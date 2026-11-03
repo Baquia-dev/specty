@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-lecciones-tarjetas",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-lecciones-tarjetas",
   "baseCommit": "37debdc39a9615ff3ec4d8a389cd758b19eb8143",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "83bd7eb790ebd15211c3d02e11ea201e659706f8",
+      "attempts": 1,
       "startedAt": "2026-11-03T10:59:05.061Z",
       "doneAt": "2026-11-03T10:59:33.468Z",
-      "summary": "La sección de lecciones y decisiones de los archivos va en la tarjeta de la tarea, tras las convenciones, y en la del borrador, tras lo que resuelve"
+      "summary": "La sección de lecciones y decisiones de los archivos va en la tarjeta de la tarea, tras las convenciones, y en la del borrador, tras lo que resuelve",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6ceaec2392a97a076e911a1c4924c47565cc895f",
+      "startedAt": "2026-11-03T10:59:33.811Z",
+      "doneAt": "2026-11-03T11:03:43.638Z",
+      "summary": "flow/views.ts lee la memoria solo con archivos (los de la spec en borrador o los de la tarea activa) y pasa sus lecciones y decisiones a la vista; formats.md lo documenta"
     }
   },
   "pending": {

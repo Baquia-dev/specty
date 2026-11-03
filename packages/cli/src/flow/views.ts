@@ -5,6 +5,7 @@ import {
   type ChangeState,
   type ChangeView,
   dirname,
+  entriesForPaths,
   isIntegrating,
   isRiskRule,
   type LongFile,
@@ -26,6 +27,7 @@ import { readMemory } from "../store/memory";
 import { acceptanceFacts } from "./acceptance";
 import { type Audit, carriedOf, dataOf, findingsOf, readAudit } from "./carried";
 import { sliceViews } from "./epic";
+import { listed } from "./shared";
 
 /**
  * What `task done` runs for a task, as one command: the repository's quick check, so a broken
@@ -71,6 +73,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
       specHash(spec) !== state.approved.hash,
     ...integrationView(state),
     ...notesOf(audit),
+    ...(await pathEntriesOf(session, filesAtHand(state.phase, spec, active))),
     ...(state.kind === "epic" ? { slices: await sliceViews(session, change, spec) } : {}),
     ...(await glossaryView(session)),
   };
@@ -206,6 +209,30 @@ async function draftFacts(
     ...(await resolvesOf(session, audit)),
     ...(await carriedOf(session, spec.frontmatter.follows)),
   };
+}
+
+/** The files at hand: those the draft's spec names, or the active task's with its extensions. */
+function filesAtHand(
+  phase: ChangeState["phase"],
+  spec: Spec,
+  active: TaskView | undefined,
+): string[] {
+  if (phase === "draft") return listed(spec);
+  return active === undefined ? [] : [...active.files, ...active.extras];
+}
+
+/**
+ * The open lessons and decisions of Specty's memory about `files` (ADR 0016); the memory is read
+ * only when there are files.
+ */
+async function pathEntriesOf(
+  session: Session,
+  files: readonly string[],
+): Promise<Pick<ChangeView, "pathEntries">> {
+  if (files.length === 0) return {};
+  const { entries } = await readMemory(session.git, session.config.memory.branch);
+  const found = entriesForPaths(entries, files);
+  return found.length === 0 ? {} : { pathEntries: found };
 }
 
 /** How many notes of the change's log `next`'s card shows. */

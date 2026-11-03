@@ -60,7 +60,7 @@ La memoria de Specty ya guarda lecciones y decisiones ligadas a rutas del códig
   - files: packages/core/src/cards/work.ts, packages/core/src/cards/next.ts, packages/core/test/memory/paths.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/paths.test.ts test/cards/findings.test.ts test/cards/memory-start.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T3: Las tarjetas leen la memoria, y la documentación
+- [x] T3: Las tarjetas leen la memoria, y la documentación
   - files: packages/cli/src/flow/views.ts, packages/cli/test/memory-paths.test.ts, docs/formats.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-paths.test.ts test/memory-settle.test.ts test/findings.test.ts && pnpm typecheck && pnpm lint
