@@ -70,3 +70,23 @@ Con un `go.work` sin versionar en la carpeta principal, Go no funciona en la wor
 
 - R1: Si la ruta del proyecto tiene caracteres especiales de glob o de expresión regular (paréntesis, corchetes) o barras invertidas (Windows), la exclusión anclada no coincide: Vite y Metro siguen viendo `.worktrees/` como hoy, sin romper nada — el ADR lo dice.
 - R2: Una configuración que excluye la carpeta de otra forma recibe el aviso igual, o una que nombra `.worktrees` y `dirname` en la misma línea sin excluirla no lo recibe — el aviso no bloquea nada fuera de `doctor`.
+
+## Cierre
+
+### Resumen
+
+`specty new` copia a la worktree `go.work` y `go.work.sum` cuando la carpeta principal los tiene sin versionar y la worktree no los recibe con la rama. Si nada los ignora, añade `/go.work` y `/go.work.sum` a `.git/info/exclude`, con el mismo código que `/.worktrees/`, para que `task done` no los vea fuera del alcance; la tarjeta los nombra bajo «WORKSPACE DE GO COPIADO» y dice cómo versionarlos. `specty doctor` pide a Vite (`server.watch.ignored`) y a Metro (`resolver.blockList`, también en una app de React Native sin `metro.config.*`) la exclusión de `.worktrees/` anclada a la carpeta de su configuración, y a Vitest configurado en `vite.config.*` la suya en `test.exclude`. ARCHITECTURE y ADR 0018 recogen las mediciones de Vite 8.3.5 y Metro 0.87.2 y la corrección sobre Go. Probado con Go 1.27.3 real: en un workspace de dos módulos con `go.work` sin versionar, `go build` compila dentro de la worktree que crea este `specty`, y `git status` no muestra la copia.
+
+### Desviaciones
+
+- Las comprobaciones de la tarjeta, en español y en inglés, están en el test de la CLI (`worktree-go-work.test.ts`, con un repositorio en inglés) y no en `packages/core/test/cards/new.test.ts`: la verificación de T1 ejecutaba primero el test de core, y su fallo impedía llegar al test nuevo de la CLI, que `propose` exige ver fallar.
+
+### Decisiones
+
+- Para Vite y Metro, `doctor` da la exclusión por buena solo si una línea nombra `.worktrees` junto a `dirname`; para Vitest en `vite.config.*`, si la nombra sin `dirname`. Así una exclusión sin anclar, que rompería Vite y Metro dentro de la worktree, no silencia el aviso.
+- `check-ignore` se consulta en la worktree nueva, que es donde `task done` mira los archivos sin seguimiento.
+
+### Pendientes
+
+- Otros servidores de desarrollo (webpack, Next.js, Angular CLI, Parcel) y Metro con Watchman, sin medir.
+- La exclusión anclada no coincide si la ruta del proyecto tiene caracteres especiales de glob o de expresiones regulares, o barras invertidas (Windows).

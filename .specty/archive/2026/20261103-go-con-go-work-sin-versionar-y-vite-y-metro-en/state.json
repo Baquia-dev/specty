@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-go-con-go-work-sin-versionar-y-vite-y-metro-en",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-go-con-go-work-sin-versionar-y-vite-y-metro-en",
   "baseCommit": "458058f0fea351879714acb35780df4de40743a9",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:70949e5d8726b104fa464ce0152399501fa2f2f94ef5925a47667f044e0c04ff",
@@ -60,12 +60,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c21a462cb98923d1faef5466fcc3952692358530",
+      "attempts": 1,
       "startedAt": "2026-11-03T12:45:34.524Z",
       "doneAt": "2026-11-03T12:49:06.536Z",
-      "summary": "doctor pide a Vite y Metro (también en una app de React Native sin metro.config) su exclusión de .worktrees/ anclada a la carpeta de la configuración, y a Vitest en vite.config la suya; ARCHITECTURE y ADR 0018 recogen las mediciones y la corrección de Go"
+      "summary": "doctor pide a Vite y Metro (también en una app de React Native sin metro.config) su exclusión de .worktrees/ anclada a la carpeta de la configuración, y a Vitest en vite.config la suya; ARCHITECTURE y ADR 0018 recogen las mediciones y la corrección de Go",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,6 +78,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T12:57:28.961Z",
   "lockedTests": {
     "packages/cli/test/doctor-watchers.test.ts": "sha256:ea121ec2f9bda905447c65600e3288e5470dac2b1f140be8f020341f061a8e58",
     "packages/cli/test/worktree-go-work.test.ts": "sha256:e7f5776a0edfa2b15fa247174c69ebcfa447c8edccc192d456e41116ab2e5d43"
