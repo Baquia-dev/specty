@@ -54,7 +54,7 @@ Que una sesión, de cualquier agente, o la persona desde su terminal, pueda deja
 
 ## Tareas
 
-- [ ] T1: Los textos de los mensajes
+- [x] T1: Los textos de los mensajes
   - files: packages/core/src/cards/messages.ts, packages/core/src/cards/index.ts, packages/core/test/cards/messages.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/messages.test.ts && pnpm lint
