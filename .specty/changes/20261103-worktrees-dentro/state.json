@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261103-worktrees-dentro",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-worktrees-dentro",
+  "baseCommit": "62172a6cae2a5062160d6594db5930843c401c45",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2ecd87a9797709c192672177f82feed7d1a082efa02e02d976583badee0623a2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:70be5301500e93906ad1732aafdbac51631591525a45e4288d03b24690de6337",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:2b66dac3fd3c98bc15f168896da585beae31a37241817c1a1a1a18daa59b397b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:8b77ce47522e925f944bd35b77463223a5bd72218554169cde1e90831c2ba4c9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cd35118ae31f434bdcf4e7a8321e285d784e9e9b9b28295ece2c041329543bb1",
+    "at": "2026-11-03T09:11:56.080Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
