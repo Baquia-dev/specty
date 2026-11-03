@@ -70,7 +70,7 @@ Primer cambio de P32 (recordatorios con disparador): un recordatorio de la memor
   - files: packages/cli/src/commands/memory.ts, packages/cli/src/commands/next.ts, packages/cli/src/commands/status.ts, packages/cli/test/memory-triggers.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-triggers.test.ts test/memory.test.ts test/memory-status.test.ts test/memory-start.test.ts test/memory-paths.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T4: La documentación de los recordatorios con disparador
+- [x] T4: La documentación de los recordatorios con disparador
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm lint

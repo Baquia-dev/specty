@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-recordatorios-con-fecha-o-rutas",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-recordatorios-con-fecha-o-rutas",
   "baseCommit": "8be0473c2cf129572fc860adc432518914be47a3",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "942731a742262e37b56c7fced1a175fb04494600",
+      "attempts": 1,
       "startedAt": "2026-11-03T14:05:16.212Z",
       "doneAt": "2026-11-03T14:06:40.395Z",
-      "summary": "cli: memory add --due <día> con sus rechazos (triggerRefusal), y next y status pasan a sus tarjetas sessionEntries con el día local, sin los recordatorios que esperan a su día o a sus rutas"
+      "summary": "cli: memory add --due <día> con sus rechazos (triggerRefusal), y next y status pasan a sus tarjetas sessionEntries con el día local, sin los recordatorios que esperan a su día o a sus rutas",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d4a84bb81f8941845914ab117bb2b00f23f240cf",
+      "startedAt": "2026-11-03T14:06:40.776Z",
+      "doneAt": "2026-11-03T14:07:10.194Z",
+      "summary": "formats.md (campo due, memory add --due, recordatorios con día o rutas) y ARCHITECTURE.md (TE TOCA, comandos de la memoria y tarjeta de inicio sin los recordatorios que esperan)"
     }
   },
   "pending": {
