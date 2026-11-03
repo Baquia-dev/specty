@@ -66,7 +66,7 @@ Hoy solo `specty doctor` dice qué herramientas de la raíz ven lo que escribe S
   - files: packages/core/src/cards/exclusions.ts, packages/core/src/cards/next.ts, packages/core/src/cards/init.ts, packages/core/src/cards/doctor.ts, packages/core/test/cards/exclusions.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/exclusions.test.ts test/cards/doctor.test.ts
-- [ ] T2: `next` sin cambio activo e `init` pasan las exclusiones que faltan, y la documentación
+- [x] T2: `next` sin cambio activo e `init` pasan las exclusiones que faltan, y la documentación
   - files: packages/cli/src/detect/formatters.ts, packages/cli/src/detect/worktree-tools.ts, packages/cli/src/commands/doctor.ts, packages/cli/src/commands/next.ts, packages/cli/src/commands/init.ts, packages/cli/test/exclusion-warnings.test.ts, docs/decisions/0018-worktrees-dentro-del-repositorio.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/exclusion-warnings.test.ts test/doctor-worktrees.test.ts

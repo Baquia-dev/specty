@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-avisos-de-exclusiones",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-avisos-de-exclusiones",
   "baseCommit": "41057257a2eb0ac9113242877423e75b81462e57",
   "revision": 2,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "adc19d9f25a0bc0faeb6c63b35db06c9ca78a70a",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:08:30.297Z",
       "doneAt": "2026-11-03T22:09:38.468Z",
-      "summary": "Bloque «HERRAMIENTAS QUE VEN LO QUE ESCRIBE SPECTY» en las tarjetas de next e init (cards/exclusions.ts), con la línea que comparte doctor y el cierre de cada tarjeta"
+      "summary": "Bloque «HERRAMIENTAS QUE VEN LO QUE ESCRIBE SPECTY» en las tarjetas de next e init (cards/exclusions.ts), con la línea que comparte doctor y el cierre de cada tarjeta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b2a23c6cc36933f36a194dbbc6ffdf6d02c1c954",
+      "startedAt": "2026-11-03T22:09:38.832Z",
+      "doneAt": "2026-11-03T22:12:04.182Z",
+      "summary": "toolExclusions (formateadores y worktrees, con ahead) en doctor, next sin cambio activo e init por adelantado si los cambios van a .worktrees/; ADR 0018 (Specty detecta, el agente corrige) y ARCHITECTURE"
     }
   },
   "pending": {

@@ -7,6 +7,7 @@ import {
   parseSpec,
   sessionEntries,
 } from "@baquia-dev/specty-core";
+import { toolExclusions } from "../detect/formatters";
 import { commitState, resolveActive } from "../flow/active";
 import { finishEpic } from "../flow/epic";
 import { changeView } from "../flow/views";
@@ -32,7 +33,9 @@ export async function next(session: Session): Promise<Output> {
     // reminders that wait for their day or for the files of their paths.
     const { entries } = await readMemory(session.git, session.config.memory.branch);
     const memory = sessionEntries(entries, localDay(session.environment.now()));
-    return nextCard({ dirty, ...(fresh ? { fresh } : {}), memory }, session.cards);
+    // Specty doesn't edit the tools that see what it writes: the agent tells the user (ADR 0018).
+    const exclusions = (await toolExclusions(session.root)).filter((tool) => !tool.excluded);
+    return nextCard({ dirty, ...(fresh ? { fresh } : {}), memory, exclusions }, session.cards);
   }
   const pending = await pendingIntegration(session, active, "close");
   const current = pending.kind === "go" ? pending.change : active;

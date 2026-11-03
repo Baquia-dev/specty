@@ -16,6 +16,7 @@ import {
   type Output,
   type ResolvedConfig,
 } from "@baquia-dev/specty-core";
+import { toolExclusions } from "../detect/formatters";
 import { detectProject, projectFacts } from "../detect/project";
 import { commitInstall } from "../install/commit";
 import { ensureDevelop } from "../install/git-flow";
@@ -186,8 +187,19 @@ async function committed(
     unfilled,
     ...(product === undefined ? {} : { product }),
     ...(installed.chooseFlow ? { chooseFlow: true } : {}),
+    exclusions: await missingExclusions(setup),
   };
   return initCard(view, cards);
+}
+
+/**
+ * The tools at the root that will see what Specty writes, before the first change when changes go
+ * to `.worktrees/` (ADR 0018). Specty doesn't edit them: the card says how they are fixed.
+ */
+async function missingExclusions(setup: InitSetup) {
+  const { worktrees, branchPerChange } = (setup.config ?? DEFAULT_CONFIG).git;
+  const tools = await toolExclusions(setup.root, worktrees && branchPerChange);
+  return tools.filter((tool) => !tool.excluded);
 }
 
 /**

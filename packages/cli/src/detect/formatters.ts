@@ -2,6 +2,7 @@
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { exists, isRecord, parseJson, readText } from "../io/files";
+import { worktreeExclusions } from "./worktree-tools";
 
 /**
  * A formatter that would also check a path Specty writes in its own format: `.specty/`, and the
@@ -88,10 +89,24 @@ const WRITTEN: readonly Written[] = [
 
 const PRETTIER_CONFIG = /^(?:\.prettierrc(?:\.[\w]+)?|prettier\.config\.[cm]?[jt]s)$/;
 
-export async function formatterExclusions(root: string): Promise<FormatterExclusion[]> {
+/** The changes' folder, which `ahead` counts before it exists. */
+const WORKTREES = ".worktrees/";
+
+/**
+ * Every tool at the root that would see what Specty writes, and whether it excludes it: the
+ * formatters, and the tools that would see the changes' worktrees (`worktree-tools.ts`). `doctor`
+ * shows them all, and `next` the ones that don't exclude it. With `ahead`, as if a change already
+ * lived in `.worktrees/`: `init` names them before the first one.
+ */
+export async function toolExclusions(root: string, ahead = false): Promise<FormatterExclusion[]> {
+  return [...(await formatterExclusions(root, ahead)), ...(await worktreeExclusions(root, ahead))];
+}
+
+async function formatterExclusions(root: string, ahead: boolean): Promise<FormatterExclusion[]> {
   const written: Written[] = [];
   for (const entry of WRITTEN) {
-    if (!entry.optional || (await exists(join(root, entry.path)))) written.push(entry);
+    const counted = !entry.optional || (ahead && entry.path === WORKTREES);
+    if (counted || (await exists(join(root, entry.path)))) written.push(entry);
   }
   const ignored = await linesOf(root, ".gitignore");
   const byGit = (entry: Written) =>

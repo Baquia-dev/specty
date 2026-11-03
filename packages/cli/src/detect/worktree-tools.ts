@@ -66,11 +66,14 @@ const DETECTORS: readonly Detector[] = [
 ];
 
 /**
- * The tools at the root that need their exclusion, once a change lives in `.worktrees/`: these of
- * JavaScript, and Python's (`worktree-python.ts`).
+ * The tools at the root that need their exclusion, once a change lives in `.worktrees/` or, with
+ * `ahead`, before the first one: these of JavaScript, and Python's (`worktree-python.ts`).
  */
-export async function worktreeExclusions(root: string): Promise<FormatterExclusion[]> {
-  if (!(await exists(join(root, PATH)))) return [];
+export async function worktreeExclusions(
+  root: string,
+  ahead: boolean,
+): Promise<FormatterExclusion[]> {
+  if (!ahead && !(await exists(join(root, PATH)))) return [];
   const entries = await readdir(root).catch(() => [] as string[]);
   const found = await viteConfigs(root, entries);
   const others = await Promise.all(DETECTORS.map((detect) => detect(root, entries)));
