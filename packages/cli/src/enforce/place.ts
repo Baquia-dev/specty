@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { realpath } from "node:fs/promises";
 import { isAbsolute, join, relative, resolve } from "node:path";
 import {
   analyzeShell,
@@ -84,6 +85,24 @@ export async function redirection({ session, cwd, bound }: Place): Promise<Redir
       return owner === undefined ? path : join(bound, relative(owner, path));
     },
   };
+}
+
+/**
+ * Whether `folder` is outside every folder of `workspace`, by their real paths: a tool may name
+ * them through a symbolic link (`/var` and `/private/var` on macOS).
+ */
+export async function outOfReach(folder: string, workspace: readonly string[]): Promise<boolean> {
+  const target = await realOrSame(folder);
+  const roots = await Promise.all(workspace.map(realOrSame));
+  return !roots.some((root) => contains(root, target));
+}
+
+async function realOrSame(path: string): Promise<string> {
+  try {
+    return await realpath(path);
+  } catch {
+    return resolve(path);
+  }
 }
 
 function contains(folder: string, path: string): boolean {

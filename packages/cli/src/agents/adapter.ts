@@ -78,6 +78,11 @@ export interface AgentAdapter {
   /** The action an event before it describes. Paths are still as the tool sent them. */
   readonly action: (event: Event) => RawAction;
   /**
+   * The folders the tool lets its agent work in, for a tool that says so in its events: a change's
+   * folder outside them is out of its reach, and `specty enter` does not take it there.
+   */
+  readonly workspace?: (event: Event) => readonly string[] | undefined;
+  /**
    * The tool's whole input, rewritten so the action happens in the conversation's folder;
    * undefined when nothing changes. It reads the event as the tool sent it. The guard judges the
    * action with this input, and sends it back for the tool to run instead.

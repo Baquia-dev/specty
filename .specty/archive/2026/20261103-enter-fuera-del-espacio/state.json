@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "id": "20261103-enter-fuera-del-espacio",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-enter-fuera-del-espacio",
+  "baseCommit": "00634cb9368a86c4be99754c10bdcf82656db6fb",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:6a052c4cc89604c30a74536602b4c49bb468ed34e3e5f1dd25ccf9a51818d037",
+    "at": "2026-11-03T07:05:35.175Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7060b9c7e9bb63f3ade3ac97da20b0fcda7f25311a879826fb4b0cb11573eccc",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c36a321ba1c1f58a04e749788b311b401d600a26daf292b335e7a06c88c62f6a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:6e03a26d6cbdfb4d103748209eb96d330f1b36ead7db0500f064c230efafd8f7",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e62f20245a90cdeba289b9c05c24a1a8fba84d9c26701a8008f5d9f51d1d6eac",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4fd3f65fbc277e92951b2e2f823a7177f062d537",
+      "attempts": 1,
+      "startedAt": "2026-11-03T07:00:21.941Z",
+      "doneAt": "2026-11-03T07:01:34.789Z",
+      "summary": "core: unreachableEnterDenial (motivo y SIGUIENTE en es/en), exportada en index.ts; el límite de Antigravity en capabilities.ts y en «Entrar con specty enter» de ARCHITECTURE",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "fd7576862ed58dd56fb14ba02d229fdc88769260",
+      "attempts": 1,
+      "startedAt": "2026-11-03T07:01:35.117Z",
+      "doneAt": "2026-11-03T07:03:03.578Z",
+      "summary": "AgentAdapter.workspace (Antigravity: workspacePaths) y outOfReach con rutas reales; enterCommand niega specty enter sin ligar la conversación cuando la carpeta del cambio queda fuera de su espacio de trabajo",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "4c74fa9534800477b231e8a3ddc314bc7e322aa4",
+      "attempts": 1,
+      "startedAt": "2026-11-03T07:06:27.574Z",
+      "doneAt": "2026-11-03T07:06:47.567Z",
+      "summary": "La fila de Antigravity en la tabla de capacidades de ARCHITECTURE §10 recoge el límite al entrar en un cambio fuera de su espacio de trabajo",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-03T07:13:23.159Z",
+  "lockedTests": {
+    "packages/cli/test/antigravity.test.ts": "sha256:0ae31274090e757723c7d2ff4d890e8c4270301249660a9e16115079385704fd",
+    "packages/core/test/guard/worktrees.test.ts": "sha256:3ff6226da4d3723e3954222b240194247f94b2bf01169ee37e2905b95ad66c90",
+    "packages/core/test/capabilities.test.ts": "sha256:6a987d2464227a7bb24a6f6f72dc668bb5b1e55a8a4903e7a9aab4cf28833e20"
+  }
+}
