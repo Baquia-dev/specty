@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-init-ignora-worktrees",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-init-ignora-worktrees",
   "baseCommit": "05c2eac55b46dff0d64d127a0c3e472713fdd2a6",
   "revision": 1,
@@ -43,6 +43,8 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T09:48:23.276Z"
+  "lockedTests": {
+    "packages/cli/test/init-commit.test.ts": "sha256:ac7e52e42a915bc582f364883725f808641d13cb35b3132aba19d0d4fe58357d",
+    "packages/cli/test/init-worktrees.test.ts": "sha256:97dd295176ed6ca4c8a3397e2774d768fa13c84c1746afdd607ebd116b681554"
+  }
 }
