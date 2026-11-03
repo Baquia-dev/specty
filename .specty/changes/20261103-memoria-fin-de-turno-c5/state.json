@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-fin-de-turno-c5",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-memoria-fin-de-turno-c5",
+  "baseCommit": "7b5a377abe7f0a22f2e50be83049a26076594b59",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b060e065ae60b0f1bc3ae2a0066f0ee9cc4a52ae4df3bbc11da657729c155a04",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:82c966ea027f9bba5cb0badfc10cc498c1bbe24ba13f3a3fb1d94cd05d688102",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:51688200e0f039e2ea0bc76cbabbc49c88fe90892dfcbd758b302947d1a426d6",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:42aa335c34f4d24ccea18c1494a40b2ae775a38cbbbdf62ab74d421a39e42822",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:2ddfbfeba616e10412d14e79b505c7a5f91341b5d2f0da94e8f68516985e7ccc",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:760e8dc2949917c8e6a296f5ff64f63b14aa6ae4befeedfa36d54693a1f81f68",
+    "at": "2026-11-03T08:37:50.457Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
