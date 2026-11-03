@@ -69,6 +69,15 @@ export async function worktreesHome(git: Git): Promise<string> {
 }
 
 /**
+ * Where the worktrees lived before ADR 0018, beside the main worktree: `init` and `uninstall` take
+ * out of each tool's settings what Specty gave it there.
+ */
+export async function formerWorktreesHome(git: Git): Promise<string> {
+  const main = (await git.worktrees())[0]?.folder ?? git.root;
+  return join(dirname(main), `${basename(main)}.worktrees`);
+}
+
+/**
  * Git's common folder, where every worktree commits (its `config` lives there): Specty's commands
  * write in it from a change's folder, and a sandbox that keeps to that folder leaves it out.
  */

@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6fda11aeb0e52128abddabca3d4a919e9f4e085b",
+      "startedAt": "2026-11-03T08:43:58.882Z",
+      "doneAt": "2026-11-03T08:45:50.172Z",
+      "summary": "OpenCode: init ya no escribe la regla de external_directory y, con uninstall, quita la de la carpeta de antes (formerWorktreesHome) sin tocar unos ajustes sin ella; doctor solo mira redirects; fuera sus textos de core"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

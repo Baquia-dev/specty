@@ -48,7 +48,7 @@ Segundo de los tres cambios que quitan los permisos que `init` daba a cada herra
 
 ## Tareas
 
-- [ ] T1: OpenCode sin `external_directory`
+- [x] T1: OpenCode sin `external_directory`
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/install/opencode.ts, packages/cli/src/agents/opencode.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/opencode-install.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-install.test.ts && pnpm typecheck && pnpm lint

@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { homedir } from "node:os";
 import { join } from "node:path";
-import { worktreesHome } from "../flow/worktree";
+import { formerWorktreesHome } from "../flow/worktree";
 import { isRecord, parseJson } from "../io/files";
 import type { Git } from "../io/git";
 import type { Invocation } from "../session";
 import { type AgentInstall, excludeLocally, OPENCODE_PLUGIN, removeFromJson } from "./agents";
-import { type InstallFiles, installFiles, rewriteJson } from "./files";
+import { type InstallFiles, installFiles } from "./files";
 
 /**
  * OpenCode's global plugin file (`$XDG_CONFIG_HOME/opencode`, or `~/.config/opencode`), which
@@ -39,46 +39,23 @@ export async function installOpencode(
 export const OPENCODE_SETTINGS = ".opencode/opencode.jsonc";
 
 /**
- * Lets OpenCode work in the worktrees' folder (`permission.external_directory`), for a session
- * that entered a change's folder there: in `.opencode/opencode.jsonc`, out of git, since the rule
- * holds a machine path. A file git keeps gets nothing. The rule's pattern, and whether it went in.
+ * Takes out the rule an older `init` wrote so that OpenCode worked in the worktrees' folder beside
+ * the project (ADR 0018), and the file once nothing is left in it. Settings without that rule stay
+ * as they are.
  */
-export async function openWorktrees(
-  root: string,
-  git: Git,
-  files: InstallFiles,
-): Promise<{ readonly pattern: string; readonly open: boolean }> {
-  const pattern = `${await worktreesHome(git)}/**`;
-  if (await git.isTracked(OPENCODE_SETTINGS)) return { pattern, open: false };
-  const path = join(root, OPENCODE_SETTINGS);
-  await rewriteJson(path, (value) => withWorktrees(value, pattern, true), true, files);
-  await excludeLocally(git, OPENCODE_SETTINGS, files);
-  return { pattern, open: true };
-}
-
-/** `uninstall`: takes the rule out, and the file once nothing is left in it. */
 export async function closeWorktrees(root: string, git: Git, files: InstallFiles): Promise<void> {
-  const pattern = `${await worktreesHome(git)}/**`;
-  const update = (value: Record<string, unknown>) => withWorktrees(value, pattern, false);
-  await removeFromJson(root, OPENCODE_SETTINGS, update, files);
+  const pattern = `${await formerWorktreesHome(git)}/**`;
+  await removeFromJson(root, OPENCODE_SETTINGS, (value) => withoutRule(value, pattern), files);
 }
 
-/**
- * The rule that allows `pattern`, after the person's ones, or taken out; what is left empty goes.
- * A rule the person gave every folder stays first (`*`), since the last one that matches wins.
- */
-function withWorktrees(
-  value: Record<string, unknown>,
-  pattern: string,
-  add: boolean,
-): Record<string, unknown> {
+/** The settings without the rule that allows `pattern`; what is left empty goes. */
+function withoutRule(value: Record<string, unknown>, pattern: string): Record<string, unknown> {
   const permission = isRecord(value.permission) ? value.permission : {};
-  const current = permission.external_directory;
-  const rules = isRecord(current) ? current : typeof current === "string" ? { "*": current } : {};
+  const rules = permission.external_directory;
+  if (!isRecord(rules) || !Object.hasOwn(rules, pattern)) return value;
   const { [pattern]: _, ...others } = rules;
-  const updated = add ? { ...others, [pattern]: "allow" } : others;
   const { external_directory: __, ...rest } = permission;
-  const kept = Object.keys(updated).length === 0 ? rest : { ...rest, external_directory: updated };
+  const kept = Object.keys(others).length === 0 ? rest : { ...rest, external_directory: others };
   const { permission: ___, ...settings } = value;
   return Object.keys(kept).length === 0 ? settings : { ...settings, permission: kept };
 }
