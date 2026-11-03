@@ -106,3 +106,39 @@ Con ella, Specty decide los casos claros (el mismo pendiente, el mismo cambio de
 - R4: Un falso parecido detiene un `new` legítimo — cuesta una pregunta a la persona, y `--distinct-from` deja constancia.
 - R5: La rama solo vive en este clon hasta que se sube — la persona la sube cuando quiera; sin subirla, un disco perdido se la lleva, como hoy a la memoria del agente.
 - R6: Algún corte no cabe en un cambio de tamaño L — se parte en cambios previos, cada uno con su test, como en épicas anteriores.
+
+## Cierre
+
+### Resumen
+
+Specty tiene memoria propia, compartida por todas las sesiones y todos los agentes del clon:
+- en vivo: qué conversación da su último paso en cada carpeta, quién lleva cada cambio y cuáles quedan huérfanos (C1);
+- duradera: pendientes, mejoras, recordatorios y decisiones en la rama `specty-memory`, que todas las carpetas ven al instante (C2), y llegan a cada sesión en la tarjeta de inicio y en «TE TOCA» de `specty status`.
+
+Los pendientes se toman con `new --resolves`, quedan hechos al cerrarse su cambio y libres si se cancela, y los «Pendientes» de cada cierre pasan solos a la memoria. Solo la persona descarta: un agente, también en modo delegado, solo propone, y el guard no le deja escribir la rama con git (C3). `new` frena un cambio que parece duplicar otro abierto y `propose` avisa cuando comparte la mitad de sus archivos (C4). La red del fin de turno devuelve el turno a Claude Code o Codex si terminan listando pendientes sin anotar, y `init` la instala (C5). `specty note` deja una bitácora del cambio que vuelve en la tarjeta de `next` (C6). `specty ui` tiene la página «Memoria», con lo que le toca a la persona, quién lleva cada cambio, búsqueda y filtros, actualización en vivo y las decisiones de la persona (C7).
+
+### Desviaciones
+
+- Varios cortes no cabían en un cambio de tamaño L y se partieron en cambios que los siguen (R6): C2 (la tarjeta de inicio y «TE TOCA»), C3 (cerrar o liberar al archivar, la cosecha del cierre, `memory drop` y el guard), C4 (el aviso de `propose`), C5 (la instalación de la red) y C7 (la barra y las acciones de la persona).
+- Dos cambios se cancelaron y se rehicieron porque un test ya aprobado tenía un error, que solo la persona puede desbloquear: la primera tarjeta de inicio y el primer aviso de `propose`.
+- La red del fin de turno solo existe en Claude Code y Codex, los dos agentes cuyo evento de fin de turno trae el último mensaje (A8).
+
+### Decisiones
+
+- La memoria duradera vive en su propia rama, `specty-memory`, sin historia común con el código (A1, decisión de la persona del 2026-10-30).
+- Descartar una entrada es solo de la persona y nunca se delega (A2, decisión de la persona del 2026-10-30).
+- Specty decide solo los casos claros (una entrada ya tomada, el mismo `follows`, la mitad de los archivos), y lo dudoso, como un título parecido, se lo pregunta a la persona (A3).
+- La página «Memoria» siguió la maqueta que aprobó la persona el 2026-11-03 antes de programarla.
+
+### Pendientes
+
+- Lecciones por ruta en la tarjeta de la tarea y decisiones por ruta en la del borrador (épica «Memoria de Specty», primer punto acordado para después de su primera versión): que la memoria guarde lecciones y decisiones ligadas a rutas del código, y que la tarjeta de cada tarea y la del borrador muestren las de los archivos que tocan.
+- Una sola verificación completa a la vez entre sesiones (épica «Memoria de Specty», segundo punto acordado): que dos sesiones no lancen `pnpm check` u otra verificación completa a la vez en el mismo clon, con un aviso o una cola.
+- Mensajes entre sesiones de cualquier agente (épica «Memoria de Specty», tercer punto acordado): que una sesión pueda dejarle un mensaje a otra, de cualquier agente, a través de Specty.
+- Lo aplazado entra solo en la memoria (épica «Memoria de Specty», cuarto punto acordado): los riesgos aceptados en la aceptación, la deuda de `specty check --all` y los hallazgos de `specty review` pasan a ser entradas sin que el agente las anote.
+- Recordatorios con disparador (épica «Memoria de Specty», quinto punto acordado): un recordatorio que sale cuando pasa algo concreto, como al cerrar un cambio, al tocar una ruta o en una fecha, en vez de en cada sesión.
+- Carriles de trabajo entre sesiones (épica «Memoria de Specty», sexto punto acordado): repartir el trabajo en carriles con dueño, para que cada sesión tome solo lo de su carril.
+- Un panel de sesiones en la UI con su consumo (épica «Memoria de Specty», séptimo punto acordado): qué sesiones trabajan, en qué carpeta, desde cuándo y cuánto llevan gastado.
+- Recursos de desarrollo por carpeta (épica «Memoria de Specty», octavo punto acordado): puertos de servidores de desarrollo por worktree y recompilar el dist de la carpeta principal tras cada cierre.
+- P25: el freno de duplicados no debería comparar un cambio que sigue a un corte con la épica de ese corte.
+- P7: este repositorio aún no tiene la red del fin de turno ni la tarjeta al empezar una sesión, hasta que la persona ejecute `specty init`.

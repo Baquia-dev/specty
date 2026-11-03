@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261030-memoria-de-specty",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261030-memoria-de-specty",
   "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fd1db758b4b0c419dde0b5ceb7c0907586e1b14ce16c13b114b10479d80151ea",
+    "at": "2026-10-30T10:06:18.155Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -59,11 +66,5 @@
     "C": 7,
     "R": 6
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:fd1db758b4b0c419dde0b5ceb7c0907586e1b14ce16c13b114b10479d80151ea",
-    "at": "2026-10-30T10:06:18.155Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-03T10:41:38.588Z"
 }
