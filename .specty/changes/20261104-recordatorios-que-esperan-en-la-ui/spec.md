@@ -44,7 +44,7 @@ Resuelve P45. Hoy la página «Memoria» de `specty ui` muestra en «Te toca» t
 
 ## Tareas
 
-- [ ] T1: «Te toca» sin los recordatorios que esperan, y su propia sección
+- [x] T1: «Te toca» sin los recordatorios que esperan, y su propia sección
   - files: packages/core/src/light.ts, packages/ui/src/memory/memory-view.ts, packages/ui/src/memory/memory-waiting.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-waiting.test.ts --include src/memory/memory-view.test.ts && pnpm lint

@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "527a7ea66466ca283c0440a937dab24e02d98fd4",
+      "startedAt": "2026-11-03T23:20:15.058Z",
+      "doneAt": "2026-11-03T23:20:51.114Z",
+      "summary": "light.ts exporta localDay y sessionEntries; memorySections recibe today y deja en Te toca solo los recordatorios que sessionEntries muestra, y los demás en la sección waiting («Recordatorios que esperan»)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

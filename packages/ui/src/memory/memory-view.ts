@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { MemoryEntry, StatusEntry } from "@baquia-dev/specty-core";
-import { fold } from "@baquia-dev/specty-core/light";
+import { fold, localDay, sessionEntries } from "@baquia-dev/specty-core/light";
 import type { Bilingual, MemoryRecord } from "../data/records";
 
 // The memory page (ADR 0016): what is the person's turn, who holds each open change, and the open
@@ -24,7 +24,7 @@ export type MemoryItem =
   | { readonly kind: "closed"; readonly entry: MemoryEntry };
 
 export interface MemorySection {
-  readonly key: "turn" | "holders" | "work" | "decisions" | "lessons" | "closed";
+  readonly key: "turn" | "holders" | "work" | "decisions" | "lessons" | "waiting" | "closed";
   readonly label: Bilingual;
   readonly items: readonly MemoryItem[];
 }
@@ -44,23 +44,35 @@ const LABELS: Readonly<Record<MemorySection["key"], Bilingual>> = {
   work: { es: "Pendientes y mejoras", en: "Pending items and improvements" },
   decisions: { es: "Decisiones", en: "Decisions" },
   lessons: { es: "Lecciones", en: "Lessons" },
+  waiting: { es: "Recordatorios que esperan", en: "Reminders that wait" },
   closed: { es: "Hechas y descartadas", en: "Done and dropped" },
 };
 
 /**
  * The sections of the memory page, in order, without the empty ones: «Te toca» (proposals to
  * drop, changes waiting for the person and open reminders), who holds each open change, the open
- * pending items and improvements by date, the open decisions and, with `filter.closed`, the done
+ * pending items and improvements by date, the open decisions and lessons, the reminders that
+ * wait for their day (after `today`), their paths or a change and, with `filter.closed`, the done
  * and dropped entries. The search and the kind leave out what they do not keep; a kind leaves out
  * the changes, which are not entries.
  */
-export function memorySections(record: MemoryRecord, filter = NO_FILTER): MemorySection[] {
+export function memorySections(
+  record: MemoryRecord,
+  filter = NO_FILTER,
+  today = localDay(new Date()),
+): MemorySection[] {
   const { entries, changes } = filtered(record, filter);
   const open = byDate(entries.filter((entry) => !isClosed(entry)));
   const proposed = open.filter((entry) => entry.status === "drop-proposed");
   const settled = open.filter((entry) => entry.status !== "drop-proposed");
   const of = (kinds: readonly MemoryEntry["kind"][]) =>
     settled.filter((entry) => kinds.includes(entry.kind));
+  // The same rule as the start card and «TE TOCA» of `specty status` (ADR 0016).
+  const due = new Set(sessionEntries(settled, today));
+  const reminders = (waiting: boolean) =>
+    of(["reminder"])
+      .filter((entry) => due.has(entry) !== waiting)
+      .map((entry): MemoryItem => ({ kind: "reminder", entry }));
   const closed = filter.closed ? byDate(entries.filter(isClosed)) : [];
   const sections: MemorySection[] = [
     section("turn", [
@@ -68,7 +80,7 @@ export function memorySections(record: MemoryRecord, filter = NO_FILTER): Memory
       ...changes
         .filter((change) => change.waitingFor === "human")
         .map((change): MemoryItem => ({ kind: "waiting", change })),
-      ...of(["reminder"]).map((entry): MemoryItem => ({ kind: "reminder", entry })),
+      ...reminders(false),
     ]),
     section(
       "holders",
@@ -86,6 +98,7 @@ export function memorySections(record: MemoryRecord, filter = NO_FILTER): Memory
       "lessons",
       of(["lesson"]).map((entry): MemoryItem => ({ kind: "lesson", entry })),
     ),
+    section("waiting", reminders(true)),
     section(
       "closed",
       closed.map((entry): MemoryItem => ({ kind: "closed", entry })),
