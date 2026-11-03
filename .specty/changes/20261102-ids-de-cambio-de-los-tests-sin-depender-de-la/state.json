@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261102-ids-de-cambio-de-los-tests-sin-depender-de-la",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261102-ids-de-cambio-de-los-tests-sin-depender-de-la",
   "baseCommit": "9424fbdec745c4a9a5080a8488cf663c84d4ec4e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7bc9322e7ed5a37fd507d2325fa934232f7249d340b94be9f22d5c28b0f565db",
+    "at": "2026-11-03T04:43:21.055Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "12c5d9fa1d5ee68ae9f42afe9aad0aff6eb6a25e",
+      "startedAt": "2026-11-03T04:43:21.949Z",
+      "doneAt": "2026-11-03T04:49:19.785Z",
+      "summary": "CHANGE y el id de sizing con makeChangeId(NOW, …) y ARCHIVE con el año local de NOW, como el código"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7bc9322e7ed5a37fd507d2325fa934232f7249d340b94be9f22d5c28b0f565db",
-    "at": "2026-11-03T04:43:21.055Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

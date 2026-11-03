@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { makeChangeId } from "@baquia-dev/specty-core";
 import { describe, expect, it } from "vitest";
 import { CONFIG, cli, NOW, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
 
@@ -36,7 +37,7 @@ describe("the size of a spec with globs", () => {
 
   it("counts only code files, matches included, against the quick limit", async () => {
     const root = await withLibrary(["--kind", "quick", "Arreglar utilidades"]);
-    const id = `${NOW.toISOString().slice(0, 10).replaceAll("-", "")}-arreglar-utilidades`;
+    const id = makeChangeId(NOW, "Arreglar utilidades");
     const quick = (files: string) =>
       `---\nkind: quick\n---\n\n# Arreglar utilidades\n\n## Objetivo\n\nLas utilidades fallan.\n\n## Archivos\n\n${files}\n## Tareas\n\n- [ ] T1: Arreglarlas\n  - files: src/app.ts\n  - type: fix\n`;
     const path = `.specty/changes/${id}/spec.md`;

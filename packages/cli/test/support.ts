@@ -3,6 +3,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, readFile, realpath, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, dirname, join } from "node:path";
+import { makeChangeId } from "@baquia-dev/specty-core";
 import { expect } from "vitest";
 import { runCli } from "../src/program";
 import type { Terminal } from "../src/session";
@@ -15,7 +16,7 @@ export const DIST = join(import.meta.dirname, "..", "dist", "specty.mjs");
  */
 export const NOW = new Date(Math.floor(Date.now() / 60_000) * 60_000);
 /** Where `close` archives a change today. */
-export const ARCHIVE = `.specty/archive/${NOW.getUTCFullYear()}`;
+export const ARCHIVE = `.specty/archive/${NOW.getFullYear()}`;
 
 /** Isolated git: no global or system configuration, fixed identity. */
 const GIT_ENV = {
@@ -214,7 +215,8 @@ La app saluda por nombre.
   - type: refactor
 `;
 
-export const CHANGE = `${NOW.toISOString().slice(0, 10).replaceAll("-", "")}-saludo-personalizado`;
+/** The id `new` gives SPEC's change today, from the local date as the command does. */
+export const CHANGE = makeChangeId(NOW, "Saludo personalizado");
 export const SPEC_PATH = `.specty/changes/${CHANGE}/spec.md`;
 
 /** The files of a repository for SPEC's change. */
