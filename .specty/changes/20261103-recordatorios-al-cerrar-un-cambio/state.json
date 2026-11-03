@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-recordatorios-al-cerrar-un-cambio",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-recordatorios-al-cerrar-un-cambio",
   "baseCommit": "4273e17bddca2d90ca009423261545f6a03f4b15",
   "revision": 1,
@@ -56,6 +56,9 @@
     "T": 5,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T14:30:34.827Z"
+  "lockedTests": {
+    "packages/cli/test/memory-on-close.test.ts": "sha256:2f31a86f276d894fad089e39926f33d439566e636c17ba78d3a4b212f3650f1e",
+    "packages/core/test/cards/close-reminders.test.ts": "sha256:e4bf6c10d48a6cce7b8d70d72797fee320c8405d5258904aaa59dd0982dfc207",
+    "packages/core/test/memory/close-trigger.test.ts": "sha256:e3eb4956805b68e20ac8354330e7011e1de11b916a336a0bf9fd1f9ab52759bb"
+  }
 }
