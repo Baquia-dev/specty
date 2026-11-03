@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-exclusion-anclada-cualquier-ruta",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-exclusion-anclada-cualquier-ruta",
   "baseCommit": "8be0473c2cf129572fc860adc432518914be47a3",
   "revision": 1,
@@ -22,7 +22,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0bed90960f061691de8f6176e276f2bfb23e5d81",
+      "startedAt": "2026-11-03T13:59:03.714Z",
+      "doneAt": "2026-11-03T14:02:00.998Z",
+      "summary": "doctor pide a Vite una función que compara el principio de la ruta y a Metro la expresión con la carpeta escapada y los dos separadores; la forma de antes no cuenta si la ruta tiene caracteres especiales; ADR 0018 con la medición"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -16,7 +16,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: Vite y Metro, con una exclusión que vale con cualquier ruta
+- [x] T1: Vite y Metro, con una exclusión que vale con cualquier ruta
   - files: packages/cli/src/detect/worktree-tools.ts, packages/cli/test/doctor-watchers.test.ts, docs/decisions/0018-worktrees-dentro-del-repositorio.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-watchers.test.ts
   - type: fix
