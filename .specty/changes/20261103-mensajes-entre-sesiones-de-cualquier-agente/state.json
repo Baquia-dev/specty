@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261103-mensajes-entre-sesiones-de-cualquier-agente",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-mensajes-entre-sesiones-de-cualquier-agente",
+  "baseCommit": "e327530a2c576639a892c6b6746d3a01ead5c48c",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7011b794406f2a89ea99282467f6baa0badac0c00730b38d9c0bb2008c3a4e3a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0c90602e65b92d8c24b956a2cfdf01195d98c5fea1b4211032491c673258bbea",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:15a763f87884a84f786bd90b00e27fc509de7fa69a698d32b8f51d908e57843c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:50d94edfaf486ee2cee39e3dbe00245c381fcca42e55a2d4e3fa0a2402c3ac04",
+    "at": "2026-11-03T11:27:16.285Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
