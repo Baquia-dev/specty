@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-pendientes-del-cierre",
   "baseCommit": "462c23752c6f0c1366d4fce8d3119bb8dc49d2c5",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:29117b93db50d1ab49f98644e88f3bafbff7975c6e4755d5ea70efb2b4e4c867",
+    "at": "2026-11-03T07:25:15.511Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -40,12 +47,6 @@
     "T": 2,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:29117b93db50d1ab49f98644e88f3bafbff7975c6e4755d5ea70efb2b4e4c867",
-    "at": "2026-11-03T07:25:15.511Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T07:26:39.354Z"
 }
