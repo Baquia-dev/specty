@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9613a585724a5a13cdc6de4ebf3428859fd85ac8",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:26:47.708Z",
       "doneAt": "2026-11-03T22:27:11.665Z",
-      "summary": "cards/front-owners.ts: frontResolvesDenial (de qué frente es la entrada, quién lo lleva y qué hacer) y foreignFrontsBlock (sección FRENTES DE OTRAS SESIONES con los archivos que caen en cada frente), exportadas en cards/index.ts."
+      "summary": "cards/front-owners.ts: frontResolvesDenial (de qué frente es la entrada, quién lo lleva y qué hacer) y foreignFrontsBlock (sección FRENTES DE OTRAS SESIONES con los archivos que caen en cada frente), exportadas en cards/index.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a09ab2b7e1479788f9510f1fc25c24ebe56266a2",
+      "startedAt": "2026-11-03T22:27:11.998Z",
+      "doneAt": "2026-11-03T22:28:23.684Z",
+      "summary": "judgeFronts juzga también los ids de new --resolves (takenDenial): rechaza con la regla memory la entrada de un frente con dueño vivo de otra conversación. foreignFronts (flow/shared.ts) da los frentes de otras sesiones en que caen los archivos, y propose añade su aviso."
     }
   },
   "pending": {

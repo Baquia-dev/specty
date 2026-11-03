@@ -13,6 +13,8 @@ import {
 import { openChanges } from "../commands/status";
 import type { Session } from "../session";
 import { readSpec } from "../store/changes";
+import { type LiveHold, liveHolds } from "../store/front-owners";
+import { readMemory } from "../store/memory";
 import { isFinished } from "./active";
 import { locateChanges } from "./changes";
 
@@ -94,4 +96,27 @@ export function sharedLines(session: Session, shared: readonly Shared[]): string
 /** The "shared files" block of an output, or nothing when no file is shared. */
 export function sharedBlock(session: Session, shared: readonly Shared[]): OutputBlock[] {
   return section(sharedTitle(session.lang), sharedLines(session, shared));
+}
+
+/**
+ * The fronts of Specty's memory that a live conversation other than the session's holds, with the
+ * governed `paths` that fall in their paths (ADR 0016): what `propose` warns about. Without
+ * knowing the session's conversation, every front with an owner counts.
+ */
+export async function foreignFronts(
+  session: Session,
+  paths: readonly string[],
+): Promise<{ readonly owner: LiveHold; readonly paths: readonly string[] }[]> {
+  const mine = [...new Set(paths)].filter((path) => isGoverned(path, session.config));
+  const { fronts } = await readMemory(session.git, session.config.memory.branch);
+  if (mine.length === 0 || !fronts.some((front) => front.paths !== undefined)) return [];
+  const { now } = session.environment;
+  const live = await liveHolds(session.git, now(), session.config.memory.orphanAfterMin);
+  const asker = session.conversation;
+  return live.flatMap((owner) => {
+    if (owner.tool === asker?.tool && owner.conversation === asker.id) return [];
+    const covered = fronts.find((front) => front.name === owner.front)?.paths ?? [];
+    const inside = mine.filter((path) => covered.length > 0 && matchesAny(path, covered));
+    return inside.length === 0 ? [] : [{ owner, paths: inside }];
+  });
 }

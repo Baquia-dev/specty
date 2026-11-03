@@ -6,6 +6,7 @@ import {
   duplicateApproveNext,
   duplicateFilesBlock,
   type EffortRecommendation,
+  foreignFrontsBlock,
   formatSizeReason,
   headerOf,
   invalidSpecCard,
@@ -32,7 +33,7 @@ import { commitState, resolveActive } from "../flow/active";
 import { analyzeChange } from "../flow/analysis";
 import { dataOf, readAudit } from "../flow/carried";
 import { impactBlock, impactedFiles } from "../flow/impact";
-import { duplicatedBy, listed, sharedBlock, sharedFiles } from "../flow/shared";
+import { duplicatedBy, foreignFronts, listed, sharedBlock, sharedFiles } from "../flow/shared";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
 import { readRevision, type StoredChange } from "../store/changes";
@@ -166,6 +167,7 @@ async function withParallel(
   const impacts = await impactedFiles(session, analysis.spec);
   const blocks = [
     ...sharedBlock(session, shared),
+    ...foreignFrontsBlock(await foreignFronts(session, paths), session.cards),
     ...duplicateFilesBlock(duplicates, session.cards),
     ...impactBlock(session, impacts),
   ];

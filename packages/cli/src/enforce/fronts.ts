@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   analyzeShell,
+  type Front,
   findFront,
   frontHeldDenial,
+  frontResolvesDenial,
   type GuardContext,
   type GuardDecision,
 } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
-import { holdFront, liveHolds } from "../store/front-owners";
+import { holdFront, type LiveHold, liveHolds } from "../store/front-owners";
 import { readMemory } from "../store/memory";
 import { conversationOf, type GuardTool } from "./actions";
 
@@ -19,11 +21,12 @@ interface FrontCall {
 }
 
 /**
- * A command with `specty front take|free <front>` that the guard would let through (ADR 0016):
- * the conversation may not take or free a front that another conversation holds, while that one
- * keeps stepping (`memory.orphanAfterMin`); otherwise it holds the last front it takes, and no
- * other. Only the guard knows the conversation, so it records the owner before the command runs,
- * as with `specty enter`. A front that does not exist is left to the command, which says so.
+ * A command with `specty front take|free <front>` or `specty new --resolves <id>…` that the guard
+ * would let through (ADR 0016): the conversation may not take or free a front that another
+ * conversation holds, nor create the change of one of its entries, while that one keeps stepping
+ * (`memory.orphanAfterMin`); otherwise it holds the last front it takes, and no other. Only the
+ * guard knows the conversation, so it records the owner before the command runs, as with
+ * `specty enter`. A front that does not exist is left to the command, which says so.
  */
 export async function judgeFronts(
   call: FrontCall,
@@ -31,14 +34,17 @@ export async function judgeFronts(
   decision: GuardDecision,
   ctx: GuardContext,
 ): Promise<GuardDecision> {
-  const requests = analyzeShell(command).fronts;
+  const { fronts: requests, resolves } = analyzeShell(command);
   const conversation = conversationOf(call.event);
-  if (!decision.allow || requests.length === 0 || conversation === undefined) return decision;
+  const asks = requests.length > 0 || resolves.length > 0;
+  if (!decision.allow || !asks || conversation === undefined) return decision;
   const { session, tool } = call;
   const now = session.environment.now();
   const { fronts } = await readMemory(session.git, session.config.memory.branch);
   const live = await liveHolds(session.git, now, session.config.memory.orphanAfterMin);
   const others = live.filter((hold) => hold.tool !== tool || hold.conversation !== conversation);
+  const taken = takenDenial(fronts, others, resolves, ctx);
+  if (taken !== undefined) return taken;
   const asked = requests.flatMap(({ action, name }) => {
     const front = findFront(fronts, name);
     return front === undefined ? [] : [{ action, front: front.name }];
@@ -52,8 +58,34 @@ export async function judgeFronts(
         ...frontHeldDenial(owner, action, ctx.lang, ctx.command),
       };
   }
-  const taken = asked.filter(({ action }) => action === "take").at(-1);
-  if (taken !== undefined)
-    await holdFront(session.git, { front: taken.front, tool, conversation, at: now.toISOString() });
+  const took = asked.filter(({ action }) => action === "take").at(-1);
+  if (took !== undefined)
+    await holdFront(session.git, { front: took.front, tool, conversation, at: now.toISOString() });
   return decision;
+}
+
+/**
+ * The denial for the first entry `specty new --resolves` names that is in a front another
+ * conversation holds (`others`); undefined when none is.
+ */
+function takenDenial(
+  fronts: readonly Front[],
+  others: readonly LiveHold[],
+  ids: readonly string[],
+  ctx: GuardContext,
+): GuardDecision | undefined {
+  for (const id of ids) {
+    const wanted = id.toLowerCase();
+    const front = fronts.find(({ items }) => items.some((item) => item.toLowerCase() === wanted));
+    const owner = others.find((hold) => hold.front === front?.name);
+    if (front !== undefined && owner !== undefined) {
+      const entry = front.items.find((item) => item.toLowerCase() === wanted) ?? id;
+      return {
+        allow: false,
+        rule: "memory",
+        ...frontResolvesDenial(owner, entry, ctx.lang, ctx.command),
+      };
+    }
+  }
+  return undefined;
 }
