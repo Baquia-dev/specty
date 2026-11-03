@@ -63,7 +63,7 @@ La regla del reporte final ya pide anotar cada pendiente con `specty memory add`
   - files: packages/core/src/memory/turn-end.ts, packages/core/src/cards/memory-turn.ts, packages/core/src/index.ts, packages/core/src/cards/index.ts, packages/core/test/memory/turn-end.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/turn-end.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: El último mensaje de Claude Code y de Codex
+- [x] T2: El último mensaje de Claude Code y de Codex
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/claude-code.ts, packages/cli/src/agents/codex.ts, packages/cli/test/memory-stop.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts && pnpm typecheck && pnpm lint

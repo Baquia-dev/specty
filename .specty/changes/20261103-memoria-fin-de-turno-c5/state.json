@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d032a7a375820ffc421940093015474f6c31ed99",
+      "attempts": 1,
       "startedAt": "2026-11-03T08:39:29.821Z",
       "doneAt": "2026-11-03T08:40:18.524Z",
-      "summary": "pendingInMessage en memory/turn-end.ts (las viñetas de primer nivel bajo un encabezado de pendientes) y memoryStopReason en cards/memory-turn.ts"
+      "summary": "pendingInMessage en memory/turn-end.ts (las viñetas de primer nivel bajo un encabezado de pendientes) y memoryStopReason en cards/memory-turn.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7e702e217bb5217242bac11f7ee142aa7f008f43",
+      "startedAt": "2026-11-03T08:40:19.231Z",
+      "doneAt": "2026-11-03T08:41:02.879Z",
+      "summary": "AgentAdapter.lastMessage y lastAssistantMessage (last_assistant_message) en adapter.ts, para Claude Code y Codex"
     }
   },
   "pending": {
