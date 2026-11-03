@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-recordatorios-que-esperan-en-la-ui",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-recordatorios-que-esperan-en-la-ui",
   "baseCommit": "0cbfa9d8cdf0fd0272a5af072f2a4f483b9b408a",
   "revision": 1,
@@ -50,6 +50,8 @@
     "AC": 3,
     "T": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T23:20:10.489Z"
+  "lockedTests": {
+    "packages/ui/src/memory/memory-reminders-page.test.ts": "sha256:60e699a77abd3332d3f8d479d851f19e92f5d562e07677b9b59d160923ff37f2",
+    "packages/ui/src/memory/memory-waiting.test.ts": "sha256:0ee41888e058e2c1343a80bdd8b6e7ca2ba93b2cac5cb29fbf9d0d19ad6ad79e"
+  }
 }
