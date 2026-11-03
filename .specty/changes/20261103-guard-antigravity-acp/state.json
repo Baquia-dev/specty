@@ -6,6 +6,13 @@
   "branch": "specty/20261103-guard-antigravity-acp",
   "baseCommit": "2e52355e2c9dfffd9c6187c41572e38939603811",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:305ec90d1e93b2f7ed1f36025f591101bfc8fd3ea1eefaa4d5ef604b0959419f",
+    "at": "2026-11-03T06:46:50.843Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:305ec90d1e93b2f7ed1f36025f591101bfc8fd3ea1eefaa4d5ef604b0959419f",
-    "at": "2026-11-03T06:46:50.843Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T06:48:38.725Z"
 }

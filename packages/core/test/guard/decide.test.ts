@@ -90,6 +90,27 @@ describe("decideGuard on files", () => {
     });
   });
 
+  it("AC3: protects the hooks of Antigravity, Gemini CLI and Devin, written or deleted", () => {
+    for (const path of [".agents/hooks.json", ".gemini/settings.json", ".devin/hooks.v1.json"]) {
+      for (const action of [write(path), { kind: "delete" as const, paths: [path] }]) {
+        expect(decideGuard(action, ctx(IMPLEMENTING)), path).toMatchObject({
+          allow: false,
+          rule: "protected",
+        });
+      }
+    }
+    // The rest of each tool's folder belongs to the person.
+    for (const path of [
+      ".agents/skills/x/SKILL.md",
+      ".gemini/commands/x.toml",
+      ".devin/notes.md",
+    ]) {
+      expect(decideGuard(write(path), ctx(IMPLEMENTING)), path).not.toMatchObject({
+        rule: "protected",
+      });
+    }
+  });
+
   it("lets the agent edit the spec only while the phase allows it", () => {
     expect(allowed(write(SPEC), ctx(change("draft")))).toBe(true);
     expect(allowed(write(SPEC), ctx(change("adjusting")))).toBe(true);
