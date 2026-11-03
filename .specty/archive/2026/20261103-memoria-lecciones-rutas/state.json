@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-lecciones-rutas",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-lecciones-rutas",
   "baseCommit": "802764ac2b1e1ea947167afbefebf61a8bbdf3d8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:de49f8b2d324105573ca7c345283dfbb3d5e8f92b7ae4b52ecabffea2cb86db7",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "626adac1d3dac2a96d4ce53cfde51bc5df19f2ce",
+      "attempts": 1,
       "startedAt": "2026-11-03T10:48:38.294Z",
       "doneAt": "2026-11-03T10:50:30.650Z",
-      "summary": "La página Memoria gana la sección Lecciones, el tipo en el filtro y las rutas de cada entrada, que la búsqueda también compara"
+      "summary": "La página Memoria gana la sección Lecciones, el tipo en el filtro y las rutas de cada entrada, que la búsqueda también compara",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -75,6 +75,7 @@
     "T": 3,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-03T10:54:50.417Z",
   "lockedTests": {
     "packages/cli/test/memory-lessons.test.ts": "sha256:d98df53be31914e21b7a9efb4d0bef6cd2f5696307b1c1dedc6c75da3153d346",
     "packages/core/test/memory/lessons.test.ts": "sha256:60c24a083d9b028a9c2183c02babf55dbdc2d36142a0c5dba4ded96cd6ff669e",

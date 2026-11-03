@@ -67,3 +67,22 @@ Lo que un agente aprende de una parte del código («este módulo no se puede im
 ## Riesgos
 
 - R1: Un agente anota lecciones sin valor que luego llenan las tarjetas — solo saldrán en las tarjetas de las tareas que tocan sus rutas, y la persona las descarta.
+
+## Cierre
+
+### Resumen
+
+La memoria de Specty guarda lecciones: un tipo de entrada nuevo (`lesson`), con id `P`, que siempre lleva las rutas del código a las que se refiere. `specty memory add … --path <ruta>…` guarda esas rutas (globs, sin repetir) en cualquier entrada, y una lección sin rutas no se anota. `specty memory` lista las rutas de cada entrada, el índice de la rama tiene su sección «Lecciones», y `--resolves` dice que una lección no se toma. La página «Memoria» gana la sección «Lecciones», el tipo en su filtro y las rutas de cada entrada, que su búsqueda también compara. El glosario gana «Lección».
+
+### Desviaciones
+
+- La búsqueda de la página también compara las rutas, aunque la spec no lo nombraba: es lo que permite encontrar las lecciones de una carpeta.
+- `specty check` pidió acortar `memorySections`: el filtrado pasó a su propia función.
+
+### Decisiones
+
+- La negativa de `memory add` se decide en una función aparte, `addRefusal`, para no subir la complejidad de `addEntry`.
+
+### Pendientes
+
+- P28: la segunda parte, que la tarjeta de la tarea muestre las lecciones y decisiones de los archivos de la tarea, y la del borrador las de los archivos de su spec.
