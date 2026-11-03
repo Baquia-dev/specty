@@ -238,6 +238,7 @@ export {
   memoryDropRefusalCard,
   memoryKeptCard,
 } from "./memory-drop";
+export { memoryStopReason } from "./memory-turn";
 export {
   changeCreatedLead,
   type NewRefusal,

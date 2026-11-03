@@ -59,7 +59,7 @@ La regla del reporte final ya pide anotar cada pendiente con `specty memory add`
 
 ## Tareas
 
-- [ ] T1: Los pendientes que lista un mensaje, y el texto que devuelve el turno
+- [x] T1: Los pendientes que lista un mensaje, y el texto que devuelve el turno
   - files: packages/core/src/memory/turn-end.ts, packages/core/src/cards/memory-turn.ts, packages/core/src/index.ts, packages/core/src/cards/index.ts, packages/core/test/memory/turn-end.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/turn-end.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
