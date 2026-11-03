@@ -58,7 +58,7 @@ La página «Memoria» de `specty ui` ya enseña la memoria de Specty y quién l
   - files: packages/ui/src/memory/memory-page.ts, packages/ui/src/memory/memory-toolbar.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-toolbar.test.ts --include src/memory/memory-page.test.ts && pnpm typecheck && pnpm lint
-- [ ] T3: La página se actualiza sola, y la documentación
+- [x] T3: La página se actualiza sola, y la documentación
   - files: packages/cli/src/server/events.ts, packages/cli/test/server/memory-events.test.ts, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/memory-events.test.ts test/server/live.test.ts && pnpm typecheck && pnpm lint

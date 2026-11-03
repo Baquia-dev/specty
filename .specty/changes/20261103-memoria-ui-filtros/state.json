@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-ui-filtros",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-ui-filtros",
   "baseCommit": "c75cdbce3855cdae88c60f61062fe690112dab04",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ef8173e5dcc3cf28d94c3897ef56a22d852e671b",
+      "attempts": 1,
       "startedAt": "2026-11-03T10:02:37.254Z",
       "doneAt": "2026-11-03T10:04:23.219Z",
-      "summary": "La página Memoria gana la barra: búsqueda, filtro por tipo con sp-segmented y la casilla de hechas y descartadas, con el aviso cuando el filtro no deja nada"
+      "summary": "La página Memoria gana la barra: búsqueda, filtro por tipo con sp-segmented y la casilla de hechas y descartadas, con el aviso cuando el filtro no deja nada",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "780877177bc79a326db7387bc65ae8660e7cbf0c",
+      "startedAt": "2026-11-03T10:04:23.561Z",
+      "doneAt": "2026-11-03T10:05:00.958Z",
+      "summary": "fingerprint añade la punta de la rama de la memoria, así que escribir en ella emite changes y la página se actualiza sola; ARCHITECTURE.md documenta la barra y la firma"
     }
   },
   "pending": {

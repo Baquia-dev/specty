@@ -17,6 +17,14 @@ const WATCHED: readonly string[] = ["spec.md", "state.json", "audit.jsonl", "com
  */
 export async function fingerprint(session: Session): Promise<string> {
   const parts: string[] = [`delegated ${JSON.stringify(await readDelegation(session.git))}`];
+  // A write to Specty's memory moves its branch (ADR 0016): the memory page reads it again.
+  const tip = await session.git.run([
+    "rev-parse",
+    "--verify",
+    "-q",
+    `refs/heads/${session.config.memory.branch}`,
+  ]);
+  parts.push(`memory ${tip.stdout.trim()}`);
   for (const { folder } of await session.git.worktrees()) {
     const { changes, archive } = repoPaths(folder);
     for (const id of await listDir(changes)) {
