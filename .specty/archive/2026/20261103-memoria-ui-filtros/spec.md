@@ -66,3 +66,23 @@ La página «Memoria» de `specty ui` ya enseña la memoria de Specty y quién l
 ## Riesgos
 
 - R1: La firma lanza un proceso de git más cada segundo — solo mientras alguien escucha `GET /api/events`, como ya pasa con las worktrees.
+
+## Cierre
+
+### Resumen
+
+La página «Memoria» de `specty ui` tiene la barra de la maqueta aprobada: una búsqueda que compara sin tildes ni mayúsculas con los ids, los textos, las citas, los cambios de origen y los títulos de los cambios; un filtro por tipo de entrada (Todas, Pendientes, Mejoras, Recordatorios y Decisiones), que con un tipo elegido deja fuera los cambios; y la casilla «Ver hechas y descartadas», que añade esa sección al final. Si el filtro no deja nada, la página lo dice. Además se actualiza sola: la firma que vigila `GET /api/events` incluye la punta de la rama de la memoria, así que escribir en ella emite `changes`. Es el segundo cambio del corte C7.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+- Al crear el cambio, el freno de duplicados lo comparó con su propia épica por la petición; se creó con `--distinct-from 20261030-memoria-de-specty`, y la mejora quedó en la memoria como P25.
+
+### Decisiones
+
+- El filtro vive en `memorySections`, que sin filtro da lo mismo que antes, así que la página y sus tests anteriores no cambian.
+
+### Pendientes
+
+- P24: las acciones de la persona en la página «Memoria», el último cambio del corte C7.
+- P25: el freno de duplicados no debería comparar un cambio que sigue a un corte con la épica de ese corte.

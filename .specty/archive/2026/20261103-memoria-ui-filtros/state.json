@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-ui-filtros",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-ui-filtros",
   "baseCommit": "c75cdbce3855cdae88c60f61062fe690112dab04",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:9552d426e816d20795f00324a710f9ffa03a43e118a2a7487757906ea1189280",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "780877177bc79a326db7387bc65ae8660e7cbf0c",
+      "attempts": 1,
       "startedAt": "2026-11-03T10:04:23.561Z",
       "doneAt": "2026-11-03T10:05:00.958Z",
-      "summary": "fingerprint añade la punta de la rama de la memoria, así que escribir en ella emite changes y la página se actualiza sola; ARCHITECTURE.md documenta la barra y la firma"
+      "summary": "fingerprint añade la punta de la rama de la memoria, así que escribir en ella emite changes y la página se actualiza sola; ARCHITECTURE.md documenta la barra y la firma",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,6 +83,7 @@
     "T": 3,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-03T10:11:28.413Z",
   "lockedTests": {
     "packages/cli/test/server/memory-events.test.ts": "sha256:ec73f5823de1e773920bd467c1d96fa061f1e37f752ea26792b165dfec13f92b",
     "packages/ui/src/memory/memory-filter.test.ts": "sha256:128186326b6b1764441b0b4cbb453661e791f6111203a2b2ee26069801d3012b",
