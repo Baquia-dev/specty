@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-doctor-worktrees-astro-tipos-turbo-deno",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-doctor-worktrees-astro-tipos-turbo-deno",
   "baseCommit": "e13cf61461797d5e1405043ff6360e194f2ffdd8",
   "revision": 1,
@@ -46,6 +46,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T15:01:59.358Z"
+  "lockedTests": {
+    "packages/cli/test/doctor-watchers.test.ts": "sha256:e1d77c056b4c797d4f07116a7157a0c36c4ffb8aadca6939296ebd5c7740618b",
+    "packages/cli/test/doctor-worktrees.test.ts": "sha256:dea71c9cc8c334c97bd52808a39af3f971dd0511019acfe202bdae46c99018f6"
+  }
 }
