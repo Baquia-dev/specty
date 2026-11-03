@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-guard-antigravity-acp",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-guard-antigravity-acp",
   "baseCommit": "2e52355e2c9dfffd9c6187c41572e38939603811",
   "revision": 1,
@@ -51,6 +51,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T06:48:38.725Z"
+  "lockedTests": {
+    "packages/cli/test/antigravity.test.ts": "sha256:ed1f420aeeb84cf08e06501441425a492bcbd0c86590b55804dd41417daede3f",
+    "packages/core/test/guard/decide.test.ts": "sha256:50cdec7555588163bd53a220f3618ae673c262a1a9052e3804b4286359865c50"
+  }
 }
