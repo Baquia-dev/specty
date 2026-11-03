@@ -80,7 +80,7 @@ Tercer cambio de P33 (repartir el trabajo entre sesiones): la tarjeta sin cambio
   - files: packages/cli/src/agents/run.ts, packages/cli/src/session.ts, packages/cli/src/enforce/sessions.ts, packages/cli/src/commands/next.ts, packages/cli/test/front-start.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-start.test.ts test/memory-start.test.ts test/session-start.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T4: Los frentes con su dueño en `status`
+- [x] T4: Los frentes con su dueño en `status`
   - files: packages/cli/src/commands/status.ts, packages/cli/test/front-status.test.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-status.test.ts test/status-json.test.ts test/memory-status.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
