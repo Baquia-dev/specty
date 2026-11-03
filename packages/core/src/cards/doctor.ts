@@ -21,6 +21,8 @@ export type DoctorLine =
     }
   /** Claude Code's settings lack the permission for the person's commands. */
   | { readonly code: "no-claude-permissions" }
+  /** Claude Code's `SessionStart` hook is from before the card at a session's start. */
+  | { readonly code: "claude-startup" }
   | { readonly code: "cursor-guard" | "no-cursor-guard" }
   /** Cursor's guard is there, without `preCompact`, which leaves the card for the next command. */
   | { readonly code: "cursor-compact" }

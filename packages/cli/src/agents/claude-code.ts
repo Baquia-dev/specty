@@ -14,6 +14,7 @@ import {
   CLAUDE_SETTINGS,
   CLAUDE_WORKTREE_EVENTS,
   excludeLocally,
+  isOurs,
   missingEvents,
   removeFromJson,
   withHooks,
@@ -33,8 +34,9 @@ import {
 /**
  * The events the guard listens to, with the tools each one covers: before each write or
  * command, after each Bash command, whether it succeeded or failed, when Claude Code creates or
- * removes a worktree, which takes no matcher, and when a session starts again after a compaction
- * or a `/clear`, which the closing advises when the session grew big.
+ * removes a worktree, which takes no matcher, and when a session starts, which brings Specty's
+ * memory, and starts again after a compaction or a `/clear`, which the closing advises when the
+ * session grew big.
  */
 const EVENTS: Readonly<Record<string, string | undefined>> = {
   PreToolUse: "Edit|MultiEdit|Write|NotebookEdit|Bash|EnterWorktree",
@@ -42,7 +44,7 @@ const EVENTS: Readonly<Record<string, string | undefined>> = {
   PostToolUseFailure: "Bash",
   WorktreeCreate: undefined,
   WorktreeRemove: undefined,
-  SessionStart: "compact|clear",
+  SessionStart: "startup|clear|compact",
 };
 /** After a Bash command, whether it succeeded or failed. */
 const AFTER: ReadonlySet<unknown> = new Set(["PostToolUse", "PostToolUseFailure"]);
@@ -61,8 +63,8 @@ const OLD_ASK = "ExitWorktree(action:remove)";
 
 /**
  * Claude Code (ARCHITECTURE §10): `PreToolUse`, `PostToolUse` and `PostToolUseFailure`, the
- * worktree events, `SessionStart` after a compaction, whose output it adds to the context, and
- * `Stop` at the end of each turn.
+ * worktree events, `SessionStart` when a session starts and after a compaction or a `/clear`,
+ * whose output it adds to the context, and `Stop` at the end of each turn.
  */
 export const claudeCode: AgentAdapter = {
   tool: "claude-code",
@@ -127,6 +129,7 @@ export const claudeCode: AgentAdapter = {
       if (worktrees !== "") problems.push({ code: "claude-worktrees", events: worktrees });
       if (compact !== "") problems.push({ code: "claude-compact", events: compact });
     }
+    if (startsBefore(settings)) problems.push({ code: "claude-startup" });
     if (missingPermissions(settings).length > 0) {
       problems.push({ code: "no-claude-permissions" });
     }
@@ -185,4 +188,36 @@ function missingPermissions(settings: readonly (string | undefined)[]): string[]
     return Array.isArray(permissions.allow) ? permissions.allow : [];
   });
   return PERSON_RULES.filter((rule) => !allowed.includes(rule));
+}
+
+/**
+ * Whether the guard's `SessionStart` is in these settings files (their text) and none of its
+ * entries runs when a session starts: an install from before the card at a session's start.
+ */
+function startsBefore(settings: readonly (string | undefined)[]): boolean {
+  const ours = settings.flatMap((text): unknown[] => {
+    const value: unknown = text === undefined ? undefined : parse(text);
+    const hooks = isRecord(value) && isRecord(value.hooks) ? value.hooks : {};
+    const entries = Array.isArray(hooks.SessionStart) ? hooks.SessionStart : [];
+    return entries.filter((entry: unknown) => isOurs(entry, "claude-code"));
+  });
+  return (
+    ours.length > 0 &&
+    !ours.some((entry) => runsAtSessionStart(isRecord(entry) ? entry.matcher : undefined))
+  );
+}
+
+/**
+ * Whether Claude Code runs a `SessionStart` hook with `matcher` when a session starts: it reads
+ * the matcher as a regular expression on `source`, and none, an empty one or `*` take them all.
+ */
+export function runsAtSessionStart(matcher: unknown): boolean {
+  if (matcher === undefined || matcher === "" || matcher === "*") return true;
+  if (typeof matcher !== "string") return false;
+  try {
+    return new RegExp(`^(?:${matcher})$`).test("startup");
+  } catch {
+    // Not a regular expression: Claude Code would compare it as it is.
+    return matcher === "startup";
+  }
 }

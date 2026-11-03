@@ -61,12 +61,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "153e4131eb1ea09d78bfc0cbec7183d2bd851932",
+      "attempts": 1,
       "startedAt": "2026-11-03T05:51:18.706Z",
       "doneAt": "2026-11-03T05:51:29.769Z",
-      "summary": "next sin cambio activo lee la memoria con readMemory y se la pasa a la tarjeta"
+      "summary": "next sin cambio activo lee la memoria con readMemory y se la pasa a la tarjeta",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "324254104d844a463807dd82c30a1127cc15f018",
+      "startedAt": "2026-11-03T05:51:30.109Z",
+      "doneAt": "2026-11-03T05:52:34.783Z",
+      "summary": "El SessionStart de Claude Code pasa a startup|clear|compact, así la tarjeta con la memoria llega al empezar; runsAtSessionStart lee el matcher como Claude Code y doctor da claude-startup cuando el hook de Specty no se dispara al empezar"
     }
   },
   "pending": {

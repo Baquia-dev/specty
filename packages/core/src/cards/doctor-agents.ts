@@ -9,6 +9,7 @@ type AgentCode =
   | "claude-after-bash"
   | "claude-worktrees"
   | "claude-compact"
+  | "claude-startup"
   | "no-claude-permissions"
   | "cursor-guard"
   | "no-cursor-guard"
@@ -64,6 +65,11 @@ export const AGENT_WRITERS: {
     t(
       `Claude Code: falta la tarjeta de Specty tras compactar (${line.events}); ejecuta \`${command} init\`.`,
       `Claude Code: Specty's card after a compaction is missing (${line.events}); run \`${command} init\`.`,
+    ),
+  "claude-startup": (_, t, command) =>
+    t(
+      `Claude Code: el hook \`SessionStart\` de Specty es de antes de la tarjeta al empezar una sesión; ejecuta \`${command} init\`.`,
+      `Claude Code: Specty's \`SessionStart\` hook predates the card at a session's start; run \`${command} init\`.`,
     ),
   "no-claude-permissions": (_, t, command) =>
     t(
