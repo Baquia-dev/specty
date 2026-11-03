@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-sin-permisos-worktrees",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-sin-permisos-worktrees",
   "baseCommit": "84797b049bdb6a68bf8caa500c9e6105227fc997",
   "revision": 1,
@@ -51,6 +51,10 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T08:16:57.680Z"
+  "lockedTests": {
+    "packages/cli/test/antigravity-turn.test.ts": "sha256:00f86139add4f9ac3493fba9c1badb7bcf317f2ce9043769cc3339f4d7b653ea",
+    "packages/cli/test/antigravity.test.ts": "sha256:8d915c0c7b8685d1a86c4496e551923b4f883f46888aaa7cabea42bd2386643d",
+    "packages/cli/test/codex.test.ts": "sha256:41f6bd1fdb173d633e580521de2593f68175c006fff0521d8428f185dba4a1e4",
+    "packages/cli/test/doctor-enter.test.ts": "sha256:002c4c57e249300da8b3f3b3244cf41497203c7cd070b77d2546f743a7c1bd56"
+  }
 }
