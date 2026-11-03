@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-avisos-de-exclusiones",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-avisos-de-exclusiones",
   "baseCommit": "41057257a2eb0ac9113242877423e75b81462e57",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:12e8513157ddb527008d391a9368c157d450e9f0daddc28d999e87fea923fa3e",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b2a23c6cc36933f36a194dbbc6ffdf6d02c1c954",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:09:38.832Z",
       "doneAt": "2026-11-03T22:12:04.182Z",
-      "summary": "toolExclusions (formateadores y worktrees, con ahead) en doctor, next sin cambio activo e init por adelantado si los cambios van a .worktrees/; ADR 0018 (Specty detecta, el agente corrige) y ARCHITECTURE"
+      "summary": "toolExclusions (formateadores y worktrees, con ahead) en doctor, next sin cambio activo e init por adelantado si los cambios van a .worktrees/; ADR 0018 (Specty detecta, el agente corrige) y ARCHITECTURE",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -66,8 +66,50 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T22:19:41.044Z",
   "lockedTests": {
     "packages/cli/test/exclusion-warnings.test.ts": "sha256:4668888bb8bc4d86207420e1061165e06de0e3eef2ea155826e1863b64eecb4f",
     "packages/core/test/cards/exclusions.test.ts": "sha256:dcaeabe5d8da0090659624eab148413c5fd175a752dd70fcf225ebfcaebb30be"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "9ccb9b300c98982c7bdb77bee83b57f6aaf3469d",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/cli/src/commands/next.ts",
+      "packages/core/src/cards/next.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/decisions/0018-worktrees-dentro-del-repositorio.md",
+      "docs/formats.md",
+      "packages/cli/src/agents/run.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/commands/init.ts",
+      "packages/cli/src/commands/next.ts",
+      "packages/cli/src/commands/status.ts",
+      "packages/cli/src/detect/formatters.ts",
+      "packages/cli/src/detect/worktree-tools.ts",
+      "packages/cli/src/enforce/sessions.ts",
+      "packages/cli/src/session.ts",
+      "packages/cli/test/exclusion-warnings.test.ts",
+      "packages/cli/test/front-start.test.ts",
+      "packages/cli/test/front-status.test.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/cards/exclusions.ts",
+      "packages/core/src/cards/fronts.ts",
+      "packages/core/src/cards/init.ts",
+      "packages/core/src/cards/memory.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/core/src/cards/status.ts",
+      "packages/core/test/cards/exclusions.test.ts",
+      "packages/core/test/cards/front-start.test.ts",
+      "packages/core/test/cards/status-fronts.test.ts"
+    ],
+    "at": "2026-11-03T22:19:44.344Z",
+    "resolved": {
+      "commit": "8478376",
+      "at": "2026-11-03T22:24:57.565Z"
+    }
   }
 }

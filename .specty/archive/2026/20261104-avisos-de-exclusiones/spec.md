@@ -75,3 +75,29 @@ Hoy solo `specty doctor` dice qué herramientas de la raíz ven lo que escribe S
 
 - R1: Algún test existente de `next` o `init` usa archivos de Biome o Prettier sin las exclusiones y compara la salida entera; el bloque nuevo lo rompería. Mitigación: el `pnpm check` de `accept` los ejecuta todos, y se ajusta el archivo de prueba, no el aviso.
 - R2: El bloque se repite en cada inicio de sesión hasta que se corrige. Es intencionado: desaparece en cuanto la herramienta excluye la carpeta.
+
+## Cierre
+
+### Resumen
+
+Las herramientas de la raíz que ven lo que escribe Specty ya no solo aparecen en `specty doctor`. Las listan también, en el bloque «HERRAMIENTAS QUE VEN LO QUE ESCRIBE SPECTY» y con la misma línea de `doctor`:
+
+- la tarjeta de `next` sin cambio activo, que es también la del inicio de cada sesión, con el `specty new "Las herramientas no ven lo que escribe Specty"` del cambio que las corrige si el usuario lo pide;
+- la de `init`, antes del primer cambio, cuando los cambios irán a `.worktrees/`.
+
+`toolExclusions` (`detect/formatters.ts`) reúne las de los formateadores y las de las worktrees para los tres comandos. Con `ahead`, cuenta `.worktrees/` aunque aún no exista. `cards/exclusions.ts` tiene la línea y el bloque de cada tarjeta. El ADR 0018 recoge la decisión D2 («Specty detecta, el agente corrige y la persona aprueba») y su consecuencia, y ARCHITECTURE, lo que muestran `next` e `init`. `pnpm check` en verde; los tests ejecutan el 100 % de las líneas añadidas.
+
+### Desviaciones
+
+- La tarea única se dividió en dos porque tocaba 12 archivos. La documentación va en T2, porque la política `contract` pide tests en cada tarea.
+
+### Decisiones
+
+- `doctor` sigue avisando de `.worktrees/` solo cuando la carpeta existe (su AC3 anterior). `next` usa esa misma regla, y solo `init` avisa por adelantado, según `git.worktrees` y `git.branchPerChange`.
+- La línea final cambia según la tarjeta. En `next`, que lee el agente, le pide decírselo al usuario y le da el `new` con `--request`. En `init`, que puede ejecutar la persona, explica cómo se corrige.
+- En `next` el bloque va antes de la memoria y no cambia el SIGUIENTE.
+
+### Pendientes
+
+- `packages/core/src/cards/init.ts` ya pasaba del aviso de tamaño (374 líneas de código; este cambio añade 3). Queda por proponer cómo dividirlo por responsabilidad.
+- Descartar D1 y P55 de la memoria de Specty: quedaron propuestas, y solo la persona las descarta.
