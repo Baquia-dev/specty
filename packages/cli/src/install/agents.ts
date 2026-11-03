@@ -138,23 +138,57 @@ const STOP_FILES: readonly string[] = [
   DEVIN_HOOKS,
 ];
 
+/**
+ * `value`, a hooks file of Claude Code's or Codex's form, with Specty's memory net at the end of
+ * the turn (`<specty> hook memory-stop <tool>`, ADR 0016) in its `Stop`, once; without it when
+ * `command` is undefined. The person's `Stop` entries stay as they were.
+ */
+export function withMemoryStop(value: Entry, tool: GuardTool, command: string | undefined): Entry {
+  const hooks = isRecord(value.hooks) ? value.hooks : {};
+  const current: unknown[] = Array.isArray(hooks.Stop) ? hooks.Stop : [];
+  const net = (entry: unknown) => JSON.stringify(entry).includes(` hook memory-stop ${tool}"`);
+  const entry = command === undefined ? undefined : { hooks: [{ type: "command", command }] };
+  if (
+    entry !== undefined &&
+    current.some((known) => JSON.stringify(known) === JSON.stringify(entry))
+  )
+    return value;
+  const { Stop: _, ...others } = hooks;
+  const stop = [...current.filter((known) => !net(known)), ...(entry === undefined ? [] : [entry])];
+  return { ...value, hooks: stop.length > 0 ? { ...others, Stop: stop } : others };
+}
+
+/**
+ * The line of `doctor` when the guard of `tool` is in one of its hooks files (`texts`) and its end
+ * of turn lacks the memory's net there; none otherwise.
+ */
+export function memoryStopLines(
+  texts: readonly (string | undefined)[],
+  tool: GuardTool,
+): { readonly code: "memory-stop"; readonly tool: GuardTool }[] {
+  const has = (marker: string) => texts.some((text) => text?.includes(marker) === true);
+  return has(` guard --tool ${tool}`) && !has(` hook memory-stop ${tool}`)
+    ? [{ code: "memory-stop", tool }]
+    : [];
+}
+
 /** Takes each agent's end of turn out of the repository, for `uninstall`. */
 export async function removeAgentStops(root: string, files: InstallFiles): Promise<void> {
   for (const file of STOP_FILES) await removeFromJson(root, file, withoutAgentStop, files);
 }
 
 /**
- * Drops the entries whose command is Specty's end of turn (`hook agent-stop`), in a `hooks` object
- * or at the top of a standalone hooks file, and the lists that leaves empty; the person's stay.
+ * Drops the entries whose command is one of Specty's ends of turn (`hook agent-stop` and the
+ * memory's `hook memory-stop`), in a `hooks` object or at the top of a standalone hooks file, and
+ * the lists that leaves empty; the person's stay.
  */
 function withoutAgentStop(value: Entry): Entry {
+  const ours = (entry: unknown) => / hook (?:agent|memory)-stop /.test(JSON.stringify(entry));
   const prune = (record: Readonly<Record<string, unknown>>): Entry =>
     Object.fromEntries(
       Object.entries(record).flatMap(([key, item]): [string, unknown][] => {
         if (!Array.isArray(item)) return [[key, item]];
-        const kept = item.filter(
-          (entry: unknown) => !JSON.stringify(entry).includes(" hook agent-stop "),
-        );
+        const kept = item.filter((entry: unknown) => !ours(entry));
         return kept.length === 0 && item.length > 0 ? [] : [[key, kept]];
       }),
     );

@@ -36,6 +36,7 @@ type AgentCode =
   | "gemini-guard"
   | "no-gemini-guard"
   | "gemini-hooks"
+  | "memory-stop"
   | "enter-outdated";
 
 /** The lines of `doctor` about each agent's installation, which `cards/doctor.ts` adds to its own. */
@@ -181,6 +182,11 @@ export const AGENT_WRITERS: {
     t(
       `Gemini CLI: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools gemini-cli\`.`,
       `Gemini CLI: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools gemini-cli\`.`,
+    ),
+  "memory-stop": (line, t, command) =>
+    t(
+      `${AGENT_NAMES[line.tool]}: el fin de turno no lleva la red de la memoria de Specty (\`hook memory-stop\`); ejecuta \`${command} init\`.`,
+      `${AGENT_NAMES[line.tool]}: its end of turn lacks Specty's memory safety net (\`hook memory-stop\`); run \`${command} init\`.`,
     ),
   "enter-outdated": (line, t, command) =>
     t(

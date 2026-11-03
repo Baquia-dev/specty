@@ -23,6 +23,8 @@ export type DoctorLine =
   | { readonly code: "no-claude-permissions" }
   /** Claude Code's `SessionStart` hook is from before the card at a session's start. */
   | { readonly code: "claude-startup" }
+  /** The agent's guard is there, and its end of turn lacks the memory's safety net (ADR 0016). */
+  | { readonly code: "memory-stop"; readonly tool: AgentTool }
   | { readonly code: "cursor-guard" | "no-cursor-guard" }
   /** Cursor's guard is there, without `preCompact`, which leaves the card for the next command. */
   | { readonly code: "cursor-compact" }

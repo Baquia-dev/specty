@@ -15,9 +15,11 @@ import {
   CLAUDE_WORKTREE_EVENTS,
   excludeLocally,
   isOurs,
+  memoryStopLines,
   missingEvents,
   removeFromJson,
   withHooks,
+  withMemoryStop,
 } from "../install/agents";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
@@ -88,11 +90,16 @@ export const claudeCode: AgentAdapter = {
     const local = !invocation.portable;
     const target = local ? CLAUDE_LOCAL_SETTINGS : CLAUDE_SETTINGS;
     const other = local ? CLAUDE_SETTINGS : CLAUDE_LOCAL_SETTINGS;
-    const without: JsonUpdate = (value) => withHooks(value, EVENTS, "claude-code", undefined);
+    const without: JsonUpdate = (value) =>
+      withMemoryStop(withHooks(value, EVENTS, "claude-code", undefined), "claude-code", undefined);
     await rewriteJson(join(root, other), without, false, files);
     const command = `${invocation.command} guard --tool claude-code`;
+    // The memory's net at the end of the turn goes with the guard (ADR 0016).
+    const net = `${invocation.command} hook memory-stop claude-code`;
     const update: JsonUpdate = (value) =>
-      withPermissions(withHooks(value, EVENTS, "claude-code", command));
+      withPermissions(
+        withMemoryStop(withHooks(value, EVENTS, "claude-code", command), "claude-code", net),
+      );
     await rewriteJson(join(root, target), update, true, files);
     if (local) await excludeLocally(git, target, files);
     return {
@@ -132,6 +139,7 @@ export const claudeCode: AgentAdapter = {
       if (compact !== "") problems.push({ code: "claude-compact", events: compact });
     }
     if (startsBefore(settings)) problems.push({ code: "claude-startup" });
+    problems.push(...memoryStopLines(settings, "claude-code"));
     if (missingPermissions(settings).length > 0) {
       problems.push({ code: "no-claude-permissions" });
     }

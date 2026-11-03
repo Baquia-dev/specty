@@ -15,9 +15,11 @@ import {
   codexHooksFile,
   excludeLocally,
   hasGuard,
+  memoryStopLines,
   missingEvents,
   removeFromJson,
   withHooks,
+  withMemoryStop,
 } from "../install/agents";
 import { type InstallFiles, rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
@@ -108,7 +110,13 @@ export const codex: AgentAdapter = {
     const command = `${invocation.command} guard --tool codex`;
     await rewriteJson(
       join(root, CODEX_HOOKS),
-      (value) => withHooks(value, EVENTS, "codex", command),
+      // The memory's net at the end of the turn goes with the guard (ADR 0016).
+      (value) =>
+        withMemoryStop(
+          withHooks(value, EVENTS, "codex", command),
+          "codex",
+          `${invocation.command} hook memory-stop codex`,
+        ),
       true,
       files,
     );
@@ -153,6 +161,7 @@ export const codex: AgentAdapter = {
         ...lines.problems,
         ...(compact ? [] : [{ code: "codex-compact", file: CODEX_HOOKS } as const]),
         ...beforeEnter(rules),
+        ...memoryStopLines([hooks], "codex"),
       ],
     };
   },
