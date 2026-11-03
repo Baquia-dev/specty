@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "id": "20261104-tipo-de-entrada-desconocido",
+  "kind": "quick",
+  "phase": "testing",
+  "branch": "specty/20261104-tipo-de-entrada-desconocido",
+  "baseCommit": "15cfdaf27d393c4defbad25e4c61b15c2f658d5b",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ecf1e03f91f97e4bf9d306a082a36847a60b8831242dea84e5368797a2b74cb0",
+    "at": "2026-11-03T22:59:52.885Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
