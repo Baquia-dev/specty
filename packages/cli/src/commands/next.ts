@@ -7,6 +7,7 @@ import { freshProject } from "../install/product";
 import { pathsOf } from "../io/git";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
+import { readMemory } from "../store/memory";
 import { pendingIntegration } from "./integrate";
 
 /**
@@ -20,7 +21,9 @@ export async function next(session: Session): Promise<Output> {
     const dirty = await dirtyGoverned(session);
     // Without code yet, the first change is the project's skeleton (ARCHITECTURE §14).
     const fresh = dirty.length === 0 && (await freshProject(session));
-    return nextCard({ dirty, ...(fresh ? { fresh } : {}) }, session.cards);
+    // The memory goes to every session that starts with no change (ADR 0016).
+    const { entries } = await readMemory(session.git, session.config.memory.branch);
+    return nextCard({ dirty, ...(fresh ? { fresh } : {}), memory: entries }, session.cards);
   }
   const pending = await pendingIntegration(session, active, "close");
   const current = pending.kind === "go" ? pending.change : active;

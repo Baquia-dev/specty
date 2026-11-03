@@ -19,6 +19,16 @@ describe("a command's output", () => {
     expect(diff.startsWith("diff --git a/a.ts")).toBe(true);
   });
 
+  it("AC8: reads whole a character whose bytes come in two pieces", async () => {
+    // «ñ» is 0xC3 0xB1 in UTF-8: the first byte goes alone, and the second a moment later.
+    const script =
+      "process.stdout.write(Buffer.from([0xc3]), () => setTimeout(() => process.stdout.write(Buffer.from([0xb1, 0x0a])), 100))";
+    const result = await execute("node", ["-e", script], { cwd: process.cwd(), whole: true });
+    expect(result.stdout).toBe("ñ\n");
+    const kept = await execute("node", ["-e", script], { cwd: process.cwd() });
+    expect(kept.stdout).toBe("ñ\n");
+  });
+
   it("keeps the last 512 KB of a verification, so that its log does not grow without end", async () => {
     const size = MAX_OUTPUT + 1000;
     const script = `process.stdout.write("x".repeat(${size - 1}) + "y")`;

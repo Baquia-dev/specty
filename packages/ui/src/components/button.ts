@@ -1,6 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
-import { ChangeDetectionStrategy, Component, computed, input, output } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  input,
+  output,
+  signal,
+} from "@angular/core";
 import { LucideDynamicIcon, type LucideIconInput } from "@lucide/angular";
+import { LucideLoader2 } from "./icons";
 import { Tooltip } from "./tooltip";
 
 export type ButtonVariant = "primary" | "secondary" | "ghost";
@@ -82,7 +92,7 @@ const ICON_SIZES: Readonly<Record<ButtonSize, string>> = { sm: "size-8", md: "si
  */
 @Component({
   selector: "sp-button",
-  imports: [Tooltip],
+  imports: [Tooltip, LucideDynamicIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "inline-flex", "[class.cursor-not-allowed]": "disabled()" },
   template: `
@@ -92,26 +102,42 @@ const ICON_SIZES: Readonly<Record<ButtonSize, string>> = { sm: "size-8", md: "si
         [class]="classes()"
         [disabled]="disabled()"
         [attr.aria-disabled]="disabled() || null"
+        [attr.aria-busy]="isBusy() || null"
         (click)="pressed.emit($event)"
         (pointerdown)="ripple($event)"
       >
+        @if (isBusy()) {
+          <svg class="animate-spin" [lucideIcon]="spinner" [size]="size() === 'sm' ? 14 : 16" aria-hidden="true"></svg>
+        }
         <ng-content />
       </button>
     </sp-tooltip>
   `,
 })
 export class Button {
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
   readonly variant = input<ButtonVariant>("secondary");
   readonly size = input<ButtonSize>("md");
   readonly type = input<"button" | "submit">("button");
   readonly disabledReason = input("");
+  readonly loading = input(false);
   readonly pressed = output<MouseEvent>();
 
-  protected readonly disabled = computed(() => this.disabledReason().length > 0);
+  private readonly manualLoading = signal<boolean | undefined>(undefined);
+  protected readonly isBusy = computed(() => this.manualLoading() ?? this.loading());
+  protected readonly disabled = computed(() => this.isBusy() || this.disabledReason().length > 0);
+  protected readonly spinner = LucideLoader2;
   protected readonly ripple = ripple;
   protected readonly classes = computed(
     () => `${BASE} ${VARIANTS[this.variant()]} ${SIZES[this.size()]}`,
   );
+
+  constructor() {
+    Object.defineProperty(this.elementRef.nativeElement, "loading", {
+      value: { set: (v: boolean) => this.manualLoading.set(v) },
+      configurable: true,
+    });
+  }
 }
 
 /** A button with only an icon: its label is required, as its name and as its tooltip. */
@@ -128,25 +154,42 @@ export class Button {
         [attr.aria-label]="label()"
         [disabled]="disabled()"
         [attr.aria-disabled]="disabled() || null"
+        [attr.aria-busy]="isBusy() || null"
         (click)="pressed.emit($event)"
         (pointerdown)="ripple($event)"
       >
-        <svg [lucideIcon]="icon()" [size]="size() === 'sm' ? 14 : 16" aria-hidden="true"></svg>
+        @if (isBusy()) {
+          <svg class="animate-spin" [lucideIcon]="spinner" [size]="size() === 'sm' ? 14 : 16" aria-hidden="true"></svg>
+        } @else {
+          <svg [lucideIcon]="icon()" [size]="size() === 'sm' ? 14 : 16" aria-hidden="true"></svg>
+        }
       </button>
     </sp-tooltip>
   `,
 })
 export class IconButton {
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
   readonly label = input.required<string>();
   readonly icon = input.required<LucideIconInput>();
   readonly variant = input<ButtonVariant>("ghost");
   readonly size = input<ButtonSize>("md");
   readonly disabledReason = input("");
+  readonly loading = input(false);
   readonly pressed = output<MouseEvent>();
 
-  protected readonly disabled = computed(() => this.disabledReason().length > 0);
+  private readonly manualLoading = signal<boolean | undefined>(undefined);
+  protected readonly isBusy = computed(() => this.manualLoading() ?? this.loading());
+  protected readonly disabled = computed(() => this.isBusy() || this.disabledReason().length > 0);
+  protected readonly spinner = LucideLoader2;
   protected readonly ripple = ripple;
   protected readonly classes = computed(
     () => `${BASE} ${VARIANTS[this.variant()]} ${ICON_SIZES[this.size()]}`,
   );
+
+  constructor() {
+    Object.defineProperty(this.elementRef.nativeElement, "loading", {
+      value: { set: (v: boolean) => this.manualLoading.set(v) },
+      configurable: true,
+    });
+  }
 }

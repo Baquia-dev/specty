@@ -68,30 +68,14 @@ export function codexRulesLine(file: string, lang: Lang): string {
   );
 }
 
-/** Codex's project settings let its sandbox write in the worktrees' folder (`specty enter`). */
-export function codexSandboxLine(file: string, lang: Lang): string {
-  return translator(lang)(
-    `Codex: ${file} (local) deja escribir a su sandbox en la carpeta de las worktrees (\`writable_roots\`), para trabajar en la de un cambio desde la misma sesión (\`specty enter\`).`,
-    `Codex: ${file} (local) lets its sandbox write in the worktrees' folder (\`writable_roots\`), to work in a change's from the same session (\`specty enter\`).`,
-  );
-}
-
-/** Codex's project settings are the person's: Specty says what to add to them. */
-export function codexSandboxKeptWarning(file: string, folder: string, lang: Lang): string {
-  return translator(lang)(
-    `Codex: Specty no escribe en ${file}, que ya existe; para que su sandbox escriba en la carpeta de un cambio desde la misma sesión (\`specty enter\`), añade \`${folder}\` a \`writable_roots\` en \`[sandbox_workspace_write]\`.`,
-    `Codex: Specty does not write to ${file}, which already exists; for its sandbox to write in a change's folder from the same session (\`specty enter\`), add \`${folder}\` to \`writable_roots\` in \`[sandbox_workspace_write]\`.`,
-  );
-}
-
 /**
  * Cursor's sandbox settings, local because they carry machine paths: the folders Specty's commands
  * write in from a change's folder, which the sandbox leaves out.
  */
 export function cursorSandboxLine(file: string, lang: Lang): string {
   return translator(lang)(
-    `Cursor: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees, que su sandbox deja fuera.`,
-    `Cursor: ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder, which its sandbox leaves out.`,
+    `Cursor: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git, que su sandbox deja fuera.`,
+    `Cursor: ${file} (local) lets Specty's commands write in the git folder, which its sandbox leaves out.`,
   );
 }
 
@@ -135,8 +119,8 @@ export function devinCommandsLine(file: string, lang: Lang): string {
 /** Devin's sandbox, opt-in, with Specty's folders as `Write(...)` scopes in its local settings. */
 export function devinSandboxLine(file: string, lang: Lang): string {
   return translator(lang)(
-    `Devin (Windsurf): ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.`,
-    `Devin (Windsurf): ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder when you turn its sandbox on.`,
+    `Devin (Windsurf): ${file} (local) deja escribir a los comandos de Specty en la carpeta de git cuando activas su sandbox.`,
+    `Devin (Windsurf): ${file} (local) lets Specty's commands write in the git folder when you turn its sandbox on.`,
   );
 }
 
@@ -162,29 +146,13 @@ export function geminiTrustWarning(lang: Lang): string {
 }
 
 /**
- * Gemini CLI's sandbox, off unless the person turns it on, with Specty's folders in its local
- * settings: the ones Specty's commands write in from a change's folder.
+ * Gemini CLI's sandbox, off unless the person turns it on, with git's common folder in its local
+ * settings: Specty's commands commit there from a change's folder.
  */
 export function geminiSandboxLine(file: string, lang: Lang): string {
   return translator(lang)(
-    `Gemini CLI: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.`,
-    `Gemini CLI: ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder when you turn its sandbox on.`,
-  );
-}
-
-/** Gemini CLI's local settings open the worktrees' folder to its tools (`specty enter`). */
-export function geminiWorkspaceLine(file: string, lang: Lang): string {
-  return translator(lang)(
-    `Gemini CLI: ${file} (local) abre a sus herramientas la carpeta de las worktrees (\`context.includeDirectories\`), para trabajar en la de un cambio desde la misma sesión (\`specty enter\`); Gemini CLI puede preguntar una vez si confías en ella.`,
-    `Gemini CLI: ${file} (local) opens the worktrees' folder to its tools (\`context.includeDirectories\`), to work in a change's from the same session (\`specty enter\`); Gemini CLI may ask once whether you trust it.`,
-  );
-}
-
-/** Gemini CLI settings that go in git: Specty says which folder to open to its tools elsewhere. */
-export function geminiWorkspaceVersionedWarning(file: string, folder: string, lang: Lang): string {
-  return translator(lang)(
-    `Gemini CLI: ${file} va en git, así que Specty no le añade la carpeta de las worktrees; para trabajar en la de un cambio desde la misma sesión (\`specty enter\`), añade \`${folder}\` a \`context.includeDirectories\` en tu configuración de usuario.`,
-    `Gemini CLI: ${file} goes in git, so Specty does not add the worktrees' folder to it; to work in a change's from the same session (\`specty enter\`), add \`${folder}\` to \`context.includeDirectories\` in your user settings.`,
+    `Gemini CLI: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git cuando activas su sandbox.`,
+    `Gemini CLI: ${file} (local) lets Specty's commands write in the git folder when you turn its sandbox on.`,
   );
 }
 
@@ -207,26 +175,6 @@ export function opencodeGuardLine(file: string, local: boolean, lang: Lang): str
   return translator(lang)(
     `OpenCode: plugin del guard en ${where}.`,
     `OpenCode: guard plugin in ${where}.`,
-  );
-}
-
-/** OpenCode's local settings let it work in the worktrees' folder (`specty enter`). */
-export function opencodeWorktreesLine(file: string, lang: Lang): string {
-  return translator(lang)(
-    `OpenCode: ${file} (local) le deja trabajar en la carpeta de las worktrees (\`permission.external_directory\`), para entrar en la de un cambio desde la misma sesión (\`specty enter\`).`,
-    `OpenCode: ${file} (local) lets it work in the worktrees' folder (\`permission.external_directory\`), to enter a change's from the same session (\`specty enter\`).`,
-  );
-}
-
-/** OpenCode settings that go in git: Specty says what to allow elsewhere. */
-export function opencodeWorktreesVersionedWarning(
-  file: string,
-  pattern: string,
-  lang: Lang,
-): string {
-  return translator(lang)(
-    `OpenCode: ${file} va en git, así que Specty no le añade la carpeta de las worktrees; para trabajar en la de un cambio desde la misma sesión (\`specty enter\`), permite \`${pattern}\` en \`permission.external_directory\` de tu configuración de usuario.`,
-    `OpenCode: ${file} goes in git, so Specty does not add the worktrees' folder to it; to work in a change's from the same session (\`specty enter\`), allow \`${pattern}\` in \`permission.external_directory\` of your user settings.`,
   );
 }
 

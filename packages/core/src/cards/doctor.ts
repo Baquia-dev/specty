@@ -21,6 +21,10 @@ export type DoctorLine =
     }
   /** Claude Code's settings lack the permission for the person's commands. */
   | { readonly code: "no-claude-permissions" }
+  /** Claude Code's `SessionStart` hook is from before the card at a session's start. */
+  | { readonly code: "claude-startup" }
+  /** The agent's guard is there, and its end of turn lacks the memory's safety net (ADR 0016). */
+  | { readonly code: "memory-stop"; readonly tool: AgentTool }
   | { readonly code: "cursor-guard" | "no-cursor-guard" }
   /** Cursor's guard is there, without `preCompact`, which leaves the card for the next command. */
   | { readonly code: "cursor-compact" }
@@ -42,6 +46,8 @@ export type DoctorLine =
   | { readonly code: "antigravity-guard" | "no-antigravity-guard"; readonly file: string }
   /** Antigravity's guard is there, without the hooks of these events. */
   | { readonly code: "antigravity-hooks"; readonly file: string; readonly events: string }
+  /** Antigravity's guard from before its tools in ACP editors: it does not see them. */
+  | { readonly code: "antigravity-acp"; readonly file: string }
   /** Devin's guard in `file`, its standalone hooks. */
   | { readonly code: "windsurf-guard" | "no-windsurf-guard"; readonly file: string }
   /** Devin's guard is there, without the hooks of these events. */
@@ -74,6 +80,8 @@ export type DoctorLine =
   | { readonly code: "missing-paths"; readonly paths: readonly string[] }
   /** Sections of AGENTS.md only the person can fill in, still empty. */
   | { readonly code: "unfilled-sections"; readonly sections: readonly string[] }
+  /** AGENTS.md has too many lines; keep it concise and move details to docs/ or PRODUCT.md. */
+  | { readonly code: "agents-bloated"; readonly lines: number }
   /** The glossary exists and defines no term yet: only its hints. */
   | { readonly code: "empty-glossary"; readonly path: string }
   /** Closing would not find ccusage to measure each change; `command` installs it. */
@@ -166,6 +174,11 @@ const WRITERS: {
       `AGENTS.md has ${listed('"', '"', "and")} not filled in: the agent reads it every session, so write there what the code does not say (directories whose purpose is not obvious, what must not be touched, rules \`specty check\` does not verify).`,
     );
   },
+  "agents-bloated": (line, t) =>
+    t(
+      `AGENTS.md tiene ${line.lines} líneas: el agente lo lee en cada sesión. Mantenlo conciso (< 80 líneas); traslada especificaciones de producto a PRODUCT.md y arquitectura o fases a docs/.`,
+      `AGENTS.md has ${line.lines} lines: the agent reads it every session. Keep it concise (< 80 lines); move product specs to PRODUCT.md and architecture or phases to docs/.`,
+    ),
   "empty-glossary": (line, t) =>
     t(
       `El glosario (\`${line.path}\`) no define ningún término: añade una línea por término con la forma «- **Término** (\`NombreEnElCódigo\`): definición.», y las tarjetas traerán las definiciones de los que usen.`,

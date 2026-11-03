@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261031-regla-para-entrar-en-worktree-con-specty-enter",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261031-regla-para-entrar-en-worktree-con-specty-enter",
+  "baseCommit": "877fb1480a106de8820cd4a98a5abf588e52dc80",
+  "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:69faa8dc2cb718dd5439b33877b3fdb8c7301028dc31e61c876a4c792842df80",
+    "at": "2026-10-31T14:04:26.107Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "b820c48420a3c14e0bbc853452181189b4bcd35f",
+      "attempts": 1,
+      "startedAt": "2026-10-31T13:51:25.585Z",
+      "doneAt": "2026-10-31T13:55:46.372Z",
+      "summary": "Regla explícita de specty enter en flowLines y carryOnText imperativo",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ae8c6801859a22846edd5e99d848687470da3b24",
+      "attempts": 1,
+      "startedAt": "2026-10-31T14:04:26.529Z",
+      "doneAt": "2026-10-31T14:09:23.071Z",
+      "summary": "Actualizar expectativa en test de integración worktrees.test.ts",
+      "scopeExtra": [
+        "packages/cli/test/worktrees.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 2
+  }
+}

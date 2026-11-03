@@ -9,7 +9,8 @@ import { exists, isRecord, parseJson, readText } from "../io/files";
  * every formatter.
  */
 export interface FormatterExclusion {
-  readonly name: "Biome" | "Prettier";
+  /** The tool: Biome and Prettier here, and the JavaScript ones of `worktree-tools.ts`. */
+  readonly name: string;
   /** The path Specty writes. */
   readonly path: string;
   /** Where the exclusion goes. */
@@ -27,6 +28,8 @@ interface Written {
   readonly inBiome: RegExp;
   readonly prettier: string;
   readonly inPrettier: RegExp;
+  /** Also excluded when `.gitignore` ignores it: Prettier reads it, and Biome with `useIgnoreFile`. */
+  readonly gitignored?: RegExp;
 }
 
 /** What Specty writes, and how each formatter's exclusion of it (or of its folder) looks. */
@@ -71,6 +74,16 @@ const WRITTEN: readonly Written[] = [
     prettier: ".opencode/plugins/specty.js",
     inPrettier: /^\/?\.opencode(?:\/plugins(?:\/specty\.js|\/\*\*|\/)?|\/\*\*|\/)?$/,
   },
+  // The changes' worktrees, inside the project once `new` made one (ADR 0018).
+  {
+    path: ".worktrees/",
+    optional: true,
+    biome: '"!.worktrees"',
+    inBiome: /"!(?:\*\*\/)?\.worktrees(?:\/\*\*)?\/?"/,
+    prettier: ".worktrees/",
+    inPrettier: /^\/?\.worktrees\/?(?:\*\*)?$/,
+    gitignored: /^\/?\.worktrees\/?$/,
+  },
 ];
 
 const PRETTIER_CONFIG = /^(?:\.prettierrc(?:\.[\w]+)?|prettier\.config\.[cm]?[jt]s)$/;
@@ -80,34 +93,53 @@ export async function formatterExclusions(root: string): Promise<FormatterExclus
   for (const entry of WRITTEN) {
     if (!entry.optional || (await exists(join(root, entry.path)))) written.push(entry);
   }
-  const found: FormatterExclusion[] = [];
+  const ignored = await linesOf(root, ".gitignore");
+  const byGit = (entry: Written) =>
+    entry.gitignored !== undefined && ignored.some((line) => entry.gitignored?.test(line));
+  return [
+    ...(await biomeExclusions(root, written, byGit)),
+    ...(await prettierExclusions(root, written, byGit)),
+  ];
+}
+
+/** Biome's exclusion of each path; with `vcs.useIgnoreFile` it also reads `.gitignore`. */
+async function biomeExclusions(
+  root: string,
+  written: readonly Written[],
+  byGit: (entry: Written) => boolean,
+): Promise<FormatterExclusion[]> {
   const biome = await firstText(root, ["biome.json", "biome.jsonc"]);
-  if (biome !== undefined) {
-    for (const entry of written) {
-      found.push({
-        name: "Biome",
-        path: entry.path,
-        file: `${biome.file} (files.includes)`,
-        add: entry.biome,
-        excluded: entry.inBiome.test(biome.text),
-      });
-    }
-  }
-  if (await usesPrettier(root)) {
-    const lines = ((await readText(join(root, ".prettierignore"))) ?? "")
-      .split("\n")
-      .map((line) => line.trim());
-    for (const entry of written) {
-      found.push({
-        name: "Prettier",
-        path: entry.path,
-        file: ".prettierignore",
-        add: entry.prettier,
-        excluded: lines.some((line) => entry.inPrettier.test(line)),
-      });
-    }
-  }
-  return found;
+  if (biome === undefined) return [];
+  const readsGit = /"useIgnoreFile"\s*:\s*true/.test(biome.text);
+  return written.map((entry) => ({
+    name: "Biome",
+    path: entry.path,
+    file: `${biome.file} (files.includes)`,
+    add: entry.biome,
+    excluded: entry.inBiome.test(biome.text) || (readsGit && byGit(entry)),
+  }));
+}
+
+/** Prettier's exclusion of each path, in `.prettierignore` or, as it reads it too, `.gitignore`. */
+async function prettierExclusions(
+  root: string,
+  written: readonly Written[],
+  byGit: (entry: Written) => boolean,
+): Promise<FormatterExclusion[]> {
+  if (!(await usesPrettier(root))) return [];
+  const lines = await linesOf(root, ".prettierignore");
+  return written.map((entry) => ({
+    name: "Prettier",
+    path: entry.path,
+    file: ".prettierignore",
+    add: entry.prettier,
+    excluded: lines.some((line) => entry.inPrettier.test(line)) || byGit(entry),
+  }));
+}
+
+/** A file's lines, trimmed; none when it is missing. */
+async function linesOf(root: string, file: string): Promise<string[]> {
+  return ((await readText(join(root, file))) ?? "").split("\n").map((line) => line.trim());
 }
 
 async function firstText(

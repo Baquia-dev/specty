@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { writtenRefs } from "./git-refs";
 
 /** A `git commit`, before placing where it runs. */
 export interface GitCommit {
@@ -13,6 +14,8 @@ export interface GitEffects {
   readonly commits: readonly GitCommit[];
   /** Skips or disables hooks: `--no-verify`, or setting `core.hooksPath`. */
   readonly bypass: boolean;
+  /** The branches it writes, deletes, pushes or checks out (`writtenRefs`). */
+  readonly refs: readonly string[];
 }
 
 const HOOKS_PATH = /^core\.hookspath/i;
@@ -65,11 +68,11 @@ export function analyzeGit(args: readonly string[]): GitEffects {
     const short = rest.filter((arg) => /^-[a-zA-Z]+$/.test(arg));
     const skip = rest.includes("--no-verify") || short.some((flag) => flag.includes("n"));
     const all = rest.includes("--all") || short.some((flag) => flag.includes("a"));
-    return { commits: [{ all, moves: options.moves }], bypass: bypassOption || skip };
+    return { commits: [{ all, moves: options.moves }], bypass: bypassOption || skip, refs: [] };
   }
   const configures =
     command === "config" && rest.some((arg) => HOOKS_PATH.test(arg)) && !onlyReads(rest);
-  return { commits: [], bypass: bypassOption || configures };
+  return { commits: [], bypass: bypassOption || configures, refs: writtenRefs(command, rest) };
 }
 
 /** Options before the git command: their values, and the folders of `-C`. */

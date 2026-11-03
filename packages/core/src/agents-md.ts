@@ -48,12 +48,12 @@ function flowLines(t: Translate, command: string): string[] {
       `This repository uses Specty. Before creating, modifying or deleting code, run \`${command} next\` and follow its output up to the \`NEXT:\` line. Talk to the user in English.`,
     ),
     t(
-      `- Si el usuario pide un cambio y no hay uno activo, \`${command} next\` te indica cómo crear la spec.`,
-      `- If the user asks for a change and none is active, \`${command} next\` tells you how to create the spec.`,
+      `- Si el usuario pide un cambio y no hay uno activo, \`${command} next\` te indica cómo crear la spec (en proyectos nuevos, andamiaje con framework y globs en alcance como única excepción; en épicas, cortes verticales en paralelo).`,
+      `- If the user asks for a change and none is active, \`${command} next\` tells you how to create the spec (in new projects, framework scaffolding with globs in scope as sole exception; in epics, parallel vertical slices).`,
     ),
     t(
-      `- Cada cambio vive en su propia carpeta (una worktree): tras \`${command} new\`, trabaja en la carpeta que indica, no en la principal.`,
-      `- Each change lives in its own folder (a worktree): after \`${command} new\`, work in the folder it names, not in the main one.`,
+      `- Cada cambio vive en su propia carpeta (una worktree): tras \`${command} new\`, trabaja en la carpeta que indica, no en la principal. Entra con \`${command} enter <id>\` (en Claude Code con \`EnterWorktree\`) y no pidas abrir otra sesión ni cambiar de rama.`,
+      `- Each change lives in its own folder (a worktree): after \`${command} new\`, work in the folder it names, not in the main one. Enter with \`${command} enter <id>\` (in Claude Code with \`EnterWorktree\`) and do not ask to open another session or switch branches.`,
     ),
     t(
       `- Completa cada tarea con \`${command} task done <id>\`; no ejecutes \`git commit\` tú mismo.`,
@@ -64,8 +64,8 @@ function flowLines(t: Translate, command: string): string[] {
       `- If you need a file outside the task's scope, request it with \`${command} scope add\`.`,
     ),
     t(
-      "- Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno. Solo si `SIGUIENTE:` te lo pide (modo delegado), los ejecutas tú.",
-      "- Approving, accepting and closing are done by the user in their terminal; ask them and end your turn. Only when `NEXT:` tells you to (delegated mode) do you run them yourself.",
+      `- Aprobar, decidir el alcance, aceptar y cerrar lo decide solo el usuario en su terminal o UI (no alteres .git ni eludas permisos); pídeselo y ejecuta \`${command} wait\` para esperar su decisión. Solo si \`SIGUIENTE:\` te lo pide (modo delegado), los ejecutas tú.`,
+      `- Approving, deciding scope, accepting and closing are the user's alone in their terminal or UI (do not alter .git or bypass permissions); ask them and run \`${command} wait\` to wait for their decision. Only when \`NEXT:\` tells you to (delegated mode) do you run them yourself.`,
     ),
     t(
       "- Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.",
@@ -98,8 +98,8 @@ function ruleLines(t: Translate, command: string): string[] {
       "- Edit with targeted changes; do not rewrite whole files for small changes.",
     ),
     t(
-      "- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.",
-      "- Brief final report: what changed, what was verified and what is pending.",
+      `- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente; anota cada pendiente con \`${command} memory add "<texto>"\` para que no se quede solo en el chat.`,
+      `- Brief final report: what changed, what was verified and what is pending; note each pending item with \`${command} memory add "<text>"\` so it does not stay only in the chat.`,
     ),
   ];
 }
@@ -134,15 +134,15 @@ export function humanSections(lang: Lang): string {
     t("## Mapa", "## Map"),
     "",
     t(
-      "<!-- Directorios cuyo propósito no es obvio y lo que no se toca (generado, migraciones aplicadas…). -->",
-      "<!-- Directories whose purpose is not obvious, and what must not be touched (generated code, applied migrations…). -->",
+      "<!-- Directorios no obvios, lo que no se toca y enlaces a PRODUCT.md y docs/ (arquitectura, protocolos). No pongas especificaciones de producto, arquitectura ni fases aquí: guárdalas en archivos dedicados. -->",
+      "<!-- Non-obvious directories, what must not be touched and links to PRODUCT.md and docs/ (architecture, protocols). Do not put product specs, architecture or phases here: keep them in dedicated files. -->",
     ),
     "",
     t("## Convenciones", "## Conventions"),
     "",
     t(
-      "<!-- Solo lo que no se deduce del código ni verifica `specty check` (formato, lint, tipos, tests, tamaño, capas…). -->",
-      "<!-- Only what cannot be inferred from the code and `specty check` does not verify (format, lint, types, tests, size, layers…). -->",
+      "<!-- Solo lo que no se deduce del código ni verifica `specty check` (formato, lint, tipos, tests, tamaño, capas…). Mantén este archivo conciso (< 80 líneas). -->",
+      "<!-- Only what cannot be inferred from the code and `specty check` does not verify (format, lint, types, tests, size, layers…). Keep this file concise (< 80 lines). -->",
     ),
   ].join("\n");
 }

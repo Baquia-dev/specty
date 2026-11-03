@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "20261030-specty-check-aplica-las-reglas-del-proyecto-con",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-specty-check-aplica-las-reglas-del-proyecto-con",
+  "baseCommit": "ce35fb1d06dad482c00eff14476fcd9ce39e7d71",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2f327158979bd2dfab37257f58197c826cbfe8d5d97f01ed30352f9344f1cc6e",
+    "at": "2026-10-30T21:06:29.230Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8dbcc6526b776f52ad4b424f6a7f06e315092be0fce7354a6fb9a24ec912d1b4",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fa188aa2549d92f7c4b27afa65e342234809cea4775867783996f600dab274e9",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:6059163e81401b5972a13869511ee6ad6a9748384241309240e1f4b347c4dc6d",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:3904390c1fd48612ddc93a9341e9b5568accd65bbf9fd95f19ccda8f91ba6a4b",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:7445d2941edfa01189511465fd4e88f1981e51a0ff9ed47b6d27154182fb3ffd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "f793c4f5c4ffeadd04255cad398ee7c118d651e7",
+      "attempts": 1,
+      "startedAt": "2026-10-30T21:14:20.922Z",
+      "doneAt": "2026-10-30T21:15:06.339Z",
+      "summary": "Check code-rules: aplica las reglas de la raíz con Opengrep o, sin él, Semgrep con metrics off, sobre una copia de los archivos de la ejecución junto al .semgrepignore; solo cuentan las coincidencias que tocan líneas añadidas; ERROR, CRITICAL y HIGH fallan y el resto avisa",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "f2e51e24e36388f1b30148fe61361e92a2acd97c",
+      "attempts": 1,
+      "startedAt": "2026-10-30T21:15:06.681Z",
+      "doneAt": "2026-10-30T21:15:19.228Z",
+      "summary": "Las guías en español e inglés documentan code-rules y que los ejemplos no lo muestran; formats.md lo describe en la lista de §6 y ARCHITECTURE.md lo nombra en specty check",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "b148aaf899b630377ef9053d4cc0b3212e16e887",
+      "attempts": 1,
+      "startedAt": "2026-10-30T21:15:19.577Z",
+      "doneAt": "2026-10-30T21:15:34.863Z",
+      "summary": "El test de las guías cuenta code-rules entre los checks que su ejemplo no muestra, porque solo aparece con reglas en la raíz",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-30T21:20:25.885Z",
+  "lockedTests": {
+    "packages/cli/test/check-code-rules.test.ts": "sha256:d2c53c6d7891bbcbdae13fe2e98cae7fd32e0d4ba7098a4bec71bdee1c020da2"
+  }
+}

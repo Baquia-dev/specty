@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Phase } from "../flow/phases";
+import type { MemoryEntry } from "../memory/entries";
 import { headerOf, type Output, section } from "../output";
 import { COMMIT_TYPES } from "../spec/model";
 import { acceptanceCard } from "./acceptance";
 import { termsSection } from "./glossary";
 import { integrationCard } from "./integration";
+import { memoryStartBlocks, resolvesLines } from "./memory";
+import { notesBlock } from "./notes";
 import { testingCard } from "./testing";
 import { draftingGuide, quoted, translator } from "./text";
 import type { CardContext, CarriedView, ChangeView, CommentView } from "./view";
@@ -18,14 +21,21 @@ export interface NextView {
   readonly dirty: readonly string[];
   /** A new project: no stack and no governed code yet, so the first change is its skeleton. */
   readonly fresh?: boolean;
+  /** Specty's memory, read only when no change is active: its open entries go after the card. */
+  readonly memory?: readonly MemoryEntry[];
 }
 
 /** `specty next`: what to do now, for every phase. Never changes anything. */
 export function nextCard(view: NextView, ctx: CardContext): Output {
   const { change } = view;
-  if (change === undefined) return noChangeCard(view.dirty, ctx, view.fresh === true);
+  if (change === undefined) {
+    const card = noChangeCard(view.dirty, ctx, view.fresh === true);
+    return { ...card, blocks: [...card.blocks, ...memoryStartBlocks(view.memory ?? [], ctx)] };
+  }
   if (change.integration !== undefined) return integrationCard(change, change.integration, ctx);
-  return PHASE_CARDS[change.phase](change, ctx);
+  const card = PHASE_CARDS[change.phase](change, ctx);
+  // The change's log comes back to the session that resumes it (ADR 0016).
+  return { ...card, blocks: [...card.blocks, ...notesBlock(change.notes ?? [], ctx)] };
 }
 
 /** The card of each phase of a change. */
@@ -157,6 +167,7 @@ function draftCard(change: ChangeView, ctx: CardContext): Output {
         t("PETICIÓN DEL USUARIO", "THE USER'S REQUEST"),
         change.request === undefined ? [] : change.request.split("\n"),
       ),
+      ...section(t("RESUELVE", "RESOLVES"), resolvesLines(change.resolves ?? [], ctx)),
       ...(change.carried ?? []).flatMap((carried) =>
         section(
           t(`DEL CAMBIO ${carried.id}`, `FROM CHANGE ${carried.id}`),
@@ -256,8 +267,8 @@ function reviewCard(change: ChangeView, ctx: CardContext): Output {
       ),
     ]),
     next: t(
-      `pide al usuario que revise la spec y la apruebe con \`${ctx.command} approve\` en su terminal; luego termina tu turno.`,
-      `ask the user to review the spec and approve it with \`${ctx.command} approve\` in their terminal; then end your turn.`,
+      `pide al usuario que revise la spec y la apruebe con \`${ctx.command} approve\` en su terminal o en la UI, y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
+      `ask the user to review the spec and approve it with \`${ctx.command} approve\` in their terminal or UI, and run \`${ctx.command} wait\` to wait for their decision.`,
     ),
   };
 }

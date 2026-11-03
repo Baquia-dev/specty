@@ -28,6 +28,7 @@ import { Toasts } from "../components/toast";
 import {
   type AssumptionView,
   type CommentAnchor,
+  type CommentView,
   type DiffPart,
   SpectyData,
 } from "../data/records";
@@ -46,6 +47,7 @@ import { BeforeLine, reportFailure, WordDiff } from "./spec-sections";
       <sp-button
         actions
         variant="primary"
+        [loading]="loading()"
         [disabledReason]="reason().trim() ? '' : t()('Escribe el motivo: el agente lo leerá.', 'Write the reason: the agent will read it.')"
         (pressed)="reject()"
       >
@@ -61,11 +63,14 @@ class RejectAssumption {
   private readonly failed = reportFailure(inject(Toasts), inject(Preferences));
   protected readonly t = inject(Preferences).t;
   protected readonly reason = signal("");
+  protected readonly loading = signal(false);
 
   protected reject(): void {
+    this.loading.set(true);
     this.source
       .decideAssumption(this.data.change, this.data.id, "rejected", this.reason().trim())
-      .then(() => this.ref.close(), this.failed);
+      .then(() => this.ref.close(), this.failed)
+      .finally(() => this.loading.set(false));
   }
 }
 
@@ -115,12 +120,12 @@ const DECISIONS = {
       @if (editable()) {
         @if (assumption().decision === 'pending' || reconsidering()) {
           <div class="mt-2 flex gap-2" data-choices>
-            <sp-button size="sm" variant="primary" (pressed)="confirm()">{{ t()('Confirmar', 'Confirm') }}</sp-button>
-            <sp-button size="sm" (pressed)="reject()">{{ t()('Rechazar…', 'Reject…') }}</sp-button>
+            <sp-button size="sm" variant="primary" [loading]="loadingConfirm()" [disabledReason]="commentBlocked()" (pressed)="confirm()">{{ t()('Confirmar', 'Confirm') }}</sp-button>
+            <sp-button size="sm" [disabledReason]="loadingConfirm() ? t()('Confirmando…', 'Confirming…') : commentBlocked()" (pressed)="reject()">{{ t()('Rechazar…', 'Reject…') }}</sp-button>
           </div>
         } @else {
           <!-- Already decided: the choices stay out of the way until the person asks for them. -->
-          <sp-button class="mt-1 self-start" size="sm" variant="ghost" (pressed)="reconsider()">{{ t()('Cambiar decisión', 'Change decision') }}</sp-button>
+          <sp-button class="mt-1 self-start" size="sm" variant="ghost" [disabledReason]="loadingConfirm() ? t()('Confirmando…', 'Confirming…') : commentBlocked()" (pressed)="reconsider()">{{ t()('Cambiar decisión', 'Change decision') }}</sp-button>
         }
       }
     </div>
@@ -138,6 +143,7 @@ export class AssumptionRow {
   readonly assumption = input.required<AssumptionView>();
   readonly change = input.required<string>();
   readonly editable = input(false);
+  readonly comments = input<readonly CommentView[]>([]);
   /** In the delta: its final text, with the words added since the approved revision. */
   readonly diff = input<readonly DiffPart[] | undefined>(undefined);
   /** In the delta, only if words were removed: what it said before. */
@@ -157,6 +163,25 @@ export class AssumptionRow {
   protected readonly waiting = computed(
     () => this.assumption().impact === "high" && this.assumption().decision === "pending",
   );
+  /** Open comments anchored to this assumption disable deciding on it. */
+  protected readonly commentBlocked = computed(() => {
+    const id = this.assumption().id;
+    const text = this.assumption().text;
+    const hasOpen = this.comments().some(
+      (c) =>
+        !c.resolved &&
+        (("item" in c.anchor && c.anchor.item === id) ||
+          ("quote" in c.anchor &&
+            c.anchor.section === "assumptions" &&
+            text.includes(c.anchor.quote))),
+    );
+    return hasOpen
+      ? this.t()(
+          "Tiene comentarios pendientes: edítalos, elimínalos o pide cambios.",
+          "Has pending comments: edit, delete them or request changes.",
+        )
+      : "";
+  });
   /**
    * The person asked to change a decision already taken. A new decision folds the choices away
    * again; live updates that keep the same decision leave them open.
@@ -176,6 +201,8 @@ export class AssumptionRow {
     }[this.assumption().decision];
   });
 
+  protected readonly loadingConfirm = signal(false);
+
   /** Shows the choices again and moves focus to the first, since the pressed button goes away. */
   protected reconsider(): void {
     this.reconsidering.set(true);
@@ -185,9 +212,11 @@ export class AssumptionRow {
   }
 
   protected confirm(): void {
+    this.loadingConfirm.set(true);
     this.source
       .decideAssumption(this.change(), this.assumption().id, "confirmed")
-      .catch(this.failed);
+      .catch(this.failed)
+      .finally(() => this.loadingConfirm.set(false));
   }
 
   protected reject(): void {

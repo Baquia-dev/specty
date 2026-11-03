@@ -13,6 +13,7 @@ import { ADAPTERS } from "../agents";
 import { formatterExclusions } from "../detect/formatters";
 import { gentleAiGuidance } from "../detect/gentle-ai";
 import { detectProject } from "../detect/project";
+import { worktreeExclusions } from "../detect/worktree-tools";
 import { gitHooksInstalled } from "../install/git-hooks";
 import { mcpDoctor } from "../install/mcp";
 import { usageDoctor } from "../install/usage";
@@ -83,7 +84,8 @@ async function toolLines(session: Session): Promise<{
   for (const { file, blocks } of await gentleAiGuidance(root, session.environment.env)) {
     problems.push({ code: "gentle-ai", file, blocks });
   }
-  for (const { name, path, add, file, excluded } of await formatterExclusions(root)) {
+  const exclusions = [...(await formatterExclusions(root)), ...(await worktreeExclusions(root))];
+  for (const { name, path, add, file, excluded } of exclusions) {
     if (excluded) ok.push({ code: "formatter-excludes", name, path });
     else problems.push({ code: "formatter-checks", name, path, add, file });
   }
@@ -114,9 +116,12 @@ async function doctorWarnings(session: Session, agents: string | undefined): Pro
   const delegation = await readDelegation(git);
   const glossary = await readText(join(root, session.config.glossary));
   const emptyGlossary = glossary !== undefined && parseGlossary(glossary).length === 0;
+  const lines = agents === undefined ? 0 : agents.split("\n").length;
+  const bloated = lines > 120 ? [{ code: "agents-bloated" as const, lines }] : [];
   return [
     ...(gone.length === 0 ? [] : [{ code: "missing-paths", paths: gone } as const]),
     ...(unfilled.length === 0 ? [] : [{ code: "unfilled-sections", sections: unfilled } as const]),
+    ...bloated,
     ...(emptyGlossary ? [{ code: "empty-glossary", path: session.config.glossary } as const] : []),
     ...(await usageDoctor(root, session.environment.env)),
     ...(delegation === undefined

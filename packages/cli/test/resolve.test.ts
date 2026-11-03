@@ -82,7 +82,7 @@ describe("specty integrate", () => {
     expect(resolved.code).toBe(0);
     expect(resolved.out).toMatch(/Incorporación de main resuelta \(merge [0-9a-f]{7}\)\./);
     expect(resolved.out).toContain(
-      "SIGUIENTE: pide al usuario que vuelva a ejecutar `specty close` y termina tu turno.",
+      "SIGUIENTE: pide al usuario que vuelva a ejecutar `specty close` y ejecuta `specty wait` para esperar su decisión.",
     );
     expect(git(folder, "log", "-1", "--format=%P").split(" ")).toHaveLength(2);
     expect(git(folder, "log", "-1", "--format=%B")).toContain(`Specty-Change: ${CHANGE}`);

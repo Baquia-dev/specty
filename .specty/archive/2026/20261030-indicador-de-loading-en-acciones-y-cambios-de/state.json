@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "id": "20261030-indicador-de-loading-en-acciones-y-cambios-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-indicador-de-loading-en-acciones-y-cambios-de",
+  "baseCommit": "9483e4408563bb2c9d100a0a7d0e5df0f80b4c18",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:23fba660618064cc7e94d092b14a49dbfe0cfbeaf8335a969ceb7812fc2eeb4a",
+    "at": "2026-10-30T12:37:48.898Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:50d1f9296d3c09af04f12c0ddd83f65264b0503f3153dc454eae744e76f710c4",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e416fb2181452cdec6852b27866415eb98544184c61ecd41d4b698c2719e3998",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:ccafeea92dc57cbf8c509d710558af4424efc20f1f877720a9014ffd697c168c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "085c8fc23efc0b3ba9bc766922eed857091838b8",
+      "attempts": 1,
+      "startedAt": "2026-10-30T12:02:34.461Z",
+      "doneAt": "2026-10-30T12:05:29.941Z",
+      "summary": "icono Loader2 y soporte de loading en Button e IconButton",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "98ada933fe07a11f483f367ed9a3332ef7f744a8",
+      "attempts": 1,
+      "startedAt": "2026-10-30T12:05:30.299Z",
+      "doneAt": "2026-10-30T12:11:12.693Z",
+      "summary": "indicadores de carga en confirmacion y rechazo de supuestos",
+      "scopeExtra": [
+        "packages/ui/src/review/spec-sections.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "277cfc0636c0ad508e4e7bda9ac7823a69bcd412",
+      "attempts": 1,
+      "startedAt": "2026-10-30T12:11:13.062Z",
+      "doneAt": "2026-10-30T12:30:13.928Z",
+      "summary": "indicadores de carga en acciones de revisión y confirmación de cierre",
+      "scopeExtra": [
+        "packages/ui/src/acceptance/closing-actions.test.ts",
+        "packages/ui/src/review/review-actions.test.ts",
+        "packages/ui/src/review/comments.test.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "909869807d6d411ab915a904478d1f2b969e736d",
+      "attempts": 1,
+      "startedAt": "2026-10-30T12:30:14.267Z",
+      "doneAt": "2026-10-30T12:32:21.175Z",
+      "summary": "indicadores de carga en creación, edición y borrado de comentarios",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "31d9b66b4ef214d83b1811892532727d147e0bfc",
+      "attempts": 1,
+      "startedAt": "2026-10-30T12:39:25.413Z",
+      "doneAt": "2026-10-30T12:43:56.421Z",
+      "summary": "actualizar conteo de iconos a 54 tras añadir LucideLoader2",
+      "scopeExtra": [
+        "packages/ui/src/components/icons.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 5,
+    "S": 4
+  },
+  "closingSubmittedAt": "2026-10-30T12:48:56.232Z",
+  "lockedTests": {
+    "packages/ui/src/acceptance/closing-actions.test.ts": "sha256:f70f5fc5a27dff456527958f9b6ec718073d3a5f4820305d0cc320761e14990d",
+    "packages/ui/src/components/button.test.ts": "sha256:f8eee93e474082fdac62468d815a99cd946e2febe50774e941258a246fb4848d",
+    "packages/ui/src/review/comments.test.ts": "sha256:f805401af99d8cf9f2c8526a8d387857641eaea1214de89ee3a500370cbeee69",
+    "packages/ui/src/review/review-actions.test.ts": "sha256:c0a9a7e0d3adbce6280fc3dc0a622e7b10eb666ed1389246e50aa995807492ab",
+    "packages/ui/src/review/spec-sections.test.ts": "sha256:1cf6fbd22e0e27d3f523cc1a05bb16dcae445a2e15ad48a6532cf9bcc68c315f",
+    "packages/ui/src/components/icons.test.ts": "sha256:89bea8fbc040b6e72996f70ae9059f3c0a94a4db08b7f42c2dd50ecc248a563f"
+  }
+}

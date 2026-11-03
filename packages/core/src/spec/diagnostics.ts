@@ -38,6 +38,8 @@ export type DiagnosticCode =
   | "criterion-uncovered"
   | "task-verify-missing"
   | "slice-cycle"
+  | "slice-without-criteria"
+  | "slice-horizontal"
   | "quick-limits"
   | "split-required"
   | "done-task-changed"

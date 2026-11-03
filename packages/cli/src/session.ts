@@ -25,7 +25,7 @@ export interface Terminal {
   confirm(message: string): Promise<boolean>;
   choose<T extends string>(
     message: string,
-    options: readonly { readonly value: T; readonly label: string }[],
+    options: readonly { readonly value: T; readonly label: string; readonly hint?: string }[],
   ): Promise<T | undefined>;
   /**
    * Several answers, with `initial` already checked: the ones checked when confirmed, or
@@ -33,7 +33,7 @@ export interface Terminal {
    */
   chooseMany<T extends string>(
     message: string,
-    options: readonly { readonly value: T; readonly label: string }[],
+    options: readonly { readonly value: T; readonly label: string; readonly hint?: string }[],
     initial: readonly T[],
   ): Promise<readonly T[] | undefined>;
   ask(message: string): Promise<string | undefined>;

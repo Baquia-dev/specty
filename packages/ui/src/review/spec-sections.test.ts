@@ -72,7 +72,7 @@ class Recording extends SpectyData {
   imports: [AssumptionRow, ReviewItems],
   template: `
     <div role="list">
-      <sp-assumption-row change="20261021-login-google" [assumption]="assumption()" [editable]="editable()" (comment)="anchors.push($event)" />
+      <sp-assumption-row change="20261021-login-google" [assumption]="assumption()" [comments]="comments()" [editable]="editable()" (comment)="anchors.push($event)" />
     </div>
     @for (section of sections; track section) {
       <sp-review-items [attr.id]="section" [review]="review" [section]="section" [editable]="editable()" (comment)="anchors.push($event)" />
@@ -86,6 +86,7 @@ class Host {
     impact: "high",
     decision: "pending",
   });
+  readonly comments = signal<readonly import("../data/records").CommentView[]>([]);
   readonly editable = signal(true);
   readonly review = REVIEW;
   readonly sections = ["criteria", "files", "tasks", "risks"] as const;
@@ -218,10 +219,53 @@ describe("AssumptionRow", () => {
     expect(element.querySelector("sp-assumption-row sp-button")).toBeNull();
   });
 
+  it("AC4: disables assumption actions when assumption has pending comments", async () => {
+    const { element, fixture, host } = await render();
+    host.comments.set([
+      {
+        id: "c1",
+        revision: 1,
+        anchor: { item: "A1" },
+        author: "User",
+        body: "Duda sobre A1",
+        createdAt: new Date().toISOString(),
+        resolved: false,
+        section: "assumptions",
+      },
+    ]);
+    await fixture.whenStable();
+    const buttons = element.querySelectorAll<HTMLButtonElement>(
+      "sp-assumption-row sp-button button",
+    );
+    expect(buttons[0]?.disabled).toBe(true);
+    expect(buttons[1]?.disabled).toBe(true);
+  });
+
   it("emits a comment anchored to the item (AC6)", async () => {
     const { element, host } = await render();
     element.querySelector<HTMLButtonElement>("sp-assumption-row sp-icon-button button")?.click();
     expect(host.anchors).toEqual([{ item: "A1" }]);
+  });
+
+  it("AC2: shows loading state on confirm button while decideAssumption is running", async () => {
+    let resolveAction!: () => void;
+    const pendingPromise = new Promise<void>((res) => {
+      resolveAction = res;
+    });
+    const { element, fixture, source } = await render();
+    (source as Recording).decideAssumption = () => pendingPromise;
+    const confirmButton = element.querySelector<HTMLButtonElement>(
+      "sp-assumption-row sp-button[variant=primary] button",
+    );
+    confirmButton?.click();
+    await fixture.whenStable();
+    expect(confirmButton?.getAttribute("aria-busy")).toBe("true");
+    expect(confirmButton?.disabled).toBe(true);
+    expect(confirmButton?.querySelector(".animate-spin")).not.toBeNull();
+    resolveAction();
+    await new Promise((resolve) => setTimeout(resolve));
+    await fixture.whenStable();
+    expect(confirmButton?.getAttribute("aria-busy")).toBeNull();
   });
 });
 

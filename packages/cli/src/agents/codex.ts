@@ -3,24 +3,23 @@ import { join, resolve } from "node:path";
 import {
   codexGuardLine,
   codexRulesLine,
-  codexSandboxKeptWarning,
-  codexSandboxLine,
   codexTrustWarning,
   type DoctorLine,
   movePatch,
   patchPaths,
 } from "@baquia-dev/specty-core";
 import type { RawAction } from "../enforce/actions";
-import { worktreesHome } from "../flow/worktree";
 import {
   CODEX_HOOKS,
   CODEX_RULES,
   codexHooksFile,
   excludeLocally,
   hasGuard,
+  memoryStopLines,
   missingEvents,
   removeFromJson,
   withHooks,
+  withMemoryStop,
 } from "../install/agents";
 import { type InstallFiles, rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
@@ -32,6 +31,7 @@ import {
   doctorLines,
   exitFailed,
   exitReply,
+  lastAssistantMessage,
   type Redirect,
   textCard,
 } from "./adapter";
@@ -102,6 +102,7 @@ export const codex: AgentAdapter = {
   failed: exitFailed,
   card: textCard,
   stop: blockingStop([CODEX_HOOKS]),
+  lastMessage: lastAssistantMessage,
   // Codex 0.131 or later reads a linked worktree's project hooks from the main checkout, so the
   // person trusts them once per repository.
   install: async ({ root, git, invocation, files, lang }) => {
@@ -109,35 +110,33 @@ export const codex: AgentAdapter = {
     const command = `${invocation.command} guard --tool codex`;
     await rewriteJson(
       join(root, CODEX_HOOKS),
-      (value) => withHooks(value, EVENTS, "codex", command),
+      // The memory's net at the end of the turn goes with the guard (ADR 0016).
+      (value) =>
+        withMemoryStop(
+          withHooks(value, EVENTS, "codex", command),
+          "codex",
+          `${invocation.command} hook memory-stop codex`,
+        ),
       true,
       files,
     );
     if (local) await excludeLocally(git, CODEX_HOOKS, files);
     await files.write(join(root, CODEX_RULES), RULE);
-    const { home, open } = await openWorktrees(root, git, files);
+    await removeFormerConfig(root, git, files);
     return {
-      done: [
-        codexGuardLine(CODEX_HOOKS, local, lang),
-        codexRulesLine(CODEX_RULES, lang),
-        ...(open ? [codexSandboxLine(CODEX_CONFIG, lang)] : []),
-      ],
-      warnings: [
-        codexTrustWarning(lang),
-        ...(open ? [] : [codexSandboxKeptWarning(CODEX_CONFIG, home, lang)]),
-      ],
+      done: [codexGuardLine(CODEX_HOOKS, local, lang), codexRulesLine(CODEX_RULES, lang)],
+      warnings: [codexTrustWarning(lang)],
       written: [...(local ? [] : [CODEX_HOOKS]), CODEX_RULES],
     };
   },
-  remove: async (root, files) => {
+  remove: async (root, files, git) => {
     const update = (value: Record<string, unknown>) => withHooks(value, EVENTS, "codex", undefined);
     await removeFromJson(root, CODEX_HOOKS, update, files);
     const rules = join(root, CODEX_RULES);
     if (isRule(await files.read(rules))) await files.remove(rules);
-    const config = join(root, CODEX_CONFIG);
-    if ((await files.read(config))?.startsWith(CONFIG_MARK) === true) await files.remove(config);
+    await removeFormerConfig(root, git, files);
   },
-  doctor: async (root, git) => {
+  doctor: async (root) => {
     const hooks = await readText(join(root, CODEX_HOOKS));
     const rules = await readText(join(root, CODEX_RULES));
     const guard = hasGuard(hooks, "codex");
@@ -161,67 +160,34 @@ export const codex: AgentAdapter = {
       problems: [
         ...lines.problems,
         ...(compact ? [] : [{ code: "codex-compact", file: CODEX_HOOKS } as const]),
-        ...(await beforeEnter(rules, root, git)),
+        ...beforeEnter(rules),
+        ...memoryStopLines([hooks], "codex"),
       ],
     };
   },
   userFile: codexHooksFile,
 };
 
-/**
- * What of the install is from before `specty enter`: Specty's rules without the one for `cd`, and
- * no settings that let the sandbox write in the worktrees' folder where `init` writes them.
- */
-async function beforeEnter(
-  rules: string | undefined,
-  root: string,
-  git: Git,
-): Promise<DoctorLine[]> {
+/** What of the install is from before `specty enter`: Specty's rules without the one for `cd`. */
+function beforeEnter(rules: string | undefined): DoctorLine[] {
   const cd = !isRule(rules) || rules?.includes('pattern = ["cd"]') === true;
-  const config = await readText(join(root, CODEX_CONFIG));
-  const theirs = config !== undefined && !config.startsWith(CONFIG_MARK);
-  const open =
-    theirs ||
-    config?.includes(writableRoots(await worktreesHome(git))) === true ||
-    (await git.isTracked(CODEX_CONFIG));
-  return [...(cd ? [] : [CODEX_RULES]), ...(open ? [] : [CODEX_CONFIG])].map(
-    (file): DoctorLine => ({ code: "enter-outdated", tool: "codex", file }),
-  );
+  return cd ? [] : [{ code: "enter-outdated", tool: "codex", file: CODEX_RULES }];
 }
 
 /** Codex's project settings, which it reads in a trusted project. */
 const CODEX_CONFIG = ".codex/config.toml";
-/** How the settings Specty writes start, so `init` and `uninstall` know them. */
+/** How the settings an older `init` wrote start, so the next one and `uninstall` know them. */
 const CONFIG_MARK = "# Specty: Codex's sandbox also writes in the worktrees' folder";
-/** The line of those settings that lets the sandbox write in `home`. */
-const writableRoots = (home: string) => `writable_roots = [${JSON.stringify(home)}]`;
 
 /**
- * Lets Codex's sandbox write in the worktrees' folder, for a session that entered a change's
- * folder there (`writable_roots`): in the project's `.codex/config.toml`, out of git as it holds
- * a machine path, only while there is none or it is Specty's. The folder must exist.
+ * Takes out the settings an older `init` wrote so that Codex's sandbox wrote in the worktrees'
+ * folder beside the project (ADR 0018): now inside it, the folder needs nothing. Only Specty's,
+ * out of git; the person's stay.
  */
-async function openWorktrees(
-  root: string,
-  git: Git,
-  files: InstallFiles,
-): Promise<{ readonly home: string; readonly open: boolean }> {
-  const home = await worktreesHome(git);
-  await files.folder(home);
+async function removeFormerConfig(root: string, git: Git, files: InstallFiles): Promise<void> {
   const path = join(root, CODEX_CONFIG);
-  const text = await files.read(path);
-  const theirs = text !== undefined && !text.startsWith(CONFIG_MARK);
-  if (theirs || (await git.isTracked(CODEX_CONFIG))) return { home, open: false };
-  const settings = [
-    `${CONFIG_MARK}, where a session that entered a`,
-    "# change works (`specty enter`). `specty init` writes this file, and `specty uninstall` removes it.",
-    "[sandbox_workspace_write]",
-    writableRoots(home),
-    "",
-  ];
-  await files.write(path, settings.join("\n"));
-  await excludeLocally(git, CODEX_CONFIG, files);
-  return { home, open: true };
+  const ours = (await files.read(path))?.startsWith(CONFIG_MARK) === true;
+  if (ours && !(await git.isTracked(CODEX_CONFIG))) await files.remove(path);
 }
 
 /** Whether `text`, a rules file, is Specty's rule for its commands. */

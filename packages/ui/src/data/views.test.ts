@@ -157,6 +157,32 @@ describe("deriveView", () => {
     expect(empty.problems.some((problem) => problem.startsWith("spec.md"))).toBe(true);
     expect(empty.title).toBe("20261020-evolucion-trimestre");
   });
+
+  it("AC1: derives epic id, slice and resolved epic title when frontmatter declares epic", () => {
+    const epicSpec = `---\nkind: epic\n---\n\n# Panel académico integral\n\n## Objetivo\n\nUnificar seguimiento.\n`;
+    const sliceSpec = SPEC.replace(
+      "kind: standard",
+      "kind: standard\nepic: 20261015-panel-academico\nslice: C1",
+    );
+    const epicRecord = record({ id: "20261015-panel-academico", kind: "epic" }, epicSpec);
+    const sliceRecord = record({ id: "20261020-evolucion-trimestre" }, sliceSpec);
+    expect(deriveView(record())).not.toHaveProperty("epic");
+    expect(deriveView(sliceRecord)).toMatchObject({
+      epic: {
+        id: "20261015-panel-academico",
+        title: "20261015-panel-academico",
+        slice: "C1",
+      },
+    });
+    const [, resolved] = deriveViews([epicRecord, sliceRecord]);
+    expect(resolved).toMatchObject({
+      epic: {
+        id: "20261015-panel-academico",
+        title: "Panel académico integral",
+        slice: "C1",
+      },
+    });
+  });
 });
 
 describe("decisions and tabs", () => {
@@ -359,6 +385,30 @@ Evolución agrupada por trimestre.
 
   it("AC4: opens the testing phase on the progress tab", () => {
     expect(initialTab("testing")).toBe("progress");
+  });
+
+  it("AC1: derives createdAt from audit or phaseSince, and closedAt for finished changes", () => {
+    const createdTs = "2026-10-21T08:00:00.000Z";
+    const closedTs = "2026-10-21T11:00:00.000Z";
+    const inProgress = deriveView({
+      ...record(),
+      audit: [{ ts: createdTs, actor: "agent", event: "change.created", data: {} }],
+    });
+    expect((inProgress as unknown as { createdAt?: string }).createdAt).toBe(createdTs);
+    expect((inProgress as unknown as { closedAt?: string }).closedAt).toBeUndefined();
+
+    const finished = deriveView({
+      ...record({ phase: "done" }),
+      audit: [
+        { ts: createdTs, actor: "agent", event: "change.created", data: {} },
+        { ts: closedTs, actor: "human", event: "change.closed", data: {} },
+      ],
+    });
+    expect((finished as unknown as { createdAt?: string }).createdAt).toBe(createdTs);
+    expect((finished as unknown as { closedAt?: string }).closedAt).toBe(closedTs);
+
+    const fallback = deriveView(record());
+    expect((fallback as unknown as { createdAt?: string }).createdAt).toBe(record().phaseSince);
   });
 });
 

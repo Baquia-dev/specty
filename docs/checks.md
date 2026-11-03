@@ -186,7 +186,7 @@ Cada capa tiene sus rutas (`paths`), las capas que puede importar (`may`; ella m
 
 ### `function-lines`
 
-**Stack:** todos salvo Elixir. En los lenguajes de llaves, una función va de su cabecera a la llave que la cierra; en Python, de su `def` a la última línea más indentada; en Ruby, de su `def` al `end` que la cierra.
+**Stack:** todos. En TypeScript, JavaScript, Java, C#, PHP, C, C++, Go, Rust, Swift, Dart, Kotlin, Python, Ruby y Elixir, cada función se lee en su árbol de sintaxis de tree-sitter, que va dentro de Specty, y va de la primera línea de su cabecera, sin decoradores, anotaciones ni atributos, a la última de su cuerpo; en Python sin docstrings, en Ruby con sus bloques dentro, y en Elixir un `def`, un `defp`, un `defmacro`, un `defmacrop` o una `fn`. En los demás lenguajes de llaves, y en un archivo con errores de sintaxis, una función va de su cabecera a la llave que la cierra; en Python, de su `def` a la última línea más indentada; en Ruby, de su `def` al `end` que la cierra.
 
 Las líneas de código de cada función, sin blancos ni comentarios. Falla con una función que el cambio toca, que pasa del límite y que es nueva o creció. Una que ya lo pasaba y no creció no cuenta, salvo con `--all`. Los tests no se miden.
 
@@ -283,6 +283,26 @@ Busca secretos con Betterleaks o, si no está, con gitleaks, sobre una copia tem
 **Configuración:** la del escáner (`.gitleaks.toml`, `.betterleaks.toml`, `.gitleaksignore`, `.betterleaksignore`).
 
 **Desactivar:** `levels: { secrets: off }`.
+
+### `code-rules`
+
+**Stack:** cualquiera con reglas de Opengrep o Semgrep en la raíz: `.opengrep.yml`, `.opengrep.yaml`, `.opengrep/`, `.semgrep.yml`, `.semgrep.yaml` o `.semgrep/`.
+
+Aplica las reglas propias del proyecto con Opengrep o, si no está, con Semgrep, sobre una copia temporal de los archivos de la ejecución, y solo cuentan las coincidencias que tocan una línea añadida. Las reglas de gravedad `ERROR`, `CRITICAL` o `HIGH` hacen fallar la verificación; las demás (`WARNING`, `INFO`, `MEDIUM`, `LOW`…) solo avisan. Nunca usa las reglas del registro (`--config auto`) y a Semgrep le pasa `--metrics=off`, así que nada sale hacia la red. Si no hay ningún escáner instalado, no corre y dice qué instalar. Para un falso positivo valen el comentario `nosemgrep` y el `.semgrepignore` de la raíz.
+
+**Configuración:** las reglas, en esos archivos o carpetas, y el `.semgrepignore` de la raíz. Sin `.semgrepignore`, el escáner aplica sus ignorados por defecto, que saltan, entre otros, `test/` y `tests/`.
+
+**Desactivar:** `levels: { code-rules: off }`.
+
+### `vulnerabilities`
+
+**Stack:** cualquiera con un lockfile que OSV-Scanner lea: `pnpm-lock.yaml`, `package-lock.json`, `yarn.lock`, `bun.lock`, `pubspec.lock`, `poetry.lock`, `uv.lock`, `pdm.lock`, `Pipfile.lock`, `pylock.toml`, `requirements.txt`, `go.mod`, `Cargo.lock`, `Gemfile.lock`, `gems.locked`, `composer.lock`, `mix.lock`, `packages.lock.json`, `packages.config`, `gradle.lockfile`, `buildscript-gradle.lockfile`, `gradle/verification-metadata.xml`, `conan.lock`, `renv.lock`, `cabal.project.freeze` y `stack.yaml.lock`, en cualquier carpeta.
+
+Cuando la ejecución toca un lockfile, se lo pasa a OSV-Scanner y falla con cada vulnerabilidad conocida de un paquete que el cambio añade o cuya versión cambia: `pnpm-lock.yaml lodash 4.17.20: GHSA-… (gravedad 7.5)`. Las que el lockfile ya tenía al empezar no salen, porque no son del cambio; con `--all` salen todas. OSV-Scanner trabaja sobre una copia de los lockfiles tal como los ve el modo, y consulta osv.dev con los nombres y las versiones de los paquetes. Sin ningún lockfile en la ejecución no aparece, y sin OSV-Scanner en el PATH no corre y dice que se instale. `pom.xml` y `build.gradle` no cuentan: OSV-Scanner tendría que resolverlos por red.
+
+**Configuración:** la de OSV-Scanner, el `osv-scanner.toml` de la carpeta de cada lockfile; por ejemplo, `[[IgnoredVulns]]` con el `id` y el `reason` de una vulnerabilidad que no te afecta.
+
+**Desactivar:** `levels: { vulnerabilities: off }`, también si no quieres que los nombres de tus paquetes salgan hacia osv.dev.
 
 ### `diff-coverage`
 
@@ -443,6 +463,8 @@ Lo que un ejemplo no comprueba:
 - `layers` sale «sin ejecutar» en TypeScript, porque los ejemplos no tienen dependency-cruiser, y no aparece en Ruby ni en Swift, cuyos imports Specty no lee.
 - `focused-tests` pasa también con el cambio que lo rompe todo en Python, Java, Kotlin, C#, Rust y Swift: sus frameworks de test no tienen una marca de foco.
 - `secrets` sale «sin ejecutar» si no hay un escáner en el PATH.
+- `vulnerabilities` está apagado: con OSV-Scanner instalado, consultaría osv.dev.
+- `code-rules` no aparece: los ejemplos no tienen reglas de Opengrep ni de Semgrep.
 
 ## Añadir un proveedor
 

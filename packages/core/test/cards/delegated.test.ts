@@ -91,19 +91,21 @@ describe("agent cards in delegated mode", () => {
     }
   });
 
-  it("keep asking the user without delegation", () => {
+  it("AC1, AC4: keep asking the user without delegation and instruct specty wait", () => {
     const plain = decisions(ES);
     expect(decisions({ ...ES, delegated: false })).toEqual(plain);
     for (const entry of plain) {
       expect(entry.next).toContain("usuario");
       expect(entry.next).toContain(entry.command);
+      expect(entry.next).toContain("specty wait");
+      expect(entry.next).not.toContain("termina tu turno");
       expect(entry.next).not.toContain("modo delegado");
     }
     expect(plain[0]?.next).toBe(
-      "dile al usuario que la spec está lista en .specty/changes/20261021-x/spec.md, con su tamaño y el esfuerzo recomendado, y que la apruebe con `specty approve` en su terminal; luego termina tu turno.",
+      "dile al usuario que la spec está lista en .specty/changes/20261021-x/spec.md, con su tamaño y el esfuerzo recomendado, que la apruebe con `specty approve` en su terminal o en la UI, y ejecuta `specty wait` para esperar su decisión.",
     );
     expect(plain[3]?.next).toBe(
-      "pide al usuario que revise la spec y la apruebe con `specty approve` en su terminal; luego termina tu turno.",
+      "pide al usuario que revise la spec y la apruebe con `specty approve` en su terminal o en la UI, y ejecuta `specty wait` para esperar su decisión.",
     );
   });
 

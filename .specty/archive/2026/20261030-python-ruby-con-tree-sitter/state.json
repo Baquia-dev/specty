@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "id": "20261030-python-ruby-con-tree-sitter",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-python-ruby-con-tree-sitter",
+  "baseCommit": "f45510422cc1f0e0aef44830fcc8fe66fba988b7",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:604b44beed8aaccfbc96b471f54ce744af9a9ac598361e3c2dfd1fa0838d4cf1",
+    "at": "2026-10-30T11:17:28.776Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6b0c7341738f62707152abf1a8ca4e3546dcee5f6a5ca29d295e222b7b903ded",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a52b8c8e58376a3972730894d39fba2a3fdf634e6ac01ff1ada24abd554162b4",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:0a4c9330cbf941e8a1b45d5b69cc0a1d43cb742ee0120e2914766bc89af36707",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0cfc4a3faa16b7e0da54e3b7557268b1a61499765713bca241d0191baa032beb",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2021a7725541bf3c28f5be49fbb616a33b1383cc",
+      "attempts": 1,
+      "startedAt": "2026-10-30T11:18:41.981Z",
+      "doneAt": "2026-10-30T11:19:39.059Z",
+      "summary": "El core mide Python y Ruby sobre el árbol con la misma medida que sus estimaciones (tree-languages-scripting.ts); un docstring no es código, y de una cadena de Python solo cuenta su primera fila.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "5301aeee16d2c57388307f9ec572211910afad0c",
+      "attempts": 1,
+      "startedAt": "2026-10-30T11:19:39.389Z",
+      "doneAt": "2026-10-30T11:19:58.535Z",
+      "summary": "specty check mide Python (.py, .pyi) y Ruby (.rb, .rake) con tree-sitter: un range.end ya no cierra el método y una variable case no es una rama.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "366b4856f292f8a37454c4568e000bc73e1eff3c",
+      "attempts": 1,
+      "startedAt": "2026-10-30T11:19:58.860Z",
+      "doneAt": "2026-10-30T11:20:27.373Z",
+      "summary": "El build comprime en dist/grammars las gramáticas de Python y Ruby, y grammar-licenses.txt lleva sus licencias MIT.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "02b3621d78538a7cd818ec7a297f82a89cadb0ff",
+      "attempts": 1,
+      "startedAt": "2026-10-30T11:20:27.701Z",
+      "doneAt": "2026-10-30T11:20:52.988Z",
+      "summary": "formats, checks (es y en) y ARCHITECTURE suman Python y Ruby a la medida sobre el árbol, con la definición de sus estimaciones.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-30T11:25:08.352Z",
+  "lockedTests": {
+    "packages/cli/test/bundle-grammars-scripting.test.ts": "sha256:1354a8e363c47522d10e187986a047b58838c97fa40968514e40f5fe868d0c10",
+    "packages/cli/test/check-functions-scripting.test.ts": "sha256:0cd19a6e478adaa072fc83d2c80805195ec363b24532812731428191becb6337",
+    "packages/core/test/checks/functions-tree-scripting.test.ts": "sha256:f19d912d77b18326b5103068e93e1de828ad76320d03aa672cfc39aa4995b825"
+  }
+}

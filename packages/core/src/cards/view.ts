@@ -4,6 +4,7 @@ import type { CoverageGap } from "../checks/coverage";
 import type { Phase } from "../flow/phases";
 import type { GlossaryEntry } from "../glossary";
 import type { Lang } from "../i18n";
+import type { MemoryEntry } from "../memory/entries";
 import type { AssertionLoss } from "../scope/assertions";
 import type { RiskFinding } from "../scope/risk";
 import type { EffortLevel } from "../sizing/effort";
@@ -74,6 +75,12 @@ export interface TaskView {
   readonly findings?: readonly string[];
   /** Files the task left past the warning line of lines of code. */
   readonly longFiles?: readonly LongFile[];
+}
+
+/** A note of the change's log (`specty note`): when it was added (ISO 8601, UTC) and its text. */
+export interface NoteView {
+  readonly at: string;
+  readonly text: string;
 }
 
 /** What a change this one follows (`follows`) left for it: its follow-ups and its findings. */
@@ -163,6 +170,10 @@ export interface ChangeView {
   readonly request?: string;
   /** While drafting, what each change in `follows` left for this one. */
   readonly carried?: readonly CarriedView[];
+  /** While drafting, the entries of Specty's memory it took (`new --resolves`), as they are now. */
+  readonly resolves?: readonly MemoryEntry[];
+  /** The last notes of the change's log (`specty note`), oldest first (ADR 0016). */
+  readonly notes?: readonly NoteView[];
   /** In acceptance, an independent review of the result (ADR 0011) should come first. */
   readonly recommendReview?: boolean;
   /** In acceptance, each criterion of the spec with the tests that carry its id. */

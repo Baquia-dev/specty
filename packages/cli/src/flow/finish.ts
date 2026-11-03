@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import type { ChangeState } from "@baquia-dev/specty-core";
+import { harvestEntries, settleEntries } from "../commands/memory";
 import { exists, move } from "../io/files";
 import type { Session } from "../session";
 import { appendAudit, type StoredChange, saveState } from "../store/changes";
 import { addReceipt, writePointer } from "../store/local";
 import { changeFiles } from "../store/paths";
 import { auditEntry } from "./active";
+import { closingFollowUps } from "./carried";
 import { commitWithReceipt, decisionTrailers } from "./commits";
 
 /**
@@ -25,7 +27,13 @@ export async function archive(
   const target = session.paths.archivedDir(state.id, session.environment.now().getFullYear());
   await move(change.files.dir, target);
   if (!session.config.git.branchPerChange) await writePointer(session.git, "active", undefined);
-  return { files: changeFiles(target), state, archived: true };
+  // The memory's entries it took get done if it closed, and free again if it was cancelled;
+  // a closed change's follow-ups become pending items.
+  await settleEntries(session, state);
+  const files = changeFiles(target);
+  if (state.phase === "done")
+    await harvestEntries(session, state, await closingFollowUps(session, files));
+  return { files, state, archived: true };
 }
 
 /**

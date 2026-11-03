@@ -33,6 +33,7 @@ const GROUP_LABELS: Readonly<Record<InboxGroup, readonly [string, string]>> = {
   state: ["Estado", "State"],
   phase: ["Fase", "Phase"],
   none: ["Sin agrupar", "No groups"],
+  epic: ["Épica", "Epic"],
 };
 
 const SORT_LABELS: Readonly<Record<InboxSort, readonly [string, string]>> = {

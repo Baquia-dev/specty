@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "id": "20261101-abrir-navegador-al-iniciar-specty-ui",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261101-abrir-navegador-al-iniciar-specty-ui",
+  "baseCommit": "38988a3bd37fff302a6ff8c573134a39a7d10ddb",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1b8f22b3e7ea8aa1145b22dd97ad80aaacd6acbfa983f17514b888a766ef002f",
+    "at": "2026-10-31T16:11:58.627Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c212f3dad4ff93f82d93f8f73fa7a72ae80f3e6087413e3526561e57a0d67466",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:10dcfcc47ca96f7d4b797f4be15ab3b0acd99f67cddb749aae6128eed8bf4385",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "411a8d001c98f7a5dbc48bac59547930ef27508a",
+      "attempts": 1,
+      "startedAt": "2026-10-31T16:13:46.819Z",
+      "doneAt": "2026-10-31T16:14:11.292Z",
+      "summary": "Crear módulo browser.ts con browserCommand y openInBrowser",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "a8e92b33be70a4686d835e21482f3a5be5325f89",
+      "attempts": 1,
+      "startedAt": "2026-10-31T16:14:11.633Z",
+      "doneAt": "2026-10-31T16:51:09.591Z",
+      "summary": "Integrar apertura automática en comando ui, agregar opción --no-open y actualizar docs",
+      "scopeExtra": [
+        "packages/cli/test/browser.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 2,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-31T16:55:45.499Z",
+  "lockedTests": {
+    "packages/cli/test/server.test.ts": "sha256:f59f4330422915715f73273ab1a637666de7e471eea25425b2550cd53d91f50d",
+    "packages/cli/test/browser.test.ts": "sha256:76ebf4cf764f724c2fc8e706bab62698251eac2a95b4433227cbde0611c3cf1c"
+  }
+}

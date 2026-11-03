@@ -2,19 +2,21 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, readFile, realpath, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { basename, dirname, join } from "node:path";
+import { dirname, join } from "node:path";
+import { makeChangeId } from "@baquia-dev/specty-core";
 import { expect } from "vitest";
 import { runCli } from "../src/program";
 import type { Terminal } from "../src/session";
 
 export const DIST = join(import.meta.dirname, "..", "dist", "specty.mjs");
 /**
- * The commands' clock: today at 10:00 UTC. The git hooks run on the real clock, so a fixed date
- * would let a receipt written by `approve` expire (24 h) and break the hook tests one day later.
+ * The commands' clock: the real time when the tests load, down to the minute. The git hooks and
+ * the files' dates run on the real clock, so a fixed hour would make a fresh `state.json` look
+ * hours old (an orphan change) and could let a receipt written by `approve` expire (24 h).
  */
-export const NOW = new Date(`${new Date().toISOString().slice(0, 10)}T10:00:00Z`);
+export const NOW = new Date(Math.floor(Date.now() / 60_000) * 60_000);
 /** Where `close` archives a change today. */
-export const ARCHIVE = `.specty/archive/${NOW.getUTCFullYear()}`;
+export const ARCHIVE = `.specty/archive/${NOW.getFullYear()}`;
 
 /** Isolated git: no global or system configuration, fixed identity. */
 const GIT_ENV = {
@@ -213,7 +215,8 @@ La app saluda por nombre.
   - type: refactor
 `;
 
-export const CHANGE = `${NOW.toISOString().slice(0, 10).replaceAll("-", "")}-saludo-personalizado`;
+/** The id `new` gives SPEC's change today, from the local date as the command does. */
+export const CHANGE = makeChangeId(NOW, "Saludo personalizado");
 export const SPEC_PATH = `.specty/changes/${CHANGE}/spec.md`;
 
 /** The files of a repository for SPEC's change. */
@@ -222,9 +225,8 @@ export const APP = {
   ".specty/config.yaml": CONFIG(),
 };
 
-/** Where `new --worktree` puts the change `id` of `root`. */
-export const folderOf = (root: string, id = CHANGE) =>
-  join(dirname(root), `${basename(root)}.worktrees`, id);
+/** Where `new --worktree` puts the change `id` of `root`: inside it (ADR 0018). */
+export const folderOf = (root: string, id = CHANGE) => join(root, ".worktrees", id);
 
 /** A repository whose change lives in a worktree of its own. */
 export async function inWorktree(files: Readonly<Record<string, string>> = APP) {

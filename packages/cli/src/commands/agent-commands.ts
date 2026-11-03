@@ -18,12 +18,14 @@ import { importCommand } from "./import";
 import { integrate } from "./integrate";
 import { type NewOptions, newChange } from "./new";
 import { next } from "./next";
+import { noteCommand } from "./note";
 import { propose } from "./propose";
 import { retro } from "./retro";
 import { retroInto } from "./retro-into";
 import { review } from "./review";
 import { scopeAdd } from "./scope";
 import { taskDone } from "./task";
+import { type WaitOptions, wait } from "./wait";
 
 type Run = (handler: (session: Session) => Promise<Output | ReportOutput>) => () => Promise<void>;
 
@@ -42,11 +44,9 @@ export function agentCommands(
   refuse: (output: Output) => void,
 ): void {
   program.command("next").description("what to do now").action(locked(run, "next")(next));
-  program
-    .command("enter")
-    .description("go on in a change's folder from this conversation")
-    .argument("<id>")
-    .action((id: string) => run((session) => enter(session, id))());
+  waitCommand(program, run);
+  noteCommand(program, run);
+  enterCommand(program, run);
   newCommand(program, run, env, refuse);
   importCommand(program, run);
   program
@@ -85,11 +85,23 @@ export function agentCommands(
     );
 }
 
+/** `specty wait`, which polls until human action completes. */
+function waitCommand(program: Command, run: Run): void {
+  program
+    .command("wait")
+    .description("wait until the change is no longer waiting for the person")
+    .option("--timeout <seconds>", "maximum seconds to wait", "3600")
+    .option("--interval <ms>", "polling interval in milliseconds", "500")
+    .action((options: WaitOptions) => run((session) => wait(session, options))());
+}
+
 /** `specty new`'s options as commander reads them. */
 interface NewFlags {
   readonly kind: string;
   readonly type: string;
   readonly follows?: string[];
+  readonly resolves?: string[];
+  readonly distinctFrom?: string[];
   readonly epic?: string;
   readonly slice?: string;
   readonly timebox?: string;
@@ -98,6 +110,15 @@ interface NewFlags {
   readonly request?: string;
   readonly slug?: string;
   readonly branch?: string;
+}
+
+/** `specty enter <id>`: the conversation goes on in a change's folder. */
+function enterCommand(program: Command, run: Run): void {
+  program
+    .command("enter")
+    .description("go on in a change's folder from this conversation")
+    .argument("<id>")
+    .action((id: string) => run((session) => enter(session, id))());
 }
 
 /** `specty new`, which refuses an unknown kind or type before any session opens. */
@@ -118,6 +139,8 @@ function newCommand(
       "feat",
     )
     .option("--follows <ids...>", "changes this one continues")
+    .option("--resolves <ids...>", "pending items or improvements of Specty's memory it takes")
+    .option("--distinct-from <ids...>", "open changes the user said this one does not duplicate")
     .option("--epic <id>")
     .option("--slice <id>")
     .option("--timebox <duration>", "spike time limit, for example 2h")
@@ -156,14 +179,25 @@ function newOptions(title: string, given: KindAndType, options: NewFlags): NewOp
     kind: given.kind,
     type: given.type,
     follows: options.follows ?? [],
-    ...(options.epic !== undefined ? { epic: options.epic } : {}),
-    ...(options.slice !== undefined ? { slice: options.slice } : {}),
-    ...(options.timebox !== undefined ? { timebox: options.timebox } : {}),
+    ...originOptions(options),
     worktree: options.worktree === true,
     ...(options.from !== undefined ? { from: options.from } : {}),
     ...(options.request !== undefined ? { request: options.request } : {}),
     ...(options.slug !== undefined ? { slug: options.slug } : {}),
     ...(options.branch !== undefined ? { branch: options.branch } : {}),
+  };
+}
+
+/** Where the change comes from: the memory's entries it takes, its epic, and what it is not. */
+function originOptions(
+  options: NewFlags,
+): Pick<NewOptions, "resolves" | "distinctFrom" | "epic" | "slice" | "timebox"> {
+  return {
+    ...(options.resolves !== undefined ? { resolves: options.resolves } : {}),
+    ...(options.distinctFrom !== undefined ? { distinctFrom: options.distinctFrom } : {}),
+    ...(options.epic !== undefined ? { epic: options.epic } : {}),
+    ...(options.slice !== undefined ? { slice: options.slice } : {}),
+    ...(options.timebox !== undefined ? { timebox: options.timebox } : {}),
   };
 }
 

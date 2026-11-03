@@ -9,9 +9,9 @@ import {
   signal,
 } from "@angular/core";
 import { LucideDynamicIcon } from "@lucide/angular";
-import { Button } from "../components/button";
+import { Button, IconButton } from "../components/button";
 import { Field } from "../components/field";
-import { LucideQuote } from "../components/icons";
+import { LucidePencil, LucideQuote, LucideTrash2 } from "../components/icons";
 import { ItemText } from "../components/item-tooltip";
 import { Toasts } from "../components/toast";
 import {
@@ -58,7 +58,7 @@ export function selectionAnchor(root: HTMLElement): CommentAnchor | undefined {
 /** The review's comments and the composer for a new one, anchored to an item or a quote. */
 @Component({
   selector: "sp-review-comments",
-  imports: [LucideDynamicIcon, Button, Field, ItemText],
+  imports: [LucideDynamicIcon, Button, IconButton, Field, ItemText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-3" },
   template: `
@@ -72,8 +72,8 @@ export function selectionAnchor(root: HTMLElement): CommentAnchor | undefined {
           <p class="m-0 text-sm text-text-muted" data-target><sp-item-text [text]="anchorLabel(target)" /></p>
           <sp-field [label]="t()('Comentario', 'Comment')" [multiline]="true" [(value)]="body" />
           <div class="flex justify-end gap-2">
-            <sp-button size="sm" variant="ghost" (pressed)="cancel()">{{ t()('Cancelar', 'Cancel') }}</sp-button>
-            <sp-button size="sm" variant="primary" [disabledReason]="body().trim() ? '' : t()('Escribe el comentario.', 'Write the comment.')" (pressed)="send(target)">
+            <sp-button size="sm" variant="ghost" [disabledReason]="loadingAdd() ? t()('Enviando…', 'Sending…') : ''" (pressed)="cancel()">{{ t()('Cancelar', 'Cancel') }}</sp-button>
+            <sp-button size="sm" variant="primary" [loading]="loadingAdd()" [disabledReason]="body().trim() ? '' : t()('Escribe el comentario.', 'Write the comment.')" (pressed)="send(target)">
               {{ t()('Comentar', 'Comment') }}
             </sp-button>
           </div>
@@ -92,9 +92,29 @@ export function selectionAnchor(root: HTMLElement): CommentAnchor | undefined {
 
     <ul class="m-0 flex list-none flex-col p-0">
       @for (comment of comments(); track comment.id) {
-        <li class="flex flex-col gap-1 border-b border-border py-3 text-sm first:pt-0" [class.opacity-60]="comment.resolved" [attr.data-comment]="comment.id">
-          <span class="font-mono text-[11px] text-text-muted"><sp-item-text [text]="anchorLabel(comment.anchor)" /></span>
-          <p class="m-0 leading-normal"><sp-item-text [text]="comment.body" /></p>
+        <li class="group flex flex-col gap-1 border-b border-border py-3 text-sm first:pt-0" [class.opacity-60]="comment.resolved" [attr.data-comment]="comment.id">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-mono text-[11px] text-text-muted"><sp-item-text [text]="anchorLabel(comment.anchor)" /></span>
+            @if (editable() && !comment.resolved) {
+              <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                <sp-icon-button data-action="edit" size="sm" [disabledReason]="loadingDelete() === comment.id ? t()('Eliminando…', 'Deleting…') : ''" [label]="t()('Editar comentario', 'Edit comment')" [icon]="editIcon" (pressed)="startEdit(comment)" />
+                <sp-icon-button data-action="delete" size="sm" [loading]="loadingDelete() === comment.id" [label]="t()('Eliminar comentario', 'Delete comment')" [icon]="deleteIcon" (pressed)="remove(comment.id)" />
+              </div>
+            }
+          </div>
+          @if (editingId() === comment.id) {
+            <form class="flex flex-col gap-2 rounded-lg border border-border bg-surface p-2.5 my-1" (submit)="$event.preventDefault()">
+              <sp-field [label]="t()('Editar comentario', 'Edit comment')" [multiline]="true" [(value)]="editBody" />
+              <div class="flex justify-end gap-2">
+                <sp-button size="sm" variant="ghost" [disabledReason]="loadingEdit() ? t()('Guardando…', 'Saving…') : ''" (pressed)="cancelEdit()">{{ t()('Cancelar', 'Cancel') }}</sp-button>
+                <sp-button data-action="save" size="sm" variant="primary" [loading]="loadingEdit()" [disabledReason]="editBody().trim() ? '' : t()('Escribe el comentario.', 'Write the comment.')" (pressed)="saveEdit(comment.id)">
+                  {{ t()('Guardar', 'Save') }}
+                </sp-button>
+              </div>
+            </form>
+          } @else {
+            <p class="m-0 leading-normal"><sp-item-text [text]="comment.body" /></p>
+          }
           <span class="text-xs text-text-muted">
             {{ comment.author }} · {{ since(comment.createdAt) }} · {{ t()('en la revisión ', 'on revision ') }}{{ comment.revision }}
             @if (comment.resolvedInRevision) {
@@ -122,7 +142,14 @@ export class ReviewComments {
   private readonly failed = reportFailure(inject(Toasts), this.preferences);
   protected readonly t = this.preferences.t;
   protected readonly quoteIcon = LucideQuote;
+  protected readonly editIcon = LucidePencil;
+  protected readonly deleteIcon = LucideTrash2;
   protected readonly body = signal("");
+  protected readonly editingId = signal<string | undefined>(undefined);
+  protected readonly editBody = signal("");
+  protected readonly loadingAdd = signal(false);
+  protected readonly loadingEdit = signal(false);
+  protected readonly loadingDelete = signal<string | undefined>(undefined);
   protected readonly open = computed(
     () => this.comments().filter((comment) => !comment.resolved).length,
   );
@@ -144,8 +171,38 @@ export class ReviewComments {
   }
 
   protected send(anchor: CommentAnchor): void {
+    this.loadingAdd.set(true);
     this.source
       .addComment(this.change(), anchor, this.body().trim())
-      .then(() => this.cancel(), this.failed);
+      .then(() => this.cancel(), this.failed)
+      .finally(() => this.loadingAdd.set(false));
+  }
+
+  protected startEdit(comment: CommentView): void {
+    this.editingId.set(comment.id);
+    this.editBody.set(comment.body);
+  }
+
+  protected cancelEdit(): void {
+    this.editingId.set(undefined);
+    this.editBody.set("");
+  }
+
+  protected saveEdit(id: string): void {
+    const text = this.editBody().trim();
+    if (!text) return;
+    this.loadingEdit.set(true);
+    this.source
+      .editComment(this.change(), id, text)
+      .then(() => this.cancelEdit(), this.failed)
+      .finally(() => this.loadingEdit.set(false));
+  }
+
+  protected remove(id: string): void {
+    this.loadingDelete.set(id);
+    this.source
+      .deleteComment(this.change(), id)
+      .catch(this.failed)
+      .finally(() => this.loadingDelete.set(undefined));
   }
 }

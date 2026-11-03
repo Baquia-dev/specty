@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "id": "20261031-instruir-specty-wait-en-tarjetas-y-regla-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261031-instruir-specty-wait-en-tarjetas-y-regla-de",
+  "baseCommit": "cc0acf042079e1e8e32ad028a2e11434c324f090",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ff5133a58ff8d0a6302d6378ff119ff5284e8373eee4e3f04a366d3c59973086",
+    "at": "2026-10-31T15:07:20.077Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8682f95aa2486c4ee5917d6f610e516b753f787b9355134cbb9c39edd5d6d627",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7b4ea2afef068d53ef363b497f08b24c10ca9b70d646d0e79c863211fbe39dc0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "47a14ca804dccdc6cca0aa6b7513baa33017fda7",
+      "attempts": 1,
+      "startedAt": "2026-10-31T15:14:26.851Z",
+      "doneAt": "2026-10-31T15:22:49.004Z",
+      "summary": "Instruir specty wait en tarjetas de flujo, revisión y pruebas",
+      "scopeExtra": [
+        "packages/core/src/cards/work.ts",
+        "packages/core/src/cards/acceptance.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c06849c6fb401c541d7bc67e47ade6f3c0b5f504",
+      "attempts": 1,
+      "startedAt": "2026-10-31T15:22:49.344Z",
+      "doneAt": "2026-10-31T15:23:32.106Z",
+      "summary": "Instruir specty wait en tarjetas de cierre, reintento y guard",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "165ec5ca62b1ca30ff9bbc2c396543e948375f3c",
+      "attempts": 1,
+      "startedAt": "2026-10-31T15:23:32.460Z",
+      "doneAt": "2026-10-31T15:25:18.102Z",
+      "summary": "Incluir decisión de alcance en regla flowBlock de AGENTS.md, docs y test de CLI",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-31T15:35:50.704Z",
+  "lockedTests": {
+    "packages/cli/test/resolve.test.ts": "sha256:046f37936f8c6741d56df18e77dff1a68ed7f1954cf3af6cba78cbf2f3e40224",
+    "packages/core/test/agents-md.test.ts": "sha256:620545b868f3741e27e0c43370ddf3fd168f25bc762b2db59ec6810ef90fbded",
+    "packages/core/test/cards/delegated.test.ts": "sha256:5195f8c825957e45e904d1e0b899d307567cb98556e2e0f20622d7cd4c5dbb84",
+    "packages/core/test/cards/incorporation.test.ts": "sha256:8defa1cc419cd6a6eab96ac7558ec8f1034696c18f370c0495436d9c35942aee",
+    "packages/core/test/cards/testing.test.ts": "sha256:95186f5a137156800c4a0081f51d05aa11ff67edec518b40958fe1ef31ba1b4c",
+    "packages/core/test/guard/decide.test.ts": "sha256:378c23acdf5ab9ba97c22f63f8a70c07c35bf2b711f7dc980f3f8412a1b3234e"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "259f09b5693d240d2af119f2f95b7a4f79da36f0",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/core/src/agents-md.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/enforce/shell-snapshot.ts",
+      "packages/cli/src/store/local.ts",
+      "packages/cli/test/delegate.test.ts",
+      "packages/cli/test/resolve.test.ts",
+      "packages/core/src/agents-md.ts",
+      "packages/core/src/cards/acceptance.ts",
+      "packages/core/src/cards/flow.ts",
+      "packages/core/src/cards/integration.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/core/src/cards/testing.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/guard/human.ts",
+      "packages/core/src/guard/shell.ts",
+      "packages/core/test/agents-md.test.ts",
+      "packages/core/test/cards/delegated.test.ts",
+      "packages/core/test/cards/incorporation.test.ts",
+      "packages/core/test/cards/testing.test.ts",
+      "packages/core/test/guard/decide.test.ts",
+      "packages/core/test/guard/shell.test.ts"
+    ],
+    "at": "2026-10-31T15:25:27.799Z",
+    "resolved": {
+      "commit": "88bab39",
+      "at": "2026-10-31T15:30:40.818Z"
+    }
+  }
+}

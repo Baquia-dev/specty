@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  blockedCard,
   delegationWarning,
   headerOf,
   noActiveChangeCard,
@@ -7,20 +8,30 @@ import {
   parseSpec,
   uiApprovalRefusalCard,
 } from "@baquia-dev/specty-core";
+import type { Lang } from "@baquia-dev/specty-core/light";
 import { accept } from "../commands/accept";
 import { adjust } from "../commands/adjust";
 import { approve } from "../commands/approve";
 import { delegate } from "../commands/delegate";
 import { close } from "../commands/finish";
 import { type PersonAction, personSession } from "../commands/human";
+import { type MemoryVerb, personMemoryAction } from "../commands/memory";
 import { reject } from "../commands/scope-decision";
 import { resolveActive, withChangeLock } from "../flow/active";
-import { addComment, decideAssumption, requestChanges } from "../flow/review";
+import {
+  addComment,
+  decideAssumption,
+  deleteComment,
+  editComment,
+  requestChanges,
+} from "../flow/review";
 import { isRecord } from "../io/files";
 import { type Session, sessionFrom, type Terminal } from "../session";
 import { readSpec } from "../store/changes";
-import { type CommentAnchor, isAnchor } from "../store/comments";
+import { type CommentAnchor, isAnchor, readComments } from "../store/comments";
 import { readDelegation } from "../store/local";
+
+const tr = (lang: Lang, es: string, en: string): string => (lang === "es" ? es : en);
 
 /** A decision the person takes in the UI, as its route and its body say it. */
 export type Action =
@@ -38,6 +49,8 @@ export type Action =
       readonly reason?: string;
     }
   | { readonly kind: "comment"; readonly anchor: CommentAnchor; readonly body: string }
+  | { readonly kind: "editComment"; readonly id: string; readonly body: string }
+  | { readonly kind: "deleteComment"; readonly id: string }
   | { readonly kind: "requestChanges" }
   | { readonly kind: "accept" }
   | { readonly kind: "adjust"; readonly request: string }
@@ -104,10 +117,17 @@ const PARSERS: ReadonlyMap<string, ActionParser> = new Map<string, ActionParser>
   [
     "comments",
     (target, data) => {
+      if (target === undefined) {
+        const body = text(data, "body");
+        return isAnchor(data.anchor) && body !== undefined
+          ? { kind: "comment", anchor: data.anchor, body }
+          : undefined;
+      }
+      if (data.delete === true || data.action === "delete") {
+        return { kind: "deleteComment", id: target };
+      }
       const body = text(data, "body");
-      return target === undefined && isAnchor(data.anchor) && body !== undefined
-        ? { kind: "comment", anchor: data.anchor, body }
-        : undefined;
+      return body !== undefined ? { kind: "editComment", id: target, body } : undefined;
     },
   ],
   ["request-changes", (target) => (target === undefined ? { kind: "requestChanges" } : undefined)],
@@ -136,6 +156,8 @@ const COMMAND: Readonly<Record<Action["kind"], PersonAction>> = {
   approve: "approve",
   assumption: "approve",
   comment: "approve",
+  editComment: "approve",
+  deleteComment: "approve",
   requestChanges: "approve",
   scope: "approve",
   accept: "accept",
@@ -171,6 +193,38 @@ function onScreen(session: Session, choice?: string): Session {
     session.config,
     session.delegated,
   );
+}
+
+/** A decision on an entry of Specty's memory from the UI: the entry, the verb and its reason. */
+export interface MemoryAction {
+  readonly id: string;
+  readonly verb: MemoryVerb;
+  readonly reason?: string;
+}
+
+const MEMORY_ACTION = /^\/api\/memory\/([^/]+)\/(drop|keep|done)$/;
+
+/**
+ * `POST /api/memory/<id>/drop|keep|done`, with `{ reason }` for `drop`; `bad` for another verb
+ * under `/api/memory/`, and nothing for any other path.
+ */
+export function parseMemoryAction(
+  pathname: string,
+  body: unknown,
+): MemoryAction | "bad" | undefined {
+  if (!pathname.startsWith("/api/memory/")) return undefined;
+  const [, id, verb] = MEMORY_ACTION.exec(pathname) ?? [];
+  if (id === undefined || (verb !== "drop" && verb !== "keep" && verb !== "done")) return "bad";
+  const reason = isRecord(body) && typeof body.reason === "string" ? body.reason : undefined;
+  return { id: decodeURIComponent(id), verb, ...(reason !== undefined ? { reason } : {}) };
+}
+
+/**
+ * The person's decision on an entry from the UI (ADR 0016), with the person on its screen: a
+ * `drop` drops the entry, as from their terminal.
+ */
+export function memoryAction(session: Session, action: MemoryAction): Promise<Output> {
+  return personMemoryAction(onScreen(session), action.id, action.verb, action.reason);
 }
 
 /** Delegated mode as the UI shows it: on or off, who turned it on and when, and the warning. */
@@ -228,11 +282,16 @@ function act(there: Session, action: Action): Promise<Output> {
 /** An action on the spec under review: an assumption's decision, a comment or asking for changes. */
 async function reviewAction(
   session: Session,
-  action: Extract<Action, { kind: "assumption" | "comment" | "requestChanges" }>,
+  action: Extract<
+    Action,
+    { kind: "assumption" | "comment" | "editComment" | "deleteComment" | "requestChanges" }
+  >,
 ): Promise<Output> {
   const change = await resolveActive(session);
   if (change === undefined) return noChange(session);
   if (action.kind === "comment") return addComment(session, change, action.anchor, action.body);
+  if (action.kind === "editComment") return editComment(session, change, action.id, action.body);
+  if (action.kind === "deleteComment") return deleteComment(session, change, action.id);
   if (action.kind === "requestChanges") return requestChanges(session, change);
   return decideAssumption(session, change, action.item, action.decision, action.comment);
 }
@@ -252,6 +311,22 @@ async function approveRevision(session: Session, revision: number): Promise<Outp
         { reason: "stale", current: state.revision, asked: revision },
         header,
         session.cards,
+      );
+    }
+    const openComments = (await readComments(change.files)).filter(
+      (comment) => comment.resolvedInRevision === undefined,
+    ).length;
+    if (openComments > 0) {
+      return blockedCard(
+        header,
+        openComments === 1
+          ? tr(session.lang, "Hay 1 comentario sin resolver.", "There is 1 unresolved comment.")
+          : tr(
+              session.lang,
+              `Hay ${openComments} comentarios sin resolver.`,
+              `There are ${openComments} unresolved comments.`,
+            ),
+        tr(session.lang, "pide cambios o resuélvelos.", "request changes or resolve them."),
       );
     }
     const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;

@@ -46,8 +46,8 @@ export function humanDenial(
       `\`${ctx.command} ${human}\` is run by the user in their terminal, not by the agent.`,
     ),
     next: t(
-      "pídele al usuario que lo ejecute y termina tu turno.",
-      "ask the user to run it and end your turn.",
+      `pídele al usuario que lo ejecute y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
+      `ask the user to run it and run \`${ctx.command} wait\` to wait for their decision.`,
     ),
   };
 }

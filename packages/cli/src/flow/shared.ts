@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type DuplicateFilesView,
   isGoverned,
   matchesAny,
   type OutputBlock,
@@ -9,6 +10,7 @@ import {
   sharedLine,
   sharedTitle,
 } from "@baquia-dev/specty-core";
+import { openChanges } from "../commands/status";
 import type { Session } from "../session";
 import { readSpec } from "../store/changes";
 import { isFinished } from "./active";
@@ -50,6 +52,30 @@ export async function sharedFiles(
       )
       .map((other) => other.id);
     return changes.length === 0 ? [] : [{ path, changes }];
+  });
+}
+
+/**
+ * The open changes a spec shares at least half of its governed `paths` with (ADR 0016), as
+ * `status` sees them; those in `skipped`, which the user told apart, do not count.
+ */
+export async function duplicatedBy(
+  session: Session,
+  paths: readonly string[],
+  shared: readonly Shared[],
+  skipped: ReadonlySet<string>,
+): Promise<DuplicateFilesView[]> {
+  const total = new Set(paths.filter((path) => isGoverned(path, session.config))).size;
+  const counts = new Map<string, number>();
+  for (const id of shared.flatMap(({ changes }) => changes)) {
+    counts.set(id, (counts.get(id) ?? 0) + 1);
+  }
+  const half = [...counts].filter(([id, count]) => !skipped.has(id) && count * 2 >= total);
+  if (half.length === 0) return [];
+  const views = await openChanges(session);
+  return half.flatMap(([id, count]) => {
+    const change = views.find((view) => view.id === id);
+    return change === undefined ? [] : [{ change, shared: count, total }];
   });
 }
 

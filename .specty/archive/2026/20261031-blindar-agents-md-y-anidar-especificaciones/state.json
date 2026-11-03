@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "id": "20261031-blindar-agents-md-y-anidar-especificaciones",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261031-blindar-agents-md-y-anidar-especificaciones",
+  "baseCommit": "4e875639b11adbd83aa70ce8e65e1c340f10ec69",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ef32b23281ea3807e8c40f3af2b2dd5d12a104c10bf04964b2dababf49e8d786",
+    "at": "2026-10-31T12:33:10.837Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8f353bfefcb033c8ca69883262a9133d7bc63d386e4dfb9d2b5fef5ef5e887c9",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:e25ff578218b47bdc788bd847bb33a709dd0b0cea9a58b1188d5c5882d7433e8",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:152b5c2f601c3071222b5b9803b4cb40dc9b20cb7b1690a3bf008646bb60f59b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:91b502e00f9697aa09dfd51d50a4bf1fb2fa6725a804ff0855a6d2beff1cbd8f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c76bb0ddccf43fac51e81406e8e89be9dbcdd234",
+      "attempts": 1,
+      "startedAt": "2026-10-31T12:25:40.093Z",
+      "doneAt": "2026-10-31T12:28:00.613Z",
+      "summary": "Pistas en humanSections y regla en flowBlock para blindar AGENTS.md",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "988a6912816c4af946da1c2e95e503a2eb90cc95",
+      "attempts": 1,
+      "startedAt": "2026-10-31T12:28:00.970Z",
+      "doneAt": "2026-10-31T12:30:12.728Z",
+      "summary": "Aviso preventivo agents-bloated en doctor para AGENTS.md sobrecargado",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f61a92a7367522ab3f8f934ca68e6d4ef04a6a22",
+      "attempts": 1,
+      "startedAt": "2026-10-31T12:30:13.073Z",
+      "doneAt": "2026-10-31T12:31:03.910Z",
+      "summary": "Documentar en ARCHITECTURE el flujo de especificaciones dedicadas, blindaje de AGENTS.md y épica del MVP",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "9c5e787ad2834c01cb040021b7c31074940bef82",
+      "attempts": 1,
+      "startedAt": "2026-10-31T12:34:01.291Z",
+      "doneAt": "2026-10-31T12:34:31.453Z",
+      "summary": "Preservar el límite estricto de 15 líneas y 5 reglas en flowBlock",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 4
+  },
+  "closingSubmittedAt": "2026-10-31T12:39:28.937Z",
+  "lockedTests": {
+    "packages/core/test/cards/doctor.test.ts": "sha256:022f97e7f80e93f669a3bd7da86975000d2a071185e1f98d20d094de93140ed3",
+    "packages/core/test/agents-md.test.ts": "sha256:b86e907792f9e55696b26d5d814ec68df289692daba6b091289969f3e550f14f"
+  }
+}

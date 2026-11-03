@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "id": "20261031-hints-con-ejemplos-en-preguntas-de-seleccion-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261031-hints-con-ejemplos-en-preguntas-de-seleccion-de",
+  "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:262631f871c760f2c07db377b9deeae4c40b449890fe72a7161796c8474b930c",
+    "at": "2026-10-31T10:52:27.031Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:50317aecaf7da74dd5039f8bc10c6b38fe81230226efeb9fb069af2cae15eacd",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:95740d19f5877dba2f231279bc4d7feef0a6c92ad49cdb4fe3e3c9e4bbe7928d",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:95c881c44b67396ac0258423df8521aec9cefa8ae46bb9885162e16ba717c7bb",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ca7d992b5619995c08f7f39c6a0fa7d6f629bd25b0d1146fb325c8289b873a10",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "1828966653714f890207a974a571916d68947902",
+      "attempts": 2,
+      "startedAt": "2026-10-31T10:56:44.680Z",
+      "doneAt": "2026-10-31T11:07:42.190Z",
+      "summary": "Tipos de commit ampliados con hotfix, release y support, y soporte completo de ramas en prefixOf para Git Flow",
+      "scopeExtra": [
+        "packages/core/test/cards/init.test.ts",
+        "packages/core/test/cards/language.test.ts",
+        "packages/core/test/branches.test.ts",
+        "packages/core/vitest.config.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "98f876a2341300a690c1788d1d2b3413e733b381",
+      "attempts": 1,
+      "startedAt": "2026-10-31T11:07:42.883Z",
+      "doneAt": "2026-10-31T11:11:15.012Z",
+      "summary": "Hints explicativos con ejemplos en opciones de idioma, agentes y flujo de Git, y ramas completas de Git Flow en cards",
+      "scopeExtra": [
+        "packages/core/test/cards/init.test.ts",
+        "packages/core/test/cards/language.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "7887d73202c952b6f8cda78c391097cefe56891e",
+      "attempts": 1,
+      "startedAt": "2026-10-31T11:11:15.773Z",
+      "doneAt": "2026-10-31T11:22:36.284Z",
+      "summary": "Terminal con hints opcionales, soporte en select/multiselect de clack y reconocimiento de support/ en Git Flow",
+      "scopeExtra": [
+        "packages/cli/vitest.config.ts",
+        "packages/cli/test/init-git-flow.test.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "e9973115d6d20d6060690575d0a1b9333ab38d04",
+      "attempts": 2,
+      "startedAt": "2026-10-31T11:22:36.642Z",
+      "doneAt": "2026-10-31T11:37:50.471Z",
+      "summary": "Documentar flujos de Git completos y tipos de commit en arquitectura y formatos, y tipado exacto en terminal",
+      "scopeExtra": [
+        "packages/cli/src/terminal.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 8,
+    "T": 4,
+    "S": 5
+  },
+  "closingSubmittedAt": "2026-10-31T11:43:49.269Z",
+  "lockedTests": {
+    "packages/cli/test/init-git-flow.test.ts": "sha256:91b7d104406f8a85340e709f11bf6c067ee78c2c691d8de1c49ec0d97e7420d3",
+    "packages/cli/test/terminal.test.ts": "sha256:65af297aa324a06323132471d6c24224642ec04d6e6b11d9f55735ae64e57b06",
+    "packages/core/test/branches.test.ts": "sha256:86d8c216bd2d7a2d5a65f38d5f0d15c555f558e9feeb52c1fe33b14ecee7aafe",
+    "packages/core/test/cards/init.test.ts": "sha256:dec09cd1b34ea3ef89788979719b12fdaa460a0137743d3b30237ddc2c875ed6",
+    "packages/core/test/cards/language.test.ts": "sha256:cb28cffe75481babf92cb02c56fcf16ca83ea80d6a462296c0d2b7c11416383a"
+  }
+}

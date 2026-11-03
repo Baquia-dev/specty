@@ -1,27 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join, resolve } from "node:path";
-import {
-  type DoctorLine,
-  movePatch,
-  opencodeGuardLine,
-  opencodeWorktreesLine,
-  opencodeWorktreesVersionedWarning,
-  patchPaths,
-} from "@baquia-dev/specty-core";
-import { parse } from "jsonc-parser";
+import { type DoctorLine, movePatch, opencodeGuardLine, patchPaths } from "@baquia-dev/specty-core";
 import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
-import { worktreesHome } from "../flow/worktree";
 import { hasGuard, OPENCODE_PLUGIN } from "../install/agents";
 import {
   closeWorktrees,
   installOpencode,
-  OPENCODE_SETTINGS,
   opencodePluginFile,
-  openWorktrees,
   planOpencodeStop,
 } from "../install/opencode";
 import { isRecord, readText } from "../io/files";
-import type { Git } from "../io/git";
 import {
   type AgentAdapter,
   blockingStop,
@@ -62,14 +50,11 @@ export const opencode: AgentAdapter = {
   },
   install: async ({ root, git, invocation, files, lang }) => {
     const { file, local } = await installOpencode(root, git, invocation, files);
-    // A session that entered a change's folder works there: OpenCode would ask for each action.
-    const { pattern, open } = await openWorktrees(root, git, files);
+    // The worktrees live inside the project now (ADR 0018): an older rule for them goes.
+    await closeWorktrees(root, git, files);
     return {
-      done: [
-        opencodeGuardLine(file, local, lang),
-        ...(open ? [opencodeWorktreesLine(OPENCODE_SETTINGS, lang)] : []),
-      ],
-      warnings: open ? [] : [opencodeWorktreesVersionedWarning(OPENCODE_SETTINGS, pattern, lang)],
+      done: [opencodeGuardLine(file, local, lang)],
+      warnings: [],
       written: local ? [] : [file],
     };
   },
@@ -78,7 +63,7 @@ export const opencode: AgentAdapter = {
     if (hasGuard(await files.read(plugin), "opencode")) await files.remove(plugin);
     await closeWorktrees(root, git, files);
   },
-  doctor: async (root, git) => {
+  doctor: async (root) => {
     const plugin = await readText(join(root, OPENCODE_PLUGIN));
     const guard = hasGuard(plugin, "opencode");
     // A plugin from before the check after each command never sends `PostToolUse`, and one from
@@ -98,7 +83,7 @@ export const opencode: AgentAdapter = {
       problems: [
         ...lines.problems,
         ...(compact ? [] : [{ code: "opencode-compact" } as const]),
-        ...(await beforeEnter(plugin ?? "", root, git)),
+        ...beforeEnter(plugin ?? ""),
       ],
     };
   },
@@ -107,19 +92,12 @@ export const opencode: AgentAdapter = {
 
 /**
  * What of the install is from before `specty enter`: a plugin that does not run the tool with the
- * input the guard gives back (`redirects`), and settings out of git without the worktrees' folder.
+ * input the guard gives back (`redirects`).
  */
-async function beforeEnter(plugin: string, root: string, git: Git): Promise<DoctorLine[]> {
-  const settings: unknown = parse((await readText(join(root, OPENCODE_SETTINGS))) ?? "");
-  const permission = isRecord(settings) && isRecord(settings.permission) ? settings.permission : {};
-  const rules = permission.external_directory;
-  const pattern = `${await worktreesHome(git)}/**`;
-  const open =
-    (isRecord(rules) && Object.hasOwn(rules, pattern)) || (await git.isTracked(OPENCODE_SETTINGS));
-  return [
-    ...(plugin.includes("redirects: true") ? [] : [OPENCODE_PLUGIN]),
-    ...(open ? [] : [OPENCODE_SETTINGS]),
-  ].map((file): DoctorLine => ({ code: "enter-outdated", tool: "opencode", file }));
+function beforeEnter(plugin: string): DoctorLine[] {
+  return plugin.includes("redirects: true")
+    ? []
+    : [{ code: "enter-outdated", tool: "opencode", file: OPENCODE_PLUGIN }];
 }
 
 /** The fields that name a tool's file or folder, in OpenCode 2 and 1. */

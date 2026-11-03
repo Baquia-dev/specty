@@ -51,7 +51,7 @@ describe("a refused `init`", () => {
 });
 
 describe("the git flow `init` asks for", () => {
-  it("offers the four flows by their branches, Specty's first when none was detected (AC1, AC2)", () => {
+  it("offers the four flows by their branches and hints with examples, including full Git Flow branches (AC3)", () => {
     expect(flowQuestion(undefined, "es")).toBe(
       "¿Qué flujo de git sigue este repositorio? Specty nombrará así las ramas de los cambios.",
     );
@@ -60,9 +60,20 @@ describe("the git flow `init` asks for", () => {
     expect(none.map((choice) => choice.label)).toEqual([
       "Specty: specty/<id>",
       "GitHub Flow: <tipo>/<slug>, como feat/<slug>",
-      "Git Flow: feature/<slug> y bugfix/<slug>",
+      "Git Flow: feature/<slug>, bugfix/<slug>, hotfix/<slug> y release/<slug>",
       "Trunk: <tipo>/<slug>, como feat/<slug>",
     ]);
+    const gitflowEs = none.find((choice) => choice.value === "gitflow");
+    expect((gitflowEs as unknown as { readonly hint?: string })?.hint).toMatch(/\(ej\./);
+    for (const choice of none) {
+      expect((choice as unknown as { readonly hint?: string }).hint).toBeDefined();
+    }
+    const en = flowChoices(undefined, "en");
+    const gitflowEn = en.find((choice) => choice.value === "gitflow");
+    expect(gitflowEn?.label).toContain(
+      "feature/<slug>, bugfix/<slug>, hotfix/<slug> and release/<slug>",
+    );
+    expect((gitflowEn as unknown as { readonly hint?: string })?.hint).toMatch(/\(e\.g\./);
   });
 
   it("puts the detected one first, and says so (AC2)", () => {
@@ -76,7 +87,9 @@ describe("the git flow `init` asks for", () => {
       "github",
       "trunk",
     ]);
-    expect(detected[0]?.label).toBe("Git Flow: feature/<slug> and bugfix/<slug> (detected)");
+    expect(detected[0]?.label).toBe(
+      "Git Flow: feature/<slug>, bugfix/<slug>, hotfix/<slug> and release/<slug> (detected)",
+    );
     expect(flowChoices("github", "es")[0]?.label).toBe(
       "GitHub Flow: <tipo>/<slug>, como feat/<slug> (detectado)",
     );
@@ -86,7 +99,7 @@ describe("the git flow `init` asks for", () => {
 describe("the git flow `init` writes", () => {
   it("says how the changes' branches will be named (AC1)", () => {
     expect(flowLine("gitflow", "es")).toBe(
-      ".specty/config.yaml: git.flow es gitflow; las ramas de los cambios serán feature/<slug> y bugfix/<slug>.",
+      ".specty/config.yaml: git.flow es gitflow; las ramas de los cambios serán feature/<slug>, bugfix/<slug>, hotfix/<slug> y release/<slug>.",
     );
     expect(flowLine("github", "es")).toBe(
       ".specty/config.yaml: git.flow es github; las ramas de los cambios serán <tipo>/<slug>, como feat/<slug>.",
@@ -118,17 +131,25 @@ describe("the agent `init` installs", () => {
       "Which agents do you work with in this repository? The detected ones are already checked; you can check several.",
     );
     const choices = agentChoices([], "es");
-    expect(choices[0]).toEqual({ value: "claude-code", label: "Claude Code" });
+    expect(choices[0]).toMatchObject({ value: "claude-code", label: "Claude Code" });
     expect(choices.map((choice) => choice.value)).toEqual(Object.keys(AGENT_NAMES));
   });
 
-  it("labels the detected ones, and says when there are none (AC2)", () => {
+  it("labels the detected ones, and says when there are none, with hints explaining each option with examples (AC2)", () => {
     const es = agentChoices(["codex", "cursor"], "es");
     expect(es.find((choice) => choice.value === "codex")?.label).toBe("Codex (detectado)");
     expect(es.find((choice) => choice.value === "cursor")?.label).toBe("Cursor (detectado)");
     expect(es[0]?.label).toBe("Claude Code");
+    for (const choice of es) {
+      expect((choice as unknown as { readonly hint?: string }).hint).toBeDefined();
+      expect((choice as unknown as { readonly hint?: string }).hint).toMatch(/\(ej\./);
+    }
     const en = agentChoices(["codex"], "en");
     expect(en.find((choice) => choice.value === "codex")?.label).toBe("Codex (detected)");
+    for (const choice of en) {
+      expect((choice as unknown as { readonly hint?: string }).hint).toBeDefined();
+      expect((choice as unknown as { readonly hint?: string }).hint).toMatch(/\(e\.g\./);
+    }
     expect(agentQuestion(false, "es")).toBe(
       "No se detectó ningún agente. ¿Con cuáles trabajas en este repositorio? Puedes marcar varios.",
     );

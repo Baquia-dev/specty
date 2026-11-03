@@ -8,11 +8,32 @@ import {
   uiOpenedCard,
   uiStoppedCard,
 } from "@baquia-dev/specty-core";
+import { openInBrowser } from "../io/browser";
 import { exists } from "../io/files";
 import { startServer } from "../server/http";
 import type { Session } from "../session";
 
 const DEFAULT_PORT = 4173;
+
+export interface UiOptions {
+  readonly port?: string;
+  readonly open?: boolean;
+}
+
+function parsePort(options?: UiOptions | string): number | undefined {
+  const port = typeof options === "string" ? options : options?.port;
+  if (port === undefined) return DEFAULT_PORT;
+  const num = Number(port);
+  return Number.isInteger(num) && num >= 0 && num <= 65_535 ? num : undefined;
+}
+
+function rawPort(options?: UiOptions | string): string {
+  return (typeof options === "string" ? options : options?.port) ?? "";
+}
+
+function shouldOpen(options?: UiOptions | string, interactive?: boolean): boolean {
+  return interactive === true && (typeof options === "string" || options?.open !== false);
+}
 
 /** The built UI: next to the bundle once it ships with it, or the monorepo's own build. */
 async function uiFolder(): Promise<string | undefined> {
@@ -37,18 +58,22 @@ function stopRequested(): Promise<void> {
  */
 export async function ui(
   session: Session,
-  port: string | undefined,
+  options?: UiOptions | string,
   stop: Promise<void> = stopRequested(),
+  openUrl: (url: string) => void = openInBrowser,
 ): Promise<Output> {
-  const first = port === undefined ? DEFAULT_PORT : Number(port);
-  if (!Number.isInteger(first) || first < 0 || first > 65_535) {
-    return invalidPortCard(port ?? "", session.cards);
+  const port = parsePort(options);
+  if (port === undefined) {
+    return invalidPortCard(rawPort(options), session.cards);
   }
   // Only the person decides from the UI: an agent that starts the server would see the link.
   const actions = session.environment.terminal.interactive;
-  const server = await startServer({ session, port: first, ui: await uiFolder(), actions });
+  const server = await startServer({ session, port, ui: await uiFolder(), actions });
   const opened = uiOpenedCard(server.link, actions, session.cards);
   session.environment.io.out(renderText(opened, session.lang));
+  if (shouldOpen(options, actions)) {
+    openUrl(server.link);
+  }
   await stop;
   await server.close();
   return uiStoppedCard(session.cards);

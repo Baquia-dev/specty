@@ -66,6 +66,10 @@ export const MESSAGES_EN: MessageCatalog = {
   "task-verify-missing": (p) =>
     `${v(p, "id")} has no \`verify\` and the configuration defines no default verification.`,
   "slice-cycle": (p) => `The slices have circular dependencies: ${v(p, "cycle")}.`,
+  "slice-without-criteria": (p) =>
+    `Slice ${v(p, "id")} must declare at least one acceptance criterion in \`ac\`.`,
+  "slice-horizontal": (p) =>
+    `Slice ${v(p, "id")} appears to be a horizontal technical layer (${v(p, "layer")}); an epic requires vertical slices verifiable end-to-end.`,
   "quick-limits": (p) =>
     `The change does not fit the quick lane (${v(p, "detail")}); use \`kind: standard\`.`,
   "split-required": (p) =>

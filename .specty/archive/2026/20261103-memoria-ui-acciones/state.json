@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-ui-acciones",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-ui-acciones",
+  "baseCommit": "7b015669ead8ecfcb9e10282d30ac9dae20748cc",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4865658454a398139ba9a15de2bbd3f626a0916ca7d46cae6ee466d470bd5362",
+    "at": "2026-11-03T10:14:25.636Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f2305b214a8f926303f0f94a11d57525435f511b70876a8274ec0a15ba538e31",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ce6824f1012a6b89e7d893642ba8c64c0c20ac7ffc869a9118971e0dc53feafe",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f3e557edda42de5086e01c7728964140e85e2572d7edebd54da44aa1acacb213",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:8bace3eb48ed80affeaed1549c3be73422fb4a79530fd18b615fa6a62924ba12",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3cd43c127d93ba47368688e0da2ea724aaf14188",
+      "attempts": 1,
+      "startedAt": "2026-11-03T10:16:27.126Z",
+      "doneAt": "2026-11-03T10:17:47.251Z",
+      "summary": "POST /api/memory/<id>/drop|keep|done: parseMemoryAction y memoryAction en server/actions.ts, con personMemoryAction de commands/memory.ts en la sesión de la persona en pantalla, despachadas en la cola desde act",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "aa481697a56189b3dc787c080c32d56b7ddbd35d",
+      "attempts": 1,
+      "startedAt": "2026-11-03T10:17:47.560Z",
+      "doneAt": "2026-11-03T10:21:56.688Z",
+      "summary": "La página Memoria decide: Descartar con el diálogo del motivo (drop-entry.ts), Mantener y Marcar hecho, con SpectyData.memoryAction en el servidor y en el prototipo, y el aviso de solo lectura; ARCHITECTURE.md lo documenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-03T10:26:11.879Z",
+  "lockedTests": {
+    "packages/cli/test/server/memory-actions.test.ts": "sha256:d5b7700b951b38486b3704e9a9b5cea2c6c17bfb7806d1e50e3630499ed41465",
+    "packages/ui/src/memory/memory-actions.test.ts": "sha256:ad0d61670bec8ea87098efc9aeabf02b504b7c73cb316fa481df88cd9f6df6f3"
+  }
+}

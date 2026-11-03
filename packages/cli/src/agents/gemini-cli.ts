@@ -6,13 +6,11 @@ import {
   geminiSandboxLine,
   geminiSandboxVersionedWarning,
   geminiTrustWarning,
-  geminiWorkspaceLine,
-  geminiWorkspaceVersionedWarning,
   guardLine,
 } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
-import { sharedFolders, worktreesHome } from "../flow/worktree";
+import { formerWorktreesHome, gitCommonFolder } from "../flow/worktree";
 import {
   excludeLocally,
   GEMINI_SETTINGS,
@@ -25,7 +23,6 @@ import {
 import { rewriteJson } from "../install/files";
 import { GEMINI_POINTER, writePointer } from "../install/project-files";
 import { isRecord, readText } from "../io/files";
-import type { Git } from "../io/git";
 import { type AgentAdapter, exitFailed, exitReply, jsonStop, type Redirect } from "./adapter";
 
 /**
@@ -96,13 +93,11 @@ export const geminiCli: AgentAdapter = {
     const local = !invocation.portable;
     const command = `${invocation.command} guard --tool gemini-cli`;
     const open = local && !(await git.isTracked(GEMINI_SETTINGS));
-    const folders = await sharedFolders(git);
-    const home = await worktreesHome(git);
-    // Gemini CLI does not start while a folder of its workspace is missing.
-    await files.folder(home);
+    const folders = [await gitCommonFolder(git)];
+    const former = await formerWorktreesHome(git);
     await rewriteJson(
       join(root, GEMINI_SETTINGS),
-      (value) => withSpecty(value, command, { folders, home, add: open }),
+      (value) => withSpecty(value, command, { folders, former, add: open }),
       true,
       files,
     );
@@ -112,31 +107,24 @@ export const geminiCli: AgentAdapter = {
     return {
       done: [
         guardLine("Gemini CLI", GEMINI_SETTINGS, local, lang),
-        ...(open
-          ? [geminiSandboxLine(GEMINI_SETTINGS, lang), geminiWorkspaceLine(GEMINI_SETTINGS, lang)]
-          : []),
+        ...(open ? [geminiSandboxLine(GEMINI_SETTINGS, lang)] : []),
         ...(pointed ? [geminiPointerLine(lang)] : []),
       ],
       warnings: [
         geminiTrustWarning(lang),
-        ...(open
-          ? []
-          : [
-              geminiSandboxVersionedWarning(GEMINI_SETTINGS, folders, lang),
-              geminiWorkspaceVersionedWarning(GEMINI_SETTINGS, home, lang),
-            ]),
+        ...(open ? [] : [geminiSandboxVersionedWarning(GEMINI_SETTINGS, folders, lang)]),
       ],
       written: [...(local ? [] : [GEMINI_SETTINGS]), "GEMINI.md"],
     };
   },
   remove: async (root, files, git) => {
-    const folders = await sharedFolders(git);
-    const home = await worktreesHome(git);
+    const folders = [await gitCommonFolder(git)];
+    const former = await formerWorktreesHome(git);
     const update = (value: Record<string, unknown>) =>
-      withSpecty(value, undefined, { folders, home, add: false });
+      withSpecty(value, undefined, { folders, former, add: false });
     await removeFromJson(root, GEMINI_SETTINGS, update, files);
   },
-  doctor: async (root, git) => {
+  doctor: async (root) => {
     const text = await readText(join(root, GEMINI_SETTINGS));
     const file = GEMINI_SETTINGS;
     if (!hasGuard(text, "gemini-cli")) {
@@ -146,7 +134,7 @@ export const geminiCli: AgentAdapter = {
     if (missing.length > 0) {
       return { ok: [], problems: [{ code: "gemini-hooks", file, events: missing.join(", ") }] };
     }
-    const outdated = await beforeEnter(text, git);
+    const outdated = beforeEnter(text);
     return {
       ok: [{ code: "gemini-guard", file }],
       problems: outdated ? [{ code: "enter-outdated", tool: "gemini-cli", file }] : [],
@@ -154,19 +142,11 @@ export const geminiCli: AgentAdapter = {
   },
 };
 
-/**
- * Whether the settings (their text) are from before `specty enter`: the guard does not see the
- * reads, or settings kept on this machine do not give the tools the worktrees' folder.
- */
-async function beforeEnter(text: string | undefined, git: Git): Promise<boolean> {
+/** Whether the settings (their text) are from before `specty enter`: the guard does not see the reads. */
+function beforeEnter(text: string | undefined): boolean {
   const value: unknown = parse(text ?? "");
   const settings = isRecord(value) ? value : {};
-  if (guardMatcher(settings.hooks, "BeforeTool", "gemini-cli") !== EVENTS.BeforeTool) return true;
-  // `init` gives the folder only to settings it keeps out of git.
-  if ((await git.ignored([GEMINI_SETTINGS])).length === 0) return false;
-  const context = isRecord(settings.context) ? settings.context : {};
-  const folders = context.includeDirectories;
-  return !Array.isArray(folders) || !folders.includes(await worktreesHome(git));
+  return guardMatcher(settings.hooks, "BeforeTool", "gemini-cli") !== EVENTS.BeforeTool;
 }
 
 /**
@@ -187,18 +167,20 @@ function normalize(event: Record<string, unknown>): Record<string, unknown> {
 }
 
 /**
- * Specty's in the settings, or taken out of them (no `command`): its hooks, the folders its
- * commands write in for the sandbox (`tools.sandboxAllowedPaths`), and the worktrees' folder for
- * the tools (`context.includeDirectories`). Machine paths go only in settings git does not keep.
+ * Specty's in the settings, or taken out of them (no `command`): its hooks and the folder its
+ * commands write in for the sandbox (`tools.sandboxAllowedPaths`); machine paths go only in
+ * settings git does not keep. The worktrees' folder an older `init` gave the sandbox and the tools
+ * (`context.includeDirectories`), beside the project before ADR 0018, goes.
  */
 function withSpecty(
   value: Record<string, unknown>,
   command: string | undefined,
-  { folders, home, add }: { folders: readonly string[]; home: string; add: boolean },
+  { folders, former, add }: { folders: readonly string[]; former: string; add: boolean },
 ): Record<string, unknown> {
   const hooked = withHooks(value, EVENTS, "gemini-cli", command);
-  const sandboxed = withPaths(hooked, ["tools", "sandboxAllowedPaths"], folders, add);
-  return withPaths(sandboxed, ["context", "includeDirectories"], [home], add);
+  const sandbox = ["tools", "sandboxAllowedPaths"] as const;
+  const tools = withPaths(hooked, ["context", "includeDirectories"], [former], false);
+  return withPaths(withPaths(tools, sandbox, [former], false), sandbox, folders, add);
 }
 
 /**

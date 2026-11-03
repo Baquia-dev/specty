@@ -66,8 +66,16 @@ describe("doctor and an install from before specty enter", () => {
     expect(await says(root, line)).toBe(true);
     await init(root, "gemini-cli");
     expect(await says(root, line)).toBe(false);
-    await rewrite(root, file, ({ context: _, ...rest }) => rest);
-    expect(await says(root, line)).toBe(true);
+  });
+
+  it("AC3: does not take Gemini CLI's or OpenCode's settings without the worktrees' folder for outdated ones", async () => {
+    const root = await tempRepo(PACKAGE);
+    await init(root, "gemini-cli");
+    await init(root, "opencode");
+    await rewrite(root, ".gemini/settings.json", ({ context: _, ...rest }) => rest);
+    await rm(join(root, ".opencode/opencode.jsonc"), { force: true });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.out).not.toContain("es de antes de `specty enter`");
   });
 
   it("leaves Gemini CLI's settings kept in git, which init gives no machine path (AC3)", async () => {
@@ -89,9 +97,6 @@ describe("doctor and an install from before specty enter", () => {
     expect(await says(root, line)).toBe(true);
     await init(root, "opencode");
     expect(await says(root, line)).toBe(false);
-    const settings = ".opencode/opencode.jsonc";
-    await rm(join(root, settings));
-    expect(await says(root, outdated("OpenCode", settings, "opencode"))).toBe(true);
   });
 
   it("leaves OpenCode's settings kept in git (AC3)", async () => {
@@ -101,7 +106,7 @@ describe("doctor and an install from before specty enter", () => {
     expect(await says(root, line)).toBe(false);
   });
 
-  it("names Codex's rules without cd, and its missing config.toml (AC1, AC2)", async () => {
+  it("names Codex's rules without cd (AC1, AC2)", async () => {
     const root = await tempRepo(PACKAGE);
     await init(root, "codex");
     const rules = ".codex/rules/specty.rules";
@@ -112,8 +117,15 @@ describe("doctor and an install from before specty enter", () => {
     expect(await says(root, line)).toBe(true);
     await init(root, "codex");
     expect(await says(root, line)).toBe(false);
-    await rm(join(root, ".codex/config.toml"));
-    expect(await says(root, outdated("Codex", ".codex/config.toml", "codex"))).toBe(true);
+  });
+
+  it("AC3: does not take Codex's install without a config.toml for an outdated one", async () => {
+    const root = await tempRepo(PACKAGE);
+    await init(root, "codex");
+    await rm(join(root, ".codex/config.toml"), { force: true });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.out).not.toContain(".codex/config.toml");
+    expect(doctor.out).not.toContain(outdated("Codex", ".codex/rules/specty.rules", "codex"));
   });
 
   it("leaves a config.toml of the person's, which init does not touch (AC3)", async () => {
@@ -139,7 +151,7 @@ describe("doctor and an install from before specty enter", () => {
     expect(await says(root, line)).toBe(false);
   });
 
-  it("names Devin's hooks without the reads, and its local settings without the worktrees (AC1, AC2)", async () => {
+  it("AC1: names Devin's hooks without the reads, and its local settings without git's folder", async () => {
     const root = await tempRepo(PACKAGE);
     await init(root, "windsurf");
     const hooks = ".devin/hooks.v1.json";
@@ -154,8 +166,10 @@ describe("doctor and an install from before specty enter", () => {
     await rewrite(root, local, (value) => {
       const permissions = isObject(value.permissions) ? value.permissions : {};
       const allow = Array.isArray(permissions.allow) ? permissions.allow : [];
-      const writes = allow.filter((rule) => !String(rule).startsWith("Read("));
-      return { ...value, permissions: { ...permissions, allow: writes } };
+      // The worktrees' folder is no longer among Specty's scopes: only git's folder is.
+      expect(allow.some((rule) => String(rule).includes(".worktrees"))).toBe(false);
+      const others = allow.filter((rule) => !String(rule).startsWith("Write("));
+      return { ...value, permissions: { ...permissions, allow: others } };
     });
     expect(await says(root, outdated("Devin (Windsurf)", local, "windsurf"))).toBe(true);
   });
@@ -180,5 +194,19 @@ describe("doctor and an install from before specty enter", () => {
     expect(await says(root, line)).toBe(true);
     await init(root, "cursor");
     expect(await says(root, line)).toBe(false);
+  });
+
+  it("AC3: warns when AGENTS.md exceeds 120 lines", async () => {
+    const root = await tempRepo(PACKAGE);
+    await init(root, "cursor");
+    await writeFiles(root, {
+      "AGENTS.md": [
+        "<!-- specty:begin id=flow -->\n## Flujo\n<!-- specty:end id=flow -->",
+        ...Array.from({ length: 130 }, (_, i) => `- Línea ${i + 1}`),
+      ].join("\n"),
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.out).toContain("AGENTS.md tiene 133 líneas");
+    expect(doctor.out).toContain("Mantenlo conciso (< 80 líneas)");
   });
 });

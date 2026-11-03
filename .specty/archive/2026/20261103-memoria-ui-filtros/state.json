@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-ui-filtros",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-ui-filtros",
+  "baseCommit": "c75cdbce3855cdae88c60f61062fe690112dab04",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9552d426e816d20795f00324a710f9ffa03a43e118a2a7487757906ea1189280",
+    "at": "2026-11-03T09:58:40.689Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:48454f1290627798a409436ea0758691c97bb9ed76718ce2aa6cc6d4e9cd3404",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:be80960e455c441dff626a8a416e48f5c325f2c6c89e8082e221796c8f742088",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:01dace3836b31965ce4ab02efb96a65f6fc31151717612717d2845edeef25cd8",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1f8affa12c452ff8945b316ed0da51b7d304dd0b58b4bad5de8af4ea4b7562e4",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:cd0bb58ef4c80c9e3fbf001760d74c0eeaa4221e3773aa386593f2718ce90a39",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6383d345e3f0ee9a9d7dde911942e861b5b7ac33",
+      "attempts": 1,
+      "startedAt": "2026-11-03T10:00:35.139Z",
+      "doneAt": "2026-11-03T10:02:36.691Z",
+      "summary": "memorySections acepta un MemoryFilter (búsqueda con fold, tipo y cerradas) y añade la sección «Hechas y descartadas»; sin filtro, igual que antes",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ef8173e5dcc3cf28d94c3897ef56a22d852e671b",
+      "attempts": 1,
+      "startedAt": "2026-11-03T10:02:37.254Z",
+      "doneAt": "2026-11-03T10:04:23.219Z",
+      "summary": "La página Memoria gana la barra: búsqueda, filtro por tipo con sp-segmented y la casilla de hechas y descartadas, con el aviso cuando el filtro no deja nada",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "780877177bc79a326db7387bc65ae8660e7cbf0c",
+      "attempts": 1,
+      "startedAt": "2026-11-03T10:04:23.561Z",
+      "doneAt": "2026-11-03T10:05:00.958Z",
+      "summary": "fingerprint añade la punta de la rama de la memoria, así que escribir en ella emite changes y la página se actualiza sola; ARCHITECTURE.md documenta la barra y la firma",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-03T10:11:28.413Z",
+  "lockedTests": {
+    "packages/cli/test/server/memory-events.test.ts": "sha256:ec73f5823de1e773920bd467c1d96fa061f1e37f752ea26792b165dfec13f92b",
+    "packages/ui/src/memory/memory-filter.test.ts": "sha256:128186326b6b1764441b0b4cbb453661e791f6111203a2b2ee26069801d3012b",
+    "packages/ui/src/memory/memory-toolbar.test.ts": "sha256:f9161535b453f074f57ec49997470ce5f47aaefb7a0308d670fa04893e77dcf1"
+  }
+}

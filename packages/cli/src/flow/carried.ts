@@ -53,6 +53,12 @@ export async function carriedOf(
   return { carried };
 }
 
+/** The follow-ups of the closing of the change in `files`; none before it has a closing. */
+export async function closingFollowUps(session: Session, files: ChangeFiles): Promise<string[]> {
+  const spec = parseSpec(await readSpec(files), { language: session.lang }).spec;
+  return followUps(spec.sections.closing);
+}
+
 const FOLLOW_UPS = new Set(["### pendientes", "### follow-ups", "### follow ups"]);
 
 /** The bullets of the closing's `### Pendientes` (or `### Follow-ups`) subsection. */

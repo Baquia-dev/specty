@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable, inject } from "@angular/core";
-import type { ChangeState } from "@baquia-dev/specty-core";
+import type { ChangeState, MemoryEntry } from "@baquia-dev/specty-core";
 import { Commands } from "../components/command-palette";
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
@@ -11,11 +11,13 @@ import {
   type CommentAnchor,
   type CommentRecord,
   type Delegation,
+  type MemoryRecord,
   SpectyData,
 } from "./records";
 import { decideResultIn } from "./sample-acceptance";
 import { sampleDelegation } from "./sample-delegation";
 import { sampleDiffOf } from "./sample-diffs";
+import { sampleMemory } from "./sample-memory";
 import { decideScopeIn } from "./sample-progress";
 import { HASH, REVIEWER, requestChangesIn, sampleRecords } from "./sample-records";
 import {
@@ -28,6 +30,7 @@ import {
 } from "./sample-run";
 import { approveTestsIn } from "./sample-tests";
 import { sampleTrace, sampleTraceFiles } from "./sample-trace";
+import type { MemoryVerb } from "./source";
 import type { TraceRecord } from "./trace";
 
 export { REVIEWER, sampleRecords } from "./sample-records";
@@ -40,6 +43,7 @@ export { REVIEWER, sampleRecords } from "./sample-records";
 export class FixtureData extends SpectyData {
   private records = sampleRecords(Date.now());
   private delegated = sampleDelegation(false);
+  private remembered = sampleMemory();
   private readonly listeners = new Set<() => void>();
   private failing = false;
   /** The next full verification fails: to see both results without the CLI. */
@@ -137,6 +141,22 @@ export class FixtureData extends SpectyData {
     return Promise.resolve(this.delegated);
   }
 
+  /** A memory with an entry of every kind and status, and changes held, waiting and orphaned. */
+  override memory(): Promise<MemoryRecord> {
+    return Promise.resolve(this.remembered);
+  }
+
+  /** The prototype decides like the person at their terminal: the entry changes at once. */
+  override memoryAction(id: string, verb: MemoryVerb, reason?: string): Promise<void> {
+    const at = new Date().toISOString();
+    const entries = this.remembered.entries.map((entry) =>
+      entry.id === id ? decided(entry, verb, reason, at) : entry,
+    );
+    this.remembered = { ...this.remembered, entries };
+    this.notify();
+    return Promise.resolve();
+  }
+
   override setDelegation(on: boolean): Promise<void> {
     this.delegated = sampleDelegation(on);
     this.notify();
@@ -198,6 +218,24 @@ export class FixtureData extends SpectyData {
         createdAt: new Date().toISOString(),
       };
       return { ...record, comments: [...comments, comment] };
+    });
+  }
+
+  override editComment(change: string, id: string, body: string): Promise<void> {
+    return this.edit(change, (record) => {
+      const comments = record.comments ?? [];
+      const updated = comments.map((comment) =>
+        comment.id === id ? { ...comment, body } : comment,
+      );
+      return { ...record, comments: updated };
+    });
+  }
+
+  override deleteComment(change: string, id: string): Promise<void> {
+    return this.edit(change, (record) => {
+      const comments = record.comments ?? [];
+      const filtered = comments.filter((comment) => comment.id !== id);
+      return { ...record, comments: filtered };
     });
   }
 
@@ -311,4 +349,21 @@ export class FixtureData extends SpectyData {
   private notify(): void {
     for (const listener of this.listeners) listener();
   }
+}
+
+/** `entry` once the person decides on it in the prototype: dropped, kept or done. */
+function decided(
+  entry: MemoryEntry,
+  verb: MemoryVerb,
+  reason: string | undefined,
+  at: string,
+): MemoryEntry {
+  const closed = { at, by: "person" };
+  if (verb === "done") return { ...entry, status: "done", closed };
+  if (verb === "drop") {
+    const why = reason !== undefined && reason !== "" ? reason : (entry.drop?.reason ?? "");
+    return { ...entry, status: "dropped", drop: { reason: why, by: "person", at }, closed };
+  }
+  const { drop: _drop, ...kept } = entry;
+  return { ...kept, status: "open" };
 }

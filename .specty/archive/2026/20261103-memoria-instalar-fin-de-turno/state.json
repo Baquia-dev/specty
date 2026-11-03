@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-instalar-fin-de-turno",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-instalar-fin-de-turno",
+  "baseCommit": "a3eda5bdf9597ca1d2ec2128b917c52c79e02a6d",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b05079ea1416e2010687aec04219109cca3dd968c3e343eb39120a5b8a94c2e9",
+    "at": "2026-11-03T08:51:01.129Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d4ae90f748ceef82075d1b3a1cc28c050ee1f1f2fe1ed494d346b3c5c5bbd9ab",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c496b0928d087f9f59500de166556550e797c77c9d4e416215405b3b56f7a333",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e60ccd022c4901576c5ceee53fc53c6ef5185e16679e315574b7d9311edaa0ee",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1ca37e1c9b9a66ee8af75936e6b17a178760109837b266c041484831dc8dc9df",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0ecad69eb0501d83eb5c35cfec4e9a9dc9331dfe",
+      "attempts": 1,
+      "startedAt": "2026-11-03T08:52:50.143Z",
+      "doneAt": "2026-11-03T08:53:18.599Z",
+      "summary": "DoctorLine memory-stop (con el agente) y su texto en cards/doctor-agents.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "829818c655c5953bb889312003d385b9755f3ee1",
+      "attempts": 1,
+      "startedAt": "2026-11-03T08:53:18.952Z",
+      "doneAt": "2026-11-03T08:59:42.431Z",
+      "summary": "install/agents.ts: withMemoryStop (añade o quita la red en hooks.Stop), memoryStopLines (aviso de doctor) y la limpieza de uninstall con hook memory-stop; Claude Code y Codex la instalan con su guard y doctor la comprueba; ARCHITECTURE.md lo documenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-03T09:04:20.876Z",
+  "lockedTests": {
+    "packages/cli/test/codex.test.ts": "sha256:c84c339cc09b1487b40e91bc342dc5807023f9acd32c1898b5c65c2cf90c0f50",
+    "packages/cli/test/memory-stop-install.test.ts": "sha256:d520b3fef61eb2c2ebf09243005aab089ccce9df0363271984fe469ab854666f"
+  }
+}

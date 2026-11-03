@@ -94,11 +94,21 @@ export const checkCoverage: Rule = (spec, ctx, lang) => {
     );
 };
 
-/** Slice references exist and dependencies have no cycles. */
+/** Slice references exist, declare criteria, and dependencies have no cycles. */
 export const checkSlices: Rule = (spec, ctx, lang) => {
   const slices = spec.sections.slices?.items ?? [];
   const ids = new Set(slices.map((slice) => slice.id));
   const criteria = new Set((spec.sections.criteria?.items ?? []).map((item) => item.id));
+  const withoutCriteria = slices
+    .filter((slice) => slice.ac.length === 0)
+    .map((slice) =>
+      report(lang, {
+        code: "slice-without-criteria",
+        params: { id: slice.id },
+        line: itemLine(ctx, slice.id),
+        target: slice.id,
+      }),
+    );
   const unknown = slices.flatMap((slice) =>
     [
       ...slice.ac.filter((ref) => !criteria.has(ref)),
@@ -117,7 +127,7 @@ export const checkSlices: Rule = (spec, ctx, lang) => {
     cycle === undefined
       ? []
       : [report(lang, { code: "slice-cycle", params: { cycle: cycle.join(" → ") } })];
-  return [...unknown, ...cycles];
+  return [...withoutCriteria, ...unknown, ...cycles];
 };
 
 function findCycle(slices: readonly Slice[]): readonly string[] | undefined {

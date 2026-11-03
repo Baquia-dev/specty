@@ -141,7 +141,7 @@ const SECTION =
                 @case ('assumptions') {
                   <div role="list" [class]="list">
                     @for (assumption of review().assumptions; track assumption.id) {
-                      <sp-assumption-row [change]="change().id" [assumption]="assumption" [editable]="editable()" (comment)="anchor.set($event)" />
+                      <sp-assumption-row [change]="change().id" [assumption]="assumption" [comments]="review().comments" [editable]="editable()" (comment)="anchor.set($event)" />
                     }
                   </div>
                 }

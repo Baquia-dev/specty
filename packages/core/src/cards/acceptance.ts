@@ -114,7 +114,7 @@ function acceptanceNext(change: ChangeView, ctx: CardContext): string {
         `delegated mode: accept the result yourself with \`${ctx.command} accept\` and follow its output. If the user asks for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
       )
     : t(
-        `pide al usuario que revise el resultado y lo acepte con \`${ctx.command} accept\`. Si pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
-        `ask the user to review the result and accept it with \`${ctx.command} accept\`. If they ask for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
+        `pide al usuario que revise el resultado y lo acepte con \`${ctx.command} accept\` en su terminal o en la UI, y ejecuta \`${ctx.command} wait\` para esperar su decisión. Si pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
+        `ask the user to review the result and accept it with \`${ctx.command} accept\` in their terminal or UI, and run \`${ctx.command} wait\` to wait for their decision. If they ask for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
       );
 }

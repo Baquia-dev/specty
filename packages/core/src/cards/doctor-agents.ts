@@ -9,6 +9,7 @@ type AgentCode =
   | "claude-after-bash"
   | "claude-worktrees"
   | "claude-compact"
+  | "claude-startup"
   | "no-claude-permissions"
   | "cursor-guard"
   | "no-cursor-guard"
@@ -28,12 +29,14 @@ type AgentCode =
   | "antigravity-guard"
   | "no-antigravity-guard"
   | "antigravity-hooks"
+  | "antigravity-acp"
   | "windsurf-guard"
   | "no-windsurf-guard"
   | "windsurf-hooks"
   | "gemini-guard"
   | "no-gemini-guard"
   | "gemini-hooks"
+  | "memory-stop"
   | "enter-outdated";
 
 /** The lines of `doctor` about each agent's installation, which `cards/doctor.ts` adds to its own. */
@@ -65,6 +68,11 @@ export const AGENT_WRITERS: {
       `Claude Code: falta la tarjeta de Specty tras compactar (${line.events}); ejecuta \`${command} init\`.`,
       `Claude Code: Specty's card after a compaction is missing (${line.events}); run \`${command} init\`.`,
     ),
+  "claude-startup": (_, t, command) =>
+    t(
+      `Claude Code: el hook \`SessionStart\` de Specty es de antes de la tarjeta al empezar una sesión; ejecuta \`${command} init\`.`,
+      `Claude Code: Specty's \`SessionStart\` hook predates the card at a session's start; run \`${command} init\`.`,
+    ),
   "no-claude-permissions": (_, t, command) =>
     t(
       `Claude Code: faltan los permisos de los comandos de la persona, así que su modo auto puede vetárselos al agente aunque Specty se los permita; ejecuta \`${command} init\`.`,
@@ -83,13 +91,13 @@ export const AGENT_WRITERS: {
     ),
   "cursor-sandbox": (line, t) =>
     t(
-      `Cursor: su sandbox deja escribir a Specty en la carpeta de git y en la de las worktrees (${line.file}).`,
-      `Cursor: its sandbox lets Specty write in the git folder and the worktrees' folder (${line.file}).`,
+      `Cursor: su sandbox deja escribir a Specty en la carpeta de git (${line.file}).`,
+      `Cursor: its sandbox lets Specty write in the git folder (${line.file}).`,
     ),
   "no-cursor-sandbox": (_, t, command) =>
     t(
-      `Cursor: su sandbox no deja escribir a Specty en la carpeta de git de las worktrees, así que fallan sus commits; ejecuta \`${command} init --tools cursor\`.`,
-      `Cursor: its sandbox does not let Specty write in the worktrees' git folder, so its commits fail; run \`${command} init --tools cursor\`.`,
+      `Cursor: su sandbox no deja escribir a Specty en la carpeta de git, así que fallan sus commits; ejecuta \`${command} init --tools cursor\`.`,
+      `Cursor: its sandbox does not let Specty write in the git folder, so its commits fail; run \`${command} init --tools cursor\`.`,
     ),
   "cursor-after-command": (line, t, command) =>
     t(
@@ -140,6 +148,11 @@ export const AGENT_WRITERS: {
       `Antigravity: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools antigravity\`.`,
       `Antigravity: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools antigravity\`.`,
     ),
+  "antigravity-acp": (line, t, command) =>
+    t(
+      `Antigravity: ${line.file} es de antes de sus herramientas en los editores ACP (Zed, JetBrains), así que el guard no ve lo que lee y escribe allí; ejecuta \`${command} init --tools antigravity\`.`,
+      `Antigravity: ${line.file} predates its tools in ACP editors (Zed, JetBrains), so the guard does not see what it reads and writes there; run \`${command} init --tools antigravity\`.`,
+    ),
   "windsurf-guard": (line, t) =>
     t(
       `Devin (Windsurf): guard en ${line.file}; Devin Desktop no lo ejecuta en modo restringido.`,
@@ -169,6 +182,11 @@ export const AGENT_WRITERS: {
     t(
       `Gemini CLI: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools gemini-cli\`.`,
       `Gemini CLI: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools gemini-cli\`.`,
+    ),
+  "memory-stop": (line, t, command) =>
+    t(
+      `${AGENT_NAMES[line.tool]}: el fin de turno no lleva la red de la memoria de Specty (\`hook memory-stop\`); ejecuta \`${command} init\`.`,
+      `${AGENT_NAMES[line.tool]}: its end of turn lacks Specty's memory safety net (\`hook memory-stop\`); run \`${command} init\`.`,
     ),
   "enter-outdated": (line, t, command) =>
     t(

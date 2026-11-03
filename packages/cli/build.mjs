@@ -4,9 +4,11 @@
 // it, for the npm package; `--outdir <folder>` writes somewhere else than `dist`; `--metafile
 // <file>` keeps esbuild's metafile, for the tests. With a build of the UI, `--ui`'s or the
 // monorepo's, it also writes the page of the MCP App, `mcp-app.html` (ADR 0015).
-import { access, cp, readdir, rm, writeFile } from "node:fs/promises";
-import { basename, join, resolve } from "node:path";
-import { parseArgs } from "node:util";
+import { access, cp, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
+import { createRequire } from "node:module";
+import { basename, dirname, join, resolve } from "node:path";
+import { parseArgs, promisify } from "node:util";
+import { brotliCompress, constants } from "node:zlib";
 import { build } from "esbuild";
 import { mcpAppPage } from "./mcp-app.mjs";
 
@@ -33,6 +35,8 @@ const result = await build({
   // Prefer ESM entries: jsonc-parser's UMD build uses dynamic requires that cannot be bundled.
   mainFields: ["module", "main"],
   legalComments: "eof",
+  // web-tree-sitter's Emscripten code calls `eval`, which esbuild warns about; it works bundled.
+  logOverride: { "direct-eval": "silent" },
   metafile: true,
   banner: {
     js: [
@@ -49,6 +53,52 @@ if (values.metafile !== undefined) {
 // Apache-2.0 asks every distribution to carry the license and the notice, and the package
 // publishes only this folder (`files: ["dist"]`).
 for (const name of ["LICENSE", "NOTICE"]) await cp(join("..", "..", name), join(outdir, name));
+
+// The tree-sitter runtime and the grammars that `src/check/syntax.ts` loads (ADR 0016), compressed
+// with brotli at quality 9: 11 would save a tenth of the size and take eighty times as long.
+const require = createRequire(import.meta.url);
+const GRAMMARS = [
+  ...["typescript", "tsx", "javascript", "java", "c_sharp", "php", "c", "cpp"],
+  ...["go", "rust", "swift", "dart"],
+  ...["python", "ruby"],
+];
+const runtime = require.resolve("web-tree-sitter/web-tree-sitter.wasm");
+const compiled = join(dirname(require.resolve("@repomix/tree-sitter-wasms/package.json")), "out");
+// Kotlin and Elixir are not in `@repomix/tree-sitter-wasms`: their own packages carry them, with
+// their licenses.
+const kotlin = require.resolve("@tree-sitter-grammars/tree-sitter-kotlin/tree-sitter-kotlin.wasm");
+const elixir = require.resolve("tree-sitter-elixir/tree-sitter-elixir.wasm");
+const grammars = join(outdir, "grammars");
+await rm(grammars, { recursive: true, force: true });
+await mkdir(grammars);
+const compress = promisify(brotliCompress);
+const packed = [
+  ["web-tree-sitter", runtime],
+  ...GRAMMARS.map((name) => [`tree-sitter-${name}`, join(compiled, `tree-sitter-${name}.wasm`)]),
+  ["tree-sitter-kotlin", kotlin],
+  ["tree-sitter-elixir", elixir],
+];
+await Promise.all(
+  packed.map(async ([name, file]) => {
+    const params = { [constants.BROTLI_PARAM_QUALITY]: 9 };
+    await writeFile(
+      join(grammars, `${name}.wasm.br`),
+      await compress(await readFile(file), { params }),
+    );
+  }),
+);
+// Their licenses: the runtime's, Kotlin's and Elixir's from their packages; the others', which
+// their package does not carry, from `grammar-licenses.txt`.
+const licenses = [
+  "== web-tree-sitter: web-tree-sitter.wasm.br ==\n",
+  await readFile(join(dirname(runtime), "LICENSE"), "utf8"),
+  await readFile("grammar-licenses.txt", "utf8"),
+  "== tree-sitter-kotlin: tree-sitter-kotlin.wasm.br ==\n",
+  await readFile(join(dirname(kotlin), "LICENSE"), "utf8"),
+  "== tree-sitter-elixir: tree-sitter-elixir.wasm.br ==\n",
+  await readFile(join(dirname(elixir), "LICENSE"), "utf8"),
+];
+await writeFile(join(grammars, "LICENSES"), licenses.join("\n"));
 
 // Chunks of earlier builds, which nothing imports any more.
 const built = new Set(Object.keys(result.metafile.outputs).map((path) => basename(path)));

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
-import type { Phase } from "@baquia-dev/specty-core";
+import type { ChangeKind, Lang, Phase } from "@baquia-dev/specty-core";
 import { LucideDynamicIcon } from "@lucide/angular";
+import type { ChangeView } from "../data/records";
 import { Preferences } from "../theme/preferences";
 import { PHASE_LABELS } from "../theme/tokens";
 import {
@@ -9,10 +10,16 @@ import {
   LucideBan,
   LucideCircleCheck,
   LucideCode,
+  LucideComponent,
   LucideEye,
+  LucideFilePlus,
   LucideFlaskConical,
+  LucideGitCommitHorizontal,
+  LucideLayers,
+  LucideLightbulb,
   LucideListChecks,
   LucidePencilLine,
+  LucidePlay,
   LucideWrench,
 } from "./icons";
 
@@ -28,6 +35,22 @@ const PHASE_ICONS = {
   done: LucideCircleCheck,
   cancelled: LucideBan,
 } as const satisfies Record<Phase, unknown>;
+
+const KIND_ICONS = {
+  epic: LucideLayers,
+  standard: LucideFilePlus,
+  quick: LucidePlay,
+  retro: LucideGitCommitHorizontal,
+  spike: LucideLightbulb,
+} as const satisfies Record<ChangeKind, unknown>;
+
+const KIND_LABELS: Readonly<Record<ChangeKind, Readonly<Record<Lang, string>>>> = {
+  epic: { es: "Épica", en: "Epic" },
+  standard: { es: "Individual", en: "Standalone" },
+  quick: { es: "Quick", en: "Quick" },
+  retro: { es: "Manual", en: "Manual" },
+  spike: { es: "Spike", en: "Spike" },
+};
 
 /** A neutral badge for sizes, counts and revisions. */
 @Component({
@@ -63,4 +86,38 @@ export class PhaseBadge {
   private readonly lang = inject(Preferences).lang;
   protected readonly icon = computed(() => PHASE_ICONS[this.phase()]);
   protected readonly label = computed(() => PHASE_LABELS[this.phase()][this.lang()]);
+}
+
+/** Identifies the kind of a change (or the epic slice it implements) with an icon and label. */
+@Component({
+  selector: "sp-kind-badge",
+  imports: [LucideDynamicIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class:
+      "inline-flex h-5 max-w-full items-center gap-1 rounded-sm border border-border bg-surface px-1.5 text-[11px] font-medium text-text-muted",
+    "[attr.data-kind]": "epic() ? 'slice' : kind()",
+    "[attr.data-epic]": "epic()?.id ?? null",
+  },
+  template: `
+    <svg class="shrink-0" [lucideIcon]="icon()" size="11" aria-hidden="true"></svg>
+    <span class="truncate">{{ label() }}</span>
+  `,
+})
+export class KindBadge {
+  readonly kind = input.required<ChangeKind>();
+  readonly epic = input<ChangeView["epic"] | undefined>(undefined);
+
+  private readonly preferences = inject(Preferences);
+  protected readonly icon = computed(() =>
+    this.epic() !== undefined ? LucideComponent : KIND_ICONS[this.kind()],
+  );
+  protected readonly label = computed(() => {
+    const epic = this.epic();
+    const lang = this.preferences.lang();
+    if (epic === undefined) return KIND_LABELS[this.kind()][lang];
+    const prefix = lang === "es" ? "Corte" : "Slice";
+    const head = epic.slice ? `${prefix} ${epic.slice}` : prefix;
+    return `${head} · ${epic.title}`;
+  });
 }

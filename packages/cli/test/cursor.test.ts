@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { basename, dirname, join } from "node:path";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   APP,
@@ -232,25 +232,22 @@ describe("installing the check in Cursor", () => {
 
 const SANDBOX = ".cursor/sandbox.json";
 const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
-/** The folders Specty's commands write in outside a change's folder: git's own and the worktrees'. */
-const foldersOf = (root: string) => [
-  join(root, ".git"),
-  join(dirname(root), `${basename(root)}.worktrees`),
-];
+/** The folder Specty's commands write in outside a change's folder: git's own (AC1). */
+const foldersOf = (root: string) => [join(root, ".git")];
 const sandboxOf = async (root: string) => JSON.parse(await read(root, SANDBOX));
 
 describe("Cursor's sandbox and Specty's commits", () => {
-  it("lets Specty write in git's folder and the worktrees', kept out of git, and doctor checks it (AC4)", async () => {
+  it("AC1: lets Specty write in git's folder only, kept out of git, and doctor checks it", async () => {
     const root = await tempRepo(PACKAGE);
     const init = await cli(root, ["init", "--language", "es", "--tools", "cursor"]);
     expect(init.out).toContain(
-      "Cursor: .cursor/sandbox.json (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees, que su sandbox deja fuera.",
+      "Cursor: .cursor/sandbox.json (local) deja escribir a los comandos de Specty en la carpeta de git, que su sandbox deja fuera.",
     );
     expect((await sandboxOf(root)).additionalReadwritePaths).toEqual(foldersOf(root));
     expect(await read(root, ".git/info/exclude")).toContain(`/${SANDBOX}`);
     expect(git(root, "status", "--porcelain")).toBe("");
     expect((await cli(root, ["doctor"])).out).toContain(
-      "Cursor: su sandbox deja escribir a Specty en la carpeta de git y en la de las worktrees (.cursor/sandbox.json).",
+      "Cursor: su sandbox deja escribir a Specty en la carpeta de git (.cursor/sandbox.json).",
     );
 
     // What the person had stays, and running init again adds nothing twice.
@@ -267,7 +264,7 @@ describe("Cursor's sandbox and Specty's commits", () => {
     const doctor = await cli(root, ["doctor"]);
     expect(doctor.code).toBe(1);
     expect(doctor.out).toContain(
-      "Cursor: su sandbox no deja escribir a Specty en la carpeta de git de las worktrees, así que fallan sus commits; ejecuta `specty init --tools cursor`.",
+      "Cursor: su sandbox no deja escribir a Specty en la carpeta de git, así que fallan sus commits; ejecuta `specty init --tools cursor`.",
     );
   });
 
@@ -277,9 +274,9 @@ describe("Cursor's sandbox and Specty's commits", () => {
       [SANDBOX]: '{"networkPolicy":{"default":"deny"}}\n',
     });
     const init = await cli(root, ["init", "--language", "es", "--tools", "cursor"]);
-    const [gitFolder, worktrees] = foldersOf(root);
+    const [gitFolder] = foldersOf(root);
     expect(init.out).toContain(
-      `Cursor: .cursor/sandbox.json está en git, así que Specty no lo toca; añade \`${gitFolder}\`, \`${worktrees}\` a \`additionalReadwritePaths\` para que los commits de Specty funcionen en su sandbox.`,
+      `Cursor: .cursor/sandbox.json está en git, así que Specty no lo toca; añade \`${gitFolder}\` a \`additionalReadwritePaths\` para que los commits de Specty funcionen en su sandbox.`,
     );
     expect(await sandboxOf(root)).toEqual({ networkPolicy: { default: "deny" } });
   });
@@ -294,6 +291,21 @@ describe("Cursor's sandbox and Specty's commits", () => {
         additionalReadwritePaths: ["/opt/cache", ...sandbox.additionalReadwritePaths],
       }),
     });
+    await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
+    expect(await sandboxOf(root)).toEqual({ additionalReadwritePaths: ["/opt/cache"] });
+  });
+
+  it("AC2: takes out the worktrees' folder an older init gave it, and leaves the person's", async () => {
+    const root = await tempRepo(PACKAGE);
+    const home = `${root}.worktrees`;
+    const older = { additionalReadwritePaths: ["/opt/cache", join(root, ".git"), home] };
+    await writeFiles(root, { [SANDBOX]: JSON.stringify(older) });
+    await cli(root, ["init", "--language", "es", "--tools", "cursor"]);
+    expect((await sandboxOf(root)).additionalReadwritePaths).toEqual([
+      "/opt/cache",
+      join(root, ".git"),
+    ]);
+    await writeFiles(root, { [SANDBOX]: JSON.stringify(older) });
     await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
     expect(await sandboxOf(root)).toEqual({ additionalReadwritePaths: ["/opt/cache"] });
   });

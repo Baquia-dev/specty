@@ -3,7 +3,7 @@
 // it): reading is required, every action is optional.
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
-import type { Bilingual, ChangeRecord, CommentAnchor, Delegation } from "./records";
+import type { Bilingual, ChangeRecord, CommentAnchor, Delegation, MemoryRecord } from "./records";
 import type { TraceRecord } from "./trace";
 
 /** An action the source could not do, explained in both languages. */
@@ -22,6 +22,9 @@ const NO_TRACE: Bilingual = {
   es: "Esta fuente no da la trazabilidad.",
   en: "This source gives no traceability.",
 };
+
+/** What the person decides on an entry of Specty's memory (ADR 0016). */
+export type MemoryVerb = "drop" | "keep" | "done";
 
 /**
  * Any data source the UI can run on: fetch + SSE from the local server, `postMessage` in an
@@ -48,6 +51,14 @@ export abstract class SpectyData {
   }
 
   addComment(_change: string, _anchor: CommentAnchor, _body: string): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  editComment(_change: string, _id: string, _body: string): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  deleteComment(_change: string, _id: string): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));
   }
 
@@ -113,6 +124,16 @@ export abstract class SpectyData {
   /** Delegated mode as the source knows it; nothing when it cannot tell. */
   delegation(): Promise<Delegation | undefined> {
     return Promise.resolve(undefined);
+  }
+
+  /** Specty's memory and who holds each open change (ADR 0016); nothing when it cannot tell. */
+  memory(): Promise<MemoryRecord | undefined> {
+    return Promise.resolve(undefined);
+  }
+
+  /** The person's decision on entry `id`: drop it (with its reason), keep it, or mark it done. */
+  memoryAction(_id: string, _verb: MemoryVerb, _reason?: string): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
   }
 
   /** Turns delegated mode on, once the person read the warning, or off. */

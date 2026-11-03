@@ -82,3 +82,70 @@ describe("the flow block with Specty's MCP server", () => {
     }
   });
 });
+
+describe("rules for epics and vertical slices", () => {
+  it("AC4: includes rule requiring vertical slices and drafting specs for parallel agents", () => {
+    const es = flowBlock("es", "specty");
+    expect(es).toContain("cortes verticales");
+    expect(es).toContain("paralelo");
+    const en = flowBlock("en", "specty");
+    expect(en).toContain("vertical slices");
+    expect(en).toContain("parallel");
+  });
+
+  it("AC3: mentions specty wait and scope decisions in flowBlock for human approvals", () => {
+    const es = flowBlock("es", "specty");
+    expect(es).toContain("specty wait");
+    expect(es).toContain("decidir el alcance");
+    const en = flowBlock("en", "specty");
+    expect(en).toContain("specty wait");
+    expect(en).toContain("deciding scope");
+  });
+
+  it("AC1: flowBlock explicitly requires entering worktree with specty enter and forbids asking for another session", () => {
+    const es = flowBlock("es", "specty");
+    expect(es).toContain("Entra con `specty enter <id>`");
+    expect(es).toContain("no pidas abrir otra sesión ni cambiar de rama");
+    const en = flowBlock("en", "specty");
+    expect(en).toContain("Enter with `specty enter <id>`");
+    expect(en).toContain("do not ask to open another session or switch branches");
+  });
+});
+
+describe("shielding AGENTS.md", () => {
+  it("AC1: humanSections hints forbid product specs or phases and point to dedicated files", () => {
+    const es = humanSections("es");
+    expect(es).toContain("PRODUCT.md");
+    expect(es).toContain("docs/");
+    expect(es).toContain("< 80 líneas");
+    const en = humanSections("en");
+    expect(en).toContain("PRODUCT.md");
+    expect(en).toContain("docs/");
+    expect(en).toContain("< 80 lines");
+  });
+
+  it("AC2: flowBlock preserves 15-line limit and 5 non-verifiable rules", () => {
+    const es = flowBlock("es", "specty").split("\n");
+    expect(es.length).toBeLessThanOrEqual(15);
+    const en = flowBlock("en", "specty").split("\n");
+    expect(en.length).toBeLessThanOrEqual(15);
+  });
+
+  it("AC4: flowBlock includes rule forbidding modifying .git or bypassing permissions", () => {
+    const es = flowBlock("es", "specty");
+    expect(es).toMatch(/\.git|permisos/);
+    const en = flowBlock("en", "specty");
+    expect(en).toMatch(/\.git|permissions/);
+    expect(es.split("\n").length).toBeLessThanOrEqual(15);
+    expect(en.split("\n").length).toBeLessThanOrEqual(15);
+  });
+
+  it("AC3: flowBlock rules mandate scaffolding with framework commands in new projects with non-leaking scope exception", () => {
+    const es = flowBlock("es", "specty");
+    expect(es).toContain("andamiaje con framework");
+    expect(es).toContain("globs en alcance como única excepción");
+    const en = flowBlock("en", "specty");
+    expect(en).toContain("framework scaffolding");
+    expect(en).toContain("globs in scope as sole exception");
+  });
+});

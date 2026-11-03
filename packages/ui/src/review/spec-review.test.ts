@@ -231,13 +231,20 @@ describe("SpecReview", () => {
     const a2 = review()?.querySelector("sp-assumption-row[data-item=A2]");
     a2?.querySelector<HTMLButtonElement>("sp-button button")?.click();
     await settle();
+    expect(text(bar()?.querySelector("[data-blocked]"))).toBe(
+      "Hay 2 comentarios sin resolver: pide cambios.",
+    );
+    expect(barButtons()[1]?.disabled).toBe(true);
+
+    const source = TestBed.inject(SpectyData);
+    await source.deleteComment(REVIEW, "c1");
+    await source.deleteComment(REVIEW, "c2");
+    await settle();
+
     expect(bar()?.querySelector("[data-blocked]")).toBeNull();
     expect(barButtons()[1]?.disabled).toBe(false);
     expect(text(barButtons()[1])).toBe("Aprobar revisión 2");
 
-    barButtons()[0]?.click();
-    await settle();
-    expect(TestBed.inject(Toasts).items().at(-1)?.text).toContain("Comentarios enviados");
     barButtons()[1]?.click();
     await settle();
     expect(TestBed.inject(Toasts).items().at(-1)?.text).toBe("Revisión 2 aprobada.");

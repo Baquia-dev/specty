@@ -90,6 +90,27 @@ describe("decideGuard on files", () => {
     });
   });
 
+  it("AC3: protects the hooks of Antigravity, Gemini CLI and Devin, written or deleted", () => {
+    for (const path of [".agents/hooks.json", ".gemini/settings.json", ".devin/hooks.v1.json"]) {
+      for (const action of [write(path), { kind: "delete" as const, paths: [path] }]) {
+        expect(decideGuard(action, ctx(IMPLEMENTING)), path).toMatchObject({
+          allow: false,
+          rule: "protected",
+        });
+      }
+    }
+    // The rest of each tool's folder belongs to the person.
+    for (const path of [
+      ".agents/skills/x/SKILL.md",
+      ".gemini/commands/x.toml",
+      ".devin/notes.md",
+    ]) {
+      expect(decideGuard(write(path), ctx(IMPLEMENTING)), path).not.toMatchObject({
+        rule: "protected",
+      });
+    }
+  });
+
   it("lets the agent edit the spec only while the phase allows it", () => {
     expect(allowed(write(SPEC), ctx(change("draft")))).toBe(true);
     expect(allowed(write(SPEC), ctx(change("adjusting")))).toBe(true);
@@ -168,7 +189,7 @@ describe("decideGuard on shell commands", () => {
     expect(allowed(shell({ bypass: true }), ctx())).toBe(false);
   });
 
-  it("opens the person's commands to the agent only when the person delegated them", () => {
+  it("AC2: opens the person's commands to the agent only when the person delegated them", () => {
     const delegated: GuardContext = { ...ctx(IMPLEMENTING), delegated: true };
     for (const name of ["approve", "accept", "close", "cancel", "reject"]) {
       expect(allowed(shell({ specty: [name] }), delegated)).toBe(true);
@@ -179,7 +200,9 @@ describe("decideGuard on shell commands", () => {
         expect(denied.reason).toBe(
           `\`specty ${name}\` lo ejecuta el usuario en su terminal, no el agente.`,
         );
-        expect(denied.next).toBe("pídele al usuario que lo ejecute y termina tu turno.");
+        expect(denied.next).toBe(
+          "pídele al usuario que lo ejecute y ejecuta `specty wait` para esperar su decisión.",
+        );
       }
     }
   });

@@ -125,6 +125,16 @@ describe("the capability table", () => {
     expect(capabilityTable("en")).toContain("**Not possible:**");
   });
 
+  it("AC1: says that Antigravity does not enter a change's folder outside its workspace, here and in ARCHITECTURE", () => {
+    const limit =
+      "Su agente solo trabaja en las carpetas de su espacio de trabajo: si la del cambio no está en ellas, el guard no lo deja entrar y pide abrirla en una conversación nueva.";
+    const row = capabilityTable("es")
+      .split("\n")
+      .find((line) => line.startsWith("- Worktree por nombre (Antigravity):"));
+    expect(row).toContain(limit);
+    expect(readFileSync(ARCHITECTURE, "utf8")).toContain(limit);
+  });
+
   it("is the table ARCHITECTURE §10 shows (AC3)", () => {
     const text = readFileSync(ARCHITECTURE, "utf8");
     const begin = "<!-- specty:capabilities:begin -->\n";

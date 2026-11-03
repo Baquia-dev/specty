@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-bitacora-c6",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-bitacora-c6",
+  "baseCommit": "9483005534b070cf93f6982555cb9da2f356708f",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3297ed5b4f2a481b39d4b142494f1926dadc64bc5faaa6980096bd72d4ae999b",
+    "at": "2026-11-03T09:05:55.792Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b7ea820931a100c89ed36491c62db8838405e6960a36cfc6994bd2438ec21034",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:04ad2bb0d9c3b3f0bfe6f7ceebd192e600050651b4bf47ed045f330c8f185564",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:ca1ff974c2f07a4b158ff1dd292c3a8a39fd733bb847fd4c176a7770d19f60ef",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b44d20853853ab6ae2eb0ca9618de44c5c62766e262af4e991696aa76c76a0b1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ceff03bd396c17f961de9221ab8a9b38c39fa910",
+      "attempts": 1,
+      "startedAt": "2026-11-03T09:06:55.727Z",
+      "doneAt": "2026-11-03T09:08:30.837Z",
+      "summary": "cards/notes.ts: notedCard, noteRefusalCard y notesBlock («BITÁCORA»); ChangeView.notes con NoteView; nextCard añade la bitácora a la tarjeta de cada fase",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "e7b4a191ab0b152a21854cf3c04d154b1efe8d19",
+      "attempts": 1,
+      "startedAt": "2026-11-03T09:08:31.470Z",
+      "doneAt": "2026-11-03T09:10:33.311Z",
+      "summary": "commands/note.ts: specty note con el lock del cambio, que anota change.noted con el texto; flow/views.ts pasa las tres últimas notas a la vista; enter se registra en su propia función; formats.md y ARCHITECTURE.md lo documentan",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-03T09:21:00.680Z",
+  "lockedTests": {
+    "packages/cli/test/note.test.ts": "sha256:2e6ddc9a0c8dac519f472473092b8322bd17370cf66e6e707e9d6b1e847093f4",
+    "packages/core/test/cards/notes.test.ts": "sha256:93dd7c07c0321fe352035659636d2381b089e407f0a858b98cd85cb651904125"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "62172a6cae2a5062160d6594db5930843c401c45",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/src/agents/cursor.ts",
+      "packages/cli/src/agents/windsurf.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/note.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/flow/worktree.ts",
+      "packages/cli/test/cursor.test.ts",
+      "packages/cli/test/doctor-enter.test.ts",
+      "packages/cli/test/note.test.ts",
+      "packages/cli/test/windsurf.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/install.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/core/src/cards/notes.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/test/cards/notes.test.ts"
+    ],
+    "at": "2026-11-03T09:10:47.986Z",
+    "resolved": {
+      "commit": "7db5b24",
+      "at": "2026-11-03T09:15:51.312Z"
+    }
+  }
+}

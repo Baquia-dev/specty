@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { AGENT_NAMES, type AgentTool } from "../agents";
 import type { Lang } from "../i18n";
 
 /** A path inside another worktree of the repository: it belongs to another change. */
@@ -85,6 +86,41 @@ export function nativeEnterDenial(id: string, lang: Lang): Denial {
     next: t(
       `usa \`EnterWorktree\` con \`name: "${id}"\`.`,
       `use \`EnterWorktree\` with \`name: "${id}"\`.`,
+    ),
+  };
+}
+
+/** A change's folder outside every folder its tool lets its agent work in. */
+export interface Unreachable {
+  readonly id: string;
+  readonly folder: string;
+  /** The folders the tool lets its agent work in, as it says. */
+  readonly workspace: readonly string[];
+  /** The folder of every change's worktree: added to the editor's project, all are in reach. */
+  readonly home: string;
+  readonly tool: AgentTool;
+}
+
+/**
+ * A tool whose agent only works inside its workspace cannot enter a change's folder outside it:
+ * the conversation opens there anew instead (ARCHITECTURE §10).
+ */
+export function unreachableEnterDenial(
+  { id, folder, workspace, home, tool }: Unreachable,
+  lang: Lang,
+  command: string,
+): Denial {
+  const t = (es: string, en: string) => (lang === "es" ? es : en);
+  const name = AGENT_NAMES[tool];
+  const folders = workspace.map((path) => `\`${path}\``).join(", ");
+  return {
+    reason: t(
+      `${name} solo trabaja dentro de las carpetas de su espacio de trabajo (${folders}), y la del cambio ${id}, \`${folder}\`, no está en ninguna: allí no podría leer ni escribir nada.`,
+      `${name} only works inside the folders of its workspace (${folders}), and the folder of change ${id}, \`${folder}\`, is in none of them: it could not read or write anything there.`,
+    ),
+    next: t(
+      `no entres. Dile al usuario que abra \`${folder}\` en su editor (en Zed, con el selector de worktrees: \`git: worktree\`) y siga allí en una conversación nueva que empiece por \`${command} next\`, o que añada \`${home}\` al proyecto de su editor para que ${name} pueda entrar en cualquier cambio; luego termina tu turno.`,
+      `do not enter. Tell the user to open \`${folder}\` in their editor (in Zed, with the worktree picker: \`git: worktree\`) and carry on there in a new conversation that starts with \`${command} next\`, or to add \`${home}\` to their editor's project so that ${name} can enter any change; then end your turn.`,
     ),
   };
 }

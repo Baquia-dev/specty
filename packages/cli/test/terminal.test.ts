@@ -83,4 +83,13 @@ describe("a question with several answers", () => {
     expect(await scripted.chooseMany("¿Cuáles?", options, [])).toEqual(["claude-code", "codex"]);
     await expect(AGENT.chooseMany("¿Cuáles?", options, [])).rejects.toThrow();
   });
+
+  it("accepts options with hint in choose and chooseMany and passes them through (AC7)", async () => {
+    const optionsWithHint = [
+      { value: "es", label: "Español", hint: "Lenguaje principal (ej. tareas)" },
+      { value: "en", label: "English", hint: "Main language (e.g. tasks)" },
+    ];
+    expect(await person().choose("¿Idioma?", optionsWithHint)).toBe("es");
+    expect(await person().chooseMany("¿Idiomas?", optionsWithHint, ["en"])).toEqual(["en"]);
+  });
 });

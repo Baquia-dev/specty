@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "id": "20261030-elixir-en-specty-check",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-elixir-en-specty-check",
+  "baseCommit": "ee895c8ad9d0b0d0c2a09e87cea291ed1eff6cdf",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:212cb95c9a0872d57e61bd01648d91136fc2a8fe6e9734defee17cdb1c3298f3",
+    "at": "2026-10-30T11:35:01.381Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9a93cc9f318538a7ff5c6312dd4359072d90f0b361d86cd27dcfd95920e8f8b4",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:2c93389a500066b43e1c0e286cbf093fcbaa4f19b69af54f116c46947dc3c4bc",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:fc6341c7d6c0765b04a26ec9ebac0faa76d03ea3759cd83a9a10dea473c0ccf8",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:832840a4b2de0022f07df21fbb520cc63f519f1412548402808b33a4b8209233",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "1759bf04b97c06a104e0b91ec4f8ac1d5f8d4d30",
+      "attempts": 1,
+      "startedAt": "2026-10-30T11:35:51.117Z",
+      "doneAt": "2026-10-30T11:36:40.456Z",
+      "summary": "specty check mide Elixir (.ex y .exs) con tree-sitter: la gramática sale de su paquete, y el proveedor de funciones ya no deja ningún stack fuera.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ead240fabe2e1d6bd773845b78c06fa63588c578",
+      "attempts": 1,
+      "startedAt": "2026-10-30T11:36:40.813Z",
+      "doneAt": "2026-10-30T11:37:11.297Z",
+      "summary": "El build comprime la gramática de Elixir desde su paquete y añade su licencia Apache-2.0 a grammars/LICENSES.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "29bea115e257031d5ff51abd76a819600340642f",
+      "attempts": 1,
+      "startedAt": "2026-10-30T11:37:11.657Z",
+      "doneAt": "2026-10-30T11:37:49.012Z",
+      "summary": "formats, checks (es y en) y ARCHITECTURE dejan de exceptuar Elixir y describen su medida; el ADR 0016 nombra sus fuentes, el peer opcional y el tamaño final (1,8 MB).",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-30T11:42:41.585Z",
+  "lockedTests": {
+    "packages/cli/test/check-functions.test.ts": "sha256:b96bf6fb7c5fd6cf1a18f37b68e66f087d0562085be760cfd313cc1e14698001",
+    "packages/cli/test/bundle-grammars-elixir.test.ts": "sha256:c316318e2db202aa7fcd5e7116bd77bb3843d95acb6d2f21ba25bd5618e03fdd",
+    "packages/cli/test/check-functions-elixir.test.ts": "sha256:df6069df86b9577027ef7453400f1a8e7c27e24ce7f8cfc735969552acc0f750"
+  }
+}

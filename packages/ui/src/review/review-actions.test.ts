@@ -98,7 +98,13 @@ describe("ReviewActions", () => {
   it("says the agent prepares the next revision once changes were asked for (AC2)", async () => {
     const { actions, buttons, fixture, host } = await render();
     const asked = { revision: 2, at: "2026-10-24T10:00:00Z" };
-    host.change.set({ ...viewOf(REVIEW), highImpactPending: 0, changesRequested: asked });
+    const base = viewOf(REVIEW);
+    host.change.set({
+      ...base,
+      highImpactPending: 0,
+      changesRequested: asked,
+      review: { ...base.review, comments: [] },
+    });
     await fixture.whenStable();
     expect(text(actions()?.querySelector("[data-requested]"))).toBe(
       "Cambios pedidos: el agente prepara la revisión 3.",
@@ -108,14 +114,75 @@ describe("ReviewActions", () => {
 
   it("requests changes and approves the revision it shows, telling so (AC2)", async () => {
     const { buttons, fixture, host } = await render();
-    host.change.set({ ...viewOf(REVIEW), highImpactPending: 0 });
+    const base = viewOf(REVIEW);
+    // Con comentarios abiertos se pueden pedir cambios
+    host.change.set({ ...base, highImpactPending: 0 });
     await fixture.whenStable();
-    expect(buttons()[1]?.disabled).toBe(false);
     buttons()[0]?.click();
     await fixture.whenStable();
     expect(TestBed.inject(Toasts).items().at(-1)?.text).toContain("Comentarios enviados");
+
+    // Sin comentarios pendientes se puede aprobar
+    host.change.set({ ...base, highImpactPending: 0, review: { ...base.review, comments: [] } });
+    await fixture.whenStable();
+    expect(buttons()[1]?.disabled).toBe(false);
     buttons()[1]?.click();
     await fixture.whenStable();
     expect(TestBed.inject(Toasts).items().at(-1)?.text).toBe("Revisión 2 aprobada.");
+  });
+
+  it("AC5: disables approve button and allows requesting changes when open comments exist", async () => {
+    const { actions, buttons, fixture, host } = await render();
+    const view = viewOf(REVIEW);
+    host.change.set({
+      ...view,
+      highImpactPending: 0,
+      review: {
+        ...view.review,
+        comments: [
+          {
+            id: "c1",
+            revision: 2,
+            anchor: { item: "A1" },
+            author: "User",
+            body: "Revisar",
+            createdAt: new Date().toISOString(),
+            resolved: false,
+            section: "assumptions",
+          },
+        ],
+      },
+    });
+    await fixture.whenStable();
+    expect(buttons()[1]?.disabled).toBe(true);
+    expect(text(actions()?.querySelector("[data-blocked]"))).toContain("comentario");
+    expect(buttons()[0]?.disabled).toBe(false);
+  });
+
+  it("AC3: shows loading state on approve and request changes buttons while actions run", async () => {
+    const { buttons, fixture, host } = await render();
+    const source = TestBed.inject(SpectyData);
+    let resolveApprove!: () => void;
+    const pendingApprove = new Promise<void>((res) => {
+      resolveApprove = res;
+    });
+    source.approve = () => pendingApprove;
+
+    const base = viewOf(REVIEW);
+    host.change.set({ ...base, highImpactPending: 0, review: { ...base.review, comments: [] } });
+    await fixture.whenStable();
+
+    const approveButton = buttons()[1];
+    approveButton?.click();
+    await fixture.whenStable();
+
+    expect(approveButton?.getAttribute("aria-busy")).toBe("true");
+    expect(approveButton?.disabled).toBe(true);
+    expect(approveButton?.querySelector(".animate-spin")).not.toBeNull();
+
+    resolveApprove();
+    await new Promise((resolve) => setTimeout(resolve));
+    await fixture.whenStable();
+    expect(approveButton?.getAttribute("aria-busy")).toBeNull();
   });
 });

@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261103-guard-antigravity-acp",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-guard-antigravity-acp",
+  "baseCommit": "2e52355e2c9dfffd9c6187c41572e38939603811",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:305ec90d1e93b2f7ed1f36025f591101bfc8fd3ea1eefaa4d5ef604b0959419f",
+    "at": "2026-11-03T06:46:50.843Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:20a2e481feadd09d80cf99a3369eaff6fca15e1dbd8ada56942230a4fc8ce29c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ad52004cb7b802303bcecc068b131e04e72c04ff8509c47746aebd02c0f3f92b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:5765c8e75357832fd396d057d70a8b2af5b7177401000b927e44c97e4647869d",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:796b0bc6b0855304dacc2104338a28b21613c3348eaa5e8784962c841b196bb7",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2b7d1decba9a7e4cdf4742392d779c44066e4e69",
+      "attempts": 1,
+      "startedAt": "2026-11-03T06:48:48.740Z",
+      "doneAt": "2026-11-03T06:50:23.916Z",
+      "summary": "El guard de Antigravity juzga client_view_file como lectura y client_edit_file/client_create_file como escrituras (tabla WRITES); doctor da antigravity-acp para un hook con lecturas pero sin ellas",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "050d633b91f47f31b74a1c4e4e582037c8d7455d",
+      "attempts": 1,
+      "startedAt": "2026-11-03T06:50:24.226Z",
+      "doneAt": "2026-11-03T06:50:57.358Z",
+      "summary": "PROTECTED suma .agents/hooks.json, .gemini/settings.json y .devin/hooks.v1.json; ARCHITECTURE nombra los hooks protegidos y las herramientas ACP de Antigravity",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-03T06:55:34.761Z",
+  "lockedTests": {
+    "packages/cli/test/antigravity.test.ts": "sha256:ed1f420aeeb84cf08e06501441425a492bcbd0c86590b55804dd41417daede3f",
+    "packages/core/test/guard/decide.test.ts": "sha256:50cdec7555588163bd53a220f3618ae673c262a1a9052e3804b4286359865c50"
+  }
+}

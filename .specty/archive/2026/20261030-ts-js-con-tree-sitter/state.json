@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "id": "20261030-ts-js-con-tree-sitter",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-ts-js-con-tree-sitter",
+  "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1220a02beceac7af67251e878b452405cd1e127dd3f23dd12645b51444f18a7a",
+    "at": "2026-10-30T10:12:55.713Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "cambia dependencias",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ce6a854e20cdea729d7e18df6234ff4e7214d22f09901b075467db1063ba99f6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e99911917ddce9d9e04065005dea64addcd27807455248c4a25a7741749577fc",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:9dea6430ddb1b8aff935aa102913b69fe3fb26170cc805ee75abbd0d5ccf4125",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:9d10ff4fd2610c8da331af3cbab2dedffa09d1bfed1f182b86d256ef1d223682",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:1490b3c88804834363b0a926a2ffc67c0dcd3eb163347c01075426752d4709c6",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:87fc11f95c6220ffc71772f7a949e5fd415dddb32936fb030e4c5198ec0a61d5",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:e3c968e11b8d68b7cf4f0e324af2bfd33af45d9136dbfb0a714bc0b8734a4c6a",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:4806df08eb7cd7a025066d077729c75be2be62884287b1fa53ec98e1a16fdd17",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "9a1aff68dfe31e7e359b59e1d612f0a744d62253",
+      "attempts": 1,
+      "startedAt": "2026-10-30T10:16:17.869Z",
+      "doneAt": "2026-10-30T10:18:39.620Z",
+      "summary": "treeFunctions mide en el core las funciones de TypeScript y JavaScript sobre el árbol de tree-sitter, con la tabla de cada lenguaje en tree-languages.ts; solo cuentan los nodos con nombre, porque el token `function` tiene el mismo tipo que un nodo.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "59f2288cbaac4d55446d76b83d999bf5e53297ec",
+      "attempts": 2,
+      "startedAt": "2026-10-30T10:18:39.967Z",
+      "doneAt": "2026-10-30T10:23:45.065Z",
+      "summary": "specty check mide TypeScript y JavaScript con tree-sitter (check/syntax.ts) y cae en la estimación si una versión no parsea o la gramática no carga; cada gramática espera al runtime, y las dos verificaciones comparten la medida de la ejecución.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "b078b037e7ba8acb0e670ba5e4d4a26d3bd47507",
+      "attempts": 1,
+      "startedAt": "2026-10-30T10:23:45.399Z",
+      "doneAt": "2026-10-30T10:27:09.673Z",
+      "summary": "El build deja en dist/grammars el runtime y las gramáticas de TypeScript, TSX y JavaScript comprimidas con brotli (calidad 9) y sus licencias; el bundle lee solo esas copias, porque el NODE_PATH de pnpm le dejaba encontrar otras.",
+      "scopeExtra": [
+        "packages/cli/src/check/syntax.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "c26e861b9e036c04554874f50614581a1ad3366b",
+      "attempts": 1,
+      "startedAt": "2026-10-30T10:27:10.000Z",
+      "doneAt": "2026-10-30T10:29:05.072Z",
+      "summary": "ADR 0016 recoge la decisión, el tamaño y la deuda que destapa; formats, checks (es y en) y ARCHITECTURE describen la medida de TypeScript y JavaScript sobre el árbol y el respaldo de la estimación.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 8,
+    "AC": 7,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-30T10:33:25.647Z",
+  "lockedTests": {
+    "packages/cli/test/bundle-grammars.test.ts": "sha256:5c0dbef58a3c63386da9c94de94b5ba39647e53cc3d5b8ea96a65df61f8b3765",
+    "packages/cli/test/check-functions-tree.test.ts": "sha256:87fb2d7da857fd120f27220f74d3e39e311c99b7b80ce21837b97988c2a9edb8",
+    "packages/core/test/checks/functions-tree.test.ts": "sha256:deefdd2c3d5d6038e39f3226365b5b22b427d59bb4eb2784207882a23a3ba3b5"
+  }
+}

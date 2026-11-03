@@ -275,7 +275,7 @@ export function runAgainNext(again: "close" | "accept", ctx: CardContext): strin
         `delegated mode: run \`${ctx.command} ${again}\` again yourself and follow its output.`,
       )
     : t(
-        `pide al usuario que vuelva a ejecutar \`${ctx.command} ${again}\` y termina tu turno.`,
-        `ask the user to run \`${ctx.command} ${again}\` again and end your turn.`,
+        `pide al usuario que vuelva a ejecutar \`${ctx.command} ${again}\` y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
+        `ask the user to run \`${ctx.command} ${again}\` again and run \`${ctx.command} wait\` to wait for their decision.`,
       );
 }

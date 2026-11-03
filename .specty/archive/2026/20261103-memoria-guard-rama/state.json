@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-guard-rama",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-guard-rama",
+  "baseCommit": "d2162d4783f13176b6898d79bfcd407c810bf47e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:da24f1a268593347e14df937a3906aa6a9630fb0ba132c77d813bfa675798acc",
+    "at": "2026-11-03T07:51:52.351Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ac6ea0e24ba032ba28e97aac27094390ce3071120dcd77380ac5c26835e6d488",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e06e325c988ce5fa145ef03520a06ed511c672a27eaeb149ba0965d77b534139",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e7a518b0765d685ef4de26c6a65d51c0ce54e70df146c30a321d7b28697572cc",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "22acfb1e701e2463b8c18dfb6076865c779069c0",
+      "attempts": 1,
+      "startedAt": "2026-11-03T07:53:34.122Z",
+      "doneAt": "2026-11-03T07:55:53.175Z",
+      "summary": "guard/git-refs.ts: writtenRefs da las ramas que escribe, borra, sube o saca cada comando de git; GitEffects y ShellAnalysis llevan refs; la regla memory del guard bloquea la rama de memory.branch o «*»",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2d6110eca915368275e4db953897e29d4b01a53d",
+      "attempts": 1,
+      "startedAt": "2026-11-03T07:55:53.507Z",
+      "doneAt": "2026-11-03T07:56:40.540Z",
+      "summary": "enforce/place.ts pasa las ramas del análisis al guard; ARCHITECTURE.md documenta la regla de la rama de la memoria",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-03T08:00:53.787Z",
+  "lockedTests": {
+    "packages/cli/test/memory-guard.test.ts": "sha256:6794574c8025967ff59aa3427812ef193e5d4d8359127688928e626cc3c8136a",
+    "packages/core/test/guard/memory-branch.test.ts": "sha256:e443efc84042679fae6d28262d81d2089af3f57bc4e339ff5a9b27f45bfc76c1"
+  }
+}

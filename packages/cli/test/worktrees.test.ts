@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { basename, delimiter, dirname, join } from "node:path";
+import { delimiter, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { hideFolder } from "../src/flow/worktree";
+import { execute } from "../src/io/exec";
 import { exists } from "../src/io/files";
 import {
   CHANGE,
@@ -22,8 +24,8 @@ const FILES = {
   ".specty/config.yaml": CONFIG(),
 };
 const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
-/** Where `new --worktree` puts the worktrees of `root`. */
-const home = (root: string) => join(dirname(root), `${basename(root)}.worktrees`);
+/** Where `new --worktree` puts the worktrees of `root`: inside it (ADR 0018). */
+const home = (root: string) => join(root, ".worktrees");
 /** Claude Code's hook before an agent action, run from `cwd`. */
 const claude = (cwd: string, tool: string, input: Record<string, unknown>) =>
   cli(cwd, ["guard", "--tool", "claude-code"], {
@@ -58,6 +60,24 @@ describe("specty new --worktree", () => {
     expect(await read(root, "src/app.ts")).toBe("a medias\n");
   });
 
+  it("AC1: marks the worktrees container folder as hidden with OS attributes", async () => {
+    const root = await tempRepo(FILES);
+    const created = await cli(root, ["new", "--worktree", "Otro cambio"]);
+    expect(created.code).toBe(0);
+    const worktreesDir = home(root);
+    expect(await exists(worktreesDir)).toBe(true);
+
+    if (process.platform === "darwin") {
+      const listing = await execute("ls", ["-ldO", worktreesDir], { cwd: dirname(worktreesDir) });
+      expect(listing.stdout).toMatch(/\bhidden\b/);
+    } else if (process.platform === "win32") {
+      const attrib = await execute("attrib", [worktreesDir], { cwd: dirname(worktreesDir) });
+      expect(attrib.stdout).toMatch(/H/);
+    }
+
+    await expect(hideFolder(join(root, "non-existent-dir"))).resolves.toBeUndefined();
+  });
+
   it("tells Codex's agent to enter the change's folder with specty enter (C6 AC4)", async () => {
     const root = await tempRepo(FILES);
     const created = await cli(root, ["new", "--worktree", "Otro cambio"], {
@@ -66,7 +86,7 @@ describe("specty new --worktree", () => {
     expect(created.code).toBe(0);
     const folder = join(home(root), CHANGE.replace("saludo-personalizado", "otro-cambio"));
     expect(created.out).toContain(
-      `SIGUIENTE: continúa en ${folder}: Codex entra en ella desde esta misma sesión: ejecuta \`specty enter ${CHANGE.replace("saludo-personalizado", "otro-cambio")}\` y sigue su salida. Si la persona prefiere otra sesión, pídele que abra Codex en esa carpeta (\`codex -C "${folder}"\`) y termina tu turno.`,
+      `SIGUIENTE: continúa en ${folder}: Codex entra en ella desde esta misma sesión: ejecuta \`specty enter ${CHANGE.replace("saludo-personalizado", "otro-cambio")}\` y sigue su salida (la persona puede abrir Codex en esa carpeta (\`codex -C "${folder}"\`) si prefiere otra sesión). Esta carpeta sigue con su propio trabajo.`,
     );
   });
 

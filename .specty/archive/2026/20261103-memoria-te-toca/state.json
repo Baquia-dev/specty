@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-te-toca",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-te-toca",
+  "baseCommit": "2b2dadc43c8dad7cf262a860d661cef3b3c957c5",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b95173dfc66935c0c1f8ed390d6d501ebb186d31e504568351a3500efdab440c",
+    "at": "2026-11-03T06:28:49.074Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0b985de26ba002db21d685b3a07e5c8b7dfa132fb665746ee2df62f0c53ca33c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2f9cb0474da982f851487b9fc4b22ab0541089c8020feb248f6f84832ac06723",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:30557c49201e4043d4ff158658bdea2e14cb45c715b3c62b589c72f058c81002",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:29553f0bbe19f860d73283094edbe102431e45b28703923f0b93326fad2cb78f",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:e6b051f6aa803bfcd679a0c8bdd94b1df3f91c83acb15ef1e5edc3d5ee0ab039",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "25113583e528d7da2d67c45f39d6332bab33f498",
+      "attempts": 1,
+      "startedAt": "2026-11-03T06:30:15.130Z",
+      "doneAt": "2026-11-03T06:31:57.608Z",
+      "summary": "La tarjeta de status pasa a cards/status.ts sin cambios; statusCard gana la memoria y la sección «TE TOCA» con los recordatorios abiertos, con reminderLines compartida con la tarjeta de inicio",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "70bb75c56e2a6cd5d931986fbef69b5ceb558288",
+      "attempts": 1,
+      "startedAt": "2026-11-03T06:31:57.924Z",
+      "doneAt": "2026-11-03T06:32:42.202Z",
+      "summary": "status lee la memoria con readMemory y le pasa sus entradas a statusCard; ARCHITECTURE.md describe «TE TOCA»",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 2,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-03T06:36:55.851Z",
+  "lockedTests": {
+    "packages/cli/test/memory-status.test.ts": "sha256:e5b5042387a507354eb85c103c7bd1f216e9c608cfb419ae220c66610405b30a",
+    "packages/core/test/cards/status-turn.test.ts": "sha256:102b984e53e042a6d2f15727c1dbbd19316f1588a852d49b1b997adefa93541b"
+  }
+}

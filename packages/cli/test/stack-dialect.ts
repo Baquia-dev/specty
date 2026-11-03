@@ -248,10 +248,12 @@ function pending(code: Code, reference: string): string {
   return `${code.comment} ${MARK.todo}${reference}: descuentos por volumen`;
 }
 
+/** `vulnerabilities` stays off: an OSV-Scanner on the machine would ask osv.dev about go.mod. */
 function checksBlock({ tools, layers, paths }: Dialect): string {
   const quoted = (path: string) => JSON.stringify(path);
   return [
     "checks:",
+    "  levels: { vulnerabilities: off }",
     "  commands:",
     ...Object.entries(tools).map(
       ([id, tool]) => `    ${id}: "node tool/check.mjs ${id} ${tool.folder}"`,

@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "id": "20261031-exigir-cortes-verticales-y-redaccion-previa-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261031-exigir-cortes-verticales-y-redaccion-previa-de",
+  "baseCommit": "78867cbe6434ca906baaf1e455d76ae3cc89199e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:67694e4952aaa83c4ec0ee1249c788a3300d57a29e32d6e8ade9424e9b906fde",
+    "at": "2026-10-31T09:58:01.976Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:eca735c65311b5c2e95bef08012ab36b0004b3a69d46fe0f64e454251502ab4d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f7a039c8e475f8f0e86b9c608c7965ba1f7d33c29daadebd88f10c8f7bb1dad6",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:72f95083942b861a73081dad222feda1d91e91e0cf3f18fefc4b743d2955f5a1",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:afa42fcc660a88127975238e5a8c0c5df3d27cb06b32b20695cf7a80f4951e47",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:92d4c67262acdd4030f77eed22e684ff58fa518645a7b884ec5e9bd305f3292d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ecfb9b4c6b76666596dffbd4f68259e01f5aaa6a",
+      "attempts": 1,
+      "startedAt": "2026-10-31T09:59:29.845Z",
+      "doneAt": "2026-10-31T10:00:36.209Z",
+      "summary": "Añadir diagnósticos y mensajes para cortes sin criterios y capas horizontales en épicas",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "dd8443e661c0fb4bc3c3526d4c0684eb9099ce14",
+      "attempts": 1,
+      "startedAt": "2026-10-31T10:00:36.562Z",
+      "doneAt": "2026-10-31T10:04:57.027Z",
+      "summary": "Validar obligatoriedad de criterios en cortes y rechazar capas horizontales en épicas",
+      "scopeExtra": [
+        "packages/core/test/validate/references.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "8c61484facaa2ddf241f1169fdf051da277cf4ee",
+      "attempts": 1,
+      "startedAt": "2026-10-31T10:04:57.404Z",
+      "doneAt": "2026-10-31T10:07:38.779Z",
+      "summary": "Añadir regla de cortes verticales en AGENTS.md y orientación a paralelismo en tarjetas de épica",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "bfa6d0a1c0a580e8f490d37bcb2e59f139ad5cbe",
+      "attempts": 1,
+      "startedAt": "2026-10-31T10:07:39.144Z",
+      "doneAt": "2026-10-31T10:09:06.978Z",
+      "summary": "Documentar en ARCHITECTURE.md y dominio.md la obligatoriedad de cortes verticales y redacción previa de specs",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-31T10:13:55.017Z",
+  "lockedTests": {
+    "packages/core/test/agents-md.test.ts": "sha256:b73ab05618072f03c227864fd1da072fdecacf5971bf327127ccac232dca5b27",
+    "packages/core/test/cards/epic.test.ts": "sha256:e2d72ed6785cb7bec2b04dca322d6a0f30e085091c357814ed5ee29267348a4d",
+    "packages/core/test/validate/quality.test.ts": "sha256:00c36bd6b36910a5f1aba28c5fc7a1d840e16f026bdf0a9ad436d315729e8d42",
+    "packages/core/test/validate/references.test.ts": "sha256:88e0965f0ba2894be32247155a91b9fed506e6b8b73222691eb6415d39399121"
+  }
+}

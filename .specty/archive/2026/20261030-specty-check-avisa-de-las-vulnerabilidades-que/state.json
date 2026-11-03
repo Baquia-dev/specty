@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "id": "20261030-specty-check-avisa-de-las-vulnerabilidades-que",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-specty-check-avisa-de-las-vulnerabilidades-que",
+  "baseCommit": "9483e4408563bb2c9d100a0a7d0e5df0f80b4c18",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:83a0328c41d5389cf65b22bd0fb16fbaac5f812319acbd53b8b318773a4ca135",
+    "at": "2026-10-30T12:44:10.406Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e9aac235a7fc8b6962ae7d6b77723bb18a37fef8584ec19bc26634f9a257dcd6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:196a8cf21882f6737a052291677cdd0215e6a7c2d666fdf70f1209fd6552968f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:c83750e0fcf1ff56cc3d9ee85c1751b21d387d75e9448e5aea4988b1480c3382",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "944667405c2e35f9961a190a97a2ea43614cb1ad",
+      "attempts": 1,
+      "startedAt": "2026-10-30T12:51:28.583Z",
+      "doneAt": "2026-10-30T12:52:05.712Z",
+      "summary": "Check vulnerabilities con OSV-Scanner: copia los lockfiles de la ejecución (después y antes) con el osv-scanner.toml de su carpeta, escanea las dos copias en paralelo y reporta solo las claves lockfile|ecosistema|paquete|versión|id nuevas; 127 se desambigua con --version",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c6fad284f5637bcf0782a4efb54bd6e740278197",
+      "attempts": 1,
+      "startedAt": "2026-10-30T12:52:06.061Z",
+      "doneAt": "2026-10-30T12:53:32.865Z",
+      "summary": "Los ejemplos por stack apagan vulnerabilities (el de Go cambia go.mod y un OSV-Scanner instalado consultaría osv.dev) y el test de las guías lo cuenta entre los checks que su ejemplo no muestra",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "8b1c2983de3ff94a5dc7dc195f6237688f380162",
+      "attempts": 1,
+      "startedAt": "2026-10-30T12:53:33.229Z",
+      "doneAt": "2026-10-30T12:53:41.188Z",
+      "summary": "checks.md y checks.en.md documentan vulnerabilities (lockfiles, solo lo que trae el cambio, osv-scanner.toml, osv.dev, cómo apagarlo); formats.md §6 detalla las dos copias, el comando y el 127; ARCHITECTURE lo añade a la lista de specty check",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 3,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-30T12:58:00.239Z",
+  "lockedTests": {
+    "packages/cli/test/check-vulnerabilities.test.ts": "sha256:7489182f4f496dd6488d730556c95782c6d3feb6f2b01c6eacc2dfa9dd4c8b86"
+  }
+}

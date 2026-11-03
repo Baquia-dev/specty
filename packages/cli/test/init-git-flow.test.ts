@@ -44,7 +44,9 @@ describe("init asks a person for the git flow", () => {
     expect(asked.map((question) => question.message)).toEqual([
       "¿Qué flujo de git sigue este repositorio? El detectado va primero; Specty nombrará así las ramas de los cambios.",
     ]);
-    expect(asked[0]?.labels[0]).toBe("Git Flow: feature/<slug> y bugfix/<slug> (detectado)");
+    expect(asked[0]?.labels[0]).toBe(
+      "Git Flow: feature/<slug>, bugfix/<slug>, hotfix/<slug> y release/<slug> (detectado)",
+    );
     expect(await flowOf(root)).toBe("github");
   });
 
@@ -95,6 +97,13 @@ describe("init without a person to ask for the git flow", () => {
     git(existing, "branch", "feat/login");
     await init(existing);
     expect(await flowOf(existing)).toBeUndefined();
+  });
+
+  it("recognizes Git Flow also by support/ branches (AC6)", async () => {
+    const created = await tempRepo(CODE);
+    git(created, "branch", "support/v1");
+    await init(created);
+    expect(await flowOf(created)).toBe("gitflow");
   });
 
   it("warns a new project with none, and its next step asks the user for it (AC6)", async () => {

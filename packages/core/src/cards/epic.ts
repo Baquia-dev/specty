@@ -35,8 +35,8 @@ export function epicCard(change: ChangeView, ctx: CardContext): Output {
           )
         : ready !== undefined
           ? t(
-              `empieza el corte ${ready.id}: ${start(ready)} y sigue su salida.`,
-              `start slice ${ready.id}: ${start(ready)} and follow its output.`,
+              `empieza el corte ${ready.id}: ${start(ready)} y sigue su salida. Para trabajar en paralelo con varios agentes, redacta antes las specs de los cortes listos.`,
+              `start slice ${ready.id}: ${start(ready)} and follow its output. To work in parallel with multiple agents, draft the specs of the ready slices first.`,
             )
           : closed === slices.length
             ? t(

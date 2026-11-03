@@ -48,6 +48,7 @@ export { type Coverage, parseCoverage } from "./checks/coverage-reports";
 export { type AnalyzerIgnore, analyzerIgnores, dartImports } from "./checks/dart";
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export { type FunctionMetric, functionMetrics } from "./checks/functions";
+export { type SyntaxNode, type TreeLanguage, treeFunctions } from "./checks/functions-tree";
 export { csharpImports, csharpNamespaces } from "./checks/imports-csharp";
 export { goImports } from "./checks/imports-go";
 export { jvmImports, jvmPackages } from "./checks/imports-jvm";
@@ -94,6 +95,12 @@ export {
   strictTypeViolations,
 } from "./checks/strict-types";
 export { suppressions } from "./checks/suppressions";
+export {
+  type DuplicateCandidate,
+  type DuplicateReason,
+  duplicateReason,
+  similarTexts,
+} from "./flow/duplicates";
 export {
   type Actor,
   EVENT_RULES,
@@ -144,7 +151,12 @@ export type { GuardIntegration } from "./guard/integration";
 export { movePatch, type PatchPaths, patchPaths } from "./guard/patch";
 export type { BoundSession } from "./guard/session";
 export { analyzeShell, type ShellAnalysis } from "./guard/shell";
-export { type ForeignPath, nativeEnterDenial } from "./guard/worktrees";
+export {
+  type ForeignPath,
+  nativeEnterDenial,
+  type Unreachable,
+  unreachableEnterDenial,
+} from "./guard/worktrees";
 export { hashText, type Sha256Hash, shortHash } from "./hash";
 export { fold, LANGS, type Lang } from "./i18n";
 export {
@@ -156,6 +168,28 @@ export {
   parseItemId,
   slugify,
 } from "./ids";
+export {
+  type ClaimProblem,
+  claimable,
+  droppedEntry,
+  freeWork,
+  harvestable,
+  isOpenEntry,
+  keptEntry,
+  MEMORY_KINDS,
+  MEMORY_STATUSES,
+  type MemoryEntry,
+  type MemoryKind,
+  type MemoryOperation,
+  type MemoryStatus,
+  nextEntryId,
+  parseEntry,
+  parseEntryId,
+  serializeEntry,
+  settledEntry,
+  takenEntry,
+} from "./memory/entries";
+export { pendingInMessage } from "./memory/turn-end";
 export {
   EXIT_CODES,
   headerOf,

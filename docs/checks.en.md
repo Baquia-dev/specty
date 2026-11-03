@@ -186,7 +186,7 @@ Each layer has its paths (`paths`), the layers it may import (`may`; itself and 
 
 ### `function-lines`
 
-**Stack:** every stack except Elixir. In the languages with braces, a function goes from its header to the brace that closes it; in Python, from its `def` to its last line indented deeper; in Ruby, from its `def` to the `end` that closes it.
+**Stack:** every stack. In TypeScript, JavaScript, Java, C#, PHP, C, C++, Go, Rust, Swift, Dart, Kotlin, Python, Ruby and Elixir, each function is read on its tree-sitter syntax tree, which comes inside Specty, and goes from the first line of its header, without decorators, annotations or attributes, to the last of its body; in Python without docstrings, in Ruby with its blocks inside, and in Elixir a `def`, `defp`, `defmacro`, `defmacrop` or `fn`. In the other languages with braces, and in a file with syntax errors, a function goes from its header to the brace that closes it; in Python, from its `def` to its last line indented deeper; in Ruby, from its `def` to the `end` that closes it.
 
 The lines of code of each function, without blank lines or comments. It fails on a function the change touches that is over the limit and is new or grew. One that was already over and did not grow does not count, except with `--all`. Tests are not measured.
 
@@ -283,6 +283,26 @@ Looks for secrets with Betterleaks or, when it is missing, with gitleaks, on a t
 **Configuration:** the scanner's (`.gitleaks.toml`, `.betterleaks.toml`, `.gitleaksignore`, `.betterleaksignore`).
 
 **Disable:** `levels: { secrets: off }`.
+
+### `code-rules`
+
+**Stack:** any with Opengrep or Semgrep rules at the root: `.opengrep.yml`, `.opengrep.yaml`, `.opengrep/`, `.semgrep.yml`, `.semgrep.yaml` or `.semgrep/`.
+
+Applies the project's own rules with Opengrep or, when it is missing, with Semgrep, on a temporary copy of the run's files, and only the matches that touch an added line count. Rules of severity `ERROR`, `CRITICAL` or `HIGH` fail the check; the others (`WARNING`, `INFO`, `MEDIUM`, `LOW`…) only warn. It never uses the registry's rules (`--config auto`) and gives Semgrep `--metrics=off`, so nothing goes out to the network. With no scanner installed, it does not run and says what to install. For a false positive, the `nosemgrep` comment and the root's `.semgrepignore` work.
+
+**Configuration:** the rules, in those files or folders, and the root's `.semgrepignore`. Without a `.semgrepignore`, the scanner applies its default ignores, which skip `test/` and `tests/`, among others.
+
+**Disable:** `levels: { code-rules: off }`.
+
+### `vulnerabilities`
+
+**Stack:** any with a lockfile OSV-Scanner reads: `pnpm-lock.yaml`, `package-lock.json`, `yarn.lock`, `bun.lock`, `pubspec.lock`, `poetry.lock`, `uv.lock`, `pdm.lock`, `Pipfile.lock`, `pylock.toml`, `requirements.txt`, `go.mod`, `Cargo.lock`, `Gemfile.lock`, `gems.locked`, `composer.lock`, `mix.lock`, `packages.lock.json`, `packages.config`, `gradle.lockfile`, `buildscript-gradle.lockfile`, `gradle/verification-metadata.xml`, `conan.lock`, `renv.lock`, `cabal.project.freeze` and `stack.yaml.lock`, in any folder.
+
+When the run touches a lockfile, it hands it to OSV-Scanner and fails with each known vulnerability of a package the change adds or whose version changes: `pnpm-lock.yaml lodash 4.17.20: GHSA-… (severity 7.5)`. The ones the lockfile already had when the run started do not show, because they are not the change's; with `--all` they all do. OSV-Scanner works on a copy of the lockfiles as the mode sees them, and asks osv.dev with the names and versions of the packages. With no lockfile in the run it does not show, and without OSV-Scanner on PATH it does not run and says to install it. `pom.xml` and `build.gradle` do not count: OSV-Scanner would have to resolve them over the network.
+
+**Configuration:** OSV-Scanner's, the `osv-scanner.toml` in each lockfile's folder; for example, `[[IgnoredVulns]]` with the `id` and `reason` of a vulnerability that does not affect you.
+
+**Disable:** `levels: { vulnerabilities: off }`, also if you do not want your package names to go out to osv.dev.
 
 ### `diff-coverage`
 
@@ -443,6 +463,8 @@ What an example does not check:
 - `layers` shows as `NOT RUN` in TypeScript, because the examples have no dependency-cruiser, and does not appear in Ruby or Swift, whose imports Specty does not read.
 - `focused-tests` passes with the change that breaks everything too in Python, Java, Kotlin, C#, Rust and Swift: their test frameworks have no focus marker.
 - `secrets` shows as `NOT RUN` when there is no scanner on PATH.
+- `vulnerabilities` is off: with OSV-Scanner installed, it would ask osv.dev.
+- `code-rules` does not show: the examples have no Opengrep or Semgrep rules.
 
 ## Adding a provider
 

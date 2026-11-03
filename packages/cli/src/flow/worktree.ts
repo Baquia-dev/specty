@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { copyFile, mkdir } from "node:fs/promises";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { basename, dirname, isAbsolute, join, relative, sep } from "node:path";
 import { type ForeignPath, preparingNote } from "@baquia-dev/specty-core";
 import { setupCommand } from "../detect/project";
@@ -62,19 +62,55 @@ async function mainBranch(git: Git): Promise<string | undefined> {
   return undefined;
 }
 
-/** `<main folder>.worktrees`, beside the main worktree: never inside a repository. */
+/** The folder of the changes' worktrees, inside the main one, which git ignores in the clone. */
+const HOME = ".worktrees";
+
+/**
+ * `<main folder>/.worktrees`, inside the project (ADR 0018): an agent or an editor that keeps to
+ * the project's folder reaches a change's with nothing to set up.
+ */
 export async function worktreesHome(git: Git): Promise<string> {
+  const main = (await git.worktrees())[0]?.folder ?? git.root;
+  return join(main, HOME);
+}
+
+/**
+ * Ignores the worktrees' folder in the clone (`.git/info/exclude`, shared by every worktree), so
+ * the main folder never shows it as untracked; the line goes in once.
+ */
+async function ignoreHome(git: Git): Promise<void> {
+  const exclude = await git.gitPath("info/exclude");
+  const text = (await exists(exclude)) ? await readFile(exclude, "utf8") : "";
+  const line = `/${HOME}/`;
+  if (text.split("\n").includes(line)) return;
+  await mkdir(dirname(exclude), { recursive: true });
+  const separator = text === "" || text.endsWith("\n") ? "" : "\n";
+  await writeFile(exclude, `${text}${separator}${line}\n`);
+}
+
+/**
+ * Where the worktrees lived before ADR 0018, beside the main worktree: `init` and `uninstall` take
+ * out of each tool's settings what Specty gave it there.
+ */
+export async function formerWorktreesHome(git: Git): Promise<string> {
   const main = (await git.worktrees())[0]?.folder ?? git.root;
   return join(dirname(main), `${basename(main)}.worktrees`);
 }
 
 /**
- * The folders Specty's commands write in besides the change's own: git's common folder, where
- * every worktree commits (its `config` lives there), and the worktrees' folder. A sandbox that
- * keeps to the folder an agent works in leaves them out.
+ * Git's common folder, where every worktree commits (its `config` lives there): Specty's commands
+ * write in it from a change's folder, and a sandbox that keeps to that folder leaves it out.
+ */
+export async function gitCommonFolder(git: Git): Promise<string> {
+  return dirname(await git.gitPath("config"));
+}
+
+/**
+ * The folders Specty's commands write in besides the change's own: git's common folder. The
+ * worktrees' folder no longer goes with it (ADR 0018).
  */
 export async function sharedFolders(git: Git): Promise<string[]> {
-  return [dirname(await git.gitPath("config")), await worktreesHome(git)];
+  return [await gitCommonFolder(git)];
 }
 
 export interface PlacedPaths {
@@ -165,6 +201,20 @@ export async function prepareWorktree(
 }
 
 /**
+ * Applies OS-level hidden attributes to a folder: `attrib +h` on Windows and `chflags hidden`
+ * on macOS. Best effort: failures or unsupported platforms are silently ignored.
+ */
+export async function hideFolder(path: string): Promise<void> {
+  if (!(await exists(path))) return;
+  const parent = dirname(path);
+  if (process.platform === "win32") {
+    await execute("attrib", ["+h", path], { cwd: parent });
+  } else if (process.platform === "darwin") {
+    await execute("chflags", ["hidden", path], { cwd: parent });
+  }
+}
+
+/**
  * Checks `branch` out from `base` in a new worktree, and copies there the agent hook files that
  * git does not track: the versioned ones arrive with the branch. Returns the copied files.
  */
@@ -172,7 +222,9 @@ export async function addWorktree(
   git: Git,
   target: { readonly folder: string; readonly branch: string; readonly base: string },
 ): Promise<string[]> {
+  await ignoreHome(git);
   await git.output(["worktree", "add", "-q", "-b", target.branch, target.folder, target.base]);
+  await hideFolder(dirname(target.folder));
   const copied: string[] = [];
   for (const file of AGENT_HOOK_FILES) {
     if (!(await exists(join(git.root, file))) || (await git.isTracked(file))) continue;

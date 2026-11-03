@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-cierre-entradas",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-cierre-entradas",
+  "baseCommit": "3712df21d6c74b02f886551f5b05e6a3dfc25d27",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4388eea788091febf95542dfd8bf26bfa80d001444c5ae3e4eba751d9ec7a79d",
+    "at": "2026-11-03T07:14:37.184Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d628f452459c9c591ea5436f7fff612f234e117f5f0ee9a1eaffc6ee61891e44",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a2dd9baf24d436a1dca03b1ec6ecd2b284f353847db2c515fc12e27d91019007",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:d76c629e4189257bd628f12327bde0cd6678d61928cd3e319618bda6f379fa2f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:59426cc57f5da601f8102aeac6c6ede50a161de090a5728e8d38d7b81052d21f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e86a7249b0ef720cd1714fe9edfdb4d7417e862a",
+      "attempts": 1,
+      "startedAt": "2026-11-03T07:16:22.823Z",
+      "doneAt": "2026-11-03T07:17:24.772Z",
+      "summary": "settledEntry y la operación free en memory/entries.ts; resolvesLines y el asunto de free en cards/memory.ts; ChangeView.resolves y la sección «RESUELVE» en la tarjeta del borrador",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "270a6ef6df117d8f800e1e7edf621bc80fe9ad46",
+      "attempts": 1,
+      "startedAt": "2026-11-03T07:17:25.125Z",
+      "doneAt": "2026-11-03T07:19:10.109Z",
+      "summary": "settleEntries en commands/memory.ts, llamada desde archive: cerrado → done con closed, cancelado → open sin taken, una por commit; el borrador lee las entradas de resolves (draftFacts en flow/views.ts); formats.md lo documenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-03T07:23:23.215Z",
+  "lockedTests": {
+    "packages/cli/test/memory-settle.test.ts": "sha256:17f959b92d9c9c8a9a3a83aa656a28fccc7e951c7f8a9d4b542571aff911e62f",
+    "packages/core/test/memory/settle.test.ts": "sha256:898f1033e7b992d2643376b0c46417e4b05d4264f0ddb61d551c52f709eb5eea"
+  }
+}

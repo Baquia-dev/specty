@@ -2,13 +2,17 @@
 
 Términos de Specty que un agente podría nombrar mal, de los más concretos a los más comunes. Las tarjetas traen la definición de los que usa su texto, como mucho 3 y en este orden ([formats.md §6](formats.md#6-configyaml)).
 
-- **Corte** (`Slice`): una parte de una épica que se entrega como un cambio propio.
-- **Épica**: un cambio sin tareas que avanza por sus cortes.
+- **Corte** (`Slice`): una parte de una épica que se entrega como un cambio propio, estructurado como un corte vertical de funcionalidad verificable de punta a punta.
+- **Épica**: un cambio sin tareas que avanza por sus cortes verticales; exige criterios observables y prohíbe capas técnicas horizontales, priorizando la redacción previa de specs para agentes en paralelo.
 - **Carril** (`ChangeKind`): el tipo de cambio: quick, standard, spike, retro o epic.
 - **Ampliación** (`ScopeRequest`): pedir tocar un archivo fuera del alcance de la tarea.
 - **Incorporación** (`IntegrationState`): traer la rama destino al cambio al cerrarlo.
 - **Recibo** (`Receipt`): lo que deja Specty para que el pre-commit acepte su commit.
 - **Bloqueo** (`LockHolder`): qué comando está cambiando un cambio; uno a la vez.
+- **Cambio huérfano** (`orphan`): uno que espera al agente sin que ninguna sesión trabaje en él.
+- **Entrada de la memoria** (`MemoryEntry`): un pendiente, una mejora, un recordatorio o una decisión, con id `Pn` o `Dn`.
+- **Memoria de Specty** (`specty memory`): las entradas de la rama `specty-memory`, que todas las sesiones y carpetas ven.
+- **Bitácora** (`specty note`): las notas de un cambio en su audit (`change.noted`); la tarjeta de `next` muestra las tres últimas.
 - **Test aprobado** (`lockedTests`): un test que aprobó la persona, o el rojo de un bug; solo cambia con un desbloqueo.
 - **Ciclo de tests** (`TestCycle`): con `contract`, el de una feature (gate 2) o el de un bug (su rojo se bloquea solo).
 - **Modo delegado** (`Delegation`): el agente aprueba, acepta y cierra por la persona.

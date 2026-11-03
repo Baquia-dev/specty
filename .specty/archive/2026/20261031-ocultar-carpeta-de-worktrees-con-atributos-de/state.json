@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261031-ocultar-carpeta-de-worktrees-con-atributos-de",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261031-ocultar-carpeta-de-worktrees-con-atributos-de",
+  "baseCommit": "411651fcb94eb6e09961fd78e10ae675a3d01583",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b751fd9dfde91f001312748dc0155971c50f9d698e627f495499b95635cc92c9",
+    "at": "2026-10-31T15:48:07.783Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "f6a60f0eb5793a0314bf8d6cd94251bb0fdba2d2",
+      "attempts": 1,
+      "startedAt": "2026-10-31T15:48:08.286Z",
+      "doneAt": "2026-10-31T15:50:19.065Z",
+      "summary": "ocultar la carpeta contenedora de worktrees con atributos de SO en Windows y macOS",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

@@ -63,6 +63,13 @@ export {
   whichChangeQuestion,
 } from "./decide";
 export { type DoctorLine, doctorCard, doctorLine } from "./doctor";
+export {
+  type DuplicateFilesView,
+  type DuplicateView,
+  duplicateApproveNext,
+  duplicateCard,
+  duplicateFilesBlock,
+} from "./duplicates";
 export { enteredCard, noFolderCard } from "./enter";
 export { epicCard, type SliceRefusal, sliceLines, sliceRefusalCard } from "./epic";
 export { type ExportRefusal, exportedCard, exportRefusalCard } from "./export";
@@ -100,8 +107,6 @@ export {
   delegationWarning,
   nothingPendingCard,
   notInteractiveCard,
-  type StatusEntry,
-  statusCard,
 } from "./human";
 export { impactLine, impactTitle } from "./impact";
 export {
@@ -135,6 +140,7 @@ export {
   noFlowWarning,
   noTestCommandWarning,
   productLine,
+  worktreesIgnoreLine,
 } from "./init";
 export {
   antigravityTrustWarning,
@@ -143,8 +149,6 @@ export {
   claudePointerLine,
   codexGuardLine,
   codexRulesLine,
-  codexSandboxKeptWarning,
-  codexSandboxLine,
   codexTrustWarning,
   cursorSandboxLine,
   cursorSandboxTrackedWarning,
@@ -156,8 +160,6 @@ export {
   geminiSandboxLine,
   geminiSandboxVersionedWarning,
   geminiTrustWarning,
-  geminiWorkspaceLine,
-  geminiWorkspaceVersionedWarning,
   gitHooksLine,
   gitHooksManualWarning,
   guardLine,
@@ -166,8 +168,6 @@ export {
   noHooksWarning,
   notOnPathWarning,
   opencodeGuardLine,
-  opencodeWorktreesLine,
-  opencodeWorktreesVersionedWarning,
   yoursUncommittedWarning,
 } from "./install";
 export {
@@ -217,6 +217,24 @@ export { longFileCard, longFileWarnings, splitAdvice } from "./lines";
 export { busyChangeCard, type LockHolderView } from "./lock";
 export { mcpNotOnPathWarning, mcpRegisteredLine, mcpUserFolderWarning } from "./mcp";
 export {
+  type MemoryListOutput,
+  type MemoryRefusal,
+  memoryAddedCard,
+  memoryCommitSubject,
+  memoryDoneCard,
+  memoryListCard,
+  memoryReadme,
+  memoryRefusalCard,
+} from "./memory";
+export { type ResolvesRefusal, resolvesRefusalCard } from "./memory-claims";
+export {
+  type MemoryDropRefusal,
+  memoryDropCard,
+  memoryDropRefusalCard,
+  memoryKeptCard,
+} from "./memory-drop";
+export { memoryStopReason } from "./memory-turn";
+export {
   changeCreatedLead,
   type NewRefusal,
   newRefusalCard,
@@ -224,6 +242,7 @@ export {
   worktreeCreatedCard,
 } from "./new";
 export { type NextView, nextCard, notInitializedCard, taskCard } from "./next";
+export { type NoteRefusal, notedCard, noteRefusalCard } from "./notes";
 export {
   notInTargetBranchLine,
   notInTargetFolderLine,
@@ -282,6 +301,7 @@ export {
   type UiApprovalRefusal,
   uiApprovalRefusalCard,
 } from "./server";
+export { type StatusEntry, statusCard } from "./status";
 export {
   type AutoApproved,
   autoApprovedLead,
@@ -332,11 +352,13 @@ export type {
   CoverageView,
   CriterionView,
   IntegrationView,
+  NoteView,
   RejectedView,
   ScopeRequestView,
   SliceView,
   TaskView,
 } from "./view";
+export { waitTimeoutCard } from "./wait";
 export {
   type WhyCommit,
   type WhyRefusal,

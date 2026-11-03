@@ -17,15 +17,17 @@ const ctx = (lang: CardContext["lang"]): CardContext => ({
 });
 
 describe("the language of Specty", () => {
-  it("is asked in both languages, with the detected one first (AC1)", () => {
+  it("is asked in both languages, with the detected one first and hints explaining with examples (AC1)", () => {
     expect(languageQuestion()).toBe(
       "¿En qué idioma trabaja Specty? · Which language should Specty work in?",
     );
-    expect(languageChoices("es")).toEqual([
-      { value: "es", label: "Español" },
-      { value: "en", label: "English" },
-    ]);
+    const choices = languageChoices("es");
+    expect(choices.map((choice) => choice.value)).toEqual(["es", "en"]);
     expect(languageChoices("en").map((choice) => choice.value)).toEqual(["en", "es"]);
+    const es = choices.find((choice) => choice.value === "es");
+    const en = choices.find((choice) => choice.value === "en");
+    expect((es as unknown as { readonly hint?: string })?.hint).toMatch(/\(ej\./);
+    expect((en as unknown as { readonly hint?: string })?.hint).toMatch(/\(e\.g\./);
   });
 
   it("says when init changed it (AC3)", () => {

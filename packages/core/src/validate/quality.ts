@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-import { fold } from "../i18n";
+import { fold, type Lang } from "../i18n";
 import type { TestsPolicy } from "../schema/config";
 import { isTestFile } from "../scope/tests";
 import { computeSize } from "../sizing/size";
 import type { Diagnostic } from "../spec/diagnostics";
 import type { CommitType, Spec, Task } from "../spec/model";
-import { fileLine, itemLine, type Rule, report } from "./context";
+import { fileLine, itemLine, type Rule, report, type ValidationContext } from "./context";
 import { formatBreach, splitBreaches } from "./limits";
 
 const VAGUE_TERMS: readonly string[] = [
@@ -169,10 +169,35 @@ export const checkFileReasons: Rule = (spec, ctx, lang) => {
     );
 };
 
-/** Changes too large for one spec must be split; close ones get a warning. */
+const HORIZONTAL_LAYERS: readonly { readonly pattern: RegExp; readonly layer: string }[] = [
+  { pattern: /\b(database(\s+schema)?|base\s+de\s+datos|bd)\b/i, layer: "database" },
+  { pattern: /\b(migrations?|migraci[oó]n(?:es)?)\b/i, layer: "migrations" },
+  { pattern: /\b(backend|back-end)\b/i, layer: "backend" },
+  { pattern: /\b(frontend|front-end)\b/i, layer: "frontend" },
+  { pattern: /\b(infra(?:structure)?|infraestructura)\b/i, layer: "infrastructure" },
+];
+
+function checkVerticalSlices(spec: Spec, ctx: ValidationContext, lang: Lang): Diagnostic[] {
+  const slices = spec.sections.slices?.items ?? [];
+  return slices.flatMap((slice) => {
+    const matched = HORIZONTAL_LAYERS.find((entry) => entry.pattern.test(slice.title));
+    if (matched === undefined) return [];
+    return [
+      report(lang, {
+        code: "slice-horizontal",
+        params: { id: slice.id, layer: matched.layer },
+        line: itemLine(ctx, slice.id),
+        target: slice.id,
+      }),
+    ];
+  });
+}
+
+/** Changes too large for one spec must be split; close ones get a warning. Epics require vertical slices. */
 export const checkSplit: Rule = (spec, ctx, lang) => {
   const { kind } = spec.frontmatter;
-  if (kind === "epic" || kind === "retro" || kind === "quick") return [];
+  if (kind === "epic") return checkVerticalSlices(spec, ctx, lang);
+  if (kind === "retro" || kind === "quick") return [];
   // The size was decided at the approval, and the closing cannot touch Files to split anything.
   if (ctx.phase === "closing") return [];
   const { exceeded, near } = splitBreaches(computeSize(spec, ctx.config, ctx.repo), ctx.config);

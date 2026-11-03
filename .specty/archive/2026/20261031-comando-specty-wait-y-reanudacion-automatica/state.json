@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
+  "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
+  "revision": 6,
+  "approved": {
+    "revision": 5,
+    "hash": "sha256:d4f799d3b1646d998ca7e094b2a1a109e1a01f6dec8de61fa350b9de7eeee15d",
+    "at": "2026-10-31T11:09:43.765Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos",
+      "7 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bd163c5e045eba4c65825c732f22b1ab424025320ff2b6b43a2f2cb740fbd5d5",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7c1a06dc11eb1a417e90d863a47b9cf1c68e9cb0a7a8a63186c47db34c10e58e",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b1dd696ce256835f8238f1b201490bdf05425184fff849d898edb8888c384d47",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ab33625ab0dc2a1efd6fd52d8d54fc30c6e4229fe3666fa063f20e38f30abf0e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ae1334670fca3891c406cc03743a2d810712ba85",
+      "attempts": 1,
+      "startedAt": "2026-10-31T10:35:57.038Z",
+      "doneAt": "2026-10-31T10:37:16.575Z",
+      "summary": "Crear tarjeta y textos de timeout para specty wait",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ff704878b17e189a8fdb36ed3bd5dc3edf7d9e7a",
+      "attempts": 1,
+      "startedAt": "2026-10-31T10:37:16.933Z",
+      "doneAt": "2026-10-31T10:48:23.441Z",
+      "summary": "Implementar comando specty wait con sondeo pasivo y registro en CLI",
+      "scopeExtra": [
+        "packages/cli/test/wait.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "cf56168ca64d9c779adbbabf3c9751065060533f",
+      "attempts": 1,
+      "startedAt": "2026-10-31T10:48:23.790Z",
+      "doneAt": "2026-10-31T10:50:29.044Z",
+      "summary": "Añadir uso de specty wait en flowBlock de AGENTS.md y documentar en ARCHITECTURE.md",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "7790b06c5a5a5c40046db1583e0ff39d41dc2aae",
+      "attempts": 1,
+      "startedAt": "2026-10-31T10:52:13.438Z",
+      "doneAt": "2026-10-31T10:57:20.586Z",
+      "summary": "Ordenar export de waitTimeoutCard alfabéticamente",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "411d8345e1b7d7dbfa9803481273255f03305012",
+      "attempts": 1,
+      "startedAt": "2026-10-31T10:58:07.652Z",
+      "doneAt": "2026-10-31T11:02:45.201Z",
+      "summary": "Formatear sleep en una sola linea en wait.ts",
+      "scopeExtra": []
+    },
+    "T6": {
+      "status": "done",
+      "baseCommit": "6837bb68f79cf69490b0a7157b2837d54bd459b5",
+      "attempts": 1,
+      "startedAt": "2026-10-31T11:03:48.783Z",
+      "doneAt": "2026-10-31T11:08:50.053Z",
+      "summary": "Corregir estrechamiento de tipos en wait.ts",
+      "scopeExtra": []
+    },
+    "T7": {
+      "status": "done",
+      "baseCommit": "7d3a80df75c06f0b8074a373870a7960c7f67ad2",
+      "attempts": 1,
+      "startedAt": "2026-10-31T11:09:44.192Z",
+      "doneAt": "2026-10-31T11:14:20.857Z",
+      "summary": "Hacer isWaitingForHuman privada para evitar export no utilizado",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 7,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-31T11:19:01.157Z",
+  "lockedTests": {
+    "packages/core/test/agents-md.test.ts": "sha256:c940b87307afb6a0c0721d19ca72cfb9ab06a605dbe4db2eb357ca78652f6a17",
+    "packages/cli/test/wait.test.ts": "sha256:e9b998427016503c67a7e4c7d69508d75ffe582c37222374e6afd2ab66ae6e76",
+    "packages/core/test/cards/wait.test.ts": "sha256:cd2b2f4fc54a73c7e604486c43c33be6c63e6a3eb5b0194f19e3cf2f16943013"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-tarjeta-de-inicio-2",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-tarjeta-de-inicio-2",
+  "baseCommit": "06aa9d7d76d48a8131d6964c705eea607bab4240",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cd281e35aa776bbf5295cd48d052f892f6e2731165b7d854f26822e3d7eb9621",
+    "at": "2026-11-03T05:50:22.013Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f4da4f583b674c2df30e46f791e2594a4f2ca7e6ba907673b914f8cb20f7a9b0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6265dbcf643388a405ee8283d0f838edcb0941e276daf65e24e687b8c7cc1454",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:8eac900c9c651c176a8ee0a369b93622eb928c30501acb30f524c3761575baa3",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:53ec2c17b8570270c6b60a1ae7ec0a3f3d8e409e08ae30f129804c984a10234d",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:91fb281648b3da9ac36f72fcdfd70be7f4596cd738d14d0f715f33bfd8beb187",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:a94d4afa46339f15122b0e528007adcb5f1198b6b6a0b14f11f2e9a7d787c3e2",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3d2c6a2b90ab06965634a089ba995e11bb7ecb76",
+      "attempts": 1,
+      "startedAt": "2026-11-03T05:51:09.524Z",
+      "doneAt": "2026-11-03T05:51:18.367Z",
+      "summary": "La tarjeta sin cambio añade «MEMORIA DE SPECTY» (cuenta de pendientes y mejoras abiertas, las tres primeras libres y cómo tomar una) y «RECORDATORIOS», con memoryStartBlocks en cards/memory.ts y NextView.memory",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "153e4131eb1ea09d78bfc0cbec7183d2bd851932",
+      "attempts": 1,
+      "startedAt": "2026-11-03T05:51:18.706Z",
+      "doneAt": "2026-11-03T05:51:29.769Z",
+      "summary": "next sin cambio activo lee la memoria con readMemory y se la pasa a la tarjeta",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "324254104d844a463807dd82c30a1127cc15f018",
+      "attempts": 1,
+      "startedAt": "2026-11-03T05:51:30.109Z",
+      "doneAt": "2026-11-03T05:52:34.783Z",
+      "summary": "El SessionStart de Claude Code pasa a startup|clear|compact, así la tarjeta con la memoria llega al empezar; runsAtSessionStart lee el matcher como Claude Code y doctor da claude-startup cuando el hook de Specty no se dispara al empezar",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "80b2f962e3286dcce336f0e1e31f1f11b47bd81c",
+      "attempts": 1,
+      "startedAt": "2026-11-03T05:52:35.143Z",
+      "doneAt": "2026-11-03T05:53:04.772Z",
+      "summary": "La regla del reporte final del bloque de flujo pide anotar cada pendiente con specty memory add; formats.md y ARCHITECTURE al día",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 4,
+    "R": 4
+  },
+  "closingSubmittedAt": "2026-11-03T05:57:53.526Z",
+  "lockedTests": {
+    "packages/cli/test/setup.test.ts": "sha256:24d887c1aab3042aacf769fd0b4d563f69d31b0d90640780b13c9a29056a845a",
+    "packages/core/test/cards.test.ts": "sha256:00d33cdc4062245b9c7f8b9d12c4051b09c6ebf8e1f74ac0fb7d32c9db6c115b",
+    "packages/cli/src/agents/claude-code.test.ts": "sha256:894951f97186f2979cc5d072064300021e6f0a7e99f619342a266bdb9348228d",
+    "packages/cli/test/memory-start.test.ts": "sha256:bcca50c3f34d5c32be4e5cb0faad0f499ee743dd95539411d6c9f45ea7fbdb41",
+    "packages/core/test/cards/memory-start.test.ts": "sha256:f10b46e1999163d594c692384917a582ea91fcfe1cb2d77088d3ec68911ba024"
+  }
+}

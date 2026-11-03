@@ -40,10 +40,12 @@ export function branchName(change: {
   return `${spike ? "spike" : prefixOf(change.flow, change.type)}/${slug}`;
 }
 
-/** Git Flow has two prefixes for daily work: `bugfix/` for a fix, `feature/` for the rest. */
+/** Git Flow prefixes: bugfix for a fix, hotfix for hotfix, release for release, support for support, feature for the rest. */
 function prefixOf(flow: Exclude<GitFlow, "specty">, type: CommitType): string {
   if (flow !== "gitflow") return type;
-  return type === "fix" ? "bugfix" : "feature";
+  if (type === "fix") return "bugfix";
+  if (type === "hotfix" || type === "release" || type === "support") return type;
+  return "feature";
 }
 
 function fill(pattern: string, values: Filling): string {
@@ -79,7 +81,7 @@ export function branchPatternIssue(pattern: string): string | undefined {
 }
 
 /** The rules of `git check-ref-format --branch` that a pattern can break. */
-function isBranchName(name: string): boolean {
+export function isBranchName(name: string): boolean {
   if (/^[-/]|[/.]$|\.\.|\/\/|@\{|[~^:?*[\\]/.test(name)) return false;
   if ([...name].some((char) => char.charCodeAt(0) <= 32 || char.charCodeAt(0) === 127)) {
     return false;

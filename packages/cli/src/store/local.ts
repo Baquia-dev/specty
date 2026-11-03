@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { readdir } from "node:fs/promises";
+import { chmod, readdir } from "node:fs/promises";
 import { isRecord, parseJson, readText, remove, writeText } from "../io/files";
 import type { Git } from "../io/git";
 
@@ -101,11 +101,16 @@ export async function readDelegation(git: Git): Promise<Delegation | undefined> 
 }
 
 export async function writeDelegation(git: Git, delegation: Delegation): Promise<void> {
-  await writeText(await git.gitPath(DELEGATION), `${JSON.stringify(delegation, null, 2)}\n`);
+  const path = await git.gitPath(DELEGATION);
+  await chmod(path, 0o666).catch(() => undefined);
+  await writeText(path, `${JSON.stringify(delegation, null, 2)}\n`);
+  await chmod(path, 0o444).catch(() => undefined);
 }
 
 export async function clearDelegation(git: Git): Promise<void> {
-  await remove(await git.gitPath(DELEGATION));
+  const path = await git.gitPath(DELEGATION);
+  await chmod(path, 0o666).catch(() => undefined);
+  await remove(path);
 }
 
 /** The worktree an agent session works in: one change at a time per session (the guard). */

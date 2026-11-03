@@ -103,8 +103,8 @@ function closingProposedCard(view: ProposedView, ctx: CardContext): Output {
             `delegated mode: confirm the closing yourself with \`${ctx.command} close\` and follow its output.`,
           )
         : t(
-            `pide al usuario que confirme el cierre con \`${ctx.command} close\` y termina tu turno.`,
-            `ask the user to confirm the closing with \`${ctx.command} close\` and end your turn.`,
+            `pide al usuario que confirme el cierre con \`${ctx.command} close\` (o en la UI) y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
+            `ask the user to confirm the closing with \`${ctx.command} close\` (or in the UI) and run \`${ctx.command} wait\` to wait for their decision.`,
           ),
   };
 }
@@ -151,8 +151,8 @@ function specProposedNext(view: ProposedView, ctx: CardContext): string {
         `delegated mode: approve the spec yourself with \`${ctx.command} approve\` and follow its output.`,
       )
     : t(
-        `dile al usuario que la spec está lista en ${view.specPath}, con su tamaño y el esfuerzo recomendado, y que la apruebe con \`${ctx.command} approve\` en su terminal; luego termina tu turno.`,
-        `tell the user the spec is ready at ${view.specPath}, with its size and recommended effort, and that they approve it with \`${ctx.command} approve\` in their terminal; then end your turn.`,
+        `dile al usuario que la spec está lista en ${view.specPath}, con su tamaño y el esfuerzo recomendado, que la apruebe con \`${ctx.command} approve\` en su terminal o en la UI, y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
+        `tell the user the spec is ready at ${view.specPath}, with its size and recommended effort, that they approve it with \`${ctx.command} approve\` in their terminal or UI, and run \`${ctx.command} wait\` to wait for their decision.`,
       );
 }
 
@@ -255,8 +255,8 @@ export function scopeRequestedCard(
     blocks: section(title, paths),
     next: unlocks
       ? t(
-          `desbloquear un test aprobado lo decide solo la persona, también en modo delegado: pídele que lo decida con \`${ctx.command} approve --scope ${request}\` en su terminal y termina tu turno.`,
-          `unlocking an approved test is the person's decision alone, in delegated mode too: ask them to decide it with \`${ctx.command} approve --scope ${request}\` in their terminal and end your turn.`,
+          `desbloquear un test aprobado lo decide solo la persona, también en modo delegado: pídele que lo decida con \`${ctx.command} approve --scope ${request}\` en su terminal o en la UI, y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
+          `unlocking an approved test is the person's decision alone, in delegated mode too: ask them to decide it with \`${ctx.command} approve --scope ${request}\` in their terminal or UI, and run \`${ctx.command} wait\` to wait for their decision.`,
         )
       : ctx.delegated === true
         ? t(
@@ -264,8 +264,8 @@ export function scopeRequestedCard(
             `delegated mode: approve the request yourself with \`${ctx.command} approve --scope ${request}\` and continue with the task.`,
           )
         : t(
-            `sigue con lo que está dentro del alcance y pide al usuario que apruebe la solicitud con \`${ctx.command} approve --scope ${request}\`.`,
-            `keep working within the scope and ask the user to approve the request with \`${ctx.command} approve --scope ${request}\`.`,
+            `pide al usuario que apruebe la solicitud con \`${ctx.command} approve --scope ${request}\` en su terminal o en la UI, y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
+            `ask the user to approve the request with \`${ctx.command} approve --scope ${request}\` in their terminal or UI, and run \`${ctx.command} wait\` to wait for their decision.`,
           ),
   };
 }

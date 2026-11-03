@@ -158,7 +158,7 @@ class ChangeMark {
         <div role="list" [class]="list + ' mt-3'">
           @for (entry of group.entries; track entry.key) {
             @if (assumptionOf(entry); as assumption) {
-              <sp-assumption-row [change]="change().id" [assumption]="assumption" [diff]="entry.text" [before]="entry.before" [editable]="editable()" (comment)="comment.emit($event)">
+              <sp-assumption-row [change]="change().id" [assumption]="assumption" [comments]="change().review.comments" [diff]="entry.text" [before]="entry.before" [editable]="editable()" (comment)="comment.emit($event)">
                 <sp-change-mark data-mark [change]="entry.change" />
                 @for (detail of entry.details; track $index) {
                   <p class="m-0 text-sm text-text-muted" data-detail>{{ detail[lang()] }}</p>

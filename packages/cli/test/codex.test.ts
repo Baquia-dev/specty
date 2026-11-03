@@ -2,7 +2,7 @@
 import { existsSync } from "node:fs";
 import { mkdtemp, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { basename, dirname, join } from "node:path";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { installFiles } from "../src/install/files";
 import { installHooks } from "../src/install/hooks";
@@ -186,7 +186,9 @@ describe("installing the guard in Codex", () => {
       "confía en el proyecto cuando Codex lo pregunte y revisa el hook con `/hooks`",
     );
     const hooks = await hooksOf(root);
-    expect(hooks).toMatchObject({ description: "mine", hooks: { Stop: [stop] } });
+    // The person's Stop stays first; Specty's memory net comes after it.
+    const net = { type: "command", command: expect.stringContaining("hook memory-stop codex") };
+    expect(hooks).toMatchObject({ description: "mine", hooks: { Stop: [stop, { hooks: [net] }] } });
     const guard = { type: "command", command: expect.stringContaining("guard --tool codex") };
     expect(hooks.hooks.PreToolUse).toMatchObject([
       { matcher: "^(Bash|apply_patch)$", hooks: [guard] },
@@ -206,11 +208,7 @@ describe("installing the guard in Codex", () => {
     expect(git(root, "status", "--porcelain")).toBe("");
     const created = await cli(root, ["new", "--worktree", "Otro cambio"]);
     expect(created.out).toContain(`HOOKS DEL AGENTE COPIADOS:\n  ${HOOKS}`);
-    const folder = join(
-      dirname(root),
-      `${basename(root)}.worktrees`,
-      CHANGE.replace("saludo-personalizado", "otro-cambio"),
-    );
+    const folder = join(root, ".worktrees", CHANGE.replace("saludo-personalizado", "otro-cambio"));
     expect(await read(folder, HOOKS)).toBe(await read(root, HOOKS));
   });
 
@@ -313,38 +311,35 @@ describe("installing the guard in Codex", () => {
 
 const SETTINGS = ".codex/config.toml";
 
-describe("Codex's sandbox and the worktrees' folder", () => {
-  it("lets it write there from a project config.toml of Specty's, out of git (AC3)", async () => {
+describe("Codex and the worktrees' folder", () => {
+  it("AC1: init writes no config.toml and makes no worktrees' folder, and takes Specty's old one out", async () => {
     const { env } = await codexHome();
     const root = await tempRepo(PACKAGE);
-    const home = `${root}.worktrees`;
     const args = ["init", "--language", "es", "--tools", "codex"];
-    expect((await cli(root, [...args, "--dry-run"], { env })).code).toBe(0);
-    expect(existsSync(home)).toBe(false);
     const init = await cli(root, args, { env });
-    expect(init.out).toContain(
-      "Codex: .codex/config.toml (local) deja escribir a su sandbox en la carpeta de las worktrees (`writable_roots`), para trabajar en la de un cambio desde la misma sesión (`specty enter`).",
-    );
-    expect(await read(root, SETTINGS)).toContain(
-      `[sandbox_workspace_write]\nwritable_roots = [${JSON.stringify(home)}]\n`,
-    );
-    // Codex's sandbox would not start with a writable folder that is missing.
-    expect(existsSync(home)).toBe(true);
-    expect(await read(root, ".git/info/exclude")).toContain(`/${SETTINGS}`);
-    expect(git(root, "status", "--porcelain")).toBe("");
-    await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }), env });
+    expect(init.code).toBe(0);
+    expect(init.out).not.toContain("writable_roots");
     expect(existsSync(join(root, SETTINGS))).toBe(false);
-    expect(existsSync(home)).toBe(true);
+    expect(existsSync(`${root}.worktrees`)).toBe(false);
+    // What an older init wrote, out of git, goes with the next one.
+    const older = [
+      "# Specty: Codex's sandbox also writes in the worktrees' folder, where a session that entered a",
+      "# change works (`specty enter`). `specty init` writes this file, and `specty uninstall` removes it.",
+      "[sandbox_workspace_write]",
+      `writable_roots = [${JSON.stringify(`${root}.worktrees`)}]`,
+      "",
+    ].join("\n");
+    await writeFiles(root, { [SETTINGS]: older });
+    expect((await cli(root, args, { env })).code).toBe(0);
+    expect(existsSync(join(root, SETTINGS))).toBe(false);
   });
 
-  it("leaves a config.toml of the person's, and says what to add (AC3)", async () => {
+  it("AC1: leaves a config.toml of the person's as it is, with nothing to add", async () => {
     const { env } = await codexHome();
     const mine = 'model = "gpt-5.5"\n';
     const root = await tempRepo({ ...PACKAGE, [SETTINGS]: mine });
     const init = await cli(root, ["init", "--language", "es", "--tools", "codex"], { env });
-    expect(init.out).toContain(
-      `Codex: Specty no escribe en .codex/config.toml, que ya existe; para que su sandbox escriba en la carpeta de un cambio desde la misma sesión (\`specty enter\`), añade \`${root}.worktrees\` a \`writable_roots\` en \`[sandbox_workspace_write]\`.`,
-    );
+    expect(init.out).not.toContain(".codex/config.toml");
     expect(await read(root, SETTINGS)).toBe(mine);
     await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }), env });
     expect(await read(root, SETTINGS)).toBe(mine);

@@ -54,7 +54,7 @@ describe("the function checks of specty check", () => {
     expect(all.out).toContain("  src/app.js:18 `busy` tiene complejidad 5 (máximo 3)");
   });
 
-  it("speaks of a function with no name, and leaves tests and stacks without braces out", async () => {
+  it("speaks of a function with no name, and leaves tests out", async () => {
     const root = await repo({});
     await writeFiles(root, {
       "src/run.js": [
@@ -73,13 +73,15 @@ describe("the function checks of specty check", () => {
         "OK 6/7 · FALLA: function-lines",
       ].join("\n"),
     );
-    // Elixir has no estimator of its own: the two checks do not show.
+  });
+
+  it("AC3: count both checks in a Mix project, whose functions the syntax tree measures", async () => {
     const elixir = await tempRepo({
       "mix.exs": "defmodule App.MixProject do\nend\n",
       ".specty/config.yaml": `${CONFIG()}checks:\n  levels: { secrets: off, tests: off }\n`,
     });
     await writeFiles(elixir, { "lib/app.ex": "defmodule App do\n  def f, do: 1\nend\n" });
-    expect((await cli(elixir, ["check"])).out).toBe("OK 5/5");
+    expect((await cli(elixir, ["check"])).out).toBe("OK 7/7");
   });
 
   it("measure Python by its indentation and Ruby by def … end (S4 AC1)", async () => {

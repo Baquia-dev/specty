@@ -18,6 +18,11 @@ export function appRoutes(devTools: boolean): Routes {
       title: "Specty · Bandeja",
     },
     {
+      path: "memory",
+      loadComponent: () => import("../memory/memory-page").then((page) => page.MemoryPage),
+      title: "Specty · Memoria",
+    },
+    {
       path: "changes/:id",
       loadComponent: () => import("../change/change-page").then((page) => page.ChangePage),
       title: "Specty · Cambio",

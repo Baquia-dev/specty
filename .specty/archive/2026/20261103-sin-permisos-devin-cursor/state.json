@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "id": "20261103-sin-permisos-devin-cursor",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-sin-permisos-devin-cursor",
+  "baseCommit": "b71b5b769ee9df08255344075ebb5b03def80c5e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:965ddb8e12ea2aa00d2c713012e538d7d9aa7a3e1c938ab8bb8c619e87649807",
+    "at": "2026-11-03T08:59:17.958Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:19a94f9efa58c114c4caced51275b915ed0d0050a93d50ead21d72412d2ddce1",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f13b2feca35762b3cb73e421e478a62a617818669bc45fbca36512855cfa75bb",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7a4181e2a6a4145eb0e721abfbecdd6e29af908e8e7916a4f0bd5551a77c8f8e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ee2a3d45aa7f15e381f059f8ccaa5d54b9d1dfcc",
+      "attempts": 1,
+      "startedAt": "2026-11-03T09:02:26.927Z",
+      "doneAt": "2026-11-03T09:03:46.378Z",
+      "summary": "Devin: los scopes de Specty son solo Write de la carpeta común de git (sharedFolders ya no da la de las worktrees); init y uninstall quitan Write/Read de la carpeta de antes; texto de init al día",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c764aca070c38d9df55894e9e646c7368ec0e82f",
+      "attempts": 1,
+      "startedAt": "2026-11-03T09:03:47.103Z",
+      "doneAt": "2026-11-03T09:04:57.613Z",
+      "summary": "Cursor: sandbox.json solo con la carpeta común de git; init y uninstall quitan la carpeta de las worktrees de antes; textos de init y doctor y ARCHITECTURE al día",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-03T09:09:22.217Z",
+  "lockedTests": {
+    "packages/cli/test/cursor.test.ts": "sha256:d38682220c9b730321cd1ef13559f61997956c391bd63a21057da0d03011f86e",
+    "packages/cli/test/doctor-enter.test.ts": "sha256:c4464ccaaa03a7295cdb6d31b654a7f1f7971de397ccf69be3857c2aaf774414",
+    "packages/cli/test/windsurf.test.ts": "sha256:77296ed1c6bec1702ae3789b3e0562cbd48ae0fd3b1ea7beba3730bd58dd0326"
+  }
+}

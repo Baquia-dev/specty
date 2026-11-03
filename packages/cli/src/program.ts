@@ -18,6 +18,7 @@ import { doctor } from "./commands/doctor";
 import { exportCommand } from "./commands/export";
 import { initCommand } from "./commands/init";
 import { mcpCommand } from "./commands/mcp";
+import { memoryCommand } from "./commands/memory";
 import { personCommands } from "./commands/person-commands";
 import { prune } from "./commands/prune";
 import { status } from "./commands/status";
@@ -64,6 +65,7 @@ export async function runCli(
   mcpCommand(program, environment, runCli);
   auditCommand(program, run);
   exportCommand(program, run);
+  memoryCommand(program, run);
   readingCommands(program, run, environment, emit);
   enforcementCommands(program, environment, (exit) => {
     result.code = exit;
@@ -166,5 +168,8 @@ function readingCommands(
     .command("ui")
     .description("serve the changes of every worktree on localhost, until Ctrl+C")
     .option("--port <port>", "the port to try first (default: 4173)")
-    .action((options: { port?: string }) => run((session) => ui(session, options.port))());
+    .option("--no-open", "do not open the browser automatically")
+    .action((options: { port?: string; open?: boolean }) =>
+      run((session) => ui(session, options))(),
+    );
 }

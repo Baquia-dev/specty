@@ -122,7 +122,7 @@ describe("the task card in Antigravity", () => {
 });
 
 describe("Antigravity's terminal sandbox", () => {
-  it("lets each command it allows write in git's folder and in the worktrees' one (AC5)", async () => {
+  it("AC2: lets each command it allows write in git's common folder only", async () => {
     const root = await implementing();
     const run = (index: number, line: string) => ({
       toolCall: { name: "run_command", args: { CommandLine: line, Cwd: root } },
@@ -130,7 +130,7 @@ describe("Antigravity's terminal sandbox", () => {
     });
     expect(await answer(guard(root, "PreToolUse", run(1, "pnpm test")))).toEqual({
       decision: "allow",
-      permissionOverrides: [`write_file(${join(root, ".git")})`, `write_file(${root}.worktrees)`],
+      permissionOverrides: [`write_file(${join(root, ".git")})`],
     });
     // Its file tools do not run in the terminal, and what it denies gets nothing.
     const write = {

@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-pendientes-del-cierre",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-pendientes-del-cierre",
+  "baseCommit": "462c23752c6f0c1366d4fce8d3119bb8dc49d2c5",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:29117b93db50d1ab49f98644e88f3bafbff7975c6e4755d5ea70efb2b4e4c867",
+    "at": "2026-11-03T07:25:15.511Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:932ecb1c9a094d1f4ce6eaec6c0fa79eb4224f52cfc96dcf5ef0e9bcc56b16e1",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:14d5f9524d40361d6ef1329b2400b829e0b5d32ff323176c5f259fbc4771b95d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:ce96e2cd19144de15b569079b75e1e36420849fac4625d1df43215ff39f86e9d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "88088ef3c81c0bd60db7ef60dc2b8f8b2280b946",
+      "attempts": 1,
+      "startedAt": "2026-11-03T07:26:40.187Z",
+      "doneAt": "2026-11-03T07:27:04.871Z",
+      "summary": "harvestable en memory/entries.ts: los pendientes del cierre que se anotan, sin vacíos, «ninguno», los que citan un id de la memoria ni el texto de una entrada abierta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "e84e093fcaec288a821fbe7b27b69de1c7dd48d4",
+      "attempts": 1,
+      "startedAt": "2026-11-03T07:27:05.171Z",
+      "doneAt": "2026-11-03T07:31:14.514Z",
+      "summary": "archive, con un cambio cerrado, lee los pendientes de su cierre (closingFollowUps en flow/carried.ts) y los anota en la memoria con harvestEntries, uno por commit; formats.md lo documenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-03T07:35:27.922Z",
+  "lockedTests": {
+    "packages/cli/test/memory-harvest.test.ts": "sha256:7025db9ea06dd02eafd6fe70b1148141f18122a2b7ac95fb2c0bf13bf5160a3d",
+    "packages/core/test/memory/harvest.test.ts": "sha256:d87cdb158d7630340e841850b7182dd383bb48a7324aefc4a15cb8654c4ecf9a"
+  }
+}

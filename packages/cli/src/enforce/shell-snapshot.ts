@@ -21,11 +21,21 @@ import { liveHolder } from "../store/lock";
 /** The snapshot of a command whose second hook never ran (blocked, interrupted) expires. */
 const SNAPSHOT_TTL_MS = 24 * 60 * 60 * 1000;
 
+/** Relative key for delegated mode switch in the common git directory. */
+export const DELEGATION_KEY = ".git/common/specty/delegated.json";
+
+async function delegationEntry(session: Session): Promise<[string, string]> {
+  const switchPath = await session.git.gitPath("common/specty/delegated.json");
+  const info = await modifiedAndSize(switchPath);
+  return [DELEGATION_KEY, info === undefined ? DELETED : `${info.size}:${info.modified}`];
+}
+
 /** Every file that differs from `HEAD`, with its size and modification time, or `DELETED`. */
 export async function treeSnapshot(session: Session): Promise<ShellSnapshot> {
   const changed = await session.git.changedSince(await session.git.head());
   const entries = await Promise.all(changed.flatMap((file) => entriesOf(session.root, file)));
-  return Object.fromEntries(entries);
+  const delegation = await delegationEntry(session);
+  return Object.fromEntries([...entries, delegation]);
 }
 
 export async function saveSnapshot(

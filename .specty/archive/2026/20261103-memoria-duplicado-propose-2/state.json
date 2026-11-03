@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-duplicado-propose-2",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-duplicado-propose-2",
+  "baseCommit": "2c3a4e3ccc76154abf0aaf3f68ce9cdb62bdfcbc",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ef855b387f5bac181a33de037d1af0010fa727859e5099fd7671ef8d6dfd3df3",
+    "at": "2026-11-03T08:22:18.467Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:67f34099d74550812858c67b339ca9ea010971444e1a9c576101eb83af176966",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8937fc7929ae3e621a541707fa2a1b425127a92deb3bd5a94a26624a1b723243",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:905455fac579afd43ba7b993c5039c368c96f996228312138b83b722ce47786a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "381c50385180fcba95c97e8432805e0fe084d45e",
+      "attempts": 1,
+      "startedAt": "2026-11-03T08:23:44.701Z",
+      "doneAt": "2026-11-03T08:24:03.922Z",
+      "summary": "duplicateFilesBlock («POSIBLE DUPLICADO» con lo que comparte de cada cambio) y duplicateApproveNext (el SIGUIENTE en modo delegado) en cards/duplicates.ts, con factsOf compartida",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "95ccfa37b6052beb2f474561ce2251d5b490f7c0",
+      "attempts": 1,
+      "startedAt": "2026-11-03T08:24:04.257Z",
+      "doneAt": "2026-11-03T08:24:53.768Z",
+      "summary": "duplicatedBy en flow/shared.ts cuenta lo que comparte cada cambio y se queda con los que llegan a la mitad; propose añade «POSIBLE DUPLICADO», salta los de distinctFrom y, en modo delegado, pide preguntar al usuario antes de aprobar; ARCHITECTURE.md lo documenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-03T08:32:35.703Z",
+  "lockedTests": {
+    "packages/cli/test/duplicate-files.test.ts": "sha256:5116e56f1ced91a2aefd4ab7a3181e44a34dce4de113ecad4910a0f1ee86bcb8",
+    "packages/core/test/cards/duplicate-files.test.ts": "sha256:7a152e4c2f941a11c06120611a63453444dcc602ab000c1e372bcc1a3f9aa71e"
+  }
+}

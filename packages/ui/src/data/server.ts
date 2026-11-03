@@ -8,11 +8,13 @@ import {
   type ChangeRecord,
   type CommentAnchor,
   type Delegation,
+  type MemoryRecord,
   SpectyData,
 } from "./records";
 import {
   answered,
   isDelegation,
+  isMemoryRecord,
   isObject,
   isRecords,
   isRun,
@@ -24,6 +26,7 @@ import {
   tooLarge,
   UNEXPECTED,
 } from "./server-answers";
+import type { MemoryVerb } from "./source";
 import { isStrings, isTrace, type TraceRecord } from "./trace";
 
 /** The mark `specty ui` puts in the page it serves (ARCHITECTURE §15). */
@@ -121,6 +124,19 @@ export class ServerData extends SpectyData {
     return this.post("/api/delegation", { on });
   }
 
+  override memoryAction(id: string, verb: MemoryVerb, reason?: string): Promise<void> {
+    const body = reason === undefined ? {} : { reason };
+    return this.post(`/api/memory/${encodeURIComponent(id)}/${verb}`, body);
+  }
+
+  override async memory(): Promise<MemoryRecord> {
+    const response = await fetch("/api/memory");
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isMemoryRecord(body)) throw new ActionError(UNEXPECTED);
+    return body;
+  }
+
   override approve(change: string, revision: number): Promise<void> {
     return this.act(change, "approve", { revision });
   }
@@ -157,6 +173,14 @@ export class ServerData extends SpectyData {
 
   override addComment(change: string, anchor: CommentAnchor, body: string): Promise<void> {
     return this.act(change, "comments", { anchor, body });
+  }
+
+  override editComment(change: string, id: string, body: string): Promise<void> {
+    return this.act(change, `comments/${encodeURIComponent(id)}`, { body });
+  }
+
+  override deleteComment(change: string, id: string): Promise<void> {
+    return this.act(change, `comments/${encodeURIComponent(id)}`, { delete: true });
   }
 
   override requestChanges(change: string): Promise<void> {
