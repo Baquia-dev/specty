@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-pendientes-del-cierre",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-pendientes-del-cierre",
   "baseCommit": "462c23752c6f0c1366d4fce8d3119bb8dc49d2c5",
   "revision": 2,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "88088ef3c81c0bd60db7ef60dc2b8f8b2280b946",
+      "attempts": 1,
       "startedAt": "2026-11-03T07:26:40.187Z",
       "doneAt": "2026-11-03T07:27:04.871Z",
-      "summary": "harvestable en memory/entries.ts: los pendientes del cierre que se anotan, sin vacíos, «ninguno», los que citan un id de la memoria ni el texto de una entrada abierta"
+      "summary": "harvestable en memory/entries.ts: los pendientes del cierre que se anotan, sin vacíos, «ninguno», los que citan un id de la memoria ni el texto de una entrada abierta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e84e093fcaec288a821fbe7b27b69de1c7dd48d4",
+      "startedAt": "2026-11-03T07:27:05.171Z",
+      "doneAt": "2026-11-03T07:31:14.514Z",
+      "summary": "archive, con un cambio cerrado, lee los pendientes de su cierre (closingFollowUps en flow/carried.ts) y los anota en la memoria con harvestEntries, uno por commit; formats.md lo documenta"
     }
   },
   "pending": {

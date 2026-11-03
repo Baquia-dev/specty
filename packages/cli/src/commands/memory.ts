@@ -3,6 +3,7 @@ import {
   type ChangeState,
   claimable,
   freeWork,
+  harvestable,
   isOpenEntry,
   MEMORY_KINDS,
   type MemoryEntry,
@@ -178,6 +179,32 @@ export async function takeEntries(
         write: { entry: takenEntry(now, change, at), operation: "take" },
         result: undefined,
       };
+    });
+  }
+}
+
+/**
+ * The follow-ups of a closed change's closing, as pending items of the memory with that change
+ * as their origin, one commit each; those already in the memory are left out (`harvestable`).
+ */
+export async function harvestEntries(
+  session: Session,
+  state: ChangeState,
+  items: readonly string[],
+): Promise<void> {
+  const target = targetOf(session, state.id);
+  for (const text of harvestable(items, await readMemory(session.git, target.branch))) {
+    await editMemory(session.git, target, (memory) => {
+      if (harvestable([text], memory).length === 0) return { result: undefined };
+      const entry: MemoryEntry = {
+        id: nextEntryId("pending", memory.ids),
+        kind: "pending",
+        status: "open",
+        created: session.environment.now().toISOString(),
+        origin: { change: state.id, by: authorOf(session) },
+        text,
+      };
+      return { write: { entry, operation: "add" }, result: undefined };
     });
   }
 }

@@ -55,7 +55,7 @@ Hoy los «Pendientes» del cierre de un cambio solo los ve el cambio que lo sigu
   - files: packages/core/src/memory/entries.ts, packages/core/src/index.ts, packages/core/test/memory/harvest.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: Cerrar un cambio anota sus pendientes, y la documentación
+- [x] T2: Cerrar un cambio anota sus pendientes, y la documentación
   - files: packages/cli/src/flow/carried.ts, packages/cli/src/commands/memory.ts, packages/cli/src/flow/finish.ts, packages/cli/test/memory-harvest.test.ts, docs/formats.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-harvest.test.ts test/memory-settle.test.ts test/findings.test.ts && pnpm typecheck && pnpm lint
