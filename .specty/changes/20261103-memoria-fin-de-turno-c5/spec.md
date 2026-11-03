@@ -67,7 +67,7 @@ La regla del reporte final ya pide anotar cada pendiente con `specty memory add`
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/claude-code.ts, packages/cli/src/agents/codex.ts, packages/cli/test/memory-stop.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts && pnpm typecheck && pnpm lint
-- [ ] T3: `specty hook memory-stop`, y la documentación
+- [x] T3: `specty hook memory-stop`, y la documentación
   - files: packages/cli/src/enforce/memory-stop.ts, packages/cli/src/enforce/entry.ts, packages/cli/test/memory-stop.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-stop.test.ts test/check-agent-stop.test.ts && pnpm typecheck && pnpm lint

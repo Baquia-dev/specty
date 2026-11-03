@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-fin-de-turno-c5",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-fin-de-turno-c5",
   "baseCommit": "7b5a377abe7f0a22f2e50be83049a26076594b59",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7e702e217bb5217242bac11f7ee142aa7f008f43",
+      "attempts": 1,
       "startedAt": "2026-11-03T08:40:19.231Z",
       "doneAt": "2026-11-03T08:41:02.879Z",
-      "summary": "AgentAdapter.lastMessage y lastAssistantMessage (last_assistant_message) en adapter.ts, para Claude Code y Codex"
+      "summary": "AgentAdapter.lastMessage y lastAssistantMessage (last_assistant_message) en adapter.ts, para Claude Code y Codex",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "02ca182effafa737b149d57165ad29109d6555b4",
+      "startedAt": "2026-11-03T08:41:03.272Z",
+      "doneAt": "2026-11-03T08:42:44.709Z",
+      "summary": "enforce/memory-stop.ts: con el último mensaje del agente, saca los pendientes, se queda con los que no están en la memoria (harvestable) y devuelve el turno una vez con stop.reply; entry.ts despacha los hooks de fin de turno con una tabla; ARCHITECTURE.md lo documenta"
     }
   },
   "pending": {
