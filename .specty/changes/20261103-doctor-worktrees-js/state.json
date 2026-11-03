@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261103-doctor-worktrees-js",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-doctor-worktrees-js",
+  "baseCommit": "c4da10f5a97680486d91cba6a454c5c6f728d0f6",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ac283c6fa6455477dd95fcfc9849f4dfdd8d66d90751abef71e827b2677c4c11",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3c35bc89a4610ba3fb0faff758cd0c75e99594606ff279f9b242d1873a775f6b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:973e00a404c78e8365abf0bcb191867b56b8d42828dda27143b968002847b266",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 1,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:00646ee5d45a0c77927881eb3165848bc6c71eeda1c88cf5b750a7bb3b2e8f0d",
+    "at": "2026-11-03T10:03:24.857Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
