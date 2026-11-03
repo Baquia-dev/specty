@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261104-cierre-nombra-sus-pendientes",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-cierre-nombra-sus-pendientes",
+  "baseCommit": "f0cd5509c44a09f82397030462640508196d1589",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ca0c1e1ff446ff4f539beaaec4f14155d8eddf5f40d465864bb818a465368982",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:6036b22a7da151ab571824b9179232903556d1e56988739854a91b17967253a1",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f949dead85f9a0ffb191fb3fd1c6f31d3bddbec782d8d268658dfd8d69d3a09d",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:fb227ec2de67e7264928654231bf12a3e29096a0f45f018772573c5fad8006ff",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:4f259e56089ab49fd84cccafedf288667ac0b0285c55f183a3891bb272f016dc",
+    "at": "2026-11-03T23:08:11.467Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
