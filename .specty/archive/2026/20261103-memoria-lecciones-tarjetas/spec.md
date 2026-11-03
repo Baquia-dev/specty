@@ -69,3 +69,21 @@ La memoria de Specty ya guarda lecciones y decisiones ligadas a rutas del códig
 
 - R1: `next` en una tarea lee la memoria cada vez — tres procesos de git, solo con archivos, como la tarjeta de inicio sin cambio.
 - R2: Una lección con una ruta muy amplia (`**`) sale en todas las tareas — la persona la descarta o el agente propone acotarla.
+
+## Cierre
+
+### Resumen
+
+Las lecciones y decisiones de la memoria de Specty llegan cuando importan. La tarjeta de la tarea activa muestra, en «LECCIONES Y DECISIONES DE ESTOS ARCHIVOS», las abiertas cuyas rutas encajan con los archivos de la tarea o sus ampliaciones, y la del borrador, las de los archivos que ya nombra su spec. Encajan en los dos sentidos, como los archivos compartidos (`entriesForPaths`). Cada una sale con su id, su tipo, la primera línea de su texto, la cita de una decisión y sus rutas, y la sección pide tenerlas en cuenta o proponer descartar la que ya no valga. La memoria solo se lee cuando hay archivos. Resuelve P28.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- Las entradas de los archivos van por fecha, como en el resto de la memoria: con la misma fecha, las lecciones (ids `P`) antes que las decisiones.
+
+### Pendientes
+
+- Ninguno.

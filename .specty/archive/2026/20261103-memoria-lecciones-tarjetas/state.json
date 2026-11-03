@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-lecciones-tarjetas",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-lecciones-tarjetas",
   "baseCommit": "37debdc39a9615ff3ec4d8a389cd758b19eb8143",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:372569e65bc15994a50c0748d110d9fbf557aa23b6488b66b9d797c3a8fbc563",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6ceaec2392a97a076e911a1c4924c47565cc895f",
+      "attempts": 1,
       "startedAt": "2026-11-03T10:59:33.811Z",
       "doneAt": "2026-11-03T11:03:43.638Z",
-      "summary": "flow/views.ts lee la memoria solo con archivos (los de la spec en borrador o los de la tarea activa) y pasa sus lecciones y decisiones a la vista; formats.md lo documenta"
+      "summary": "flow/views.ts lee la memoria solo con archivos (los de la spec en borrador o los de la tarea activa) y pasa sus lecciones y decisiones a la vista; formats.md lo documenta",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -75,6 +75,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T11:08:20.627Z",
   "lockedTests": {
     "packages/cli/test/memory-paths.test.ts": "sha256:eb43ed0386a14ac00216ca8c9077d21edf4eab489bb7ddbae1e4de211d221ee6",
     "packages/core/test/memory/paths.test.ts": "sha256:4517ec9fedb98f419b25b8a2bdcdc3db6223bc1a325d9ee83293a5f6c3fc0954"
