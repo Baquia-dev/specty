@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-ui-acciones",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-ui-acciones",
   "baseCommit": "7b015669ead8ecfcb9e10282d30ac9dae20748cc",
   "revision": 1,
@@ -51,6 +51,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T10:16:26.087Z"
+  "lockedTests": {
+    "packages/cli/test/server/memory-actions.test.ts": "sha256:d5b7700b951b38486b3704e9a9b5cea2c6c17bfb7806d1e50e3630499ed41465",
+    "packages/ui/src/memory/memory-actions.test.ts": "sha256:ad0d61670bec8ea87098efc9aeabf02b504b7c73cb316fa481df88cd9f6df6f3"
+  }
 }
