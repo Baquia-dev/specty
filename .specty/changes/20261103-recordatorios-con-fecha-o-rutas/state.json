@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "86f9ba3d01ffca1bdf67454892cea9a5ae936a51",
+      "attempts": 1,
       "startedAt": "2026-11-03T14:03:11.607Z",
       "doneAt": "2026-11-03T14:03:56.454Z",
-      "summary": "core memory/triggers.ts (localDay, isDay, sessionEntries), MemoryEntry.due solo para recordatorios y con un día válido, y entriesForPaths incluye los recordatorios con rutas"
+      "summary": "core memory/triggers.ts (localDay, isDay, sessionEntries), MemoryEntry.due solo para recordatorios y con un día válido, y entriesForPaths incluye los recordatorios con rutas",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0bf650d96ad27d5cdf7f9372ea84b7d78ad9a0ee",
+      "startedAt": "2026-11-03T14:03:57.147Z",
+      "doneAt": "2026-11-03T14:05:15.562Z",
+      "summary": "cards/memory.ts: el día de un recordatorio en la lista («desde»), los rechazos bad-date, due-not-reminder y two-triggers, y reminderDoneLine compartida; cards/memory-paths.ts: la sección RECORDATORIOS DE ESTOS ARCHIVOS tras las lecciones y decisiones"
     }
   },
   "pending": {

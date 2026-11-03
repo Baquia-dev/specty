@@ -26,7 +26,17 @@ type AddRefusal =
   | { readonly reason: "empty" }
   | { readonly reason: "no-quote" }
   /** A lesson without `--path`. */
-  | { readonly reason: "no-path" };
+  | { readonly reason: "no-path" }
+  | TriggerRefusal;
+
+/** Why `memory add` writes nothing about a reminder's trigger. */
+type TriggerRefusal =
+  /** `--due` is not a day of the calendar as YYYY-MM-DD. */
+  | { readonly reason: "bad-date"; readonly value: string }
+  /** `--due` on an entry of `kind`, which is not a reminder. */
+  | { readonly reason: "due-not-reminder"; readonly kind: MemoryKind }
+  /** `--due` and `--path` together. */
+  | { readonly reason: "two-triggers" };
 
 /** Why `memory done` changes nothing. */
 type DoneRefusal =
@@ -134,9 +144,11 @@ export function memoryDoneCard(entry: MemoryEntry, ctx: CardContext): Output {
 export function memoryRefusalCard(refusal: MemoryRefusal, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   const { reason, next } =
-    refusal.reason === "empty" || refusal.reason === "no-quote" || refusal.reason === "no-path"
-      ? addRefusalTexts(refusal, ctx.command, t)
-      : doneRefusalTexts(refusal, ctx, t);
+    refusal.reason === "unknown" ||
+    refusal.reason === "not-reminder" ||
+    refusal.reason === "already-done"
+      ? doneRefusalTexts(refusal, ctx, t)
+      : addRefusalTexts(refusal, ctx.command, t);
   return {
     status: "invalid",
     header: headerOf(t("memoria", "memory")),
@@ -147,6 +159,10 @@ export function memoryRefusalCard(refusal: MemoryRefusal, ctx: CardContext): Out
 
 function addRefusalTexts(refusal: AddRefusal, command: string, t: Translate): RefusalTexts {
   switch (refusal.reason) {
+    case "bad-date":
+    case "due-not-reminder":
+    case "two-triggers":
+      return triggerRefusalTexts(refusal, command, t);
     case "empty":
       return {
         reason: t("El texto de la entrada está vacío.", "The entry's text is empty."),
@@ -175,6 +191,46 @@ function addRefusalTexts(refusal: AddRefusal, command: string, t: Translate): Re
         next: t(
           `vuelve a ejecutar \`${command} memory add "<texto>" --kind lesson --path <ruta>\`.`,
           `run \`${command} memory add "<text>" --kind lesson --path <path>\` again.`,
+        ),
+      };
+  }
+}
+
+function triggerRefusalTexts(refusal: TriggerRefusal, command: string, t: Translate): RefusalTexts {
+  switch (refusal.reason) {
+    case "bad-date":
+      return {
+        reason: t(
+          `\`--due\` espera un día como AAAA-MM-DD, y «${refusal.value}» no lo es.`,
+          `\`--due\` expects a day as YYYY-MM-DD, and «${refusal.value}» is not one.`,
+        ),
+        next: t(
+          `vuelve a ejecutar \`${command} memory add "<texto>" --kind reminder --due AAAA-MM-DD\`.`,
+          `run \`${command} memory add "<text>" --kind reminder --due YYYY-MM-DD\` again.`,
+        ),
+      };
+    case "due-not-reminder": {
+      const [es, en] = ONE_OF_KIND[refusal.kind];
+      return {
+        reason: t(
+          `Solo un recordatorio espera a un día, y esta entrada sería ${es}.`,
+          `Only a reminder waits for a day, and this entry would be ${en}.`,
+        ),
+        next: t(
+          "añade `--kind reminder` o quita `--due`.",
+          "add `--kind reminder` or drop `--due`.",
+        ),
+      };
+    }
+    case "two-triggers":
+      return {
+        reason: t(
+          "Un recordatorio lleva un solo disparador: `--due` o `--path`, no los dos.",
+          "A reminder carries a single trigger: `--due` or `--path`, not both.",
+        ),
+        next: t(
+          `quédate con uno y vuelve a ejecutar \`${command} memory add\`.`,
+          `keep one and run \`${command} memory add\` again.`,
         ),
       };
   }
@@ -237,18 +293,22 @@ export function memoryStartBlocks(
  * when none is open. The start card and «TE TOCA» of `specty status` show them.
  */
 export function reminderLines(entries: readonly MemoryEntry[], ctx: CardContext): string[] {
-  const t = translator(ctx.lang);
   const reminders = byDate(entries.filter(isOpenEntry)).filter(
     (entry) => entry.kind === "reminder",
   );
   if (reminders.length === 0) return [];
   return [
     ...reminders.map((entry) => `${entry.id} · ${firstLine(entry.text)}`),
-    t(
-      `Cuando se cumpla uno, márcalo hecho con \`${ctx.command} memory done <id>\`.`,
-      `When one is fulfilled, mark it done with \`${ctx.command} memory done <id>\`.`,
-    ),
+    reminderDoneLine(ctx),
   ];
+}
+
+/** How to mark a reminder done, under a list of them. */
+export function reminderDoneLine(ctx: CardContext): string {
+  return translator(ctx.lang)(
+    `Cuando se cumpla uno, márcalo hecho con \`${ctx.command} memory done <id>\`.`,
+    `When one is fulfilled, mark it done with \`${ctx.command} memory done <id>\`.`,
+  );
 }
 
 /** The open pending items and improvements: how many, the first free ones, and how to take one. */
@@ -345,7 +405,8 @@ export function resolvesLines(entries: readonly MemoryEntry[], ctx: CardContext)
 function entryLine(entry: MemoryEntry, t: Translate): string {
   const kind = t(...KINDS[entry.kind]);
   const paths = entry.paths === undefined ? "" : ` · ${t("en", "in")} ${entry.paths.join(", ")}`;
-  return `${entry.id} · ${kind}${statusOf(entry, t)} · ${firstLine(entry.text)}${quoted(entry)} — ${originOf(entry, t)}${paths}`;
+  const due = entry.due === undefined ? "" : ` · ${t("desde", "from")} ${entry.due}`;
+  return `${entry.id} · ${kind}${statusOf(entry, t)}${due} · ${firstLine(entry.text)}${quoted(entry)} — ${originOf(entry, t)}${paths}`;
 }
 
 /** Its status unless open, with the change that took it when it is taken. */

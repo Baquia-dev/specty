@@ -1,21 +1,47 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { MemoryEntry } from "../memory/entries";
 import { type OutputBlock, section } from "../output";
-import { translator } from "./text";
+import { reminderDoneLine } from "./memory";
+import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
 /**
- * The lessons and decisions of the files a task or a draft touches (ADR 0016): each with its id,
- * kind, first line, quote and paths, and a reminder to keep them in mind. Nothing without entries.
+ * The memory of the files a task or a draft touches (ADR 0016): its lessons and decisions, each
+ * with its id, kind, first line, quote and paths, and a reminder to keep them in mind; then its
+ * reminders, in their own section, and how to mark one done. Nothing without entries.
  */
 export function pathEntriesBlock(entries: readonly MemoryEntry[], ctx: CardContext): OutputBlock[] {
   const t = translator(ctx.lang);
+  const reminders = entries.filter((entry) => entry.kind === "reminder");
+  return [
+    ...knownBlock(
+      entries.filter((entry) => entry.kind !== "reminder"),
+      ctx,
+      t,
+    ),
+    ...section(
+      t("RECORDATORIOS DE ESTOS ARCHIVOS", "REMINDERS FOR THESE FILES"),
+      reminders.length === 0
+        ? []
+        : [
+            ...reminders.map((entry) => `${entry.id} · ${firstLine(entry)}${where(entry, t)}`),
+            reminderDoneLine(ctx),
+          ],
+    ),
+  ];
+}
+
+/** The lessons and decisions of the files. */
+function knownBlock(
+  entries: readonly MemoryEntry[],
+  ctx: CardContext,
+  t: Translate,
+): OutputBlock[] {
   if (entries.length === 0) return [];
   const lines = entries.map((entry) => {
     const kind = entry.kind === "decision" ? t("decisión", "decision") : t("lección", "lesson");
     const quote = entry.quote === undefined ? "" : ` «${entry.quote}»`;
-    const first = entry.text.trim().split("\n")[0] ?? "";
-    return `${entry.id} · ${kind} · ${first}${quote} · ${t("en", "in")} ${(entry.paths ?? []).join(", ")}`;
+    return `${entry.id} · ${kind} · ${firstLine(entry)}${quote}${where(entry, t)}`;
   });
   return section(
     t("LECCIONES Y DECISIONES DE ESTOS ARCHIVOS", "LESSONS AND DECISIONS FOR THESE FILES"),
@@ -27,4 +53,12 @@ export function pathEntriesBlock(entries: readonly MemoryEntry[], ctx: CardConte
       ),
     ],
   );
+}
+
+function firstLine(entry: MemoryEntry): string {
+  return entry.text.trim().split("\n")[0] ?? "";
+}
+
+function where(entry: MemoryEntry, t: Translate): string {
+  return ` · ${t("en", "in")} ${(entry.paths ?? []).join(", ")}`;
 }
