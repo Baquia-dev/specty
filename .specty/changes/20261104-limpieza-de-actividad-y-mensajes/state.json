@@ -6,6 +6,13 @@
   "branch": "specty/20261104-limpieza-de-actividad-y-mensajes",
   "baseCommit": "51c0e57a3df5ab8e60267df595d7ae71b3ccb19a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:813f1c047c1b9b9a1b9ac9e5dc8a3e4962ff0e94fbde9997ac689a396dca5988",
+    "at": "2026-11-03T22:48:02.167Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -45,12 +52,6 @@
     "T": 4,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:813f1c047c1b9b9a1b9ac9e5dc8a3e4962ff0e94fbde9997ac689a396dca5988",
-    "at": "2026-11-03T22:48:02.167Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T22:49:34.735Z"
 }
