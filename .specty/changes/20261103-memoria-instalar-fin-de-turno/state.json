@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-instalar-fin-de-turno",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-memoria-instalar-fin-de-turno",
+  "baseCommit": "a3eda5bdf9597ca1d2ec2128b917c52c79e02a6d",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d4ae90f748ceef82075d1b3a1cc28c050ee1f1f2fe1ed494d346b3c5c5bbd9ab",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c496b0928d087f9f59500de166556550e797c77c9d4e416215405b3b56f7a333",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e60ccd022c4901576c5ceee53fc53c6ef5185e16679e315574b7d9311edaa0ee",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1ca37e1c9b9a66ee8af75936e6b17a178760109837b266c041484831dc8dc9df",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b05079ea1416e2010687aec04219109cca3dd968c3e343eb39120a5b8a94c2e9",
+    "at": "2026-11-03T08:51:01.129Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
