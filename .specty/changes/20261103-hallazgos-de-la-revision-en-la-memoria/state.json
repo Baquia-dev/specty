@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261103-hallazgos-de-la-revision-en-la-memoria",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-hallazgos-de-la-revision-en-la-memoria",
+  "baseCommit": "540f6bd0eacaf52fe2663ca853b18e5c2adf75ca",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5e8409fd884c5ae8ceb9b8caca132eaf8e5f19d61f97a56f518c6c73a4832897",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e3c35623bd48f024c253b7a2f362737dc1e7bd485d9f448366dddc4ffa8f3330",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:307af283d0857a6937d31ea37d827f3b265f5a40a9b607ddf24d6d0338c96e46",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0c5c997b125ad56f878901468ad2d9daccd976ee8ec9d9aed15a86eef67bbe24",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:84ca47377c52a1f05cf1fdbb96d3531a2a7e9bf3970064280ec984f104497cb9",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:d4585956cd38debc827ff2cb0df155d24f518579100766ad1c9b0a2f61211670",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:020708b1f814500489e4f36eecb720e1f56c1c852f7e27f178873bccfcbb9687",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ffba3e1a299c22b06027f5683a6b208164dcb1f2cc7703d6cad85164c99ccebc",
+    "at": "2026-11-03T13:40:59.702Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
