@@ -61,7 +61,7 @@ Segundo y último cambio de P32 (recordatorios con disparador): un recordatorio 
 
 ## Tareas
 
-- [ ] T1: Los rechazos de la memoria en su propio archivo
+- [x] T1: Los rechazos de la memoria en su propio archivo
   - files: packages/core/src/cards/memory-refusals.ts, packages/core/src/cards/memory.ts, packages/core/src/cards/index.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/reminder-triggers.test.ts test/memory/entries.test.ts test/memory/lessons.test.ts && pnpm lint

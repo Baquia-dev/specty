@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "61fc697063261296b4635cd3a10a99da393e89c1",
+      "startedAt": "2026-11-03T14:30:46.579Z",
+      "doneAt": "2026-11-03T14:31:19.897Z",
+      "summary": "Los rechazos de memory add y memory done pasan tal cual a cards/memory-refusals.ts; memory.ts exporta goOn y baja a 224 líneas de código"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

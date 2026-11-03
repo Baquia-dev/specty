@@ -219,13 +219,11 @@ export { busyChangeCard, fullVerificationWaitNote, type LockHolderView } from ".
 export { mcpNotOnPathWarning, mcpRegisteredLine, mcpUserFolderWarning } from "./mcp";
 export {
   type MemoryListOutput,
-  type MemoryRefusal,
   memoryAddedCard,
   memoryCommitSubject,
   memoryDoneCard,
   memoryListCard,
   memoryReadme,
-  memoryRefusalCard,
 } from "./memory";
 export { type ResolvesRefusal, resolvesRefusalCard } from "./memory-claims";
 export {
@@ -234,6 +232,7 @@ export {
   memoryDropRefusalCard,
   memoryKeptCard,
 } from "./memory-drop";
+export { type MemoryRefusal, memoryRefusalCard } from "./memory-refusals";
 export { memoryStopReason } from "./memory-turn";
 export {
   type MessageRefusal,
