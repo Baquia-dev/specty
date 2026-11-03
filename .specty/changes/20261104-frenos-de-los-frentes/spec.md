@@ -64,7 +64,7 @@ follows:
   - files: packages/core/src/guard/specty-calls.ts, packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts && pnpm lint
-- [ ] T2: El rechazo y el aviso de los frentes de otras sesiones
+- [x] T2: El rechazo y el aviso de los frentes de otras sesiones
   - files: packages/core/src/cards/front-owners.ts, packages/core/src/cards/index.ts, packages/core/test/cards/front-brakes.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/front-brakes.test.ts test/cards/front-owners.test.ts && pnpm lint

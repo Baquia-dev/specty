@@ -2,7 +2,7 @@
 import type { Lang } from "../i18n";
 import type { MemoryEntry } from "../memory/entries";
 import type { Front } from "../memory/fronts";
-import { headerOf, type Output, section } from "../output";
+import { headerOf, type Output, type OutputBlock, section } from "../output";
 import { type FrontOwner, frontSection } from "./fronts";
 import { goOn } from "./memory";
 import { ago, heldBy } from "./status";
@@ -82,6 +82,53 @@ export function frontFreedCard(
     blocks: section(undefined, [freed]),
     next: goOn(ctx),
   };
+}
+
+/**
+ * Why the guard does not let an agent's conversation create the change of entry `id`, of the front
+ * `owner` holds from another conversation, and what to do instead.
+ */
+export function frontResolvesDenial(
+  owner: FrontOwner,
+  id: string,
+  lang: Lang,
+  command: string,
+): { readonly reason: string; readonly next: string } {
+  const t = translator(lang);
+  const held = heldBy({ holder: owner }, t) ?? "";
+  const { front } = owner;
+  return {
+    reason: t(
+      `${id} es del frente ${front}, que ya tiene dueño: ${held}, en otra conversación.`,
+      `${id} belongs to front ${front}, which already has an owner: ${held}, in another conversation.`,
+    ),
+    next: t(
+      `toma una entrada libre de tu frente o sin frente (\`${command} front\` los lista), o pídele a la persona que libere el frente ${front} en su terminal con \`${command} front free ${front}\`.`,
+      `take a free entry of your front or of none (\`${command} front\` lists them), or ask the person to free front ${front} in their terminal with \`${command} front free ${front}\`.`,
+    ),
+  };
+}
+
+/**
+ * The warning of `specty propose`: each front another session holds, with the spec's files that
+ * fall in its paths. It stops nothing; nothing when no file falls in one.
+ */
+export function foreignFrontsBlock(
+  touched: readonly { readonly owner: FrontOwner; readonly paths: readonly string[] }[],
+  ctx: CardContext,
+): OutputBlock[] {
+  const t = translator(ctx.lang);
+  if (touched.length === 0) return [];
+  return section(t("FRENTES DE OTRAS SESIONES", "OTHER SESSIONS' FRONTS"), [
+    ...touched.map(
+      ({ owner, paths }) =>
+        `${owner.front} · ${heldBy({ holder: owner }, t) ?? ""}: ${paths.join(", ")}`,
+    ),
+    t(
+      "Estos archivos caen en las rutas de un frente que lleva otra sesión (si no es el tuyo): no frena nada, pero coméntaselo al usuario antes de seguir.",
+      "These files fall in the paths of a front another session holds (if it is not yours): it stops nothing, but tell the user before going on.",
+    ),
+  ]);
 }
 
 /**
