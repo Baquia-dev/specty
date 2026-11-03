@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-entradas-c2",
   "baseCommit": "fff62ec97c2f5f7ab37ffc75def65996c6177694",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:98e5dd5adbc4b416f6d9f4ccf80a117c8ab5eccecb742081efa458bf794a8305",
+    "at": "2026-11-03T03:25:42.904Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -57,12 +64,6 @@
     "T": 5,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:98e5dd5adbc4b416f6d9f4ccf80a117c8ab5eccecb742081efa458bf794a8305",
-    "at": "2026-11-03T03:25:42.904Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T03:28:57.135Z"
 }

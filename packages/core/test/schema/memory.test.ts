@@ -25,3 +25,21 @@ describe("memory in config.yaml", () => {
     expect(resolveConfig({ version: 1, memory: { orphanAfter: 60 } }).ok).toBe(false);
   });
 });
+
+describe("the memory's branch in config.yaml", () => {
+  it("AC7: is specty-memory unless the config gives another", () => {
+    expect(DEFAULT_CONFIG.memory.branch).toBe("specty-memory");
+    const plain = resolveConfig({ version: 1 });
+    expect(plain.ok && plain.config.memory.branch).toBe("specty-memory");
+    const given = resolveConfig({ version: 1, memory: { branch: "notas/memoria" } });
+    expect(given.ok && given.config.memory.branch).toBe("notas/memoria");
+  });
+
+  it("AC7: must be a valid branch name outside specty/, where the changes' branches go", () => {
+    for (const branch of ["specty/memoria", "con espacio", "a..b", "-x", "x.lock", "x/", "", 3]) {
+      const result = resolveConfig({ version: 1, memory: { branch } });
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.issues.map((issue) => issue.path)).toContain("memory.branch");
+    }
+  });
+});
