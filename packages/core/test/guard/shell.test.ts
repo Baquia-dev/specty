@@ -79,6 +79,24 @@ describe("analyzeShell", () => {
     ]);
   });
 
+  it("AC5: names the entries each `specty new --resolves` takes, in order", () => {
+    expect(analyzeShell('specty new "Saludo" --resolves P12 p3 --follows 2026-a').resolves).toEqual(
+      ["P12", "p3"],
+    );
+    expect(
+      analyzeShell(
+        'specty new "X" --resolves=P4 && npx -y @baquia-dev/specty new "Y" --request "z" --resolves P5',
+      ).resolves,
+    ).toEqual(["P4", "P5"]);
+  });
+
+  it("AC5: names none for `specty new` without them or for other commands", () => {
+    expect(analyzeShell('specty new "Saludo" --request "hola"').resolves).toEqual([]);
+    expect(analyzeShell("specty memory --resolves P1").resolves).toEqual([]);
+    expect(analyzeShell("echo specty new --resolves P1").resolves).toEqual([]);
+    expect(analyzeShell("specty next").resolves).toEqual([]);
+  });
+
   it("AC2: names no front for the other `specty front` commands or without a name", () => {
     expect(analyzeShell("specty front").fronts).toEqual([]);
     expect(analyzeShell('specty front add B "Guard"').fronts).toEqual([]);
