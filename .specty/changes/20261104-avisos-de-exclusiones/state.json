@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261104-avisos-de-exclusiones",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-avisos-de-exclusiones",
+  "baseCommit": "41057257a2eb0ac9113242877423e75b81462e57",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:eb0c58a0e0b8c2ebfd89a73791030c1e260db73312f67a758a8a2f5063781a18",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:b190475540359c566976265b8a7ed7e91a2ec771d8e5c910d7a28d2b8d6c98cd",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:caccd4c99ddae134ad0d5c6b1610ea863155d6da3ff309f6a1da60d78e4ec2bd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:12e8513157ddb527008d391a9368c157d450e9f0daddc28d999e87fea923fa3e",
+    "at": "2026-11-03T22:07:08.405Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
