@@ -51,7 +51,7 @@ Hoy los «Pendientes» del cierre de un cambio solo los ve el cambio que lo sigu
 
 ## Tareas
 
-- [ ] T1: Qué pendientes del cierre se anotan
+- [x] T1: Qué pendientes del cierre se anotan
   - files: packages/core/src/memory/entries.ts, packages/core/src/index.ts, packages/core/test/memory/harvest.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

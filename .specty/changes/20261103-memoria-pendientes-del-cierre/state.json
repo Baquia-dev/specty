@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "88088ef3c81c0bd60db7ef60dc2b8f8b2280b946",
+      "startedAt": "2026-11-03T07:26:40.187Z",
+      "doneAt": "2026-11-03T07:27:04.871Z",
+      "summary": "harvestable en memory/entries.ts: los pendientes del cierre que se anotan, sin vacíos, «ninguno», los que citan un id de la memoria ni el texto de una entrada abierta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -171,6 +171,30 @@ export function settledEntry(
   return { ...free, status: "open" };
 }
 
+const NONE = new Set(["ninguno", "ninguna", "none"]);
+
+/**
+ * The follow-ups of a closing that become pending items, trimmed and once each. Left out: an
+ * empty one, one that says there are none, one that cites an entry of the memory (readable or
+ * not, as `ids` holds them) and one with the text of an open entry.
+ */
+export function harvestable(
+  items: readonly string[],
+  memory: { readonly entries: readonly MemoryEntry[]; readonly ids: readonly string[] },
+): string[] {
+  const known = new Set(memory.ids);
+  const open = new Set(memory.entries.filter(isOpenEntry).map((entry) => entry.text.trim()));
+  const kept: string[] = [];
+  for (const item of items) {
+    const text = item.trim();
+    const none = NONE.has(text.replace(/\.$/, "").toLowerCase());
+    const cites = (text.match(/\b[PD][1-9]\d*\b/g) ?? []).some((id) => known.has(id));
+    if (text.length > 0 && !none && !cites && !open.has(text) && !kept.includes(text))
+      kept.push(text);
+  }
+  return kept;
+}
+
 /** By date and, on the same date, the P ids before the D ones, each by number. */
 export function byDate(entries: readonly MemoryEntry[]): readonly MemoryEntry[] {
   const number = (entry: MemoryEntry) => Number(entry.id.slice(1));

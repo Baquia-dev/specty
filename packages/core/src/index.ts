@@ -166,6 +166,7 @@ export {
   type ClaimProblem,
   claimable,
   freeWork,
+  harvestable,
   isOpenEntry,
   MEMORY_KINDS,
   MEMORY_STATUSES,
