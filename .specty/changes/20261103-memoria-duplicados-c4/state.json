@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-duplicados-c4",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-duplicados-c4",
   "baseCommit": "84797b049bdb6a68bf8caa500c9e6105227fc997",
   "revision": 1,
@@ -55,6 +55,8 @@
     "T": 2,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T08:05:34.424Z"
+  "lockedTests": {
+    "packages/cli/test/duplicates.test.ts": "sha256:b00b27a36e9fe3102abde5d7ac7741f17ba48938c74ac1a083fce7d3b2504a77",
+    "packages/core/test/flow/duplicates.test.ts": "sha256:178ab24a7d69cb0533e63f554e7b51c874f5434e5e08f81fec4c603bb775d38e"
+  }
 }
