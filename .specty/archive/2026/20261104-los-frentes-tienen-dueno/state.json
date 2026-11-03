@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-los-frentes-tienen-dueno",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-los-frentes-tienen-dueno",
   "baseCommit": "2435a73902d061d02e48bb31d769a851d0c0f258",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:f68606a0002df15896d3d2bd3269d049dccacd426489883a8225114e1b7c1cbb",
@@ -94,12 +94,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b03d86accc0d585d01331eacb8a1761fd41c2000",
+      "attempts": 1,
       "startedAt": "2026-11-03T20:26:46.014Z",
       "doneAt": "2026-11-03T20:27:19.672Z",
-      "summary": "formats.md §1: el registro fronts/<frente>.json y el párrafo «Dueño de un frente»; ARCHITECTURE: front take y front free, quién registra al dueño y qué rechaza el guard"
+      "summary": "formats.md §1: el registro fronts/<frente>.json y el párrafo «Dueño de un frente»; ARCHITECTURE: front take y front free, quién registra al dueño y qué rechaza el guard",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -112,6 +112,7 @@
     "T": 5,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T20:32:45.925Z",
   "lockedTests": {
     "packages/core/test/guard/shell.test.ts": "sha256:0adb9e479b94baf5851a63ba75e45f5ed2ccdb8f0e23f02a17ecb3fdb86a0c9c",
     "packages/cli/test/front-guard.test.ts": "sha256:a71768b06b297cd0a12c00acc7f6f37676f531f6b3f0a2fc883ca0652b47a62a",

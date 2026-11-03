@@ -95,3 +95,28 @@ Segundo cambio de P33 (repartir el trabajo entre sesiones): una sesión de agent
 
 - R1: El guard lee la rama de la memoria en cada comando con `front take` o `front free` — solo en esos, así que el resto de comandos no paga nada.
 - R2: Una herramienta que no da el id de la conversación al guard no registra dueño — `front take` lo dice («nadie lo lleva»), como sin guard.
+
+## Cierre
+
+### Resumen
+
+Una sesión de agente toma un frente con `specty front take <frente>`: el guard de su herramienta, antes de que el comando corra, la registra como dueña en `.git/common/specty/fronts/<frente>.json` (herramienta, conversación y hora) y borra el frente que esa conversación llevaba. El guard rechaza, con la regla `memory`, que otra conversación tome o libere un frente cuyo dueño dio un paso, o lo tomó, en los últimos `memory.orphanAfterMin` minutos, y dice quién lo lleva, desde cuándo y cómo liberarlo; pasado ese tiempo el frente queda libre sin borrar nada. `front take` muestra el frente con su dueño, sus entradas abiertas en orden y, como siguiente paso, el cambio de la primera libre con `--resolves`; sin el guard dice que nadie lo lleva. `front free` deja el frente sin dueño y dice quién lo llevaba, y `specty front` añade «lo lleva <herramienta>, hace N min» a cada frente con dueño vivo. El análisis de shell del core reconoce `specty front take|free <frente>` (`ShellAnalysis.fronts`).
+
+### Desviaciones
+
+- `holdFront` pasó de T3 a T4, con `specty scope add` de `packages/cli/src/store/front-owners.ts` para T4: en T3 nadie lo usaba aún y knip lo marcaba.
+- `FrontOwner` vive en `cards/fronts.ts` y no en `cards/front-owners.ts`, para que `front-owners.ts` use `frontSection` sin un ciclo de imports; `frontSection` exportada sustituye a la `frontLines` privada.
+- `take` y `free` de un frente que no existe reutilizan el rechazo `unknown-front` de `front assign`, ahora en la función `unknownFront` de `commands/front.ts`, que usan los tres.
+- `analyzeSegment` pasaba de complejidad 10 al añadir `fronts`: lo que un segmento pide a Specty (`specty`, `enters` y `fronts`) sale ahora de `spectyCalls`.
+
+### Decisiones
+
+- Un dueño sigue vivo con lo más reciente entre su último paso en `activity/` y la hora de la toma, para que un frente recién tomado no salga libre antes del primer paso anotado.
+- El tipo de cada petición de frente va escrito dentro de `ShellAnalysis` y no como interfaz exportada, que knip marcaría sin uso fuera del core.
+- `FrontHold` no se exporta: el guard le pasa a `holdFront` un objeto literal, y `front.ts` usa `LiveHold`.
+
+### Pendientes
+
+- P33: falta mostrar los frentes con su dueño en `specty status` (y en su `--json`) y, en el último cambio, la tarjeta de inicio con solo lo del frente de la sesión y los frenos de `new --resolves` y `propose`.
+- P2: `packages/core/src/cards/index.ts` tiene ya 391 líneas de código.
+- `packages/cli/src/enforce/guard.ts` tiene 302 líneas de código (el aviso salta a partir de 300). Propuesta de división por responsabilidad: llevar lo que juzga `specty enter` dentro de un comando de shell (`enterCommand` y `unreachable`) a `enforce/sessions.ts`, junto a `enterChange` y `bindSession`, o a un `enforce/enter-command.ts` propio.
