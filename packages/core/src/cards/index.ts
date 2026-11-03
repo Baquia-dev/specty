@@ -148,8 +148,6 @@ export {
   claudePointerLine,
   codexGuardLine,
   codexRulesLine,
-  codexSandboxKeptWarning,
-  codexSandboxLine,
   codexTrustWarning,
   cursorSandboxLine,
   cursorSandboxTrackedWarning,
