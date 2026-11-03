@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-lecciones-rutas",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-lecciones-rutas",
   "baseCommit": "802764ac2b1e1ea947167afbefebf61a8bbdf3d8",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b8032dba680da46daf55f41273c33fa31e082a5d",
+      "attempts": 1,
       "startedAt": "2026-11-03T10:47:20.527Z",
       "doneAt": "2026-11-03T10:48:37.987Z",
-      "summary": "memory add gana --path (rutas sin repetir en paths) y la negativa de una lección sin rutas; formats.md documenta lesson, paths y --path"
+      "summary": "memory add gana --path (rutas sin repetir en paths) y la negativa de una lección sin rutas; formats.md documenta lesson, paths y --path",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "626adac1d3dac2a96d4ce53cfde51bc5df19f2ce",
+      "startedAt": "2026-11-03T10:48:38.294Z",
+      "doneAt": "2026-11-03T10:50:30.650Z",
+      "summary": "La página Memoria gana la sección Lecciones, el tipo en el filtro y las rutas de cada entrada, que la búsqueda también compara"
     }
   },
   "pending": {

@@ -59,7 +59,7 @@ Lo que un agente aprende de una parte del código («este módulo no se puede im
   - files: packages/cli/src/commands/memory.ts, packages/cli/test/memory-lessons.test.ts, docs/formats.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-lessons.test.ts test/memory.test.ts && pnpm lint
-- [ ] T3: Las lecciones en la página «Memoria»
+- [x] T3: Las lecciones en la página «Memoria»
   - files: packages/ui/src/memory/memory-view.ts, packages/ui/src/memory/memory-page.ts, packages/ui/src/memory/memory-lessons.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-lessons.test.ts --include src/memory/memory-page.test.ts --include src/memory/memory-filter.test.ts && pnpm typecheck && pnpm lint

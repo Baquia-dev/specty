@@ -36,10 +36,11 @@ const KINDS: Readonly<
   improvement: { label: { es: "mejora", en: "improvement" }, tone: "implementing" },
   reminder: { label: { es: "recordatorio", en: "reminder" }, tone: "acceptance" },
   decision: { label: { es: "decisión", en: "decision" }, tone: "review" },
+  lesson: { label: { es: "lección", en: "lesson" }, tone: "testing" },
 };
 
 /** The toolbar's choices of kind: every entry, or one kind. */
-const KIND_FILTERS = ["all", "pending", "improvement", "reminder", "decision"] as const;
+const KIND_FILTERS = ["all", "pending", "improvement", "reminder", "decision", "lesson"] as const;
 
 const ALL_KINDS: Bilingual = { es: "Todas", en: "All" };
 
@@ -48,6 +49,7 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
   improvement: { es: "Mejoras", en: "Improvements" },
   reminder: { es: "Recordatorios", en: "Reminders" },
   decision: { es: "Decisiones", en: "Decisions" },
+  lesson: { es: "Lecciones", en: "Lessons" },
 };
 
 /**
@@ -285,6 +287,7 @@ export class MemoryPage {
       ...(entry.origin.change === undefined ? [] : [entry.origin.change]),
       by,
       entry.created.slice(0, 10),
+      ...(entry.paths === undefined ? [] : [`${t("en", "in")} ${entry.paths.join(", ")}`]),
     ].join(" · ");
   }
 

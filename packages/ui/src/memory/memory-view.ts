@@ -18,11 +18,13 @@ export type MemoryItem =
   /** An open pending item or improvement. */
   | { readonly kind: "work"; readonly entry: MemoryEntry }
   | { readonly kind: "decision"; readonly entry: MemoryEntry }
+  /** An open lesson, with the paths it is about. */
+  | { readonly kind: "lesson"; readonly entry: MemoryEntry }
   /** An entry done or dropped, shown on demand. */
   | { readonly kind: "closed"; readonly entry: MemoryEntry };
 
 export interface MemorySection {
-  readonly key: "turn" | "holders" | "work" | "decisions" | "closed";
+  readonly key: "turn" | "holders" | "work" | "decisions" | "lessons" | "closed";
   readonly label: Bilingual;
   readonly items: readonly MemoryItem[];
 }
@@ -41,6 +43,7 @@ const LABELS: Readonly<Record<MemorySection["key"], Bilingual>> = {
   holders: { es: "Quién lleva cada cambio", en: "Who holds each change" },
   work: { es: "Pendientes y mejoras", en: "Pending items and improvements" },
   decisions: { es: "Decisiones", en: "Decisions" },
+  lessons: { es: "Lecciones", en: "Lessons" },
   closed: { es: "Hechas y descartadas", en: "Done and dropped" },
 };
 
@@ -52,16 +55,7 @@ const LABELS: Readonly<Record<MemorySection["key"], Bilingual>> = {
  * the changes, which are not entries.
  */
 export function memorySections(record: MemoryRecord, filter = NO_FILTER): MemorySection[] {
-  const query = fold(filter.query);
-  const entries = record.entries.filter(
-    (entry) =>
-      (filter.kind === "all" || entry.kind === filter.kind) &&
-      matches(query, [entry.id, entry.text, entry.quote, entry.origin.change, entry.taken?.change]),
-  );
-  const changes =
-    filter.kind === "all"
-      ? record.changes.filter((change) => matches(query, [change.id, change.title]))
-      : [];
+  const { entries, changes } = filtered(record, filter);
   const open = byDate(entries.filter((entry) => !isClosed(entry)));
   const proposed = open.filter((entry) => entry.status === "drop-proposed");
   const settled = open.filter((entry) => entry.status !== "drop-proposed");
@@ -89,11 +83,37 @@ export function memorySections(record: MemoryRecord, filter = NO_FILTER): Memory
       of(["decision"]).map((entry): MemoryItem => ({ kind: "decision", entry })),
     ),
     section(
+      "lessons",
+      of(["lesson"]).map((entry): MemoryItem => ({ kind: "lesson", entry })),
+    ),
+    section(
       "closed",
       closed.map((entry): MemoryItem => ({ kind: "closed", entry })),
     ),
   ];
   return sections.filter((found) => found.items.length > 0);
+}
+
+/** What the search and the kind keep: a kind leaves out the changes, which are not entries. */
+function filtered(record: MemoryRecord, filter: MemoryFilter): MemoryRecord {
+  const query = fold(filter.query);
+  const entries = record.entries.filter(
+    (entry) =>
+      (filter.kind === "all" || entry.kind === filter.kind) &&
+      matches(query, [
+        entry.id,
+        entry.text,
+        entry.quote,
+        entry.origin.change,
+        entry.taken?.change,
+        ...(entry.paths ?? []),
+      ]),
+  );
+  const changes =
+    filter.kind === "all"
+      ? record.changes.filter((change) => matches(query, [change.id, change.title]))
+      : [];
+  return { entries, changes };
 }
 
 function isClosed(entry: MemoryEntry): boolean {
