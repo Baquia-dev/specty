@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-fin-de-turno-c5",
   "baseCommit": "7b5a377abe7f0a22f2e50be83049a26076594b59",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:760e8dc2949917c8e6a296f5ff64f63b14aa6ae4befeedfa36d54693a1f81f68",
+    "at": "2026-11-03T08:37:50.457Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:760e8dc2949917c8e6a296f5ff64f63b14aa6ae4befeedfa36d54693a1f81f68",
-    "at": "2026-11-03T08:37:50.457Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T08:39:27.978Z"
 }
