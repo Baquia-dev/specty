@@ -61,7 +61,7 @@ Resuelve P43 y P47. Hoy la salida de `specty close` no dice qué pendientes deja
   - files: packages/cli/src/flow/archive-memory.ts, packages/cli/src/commands/memory.ts, packages/cli/src/flow/finish.ts, packages/cli/src/commands/finish.ts, packages/cli/src/commands/accept.ts, packages/cli/src/commands/retro.ts, packages/cli/test/close-harvest.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/close-harvest.test.ts test/memory-harvest.test.ts test/memory-on-close.test.ts test/memory-settle.test.ts test/risk-lessons.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: La documentación de la salida del cierre
+- [x] T3: La documentación de la salida del cierre
   - files: docs/formats.md
   - ac: AC1
   - verify: pnpm lint
