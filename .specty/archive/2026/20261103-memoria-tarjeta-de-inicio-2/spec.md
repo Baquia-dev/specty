@@ -91,3 +91,35 @@ Las entradas de la memoria de Specty ya se anotan y se listan, pero nadie las ve
 - R2: Leer la rama frena `next`, que también ejecuta el guard — son tres procesos de git, y solo sin cambio activo.
 - R3: Un agente empieza un pendiente por su cuenta al verlo en la tarjeta — la tarjeta pide no empezarlos sin que el usuario lo pida.
 - R4: Un matcher que no es una expresión regular válida rompería la lectura de `doctor` — `runsAtSessionStart` lo compara entonces como texto.
+
+## Cierre
+
+### Resumen
+
+La memoria de Specty llega sola a cada sesión. Sin cambio activo, la tarjeta de `specty next` añade dos secciones, que nunca cambian su SIGUIENTE:
+- «MEMORIA DE SPECTY»: cuántos pendientes y mejoras siguen abiertos, los tres primeros libres por fecha y cómo tomar uno.
+- «RECORDATORIOS»: todos los abiertos y cómo marcarlos hechos.
+
+Esa misma tarjeta es la de inicio. En Claude Code, `init` instala el `SessionStart` con `startup|clear|compact`, así que llega también al empezar una sesión. `doctor` avisa (`claude-startup`) cuando el hook de Specty no se dispara al empezar: `runsAtSessionStart` lee el matcher como Claude Code, como una expresión regular sobre `source`, en la que vacío, `*` o ningún matcher valen siempre.
+
+La regla del reporte final del bloque de AGENTS.md pide anotar cada pendiente con `specty memory add`. Con esto se completa el AC4 de la épica.
+
+### Desviaciones
+
+- El primer intento, `20261103-memoria-tarjeta-de-inicio`, se canceló en aceptación. La verificación de su T3 no incluía el typecheck, y `pnpm check` falló por un error de tipos en `claude-code.ts`. El ajuste no podía tener un test rojo con la spec bloqueada, así que este cambio lo rehace con el typecheck en las verificaciones de T3 y T4 y con `src/agents/claude-code.test.ts`.
+- `doctor` ya no compara el matcher instalado como texto exacto, como decía el diseño del primer intento: lo evalúa como Claude Code, para no avisar en falso de `*`, de ningún matcher ni de otro orden.
+- «TE TOCA» en `status` salió de este cambio para que no fuera XL.
+
+### Decisiones
+
+- La tarjeta cuenta solo pendientes y mejoras, y enseña aparte los recordatorios; las decisiones no salen (A1).
+- Mientras no exista `--resolves` (C3), tomar una entrada es crear su cambio con `specty new` citando su id en la petición. La tarjeta pide además no empezarlas sin que lo pida el usuario.
+- El aviso de anotar lo pendiente va dentro de la regla del reporte final, sin otra línea, para que el bloque de flujo siga en 15 líneas como mucho.
+
+### Pendientes
+
+- P4: el cambio que sigue a este. Pone en «TE TOCA» de `status` los recordatorios, y la tarjeta de `status` pasa a su propio archivo.
+- P5: la tarjeta al empezar en Codex y Devin, sin comprobar.
+- P6: la mejora de la política `contract` para los ajustes por fallos de tipos.
+- P7: el bloque de flujo del AGENTS.md de este repositorio, de una versión anterior.
+- Luego, los cortes C3, C4, C5 y C6 de la épica.

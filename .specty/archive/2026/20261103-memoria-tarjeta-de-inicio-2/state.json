@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-tarjeta-de-inicio-2",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-tarjeta-de-inicio-2",
   "baseCommit": "06aa9d7d76d48a8131d6964c705eea607bab4240",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:cd281e35aa776bbf5295cd48d052f892f6e2731165b7d854f26822e3d7eb9621",
@@ -79,12 +79,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "80b2f962e3286dcce336f0e1e31f1f11b47bd81c",
+      "attempts": 1,
       "startedAt": "2026-11-03T05:52:35.143Z",
       "doneAt": "2026-11-03T05:53:04.772Z",
-      "summary": "La regla del reporte final del bloque de flujo pide anotar cada pendiente con specty memory add; formats.md y ARCHITECTURE al día"
+      "summary": "La regla del reporte final del bloque de flujo pide anotar cada pendiente con specty memory add; formats.md y ARCHITECTURE al día",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -97,6 +97,7 @@
     "T": 4,
     "R": 4
   },
+  "closingSubmittedAt": "2026-11-03T05:57:53.526Z",
   "lockedTests": {
     "packages/cli/test/setup.test.ts": "sha256:24d887c1aab3042aacf769fd0b4d563f69d31b0d90640780b13c9a29056a845a",
     "packages/core/test/cards.test.ts": "sha256:00d33cdc4062245b9c7f8b9d12c4051b09c6ebf8e1f74ac0fb7d32c9db6c115b",
