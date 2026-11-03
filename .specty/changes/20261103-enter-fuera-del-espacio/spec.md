@@ -50,7 +50,7 @@ Antigravity solo deja trabajar a su agente dentro de las carpetas de su espacio 
 
 ## Tareas
 
-- [ ] T1: La negativa y el límite de Antigravity en core, y la documentación
+- [x] T1: La negativa y el límite de Antigravity en core, y la documentación
   - files: packages/core/src/guard/worktrees.ts, packages/core/src/index.ts, packages/core/src/capabilities.ts, packages/core/test/guard/worktrees.test.ts, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/worktrees.test.ts && pnpm typecheck && pnpm lint
