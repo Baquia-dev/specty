@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "32171025dd735e45d516881f6a70461f67a4fe62",
+      "startedAt": "2026-11-03T11:13:29.734Z",
+      "doneAt": "2026-11-03T11:13:50.053Z",
+      "summary": "fullVerificationWaitNote en cards/lock.ts: quién verifica, dónde y desde cuándo, y que se espera"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

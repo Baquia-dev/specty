@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import type { Lang } from "../i18n";
 import { headerOf, type Output } from "../output";
 import { blockedCard } from "./flow";
 import { translator } from "./text";
@@ -33,5 +34,17 @@ export function busyChangeCard(id: string, holder: LockHolderView, ctx: CardCont
       "espera a que termine y vuelve a ejecutar tu comando; si ese proceso ya no existe, su bloqueo deja de contar solo.",
       "wait for it to finish and run your command again; if that process no longer exists, its lock stops counting by itself.",
     ),
+  );
+}
+
+/**
+ * Another session holds the turn of the full verification (one at a time in the clone): this one
+ * says who, where and since when, and waits for it to end.
+ */
+export function fullVerificationWaitNote(holder: LockHolderView, lang: Lang): string {
+  const since = holder.at.slice(11, 16);
+  return translator(lang)(
+    `specty: otra sesión está haciendo una verificación completa (\`${holder.command}\` en ${holder.folder}, desde las ${since} UTC); espero a que termine para no correr dos a la vez…`,
+    `specty: another session is running a full verification (\`${holder.command}\` in ${holder.folder}, since ${since} UTC); waiting for it to end so that two do not run at once…`,
   );
 }

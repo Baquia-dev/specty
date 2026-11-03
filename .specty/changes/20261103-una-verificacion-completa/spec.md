@@ -49,7 +49,7 @@ Con varias sesiones trabajando en el mismo clon, dos `specty accept` o dos incor
 
 ## Tareas
 
-- [ ] T1: El aviso de espera
+- [x] T1: El aviso de espera
   - files: packages/core/src/cards/lock.ts, packages/core/src/cards/index.ts, packages/core/test/cards/full-verification.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/full-verification.test.ts && pnpm lint
