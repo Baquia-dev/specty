@@ -14,7 +14,7 @@ Se midió qué herramientas de cada stack ven una worktree creada dentro del rep
 
 ## Tareas
 
-- [ ] T1: El ADR 0018 deja medidas las worktrees dentro del repositorio
+- [x] T1: El ADR 0018 deja medidas las worktrees dentro del repositorio
   - files: docs/decisions/0018-worktrees-dentro-del-repositorio.md
   - ac: —
   - verify: pnpm lint
