@@ -40,7 +40,20 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/worktrees-inside.test.ts",
+        "packages/cli/src/enforce/worktree-hooks.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "8c2623cb35ca8f0869a3a4261732c55ae5a459dc",
+      "startedAt": "2026-11-03T09:15:27.518Z",
+      "doneAt": "2026-11-03T09:27:17.567Z",
+      "summary": "worktreesHome da <principal>/.worktrees y addWorktree la ignora en .git/info/exclude; namedWorktree y WorktreeRemove miran también la carpeta de antes (formerWorktreesHome) para los cambios ya abiertos"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -49,7 +62,8 @@
     "A": 4,
     "AC": 4,
     "T": 2,
-    "R": 2
+    "R": 2,
+    "S": 2
   },
   "lockedTests": {
     "packages/cli/test/antigravity.test.ts": "sha256:6912bc000947e4bffd6fe092ab21ea5be1998717eddee2cc6590d86cb0fa6685",
@@ -61,6 +75,6 @@
     "packages/cli/test/status-json.test.ts": "sha256:0ab8372d68bb0cf57ee882ce84c5c05885f6a148bd967f5a449d47b5a27fa162",
     "packages/cli/test/support.ts": "sha256:d832a96106a4ef6d38bce7b0e4e74e69fa9ed477855f5e26750ab69c5e1d4dac",
     "packages/cli/test/worktrees.test.ts": "sha256:c5d160fd90546c3b020ec84200172eb7144eb16a4023449247990e166a05bbc9",
-    "packages/cli/test/worktrees-inside.test.ts": "sha256:652f5b7f1d496f960190bc6bc5899feaf7d3510190be6f2aa120aaff78dd15dd"
+    "packages/cli/test/worktrees-inside.test.ts": "sha256:b857f512ddd273174a09bca127f18231ab6b6d812f2aa71e7a99fce8b45c343a"
   }
 }

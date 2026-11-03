@@ -3,7 +3,7 @@ import { join, resolve } from "node:path";
 import { type Lang, worktreeHookRefusal } from "@baquia-dev/specty-core";
 import { reasonOf } from "../flow/integrate";
 import { within } from "../flow/land";
-import { worktreesHome } from "../flow/worktree";
+import { formerWorktreesHome, worktreesHome } from "../flow/worktree";
 import { exists } from "../io/files";
 import { createGit, findRoot, type Git, resolved } from "../io/git";
 import { COMMAND, type Environment, openSession, systemLanguage } from "../session";
@@ -30,10 +30,21 @@ export interface NamedWorktree {
 export async function namedWorktree(git: Git, name: string): Promise<NamedWorktree> {
   // Git lists `C:/…` on Windows, where `join` gives `C:\…`: they are compared resolved.
   const listed = (await git.worktrees()).map(({ folder }) => resolve(folder));
-  const prepared = join(await worktreesHome(git), name);
-  if (listed.includes(resolve(prepared))) return { folder: prepared, prepared: true, listed: true };
+  for (const home of await changeHomes(git)) {
+    const prepared = join(home, name);
+    if (listed.includes(resolve(prepared)))
+      return { folder: prepared, prepared: true, listed: true };
+  }
   const own = join(git.root, ".claude", "worktrees", name);
   return { folder: own, prepared: false, listed: listed.includes(resolve(own)) };
+}
+
+/**
+ * Where `specty new` puts the changes' folders, and where it put them before ADR 0018, beside the
+ * main one: a change opened then still lives there until it closes.
+ */
+async function changeHomes(git: Git): Promise<string[]> {
+  return [await worktreesHome(git), await formerWorktreesHome(git)];
 }
 
 export function isWorktreeEvent(event: Record<string, unknown>): boolean {
@@ -87,7 +98,8 @@ async function remove(git: Git, path: string, lang: Lang): Promise<HookReply> {
   const folder = await resolved(resolve(git.root, path));
   // `close` already removed it, once the change reached its target: nothing left to do.
   if (!(await exists(folder))) return { code: 0, stdout: "", stderr: "" };
-  if (await within(folder, await worktreesHome(git))) {
+  const homes = await changeHomes(git);
+  if ((await Promise.all(homes.map((home) => within(folder, home)))).some(Boolean)) {
     return refuse(worktreeHookRefusal({ reason: "change-folder", folder, command: COMMAND }, lang));
   }
   const worktrees = await git.worktrees();

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { existsSync } from "node:fs";
+import { mkdir } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { APP, CHANGE, cli, folderOf, git, read, tempRepo } from "./support";
@@ -65,6 +66,8 @@ describe("the changes' worktrees inside the project", () => {
     const root = await tempRepo(APP);
     expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
     const old = join(dirname(root), `${basename(root)}.worktrees`, CHANGE);
+    // git moves a worktree only into a folder that exists.
+    await mkdir(dirname(old), { recursive: true });
     git(root, "worktree", "move", folderOf(root), old);
     const status = await cli(root, ["status"]);
     expect(status.out).toContain(CHANGE);

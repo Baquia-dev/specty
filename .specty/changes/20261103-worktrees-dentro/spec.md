@@ -58,7 +58,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: La carpeta de las worktrees, dentro del proyecto e ignorada
+- [x] T1: La carpeta de las worktrees, dentro del proyecto e ignorada
   - files: packages/cli/src/flow/worktree.ts, packages/cli/test/worktrees-inside.test.ts, packages/cli/test/support.ts, packages/cli/test/worktrees.test.ts, packages/cli/test/epic.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees-inside.test.ts test/worktrees.test.ts test/epic.test.ts && pnpm typecheck && pnpm lint
