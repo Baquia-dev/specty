@@ -71,3 +71,23 @@ Que una sesión, de cualquier agente, o la persona desde su terminal, pueda deja
 
 - R1: Un mensaje llega como si fuera un aviso del guard — el texto empieza diciendo que es un mensaje de otra sesión y de quién, y no pide deshacer nada.
 - R2: Dos sesiones en la misma carpeta — lo recibe la primera que termina un comando; la otra no.
+
+## Cierre
+
+### Resumen
+
+`specty message <id> "<texto>"` deja un mensaje para la sesión del cambio abierto `<id>`, desde cualquier carpeta, lo ejecute un agente o la persona, en `.git/common/specty/messages/<id>/`, con quién lo deja, su herramienta, el cambio de su carpeta y la hora. Tras el siguiente comando de shell en la carpeta de ese cambio, el guard se lo entrega a su agente una sola vez, con la hora, quién lo dejó y cómo responderle, por el mismo camino que un aviso: probado con Claude Code y con Cursor.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- Los mensajes viajan en el veredicto del guard tras un comando, que deja de permitir cuando lleva alguno: así llegan en la forma de cada agente sin tocar ningún módulo de `agents/`, también a Antigravity en su siguiente llamada al modelo.
+- Solo se entregan tras un comando de shell, no antes de cada acción: los comandos de Specty también son comandos de shell, así que llegan a más tardar en el siguiente `specty`.
+
+### Pendientes
+
+- Los mensajes que nadie recogió de un cambio que se cierra o se cancela se quedan en `.git/common/specty/messages/<id>/`: borrarlos al cerrar o cancelar el cambio, o con `specty prune`.
+- `specty message` no dice al que envía si alguna sesión trabaja ahora en ese cambio, y ni `specty status` ni la UI muestran los mensajes que esperan: usar la actividad de `.git/common/specty/activity/` para avisar y contarlos por cambio.

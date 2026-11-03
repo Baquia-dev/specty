@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-mensajes-entre-sesiones-de-cualquier-agente",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-mensajes-entre-sesiones-de-cualquier-agente",
   "baseCommit": "e327530a2c576639a892c6b6746d3a01ead5c48c",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:50d94edfaf486ee2cee39e3dbe00245c381fcca42e55a2d4e3fa0a2402c3ac04",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "032938e9249249bc1d4bf7aafe61e119638c9cc1",
+      "attempts": 1,
       "startedAt": "2026-11-03T12:02:21.421Z",
       "doneAt": "2026-11-03T12:04:14.191Z",
-      "summary": "El guard une al veredicto tras un comando los mensajes de la sesión del cambio de su carpeta (waitingMessages en commands/message.ts), que llegan como un aviso en cada agente; formats §1, ARCHITECTURE y el glosario los documentan"
+      "summary": "El guard une al veredicto tras un comando los mensajes de la sesión del cambio de su carpeta (waitingMessages en commands/message.ts), que llegan como un aviso en cada agente; formats §1, ARCHITECTURE y el glosario los documentan",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -75,6 +75,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T12:08:56.415Z",
   "lockedTests": {
     "packages/cli/test/message-delivery.test.ts": "sha256:d3934bf40ca5e364a73f6ab9b356b1f394a3fea33ceb07ff534450927f3069d1",
     "packages/cli/test/message.test.ts": "sha256:31796625b469833203ec7dd4640451fe71c5a15e7315a04b5ff08f7961174422",
