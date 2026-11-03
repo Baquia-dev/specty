@@ -191,6 +191,17 @@ export {
   takenEntry,
   waitingFor,
 } from "./memory/entries";
+export {
+  type AssignProblem,
+  assignable,
+  assignToFront,
+  type Front,
+  type FrontMove,
+  findFront,
+  isFrontName,
+  parseFront,
+  serializeFront,
+} from "./memory/fronts";
 export { entriesForPaths } from "./memory/paths";
 export { isDay, localDay, sessionEntries } from "./memory/triggers";
 export { pendingInMessage } from "./memory/turn-end";

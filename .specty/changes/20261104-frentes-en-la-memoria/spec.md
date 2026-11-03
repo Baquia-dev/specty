@@ -57,7 +57,7 @@ Primer cambio de P33 (repartir el trabajo entre sesiones): la memoria de Specty 
 
 ## Tareas
 
-- [ ] T1: El modelo de un frente y el reparto de entradas
+- [x] T1: El modelo de un frente y el reparto de entradas
   - files: packages/core/src/memory/fronts.ts, packages/core/src/index.ts, packages/core/test/memory/fronts.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/fronts.test.ts && pnpm lint
