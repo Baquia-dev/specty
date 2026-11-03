@@ -65,3 +65,23 @@ Hoy los «Pendientes» del cierre de un cambio solo los ve el cambio que lo sigu
 - R1: La memoria se llena de pendientes que el agente ya iba a hacer enseguida — se toman con `new --resolves`, y la persona puede descartarlos cuando exista `memory drop`.
 - R2: Una viñeta que cita un id por otro motivo no se anota — es raro, y el texto sigue en el cierre archivado.
 - R3: Un cierre con muchas viñetas hace muchos commits en la memoria — uno por pendiente, como `memory add`.
+
+## Cierre
+
+### Resumen
+
+Al archivarse un cambio cerrado (con `close`, `accept` de un cambio quick o un retro confirmado), cada viñeta de «### Pendientes» de su cierre pasa a ser un pendiente abierto de la memoria de Specty, con ese cambio y quien lo cerró como origen, en su propio commit. No se anotan las viñetas vacías, las que dicen que no queda ninguno, las que citan el id de una entrada de la memoria ni las que repiten el texto de una entrada abierta. Lo decide `harvestable`, en core, y la CLI lo aplica desde `archive`, después de cerrar o liberar las entradas que tomó el cambio. Con esto se cumple el AC3 de la épica.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- La comprobación se repite dentro de cada edición de la memoria, así que un pendiente que otra sesión anotó entretanto no se duplica.
+- Una viñeta que cita un id solo se omite si ese id existe en la memoria, aunque su entrada no se pueda leer.
+
+### Pendientes
+
+- Cambio que sigue a 20261103-memoria-pendientes-del-cierre en la épica «Memoria de Specty» (AC6): `specty memory drop <id> --reason "<motivo>"`, con el que la persona descarta una entrada y un agente, también en modo delegado, solo la propone para descartar; las entradas propuestas salen en «TE TOCA» de `specty status`; y el guard impide a los agentes escribir con git la rama `specty-memory`.
+- P9: `packages/core/src/index.ts` ya tiene 309 líneas de código; decidirlo junto con P2.
