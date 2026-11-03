@@ -23,10 +23,15 @@ const METRO = /^metro\.config\.[cm]?[jt]s$/;
 const VITEST_ADD = '"**/.worktrees/**"';
 /**
  * Vite and Metro compare absolute paths: an unanchored pattern would also exclude their own files
- * when they run inside a worktree, so theirs is anchored to the config's folder.
+ * when they run inside a worktree, so theirs is anchored to the config's folder. Neither puts that
+ * path in a pattern as it is, where parentheses, brackets or Windows' backslashes would change its
+ * meaning: Vite's compares the start of the path, which chokidar hands its functions with `/`; Metro
+ * tests native paths, so its expression escapes the folder and takes either separator.
  */
-const VITE_ADD = `\`\${import.meta.dirname}/.worktrees/**\``;
-const METRO_ADD = `new RegExp(\`^\${__dirname}/\\\\.worktrees/\`)`;
+const VITE_ADD = `(file) => file.startsWith(\`\${import.meta.dirname.replaceAll("\\\\", "/")}/.worktrees/\`)`;
+const METRO_ADD = `new RegExp(\`^\${__dirname.replace(/[\\\\^$.*+?()[\\]{}|]/g, "\\\\$&")}[/\\\\\\\\]\\\\.worktrees[/\\\\\\\\]\`)`;
+/** Characters that change a glob or a regular expression: a path with them can't go in one as it is. */
+const SPECIAL = /[\\^$*+?()[\]{}|!]/;
 
 /** Vitest, Vite, Jest, ESLint and Metro at the root, once a change lives in `.worktrees/`. */
 export async function worktreeExclusions(root: string): Promise<FormatterExclusion[]> {
@@ -68,7 +73,9 @@ async function viteConfigs(
     });
   }
   if (vite !== undefined) {
-    found.push(anchored("Vite", `${vite} (server.watch.ignored)`, VITE_ADD, viteText));
+    found.push(
+      anchored("Vite", `${vite} (server.watch.ignored)`, VITE_ADD, usable(viteText, root)),
+    );
   }
   return found;
 }
@@ -81,7 +88,7 @@ async function metroConfig(
   const file = entries.find((entry) => METRO.test(entry));
   if (file !== undefined) {
     const text = (await readText(join(root, file))) ?? "";
-    return anchored("Metro", `${file} (resolver.blockList)`, METRO_ADD, text);
+    return anchored("Metro", `${file} (resolver.blockList)`, METRO_ADD, usable(text, root));
   }
   const manifest = parseJson((await readText(join(root, "package.json"))) ?? "");
   if (!isRecord(manifest)) return undefined;
@@ -134,6 +141,18 @@ function exclusion(name: string, file: string, add: string, text: string): Forma
 /** A dev server excludes the folder when a line names it next to the config's folder. */
 function anchored(name: string, file: string, add: string, text: string): FormatterExclusion {
   return { name, path: PATH, file, add, excluded: namesFolder(text, true) };
+}
+
+/**
+ * The config's lines that can exclude the folder of a project in `root`: one that puts the config's
+ * folder in a pattern as it is (`${…dirname}/`) only matches when that path has no special characters.
+ */
+function usable(text: string, root: string): string {
+  if (!SPECIAL.test(root)) return text;
+  return text
+    .split("\n")
+    .filter((line) => !line.includes("dirname}/"))
+    .join("\n");
 }
 
 /** Whether a line names `.worktrees`, with `dirname` on it or without. */

@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261103-exclusion-anclada-cualquier-ruta",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261103-exclusion-anclada-cualquier-ruta",
+  "baseCommit": "8be0473c2cf129572fc860adc432518914be47a3",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:66119fac4d3e45038b99174949581ac9c8c88b4d839735086f1924ac42944d50",
+    "at": "2026-11-03T13:57:21.547Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0bed90960f061691de8f6176e276f2bfb23e5d81",
+      "attempts": 1,
+      "startedAt": "2026-11-03T13:59:03.714Z",
+      "doneAt": "2026-11-03T14:02:00.998Z",
+      "summary": "doctor pide a Vite una función que compara el principio de la ruta y a Metro la expresión con la carpeta escapada y los dos separadores; la forma de antes no cuenta si la ruta tiene caracteres especiales; ADR 0018 con la medición",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/cli/test/doctor-watchers.test.ts": "sha256:70d6740a5e1ead60246bd729adf13d5b9a628a5dcf57fe51defaca311df80d74"
+  }
+}
