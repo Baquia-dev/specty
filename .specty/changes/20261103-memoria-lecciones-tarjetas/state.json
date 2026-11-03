@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "370c62c9ae848df35984b8365674ea289e514bbd",
+      "startedAt": "2026-11-03T10:58:04.174Z",
+      "doneAt": "2026-11-03T10:59:04.747Z",
+      "summary": "entriesForPaths en memory/paths.ts (lecciones y decisiones abiertas cuyas rutas encajan, en los dos sentidos, por fecha), pathEntriesBlock en cards/memory-paths.ts y ChangeView.pathEntries"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

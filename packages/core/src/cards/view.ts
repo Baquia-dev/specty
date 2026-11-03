@@ -172,6 +172,8 @@ export interface ChangeView {
   readonly carried?: readonly CarriedView[];
   /** While drafting, the entries of Specty's memory it took (`new --resolves`), as they are now. */
   readonly resolves?: readonly MemoryEntry[];
+  /** The open lessons and decisions of the active task's files, or of the draft's (ADR 0016). */
+  readonly pathEntries?: readonly MemoryEntry[];
   /** The last notes of the change's log (`specty note`), oldest first (ADR 0016). */
   readonly notes?: readonly NoteView[];
   /** In acceptance, an independent review of the result (ADR 0011) should come first. */

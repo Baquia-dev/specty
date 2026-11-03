@@ -52,7 +52,7 @@ La memoria de Specty ya guarda lecciones y decisiones ligadas a rutas del códig
 
 ## Tareas
 
-- [ ] T1: Qué lecciones y decisiones corresponden a unos archivos, y la sección
+- [x] T1: Qué lecciones y decisiones corresponden a unos archivos, y la sección
   - files: packages/core/src/memory/paths.ts, packages/core/src/index.ts, packages/core/src/cards/memory-paths.ts, packages/core/src/cards/view.ts, packages/core/test/memory/paths.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/paths.test.ts -t "which lessons and decisions" && pnpm lint

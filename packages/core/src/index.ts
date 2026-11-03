@@ -189,6 +189,7 @@ export {
   settledEntry,
   takenEntry,
 } from "./memory/entries";
+export { entriesForPaths } from "./memory/paths";
 export { pendingInMessage } from "./memory/turn-end";
 export {
   EXIT_CODES,
