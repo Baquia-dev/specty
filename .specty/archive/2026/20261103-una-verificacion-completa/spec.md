@@ -66,3 +66,22 @@ Con varias sesiones trabajando en el mismo clon, dos `specty accept` o dos incor
 
 - R1: Una sesión espera mucho a otra que tarda — como mucho `verify.timeoutSec`, y avisa de quién la hace esperar.
 - R2: Un proceso muere con el turno — el de un proceso que ya no existe no cuenta, como en el bloqueo de un cambio.
+
+## Cierre
+
+### Resumen
+
+La verificación completa de `accept` y la de la incorporación de main toman el turno de `.git/common/specty/locks/full-verification.json`, con las reglas del bloqueo de un cambio. Si otra sesión viva lo tiene, la nueva dice una vez quién verifica, en qué carpeta y desde cuándo, y espera; pasado `verify.timeoutSec`, corre igualmente. El turno se suelta al terminar, también tras un fallo, y el tiempo que anota la auditoría empieza con el turno.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- El tiempo de la verificación de la incorporación cuenta desde que tiene el turno y no desde que empezó a esperar, para que la auditoría mida la verificación y no la espera.
+- La verificación de una tarea no toma el turno: es corta y la de cada sesión es la suya.
+
+### Pendientes
+
+- La verificación completa que la persona lanza desde la UI (`runFull` en `packages/cli/src/server/runs.ts`) aún no toma el turno de `locks/full-verification.json`: puede correr a la vez que el `accept` de otra sesión.

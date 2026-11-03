@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-una-verificacion-completa",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-una-verificacion-completa",
   "baseCommit": "9053fd535295a255dfe2b4d0d4c9f41f3fc589c9",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:7b9fbb85fbe6d94067ba044698cd3349e6e4b10a9de6c7c4810307ab3809b4bb",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "590e98a6da3f2f72d3d869ce2dadcd98bf5242d7",
+      "attempts": 1,
       "startedAt": "2026-11-03T11:14:40.444Z",
       "doneAt": "2026-11-03T11:17:10.508Z",
-      "summary": "runLive sin tarea y failedVerification de la incorporación corren la verificación completa con oneAtATime (el tiempo cuenta desde el turno); formats §1 documenta locks/full-verification.json y ARCHITECTURE §9 una verificación completa a la vez"
+      "summary": "runLive sin tarea y failedVerification de la incorporación corren la verificación completa con oneAtATime (el tiempo cuenta desde el turno); formats §1 documenta locks/full-verification.json y ARCHITECTURE §9 una verificación completa a la vez",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -75,6 +75,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T11:21:40.422Z",
   "lockedTests": {
     "packages/cli/src/flow/full-verification.test.ts": "sha256:891809d73a2d92c60f2e275cef7a5501022ef022470359e1be7efbbc4f9b450e",
     "packages/core/test/cards/full-verification.test.ts": "sha256:596a414f2e2cfa6681e3a6eb32b9948c994ac7915ce5a4bcf0454bdaa4555a47"
