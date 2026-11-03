@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-enter-fuera-del-espacio",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-enter-fuera-del-espacio",
   "baseCommit": "00634cb9368a86c4be99754c10bdcf82656db6fb",
   "revision": 2,
@@ -72,7 +72,7 @@
   },
   "lockedTests": {
     "packages/cli/test/antigravity.test.ts": "sha256:0ae31274090e757723c7d2ff4d890e8c4270301249660a9e16115079385704fd",
-    "packages/core/test/guard/worktrees.test.ts": "sha256:3ff6226da4d3723e3954222b240194247f94b2bf01169ee37e2905b95ad66c90"
-  },
-  "testCycle": "bug"
+    "packages/core/test/guard/worktrees.test.ts": "sha256:3ff6226da4d3723e3954222b240194247f94b2bf01169ee37e2905b95ad66c90",
+    "packages/core/test/capabilities.test.ts": "sha256:6a987d2464227a7bb24a6f6f72dc668bb5b1e55a8a4903e7a9aab4cf28833e20"
+  }
 }
