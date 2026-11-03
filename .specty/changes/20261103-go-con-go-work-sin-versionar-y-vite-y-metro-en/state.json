@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261103-go-con-go-work-sin-versionar-y-vite-y-metro-en",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-go-con-go-work-sin-versionar-y-vite-y-metro-en",
+  "baseCommit": "458058f0fea351879714acb35780df4de40743a9",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bd554478406de3c08d7aab9ee92bfaee1b7f14627bd8f239eae0ba1e567035ec",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c5f4408a5ac90865792209013b2873f44a6af66b2d2894597e7189025bfbcddc",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8481127a717723d5c4251adbb0a366faae9a7a53318c82c1e40f4170cc991fbf",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:12983107e5a4ad4b32b694ac49c07cb9eaa939a8fb7693297a344f9e8d57d9a6",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:cb903be47f8802234d1ab05d27881ae410d1d22a3577ca0d712d5c7416ec7f28",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:b77cbed147e60671b720f57f9c85f4b4026d5f7a33c373f0725b46dac5ae42f4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 6,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:70949e5d8726b104fa464ce0152399501fa2f2f94ef5925a47667f044e0c04ff",
+    "at": "2026-11-03T12:39:44.318Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
