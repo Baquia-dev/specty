@@ -7,7 +7,7 @@ import {
   type MemoryKind,
   type MemoryStatus,
 } from "../memory/entries";
-import { headerOf, type Output, section } from "../output";
+import { headerOf, type Output, type OutputBlock, section } from "../output";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
@@ -190,6 +190,60 @@ function doneRefusalTexts(refusal: DoneRefusal, ctx: CardContext, t: Translate):
         next: goOn(ctx),
       };
   }
+}
+
+/** How many free entries the card with no active change shows. */
+const FREE_SHOWN = 3;
+
+/**
+ * The memory in the card with no active change, which is also the one a session gets when it
+ * starts: the open pending items and improvements, with the first free ones, and the reminders.
+ * Nothing when none is open, so the card stays as it was.
+ */
+export function memoryStartBlocks(
+  entries: readonly MemoryEntry[],
+  ctx: CardContext,
+): OutputBlock[] {
+  const t = translator(ctx.lang);
+  const open = byDate(entries.filter(isOpenEntry));
+  const reminders = open.filter((entry) => entry.kind === "reminder");
+  const done = t(
+    `Cuando se cumpla uno, márcalo hecho con \`${ctx.command} memory done <id>\`.`,
+    `When one is fulfilled, mark it done with \`${ctx.command} memory done <id>\`.`,
+  );
+  return [
+    ...section(t("MEMORIA DE SPECTY", "SPECTY'S MEMORY"), workLines(open, ctx, t)),
+    ...section(
+      t("RECORDATORIOS", "REMINDERS"),
+      reminders.length === 0
+        ? []
+        : [...reminders.map((entry) => `${entry.id} · ${firstLine(entry.text)}`), done],
+    ),
+  ];
+}
+
+/** The open pending items and improvements: how many, the first free ones, and how to take one. */
+function workLines(open: readonly MemoryEntry[], ctx: CardContext, t: Translate): string[] {
+  const work = open.filter((entry) => entry.kind === "pending" || entry.kind === "improvement");
+  if (work.length === 0) return [];
+  const free = work.filter((entry) => entry.status === "open").slice(0, FREE_SHOWN);
+  const command = ctx.command;
+  return [
+    free.length > 0
+      ? t(
+          `Pendientes y mejoras abiertas: ${work.length}. Las primeras libres:`,
+          `Open pending items and improvements: ${work.length}. The first free ones:`,
+        )
+      : t(
+          `Pendientes y mejoras abiertas: ${work.length}; ninguna está libre.`,
+          `Open pending items and improvements: ${work.length}; none is free.`,
+        ),
+    ...free.map((entry) => `${entry.id} · ${t(...KINDS[entry.kind])} · ${firstLine(entry.text)}`),
+    t(
+      `No las empieces si el usuario no lo pide. Para tomar una, crea su cambio con \`${command} new\` y cita su id en la petición; todas, con \`${command} memory\`.`,
+      `Do not start them unless the user asks. To take one, create its change with \`${command} new\` and cite its id in the request; all of them, with \`${command} memory\`.`,
+    ),
+  ];
 }
 
 /** The README of the memory's branch: its open entries by kind, in the project's language. */

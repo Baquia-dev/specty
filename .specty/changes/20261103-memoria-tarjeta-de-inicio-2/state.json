@@ -49,7 +49,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3d2c6a2b90ab06965634a089ba995e11bb7ecb76",
+      "startedAt": "2026-11-03T05:51:09.524Z",
+      "doneAt": "2026-11-03T05:51:18.367Z",
+      "summary": "La tarjeta sin cambio añade «MEMORIA DE SPECTY» (cuenta de pendientes y mejoras abiertas, las tres primeras libres y cómo tomar una) y «RECORDATORIOS», con memoryStartBlocks en cards/memory.ts y NextView.memory"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

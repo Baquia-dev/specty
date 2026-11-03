@@ -68,7 +68,7 @@ Las entradas de la memoria de Specty ya se anotan y se listan, pero nadie las ve
 
 ## Tareas
 
-- [ ] T1: Las secciones de la memoria en la tarjeta sin cambio
+- [x] T1: Las secciones de la memoria en la tarjeta sin cambio
   - files: packages/core/src/cards/memory.ts, packages/core/src/cards/next.ts, packages/core/test/cards/memory-start.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/memory-start.test.ts && pnpm lint
