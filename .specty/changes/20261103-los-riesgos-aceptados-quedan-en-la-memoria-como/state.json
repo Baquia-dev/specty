@@ -6,6 +6,13 @@
   "branch": "specty/20261103-los-riesgos-aceptados-quedan-en-la-memoria-como",
   "baseCommit": "386167b88f29023b2774dc35bfd733fe7746a53c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:afc777cc809b5b9d6f1d8ea7e7b9e51c0f1c1e7ab6032ec04c9cf4e3ab0fb0f6",
+    "at": "2026-11-03T12:14:19.555Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -40,12 +47,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:afc777cc809b5b9d6f1d8ea7e7b9e51c0f1c1e7ab6032ec04c9cf4e3ab0fb0f6",
-    "at": "2026-11-03T12:14:19.555Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T12:15:24.925Z"
 }
