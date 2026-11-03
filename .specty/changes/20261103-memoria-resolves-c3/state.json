@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2f78dab5e14f63f2830868bf57158c67464efc13",
+      "startedAt": "2026-11-03T06:53:11.313Z",
+      "doneAt": "2026-11-03T06:55:26.939Z",
+      "summary": "MemoryEntry gana taken; claimable, freeWork, takenEntry y byDate en memory/entries.ts; el asunto de commit de take y «tomada por <cambio>» en specty memory"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

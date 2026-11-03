@@ -70,7 +70,7 @@ Hoy un pendiente de la memoria de Specty se toma citando su id en la petición d
 
 ## Tareas
 
-- [ ] T1: El modelo de la entrada tomada y sus reglas
+- [x] T1: El modelo de la entrada tomada y sus reglas
   - files: packages/core/src/memory/entries.ts, packages/core/src/index.ts, packages/core/src/cards/memory.ts, packages/core/test/memory/claims.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/claims.test.ts -t "what --resolves can take" && pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/entries.test.ts test/cards/memory-start.test.ts && pnpm lint

@@ -26,6 +26,8 @@ export interface MemoryEntry {
   };
   /** The person's literal words: a decision always has them. */
   readonly quote?: string;
+  /** The change that took it (`specty new --resolves`), and when. */
+  readonly taken?: { readonly change: string; readonly at: string };
   /** Who marked it done, or dropped it, and when. */
   readonly closed?: { readonly at: string; readonly by: string };
   /** Written for someone without the conversation's context. */
@@ -42,6 +44,7 @@ const EntrySchema = z
     created: Text,
     origin: z.strictObject({ change: Text.optional(), by: Text }),
     quote: Text.optional(),
+    taken: z.strictObject({ change: Text, at: Text }).optional(),
     closed: z.strictObject({ at: Text, by: Text }).optional(),
   })
   .refine((entry) => entry.kind !== "decision" || entry.quote !== undefined, {
@@ -59,7 +62,7 @@ export function parseEntry(markdown: string): MemoryEntry | undefined {
   const parsed = EntrySchema.safeParse(loadYaml(raw));
   const text = (body ?? "").trim();
   if (!parsed.success || text.length === 0) return undefined;
-  const { id, kind, status, created, origin, quote, closed } = parsed.data;
+  const { id, kind, status, created, origin, quote, taken, closed } = parsed.data;
   return {
     id,
     kind,
@@ -67,6 +70,7 @@ export function parseEntry(markdown: string): MemoryEntry | undefined {
     created,
     origin: { ...(origin.change !== undefined ? { change: origin.change } : {}), by: origin.by },
     ...(quote !== undefined ? { quote } : {}),
+    ...(taken !== undefined ? { taken: { change: taken.change, at: taken.at } } : {}),
     ...(closed !== undefined ? { closed: { at: closed.at, by: closed.by } } : {}),
     text,
   };
@@ -97,6 +101,77 @@ export function parseEntryId(raw: string): string | undefined {
 /** Open until it is done or dropped: taken or proposed to drop, it still waits for something. */
 export function isOpenEntry(entry: MemoryEntry): boolean {
   return entry.status !== "done" && entry.status !== "dropped";
+}
+
+/** What a commit of the memory's branch does to its entry. */
+export type MemoryOperation = "add" | "done" | "take";
+
+/** Why `specty new --resolves` cannot take an entry. */
+export type ClaimProblem =
+  | { readonly reason: "unknown"; readonly id: string }
+  /** Done, dropped or proposed to drop. */
+  | { readonly reason: "unavailable"; readonly entry: MemoryEntry }
+  /** A reminder or a decision: only pending items and improvements are taken. */
+  | { readonly reason: "not-work"; readonly entry: MemoryEntry }
+  /** An open change took it first. */
+  | { readonly reason: "taken"; readonly entry: MemoryEntry; readonly change: string };
+
+/**
+ * The entries `ids` names, ready to be taken, or the first that cannot be. One taken by a change
+ * that is no longer among the `open` ones is free again.
+ */
+export function claimable(
+  ids: readonly string[],
+  entries: readonly MemoryEntry[],
+  open: ReadonlySet<string>,
+): { readonly entries: readonly MemoryEntry[] } | { readonly problem: ClaimProblem } {
+  const found: MemoryEntry[] = [];
+  for (const raw of ids) {
+    const id = parseEntryId(raw) ?? raw.trim();
+    const entry = entries.find((known) => known.id === id);
+    const problem = claimProblem(id, entry, open);
+    if (problem !== undefined) return { problem };
+    if (entry !== undefined && !found.includes(entry)) found.push(entry);
+  }
+  return { entries: found };
+}
+
+function claimProblem(
+  id: string,
+  entry: MemoryEntry | undefined,
+  open: ReadonlySet<string>,
+): ClaimProblem | undefined {
+  if (entry === undefined) return { reason: "unknown", id };
+  if (entry.status !== "open" && entry.status !== "taken") return { reason: "unavailable", entry };
+  if (!isWork(entry)) return { reason: "not-work", entry };
+  const change = entry.status === "taken" ? entry.taken?.change : undefined;
+  return change !== undefined && open.has(change) ? { reason: "taken", entry, change } : undefined;
+}
+
+/** The pending items and improvements nobody took, by date. */
+export function freeWork(entries: readonly MemoryEntry[]): readonly MemoryEntry[] {
+  return byDate(entries.filter((entry) => isWork(entry) && entry.status === "open"));
+}
+
+/** `entry`, taken by `change` at `at`. */
+export function takenEntry(entry: MemoryEntry, change: string, at: string): MemoryEntry {
+  return { ...entry, status: "taken", taken: { change, at } };
+}
+
+/** By date and, on the same date, the P ids before the D ones, each by number. */
+export function byDate(entries: readonly MemoryEntry[]): readonly MemoryEntry[] {
+  const number = (entry: MemoryEntry) => Number(entry.id.slice(1));
+  return entries.toSorted(
+    (a, b) =>
+      a.created.localeCompare(b.created) ||
+      b.id.charAt(0).localeCompare(a.id.charAt(0)) ||
+      number(a) - number(b),
+  );
+}
+
+/** Pending items and improvements: what a change resolves. */
+function isWork(entry: MemoryEntry): boolean {
+  return entry.kind === "pending" || entry.kind === "improvement";
 }
 
 function prefixOf(kind: MemoryKind): "P" | "D" {

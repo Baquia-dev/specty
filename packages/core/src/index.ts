@@ -158,16 +158,21 @@ export {
   slugify,
 } from "./ids";
 export {
+  type ClaimProblem,
+  claimable,
+  freeWork,
   isOpenEntry,
   MEMORY_KINDS,
   MEMORY_STATUSES,
   type MemoryEntry,
   type MemoryKind,
+  type MemoryOperation,
   type MemoryStatus,
   nextEntryId,
   parseEntry,
   parseEntryId,
   serializeEntry,
+  takenEntry,
 } from "./memory/entries";
 export {
   EXIT_CODES,
