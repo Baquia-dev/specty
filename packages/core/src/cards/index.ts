@@ -224,6 +224,7 @@ export {
   memoryReadme,
   memoryRefusalCard,
 } from "./memory";
+export { type ResolvesRefusal, resolvesRefusalCard } from "./memory-claims";
 export {
   changeCreatedLead,
   type NewRefusal,

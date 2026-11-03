@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import {
+  byDate,
   isOpenEntry,
   MEMORY_KINDS,
   type MemoryEntry,
   type MemoryKind,
+  type MemoryOperation,
   type MemoryStatus,
 } from "../memory/entries";
 import { headerOf, type Output, type OutputBlock, section } from "../output";
@@ -279,19 +281,35 @@ export function memoryReadme(entries: readonly MemoryEntry[], lang: Lang): strin
   ].join("\n");
 }
 
-/** The subject of the commit that adds entry `id` to the memory's branch, or marks it done. */
-export function memoryCommitSubject(operation: "add" | "done", id: string, lang: Lang): string {
+/**
+ * The subject of the commit that adds entry `id` to the memory's branch, marks it done or takes
+ * it for a change.
+ */
+export function memoryCommitSubject(operation: MemoryOperation, id: string, lang: Lang): string {
   const t = translator(lang);
-  return operation === "add"
-    ? t(`memoria: anota ${id}`, `memory: add ${id}`)
-    : t(`memoria: ${id} hecha`, `memory: ${id} done`);
+  switch (operation) {
+    case "add":
+      return t(`memoria: anota ${id}`, `memory: add ${id}`);
+    case "done":
+      return t(`memoria: ${id} hecha`, `memory: ${id} done`);
+    case "take":
+      return t(`memoria: ${id} tomada`, `memory: ${id} taken`);
+  }
 }
 
 /** One entry in a list: its id, kind, status unless open, text, quote and origin. */
 function entryLine(entry: MemoryEntry, t: Translate): string {
   const kind = t(...KINDS[entry.kind]);
-  const status = entry.status === "open" ? "" : ` · ${t(...STATUSES[entry.status])}`;
-  return `${entry.id} · ${kind}${status} · ${firstLine(entry.text)}${quoted(entry)} — ${originOf(entry, t)}`;
+  return `${entry.id} · ${kind}${statusOf(entry, t)} · ${firstLine(entry.text)}${quoted(entry)} — ${originOf(entry, t)}`;
+}
+
+/** Its status unless open, with the change that took it when it is taken. */
+function statusOf(entry: MemoryEntry, t: Translate): string {
+  if (entry.status === "open") return "";
+  const change = entry.status === "taken" ? entry.taken?.change : undefined;
+  return change === undefined
+    ? ` · ${t(...STATUSES[entry.status])}`
+    : ` · ${t(`tomada por ${change}`, `taken by ${change}`)}`;
 }
 
 /** An entry in the README: its text, quote and origin. */
@@ -311,19 +329,8 @@ function originOf(entry: MemoryEntry, t: Translate): string {
     .join(", ");
 }
 
-function firstLine(text: string): string {
+export function firstLine(text: string): string {
   return text.trim().split("\n")[0] ?? "";
-}
-
-/** By date and, on the same date, the P ids before the D ones, each by number. */
-function byDate(entries: readonly MemoryEntry[]): readonly MemoryEntry[] {
-  const number = (entry: MemoryEntry) => Number(entry.id.slice(1));
-  return entries.toSorted(
-    (a, b) =>
-      a.created.localeCompare(b.created) ||
-      b.id.charAt(0).localeCompare(a.id.charAt(0)) ||
-      number(a) - number(b),
-  );
 }
 
 function goOn(ctx: CardContext): string {

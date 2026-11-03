@@ -23,9 +23,16 @@ const MINUTE_MS = 60_000;
  * memory's open reminders in «TE TOCA» (ADR 0016).
  */
 export async function status(session: Session): Promise<Output> {
+  const entries = await openChanges(session);
+  const memory = await readMemory(session.git, session.config.memory.branch);
+  return statusCard(entries, session.cards, memory.entries);
+}
+
+/** The open changes of every worktree as `status` shows them: phase, who they wait for and who holds them. */
+export async function openChanges(session: Session): Promise<StatusEntry[]> {
   const located = (await locateChanges(session)).filter(({ change }) => !isFinished(change.state));
   const steps = await stepsByFolder(session);
-  const entries = await Promise.all(
+  return Promise.all(
     located.map(async ({ change, session: there, current }): Promise<StatusEntry> => {
       const { state } = change;
       const title = parseSpec(await readSpec(change.files), { language: there.lang }).spec.title;
@@ -52,8 +59,6 @@ export async function status(session: Session): Promise<Output> {
       };
     }),
   );
-  const memory = await readMemory(session.git, session.config.memory.branch);
-  return statusCard(entries, session.cards, memory.entries);
 }
 
 /** The last step noted in each folder, by its real path. */

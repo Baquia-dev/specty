@@ -5,6 +5,7 @@ import {
   type ChangeKind,
   type CommitType,
   changeCreatedLead,
+  type MemoryEntry,
   makeChangeId,
   newRefusalCard,
   nextCard,
@@ -27,6 +28,7 @@ import type { Session } from "../session";
 import { initialState, type StoredChange } from "../store/changes";
 import { writePointer } from "../store/local";
 import { changeFiles, repoPaths } from "../store/paths";
+import { claimEntries, takeEntries } from "./memory";
 import { dirtyGoverned } from "./next";
 
 export interface NewOptions {
@@ -35,6 +37,10 @@ export interface NewOptions {
   /** What the change is, which names its branch under `git.flow`. */
   readonly type: CommitType;
   readonly follows: readonly string[];
+  /** Pending items or improvements of Specty's memory the change takes (ADR 0016). */
+  readonly resolves?: readonly string[];
+  /** Set by `new` itself: the entries `resolves` names, as they were when checked. */
+  readonly claimed?: readonly MemoryEntry[];
   readonly epic?: string;
   readonly slice?: string;
   readonly timebox?: string;
@@ -82,8 +88,21 @@ async function createNew(session: Session, options: NewOptions): Promise<Output>
   if (options.from !== undefined && !inWorktree) {
     return newRefusalCard({ reason: "from-without-worktree", from: options.from }, cards);
   }
-  if (inWorktree) return newInWorktree(session, options, title);
-  return newInFolder(session, options, title);
+  const claim = await claimed(session, options);
+  if ("refusal" in claim) return claim.refusal;
+  if (inWorktree) return newInWorktree(session, claim.options, title);
+  return newInFolder(session, claim.options, title);
+}
+
+/** `options` with the entries `--resolves` takes, checked before anything is created. */
+async function claimed(
+  session: Session,
+  options: NewOptions,
+): Promise<{ readonly options: NewOptions } | { readonly refusal: Output }> {
+  const ids = options.resolves ?? [];
+  if (ids.length === 0) return { options };
+  const claim = await claimEntries(session, ids);
+  return "refusal" in claim ? claim : { options: { ...options, claimed: claim.entries } };
 }
 
 /** Without worktrees: the change starts in this folder, which must hold no other one. */
@@ -208,15 +227,25 @@ async function createChange(
   const files = changeFiles(target.dir);
   await writeText(files.spec, skeleton(session, options, target.title));
   const state = initialState({ id, kind: options.kind, branch, baseCommit: target.baseCommit });
-  return commitState(session, { files, state, archived: false }, state, "change.created", {
-    kind: options.kind,
-    type: options.type,
-    ...(branch !== undefined ? { branch } : {}),
-    ...(options.follows.length > 0 ? { follows: options.follows } : {}),
-    ...(options.epic !== undefined ? { epic: options.epic, slice: options.slice } : {}),
-    ...(options.request !== undefined ? { request: options.request.trim() } : {}),
-    ...(options.bootstrap === true ? { bootstrap: true } : {}),
-  });
+  const claimed = options.claimed ?? [];
+  const created = await commitState(
+    session,
+    { files, state, archived: false },
+    state,
+    "change.created",
+    {
+      kind: options.kind,
+      type: options.type,
+      ...(branch !== undefined ? { branch } : {}),
+      ...(options.follows.length > 0 ? { follows: options.follows } : {}),
+      ...(claimed.length > 0 ? { resolves: claimed.map((entry) => entry.id) } : {}),
+      ...(options.epic !== undefined ? { epic: options.epic, slice: options.slice } : {}),
+      ...(options.request !== undefined ? { request: options.request.trim() } : {}),
+      ...(options.bootstrap === true ? { bootstrap: true } : {}),
+    },
+  );
+  await takeEntries(session, id, claimed);
+  return created;
 }
 
 /** The spec's skeleton: its frontmatter and title, and the sections that come written. */

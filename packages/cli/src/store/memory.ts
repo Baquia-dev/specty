@@ -2,6 +2,7 @@
 import {
   type Lang,
   type MemoryEntry,
+  type MemoryOperation,
   memoryCommitSubject,
   memoryReadme,
   parseEntry,
@@ -26,7 +27,7 @@ export interface Memory {
 /** One entry to write, added or changed, and what the commit says it did. */
 export interface MemoryWrite {
   readonly entry: MemoryEntry;
-  readonly operation: "add" | "done";
+  readonly operation: MemoryOperation;
 }
 
 /** Where the memory lives and what its commits say besides the entry. */
