@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261103-recordatorios-al-cerrar-un-cambio",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-recordatorios-al-cerrar-un-cambio",
+  "baseCommit": "4273e17bddca2d90ca009423261545f6a03f4b15",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f055fbda4d53cbe36deaf405ff96ac8a94cec72dddfd8ca5ed8db10fef208922",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:75db57b34106dcf1c9847820fa4fea78da0533bcb126cbf3b5a2b36bed8b9b59",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:960d72758f0dd78106db4a42df9d3a981e4a3e10da440312a1abb545b81f67e5",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:993758a88ebaa7148c0a428196d58ef273097de1b0ad85df4bebe0596256c3b6",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:2a2950b8b4a86990000888d0798e5181c05e4b9d54a5fecd9a70b332bb2290f5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 5,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:25b595f7c21ef55033f92dd247d06b718353669ac5775fc5cd780265cc8fe87e",
+    "at": "2026-11-03T14:28:08.057Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
