@@ -294,6 +294,12 @@ export {
   specReviewPrompt,
 } from "./review";
 export {
+  type ReviewRemark,
+  reviewRemarks,
+  reviewRemarkText,
+  uncitedRemarks,
+} from "./review-remarks";
+export {
   assumptionDecidedLine,
   changesRequestedLine,
   commentSavedLine,

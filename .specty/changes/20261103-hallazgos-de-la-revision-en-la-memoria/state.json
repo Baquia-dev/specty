@@ -52,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f3c996d54bb4057ca5dccf80683117d15aa608c1",
+      "startedAt": "2026-11-03T13:43:07.503Z",
+      "doneAt": "2026-11-03T13:44:05.338Z",
+      "summary": "core cards/review-remarks.ts: reviewRemarks (viñetas de primer nivel altas y medias, gravedad por palabra o por encabezado), uncitedRemarks, reviewRemarkText y las líneas de la tarjeta; ChangeView.reviewRemarks y la sección OBSERVACIONES DE LA REVISIÓN en la tarjeta del cierre"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

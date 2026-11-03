@@ -11,6 +11,7 @@ import type { EffortLevel } from "../sizing/effort";
 import type { LongFile } from "../sizing/lines";
 import type { ChangeKind } from "../spec/model";
 import type { TestRules } from "../validate/quality";
+import type { ReviewRemark } from "./review-remarks";
 
 /** What the cards need to know about the environment. */
 export interface CardContext {
@@ -187,6 +188,11 @@ export interface ChangeView {
     readonly task: string;
   }[];
   readonly closingSubmitted: boolean;
+  /**
+   * While closing, the remarks of high or medium severity of the last review of the result
+   * (ADR 0011) that the closing does not cite yet, if there are any.
+   */
+  readonly reviewRemarks?: readonly ReviewRemark[];
   /** In the testing phase, the tests were sent and wait for the person (ADR 0014). */
   readonly testsSubmitted?: boolean;
   /** `spec.md` no longer matches the approved revision. */

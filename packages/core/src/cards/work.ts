@@ -4,6 +4,7 @@ import { acceptanceCard, doneLine } from "./acceptance";
 import { epicCard } from "./epic";
 import { glossaryClosingLines, termsSection } from "./glossary";
 import { pathEntriesBlock } from "./memory-paths";
+import { reviewRemarkLines } from "./review-remarks";
 import { effortLabel, progressOf, translator } from "./text";
 import type { CardContext, ChangeView, TaskView } from "./view";
 
@@ -221,6 +222,10 @@ export function closingCard(change: ChangeView, ctx: CardContext): Output {
       ...section(
         t("HALLAZGOS DE LAS TAREAS", "FINDINGS OF THE TASKS"),
         findings.length === 0 ? [] : [...findings, carry],
+      ),
+      ...section(
+        t("OBSERVACIONES DE LA REVISIÓN", "REVIEW REMARKS"),
+        reviewRemarkLines(change.reviewRemarks ?? [], ctx.lang),
       ),
     ],
     next: t(

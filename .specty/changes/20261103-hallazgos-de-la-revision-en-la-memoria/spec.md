@@ -65,7 +65,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: Qué observaciones de una revisión cuentan y cuáles no cita el cierre
+- [x] T1: Qué observaciones de una revisión cuentan y cuáles no cita el cierre
   - files: packages/core/src/cards/review-remarks.ts, packages/core/src/cards/index.ts, packages/core/src/cards/view.ts, packages/core/src/cards/work.ts, packages/core/test/cards/review-remarks.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/review-remarks.test.ts test/cards/findings.test.ts && pnpm typecheck && pnpm lint
