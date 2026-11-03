@@ -13,6 +13,7 @@ import { ADAPTERS } from "../agents";
 import { formatterExclusions } from "../detect/formatters";
 import { gentleAiGuidance } from "../detect/gentle-ai";
 import { detectProject } from "../detect/project";
+import { worktreeExclusions } from "../detect/worktree-tools";
 import { gitHooksInstalled } from "../install/git-hooks";
 import { mcpDoctor } from "../install/mcp";
 import { usageDoctor } from "../install/usage";
@@ -83,7 +84,8 @@ async function toolLines(session: Session): Promise<{
   for (const { file, blocks } of await gentleAiGuidance(root, session.environment.env)) {
     problems.push({ code: "gentle-ai", file, blocks });
   }
-  for (const { name, path, add, file, excluded } of await formatterExclusions(root)) {
+  const exclusions = [...(await formatterExclusions(root)), ...(await worktreeExclusions(root))];
+  for (const { name, path, add, file, excluded } of exclusions) {
     if (excluded) ok.push({ code: "formatter-excludes", name, path });
     else problems.push({ code: "formatter-checks", name, path, add, file });
   }

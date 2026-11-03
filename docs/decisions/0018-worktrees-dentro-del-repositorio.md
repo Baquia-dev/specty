@@ -50,7 +50,7 @@ Fuera del ecosistema de JavaScript, ninguna herramienta medida ve una worktree e
 
 - Para todos los proyectos, sin clave para volver a la ubicación de antes: sin los permisos por agente, las herramientas con sandbox no la alcanzarían.
 - `specty new` crea la worktree en `.worktrees/<id>`, dentro del proyecto, y la ignora en el clon (`.git/info/exclude`); `init` añade además `/.worktrees/` a `.gitignore`, que es lo que lee Prettier. Así cualquier agente o editor que solo trabaje en la carpeta del proyecto alcanza la del cambio, sin que la persona haga nada.
-- En los proyectos de JavaScript y TypeScript, `init` añade la exclusión de `.worktrees/` a la configuración de Vitest, Jest, ESLint y Biome que puede editar, y `doctor` avisa donde no pudo.
+- En los proyectos de JavaScript y TypeScript, `doctor` dice qué herramienta de la raíz (Vitest, Jest, ESLint, Biome) no excluye `.worktrees/`, en qué archivo y qué añadir, como ya pide las exclusiones de `.specty`. No edita esas configuraciones: son código de la persona, en formatos que Specty no puede reescribir con seguridad.
 - Los cambios abiertos antes se quedan en `<carpeta>.worktrees/<id>` hasta cerrarse: `specty enter`, `EnterWorktree` por nombre y la protección de `WorktreeRemove` los buscan también allí.
 - Los permisos que abrían la carpeta de fuera a cada herramienta (Codex, OpenCode, Gemini CLI, Devin, Cursor y Antigravity) se quitaron, y `init` y `uninstall` borran los que quedaron de antes. Se mantienen los de la carpeta común de git, donde hacen sus commits los comandos de Specty.
 
