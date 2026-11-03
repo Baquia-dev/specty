@@ -6,6 +6,13 @@
   "branch": "specty/20261103-doctor-worktrees-js",
   "baseCommit": "c4da10f5a97680486d91cba6a454c5c6f728d0f6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:00646ee5d45a0c77927881eb3165848bc6c71eeda1c88cf5b750a7bb3b2e8f0d",
+    "at": "2026-11-03T10:03:24.857Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -39,12 +46,6 @@
     "T": 1,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:00646ee5d45a0c77927881eb3165848bc6c71eeda1c88cf5b750a7bb3b2e8f0d",
-    "at": "2026-11-03T10:03:24.857Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T10:04:08.836Z"
 }
