@@ -52,7 +52,7 @@ Resuelve P45. Hoy la página «Memoria» de `specty ui` muestra en «Te toca» t
   - files: packages/ui/src/memory/memory-page.ts, packages/ui/src/memory/memory-reminders-page.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-reminders-page.test.ts --include src/memory/memory-page.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: La documentación de la página con los recordatorios que esperan
+- [x] T3: La documentación de la página con los recordatorios que esperan
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC3
   - verify: pnpm lint

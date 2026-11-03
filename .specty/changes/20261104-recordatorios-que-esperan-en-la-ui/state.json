@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-recordatorios-que-esperan-en-la-ui",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-recordatorios-que-esperan-en-la-ui",
   "baseCommit": "0cbfa9d8cdf0fd0272a5af072f2a4f483b9b408a",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "666e5cf9a54c1b7463d101396397a1a1fb1489a3",
+      "attempts": 1,
       "startedAt": "2026-11-03T23:20:51.451Z",
       "doneAt": "2026-11-03T23:21:42.170Z",
-      "summary": "memory-page.ts: waitsFor añade a la línea de una entrada a qué espera un recordatorio («desde <día>», «al cerrar <id>») y sus rutas."
+      "summary": "memory-page.ts: waitsFor añade a la línea de una entrada a qué espera un recordatorio («desde <día>», «al cerrar <id>») y sus rutas.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8445574a4c066bca7bff81927ec7550109a9857c",
+      "startedAt": "2026-11-03T23:21:42.500Z",
+      "doneAt": "2026-11-03T23:21:55.339Z",
+      "summary": "ARCHITECTURE: «Te toca» con la regla de la tarjeta de inicio, la sección «Recordatorios que esperan» y a qué espera cada recordatorio."
     }
   },
   "pending": {
