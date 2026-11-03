@@ -27,6 +27,7 @@ import { readMemory } from "../store/memory";
 import { acceptanceFacts } from "./acceptance";
 import { type Audit, carriedOf, dataOf, findingsOf, readAudit } from "./carried";
 import { sliceViews } from "./epic";
+import { closingRemarks } from "./review-remarks";
 import { listed } from "./shared";
 
 /**
@@ -170,6 +171,7 @@ async function phaseFacts(
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
     ...(state.phase === "draft" ? await draftFacts(session, spec, audit) : {}),
     ...(state.phase === "acceptance" ? await acceptanceFacts(session, change, spec, read) : {}),
+    ...(state.phase === "closing" ? await closingRemarks(change.files, spec) : {}),
   };
 }
 

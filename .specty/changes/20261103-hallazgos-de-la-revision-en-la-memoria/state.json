@@ -55,12 +55,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f3c996d54bb4057ca5dccf80683117d15aa608c1",
+      "attempts": 1,
       "startedAt": "2026-11-03T13:43:07.503Z",
       "doneAt": "2026-11-03T13:44:05.338Z",
-      "summary": "core cards/review-remarks.ts: reviewRemarks (viñetas de primer nivel altas y medias, gravedad por palabra o por encabezado), uncitedRemarks, reviewRemarkText y las líneas de la tarjeta; ChangeView.reviewRemarks y la sección OBSERVACIONES DE LA REVISIÓN en la tarjeta del cierre"
+      "summary": "core cards/review-remarks.ts: reviewRemarks (viñetas de primer nivel altas y medias, gravedad por palabra o por encabezado), uncitedRemarks, reviewRemarkText y las líneas de la tarjeta; ChangeView.reviewRemarks y la sección OBSERVACIONES DE LA REVISIÓN en la tarjeta del cierre",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "db057982cdca55c073f8d9c22ebe5c620f0041a3",
+      "startedAt": "2026-11-03T13:44:05.669Z",
+      "doneAt": "2026-11-03T13:45:09.042Z",
+      "summary": "cli flow/review-remarks.ts: lee el diff-<n>.md más alto de reviews/; closingRemarks da a la vista del cierre las observaciones sin citar y remarkHarvest los pendientes que archive pasa a harvestEntries tras los del cierre"
     }
   },
   "pending": {

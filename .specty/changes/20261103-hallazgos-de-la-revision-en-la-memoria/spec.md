@@ -69,7 +69,7 @@ follows:
   - files: packages/core/src/cards/review-remarks.ts, packages/core/src/cards/index.ts, packages/core/src/cards/view.ts, packages/core/src/cards/work.ts, packages/core/test/cards/review-remarks.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/review-remarks.test.ts test/cards/findings.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: El cierre deja en la memoria las observaciones que no cita
+- [x] T2: El cierre deja en la memoria las observaciones que no cita
   - files: packages/cli/src/flow/review-remarks.ts, packages/cli/src/flow/views.ts, packages/cli/src/flow/finish.ts, packages/cli/test/review-remarks.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/review-remarks.test.ts test/memory-harvest.test.ts test/review.test.ts test/bundle.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip

@@ -10,6 +10,7 @@ import { changeFiles } from "../store/paths";
 import { auditEntry } from "./active";
 import { closingFollowUps } from "./carried";
 import { commitWithReceipt, decisionTrailers } from "./commits";
+import { remarkHarvest } from "./review-remarks";
 
 /**
  * Moves a finished change to `.specty/archive/<year>/<id>` with its final state. Only a person's
@@ -28,15 +29,15 @@ export async function archive(
   await move(change.files.dir, target);
   if (!session.config.git.branchPerChange) await writePointer(session.git, "active", undefined);
   // The memory's entries it took get done if it closed, and free again if it was cancelled;
-  // a closed change's follow-ups become pending items.
+  // a closed change's follow-ups, and the remarks of its last review that its closing does not
+  // cite, become pending items.
   await settleEntries(session, state);
   const files = changeFiles(target);
   if (state.phase === "done")
-    await harvestEntries(
-      session,
-      state,
-      (await closingFollowUps(session, files)).map((text) => ({ text })),
-    );
+    await harvestEntries(session, state, [
+      ...(await closingFollowUps(session, files)).map((text) => ({ text })),
+      ...(await remarkHarvest(session, files)),
+    ]);
   return { files, state, archived: true };
 }
 
