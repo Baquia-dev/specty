@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-frenos-de-los-frentes",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-frenos-de-los-frentes",
   "baseCommit": "9ccb9b300c98982c7bdb77bee83b57f6aaf3469d",
   "revision": 1,
@@ -56,6 +56,9 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T22:25:54.308Z"
+  "lockedTests": {
+    "packages/core/test/guard/shell.test.ts": "sha256:a9b04a5a9c9f73ba02e5f353236bb858a39cf2a82ffb6b392704dcf10e8d3ec9",
+    "packages/cli/test/front-brakes.test.ts": "sha256:6ebcf08fcdd1e72cb530b10346faead0b56a84b3743d75f2abd86ed188145b45",
+    "packages/core/test/cards/front-brakes.test.ts": "sha256:094321a9b07a21c1939da6665647b2e761c78706d0da9d5113cc14b66c173beb"
+  }
 }
