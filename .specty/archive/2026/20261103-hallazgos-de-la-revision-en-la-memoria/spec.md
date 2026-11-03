@@ -83,3 +83,26 @@ follows:
 
 - R1: Pendientes de más con un revisor que marca mucho como alto — solo cuenta la última revisión, el agente cita las que no son reales, y la persona descarta las demás con `specty memory drop`.
 - R2: Una respuesta con otro formato (una tabla, sin viñetas) no deja nada — es información, como hoy; las instrucciones del revisor ya piden una viñeta por hallazgo con su gravedad.
+
+## Cierre
+
+### Resumen
+
+Al cerrar un cambio, cada observación de gravedad alta o media de su última revisión independiente del resultado (el `reviews/diff-<n>.md` con el `n` más alto) que el cierre no cita pasa a la memoria de Specty como un pendiente, con el cambio y quien lo cerró como origen y la ruta de la respuesta archivada y la referencia de la observación en el texto. Una observación es una viñeta de primer nivel, con la gravedad de su primera palabra de gravedad en español o en inglés, o la del encabezado que tiene encima, y su referencia es `<archivo>#<número>`. Mientras el agente escribe el cierre, su tarjeta muestra en «OBSERVACIONES DE LA REVISIÓN» las que aún no cita y cómo citarlas. Con este corte, P31 queda resuelto: los riesgos aceptados, la deuda de `specty check --all` y las observaciones de la revisión ya entran solos en la memoria.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Se llaman observaciones, y no hallazgos, porque «Hallazgo» ya es en el glosario lo que aprende una tarea; el término «Observación» entra en `docs/dominio.md`.
+- Las funciones de core van en `cards/review-remarks.ts` y se exportan desde `cards/index.ts`, como las de `check-debt.ts` y `risk-lessons.ts`; `packages/core/src/index.ts` no cambia.
+- `flow/review-remarks.ts` solo importa tipos de `commands/`, porque `flow/views.ts`, que lo usa, también lo carga el hook de inicio de sesión.
+
+### Pendientes
+
+- `packages/cli/src/flow/views.ts` tiene 321 líneas de código (el aviso salta a partir de 300). Propuesta de división por responsabilidad: llevar las vistas de las tareas (`taskView`, `recordedFindings`, `findingsByTask`, `criteriaOf`, `taskCommits`, `taskVerification`) a `flow/task-views.ts`, y los datos del borrador (`draftFacts`, `request`, `resolvesOf`, `filesAtHand`, `pathEntriesOf`) a `flow/draft-facts.ts`.
+- P2: `packages/core/src/cards/index.ts` ya tiene 381 líneas de código.
+- La salida de `specty close` no nombra los pendientes que el cierre deja en la memoria (los de «### Pendientes» y las observaciones de la revisión sin citar), como sí nombra `accept` las lecciones de los riesgos aceptados.
+- Comprobar con un revisor real (`review.command` con `claude -p`) que su respuesta da la gravedad en cada viñeta, como espera el reconocimiento de las observaciones de la revisión; este repositorio no tiene `review` configurado y solo se probó con un revisor falso.

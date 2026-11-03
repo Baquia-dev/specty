@@ -20,6 +20,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Modo delegado** (`Delegation`): el agente aprueba, acepta y cierra por la persona.
 - **Retro-spec**: la spec que documenta después cambios hechos sin spec.
 - **Hallazgo**: lo que una tarea aprendió (`task done --finding`) para las siguientes.
+- **Observación** (`ReviewRemark`): una viñeta alta o media de la última revisión independiente del resultado, con su referencia `diff-<n>.md#<número>`; la que el cierre no cita pasa a la memoria como pendiente.
 - **Guard** (`GuardDecision`): el hook que decide si la fase permite cada acción del agente.
 - **Supuesto** (`Assumption`): lo que la spec da por cierto; con impacto alto, lo confirma la persona.
 - **Criterio** (`Criterion`): un resultado observable con id `ACn`, que su test lleva en el nombre.
