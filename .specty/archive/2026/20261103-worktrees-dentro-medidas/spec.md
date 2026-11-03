@@ -19,3 +19,9 @@ Se midió qué herramientas de cada stack ven una worktree creada dentro del rep
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+ADR 0018: medición de las herramientas de cada stack con una worktree en .worktrees/ y la propuesta de crear allí las de los cambios
