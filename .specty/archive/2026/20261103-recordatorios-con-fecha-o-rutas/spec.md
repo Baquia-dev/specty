@@ -79,3 +79,27 @@ Primer cambio de P32 (recordatorios con disparador): un recordatorio de la memor
 ## Riesgos
 
 - R1: Un recordatorio con rutas que nadie toca no vuelve a salir — `specty memory` lo sigue listando, y la persona lo marca hecho o lo descarta.
+
+## Cierre
+
+### Resumen
+
+Un recordatorio de la memoria de Specty puede esperar a su disparador en vez de salir en cada sesión. Con `specty memory add --kind reminder --due AAAA-MM-DD` no sale en la tarjeta de inicio ni en «TE TOCA» hasta ese día de la fecha local, y `specty memory` lo lista con «desde AAAA-MM-DD». Con `--path` no sale en ellas nunca: sale en «RECORDATORIOS DE ESTOS ARCHIVOS» de la tarjeta de la tarea o del borrador que toca sus rutas, tras las lecciones y decisiones. Un día que no es una fecha válida, `--due` en otro tipo de entrada o los dos disparadores juntos no anotan nada y lo explican.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El campo es `due` y no `on`, que en YAML 1.1 se lee como un booleano.
+- Las lecciones y decisiones conservan su sección y su encabezado; los recordatorios de las rutas van en la suya, así que los tests aprobados de las lecciones no cambian.
+- `next` y `status` filtran la memoria con `sessionEntries` antes de pasarla a sus tarjetas, en vez de dar la fecha a las tarjetas del core.
+- El término «Disparador» entra en `docs/dominio.md`.
+
+### Pendientes
+
+- P32: falta el disparador al cerrar un cambio concreto (`--on-close <id>`), en el cambio siguiente, que la resuelve.
+- La página «Memoria» de `specty ui` muestra en «Te toca» todos los recordatorios abiertos, también los que esperan a su día o a sus rutas: aplicarle la misma regla que a la tarjeta de inicio y a «TE TOCA» de `specty status`, y mostrar el día y las rutas de cada recordatorio.
+- `packages/core/src/cards/memory.ts` tiene 372 líneas de código (el aviso salta a partir de 300). Propuesta de división por responsabilidad: llevar los rechazos de `memory add` y `memory done` (`memoryRefusalCard`, `addRefusalTexts`, `triggerRefusalTexts`, `doneRefusalTexts` y sus tipos) a `cards/memory-refusals.ts`.
+- P9: `packages/core/src/index.ts` ya tiene 320 líneas de código.

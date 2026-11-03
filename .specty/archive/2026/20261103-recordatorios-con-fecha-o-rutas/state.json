@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-recordatorios-con-fecha-o-rutas",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-recordatorios-con-fecha-o-rutas",
   "baseCommit": "8be0473c2cf129572fc860adc432518914be47a3",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:d53b1592fbf74d5aeed63db144b8e9a655f901e972f2d5619c7c95e6858010c9",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d4a84bb81f8941845914ab117bb2b00f23f240cf",
+      "attempts": 1,
       "startedAt": "2026-11-03T14:06:40.776Z",
       "doneAt": "2026-11-03T14:07:10.194Z",
-      "summary": "formats.md (campo due, memory add --due, recordatorios con día o rutas) y ARCHITECTURE.md (TE TOCA, comandos de la memoria y tarjeta de inicio sin los recordatorios que esperan)"
+      "summary": "formats.md (campo due, memory add --due, recordatorios con día o rutas) y ARCHITECTURE.md (TE TOCA, comandos de la memoria y tarjeta de inicio sin los recordatorios que esperan)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-03T14:11:59.946Z",
   "lockedTests": {
     "packages/cli/test/memory-triggers.test.ts": "sha256:0866afd3839c8e0968a06e41a6ca58aefcbe4628aaaea00c2860355eda2677e7",
     "packages/core/test/cards/reminder-triggers.test.ts": "sha256:a6978aac6efbf132fdb2603d3d8811768a62463ebb223f0c2ca2ac943f5e8d91",
