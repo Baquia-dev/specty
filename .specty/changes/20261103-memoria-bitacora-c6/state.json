@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-bitacora-c6",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-bitacora-c6",
   "baseCommit": "9483005534b070cf93f6982555cb9da2f356708f",
   "revision": 1,
@@ -51,6 +51,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T09:06:53.979Z"
+  "lockedTests": {
+    "packages/cli/test/note.test.ts": "sha256:2e6ddc9a0c8dac519f472473092b8322bd17370cf66e6e707e9d6b1e847093f4",
+    "packages/core/test/cards/notes.test.ts": "sha256:93dd7c07c0321fe352035659636d2381b089e407f0a858b98cd85cb651904125"
+  }
 }
