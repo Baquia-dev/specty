@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-frentes-en-la-memoria",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-frentes-en-la-memoria",
   "baseCommit": "042eeefd2788dc9a723896f106ce10ce5563a0e4",
   "revision": 1,
@@ -56,6 +56,9 @@
     "T": 4,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T19:30:12.851Z"
+  "lockedTests": {
+    "packages/cli/test/fronts.test.ts": "sha256:9b1c0fc9c222791873eb4bd0484fdf0fc0119ff6d6608a6bfc61151a79f76d02",
+    "packages/core/test/cards/fronts.test.ts": "sha256:f9db9f5625a3c8c86baf5e1d59394dcdf4e279db45194177ad0eb42053a908be",
+    "packages/core/test/memory/fronts.test.ts": "sha256:43c980f655d49fcc4b5a5be897547078fdea2ba7ded6b47e77ebcfca5b1530fa"
+  }
 }
