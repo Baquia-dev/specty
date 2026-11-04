@@ -6,6 +6,13 @@
   "branch": "specty/20261105-la-tarjeta-al-empezar-una-sesion-tambien-en",
   "baseCommit": "a0110db82c25c3db2cb9b037f2db2fc48f5dac72",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:81a2cc875a083cba3ae6e00b8f5d38e83d6353c18099dd7431176d196ff8dcd3",
+    "at": "2026-11-04T17:29:36.921Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -40,12 +47,6 @@
     "AC": 4,
     "T": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:81a2cc875a083cba3ae6e00b8f5d38e83d6353c18099dd7431176d196ff8dcd3",
-    "at": "2026-11-04T17:29:36.921Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T17:33:24.597Z"
 }

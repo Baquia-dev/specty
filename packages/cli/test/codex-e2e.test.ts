@@ -227,5 +227,12 @@ describe.skipIf(CODEX === undefined)(
       // The turn, and the one it was sent back for: then it may end.
       expect(responses.requests()).toHaveLength(2);
     });
+
+    it("AC4: brings Specty's card to the model as the session starts", LONG, async () => {
+      const root = await implementing();
+      const responses = await codexRun(root, []);
+      const texts = responses.requests().flatMap((request) => request.map(({ text }) => text));
+      expect(texts.join("\n")).toContain("TAREA T1: Saludar por nombre");
+    });
   },
 );
