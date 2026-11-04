@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-carpeta-perdida-se-recupera",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-carpeta-perdida-se-recupera",
   "baseCommit": "6b1d2d1c5157371c66b4e459152d6a1adde1da4a",
   "revision": 2,
@@ -63,6 +63,9 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T08:02:01.449Z"
+  "lockedTests": {
+    "packages/cli/test/lost-status.test.ts": "sha256:f658c6c5392e0bf214fc0c43fc8dacc0bc31349afdb8400bbe83956b2de17ca6",
+    "packages/cli/test/restore.test.ts": "sha256:c47f3710fd1d4b34c4c3151e1260a7010cef3d3fb7d3ba0058cc191c677dc6e0",
+    "packages/core/test/cards/restore.test.ts": "sha256:39c12fe0c7900e7d6d99243d6cbcf3f3834cb4c1687269da710077a109066428"
+  }
 }
