@@ -49,12 +49,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3193fea35dabf3ebf26fa43b52677c133205221a",
+      "attempts": 1,
       "startedAt": "2026-11-04T17:33:58.620Z",
       "doneAt": "2026-11-04T17:35:43.030Z",
-      "summary": "Codex: SessionStart con matcher ^(startup|resume|clear|compact)$ y kind compact para esos cuatro source (fork no); doctor avisa codex-startup si el SessionStart del guard no admite startup"
+      "summary": "Codex: SessionStart con matcher ^(startup|resume|clear|compact)$ y kind compact para esos cuatro source (fork no); doctor avisa codex-startup si el SessionStart del guard no admite startup",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5a14a481c1c0f20e737470c2f0811d4b1232ea42",
+      "startedAt": "2026-11-04T17:35:43.381Z",
+      "doneAt": "2026-11-04T17:37:24.286Z",
+      "summary": "Devin: SessionStart sin matcher en sus eventos, kind compact, y la tarjeta como hookSpecificOutput.additionalContext"
     }
   },
   "pending": {

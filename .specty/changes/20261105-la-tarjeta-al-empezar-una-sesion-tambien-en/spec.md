@@ -61,7 +61,7 @@ La tarjeta de Specty al empezar una sesión (la de `specty next`, con la memoria
   - files: packages/cli/src/agents/codex.ts, packages/cli/test/session-start-codex.test.ts, packages/cli/test/session-start.test.ts, packages/cli/test/codex.test.ts, packages/cli/test/agents.test.ts, packages/cli/test/codex-e2e.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-start-codex.test.ts test/session-start.test.ts test/codex.test.ts test/agents.test.ts test/codex-e2e.test.ts && pnpm typecheck && pnpm lint
-- [ ] T3: Devin recibe la tarjeta al empezar y al reanudar
+- [x] T3: Devin recibe la tarjeta al empezar y al reanudar
   - files: packages/cli/src/agents/windsurf.ts, packages/cli/test/session-start-devin.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-start-devin.test.ts test/windsurf.test.ts test/agents.test.ts && pnpm typecheck && pnpm lint
