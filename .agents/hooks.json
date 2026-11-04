@@ -1,0 +1,35 @@
+{
+  "specty": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command|write_to_file|replace_file_content|multi_replace_file_content|manage_task|view_file|list_dir|grep_search|find_by_name|client_view_file|client_edit_file|client_create_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "specty guard --tool antigravity --event PreToolUse",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "specty guard --tool antigravity --event PostToolUse",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "specty guard --tool antigravity --event PreInvocation",
+        "timeout": 30
+      }
+    ]
+  }
+}

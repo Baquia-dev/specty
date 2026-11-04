@@ -18,8 +18,13 @@ export interface CommitRequest {
  */
 export async function commitWithReceipt(session: Session, request: CommitRequest): Promise<string> {
   const { git } = session;
-  // Worktrees inside this one belong to other changes; `git add -A` would embed them.
-  const nested = (await git.nestedWorktrees()).map((folder) => `:(exclude)${folder}`);
+  // Worktrees inside this one belong to other changes; `git add -A` would embed them. Those git
+  // ignores, like `.worktrees/`, stay out already, and `git add` refuses to exclude them.
+  const folders = await git.nestedWorktrees();
+  const ignored = new Set(await git.ignored(folders));
+  const nested = folders
+    .filter((folder) => !ignored.has(folder))
+    .map((folder) => `:(exclude)${folder}`);
   for (const pathspecs of request.stage) {
     await git.output(["add", "-A", "--", ...pathspecs, ...nested]);
   }

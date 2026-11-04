@@ -55,11 +55,31 @@
     ],
     "SessionStart": [
       {
-        "matcher": "compact|clear",
+        "matcher": "startup|clear|compact",
         "hooks": [
           {
             "type": "command",
             "command": "specty guard --tool claude-code"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "specty guard --tool claude-code"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "specty hook memory-stop claude-code"
           }
         ]
       }
