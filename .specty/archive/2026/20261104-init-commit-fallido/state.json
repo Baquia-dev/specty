@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-init-commit-fallido",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-init-commit-fallido",
   "baseCommit": "bc548eea883cab9fedd57b3796805b49c4cfd8bc",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:fa2fe05c7e9d505e9df250320a093be47fbc7049ceef753fbc8d37a8129c7aca",
@@ -53,12 +53,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7d5f75d42bd0ecc0c66d7d57d2d3585d5548c0b8",
+      "attempts": 1,
       "startedAt": "2026-11-04T06:01:09.501Z",
       "doneAt": "2026-11-04T06:01:43.466Z",
-      "summary": "check --install sale con código 1 si su commit falla (commit.failed); ARCHITECTURE.md explica qué hace init cuando su commit falla"
+      "summary": "check --install sale con código 1 si su commit falla (commit.failed); ARCHITECTURE.md explica qué hace init cuando su commit falla",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -71,6 +71,7 @@
     "T": 3,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-04T06:07:32.441Z",
   "lockedTests": {
     "packages/cli/test/check-install.test.ts": "sha256:e04f1bf1b77339b17887e950d991efe4c39f3107b6f54154020f999a1b8c6085",
     "packages/cli/test/init-commit.test.ts": "sha256:62cb15eb101ffbc9d0973cec12f0b2492eed346a60f56389ac4bb3ef94404004",

@@ -70,3 +70,23 @@ Cuando falla el commit de lo que instala `specty init` (o `specty check --instal
 ## Riesgos
 
 - R1: Hacer fallar el commit en los tests. Mitigación: `commit.gpgsign=true` con `gpg.program=false` en el repositorio de prueba hace fallar `git commit` sin tocar el índice.
+
+## Cierre
+
+### Resumen
+
+Si falla el commit de lo instalado, `commitInstall` captura el `GitError` de `commitWithReceipt` y deshace lo que escribió en los archivos que iba a incluir. Devuelve a HEAD los que estaban allí (`git checkout HEAD --`) y quita del índice y del disco los que había creado. Lo cuenta en AVISOS con `installCommitFailedWarning`: el subcomando de git, su error en una línea sin `hint:` y los archivos deshechos. La tarjeta de `init` sale entonces con estado `invalid` (código 1), y su SIGUIENTE pide corregir la causa y volver a ejecutar `specty init`. `check --install`, que comparte el commit, también termina con código 1. Volver a ejecutar `init` una vez corregida la causa hace su commit, como comprueba el test de AC2. `io/git.ts` exporta `GitError`, y `docs/ARCHITECTURE.md` explica el comportamiento.
+
+### Desviaciones
+
+- T2 se dividió en T2 (`init`) y T3 (`check --install` y la documentación) antes de aprobar la spec, porque `propose` avisó de que tocaba 7 archivos.
+
+### Decisiones
+
+- Se deshace en vez de dejar los archivos sin commit. Así, volver a ejecutar `init` los vuelve a escribir y hace su commit; sin deshacer, los tomaría por cambios de la persona. Es seguro porque esos archivos no tenían cambios antes de `init`.
+- Solo se captura `GitError`: cualquier otro error sigue siendo un fallo de Specty y conserva su traza.
+- El error de git se cita tal cual; los tests solo comprueban su comienzo, porque el texto cambia entre versiones de git.
+
+### Pendientes
+
+- Un `GitError` en los demás comandos (`task done`, `approve`, `close`, `integrate`…) sigue saliendo como traza de Node. Falta un manejo común en `sessionRunner` (`program.ts`) con un aviso bilingüe en el idioma de la sesión.
