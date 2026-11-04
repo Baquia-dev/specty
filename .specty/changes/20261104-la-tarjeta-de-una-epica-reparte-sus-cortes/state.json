@@ -6,6 +6,13 @@
   "branch": "specty/20261104-la-tarjeta-de-una-epica-reparte-sus-cortes",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a5c587f96d9f7fee4cd7baa59eb47d109e3e3bad521e3725910321221f94cac8",
+    "at": "2026-11-04T12:38:42.744Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a5c587f96d9f7fee4cd7baa59eb47d109e3e3bad521e3725910321221f94cac8",
-    "at": "2026-11-04T12:38:42.744Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T12:43:37.068Z"
 }
