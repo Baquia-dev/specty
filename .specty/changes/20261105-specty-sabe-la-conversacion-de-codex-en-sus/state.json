@@ -6,6 +6,13 @@
   "branch": "specty/20261105-specty-sabe-la-conversacion-de-codex-en-sus",
   "baseCommit": "4bacdf24afc367be9ed57975303bbf796b47c586",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8320c956baaf92be6fb7e5f52514487156a853c9355846c05d2dbe188e682876",
+    "at": "2026-11-04T17:47:14.872Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -30,12 +37,6 @@
     "AC": 3,
     "T": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:8320c956baaf92be6fb7e5f52514487156a853c9355846c05d2dbe188e682876",
-    "at": "2026-11-04T17:47:14.872Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T17:48:58.720Z"
 }
