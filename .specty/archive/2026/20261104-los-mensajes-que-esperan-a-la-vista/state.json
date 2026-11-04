@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-los-mensajes-que-esperan-a-la-vista",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-los-mensajes-que-esperan-a-la-vista",
   "baseCommit": "43c34fda8080cee816e6230d6d68fbf9aa12f3ba",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:78951042904d3803cf979901843267f50fd9e85219cc5bd5c93127a2ee92b673",
@@ -72,12 +72,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7d793f750c4c8acf4a9f57151950092ce36149f4",
+      "attempts": 1,
       "startedAt": "2026-11-04T08:26:26.673Z",
       "doneAt": "2026-11-04T08:26:34.498Z",
-      "summary": "inbox-row.ts importa con import type los tipos de ../data/records, como pide lint/style/useImportType"
+      "summary": "inbox-row.ts importa con import type los tipos de ../data/records, como pide lint/style/useImportType",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -90,9 +90,50 @@
     "T": 5,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-04T08:38:25.085Z",
   "lockedTests": {
     "packages/cli/test/message-holder.test.ts": "sha256:a1194e7d811ea478fca00f5c243cf72f6e4c6f1254e7fbdbe93e4ce47b9d44f0",
     "packages/core/test/cards/messages-waiting.test.ts": "sha256:f75d2d74d5ed3c823a4b1a9e28f459c02910b98bcd066b7fbfd86a3367a63fc9",
     "packages/ui/src/memory/memory-messages.test.ts": "sha256:f74732bc41f670756d23dcb099d2125b178217b0ed67f51146a85792234cffda"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "2b239513dd1a5121a54c36052fc6dc1c27b1de89",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md",
+      "packages/core/src/cards/status.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/message.ts",
+      "packages/cli/src/commands/restore.ts",
+      "packages/cli/src/commands/status.ts",
+      "packages/cli/src/flow/branches.ts",
+      "packages/cli/src/flow/lost.ts",
+      "packages/cli/src/flow/worktree.ts",
+      "packages/cli/src/store/messages.ts",
+      "packages/cli/test/lost-status.test.ts",
+      "packages/cli/test/message-holder.test.ts",
+      "packages/cli/test/restore.test.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/messages.ts",
+      "packages/core/src/cards/new.ts",
+      "packages/core/src/cards/restore.ts",
+      "packages/core/src/cards/status.ts",
+      "packages/core/test/cards/messages-waiting.test.ts",
+      "packages/core/test/cards/restore.test.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "packages/ui/src/memory/memory-lines.ts",
+      "packages/ui/src/memory/memory-messages.test.ts"
+    ],
+    "at": "2026-11-04T08:38:26.928Z",
+    "resolved": {
+      "commit": "b9bca06",
+      "at": "2026-11-04T08:47:23.599Z"
+    }
   }
 }

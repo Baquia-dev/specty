@@ -82,3 +82,22 @@ kind: standard
 ## Riesgos
 
 - R1: `status` lee la carpeta de mensajes de cada cambio — solo si `anyMessages` encuentra alguno, una lectura de carpeta.
+
+## Cierre
+
+### Resumen
+
+`specty message` dice quién recibirá el mensaje: el agente que dio un paso en la carpeta del cambio en los últimos `memory.orphanAfterMin` minutos, y hace cuánto, o que ahora ninguna sesión trabaja en él y le llegará a la que lo retome. `specty status` cuenta en la línea de cada cambio abierto los mensajes que esperan («· 2 mensajes esperan»), `status --json` los da en `messages`, y la página «Memoria» de `specty ui` los cuenta bajo cada cambio. `status` solo mira la carpeta de mensajes de cada cambio si hay alguno en `messages/`.
+
+### Desviaciones
+
+- T5, un ajuste: la primera verificación completa de `accept` falló por un error de lint (`useImportType`) en `packages/ui/src/inbox/inbox-row.ts` que llegó con main desde `20261031-tiempos-de-ejecucion-y-estado-en-la-bandeja`; se corrigió aquí porque frenaba cualquier aceptación.
+
+### Decisiones
+
+- `message` busca el cambio en `openChanges`, la misma vista de `status`, en vez de en `locateChanges`: así sabe a la vez si está abierto y quién lo lleva.
+- Una sesión «trabaja ahora» en un cambio con un paso en su carpeta dentro de `memory.orphanAfterMin`, el mismo límite que decide un huérfano.
+
+### Pendientes
+
+Ninguno.
