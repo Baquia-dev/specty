@@ -57,7 +57,7 @@ La tabla de capacidades aún no deja a Cursor repartir los cortes de una épica 
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor-subagents.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
   - type: test
-- [ ] T2: La tabla de capacidades dice que Cursor reparte los cortes de una épica entre subagentes
+- [x] T2: La tabla de capacidades dice que Cursor reparte los cortes de una épica entre subagentes
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts && pnpm typecheck && pnpm lint

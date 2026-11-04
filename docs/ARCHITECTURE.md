@@ -426,7 +426,7 @@ Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decis
 | Herramienta | Guard | Aviso tras cada comando | Tarjeta tras compactar | Worktree por nombre | Cortes en subagentes | Fin de turno | Exclusión | Permisos | Prueba de extremo a extremo | Se detecta por |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Claude Code | sí | sí | sí | sí | sí | sí | sí | sí | sí | `.claude`, `CLAUDE.md` |
-| Cursor | sí | sí | indirecto | indirecto | — | sí | sí | sí | no posible | `.cursor`, `.cursorrules` |
+| Cursor | sí | sí | indirecto | indirecto | sí | sí | sí | sí | no posible | `.cursor`, `.cursorrules` |
 | Codex | sí | sí | sí | indirecto | — | sí | no posible | sí | sí | `.codex` |
 | OpenCode | sí | sí | sí | indirecto | — | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |
 | Gemini CLI | sí | sí | indirecto | indirecto | no posible | sí | sí | sí | sí | `.gemini`, `GEMINI.md` |
