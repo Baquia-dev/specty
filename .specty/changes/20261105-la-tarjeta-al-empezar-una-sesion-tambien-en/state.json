@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-tarjeta-al-empezar-una-sesion-tambien-en",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-tarjeta-al-empezar-una-sesion-tambien-en",
   "baseCommit": "a0110db82c25c3db2cb9b037f2db2fc48f5dac72",
   "revision": 1,
@@ -58,12 +58,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5a14a481c1c0f20e737470c2f0811d4b1232ea42",
+      "attempts": 1,
       "startedAt": "2026-11-04T17:35:43.381Z",
       "doneAt": "2026-11-04T17:37:24.286Z",
-      "summary": "Devin: SessionStart sin matcher en sus eventos, kind compact, y la tarjeta como hookSpecificOutput.additionalContext"
+      "summary": "Devin: SessionStart sin matcher en sus eventos, kind compact, y la tarjeta como hookSpecificOutput.additionalContext",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cb7d550e9e39744fc4f2d0987a7cf59e95945de8",
+      "startedAt": "2026-11-04T17:37:25.034Z",
+      "doneAt": "2026-11-04T17:37:41.901Z",
+      "summary": "ARCHITECTURE: la tarjeta al empezar en Codex (startup, resume, clear y compact; fork no) y en Devin, y el aviso codex-startup"
     }
   },
   "pending": {

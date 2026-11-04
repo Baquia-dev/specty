@@ -65,7 +65,7 @@ La tarjeta de Specty al empezar una sesión (la de `specty next`, con la memoria
   - files: packages/cli/src/agents/windsurf.ts, packages/cli/test/session-start-devin.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-start-devin.test.ts test/windsurf.test.ts test/agents.test.ts && pnpm typecheck && pnpm lint
-- [ ] T4: La documentación
+- [x] T4: La documentación
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
