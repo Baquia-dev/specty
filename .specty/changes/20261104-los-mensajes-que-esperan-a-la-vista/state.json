@@ -36,12 +36,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c46dc34f85e7644c81d35ea2729c313bc58a135a",
+      "attempts": 1,
       "startedAt": "2026-11-04T08:01:32.731Z",
       "doneAt": "2026-11-04T08:02:13.712Z",
-      "summary": "core: StatusEntry.messages y su texto al final de la línea de status; messageLeftCard dice quién lleva el cambio ahora o que ninguna sesión trabaja en él"
+      "summary": "core: StatusEntry.messages y su texto al final de la línea de status; messageLeftCard dice quién lleva el cambio ahora o que ninguna sesión trabaja en él",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3800454bc27d8963417d24058ca7b24458b6a524",
+      "startedAt": "2026-11-04T08:02:14.368Z",
+      "doneAt": "2026-11-04T08:03:58.568Z",
+      "summary": "cli: status cuenta los mensajes de cada cambio abierto (waitingCount, solo si anyMessages); message busca el cambio en openChanges y pasa a la tarjeta el agente que dio un paso en su carpeta dentro de memory.orphanAfterMin"
     }
   },
   "pending": {

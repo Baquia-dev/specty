@@ -59,7 +59,7 @@ kind: standard
   - files: packages/core/src/cards/status.ts, packages/core/src/cards/messages.ts, packages/core/test/cards/messages-waiting.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/messages-waiting.test.ts test/cards/messages.test.ts test/cards/status-holder.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: `message` y `status` miran la actividad y los mensajes
+- [x] T2: `message` y `status` miran la actividad y los mensajes
   - files: packages/cli/src/store/messages.ts, packages/cli/src/commands/status.ts, packages/cli/src/commands/message.ts, packages/cli/test/message-holder.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/message-holder.test.ts test/message.test.ts test/status-json.test.ts test/status-away.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
