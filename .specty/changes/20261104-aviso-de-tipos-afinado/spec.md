@@ -13,6 +13,7 @@ Resuelve P69, P70 y P71, lo que dejó el cambio `20261104-fallo-de-tipos-con-con
 - modificar packages/core/src/validate/quality.ts — un comando vacío no cuenta, y no avisa de una tarea hecha
 - modificar packages/core/test/validate/quality.test.ts — los casos de P69, P70 y P71
 - modificar docs/formats.md — el aviso solo mira una tarea pendiente
+- modificar packages/cli/test/doctor-watchers.test.ts — el caso Expo de AC5 sin instalar sus dependencias de la red
 
 ## Tareas
 
@@ -20,3 +21,7 @@ Resuelve P69, P70 y P71, lo que dejó el cambio `20261104-fallo-de-tipos-con-con
   - files: packages/core/src/validate/quality.ts, packages/core/test/validate/quality.test.ts, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/quality.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+- [ ] T2: El caso Expo de AC5 de doctor-watchers no instala de la red
+  - files: packages/cli/test/doctor-watchers.test.ts
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-watchers.test.ts && pnpm lint
+  - type: test
