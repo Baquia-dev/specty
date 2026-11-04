@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f6af439f85a6c36ad76ec4cccea67f39c97417cf",
+      "attempts": 1,
       "startedAt": "2026-11-04T13:43:21.107Z",
       "doneAt": "2026-11-04T13:43:41.438Z",
-      "summary": "fullVerificationWaitNote acepta ahead (0 por defecto) y añade «Delante en la cola: N.» / «Ahead in the queue: N.» cuando hay sesiones delante"
+      "summary": "fullVerificationWaitNote acepta ahead (0 por defecto) y añade «Delante en la cola: N.» / «Ahead in the queue: N.» cuando hay sesiones delante",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e1ae6380ce6baf93c6bc8e59229550f04c75e46a",
+      "startedAt": "2026-11-04T13:43:42.148Z",
+      "doneAt": "2026-11-04T13:46:44.858Z",
+      "summary": "Cola del turno en store/turn-queue.ts, por orden de llegada (se descartan los que murieron o no renuevan en 30 s); oneAtATime hace cola salvo si ya tiene el turno, avisa una vez con cuántos esperan delante y nunca corre sin turno"
     }
   },
   "pending": {

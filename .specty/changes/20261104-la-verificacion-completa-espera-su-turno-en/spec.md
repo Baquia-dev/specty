@@ -61,7 +61,7 @@ Hoy `oneAtATime` (`flow/full-verification.ts`) espera el turno de la verificaci�
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/lock.test.ts && pnpm lint
   - type: fix
-- [ ] T2: La verificación completa espera en cola por orden de llegada y nunca corre sin turno
+- [x] T2: La verificación completa espera en cola por orden de llegada y nunca corre sin turno
   - files: packages/cli/src/store/turn-queue.ts, packages/cli/src/store/lock.ts, packages/cli/src/flow/full-verification.ts, packages/cli/src/flow/full-verification.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/flow/full-verification.test.ts test/close-turn.test.ts test/server/runs-turn.test.ts && pnpm typecheck && pnpm lint && pnpm knip

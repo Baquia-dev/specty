@@ -26,6 +26,8 @@ export type Lock =
 
 // Under `common/`, git keeps a path in the common directory: one lock for every worktree.
 const lockOf = (id: string) => `common/specty/locks/${id}.json`;
+/** The turn of the full verification, one for the whole clone. */
+const FULL_VERIFICATION = "common/specty/locks/full-verification.json";
 
 /** The locks this process holds: a command run inside another one does not lock twice. */
 const held = new Set<string>();
@@ -43,7 +45,12 @@ export async function lockChange(git: Git, id: string, holder: LockHolder): Prom
  * the same rules as a change's lock (formats.md §1).
  */
 export async function lockFullVerification(git: Git, holder: LockHolder): Promise<Lock> {
-  return lockAt(git, "common/specty/locks/full-verification.json", holder);
+  return lockAt(git, FULL_VERIFICATION, holder);
+}
+
+/** Whether this process already holds the turn of the full verification, as a closing does. */
+export async function holdsFullVerification(git: Git): Promise<boolean> {
+  return held.has(await git.gitPath(FULL_VERIFICATION));
 }
 
 async function lockAt(git: Git, lock: string, holder: LockHolder): Promise<Lock> {
