@@ -70,7 +70,7 @@ Resuelve P62 y P66. `specty check --all` avisa en `max-lines` de cinco archivos:
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/fixtures.test.ts --include src/data/decisions.test.ts --include src/review/review-actions.test.ts --include src/acceptance/closing-actions.test.ts --include src/memory/memory-actions.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
   - type: refactor
-- [ ] T4: Los tests del MCP App, con su andamiaje aparte
+- [x] T4: Los tests del MCP App, con su andamiaje aparte
   - files: packages/ui/src/data/mcp-app.test.ts, packages/ui/src/data/mcp-app-live.test.ts, packages/ui/src/data/testing/mcp-host.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/mcp-app.test.ts --include src/data/mcp-app-live.test.ts && pnpm typecheck && pnpm lint && pnpm knip

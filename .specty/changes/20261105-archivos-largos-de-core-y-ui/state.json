@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-archivos-largos-de-core-y-ui",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-archivos-largos-de-core-y-ui",
   "baseCommit": "555d8540abbd360891f992252bcb564c64542ed6",
   "revision": 1,
@@ -54,12 +54,24 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b3f589a6442dcdcc23da1a6f842ebba7beb20f4f",
+      "attempts": 1,
       "startedAt": "2026-11-04T18:45:56.795Z",
       "doneAt": "2026-11-04T18:48:44.391Z",
-      "summary": "Lo que cada decisión de la revisión hace a un registro pasa de fixtures.ts a sample-review.ts (decideAssumptionIn, comentarios, approveIn); confirmar el cierre, a confirmClosingIn en sample-acceptance.ts; y decided, a decidedIn en sample-memory.ts."
+      "summary": "Lo que cada decisión de la revisión hace a un registro pasa de fixtures.ts a sample-review.ts (decideAssumptionIn, comentarios, approveIn); confirmar el cierre, a confirmClosingIn en sample-acceptance.ts; y decided, a decidedIn en sample-memory.ts.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/components/item-tooltip.test.ts",
+        "packages/ui/src/components/testing/item-host.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "6079aab45e6ac643cbe4d7c54696d25cf94e41c5",
+      "startedAt": "2026-11-04T18:48:45.008Z",
+      "doneAt": "2026-11-04T18:53:14.328Z",
+      "summary": "El andamiaje de los tests del MCP App pasa a data/testing/mcp-host.ts y el de los tooltips a components/testing/item-host.ts, sin mover ningún test: con contract, mover tests de archivo cuenta como aserciones quitadas."
     }
   },
   "pending": {
@@ -69,6 +81,7 @@
   "maxIds": {
     "A": 2,
     "AC": 2,
-    "T": 4
+    "T": 4,
+    "S": 1
   }
 }
