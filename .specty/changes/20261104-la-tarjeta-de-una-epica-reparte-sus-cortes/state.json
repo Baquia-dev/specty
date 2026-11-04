@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-la-tarjeta-de-una-epica-reparte-sus-cortes",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-la-tarjeta-de-una-epica-reparte-sus-cortes",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 1,
@@ -56,6 +56,10 @@
     "T": 4,
     "R": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T12:43:37.068Z"
+  "lockedTests": {
+    "packages/core/test/cards/budget.test.ts": "sha256:1909f3076c48cbb8f380b1f0c3b01ea55c304e9460d9d5b8241f2a8339f8974c",
+    "packages/core/test/cards/epic.test.ts": "sha256:0f8cdd51abd9e974f79fa0f104a7a05582eb82db0c35b9ba620e3bc2ee7151c1",
+    "packages/core/test/schema/schema.test.ts": "sha256:a75af5e412d46111f33f0c64f31d079354588a26444d1f2517426da08e871e31",
+    "packages/cli/test/epic-subagents.test.ts": "sha256:998c1d7a524a5282e128a2cebf87558f5c83de149b7ee61da2b649f1ed66d7b0"
+  }
 }
