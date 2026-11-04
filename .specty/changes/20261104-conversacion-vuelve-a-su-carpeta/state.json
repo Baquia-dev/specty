@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-conversacion-vuelve-a-su-carpeta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-conversacion-vuelve-a-su-carpeta",
   "baseCommit": "76e0eca1da6b2bc6fa42d0e1a0b555f88690dc3d",
   "revision": 1,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "99ff8a2b0ef222cd1c675fa59e56e6338c2429de",
+      "attempts": 2,
       "startedAt": "2026-11-04T06:15:39.792Z",
       "doneAt": "2026-11-04T06:17:35.036Z",
-      "summary": "rejoin.ts con la tarjeta de volver al cambio de la conversación y el bloque de cambios sin conversación; NextView gana own, orphans y byName; carryOnText exportado con una entrada propia"
+      "summary": "rejoin.ts con la tarjeta de volver al cambio de la conversación y el bloque de cambios sin conversación; NextView gana own, orphans y byName; carryOnText exportado con una entrada propia",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4394e7b5a8ab2bd5c26332e55e3e12d6eb7f59df",
+      "startedAt": "2026-11-04T06:17:35.376Z",
+      "doneAt": "2026-11-04T06:20:47.683Z",
+      "summary": "next lee el enlace de la conversación (conversationChange) y da la tarjeta de volver, o lista los huérfanos de openChanges; new enlaza la conversación a la carpeta nueva con la regla del guard (bindNew); docs de ARCHITECTURE §7 y formats §1"
     }
   },
   "pending": {

@@ -63,7 +63,7 @@ Hoy, cuando una sesión de Claude Code vuelve a la carpeta principal (al reanuda
   - files: packages/core/src/cards/rejoin.ts, packages/core/src/cards/next.ts, packages/core/src/cards/new.ts, packages/core/test/cards/rejoin.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/rejoin.test.ts test/cards/new.test.ts test/cards/memory-start.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: `next` y `new` con el enlace de la conversación y los huérfanos, y la documentación
+- [x] T2: `next` y `new` con el enlace de la conversación y los huérfanos, y la documentación
   - files: packages/cli/src/enforce/sessions.ts, packages/cli/src/commands/next.ts, packages/cli/src/commands/new.ts, packages/cli/test/session-return.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-return.test.ts test/sessions.test.ts test/session-start.test.ts test/enter.test.ts && pnpm typecheck && pnpm lint

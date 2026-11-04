@@ -16,6 +16,7 @@ import {
   withLead,
   worktreeCreatedCard,
 } from "@baquia-dev/specty-core";
+import { bindNew } from "../enforce/sessions";
 import { commitState, isFinished, resolveActive } from "../flow/active";
 import { freeBranch, markBranch } from "../flow/branches";
 import { duplicatesOf } from "../flow/duplicates";
@@ -191,6 +192,8 @@ async function newInWorktree(
     dir: repoPaths(folder).changeDir(id),
   });
   const prepared = await prepareWorktree(session, folder);
+  // The conversation that creates it works there, even before it enters it.
+  await bindNew(session, folder, options.epic);
   return worktreeCreatedCard(
     {
       id,
