@@ -220,7 +220,10 @@ export function worktreeCreatedCard(created: WorktreeCreated, ctx: CardContext):
 }
 
 /** Go's workspace files copied, and how to version them once Specty ignored them in the clone. */
-function workspaceLines(created: WorktreeCreated, t: Translate): readonly string[] {
+export function workspaceLines(
+  created: Pick<WorktreeCreated, "workspace">,
+  t: Translate,
+): readonly string[] {
   const { files = [], excluded = false } = created.workspace ?? {};
   if (!excluded) return files;
   return [
@@ -269,8 +272,11 @@ function worktreeCreatedBlocks(created: WorktreeCreated, t: Translate): Output["
   ];
 }
 
-/** Moving the session to the new folder, after preparing it again if that failed. */
-function worktreeCreatedNext(created: WorktreeCreated, ctx: CardContext): string {
+/** Moving the session to a change's folder, after preparing it again if that failed. */
+export function worktreeCreatedNext(
+  created: CarryOnTarget & Pick<WorktreeCreated, "prepared">,
+  ctx: CardContext,
+): string {
   const t = translator(ctx.lang);
   const { folder, prepared } = created;
   const carryOn = carryOnText(created, ctx, t);
