@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-sesion-de-una-epica-sale-de-su-carpeta-antes",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-la-sesion-de-una-epica-sale-de-su-carpeta-antes",
   "baseCommit": "f374134873dd21f2f9c61c4f60dd97f9b5c0e4f1",
   "revision": 1,
@@ -52,6 +52,10 @@
     "T": 5,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T17:47:31.370Z"
+  "lockedTests": {
+    "packages/cli/test/session-return.test.ts": "sha256:637563e76786e1173873735e1db34326cc41bbc8ea71d10b38869ba631acc5eb",
+    "packages/core/test/cards/epic.test.ts": "sha256:080ed575e2aae451ec2d8239086ef25e9a4a6b2d91f0185f49e5a2ab1b9708a8",
+    "packages/core/test/cards/new.test.ts": "sha256:c0526e046cb4ac8f0496d2e95e9c87bd5a3a629cc78ddbf5601d79debf144cc8",
+    "packages/core/test/cards/rejoin.test.ts": "sha256:19426f63b5a9513a5786e1009add11b37b4855ed65e95a61af98f65840e42662"
+  }
 }
