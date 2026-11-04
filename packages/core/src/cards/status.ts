@@ -30,6 +30,8 @@ export interface StatusEntry {
    * that folder stepped last in another one: its agent, and how many minutes ago.
    */
   readonly away?: { readonly tool: string; readonly ago: number };
+  /** The messages left for its session that it has not taken yet, when there are any. */
+  readonly messages?: number;
 }
 
 /** A front of the memory in `status`: its open entries in order, and its live owner. */
@@ -140,7 +142,15 @@ function statusLine(entry: StatusEntry, t: Translate, command: string): string {
         );
   const where = entry.folder === undefined ? "" : ` · ${t("en", "in")} ${entry.folder}`;
   const held = entry.away === undefined ? heldBy(entry, t) : awayText(entry.away, t, command);
-  return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}${where}${held === undefined ? "" : ` · ${held}`}`;
+  return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}${where}${held === undefined ? "" : ` · ${held}`}${messagesText(entry.messages, t)}`;
+}
+
+/** The messages waiting for the change's session, after a separator; nothing without any. */
+function messagesText(messages: number | undefined, t: Translate): string {
+  if (messages === undefined || messages === 0) return "";
+  return messages === 1
+    ? t(" · 1 mensaje espera", " · 1 message waiting")
+    : t(` · ${messages} mensajes esperan`, ` · ${messages} messages waiting`);
 }
 
 /** Who holds the change and since when, or that it is an orphan; nothing when neither is known. */

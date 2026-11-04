@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { headerOf, type Output, section } from "../output";
+import { ago } from "./status";
 import { translator } from "./text";
 import type { CardContext } from "./view";
 
@@ -27,8 +28,16 @@ export type MessageRefusal =
   | { readonly reason: "empty"; readonly id: string }
   | { readonly reason: "no-change"; readonly id: string };
 
-/** `specty message`: the message waits for the session of change `id`. */
-export function messageLeftCard(id: string, text: string, ctx: CardContext): Output {
+/**
+ * `specty message`: the message waits for the session of change `id`; `holder`, the agent that
+ * stepped lately in its folder and how many minutes ago, or none when no session works on it now.
+ */
+export function messageLeftCard(
+  id: string,
+  text: string,
+  ctx: CardContext,
+  holder?: { readonly tool: string; readonly ago: number },
+): Output {
   const t = translator(ctx.lang);
   return {
     status: "ok",
@@ -38,6 +47,15 @@ export function messageLeftCard(id: string, text: string, ctx: CardContext): Out
         `Mensaje dejado para la sesión de ${id}: le llegará tras su siguiente comando en la carpeta del cambio.`,
         `Message left for the session of ${id}: it gets it after its next command in the change's folder.`,
       ),
+      holder === undefined
+        ? t(
+            "Ahora ninguna sesión trabaja en ese cambio: le llegará a la que lo retome.",
+            "No session works on that change now: whichever resumes it gets it.",
+          )
+        : t(
+            `Ahora lo lleva ${holder.tool}: dio su último paso ${ago(holder.ago, t)}.`,
+            `${holder.tool} holds it now: it last stepped ${ago(holder.ago, t)}.`,
+          ),
       `«${text.trim()}»`,
     ]),
     next: t("sigue con tu trabajo.", "go on with your work."),

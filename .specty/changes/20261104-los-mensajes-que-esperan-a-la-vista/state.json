@@ -33,7 +33,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c46dc34f85e7644c81d35ea2729c313bc58a135a",
+      "startedAt": "2026-11-04T08:01:32.731Z",
+      "doneAt": "2026-11-04T08:02:13.712Z",
+      "summary": "core: StatusEntry.messages y su texto al final de la línea de status; messageLeftCard dice quién lleva el cambio ahora o que ninguna sesión trabaja en él"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -55,7 +55,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Las tarjetas dicen quién lleva el cambio y cuántos mensajes esperan
+- [x] T1: Las tarjetas dicen quién lleva el cambio y cuántos mensajes esperan
   - files: packages/core/src/cards/status.ts, packages/core/src/cards/messages.ts, packages/core/test/cards/messages-waiting.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/messages-waiting.test.ts test/cards/messages.test.ts test/cards/status-holder.test.ts && pnpm typecheck && pnpm lint
