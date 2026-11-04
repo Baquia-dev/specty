@@ -31,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3ffb82cb13bf71153bd78d40e0cbe5d8c6f94ba6",
+      "startedAt": "2026-11-04T12:18:20.954Z",
+      "doneAt": "2026-11-04T12:21:02.113Z",
+      "summary": "landRetrying (flow/land.ts): si main avanzó mientras el cambio se integraba, vuelve a incorporarlo con su verificación e integra, hasta dos veces más; close, su reintento y el carril rápido lo usan"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

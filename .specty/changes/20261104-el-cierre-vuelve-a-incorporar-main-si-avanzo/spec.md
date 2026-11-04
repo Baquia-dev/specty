@@ -40,7 +40,7 @@ El cierre toma el turno de la verificación completa antes de incorporar main, p
 
 ## Tareas
 
-- [ ] T1: El cierre vuelve a incorporar main si avanzó
+- [x] T1: El cierre vuelve a incorporar main si avanzó
   - files: packages/cli/src/flow/land.ts, packages/cli/src/commands/finish.ts, packages/cli/src/commands/accept.ts, packages/cli/test/close-moved.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/close-moved.test.ts test/integrate.test.ts test/close-turn.test.ts && pnpm typecheck && pnpm lint
