@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cb351d0e7a929d8c18ad9785b38c910a8fb0a4d2",
+      "attempts": 1,
       "startedAt": "2026-11-04T18:24:47.147Z",
       "doneAt": "2026-11-04T18:25:13.790Z",
-      "summary": "clausesOf saca clauseList: recorre las viñetas GIVEN/WHEN/THEN/AND y une cada AND a la cláusula anterior; clausesOf elige la primera de cada clave y arma el texto."
+      "summary": "clausesOf saca clauseList: recorre las viñetas GIVEN/WHEN/THEN/AND y une cada AND a la cláusula anterior; clausesOf elige la primera de cada clave y arma el texto.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3b41ed64eae9ed70474bc4e38536e5023c98f399",
+      "startedAt": "2026-11-04T18:25:14.553Z",
+      "doneAt": "2026-11-04T18:25:36.978Z",
+      "summary": "changesView saca hereText (fase del cambio de la carpeta y si te espera) y countsOf (cambios abiertos y los que te esperan)."
     }
   },
   "pending": {

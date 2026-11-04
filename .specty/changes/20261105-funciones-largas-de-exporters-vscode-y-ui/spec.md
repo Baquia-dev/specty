@@ -45,7 +45,7 @@ Resuelve P60 y la deuda de `complexity` que queda (P109, que `specty check --all
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-exporters exec vitest run test/import-openspec.test.ts && pnpm lint
   - type: refactor
-- [ ] T2: La función compleja de vscode, simplificada
+- [x] T2: La función compleja de vscode, simplificada
   - files: packages/vscode/src/view.ts
   - ac: AC1, AC2
   - verify: pnpm --filter specty-vscode exec vitest run test/view.test.ts && pnpm --filter specty-vscode typecheck && pnpm lint
