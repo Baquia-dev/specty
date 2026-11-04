@@ -53,7 +53,7 @@ La tarjeta de Specty al empezar una sesión (la de `specty next`, con la memoria
 
 ## Tareas
 
-- [ ] T1: El aviso de doctor de Codex
+- [x] T1: El aviso de doctor de Codex
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/test/cards/doctor-codex-startup.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-codex-startup.test.ts && pnpm lint && pnpm sources
