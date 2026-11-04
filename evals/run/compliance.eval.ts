@@ -53,7 +53,8 @@ function agentEnv(bin: string): NodeJS.ProcessEnv {
 
 /**
  * One run of a scenario or an experiment by `agent`, or why the agent has to be left out. An
- * experiment brings its own turns and minutes; a run that tells its consumption keeps it.
+ * experiment brings its own turns and minutes; each run keeps its wall-clock seconds, and one
+ * that tells its consumption keeps it too.
  */
 async function runOnce(
   agent: Agent,
@@ -64,6 +65,7 @@ async function runOnce(
   const root = await scenario.prepare(agent.id);
   const turns = "turns" in scenario ? scenario.turns : undefined;
   const [command = binary, ...args] = agent.command(binary, scenario.prompt, turns);
+  const started = performance.now();
   const result = spawnSync(command, args, {
     cwd: root,
     env: agentEnv(bin),
@@ -71,6 +73,7 @@ async function runOnce(
     timeout: "minutes" in scenario ? scenario.minutes * 60 * 1000 : TIMEOUT_MS,
     maxBuffer: 64 * 1024 * 1024,
   });
+  const seconds = Math.round((performance.now() - started) / 1000);
   const transcript = result.stdout ?? "";
   const counts = countsOf(agent.id, transcript);
   if (
@@ -82,7 +85,7 @@ async function runOnce(
   }
   const verdict = await scenario.judge(root);
   const consumption = consumptionOf(agent.id, transcript);
-  return { agent: agent.id, scenario: scenario.id, verdict, ...counts, ...consumption };
+  return { agent: agent.id, scenario: scenario.id, verdict, ...counts, seconds, ...consumption };
 }
 
 /** Every run of one agent; without its binary, or once it shows it has no session, why not. */

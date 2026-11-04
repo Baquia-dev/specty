@@ -58,7 +58,7 @@ Hoy las evals miden el coste de tres cambios seguidos, pero no el de una épica 
 
 ## Tareas
 
-- [ ] T1: El informe da el tiempo de reloj de cada escenario y experimento
+- [x] T1: El informe da el tiempo de reloj de cada escenario y experimento
   - files: evals/src/report.ts, evals/run/compliance.eval.ts, evals/test/report.test.ts, evals/test/consumption.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/report.test.ts test/consumption.test.ts && pnpm lint

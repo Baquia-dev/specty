@@ -43,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fb062e1e7873e027d05ac8f018341271aa958b5c",
+      "startedAt": "2026-11-04T13:39:31.934Z",
+      "doneAt": "2026-11-04T13:40:36.590Z",
+      "summary": "Run gana seconds, que el ejecutor mide con el reloj alrededor del agente; summarize da su media entera y la tabla del informe la columna Tiempo (s). El coste sigue en Consumo."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
