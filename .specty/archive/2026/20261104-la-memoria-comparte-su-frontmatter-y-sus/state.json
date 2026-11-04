@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-la-memoria-comparte-su-frontmatter-y-sus",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-la-memoria-comparte-su-frontmatter-y-sus",
   "baseCommit": "cedf87d684d7915bba73bb090306543d330d75d8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:43c511155a4fd29b4e175a819bd091aefa8907ee4cc9f299d6fa1bfc6ce9119e",
@@ -39,12 +39,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f19554d713745b1bee3dfa405cf06f5cac67d8ae",
+      "attempts": 1,
       "startedAt": "2026-11-04T09:27:02.997Z",
       "doneAt": "2026-11-04T09:27:50.133Z",
-      "summary": "cards/memory-kinds.ts: ONE_OF_KIND, cada tipo de entrada con su artículo; memory-refusals.ts y fronts.ts lo importan"
+      "summary": "cards/memory-kinds.ts: ONE_OF_KIND, cada tipo de entrada con su artículo; memory-refusals.ts y fronts.ts lo importan",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -55,5 +55,28 @@
     "A": 1,
     "AC": 2,
     "T": 2
+  },
+  "closingSubmittedAt": "2026-11-04T10:51:35.058Z",
+  "integration": {
+    "target": "main",
+    "commit": "cb6838409f3dba5834c2ee9722cae08987438784",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "packages/core/src/cards/fronts.ts",
+      "packages/core/src/cards/memory-kinds.ts",
+      "packages/core/src/cards/memory-refusals.ts",
+      "packages/core/src/memory/entries.ts",
+      "packages/core/src/memory/frontmatter.ts",
+      "packages/core/src/memory/fronts.ts",
+      "packages/ui/package.json",
+      "pnpm-lock.yaml",
+      "pnpm-workspace.yaml"
+    ],
+    "at": "2026-11-04T09:51:34.285Z",
+    "resolved": {
+      "commit": "00a5496",
+      "at": "2026-11-04T10:23:09.550Z"
+    }
   }
 }

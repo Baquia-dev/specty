@@ -52,3 +52,21 @@ kind: standard
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards test/memory && pnpm typecheck && pnpm lint && pnpm exec knip && pnpm sources
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+La lectura del frontmatter de la memoria vive en `memory/frontmatter.ts` (`frontmatterOf`, el YAML leído y el cuerpo), que usan `parseEntry` y `parseFront` en vez de su copia de `FRONTMATTER` y `loadYaml`. La tabla de cada tipo de entrada con su artículo vive en `cards/memory-kinds.ts` (`ONE_OF_KIND`), que importan `cards/memory-refusals.ts` y `cards/fronts.ts`. Lo que leen y dicen no cambia, y los tests de la memoria y de las tarjetas pasan sin tocarlos.
+
+### Desviaciones
+
+- La aceptación tardó cuatro intentos por fallos intermitentes de los tests de la UI dentro de `pnpm check` con la máquina muy cargada (carga 67 por otras sesiones); `pnpm check` a mano pasó cada vez. Quedan en la memoria: el test de `embedded.test.ts`, cuyo worker lee `.filter` de unos registros que no llegan, y la salida de la verificación que no muestra el fallo (P83).
+
+### Decisiones
+
+- Los módulos nuevos no se exportan desde core: solo los usan la memoria y sus tarjetas.
+
+### Pendientes
+
+Ninguno.
