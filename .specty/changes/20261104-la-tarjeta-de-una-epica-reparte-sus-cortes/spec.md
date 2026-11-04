@@ -68,7 +68,7 @@ Hoy la tarjeta de una épica aprobada propone empezar un corte cada vez, en la m
 
 ## Tareas
 
-- [ ] T1: La tarjeta de una épica reparte sus cortes listos y huérfanos entre subagentes
+- [x] T1: La tarjeta de una épica reparte sus cortes listos y huérfanos entre subagentes
   - files: packages/core/src/cards/epic.ts, packages/core/src/cards/view.ts, packages/core/test/cards/epic.test.ts, packages/core/test/cards/budget.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts test/cards/budget.test.ts && pnpm typecheck

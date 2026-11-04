@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "831cea4471e9a3bc27fb037ce4493656b87efc49",
+      "startedAt": "2026-11-04T12:43:47.266Z",
+      "doneAt": "2026-11-04T12:45:42.083Z",
+      "summary": "La tarjeta de una épica, si la herramienta reparte cortes en subagentes y subagents no lo apaga, trae un encargo por corte listo o huérfano y pide lanzarlos en paralelo; si no, es la de hoy. CardContext gana subagents y el hijo de SliceView, orphan. ARCHITECTURE §5 y §7."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
