@@ -58,3 +58,22 @@ El servidor de `specty ui` ya da en `GET /api/sessions` cada conversación de ag
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`specty ui` tiene la página «Sesiones» (`/sessions`, después de «Memoria» en el menú). Muestra un resumen («3 sesiones · 1 viva») y cada sesión de agente, de la más reciente a la más antigua: su agente, el cambio de su carpeta como enlace (o la carpeta, o «carpeta principal»), cuándo empezó y su último paso, la marca «viva» o «sin actividad reciente», y su consumo en tokens y en dólares con el formato del idioma. Sin sesiones, un estado vacío lo dice. Los datos vienen de `GET /api/sessions` (`sessions()` en la fuente de datos, validado con `isSessionList`), y el prototipo trae dos sesiones de ejemplo.
+
+### Desviaciones
+
+- `app/shell.test.ts` fijaba la lista exacta de enlaces del menú y el índice del catálogo; con «Sesiones» después de «Memoria» había que incluirla. Se pidió con `specty scope add` y se cambió solo esa lista y ese índice.
+
+### Decisiones
+
+- Los tokens van abreviados y el coste en dólares con `Intl.NumberFormat` del idioma de la UI, y el tiempo con el `ago` de `memory/memory-lines.ts`, ahora exportado, para no tocar core.
+
+### Pendientes
+
+- `packages/ui/src/data/fixtures.ts` tiene 339 líneas de código (el aviso salta a partir de 300): llevar las sesiones de ejemplo a `data/sample-sessions.ts`, como `sample-memory.ts`.
+- La cobertura de las líneas nuevas quedó en el 73 %: faltan tests de `sessions()` de `ServerData` (`data/server.ts`) y de `isSessionList` (`data/server-answers.ts`).
