@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261104-dependencias-sin-vulnerabilidades",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261104-dependencias-sin-vulnerabilidades",
+  "baseCommit": "c5e6b9058c3198ae970fb5670e26ff9cbfc4e296",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f69f25ecde6297976613e495c075279539568bd4863744e773c5ef1f0f7dacac",
+    "at": "2026-11-04T08:57:46.576Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
