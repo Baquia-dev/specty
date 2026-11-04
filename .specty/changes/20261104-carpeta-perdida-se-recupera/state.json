@@ -6,6 +6,13 @@
   "branch": "specty/20261104-carpeta-perdida-se-recupera",
   "baseCommit": "6b1d2d1c5157371c66b4e459152d6a1adde1da4a",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:3db2d62715a2f50cdbf1f793ccc01dbfaaad44a578f6a41fc9a0cbc3f95e35c7",
+    "at": "2026-11-04T07:57:00.602Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -56,12 +63,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:3db2d62715a2f50cdbf1f793ccc01dbfaaad44a578f6a41fc9a0cbc3f95e35c7",
-    "at": "2026-11-04T07:57:00.602Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T08:02:01.449Z"
 }
