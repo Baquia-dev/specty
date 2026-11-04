@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "id": "20261104-la-verificacion-completa-de-la-ui-espera-su",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-la-verificacion-completa-de-la-ui-espera-su",
+  "baseCommit": "94963be409456e72963dbcd89bd9ab189f7a2af3",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e53bd07372fb8da139c8fd8bc5526386aff24559dcc8536ca3170e10e41133c4",
+    "at": "2026-11-04T08:49:47.648Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b3335fe8793c5f05f70c51434ac8cd0b9e179663d45948fa9c3c479b34866e9a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a60041e83ac51d5e0f88d60636ee9a173a719fbb9319dd4461c18f28ac1a39a8",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9e15905e179a13768998ea3febbf6ee4645403a634fd9ba690979f52786acfc3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6d761fcbae11d5621c4bc126f65effa958c07c29",
+      "attempts": 1,
+      "startedAt": "2026-11-04T08:52:07.393Z",
+      "doneAt": "2026-11-04T08:54:42.395Z",
+      "summary": "runFull muestra la ejecución enseguida y la corre con oneAtATime tras las anteriores del servidor (inTurn); el aviso de espera va a su salida y el comando se lanza en spawned dentro del turno",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "f29843b32613930223d062d886087897dbb86c76",
+      "attempts": 1,
+      "startedAt": "2026-11-04T08:54:42.901Z",
+      "doneAt": "2026-11-04T08:55:00.675Z",
+      "summary": "ARCHITECTURE: la verificación completa de la UI también toma el turno y el servidor encola las suyas",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-04T09:09:48.124Z",
+  "lockedTests": {
+    "packages/cli/test/server/runs-turn.test.ts": "sha256:39c0de6e6948c8e282c83c958455526299eebfcad76667e67ea00b732b556b0b"
+  }
+}
