@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-cada-subagente-de-cursor-trabaja-en-la-carpeta",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-cada-subagente-de-cursor-trabaja-en-la-carpeta",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 1,
@@ -47,6 +47,7 @@
     "T": 2,
     "R": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T12:38:20.436Z"
+  "lockedTests": {
+    "packages/core/test/capabilities.test.ts": "sha256:f54a28afa178cd86345063604a24b1f3c79f1d44fb39cf6bdf4bc252641af24a"
+  }
 }
