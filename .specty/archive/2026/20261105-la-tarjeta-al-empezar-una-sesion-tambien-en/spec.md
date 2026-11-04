@@ -70,3 +70,24 @@ La tarjeta de Specty al empezar una sesión (la de `specty next`, con la memoria
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La tarjeta de Specty al empezar una sesión ya llega también en Codex y en Devin. Codex escucha `SessionStart` con el matcher `^(startup|resume|clear|compact)$` y el guard responde con lo que imprimiría `specty next` a esos cuatro orígenes (un `fork` sigue sin tarjeta); `doctor` avisa `codex-startup`, con el comando que lo arregla, cuando el `SessionStart` del guard es de antes y no admite `startup`. Devin escucha `SessionStart` sin matcher y recibe la tarjeta como `hookSpecificOutput.additionalContext`. La prueba E2E de Codex comprueba que la tarjeta llega al modelo simulado al empezar.
+
+### Desviaciones
+
+- La prueba E2E con Codex (AC4) no se ejecutó aquí: Codex no está instalado y el clasificador del modo automático no dejó instalarlo. Se salta sin `SPECTY_E2E_CODEX`; queda para ejecutarla con Codex.
+- Tres tests que ya existían fijaban lo de antes y cambiaron a propósito, como decía la spec: el matcher de Codex (`codex.test.ts`), su `kind` al empezar (`agents.test.ts`) y que sus otros inicios no añadían nada, que ahora solo vale para `fork` (`session-start.test.ts`).
+- Las tareas se separaron en Codex y Devin antes de aprobar, porque una sola tocaba demasiados archivos.
+
+### Decisiones
+
+- Codex usa `runsAtSessionStart` de `claude-code.ts` para el aviso de doctor, en vez de moverla, para no tocar más tests.
+- Los datos de Codex y Devin salen de su documentación de hooks (`source` y `additionalContext` de `SessionStart`), no de una prueba con la herramienta real.
+
+### Pendientes
+
+- Ejecutar la prueba E2E de Codex (`SPECTY_E2E_CODEX=<codex> pnpm --filter @baquia-dev/specty exec vitest run test/codex-e2e.test.ts`) para confirmar que la tarjeta llega al modelo al empezar una sesión, y comprobar con Devin de verdad que su `SessionStart` la añade al contexto.

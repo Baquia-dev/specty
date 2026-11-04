@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-la-tarjeta-al-empezar-una-sesion-tambien-en",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-la-tarjeta-al-empezar-una-sesion-tambien-en",
   "baseCommit": "a0110db82c25c3db2cb9b037f2db2fc48f5dac72",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:81a2cc875a083cba3ae6e00b8f5d38e83d6353c18099dd7431176d196ff8dcd3",
@@ -67,12 +67,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cb7d550e9e39744fc4f2d0987a7cf59e95945de8",
+      "attempts": 1,
       "startedAt": "2026-11-04T17:37:25.034Z",
       "doneAt": "2026-11-04T17:37:41.901Z",
-      "summary": "ARCHITECTURE: la tarjeta al empezar en Codex (startup, resume, clear y compact; fork no) y en Devin, y el aviso codex-startup"
+      "summary": "ARCHITECTURE: la tarjeta al empezar en Codex (startup, resume, clear y compact; fork no) y en Devin, y el aviso codex-startup",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -84,6 +84,7 @@
     "AC": 4,
     "T": 4
   },
+  "closingSubmittedAt": "2026-11-04T17:46:19.670Z",
   "lockedTests": {
     "packages/cli/test/agents.test.ts": "sha256:74d5303191e63a9a096bfa05c2b53386e495fe24320f117397cc406039fc8499",
     "packages/cli/test/codex-e2e.test.ts": "sha256:14359f1f837f1463d658fc211a9a035e49e99b430537092c05d649397a78753d",
