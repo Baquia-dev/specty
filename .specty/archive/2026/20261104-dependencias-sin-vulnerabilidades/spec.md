@@ -24,3 +24,9 @@ Resuelve P63. La verificación `vulnerabilities` de `specty check --all` encuent
   - files: pnpm-workspace.yaml, pnpm-lock.yaml
   - verify: pnpm install --frozen-lockfile --offline && pnpm --filter specty-vscode package && pnpm --filter @baquia-dev/specty-ui test
   - type: build
+
+## Cierre
+
+### Resumen
+
+Angular build y CLI 22.2.5 traen vite 8.3.5 (dedupe quita la 8.3.0); @azure/identity 4.14.1 trae msal-node 7.1.2; un override de pnpm-workspace.yaml sube el minimatch de vsce a 11.0.4.

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-dependencias-sin-vulnerabilidades",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-dependencias-sin-vulnerabilidades",
   "baseCommit": "c5e6b9058c3198ae970fb5670e26ff9cbfc4e296",
   "revision": 1,
@@ -25,14 +25,14 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/package.json"
-      ],
-      "attempts": 2,
       "baseCommit": "d243247c46fe45d9a2786c680b10c4f307840f61",
+      "attempts": 2,
       "startedAt": "2026-11-04T08:57:47.663Z",
       "doneAt": "2026-11-04T09:04:32.472Z",
-      "summary": "Angular build y CLI 22.2.5 traen vite 8.3.5 (dedupe quita la 8.3.0); @azure/identity 4.14.1 trae msal-node 7.1.2; un override de pnpm-workspace.yaml sube el minimatch de vsce a 11.0.4."
+      "summary": "Angular build y CLI 22.2.5 traen vite 8.3.5 (dedupe quita la 8.3.0); @azure/identity 4.14.1 trae msal-node 7.1.2; un override de pnpm-workspace.yaml sube el minimatch de vsce a 11.0.4.",
+      "scopeExtra": [
+        "packages/ui/package.json"
+      ]
     }
   },
   "pending": {
