@@ -27,7 +27,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8777acff10a5ce21702366166c97c96d175b3c0c",
+      "startedAt": "2026-11-04T17:49:00.781Z",
+      "doneAt": "2026-11-04T17:49:54.317Z",
+      "summary": "agentSession lee CODEX_THREAD_ID cuando el agente es Codex, como CLAUDE_CODE_SESSION_ID en Claude Code"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
