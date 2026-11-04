@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-ui-retomar-cambios",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-ui-retomar-cambios",
   "baseCommit": "2bd6cf73dc77785caeb5ec988958323a0e167772",
   "revision": 1,
@@ -51,6 +51,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T10:51:45.225Z"
+  "lockedTests": {
+    "packages/cli/test/server-holds.test.ts": "sha256:75e559e38036ad8110c0438bdd11d591529395b51fe893c288d67fee17bae609",
+    "packages/ui/src/change/resume-hints.test.ts": "sha256:7369f98b73d6a2d51d62ad14e68d7769da949c2effe46004964489513dc7ec84"
+  }
 }
