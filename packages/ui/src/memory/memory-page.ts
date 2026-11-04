@@ -287,8 +287,20 @@ export class MemoryPage {
       ...(entry.origin.change === undefined ? [] : [entry.origin.change]),
       by,
       entry.created.slice(0, 10),
-      ...(entry.paths === undefined ? [] : [`${t("en", "in")} ${entry.paths.join(", ")}`]),
+      ...this.waitsFor(entry),
     ].join(" · ");
+  }
+
+  /** What an entry waits or waited for: a reminder's day or change, and the paths it is about. */
+  private waitsFor(entry: MemoryEntry): string[] {
+    const t = this.t();
+    return [
+      ...(entry.due === undefined ? [] : [t(`desde ${entry.due}`, `from ${entry.due}`)]),
+      ...(entry.onClose === undefined
+        ? []
+        : [t(`al cerrar ${entry.onClose}`, `when ${entry.onClose} closes`)]),
+      ...(entry.paths === undefined ? [] : [`${t("en", "in")} ${entry.paths.join(", ")}`]),
+    ];
   }
 
   /** Under a change: its id and kind, who it waits for, and who holds it or that it is orphaned. */
