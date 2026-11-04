@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "20261104-init-commit-fallido",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-init-commit-fallido",
+  "baseCommit": "bc548eea883cab9fedd57b3796805b49c4cfd8bc",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cfe39acd1a80f7d828193c6f0a9dd699abd66ee007746c2a9ea73f9177f41e32",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:8696ef674ce850e4a6333cad47f67b5e762a54b7ebe116c5bb55c3c7b2b5c9f5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:fa2fe05c7e9d505e9df250320a093be47fbc7049ceef753fbc8d37a8129c7aca",
+    "at": "2026-11-04T05:54:57.551Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
