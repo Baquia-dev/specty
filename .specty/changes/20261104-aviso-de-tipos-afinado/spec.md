@@ -16,7 +16,7 @@ Resuelve P69, P70 y P71, lo que dejó el cambio `20261104-fallo-de-tipos-con-con
 
 ## Tareas
 
-- [ ] T1: El aviso ignora los comandos vacíos y la última tarea de código ya hecha
+- [x] T1: El aviso ignora los comandos vacíos y la última tarea de código ya hecha
   - files: packages/core/src/validate/quality.ts, packages/core/test/validate/quality.test.ts, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/quality.test.ts && pnpm typecheck && pnpm lint
   - type: fix

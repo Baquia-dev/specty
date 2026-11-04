@@ -158,15 +158,17 @@ function needsTests(task: Pick<Task, "type">, policy: TestsPolicy): boolean {
  * Under `contract`, the last code task checks the project's types: `task done` does not run the
  * project's commands for a task with its own verification, so a type error would only show up
  * at acceptance. Earlier tasks need not, as every test is written before them. Its verification
- * counts as `task done` runs it, `verify.quick` first; running `verify.full` counts too.
+ * counts as `task done` runs it, `verify.quick` first; running `verify.full` counts too. A done
+ * task is left alone: an adjustment without new code tasks adds no code to check.
  */
 export const checkTypecheck: Rule = (spec, ctx, lang) => {
-  const { typecheck } = ctx;
-  if (typecheck === undefined || !typesApply(spec, ctx)) return [];
+  const typecheck = ctx.typecheck?.trim();
+  if (typecheck === undefined || typecheck === "" || !typesApply(spec, ctx)) return [];
   const last = (spec.sections.tasks?.items ?? [])
     .filter((task) => CODE_TYPES.has(task.type ?? "feat"))
     .at(-1);
-  if (last === undefined || checksTypes(last, ctx.config, typecheck)) return [];
+  if (last === undefined || ctx.doneTasks?.has(last.id) === true) return [];
+  if (checksTypes(last, ctx.config, typecheck)) return [];
   return [
     report(lang, {
       code: "task-no-typecheck",
@@ -187,7 +189,10 @@ function typesApply(spec: Spec, ctx: ValidationContext): boolean {
   );
 }
 
-/** Whether `task`'s verification, as `task done` runs it, runs `typecheck` or `verify.full`. */
+/**
+ * Whether `task`'s verification, as `task done` runs it, runs `typecheck` or `verify.full`; an
+ * empty command runs nothing, though every text contains it.
+ */
 function checksTypes(
   task: Pick<Task, "verify">,
   config: ValidationContext["config"],
@@ -197,7 +202,9 @@ function checksTypes(
   const runs = [quick, task.verify ?? config.verify.default]
     .filter((part) => part !== undefined)
     .join(" && ");
-  return [typecheck, full].some((command) => command !== undefined && runs.includes(command));
+  return [typecheck, full?.trim()].some(
+    (command) => command !== undefined && command !== "" && runs.includes(command),
+  );
 }
 
 /** Every file says why it changes; retros are written from the diff, so they are exempt. */

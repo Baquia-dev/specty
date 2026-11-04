@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-aviso-de-tipos-afinado",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-aviso-de-tipos-afinado",
   "baseCommit": "6b1d2d1c5157371c66b4e459152d6a1adde1da4a",
   "revision": 1,
@@ -22,7 +22,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3ec76b8b3b050da334d6e9089216256110340906",
+      "startedAt": "2026-11-04T07:57:01.104Z",
+      "doneAt": "2026-11-04T07:57:42.465Z",
+      "summary": "checkTypecheck ignora un typecheck o verify.full vacíos y no avisa si la última tarea de código ya está hecha; tests de quick y de closing; formats.md §2 lo cuenta."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
