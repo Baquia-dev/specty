@@ -456,9 +456,12 @@ ui:
 memory:                           # la memoria de Specty (ADR 0016)
   orphanAfterMin: 60              # minutos sin pasos ni cambios de estado tras los que un cambio que espera al agente es huérfano
   branch: specty-memory           # la rama de las entradas (§1): un nombre de rama válido fuera de `specty/`, donde van las de los cambios
+subagents: true                   # false: una épica no reparte sus cortes entre subagentes, aunque su herramienta pueda
 ```
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
+
+`subagents` (por defecto `true`) deja que la tarjeta de una épica aprobada reparta sus cortes listos, y los huérfanos, entre subagentes, con un encargo por corte, cuando la herramienta detectada puede (columna «Cortes en subagentes» de [ARCHITECTURE §10](ARCHITECTURE.md#10-cumplimiento-por-capas); el encargo, en [§7](ARCHITECTURE.md#7-contexto-para-el-agente)). Con `false`, la tarjeta propone los cortes de uno en uno, como con una herramienta sin subagentes. Una feature suelta, o el corte de una épica, nunca pide subagentes.
 
 `review` activa la revisión independiente (ADR 0011), que solo configura la persona:
 

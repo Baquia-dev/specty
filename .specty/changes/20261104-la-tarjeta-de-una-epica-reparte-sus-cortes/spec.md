@@ -72,7 +72,7 @@ Hoy la tarjeta de una épica aprobada propone empezar un corte cada vez, en la m
   - files: packages/core/src/cards/epic.ts, packages/core/src/cards/view.ts, packages/core/test/cards/epic.test.ts, packages/core/test/cards/budget.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts test/cards/budget.test.ts && pnpm typecheck
-- [ ] T2: La clave `subagents` de config.yaml apaga el reparto
+- [x] T2: La clave `subagents` de config.yaml apaga el reparto
   - files: packages/core/src/schema/config.ts, packages/cli/src/session.ts, packages/core/test/schema/schema.test.ts
   - ac: AC3, AC9
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts && pnpm typecheck
