@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-un-comando-tras-incorporar-cada-cambio",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-un-comando-tras-incorporar-cada-cambio",
   "baseCommit": "4823e350e06ae881d51dadddc5e9b1e0edf03b42",
   "revision": 1,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d20253a6415e9a8e4d5750687755e0d07a61393d",
+      "attempts": 1,
       "startedAt": "2026-11-04T18:54:39.730Z",
       "doneAt": "2026-11-04T19:03:23.308Z",
-      "summary": "flow/land.ts: tras integrar, afterLanding ejecuta git.afterLanding en la carpeta que tiene la rama destino (en la principal, tras volver a ella: landedInMain) y añade su línea; si falla, el cambio sigue integrado"
+      "summary": "flow/land.ts: tras integrar, afterLanding ejecuta git.afterLanding en la carpeta que tiene la rama destino (en la principal, tras volver a ella: landedInMain) y añade su línea; si falla, el cambio sigue integrado",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2fc6885725d57eeafa7b3dbfd73594c82f31ae87",
+      "startedAt": "2026-11-04T19:03:24.700Z",
+      "doneAt": "2026-11-04T19:04:32.998Z",
+      "summary": "formats: git.afterLanding en el ejemplo de config.yaml; ARCHITECTURE: el comando tras incorporar"
     }
   },
   "pending": {

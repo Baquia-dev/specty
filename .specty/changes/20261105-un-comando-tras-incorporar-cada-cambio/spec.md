@@ -55,7 +55,7 @@ Cuando un cambio entra en la rama principal, la carpeta que la tiene queda con e
   - files: packages/cli/src/flow/land.ts, packages/cli/test/after-landing.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/after-landing.test.ts test/integrate.test.ts test/close-turn.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: La documentación
+- [x] T3: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
