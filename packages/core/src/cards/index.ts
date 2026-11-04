@@ -183,6 +183,7 @@ export {
   gitHooksLine,
   gitHooksManualWarning,
   guardLine,
+  installCommitFailedWarning,
   installCommitLine,
   installCommitSubject,
   noHooksWarning,

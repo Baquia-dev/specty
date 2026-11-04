@@ -188,6 +188,7 @@ async function committed(
     ...(product === undefined ? {} : { product }),
     ...(installed.chooseFlow ? { chooseFlow: true } : {}),
     exclusions: await missingExclusions(setup),
+    ...(result.failed === true ? { failed: true } : {}),
   };
   return initCard(view, cards);
 }
