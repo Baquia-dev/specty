@@ -80,3 +80,23 @@ Con esta épica, la sesión recuerda su cambio y Specty le dice cómo volver. Un
 - R2: Dos sesiones recuperan la misma carpeta a la vez. Mitigación: la recuperación toma el bloqueo del cambio (A6).
 - R3: El aviso de `doctor` por el `resume` que falta salta en todas las instalaciones anteriores. Mitigación: el aviso dice que basta repetir `specty init`, como los avisos de eventos anteriores.
 - R4: Una conversación que salió de su carpeta a propósito recibe la indicación de volver. Mitigación: es la regla de un cambio por sesión que el guard ya aplica; la salida dice también cómo abrir otra sesión para otra cosa.
+
+## Cierre
+
+### Resumen
+
+Una sesión de agente ya no pierde la carpeta de su cambio sin salida. La conversación que vuelve a la carpeta principal (al reanudarla, tras compactar o tras un `cd`) oye en `next` y en su `SessionStart` qué cambio lleva y cómo volver. `specty new` la enlaza a la carpeta nueva. Claude Code da la tarjeta también al reanudar, y `doctor` avisa a las instalaciones sin `resume`. `status` marca el cambio cuya conversación salió de su carpeta. Una carpeta borrada o podada se ve en `status`, en `next` y en la UI, y se recupera desde su rama con `specty restore <id>` o con «Recuperar carpeta». `EnterWorktree` y `specty enter` ya no crean otra worktree ni enlazan a una carpeta que no existe. La UI marca además los cambios que nadie lleva y dice cómo retomarlos con cada agente.
+
+### Desviaciones
+
+- Los tres cortes salían grandes y cada uno se repartió en dos cambios. C1: `20261104-conversacion-vuelve-a-su-carpeta`, más `20261104-reanudar-con-tarjeta` (AC3) y `20261104-status-fuera-de-su-carpeta` (AC5). C2: `20261104-carpeta-perdida-se-recupera`, más `20261104-carpeta-perdida-en-next-y-enter` (AC6 en `next`, AC9 y AC10). C3: `20261104-ui-carpeta-perdida`, más `20261104-ui-retomar-cambios` (AC13).
+- El `.claude/settings.json` de este repositorio sigue sin `resume`, porque el guard no deja editarlo a mano (P72).
+
+### Decisiones
+
+- Un cambio sin carpeta es cualquier cambio abierto cuya rama marcada no tiene una carpeta existente; en el modo sin worktrees eso incluye una rama sin sacar (P77).
+- `restore` no decide nada sobre permisos: lo ejecutan el agente o la persona, y la UI lo ofrece como acción del servidor.
+
+### Pendientes
+
+- Ninguno

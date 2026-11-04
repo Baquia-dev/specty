@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261104-sesiones-con-su-carpeta",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261104-sesiones-con-su-carpeta",
   "baseCommit": "76e0eca1da6b2bc6fa42d0e1a0b555f88690dc3d",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5e0ecc13a3f5fbb447bb60ae0a0da9839e1afa7686074b32fb0b5a56390a046c",
+    "at": "2026-11-04T06:03:51.894Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -67,11 +74,5 @@
     "C": 3,
     "R": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5e0ecc13a3f5fbb447bb60ae0a0da9839e1afa7686074b32fb0b5a56390a046c",
-    "at": "2026-11-04T06:03:51.894Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-04T11:49:08.586Z"
 }
