@@ -6,6 +6,13 @@
   "branch": "specty/20261104-init-commit-fallido",
   "baseCommit": "bc548eea883cab9fedd57b3796805b49c4cfd8bc",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:fa2fe05c7e9d505e9df250320a093be47fbc7049ceef753fbc8d37a8129c7aca",
+    "at": "2026-11-04T05:54:57.551Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -36,12 +43,6 @@
     "T": 3,
     "R": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:fa2fe05c7e9d505e9df250320a093be47fbc7049ceef753fbc8d37a8129c7aca",
-    "at": "2026-11-04T05:54:57.551Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T05:57:39.905Z"
 }

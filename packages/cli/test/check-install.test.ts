@@ -82,6 +82,23 @@ describe("specty check --install", () => {
     expect(again.out).toContain("dependency-cruiser@18.7.0");
   });
 
+  it("AC3: when its commit fails, says why, undoes what it applied and ends with 1", async () => {
+    const root = await typescript();
+    const config = await read(root, ".specty/config.yaml");
+    // Signing with a program that fails makes `git commit` fail without touching the index.
+    git(root, "config", "commit.gpgsign", "true");
+    git(root, "config", "gpg.program", "false");
+    const terminal = person({ confirm: [true, true, false] });
+    const run = await cli(root, ["check", "--install"], { terminal });
+    expect(run.code).toBe(1);
+    expect(run.out).toContain(
+      "No se pudo hacer el commit de lo instalado (git commit: error: gpg failed to sign",
+    );
+    expect(run.out).toContain(`; se deshizo lo escrito en ${WORKFLOW}, .specty/config.yaml.`);
+    expect(await read(root, ".specty/config.yaml")).toBe(config);
+    expect(git(root, "status", "--porcelain")).toBe("");
+  });
+
   it("never overwrites what the person decided: it reports the conflict", async () => {
     const root = await typescript("checks:\n  levels: { secrets: off }\n  preCommit: false\n");
     await writeFiles(root, { [WORKFLOW]: "name: mine\n" });
