@@ -2,25 +2,25 @@
   "schema": 1,
   "id": "20261104-los-mensajes-que-esperan-a-la-vista",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261104-los-mensajes-que-esperan-a-la-vista",
   "baseCommit": "43c34fda8080cee816e6230d6d68fbf9aa12f3ba",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:dbd88c543addf0661d3f0ee192e1f9ddda217f201d447afdceaa1d980375a4ca",
-    "at": "2026-11-04T07:59:36.453Z",
+    "revision": 2,
+    "hash": "sha256:78951042904d3803cf979901843267f50fd9e85219cc5bd5c93127a2ee92b673",
+    "at": "2026-11-04T08:26:25.859Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "L",
-    "score": 14,
+    "score": 16,
     "adjust": 0,
     "reasons": [
-      "9 archivos",
+      "10 archivos",
       "3 módulos",
-      "4 tareas"
+      "5 tareas"
     ]
   },
   "items": {
@@ -63,12 +63,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0d30e87747e395ef92e689648d3edea1f3dc442c",
+      "attempts": 1,
       "startedAt": "2026-11-04T08:04:31.655Z",
       "doneAt": "2026-11-04T08:05:08.391Z",
-      "summary": "ARCHITECTURE: lo que dicen message y status de los mensajes, y messages en status --json; formats: status cuenta los mensajes que quedan"
+      "summary": "ARCHITECTURE: lo que dicen message y status de los mensajes, y messages en status --json; formats: status cuenta los mensajes que quedan",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,7 +78,7 @@
   "maxIds": {
     "A": 2,
     "AC": 4,
-    "T": 4,
+    "T": 5,
     "R": 1
   },
   "lockedTests": {

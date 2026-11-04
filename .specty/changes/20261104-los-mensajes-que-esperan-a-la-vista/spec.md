@@ -52,6 +52,7 @@ kind: standard
 - crear packages/ui/src/memory/memory-messages.test.ts — la línea del cambio con mensajes
 - modificar docs/ARCHITECTURE.md — lo que dicen `message` y `status` de los mensajes
 - modificar docs/formats.md — `messages` en `status --json`
+- modificar packages/ui/src/inbox/inbox-row.ts — el import de tipos que pide el lint, llegado con main
 
 ## Tareas
 
@@ -72,6 +73,11 @@ kind: standard
   - ac: —
   - verify: pnpm lint
   - type: docs
+- [ ] T5: El lint de la bandeja, que llegó con main
+  - files: packages/ui/src/inbox/inbox-row.ts
+  - ac: —
+  - verify: pnpm lint
+  - type: refactor
 
 ## Riesgos
 
