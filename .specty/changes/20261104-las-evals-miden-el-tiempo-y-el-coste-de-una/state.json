@@ -6,6 +6,13 @@
   "branch": "specty/20261104-las-evals-miden-el-tiempo-y-el-coste-de-una",
   "baseCommit": "b7f1b8f4d4b10f3978cd306250b73338b1c0687f",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:9c43f58db1a7e224c1d1d747f17830e103dc0216baf20c8b990c50847222b2d7",
+    "at": "2026-11-04T13:34:14.599Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -47,12 +54,6 @@
     "T": 3,
     "R": 4
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:9c43f58db1a7e224c1d1d747f17830e103dc0216baf20c8b990c50847222b2d7",
-    "at": "2026-11-04T13:34:14.599Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T13:39:15.212Z"
 }
