@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-subagentes-claude-code-en-su-carpeta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-subagentes-claude-code-en-su-carpeta",
   "baseCommit": "cb6838409f3dba5834c2ee9722cae08987438784",
   "revision": 3,
@@ -72,6 +72,17 @@
       "doneAt": "2026-11-04T10:24:09.652Z",
       "summary": "La tabla de capacidades gana la columna Cortes en subagentes: Claude Code en sí; Gemini CLI, Antigravity y Devin en no posible con su motivo; Codex, OpenCode y Cursor sin ella hasta su corte. ARCHITECTURE explica cómo el guard trata a los subagentes.",
       "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/fake-model.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "f041372567993ac40bffc2e17720ec71d5b88e4a",
+      "startedAt": "2026-11-04T10:29:47.866Z",
+      "doneAt": "2026-11-04T10:41:01.068Z",
+      "summary": "fakeModel deja de exportarse: desde T1 solo la usa claudeWith, en su mismo archivo, y knip fallaba en pnpm check."
     }
   },
   "pending": {
@@ -82,10 +93,11 @@
     "A": 4,
     "AC": 7,
     "T": 4,
-    "R": 4
+    "R": 4,
+    "S": 1
   },
   "lockedTests": {
-    "packages/cli/test/fake-model.ts": "sha256:a40c78cd96998f7515cb39ad3380ff75cd20bfeb68e3762c565a0edd1b5e659d",
+    "packages/cli/test/fake-model.ts": "sha256:b04464b421feb1f95b583e3792e684d3b718aff6e557a79f6d7be4f494c380e2",
     "packages/core/test/capabilities.test.ts": "sha256:f12d2f2ce39299c69b512274e2b23db31b768f41dfb3b0f656e4ef08974830bb",
     "packages/cli/test/subagents.test.ts": "sha256:c8f186bec2a48c7a3e1dd7287946271633dc22436cbf269f7c035ce1042de89f"
   }

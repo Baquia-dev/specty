@@ -46,7 +46,7 @@ type Body = Readonly<Record<string, unknown>>;
  * Plays `script` to the main conversation and, to a subagent whose task (its first message)
  * carries one of the marks of `subagents`, that mark's script, each conversation on its own.
  */
-export async function fakeModel(
+async function fakeModel(
   script: readonly ToolUse[],
   subagents: Readonly<Record<string, readonly ToolUse[]>> = {},
 ): Promise<FakeModel> {
