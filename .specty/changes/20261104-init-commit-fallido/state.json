@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-init-commit-fallido",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-init-commit-fallido",
   "baseCommit": "bc548eea883cab9fedd57b3796805b49c4cfd8bc",
   "revision": 2,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "737ae319ab5489c28ed3efc0885c1a6e4eb2e956",
+      "attempts": 1,
       "startedAt": "2026-11-04T05:58:29.000Z",
       "doneAt": "2026-11-04T06:01:09.119Z",
-      "summary": "commitInstall captura el GitError de su commit, deshace lo escrito (checkout de HEAD para lo seguido, rm --cached y borrado para lo creado), avisa con el subcomando de git y su error sin hints y marca failed; init pasa failed a su tarjeta. GitError exportado"
+      "summary": "commitInstall captura el GitError de su commit, deshace lo escrito (checkout de HEAD para lo seguido, rm --cached y borrado para lo creado), avisa con el subcomando de git y su error sin hints y marca failed; init pasa failed a su tarjeta. GitError exportado",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7d5f75d42bd0ecc0c66d7d57d2d3585d5548c0b8",
+      "startedAt": "2026-11-04T06:01:09.501Z",
+      "doneAt": "2026-11-04T06:01:43.466Z",
+      "summary": "check --install sale con código 1 si su commit falla (commit.failed); ARCHITECTURE.md explica qué hace init cuando su commit falla"
     }
   },
   "pending": {

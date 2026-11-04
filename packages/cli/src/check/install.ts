@@ -144,7 +144,7 @@ async function installed(
     ...commit.warnings,
   ].join("\n");
   const json = { applied, declined, failed, conflicts: plan.conflicts, hints: plan.hints };
-  return { report, json, code: failed.length > 0 ? 1 : 0 };
+  return { report, json, code: failed.length > 0 || commit.failed === true ? 1 : 0 };
 }
 
 /** The plan as text: each edit with its diff, each command, the conflicts and what is left. */

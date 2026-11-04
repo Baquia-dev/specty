@@ -62,7 +62,7 @@ Cuando falla el commit de lo que instala `specty init` (o `specty check --instal
   - files: packages/cli/src/io/git.ts, packages/cli/src/install/commit.ts, packages/cli/src/commands/init.ts, packages/cli/test/init-commit.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-commit.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: `check --install` termina con código 1 si su commit falla, y la documentación
+- [x] T3: `check --install` termina con código 1 si su commit falla, y la documentación
   - files: packages/cli/src/check/install.ts, packages/cli/test/check-install.test.ts, docs/ARCHITECTURE.md
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-install.test.ts && pnpm lint
