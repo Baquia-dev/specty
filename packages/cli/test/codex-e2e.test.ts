@@ -228,6 +228,16 @@ describe.skipIf(CODEX === undefined)(
       expect(responses.requests()).toHaveLength(2);
     });
 
+    it("AC3: gives Specty's commands the thread its hooks send as session_id", LONG, async () => {
+      const root = await implementing();
+      const responses = await codexRun(root, [shell('echo "thread=$CODEX_THREAD_ID"')]);
+      const thread = /thread=([\w-]+)/.exec(responses.results()[0] ?? "")?.[1];
+      expect(thread).toBeDefined();
+      // The guard notes each step under the conversation its hook's event names.
+      const noted = join(root, ".git/common/specty/activity", `codex-${thread}.json`);
+      expect(existsSync(noted)).toBe(true);
+    });
+
     it("AC4: brings Specty's card to the model as the session starts", LONG, async () => {
       const root = await implementing();
       const responses = await codexRun(root, []);

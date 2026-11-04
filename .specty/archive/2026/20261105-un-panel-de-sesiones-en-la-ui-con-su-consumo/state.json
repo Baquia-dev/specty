@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "id": "20261105-un-panel-de-sesiones-en-la-ui-con-su-consumo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-un-panel-de-sesiones-en-la-ui-con-su-consumo",
+  "baseCommit": "88e445fd33157702c2f2e6db0e9d78d0f198744d",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cce98246adf134916af3ca226c53c14246e1db2786aa961b0a8fac25c5823172",
+    "at": "2026-11-04T18:11:05.782Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:25aeb0589adcb06ae9a3b90992ef45b937c733080617bbcdd6ecc104e18893e0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:aa73ee7f46075e93c68802ce66a6c3301b4cf188226d51cb2735f9a87d7dee4e",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "9e6a9cfb06bbf72eab9af1efe27369bc282e6097",
+      "attempts": 1,
+      "startedAt": "2026-11-04T18:12:22.378Z",
+      "doneAt": "2026-11-04T18:13:01.419Z",
+      "summary": "core: SessionView en memory/sessions.ts, exportada como tipo en index.ts y light.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "3eea549eef19b713597eddbd03cd83b1760be64c",
+      "attempts": 1,
+      "startedAt": "2026-11-04T18:13:01.883Z",
+      "doneAt": "2026-11-04T18:17:01.917Z",
+      "summary": "GET /api/sessions (server/sessions.ts): cada conversación de activity/ con su carpeta relativa, el cambio abierto de esa carpeta, sus pasos y si sigue viva, de la más reciente a la más antigua; sessionTotals (flow/usage.ts) suma tokens y coste de cada sesión de Claude Code con un informe de ccusage",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "89eba1ffdac95683628e5d04af3f5e03b38ec872",
+      "attempts": 1,
+      "startedAt": "2026-11-04T18:17:03.256Z",
+      "doneAt": "2026-11-04T18:17:44.483Z",
+      "summary": "ARCHITECTURE: GET /api/sessions, qué da y de dónde sale el consumo",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-11-04T18:25:57.581Z",
+  "lockedTests": {
+    "packages/cli/test/server/sessions.test.ts": "sha256:c44c1de5ee9f648f5c53d1cb58075bb07918af05dab84cd54a9b0a10e88d46c8"
+  }
+}
