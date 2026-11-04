@@ -50,7 +50,7 @@ Resuelve P60 y la deuda de `complexity` que queda (P109, que `specty check --all
   - ac: AC1, AC2
   - verify: pnpm --filter specty-vscode exec vitest run test/view.test.ts && pnpm --filter specty-vscode typecheck && pnpm lint
   - type: refactor
-- [ ] T3: La función larga de la UI, dividida
+- [x] T3: La función larga de la UI, dividida
   - files: packages/ui/src/data/sample-acceptance.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/acceptance.test.ts --include src/acceptance/criterion-row.test.ts --include src/acceptance/changes-view.test.ts --include src/data/fixtures.test.ts && pnpm typecheck && pnpm lint

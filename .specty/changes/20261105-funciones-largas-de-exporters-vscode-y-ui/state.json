@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-funciones-largas-de-exporters-vscode-y-ui",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-funciones-largas-de-exporters-vscode-y-ui",
   "baseCommit": "f1a96491b477e2d9f99fc7569fea2cc621416f7e",
   "revision": 2,
@@ -40,12 +40,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3b41ed64eae9ed70474bc4e38536e5023c98f399",
+      "attempts": 1,
       "startedAt": "2026-11-04T18:25:14.553Z",
       "doneAt": "2026-11-04T18:25:36.978Z",
-      "summary": "changesView saca hereText (fase del cambio de la carpeta y si te espera) y countsOf (cambios abiertos y los que te esperan)."
+      "summary": "changesView saca hereText (fase del cambio de la carpeta y si te espera) y countsOf (cambios abiertos y los que te esperan).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "17627467ecf9513f6fbce0711e373e0538242987",
+      "startedAt": "2026-11-04T18:25:37.332Z",
+      "doneAt": "2026-11-04T18:26:22.614Z",
+      "summary": "asistenciaSample saca la auditoría de sus dos tareas a asistenciaAudit(at), como boletinesAudit en sample-progress.ts."
     }
   },
   "pending": {

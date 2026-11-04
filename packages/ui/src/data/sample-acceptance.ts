@@ -44,7 +44,6 @@ const CRITERIA_TESTS: readonly CriterionTests[] = [
 /** Both tasks done and verified; the panel passed at its second try. */
 export function asistenciaSample(record: ChangeRecord, now: number): ChangeRecord {
   const at = (minutes: number) => new Date(now - minutes * MINUTE).toISOString();
-  const cmd = "flutter test test/attendance";
   return withProgress(
     { ...record, criteriaTests: CRITERIA_TESTS },
     {
@@ -71,44 +70,50 @@ export function asistenciaSample(record: ChangeRecord, now: number): ChangeRecor
         },
       },
       pending: { scopeRequests: [], adjustment: null },
-      audit: [
-        event(at(150), "agent", "task.started", { task: "T1", baseCommit: "5d2a7b0" }),
-        event(at(133), "specty", "task.verified", { task: "T1", cmd, exit: 0, ms: 12_000 }),
-        event(at(132), "agent", "task.completed", {
-          task: "T1",
-          commit: "3c9d1e2",
-          risks: [
-            {
-              path: "lib/attendance/attendance_repository.dart",
-              rule: "secret",
-              cwe: "CWE-798",
-              line: 12,
-            },
-          ],
-        }),
-        event(at(131), "agent", "task.started", { task: "T2", baseCommit: "3c9d1e2" }),
-        event(at(112), "specty", "task.verified", {
-          task: "T2",
-          cmd,
-          exit: 1,
-          ms: 19_000,
-          outputTail: [
-            "00:19 +8 -1: highlights students over three absences [E]",
-            "  Expected: <true>",
-            "    Actual: <false>",
-            "  test/attendance/course_panel_test.dart:41:5",
-            "00:19 +8 -1: Some tests failed.",
-          ],
-        }),
-        event(at(97), "specty", "task.verified", { task: "T2", cmd, exit: 0, ms: 21_000 }),
-        event(at(96), "agent", "task.completed", {
-          task: "T2",
-          commit: "8b0a4f6",
-          removedAssertions: [{ path: "test/attendance/course_panel_test.dart", removed: 1 }],
-        }),
-      ],
+      audit: asistenciaAudit(at),
     },
   );
+}
+
+/** What the agent and Specty logged for both tasks: T2's first verification failed. */
+function asistenciaAudit(at: (minutes: number) => string): readonly AuditRecord[] {
+  const cmd = "flutter test test/attendance";
+  return [
+    event(at(150), "agent", "task.started", { task: "T1", baseCommit: "5d2a7b0" }),
+    event(at(133), "specty", "task.verified", { task: "T1", cmd, exit: 0, ms: 12_000 }),
+    event(at(132), "agent", "task.completed", {
+      task: "T1",
+      commit: "3c9d1e2",
+      risks: [
+        {
+          path: "lib/attendance/attendance_repository.dart",
+          rule: "secret",
+          cwe: "CWE-798",
+          line: 12,
+        },
+      ],
+    }),
+    event(at(131), "agent", "task.started", { task: "T2", baseCommit: "3c9d1e2" }),
+    event(at(112), "specty", "task.verified", {
+      task: "T2",
+      cmd,
+      exit: 1,
+      ms: 19_000,
+      outputTail: [
+        "00:19 +8 -1: highlights students over three absences [E]",
+        "  Expected: <true>",
+        "    Actual: <false>",
+        "  test/attendance/course_panel_test.dart:41:5",
+        "00:19 +8 -1: Some tests failed.",
+      ],
+    }),
+    event(at(97), "specty", "task.verified", { task: "T2", cmd, exit: 0, ms: 21_000 }),
+    event(at(96), "agent", "task.completed", {
+      task: "T2",
+      commit: "8b0a4f6",
+      removedAssertions: [{ path: "test/attendance/course_panel_test.dart", removed: 1 }],
+    }),
+  ];
 }
 
 /**
