@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261104-cada-subagente-de-codex-trabaja-en-la-carpeta",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-cada-subagente-de-codex-trabaja-en-la-carpeta",
+  "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c781b0cff9655eb75696b2c58d6bd712cd5dfe8531ef62fc86f2431f0ca44d5a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3cf0117ed86a0f2dfbf9984c4ff9273f0e65bcadbfcb6f9618e767d59b55b825",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:afafc2bd790accce9fa5523e97771af52f5220d19fdbb774c834cc90efb63cd6",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c5a106844519089ec83acfabc8a01a56eb96c9cc7e435c7cb382dd266e10fdab",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 2,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d9cea21aa6834d9da81476abc8ed97d7ad1022a486a93a7b25d7ce802defa5a2",
+    "at": "2026-11-04T12:39:42.488Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
