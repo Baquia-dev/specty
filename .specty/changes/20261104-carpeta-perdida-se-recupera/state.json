@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261104-carpeta-perdida-se-recupera",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-carpeta-perdida-se-recupera",
+  "baseCommit": "6b1d2d1c5157371c66b4e459152d6a1adde1da4a",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5b1df068a6b6fc57b08ffaf87c4174b1dbd0ce4490f3082f091a2cf66b05f1ad",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7505c6e9e11f3d8567ffe6db48365e508507fe7eb3fd6e2c310eda4678c0646b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:32ad6cd8633b55d96f3adcc80bdbcfa910a137fb581cc4b73b8db7e38232e5dd",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c1a58a02ca777c1dd953eafa438390f9b31a776ed473221e8b8617d949e389ad",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:1440c240cd527e29593532c8d0b4a22d184f6eac3027667347ae623ef2935582",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:f03d9206186ee639171c892d10e78101d20c335e89eb68873940a2f495a05d1f",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:0489145166b210d8c13fc6543efcb012710ee1b6ad9cd78cc3be1d9303b0d009",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 4,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:3db2d62715a2f50cdbf1f793ccc01dbfaaad44a578f6a41fc9a0cbc3f95e35c7",
+    "at": "2026-11-04T07:57:00.602Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
