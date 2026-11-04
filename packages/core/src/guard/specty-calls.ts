@@ -10,9 +10,11 @@ export interface SpectyCalls {
   readonly fronts: readonly { readonly action: "take" | "free"; readonly name: string }[];
   /** The entries of Specty's memory each `specty new --resolves <id>…` takes, in order. */
   readonly resolves: readonly string[];
+  /** Each `specty new`, in order, and whether it carries `--subagent`, which binds nobody to it. */
+  readonly news: readonly { readonly subagent: boolean }[];
 }
 
-const NONE: SpectyCalls = { specty: [], enters: [], fronts: [], resolves: [] };
+const NONE: SpectyCalls = { specty: [], enters: [], fronts: [], resolves: [], news: [] };
 
 /** What a segment that runs Specty with `args` asks of it; nothing when it does not run Specty. */
 export function spectyCalls(args: readonly string[] | undefined): SpectyCalls {
@@ -23,6 +25,7 @@ export function spectyCalls(args: readonly string[] | undefined): SpectyCalls {
     enters: entered(args),
     fronts: frontRequests(args),
     resolves: resolvedIds(args),
+    news: created(args),
   };
 }
 
@@ -36,6 +39,11 @@ function entered(args: readonly string[]): string[] {
   if (subcommand(args) !== "enter") return [];
   const id = args.slice(args.indexOf("enter") + 1).find((arg) => !arg.startsWith("-"));
   return id === undefined ? [] : [id];
+}
+
+/** The `specty new` of `args`, and whether it carries `--subagent` wherever commander reads it. */
+function created(args: readonly string[]): SpectyCalls["news"] {
+  return subcommand(args) === "new" ? [{ subagent: args.includes("--subagent") }] : [];
 }
 
 /** The front `specty front take|free <front>` names: the words after `front` that are not options. */

@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a154689711ad69f961eaff1c7a78eccdb3bbea52",
+      "startedAt": "2026-11-04T12:31:26.509Z",
+      "doneAt": "2026-11-04T12:32:08.781Z",
+      "summary": "SpectyCalls gana news: un elemento por cada specty new, en orden, con si lleva --subagent; analyzeShell los junta como enters y resolves."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

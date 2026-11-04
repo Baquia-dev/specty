@@ -54,7 +54,7 @@ Desde C1, un subagente de Claude Code entra con `specty enter` en la carpeta de 
 
 ## Tareas
 
-- [ ] T1: El análisis de un comando dice cada `specty new` y si lleva `--subagent`
+- [x] T1: El análisis de un comando dice cada `specty new` y si lleva `--subagent`
   - files: packages/core/src/guard/specty-calls.ts, packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts
