@@ -244,6 +244,8 @@ describe("a worktree inside the repository", () => {
     const root = await tempRepo(FILES);
     // Where Claude Code creates its worktrees.
     git(root, "worktree", "add", "-q", "--detach", ".claude/worktrees/x");
+    // Where Gemini CLI creates its worktrees, on a branch named like the folder.
+    git(root, "worktree", "add", "-q", "-b", "buscador", ".gemini/worktrees/buscador");
     expect((await cli(root, ["next"])).out).toContain("No hay un cambio activo.");
     expect((await cli(root, ["new", "Saludo personalizado"])).code).toBe(0);
     await writeFiles(root, { [SPEC_PATH]: SPEC });
@@ -257,7 +259,9 @@ describe("a worktree inside the repository", () => {
     });
     const done = await cli(root, ["task", "done", "T1", "--summary", "Saludo por nombre"]);
     expect(done.code).toBe(0);
-    expect(git(root, "ls-tree", "-r", "--name-only", "HEAD")).not.toContain(".claude");
+    const committed = git(root, "ls-tree", "-r", "--name-only", "HEAD");
+    expect(committed).not.toContain(".claude");
+    expect(committed).not.toContain(".gemini");
   });
 
   it("is told apart from other nested repositories, which still count", async () => {
