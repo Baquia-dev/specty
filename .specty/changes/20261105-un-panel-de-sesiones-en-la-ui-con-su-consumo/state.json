@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-un-panel-de-sesiones-en-la-ui-con-su-consumo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-un-panel-de-sesiones-en-la-ui-con-su-consumo",
   "baseCommit": "88e445fd33157702c2f2e6db0e9d78d0f198744d",
   "revision": 1,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3eea549eef19b713597eddbd03cd83b1760be64c",
+      "attempts": 1,
       "startedAt": "2026-11-04T18:13:01.883Z",
       "doneAt": "2026-11-04T18:17:01.917Z",
-      "summary": "GET /api/sessions (server/sessions.ts): cada conversación de activity/ con su carpeta relativa, el cambio abierto de esa carpeta, sus pasos y si sigue viva, de la más reciente a la más antigua; sessionTotals (flow/usage.ts) suma tokens y coste de cada sesión de Claude Code con un informe de ccusage"
+      "summary": "GET /api/sessions (server/sessions.ts): cada conversación de activity/ con su carpeta relativa, el cambio abierto de esa carpeta, sus pasos y si sigue viva, de la más reciente a la más antigua; sessionTotals (flow/usage.ts) suma tokens y coste de cada sesión de Claude Code con un informe de ccusage",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "89eba1ffdac95683628e5d04af3f5e03b38ec872",
+      "startedAt": "2026-11-04T18:17:03.256Z",
+      "doneAt": "2026-11-04T18:17:44.483Z",
+      "summary": "ARCHITECTURE: GET /api/sessions, qué da y de dónde sale el consumo"
     }
   },
   "pending": {

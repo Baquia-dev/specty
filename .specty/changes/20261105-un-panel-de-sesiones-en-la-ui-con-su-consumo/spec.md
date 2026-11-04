@@ -57,7 +57,7 @@ La persona no ve en un sitio qué sesiones de agente trabajan en el repositorio,
   - files: packages/cli/src/store/activity.ts, packages/cli/src/flow/usage.ts, packages/cli/src/server/sessions.ts, packages/cli/src/server/http.ts, packages/cli/test/server/sessions.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/sessions.test.ts test/server/memory.test.ts test/activity.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: La documentación
+- [x] T3: La documentación
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
