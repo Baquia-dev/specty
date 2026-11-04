@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261104-subagentes-claude-code-en-su-carpeta",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-subagentes-claude-code-en-su-carpeta",
+  "baseCommit": "cb6838409f3dba5834c2ee9722cae08987438784",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fc6c68e2f7d65f877ff681a1ee443b15ff79351462e15586185296c162b8afb5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c2c14b7ab58a7780de3d4f1460c60d5bfeecc33c9443e6c4dae56b9a375212a7",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:d8a58feb72121532c8d91f2da4b4e5557ccc000ecb84ba6dfb0f4c498db5b6bf",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:e515e0c62b4555ed344756330680dbf74a88817eb319571097405c8e13e3d0b5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 3,
+    "R": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:96dbc6573af0aaf8dd77721478436ff20ba0788725a0f4911039a79019d74e06",
+    "at": "2026-11-04T09:48:47.262Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
