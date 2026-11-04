@@ -39,3 +39,21 @@ El freno de duplicados de `specty new` (corte C4 de la épica «Memoria de Spect
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/duplicates-epic.test.ts test/duplicates.test.ts test/epic.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+El freno de duplicados de `specty new` ya no compara un cambio con la épica de un cambio que sigue: `duplicatesOf` busca cada cambio de `--follows` con `findChange`, abierto o archivado, lee la `epic` del frontmatter de su spec y la añade a los que no cuentan, junto a los que sigue, la épica del corte que se crea y los de `--distinct-from`. Otra épica abierta con una petición parecida sigue frenándolo.
+
+### Desviaciones
+
+- La primera aceptación falló por un test del CLI intermitente con la máquina cargada; la suite entera del CLI pasó a mano (1010 tests) y la segunda aceptación pasó sin cambiar nada.
+
+### Decisiones
+
+- Un cambio de `--follows` que no se encuentra, o que no es un corte, no añade ninguna épica: el freno sigue como antes para él.
+
+### Pendientes
+
+Ninguno.
