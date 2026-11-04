@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "id": "20261104-init-commit-fallido",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-init-commit-fallido",
+  "baseCommit": "bc548eea883cab9fedd57b3796805b49c4cfd8bc",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:fa2fe05c7e9d505e9df250320a093be47fbc7049ceef753fbc8d37a8129c7aca",
+    "at": "2026-11-04T05:54:57.551Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cfe39acd1a80f7d828193c6f0a9dd699abd66ee007746c2a9ea73f9177f41e32",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:8696ef674ce850e4a6333cad47f67b5e762a54b7ebe116c5bb55c3c7b2b5c9f5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ab2c19586f7c2bbaa9e6fb28b5a91bee4c4302b9",
+      "attempts": 1,
+      "startedAt": "2026-11-04T05:57:54.973Z",
+      "doneAt": "2026-11-04T05:58:28.233Z",
+      "summary": "installCommitFailedWarning (es/en) exportado; InitView.failed: tarjeta con estado invalid y SIGUIENTE de volver a ejecutar init",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "737ae319ab5489c28ed3efc0885c1a6e4eb2e956",
+      "attempts": 1,
+      "startedAt": "2026-11-04T05:58:29.000Z",
+      "doneAt": "2026-11-04T06:01:09.119Z",
+      "summary": "commitInstall captura el GitError de su commit, deshace lo escrito (checkout de HEAD para lo seguido, rm --cached y borrado para lo creado), avisa con el subcomando de git y su error sin hints y marca failed; init pasa failed a su tarjeta. GitError exportado",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "7d5f75d42bd0ecc0c66d7d57d2d3585d5548c0b8",
+      "attempts": 1,
+      "startedAt": "2026-11-04T06:01:09.501Z",
+      "doneAt": "2026-11-04T06:01:43.466Z",
+      "summary": "check --install sale con código 1 si su commit falla (commit.failed); ARCHITECTURE.md explica qué hace init cuando su commit falla",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-04T06:07:32.441Z",
+  "lockedTests": {
+    "packages/cli/test/check-install.test.ts": "sha256:e04f1bf1b77339b17887e950d991efe4c39f3107b6f54154020f999a1b8c6085",
+    "packages/cli/test/init-commit.test.ts": "sha256:62cb15eb101ffbc9d0973cec12f0b2492eed346a60f56389ac4bb3ef94404004",
+    "packages/core/test/cards/init.test.ts": "sha256:0adf8d3d5afbe849d0825a6e120c69d1a8e30075b0d3a51cea6f1db261206d5d",
+    "packages/core/test/cards/install.test.ts": "sha256:435f75e0b9453d1bee7dd5673a2124f70ae6fe99d7dbc9babe810f2a3bef3be1"
+  }
+}

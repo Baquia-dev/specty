@@ -2,6 +2,7 @@
 import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { exists } from "../src/io/files";
 import { createGit } from "../src/io/git";
 import { addReceipt } from "../src/store/local";
 import { CONFIG, cli, git, NOW, read, tempRepo, writeFiles } from "./support";
@@ -124,5 +125,63 @@ describe("specty init commits what it writes", () => {
     expect(result.out).toContain("Esta carpeta tiene un cambio activo");
     expect(result.out).toContain("Ejecuta `specty init` en la carpeta principal.");
     expect(git(root, "rev-parse", "HEAD")).toBe(head);
+  });
+});
+
+/** Makes `git commit` fail in `root` without touching the index: it signs with a program that fails. */
+function failingCommits(root: string): void {
+  git(root, "config", "commit.gpgsign", "true");
+  git(root, "config", "gpg.program", "false");
+}
+
+const FAILED = "No se pudo hacer el commit de lo instalado (git commit: error: gpg failed to sign";
+
+describe("specty init when its commit fails", () => {
+  it("AC1: says why instead of a trace, and ends with an error", async () => {
+    const root = await installed();
+    await dropFlowBlock(root);
+    failingCommits(root);
+    const result = await cli(root, INIT);
+    expect(result.code).toBe(1);
+    expect(result.out).toContain(FAILED);
+    expect(result.out).toContain("; se deshizo lo escrito en AGENTS.md.");
+    expect(result.out).toContain(
+      "SIGUIENTE: corrige lo que impidió el commit (en AVISOS) y vuelve a ejecutar `specty init`.",
+    );
+    expect(`${result.out}${result.err}`).not.toMatch(/GitError|hint:|\n\s+at /);
+  });
+
+  it("AC2: undoes what it wrote, leaves the person's changes, and commits once run again", async () => {
+    const root = await installed();
+    await dropFlowBlock(root);
+    const head = git(root, "rev-parse", "HEAD");
+    const dropped = await read(root, "AGENTS.md");
+    await writeFiles(root, { "src/app.ts": "y\n" });
+    failingCommits(root);
+    expect((await cli(root, INIT)).code).toBe(1);
+    expect(git(root, "rev-parse", "HEAD")).toBe(head);
+    expect(await read(root, "AGENTS.md")).toBe(dropped);
+    expect(await read(root, "src/app.ts")).toBe("y\n");
+    expect(git(root, "status", "--porcelain")).toBe("M src/app.ts");
+    git(root, "config", "--unset", "commit.gpgsign");
+    expect((await cli(root, INIT)).code).toBe(0);
+    expect(committed(root)).toEqual(["AGENTS.md"]);
+  });
+
+  it("AC2: on the first installation, deletes the files it created and stages nothing", async () => {
+    const root = await tempRepo({ "src/app.ts": "x\n" });
+    failingCommits(root);
+    const result = await cli(root, INIT);
+    expect(result.code).toBe(1);
+    const created = [
+      ".gitignore",
+      ".specty/config.yaml",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "docs/dominio.md",
+    ];
+    expect(result.out).toContain(`; se deshizo lo escrito en ${created.join(", ")}.`);
+    for (const path of created) expect(await exists(join(root, path))).toBe(false);
+    expect(git(root, "diff", "--cached", "--name-only")).toBe("");
   });
 });

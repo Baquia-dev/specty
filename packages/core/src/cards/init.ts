@@ -147,13 +147,18 @@ export interface InitView {
   readonly chooseFlow?: boolean;
   /** The tools at the root that will see what Specty writes, its changes' folder included. */
   readonly exclusions?: readonly ExclusionView[];
+  /** Its commit failed and what it wrote was undone: the warnings say why. */
+  readonly failed?: boolean;
 }
 
-/** `specty init` done. Next comes AGENTS.md, or in a new project, its first change. */
+/**
+ * `specty init` done. Next comes AGENTS.md, or in a new project, its first change; if its commit
+ * failed, running it again.
+ */
 export function initCard(view: InitView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   return {
-    status: "ok",
+    status: view.failed === true ? "invalid" : "ok",
     header: headerOf("init"),
     blocks: [
       ...section(t("CONFIGURADO", "CONFIGURED"), view.done),
@@ -162,9 +167,14 @@ export function initCard(view: InitView, ctx: CardContext): Output {
       ...exclusionsBlock(view.exclusions ?? [], ctx, "init"),
     ],
     next:
-      view.product === undefined
-        ? existingProjectNext(view.unfilled, ctx)
-        : newProjectNext(view.product === "interviewed", ctx, view.chooseFlow === true),
+      view.failed === true
+        ? t(
+            `corrige lo que impidió el commit (en AVISOS) y vuelve a ejecutar \`${ctx.command} init\`.`,
+            `fix what stopped the commit (under WARNINGS) and run \`${ctx.command} init\` again.`,
+          )
+        : view.product === undefined
+          ? existingProjectNext(view.unfilled, ctx)
+          : newProjectNext(view.product === "interviewed", ctx, view.chooseFlow === true),
   };
 }
 
