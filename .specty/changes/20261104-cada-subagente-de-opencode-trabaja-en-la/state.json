@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261104-cada-subagente-de-opencode-trabaja-en-la",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-cada-subagente-de-opencode-trabaja-en-la",
+  "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:805b6ce6b9105eb8b0e6c1a45afb3f896b4003decfdbd108c9f004c60f7e01da",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:dbab58db4653864cc92db872bb26940df161b9d5de4b70168e9e4d088cce1af2",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e0ad2903788d83a6565d2170cc4736f21076088531133840c6ffc4b5f5b5cdf3",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:8d644a1730fba8737c8894c6a599b214e723c21c39737a1265b43fc335bb9987",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 1,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:18d43c9d01453eddc558721d5d390e6d329e97295cab67f98bb6536dcefddd59",
+    "at": "2026-11-04T12:39:43.264Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
