@@ -51,7 +51,7 @@ Hoy `close` incorpora main a la rama del cambio y solo después pide el turno de
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/close-turn.test.ts test/integrate.test.ts src/flow/full-verification.test.ts && pnpm typecheck && pnpm lint
   - type: fix
-- [ ] T2: La documentación del turno del cierre
+- [x] T2: La documentación del turno del cierre
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm lint
