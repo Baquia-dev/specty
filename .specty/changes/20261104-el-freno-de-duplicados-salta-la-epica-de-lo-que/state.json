@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-el-freno-de-duplicados-salta-la-epica-de-lo-que",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-el-freno-de-duplicados-salta-la-epica-de-lo-que",
   "baseCommit": "b06989fb18be8c45c5934403c924fe034d3c7a7b",
   "revision": 1,
@@ -27,7 +27,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "23cc473a7bc383dc489a7cd283f6af21240983bb",
+      "startedAt": "2026-11-04T11:02:26.286Z",
+      "doneAt": "2026-11-04T11:03:16.929Z",
+      "summary": "duplicatesOf no cuenta la épica de cada cambio que sigue: epicsOf la lee con findChange y el frontmatter de su spec, abierto o archivado"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

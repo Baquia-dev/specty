@@ -34,7 +34,7 @@ El freno de duplicados de `specty new` (corte C4 de la épica «Memoria de Spect
 
 ## Tareas
 
-- [ ] T1: El freno salta la épica de los cambios que sigue
+- [x] T1: El freno salta la épica de los cambios que sigue
   - files: packages/cli/src/flow/duplicates.ts, packages/cli/test/duplicates-epic.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/duplicates-epic.test.ts test/duplicates.test.ts test/epic.test.ts && pnpm typecheck && pnpm lint
