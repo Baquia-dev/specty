@@ -65,3 +65,23 @@ Hoy, cuando Claude Code reanuda una sesión (`--resume`, `--continue` o reabrir 
 
 - R1: El aviso sale en todas las instalaciones anteriores de Claude Code. Mitigación: dice que basta con `specty init`, como los avisos de eventos anteriores (R3 de la épica).
 - R2: Si Claude Code no conservara el `session_id` al reanudar, la sesión reanudada no tiene enlace. Mitigación: recibe la tarjeta sin cambio activo, con la lista de cambios huérfanos del cambio anterior.
+
+## Cierre
+
+### Resumen
+
+Claude Code ya da la tarjeta de Specty al reanudar una sesión. `init` escribe el `SessionStart` del guard con el matcher `startup|clear|compact|resume`. Al reanudar, el guard responde con la tarjeta de `specty next`: en la carpeta principal, la de volver a la carpeta del cambio enlazado. `doctor` tiene el aviso `claude-resume` para un `SessionStart` que se dispara al empezar y no al reanudar; si tampoco se dispara al empezar, da solo el aviso anterior (`claude-startup`). Cubre el AC3 de la épica `20261104-sesiones-con-su-carpeta`.
+
+### Desviaciones
+
+- `.claude/settings.json` de este repositorio no se tocó: el guard no deja editarlo a mano porque lo gestiona Specty. Su matcher sigue sin `resume` hasta que la persona ejecute `specty init`.
+- `packages/cli/src/agents/claude-code.ts` pasó también al alcance de T1. La verificación de T1 incluía `pnpm typecheck`, y el test aprobado de `runsAtSessionStart` con el origen no compilaba hasta cambiar su firma.
+
+### Decisiones
+
+- `runsAtSessionStart(matcher, source)` recibe el origen, con `startup` por defecto, en lugar de una función nueva solo para `resume`: la regla del matcher es la misma.
+- Un solo aviso por instalación: sin `startup`, `claude-startup`; con `startup` y sin `resume`, `claude-resume`. El mismo `specty init` arregla los dos.
+
+### Pendientes
+
+- El `.claude/settings.json` de este repositorio no tiene `resume` en el matcher del `SessionStart`: la persona debe ejecutar `specty init` en la carpeta principal, con el CLI ya construido desde main, y `doctor` avisará hasta entonces.

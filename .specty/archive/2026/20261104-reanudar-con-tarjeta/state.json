@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-reanudar-con-tarjeta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-reanudar-con-tarjeta",
   "baseCommit": "c7e7ed0c3cf6644b5ecd5814ed1d072854b84f27",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:e351fe4d159e4fe93c08a69dc6af738d573eaac7daadc1d99c6f093795a07ca0",
@@ -50,12 +50,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7c3d0aee53bb7fc7d55b6adaf7b6d794174b7029",
+      "attempts": 1,
       "startedAt": "2026-11-04T06:51:16.789Z",
       "doneAt": "2026-11-04T06:52:50.819Z",
-      "summary": "init escribe SessionStart con resume y doctor avisa con claude-resume si se dispara al empezar y no al reanudar; ARCHITECTURE §7. .claude/settings.json no se tocó: lo gestiona Specty"
+      "summary": "init escribe SessionStart con resume y doctor avisa con claude-resume si se dispara al empezar y no al reanudar; ARCHITECTURE §7. .claude/settings.json no se tocó: lo gestiona Specty",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,6 +68,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-04T07:02:31.558Z",
   "lockedTests": {
     "packages/cli/src/agents/claude-code.test.ts": "sha256:4b297db8de9a95d9d286c6b2945e0c400fac187b5545b98525132ea2c4b607fb",
     "packages/cli/test/setup.test.ts": "sha256:b5d5c3feee3d6b66c9ec0121a3a939f53102e21464f2ff5882d9a93a631540a3",
