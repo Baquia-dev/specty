@@ -61,3 +61,27 @@ Dos archivos pasan del aviso de tamaño (300 líneas de código): `cli/src/flow/
 ## Riesgos
 
 - R1: Un import circular entre `views.ts` y `task-views.ts`, o entre `init.ts` y `init-questions.ts`. Mitigación: los archivos nuevos no importan de los que se dividen.
+
+## Cierre
+
+### Resumen
+
+`flow/views.ts` y `cards/init.ts` ya no avisan en `max-lines` (`specty check --all` con el CLI construido sobre este cambio), y los archivos nuevos tampoco. Se dividieron por responsabilidad sin cambiar lo que hacen:
+- `flow/views.ts` (de 383 a 220 líneas) se queda con la vista del cambio, y `flow/task-views.ts` tiene las vistas de las tareas: `taskVerification`, `taskCommits` y `taskViews`, que devuelve las tareas y sus commits.
+- `cards/init.ts` (de 447 a 250 líneas) se queda con lo que `init` rechaza, lo que hizo y sus tarjetas, y `cards/init-questions.ts` tiene las opciones que ofrece a la persona: idioma, agentes y flujo de git.
+
+Ningún test cambió, y `pnpm check` pasó al aceptar.
+
+### Desviaciones (respecto al plan)
+
+- Ninguna.
+
+### Decisiones
+
+- Los datos del borrador siguen en `views.ts`, como decía la spec: P42 proponía `flow/draft-facts.ts`, pero sin las vistas de las tareas el archivo queda muy por debajo del aviso.
+- Un comentario repetido sobre `draftFacts` pasó a `request`, la función que describe.
+
+### Pendientes
+
+- `core/src/cards/index.ts` (399 líneas de código) y `core/src/index.ts` (333) siguen avisando: son las listas de la API de core (P2 y P9). La persona puede añadirlas a `lines.exclude` de `.specty/config.yaml`.
+- Al comprobar AC1, `specty check --all` anotó su deuda en la memoria como P60 a P63 (`function-lines`, `complexity`, `max-lines` y `vulnerabilities`).
