@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261104-cada-subagente-de-cursor-trabaja-en-la-carpeta",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-cada-subagente-de-cursor-trabaja-en-la-carpeta",
+  "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cad0c52a06bac219c23dde90075f6545553ffc7ddb97b29ec7cae5b192085d28",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a1a0e4d4df5b93f465cad23585c0ad91216cb8908e54bc49779e3768e4199872",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:97634714609d4414eb57c6a880ec79d417aefb690041c322184e903108fdb5f5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 6,
+    "T": 2,
+    "R": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:352eb780cc44af8cff2c54c67ff7db4b94b7e9a50f804b212779932f882b4d27",
+    "at": "2026-11-04T12:37:37.160Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
