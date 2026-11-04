@@ -17,6 +17,22 @@ export function enteredCard(folder: string, card: Output, ctx: CardContext): Out
   return { ...card, blocks: [...section(undefined, [lead]), ...card.blocks] };
 }
 
+/** `specty enter <id>` for an open change whose folder was lost: `restore` brings it back first. */
+export function lostFolderCard(id: string, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  return blockedCard(
+    headerOf(id),
+    t(
+      `La carpeta del cambio ${id} se perdió; el cambio sigue en su rama.`,
+      `The folder of change ${id} was lost; the change is still on its branch.`,
+    ),
+    t(
+      `recupérala con \`${ctx.command} restore ${id}\` y vuelve a ejecutar \`${ctx.command} enter ${id}\`.`,
+      `bring it back with \`${ctx.command} restore ${id}\` and run \`${ctx.command} enter ${id}\` again.`,
+    ),
+  );
+}
+
 /** `specty enter <id>` for a change without a folder of its own in `home`: nowhere to enter. */
 export function noFolderCard(id: string, home: string, ctx: CardContext): Output {
   const t = translator(ctx.lang);

@@ -12,6 +12,7 @@ import { toolExclusions } from "../detect/formatters";
 import { conversationChange } from "../enforce/sessions";
 import { commitState, resolveActive } from "../flow/active";
 import { finishEpic } from "../flow/epic";
+import { lostChanges } from "../flow/lost";
 import { changeView } from "../flow/views";
 import { entersByName } from "../install/agents";
 import { freshProject } from "../install/product";
@@ -46,7 +47,12 @@ export async function next(session: Session): Promise<Output> {
     // Specty doesn't edit the tools that see what it writes: the agent tells the user (ADR 0018).
     const exclusions = (await toolExclusions(session.root)).filter((tool) => !tool.excluded);
     const orphans = await orphanChanges(session);
-    const start = { memory, exclusions, orphans, byName, ...view };
+    const lost = (await lostChanges(session)).map(({ id, title, state }) => ({
+      id,
+      title,
+      phase: state.phase,
+    }));
+    const start = { memory, exclusions, orphans, lost, byName, ...view };
     return nextCard({ dirty, ...(fresh ? { fresh } : {}), ...start }, session.cards);
   }
   const pending = await pendingIntegration(session, active, "close");

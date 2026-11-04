@@ -70,6 +70,8 @@ export type WorktreeHookRefusal =
   | { readonly reason: "no-repository"; readonly cwd: string }
   | { readonly reason: "invalid-name"; readonly name: string }
   | { readonly reason: "no-folder" }
+  /** The id of an open change whose folder was lost: `restore` brings it back, not this hook. */
+  | { readonly reason: "lost"; readonly id: string; readonly command: string }
   /** A change's folder stays while the change is open: `close` removes it once merged. */
   | { readonly reason: "change-folder"; readonly folder: string; readonly command: string };
 
@@ -88,6 +90,11 @@ export function worktreeHookRefusal(refusal: WorktreeHookRefusal, lang: Lang): s
       );
     case "no-folder":
       return t("Falta la carpeta de la worktree.", "The worktree's folder is missing.");
+    case "lost":
+      return t(
+        `La carpeta del cambio ${refusal.id} se perdió; el cambio sigue en su rama. Recupérala con \`${refusal.command} restore ${refusal.id}\` y vuelve a pedir \`EnterWorktree\` con \`name: "${refusal.id}"\`.`,
+        `The folder of change ${refusal.id} was lost; the change is still on its branch. Bring it back with \`${refusal.command} restore ${refusal.id}\` and ask for \`EnterWorktree\` with \`name: "${refusal.id}"\` again.`,
+      );
     case "change-folder":
       return t(
         `${refusal.folder} es la carpeta de un cambio de Specty: se queda mientras el cambio siga abierto, y \`${refusal.command} close\` la borra al incorporarlo.`,

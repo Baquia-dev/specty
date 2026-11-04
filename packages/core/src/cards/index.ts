@@ -72,7 +72,7 @@ export {
   duplicateCard,
   duplicateFilesBlock,
 } from "./duplicates";
-export { enteredCard, noFolderCard } from "./enter";
+export { enteredCard, lostFolderCard, noFolderCard } from "./enter";
 export { epicCard, type SliceRefusal, sliceLines, sliceRefusalCard } from "./epic";
 export { type ExportRefusal, exportedCard, exportRefusalCard } from "./export";
 export {

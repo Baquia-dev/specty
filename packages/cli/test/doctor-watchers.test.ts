@@ -146,8 +146,9 @@ describe("doctor and the dev servers that would watch the changes' worktrees", (
     expect(doctor.code).toBe(1);
     expect(doctor.out).toContain(seen("Metro", METRO, "metro.config.js (resolver.blockList)"));
 
-    // An Expo app without a Metro config of its own.
-    const { doctor: expo } = await doctorWith({
+    // An Expo app without a Metro config of its own, written once the change exists: in the
+    // commit, `new` would install Expo and React Native from the network.
+    const { doctor: expo } = await doctorAfter({
       "package.json":
         '{ "name": "x", "dependencies": { "expo": "^55.0.0", "react-native": "0.85.0" } }\n',
     });
