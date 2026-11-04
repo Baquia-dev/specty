@@ -6,6 +6,13 @@
   "branch": "specty/20261104-vistas-de-tareas-y-preguntas-de-init",
   "baseCommit": "0cbfa9d8cdf0fd0272a5af072f2a4f483b9b408a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0fd5ee4411eb578c9bdf8673a9463c69343cb70912cec7a96f5cdd47d6f1469b",
+    "at": "2026-11-04T05:34:05.362Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dbfdaf8127ff969f3ddbc5733b229354ef0edad1",
+      "startedAt": "2026-11-04T05:34:05.785Z",
+      "doneAt": "2026-11-04T05:35:33.343Z",
+      "summary": "Las vistas de las tareas (taskVerification, taskCommits y la nueva taskViews, con taskView, recordedFindings, findingsByTask, criteriaOf y listOf) pasan de flow/views.ts a flow/task-views.ts; changeView llama a taskViews; task, audit y task-done importan del archivo nuevo."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -31,12 +48,5 @@
     "AC": 2,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:0fd5ee4411eb578c9bdf8673a9463c69343cb70912cec7a96f5cdd47d6f1469b",
-    "at": "2026-11-04T05:34:05.362Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -47,7 +47,7 @@ Dos archivos pasan del aviso de tamaño (300 líneas de código): `cli/src/flow/
 
 ## Tareas
 
-- [ ] T1: Las vistas de las tareas, en su propio archivo
+- [x] T1: Las vistas de las tareas, en su propio archivo
   - files: packages/cli/src/flow/views.ts, packages/cli/src/flow/task-views.ts, packages/cli/src/commands/task.ts, packages/cli/src/commands/audit.ts, packages/cli/src/flow/task-done.ts
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/audit.test.ts test/audit-who.test.ts test/task-check.test.ts test/findings.test.ts test/criteria-tests.test.ts test/commands.test.ts
