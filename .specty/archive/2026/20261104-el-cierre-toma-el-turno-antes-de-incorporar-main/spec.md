@@ -61,3 +61,23 @@ Hoy `close` incorpora main a la rama del cambio y solo después pide el turno de
 
 - R1: Un cierre espera ahora a una verificación larga de otra sesión aunque su rama ya contenga main — como mucho `verify.timeoutSec`, y dice quién lo hace esperar; esperar es lo que evita repetir el cierre.
 - R2: El cierre sostiene el turno mientras archiva y hace commits, y retrasa a las demás verificaciones — esos pasos duran segundos, frente a los minutos de la verificación.
+
+## Cierre
+
+### Resumen
+
+`close` tras la confirmación, su reintento para un cambio cerrado que no llegó a main y el `accept` que cierra un cambio del carril rápido toman el turno de la verificación completa antes de incorporar main y lo sueltan cuando main ya avanzó (`landingTurn` en `flow/full-verification.ts`). Antes incorporaban main y solo pedían el turno para verificar: mientras esperaban, otra sesión integraba su cambio en main y el avance rápido fallaba («main no avanzó»). Ahora dos cierres a la vez van uno tras otro, y el segundo incorpora lo que integró el primero. Sin incorporación o sin verificación completa, el cierre no espera.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- `closeConfirmed` y `closeQuick` toman el turno y delegan el resto en `closeOnTurn` y `closeQuickOnTurn`; el reintento de `close` arma su tarjeta en `landedAgain`. Así ninguna función crece por envolverse en el turno.
+- El turno del cierre lleva como comando el de la verificación completa, así que quien espera lee «otra sesión está haciendo una verificación completa (`pnpm check` …)» también mientras otra sesión cierra.
+- Una épica con verificación completa configurada también toma el turno al cerrar, aunque no verifique su incorporación: su avance de main dejaría igual de vieja la incorporación de otra sesión.
+
+### Pendientes
+
+Ninguno.
