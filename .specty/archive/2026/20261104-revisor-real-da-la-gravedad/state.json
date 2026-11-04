@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-revisor-real-da-la-gravedad",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-revisor-real-da-la-gravedad",
   "baseCommit": "4a6731c606eaf572e027ad2476d42d371b412475",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d0588f96a16c36badbdf49e42c5a265fd3908ef0",
+      "attempts": 1,
       "startedAt": "2026-11-04T07:07:41.565Z",
       "doneAt": "2026-11-04T07:07:59.719Z",
-      "summary": "El ADR 0011 anota la comprobación con un revisor real (Claude Code 2.1.318, el comando del ADR, español e inglés): cada viñeta de primer nivel empieza por su gravedad y reviewRemarks las reconoce todas."
+      "summary": "El ADR 0011 anota la comprobación con un revisor real (Claude Code 2.1.318, el comando del ADR, español e inglés): cada viñeta de primer nivel empieza por su gravedad y reviewRemarks las reconoce todas.",
+      "scopeExtra": []
     }
   },
   "pending": {

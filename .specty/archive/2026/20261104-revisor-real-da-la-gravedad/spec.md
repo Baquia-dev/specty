@@ -18,3 +18,9 @@ Resuelve P44. Las observaciones de la revisión (`reviewRemarks`) esperan que ca
   - files: docs/decisions/0011-revision-independiente.md
   - verify: grep -q "2.1.318" docs/decisions/0011-revision-independiente.md
   - type: docs
+
+## Cierre
+
+### Resumen
+
+El ADR 0011 anota la comprobación con un revisor real (Claude Code 2.1.318, el comando del ADR, español e inglés): cada viñeta de primer nivel empieza por su gravedad y reviewRemarks las reconoce todas.
