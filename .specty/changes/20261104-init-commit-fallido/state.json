@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-init-commit-fallido",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-init-commit-fallido",
   "baseCommit": "bc548eea883cab9fedd57b3796805b49c4cfd8bc",
   "revision": 2,
@@ -43,6 +43,10 @@
     "T": 3,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T05:57:39.905Z"
+  "lockedTests": {
+    "packages/cli/test/check-install.test.ts": "sha256:e04f1bf1b77339b17887e950d991efe4c39f3107b6f54154020f999a1b8c6085",
+    "packages/cli/test/init-commit.test.ts": "sha256:62cb15eb101ffbc9d0973cec12f0b2492eed346a60f56389ac4bb3ef94404004",
+    "packages/core/test/cards/init.test.ts": "sha256:0adf8d3d5afbe849d0825a6e120c69d1a8e30075b0d3a51cea6f1db261206d5d",
+    "packages/core/test/cards/install.test.ts": "sha256:435f75e0b9453d1bee7dd5673a2124f70ae6fe99d7dbc9babe810f2a3bef3be1"
+  }
 }
