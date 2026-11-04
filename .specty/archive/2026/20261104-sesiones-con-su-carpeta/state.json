@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261104-sesiones-con-su-carpeta",
+  "kind": "epic",
+  "phase": "done",
+  "branch": "specty/20261104-sesiones-con-su-carpeta",
+  "baseCommit": "76e0eca1da6b2bc6fa42d0e1a0b555f88690dc3d",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5e0ecc13a3f5fbb447bb60ae0a0da9839e1afa7686074b32fb0b5a56390a046c",
+    "at": "2026-11-04T06:03:51.894Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:855ef217790cac3e5411cccb9aa7503c79616a5292452eac93f0d69285c9fa62",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d976efa9de914707b27ea85ecc0bbf4118ade483ad6bd2506aca2f696180ae06",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:db1a9f98869a69aa3ad30f0be129d26e1121df1ca06d2aac7b63c0f2c9d6f077",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:6388bb587861677be509f537a5be0e23deb2389a6279f12e1bdb2df1a16c95f4",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:0034dfe0470e00b787932e745f00f9622c25b8125df6926ed0e9ac3f0de8ba67",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:1cf2a1ee654b8e16b6aba911c03738933eccaec774883047a504fce7eec4aeed",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:72352f9d325187c24d8f4480f2fa54891a174cf9ed1f80ce78cb9acc898369f2",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:0af34b6cae00077b6be67f1f6b3b13c31ed3087ad31378d40f9a322074c54425",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:a38c4c037422f377b35ae205066764d051ab843c1f422c67e41764aafcd2b6d1",
+      "decision": "implicit"
+    },
+    "A10": {
+      "hash": "sha256:888c8bf5337a1855bc1b47f488b5ba0c59bdc1d6217c1b8c6cfc467a31c720af",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 10,
+    "AC": 13,
+    "C": 3,
+    "R": 4
+  },
+  "closingSubmittedAt": "2026-11-04T11:49:08.586Z"
+}

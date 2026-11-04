@@ -63,6 +63,11 @@ export interface NewOptions {
   readonly slug?: string;
   /** An explicit branch name for the change. */
   readonly branch?: string;
+  /**
+   * A subagent creates it: the conversation that runs `new` (its tool tells the session's, not the
+   * subagent's) is not bound to the change, and the subagent enters it with `specty enter`.
+   */
+  readonly subagent?: boolean;
 }
 
 /**
@@ -192,8 +197,10 @@ async function newInWorktree(
     dir: repoPaths(folder).changeDir(id),
   });
   const prepared = await prepareWorktree(session, folder);
-  // The conversation that creates it works there, even before it enters it.
-  await bindNew(session, folder, options.epic);
+  // The conversation that creates it works there, even before it enters it; a subagent's command
+  // names the session that launched it, which stays where it was.
+  const subagent = options.subagent === true;
+  if (!subagent) await bindNew(session, folder, options.epic);
   return worktreeCreatedCard(
     {
       id,
@@ -208,6 +215,7 @@ async function newInWorktree(
       byName: await entersByName(session.root),
       // Any other agent carries on in a session of its own, which the card says how to open.
       agent: session.tool,
+      ...(subagent ? { subagent } : {}),
     },
     cards,
   );

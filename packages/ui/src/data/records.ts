@@ -37,6 +37,12 @@ export interface ChangeRecord {
   readonly verifyFull?: string;
   /** The worktree whose files these are, as the local server says it. */
   readonly folder?: string;
+  /** An open change whose folder is gone: its files come from its branch (`specty restore`). */
+  readonly lost?: boolean;
+  /** It waits for the agent and no conversation stepped in it nor wrote to it lately. */
+  readonly orphan?: boolean;
+  /** It waits for the agent and its conversation stepped last in another folder, minutes ago. */
+  readonly away?: { readonly tool: string; readonly ago: number };
   /** The independent reviews that answered, with their text, oldest first (ADR 0011). */
   readonly reviews?: readonly ReviewRecord[];
   /** In acceptance, each criterion with the tests that carry its id, from the server (ADR 0014). */
@@ -287,6 +293,12 @@ export interface ChangeView {
   readonly branch?: string;
   /** The folder (worktree) the change lives in, when the source says it. */
   readonly folder?: string;
+  /** Its folder is gone and it is still on its branch: the page offers to bring it back. */
+  readonly lost?: boolean;
+  /** No conversation holds it: the page says how to resume it. */
+  readonly orphan?: boolean;
+  /** Its conversation left its folder: which agent, and how many minutes ago. */
+  readonly away?: { readonly tool: string; readonly ago: number };
   /** Governed files that other open changes also list. */
   readonly shared?: readonly SharedFile[];
   readonly phaseSince: string;

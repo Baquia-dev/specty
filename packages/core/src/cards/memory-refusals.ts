@@ -2,6 +2,7 @@
 import { MEMORY_KINDS, type MemoryEntry, type MemoryKind } from "../memory/entries";
 import { headerOf, type Output, section } from "../output";
 import { goOn } from "./memory";
+import { ONE_OF_KIND } from "./memory-kinds";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
@@ -50,15 +51,6 @@ interface RefusalTexts {
   readonly reason: string;
   readonly next: string;
 }
-
-/** Each kind with its article, as a sentence names one entry. */
-const ONE_OF_KIND: Readonly<Record<MemoryKind, readonly [string, string]>> = {
-  pending: ["un pendiente", "a pending item"],
-  improvement: ["una mejora", "an improvement"],
-  reminder: ["un recordatorio", "a reminder"],
-  decision: ["una decisión", "a decision"],
-  lesson: ["una lección", "a lesson"],
-};
 
 /** Why `memory add` or `memory done` changed nothing, and what to do instead. */
 export function memoryRefusalCard(refusal: MemoryRefusal, ctx: CardContext): Output {

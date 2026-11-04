@@ -101,6 +101,11 @@ export abstract class SpectyData {
     return Promise.reject(new ActionError(READ_ONLY));
   }
 
+  /** Brings back the lost folder of an open change from its branch, as `specty restore`. */
+  restoreFolder(_change: string): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
   /** Starts the full verification (`verify.full`); it streams through `watchRun`, with no task. */
   verifyChange(_change: string): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));
