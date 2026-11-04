@@ -52,7 +52,7 @@ Hoy, cuando Claude Code reanuda una sesión (`--resume`, `--continue` o reabrir 
 
 ## Tareas
 
-- [ ] T1: El aviso `claude-resume`, en español y en inglés
+- [x] T1: El aviso `claude-resume`, en español y en inglés
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/test/cards/doctor.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor.test.ts && pnpm typecheck && pnpm lint

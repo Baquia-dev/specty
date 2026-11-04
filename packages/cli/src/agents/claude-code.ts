@@ -223,16 +223,17 @@ function startsBefore(settings: readonly (string | undefined)[]): boolean {
 }
 
 /**
- * Whether Claude Code runs a `SessionStart` hook with `matcher` when a session starts: it reads
- * the matcher as a regular expression on `source`, and none, an empty one or `*` take them all.
+ * Whether Claude Code runs a `SessionStart` hook with `matcher` when a session starts from
+ * `source` (by default, a new session): it reads the matcher as a regular expression on
+ * `source`, and none, an empty one or `*` take them all.
  */
-export function runsAtSessionStart(matcher: unknown): boolean {
+export function runsAtSessionStart(matcher: unknown, source = "startup"): boolean {
   if (matcher === undefined || matcher === "" || matcher === "*") return true;
   if (typeof matcher !== "string") return false;
   try {
-    return new RegExp(`^(?:${matcher})$`).test("startup");
+    return new RegExp(`^(?:${matcher})$`).test(source);
   } catch {
     // Not a regular expression: Claude Code would compare it as it is.
-    return matcher === "startup";
+    return matcher === source;
   }
 }

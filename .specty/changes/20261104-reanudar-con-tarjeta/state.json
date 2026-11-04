@@ -36,7 +36,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/agents/claude-code.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "def68ae59744814c49ead28b35c8194afcc20b08",
+      "startedAt": "2026-11-04T06:50:16.413Z",
+      "doneAt": "2026-11-04T06:51:16.188Z",
+      "summary": "El código claude-resume de doctor con su texto en español y en inglés, y runsAtSessionStart con el origen (startup por defecto)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
