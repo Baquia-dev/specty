@@ -19,3 +19,9 @@ Resuelve P84. Hoy el servidor de `specty ui` avisa del fin de una verificación 
   - files: packages/cli/src/server/runs.ts, packages/cli/test/server/runs-turn.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/runs-turn.test.ts test/server/runs.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+runs.ts avisa del fin de la verificación completa de la UI tras soltar su turno: heard(id, undefined) pasa de ended al finally de runFull, salvo si el servidor cierra o el cambio tiene otra ejecución en marcha. AC2 comprueba el candado al oír el aviso.
