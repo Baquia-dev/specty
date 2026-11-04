@@ -62,3 +62,23 @@ La persona no ve en un sitio qué sesiones de agente trabajan en el repositorio,
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+El servidor de `specty ui` da en `GET /api/sessions` cada conversación de agente que anotó el guard, de la más reciente a la más antigua: su agente y su conversación, la carpeta de su último paso relativa a la principal, el cambio abierto de esa carpeta, su primer y su último paso, si sigue viva (un paso en `memory.orphanAfterMin`) y, en las de Claude Code, lo que gastó según ccusage (tokens y coste, sumados de un solo informe de sesiones con `sessionTotals`). `SessionView` es el tipo que comparten el servidor y la UI, exportado también por la entrada ligera de core.
+
+### Desviaciones
+
+- El panel se dividió en dos cambios porque Specty lo midió XL: este da los datos del servidor, y la página «Sesiones» va en un cambio que sigue a este.
+- No hizo falta `readSessions` en `store/activity.ts`: `readActivity` ya da la conversación de cada actividad desde otro cambio.
+
+### Decisiones
+
+- Una carpeta que ya no existe no se puede resolver, así que la carpeta relativa se busca con la ruta tal como se anotó y con la real; una carpeta fuera de la principal queda como está.
+- Sin ccusage, o si falla, ninguna sesión trae `usage` y lo demás no cambia; solo se le pide si alguna sesión es de Claude Code.
+
+### Pendientes
+
+Ninguno.
