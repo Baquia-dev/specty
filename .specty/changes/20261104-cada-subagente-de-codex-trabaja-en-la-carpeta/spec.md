@@ -63,7 +63,7 @@ Hoy el guard reconoce una conversación de Codex por el `session_id` de sus hook
   - files: packages/cli/src/agents/codex.ts, packages/cli/src/enforce/actions.ts, packages/cli/test/codex-subagents.test.ts, packages/cli/test/codex-e2e.test.ts, packages/cli/test/fake-responses.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex-subagents.test.ts test/codex-e2e.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: La tabla de capacidades dice que Codex reparte los cortes de una épica entre subagentes
+- [x] T2: La tabla de capacidades dice que Codex reparte los cortes de una épica entre subagentes
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts && pnpm typecheck && pnpm lint

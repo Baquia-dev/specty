@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-cada-subagente-de-codex-trabaja-en-la-carpeta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-cada-subagente-de-codex-trabaja-en-la-carpeta",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 1,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b4691dbbbc723151f8f5c50c5789d62652399ad2",
+      "attempts": 1,
       "startedAt": "2026-11-04T12:51:35.854Z",
       "doneAt": "2026-11-04T12:53:01.651Z",
-      "summary": "El módulo de Codex compone asSubagentConversation: la conversación de un subagente es session_id--agent_id, entra con specty enter y el guard le lleva comandos y parches a su carpeta. Comprobado con Codex 0.166.0 real (spawn_agent tras tool_search) y con sus eventos grabados."
+      "summary": "El módulo de Codex compone asSubagentConversation: la conversación de un subagente es session_id--agent_id, entra con specty enter y el guard le lleva comandos y parches a su carpeta. Comprobado con Codex 0.166.0 real (spawn_agent tras tool_search) y con sus eventos grabados.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "487d4e8a468b16516d5f875a8f9b34d153f0620e",
+      "startedAt": "2026-11-04T12:53:02.001Z",
+      "doneAt": "2026-11-04T12:56:07.858Z",
+      "summary": "Codex pasa a sí en Cortes en subagentes (AGENT_CAPABILITIES, con su comentario). La tabla de ARCHITECTURE §10 se regeneró y un párrafo explica sus subagentes: spawn_agent, agent_id con el session_id del hilo raíz, specty enter con updatedInput y SubagentStop sin escuchar."
     }
   },
   "pending": {
