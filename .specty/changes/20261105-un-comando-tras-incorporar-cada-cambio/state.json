@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bd4fad6c5e61396a8b7ef5324ed2d0a6c220a0ed",
+      "attempts": 1,
       "startedAt": "2026-11-04T18:53:20.528Z",
       "doneAt": "2026-11-04T18:54:39.308Z",
-      "summary": "core: git.afterLanding en el esquema (texto no vacío), afterLandingLine con lo que hizo el comando y landingNote mientras corre"
+      "summary": "core: git.afterLanding en el esquema (texto no vacío), afterLandingLine con lo que hizo el comando y landingNote mientras corre",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d20253a6415e9a8e4d5750687755e0d07a61393d",
+      "startedAt": "2026-11-04T18:54:39.730Z",
+      "doneAt": "2026-11-04T19:03:23.308Z",
+      "summary": "flow/land.ts: tras integrar, afterLanding ejecuta git.afterLanding en la carpeta que tiene la rama destino (en la principal, tras volver a ella: landedInMain) y añade su línea; si falla, el cambio sigue integrado"
     }
   },
   "pending": {

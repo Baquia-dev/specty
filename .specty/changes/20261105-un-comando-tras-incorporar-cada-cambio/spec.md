@@ -51,7 +51,7 @@ Cuando un cambio entra en la rama principal, la carpeta que la tiene queda con e
   - files: packages/core/src/schema/git.ts, packages/core/src/cards/land.ts, packages/core/src/cards/index.ts, packages/core/src/index.ts, packages/core/test/cards/after-landing.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/after-landing.test.ts && pnpm typecheck && pnpm lint && pnpm sources
-- [ ] T2: Specty ejecuta el comando tras incorporar
+- [x] T2: Specty ejecuta el comando tras incorporar
   - files: packages/cli/src/flow/land.ts, packages/cli/test/after-landing.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/after-landing.test.ts test/integrate.test.ts test/close-turn.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
