@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261104-conversacion-vuelve-a-su-carpeta",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-conversacion-vuelve-a-su-carpeta",
+  "baseCommit": "76e0eca1da6b2bc6fa42d0e1a0b555f88690dc3d",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:29a53d0fe134c1480e4a76ebfecac54228f0f07ae45b2879491378d6b5883942",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f469e4a5bf1b90648c584604c4255d6358b8438bb274a3db916eb5de48a40ae2",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3db0b5e9f55accd929ddabca67bac03ce04d43383f492dde58221aab20a6f61a",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e0a4670e837322cef1d653a4e9b66bdf068016c239bb0c29f8e0272ee335fc19",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a74e3a9713fae5cba0fe900c6223137be47143b56ce8bf562f9ac8b5da28cf72",
+    "at": "2026-11-04T06:11:08.227Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
