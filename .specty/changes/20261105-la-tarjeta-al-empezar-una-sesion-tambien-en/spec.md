@@ -57,7 +57,7 @@ La tarjeta de Specty al empezar una sesión (la de `specty next`, con la memoria
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/test/cards/doctor-codex-startup.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-codex-startup.test.ts && pnpm lint && pnpm sources
-- [ ] T2: Codex recibe la tarjeta al empezar, reanudar y tras `/clear`
+- [x] T2: Codex recibe la tarjeta al empezar, reanudar y tras `/clear`
   - files: packages/cli/src/agents/codex.ts, packages/cli/test/session-start-codex.test.ts, packages/cli/test/session-start.test.ts, packages/cli/test/codex.test.ts, packages/cli/test/agents.test.ts, packages/cli/test/codex-e2e.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-start-codex.test.ts test/session-start.test.ts test/codex.test.ts test/agents.test.ts test/codex-e2e.test.ts && pnpm typecheck && pnpm lint
