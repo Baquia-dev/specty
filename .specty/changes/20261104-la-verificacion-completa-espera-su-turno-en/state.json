@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-la-verificacion-completa-espera-su-turno-en",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-la-verificacion-completa-espera-su-turno-en",
   "baseCommit": "b7f1b8f4d4b10f3978cd306250b73338b1c0687f",
   "revision": 2,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ea8f9481425b13916e494ac58ce74bdf48581be8",
+      "attempts": 1,
       "startedAt": "2026-11-04T13:46:46.874Z",
       "doneAt": "2026-11-04T13:49:04.092Z",
-      "summary": "runLive acepta onStart, que llama justo antes de lanzar el comando; accept toma de ahí el inicio de change.verified, así que la espera del turno de otra sesión no cuenta como tiempo de la verificación"
+      "summary": "runLive acepta onStart, que llama justo antes de lanzar el comando; accept toma de ahí el inicio de change.verified, así que la espera del turno de otra sesión no cuenta como tiempo de la verificación",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f6cfbf759f345da7b6da41bf0ccd08f6856a5f40",
+      "startedAt": "2026-11-04T13:49:05.439Z",
+      "doneAt": "2026-11-04T13:49:33.855Z",
+      "summary": "ARCHITECTURE §9 describe la cola del turno (orden de llegada, archivos que caducan, nunca sin turno, el tiempo de accept desde su turno) y formats.md §1 la carpeta locks/full-verification.queue/"
     }
   },
   "pending": {

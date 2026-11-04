@@ -71,7 +71,7 @@ Hoy `oneAtATime` (`flow/full-verification.ts`) espera el turno de la verificaci�
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-turn-time.test.ts test/accept-live.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: fix
-- [ ] T4: La documentación de la cola del turno
+- [x] T4: La documentación de la cola del turno
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm lint
