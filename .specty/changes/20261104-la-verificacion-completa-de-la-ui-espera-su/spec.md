@@ -44,7 +44,7 @@ La verificación completa que la persona lanza desde `specty ui` (`runFull` en `
   - files: packages/cli/src/server/runs.ts, packages/cli/test/server/runs-turn.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/runs-turn.test.ts test/server/runs.test.ts test/server/verify.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: La documentación
+- [x] T2: La documentación
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

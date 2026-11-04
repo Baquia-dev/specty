@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-la-verificacion-completa-de-la-ui-espera-su",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-la-verificacion-completa-de-la-ui-espera-su",
   "baseCommit": "94963be409456e72963dbcd89bd9ab189f7a2af3",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6d761fcbae11d5621c4bc126f65effa958c07c29",
+      "attempts": 1,
       "startedAt": "2026-11-04T08:52:07.393Z",
       "doneAt": "2026-11-04T08:54:42.395Z",
-      "summary": "runFull muestra la ejecución enseguida y la corre con oneAtATime tras las anteriores del servidor (inTurn); el aviso de espera va a su salida y el comando se lanza en spawned dentro del turno"
+      "summary": "runFull muestra la ejecución enseguida y la corre con oneAtATime tras las anteriores del servidor (inTurn); el aviso de espera va a su salida y el comando se lanza en spawned dentro del turno",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f29843b32613930223d062d886087897dbb86c76",
+      "startedAt": "2026-11-04T08:54:42.901Z",
+      "doneAt": "2026-11-04T08:55:00.675Z",
+      "summary": "ARCHITECTURE: la verificación completa de la UI también toma el turno y el servidor encola las suyas"
     }
   },
   "pending": {
