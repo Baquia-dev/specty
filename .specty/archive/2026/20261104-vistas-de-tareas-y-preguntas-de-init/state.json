@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": "20261104-vistas-de-tareas-y-preguntas-de-init",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-vistas-de-tareas-y-preguntas-de-init",
+  "baseCommit": "0cbfa9d8cdf0fd0272a5af072f2a4f483b9b408a",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0fd5ee4411eb578c9bdf8673a9463c69343cb70912cec7a96f5cdd47d6f1469b",
+    "at": "2026-11-04T05:34:05.362Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:519986c4640b693a526bb3f36b66b0964657dc9a9b172ce9c98007d64c2593f7",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "dbfdaf8127ff969f3ddbc5733b229354ef0edad1",
+      "attempts": 1,
+      "startedAt": "2026-11-04T05:34:05.785Z",
+      "doneAt": "2026-11-04T05:35:33.343Z",
+      "summary": "Las vistas de las tareas (taskVerification, taskCommits y la nueva taskViews, con taskView, recordedFindings, findingsByTask, criteriaOf y listOf) pasan de flow/views.ts a flow/task-views.ts; changeView llama a taskViews; task, audit y task-done importan del archivo nuevo.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "aa58392724442bdf0906bb7fd42dc46ab4785e2c",
+      "attempts": 1,
+      "startedAt": "2026-11-04T05:35:33.704Z",
+      "doneAt": "2026-11-04T05:36:59.222Z",
+      "summary": "Las opciones que init ofrece a la persona (idioma, agentes y flujo de git: sus preguntas, respuestas, flowLine y los avisos noAgentWarning y noFlowWarning, con sus tablas) pasan de cards/init.ts a cards/init-questions.ts, con los textos tal cual; cards/index.ts exporta cada nombre desde su archivo.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-04T05:50:45.239Z"
+}
