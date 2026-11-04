@@ -63,7 +63,7 @@ kind: standard
   - files: packages/cli/src/store/messages.ts, packages/cli/src/commands/status.ts, packages/cli/src/commands/message.ts, packages/cli/test/message-holder.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/message-holder.test.ts test/message.test.ts test/status-json.test.ts test/status-away.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: La página «Memoria» cuenta los mensajes que esperan
+- [x] T3: La página «Memoria» cuenta los mensajes que esperan
   - files: packages/ui/src/memory/memory-lines.ts, packages/ui/src/memory/memory-messages.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-messages.test.ts --include src/memory/memory-lines.test.ts && pnpm typecheck && pnpm lint

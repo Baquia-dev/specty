@@ -45,12 +45,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3800454bc27d8963417d24058ca7b24458b6a524",
+      "attempts": 1,
       "startedAt": "2026-11-04T08:02:14.368Z",
       "doneAt": "2026-11-04T08:03:58.568Z",
-      "summary": "cli: status cuenta los mensajes de cada cambio abierto (waitingCount, solo si anyMessages); message busca el cambio en openChanges y pasa a la tarjeta el agente que dio un paso en su carpeta dentro de memory.orphanAfterMin"
+      "summary": "cli: status cuenta los mensajes de cada cambio abierto (waitingCount, solo si anyMessages); message busca el cambio en openChanges y pasa a la tarjeta el agente que dio un paso en su carpeta dentro de memory.orphanAfterMin",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "73f23cdf76f5c0d93108ec481ce696e9ed20e1bc",
+      "startedAt": "2026-11-04T08:03:58.946Z",
+      "doneAt": "2026-11-04T08:04:31.269Z",
+      "summary": "ui: changeLine de memory-lines.ts añade cuántos mensajes esperan a la sesión del cambio"
     }
   },
   "pending": {
