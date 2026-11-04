@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261104-carpeta-perdida-en-next-y-enter",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-carpeta-perdida-en-next-y-enter",
+  "baseCommit": "2b239513dd1a5121a54c36052fc6dc1c27b1de89",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9bd2366800d8ee12a73c1b9fb7e6c27fed187f8219616482b5797610879ef58c",
+    "at": "2026-11-04T08:45:43.572Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d3478e1551f97b5961c4a47ba47222b2ef7f7abfe71ccfc97466b0708ec7f3bb",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:e140ba4fa690195212ba0624e2f312d4eab9b575b80a951f3dbdd1605a8cc6ce",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:85a9e1e920ab6e3fab7cda6ec2f59af0e109a250f81035d07dc5703a1c8ceb30",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b0518b58a07aebe82bf42cef17c3d0a886c2b31e14886b3c98c0df1f07f385fa",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:9d99f365f679b25be51abe0431d435efcb5a79a5c1e488f284f4f9e71c565183",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "430bff269a6475aa0e0e469c9f3c332bf1297008",
+      "attempts": 1,
+      "startedAt": "2026-11-04T08:48:58.792Z",
+      "doneAt": "2026-11-04T08:49:52.786Z",
+      "summary": "rejoin.ts con lostBlock y la tarjeta de volver para una carpeta perdida, NextView.lost, lostFolderCard para enter y el motivo lost del hook WorktreeCreate",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "bdc4a9cfe3e523b1b4c8bf502f1c2457df148e7b",
+      "attempts": 1,
+      "startedAt": "2026-11-04T08:49:53.139Z",
+      "doneAt": "2026-11-04T08:53:49.127Z",
+      "summary": "next lista los cambios sin carpeta y conversationChange reconoce una carpeta perdida; enter y el hook WorktreeCreate llevan a specty restore sin crear ni enlazar nada (namedWorktree ignora carpetas que no existen); ARCHITECTURE §6, §7 y §10",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-04T09:04:18.432Z",
+  "lockedTests": {
+    "packages/cli/test/lost-folder.test.ts": "sha256:6af657a657d6bac83b2a51fdd96bc225e083521c4dfe0cb094a4ac70ab149dbe",
+    "packages/core/test/cards/lost-folder.test.ts": "sha256:1ee118f65b82c3b077ea13b02dc49d4d37ebdbf3a04ee86b6a0fefcfd25f4cb2"
+  }
+}

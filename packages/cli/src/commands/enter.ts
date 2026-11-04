@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-import { enteredCard, noFolderCard, type Output } from "@baquia-dev/specty-core";
+import { enteredCard, lostFolderCard, noFolderCard, type Output } from "@baquia-dev/specty-core";
 import { namedWorktree } from "../enforce/worktree-hooks";
+import { lostChanges } from "../flow/lost";
 import { worktreesHome } from "../flow/worktree";
 import { openSession, type Session } from "../session";
 import { next } from "./next";
@@ -17,6 +18,10 @@ export async function enter(session: Session, id: string): Promise<Output> {
     ? await openSession({ ...session.environment, cwd: named.folder })
     : undefined;
   if (opened?.kind !== "ok") {
+    // An open change whose folder was lost comes back with `specty restore` first.
+    if ((await lostChanges(session)).some((change) => change.id === id)) {
+      return lostFolderCard(id, session.cards);
+    }
     return noFolderCard(id, await worktreesHome(session.git), session.cards);
   }
   return enteredCard(named.folder, await next(opened.session), session.cards);
