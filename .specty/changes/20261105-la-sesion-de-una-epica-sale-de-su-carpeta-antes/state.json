@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261105-la-sesion-de-una-epica-sale-de-su-carpeta-antes",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-la-sesion-de-una-epica-sale-de-su-carpeta-antes",
+  "baseCommit": "f374134873dd21f2f9c61c4f60dd97f9b5c0e4f1",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:213066d7336cef19b5096ebfb56b5e5e4baa946ae9f79501e8b62c5f54195e04",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7a0ee139b309f4a36a0cf19419c176e24d6c58284e2e144a673ad71009587dde",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:3c804a8e992bb3d9d3a9495e604f2c147b20529a88121005c1008e247e029b4e",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:50017ef0b645c99aaa5e1917549ee3a91361d8cdee63e733e770e46a97f0382f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 5,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:be3ba1ce1e843fd408a2223c626621fb5f77daef12bf91baaf536d93275fc9a3",
+    "at": "2026-11-04T17:44:42.494Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
