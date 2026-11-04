@@ -40,7 +40,7 @@ La verificación completa que la persona lanza desde `specty ui` (`runFull` en `
 
 ## Tareas
 
-- [ ] T1: La verificación completa de la UI toma el turno
+- [x] T1: La verificación completa de la UI toma el turno
   - files: packages/cli/src/server/runs.ts, packages/cli/test/server/runs-turn.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/runs-turn.test.ts test/server/runs.test.ts test/server/verify.test.ts && pnpm typecheck && pnpm lint

@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6d761fcbae11d5621c4bc126f65effa958c07c29",
+      "startedAt": "2026-11-04T08:52:07.393Z",
+      "doneAt": "2026-11-04T08:54:42.395Z",
+      "summary": "runFull muestra la ejecución enseguida y la corre con oneAtATime tras las anteriores del servidor (inTurn); el aviso de espera va a su salida y el comando se lanza en spawned dentro del turno"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
