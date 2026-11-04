@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261105-un-panel-de-sesiones-en-la-ui-con-su-consumo",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-un-panel-de-sesiones-en-la-ui-con-su-consumo",
+  "baseCommit": "88e445fd33157702c2f2e6db0e9d78d0f198744d",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:25aeb0589adcb06ae9a3b90992ef45b937c733080617bbcdd6ecc104e18893e0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:aa73ee7f46075e93c68802ce66a6c3301b4cf188226d51cb2735f9a87d7dee4e",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cce98246adf134916af3ca226c53c14246e1db2786aa961b0a8fac25c5823172",
+    "at": "2026-11-04T18:11:05.782Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
