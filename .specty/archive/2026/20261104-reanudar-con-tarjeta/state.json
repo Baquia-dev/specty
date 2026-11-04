@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261104-reanudar-con-tarjeta",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-reanudar-con-tarjeta",
+  "baseCommit": "c7e7ed0c3cf6644b5ecd5814ed1d072854b84f27",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e351fe4d159e4fe93c08a69dc6af738d573eaac7daadc1d99c6f093795a07ca0",
+    "at": "2026-11-04T06:47:27.596Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:decb223fda9239b61f345c0b40a9bc492c3d98043a7c8b2fce79ab7ff619db4a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ef0a13ae8ce1d792ac87bb3a54b2f7b7667c27d008245e0fd8fe940b1e587896",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:91fbb27b4efe8a70d3800f0e8f6270408f6b983729cba71d0173e32fdec49e9b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "def68ae59744814c49ead28b35c8194afcc20b08",
+      "attempts": 1,
+      "startedAt": "2026-11-04T06:50:16.413Z",
+      "doneAt": "2026-11-04T06:51:16.188Z",
+      "summary": "El código claude-resume de doctor con su texto en español y en inglés, y runsAtSessionStart con el origen (startup por defecto)",
+      "scopeExtra": [
+        "packages/cli/src/agents/claude-code.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "7c3d0aee53bb7fc7d55b6adaf7b6d794174b7029",
+      "attempts": 1,
+      "startedAt": "2026-11-04T06:51:16.789Z",
+      "doneAt": "2026-11-04T06:52:50.819Z",
+      "summary": "init escribe SessionStart con resume y doctor avisa con claude-resume si se dispara al empezar y no al reanudar; ARCHITECTURE §7. .claude/settings.json no se tocó: lo gestiona Specty",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-04T07:02:31.558Z",
+  "lockedTests": {
+    "packages/cli/src/agents/claude-code.test.ts": "sha256:4b297db8de9a95d9d286c6b2945e0c400fac187b5545b98525132ea2c4b607fb",
+    "packages/cli/test/setup.test.ts": "sha256:b5d5c3feee3d6b66c9ec0121a3a939f53102e21464f2ff5882d9a93a631540a3",
+    "packages/core/test/cards/doctor.test.ts": "sha256:b2f08fd98e386f7779118caf81fbdc3c6f18821eea28b2b880f516ed5195df92",
+    "packages/cli/test/session-resume.test.ts": "sha256:dbba3a62141cb814db866a9a58a9df1ae5fd20845137abdefb211f9dfd1f3222"
+  }
+}
