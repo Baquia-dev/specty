@@ -6,6 +6,13 @@
   "branch": "specty/20261104-conversacion-vuelve-a-su-carpeta",
   "baseCommit": "76e0eca1da6b2bc6fa42d0e1a0b555f88690dc3d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a74e3a9713fae5cba0fe900c6223137be47143b56ce8bf562f9ac8b5da28cf72",
+    "at": "2026-11-04T06:11:08.227Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a74e3a9713fae5cba0fe900c6223137be47143b56ce8bf562f9ac8b5da28cf72",
-    "at": "2026-11-04T06:11:08.227Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T06:15:25.095Z"
 }
