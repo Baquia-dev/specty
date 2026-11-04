@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e1ae6380ce6baf93c6bc8e59229550f04c75e46a",
+      "attempts": 1,
       "startedAt": "2026-11-04T13:43:42.148Z",
       "doneAt": "2026-11-04T13:46:44.858Z",
-      "summary": "Cola del turno en store/turn-queue.ts, por orden de llegada (se descartan los que murieron o no renuevan en 30 s); oneAtATime hace cola salvo si ya tiene el turno, avisa una vez con cuántos esperan delante y nunca corre sin turno"
+      "summary": "Cola del turno en store/turn-queue.ts, por orden de llegada (se descartan los que murieron o no renuevan en 30 s); oneAtATime hace cola salvo si ya tiene el turno, avisa una vez con cuántos esperan delante y nunca corre sin turno",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ea8f9481425b13916e494ac58ce74bdf48581be8",
+      "startedAt": "2026-11-04T13:46:46.874Z",
+      "doneAt": "2026-11-04T13:49:04.092Z",
+      "summary": "runLive acepta onStart, que llama justo antes de lanzar el comando; accept toma de ahí el inicio de change.verified, así que la espera del turno de otra sesión no cuenta como tiempo de la verificación"
     }
   },
   "pending": {

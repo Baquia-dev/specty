@@ -66,7 +66,7 @@ Hoy `oneAtATime` (`flow/full-verification.ts`) espera el turno de la verificaci�
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/flow/full-verification.test.ts test/close-turn.test.ts test/server/runs-turn.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: fix
-- [ ] T3: El tiempo de la verificación completa de accept empieza con su turno
+- [x] T3: El tiempo de la verificación completa de accept empieza con su turno
   - files: packages/cli/src/flow/live-run.ts, packages/cli/src/commands/accept.ts, packages/cli/test/accept-turn-time.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-turn-time.test.ts test/accept-live.test.ts && pnpm typecheck && pnpm lint && pnpm knip
