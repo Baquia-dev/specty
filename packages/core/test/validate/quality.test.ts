@@ -224,4 +224,29 @@ describe("the type check under contract", () => {
     expect(warned(STANDARD, { config: required, typecheck: TYPES })).toEqual([]);
     expect(warned(STANDARD, { config: contract })).toEqual([]);
   });
+
+  it("P69: an empty verify.full or type check command does not count as run", () => {
+    const empty = withConfig({
+      policy: { tests: "contract" },
+      verify: { ...DEFAULT_CONFIG.verify, full: "" },
+    });
+    expect(warned(STANDARD, { config: empty, typecheck: TYPES })).toEqual(["task-no-typecheck:T2"]);
+    expect(warned(STANDARD, { config: contract, typecheck: "" })).toEqual([]);
+  });
+
+  it("P70: does not warn when the last code task is already done, as in an adjustment", () => {
+    const adjusting = { phase: "adjusting", config: contract, typecheck: TYPES } as const;
+    expect(warned(STANDARD, { ...adjusting, doneTasks: new Set(["T1", "T2"]) })).toEqual([]);
+    expect(warned(STANDARD, { ...adjusting, doneTasks: new Set(["T1"]) })).toEqual([
+      "task-no-typecheck:T2",
+    ]);
+  });
+
+  it("P71: warns on a quick change too, and not while closing", () => {
+    const quick = fixture("quick.en.md");
+    expect(warned(quick, { config: contract, typecheck: "pnpm typecheck" })).toEqual([
+      "task-no-typecheck:T1",
+    ]);
+    expect(warned(STANDARD, { phase: "closing", config: contract, typecheck: TYPES })).toEqual([]);
+  });
 });
