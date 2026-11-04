@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9e6a9cfb06bbf72eab9af1efe27369bc282e6097",
+      "attempts": 1,
       "startedAt": "2026-11-04T18:12:22.378Z",
       "doneAt": "2026-11-04T18:13:01.419Z",
-      "summary": "core: SessionView en memory/sessions.ts, exportada como tipo en index.ts y light.ts"
+      "summary": "core: SessionView en memory/sessions.ts, exportada como tipo en index.ts y light.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3eea549eef19b713597eddbd03cd83b1760be64c",
+      "startedAt": "2026-11-04T18:13:01.883Z",
+      "doneAt": "2026-11-04T18:17:01.917Z",
+      "summary": "GET /api/sessions (server/sessions.ts): cada conversación de activity/ con su carpeta relativa, el cambio abierto de esa carpeta, sus pasos y si sigue viva, de la más reciente a la más antigua; sessionTotals (flow/usage.ts) suma tokens y coste de cada sesión de Claude Code con un informe de ccusage"
     }
   },
   "pending": {
