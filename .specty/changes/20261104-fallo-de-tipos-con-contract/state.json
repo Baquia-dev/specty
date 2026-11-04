@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "982c4fb05f60bdf22bb227729f606dbe9a6a0c93",
+      "attempts": 1,
       "startedAt": "2026-11-04T06:37:58.731Z",
       "doneAt": "2026-11-04T06:39:30.150Z",
-      "summary": "Regla checkTypecheck (aviso task-no-typecheck): con contract, avisa si la verificación de la última tarea de código, como la ejecuta task done, no contiene la comprobación de tipos del proyecto (ValidationContext.typecheck) ni verify.full."
+      "summary": "Regla checkTypecheck (aviso task-no-typecheck): con contract, avisa si la verificación de la última tarea de código, como la ejecuta task done, no contiene la comprobación de tipos del proyecto (ValidationContext.typecheck) ni verify.full.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fd3151ebd97d9b305413ee5989cfd969a688917a",
+      "startedAt": "2026-11-04T06:39:30.752Z",
+      "doneAt": "2026-11-04T06:39:55.075Z",
+      "summary": "La tarjeta del ajuste, en «CÓMO CLASIFICARLA», manda un fallo solo de tipos, lint o formato a una tarea type: refactor con ac: — y el comando que falló en su verify, sin test en rojo, en español y en inglés."
     }
   },
   "pending": {

@@ -58,7 +58,7 @@ Resuelve P6. Con `policy.tests: contract`, `task done` no ejecuta la comprobaci√
   - files: packages/core/src/validate/quality.ts, packages/core/src/validate/index.ts, packages/core/src/validate/context.ts, packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/validate/quality.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/quality.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: La tarjeta del ajuste manda un fallo solo de tipos a un refactor
+- [x] T2: La tarjeta del ajuste manda un fallo solo de tipos a un refactor
   - files: packages/core/src/cards/work.ts, packages/core/test/cards/adjusting.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/adjusting.test.ts && pnpm typecheck && pnpm lint && pnpm sources
