@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-cada-subagente-de-codex-trabaja-en-la-carpeta",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-cada-subagente-de-codex-trabaja-en-la-carpeta",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 1,
@@ -51,6 +51,10 @@
     "T": 2,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T12:51:24.552Z"
+  "lockedTests": {
+    "packages/cli/test/codex-e2e.test.ts": "sha256:520fda9b59efa63ad3cbdf2c69bf64982e65a01cd142a07e048db91f97a0e48c",
+    "packages/cli/test/fake-responses.ts": "sha256:c5605a193a327a5b6cadf7bb2f1d65e63a0a1c21728cc60e7c19ef133090203d",
+    "packages/core/test/capabilities.test.ts": "sha256:41e36730ba645269271f4335a2db12497784ccf2c07cda57d2c40872e2425b4f",
+    "packages/cli/test/codex-subagents.test.ts": "sha256:2cf2c198996ba7f8d492d69bb946c634e9bb88fb937442f9189df1062610e70f"
+  }
 }
