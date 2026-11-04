@@ -6,6 +6,13 @@
   "branch": "specty/20261105-un-panel-de-sesiones-en-la-ui-con-su-consumo",
   "baseCommit": "88e445fd33157702c2f2e6db0e9d78d0f198744d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cce98246adf134916af3ca226c53c14246e1db2786aa961b0a8fac25c5823172",
+    "at": "2026-11-04T18:11:05.782Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -35,12 +42,6 @@
     "AC": 2,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:cce98246adf134916af3ca226c53c14246e1db2786aa961b0a8fac25c5823172",
-    "at": "2026-11-04T18:11:05.782Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T18:12:20.521Z"
 }
