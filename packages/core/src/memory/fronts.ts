@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-import { parse as parseYaml, stringify } from "yaml";
+import { stringify } from "yaml";
 import * as z from "zod";
 import { isOpenEntry, type MemoryEntry, parseEntryId } from "./entries";
+import { frontmatterOf } from "./frontmatter";
 
 // A front of work of Specty's memory (formats.md §1, ADR 0016): a markdown file of its branch,
 // `fronts/<name>.md`, with the pending items and improvements it holds, in the order they go.
@@ -33,8 +34,6 @@ const FrontSchema = z.strictObject({
   items: z.array(Text),
 });
 
-const FRONTMATTER = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/;
-
 /** Whether `name` can name a front: letters without accents, digits, `-` or `_`, up to 40. */
 export function isFrontName(name: string): boolean {
   return NAME.test(name);
@@ -42,10 +41,10 @@ export function isFrontName(name: string): boolean {
 
 /** The front a `fronts/<name>.md` file holds; undefined when it is not a valid one. */
 export function parseFront(markdown: string): Front | undefined {
-  const [, raw, body] = FRONTMATTER.exec(markdown.replaceAll("\r\n", "\n")) ?? [];
-  if (raw === undefined) return undefined;
-  const parsed = FrontSchema.safeParse(loadYaml(raw));
-  const text = (body ?? "").trim();
+  const read = frontmatterOf(markdown);
+  if (read === undefined) return undefined;
+  const parsed = FrontSchema.safeParse(read.data);
+  const text = read.body;
   if (!parsed.success || text.length === 0) return undefined;
   const { name, created, origin, paths, items } = parsed.data;
   return {
@@ -129,12 +128,4 @@ export function assignToFront(
     moved.push({ front: front.name, ids: leaving });
   }
   return { fronts: changed, moved };
-}
-
-function loadYaml(raw: string): unknown {
-  try {
-    return parseYaml(raw);
-  } catch {
-    return undefined;
-  }
 }
