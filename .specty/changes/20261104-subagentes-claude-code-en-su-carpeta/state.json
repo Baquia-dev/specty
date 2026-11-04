@@ -6,6 +6,13 @@
   "branch": "specty/20261104-subagentes-claude-code-en-su-carpeta",
   "baseCommit": "cb6838409f3dba5834c2ee9722cae08987438784",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:96dbc6573af0aaf8dd77721478436ff20ba0788725a0f4911039a79019d74e06",
+    "at": "2026-11-04T09:48:47.262Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -44,12 +51,6 @@
     "T": 3,
     "R": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:96dbc6573af0aaf8dd77721478436ff20ba0788725a0f4911039a79019d74e06",
-    "at": "2026-11-04T09:48:47.262Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T10:09:54.156Z"
 }
