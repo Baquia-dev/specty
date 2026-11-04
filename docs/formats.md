@@ -245,6 +245,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - Un criterio no tiene un resultado observable o usa términos vagos ("rápido", "correctamente", "adecuado"…).
 - Una tarea tiene más archivos de los recomendados, o su tarjeta supera el presupuesto de contexto.
 - Una tarea de código no toca tests, si la política es `recommended`.
+- Con `contract`, la verificación de la última tarea de código de un cambio `standard` o `quick` (`feat`, `fix`, `refactor` o `perf`, en el orden de la spec) no ejecuta la comprobación de tipos del proyecto, la que usa `specty check` (`checks.commands.typecheck` o la que detecta del stack), ni `verify.full`. Cuenta como la ejecuta `task done`, con `verify.quick` delante. `task done` no ejecuta los comandos del proyecto en una tarea con verificación, así que un fallo de tipos solo saldría al aceptar; las tareas anteriores no lo necesitan, porque todos los tests se escriben antes que ellas.
 
 ### Forma canónica y hash
 

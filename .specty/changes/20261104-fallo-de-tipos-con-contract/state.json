@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-fallo-de-tipos-con-contract",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-fallo-de-tipos-con-contract",
   "baseCommit": "2950e27c26894203e230bc0b9164829ece6c2e6c",
   "revision": 2,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fd3151ebd97d9b305413ee5989cfd969a688917a",
+      "attempts": 1,
       "startedAt": "2026-11-04T06:39:30.752Z",
       "doneAt": "2026-11-04T06:39:55.075Z",
-      "summary": "La tarjeta del ajuste, en «CÓMO CLASIFICARLA», manda un fallo solo de tipos, lint o formato a una tarea type: refactor con ac: — y el comando que falló en su verify, sin test en rojo, en español y en inglés."
+      "summary": "La tarjeta del ajuste, en «CÓMO CLASIFICARLA», manda un fallo solo de tipos, lint o formato a una tarea type: refactor con ac: — y el comando que falló en su verify, sin test en rojo, en español y en inglés.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dd18f44a3442fbeb745579872136638ca73cfe45",
+      "startedAt": "2026-11-04T06:39:55.528Z",
+      "doneAt": "2026-11-04T06:40:55.093Z",
+      "summary": "propose pasa a la validación, solo con contract, la comprobación de tipos del proyecto (projectCommands de check/commands.ts, ahora exportada, sobre el stack detectado); formats.md §2 documenta el aviso."
     }
   },
   "pending": {

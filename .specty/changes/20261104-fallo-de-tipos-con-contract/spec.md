@@ -62,7 +62,7 @@ Resuelve P6. Con `policy.tests: contract`, `task done` no ejecuta la comprobaci�
   - files: packages/core/src/cards/work.ts, packages/core/test/cards/adjusting.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/adjusting.test.ts && pnpm typecheck && pnpm lint && pnpm sources
-- [ ] T3: propose avisa con la comprobación de tipos que detecta, y la documentación
+- [x] T3: propose avisa con la comprobación de tipos que detecta, y la documentación
   - files: packages/cli/src/flow/analysis.ts, packages/cli/src/check/commands.ts, packages/cli/test/typecheck-warning.test.ts, docs/formats.md
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/typecheck-warning.test.ts && pnpm typecheck && pnpm lint && pnpm knip
