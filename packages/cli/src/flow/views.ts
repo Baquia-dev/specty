@@ -19,7 +19,7 @@ import { readComments } from "../store/comments";
 import { readMemory } from "../store/memory";
 import { acceptanceFacts } from "./acceptance";
 import { type Audit, carriedOf, dataOf, readAudit } from "./carried";
-import { sliceViews } from "./epic";
+import { epicSlices } from "./epic";
 import { closingRemarks } from "./review-remarks";
 import { listed } from "./shared";
 import { taskViews } from "./task-views";
@@ -54,7 +54,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
     ...integrationView(state),
     ...notesOf(audit),
     ...(await pathEntriesOf(session, filesAtHand(state.phase, spec, active))),
-    ...(state.kind === "epic" ? { slices: await sliceViews(session, change, spec) } : {}),
+    ...(state.kind === "epic" ? { slices: await epicSlices(session, change, spec) } : {}),
     ...(await glossaryView(session)),
   };
 }

@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "id": "20261104-la-tarjeta-de-una-epica-reparte-sus-cortes",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-la-tarjeta-de-una-epica-reparte-sus-cortes",
+  "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a5c587f96d9f7fee4cd7baa59eb47d109e3e3bad521e3725910321221f94cac8",
+    "at": "2026-11-04T12:38:42.744Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0447e500e14cb0711aa1c81db8db3f5a866de32984de1b9f8afa749331ba4eb7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:5c49f60cbfd8a7543a72e8f7aaa1be2b9f935c1f9d6349041351744d49f9977d",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:8ca7ae51de8ede87a5602e42a8aa0fd31b9b68f1b12f55806c9d1352c4652535",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:dd78187e757bd5f7145fb0b6abe498128c4a35e14a09abf8f00e3dc72468eccf",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:02eadc08f73bfd758a0a0d8d368d010d7eaec76782daf2517f8c3ec8a3d97c67",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "831cea4471e9a3bc27fb037ce4493656b87efc49",
+      "attempts": 1,
+      "startedAt": "2026-11-04T12:43:47.266Z",
+      "doneAt": "2026-11-04T12:45:42.083Z",
+      "summary": "La tarjeta de una épica, si la herramienta reparte cortes en subagentes y subagents no lo apaga, trae un encargo por corte listo o huérfano y pide lanzarlos en paralelo; si no, es la de hoy. CardContext gana subagents y el hijo de SliceView, orphan. ARCHITECTURE §5 y §7.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "20f41d4b9eb0aa03b2facd34c67ec76dba894758",
+      "attempts": 1,
+      "startedAt": "2026-11-04T12:45:42.835Z",
+      "doneAt": "2026-11-04T12:47:56.842Z",
+      "summary": "La clave subagents de config.yaml, true por defecto y booleana: la CLI la pasa a las tarjetas, y con false la épica no reparte sus cortes. Documentada en formats §6.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "22817d6a79a5a0e057b60ba45992a9512df86ce4",
+      "attempts": 1,
+      "startedAt": "2026-11-04T12:47:58.719Z",
+      "doneAt": "2026-11-04T12:49:27.963Z",
+      "summary": "El freno de duplicados de new no compara un corte con los cambios abiertos de otros cortes de su épica, que se parecen a propósito: varios subagentes crean a la vez los suyos. ARCHITECTURE §6.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "83fa00fb48626c4fb8b02758d03525183600dc39",
+      "attempts": 1,
+      "startedAt": "2026-11-04T12:49:29.020Z",
+      "doneAt": "2026-11-04T12:51:31.358Z",
+      "summary": "La vista de una épica marca sus cortes en curso huérfanos (epicSlices, con openChanges de status) para que la tarjeta dé el encargo de retomarlos; sliceViews deja de exportarse. ARCHITECTURE §10 y §16.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 9,
+    "T": 4,
+    "R": 4
+  },
+  "closingSubmittedAt": "2026-11-04T13:03:09.090Z",
+  "lockedTests": {
+    "packages/core/test/cards/budget.test.ts": "sha256:1909f3076c48cbb8f380b1f0c3b01ea55c304e9460d9d5b8241f2a8339f8974c",
+    "packages/core/test/cards/epic.test.ts": "sha256:0f8cdd51abd9e974f79fa0f104a7a05582eb82db0c35b9ba620e3bc2ee7151c1",
+    "packages/core/test/schema/schema.test.ts": "sha256:a75af5e412d46111f33f0c64f31d079354588a26444d1f2517426da08e871e31",
+    "packages/cli/test/epic-subagents.test.ts": "sha256:998c1d7a524a5282e128a2cebf87558f5c83de149b7ee61da2b649f1ed66d7b0"
+  }
+}
