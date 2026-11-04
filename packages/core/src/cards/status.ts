@@ -30,6 +30,8 @@ export interface StatusEntry {
    * that folder stepped last in another one: its agent, and how many minutes ago.
    */
   readonly away?: { readonly tool: string; readonly ago: number };
+  /** Its folder is gone and its branch is still there: `specty restore` brings the folder back. */
+  readonly lost?: boolean;
 }
 
 /** A front of the memory in `status`: its open entries in order, and its live owner. */
@@ -139,7 +141,12 @@ function statusLine(entry: StatusEntry, t: Translate, command: string): string {
           ` · scope: ${entry.pendingScope.join(", ")}`,
         );
   const where = entry.folder === undefined ? "" : ` · ${t("en", "in")} ${entry.folder}`;
-  const held = entry.away === undefined ? heldBy(entry, t) : awayText(entry.away, t, command);
+  const held =
+    entry.lost === true
+      ? lostText(entry.id, t, command)
+      : entry.away === undefined
+        ? heldBy(entry, t)
+        : awayText(entry.away, t, command);
   return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}${where}${held === undefined ? "" : ` · ${held}`}`;
 }
 
@@ -171,6 +178,14 @@ function awayText(away: NonNullable<StatusEntry["away"]>, t: Translate, command:
   return t(
     `fuera de su carpeta: ${away.tool} dio su último paso en otra carpeta ${when}; en esa conversación, \`${command} next\` dice cómo volver`,
     `outside its folder: ${away.tool} last stepped in another folder ${when}; in that conversation, \`${command} next\` tells how to go back`,
+  );
+}
+
+/** The change's folder is gone: `restore` brings it back from its branch. */
+function lostText(id: string, t: Translate, command: string): string {
+  return t(
+    `sin carpeta: se recupera desde su rama con \`${command} restore ${id}\``,
+    `no folder: \`${command} restore ${id}\` brings it back from its branch`,
   );
 }
 

@@ -10,6 +10,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Recibo** (`Receipt`): lo que deja Specty para que el pre-commit acepte su commit.
 - **Bloqueo** (`LockHolder`): qué comando está cambiando un cambio; uno a la vez.
 - **Cambio huérfano** (`orphan`): uno que espera al agente sin que ninguna sesión trabaje en él.
+- **Cambio sin carpeta** (`lost`, `specty restore`): uno abierto cuya carpeta se borró o git podó, y que sigue en su rama, desde la que se recupera.
 - **Entrada de la memoria** (`MemoryEntry`): un pendiente, una mejora, un recordatorio o una decisión, con id `Pn` o `Dn`.
 - **Memoria de Specty** (`specty memory`): las entradas de la rama `specty-memory`, que todas las sesiones y carpetas ven.
 - **Lección** (`lesson`): una entrada de la memoria con lo que un agente aprendió de unas rutas del código, que siempre las lleva.

@@ -53,7 +53,17 @@ export async function markBranch(git: Git, branch: string, id: string): Promise<
 
 /** The branches `markBranch` tied to a change; git exits with 1 when there is none. */
 export async function markedBranches(git: Git): Promise<string[]> {
+  return (await markedChanges(git)).map(({ branch }) => branch);
+}
+
+/** Each branch `markBranch` tied to a change, with that change's id. */
+export async function markedChanges(
+  git: Git,
+): Promise<{ readonly branch: string; readonly id: string }[]> {
   const marks = await git.run(["config", "--get-regexp", "^branch\\..*\\.specty$"]);
   if (marks.code !== 0) return [];
-  return marks.stdout.split("\n").flatMap((line) => /^branch\.(.+)\.specty /.exec(line)?.[1] ?? []);
+  return marks.stdout.split("\n").flatMap((line) => {
+    const [, branch, id] = /^branch\.(.+)\.specty (\S+)$/.exec(line.trim()) ?? [];
+    return branch === undefined || id === undefined ? [] : [{ branch, id }];
+  });
 }

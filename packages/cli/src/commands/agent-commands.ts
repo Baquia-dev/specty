@@ -21,6 +21,7 @@ import { type NewOptions, newChange } from "./new";
 import { next } from "./next";
 import { noteCommand } from "./note";
 import { propose } from "./propose";
+import { restore } from "./restore";
 import { retro } from "./retro";
 import { retroInto } from "./retro-into";
 import { review } from "./review";
@@ -49,6 +50,7 @@ export function agentCommands(
   noteCommand(program, run);
   messageCommand(program, run);
   enterCommand(program, run);
+  restoreCommand(program, run);
   newCommand(program, run, env, refuse);
   importCommand(program, run);
   program
@@ -121,6 +123,15 @@ function enterCommand(program: Command, run: Run): void {
     .description("go on in a change's folder from this conversation")
     .argument("<id>")
     .action((id: string) => run((session) => enter(session, id))());
+}
+
+/** `specty restore <id>`: brings back an open change's lost folder from its branch. */
+function restoreCommand(program: Command, run: Run): void {
+  program
+    .command("restore")
+    .description("bring back an open change's lost folder from its branch")
+    .argument("<id>")
+    .action((id: string) => run((session) => restore(session, id))());
 }
 
 /** `specty new`, which refuses an unknown kind or type before any session opens. */
