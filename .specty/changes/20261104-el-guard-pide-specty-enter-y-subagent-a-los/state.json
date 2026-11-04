@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-el-guard-pide-specty-enter-y-subagent-a-los",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-el-guard-pide-specty-enter-y-subagent-a-los",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 2,
@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a154689711ad69f961eaff1c7a78eccdb3bbea52",
+      "attempts": 1,
       "startedAt": "2026-11-04T12:31:26.509Z",
       "doneAt": "2026-11-04T12:32:08.781Z",
-      "summary": "SpectyCalls gana news: un elemento por cada specty new, en orden, con si lleva --subagent; analyzeShell los junta como enters y resolves."
+      "summary": "SpectyCalls gana news: un elemento por cada specty new, en orden, con si lleva --subagent; analyzeShell los junta como enters y resolves.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2d02afa176cf79b053ade2e333e3798f787f509e",
+      "startedAt": "2026-11-04T12:32:09.151Z",
+      "doneAt": "2026-11-04T12:34:46.634Z",
+      "summary": "El guard pide a un subagente de Claude Code specty enter en vez de EnterWorktree y repetir new con --subagent: enforce/subagents.ts lo decide antes de juzgar la acción, con los textos es/en en core."
     }
   },
   "pending": {

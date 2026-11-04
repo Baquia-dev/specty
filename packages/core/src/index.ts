@@ -154,6 +154,8 @@ export { analyzeShell, type ShellAnalysis } from "./guard/shell";
 export {
   type ForeignPath,
   nativeEnterDenial,
+  subagentEnterDenial,
+  subagentNewDenial,
   type Unreachable,
   unreachableEnterDenial,
 } from "./guard/worktrees";

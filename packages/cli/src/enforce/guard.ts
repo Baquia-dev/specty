@@ -35,6 +35,7 @@ import {
   treeSnapshot,
   withoutSpecty,
 } from "./shell-snapshot";
+import { subagentDenial } from "./subagents";
 import { worktreeHook } from "./worktree-hooks";
 
 const ALLOW: Verdict = { allow: true };
@@ -197,11 +198,14 @@ async function leave(
 async function beforeAction(call: Call): Promise<GuardReply> {
   const { agent, environment, session, event, cwd } = call;
   const raw = agent.action(event);
+  const ctx = await guardContext(session);
+  // A subagent must neither move nor bind the session that launched it (ARCHITECTURE §10).
+  const asked = await subagentDenial(call, raw, ctx);
+  if (asked !== undefined) return agent.reply(verdict(asked, session), "before");
   const action =
     raw.kind === "enter"
       ? await enterAction(environment, session, event, raw.request, cwd)
       : await resolveAction(call, raw);
-  const ctx = await guardContext(session);
   const entry = raw.kind === "shell" ? await enterCommand(call, raw.command, ctx) : undefined;
   const judged = entry?.decision.allow === false ? entry.decision : decideGuard(action, ctx);
   // One front per conversation, and none another one holds (ADR 0016).

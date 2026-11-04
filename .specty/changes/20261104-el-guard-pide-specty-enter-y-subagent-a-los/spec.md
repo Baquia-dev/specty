@@ -58,7 +58,7 @@ Desde C1, un subagente de Claude Code entra con `specty enter` en la carpeta de 
   - files: packages/core/src/guard/specty-calls.ts, packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts
-- [ ] T2: El guard pide `specty enter` y `--subagent` a un subagente de Claude Code
+- [x] T2: El guard pide `specty enter` y `--subagent` a un subagente de Claude Code
   - files: packages/core/src/guard/worktrees.ts, packages/core/src/index.ts, packages/cli/src/enforce/subagents.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/subagents.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/subagents.test.ts && pnpm typecheck
