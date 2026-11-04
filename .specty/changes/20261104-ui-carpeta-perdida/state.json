@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-ui-carpeta-perdida",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-ui-carpeta-perdida",
   "baseCommit": "4f68f6e03188ee8cfe1d981c6433ca374dcdf161",
   "revision": 1,
@@ -55,6 +55,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T09:36:39.733Z"
+  "lockedTests": {
+    "packages/cli/test/server-restore.test.ts": "sha256:a4849b12d52319f057950505d37c8dfa54aa366d71c0580e68c74a80a9df24e0",
+    "packages/ui/src/change/lost-folder.test.ts": "sha256:0ce5efcbe24b09423920476fd9cdf255e11b57aeb0a4551f3ea72fd35795379e",
+    "packages/ui/src/data/lost-folder.test.ts": "sha256:bdc3594f5ac7507bce4f3adf53ece538df801c87592aef09291e18783463cf30"
+  }
 }
