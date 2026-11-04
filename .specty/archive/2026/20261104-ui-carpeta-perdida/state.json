@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-ui-carpeta-perdida",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-ui-carpeta-perdida",
   "baseCommit": "4f68f6e03188ee8cfe1d981c6433ca374dcdf161",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:bdc7d7ee885fd6eb83231659199f3286d7109c6869cf65f00f803d6be77bc1fe",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "14d81e37793251e2a8190dccf0b363760d3a5afa",
+      "attempts": 1,
       "startedAt": "2026-11-04T09:43:19.799Z",
       "doneAt": "2026-11-04T09:47:44.574Z",
-      "summary": "La marca Sin carpeta en la fila de la Bandeja, el panel sp-lost-folder (qué pasó, Recuperar carpeta con su aviso, el comando y el motivo en solo lectura) en lugar de las pestañas, y ARCHITECTURE §15"
+      "summary": "La marca Sin carpeta en la fila de la Bandeja, el panel sp-lost-folder (qué pasó, Recuperar carpeta con su aviso, el comando y el motivo en solo lectura) en lugar de las pestañas, y ARCHITECTURE §15",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,9 +83,42 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-04T10:28:25.590Z",
   "lockedTests": {
     "packages/cli/test/server-restore.test.ts": "sha256:a4849b12d52319f057950505d37c8dfa54aa366d71c0580e68c74a80a9df24e0",
     "packages/ui/src/change/lost-folder.test.ts": "sha256:0ce5efcbe24b09423920476fd9cdf255e11b57aeb0a4551f3ea72fd35795379e",
     "packages/ui/src/data/lost-folder.test.ts": "sha256:bdc3594f5ac7507bce4f3adf53ece538df801c87592aef09291e18783463cf30"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "cb6838409f3dba5834c2ee9722cae08987438784",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/flow/lost.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/test/server-restore.test.ts",
+      "packages/cli/test/server/runs-turn.test.ts",
+      "packages/ui/package.json",
+      "packages/ui/src/change/change-page.ts",
+      "packages/ui/src/change/lost-folder.test.ts",
+      "packages/ui/src/change/lost-folder.ts",
+      "packages/ui/src/data/lost-folder.test.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/data/views.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "pnpm-lock.yaml",
+      "pnpm-workspace.yaml"
+    ],
+    "at": "2026-11-04T10:01:36.524Z",
+    "resolved": {
+      "commit": "81d65df",
+      "at": "2026-11-04T10:22:16.200Z"
+    }
   }
 }

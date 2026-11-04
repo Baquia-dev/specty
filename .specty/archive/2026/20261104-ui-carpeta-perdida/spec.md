@@ -78,3 +78,24 @@ Desde el corte C2, la terminal ve los cambios abiertos cuya carpeta se perdió y
 
 - R1: Leer las ramas en cada lectura de los cambios hace más lento el servidor con muchas ramas. Mitigación: es la misma lectura que `status` (un proceso de git para todas las ramas marcadas sin carpeta), y el servidor solo vuelve a leer cuando cambian los archivos.
 - R2: Una pantalla que espera las carpetas de los cambios recibe uno sin carpeta. Mitigación: `folder` ya es opcional en el registro de la UI, y la página de un cambio sin carpeta no abre sus pestañas.
+
+## Cierre
+
+### Resumen
+
+La UI ya ve los cambios abiertos cuya carpeta se perdió y los recupera. `GET /api/changes` los trae con la spec y el estado de la punta de su rama, `lost: true` y sin carpeta. La Bandeja los marca «Sin carpeta». Su página muestra, en lugar de las pestañas, qué pasó, el botón «Recuperar carpeta» y el comando `specty restore <id>`. El botón llama a `POST /api/changes/<id>/restore`, que ejecuta el mismo `restore` que el comando, con la seguridad de las demás acciones y en su cola, y la UI avisa del resultado o del motivo. En un servidor de solo lectura el botón queda desactivado y la página dice por qué. Cubre los AC11 y AC12 de la épica `20261104-sesiones-con-su-carpeta`.
+
+### Desviaciones
+
+- El corte C3 se reparte en dos cambios, como C1 y C2: este lleva los cambios sin carpeta y su recuperación; la marca de los cambios que esperan al agente sin una conversación en su carpeta, con cómo retomarlos con cada agente (AC13 de la épica), va en el cambio de la épica que sigue.
+- La primera verificación completa tras incorporar main falló y la repetición pasó entera sin tocar nada: un test intermitente con la máquina cargada, como los que ya anota la memoria.
+
+### Decisiones
+
+- El registro de un cambio sin carpeta no lleva `folder` (ahora opcional en el servidor), y su fase empieza, para la UI, con el último commit de su rama.
+- La acción de recuperar va por su propia ruta y no por `runAction`, que busca la carpeta del cambio para actuar en ella.
+- El motivo de solo lectura se muestra también como texto bajo el botón, no solo en su tooltip.
+
+### Pendientes
+
+- Ninguno
