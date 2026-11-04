@@ -6,6 +6,13 @@
   "branch": "specty/20261104-ui-carpeta-perdida",
   "baseCommit": "4f68f6e03188ee8cfe1d981c6433ca374dcdf161",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bdc7d7ee885fd6eb83231659199f3286d7109c6869cf65f00f803d6be77bc1fe",
+    "at": "2026-11-04T09:32:42.282Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:bdc7d7ee885fd6eb83231659199f3286d7109c6869cf65f00f803d6be77bc1fe",
-    "at": "2026-11-04T09:32:42.282Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T09:36:39.733Z"
 }
