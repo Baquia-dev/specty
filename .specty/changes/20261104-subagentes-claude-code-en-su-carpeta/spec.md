@@ -73,7 +73,7 @@ Hoy el guard reconoce una conversación por el `session_id` de sus hooks, y los 
   - files: packages/cli/src/agents/claude-code.ts, packages/cli/src/enforce/actions.ts, packages/cli/src/enforce/sessions.ts, packages/cli/src/enforce/enter-command.ts, packages/cli/test/subagents.test.ts, packages/cli/test/agent-e2e.test.ts, packages/cli/test/fake-model.ts
   - ac: AC1, AC2, AC3, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/subagents.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/agent-e2e.test.ts -t AC7
-- [ ] T2: `specty new --subagent` crea el cambio sin atar a quien lo ejecuta
+- [x] T2: `specty new --subagent` crea el cambio sin atar a quien lo ejecuta
   - files: packages/cli/src/commands/new.ts, packages/cli/src/commands/agent-commands.ts, packages/core/src/cards/new.ts, packages/cli/test/subagents.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/subagents.test.ts
