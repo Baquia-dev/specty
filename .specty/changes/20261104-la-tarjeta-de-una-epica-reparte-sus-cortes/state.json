@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "20f41d4b9eb0aa03b2facd34c67ec76dba894758",
+      "attempts": 1,
       "startedAt": "2026-11-04T12:45:42.835Z",
       "doneAt": "2026-11-04T12:47:56.842Z",
-      "summary": "La clave subagents de config.yaml, true por defecto y booleana: la CLI la pasa a las tarjetas, y con false la épica no reparte sus cortes. Documentada en formats §6."
+      "summary": "La clave subagents de config.yaml, true por defecto y booleana: la CLI la pasa a las tarjetas, y con false la épica no reparte sus cortes. Documentada en formats §6.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "22817d6a79a5a0e057b60ba45992a9512df86ce4",
+      "startedAt": "2026-11-04T12:47:58.719Z",
+      "doneAt": "2026-11-04T12:49:27.963Z",
+      "summary": "El freno de duplicados de new no compara un corte con los cambios abiertos de otros cortes de su épica, que se parecen a propósito: varios subagentes crean a la vez los suyos. ARCHITECTURE §6."
     }
   },
   "pending": {

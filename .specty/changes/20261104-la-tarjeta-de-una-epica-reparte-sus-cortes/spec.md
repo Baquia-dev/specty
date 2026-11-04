@@ -76,7 +76,7 @@ Hoy la tarjeta de una épica aprobada propone empezar un corte cada vez, en la m
   - files: packages/core/src/schema/config.ts, packages/cli/src/session.ts, packages/core/test/schema/schema.test.ts
   - ac: AC3, AC9
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts && pnpm typecheck
-- [ ] T3: Los cortes de una épica no se frenan entre sí como duplicados
+- [x] T3: Los cortes de una épica no se frenan entre sí como duplicados
   - files: packages/cli/src/flow/duplicates.ts, packages/cli/test/epic-subagents.test.ts
   - ac: AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-subagents.test.ts -t AC7
