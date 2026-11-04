@@ -51,6 +51,7 @@ export type DiagnosticCode =
   | "criterion-unstructured"
   | "task-too-large"
   | "task-no-tests"
+  | "task-no-typecheck"
   | "file-reason-missing"
   | "size-near-split"
   | "possible-new-scope";
@@ -82,6 +83,7 @@ const WARNINGS: ReadonlySet<DiagnosticCode> = new Set<DiagnosticCode>([
   "criterion-unstructured",
   "task-too-large",
   "task-no-tests",
+  "task-no-typecheck",
   "file-reason-missing",
   "size-near-split",
   "possible-new-scope",
