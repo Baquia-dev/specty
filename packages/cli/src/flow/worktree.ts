@@ -85,6 +85,15 @@ async function excludeInClone(git: Git, line: string): Promise<void> {
 }
 
 /**
+ * Whether `git.root` is a worktree apart from the main folder, as a change's own is: Claude
+ * Code's session that moved into it leaves it before entering another or launching subagents.
+ */
+export async function apartFromMain(git: Git): Promise<boolean> {
+  const main = (await git.worktrees())[0]?.folder;
+  return main !== undefined && (await resolved(main)) !== (await resolved(git.root));
+}
+
+/**
  * Where the worktrees lived before ADR 0018, beside the main worktree: `init` and `uninstall` take
  * out of each tool's settings what Specty gave it there.
  */

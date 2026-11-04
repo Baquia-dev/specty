@@ -44,14 +44,26 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/cards/new.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "2cc48f6e9386493fc35f1a1aa2a35727cec7e817",
+      "attempts": 2,
       "startedAt": "2026-11-04T17:47:44.439Z",
       "doneAt": "2026-11-04T17:49:34.708Z",
-      "summary": "La tarjeta de una épica en su worktree pide ExitWorktree keep antes de lanzar los encargos; awayEpicCard da la tarjeta de la épica a su conversación fuera de su carpeta, y rejoinCard la usa mientras quedan cortes para los subagentes."
+      "summary": "La tarjeta de una épica en su worktree pide ExitWorktree keep antes de lanzar los encargos; awayEpicCard da la tarjeta de la épica a su conversación fuera de su carpeta, y rejoinCard la usa mientras quedan cortes para los subagentes.",
+      "scopeExtra": [
+        "packages/core/src/cards/new.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/new.ts",
+        "packages/cli/src/commands/new.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "0dad9e3eaeb158b45ff0ab219d6ca24c6d3964f8",
+      "startedAt": "2026-11-04T17:49:35.330Z",
+      "doneAt": "2026-11-04T17:54:42.084Z",
+      "summary": "specty next fuera de una épica aprobada lee su vista en su carpeta y la tarjeta la reparte desde allí; la vista dice si la épica vive en su worktree. Incluye AC6 de T3: new desde otra worktree pide ExitWorktree keep, porque la verificación de T2 corre su test."
     }
   },
   "pending": {

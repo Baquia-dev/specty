@@ -71,7 +71,7 @@ Con Claude Code, la sesión principal entra en la carpeta de la épica con `Ente
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/epic.ts, packages/core/src/cards/rejoin.ts, packages/core/test/cards/epic.test.ts, packages/core/test/cards/rejoin.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts test/cards/rejoin.test.ts test/cards/budget.test.ts && pnpm typecheck
-- [ ] T2: `specty next` le trae su épica a la conversación fuera de la carpeta de la épica
+- [x] T2: `specty next` le trae su épica a la conversación fuera de la carpeta de la épica
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/next.ts, packages/cli/test/session-return.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-return.test.ts test/epic-subagents.test.ts && pnpm typecheck
