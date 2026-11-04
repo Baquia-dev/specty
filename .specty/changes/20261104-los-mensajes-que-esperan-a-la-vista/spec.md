@@ -73,7 +73,7 @@ kind: standard
   - ac: —
   - verify: pnpm lint
   - type: docs
-- [ ] T5: El lint de la bandeja, que llegó con main
+- [x] T5: El lint de la bandeja, que llegó con main
   - files: packages/ui/src/inbox/inbox-row.ts
   - ac: —
   - verify: pnpm lint
