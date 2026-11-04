@@ -47,3 +47,22 @@ Specty solo sabe en qué conversación corre un comando suyo cuando el agente es
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Specty sabe en qué hilo de Codex corre un comando suyo por `CODEX_THREAD_ID`, como ya sabía la conversación de Claude Code por `CLAUDE_CODE_SESSION_ID` (`agentSession` en `agents/run.ts`). Así `specty next` le muestra a un hilo de Codex que tomó un frente solo las entradas libres de ese frente, en su orden, igual que la tarjeta que le da el guard al empezar. La documentación dice qué da cada agente: Cursor, Gemini CLI, OpenCode, Devin y Antigravity solo se lo dan a sus hooks, y allí `next` sigue mostrando la tarjeta de una conversación sin frente.
+
+### Desviaciones
+
+- La prueba E2E con Codex (AC3: el `CODEX_THREAD_ID` de un comando es el `session_id` de sus hooks) no se ejecutó aquí: Codex no está instalado y no se pudo instalar. Se salta sin `SPECTY_E2E_CODEX`.
+
+### Decisiones
+
+- Que `CODEX_THREAD_ID` sea el `session_id` de los hooks de Codex sale de su SDK, que reanuda un hilo con él, y de que los hooks mandan el id de la sesión, que es el hilo; la prueba E2E lo comprueba con Codex.
+- El consumo de un hilo de Codex sigue sin ir a la auditoría: `agentRun` es solo de Claude Code.
+
+### Pendientes
+
+- Ejecutar con Codex la prueba E2E de `CODEX_THREAD_ID` (`SPECTY_E2E_CODEX=<codex> pnpm --filter @baquia-dev/specty exec vitest run test/codex-e2e.test.ts`), junto con la de P105.
