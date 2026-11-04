@@ -91,3 +91,32 @@ Hoy la tarjeta de una épica aprobada propone empezar un corte cada vez, en la m
 - R2: Hasta P81, un subagente que use `EnterWorktree` o `new` sin `--subagent` movería a la sesión principal. Mitigación: el encargo trae los comandos exactos, y P81 va en otro cambio a la vez.
 - R3: Otros cambios abiertos a la vez (C6, C7, C8 y P81) tocan archivos cercanos. Mitigación: `propose` avisa de los archivos compartidos, y al cerrar los conflictos van a `specty integrate`.
 - R4: Si un subagente responde sin cerrar su corte y este sigue esperando al agente, el corte sale en curso, sin encargo, hasta que queda huérfano (60 minutos). Mitigación: su informe dice la fase y lo que falta, y la sesión principal se lo cuenta a la persona.
+
+## Cierre
+
+### Resumen
+
+- La tarjeta de una épica aprobada reparte sus cortes cuando la herramienta detectada tiene la capacidad «Cortes en subagentes» en «sí» (hoy, Claude Code) y `subagents` no está en `false`. Trae un encargo por cada corte listo o huérfano, también si solo hay uno, y su SIGUIENTE pide lanzar en paralelo, en un solo mensaje, un subagente por encargo con su texto tal cual, y volver a `specty next` en la épica cuando terminen.
+- El encargo de un corte listo pide, en 5 pasos: `specty new "<título>" --epic <épica> --slice <corte> --subagent`; `specty enter <id>`; empezar cada comando con `cd '<carpeta del cambio>' &&` y usar rutas absolutas; seguir `specty next` hasta cerrarlo, con `specty wait` cuando espere a la persona; y responder en tres líneas. El de un corte huérfano es el mismo desde `specty enter`, con su id y su carpeta, citada como la cita el guard.
+- Un corte en curso que lleva un subagente sale en curso, sin encargo; sin encargos y con cortes en curso, el SIGUIENTE pide esperar los informes, sin mandar a la sesión a la carpeta de ningún corte.
+- Sin herramienta que reparta, o con `subagents: false`, la tarjeta es la de hoy, y la de una feature suelta o un corte nunca pide subagentes.
+- `subagents` en `config.yaml`, `true` por defecto; la CLI marca los cortes huérfanos con la regla de `status` (`epicSlices`).
+- El freno de duplicados de `new` ya no compara un corte con los otros cortes de su épica: dos subagentes crean a la vez los cambios de cortes de títulos casi iguales (AC7).
+- Documentos: ARCHITECTURE §5, §6, §7, §10 y §16, formats §6 y «Encargo» en el glosario.
+
+### Desviaciones (respecto al plan)
+
+- `sliceViews` dejó de exportarse: desde que `views.ts` pasa por `epicSlices`, solo la usa `flow/epic.ts`, y knip la habría marcado.
+- No se tocaron ARCHITECTURE §4 ni §11, que el Diseño de la épica nombraba para el conjunto de sus cortes: lo de este corte no les afecta.
+
+### Decisiones
+
+- La tarjeta mira la capacidad en core (`AGENT_CAPABILITIES`) y no en la CLI: Codex, OpenCode y Cursor repartirán en cuanto sus cortes (C6, C7 y C8) la pongan en «sí», sin tocar la tarjeta.
+- El encargo no lleva `--request`: el corte ya trae su título, su `--epic` y su `--slice`. Con la misma petición, varios subagentes se frenaban entre sí como duplicados (hallazgo del coordinador, que este corte ya resolvía con T3).
+- Presupuesto: cada encargo son unos 150 tokens con títulos largos. El test fija una épica de 9 cortes con 6 listos, de 86 caracteres de título (el percentil 90 de las épicas archivadas), por debajo de 1.500 tokens; con más de 7 listos a la vez, la tarjeta pasaría, y se acepta porque la sesión la lee una vez por ronda y pasa cada encargo a su subagente.
+- R5 de la épica: 20 `specty new --subagent` simultáneos (5 rondas de 4, en un repositorio temporal) no chocaron en git, así que el encargo no pide crear los cambios en orden.
+
+### Pendientes
+
+- P94: un corte cuyo subagente ya respondió sin cerrarlo, y que espera al agente, sale en curso y sin encargo hasta quedar huérfano (60 minutos), y el SIGUIENTE pide esperar informes que ya llegaron.
+- P81 (en otro cambio): el guard debe bloquear a un subagente que use `EnterWorktree` o `specty new` sin `--subagent`, antes de usar en serio esta tarjeta.

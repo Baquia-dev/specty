@@ -5,6 +5,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Corte** (`Slice`): una parte de una épica que se entrega como un cambio propio, estructurado como un corte vertical de funcionalidad verificable de punta a punta.
 - **Épica**: un cambio sin tareas que avanza por sus cortes verticales; exige criterios observables y prohíbe capas técnicas horizontales, priorizando la redacción previa de specs para agentes en paralelo.
 - **Subagente** (`agent_id`): un agente que lanza la sesión para hacer parte de su trabajo; para el guard es una conversación propia, que entra con `specty enter` en la carpeta de un cambio y queda atada a ella.
+- **Encargo** (`briefOf`): el texto que la tarjeta de una épica da para un corte listo o huérfano, y que la sesión pasa tal cual a un subagente para que cree o retome su cambio y lo cierre.
 - **Carril** (`ChangeKind`): el tipo de cambio: quick, standard, spike, retro o epic.
 - **Ampliación** (`ScopeRequest`): pedir tocar un archivo fuera del alcance de la tarea.
 - **Incorporación** (`IntegrationState`): traer la rama destino al cambio al cerrarlo.

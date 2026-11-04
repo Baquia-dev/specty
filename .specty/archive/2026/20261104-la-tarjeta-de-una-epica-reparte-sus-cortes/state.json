@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-la-tarjeta-de-una-epica-reparte-sus-cortes",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-la-tarjeta-de-una-epica-reparte-sus-cortes",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:a5c587f96d9f7fee4cd7baa59eb47d109e3e3bad521e3725910321221f94cac8",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "83fa00fb48626c4fb8b02758d03525183600dc39",
+      "attempts": 1,
       "startedAt": "2026-11-04T12:49:29.020Z",
       "doneAt": "2026-11-04T12:51:31.358Z",
-      "summary": "La vista de una épica marca sus cortes en curso huérfanos (epicSlices, con openChanges de status) para que la tarjeta dé el encargo de retomarlos; sliceViews deja de exportarse. ARCHITECTURE §10 y §16."
+      "summary": "La vista de una épica marca sus cortes en curso huérfanos (epicSlices, con openChanges de status) para que la tarjeta dé el encargo de retomarlos; sliceViews deja de exportarse. ARCHITECTURE §10 y §16.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 4
   },
+  "closingSubmittedAt": "2026-11-04T13:03:09.090Z",
   "lockedTests": {
     "packages/core/test/cards/budget.test.ts": "sha256:1909f3076c48cbb8f380b1f0c3b01ea55c304e9460d9d5b8241f2a8339f8974c",
     "packages/core/test/cards/epic.test.ts": "sha256:0f8cdd51abd9e974f79fa0f104a7a05582eb82db0c35b9ba620e3bc2ee7151c1",
