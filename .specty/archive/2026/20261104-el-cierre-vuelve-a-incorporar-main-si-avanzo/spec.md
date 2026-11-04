@@ -50,3 +50,23 @@ El cierre toma el turno de la verificación completa antes de incorporar main, p
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Cuando main avanza mientras un cambio se integra (la espera del turno acabó en `verify.timeoutSec`, o alguien hizo un `specty init` o un commit a mano en la carpeta principal), el cierre ya no se queda en «main no avanzó»: `landRetrying` (`flow/land.ts`) hace lo que haría volver a ejecutar `specty close`, incorporar main otra vez con su verificación e integrar, hasta dos veces más. Lo usan `close`, su reintento y el `accept` del carril rápido. Si main sigue moviéndose, tras tres intentos lo dice como antes.
+
+### Desviaciones
+
+- La primera aceptación falló por los tests de la UI intermitentes dentro de `pnpm check` (P75 y la del worker de `embedded.test.ts` en la memoria); la suite de la UI pasó a mano y la segunda aceptación pasó sin cambiar nada.
+
+### Decisiones
+
+- Solo se reintenta cuando la rama del cambio ya no contiene main; otro fallo del avance rápido se dice como antes.
+- Si una nueva incorporación tiene conflictos o su verificación falla, el cierre se queda sin integrar, como hoy, y `specty close` lo explica.
+- `landChange` deja de exportarse: todos integran con `landRetrying`.
+
+### Pendientes
+
+Ninguno.
