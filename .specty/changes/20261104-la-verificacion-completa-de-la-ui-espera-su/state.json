@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-la-verificacion-completa-de-la-ui-espera-su",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-la-verificacion-completa-de-la-ui-espera-su",
   "baseCommit": "94963be409456e72963dbcd89bd9ab189f7a2af3",
   "revision": 1,
@@ -46,6 +46,7 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T08:52:04.691Z"
+  "lockedTests": {
+    "packages/cli/test/server/runs-turn.test.ts": "sha256:39c0de6e6948c8e282c83c958455526299eebfcad76667e67ea00b732b556b0b"
+  }
 }
