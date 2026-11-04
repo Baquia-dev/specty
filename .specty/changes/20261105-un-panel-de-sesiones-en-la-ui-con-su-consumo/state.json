@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-un-panel-de-sesiones-en-la-ui-con-su-consumo",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-un-panel-de-sesiones-en-la-ui-con-su-consumo",
   "baseCommit": "88e445fd33157702c2f2e6db0e9d78d0f198744d",
   "revision": 1,
@@ -42,6 +42,7 @@
     "AC": 2,
     "T": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T18:12:20.521Z"
+  "lockedTests": {
+    "packages/cli/test/server/sessions.test.ts": "sha256:c44c1de5ee9f648f5c53d1cb58075bb07918af05dab84cd54a9b0a10e88d46c8"
+  }
 }
