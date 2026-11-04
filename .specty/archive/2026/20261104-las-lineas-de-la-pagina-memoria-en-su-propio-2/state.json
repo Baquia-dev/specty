@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-las-lineas-de-la-pagina-memoria-en-su-propio-2",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-las-lineas-de-la-pagina-memoria-en-su-propio-2",
   "baseCommit": "6b1d2d1c5157371c66b4e459152d6a1adde1da4a",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "19fc1e0ec41c1e3965061cbd1b2e01e94935cb32",
+      "attempts": 1,
       "startedAt": "2026-11-04T07:42:56.973Z",
       "doneAt": "2026-11-04T07:43:53.924Z",
-      "summary": "entryLine, waitsFor, changeLine, heldBy y ago pasan a memory/memory-lines.ts como funciones puras con el traductor; la página las llama y baja a 284 líneas"
+      "summary": "entryLine, waitsFor, changeLine, heldBy y ago pasan a memory/memory-lines.ts como funciones puras con el traductor; la página las llama y baja a 284 líneas",
+      "scopeExtra": []
     }
   },
   "pending": {
