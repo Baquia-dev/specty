@@ -41,14 +41,30 @@ function waitsFor(entry: MemoryEntry, t: Translate): string[] {
   ];
 }
 
-/** Under a change: its id and kind, who it waits for, and who holds it or that it is orphaned. */
+/**
+ * Under a change: its id and kind, who it waits for, who holds it or that it is orphaned, and the
+ * messages waiting for its session.
+ */
 export function changeLine(change: StatusEntry, t: Translate): string {
   const waits = {
     agent: t("espera al agente", "waits for the agent"),
     human: t("espera tu decisión", "waits for your decision"),
     nobody: "—",
   }[change.waitingFor];
-  return [`${change.id} · ${change.kind}`, waits, heldBy(change, t)].join(" · ");
+  return [`${change.id} · ${change.kind}`, waits, heldBy(change, t), ...messages(change, t)].join(
+    " · ",
+  );
+}
+
+/** How many messages wait for the change's session; nothing without any. */
+function messages(change: StatusEntry, t: Translate): string[] {
+  const count = change.messages ?? 0;
+  if (count === 0) return [];
+  return [
+    count === 1
+      ? t("1 mensaje espera", "1 message waiting")
+      : t(`${count} mensajes esperan`, `${count} messages waiting`),
+  ];
 }
 
 function heldBy(change: StatusEntry, t: Translate): string {

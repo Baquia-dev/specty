@@ -20,6 +20,7 @@ import { readSpec, type StoredChange } from "../store/changes";
 import { liveHolds } from "../store/front-owners";
 import { readBindings } from "../store/local";
 import { readMemory } from "../store/memory";
+import { anyMessages, waitingCount } from "../store/messages";
 import { posixRelative } from "../store/paths";
 
 const MINUTE_MS = 60_000;
@@ -71,6 +72,8 @@ export async function openChanges(session: Session): Promise<StatusEntry[]> {
   const activity = await readActivity(session.git);
   const steps = await stepsByFolder(activity);
   const away = await awayByFolder(session, activity);
+  // Only when some message waits does it look at each change's folder of messages.
+  const counting = await anyMessages(session.git);
   return Promise.all(
     located.map(async ({ change, session: there, current }): Promise<StatusEntry> => {
       const { state } = change;
@@ -91,9 +94,16 @@ export async function openChanges(session: Session): Promise<StatusEntry[]> {
           step: steps.get(root),
           away: away.get(root),
         })),
+        ...(counting ? await waiting(session, state.id) : {}),
       };
     }),
   );
+}
+
+/** The messages waiting for the session of change `id`, when there are any. */
+async function waiting(session: Session, id: string): Promise<Pick<StatusEntry, "messages">> {
+  const messages = await waitingCount(session.git, id);
+  return messages > 0 ? { messages } : {};
 }
 
 /** The last step noted in each folder, by its real path. */
