@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261105-los-evals-salen-de-pnpm-test",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261105-los-evals-salen-de-pnpm-test",
+  "baseCommit": "f50fcc644037d9b0db1c80c63596653763b1cdf1",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos",
+      "1 ruta sensible",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:195e9dfe6254a2092e30e7f1417ebaf74e15f3cb0f7326d569ad68380c20f15d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:de15700784a125046205d0187cfe743f4e08bc95003276bc0ae4fa24d2a272bb",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c08cfbb39d7e8c66d04a44a3e988120916b1ae7c2e5a678daa75dba59815e188",
+    "at": "2026-11-04T19:03:53.797Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
