@@ -138,6 +138,15 @@ describe("the lines of `doctor`", () => {
     );
   });
 
+  it("AC3: say that a resumed Claude Code session misses its card, and that init fixes it", () => {
+    expect(doctorLine({ code: "claude-resume" }, ES)).toBe(
+      "Claude Code: el hook `SessionStart` de Specty no se dispara al reanudar una sesión, así que la sesión reanudada no recibe la tarjeta de su cambio; ejecuta `specty init`.",
+    );
+    expect(doctorLine({ code: "claude-resume" }, EN)).toBe(
+      "Claude Code: Specty's `SessionStart` hook does not run when a session resumes, so the resumed session does not get its change's card; run `specty init`.",
+    );
+  });
+
   it("AC3: warns when AGENTS.md has too many lines (agents-bloated)", () => {
     const line = {
       code: "agents-bloated",

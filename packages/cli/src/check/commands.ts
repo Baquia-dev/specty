@@ -30,7 +30,8 @@ export function projectProvider(stacks: readonly Stack[], config: ResolvedConfig
   };
 }
 
-function projectCommands(
+/** The project's format, lint, typecheck and tests: the ones `checks.commands` names, or the detected ones. */
+export function projectCommands(
   stack: Stack | undefined,
   configured: Readonly<Partial<Record<CommandCheck, string>>>,
 ): Partial<Record<CommandCheck, string>> {

@@ -10,6 +10,7 @@ type AgentCode =
   | "claude-worktrees"
   | "claude-compact"
   | "claude-startup"
+  | "claude-resume"
   | "claude-session-end"
   | "no-claude-permissions"
   | "cursor-guard"
@@ -78,6 +79,11 @@ export const AGENT_WRITERS: {
     t(
       `Claude Code: el hook \`SessionStart\` de Specty es de antes de la tarjeta al empezar una sesión; ejecuta \`${command} init\`.`,
       `Claude Code: Specty's \`SessionStart\` hook predates the card at a session's start; run \`${command} init\`.`,
+    ),
+  "claude-resume": (_, t, command) =>
+    t(
+      `Claude Code: el hook \`SessionStart\` de Specty no se dispara al reanudar una sesión, así que la sesión reanudada no recibe la tarjeta de su cambio; ejecuta \`${command} init\`.`,
+      `Claude Code: Specty's \`SessionStart\` hook does not run when a session resumes, so the resumed session does not get its change's card; run \`${command} init\`.`,
     ),
   "no-claude-permissions": (_, t, command) =>
     t(

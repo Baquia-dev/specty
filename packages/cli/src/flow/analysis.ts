@@ -14,6 +14,8 @@ import {
   type RepoSignals,
   type Spec,
 } from "@baquia-dev/specty-core";
+import { projectCommands } from "../check/commands";
+import { detectStacks } from "../detect/stack";
 import { isMissing } from "../io/files";
 import type { Session } from "../session";
 import { readRevision, readSpec, type StoredChange } from "../store/changes";
@@ -50,9 +52,21 @@ export async function analyzeChange(
       repo: await repoSignals(session, text),
       ...(approved !== undefined ? { approved } : {}),
       ...(previous !== undefined ? { previous } : {}),
+      ...(await typecheckOf(session)),
     },
     { language: session.lang },
   );
+}
+
+/**
+ * Under `policy.tests: contract`, the project's type check, as `specty check` runs it: the last
+ * code task should run it (formats.md §2). The stack is detected only then.
+ */
+async function typecheckOf(session: Session): Promise<{ readonly typecheck?: string }> {
+  if (session.config.policy.tests !== "contract") return {};
+  const [stack] = await detectStacks(session.root);
+  const { typecheck } = projectCommands(stack, session.config.checks.commands);
+  return typecheck === undefined ? {} : { typecheck };
 }
 
 /**

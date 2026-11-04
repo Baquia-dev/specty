@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "id": "20261104-fallo-de-tipos-con-contract",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-fallo-de-tipos-con-contract",
+  "baseCommit": "2950e27c26894203e230bc0b9164829ece6c2e6c",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:03deff5c58e3ffe376fed8469a2a6da425c8955bf0e89846eb6f740f9fffa4ea",
+    "at": "2026-11-04T06:35:50.017Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:671b7db92fe064a4d9190cbe675aaf971e54ce936ffc6223c32a90804882aec5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a6cb16dba279d8311ee8c8bdd78ab7aa0cdee7091a8ff46d31e0f384441ef71c",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:d4be0baaacd96534baa87c6ea14dd61615244db0e5b69e343140f92fc00e56b3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "982c4fb05f60bdf22bb227729f606dbe9a6a0c93",
+      "attempts": 1,
+      "startedAt": "2026-11-04T06:37:58.731Z",
+      "doneAt": "2026-11-04T06:39:30.150Z",
+      "summary": "Regla checkTypecheck (aviso task-no-typecheck): con contract, avisa si la verificación de la última tarea de código, como la ejecuta task done, no contiene la comprobación de tipos del proyecto (ValidationContext.typecheck) ni verify.full.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "fd3151ebd97d9b305413ee5989cfd969a688917a",
+      "attempts": 1,
+      "startedAt": "2026-11-04T06:39:30.752Z",
+      "doneAt": "2026-11-04T06:39:55.075Z",
+      "summary": "La tarjeta del ajuste, en «CÓMO CLASIFICARLA», manda un fallo solo de tipos, lint o formato a una tarea type: refactor con ac: — y el comando que falló en su verify, sin test en rojo, en español y en inglés.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "dd18f44a3442fbeb745579872136638ca73cfe45",
+      "attempts": 1,
+      "startedAt": "2026-11-04T06:39:55.528Z",
+      "doneAt": "2026-11-04T06:40:55.093Z",
+      "summary": "propose pasa a la validación, solo con contract, la comprobación de tipos del proyecto (projectCommands de check/commands.ts, ahora exportada, sobre el stack detectado); formats.md §2 documenta el aviso.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-04T06:53:23.167Z",
+  "lockedTests": {
+    "packages/core/test/validate/quality.test.ts": "sha256:0fb0177acd45372d2172a8bff005fd9f5361264f845d1b883faef64ede9efd41",
+    "packages/cli/test/typecheck-warning.test.ts": "sha256:c28f9e1eec7e6e697ba3c86a45a51009a71dcb22bcec2d46ec9e8db3e4509be9",
+    "packages/core/test/cards/adjusting.test.ts": "sha256:a2dcd174a6630b018f8dc739d336d9a7db8412acb72951dcbe47127a247a52d0"
+  }
+}

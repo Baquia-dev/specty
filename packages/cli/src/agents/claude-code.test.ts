@@ -55,3 +55,18 @@ describe("Claude Code's SessionStart at a session's start", () => {
     expect(await doctorWith("compact|clear")).toContain(WARNING);
   });
 });
+
+describe("Claude Code's SessionStart when a session resumes", () => {
+  it("AC3: runs with the matcher init writes, in any order, with every source or with none", () => {
+    for (const matcher of ["startup|clear|compact|resume", "resume|startup", "resume", "*", ""]) {
+      expect(runsAtSessionStart(matcher, "resume")).toBe(true);
+    }
+    expect(runsAtSessionStart(undefined, "resume")).toBe(true);
+  });
+
+  it("AC3: does not run with a matcher from before, nor with one that is not text", () => {
+    for (const matcher of ["startup|clear|compact", "compact|clear", "resumed", 3, null]) {
+      expect(runsAtSessionStart(matcher, "resume")).toBe(false);
+    }
+  });
+});

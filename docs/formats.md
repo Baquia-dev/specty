@@ -34,7 +34,7 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 ├─ fronts/<frente>.json        # { "front", "tool", "conversation", "at" }: la conversación de agente que tomó ese frente de la memoria con `specty front take`, y cuándo (ADR 0016); la escribe el guard antes del comando y borra la del frente que esa conversación llevaba, y `specty front free` la borra; deja de contar cuando ni el último paso de esa conversación (`activity/`) ni la toma caben en `memory.orphanAfterMin` minutos
 ├─ locks/<id>.json             # { "pid", "command", "folder", "at" }: el comando que está cambiando ese cambio, uno a la vez (ARCHITECTURE §9); se crea en exclusiva y se borra al terminar, y el de un proceso que ya no existe no cuenta; para reemplazarlo, un comando toma antes `locks/<id>.json.claim`, un permiso exclusivo y breve
 ├─ messages/<id>/<hora>-<n>.json # { "at", "text", "from": { "actor", "tool"?, "change"?, "folder" } }: un mensaje que una sesión o la persona dejó con `specty message` para la sesión del cambio abierto `<id>`, en orden de llegada (`<hora>` es `at` sin separadores y `<n>` lo desempata); el guard lo entrega tras el siguiente comando de shell en la carpeta del cambio y lo borra al entregarlo (ARCHITECTURE §10); los que nadie recogió se borran al archivar el cambio, cerrado o cancelado, y `specty prune` borra los de un cambio que ya no está abierto
-├─ locks/full-verification.json # el turno de la verificación completa (`verify.full`, la de `accept` y la de la incorporación de main), una a la vez en todo el clon (ARCHITECTURE §9): la misma forma y las mismas reglas que `locks/<id>.json`
+├─ locks/full-verification.json # el turno de la verificación completa (`verify.full`, la de `accept` y la de la incorporación de main), una a la vez en todo el clon; el cierre que integra un cambio en main lo tiene desde antes de incorporar main hasta que main avanza (ARCHITECTURE §9): la misma forma y las mismas reglas que `locks/<id>.json`
 └─ backups/<fecha>/            # lo que había antes de que `init` o `uninstall` lo cambiaran (una carpeta por ejecución)
    ├─ repo/<ruta>              # copia de un archivo del repositorio
    ├─ outside/<ruta absoluta>  # copia de uno de fuera (Codex, OpenCode, .git/info/exclude de una worktree)
@@ -245,6 +245,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - Un criterio no tiene un resultado observable o usa términos vagos ("rápido", "correctamente", "adecuado"…).
 - Una tarea tiene más archivos de los recomendados, o su tarjeta supera el presupuesto de contexto.
 - Una tarea de código no toca tests, si la política es `recommended`.
+- Con `contract`, la verificación de la última tarea de código de un cambio `standard` o `quick` (`feat`, `fix`, `refactor` o `perf`, en el orden de la spec) no ejecuta la comprobación de tipos del proyecto, la que usa `specty check` (`checks.commands.typecheck` o la que detecta del stack), ni `verify.full`. Cuenta como la ejecuta `task done`, con `verify.quick` delante. `task done` no ejecuta los comandos del proyecto en una tarea con verificación, así que un fallo de tipos solo saldría al aceptar; las tareas anteriores no lo necesitan, porque todos los tests se escriben antes que ellas.
 
 ### Forma canónica y hash
 
