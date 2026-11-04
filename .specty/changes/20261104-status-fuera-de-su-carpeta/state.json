@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261104-status-fuera-de-su-carpeta",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-status-fuera-de-su-carpeta",
+  "baseCommit": "18e5bc17b96c24314a40c50c974b1c5994877cbe",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5e8657893f0a2b572e6fd00fb777349b6b9345f2551cc5a0c789c3a3715b273f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4b1a92a51bad892fdc83d558d4ae33d78e91afa9b19286060f1969fb08d7b9fe",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:6a61c324a9256b5639f69538085a4c9bc5f7877214d770a10b18ff62c57d2382",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:2d494586a2f3e62f533399b74aac7b2e5aada20672dccd4294de2e56d77a2470",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:59fdfce06f80b4f3044585e104cc8861a7340572196e941d1004a7cf2ea6fd14",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2910df54eaf3830be217937376ced0f7d40dfe45b4d817a6ea4372331210ad41",
+    "at": "2026-11-04T07:15:25.114Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
