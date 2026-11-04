@@ -56,7 +56,7 @@ Desde el cambio anterior, `specty status` lista los cambios abiertos sin carpeta
 
 ## Tareas
 
-- [ ] T1: Los textos de los cambios sin carpeta en `next`, `enter` y el hook
+- [x] T1: Los textos de los cambios sin carpeta en `next`, `enter` y el hook
   - files: packages/core/src/cards/rejoin.ts, packages/core/src/cards/next.ts, packages/core/src/cards/enter.ts, packages/core/src/cards/hooks.ts, packages/core/src/cards/index.ts, packages/core/test/cards/lost-folder.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/lost-folder.test.ts test/cards/rejoin.test.ts && pnpm typecheck && pnpm lint

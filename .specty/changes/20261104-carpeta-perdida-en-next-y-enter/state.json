@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "430bff269a6475aa0e0e469c9f3c332bf1297008",
+      "startedAt": "2026-11-04T08:48:58.792Z",
+      "doneAt": "2026-11-04T08:49:52.786Z",
+      "summary": "rejoin.ts con lostBlock y la tarjeta de volver para una carpeta perdida, NextView.lost, lostFolderCard para enter y el motivo lost del hook WorktreeCreate"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
