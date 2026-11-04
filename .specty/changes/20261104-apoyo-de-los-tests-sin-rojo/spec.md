@@ -16,7 +16,7 @@ Resuelve P39. Con `policy.tests: contract`, `specty propose` en la fase de tests
 
 ## Tareas
 
-- [ ] T1: El rojo de los tests no pide fallar a un archivo de apoyo sin casos
+- [x] T1: El rojo de los tests no pide fallar a un archivo de apoyo sin casos
   - files: packages/cli/src/commands/tests.ts, packages/cli/test/testing-phase.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/testing-phase.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: fix

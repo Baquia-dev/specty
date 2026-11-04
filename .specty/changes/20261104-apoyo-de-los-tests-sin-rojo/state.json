@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-apoyo-de-los-tests-sin-rojo",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-apoyo-de-los-tests-sin-rojo",
   "baseCommit": "76e0eca1da6b2bc6fa42d0e1a0b555f88690dc3d",
   "revision": 1,
@@ -22,7 +22,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9ef14f0ca9edcc9d935dec211be888da1f8d02ea",
+      "startedAt": "2026-11-04T06:01:11.928Z",
+      "doneAt": "2026-11-04T06:02:19.608Z",
+      "summary": "El rojo de la fase de tests solo exige que la salida nombre los tests que declaran algún caso (testCases de core); un archivo de apoyo sin casos va en el envío y se bloquea con los demás. ARCHITECTURE §4 lo cuenta."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
