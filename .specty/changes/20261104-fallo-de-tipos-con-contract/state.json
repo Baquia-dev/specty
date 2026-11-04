@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-fallo-de-tipos-con-contract",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-fallo-de-tipos-con-contract",
   "baseCommit": "2950e27c26894203e230bc0b9164829ece6c2e6c",
   "revision": 2,
@@ -47,6 +47,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T06:37:53.315Z"
+  "lockedTests": {
+    "packages/core/test/validate/quality.test.ts": "sha256:0fb0177acd45372d2172a8bff005fd9f5361264f845d1b883faef64ede9efd41",
+    "packages/cli/test/typecheck-warning.test.ts": "sha256:c28f9e1eec7e6e697ba3c86a45a51009a71dcb22bcec2d46ec9e8db3e4509be9",
+    "packages/core/test/cards/adjusting.test.ts": "sha256:a2dcd174a6630b018f8dc739d336d9a7db8412acb72951dcbe47127a247a52d0"
+  }
 }
