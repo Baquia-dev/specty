@@ -6,6 +6,13 @@
   "branch": "specty/20261105-funciones-largas-de-exporters-vscode-y-ui",
   "baseCommit": "f1a96491b477e2d9f99fc7569fea2cc621416f7e",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:0b8ebab8b7e25b1d8bf415a301f0c52b9a60adcf1c2d71755bb46b7e15e997ce",
+    "at": "2026-11-04T18:24:46.715Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cb351d0e7a929d8c18ad9785b38c910a8fb0a4d2",
+      "startedAt": "2026-11-04T18:24:47.147Z",
+      "doneAt": "2026-11-04T18:25:13.790Z",
+      "summary": "clausesOf saca clauseList: recorre las viñetas GIVEN/WHEN/THEN/AND y une cada AND a la cláusula anterior; clausesOf elige la primera de cada clave y arma el texto."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 2,
     "T": 3
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:0b8ebab8b7e25b1d8bf415a301f0c52b9a60adcf1c2d71755bb46b7e15e997ce",
-    "at": "2026-11-04T18:24:46.715Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

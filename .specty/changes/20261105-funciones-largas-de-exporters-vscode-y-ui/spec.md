@@ -40,7 +40,7 @@ Resuelve P60 y la deuda de `complexity` que queda (P109, que `specty check --all
 
 ## Tareas
 
-- [ ] T1: La función compleja de exporters, simplificada
+- [x] T1: La función compleja de exporters, simplificada
   - files: packages/exporters/src/import-openspec.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-exporters exec vitest run test/import-openspec.test.ts && pnpm lint
