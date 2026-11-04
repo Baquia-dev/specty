@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-carpeta-perdida-en-next-y-enter",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-carpeta-perdida-en-next-y-enter",
   "baseCommit": "2b239513dd1a5121a54c36052fc6dc1c27b1de89",
   "revision": 1,
@@ -55,6 +55,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T08:48:56.414Z"
+  "lockedTests": {
+    "packages/cli/test/lost-folder.test.ts": "sha256:6af657a657d6bac83b2a51fdd96bc225e083521c4dfe0cb094a4ac70ab149dbe",
+    "packages/core/test/cards/lost-folder.test.ts": "sha256:1ee118f65b82c3b077ea13b02dc49d4d37ebdbf3a04ee86b6a0fefcfd25f4cb2"
+  }
 }
