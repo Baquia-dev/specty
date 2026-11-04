@@ -48,7 +48,7 @@ La persona no ve en un sitio qué sesiones de agente trabajan en el repositorio,
 
 ## Tareas
 
-- [ ] T1: `SessionView`, el tipo que comparten el servidor y la UI
+- [x] T1: `SessionView`, el tipo que comparten el servidor y la UI
   - files: packages/core/src/memory/sessions.ts, packages/core/src/index.ts, packages/core/src/light.ts
   - ac: —
   - verify: pnpm typecheck && pnpm lint

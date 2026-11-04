@@ -32,7 +32,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9e6a9cfb06bbf72eab9af1efe27369bc282e6097",
+      "startedAt": "2026-11-04T18:12:22.378Z",
+      "doneAt": "2026-11-04T18:13:01.419Z",
+      "summary": "core: SessionView en memory/sessions.ts, exportada como tipo en index.ts y light.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
