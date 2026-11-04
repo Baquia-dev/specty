@@ -286,7 +286,7 @@ El nombre sale de `branchName`, en el core. Si la rama ya existe en local o en u
 - **Preparación:** ejecuta allí `git.setup` o, sin esa clave, el comando de instalación del stack detectado (formats.md §6), y la salida lo nombra. Si falla, el cambio existe igual, y la salida muestra la cola y pide ejecutarlo allí.
 - **El agente sigue allí:** el SIGUIENTE de `new` le pide cambiar a esa carpeta la de su sesión, o abrir allí un agente; el bloque de flujo de AGENTS.md lo dice también. El guard le impide escribir en otra worktree (§10).
 
-Las worktrees que otras herramientas crean dentro del repositorio (Claude Code usa `.claude/worktrees/`) no cuentan como código sin spec ni entran en los commits de Specty.
+Las worktrees que otras herramientas crean dentro del repositorio (Claude Code usa `.claude/worktrees/` y Gemini CLI `.gemini/worktrees/`) no cuentan como código sin spec ni entran en los commits de Specty. Specty las reconoce porque git las lista como worktrees del repositorio, no por su carpeta: vale para cualquiera.
 
 **Incorporación.** Al cerrar un cambio, o al aceptar uno quick, Specty lo lleva a la rama destino en ese mismo comando. Es la misma que `new` usa como base: `git.target` o, sin esa clave, la rama principal. Si `git.target` nombra una rama que no existe, el cambio se cierra sin incorporarse. En lo que sigue, «la rama principal» es la rama destino. La rama principal solo avanza por fast-forward hasta código verificado, así que nunca recibe un conflicto: lo resuelve el cambio que llega después, en su rama y su carpeta.
 
