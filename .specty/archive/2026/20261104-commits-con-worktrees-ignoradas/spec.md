@@ -18,3 +18,9 @@ Con un cambio abierto en `.worktrees/`, que git ignora (`specty new` lo añade a
 - [x] T1: Los commits del flujo no excluyen las worktrees anidadas que git ignora
   - files: packages/cli/src/flow/commits.ts, packages/cli/test/init-commit.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-commit.test.ts test/worktrees.test.ts
+
+## Cierre
+
+### Resumen
+
+commitWithReceipt solo pasa :(exclude) para las worktrees anidadas que git no ignora; git add -A ya deja fuera las ignoradas y rechazaba excluirlas. Test de init con otro cambio en .worktrees/ ignorada

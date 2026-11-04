@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-commits-con-worktrees-ignoradas",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-commits-con-worktrees-ignoradas",
   "baseCommit": "0cbfa9d8cdf0fd0272a5af072f2a4f483b9b408a",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "467e528b96fd35c8eba688efb11a6e07688ab76e",
+      "attempts": 1,
       "startedAt": "2026-11-04T05:39:12.455Z",
       "doneAt": "2026-11-04T05:40:44.210Z",
-      "summary": "commitWithReceipt solo pasa :(exclude) para las worktrees anidadas que git no ignora; git add -A ya deja fuera las ignoradas y rechazaba excluirlas. Test de init con otro cambio en .worktrees/ ignorada"
+      "summary": "commitWithReceipt solo pasa :(exclude) para las worktrees anidadas que git no ignora; git add -A ya deja fuera las ignoradas y rechazaba excluirlas. Test de init con otro cambio en .worktrees/ ignorada",
+      "scopeExtra": []
     }
   },
   "pending": {
