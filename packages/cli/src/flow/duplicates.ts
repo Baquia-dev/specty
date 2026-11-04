@@ -22,7 +22,8 @@ export interface DuplicateQuery {
 /**
  * The open changes of every worktree a new change may duplicate (ADR 0016), as `status` sees
  * them, each with why: the same `follows`, a similar title or a similar request. Those it follows,
- * their epics, its own epic and those of `--distinct-from` do not count.
+ * their epics, its own epic, the other slices of its epic and those of `--distinct-from` do not
+ * count.
  */
 export async function duplicatesOf(
   session: Session,
@@ -42,6 +43,8 @@ export async function duplicatesOf(
   const hits = await Promise.all(
     located.map(async ({ change, session: there }) => {
       const spec = parseSpec(await readSpec(change.files), { language: there.lang }).spec;
+      // Slices of one epic look alike on purpose, and `new` gives each slice one change at most.
+      if (query.epic !== undefined && spec.frontmatter.epic === query.epic) return [];
       const created = (await readAudit(change.files)).find(
         (entry) => entry.event === "change.created",
       );

@@ -25,6 +25,11 @@ export interface CardContext {
   readonly branchTypes?: boolean;
   /** The person delegated their decisions to the agent (ADR 0010): the agent runs them itself. */
   readonly delegated?: boolean;
+  /**
+   * `subagents` of `config.yaml` (formats.md §6): `false` keeps an epic's slices out of
+   * subagents, even with a tool that can take them.
+   */
+  readonly subagents?: boolean;
 }
 
 export interface CriterionView {
@@ -146,7 +151,13 @@ export interface SliceView {
   /** Closed; in progress; ready, with every slice it depends on closed; or waiting for them. */
   readonly status: "done" | "open" | "ready" | "waiting";
   /** The slice's change: the closed one, or the one in progress, with its folder. */
-  readonly child?: { readonly id: string; readonly phase: Phase; readonly folder?: string };
+  readonly child?: {
+    readonly id: string;
+    readonly phase: Phase;
+    readonly folder?: string;
+    /** In progress, and no conversation holds it (`status`'s orphan): a subagent resumes it. */
+    readonly orphan?: boolean;
+  };
 }
 
 export interface ChangeView {
