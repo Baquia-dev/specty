@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261104-las-lineas-de-la-pagina-memoria-en-su-propio-2",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-las-lineas-de-la-pagina-memoria-en-su-propio-2",
   "baseCommit": "6b1d2d1c5157371c66b4e459152d6a1adde1da4a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a8c16712b9cabaa828d7fac6f308535638c046d3080ac729bad08b3749ead5de",
+    "at": "2026-11-04T07:42:55.863Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "19fc1e0ec41c1e3965061cbd1b2e01e94935cb32",
+      "startedAt": "2026-11-04T07:42:56.973Z",
+      "doneAt": "2026-11-04T07:43:53.924Z",
+      "summary": "entryLine, waitsFor, changeLine, heldBy y ago pasan a memory/memory-lines.ts como funciones puras con el traductor; la página las llama y baja a 284 líneas"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a8c16712b9cabaa828d7fac6f308535638c046d3080ac729bad08b3749ead5de",
-    "at": "2026-11-04T07:42:55.863Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

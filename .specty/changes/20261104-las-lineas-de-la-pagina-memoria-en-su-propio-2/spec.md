@@ -16,7 +16,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: Las líneas bajo cada fila, en `memory-lines.ts`
+- [x] T1: Las líneas bajo cada fila, en `memory-lines.ts`
   - files: packages/ui/src/memory/memory-page.ts, packages/ui/src/memory/memory-lines.ts, packages/ui/src/memory/memory-lines.test.ts
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-lines.test.ts --include src/memory/memory-page.test.ts --include src/memory/memory-waiting.test.ts --include src/memory/memory-actions.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
   - type: refactor
