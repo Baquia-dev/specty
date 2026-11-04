@@ -14,7 +14,7 @@ Resuelve P44. Las observaciones de la revisión (`reviewRemarks`) esperan que ca
 
 ## Tareas
 
-- [ ] T1: El ADR 0011 anota la comprobación con un revisor real
+- [x] T1: El ADR 0011 anota la comprobación con un revisor real
   - files: docs/decisions/0011-revision-independiente.md
   - verify: grep -q "2.1.318" docs/decisions/0011-revision-independiente.md
   - type: docs

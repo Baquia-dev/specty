@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261104-revisor-real-da-la-gravedad",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-revisor-real-da-la-gravedad",
   "baseCommit": "4a6731c606eaf572e027ad2476d42d371b412475",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:93c13b706966f99ee34ec0e2c084b84af82bee49feb6afc68d74cad7f2be2b98",
+    "at": "2026-11-04T07:07:41.024Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d0588f96a16c36badbdf49e42c5a265fd3908ef0",
+      "startedAt": "2026-11-04T07:07:41.565Z",
+      "doneAt": "2026-11-04T07:07:59.719Z",
+      "summary": "El ADR 0011 anota la comprobación con un revisor real (Claude Code 2.1.318, el comando del ADR, español e inglés): cada viñeta de primer nivel empieza por su gravedad y reviewRemarks las reconoce todas."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:93c13b706966f99ee34ec0e2c084b84af82bee49feb6afc68d74cad7f2be2b98",
-    "at": "2026-11-04T07:07:41.024Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
