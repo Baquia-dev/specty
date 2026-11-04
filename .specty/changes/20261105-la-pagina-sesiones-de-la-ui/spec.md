@@ -44,7 +44,7 @@ El servidor de `specty ui` ya da en `GET /api/sessions` cada conversación de ag
 
 ## Tareas
 
-- [ ] T1: La UI pide las sesiones
+- [x] T1: La UI pide las sesiones
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/fixtures.ts
   - ac: —
   - verify: pnpm typecheck && pnpm lint

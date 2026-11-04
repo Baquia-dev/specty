@@ -31,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c279c126d0539b398f26a60c8a7901573310b18a",
+      "startedAt": "2026-11-04T18:27:52.125Z",
+      "doneAt": "2026-11-04T18:28:56.369Z",
+      "summary": "UI: sessions() en la fuente de datos, GET /api/sessions en ServerData validado con isSessionList, y dos sesiones de ejemplo en FixtureData"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
