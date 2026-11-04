@@ -55,3 +55,22 @@ Resuelve P60 y la deuda de `complexity` que queda (P109, que `specty check --all
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/acceptance.test.ts --include src/acceptance/criterion-row.test.ts --include src/acceptance/changes-view.test.ts --include src/data/fixtures.test.ts && pnpm typecheck && pnpm lint
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Las tres funciones que quedaban por encima de los límites de función quedan por debajo, sin cambiar lo que hacen: `clausesOf` (exporters) saca `clauseList`, `changesView` (vscode) saca `hereText` y `countsOf`, y `asistenciaSample` (UI) saca su auditoría a `asistenciaAudit(at)`. Ningún test que ya existía cambió.
+
+### Desviaciones
+
+- AC1 se comprobó en dos partes: la verificación de cada tarea (`specty check --changed`) midió `function-lines` y `complexity` en los tres archivos, y el `specty check --all` de antes de empezar solo señalaba estas tres funciones. No se repitió `--all` entero (casi 9 minutos con la máquina cargada).
+- El cambio no toma P109 con `--resolves` porque se anotó después de crearlo; como es deuda de `specty check --all`, Specty la marca hecha cuando la verificación pase.
+
+### Decisiones
+
+- `asistenciaAudit(at)` sigue el patrón de `boletinesAudit(at)` en `sample-progress.ts`.
+
+### Pendientes
+
+- Ninguno.
