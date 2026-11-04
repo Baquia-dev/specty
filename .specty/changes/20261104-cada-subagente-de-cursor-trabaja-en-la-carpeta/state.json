@@ -6,6 +6,13 @@
   "branch": "specty/20261104-cada-subagente-de-cursor-trabaja-en-la-carpeta",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:352eb780cc44af8cff2c54c67ff7db4b94b7e9a50f804b212779932f882b4d27",
+    "at": "2026-11-04T12:37:37.160Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -40,12 +47,6 @@
     "T": 2,
     "R": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:352eb780cc44af8cff2c54c67ff7db4b94b7e9a50f804b212779932f882b4d27",
-    "at": "2026-11-04T12:37:37.160Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T12:38:20.436Z"
 }
