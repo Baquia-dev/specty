@@ -97,6 +97,23 @@ describe("analyzeShell", () => {
     expect(analyzeShell("specty next").resolves).toEqual([]);
   });
 
+  it("AC5: names each `specty new`, in order, and whether it carries `--subagent`", () => {
+    expect(analyzeShell('specty new "Saludo" --subagent').news).toEqual([{ subagent: true }]);
+    expect(analyzeShell('specty new "Saludo" --resolves P81').news).toEqual([{ subagent: false }]);
+    expect(
+      analyzeShell(
+        'specty new --subagent "A" --epic 2026-e --slice C1 && npx -y @baquia-dev/specty new "B" --request "con --subagent"',
+      ).news,
+    ).toEqual([{ subagent: true }, { subagent: false }]);
+  });
+
+  it("AC5: names no `specty new` for the other commands", () => {
+    expect(analyzeShell("specty next").news).toEqual([]);
+    expect(analyzeShell("specty enter 2026-a --subagent").news).toEqual([]);
+    expect(analyzeShell("echo specty new --subagent").news).toEqual([]);
+    expect(analyzeShell("ls -la").news).toEqual([]);
+  });
+
   it("AC2: names no front for the other `specty front` commands or without a name", () => {
     expect(analyzeShell("specty front").fronts).toEqual([]);
     expect(analyzeShell('specty front add B "Guard"').fronts).toEqual([]);

@@ -6,6 +6,13 @@
   "branch": "specty/20261104-el-guard-pide-specty-enter-y-subagent-a-los",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:2b8379b79280b73731e1234e62539fedc13af039f2255c2994b279db6906f1c6",
+    "at": "2026-11-04T12:26:06.812Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -48,12 +55,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:2b8379b79280b73731e1234e62539fedc13af039f2255c2994b279db6906f1c6",
-    "at": "2026-11-04T12:26:06.812Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T12:31:11.396Z"
 }
