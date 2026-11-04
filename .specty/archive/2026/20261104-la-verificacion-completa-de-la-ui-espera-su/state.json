@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-la-verificacion-completa-de-la-ui-espera-su",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-la-verificacion-completa-de-la-ui-espera-su",
   "baseCommit": "94963be409456e72963dbcd89bd9ab189f7a2af3",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:e53bd07372fb8da139c8fd8bc5526386aff24559dcc8536ca3170e10e41133c4",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f29843b32613930223d062d886087897dbb86c76",
+      "attempts": 1,
       "startedAt": "2026-11-04T08:54:42.901Z",
       "doneAt": "2026-11-04T08:55:00.675Z",
-      "summary": "ARCHITECTURE: la verificación completa de la UI también toma el turno y el servidor encola las suyas"
+      "summary": "ARCHITECTURE: la verificación completa de la UI también toma el turno y el servidor encola las suyas",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,6 +65,7 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-04T09:09:48.124Z",
   "lockedTests": {
     "packages/cli/test/server/runs-turn.test.ts": "sha256:39c0de6e6948c8e282c83c958455526299eebfcad76667e67ea00b732b556b0b"
   }

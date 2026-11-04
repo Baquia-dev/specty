@@ -53,3 +53,23 @@ La verificación completa que la persona lanza desde `specty ui` (`runFull` en `
 ## Riesgos
 
 - R1: Una verificación de la UI espera mucho a otra sesión — como mucho `verify.timeoutSec`, y la UI muestra a quién espera.
+
+## Cierre
+
+### Resumen
+
+La verificación completa que la persona lanza desde `specty ui` toma el turno de `locks/full-verification.json` como las de `accept` y del cierre. La UI la muestra enseguida; mientras otra sesión tiene el turno, el aviso de a quién espera (comando, carpeta y desde cuándo) va a su salida, y el comando empieza cuando el turno queda libre. La auditoría mide desde que empieza el comando, y el turno se suelta al terminar. El servidor encola sus propias verificaciones completas, porque el turno es del proceso.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- `runFull` publica la ejecución sin salida y la corre en `inTurn`, la cola del servidor, con `oneAtATime`; el comando y su espera de fin van en `spawned`, y la lectura de su salida en `streamed`, para que ninguna función crezca.
+- El aviso de espera de `oneAtATime` va a la salida de la ejecución con una sesión cuyo `io.err` escribe en ella, en vez de a la salida de error del servidor, que la persona no ve.
+- Si el servidor se cierra mientras espera, el comando no llega a lanzarse.
+
+### Pendientes
+
+Ninguno.
