@@ -69,7 +69,7 @@ Desde el corte C2, la terminal ve los cambios abiertos cuya carpeta se perdió y
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/lost-folder.test.ts
   - ac: AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/lost-folder.test.ts --include src/data/views.test.ts --include src/data/server.test.ts && pnpm lint
-- [ ] T3: La marca, el panel y el botón en la UI, y la documentación
+- [x] T3: La marca, el panel y el botón en la UI, y la documentación
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/change/lost-folder.ts, packages/ui/src/change/change-page.ts, packages/ui/src/change/lost-folder.test.ts, docs/ARCHITECTURE.md
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/lost-folder.test.ts --include src/change/change-page.test.ts --include src/inbox/inbox-row.test.ts && pnpm typecheck && pnpm lint

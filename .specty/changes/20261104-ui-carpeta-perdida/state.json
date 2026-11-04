@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-ui-carpeta-perdida",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-ui-carpeta-perdida",
   "baseCommit": "4f68f6e03188ee8cfe1d981c6433ca374dcdf161",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "034a594c36a9aa224361e6cd50bf482b6dfa8e39",
+      "attempts": 1,
       "startedAt": "2026-11-04T09:41:59.505Z",
       "doneAt": "2026-11-04T09:43:18.478Z",
-      "summary": "lost en ChangeRecord y ChangeView de la UI, restoreFolder en SpectyData (rechazado en solo lectura) y en ServerData con POST /api/changes/<id>/restore"
+      "summary": "lost en ChangeRecord y ChangeView de la UI, restoreFolder en SpectyData (rechazado en solo lectura) y en ServerData con POST /api/changes/<id>/restore",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "14d81e37793251e2a8190dccf0b363760d3a5afa",
+      "startedAt": "2026-11-04T09:43:19.799Z",
+      "doneAt": "2026-11-04T09:47:44.574Z",
+      "summary": "La marca Sin carpeta en la fila de la Bandeja, el panel sp-lost-folder (qué pasó, Recuperar carpeta con su aviso, el comando y el motivo en solo lectura) en lugar de las pestañas, y ARCHITECTURE §15"
     }
   },
   "pending": {
