@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261104-ui-retomar-cambios",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-ui-retomar-cambios",
+  "baseCommit": "2bd6cf73dc77785caeb5ec988958323a0e167772",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0387f0929561e3f245c5c551ffd998e4e2ecd718ce0e6fab796720d583ea327b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:68b1385e743afc13199ea9fa7d156efb66f8ff526ea02116bd6d190ecc9f05fa",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:5e8ab13c733fca65f57ccf1928bd943e77177b18c47ca89873264a32b0ed2b50",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:54896e1773e50e5f9d4f6efcae09973fef9a85751ca1101d31057f520bbed63c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:76622aa7f05c8442962c74e620feeb0bf4a0d7549a7561433581b75f96fb12e0",
+    "at": "2026-11-04T10:48:41.114Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
