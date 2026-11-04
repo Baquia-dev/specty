@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261104-el-cierre-vuelve-a-incorporar-main-si-avanzo",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-el-cierre-vuelve-a-incorporar-main-si-avanzo",
+  "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c1a97901f4ff55c70fd65eb8370362437305dbfa7f95511556900ef847f8e00b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bc451c324c6bffee5fdce85df57b8d7cb9d1ac61dd030185d04b91da1be7e73d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ff6d830519d71d7da92d825ff53279e78bb7de12e697af8a4ebf9db0216b4965",
+    "at": "2026-11-04T12:16:05.721Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
