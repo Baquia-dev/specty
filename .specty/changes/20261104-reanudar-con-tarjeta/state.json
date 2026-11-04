@@ -6,6 +6,13 @@
   "branch": "specty/20261104-reanudar-con-tarjeta",
   "baseCommit": "c7e7ed0c3cf6644b5ecd5814ed1d072854b84f27",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e351fe4d159e4fe93c08a69dc6af738d573eaac7daadc1d99c6f093795a07ca0",
+    "at": "2026-11-04T06:47:27.596Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -40,12 +47,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e351fe4d159e4fe93c08a69dc6af738d573eaac7daadc1d99c6f093795a07ca0",
-    "at": "2026-11-04T06:47:27.596Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T06:50:07.169Z"
 }
