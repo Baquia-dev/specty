@@ -289,6 +289,12 @@ export {
   reloadNext,
 } from "./refusals";
 export {
+  type Restored,
+  type RestoreRefusal,
+  restoredCard,
+  restoreRefusalCard,
+} from "./restore";
+export {
   type RetroRefusal,
   retroDoneCard,
   retroReasonQuestion,

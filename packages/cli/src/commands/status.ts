@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { realpath, stat } from "node:fs/promises";
 import {
+  type ChangeState,
   isIntegrating,
   localDay,
   type Output,
@@ -12,6 +13,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
 import { locateChanges } from "../flow/changes";
+import { lostChanges } from "../flow/lost";
 import type { Session } from "../session";
 import { type Activity, readActivity } from "../store/activity";
 import { readSpec, type StoredChange } from "../store/changes";
@@ -28,15 +30,40 @@ const MINUTE_MS = 60_000;
  * memory's fronts with who holds each in «FRENTES», and its open reminders in «TE TOCA» (ADR 0016).
  */
 export async function status(session: Session): Promise<Output> {
-  const entries = await openChanges(session);
+  const open = await openChanges(session);
+  const known = new Set(open.map((entry) => entry.id));
+  const lost = (await lostEntries(session)).filter((entry) => !known.has(entry.id));
+  const entries = [...open, ...lost];
   const memory = await readMemory(session.git, session.config.memory.branch);
   const now = session.environment.now();
   const owners =
     memory.fronts.length === 0
       ? []
       : await liveHolds(session.git, now, session.config.memory.orphanAfterMin);
-  const open = sessionEntries(memory.entries, localDay(now));
-  return statusCard(entries, session.cards, open, { fronts: memory.fronts, owners });
+  const reminders = sessionEntries(memory.entries, localDay(now));
+  return statusCard(entries, session.cards, reminders, { fronts: memory.fronts, owners });
+}
+
+/** The open changes whose folder is gone, read from their branches (`lost`). */
+async function lostEntries(session: Session): Promise<StatusEntry[]> {
+  return (await lostChanges(session)).map(({ id, state, title }) => ({
+    id,
+    kind: state.kind,
+    phase: state.phase,
+    title,
+    waitingFor: waitingForOf(state),
+    current: false,
+    pendingScope: state.pending.scopeRequests.map((request) => request.id),
+    lost: true,
+  }));
+}
+
+/** Who the change waits for: the person while a scope request is pending, else as its phase says. */
+function waitingForOf(state: ChangeState): StatusEntry["waitingFor"] {
+  if (state.pending.scopeRequests.length > 0) return "human";
+  const submitted =
+    (state.phase === "testing" ? state.testsSubmittedAt : state.closingSubmittedAt) !== undefined;
+  return phasePermissions(state.phase, submitted, isIntegrating(state)).waitingFor;
 }
 
 /** The open changes of every worktree as `status` shows them: phase, who they wait for and who holds them. */
@@ -53,15 +80,7 @@ export async function openChanges(session: Session): Promise<StatusEntry[]> {
       const root = await real(there.root);
       const title = parseSpec(await readSpec(change.files), { language: there.lang }).spec.title;
       const folder = posixRelative(session.root, there.root);
-      const waitingFor =
-        state.pending.scopeRequests.length > 0
-          ? "human"
-          : phasePermissions(
-              state.phase,
-              (state.phase === "testing" ? state.testsSubmittedAt : state.closingSubmittedAt) !==
-                undefined,
-              isIntegrating(state),
-            ).waitingFor;
+      const waitingFor = waitingForOf(state);
       return {
         id: state.id,
         kind: state.kind,
