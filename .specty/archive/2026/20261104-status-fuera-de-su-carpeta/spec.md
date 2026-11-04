@@ -66,3 +66,23 @@ Cuando una conversación de agente sale de la carpeta de su cambio (vuelve a la 
 
 - R1: `status` lee además los enlaces de todas las conversaciones, también las que terminaron. Mitigación: son archivos pequeños en la carpeta común de git, que `next` y `prune` ya leen; solo se cruzan con las carpetas de los cambios abiertos.
 - R2: Una conversación que salió a propósito de su carpeta marca su cambio durante `memory.orphanAfterMin` minutos. Mitigación: es la regla de un cambio por sesión que el guard ya aplica, y la marca desaparece en cuanto alguien da un paso en la carpeta del cambio.
+
+## Cierre
+
+### Resumen
+
+`specty status` ya dice cuándo la conversación de un cambio está fuera de su carpeta. Esto ocurre cuando el cambio espera al agente, nadie dio un paso en su carpeta en `memory.orphanAfterMin` minutos y la conversación enlazada a ella (`sessions/`) dio su último paso en otra carpeta en ese tiempo. Entonces la línea del cambio dice «fuera de su carpeta», con el agente y hace cuánto, y que `specty next` en esa conversación dice cómo volver, en lugar de «lo lleva» o «huérfano». `status --json` lo da en `away`, con `tool` y `ago`, y `holder` y `orphan` siguen como antes. Con esto queda cubierto el AC5 de la épica `20261104-sesiones-con-su-carpeta`, y con él todo su corte C1.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- `readBindings` y `readActivity` devuelven también la conversación de cada registro, en lugar de funciones nuevas: `status` lee los dos una sola vez y los cruza por conversación.
+- Un registro de actividad cuyo nombre no empieza por su agente sigue contando para «lo lleva», como antes; su conversación es el nombre entero.
+- El texto usa el comando de la tarjeta (`ctx.command`), no `specty` fijo.
+
+### Pendientes
+
+- Ninguno nuevo.

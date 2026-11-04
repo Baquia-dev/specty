@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-status-fuera-de-su-carpeta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-status-fuera-de-su-carpeta",
   "baseCommit": "18e5bc17b96c24314a40c50c974b1c5994877cbe",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2910df54eaf3830be217937376ced0f7d40dfe45b4d817a6ea4372331210ad41",
@@ -56,12 +56,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d85a7821cadf83835292e43c29e5781efaebcc80",
+      "attempts": 1,
       "startedAt": "2026-11-04T07:19:10.311Z",
       "doneAt": "2026-11-04T07:21:52.648Z",
-      "summary": "status cruza los enlaces de sessions/ con el último paso de cada conversación y añade away al cambio de una carpeta que su conversación dejó; ARCHITECTURE §6 y formats §1"
+      "summary": "status cruza los enlaces de sessions/ con el último paso de cada conversación y añade away al cambio de una carpeta que su conversación dejó; ARCHITECTURE §6 y formats §1",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,6 +74,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-04T07:31:30.763Z",
   "lockedTests": {
     "packages/cli/test/status-away.test.ts": "sha256:342c508f34be88d09450ae88f8e1d983d5503559f1d1942e703b5897a0cb9dec",
     "packages/core/test/cards/status-away.test.ts": "sha256:1127986da054c8aba57f4e88c2dcdc55dcbf0cf8206f2d87dcd9c6d45d443a6c"
