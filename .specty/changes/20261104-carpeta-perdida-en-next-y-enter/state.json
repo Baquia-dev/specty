@@ -6,6 +6,13 @@
   "branch": "specty/20261104-carpeta-perdida-en-next-y-enter",
   "baseCommit": "2b239513dd1a5121a54c36052fc6dc1c27b1de89",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9bd2366800d8ee12a73c1b9fb7e6c27fed187f8219616482b5797610879ef58c",
+    "at": "2026-11-04T08:45:43.572Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -48,12 +55,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9bd2366800d8ee12a73c1b9fb7e6c27fed187f8219616482b5797610879ef58c",
-    "at": "2026-11-04T08:45:43.572Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T08:48:56.414Z"
 }
