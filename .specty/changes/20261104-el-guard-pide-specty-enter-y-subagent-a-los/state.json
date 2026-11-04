@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-el-guard-pide-specty-enter-y-subagent-a-los",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-el-guard-pide-specty-enter-y-subagent-a-los",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 2,
@@ -55,6 +55,8 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T12:31:11.396Z"
+  "lockedTests": {
+    "packages/cli/test/subagents.test.ts": "sha256:fc889771983aca6371e27ade8acea5f3b7dd99fe9fd7bffdaaf617a81c86943d",
+    "packages/core/test/guard/shell.test.ts": "sha256:4f690e5656bf0ee25910b60c7c6bd13dcf13370b41c167acd08eed3dfe1f4b44"
+  }
 }
