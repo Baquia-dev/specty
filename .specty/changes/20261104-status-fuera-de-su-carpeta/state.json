@@ -6,6 +6,13 @@
   "branch": "specty/20261104-status-fuera-de-su-carpeta",
   "baseCommit": "18e5bc17b96c24314a40c50c974b1c5994877cbe",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2910df54eaf3830be217937376ced0f7d40dfe45b4d817a6ea4372331210ad41",
+    "at": "2026-11-04T07:15:25.114Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -48,12 +55,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2910df54eaf3830be217937376ced0f7d40dfe45b4d817a6ea4372331210ad41",
-    "at": "2026-11-04T07:15:25.114Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T07:18:10.516Z"
 }
