@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "id": "20261105-la-tarjeta-al-empezar-una-sesion-tambien-en",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-la-tarjeta-al-empezar-una-sesion-tambien-en",
+  "baseCommit": "a0110db82c25c3db2cb9b037f2db2fc48f5dac72",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:81a2cc875a083cba3ae6e00b8f5d38e83d6353c18099dd7431176d196ff8dcd3",
+    "at": "2026-11-04T17:29:36.921Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:dca0791792a3ef21d04830c2579954d5bbae7c8561d733eb5ac80359e1303d3e",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bab5e53d568197bec2da58b615d1055cfefa5f48b7f959ccf03f1fc44edb59ee",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:505b69b1d7a309a8e5fce319d6ea437a0875228ea211012b05e8abcc69f6423b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "1187684c9000a5a9f539eb2b7d39eecd01002144",
+      "attempts": 1,
+      "startedAt": "2026-11-04T17:33:33.782Z",
+      "doneAt": "2026-11-04T17:33:57.963Z",
+      "summary": "core: el código codex-startup de doctor y su texto, con el archivo y el comando que lo arregla",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "3193fea35dabf3ebf26fa43b52677c133205221a",
+      "attempts": 1,
+      "startedAt": "2026-11-04T17:33:58.620Z",
+      "doneAt": "2026-11-04T17:35:43.030Z",
+      "summary": "Codex: SessionStart con matcher ^(startup|resume|clear|compact)$ y kind compact para esos cuatro source (fork no); doctor avisa codex-startup si el SessionStart del guard no admite startup",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "5a14a481c1c0f20e737470c2f0811d4b1232ea42",
+      "attempts": 1,
+      "startedAt": "2026-11-04T17:35:43.381Z",
+      "doneAt": "2026-11-04T17:37:24.286Z",
+      "summary": "Devin: SessionStart sin matcher en sus eventos, kind compact, y la tarjeta como hookSpecificOutput.additionalContext",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "cb7d550e9e39744fc4f2d0987a7cf59e95945de8",
+      "attempts": 1,
+      "startedAt": "2026-11-04T17:37:25.034Z",
+      "doneAt": "2026-11-04T17:37:41.901Z",
+      "summary": "ARCHITECTURE: la tarjeta al empezar en Codex (startup, resume, clear y compact; fork no) y en Devin, y el aviso codex-startup",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4
+  },
+  "closingSubmittedAt": "2026-11-04T17:46:19.670Z",
+  "lockedTests": {
+    "packages/cli/test/agents.test.ts": "sha256:74d5303191e63a9a096bfa05c2b53386e495fe24320f117397cc406039fc8499",
+    "packages/cli/test/codex-e2e.test.ts": "sha256:14359f1f837f1463d658fc211a9a035e49e99b430537092c05d649397a78753d",
+    "packages/cli/test/codex.test.ts": "sha256:2f6249c1490c3f64cf935ceec311cd2a8395fc8c61dcda64b173ad671b1fafa2",
+    "packages/cli/test/session-start.test.ts": "sha256:24aa81497a939243f274ed2a41a9784a67aca98861ef802d5922c09f25d08873",
+    "packages/cli/test/session-start-codex.test.ts": "sha256:a827c4f3c5034f2b4f5e799f044d92875725a292f174a9fd3505d60e77e44901",
+    "packages/cli/test/session-start-devin.test.ts": "sha256:aeccb0bf26ac5b5ae7b3bda0f740379b369caf88f692079f2e4690cd66febeac",
+    "packages/core/test/cards/doctor-codex-startup.test.ts": "sha256:514fe4d7236ec19d8b35b4f326b2a6f492f79f3f64c61a10a0354f38dc443017"
+  }
+}
