@@ -65,7 +65,7 @@ Desde el corte C2, la terminal ve los cambios abiertos cuya carpeta se perdió y
   - files: packages/cli/src/flow/lost.ts, packages/cli/src/server/records.ts, packages/cli/src/server/http.ts, packages/cli/test/server-restore.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-restore.test.ts test/server.test.ts test/restore.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
-- [ ] T2: `lost` y `restoreFolder` en los datos de la UI
+- [x] T2: `lost` y `restoreFolder` en los datos de la UI
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/lost-folder.test.ts
   - ac: AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/lost-folder.test.ts --include src/data/views.test.ts --include src/data/server.test.ts && pnpm lint

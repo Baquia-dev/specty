@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6113651e9fd49ddecc6ca38fa8f28bdaaecaa9a9",
+      "attempts": 1,
       "startedAt": "2026-11-04T09:36:44.289Z",
       "doneAt": "2026-11-04T09:41:59.045Z",
-      "summary": "El servidor añade a los registros los cambios sin carpeta (spec y estado de su rama, lost, sin carpeta) y la acción POST /api/changes/<id>/restore ejecuta restore en la cola de acciones"
+      "summary": "El servidor añade a los registros los cambios sin carpeta (spec y estado de su rama, lost, sin carpeta) y la acción POST /api/changes/<id>/restore ejecuta restore en la cola de acciones",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "034a594c36a9aa224361e6cd50bf482b6dfa8e39",
+      "startedAt": "2026-11-04T09:41:59.505Z",
+      "doneAt": "2026-11-04T09:43:18.478Z",
+      "summary": "lost en ChangeRecord y ChangeView de la UI, restoreFolder en SpectyData (rechazado en solo lectura) y en ServerData con POST /api/changes/<id>/restore"
     }
   },
   "pending": {
