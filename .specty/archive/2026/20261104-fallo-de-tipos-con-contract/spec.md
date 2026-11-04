@@ -71,3 +71,24 @@ Resuelve P6. Con `policy.tests: contract`, `task done` no ejecuta la comprobaci�
 
 - R1: Un aviso en falso cuando la verificación comprueba los tipos con otro comando (un script `check` que los incluye) — se acepta también `verify.full`, y es un aviso, que no bloquea.
 - R2: Detectar el stack en cada `propose` lo frena — solo con `contract`, y `detectStacks` lee unos pocos archivos.
+
+## Cierre
+
+### Resumen
+
+Con `policy.tests: contract`, `propose` avisa (`task-no-typecheck`) cuando la verificación de la última tarea de código no ejecuta la comprobación de tipos del proyecto, la que usa `specty check`, ni `verify.full`. El CLI la detecta del stack solo con `contract` y se la pasa a la validación de core. La tarjeta del ajuste manda un fallo solo de tipos, lint o formato a una tarea `type: refactor` con `ac: —`, que no pasa por la fase de tests, en vez de a un `fix` que pediría un test en rojo. `docs/formats.md` §2 documenta el aviso, y `pnpm check` pasó al aceptar.
+
+### Desviaciones (respecto al plan)
+
+- El aviso lleva el comando en el parámetro `value`, que ya pinta el test de los mensajes, en vez de uno nuevo `command`.
+
+### Decisiones
+
+- Una revisión independiente con `claude -p` (la prueba de P44) señaló como media que la regla avisaría en una tarea sin verificación propia. No aplica: `task done` cuenta como verificación también `verify.default` y `verify.quick` (`taskVerification`), y `propose` rechaza una tarea sin ninguna (`task-verify-missing`). Que solo mire el primer stack es lo mismo que hace `specty check` (`projectProvider`).
+- A3 (un `refactor` de ajuste no pasa por la fase de tests) lo cubren los tests de `testCycle` que ya existían, con las tareas pendientes de un ajuste.
+
+### Pendientes
+
+- `task-no-typecheck` calla si `verify.full` es una cadena vacía, porque cualquier verificación la contiene; la regla debería ignorar los comandos vacíos.
+- En un ajuste sin tareas de código nuevas, `task-no-typecheck` cae en la última tarea hecha, que no se puede cambiar; su texto podría pedir entonces una tarea nueva.
+- Faltan tests de `task-no-typecheck` para una spec `quick` y para la fase `closing`, que la regla exime.

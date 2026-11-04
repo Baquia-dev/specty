@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-fallo-de-tipos-con-contract",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-fallo-de-tipos-con-contract",
   "baseCommit": "2950e27c26894203e230bc0b9164829ece6c2e6c",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:03deff5c58e3ffe376fed8469a2a6da425c8955bf0e89846eb6f740f9fffa4ea",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dd18f44a3442fbeb745579872136638ca73cfe45",
+      "attempts": 1,
       "startedAt": "2026-11-04T06:39:55.528Z",
       "doneAt": "2026-11-04T06:40:55.093Z",
-      "summary": "propose pasa a la validación, solo con contract, la comprobación de tipos del proyecto (projectCommands de check/commands.ts, ahora exportada, sobre el stack detectado); formats.md §2 documenta el aviso."
+      "summary": "propose pasa a la validación, solo con contract, la comprobación de tipos del proyecto (projectCommands de check/commands.ts, ahora exportada, sobre el stack detectado); formats.md §2 documenta el aviso.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -75,6 +75,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-04T06:53:23.167Z",
   "lockedTests": {
     "packages/core/test/validate/quality.test.ts": "sha256:0fb0177acd45372d2172a8bff005fd9f5361264f845d1b883faef64ede9efd41",
     "packages/cli/test/typecheck-warning.test.ts": "sha256:c28f9e1eec7e6e697ba3c86a45a51009a71dcb22bcec2d46ec9e8db3e4509be9",
