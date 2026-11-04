@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-reanudar-con-tarjeta",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-reanudar-con-tarjeta",
   "baseCommit": "c7e7ed0c3cf6644b5ecd5814ed1d072854b84f27",
   "revision": 1,
@@ -47,6 +47,10 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T06:50:07.169Z"
+  "lockedTests": {
+    "packages/cli/src/agents/claude-code.test.ts": "sha256:4b297db8de9a95d9d286c6b2945e0c400fac187b5545b98525132ea2c4b607fb",
+    "packages/cli/test/setup.test.ts": "sha256:b5d5c3feee3d6b66c9ec0121a3a939f53102e21464f2ff5882d9a93a631540a3",
+    "packages/core/test/cards/doctor.test.ts": "sha256:b2f08fd98e386f7779118caf81fbdc3c6f18821eea28b2b880f516ed5195df92",
+    "packages/cli/test/session-resume.test.ts": "sha256:dbba3a62141cb814db866a9a58a9df1ae5fd20845137abdefb211f9dfd1f3222"
+  }
 }
