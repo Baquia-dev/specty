@@ -42,7 +42,7 @@ Specty solo sabe en qué conversación corre un comando suyo cuando el agente es
   - files: packages/cli/src/agents/run.ts, packages/cli/test/front-start-codex.test.ts, packages/cli/test/codex-e2e.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-start-codex.test.ts test/front-start.test.ts test/codex-e2e.test.ts test/audit-who.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: La documentación
+- [x] T2: La documentación
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

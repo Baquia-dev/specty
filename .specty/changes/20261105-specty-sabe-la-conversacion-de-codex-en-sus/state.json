@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-specty-sabe-la-conversacion-de-codex-en-sus",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-specty-sabe-la-conversacion-de-codex-en-sus",
   "baseCommit": "4bacdf24afc367be9ed57975303bbf796b47c586",
   "revision": 1,
@@ -30,12 +30,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8777acff10a5ce21702366166c97c96d175b3c0c",
+      "attempts": 1,
       "startedAt": "2026-11-04T17:49:00.781Z",
       "doneAt": "2026-11-04T17:49:54.317Z",
-      "summary": "agentSession lee CODEX_THREAD_ID cuando el agente es Codex, como CLAUDE_CODE_SESSION_ID en Claude Code"
+      "summary": "agentSession lee CODEX_THREAD_ID cuando el agente es Codex, como CLAUDE_CODE_SESSION_ID en Claude Code",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "62bc7e5e651075a2a8974bbb58535d13ac8f1457",
+      "startedAt": "2026-11-04T17:49:54.943Z",
+      "doneAt": "2026-11-04T17:50:19.277Z",
+      "summary": "ARCHITECTURE: qué variable da la conversación en cada agente (Claude Code y Codex) y que los demás solo se la dan a sus hooks"
     }
   },
   "pending": {
