@@ -67,7 +67,7 @@ kind: standard
   - files: packages/ui/src/memory/memory-lines.ts, packages/ui/src/memory/memory-messages.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-messages.test.ts --include src/memory/memory-lines.test.ts && pnpm typecheck && pnpm lint
-- [ ] T4: La documentación
+- [x] T4: La documentación
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm lint
