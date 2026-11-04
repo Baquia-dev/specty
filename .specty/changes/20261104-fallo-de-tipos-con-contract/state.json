@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261104-fallo-de-tipos-con-contract",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-fallo-de-tipos-con-contract",
+  "baseCommit": "2950e27c26894203e230bc0b9164829ece6c2e6c",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:671b7db92fe064a4d9190cbe675aaf971e54ce936ffc6223c32a90804882aec5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a6cb16dba279d8311ee8c8bdd78ab7aa0cdee7091a8ff46d31e0f384441ef71c",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:d4be0baaacd96534baa87c6ea14dd61615244db0e5b69e343140f92fc00e56b3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:03deff5c58e3ffe376fed8469a2a6da425c8955bf0e89846eb6f740f9fffa4ea",
+    "at": "2026-11-04T06:35:50.017Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
