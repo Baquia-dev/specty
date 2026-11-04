@@ -11,7 +11,7 @@ import type { ReportOutput } from "../check/provider";
 import { resolveActive } from "../flow/active";
 import { readAudit } from "../flow/carried";
 import { findChange } from "../flow/find";
-import { taskCommits } from "../flow/views";
+import { taskCommits } from "../flow/task-views";
 import type { Session } from "../session";
 import { readSpec } from "../store/changes";
 

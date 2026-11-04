@@ -21,8 +21,8 @@ import type { StoredChange } from "../store/changes";
 import { commitState } from "./active";
 import { changeTrailers, commitWithReceipt } from "./commits";
 import { runLive } from "./live-run";
+import { taskVerification } from "./task-views";
 import { codeTree } from "./verified";
-import { taskVerification } from "./views";
 
 /**
  * What `task.completed` keeps besides the summary, when there is any: what the task's diff shows
