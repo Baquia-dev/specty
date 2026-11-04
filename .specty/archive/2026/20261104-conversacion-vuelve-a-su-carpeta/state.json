@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261104-conversacion-vuelve-a-su-carpeta",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-conversacion-vuelve-a-su-carpeta",
+  "baseCommit": "76e0eca1da6b2bc6fa42d0e1a0b555f88690dc3d",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a74e3a9713fae5cba0fe900c6223137be47143b56ce8bf562f9ac8b5da28cf72",
+    "at": "2026-11-04T06:11:08.227Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:29a53d0fe134c1480e4a76ebfecac54228f0f07ae45b2879491378d6b5883942",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f469e4a5bf1b90648c584604c4255d6358b8438bb274a3db916eb5de48a40ae2",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3db0b5e9f55accd929ddabca67bac03ce04d43383f492dde58221aab20a6f61a",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e0a4670e837322cef1d653a4e9b66bdf068016c239bb0c29f8e0272ee335fc19",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "99ff8a2b0ef222cd1c675fa59e56e6338c2429de",
+      "attempts": 2,
+      "startedAt": "2026-11-04T06:15:39.792Z",
+      "doneAt": "2026-11-04T06:17:35.036Z",
+      "summary": "rejoin.ts con la tarjeta de volver al cambio de la conversación y el bloque de cambios sin conversación; NextView gana own, orphans y byName; carryOnText exportado con una entrada propia",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "4394e7b5a8ab2bd5c26332e55e3e12d6eb7f59df",
+      "attempts": 1,
+      "startedAt": "2026-11-04T06:17:35.376Z",
+      "doneAt": "2026-11-04T06:20:47.683Z",
+      "summary": "next lee el enlace de la conversación (conversationChange) y da la tarjeta de volver, o lista los huérfanos de openChanges; new enlaza la conversación a la carpeta nueva con la regla del guard (bindNew); docs de ARCHITECTURE §7 y formats §1",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-04T06:27:20.233Z",
+  "lockedTests": {
+    "packages/cli/test/session-return.test.ts": "sha256:7708b4d394dbc174210f6ef306f77ed51b60e46961248da665bae997cd0d9bb8",
+    "packages/core/test/cards/rejoin.test.ts": "sha256:a45917a4adde3811e9dd78ab6f2aca2038751d0bfaf74387e8262d12106bc0ea"
+  }
+}
