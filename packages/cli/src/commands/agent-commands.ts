@@ -111,6 +111,7 @@ interface NewFlags {
   readonly timebox?: string;
   readonly worktree?: boolean;
   readonly from?: string;
+  readonly subagent?: boolean;
   readonly request?: string;
   readonly slug?: string;
   readonly branch?: string;
@@ -159,6 +160,10 @@ function newCommand(
     .option("--timebox <duration>", "spike time limit, for example 2h")
     .option("--worktree", "create the change in a new worktree, so this folder keeps its work")
     .option("--from <branch>", "with --worktree, the branch to start from (default: the main one)")
+    .option(
+      "--subagent",
+      "a subagent runs it: its session stays where it was, and the subagent enters the change's folder with `specty enter`",
+    )
     .option("--request <text>", "the user's literal request, kept in the audit as written")
     .option("--slug <slug>", "clean, concise slug for the change id and branch")
     .option("--branch <branch>", "explicit branch name for the change")
@@ -195,6 +200,7 @@ function newOptions(title: string, given: KindAndType, options: NewFlags): NewOp
     ...originOptions(options),
     worktree: options.worktree === true,
     ...(options.from !== undefined ? { from: options.from } : {}),
+    ...(options.subagent === true ? { subagent: true } : {}),
     ...(options.request !== undefined ? { request: options.request } : {}),
     ...(options.slug !== undefined ? { slug: options.slug } : {}),
     ...(options.branch !== undefined ? { branch: options.branch } : {}),

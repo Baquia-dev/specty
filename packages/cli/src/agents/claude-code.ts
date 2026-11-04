@@ -7,7 +7,7 @@ import {
   HUMAN_COMMANDS,
 } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
-import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
+import { asSubagentConversation, type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import { isWorktreeEvent } from "../enforce/worktree-hooks";
 import {
   CLAUDE_LOCAL_SETTINGS,
@@ -74,6 +74,8 @@ const OLD_ASK = "ExitWorktree(action:remove)";
  */
 export const claudeCode: AgentAdapter = {
   tool: "claude-code",
+  // A subagent sends its session's id with its own `agent_id`: it is a conversation of its own.
+  normalize: asSubagentConversation,
   kind: (event) => {
     if (isWorktreeEvent(event)) return "worktree";
     if (event.hook_event_name === "SessionStart") return "compact";

@@ -40,7 +40,21 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/commands/new.ts",
+        "packages/cli/src/commands/agent-commands.ts",
+        "packages/core/src/cards/new.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "2dda86f0c083c40d1fbd756c6fb5280027ec1d58",
+      "startedAt": "2026-11-04T10:10:15.733Z",
+      "doneAt": "2026-11-04T10:20:28.994Z",
+      "summary": "Cada subagente de Claude Code (agent_id) es una conversación propia: entra con specty enter, queda atado a su carpeta y se juzga con sus reglas sin mover a la sesión principal. Incluye new --subagent (de T2) y el arnés de Claude Code real compartido."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
