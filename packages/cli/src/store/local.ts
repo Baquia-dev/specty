@@ -130,13 +130,22 @@ export async function readBinding(git: Git, session: string): Promise<SessionBin
   return typeof folder === "string" && typeof at === "string" ? { folder, at } : undefined;
 }
 
-/** Every agent session's worktree, as the guard recorded it, also of sessions that ended. */
-export async function readBindings(git: Git): Promise<SessionBinding[]> {
+/**
+ * Every agent session's worktree, as the guard recorded it, also of sessions that ended, with
+ * the session (its conversation) each belongs to.
+ */
+export async function readBindings(
+  git: Git,
+): Promise<(SessionBinding & { readonly conversation: string })[]> {
   const names: string[] = await readdir(await git.gitPath(SESSIONS)).catch(() => []);
   const bindings = await Promise.all(
     names
       .filter((name) => name.endsWith(".json"))
-      .map((name) => readBinding(git, name.slice(0, -".json".length))),
+      .map(async (name) => {
+        const conversation = name.slice(0, -".json".length);
+        const bound = await readBinding(git, conversation);
+        return bound === undefined ? undefined : { ...bound, conversation };
+      }),
   );
   return bindings.flatMap((bound) => (bound === undefined ? [] : [bound]));
 }

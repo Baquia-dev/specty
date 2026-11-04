@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-status-fuera-de-su-carpeta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-status-fuera-de-su-carpeta",
   "baseCommit": "18e5bc17b96c24314a40c50c974b1c5994877cbe",
   "revision": 1,
@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0be65f6271791c5f19022063e402f1925a750973",
+      "attempts": 1,
       "startedAt": "2026-11-04T07:18:25.784Z",
       "doneAt": "2026-11-04T07:19:09.657Z",
-      "summary": "StatusEntry.away y su texto en la línea de status, en lugar de lo lleva o huérfano, con el comando de la tarjeta"
+      "summary": "StatusEntry.away y su texto en la línea de status, en lugar de lo lleva o huérfano, con el comando de la tarjeta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d85a7821cadf83835292e43c29e5781efaebcc80",
+      "startedAt": "2026-11-04T07:19:10.311Z",
+      "doneAt": "2026-11-04T07:21:52.648Z",
+      "summary": "status cruza los enlaces de sessions/ con el último paso de cada conversación y añade away al cambio de una carpeta que su conversación dejó; ARCHITECTURE §6 y formats §1"
     }
   },
   "pending": {

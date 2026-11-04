@@ -57,7 +57,7 @@ Cuando una conversación de agente sale de la carpeta de su cambio (vuelve a la 
   - files: packages/core/src/cards/status.ts, packages/core/test/cards/status-away.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/status-away.test.ts test/cards/status-holder.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: `status` cruza los enlaces con los últimos pasos, y la documentación
+- [x] T2: `status` cruza los enlaces con los últimos pasos, y la documentación
   - files: packages/cli/src/store/local.ts, packages/cli/src/store/activity.ts, packages/cli/src/commands/status.ts, packages/cli/test/status-away.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/status-away.test.ts test/activity.test.ts test/session-return.test.ts test/prune.test.ts && pnpm typecheck && pnpm lint
