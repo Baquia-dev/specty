@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261104-el-freno-de-duplicados-salta-la-epica-de-lo-que",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-el-freno-de-duplicados-salta-la-epica-de-lo-que",
   "baseCommit": "b06989fb18be8c45c5934403c924fe034d3c7a7b",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:57be024cb9d987e715f7e9550f389da0396e424037e8d2e2fc89fef98a43f105",
+    "at": "2026-11-04T11:01:22.877Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -30,12 +37,7 @@
     "AC": 2,
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:57be024cb9d987e715f7e9550f389da0396e424037e8d2e2fc89fef98a43f105",
-    "at": "2026-11-04T11:01:22.877Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/duplicates-epic.test.ts": "sha256:92ecd7f16eb181b31472aded7df4c23cf9d922691c6620c8cea161d2f718e3b4"
+  }
 }
