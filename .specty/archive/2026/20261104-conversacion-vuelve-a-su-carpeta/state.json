@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-conversacion-vuelve-a-su-carpeta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-conversacion-vuelve-a-su-carpeta",
   "baseCommit": "76e0eca1da6b2bc6fa42d0e1a0b555f88690dc3d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:a74e3a9713fae5cba0fe900c6223137be47143b56ce8bf562f9ac8b5da28cf72",
@@ -52,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4394e7b5a8ab2bd5c26332e55e3e12d6eb7f59df",
+      "attempts": 1,
       "startedAt": "2026-11-04T06:17:35.376Z",
       "doneAt": "2026-11-04T06:20:47.683Z",
-      "summary": "next lee el enlace de la conversación (conversationChange) y da la tarjeta de volver, o lista los huérfanos de openChanges; new enlaza la conversación a la carpeta nueva con la regla del guard (bindNew); docs de ARCHITECTURE §7 y formats §1"
+      "summary": "next lee el enlace de la conversación (conversationChange) y da la tarjeta de volver, o lista los huérfanos de openChanges; new enlaza la conversación a la carpeta nueva con la regla del guard (bindNew); docs de ARCHITECTURE §7 y formats §1",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,6 +70,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-04T06:27:20.233Z",
   "lockedTests": {
     "packages/cli/test/session-return.test.ts": "sha256:7708b4d394dbc174210f6ef306f77ed51b60e46961248da665bae997cd0d9bb8",
     "packages/core/test/cards/rejoin.test.ts": "sha256:a45917a4adde3811e9dd78ab6f2aca2038751d0bfaf74387e8262d12106bc0ea"

@@ -72,3 +72,25 @@ Hoy, cuando una sesión de Claude Code vuelve a la carpeta principal (al reanuda
 
 - R1: `next` sin cambio activo abre una sesión por worktree para buscar huérfanos, y lo hace en cada `SessionStart`. Mitigación: es lo mismo que hace `status`; solo ocurre sin cambio activo y sin enlace.
 - R2: Una conversación que salió a propósito de su carpeta recibe la indicación de volver. Mitigación: es la regla de un cambio por sesión que el guard ya aplica, y la tarjeta dice que otra sesión puede llevar otro trabajo.
+
+## Cierre
+
+### Resumen
+
+Una conversación que sale de la carpeta de su cambio ya no recibe «No hay un cambio activo» ni la propuesta de crear otro. Si está enlazada a la carpeta de un cambio abierto y pregunta desde otra, `specty next` le da la tarjeta «TU CAMBIO»: nombra el cambio y su carpeta, y dice cómo volver con la misma regla de `specty new`. El guard da esa tarjeta también en su `SessionStart`. `specty new` enlaza a la carpeta nueva la conversación que lo ejecuta, salvo que ya trabaje en otro cambio abierto que no sea la épica del nuevo. Sin enlace, la tarjeta sin cambio activo lista los cambios huérfanos con su carpeta y cómo retomarlos, antes de `specty new`. Cubre los AC1, AC2 y AC4 de la épica `20261104-sesiones-con-su-carpeta`.
+
+### Desviaciones
+
+- El corte C1 de la épica salía XL. Este cambio lleva su parte central. La tarjeta al reanudar (`SessionStart` con `resume` y su aviso de `doctor`, AC3 de la épica) y la marca «fuera de su carpeta» en `status` (AC5) van en los dos cambios de la épica que siguen.
+- `bindNew` repite la condición de `sessionDenial` en lugar de llamarla, porque esa función no está en la API pública de core.
+
+### Decisiones
+
+- La tarjeta de volver gana a la de los cambios sin spec, la de la memoria y la lista de huérfanos: la conversación tiene un cambio, y lo primero es volver a él.
+- Los huérfanos son los de `status` (`openChanges`), para que las dos salidas digan lo mismo.
+
+### Pendientes
+
+- `packages/core/src/cards/next.ts` tiene 301 líneas de código, una más que el aviso. Propuesta: llevar las tarjetas sin cambio activo (`noChangeCard`, `withoutSpecCard`, `skeletonCard`, `idleCard` y los textos de `specty new`) a un `cards/idle.ts` propio, que es una responsabilidad aparte de las tarjetas de cada fase.
+- `specty cancel <id>` ejecutado desde la carpeta principal respondió «No hay un cambio activo» con un cambio abierto en su worktree (2026-11-04); dentro de la carpeta del cambio sí canceló. Revisar si las decisiones de la persona desde cualquier carpeta cubren `cancel` con id.
+- `specty new` creó como `standard` un cambio cuya spec se cambió luego a `kind: epic`, y `propose` y `approve` lo aceptaron sin avisar: el cambio pasó a aceptación sin cortes. Que `propose` rechace un `kind` del frontmatter distinto del estado.
