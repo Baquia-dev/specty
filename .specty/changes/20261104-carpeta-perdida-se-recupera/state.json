@@ -55,12 +55,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "984f8abcc7c8dd225d85582700ceedd0a44e13f3",
+      "attempts": 1,
       "startedAt": "2026-11-04T08:02:20.905Z",
       "doneAt": "2026-11-04T08:10:50.632Z",
-      "summary": "cards/restore.ts con la salida de restore (recuperada, reparada o el motivo), StatusEntry.lost y su marca sin carpeta; new.ts exporta las líneas del go.work y el SIGUIENTE para reutilizarlos"
+      "summary": "cards/restore.ts con la salida de restore (recuperada, reparada o el motivo), StatusEntry.lost y su marca sin carpeta; new.ts exporta las líneas del go.work y el SIGUIENTE para reutilizarlos",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "13bc6abab7d16167068d24b733756598fcbe8d9a",
+      "startedAt": "2026-11-04T08:10:51.563Z",
+      "doneAt": "2026-11-04T08:20:32.741Z",
+      "summary": "flow/lost.ts detecta los cambios abiertos sin carpeta desde sus ramas marcadas (un cat-file --batch-check y solo después sus estados), markedChanges da rama e id, y status los lista con lost"
     }
   },
   "pending": {

@@ -65,7 +65,7 @@ Hoy, si alguien borra la carpeta de un cambio abierto o git la «poda», el camb
   - files: packages/core/src/cards/restore.ts, packages/core/src/cards/new.ts, packages/core/src/cards/status.ts, packages/core/src/cards/index.ts, packages/core/test/cards/restore.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/restore.test.ts test/cards/status-away.test.ts test/cards/status-holder.test.ts test/cards/new.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: `status` detecta los cambios sin carpeta desde sus ramas
+- [x] T2: `status` detecta los cambios sin carpeta desde sus ramas
   - files: packages/cli/src/flow/lost.ts, packages/cli/src/flow/branches.ts, packages/cli/src/commands/status.ts, packages/cli/test/lost-status.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/lost-status.test.ts test/status-away.test.ts test/activity.test.ts test/prune.test.ts && pnpm typecheck && pnpm lint
