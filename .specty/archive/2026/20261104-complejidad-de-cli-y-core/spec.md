@@ -53,3 +53,22 @@ Resuelve, en parte, P61. `specty check --all` falla en `complexity` (máximo 10)
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm --filter @baquia-dev/specty-core exec vitest run test/guard test/cards/new.test.ts
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Las seis funciones que `complexity` señalaba en el CLI y en core quedan por debajo de 10, sacando a funciones con nombre las decisiones que mezclaban: `requestedTask` en `scopeAdd`; `eventOf`, `messageOf` y `guardChange` (con `taskFiles`, `plannedFiles`, `lockedOf` e `integrationOf`) en el guard; `pushBase` en la CI de GitHub; `inProgressNext` en `newRefusalNext`; y el conjunto `LEADING_VALUED` en `leadingOptions`. Ningún test que ya existía cambió.
+
+### Desviaciones
+
+- AC1 se comprobó con la verificación de cada tarea (`specty check --changed`, que mide `complexity` en los archivos tocados), no con `specty check --all`: la deuda P61 sigue abierta hasta el cambio siguiente (exporters y vscode).
+- La incorporación de main falló tres veces: `pnpm check` tardaba unos 10 minutos con varias sesiones a la vez y `verify.timeoutSec: 600` lo cortaba. Pasó al cuarto intento, con la máquina más tranquila (9 min 47 s).
+
+### Decisiones
+
+- Sin archivos nuevos: cada función extraída vive junto a la que la usa (A1).
+
+### Pendientes
+
+- Cuando `verify.timeoutSec` corta `pnpm check`, `specty integrate` solo dice «`pnpm check` falla» con una salida truncada, sin decir que se agotó el tiempo; que lo diga y sugiera subir `verify.timeoutSec`.
