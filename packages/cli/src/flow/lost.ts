@@ -21,6 +21,8 @@ export interface LostChange {
   readonly branch: string;
   readonly state: ChangeState;
   readonly title: string;
+  /** Its `spec.md` at the tip of its branch, when there is one. */
+  readonly spec?: string;
   /** The folders git still lists for its branch, which no longer exist. */
   readonly stale: readonly string[];
 }
@@ -90,7 +92,7 @@ async function readLost(
   const spec = await show("spec.md");
   const title =
     spec === undefined ? id : parseSpec(spec, { language: session.lang }).spec.title || id;
-  return { id, branch, state: parsed.state, title, stale };
+  return { id, branch, state: parsed.state, title, ...(spec !== undefined ? { spec } : {}), stale };
 }
 
 /** What `specty restore` did with a lost change's folder. */

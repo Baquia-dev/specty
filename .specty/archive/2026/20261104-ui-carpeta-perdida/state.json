@@ -1,0 +1,124 @@
+{
+  "schema": 1,
+  "id": "20261104-ui-carpeta-perdida",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-ui-carpeta-perdida",
+  "baseCommit": "4f68f6e03188ee8cfe1d981c6433ca374dcdf161",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bdc7d7ee885fd6eb83231659199f3286d7109c6869cf65f00f803d6be77bc1fe",
+    "at": "2026-11-04T09:32:42.282Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a48cad4f3e9444e5332147ad39dc99c0adf3c2475e98f59424f0b8131c4f56cf",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:230ed35fa1f2ccabd96d1209ddaf757675cbfcefbbb4121366f5418a9d0f0056",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:b79e54a5edf0452f9e67b194bd4dd29574857e96c8ac6b810aa7a302427df361",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1b31957d5a70e2a74bd4137bd679a4c94e388bc2c520f1163503374211288ff6",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:33334337d18c8f0ac4c66a35296c2986c5d5117cd6065c6d037531e6c18038a8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6113651e9fd49ddecc6ca38fa8f28bdaaecaa9a9",
+      "attempts": 1,
+      "startedAt": "2026-11-04T09:36:44.289Z",
+      "doneAt": "2026-11-04T09:41:59.045Z",
+      "summary": "El servidor añade a los registros los cambios sin carpeta (spec y estado de su rama, lost, sin carpeta) y la acción POST /api/changes/<id>/restore ejecuta restore en la cola de acciones",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "034a594c36a9aa224361e6cd50bf482b6dfa8e39",
+      "attempts": 1,
+      "startedAt": "2026-11-04T09:41:59.505Z",
+      "doneAt": "2026-11-04T09:43:18.478Z",
+      "summary": "lost en ChangeRecord y ChangeView de la UI, restoreFolder en SpectyData (rechazado en solo lectura) y en ServerData con POST /api/changes/<id>/restore",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "14d81e37793251e2a8190dccf0b363760d3a5afa",
+      "attempts": 1,
+      "startedAt": "2026-11-04T09:43:19.799Z",
+      "doneAt": "2026-11-04T09:47:44.574Z",
+      "summary": "La marca Sin carpeta en la fila de la Bandeja, el panel sp-lost-folder (qué pasó, Recuperar carpeta con su aviso, el comando y el motivo en solo lectura) en lugar de las pestañas, y ARCHITECTURE §15",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-04T10:28:25.590Z",
+  "lockedTests": {
+    "packages/cli/test/server-restore.test.ts": "sha256:a4849b12d52319f057950505d37c8dfa54aa366d71c0580e68c74a80a9df24e0",
+    "packages/ui/src/change/lost-folder.test.ts": "sha256:0ce5efcbe24b09423920476fd9cdf255e11b57aeb0a4551f3ea72fd35795379e",
+    "packages/ui/src/data/lost-folder.test.ts": "sha256:bdc3594f5ac7507bce4f3adf53ece538df801c87592aef09291e18783463cf30"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "cb6838409f3dba5834c2ee9722cae08987438784",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/flow/lost.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/test/server-restore.test.ts",
+      "packages/cli/test/server/runs-turn.test.ts",
+      "packages/ui/package.json",
+      "packages/ui/src/change/change-page.ts",
+      "packages/ui/src/change/lost-folder.test.ts",
+      "packages/ui/src/change/lost-folder.ts",
+      "packages/ui/src/data/lost-folder.test.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/data/views.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "pnpm-lock.yaml",
+      "pnpm-workspace.yaml"
+    ],
+    "at": "2026-11-04T10:01:36.524Z",
+    "resolved": {
+      "commit": "81d65df",
+      "at": "2026-11-04T10:22:16.200Z"
+    }
+  }
+}
