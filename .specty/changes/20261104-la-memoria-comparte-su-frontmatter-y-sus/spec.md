@@ -47,7 +47,7 @@ kind: standard
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory && pnpm typecheck && pnpm lint && pnpm exec knip
   - type: refactor
-- [ ] T2: Los tipos de entrada con su artículo, en su propio módulo
+- [x] T2: Los tipos de entrada con su artículo, en su propio módulo
   - files: packages/core/src/cards/memory-kinds.ts, packages/core/src/cards/memory-refusals.ts, packages/core/src/cards/fronts.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards test/memory && pnpm typecheck && pnpm lint && pnpm exec knip && pnpm sources

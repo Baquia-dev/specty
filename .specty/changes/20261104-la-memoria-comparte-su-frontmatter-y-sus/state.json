@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-la-memoria-comparte-su-frontmatter-y-sus",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-la-memoria-comparte-su-frontmatter-y-sus",
   "baseCommit": "cedf87d684d7915bba73bb090306543d330d75d8",
   "revision": 1,
@@ -30,12 +30,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "706485bbec3ebaafe440a7092a486fb1ebe35ee6",
+      "attempts": 1,
       "startedAt": "2026-11-04T09:26:01.246Z",
       "doneAt": "2026-11-04T09:27:02.326Z",
-      "summary": "memory/frontmatter.ts: frontmatterOf lee el YAML y el cuerpo de una entrada o un frente; parseEntry y parseFront lo usan en vez de su FRONTMATTER y su loadYaml"
+      "summary": "memory/frontmatter.ts: frontmatterOf lee el YAML y el cuerpo de una entrada o un frente; parseEntry y parseFront lo usan en vez de su FRONTMATTER y su loadYaml",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f19554d713745b1bee3dfa405cf06f5cac67d8ae",
+      "startedAt": "2026-11-04T09:27:02.997Z",
+      "doneAt": "2026-11-04T09:27:50.133Z",
+      "summary": "cards/memory-kinds.ts: ONE_OF_KIND, cada tipo de entrada con su artículo; memory-refusals.ts y fronts.ts lo importan"
     }
   },
   "pending": {
