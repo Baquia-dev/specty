@@ -6,6 +6,13 @@
   "branch": "specty/20261105-archivos-largos-de-core-y-ui",
   "baseCommit": "555d8540abbd360891f992252bcb564c64542ed6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d24bf2c30049185ab5f2e690f8013653946bcb6b47f6551cb76c3cf1999f3b25",
+    "at": "2026-11-04T18:39:58.611Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -26,7 +33,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "96554ecd0841f28178ae3e9bb54ea3dbc4f8aa70",
+      "startedAt": "2026-11-04T18:39:59.454Z",
+      "doneAt": "2026-11-04T18:41:25.162Z",
+      "summary": "La tarjeta sin cambio activo (noChangeCard, con withoutSpecCard, skeletonCard, idleCard y los textos de specty new) pasa de cards/next.ts a cards/idle.ts; next.ts la importa."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -35,12 +52,5 @@
     "A": 2,
     "AC": 2,
     "T": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d24bf2c30049185ab5f2e690f8013653946bcb6b47f6551cb76c3cf1999f3b25",
-    "at": "2026-11-04T18:39:58.611Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

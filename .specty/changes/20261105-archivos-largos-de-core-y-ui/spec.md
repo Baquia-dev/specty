@@ -55,7 +55,7 @@ Resuelve P62 y P66. `specty check --all` avisa en `max-lines` de cinco archivos:
 
 ## Tareas
 
-- [ ] T1: La tarjeta sin cambio activo, en su archivo
+- [x] T1: La tarjeta sin cambio activo, en su archivo
   - files: packages/core/src/cards/next.ts, packages/core/src/cards/idle.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm knip
