@@ -93,3 +93,30 @@ Hoy el guard reconoce una conversación por el `session_id` de sus hooks, y los 
 - R2: La épica abierta `20261104-sesiones-con-su-carpeta` también toca los enlaces de sesión (`enforce/sessions.ts`). Mitigación: este corte no cambia su regla de `new` (usa `--subagent`), y al cerrar los conflictos van a `specty integrate`.
 - R3: La prueba con Claude Code real depende de cómo trata el modo sin interfaz a un subagente en segundo plano. Mitigación: el guion de la sesión principal espera al subagente antes de terminar; como los demás E2E, se salta sin Claude Code instalado.
 - R4: Hasta el cambio de las redes de seguridad, un subagente que use `EnterWorktree` o olvide `--subagent` movería a la sesión principal. Mitigación: el encargo de C2 trae los comandos exactos, y ese cambio va antes de usar C2 en serio.
+
+## Cierre
+
+### Resumen
+
+- El guard distingue a cada subagente de Claude Code por su `agent_id`: su conversación es `<session_id>--<agent_id>`, con su propio enlace a una carpeta, sus pasos en `status` y su frente.
+- Un subagente entra con `specty enter <id>`, también en Claude Code, cuya sesión principal sigue entrando con `EnterWorktree`. Queda atado a la carpeta de ese cambio, se juzga con sus reglas, y lo que caería fuera se le bloquea con la ruta o el comando buenos.
+- `specty new --subagent` crea el cambio sin atar a la conversación que lo ejecuta, y su SIGUIENTE pide entrar con `specty enter <id>` en cualquier herramienta.
+- La tabla de capacidades tiene la columna «Cortes en subagentes»: Claude Code en «sí»; Gemini CLI, Antigravity y Devin (Windsurf) en «no posible», con su motivo; Codex, OpenCode y Cursor sin ella hasta su corte.
+- Comprobado con Claude Code real (AC7, en `subagents.test.ts`): la sesión principal no envía `agent_id`; el subagente lo envía con el `session_id` de la sesión principal, arranca en la carpeta de esta y en sus comandos ve el mismo `CLAUDE_CODE_SESSION_ID`.
+
+### Desviaciones (respecto al plan)
+
+- La prueba con Claude Code real está en `subagents.test.ts`, no en `agent-e2e.test.ts`. La verificación de T1 encadena dos comandos con `&&`, y el primero falla en la fase de tests, así que el segundo nunca nombraba ese archivo. El arnés de Claude Code real (encontrar el binario, preparar el repositorio, ejecutarlo sin interfaz y los pasos del guion) pasó a `fake-model.ts`, y `agent-e2e.test.ts` lo importa: las 3 aserciones de sus ayudantes se movieron con ellos y se siguen ejecutando.
+- T1 hizo también el código de T2 (`--subagent`), con el alcance ampliado, porque su verificación ejecuta todo `subagents.test.ts`, que incluye los casos de AC5.
+- T4 llegó con un ajuste: `fakeModel` dejó de exportarse, porque solo la usa su propio archivo y knip hacía fallar `pnpm check`. La persona desbloqueó `fake-model.ts` para ello (S1).
+- La épica decía que `new --epic --slice` dejaría de mover a la conversación atada a su épica. En su lugar, `--subagent` no ata a nadie, y la regla de `new` de la épica `20261104-sesiones-con-su-carpeta` queda como estaba.
+
+### Decisiones
+
+- El guard no reescribe las acciones de un subagente de Claude Code: reescribir exige responder «allow», que saltaría los permisos de la persona. Se las bloquea con la ruta o el comando buenos.
+- Las redes de seguridad del guard para subagentes salieron del corte para no pasar del tamaño L (P81).
+
+### Pendientes
+
+- P81: que el guard bloquee a un subagente que use `EnterWorktree` o `specty new` sin `--subagent`, antes de usar en serio la tarjeta de C2.
+- P84: el test de main `runs-turn.test.ts` «AC2: frees the turn when it ends» falla a veces dentro de `pnpm check`.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-subagentes-claude-code-en-su-carpeta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-subagentes-claude-code-en-su-carpeta",
   "baseCommit": "cb6838409f3dba5834c2ee9722cae08987438784",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:fe062b63fa87951109c5bf523590ddf78ceb9929f3156dc4e24da55d4ba7440a",
@@ -75,14 +75,14 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/fake-model.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "f041372567993ac40bffc2e17720ec71d5b88e4a",
+      "attempts": 1,
       "startedAt": "2026-11-04T10:29:47.866Z",
       "doneAt": "2026-11-04T10:41:01.068Z",
-      "summary": "fakeModel deja de exportarse: desde T1 solo la usa claudeWith, en su mismo archivo, y knip fallaba en pnpm check."
+      "summary": "fakeModel deja de exportarse: desde T1 solo la usa claudeWith, en su mismo archivo, y knip fallaba en pnpm check.",
+      "scopeExtra": [
+        "packages/cli/test/fake-model.ts"
+      ]
     }
   },
   "pending": {
@@ -96,9 +96,49 @@
     "R": 4,
     "S": 1
   },
+  "closingSubmittedAt": "2026-11-04T11:48:46.051Z",
   "lockedTests": {
     "packages/cli/test/fake-model.ts": "sha256:b04464b421feb1f95b583e3792e684d3b718aff6e557a79f6d7be4f494c380e2",
     "packages/core/test/capabilities.test.ts": "sha256:f12d2f2ce39299c69b512274e2b23db31b768f41dfb3b0f656e4ef08974830bb",
     "packages/cli/test/subagents.test.ts": "sha256:c8f186bec2a48c7a3e1dd7287946271633dc22436cbf269f7c035ce1042de89f"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "2bd6cf73dc77785caeb5ec988958323a0e167772",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/agents/claude-code.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/enforce/actions.ts",
+      "packages/cli/src/enforce/enter-command.ts",
+      "packages/cli/src/enforce/sessions.ts",
+      "packages/cli/src/flow/lost.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/test/agent-e2e.test.ts",
+      "packages/cli/test/fake-model.ts",
+      "packages/cli/test/server-restore.test.ts",
+      "packages/cli/test/subagents.test.ts",
+      "packages/core/src/capabilities.ts",
+      "packages/core/src/cards/new.ts",
+      "packages/core/test/capabilities.test.ts",
+      "packages/ui/src/change/change-page.ts",
+      "packages/ui/src/change/lost-folder.test.ts",
+      "packages/ui/src/change/lost-folder.ts",
+      "packages/ui/src/data/lost-folder.test.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/data/views.ts",
+      "packages/ui/src/inbox/inbox-row.ts"
+    ],
+    "at": "2026-11-04T11:00:43.267Z",
+    "resolved": {
+      "commit": "995cbca",
+      "at": "2026-11-04T11:40:12.610Z"
+    }
   }
 }
