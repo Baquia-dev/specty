@@ -13,7 +13,7 @@ import { KindBadge, PhaseBadge } from "../components/badge";
 import { Button } from "../components/button";
 import { ItemTooltips } from "../components/item-tooltip";
 import { formatDuration } from "../data/progress";
-import { type Bilingual, type ChangeView, type DecisionKind } from "../data/records";
+import type { Bilingual, ChangeView, DecisionKind } from "../data/records";
 import { Preferences } from "../theme/preferences";
 
 const DECISIONS: Readonly<

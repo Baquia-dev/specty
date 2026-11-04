@@ -39,6 +39,12 @@ export async function anyMessages(git: Git): Promise<boolean> {
   return names.length > 0;
 }
 
+/** How many messages wait for the session of change `id`: they go as that session reads them. */
+export async function waitingCount(git: Git, id: string): Promise<number> {
+  const names = await readdir(join(await git.gitPath(MESSAGES), id)).catch(() => []);
+  return names.filter((name) => name.endsWith(".json")).length;
+}
+
 /** The changes with a folder of messages. */
 export async function messageChanges(git: Git): Promise<string[]> {
   const folder = await git.gitPath(MESSAGES);
