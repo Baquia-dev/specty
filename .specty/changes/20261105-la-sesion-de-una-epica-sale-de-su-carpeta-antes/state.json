@@ -41,7 +41,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/new.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "2cc48f6e9386493fc35f1a1aa2a35727cec7e817",
+      "startedAt": "2026-11-04T17:47:44.439Z",
+      "doneAt": "2026-11-04T17:49:34.708Z",
+      "summary": "La tarjeta de una épica en su worktree pide ExitWorktree keep antes de lanzar los encargos; awayEpicCard da la tarjeta de la épica a su conversación fuera de su carpeta, y rejoinCard la usa mientras quedan cortes para los subagentes."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

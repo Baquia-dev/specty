@@ -174,6 +174,11 @@ export interface WorktreeCreated {
   readonly agent?: AgentTool | undefined;
   /** A subagent ran it (`--subagent`): it enters the folder with `specty enter`, whatever its tool. */
   readonly subagent?: boolean;
+  /**
+   * `new` ran in another change's worktree, not in the main folder: a session that moved there
+   * with its tool (Claude Code) leaves it before entering the new change's.
+   */
+  readonly fromWorktree?: boolean;
 }
 
 /**

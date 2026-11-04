@@ -67,7 +67,7 @@ Con Claude Code, la sesión principal entra en la carpeta de la épica con `Ente
 
 ## Tareas
 
-- [ ] T1: La tarjeta de la épica pide salir de su carpeta antes de repartir, y se ve desde fuera
+- [x] T1: La tarjeta de la épica pide salir de su carpeta antes de repartir, y se ve desde fuera
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/epic.ts, packages/core/src/cards/rejoin.ts, packages/core/test/cards/epic.test.ts, packages/core/test/cards/rejoin.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts test/cards/rejoin.test.ts test/cards/budget.test.ts && pnpm typecheck
