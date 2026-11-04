@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261104-revisor-real-da-la-gravedad",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261104-revisor-real-da-la-gravedad",
+  "baseCommit": "4a6731c606eaf572e027ad2476d42d371b412475",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:93c13b706966f99ee34ec0e2c084b84af82bee49feb6afc68d74cad7f2be2b98",
+    "at": "2026-11-04T07:07:41.024Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
