@@ -45,7 +45,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: pnpm test y pnpm check dejan fuera los tests de los evals, que corren con pnpm test:evals y en el CI
+- [x] T1: pnpm test y pnpm check dejan fuera los tests de los evals, que corren con pnpm test:evals y en el CI
   - files: package.json, .github/workflows/ci.yml, packages/cli/test/workflows.test.ts, AGENTS.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/workflows.test.ts && pnpm test:evals && pnpm lint && pnpm typecheck
