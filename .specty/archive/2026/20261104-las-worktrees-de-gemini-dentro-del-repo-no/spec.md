@@ -18,3 +18,9 @@ Gemini CLI crea sus worktrees dentro del repositorio, en `.gemini/worktrees/<nom
 - [x] T1: Las worktrees de Gemini CLI dentro del repositorio no cuentan como código del cambio
   - files: packages/cli/test/worktrees.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts -t "a worktree inside the repository" && pnpm typecheck
+
+## Cierre
+
+### Resumen
+
+El test de la worktree dentro del repositorio añade una de Gemini CLI en .gemini/worktrees/ con su rama y comprueba que no cuenta como código sin spec ni entra en los commits; ARCHITECTURE nombra las dos carpetas y dice que la regla vale para cualquier worktree del repositorio
