@@ -59,7 +59,7 @@ Hoy el guard reconoce una conversación de Codex por el `session_id` de sus hook
 
 ## Tareas
 
-- [ ] T1: Cada subagente de Codex entra con `specty enter` y trabaja en la carpeta de su cambio
+- [x] T1: Cada subagente de Codex entra con `specty enter` y trabaja en la carpeta de su cambio
   - files: packages/cli/src/agents/codex.ts, packages/cli/src/enforce/actions.ts, packages/cli/test/codex-subagents.test.ts, packages/cli/test/codex-e2e.test.ts, packages/cli/test/fake-responses.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex-subagents.test.ts test/codex-e2e.test.ts && pnpm typecheck && pnpm lint

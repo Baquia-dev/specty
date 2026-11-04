@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b4691dbbbc723151f8f5c50c5789d62652399ad2",
+      "startedAt": "2026-11-04T12:51:35.854Z",
+      "doneAt": "2026-11-04T12:53:01.651Z",
+      "summary": "El módulo de Codex compone asSubagentConversation: la conversación de un subagente es session_id--agent_id, entra con specty enter y el guard le lleva comandos y parches a su carpeta. Comprobado con Codex 0.166.0 real (spawn_agent tras tool_search) y con sus eventos grabados."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
