@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261104-commits-con-worktrees-ignoradas",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261104-commits-con-worktrees-ignoradas",
+  "baseCommit": "0cbfa9d8cdf0fd0272a5af072f2a4f483b9b408a",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:46afd3eae93b07dad25152d1b829b10b57e842f7fae6f3ddb473947eb200c01b",
+    "at": "2026-11-04T05:39:11.528Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
