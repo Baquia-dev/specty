@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261104-ui-carpeta-perdida",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-ui-carpeta-perdida",
+  "baseCommit": "4f68f6e03188ee8cfe1d981c6433ca374dcdf161",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a48cad4f3e9444e5332147ad39dc99c0adf3c2475e98f59424f0b8131c4f56cf",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:230ed35fa1f2ccabd96d1209ddaf757675cbfcefbbb4121366f5418a9d0f0056",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:b79e54a5edf0452f9e67b194bd4dd29574857e96c8ac6b810aa7a302427df361",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1b31957d5a70e2a74bd4137bd679a4c94e388bc2c520f1163503374211288ff6",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:33334337d18c8f0ac4c66a35296c2986c5d5117cd6065c6d037531e6c18038a8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bdc7d7ee885fd6eb83231659199f3286d7109c6869cf65f00f803d6be77bc1fe",
+    "at": "2026-11-04T09:32:42.282Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
