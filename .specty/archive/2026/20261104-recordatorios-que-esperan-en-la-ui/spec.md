@@ -57,3 +57,23 @@ Resuelve P45. Hoy la página «Memoria» de `specty ui` muestra en «Te toca» t
   - ac: AC1, AC3
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La página «Memoria» de `specty ui` usa para «Te toca» la regla de la tarjeta de inicio y de «TE TOCA» de `specty status`: solo salen los recordatorios que ya tocan. Los que esperan a su día, a sus rutas o a que se cierre un cambio van, por fecha, a la sección nueva «Recordatorios que esperan», con su botón «Marcar hecho». La línea bajo cada recordatorio dice a qué espera o esperaba: «desde <día>», «al cerrar <id>» o «en <rutas>». La UI toma la regla (`sessionEntries` y `localDay`) de la entrada ligera del core, que solo depende del tipo de una entrada.
+
+### Desviaciones
+
+- `entryLine` pasaba de complejidad 10: lo que espera una entrada (su día, su cambio y sus rutas) salió a `waitsFor`.
+- La primera verificación completa de `accept` falló sin que `pnpm check`, ejecutado a mano después, fallara. La segunda pasó sin cambiar nada: el fallo fue pasajero, como el del test de la extensión de VS Code que anota P10.
+
+### Decisiones
+
+- `memorySections` recibe el día como tercer argumento, con el de hoy por defecto, para que los tests no dependan del reloj.
+- Los recordatorios que esperan siguen pudiéndose marcar hechos desde su sección.
+
+### Pendientes
+
+- `packages/ui/src/memory/memory-page.ts` tiene 304 líneas de código (el aviso salta a partir de 300). Propuesta de división por responsabilidad: llevar las líneas bajo cada fila (`entryLine`, `waitsFor` y `changeLine`) a `memory/memory-lines.ts`, como funciones puras que reciben el traductor, junto a `memory-view.ts`.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-recordatorios-que-esperan-en-la-ui",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-recordatorios-que-esperan-en-la-ui",
   "baseCommit": "0cbfa9d8cdf0fd0272a5af072f2a4f483b9b408a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2f4f1eee32d3b69ec5b7e36e8fece33517b17a40c970f4888c1209cd729fc29f",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8445574a4c066bca7bff81927ec7550109a9857c",
+      "attempts": 1,
       "startedAt": "2026-11-03T23:21:42.500Z",
       "doneAt": "2026-11-03T23:21:55.339Z",
-      "summary": "ARCHITECTURE: «Te toca» con la regla de la tarjeta de inicio, la sección «Recordatorios que esperan» y a qué espera cada recordatorio."
+      "summary": "ARCHITECTURE: «Te toca» con la regla de la tarjeta de inicio, la sección «Recordatorios que esperan» y a qué espera cada recordatorio.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,6 +78,7 @@
     "AC": 3,
     "T": 3
   },
+  "closingSubmittedAt": "2026-11-04T05:29:15.952Z",
   "lockedTests": {
     "packages/ui/src/memory/memory-reminders-page.test.ts": "sha256:60e699a77abd3332d3f8d479d851f19e92f5d562e07677b9b59d160923ff37f2",
     "packages/ui/src/memory/memory-waiting.test.ts": "sha256:0ee41888e058e2c1343a80bdd8b6e7ca2ba93b2cac5cb29fbf9d0d19ad6ad79e"
