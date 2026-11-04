@@ -24,3 +24,9 @@ packageExtensions:
     peerDependenciesMeta:
       tree-sitter:
         optional: true
+
+# vsce asks for minimatch ^10.2.6, and no 10.x fixes GHSA-g3hv-75wg-m249 (denial of service with
+# glob patterns; fixed in 11.0.1). vsce only reads the patterns of .vscodeignore, and minimatch 11
+# keeps its API and runs on Node >= 20. Remove this once vsce asks for minimatch 11.
+overrides:
+  "@vscode/vsce>minimatch": ^11.0.4

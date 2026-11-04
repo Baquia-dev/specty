@@ -20,7 +20,7 @@ Resuelve P63. La verificación `vulnerabilities` de `specty check --all` encuent
 
 ## Tareas
 
-- [ ] T1: Las dependencias con avisos, actualizadas
+- [x] T1: Las dependencias con avisos, actualizadas
   - files: pnpm-workspace.yaml, pnpm-lock.yaml
   - verify: pnpm install --frozen-lockfile --offline && pnpm --filter specty-vscode package && pnpm --filter @baquia-dev/specty-ui test
   - type: build

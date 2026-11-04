@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261104-dependencias-sin-vulnerabilidades",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-dependencias-sin-vulnerabilidades",
   "baseCommit": "c5e6b9058c3198ae970fb5670e26ff9cbfc4e296",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f69f25ecde6297976613e495c075279539568bd4863744e773c5ef1f0f7dacac",
+    "at": "2026-11-04T08:57:46.576Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 1,
@@ -15,19 +22,25 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/package.json"
+      ],
+      "attempts": 2,
+      "baseCommit": "d243247c46fe45d9a2786c680b10c4f307840f61",
+      "startedAt": "2026-11-04T08:57:47.663Z",
+      "doneAt": "2026-11-04T09:04:32.472Z",
+      "summary": "Angular build y CLI 22.2.5 traen vite 8.3.5 (dedupe quita la 8.3.0); @azure/identity 4.14.1 trae msal-node 7.1.2; un override de pnpm-workspace.yaml sube el minimatch de vsce a 11.0.4."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
-    "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f69f25ecde6297976613e495c075279539568bd4863744e773c5ef1f0f7dacac",
-    "at": "2026-11-04T08:57:46.576Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
+    "T": 1,
+    "S": 1
   }
 }
