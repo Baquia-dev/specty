@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261104-la-verificacion-completa-espera-su-turno-en",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-la-verificacion-completa-espera-su-turno-en",
   "baseCommit": "b7f1b8f4d4b10f3978cd306250b73338b1c0687f",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:5c4e40769b9ccb85793624febe2fb3408aa9bcaf099df219c6c57e8cfcecf5bf",
+    "at": "2026-11-04T13:39:05.694Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -49,12 +56,9 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:5c4e40769b9ccb85793624febe2fb3408aa9bcaf099df219c6c57e8cfcecf5bf",
-    "at": "2026-11-04T13:39:05.694Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/src/flow/full-verification.test.ts": "sha256:db5583cb93c00a51f2c9518a685194e42628ccc37da7dddfecfef33746d877e9",
+    "packages/core/test/cards/lock.test.ts": "sha256:13028a2471300666f7f04d63380dc58b8178e6334ea2fcaf4cb05aed3ed5dd4c",
+    "packages/cli/test/accept-turn-time.test.ts": "sha256:920d7c7123ef17a3daf0a90e46d30802c1fbe13d458a097952ae84f5fa2f9e04"
+  }
 }
