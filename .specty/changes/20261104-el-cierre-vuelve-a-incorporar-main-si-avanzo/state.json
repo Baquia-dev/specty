@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-el-cierre-vuelve-a-incorporar-main-si-avanzo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-el-cierre-vuelve-a-incorporar-main-si-avanzo",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 1,
@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3ffb82cb13bf71153bd78d40e0cbe5d8c6f94ba6",
+      "attempts": 1,
       "startedAt": "2026-11-04T12:18:20.954Z",
       "doneAt": "2026-11-04T12:21:02.113Z",
-      "summary": "landRetrying (flow/land.ts): si main avanzó mientras el cambio se integraba, vuelve a incorporarlo con su verificación e integra, hasta dos veces más; close, su reintento y el carril rápido lo usan"
+      "summary": "landRetrying (flow/land.ts): si main avanzó mientras el cambio se integraba, vuelve a incorporarlo con su verificación e integra, hasta dos veces más; close, su reintento y el carril rápido lo usan",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d0436f5a1d38f8d9c2f336219a513071add35086",
+      "startedAt": "2026-11-04T12:21:02.535Z",
+      "doneAt": "2026-11-04T12:21:13.541Z",
+      "summary": "ARCHITECTURE: el cierre vuelve a incorporar main e integrar si avanzó, hasta dos veces más"
     }
   },
   "pending": {

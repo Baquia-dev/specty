@@ -45,7 +45,7 @@ El cierre toma el turno de la verificación completa antes de incorporar main, p
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/close-moved.test.ts test/integrate.test.ts test/close-turn.test.ts && pnpm typecheck && pnpm lint
   - type: fix
-- [ ] T2: La documentación
+- [x] T2: La documentación
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
