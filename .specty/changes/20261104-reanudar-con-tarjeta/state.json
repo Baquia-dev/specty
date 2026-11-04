@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261104-reanudar-con-tarjeta",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-reanudar-con-tarjeta",
+  "baseCommit": "c7e7ed0c3cf6644b5ecd5814ed1d072854b84f27",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:decb223fda9239b61f345c0b40a9bc492c3d98043a7c8b2fce79ab7ff619db4a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ef0a13ae8ce1d792ac87bb3a54b2f7b7667c27d008245e0fd8fe940b1e587896",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:91fbb27b4efe8a70d3800f0e8f6270408f6b983729cba71d0173e32fdec49e9b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e351fe4d159e4fe93c08a69dc6af738d573eaac7daadc1d99c6f093795a07ca0",
+    "at": "2026-11-04T06:47:27.596Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
