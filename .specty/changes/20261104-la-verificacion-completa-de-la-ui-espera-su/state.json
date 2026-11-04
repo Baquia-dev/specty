@@ -6,6 +6,13 @@
   "branch": "specty/20261104-la-verificacion-completa-de-la-ui-espera-su",
   "baseCommit": "94963be409456e72963dbcd89bd9ab189f7a2af3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e53bd07372fb8da139c8fd8bc5526386aff24559dcc8536ca3170e10e41133c4",
+    "at": "2026-11-04T08:49:47.648Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -39,12 +46,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e53bd07372fb8da139c8fd8bc5526386aff24559dcc8536ca3170e10e41133c4",
-    "at": "2026-11-04T08:49:47.648Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T08:52:04.691Z"
 }
