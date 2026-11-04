@@ -56,7 +56,7 @@ Hoy `oneAtATime` (`flow/full-verification.ts`) espera el turno de la verificaci�
 
 ## Tareas
 
-- [ ] T1: El aviso de espera del turno dice cuántas sesiones esperan delante
+- [x] T1: El aviso de espera del turno dice cuántas sesiones esperan delante
   - files: packages/core/src/cards/lock.ts, packages/core/test/cards/lock.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/lock.test.ts && pnpm lint

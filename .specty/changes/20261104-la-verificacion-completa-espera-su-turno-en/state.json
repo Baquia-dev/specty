@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f6af439f85a6c36ad76ec4cccea67f39c97417cf",
+      "startedAt": "2026-11-04T13:43:21.107Z",
+      "doneAt": "2026-11-04T13:43:41.438Z",
+      "summary": "fullVerificationWaitNote acepta ahead (0 por defecto) y añade «Delante en la cola: N.» / «Ahead in the queue: N.» cuando hay sesiones delante"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
