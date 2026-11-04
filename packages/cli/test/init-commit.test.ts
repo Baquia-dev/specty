@@ -104,6 +104,18 @@ describe("specty init commits what it writes", () => {
     expect(git(root, "diff", "--cached", "--name-only")).toBe("src/app.ts");
   });
 
+  it("commits with another change's worktree in .worktrees/, which git ignores", async () => {
+    const root = await installed();
+    await dropFlowBlock(root);
+    // What `specty new` leaves: the change's worktree inside, ignored by `.git/info/exclude`.
+    await writeFiles(root, { ".git/info/exclude": "/.worktrees/\n" });
+    git(root, "worktree", "add", "-q", "--detach", ".worktrees/otro-cambio");
+    const result = await cli(root, INIT);
+    expect(result.code).toBe(0);
+    expect(committed(root)).toEqual(["AGENTS.md"]);
+    expect(git(root, "status", "--porcelain")).toBe("");
+  });
+
   it("does not commit in a folder with a change in progress (AC5)", async () => {
     const root = await tempRepo({ "src/app.ts": "x\n", ".specty/config.yaml": CONFIG() });
     expect((await cli(root, ["new", "Saludo personalizado"])).code).toBe(0);
