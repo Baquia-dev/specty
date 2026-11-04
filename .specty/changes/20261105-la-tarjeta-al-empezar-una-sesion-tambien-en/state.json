@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261105-la-tarjeta-al-empezar-una-sesion-tambien-en",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-la-tarjeta-al-empezar-una-sesion-tambien-en",
+  "baseCommit": "a0110db82c25c3db2cb9b037f2db2fc48f5dac72",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:dca0791792a3ef21d04830c2579954d5bbae7c8561d733eb5ac80359e1303d3e",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bab5e53d568197bec2da58b615d1055cfefa5f48b7f959ccf03f1fc44edb59ee",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:505b69b1d7a309a8e5fce319d6ea437a0875228ea211012b05e8abcc69f6423b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:81a2cc875a083cba3ae6e00b8f5d38e83d6353c18099dd7431176d196ff8dcd3",
+    "at": "2026-11-04T17:29:36.921Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
