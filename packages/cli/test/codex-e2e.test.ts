@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { type CodexCall, type FakeResponses, fakeResponses } from "./fake-responses";
+import { type CodexCall, type FakeResponses, fakeResponses, spawnAgent } from "./fake-responses";
 import {
   CHANGE,
   CONFIG,
@@ -99,11 +99,16 @@ async function isolated(responses: FakeResponses, root: string): Promise<NodeJS.
 }
 
 /**
- * `codex exec` in `root` against a fake that plays `script`. The person authorized its two options
- * for these throwaway repositories: writing in the workspace, and the hooks without their review.
+ * `codex exec` in `root` against a fake that plays `script`, and each subagent's script by the mark
+ * in its task. The person authorized its two options for these throwaway repositories: writing in
+ * the workspace, and the hooks without their review.
  */
-async function codexRun(root: string, script: readonly CodexCall[]): Promise<FakeResponses> {
-  const responses = await fakeResponses(script);
+async function codexRun(
+  root: string,
+  script: readonly CodexCall[],
+  subagents: Readonly<Record<string, readonly CodexCall[]>> = {},
+): Promise<FakeResponses> {
+  const responses = await fakeResponses(script, subagents);
   const env = await isolated(responses, root);
   const args = [
     "exec",
@@ -139,6 +144,19 @@ const patch = (path: string, line: string): CodexCall => ({
   input: ["*** Begin Patch", `*** Add File: ${path}`, `+${line}`, "*** End Patch", ""].join("\n"),
 });
 const shell = (cmd: string): CodexCall => ({ name: "exec_command", arguments: { cmd } });
+
+const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
+
+/** The folder each conversation of Codex works in, by its id, as the guard keeps them. */
+async function bindings(root: string): Promise<Record<string, string>> {
+  const sessions = ".git/common/specty/sessions";
+  const names = await readdir(join(root, sessions));
+  const bound = names.map(async (name) => {
+    const { folder } = JSON.parse(await read(root, `${sessions}/${name}`));
+    return [name.replace(/\.json$/, ""), String(folder)] as const;
+  });
+  return Object.fromEntries(await Promise.all(bound));
+}
 
 describe.skipIf(CODEX === undefined)(
   "Codex with a scripted model (needs Codex: SPECTY_E2E_CODEX or the PATH)",
@@ -213,6 +231,39 @@ describe.skipIf(CODEX === undefined)(
         expect(Number(git(folder, "rev-list", "--count", "HEAD"))).toBe(Number(commits) + 1);
       },
     );
+
+    it("AC4: a subagent and the main thread work each in its change's folder", LONG, async () => {
+      const root = await initialized();
+      expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+      expect((await cli(root, ["new", "--worktree", "Otro cambio"])).code).toBe(0);
+      const [first, second] = [folderOf(root), folderOf(root, OTHER)];
+      const mark = "ENCARGO-C6";
+      const main: readonly CodexCall[] = [
+        shell(`specty enter ${CHANGE}`),
+        { search: "spawn agent" },
+        spawnAgent(mark, "trabaja en el otro cambio"),
+        { wait: "spawned" },
+        shell("pwd"),
+      ];
+      const subagent = [shell(`specty enter ${OTHER}`), patch("notas.md", "x"), shell("pwd")];
+      const responses = await codexRun(root, main, { [mark]: subagent });
+      const [entered, , spawned, , here] = responses.results();
+      const [inside, patched, there] = responses.results(mark);
+      expect(entered).toContain(`Esta conversación trabaja ahora en \`${first}\``);
+      expect(inside).toContain(`Esta conversación trabaja ahora en \`${second}\``);
+      // Its patch and its command went to its folder, and the main thread's command to its own.
+      expect(patched).not.toMatch(/SIGUIENTE: /);
+      expect(await read(second, "notas.md")).toBe("x\n");
+      expect(existsSync(join(root, "notas.md"))).toBe(false);
+      expect(existsSync(join(first, "notas.md"))).toBe(false);
+      expect(there).toContain(second);
+      expect(here).toContain(first);
+      // Its conversation is the root thread's with the `agent_id` that `spawn_agent` gave.
+      const agent = JSON.parse(spawned ?? "{}").agent_id;
+      const bound = await bindings(root);
+      const session = Object.keys(bound).find((id) => !id.includes("--"));
+      expect(bound).toEqual({ [`${session}`]: first, [`${session}--${agent}`]: second });
+    });
 
     it("sends the turn back once while specty check --changed fails (AC1)", LONG, async () => {
       const root = await initialized("checks:\n  levels: { secrets: off }\n");
