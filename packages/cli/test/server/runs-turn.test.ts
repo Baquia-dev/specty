@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { spawn } from "node:child_process";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../../src/io/files";
@@ -80,14 +80,17 @@ describe("the full verification started from the UI", () => {
   it("AC2: frees the turn when it ends", async () => {
     const root = await inAcceptance();
     const session = await sessionAt(root, AGENT);
-    const heard: (Run | undefined)[] = [];
+    // Each notice, with whether the turn was still held as it was heard.
+    const heard: { readonly run: Run | undefined; readonly held: boolean }[] = [];
     const runs = changeRuns(session, (id, run) => {
-      if (id === CHANGE) heard.push(run);
+      if (id === CHANGE) heard.push({ run, held: existsSync(join(root, LOCK)) });
     });
     try {
       await runs.start(CHANGE);
-      await until(() => heard.length > 1 && heard.at(-1) === undefined);
+      await until(() => heard.length > 1 && heard.at(-1)?.run === undefined);
       expect(await exists(join(root, "ran"))).toBe(true);
+      // Its end is heard with the turn already free: whoever hears it can take the turn at once.
+      expect(heard.at(-1)).toEqual({ run: undefined, held: false });
       expect(await exists(join(root, LOCK))).toBe(false);
     } finally {
       runs.close();
