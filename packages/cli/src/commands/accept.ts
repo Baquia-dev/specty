@@ -30,7 +30,14 @@ import { commitState } from "../flow/active";
 import { harvestEntries, withArchivedMemory } from "../flow/archive-memory";
 import { verifyHints, withVerifyHints } from "../flow/detected";
 import { archive, commitArchive } from "../flow/finish";
-import { type Absorbed, absorbTarget, integrationOf, mergeTarget } from "../flow/integrate";
+import { landingTurn } from "../flow/full-verification";
+import {
+  type Absorbed,
+  absorbTarget,
+  type Integration,
+  integrationOf,
+  mergeTarget,
+} from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
 import { runLive } from "../flow/live-run";
 import { measureUsage, withUsage } from "../flow/usage";
@@ -215,16 +222,33 @@ async function acceptedRisks(
   return line === undefined ? [] : [line];
 }
 
-/** Quick lane: accepting closes the change, with the task summary as its closing. */
+/**
+ * Quick lane: accepting closes the change, with the task summary as its closing. As when closing,
+ * it lands on the full verification's turn, so that no other session lands in between.
+ */
 async function closeQuick(
   session: Session,
   change: StoredChange,
   summaries: readonly string[],
   merged: readonly string[],
 ): Promise<Output> {
+  const plan = await integrationOf(session, change.state);
+  return landingTurn(session, plan, () =>
+    closeQuickOnTurn(session, change, plan, { summaries, merged }),
+  );
+}
+
+async function closeQuickOnTurn(
+  session: Session,
+  change: StoredChange,
+  plan: Integration | undefined,
+  {
+    summaries,
+    merged,
+  }: { readonly summaries: readonly string[]; readonly merged: readonly string[] },
+): Promise<Output> {
   // As when closing, before it lands: main's folder is checked and main comes in again if it
   // moved since the verification. A refusal leaves the change in acceptance.
-  const plan = await integrationOf(session, change.state);
   const absorbed =
     plan === undefined ? undefined : await absorbTarget(session, plan, change, "accept");
   if (absorbed?.ok === false) return absorbed.output;

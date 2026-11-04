@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "id": "20261104-el-cierre-toma-el-turno-antes-de-incorporar-main",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-el-cierre-toma-el-turno-antes-de-incorporar-main",
+  "baseCommit": "2950e27c26894203e230bc0b9164829ece6c2e6c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:92107dd0a0b675019cfcb17f39c425b3aa03c023e4f8a2f98d44b16fde322965",
+    "at": "2026-11-04T06:30:09.454Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:773b9ccae3bc6f41be6e6c4914909026f084d35d57a659ca1ae76c032992c685",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3a8f3b24e810e52e4e3d1aa567f042594dbd7696f35bfc61d7f99242ab51ee0d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:484a526a76dcd2b56d44f6b4849c11fbe9d9261fc8d1da73b0cb0d212f40a445",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "52c6ce7e8c75ebc2a7d6decc2fc6d27d5b0c8c44",
+      "attempts": 1,
+      "startedAt": "2026-11-04T06:32:58.969Z",
+      "doneAt": "2026-11-04T06:37:53.822Z",
+      "summary": "close, su reintento y el cierre del carril rápido toman el turno de la verificación completa (landingTurn) antes de incorporar main y lo sueltan cuando main avanzó",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "d556443be96b8bb1b5091a9357df47d0c2ec00b1",
+      "attempts": 1,
+      "startedAt": "2026-11-04T06:37:54.372Z",
+      "doneAt": "2026-11-04T06:38:10.780Z",
+      "summary": "ARCHITECTURE y formats: el cierre toma el turno antes de incorporar main y lo suelta cuando main avanzó",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-04T06:48:31.024Z",
+  "lockedTests": {
+    "packages/cli/test/close-turn.test.ts": "sha256:f43c3c5845feecfc0e026a5abedde7c69d0e24642bf098ffe4c39848a1f272da"
+  }
+}

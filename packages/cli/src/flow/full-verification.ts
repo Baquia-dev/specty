@@ -2,6 +2,7 @@
 import { fullVerificationWaitNote } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
 import { lockFullVerification } from "../store/lock";
+import type { Integration } from "./integrate";
 
 /** How often a full verification waiting for its turn looks again. */
 const POLL_MS = 2000;
@@ -39,4 +40,19 @@ export async function oneAtATime<T>(
     if (Date.now() >= deadline) return run();
     await new Promise((done) => setTimeout(done, options.pollMs ?? POLL_MS));
   }
+}
+
+/**
+ * Runs `run`, which incorporates main into the change and lands it there, on the full
+ * verification's turn, held from before the merge until main moved: no other session lands
+ * meanwhile and leaves this merge behind. The verification inside gets the same turn, as the lock
+ * is this process's. Without a landing (`plan`) or a full verification, it runs at once.
+ */
+export function landingTurn<T>(
+  session: Session,
+  plan: Integration | undefined,
+  run: () => Promise<T>,
+): Promise<T> {
+  const command = session.config.verify.full ?? session.config.verify.default;
+  return plan === undefined || command === undefined ? run() : oneAtATime(session, command, run);
 }

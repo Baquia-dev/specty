@@ -26,8 +26,9 @@ import { isFinished } from "../flow/active";
 import { withArchivedMemory } from "../flow/archive-memory";
 import { verifyHints, withVerifyHints } from "../flow/detected";
 import { archive, commitArchive } from "../flow/finish";
-import { absorbTarget, integrationOf, isIncorporated } from "../flow/integrate";
-import { landChange, withIntegration } from "../flow/land";
+import { landingTurn } from "../flow/full-verification";
+import { absorbTarget, type Integration, integrationOf, isIncorporated } from "../flow/integrate";
+import { type Landed, landChange, withIntegration } from "../flow/land";
 import { measureUsage, withUsage } from "../flow/usage";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
@@ -68,11 +69,23 @@ function noteClosing(session: Session, state: ChangeState, spec: Spec): void {
   terminal.note(note.title, note.text);
 }
 
-/** The closing confirmed: the main branch comes in, the change is archived and lands. */
+/**
+ * The closing confirmed: the main branch comes in, the change is archived and lands, all on the
+ * full verification's turn, so that no other session lands in between.
+ */
 async function closeConfirmed(session: Session, change: StoredChange, spec: Spec): Promise<Output> {
+  const plan = await integrationOf(session, change.state);
+  return landingTurn(session, plan, () => closeOnTurn(session, change, spec, plan));
+}
+
+async function closeOnTurn(
+  session: Session,
+  change: StoredChange,
+  spec: Spec,
+  plan: Integration | undefined,
+): Promise<Output> {
   const { state } = change;
   // The main branch comes into the change before anything is archived: a refusal changes nothing.
-  const plan = await integrationOf(session, state);
   const absorbed =
     plan === undefined ? undefined : await absorbTarget(session, plan, change, "close");
   if (absorbed?.ok === false) return absorbed.output;
@@ -128,9 +141,20 @@ async function landClosed(session: Session, change: StoredChange): Promise<Outpu
     ))
   )
     return postponed(session, state);
-  const absorbed = await absorbTarget(session, plan, change, "close");
-  if (!absorbed.ok) return absorbed.output;
-  const landed = await landChange(session, plan);
+  return landingTurn(session, plan, async () => {
+    const absorbed = await absorbTarget(session, plan, change, "close");
+    if (!absorbed.ok) return absorbed.output;
+    return landedAgain(session, state, absorbed.lines, await landChange(session, plan));
+  });
+}
+
+/** The card of a closed change whose incorporation was retried. */
+function landedAgain(
+  session: Session,
+  state: ChangeState,
+  absorbed: readonly string[],
+  landed: Landed,
+): Output {
   return withIntegration(
     session,
     closedCard(
@@ -139,7 +163,7 @@ async function landClosed(session: Session, change: StoredChange): Promise<Outpu
       landed.landed ? undefined : state.branch,
       session.cards,
     ),
-    absorbed.lines,
+    absorbed,
     landed,
   );
 }
