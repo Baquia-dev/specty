@@ -1,54 +1,160 @@
 // SPDX-License-Identifier: Apache-2.0
+import { AGENT_CAPABILITIES } from "../capabilities";
 import type { Phase } from "../flow/phases";
-import { headerOf, type Output, section } from "../output";
+import { headerOf, type Output, type OutputBlock, section } from "../output";
 import { blockedCard } from "./flow";
 import { type Translate, translator } from "./text";
 import type { CardContext, ChangeView, SliceView } from "./view";
 
 /**
  * An approved epic's card: it has no tasks, so it shows its slices, each one a change of its own,
- * and the next step, to go on with the slice in progress or to start the first one ready.
+ * and the next step. When its tool hands the slices to subagents, it brings a brief for each slice
+ * ready or orphaned, one subagent each, and the session stays in the epic; otherwise it goes on
+ * with the slice in progress or starts the first one ready.
  */
 export function epicCard(change: ChangeView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   const slices = change.slices ?? [];
   const closed = slices.filter((slice) => slice.status === "done").length;
-  const open = slices.find((slice) => slice.status === "open");
-  const ready = slices.find((slice) => slice.status === "ready");
-  const start = (slice: SliceView) =>
-    `\`${ctx.command} new "${slice.title}" --epic ${change.id} --slice ${slice.id}\``;
+  const header = headerOf(change.id, "implementing");
+  const list = section(
+    t(
+      `CORTES (${closed} de ${slices.length} cerrados)`,
+      `SLICES (${closed} of ${slices.length} closed)`,
+    ),
+    sliceLines(slices, ctx),
+  );
+  if (!toSubagents(ctx)) {
+    return { status: "ok", header, blocks: list, next: inOrderNext(change.id, slices, ctx) };
+  }
+  const briefs = slices.flatMap((slice) => briefOf(change.id, slice, ctx));
   return {
     status: "ok",
-    header: headerOf(change.id, "implementing"),
-    blocks: section(
-      t(
-        `CORTES (${closed} de ${slices.length} cerrados)`,
-        `SLICES (${closed} of ${slices.length} closed)`,
-      ),
-      sliceLines(slices, ctx),
-    ),
-    next:
-      open !== undefined
-        ? t(
-            `sigue con el corte ${open.id} en su carpeta, ${open.child?.folder ?? open.child?.id}: ejecuta \`${ctx.command} next\` allí.`,
-            `go on with slice ${open.id} in its folder, ${open.child?.folder ?? open.child?.id}: run \`${ctx.command} next\` there.`,
-          )
-        : ready !== undefined
-          ? t(
-              `empieza el corte ${ready.id}: ${start(ready)} y sigue su salida. Para trabajar en paralelo con varios agentes, redacta antes las specs de los cortes listos.`,
-              `start slice ${ready.id}: ${start(ready)} and follow its output. To work in parallel with multiple agents, draft the specs of the ready slices first.`,
-            )
-          : closed === slices.length
-            ? t(
-                `todos los cortes están cerrados: ejecuta \`${ctx.command} next\` para pasar la épica a aceptación.`,
-                `every slice is closed: run \`${ctx.command} next\` to move the epic to acceptance.`,
-              )
-            : t(
-                "ningún corte puede empezar: sus `depends` esperan cortes que no se cierran. Revísalo con el usuario.",
-                "no slice can start: their `depends` wait for slices that do not close. Review it with the user.",
-              ),
+    header,
+    blocks: [...list, ...briefs],
+    next: subagentsNext(slices, briefs.length, ctx),
   };
 }
+
+/** The tool hands an epic's slices to subagents (ARCHITECTURE §10), and `subagents` lets it. */
+function toSubagents(ctx: CardContext): boolean {
+  if (ctx.tool === undefined || ctx.subagents === false) return false;
+  return AGENT_CAPABILITIES[ctx.tool].subagentSlices.state === "yes";
+}
+
+/** Without subagents: go on with the slice in progress, or start the first one ready. */
+function inOrderNext(epic: string, slices: readonly SliceView[], ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  const open = slices.find((slice) => slice.status === "open");
+  if (open !== undefined) {
+    const where = open.child?.folder ?? open.child?.id;
+    return t(
+      `sigue con el corte ${open.id} en su carpeta, ${where}: ejecuta \`${ctx.command} next\` allí.`,
+      `go on with slice ${open.id} in its folder, ${where}: run \`${ctx.command} next\` there.`,
+    );
+  }
+  const ready = slices.find((slice) => slice.status === "ready");
+  if (ready === undefined) return settledNext(slices, ctx);
+  const start = `\`${ctx.command} new "${ready.title}" --epic ${epic} --slice ${ready.id}\``;
+  return t(
+    `empieza el corte ${ready.id}: ${start} y sigue su salida. Para trabajar en paralelo con varios agentes, redacta antes las specs de los cortes listos.`,
+    `start slice ${ready.id}: ${start} and follow its output. To work in parallel with multiple agents, draft the specs of the ready slices first.`,
+  );
+}
+
+/** With subagents: launch the briefs, or wait for the subagents of the slices in progress. */
+function subagentsNext(slices: readonly SliceView[], briefs: number, ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  if (briefs > 0) {
+    return t(
+      `lanza en paralelo, en un solo mensaje, un subagente por encargo con su texto tal cual; cuando terminen, vuelve a ejecutar \`${ctx.command} next\` aquí, en la épica.`,
+      `launch in parallel, in a single message, one subagent per brief with its text as is; once they finish, run \`${ctx.command} next\` again here, in the epic.`,
+    );
+  }
+  if (!slices.some((slice) => slice.status === "open")) return settledNext(slices, ctx);
+  return t(
+    `los cortes en curso siguen con sus subagentes: espera sus informes y, cuando terminen, vuelve a ejecutar \`${ctx.command} next\` aquí, en la épica.`,
+    `the slices in progress go on with their subagents: wait for their reports and, once they finish, run \`${ctx.command} next\` again here, in the epic.`,
+  );
+}
+
+/** Nothing in progress nor ready: every slice is closed, or none can start. */
+function settledNext(slices: readonly SliceView[], ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  return slices.every((slice) => slice.status === "done")
+    ? t(
+        `todos los cortes están cerrados: ejecuta \`${ctx.command} next\` para pasar la épica a aceptación.`,
+        `every slice is closed: run \`${ctx.command} next\` to move the epic to acceptance.`,
+      )
+    : t(
+        "ningún corte puede empezar: sus `depends` esperan cortes que no se cierran. Revísalo con el usuario.",
+        "no slice can start: their `depends` wait for slices that do not close. Review it with the user.",
+      );
+}
+
+/**
+ * The brief a subagent gets as is: for a ready slice, to create its change and close it; for an
+ * orphan, the same from `enter`. A slice in progress that a conversation holds has none.
+ */
+function briefOf(epic: string, slice: SliceView, ctx: CardContext): OutputBlock[] {
+  const t = translator(ctx.lang);
+  const { command } = ctx;
+  const placeholder = t("<carpeta del cambio>", "<change folder>");
+  if (slice.status === "ready") {
+    return section(t(`ENCARGO ${slice.id}`, `BRIEF ${slice.id}`), [
+      t(
+        `Haz el corte ${slice.id} con sus tareas en orden y sin lanzar otros subagentes:`,
+        `Do slice ${slice.id} with its tasks in order and without launching other subagents:`,
+      ),
+      ...numbered([
+        `\`${command} new "${slice.title}" --epic ${epic} --slice ${slice.id} --subagent\``,
+        t(
+          `\`${command} enter <id>\`, con el id que te dé \`new\`.`,
+          `\`${command} enter <id>\`, with the id \`new\` gives you.`,
+        ),
+        ...inItsFolder(placeholder, ctx),
+      ]),
+    ]);
+  }
+  const { child } = slice;
+  if (slice.status !== "open" || child?.orphan !== true) return [];
+  return section(t(`ENCARGO ${slice.id} (huérfano)`, `BRIEF ${slice.id} (orphaned)`), [
+    t(
+      `Retoma el corte ${slice.id} con sus tareas en orden y sin lanzar otros subagentes:`,
+      `Resume slice ${slice.id} with its tasks in order and without launching other subagents:`,
+    ),
+    ...numbered([
+      `\`${command} enter ${child.id}\``,
+      ...inItsFolder(child.folder ?? placeholder, ctx),
+    ]),
+  ]);
+}
+
+/**
+ * A brief's steps once the change is entered: its commands in its folder, quoted as the guard
+ * quotes it, so the command asked for is the one it takes; then `next` to the end, and the answer.
+ */
+function inItsFolder(folder: string, ctx: CardContext): string[] {
+  const t = translator(ctx.lang);
+  const cd = `cd '${folder.replaceAll("'", `'\\''`)}' &&`;
+  return [
+    t(
+      `Tu \`cd\` no dura entre comandos: empieza cada uno con \`${cd}\` y usa rutas absolutas de esa carpeta.`,
+      `Your \`cd\` does not last between commands: start each one with \`${cd}\` and use absolute paths in that folder.`,
+    ),
+    t(
+      `Sigue \`${ctx.command} next\` hasta cerrarlo; cuando espere a la persona, ejecuta \`${ctx.command} wait\`.`,
+      `Follow \`${ctx.command} next\` until it is closed; when it waits for the person, run \`${ctx.command} wait\`.`,
+    ),
+    t(
+      "Responde en tres líneas: el cambio, su fase y lo que falta.",
+      "Answer in three lines: the change, its phase and what is left.",
+    ),
+  ];
+}
+
+const numbered = (steps: readonly string[]): string[] =>
+  steps.map((step, index) => `${index + 1}. ${step}`);
 
 /** One line per slice: its id and title, and how far it got. */
 export function sliceLines(slices: readonly SliceView[], ctx: CardContext): string[] {

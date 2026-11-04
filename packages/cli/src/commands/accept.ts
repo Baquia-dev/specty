@@ -38,7 +38,7 @@ import {
   integrationOf,
   mergeTarget,
 } from "../flow/integrate";
-import { landChange, withIntegration } from "../flow/land";
+import { landRetrying, withIntegration } from "../flow/land";
 import { runLive } from "../flow/live-run";
 import { measureUsage, withUsage } from "../flow/usage";
 import { codeTree, passedOnThisCode, recordFullVerification } from "../flow/verified";
@@ -275,7 +275,7 @@ async function closeQuickOnTurn(
   );
   // Read while the folder exists: landing removes a worktree of its own.
   const hints = await verifyHints(session, plan?.main ?? session.root);
-  const landed = plan === undefined ? undefined : await landChange(session, plan);
+  const landed = plan === undefined ? undefined : await landRetrying(session, plan);
   const card = withIntegration(
     session,
     closedCard(

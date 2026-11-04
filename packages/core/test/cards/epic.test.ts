@@ -1,6 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { type CardContext, type ChangeView, nextCard, renderText, type SliceView } from "../../src";
+import {
+  type CardContext,
+  type ChangeView,
+  nextCard,
+  renderText,
+  type SliceView,
+  type TaskView,
+} from "../../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
 const EN: CardContext = { ...ES, lang: "en" };
@@ -92,5 +99,185 @@ describe("the epic card", () => {
     const text = card(epic("acceptance", [DONE]));
     expect(text).toContain("CORTES:\n  C1 Corte C1 — cerrado (20261024-inicio)");
     expect(text).not.toContain("TAREAS HECHAS");
+  });
+});
+
+/** Claude Code, whose subagents take an epic's slices (ARCHITECTURE §10). */
+const CLAUDE: CardContext = { ...ES, tool: "claude-code" };
+const CLAUDE_EN: CardContext = { ...EN, tool: "claude-code" };
+const NOTES = "20261026-las-notas";
+const NOTES_FOLDER = `/repos/app/.worktrees/${NOTES}`;
+/** C3 in progress, and no conversation holds it: an orphan. */
+const ORPHAN = slice("C3", "open", {
+  child: { id: NOTES, phase: "implementing", folder: NOTES_FOLDER, orphan: true },
+});
+
+/** The brief of a ready slice, as the card shows it in Spanish. */
+const readyBrief = (id: string) =>
+  [
+    `ENCARGO ${id}:`,
+    `  Haz el corte ${id} con sus tareas en orden y sin lanzar otros subagentes:`,
+    `  1. \`specty new "Corte ${id}" --epic ${EPIC} --slice ${id} --subagent\``,
+    "  2. `specty enter <id>`, con el id que te dé `new`.",
+    "  3. Tu `cd` no dura entre comandos: empieza cada uno con `cd '<carpeta del cambio>' &&` y usa rutas absolutas de esa carpeta.",
+    "  4. Sigue `specty next` hasta cerrarlo; cuando espere a la persona, ejecuta `specty wait`.",
+    "  5. Responde en tres líneas: el cambio, su fase y lo que falta.",
+  ].join("\n");
+
+const LAUNCH =
+  "SIGUIENTE: lanza en paralelo, en un solo mensaje, un subagente por encargo con su texto tal cual; cuando terminen, vuelve a ejecutar `specty next` aquí, en la épica.";
+
+describe("the card of an epic whose tool hands its slices to subagents", () => {
+  it("AC1: brings a brief per ready slice, and asks to launch a subagent per brief in parallel", () => {
+    const text = card(
+      epic("implementing", [
+        DONE,
+        slice("C2", "ready"),
+        slice("C3", "ready"),
+        slice("C4", "waiting", { depends: ["C2"] }),
+      ]),
+      CLAUDE,
+    );
+    expect(text).toContain("  C2 Corte C2 — listo para empezar");
+    expect(text).toContain("ENCARGO C2:");
+    expect(text).toContain("ENCARGO C3:");
+    expect(text).not.toContain("ENCARGO C1");
+    expect(text).not.toContain("ENCARGO C4");
+    expect(text.endsWith(LAUNCH)).toBe(true);
+    // A single ready slice goes to a subagent too.
+    const one = card(epic("implementing", [slice("C1", "ready")]), CLAUDE);
+    expect(one).toContain("ENCARGO C1:");
+    expect(one).toContain(LAUNCH);
+    const english = card(epic("implementing", [slice("C1", "ready")]), CLAUDE_EN);
+    expect(english).toContain("BRIEF C1:");
+    expect(english).toContain(
+      "NEXT: launch in parallel, in a single message, one subagent per brief with its text as is; once they finish, run `specty next` again here, in the epic.",
+    );
+  });
+
+  it("AC2: the brief says how to create its change, enter it, work in its folder, wait and answer", () => {
+    expect(card(epic("implementing", [slice("C2", "ready")]), CLAUDE)).toContain(readyBrief("C2"));
+    const english = card(epic("implementing", [slice("C2", "ready")]), CLAUDE_EN);
+    expect(english).toContain(
+      [
+        "BRIEF C2:",
+        "  Do slice C2 with its tasks in order and without launching other subagents:",
+        `  1. \`specty new "Corte C2" --epic ${EPIC} --slice C2 --subagent\``,
+        "  2. `specty enter <id>`, with the id `new` gives you.",
+        "  3. Your `cd` does not last between commands: start each one with `cd '<change folder>' &&` and use absolute paths in that folder.",
+        "  4. Follow `specty next` until it is closed; when it waits for the person, run `specty wait`.",
+        "  5. Answer in three lines: the change, its phase and what is left.",
+      ].join("\n"),
+    );
+  });
+
+  it("AC3: is today's card with no tool, with one that cannot hand slices out, or with subagents: false", () => {
+    const change = epic("implementing", [DONE, OPEN, slice("C3", "ready")]);
+    const today = card(change);
+    expect(today).not.toContain("ENCARGO");
+    expect(today).toContain(
+      `SIGUIENTE: sigue con el corte C2 en su carpeta, ${FOLDER}: ejecuta \`specty next\` allí.`,
+    );
+    for (const tool of ["gemini-cli", "codex", "copilot"] as const) {
+      expect(card(change, { ...ES, tool })).toBe(today);
+    }
+    expect(card(change, { ...CLAUDE, subagents: false })).toBe(today);
+    const ready = epic("implementing", [slice("C1", "ready")]);
+    expect(card(ready, { ...CLAUDE, subagents: false })).toBe(card(ready));
+  });
+
+  it("AC4: brings the brief of a slice a closed one left ready, and the one to resume an orphan", () => {
+    const left = card(
+      epic("implementing", [DONE, slice("C2", "ready", { depends: ["C1"] })]),
+      CLAUDE,
+    );
+    expect(left).toContain(readyBrief("C2"));
+    const text = card(epic("implementing", [DONE, OPEN, ORPHAN]), CLAUDE);
+    expect(text).toContain(
+      [
+        "ENCARGO C3 (huérfano):",
+        "  Retoma el corte C3 con sus tareas en orden y sin lanzar otros subagentes:",
+        `  1. \`specty enter ${NOTES}\``,
+        `  2. Tu \`cd\` no dura entre comandos: empieza cada uno con \`cd '${NOTES_FOLDER}' &&\` y usa rutas absolutas de esa carpeta.`,
+        "  3. Sigue `specty next` hasta cerrarlo; cuando espere a la persona, ejecuta `specty wait`.",
+        "  4. Responde en tres líneas: el cambio, su fase y lo que falta.",
+      ].join("\n"),
+    );
+    expect(text).not.toContain("ENCARGO C2");
+    expect(text).toContain(LAUNCH);
+    // Its folder is quoted as the guard quotes it, so the command it asks for is the one it takes.
+    const quoted = slice("C3", "open", {
+      child: { id: NOTES, phase: "implementing", folder: "/repos/l'app/notas", orphan: true },
+    });
+    expect(card(epic("implementing", [quoted]), CLAUDE)).toContain(
+      "`cd '/repos/l'\\''app/notas' &&`",
+    );
+    expect(card(epic("implementing", [ORPHAN]), CLAUDE_EN)).toContain(
+      "BRIEF C3 (orphaned):\n  Resume slice C3 with its tasks in order and without launching other subagents:",
+    );
+  });
+
+  it("AC5: leaves a slice its subagent holds in progress, without a brief, and waits in the epic", () => {
+    const text = card(
+      epic("implementing", [DONE, OPEN, slice("C3", "waiting", { depends: ["C2"] })]),
+      CLAUDE,
+    );
+    expect(text).toContain("  C2 Corte C2 — en curso: 20261025-el-panel, en implementing");
+    expect(text).not.toContain("ENCARGO");
+    expect(text).toContain(
+      "SIGUIENTE: los cortes en curso siguen con sus subagentes: espera sus informes y, cuando terminen, vuelve a ejecutar `specty next` aquí, en la épica.",
+    );
+    expect(text).not.toContain(FOLDER);
+    // With a ready one, only that one has a brief.
+    const ready = card(epic("implementing", [DONE, OPEN, slice("C3", "ready")]), CLAUDE);
+    expect(ready).not.toContain("ENCARGO C2");
+    expect(ready).toContain("ENCARGO C3:");
+    expect(card(epic("implementing", [DONE, OPEN]), CLAUDE_EN)).toContain(
+      "NEXT: the slices in progress go on with their subagents: wait for their reports and, once they finish, run `specty next` again here, in the epic.",
+    );
+    // With nothing in progress nor ready, it says what it says today.
+    const stuck = epic("implementing", [slice("C1", "waiting", { depends: ["C2"] })]);
+    expect(card(stuck, CLAUDE)).toBe(card(stuck));
+  });
+});
+
+const task = (id: string, status: TaskView["status"]): TaskView => ({
+  id,
+  title: `Tarea ${id}`,
+  status,
+  files: ["src/progreso.ts"],
+  extras: [],
+  criteria: [],
+  effort: "medium",
+});
+
+/** A feature on its own; a slice of an epic is a change like it, with its own tasks. */
+const feature = (phase: ChangeView["phase"]): ChangeView => ({
+  id: "20261026-el-progreso",
+  kind: "standard",
+  phase,
+  title: "El progreso",
+  specPath: ".specty/changes/20261026-el-progreso/spec.md",
+  revision: 1,
+  tasks: [task("T1", "active"), task("T2", "pending")],
+  conventions: [],
+  pendingScope: [],
+  rejected: [],
+  closingSubmitted: false,
+  specChanged: false,
+});
+
+describe("the cards of a change that is not an epic", () => {
+  it("AC6: never ask to launch subagents, and take its tasks in order", () => {
+    for (const ctx of [CLAUDE, CLAUDE_EN]) {
+      for (const phase of ["draft", "implementing"] as const) {
+        const text = card(feature(phase), ctx);
+        expect(text).not.toMatch(/subagent/i);
+        expect(text).not.toMatch(/ENCARGO|BRIEF/);
+      }
+    }
+    expect(card(feature("implementing"), CLAUDE)).toContain(
+      "SIGUIENTE: implementa T1 y ejecuta `specty task done T1",
+    );
   });
 });

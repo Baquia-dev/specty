@@ -15,7 +15,8 @@ import {
 import type { ExecResult } from "../io/exec";
 import { resolved } from "../io/git";
 import type { Session } from "../session";
-import { contains, type Integration, reasonOf } from "./integrate";
+import { findChange } from "./find";
+import { absorbTarget, contains, type Integration, reasonOf } from "./integrate";
 
 export interface Landed {
   /** The main branch now contains the change. */
@@ -31,7 +32,7 @@ export interface Landed {
  * closes works inside it; the main folder goes back to the main branch. Reports failures instead
  * of throwing: the change is already closed.
  */
-export async function landChange(session: Session, plan: Integration): Promise<Landed> {
+async function landChange(session: Session, plan: Integration): Promise<Landed> {
   const { git, lang } = session;
   const tip = await git.output(["rev-parse", "HEAD"]);
   const failure =
@@ -58,6 +59,30 @@ export async function landChange(session: Session, plan: Integration): Promise<L
   );
   const left = { folder: git.root, main: plan.main, removed: removed.code === 0 };
   return { landed: true, lines, ...(inside ? { left } : {}) };
+}
+
+/** How many more times a change lands when main moved while it was landing. */
+const RETRIES = 2;
+
+/**
+ * Lands the change; when main moved meanwhile (the change's branch, with main incorporated, no
+ * longer contains it), does what running `specty close` again would: incorporates main once more,
+ * with its verification, and lands, up to `RETRIES` more times. Those incorporations' lines go
+ * before the last landing's.
+ */
+export async function landRetrying(session: Session, plan: Integration): Promise<Landed> {
+  let landed = await landChange(session, plan);
+  const lines: string[] = [];
+  for (let retry = 0; retry < RETRIES && !landed.landed; retry++) {
+    if (await contains(session.git, "HEAD", plan.target)) break;
+    const change = await findChange(session, plan.id);
+    if (change === undefined) break;
+    const absorbed = await absorbTarget(session, plan, change, "close");
+    if (!absorbed.ok) break;
+    lines.push(...absorbed.lines);
+    landed = await landChange(session, plan);
+  }
+  return { ...landed, lines: [...lines, ...landed.lines] };
 }
 
 /** The closing card plus what the incorporation did; if the main branch did not move, how to retry. */

@@ -10,6 +10,7 @@ import {
   sliceRefusalCard,
   transition,
 } from "@baquia-dev/specty-core";
+import { openChanges } from "../commands/status";
 import { readText } from "../io/files";
 import type { Session } from "../session";
 import { listDir, loadState, readSpec, type StoredChange } from "../store/changes";
@@ -27,14 +28,31 @@ interface Child {
 }
 
 /**
- * The epic's slices, in the order of its spec, each with the change that implements it. The
- * slices are derived from those changes every time: the epic does not keep them in its state.
+ * The epic's slices for its card: the change of a slice in progress that no conversation holds
+ * (`status`'s orphan) says so, for the card to hand it to a subagent again (ARCHITECTURE §7).
  */
-export async function sliceViews(
+export async function epicSlices(
   session: Session,
   epic: StoredChange,
   spec: Spec,
 ): Promise<SliceView[]> {
+  const slices = await sliceViews(session, epic, spec);
+  if (!slices.some((slice) => slice.status === "open")) return slices;
+  const orphans = new Set(
+    (await openChanges(session)).flatMap((entry) => (entry.orphan === true ? [entry.id] : [])),
+  );
+  return slices.map((slice) =>
+    slice.child !== undefined && orphans.has(slice.child.id)
+      ? { ...slice, child: { ...slice.child, orphan: true } }
+      : slice,
+  );
+}
+
+/**
+ * The epic's slices, in the order of its spec, each with the change that implements it. The
+ * slices are derived from those changes every time: the epic does not keep them in its state.
+ */
+async function sliceViews(session: Session, epic: StoredChange, spec: Spec): Promise<SliceView[]> {
   // A cancelled change does not count: its slice can start again.
   const children = (await childrenOf(session, epic.state.id)).filter(
     (child) => child.phase !== "cancelled",
