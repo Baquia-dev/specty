@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-carpeta-perdida-se-recupera",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-carpeta-perdida-se-recupera",
   "baseCommit": "6b1d2d1c5157371c66b4e459152d6a1adde1da4a",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:3db2d62715a2f50cdbf1f793ccc01dbfaaad44a578f6a41fc9a0cbc3f95e35c7",
@@ -73,12 +73,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6d5ad14aa265a415d1d7b0dab8db1e7ecbd3f3c9",
+      "attempts": 1,
       "startedAt": "2026-11-04T08:20:34.834Z",
       "doneAt": "2026-11-04T08:24:59.699Z",
-      "summary": "specty restore <id> (agente o persona, con el bloqueo del cambio): repara la carpeta que ya está, o quita los registros muertos y saca la rama en .worktrees/<id> con hooks y preparación; addWorktree saca una rama existente; ARCHITECTURE §6 y §9"
+      "summary": "specty restore <id> (agente o persona, con el bloqueo del cambio): repara la carpeta que ya está, o quita los registros muertos y saca la rama en .worktrees/<id> con hooks y preparación; addWorktree saca una rama existente; ARCHITECTURE §6 y §9",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -91,6 +91,7 @@
     "T": 3,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-04T08:30:39.084Z",
   "lockedTests": {
     "packages/cli/test/lost-status.test.ts": "sha256:f658c6c5392e0bf214fc0c43fc8dacc0bc31349afdb8400bbe83956b2de17ca6",
     "packages/cli/test/restore.test.ts": "sha256:c47f3710fd1d4b34c4c3151e1260a7010cef3d3fb7d3ba0058cc191c677dc6e0",

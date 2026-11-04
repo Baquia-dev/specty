@@ -79,3 +79,24 @@ Hoy, si alguien borra la carpeta de un cambio abierto o git la «poda», el camb
 - R1: Leer las ramas en cada `status` lo hace más lento con muchas ramas. Mitigación: un solo proceso de git para todas (A2), y solo sobre las ramas marcadas sin carpeta.
 - R2: Dos sesiones recuperan la misma carpeta a la vez. Mitigación: `restore` toma el bloqueo del cambio (A3).
 - R3: `git worktree repair` toca registros de git. Mitigación: solo se ejecuta sobre la carpeta del cambio, y si git no la reconoce después, Specty no toca la carpeta.
+
+## Cierre
+
+### Resumen
+
+Un cambio abierto cuya carpeta se borró, o que git podó, ya no desaparece. `specty status` lo lee de su rama y lo lista con la marca «sin carpeta» y el comando que la recupera; `status --json` lo trae con `lost: true`. `specty restore <id>`, que pueden ejecutar el agente o la persona, toma el bloqueo del cambio y recrea la carpeta en `.worktrees/<id>` desde su rama, con los hooks del agente copiados y preparada; dice que lo no confirmado en la rama no vuelve y cómo entrar. Si en ese lugar ya hay una carpeta, prueba `git worktree repair`: la usa si git la reconoce después, y si no, no la toca y pide apartarla. Falla sin tocar nada con un cambio que tiene su carpeta o con un id sin cambio abierto. Cubre los AC7 y AC8 de la épica `20261104-sesiones-con-su-carpeta` y el AC6 en `status`.
+
+### Desviaciones
+
+- El corte C2 se reparte en dos cambios, como C1: este lleva la detección, `restore` y `status`; `specty next` con los cambios sin carpeta, `EnterWorktree` y `specty enter` ante una carpeta perdida, y la conversación enlazada a ella (AC6 en `next`, AC9 y AC10 de la épica) van en el cambio de la épica que sigue.
+
+### Decisiones
+
+- Cualquier cambio abierto cuya rama marcada no tiene una carpeta existente cuenta como «sin carpeta»: ni la configuración de git ni el estado distinguen una carpeta perdida de una rama sin sacar.
+- La reparación va antes de quitar los registros muertos: `git worktree repair` necesita el registro de la carpeta para reconocerla.
+- `addWorktree` saca una rama existente cuando no recibe base, en lugar de una función aparte: copiar los hooks y el `go.work` es lo mismo.
+- `restore` toma el bloqueo antes de buscar el cambio, para que una segunda recuperación a la vez vea la carpeta ya recuperada.
+
+### Pendientes
+
+- En el modo sin worktrees (`git.worktrees: false`), un cambio cuya rama no está sacada en la carpeta principal también sale como «sin carpeta», y `restore` le crea `.worktrees/<id>`. Para ese modo, `status` podría proponer `git switch <rama>` en lugar de `restore`.
