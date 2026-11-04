@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c279c126d0539b398f26a60c8a7901573310b18a",
+      "attempts": 1,
       "startedAt": "2026-11-04T18:27:52.125Z",
       "doneAt": "2026-11-04T18:28:56.369Z",
-      "summary": "UI: sessions() en la fuente de datos, GET /api/sessions en ServerData validado con isSessionList, y dos sesiones de ejemplo en FixtureData"
+      "summary": "UI: sessions() en la fuente de datos, GET /api/sessions en ServerData validado con isSessionList, y dos sesiones de ejemplo en FixtureData",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b46d8533e43a06338046401d2e05f08ab09213bf",
+      "startedAt": "2026-11-04T18:28:56.751Z",
+      "doneAt": "2026-11-04T18:36:02.065Z",
+      "summary": "Página «Sesiones» (sessions/sessions-page.ts) con resumen, lista y estado vacío; ruta /sessions y enlace del menú tras Memoria; ago de memory-lines.ts exportado; shell.test.ts incluye /sessions en la lista de enlaces"
     }
   },
   "pending": {

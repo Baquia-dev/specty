@@ -96,6 +96,7 @@ export class Shell {
   protected readonly links = [
     { path: "/", es: "Bandeja", en: "Inbox", exact: true },
     { path: "/memory", es: "Memoria", en: "Memory", exact: true },
+    { path: "/sessions", es: "Sesiones", en: "Sessions", exact: true },
     ...(this.devTools ? [{ path: "/catalog", es: "Catálogo", en: "Catalog", exact: false }] : []),
   ];
 
