@@ -53,7 +53,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: El servidor trae las marcas de los cambios sin conversación
+- [x] T1: El servidor trae las marcas de los cambios sin conversación
   - files: packages/cli/src/server/records.ts, packages/cli/test/server-holds.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-holds.test.ts test/server-restore.test.ts test/server.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint

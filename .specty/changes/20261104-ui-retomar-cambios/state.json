@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2443b0ac7fd024d9c80c2607245c064e3b471f03",
+      "startedAt": "2026-11-04T10:51:47.199Z",
+      "doneAt": "2026-11-04T10:59:43.630Z",
+      "summary": "changeRecords añade a cada registro abierto orphan y away tal como los calcula status (openChanges), por id"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
