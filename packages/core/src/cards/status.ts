@@ -25,6 +25,11 @@ export interface StatusEntry {
   readonly holder?: { readonly tool: string; readonly ago: number };
   /** It waits for the agent, and no session stepped in it nor wrote to it lately. */
   readonly orphan?: boolean;
+  /**
+   * It waits for the agent, nobody stepped in its folder lately, and the conversation bound to
+   * that folder stepped last in another one: its agent, and how many minutes ago.
+   */
+  readonly away?: { readonly tool: string; readonly ago: number };
 }
 
 /** A front of the memory in `status`: its open entries in order, and its live owner. */
@@ -56,7 +61,7 @@ export function statusCard(
   view: FrontsView = { fronts: [], owners: [] },
 ): StatusOutput {
   const t = translator(ctx.lang);
-  const lines = entries.map((entry) => statusLine(entry, t));
+  const lines = entries.map((entry) => statusLine(entry, t, ctx.command));
   const fronts = statusFronts(view, memory);
   return {
     status: "ok",
@@ -119,7 +124,7 @@ function frontLine(front: StatusFront, t: Translate): string {
 }
 
 /** One open change: the one here marked, who it waits for, its pending scope and its folder. */
-function statusLine(entry: StatusEntry, t: Translate): string {
+function statusLine(entry: StatusEntry, t: Translate, command: string): string {
   const who = {
     agent: t("al agente", "the agent"),
     human: t("a ti", "you"),
@@ -134,7 +139,7 @@ function statusLine(entry: StatusEntry, t: Translate): string {
           ` · scope: ${entry.pendingScope.join(", ")}`,
         );
   const where = entry.folder === undefined ? "" : ` · ${t("en", "in")} ${entry.folder}`;
-  const held = heldBy(entry, t);
+  const held = entry.away === undefined ? heldBy(entry, t) : awayText(entry.away, t, command);
   return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}${where}${held === undefined ? "" : ` · ${held}`}`;
 }
 
@@ -158,6 +163,15 @@ export function heldBy(
         `lo lleva ${holder.tool}, ${ago(holder.ago, t)}`,
         `held by ${holder.tool}, ${ago(holder.ago, t)}`,
       );
+}
+
+/** The conversation of the change is outside its folder: `specty next` there tells it how to go back. */
+function awayText(away: NonNullable<StatusEntry["away"]>, t: Translate, command: string): string {
+  const when = ago(away.ago, t);
+  return t(
+    `fuera de su carpeta: ${away.tool} dio su último paso en otra carpeta ${when}; en esa conversación, \`${command} next\` dice cómo volver`,
+    `outside its folder: ${away.tool} last stepped in another folder ${when}; in that conversation, \`${command} next\` tells how to go back`,
+  );
 }
 
 /** How long ago, from minutes: under a minute, minutes, hours up to two days, then days. */

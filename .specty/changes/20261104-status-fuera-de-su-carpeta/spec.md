@@ -53,7 +53,7 @@ Cuando una conversación de agente sale de la carpeta de su cambio (vuelve a la 
 
 ## Tareas
 
-- [ ] T1: La marca «fuera de su carpeta» en la línea de `status`
+- [x] T1: La marca «fuera de su carpeta» en la línea de `status`
   - files: packages/core/src/cards/status.ts, packages/core/test/cards/status-away.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/status-away.test.ts test/cards/status-holder.test.ts && pnpm typecheck && pnpm lint

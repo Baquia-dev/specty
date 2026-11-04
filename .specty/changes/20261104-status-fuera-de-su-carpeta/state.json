@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0be65f6271791c5f19022063e402f1925a750973",
+      "startedAt": "2026-11-04T07:18:25.784Z",
+      "doneAt": "2026-11-04T07:19:09.657Z",
+      "summary": "StatusEntry.away y su texto en la línea de status, en lugar de lo lleva o huérfano, con el comando de la tarjeta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
