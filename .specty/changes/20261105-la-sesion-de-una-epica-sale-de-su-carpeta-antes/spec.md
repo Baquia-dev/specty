@@ -84,7 +84,7 @@ Con Claude Code, la sesión principal entra en la carpeta de la épica con `Ente
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/subagents.test.ts test/agent-e2e.test.ts
   - type: test
-- [ ] T5: ARCHITECTURE cuenta la salida de la carpeta de la épica antes de repartir y antes de entrar en un corte
+- [x] T5: ARCHITECTURE cuenta la salida de la carpeta de la épica antes de repartir y antes de entrar en un corte
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts

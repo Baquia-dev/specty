@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-sesion-de-una-epica-sale-de-su-carpeta-antes",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-sesion-de-una-epica-sale-de-su-carpeta-antes",
   "baseCommit": "f374134873dd21f2f9c61c4f60dd97f9b5c0e4f1",
   "revision": 1,
@@ -76,12 +76,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "616925177e5d24dd6a6d50b131111ca791fa205f",
+      "attempts": 1,
       "startedAt": "2026-11-04T17:55:34.481Z",
       "doneAt": "2026-11-04T17:58:17.708Z",
-      "summary": "El modelo guionizado corre con los permisos de las evals, EnterWorktree y ExitWorktree y el specty de la rama. Claude Code real: tras ExitWorktree keep, el subagente escribe en su corte; sin salir, Claude Code lo aísla en la worktree de la épica."
+      "summary": "El modelo guionizado corre con los permisos de las evals, EnterWorktree y ExitWorktree y el specty de la rama. Claude Code real: tras ExitWorktree keep, el subagente escribe en su corte; sin salir, Claude Code lo aísla en la worktree de la épica.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "57e04b3b90ba9a5c0a4baca6dd315ec568b2710f",
+      "startedAt": "2026-11-04T17:58:18.270Z",
+      "doneAt": "2026-11-04T17:58:55.854Z",
+      "summary": "ARCHITECTURE §5, §6, §7 y §10: la tarjeta de una épica en su worktree pide ExitWorktree keep antes de repartir, next fuera de la épica da su tarjeta mientras quedan cortes, y new desde otra worktree pide salir antes."
     }
   },
   "pending": {
