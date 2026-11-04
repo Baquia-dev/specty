@@ -52,7 +52,7 @@ La tabla de capacidades aún no deja a Cursor repartir los cortes de una épica 
 
 ## Tareas
 
-- [ ] T1: Una prueba con eventos de la forma real de Cursor demuestra que cada subagente trabaja en la carpeta de su cambio
+- [x] T1: Una prueba con eventos de la forma real de Cursor demuestra que cada subagente trabaja en la carpeta de su cambio
   - files: packages/cli/test/cursor-subagents.test.ts, packages/cli/src/agents/cursor.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor-subagents.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint

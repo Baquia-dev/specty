@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0b7c13994345cb07cc2725a553753254e7e242a8",
+      "startedAt": "2026-11-04T12:38:26.817Z",
+      "doneAt": "2026-11-04T12:41:23.368Z",
+      "summary": "Prueba con eventos de la forma real de Cursor: cada subagente, con su conversation_id, entra con specty enter y trabaja en su carpeta sin mover a la conversación principal. El guard ya lo hacía: cursor.ts solo explica por qué no necesita normalize, y §10 lo documenta."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
