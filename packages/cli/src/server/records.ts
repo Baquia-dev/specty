@@ -2,6 +2,7 @@
 import { stat } from "node:fs/promises";
 import { basename, join } from "node:path";
 import { type ChangeState, type ChangeView, type Phase, parseSpec } from "@baquia-dev/specty-core";
+import { openChanges } from "../commands/status";
 import { isFinished } from "../flow/active";
 import { locateChanges } from "../flow/changes";
 import { criteriaTests } from "../flow/criteria-tests";
@@ -24,6 +25,10 @@ export interface ChangeRecord {
   readonly folder?: string;
   /** An open change whose folder is gone: its files come from its branch (`specty restore`). */
   readonly lost?: boolean;
+  /** It waits for the agent and no conversation stepped in it nor wrote to it lately (`status`). */
+  readonly orphan?: boolean;
+  /** It waits for the agent and its conversation stepped last in another folder (`status`). */
+  readonly away?: { readonly tool: string; readonly ago: number };
   /** `comments.json` (formats.md §5). */
   readonly comments?: readonly unknown[];
   /** The revision the person approved, `revisions/r<N>.md`. */
@@ -91,14 +96,33 @@ export async function changeRecords(session: Session): Promise<ChangeRecord[]> {
     }
   }
   const commits = await taskCommits(session);
+  const holds = await holdsById(session);
   return Promise.all(
     records.map((record) => {
       const tasks = commits.get(record.state.id);
       const there = sessions.get(record.state.id);
-      const withTasks = withCommits(record, tasks);
+      const withTasks = { ...withCommits(record, tasks), ...holds.get(record.state.id) };
       return there === undefined ? withTasks : withCriteriaTests(there, withTasks, tasks);
     }),
   );
+}
+
+/**
+ * The open changes that wait for the agent with no conversation in their folder, by id, as
+ * `status` marks them: orphans, and those whose conversation stepped last in another folder.
+ */
+async function holdsById(
+  session: Session,
+): Promise<ReadonlyMap<string, Pick<ChangeRecord, "orphan" | "away">>> {
+  const holds = new Map<string, Pick<ChangeRecord, "orphan" | "away">>();
+  for (const { id, orphan, away } of await openChanges(session)) {
+    if (orphan !== true && away === undefined) continue;
+    holds.set(id, {
+      ...(orphan === true ? { orphan } : {}),
+      ...(away !== undefined ? { away } : {}),
+    });
+  }
+  return holds;
 }
 
 /**
