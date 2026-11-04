@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261104-las-evals-miden-el-tiempo-y-el-coste-de-una",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-las-evals-miden-el-tiempo-y-el-coste-de-una",
+  "baseCommit": "b7f1b8f4d4b10f3978cd306250b73338b1c0687f",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:02006960185f962136c282d076036289bab643eba653ae038d5125d8a1b878d5",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:41c0b7a42b752957742c08409303e75486a3dbce008f7d4ec57af97922e8c59e",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:3c2b10e4abc840497623acc13c9d033b9fecfc8415e4fff624de587120b2d848",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:cfe2d934d8031149e1ed262d1a4d643dc39fc97dec096e6d74a109d37bdac822",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:128c42279ebb02a0af6c2999e75d80068c799cead91df0c0f78124744a8017d9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 4
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:9c43f58db1a7e224c1d1d747f17830e103dc0216baf20c8b990c50847222b2d7",
+    "at": "2026-11-04T13:34:14.599Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
