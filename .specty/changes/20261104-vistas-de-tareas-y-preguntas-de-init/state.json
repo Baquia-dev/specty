@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-vistas-de-tareas-y-preguntas-de-init",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-vistas-de-tareas-y-preguntas-de-init",
   "baseCommit": "0cbfa9d8cdf0fd0272a5af072f2a4f483b9b408a",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dbfdaf8127ff969f3ddbc5733b229354ef0edad1",
+      "attempts": 1,
       "startedAt": "2026-11-04T05:34:05.785Z",
       "doneAt": "2026-11-04T05:35:33.343Z",
-      "summary": "Las vistas de las tareas (taskVerification, taskCommits y la nueva taskViews, con taskView, recordedFindings, findingsByTask, criteriaOf y listOf) pasan de flow/views.ts a flow/task-views.ts; changeView llama a taskViews; task, audit y task-done importan del archivo nuevo."
+      "summary": "Las vistas de las tareas (taskVerification, taskCommits y la nueva taskViews, con taskView, recordedFindings, findingsByTask, criteriaOf y listOf) pasan de flow/views.ts a flow/task-views.ts; changeView llama a taskViews; task, audit y task-done importan del archivo nuevo.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "aa58392724442bdf0906bb7fd42dc46ab4785e2c",
+      "startedAt": "2026-11-04T05:35:33.704Z",
+      "doneAt": "2026-11-04T05:36:59.222Z",
+      "summary": "Las opciones que init ofrece a la persona (idioma, agentes y flujo de git: sus preguntas, respuestas, flowLine y los avisos noAgentWarning y noFlowWarning, con sus tablas) pasan de cards/init.ts a cards/init-questions.ts, con los textos tal cual; cards/index.ts exporta cada nombre desde su archivo."
     }
   },
   "pending": {

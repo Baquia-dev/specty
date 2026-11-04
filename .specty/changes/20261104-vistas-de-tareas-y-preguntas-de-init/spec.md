@@ -52,7 +52,7 @@ Dos archivos pasan del aviso de tamaño (300 líneas de código): `cli/src/flow/
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/audit.test.ts test/audit-who.test.ts test/task-check.test.ts test/findings.test.ts test/criteria-tests.test.ts test/commands.test.ts
   - type: refactor
-- [ ] T2: Las opciones que init ofrece, en su propio archivo
+- [x] T2: Las opciones que init ofrece, en su propio archivo
   - files: packages/core/src/cards/init.ts, packages/core/src/cards/init-questions.ts, packages/core/src/cards/index.ts
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm sources && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards && pnpm --filter @baquia-dev/specty exec vitest run test/init-agents.test.ts test/init-git-flow.test.ts test/init-language.test.ts
