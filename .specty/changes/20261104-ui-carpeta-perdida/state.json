@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6113651e9fd49ddecc6ca38fa8f28bdaaecaa9a9",
+      "startedAt": "2026-11-04T09:36:44.289Z",
+      "doneAt": "2026-11-04T09:41:59.045Z",
+      "summary": "El servidor añade a los registros los cambios sin carpeta (spec y estado de su rama, lost, sin carpeta) y la acción POST /api/changes/<id>/restore ejecuta restore en la cola de acciones"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

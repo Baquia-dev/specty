@@ -61,7 +61,7 @@ Desde el corte C2, la terminal ve los cambios abiertos cuya carpeta se perdió y
 
 ## Tareas
 
-- [ ] T1: El servidor trae los cambios sin carpeta y recupera su carpeta
+- [x] T1: El servidor trae los cambios sin carpeta y recupera su carpeta
   - files: packages/cli/src/flow/lost.ts, packages/cli/src/server/records.ts, packages/cli/src/server/http.ts, packages/cli/test/server-restore.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-restore.test.ts test/server.test.ts test/restore.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint

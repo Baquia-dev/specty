@@ -5,6 +5,7 @@ import { type ChangeState, type ChangeView, type Phase, parseSpec } from "@baqui
 import { isFinished } from "../flow/active";
 import { locateChanges } from "../flow/changes";
 import { criteriaTests } from "../flow/criteria-tests";
+import { type LostChange, lostChanges } from "../flow/lost";
 import { isRecord, parseJson, readText } from "../io/files";
 import type { Session } from "../session";
 import { listDir, loadState, readRevision } from "../store/changes";
@@ -19,8 +20,10 @@ export interface ChangeRecord {
   readonly state: ChangeState;
   /** ISO time when the change entered its current phase. */
   readonly phaseSince: string;
-  /** The worktree whose files these are. */
-  readonly folder: string;
+  /** The worktree whose files these are; none for a change whose folder is lost. */
+  readonly folder?: string;
+  /** An open change whose folder is gone: its files come from its branch (`specty restore`). */
+  readonly lost?: boolean;
   /** `comments.json` (formats.md §5). */
   readonly comments?: readonly unknown[];
   /** The revision the person approved, `revisions/r<N>.md`. */
@@ -76,6 +79,8 @@ export async function changeRecords(session: Session): Promise<ChangeRecord[]> {
     add(await readRecord(change.files, there.root, there.config.verify.full));
     sessions.set(change.state.id, there);
   }
+  // The open changes whose folder is gone, read from their branches (ARCHITECTURE §9).
+  for (const lost of await lostChanges(session)) add(await lostRecord(session, lost));
   for (const { folder } of await session.git.worktrees()) {
     const { archive } = repoPaths(folder);
     for (const year of await listDir(archive)) {
@@ -153,6 +158,21 @@ function withCommits(
     }),
   );
   return { ...record, state: { ...record.state, tasks } };
+}
+
+/**
+ * An open change whose folder is gone, from its branch: its spec and state, with no folder. Its
+ * phase began, as far as the page can tell, with the last commit of its branch.
+ */
+async function lostRecord(session: Session, lost: LostChange): Promise<ChangeRecord> {
+  const tip = await session.git.run(["log", "-1", "--format=%cI", `refs/heads/${lost.branch}`]);
+  const since = tip.stdout.trim();
+  return {
+    spec: lost.spec ?? `# ${lost.title}\n`,
+    state: lost.state,
+    phaseSince: tip.code === 0 && since !== "" ? since : session.environment.now().toISOString(),
+    lost: true,
+  };
 }
 
 /** A change's files; a change whose state cannot be read is left out. */
