@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261104-apoyo-de-los-tests-sin-rojo",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-apoyo-de-los-tests-sin-rojo",
   "baseCommit": "76e0eca1da6b2bc6fa42d0e1a0b555f88690dc3d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f81a76956c2a5fb34180049e089e4de2285770ee257b3c33f1cd2a0180fddf9",
+    "at": "2026-11-04T05:59:43.757Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6f81a76956c2a5fb34180049e089e4de2285770ee257b3c33f1cd2a0180fddf9",
-    "at": "2026-11-04T05:59:43.757Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/testing-phase.test.ts": "sha256:7d2d5f1c5de70fc0d0ccbae1c3b70855147565bd1e1d32198d8c271fb3ee09ce"
+  }
 }

@@ -193,6 +193,19 @@ describe("the red the tests are sent with", () => {
       data: { count: 1, files: ["src/app.test.ts"], red: [{ cmd: RED, exit: 1 }] },
     });
   });
+
+  it("P39: sends a support file of the tests that declares no case, without asking it to fail", async () => {
+    const root = await withTests();
+    await writeFiles(root, { "src/__tests__/greeting.ts": "export const NAME = 'Ana';\n" });
+    const sent = await cli(root, ["propose"]);
+    expect(sent.code, sent.out).toBe(0);
+    expect(await lastAudit(root)).toMatchObject({
+      event: "tests.proposed",
+      data: { count: 2, files: ["src/__tests__/greeting.ts", "src/app.test.ts"] },
+    });
+    const files = git(root, "show", "--name-only", "--format=", "HEAD");
+    expect(files).toContain("src/__tests__/greeting.ts");
+  });
 });
 
 describe("approving the tests", () => {
