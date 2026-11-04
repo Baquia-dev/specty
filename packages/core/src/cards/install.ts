@@ -225,6 +225,18 @@ export function yoursUncommittedWarning(paths: readonly string[], lang: Lang): s
   );
 }
 
+/** The commit of what was installed failed (`detail`: git's command and error), and was undone. */
+export function installCommitFailedWarning(
+  paths: readonly string[],
+  detail: string,
+  lang: Lang,
+): string {
+  return translator(lang)(
+    `No se pudo hacer el commit de lo instalado (${detail}); se deshizo lo escrito en ${paths.join(", ")}.`,
+    `Could not commit what was installed (${detail}); what was written to ${paths.join(", ")} was undone.`,
+  );
+}
+
 /** The subject of `init`'s commit: the first installation, or an update of it. */
 export function installCommitSubject(first: boolean, lang: Lang): string {
   const t = translator(lang);
