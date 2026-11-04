@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-tarjeta-al-empezar-una-sesion-tambien-en",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-la-tarjeta-al-empezar-una-sesion-tambien-en",
   "baseCommit": "a0110db82c25c3db2cb9b037f2db2fc48f5dac72",
   "revision": 1,
@@ -47,6 +47,13 @@
     "AC": 4,
     "T": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T17:33:24.597Z"
+  "lockedTests": {
+    "packages/cli/test/agents.test.ts": "sha256:74d5303191e63a9a096bfa05c2b53386e495fe24320f117397cc406039fc8499",
+    "packages/cli/test/codex-e2e.test.ts": "sha256:14359f1f837f1463d658fc211a9a035e49e99b430537092c05d649397a78753d",
+    "packages/cli/test/codex.test.ts": "sha256:2f6249c1490c3f64cf935ceec311cd2a8395fc8c61dcda64b173ad671b1fafa2",
+    "packages/cli/test/session-start.test.ts": "sha256:24aa81497a939243f274ed2a41a9784a67aca98861ef802d5922c09f25d08873",
+    "packages/cli/test/session-start-codex.test.ts": "sha256:a827c4f3c5034f2b4f5e799f044d92875725a292f174a9fd3505d60e77e44901",
+    "packages/cli/test/session-start-devin.test.ts": "sha256:aeccb0bf26ac5b5ae7b3bda0f740379b369caf88f692079f2e4690cd66febeac",
+    "packages/core/test/cards/doctor-codex-startup.test.ts": "sha256:514fe4d7236ec19d8b35b4f326b2a6f492f79f3f64c61a10a0354f38dc443017"
+  }
 }
