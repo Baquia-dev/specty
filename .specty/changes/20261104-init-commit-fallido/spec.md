@@ -58,7 +58,7 @@ Cuando falla el commit de lo que instala `specty init` (o `specty check --instal
   - files: packages/core/src/cards/install.ts, packages/core/src/cards/init.ts, packages/core/src/cards/index.ts, packages/core/test/cards/install.test.ts, packages/core/test/cards/init.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/install.test.ts test/cards/init.test.ts && pnpm lint
-- [ ] T2: `init` deshace lo escrito y avisa cuando su commit falla
+- [x] T2: `init` deshace lo escrito y avisa cuando su commit falla
   - files: packages/cli/src/io/git.ts, packages/cli/src/install/commit.ts, packages/cli/src/commands/init.ts, packages/cli/test/init-commit.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-commit.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
