@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-carpeta-perdida-se-recupera",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-carpeta-perdida-se-recupera",
   "baseCommit": "6b1d2d1c5157371c66b4e459152d6a1adde1da4a",
   "revision": 2,
@@ -64,12 +64,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "13bc6abab7d16167068d24b733756598fcbe8d9a",
+      "attempts": 1,
       "startedAt": "2026-11-04T08:10:51.563Z",
       "doneAt": "2026-11-04T08:20:32.741Z",
-      "summary": "flow/lost.ts detecta los cambios abiertos sin carpeta desde sus ramas marcadas (un cat-file --batch-check y solo después sus estados), markedChanges da rama e id, y status los lista con lost"
+      "summary": "flow/lost.ts detecta los cambios abiertos sin carpeta desde sus ramas marcadas (un cat-file --batch-check y solo después sus estados), markedChanges da rama e id, y status los lista con lost",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6d5ad14aa265a415d1d7b0dab8db1e7ecbd3f3c9",
+      "startedAt": "2026-11-04T08:20:34.834Z",
+      "doneAt": "2026-11-04T08:24:59.699Z",
+      "summary": "specty restore <id> (agente o persona, con el bloqueo del cambio): repara la carpeta que ya está, o quita los registros muertos y saca la rama en .worktrees/<id> con hooks y preparación; addWorktree saca una rama existente; ARCHITECTURE §6 y §9"
     }
   },
   "pending": {

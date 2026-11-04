@@ -69,7 +69,7 @@ Hoy, si alguien borra la carpeta de un cambio abierto o git la «poda», el camb
   - files: packages/cli/src/flow/lost.ts, packages/cli/src/flow/branches.ts, packages/cli/src/commands/status.ts, packages/cli/test/lost-status.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/lost-status.test.ts test/status-away.test.ts test/activity.test.ts test/prune.test.ts && pnpm typecheck && pnpm lint
-- [ ] T3: `specty restore <id>` y la documentación
+- [x] T3: `specty restore <id>` y la documentación
   - files: packages/cli/src/flow/lost.ts, packages/cli/src/flow/worktree.ts, packages/cli/src/commands/restore.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/restore.test.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/restore.test.ts test/lost-status.test.ts test/commands-named.test.ts test/worktrees.test.ts && pnpm typecheck && pnpm lint

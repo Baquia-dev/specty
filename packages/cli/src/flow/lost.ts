@@ -1,9 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
+
+import { join } from "node:path";
 import { type ChangeState, parseChangeState, parseSpec } from "@baquia-dev/specty-core";
 import { exists, parseJson } from "../io/files";
+import { GitError, resolved } from "../io/git";
 import type { Session } from "../session";
 import { isFinished } from "./active";
 import { markedChanges } from "./branches";
+import {
+  addWorktree,
+  type CopiedFiles,
+  type Prepared,
+  prepareWorktree,
+  worktreesHome,
+} from "./worktree";
 
 /** An open change whose folder is gone, as its branch tells it (ARCHITECTURE §9). */
 export interface LostChange {
@@ -81,4 +91,53 @@ async function readLost(
   const title =
     spec === undefined ? id : parseSpec(spec, { language: session.lang }).spec.title || id;
   return { id, branch, state: parsed.state, title, stale };
+}
+
+/** What `specty restore` did with a lost change's folder. */
+export type RestoreOutcome =
+  | {
+      readonly kind: "restored";
+      readonly folder: string;
+      readonly copied: CopiedFiles;
+      readonly prepared?: Prepared;
+    }
+  /** Git recognized again the folder in the change's place: it stays as it was. */
+  | { readonly kind: "repaired"; readonly folder: string }
+  /** A folder git does not recognize as the change's is in its place: untouched. */
+  | { readonly kind: "in-the-way"; readonly folder: string }
+  | { readonly kind: "git"; readonly detail: string };
+
+/**
+ * Brings back the folder of `lost` in `.worktrees/<id>`, where `specty new` puts them. A folder
+ * already there gets `git worktree repair` and is used if git then recognizes it, and is left
+ * untouched if not. Otherwise git forgets only the missing folders it listed for the branch, and
+ * the branch is checked out as it is, with the agent's hooks copied, and prepared.
+ */
+export async function restoreFolder(session: Session, lost: LostChange): Promise<RestoreOutcome> {
+  const { git } = session;
+  const folder = join(await worktreesHome(git), lost.id);
+  if (await exists(folder)) {
+    await git.run(["worktree", "repair", folder]);
+    return (await checksOut(session, folder, lost.branch))
+      ? { kind: "repaired", folder }
+      : { kind: "in-the-way", folder };
+  }
+  for (const missing of lost.stale) await git.run(["worktree", "remove", missing]);
+  try {
+    const copied = await addWorktree(git, { folder, branch: lost.branch });
+    const prepared = await prepareWorktree(session, folder);
+    return { kind: "restored", folder, copied, ...(prepared !== undefined ? { prepared } : {}) };
+  } catch (error) {
+    if (!(error instanceof GitError)) throw error;
+    return { kind: "git", detail: error.message };
+  }
+}
+
+/** Whether git lists `folder` as a worktree with `branch` checked out. */
+async function checksOut(session: Session, folder: string, branch: string): Promise<boolean> {
+  const own = await resolved(folder);
+  for (const worktree of await session.git.worktrees()) {
+    if (worktree.branch === branch && (await resolved(worktree.folder)) === own) return true;
+  }
+  return false;
 }
