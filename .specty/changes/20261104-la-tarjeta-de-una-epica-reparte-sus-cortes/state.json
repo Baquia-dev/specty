@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-la-tarjeta-de-una-epica-reparte-sus-cortes",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-la-tarjeta-de-una-epica-reparte-sus-cortes",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "22817d6a79a5a0e057b60ba45992a9512df86ce4",
+      "attempts": 1,
       "startedAt": "2026-11-04T12:47:58.719Z",
       "doneAt": "2026-11-04T12:49:27.963Z",
-      "summary": "El freno de duplicados de new no compara un corte con los cambios abiertos de otros cortes de su épica, que se parecen a propósito: varios subagentes crean a la vez los suyos. ARCHITECTURE §6."
+      "summary": "El freno de duplicados de new no compara un corte con los cambios abiertos de otros cortes de su épica, que se parecen a propósito: varios subagentes crean a la vez los suyos. ARCHITECTURE §6.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "83fa00fb48626c4fb8b02758d03525183600dc39",
+      "startedAt": "2026-11-04T12:49:29.020Z",
+      "doneAt": "2026-11-04T12:51:31.358Z",
+      "summary": "La vista de una épica marca sus cortes en curso huérfanos (epicSlices, con openChanges de status) para que la tarjeta dé el encargo de retomarlos; sliceViews deja de exportarse. ARCHITECTURE §10 y §16."
     }
   },
   "pending": {

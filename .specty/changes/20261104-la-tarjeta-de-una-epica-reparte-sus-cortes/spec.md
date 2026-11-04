@@ -80,7 +80,7 @@ Hoy la tarjeta de una épica aprobada propone empezar un corte cada vez, en la m
   - files: packages/cli/src/flow/duplicates.ts, packages/cli/test/epic-subagents.test.ts
   - ac: AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-subagents.test.ts -t AC7
-- [ ] T4: La épica marca sus cortes huérfanos para darles un encargo
+- [x] T4: La épica marca sus cortes huérfanos para darles un encargo
   - files: packages/cli/src/flow/epic.ts, packages/cli/src/flow/views.ts, packages/cli/test/epic-subagents.test.ts
   - ac: AC1, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-subagents.test.ts && pnpm typecheck
