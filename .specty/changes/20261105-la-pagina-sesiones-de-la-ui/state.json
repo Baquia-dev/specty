@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261105-la-pagina-sesiones-de-la-ui",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-la-pagina-sesiones-de-la-ui",
+  "baseCommit": "9c97bf0754ec7523b4d7255fd2f72e45a8420334",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5f4818d52e6a513b1df4372a2c5b9fe8d02c068a522592e80dee5a8eb18f135f",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:12f85431b2e1ec826e31cf97161c3913681478bb6e3b4c088a98122f2803db43",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4ec5429b9755e5b48015c16895bfb3bea8adc27ecaefe033337f1fcb67fd8122",
+    "at": "2026-11-04T18:26:33.639Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
