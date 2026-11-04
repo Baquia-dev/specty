@@ -20,3 +20,9 @@ Resuelve P39. Con `policy.tests: contract`, `specty propose` en la fase de tests
   - files: packages/cli/src/commands/tests.ts, packages/cli/test/testing-phase.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/testing-phase.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: fix
+
+## Cierre
+
+### Resumen
+
+El rojo de la fase de tests solo exige que la salida nombre los tests que declaran algún caso (testCases de core); un archivo de apoyo sin casos va en el envío y se bloquea con los demás. ARCHITECTURE §4 lo cuenta.
