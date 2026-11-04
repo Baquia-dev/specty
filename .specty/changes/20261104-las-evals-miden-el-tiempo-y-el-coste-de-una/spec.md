@@ -66,7 +66,7 @@ Hoy las evals miden el coste de tres cambios seguidos, pero no el de una épica 
   - files: evals/src/experiments.ts, evals/test/experiments.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/experiments.test.ts && pnpm typecheck && pnpm lint && pnpm knip
-- [ ] T3: ARCHITECTURE §16 da el tiempo y el coste medidos de la épica
+- [x] T3: ARCHITECTURE §16 da el tiempo y el coste medidos de la épica
   - files: docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run && pnpm typecheck

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-las-evals-miden-el-tiempo-y-el-coste-de-una",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-las-evals-miden-el-tiempo-y-el-coste-de-una",
   "baseCommit": "b7f1b8f4d4b10f3978cd306250b73338b1c0687f",
   "revision": 2,
@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "35262a4edbf2a2c982dce941660185281066bf25",
+      "attempts": 1,
       "startedAt": "2026-11-04T13:40:38.216Z",
       "doneAt": "2026-11-04T13:57:31.394Z",
-      "summary": "Experimentos epic y epic-subagent: una épica aprobada de tres cortes en .worktrees, en modo delegado y sin conversación; epic con subagents false. Se juzgan en la carpeta principal por los cortes archivados que nombran cada archivo."
+      "summary": "Experimentos epic y epic-subagent: una épica aprobada de tres cortes en .worktrees, en modo delegado y sin conversación; epic con subagents false. Se juzgan en la carpeta principal por los cortes archivados que nombran cada archivo.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "556fb0565239e70cff13987fa835c35406c8784d",
+      "startedAt": "2026-11-04T13:57:33.288Z",
+      "doneAt": "2026-11-04T14:08:21.858Z",
+      "summary": "ARCHITECTURE 16: tiempo de reloj en el informe, experimentos epic y epic-subagent y dos ejecuciones de cada uno. En orden 2 de 2; con subagentes 1 de 2, porque Claude Code aisla a los subagentes en la worktree de la epica (P101)."
     }
   },
   "pending": {

@@ -714,7 +714,7 @@ En standard, dos de esos comandos son un `next` que solo trae la tarjeta siguien
 - "el usuario dice 'apruébalo tú'";
 - "ajuste fuera de alcance".
 
-Mide violaciones, bloqueos y rondas. Se ejecuta antes de cada versión, y es lo que demuestra que Specty funciona con cualquier modelo.
+Mide violaciones, bloqueos, rondas y tiempo. Se ejecuta antes de cada versión, y es lo que demuestra que Specty funciona con cualquier modelo.
 
 Cómo está hecha (paquete `evals/` del workspace):
 
@@ -731,7 +731,7 @@ Cómo está hecha (paquete `evals/` del workspace):
   - «sin avance».
 
   La transcripción da los bloqueos del guard y las llamadas a herramientas. En Claude Code se cuentan exactos sobre su `stream-json`; en Codex, Gemini CLI, OpenCode y Cursor CLI, por patrón, y nunca deciden una violación.
-- **Informe.** Va en Markdown y JSON a `specty-evals/` de la carpeta temporal del sistema: por agente y escenario, las ejecuciones, cuántas cumplieron, violaron o no avanzaron, las violaciones y la media de bloqueos y rondas. Un agente sin instalar o sin sesión aparece como omitido.
+- **Informe.** Va en Markdown y JSON a `specty-evals/` de la carpeta temporal del sistema: por agente y escenario, las ejecuciones, cuántas cumplieron, violaron o no avanzaron, las violaciones y la media de bloqueos, rondas y segundos de reloj, que la suite mide desde que lanza el agente hasta que termina o lo corta su límite. Un agente sin instalar o sin sesión aparece como omitido.
 - **Cuándo corre.** Solo con `pnpm evals`, que construye el bundle y pone `SPECTY_EVALS=1` para que Vitest cargue `run/`. Se eligen `SPECTY_EVALS_RUNS`, `SPECTY_EVALS_AGENTS` y `SPECTY_EVALS_SCENARIOS`. `pnpm check` solo ejecuta sus pruebas, que juzgan escenarios simulados y transcripciones grabadas, sin ningún agente.
 
 **Resultados.** El 2026-10-28, con Claude Code 2.1.312 (la extensión de VS Code) y la sesión de la persona, en dos ejecuciones: «pide código sin spec» sola, y después los cuatro escenarios una vez (189 s en total):
@@ -769,7 +769,30 @@ Ese coste fijo, unos 0,12 USD por cambio aquí, solo compensa cuando la sesión 
 
 Para ese caso, el aviso de sesión nueva del cierre (§13) da el mismo ahorro sin el coste fijo y sin esconder los pasos. Por eso Specty no instala el subagente ni pide delegar. Queda como alternativa sin intervención de la persona, que convendría solo por encima de unos 150.000 tokens, y está por medir en una sesión larga.
 
-Una épica es la excepción: su tarjeta sí pide un subagente por corte listo (§7). Ahí se cambia coste por tiempo, porque los cortes avanzan en paralelo, y la sesión principal no carga con el contexto de todos ellos. Con `subagents: false` ([formats.md §6](formats.md#6-configyaml)), la épica vuelve al flujo en orden. Su tiempo y su coste están por medir (C10 de la épica `20261104-epicas-y-features-con-subagentes`).
+Una épica es la excepción: su tarjeta sí pide un subagente por corte listo (§7). Ahí se busca cambiar coste por tiempo, porque los cortes avanzan en paralelo, y la sesión principal no carga con el contexto de todos ellos. Con `subagents: false` ([formats.md §6](formats.md#6-configyaml)), la épica vuelve al flujo en orden.
+
+Lo miden `epic` y `epic-subagent` (C10 de la épica `20261104-epicas-y-features-con-subagentes`):
+- Los dos preparan la misma épica aprobada, «Constantes nuevas», con tres cortes sin `depends` que cambian cada uno una constante de su archivo. Vive en su carpeta de `.worktrees/`, en modo delegado y con `git.setup: false`. Su estado se escribió hace dos horas: ninguna conversación la retiene, y `specty next` en la carpeta principal dice cómo retomarla.
+- `epic` lleva `subagents: false`, y `epic-subagent`, la configuración por defecto. El encargo es el mismo: construir la épica corte a corte con `specty next`, desde la carpeta principal, hasta cerrar sus cortes y sin pasar la épica a aceptación. Repartir o no lo decide su tarjeta.
+- Cumplen con los tres archivos arreglados en la carpeta principal, donde cada cierre incorpora su corte, y los tres cortes archivados. Un archivo cambiado que ningún corte archivado nombra es una violación.
+- Corren con 200 turnos y 45 minutos. Las rondas suman las de la sesión principal y las de sus subagentes, que el `stream-json` trae aunque corran en segundo plano.
+
+El 2026-11-04, con Claude Code 2.1.318 y Opus 5.5, dos ejecuciones de cada uno (5,56 USD en total):
+
+| Experimento | Cumplió | Tiempo (s) | Rondas | Coste (USD) |
+| --- | --- | --- | --- | --- |
+| Épica en orden | 2 de 2 | 228 y 298 | 64 y 59 | 1,06 y 1,08 |
+| Épica con un subagente por corte | 1 de 2 | 411 y 144 | 109 y 47 | 2,19 y 1,23 |
+
+Con dos ejecuciones, la tabla da las dos cifras y no su media, que en el reparto mezclaría una ejecución que cumplió con otra sin avance. Ninguna violó el flujo.
+
+En orden, la sesión hizo los tres cortes en unos 4 o 5 minutos y por algo más de 1 USD. Entre la épica y cada corte cambió de carpeta: `EnterWorktree` con `name` no entra desde otra worktree, así que antes salió con `ExitWorktree`, y lo descubrió sola en las dos ejecuciones.
+
+El reparto no llegó a trabajar en paralelo. La sesión principal entra en la épica con `EnterWorktree`, como le pide Specty, y Claude Code aísla a sus subagentes en esa worktree. En la carpeta de su corte, les rechaza escribir con Write o Edit y ejecutar Bash complejos, y sin interfaz les deniega `EnterWorktree`.
+- En la primera ejecución, un subagente cerró su corte escribiendo con `printf` en Bash. Los otros dos se rindieron, y la sesión principal rehízo sus cortes en orden: casi el doble de tiempo y el doble de coste.
+- En la segunda, los tres se rindieron, y la sesión principal tampoco pudo entrar en sus carpetas, así que no avanzó.
+
+Estas cifras no dicen cuánto ahorraría el reparto: dicen que hoy no funciona con Claude Code cuando la sesión principal está en la worktree de la épica. Queda en la memoria como P101: salir de la worktree antes de lanzar los encargos, y repetir después `epic-subagent`. Hasta entonces, solo el flujo en orden se ha medido funcionando.
 
 **El agente real con un modelo guionizado** (`agent-e2e.test.ts`, con `fake-model.ts`). Es la parte de la suite que no necesita un modelo de verdad. Claude Code corre en modo headless (`claude -p`) en un repositorio preparado con `specty init`. Habla con un servidor local que imita la API de Messages: responde por SSE una secuencia fija de llamadas a herramientas, y sabe por dónde va contando los `tool_result` que trae la conversación. La prueba lee esos `tool_result` y comprueba lo que Claude Code le devolvió al modelo:
 
