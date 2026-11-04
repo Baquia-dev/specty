@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-import { parse as parseYaml, stringify } from "yaml";
+import { stringify } from "yaml";
 import * as z from "zod";
+import { frontmatterOf } from "./frontmatter";
 import { isDay } from "./triggers";
 
 // An entry of Specty's memory (formats.md §1, ADR 0016): a markdown file of its own branch,
@@ -78,14 +79,12 @@ const EntrySchema = z
   })
   .refine((entry) => entry.id.startsWith(prefixOf(entry.kind)));
 
-const FRONTMATTER = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/;
-
 /** The entry an `entries/<id>.md` file holds; undefined when it is not a valid one. */
 export function parseEntry(markdown: string): MemoryEntry | undefined {
-  const [, raw, body] = FRONTMATTER.exec(markdown.replaceAll("\r\n", "\n")) ?? [];
-  if (raw === undefined) return undefined;
-  const parsed = EntrySchema.safeParse(loadYaml(raw));
-  const text = (body ?? "").trim();
+  const read = frontmatterOf(markdown);
+  if (read === undefined) return undefined;
+  const parsed = EntrySchema.safeParse(read.data);
+  const text = read.body;
   if (!parsed.success || text.length === 0) return undefined;
   const { id, kind, status, created, origin } = parsed.data;
   return {
@@ -307,12 +306,4 @@ function isWork(entry: MemoryEntry): boolean {
 
 function prefixOf(kind: MemoryKind): "P" | "D" {
   return kind === "decision" ? "D" : "P";
-}
-
-function loadYaml(raw: string): unknown {
-  try {
-    return parseYaml(raw);
-  } catch {
-    return undefined;
-  }
 }

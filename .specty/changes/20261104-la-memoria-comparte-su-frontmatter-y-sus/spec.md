@@ -42,7 +42,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: El frontmatter de la memoria, en su propio módulo
+- [x] T1: El frontmatter de la memoria, en su propio módulo
   - files: packages/core/src/memory/frontmatter.ts, packages/core/src/memory/entries.ts, packages/core/src/memory/fronts.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory && pnpm typecheck && pnpm lint && pnpm exec knip

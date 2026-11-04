@@ -6,6 +6,13 @@
   "branch": "specty/20261104-la-memoria-comparte-su-frontmatter-y-sus",
   "baseCommit": "cedf87d684d7915bba73bb090306543d330d75d8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:43c511155a4fd29b4e175a819bd091aefa8907ee4cc9f299d6fa1bfc6ce9119e",
+    "at": "2026-11-04T09:26:00.749Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -20,7 +27,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "706485bbec3ebaafe440a7092a486fb1ebe35ee6",
+      "startedAt": "2026-11-04T09:26:01.246Z",
+      "doneAt": "2026-11-04T09:27:02.326Z",
+      "summary": "memory/frontmatter.ts: frontmatterOf lee el YAML y el cuerpo de una entrada o un frente; parseEntry y parseFront lo usan en vez de su FRONTMATTER y su loadYaml"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 2,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:43c511155a4fd29b4e175a819bd091aefa8907ee4cc9f299d6fa1bfc6ce9119e",
-    "at": "2026-11-04T09:26:00.749Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
