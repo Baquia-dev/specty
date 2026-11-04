@@ -60,7 +60,7 @@ Desde el cambio anterior, `specty status` lista los cambios abiertos sin carpeta
   - files: packages/core/src/cards/rejoin.ts, packages/core/src/cards/next.ts, packages/core/src/cards/enter.ts, packages/core/src/cards/hooks.ts, packages/core/src/cards/index.ts, packages/core/test/cards/lost-folder.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/lost-folder.test.ts test/cards/rejoin.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: `next`, `enter` y el hook llevan a `specty restore`, y la documentación
+- [x] T2: `next`, `enter` y el hook llevan a `specty restore`, y la documentación
   - files: packages/cli/src/commands/next.ts, packages/cli/src/enforce/sessions.ts, packages/cli/src/commands/enter.ts, packages/cli/src/enforce/worktree-hooks.ts, packages/cli/test/lost-folder.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/lost-folder.test.ts test/session-return.test.ts test/enter.test.ts test/worktree-hooks.test.ts test/worktrees.test.ts && pnpm typecheck && pnpm lint

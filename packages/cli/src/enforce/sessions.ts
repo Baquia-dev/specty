@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { resolve } from "node:path";
+import { basename, resolve } from "node:path";
 import {
   AGENT_CAPABILITIES,
   type BoundSession,
@@ -7,6 +7,7 @@ import {
   parseSpec,
 } from "@baquia-dev/specty-core";
 import { isFinished, resolveActive } from "../flow/active";
+import { lostChanges } from "../flow/lost";
 import { exists } from "../io/files";
 import { resolved } from "../io/git";
 import { type Environment, openSession, type Session } from "../session";
@@ -146,17 +147,28 @@ async function openChange(
  * The open change of the folder the session's conversation is bound to, when that folder is not
  * the one the session works in: the conversation left it, and `next` tells it to go back.
  */
-export async function conversationChange(
-  session: Session,
-): Promise<{ readonly id: string; readonly title: string; readonly folder: string } | undefined> {
+export async function conversationChange(session: Session): Promise<
+  | {
+      readonly id: string;
+      readonly title: string;
+      readonly folder: string;
+      readonly lost?: boolean;
+    }
+  | undefined
+> {
   const id = session.conversation?.id;
   const binding = id === undefined ? undefined : await readBinding(session.git, id);
   if (binding === undefined) return undefined;
-  if ((await resolved(binding.folder)) === (await resolved(session.root))) return undefined;
-  const change = await openChange(session.environment, binding.folder);
-  return change === undefined
-    ? undefined
-    : { id: change.id, title: change.title, folder: binding.folder };
+  const { folder } = binding;
+  if ((await resolved(folder)) === (await resolved(session.root))) return undefined;
+  const change = await openChange(session.environment, folder);
+  if (change !== undefined) return { id: change.id, title: change.title, folder };
+  if (await exists(folder)) return undefined;
+  // A folder that is gone and was a lost change's: git still lists it, or it bears the change's id.
+  const lost = (await lostChanges(session)).find(
+    (candidate) => candidate.stale.includes(folder) || candidate.id === basename(folder),
+  );
+  return lost === undefined ? undefined : { id: lost.id, title: lost.title, folder, lost: true };
 }
 
 /**
