@@ -6,6 +6,13 @@
   "branch": "specty/20261104-ui-retomar-cambios",
   "baseCommit": "2bd6cf73dc77785caeb5ec988958323a0e167772",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:76622aa7f05c8442962c74e620feeb0bf4a0d7549a7561433581b75f96fb12e0",
+    "at": "2026-11-04T10:48:41.114Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:76622aa7f05c8442962c74e620feeb0bf4a0d7549a7561433581b75f96fb12e0",
-    "at": "2026-11-04T10:48:41.114Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T10:51:45.225Z"
 }
