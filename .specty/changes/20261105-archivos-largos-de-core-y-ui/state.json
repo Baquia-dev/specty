@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261105-archivos-largos-de-core-y-ui",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261105-archivos-largos-de-core-y-ui",
+  "baseCommit": "555d8540abbd360891f992252bcb564c64542ed6",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6c6c5e6f7ae939b30b03513c4484df5b7eab630f6cf1b8b2eb14ef8b156adc80",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:64cfee4e8151c427f4ccdc490a294ee82c5632de46c6dc7605a41b3206f918ff",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d24bf2c30049185ab5f2e690f8013653946bcb6b47f6551cb76c3cf1999f3b25",
+    "at": "2026-11-04T18:39:58.611Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
