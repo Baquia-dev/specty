@@ -172,6 +172,8 @@ export interface WorktreeCreated {
   readonly byName: boolean;
   /** The agent that ran `new`, known by its environment: how it carries on in the folder. */
   readonly agent?: AgentTool | undefined;
+  /** A subagent ran it (`--subagent`): it enters the folder with `specty enter`, whatever its tool. */
+  readonly subagent?: boolean;
 }
 
 /**
@@ -289,15 +291,22 @@ export function worktreeCreatedNext(
 }
 
 /** A change's folder and how the agent that asks enters it: what `carryOnText` needs. */
-type CarryOnTarget = Pick<WorktreeCreated, "id" | "folder" | "byName" | "agent">;
+type CarryOnTarget = Pick<WorktreeCreated, "id" | "folder" | "byName" | "agent" | "subagent">;
 
 /**
  * How the session carries on in the change's folder: an agent with Specty's guard enters it from
  * the same session (`specty enter`), or the person opens its tool there; Claude Code enters it on
- * its own, and an unknown agent hears both ways.
+ * its own, and an unknown agent hears both ways. A subagent always enters with `specty enter`,
+ * since its tool's own way would move the session that launched it.
  */
 export function carryOnText(created: CarryOnTarget, ctx: CardContext, t: Translate): string {
   const { id, folder, agent } = created;
+  if (created.subagent === true) {
+    return t(
+      `entra con \`${ctx.command} enter ${id}\` y sigue su salida; esta carpeta sigue con su propio trabajo.`,
+      `enter it with \`${ctx.command} enter ${id}\` and follow its output; this folder carries on with its own work.`,
+    );
+  }
   if (agent !== undefined && AGENT_CAPABILITIES[agent].worktreeByName.state === "indirect") {
     const open = OPEN_IN[agent]?.(folder, t);
     const other =

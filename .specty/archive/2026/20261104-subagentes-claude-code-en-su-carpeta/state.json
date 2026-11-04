@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "id": "20261104-subagentes-claude-code-en-su-carpeta",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-subagentes-claude-code-en-su-carpeta",
+  "baseCommit": "cb6838409f3dba5834c2ee9722cae08987438784",
+  "revision": 4,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:fe062b63fa87951109c5bf523590ddf78ceb9929f3156dc4e24da55d4ba7440a",
+    "at": "2026-11-04T10:29:46.879Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fc6c68e2f7d65f877ff681a1ee443b15ff79351462e15586185296c162b8afb5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c2c14b7ab58a7780de3d4f1460c60d5bfeecc33c9443e6c4dae56b9a375212a7",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:d8a58feb72121532c8d91f2da4b4e5557ccc000ecb84ba6dfb0f4c498db5b6bf",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:e515e0c62b4555ed344756330680dbf74a88817eb319571097405c8e13e3d0b5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2dda86f0c083c40d1fbd756c6fb5280027ec1d58",
+      "attempts": 1,
+      "startedAt": "2026-11-04T10:10:15.733Z",
+      "doneAt": "2026-11-04T10:20:28.994Z",
+      "summary": "Cada subagente de Claude Code (agent_id) es una conversación propia: entra con specty enter, queda atado a su carpeta y se juzga con sus reglas sin mover a la sesión principal. Incluye new --subagent (de T2) y el arnés de Claude Code real compartido.",
+      "scopeExtra": [
+        "packages/cli/src/commands/new.ts",
+        "packages/cli/src/commands/agent-commands.ts",
+        "packages/core/src/cards/new.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "206b2a8594d2bb2fc09a28ca4b04b0c1bfe7d673",
+      "attempts": 1,
+      "startedAt": "2026-11-04T10:20:30.715Z",
+      "doneAt": "2026-11-04T10:21:51.882Z",
+      "summary": "El código de new --subagent llegó con T1, que amplió su alcance: no ata a la conversación que lo ejecuta y su SIGUIENTE pide entrar con specty enter.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "1baeba6ff5e548fc0a5be4c5fc5fe54bab072b99",
+      "attempts": 1,
+      "startedAt": "2026-11-04T10:21:52.980Z",
+      "doneAt": "2026-11-04T10:24:09.652Z",
+      "summary": "La tabla de capacidades gana la columna Cortes en subagentes: Claude Code en sí; Gemini CLI, Antigravity y Devin en no posible con su motivo; Codex, OpenCode y Cursor sin ella hasta su corte. ARCHITECTURE explica cómo el guard trata a los subagentes.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "f041372567993ac40bffc2e17720ec71d5b88e4a",
+      "attempts": 1,
+      "startedAt": "2026-11-04T10:29:47.866Z",
+      "doneAt": "2026-11-04T10:41:01.068Z",
+      "summary": "fakeModel deja de exportarse: desde T1 solo la usa claudeWith, en su mismo archivo, y knip fallaba en pnpm check.",
+      "scopeExtra": [
+        "packages/cli/test/fake-model.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 4,
+    "R": 4,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-04T11:48:46.051Z",
+  "lockedTests": {
+    "packages/cli/test/fake-model.ts": "sha256:b04464b421feb1f95b583e3792e684d3b718aff6e557a79f6d7be4f494c380e2",
+    "packages/core/test/capabilities.test.ts": "sha256:f12d2f2ce39299c69b512274e2b23db31b768f41dfb3b0f656e4ef08974830bb",
+    "packages/cli/test/subagents.test.ts": "sha256:c8f186bec2a48c7a3e1dd7287946271633dc22436cbf269f7c035ce1042de89f"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "2bd6cf73dc77785caeb5ec988958323a0e167772",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/agents/claude-code.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/enforce/actions.ts",
+      "packages/cli/src/enforce/enter-command.ts",
+      "packages/cli/src/enforce/sessions.ts",
+      "packages/cli/src/flow/lost.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/test/agent-e2e.test.ts",
+      "packages/cli/test/fake-model.ts",
+      "packages/cli/test/server-restore.test.ts",
+      "packages/cli/test/subagents.test.ts",
+      "packages/core/src/capabilities.ts",
+      "packages/core/src/cards/new.ts",
+      "packages/core/test/capabilities.test.ts",
+      "packages/ui/src/change/change-page.ts",
+      "packages/ui/src/change/lost-folder.test.ts",
+      "packages/ui/src/change/lost-folder.ts",
+      "packages/ui/src/data/lost-folder.test.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/data/views.ts",
+      "packages/ui/src/inbox/inbox-row.ts"
+    ],
+    "at": "2026-11-04T11:00:43.267Z",
+    "resolved": {
+      "commit": "995cbca",
+      "at": "2026-11-04T11:40:12.610Z"
+    }
+  }
+}
