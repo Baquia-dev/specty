@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-las-evals-miden-el-tiempo-y-el-coste-de-una",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-las-evals-miden-el-tiempo-y-el-coste-de-una",
   "baseCommit": "b7f1b8f4d4b10f3978cd306250b73338b1c0687f",
   "revision": 2,
@@ -54,6 +54,9 @@
     "T": 3,
     "R": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T13:39:15.212Z"
+  "lockedTests": {
+    "evals/test/consumption.test.ts": "sha256:ce2a8c2b83a88d67ba8d229a2a6f75cf0f292dacfa86e1b1d4237cfff09f2e1a",
+    "evals/test/experiments.test.ts": "sha256:0764ab72ccb21791e7283466d4de20c92008f24987479764ea0cd2298c95688f",
+    "evals/test/report.test.ts": "sha256:7a9bbc88797292064e8d65c4bd82fdaa5ecc439201563e913f93bdd9e4bf4e04"
+  }
 }
