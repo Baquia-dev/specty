@@ -126,16 +126,21 @@ function newRefusalNext(refusal: NewRefusal, t: Translate, command: string): str
         "name an existing branch with `--from <branch>`.",
       );
     case "in-progress":
-      return refusal.branchPerChange
-        ? t(
-            `termínalo (\`${command} next\`) o crea el nuevo en paralelo, en otra carpeta: \`${command} new --worktree "<título>"\`.`,
-            `finish it (\`${command} next\`) or create the new one in parallel, in another folder: \`${command} new --worktree "<title>"\`.`,
-          )
-        : t(
-            `termínalo (\`${command} next\`) o cámbiate a otra rama antes de crear otro.`,
-            `finish it (\`${command} next\`) or switch to another branch before creating a new one.`,
-          );
+      return inProgressNext(refusal.branchPerChange, t, command);
   }
+}
+
+/** With a change in progress: finish it, or make the new one in another folder or branch. */
+function inProgressNext(branchPerChange: boolean, t: Translate, command: string): string {
+  return branchPerChange
+    ? t(
+        `termínalo (\`${command} next\`) o crea el nuevo en paralelo, en otra carpeta: \`${command} new --worktree "<título>"\`.`,
+        `finish it (\`${command} next\`) or create the new one in parallel, in another folder: \`${command} new --worktree "<title>"\`.`,
+      )
+    : t(
+        `termínalo (\`${command} next\`) o cámbiate a otra rama antes de crear otro.`,
+        `finish it (\`${command} next\`) or switch to another branch before creating a new one.`,
+      );
 }
 
 /** The lead of `specty new` when the change is created in this folder. */

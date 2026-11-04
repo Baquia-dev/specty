@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-complejidad-de-cli-y-core",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-complejidad-de-cli-y-core",
   "baseCommit": "4f68f6e03188ee8cfe1d981c6433ca374dcdf161",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f41cc436ba4b5a9c2931a957cdb74d942afb9495",
+      "attempts": 1,
       "startedAt": "2026-11-04T09:20:55.963Z",
       "doneAt": "2026-11-04T09:24:09.205Z",
-      "summary": "scopeAdd saca requestedTask; guard saca eventOf y messageOf; guardContext deja el cambio activo a guardChange, con taskFiles, plannedFiles, lockedOf e integrationOf; push saca pushBase."
+      "summary": "scopeAdd saca requestedTask; guard saca eventOf y messageOf; guardContext deja el cambio activo a guardChange, con taskFiles, plannedFiles, lockedOf e integrationOf; push saca pushBase.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "05f947010174e0e94840a63ede7559dc5350ffe8",
+      "startedAt": "2026-11-04T09:24:09.894Z",
+      "doneAt": "2026-11-04T09:25:07.434Z",
+      "summary": "newRefusalNext saca inProgressNext; leadingOptions usa el conjunto LEADING_VALUED de opciones globales con valor y lee su valor una vez."
     }
   },
   "pending": {

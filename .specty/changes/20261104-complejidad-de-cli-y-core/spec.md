@@ -48,7 +48,7 @@ Resuelve, en parte, P61. `specty check --all` falla en `complexity` (máximo 10)
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/commands.test.ts test/flow.test.ts test/delegate.test.ts test/ci-github.test.ts test/ci.test.ts test/front-guard.test.ts test/memory-guard.test.ts test/test-locks.test.ts test/antigravity-turn.test.ts
   - type: refactor
-- [ ] T2: Las funciones complejas de core, simplificadas
+- [x] T2: Las funciones complejas de core, simplificadas
   - files: packages/core/src/cards/new.ts, packages/core/src/guard/git.ts
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm --filter @baquia-dev/specty-core exec vitest run test/guard test/cards/new.test.ts
