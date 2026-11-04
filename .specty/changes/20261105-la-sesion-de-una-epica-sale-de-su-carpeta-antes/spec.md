@@ -75,7 +75,7 @@ Con Claude Code, la sesión principal entra en la carpeta de la épica con `Ente
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/next.ts, packages/cli/test/session-return.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-return.test.ts test/epic-subagents.test.ts && pnpm typecheck
-- [ ] T3: `new` desde la carpeta de otro cambio pide salir de ella antes de entrar en la del nuevo
+- [x] T3: `new` desde la carpeta de otro cambio pide salir de ella antes de entrar en la del nuevo
   - files: packages/core/src/cards/new.ts, packages/cli/src/commands/new.ts, packages/core/test/cards/new.test.ts, packages/cli/test/session-return.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/new.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/session-return.test.ts && pnpm typecheck
