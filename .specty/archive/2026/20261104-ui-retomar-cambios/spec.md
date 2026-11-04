@@ -66,3 +66,22 @@ follows:
 
 - R1: Calcular las marcas en cada lectura de los cambios cuesta lo que un `status`. Mitigación: el servidor solo vuelve a leer cuando cambian los archivos de los cambios.
 - R2: Una orden para un agente cambia de forma en una versión nueva de ese agente. Mitigación: son las mismas que ya propone `specty new`, comprobadas con cada herramienta.
+
+## Cierre
+
+### Resumen
+
+La UI ya marca los cambios que esperan al agente sin una conversación en su carpeta y dice cómo retomarlos. Cada registro de un cambio abierto lleva las marcas de `status`: `orphan` si es huérfano y `away` (agente y minutos) si su conversación dio su último paso en otra carpeta. La fila de la Bandeja dice «Ninguna conversación lo lleva» o «Su conversación (<agente>) salió de su carpeta». La página muestra, encima de las pestañas, por qué nadie lo lleva y la orden que abre cada agente en su carpeta, con «Copiar». También dice cómo entrar desde una sesión ya abierta (`EnterWorktree` con `name` o `specty enter <id>`) y que después el agente sigue con `specty next`. Cubre el AC13, el último de la épica `20261104-sesiones-con-su-carpeta`.
+
+### Desviaciones
+
+- La primera verificación completa tras incorporar main falló y, repetida sin tocar nada, pasó entera, como en el cambio anterior. Anotado como P85: la salida no dice qué falló.
+
+### Decisiones
+
+- Las órdenes de cada agente viven en la UI, en español y en inglés, porque el hilo principal de la UI solo importa la entrada ligera de core; son las mismas que propone `specty new`.
+- La marca de la conversación que salió gana a la de huérfano en la fila, porque dice más: qué agente la lleva.
+
+### Pendientes
+
+- Ninguno
