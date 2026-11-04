@@ -154,6 +154,52 @@ function needsTests(task: Pick<Task, "type">, policy: TestsPolicy): boolean {
   return rules === "first" || (rules === "keep" && policy !== "contract");
 }
 
+/**
+ * Under `contract`, the last code task checks the project's types: `task done` does not run the
+ * project's commands for a task with its own verification, so a type error would only show up
+ * at acceptance. Earlier tasks need not, as every test is written before them. Its verification
+ * counts as `task done` runs it, `verify.quick` first; running `verify.full` counts too.
+ */
+export const checkTypecheck: Rule = (spec, ctx, lang) => {
+  const { typecheck } = ctx;
+  if (typecheck === undefined || !typesApply(spec, ctx)) return [];
+  const last = (spec.sections.tasks?.items ?? [])
+    .filter((task) => CODE_TYPES.has(task.type ?? "feat"))
+    .at(-1);
+  if (last === undefined || checksTypes(last, ctx.config, typecheck)) return [];
+  return [
+    report(lang, {
+      code: "task-no-typecheck",
+      params: { id: last.id, value: typecheck },
+      line: itemLine(ctx, last.id),
+      target: last.id,
+    }),
+  ];
+};
+
+/** The type check is asked of a standard or quick change under `contract`, until its closing. */
+function typesApply(spec: Spec, ctx: ValidationContext): boolean {
+  const { kind } = spec.frontmatter;
+  return (
+    ctx.config.policy.tests === "contract" &&
+    ctx.phase !== "closing" &&
+    (kind === "standard" || kind === "quick")
+  );
+}
+
+/** Whether `task`'s verification, as `task done` runs it, runs `typecheck` or `verify.full`. */
+function checksTypes(
+  task: Pick<Task, "verify">,
+  config: ValidationContext["config"],
+  typecheck: string,
+): boolean {
+  const { quick, full } = config.verify;
+  const runs = [quick, task.verify ?? config.verify.default]
+    .filter((part) => part !== undefined)
+    .join(" && ");
+  return [typecheck, full].some((command) => command !== undefined && runs.includes(command));
+}
+
 /** Every file says why it changes; retros are written from the diff, so they are exempt. */
 export const checkFileReasons: Rule = (spec, ctx, lang) => {
   if (spec.frontmatter.kind === "retro") return [];

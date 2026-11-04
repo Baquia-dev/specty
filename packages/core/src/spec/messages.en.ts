@@ -88,6 +88,8 @@ export const MESSAGES_EN: MessageCatalog = {
   "task-too-large": (p) =>
     `${v(p, "id")} touches ${v(p, "count")} files (recommended: at most ${v(p, "max")}); consider splitting it.`,
   "task-no-tests": (p) => `${v(p, "id")} includes no tests (policy: ${v(p, "policy")}).`,
+  "task-no-typecheck": (p) =>
+    `${v(p, "id")} is the last code task and its verification does not check the types with \`${v(p, "value")}\`: a type error would only show up at acceptance. Add it to its \`verify\`.`,
   "file-reason-missing": (p) => `${v(p, "path")} has no reason; add it after an em dash (—).`,
   "size-near-split": (p) => `The change is close to the split threshold (${v(p, "detail")}).`,
   "possible-new-scope": (p) =>

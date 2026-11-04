@@ -142,6 +142,10 @@ export function adjustingCard(change: ChangeView, ctx: CardContext): Output {
           "Defect (a criterion is not met): add a `type: fix` task that references it in `ac`.",
         ),
         t(
+          "Fallo solo de tipos, lint o formato, sin cambiar lo que hace el código: añade una tarea `type: refactor` con `ac: —` y el comando que falló en su `verify`; no necesita un test en rojo.",
+          "A types, lint or format failure alone, which does not change what the code does: add a `type: refactor` task with `ac: —` and the failed command in its `verify`; it needs no red test.",
+        ),
+        t(
           "Refinamiento (cambia un detalle de un criterio): ajusta el criterio y añade una tarea.",
           "Refinement (a detail of a criterion changes): adjust the criterion and add a task.",
         ),

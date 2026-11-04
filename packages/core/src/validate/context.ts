@@ -20,6 +20,11 @@ export interface ValidationContext {
   readonly doneTasks?: ReadonlySet<string>;
   readonly maxIds?: Readonly<Partial<Record<ItemPrefix, number>>>;
   readonly repo?: RepoSignals;
+  /**
+   * The project's type check (`specty check`'s `typecheck`), when there is one: core reads no
+   * disk, so the CLI passes it, under `policy.tests: contract` only.
+   */
+  readonly typecheck?: string;
 }
 
 export type Rule = (spec: Spec, ctx: ValidationContext, lang: Lang) => readonly Diagnostic[];
