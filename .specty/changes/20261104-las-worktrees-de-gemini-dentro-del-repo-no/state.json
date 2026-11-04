@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261104-las-worktrees-de-gemini-dentro-del-repo-no",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-las-worktrees-de-gemini-dentro-del-repo-no",
   "baseCommit": "6b1d2d1c5157371c66b4e459152d6a1adde1da4a",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:5174ff46395a672a24593865738259c7ce22f7405c1675db2ebe60c88aed98a0",
+    "at": "2026-11-04T08:00:55.926Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  },
   "size": {
     "level": "S",
     "score": 1,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "758a3e1498282d0cbfc26bb1e6d9d8083954520d",
+      "startedAt": "2026-11-04T08:01:08.637Z",
+      "doneAt": "2026-11-04T08:01:59.137Z",
+      "summary": "El test de la worktree dentro del repositorio añade una de Gemini CLI en .gemini/worktrees/ con su rama y comprueba que no cuenta como código sin spec ni entra en los commits; ARCHITECTURE nombra las dos carpetas y dice que la regla vale para cualquier worktree del repositorio"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:5174ff46395a672a24593865738259c7ce22f7405c1675db2ebe60c88aed98a0",
-    "at": "2026-11-04T08:00:55.926Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "ui"
   }
 }
