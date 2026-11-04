@@ -282,12 +282,15 @@ function worktreeCreatedNext(created: WorktreeCreated, ctx: CardContext): string
     : t(`continúa en ${folder}: ${carryOn}`, `carry on in ${folder}: ${carryOn}`);
 }
 
+/** A change's folder and how the agent that asks enters it: what `carryOnText` needs. */
+type CarryOnTarget = Pick<WorktreeCreated, "id" | "folder" | "byName" | "agent">;
+
 /**
  * How the session carries on in the change's folder: an agent with Specty's guard enters it from
  * the same session (`specty enter`), or the person opens its tool there; Claude Code enters it on
  * its own, and an unknown agent hears both ways.
  */
-function carryOnText(created: WorktreeCreated, ctx: CardContext, t: Translate): string {
+export function carryOnText(created: CarryOnTarget, ctx: CardContext, t: Translate): string {
   const { id, folder, agent } = created;
   if (agent !== undefined && AGENT_CAPABILITIES[agent].worktreeByName.state === "indirect") {
     const open = OPEN_IN[agent]?.(folder, t);

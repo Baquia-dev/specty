@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "99ff8a2b0ef222cd1c675fa59e56e6338c2429de",
+      "startedAt": "2026-11-04T06:15:39.792Z",
+      "doneAt": "2026-11-04T06:17:35.036Z",
+      "summary": "rejoin.ts con la tarjeta de volver al cambio de la conversación y el bloque de cambios sin conversación; NextView gana own, orphans y byName; carryOnText exportado con una entrada propia"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

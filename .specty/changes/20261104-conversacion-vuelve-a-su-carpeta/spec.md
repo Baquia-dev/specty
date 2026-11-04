@@ -59,7 +59,7 @@ Hoy, cuando una sesión de Claude Code vuelve a la carpeta principal (al reanuda
 
 ## Tareas
 
-- [ ] T1: La tarjeta de volver y el bloque de los huérfanos
+- [x] T1: La tarjeta de volver y el bloque de los huérfanos
   - files: packages/core/src/cards/rejoin.ts, packages/core/src/cards/next.ts, packages/core/src/cards/new.ts, packages/core/test/cards/rejoin.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/rejoin.test.ts test/cards/new.test.ts test/cards/memory-start.test.ts && pnpm typecheck && pnpm lint
