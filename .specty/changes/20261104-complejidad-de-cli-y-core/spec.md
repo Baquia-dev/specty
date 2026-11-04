@@ -43,7 +43,7 @@ Resuelve, en parte, P61. `specty check --all` falla en `complexity` (máximo 10)
 
 ## Tareas
 
-- [ ] T1: Las funciones complejas del CLI, simplificadas
+- [x] T1: Las funciones complejas del CLI, simplificadas
   - files: packages/cli/src/commands/scope.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/flow/ci-github.ts
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/commands.test.ts test/flow.test.ts test/delegate.test.ts test/ci-github.test.ts test/ci.test.ts test/front-guard.test.ts test/memory-guard.test.ts test/test-locks.test.ts test/antigravity-turn.test.ts
