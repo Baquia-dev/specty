@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "id": "20261104-los-mensajes-que-esperan-a-la-vista",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-los-mensajes-que-esperan-a-la-vista",
+  "baseCommit": "43c34fda8080cee816e6230d6d68fbf9aa12f3ba",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:78951042904d3803cf979901843267f50fd9e85219cc5bd5c93127a2ee92b673",
+    "at": "2026-11-04T08:26:25.859Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "3 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9347c0ee42cf96154be026f15746b30b5e1beb8a24d7dd9f19d485fe6218ff54",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:17ccefcc36846a2bdd33d54d6b316e1723a42a1db33982cf0885c685e86e6701",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c46dc34f85e7644c81d35ea2729c313bc58a135a",
+      "attempts": 1,
+      "startedAt": "2026-11-04T08:01:32.731Z",
+      "doneAt": "2026-11-04T08:02:13.712Z",
+      "summary": "core: StatusEntry.messages y su texto al final de la línea de status; messageLeftCard dice quién lleva el cambio ahora o que ninguna sesión trabaja en él",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "3800454bc27d8963417d24058ca7b24458b6a524",
+      "attempts": 1,
+      "startedAt": "2026-11-04T08:02:14.368Z",
+      "doneAt": "2026-11-04T08:03:58.568Z",
+      "summary": "cli: status cuenta los mensajes de cada cambio abierto (waitingCount, solo si anyMessages); message busca el cambio en openChanges y pasa a la tarjeta el agente que dio un paso en su carpeta dentro de memory.orphanAfterMin",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "73f23cdf76f5c0d93108ec481ce696e9ed20e1bc",
+      "attempts": 1,
+      "startedAt": "2026-11-04T08:03:58.946Z",
+      "doneAt": "2026-11-04T08:04:31.269Z",
+      "summary": "ui: changeLine de memory-lines.ts añade cuántos mensajes esperan a la sesión del cambio",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "0d30e87747e395ef92e689648d3edea1f3dc442c",
+      "attempts": 1,
+      "startedAt": "2026-11-04T08:04:31.655Z",
+      "doneAt": "2026-11-04T08:05:08.391Z",
+      "summary": "ARCHITECTURE: lo que dicen message y status de los mensajes, y messages en status --json; formats: status cuenta los mensajes que quedan",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "7d793f750c4c8acf4a9f57151950092ce36149f4",
+      "attempts": 1,
+      "startedAt": "2026-11-04T08:26:26.673Z",
+      "doneAt": "2026-11-04T08:26:34.498Z",
+      "summary": "inbox-row.ts importa con import type los tipos de ../data/records, como pide lint/style/useImportType",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 5,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-04T08:38:25.085Z",
+  "lockedTests": {
+    "packages/cli/test/message-holder.test.ts": "sha256:a1194e7d811ea478fca00f5c243cf72f6e4c6f1254e7fbdbe93e4ce47b9d44f0",
+    "packages/core/test/cards/messages-waiting.test.ts": "sha256:f75d2d74d5ed3c823a4b1a9e28f459c02910b98bcd066b7fbfd86a3367a63fc9",
+    "packages/ui/src/memory/memory-messages.test.ts": "sha256:f74732bc41f670756d23dcb099d2125b178217b0ed67f51146a85792234cffda"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "2b239513dd1a5121a54c36052fc6dc1c27b1de89",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md",
+      "packages/core/src/cards/status.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/message.ts",
+      "packages/cli/src/commands/restore.ts",
+      "packages/cli/src/commands/status.ts",
+      "packages/cli/src/flow/branches.ts",
+      "packages/cli/src/flow/lost.ts",
+      "packages/cli/src/flow/worktree.ts",
+      "packages/cli/src/store/messages.ts",
+      "packages/cli/test/lost-status.test.ts",
+      "packages/cli/test/message-holder.test.ts",
+      "packages/cli/test/restore.test.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/messages.ts",
+      "packages/core/src/cards/new.ts",
+      "packages/core/src/cards/restore.ts",
+      "packages/core/src/cards/status.ts",
+      "packages/core/test/cards/messages-waiting.test.ts",
+      "packages/core/test/cards/restore.test.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "packages/ui/src/memory/memory-lines.ts",
+      "packages/ui/src/memory/memory-messages.test.ts"
+    ],
+    "at": "2026-11-04T08:38:26.928Z",
+    "resolved": {
+      "commit": "b9bca06",
+      "at": "2026-11-04T08:47:23.599Z"
+    }
+  }
+}

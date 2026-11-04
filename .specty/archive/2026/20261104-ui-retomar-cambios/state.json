@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "id": "20261104-ui-retomar-cambios",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-ui-retomar-cambios",
+  "baseCommit": "2bd6cf73dc77785caeb5ec988958323a0e167772",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:76622aa7f05c8442962c74e620feeb0bf4a0d7549a7561433581b75f96fb12e0",
+    "at": "2026-11-04T10:48:41.114Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0387f0929561e3f245c5c551ffd998e4e2ecd718ce0e6fab796720d583ea327b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:68b1385e743afc13199ea9fa7d156efb66f8ff526ea02116bd6d190ecc9f05fa",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:5e8ab13c733fca65f57ccf1928bd943e77177b18c47ca89873264a32b0ed2b50",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:54896e1773e50e5f9d4f6efcae09973fef9a85751ca1101d31057f520bbed63c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2443b0ac7fd024d9c80c2607245c064e3b471f03",
+      "attempts": 1,
+      "startedAt": "2026-11-04T10:51:47.199Z",
+      "doneAt": "2026-11-04T10:59:43.630Z",
+      "summary": "changeRecords añade a cada registro abierto orphan y away tal como los calcula status (openChanges), por id",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2a37249d735194a267bbe65f5c271db302d4175d",
+      "attempts": 1,
+      "startedAt": "2026-11-04T10:59:44.476Z",
+      "doneAt": "2026-11-04T11:01:50.318Z",
+      "summary": "orphan y away en los datos de la UI, la marca en la fila de la Bandeja y el panel sp-resume-hints encima de las pestañas con la orden de cada agente, Copiar, la entrada desde una sesión abierta y specty next; ARCHITECTURE §15",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-04T11:43:12.012Z",
+  "lockedTests": {
+    "packages/cli/test/server-holds.test.ts": "sha256:75e559e38036ad8110c0438bdd11d591529395b51fe893c288d67fee17bae609",
+    "packages/ui/src/change/resume-hints.test.ts": "sha256:7369f98b73d6a2d51d62ad14e68d7769da949c2effe46004964489513dc7ec84"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "b06989fb18be8c45c5934403c924fe034d3c7a7b",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/test/server-holds.test.ts",
+      "packages/core/src/cards/fronts.ts",
+      "packages/core/src/cards/memory-kinds.ts",
+      "packages/core/src/cards/memory-refusals.ts",
+      "packages/core/src/memory/entries.ts",
+      "packages/core/src/memory/frontmatter.ts",
+      "packages/core/src/memory/fronts.ts",
+      "packages/ui/src/change/change-page.ts",
+      "packages/ui/src/change/resume-hints.test.ts",
+      "packages/ui/src/change/resume-hints.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/views.ts",
+      "packages/ui/src/inbox/inbox-row.ts"
+    ],
+    "at": "2026-11-04T11:11:56.594Z",
+    "resolved": {
+      "commit": "c8f4427",
+      "at": "2026-11-04T11:36:15.624Z"
+    }
+  }
+}

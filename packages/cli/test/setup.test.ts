@@ -151,7 +151,7 @@ describe("specty init", () => {
     expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
     const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
     expect(settings.hooks.SessionStart).toMatchObject([
-      { matcher: "startup|clear|compact", hooks: [{ type: "command" }] },
+      { matcher: "startup|clear|compact|resume", hooks: [{ type: "command" }] },
     ]);
     const hooks = { ...settings.hooks, SessionStart: [] };
     await writeFiles(root, {
@@ -170,7 +170,7 @@ describe("specty init", () => {
     expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
     const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
     expect(settings.hooks.SessionStart).toMatchObject([
-      { matcher: "startup|clear|compact", hooks: [{ type: "command" }] },
+      { matcher: "startup|clear|compact|resume", hooks: [{ type: "command" }] },
     ]);
     const added = await cli(root, ["memory", "add", "Probar el saludo en Windows"], {
       env: { CLAUDECODE: "1" },

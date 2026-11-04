@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { DEFAULT_CONFIG, parseSpec, testCycle, validateSpec } from "../../src";
+import {
+  DEFAULT_CONFIG,
+  parseSpec,
+  testCycle,
+  type ValidationContext,
+  validateSpec,
+} from "../../src";
 import { check, fixture, withConfig } from "../helpers";
 
 const STANDARD = fixture("standard.es.md");
@@ -170,5 +176,77 @@ describe("vertical slices", () => {
       "- C1: Database schema and migrations",
     );
     expect(check(horizontal)).toContain("slice-horizontal:C1");
+  });
+});
+
+describe("the type check under contract", () => {
+  const contract = withConfig({ policy: { tests: "contract" } });
+  const TYPES = "flutter analyze";
+  const warned = (text: string, ctx: Partial<ValidationContext>) =>
+    check(text, ctx).filter((label) => label.startsWith("task-no-typecheck"));
+
+  it("AC1: warns when the last code task does not run the project's type check", () => {
+    const { spec, locations } = parseSpec(STANDARD);
+    const found = validateSpec(spec, {
+      phase: "draft",
+      config: contract,
+      locations,
+      typecheck: TYPES,
+    }).filter((entry) => entry.code === "task-no-typecheck");
+    expect(found.map((entry) => [entry.target, entry.severity])).toEqual([["T2", "warning"]]);
+    expect(found[0]?.message).toContain("`flutter analyze`");
+    expect(warned(withTasks(1), { config: contract, typecheck: TYPES })).toEqual([
+      "task-no-typecheck:T2",
+    ]);
+  });
+
+  it("AC1: does not warn when the last code task runs it, verify.quick or verify.full does", () => {
+    const runs = (command: string) =>
+      STANDARD.replace(
+        "verify: flutter test test/features/analytics",
+        `verify: flutter test test/features/analytics && ${command}`,
+      );
+    expect(warned(runs(TYPES), { config: contract, typecheck: TYPES })).toEqual([]);
+    const quick = withConfig({
+      policy: { tests: "contract" },
+      verify: { ...DEFAULT_CONFIG.verify, quick: TYPES },
+    });
+    expect(warned(STANDARD, { config: quick, typecheck: TYPES })).toEqual([]);
+    const full = withConfig({
+      policy: { tests: "contract" },
+      verify: { ...DEFAULT_CONFIG.verify, full: "make check" },
+    });
+    expect(warned(runs("make check"), { config: full, typecheck: TYPES })).toEqual([]);
+  });
+
+  it("AC1: does not warn without contract or without a type check command", () => {
+    const required = withConfig({ policy: { tests: "required" } });
+    expect(warned(STANDARD, { config: required, typecheck: TYPES })).toEqual([]);
+    expect(warned(STANDARD, { config: contract })).toEqual([]);
+  });
+
+  it("P69: an empty verify.full or type check command does not count as run", () => {
+    const empty = withConfig({
+      policy: { tests: "contract" },
+      verify: { ...DEFAULT_CONFIG.verify, full: "" },
+    });
+    expect(warned(STANDARD, { config: empty, typecheck: TYPES })).toEqual(["task-no-typecheck:T2"]);
+    expect(warned(STANDARD, { config: contract, typecheck: "" })).toEqual([]);
+  });
+
+  it("P70: does not warn when the last code task is already done, as in an adjustment", () => {
+    const adjusting = { phase: "adjusting", config: contract, typecheck: TYPES } as const;
+    expect(warned(STANDARD, { ...adjusting, doneTasks: new Set(["T1", "T2"]) })).toEqual([]);
+    expect(warned(STANDARD, { ...adjusting, doneTasks: new Set(["T1"]) })).toEqual([
+      "task-no-typecheck:T2",
+    ]);
+  });
+
+  it("P71: warns on a quick change too, and not while closing", () => {
+    const quick = fixture("quick.en.md");
+    expect(warned(quick, { config: contract, typecheck: "pnpm typecheck" })).toEqual([
+      "task-no-typecheck:T1",
+    ]);
+    expect(warned(STANDARD, { phase: "closing", config: contract, typecheck: TYPES })).toEqual([]);
   });
 });

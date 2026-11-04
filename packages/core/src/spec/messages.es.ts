@@ -93,6 +93,8 @@ export const MESSAGES_ES: MessageCatalog = {
   "task-too-large": (p) =>
     `${v(p, "id")} toca ${v(p, "count")} archivos (recomendado: ${v(p, "max")} como máximo); considera dividirla.`,
   "task-no-tests": (p) => `${v(p, "id")} no incluye tests (política: ${v(p, "policy")}).`,
+  "task-no-typecheck": (p) =>
+    `${v(p, "id")} es la última tarea de código y su verificación no comprueba los tipos con \`${v(p, "value")}\`: un fallo de tipos solo saldría al aceptar. Añádelo a su \`verify\`.`,
   "file-reason-missing": (p) => `${v(p, "path")} no tiene motivo; añádelo tras un guion largo (—).`,
   "size-near-split": (p) => `El cambio está cerca del umbral de división (${v(p, "detail")}).`,
   "possible-new-scope": (p) =>

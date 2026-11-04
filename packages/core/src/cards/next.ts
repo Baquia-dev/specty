@@ -11,6 +11,14 @@ import { integrationCard } from "./integration";
 import { memoryStartBlocks, resolvesLines } from "./memory";
 import { pathEntriesBlock } from "./memory-paths";
 import { notesBlock } from "./notes";
+import {
+  type LostView,
+  lostBlock,
+  type OrphanView,
+  type OwnChangeView,
+  orphansBlock,
+  rejoinCard,
+} from "./rejoin";
 import { testingCard } from "./testing";
 import { draftingGuide, quoted, translator } from "./text";
 import type { CardContext, CarriedView, ChangeView, CommentView } from "./view";
@@ -30,16 +38,31 @@ export interface NextView {
   readonly fronts?: FrontsView;
   /** With no change active, the tools at the root that would see what Specty writes. */
   readonly exclusions?: readonly ExclusionView[];
+  /** The open change of another folder the conversation that asks is bound to: it goes back. */
+  readonly own?: OwnChangeView;
+  /** With no change active, the open changes that wait for the agent and no conversation holds. */
+  readonly orphans?: readonly OrphanView[];
+  /** With no change active, the open changes whose folder is gone (`specty restore`). */
+  readonly lost?: readonly LostView[];
+  /** Claude Code enters a change's folder by name, with Specty's worktree hooks. */
+  readonly byName?: boolean;
 }
 
 /** `specty next`: what to do now, for every phase. Never changes anything. */
 export function nextCard(view: NextView, ctx: CardContext): Output {
   const { change } = view;
   if (change === undefined) {
+    const byName = view.byName === true;
+    // A conversation bound to an open change elsewhere goes back there, before anything else.
+    if (view.own !== undefined) return rejoinCard(view.own, byName, ctx);
     const card = noChangeCard(view.dirty, ctx, view.fresh === true);
+    const orphans = [
+      ...orphansBlock(view.orphans ?? [], byName, ctx),
+      ...lostBlock(view.lost ?? [], ctx),
+    ];
     const exclusions = exclusionsBlock(view.exclusions ?? [], ctx, "next");
     const memory = memoryStartBlocks(view.memory ?? [], ctx, view.fronts);
-    return { ...card, blocks: [...card.blocks, ...exclusions, ...memory] };
+    return { ...card, blocks: [...card.blocks, ...orphans, ...exclusions, ...memory] };
   }
   if (change.integration !== undefined) return integrationCard(change, change.integration, ctx);
   const card = PHASE_CARDS[change.phase](change, ctx);

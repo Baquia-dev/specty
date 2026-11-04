@@ -72,7 +72,7 @@ export {
   duplicateCard,
   duplicateFilesBlock,
 } from "./duplicates";
-export { enteredCard, noFolderCard } from "./enter";
+export { enteredCard, lostFolderCard, noFolderCard } from "./enter";
 export { epicCard, type SliceRefusal, sliceLines, sliceRefusalCard } from "./epic";
 export { type ExportRefusal, exportedCard, exportRefusalCard } from "./export";
 export {
@@ -183,6 +183,7 @@ export {
   gitHooksLine,
   gitHooksManualWarning,
   guardLine,
+  installCommitFailedWarning,
   installCommitLine,
   installCommitSubject,
   noHooksWarning,
@@ -287,6 +288,12 @@ export {
   nothingChangedCard,
   reloadNext,
 } from "./refusals";
+export {
+  type Restored,
+  type RestoreRefusal,
+  restoredCard,
+  restoreRefusalCard,
+} from "./restore";
 export {
   type RetroRefusal,
   retroDoneCard,

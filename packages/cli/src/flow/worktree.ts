@@ -227,16 +227,21 @@ export interface CopiedFiles {
 }
 
 /**
- * Checks `branch` out from `base` in a new worktree, and copies there the agent hook files and Go's
- * workspace files that git does not track: the versioned ones arrive with the branch.
+ * Checks `branch` out in a new worktree, as a new branch from `base` or, without one, the branch as
+ * it is; and copies there the agent hook files and Go's workspace files that git does not track:
+ * the versioned ones arrive with the branch.
  */
 export async function addWorktree(
   git: Git,
-  target: { readonly folder: string; readonly branch: string; readonly base: string },
+  target: { readonly folder: string; readonly branch: string; readonly base?: string },
 ): Promise<CopiedFiles> {
   // The main folder never shows the worktrees' folder as untracked.
   await excludeInClone(git, `/${HOME}/`);
-  await git.output(["worktree", "add", "-q", "-b", target.branch, target.folder, target.base]);
+  await git.output(
+    target.base === undefined
+      ? ["worktree", "add", "-q", target.folder, target.branch]
+      : ["worktree", "add", "-q", "-b", target.branch, target.folder, target.base],
+  );
   await hideFolder(dirname(target.folder));
   const hooks: string[] = [];
   for (const file of AGENT_HOOK_FILES) {

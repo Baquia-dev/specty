@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { resolve } from "node:path";
+import { basename, resolve } from "node:path";
 import {
   AGENT_CAPABILITIES,
   type BoundSession,
@@ -7,6 +7,7 @@ import {
   parseSpec,
 } from "@baquia-dev/specty-core";
 import { isFinished, resolveActive } from "../flow/active";
+import { lostChanges } from "../flow/lost";
 import { exists } from "../io/files";
 import { resolved } from "../io/git";
 import { type Environment, openSession, type Session } from "../session";
@@ -127,18 +128,66 @@ async function boundTo(environment: Environment, folder: string): Promise<BoundS
   return change === undefined ? { folder } : { folder, change: change.id };
 }
 
-/** The open change of `folder`, with the epic it is a slice of, if it is one. */
+/** The open change of `folder`, with its title and the epic it is a slice of, if it is one. */
 async function openChange(
   environment: Environment,
   folder: string,
-): Promise<{ readonly id: string; readonly epic?: string } | undefined> {
+): Promise<{ readonly id: string; readonly title: string; readonly epic?: string } | undefined> {
   if (!(await exists(folder))) return undefined;
   const opened = await openSession({ ...environment, cwd: folder });
   if (opened.kind !== "ok") return undefined;
   const change = await resolveActive(opened.session);
   if (change === undefined || isFinished(change.state)) return undefined;
-  const { epic } = parseSpec(await readSpec(change.files)).spec.frontmatter;
-  return { id: change.state.id, ...(epic !== undefined ? { epic } : {}) };
+  const { spec } = parseSpec(await readSpec(change.files));
+  const { epic } = spec.frontmatter;
+  return { id: change.state.id, title: spec.title, ...(epic !== undefined ? { epic } : {}) };
+}
+
+/**
+ * The open change of the folder the session's conversation is bound to, when that folder is not
+ * the one the session works in: the conversation left it, and `next` tells it to go back.
+ */
+export async function conversationChange(session: Session): Promise<
+  | {
+      readonly id: string;
+      readonly title: string;
+      readonly folder: string;
+      readonly lost?: boolean;
+    }
+  | undefined
+> {
+  const id = session.conversation?.id;
+  const binding = id === undefined ? undefined : await readBinding(session.git, id);
+  if (binding === undefined) return undefined;
+  const { folder } = binding;
+  if ((await resolved(folder)) === (await resolved(session.root))) return undefined;
+  const change = await openChange(session.environment, folder);
+  if (change !== undefined) return { id: change.id, title: change.title, folder };
+  if (await exists(folder)) return undefined;
+  // A folder that is gone and was a lost change's: git still lists it, or it bears the change's id.
+  const lost = (await lostChanges(session)).find(
+    (candidate) => candidate.stale.includes(folder) || candidate.id === basename(folder),
+  );
+  return lost === undefined ? undefined : { id: lost.id, title: lost.title, folder, lost: true };
+}
+
+/**
+ * `specty new` binds the conversation that runs it to the new change's folder, as entering that
+ * folder would: unless it is bound to another open change, other than the new change's epic
+ * (the guard's `sessionDenial`).
+ */
+export async function bindNew(
+  session: Session,
+  folder: string,
+  epic: string | undefined,
+): Promise<void> {
+  const id = session.conversation?.id;
+  if (id === undefined) return;
+  const binding = await readBinding(session.git, id);
+  const bound =
+    binding === undefined ? undefined : await boundTo(session.environment, binding.folder);
+  if (bound?.change !== undefined && bound.folder !== folder && bound.change !== epic) return;
+  await writeBinding(session.git, id, { folder, at: session.environment.now().toISOString() });
 }
 
 /** Once the conversation may enter `target`, that worktree is the one it works in. */

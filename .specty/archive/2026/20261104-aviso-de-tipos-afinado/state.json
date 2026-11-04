@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261104-aviso-de-tipos-afinado",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261104-aviso-de-tipos-afinado",
+  "baseCommit": "6b1d2d1c5157371c66b4e459152d6a1adde1da4a",
+  "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:21d4f99f97dd984904ec1d1a7d440a7fa3f431e4cae23c1279723af5f18906d3",
+    "at": "2026-11-04T08:39:48.138Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3ec76b8b3b050da334d6e9089216256110340906",
+      "attempts": 1,
+      "startedAt": "2026-11-04T07:57:01.104Z",
+      "doneAt": "2026-11-04T07:57:42.465Z",
+      "summary": "checkTypecheck ignora un typecheck o verify.full vacíos y no avisa si la última tarea de código ya está hecha; tests de quick y de closing; formats.md §2 lo cuenta.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "3c5782ce599e5026832d0cde9aec0596f5e7d105",
+      "attempts": 1,
+      "startedAt": "2026-11-04T08:39:48.606Z",
+      "doneAt": "2026-11-04T08:40:08.408Z",
+      "summary": "El caso Expo de AC5 en doctor-watchers escribe su package.json con doctorAfter, tras crear el cambio, para que new no instale Expo y React Native de la red; las aserciones no cambian.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 2
+  },
+  "lockedTests": {
+    "packages/core/test/validate/quality.test.ts": "sha256:bfda8fafc0b7f7cdc764122ff5fd2c815b22cea73febf9c815762e246f14b0c0"
+  }
+}

@@ -46,6 +46,8 @@ import { SpecReview } from "../review/spec-review";
 import { Preferences } from "../theme/preferences";
 import { ChangeBar } from "./change-bar";
 import { ChangeFacts } from "./change-facts";
+import { LostFolder } from "./lost-folder";
+import { ResumeHints } from "./resume-hints";
 
 const TABS: readonly ChangeTab[] = ["spec", "progress", "acceptance", "history"];
 
@@ -95,6 +97,8 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     ClosingActions,
     TestsActions,
     HistoryTab,
+    LostFolder,
+    ResumeHints,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -163,6 +167,12 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
         </header>
 
         <div [class]="page + ' mt-2'">
+          @if (change.lost) {
+            <sp-lost-folder [change]="change" />
+          } @else {
+          @if (change.orphan || change.away) {
+            <sp-resume-hints [change]="change" />
+          }
           <sp-tabs [label]="t()('Secciones del cambio', 'Change sections')" [selected]="tab()" (selectedChange)="select($event)">
             <sp-tab-panel value="spec" label="Spec">
               <sp-spec-review [change]="change" [(reading)]="reading" />
@@ -177,6 +187,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               <sp-history-tab class="pt-2" [history]="change.history" [change]="change.id" />
             </sp-tab-panel>
           </sp-tabs>
+          }
         </div>
       } @else if (store.views.hasValue()) {
         <sp-empty-state [class]="page" [heading]="t()('No existe ese cambio', 'That change does not exist')" [icon]="missing" [level]="1">

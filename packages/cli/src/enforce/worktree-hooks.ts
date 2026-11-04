@@ -3,10 +3,11 @@ import { join, resolve } from "node:path";
 import { type Lang, worktreeHookRefusal } from "@baquia-dev/specty-core";
 import { reasonOf } from "../flow/integrate";
 import { within } from "../flow/land";
+import { lostChanges } from "../flow/lost";
 import { formerWorktreesHome, worktreesHome } from "../flow/worktree";
 import { exists } from "../io/files";
 import { createGit, findRoot, type Git, resolved } from "../io/git";
-import { COMMAND, type Environment, openSession, systemLanguage } from "../session";
+import { COMMAND, type Environment, openSession, type Session, systemLanguage } from "../session";
 
 export interface HookReply {
   readonly code: number;
@@ -28,8 +29,12 @@ export interface NamedWorktree {
  * id or, for any other name, `.claude/worktrees/<name>` in this worktree, as Claude Code does.
  */
 export async function namedWorktree(git: Git, name: string): Promise<NamedWorktree> {
-  // Git lists `C:/…` on Windows, where `join` gives `C:\…`: they are compared resolved.
-  const listed = (await git.worktrees()).map(({ folder }) => resolve(folder));
+  // Git lists `C:/…` on Windows, where `join` gives `C:\…`: they are compared resolved. A folder
+  // git lists that no longer exists is no worktree to enter (`specty restore` brings it back).
+  const listed: string[] = [];
+  for (const { folder } of await git.worktrees()) {
+    if (await exists(folder)) listed.push(resolve(folder));
+  }
   for (const home of await changeHomes(git)) {
     const prepared = join(home, name);
     if (listed.includes(resolve(prepared)))
@@ -70,14 +75,24 @@ export async function worktreeHook(
   const git = createGit(root, environment.env);
   const text = (value: unknown) => (typeof value === "string" ? value : "");
   return event.hook_event_name === "WorktreeCreate"
-    ? create(git, text(event.name), lang)
+    ? create(git, text(event.name), lang, opened.kind === "ok" ? opened.session : undefined)
     : remove(git, text(event.worktree_path), lang);
 }
 
 /** Answers with the folder's path, the only thing Claude Code reads from stdout. */
-async function create(git: Git, name: string, lang: Lang): Promise<HookReply> {
+async function create(
+  git: Git,
+  name: string,
+  lang: Lang,
+  session: Session | undefined,
+): Promise<HookReply> {
   if (name.split("/").some((part) => part === "" || part === "." || part === "..")) {
     return refuse(worktreeHookRefusal({ reason: "invalid-name", name }, lang));
+  }
+  // The id of a change whose folder was lost: `restore` brings it back, too slow for this hook.
+  if (session !== undefined && (await lostChanges(session)).some(({ id }) => id === name)) {
+    const { command } = session.cards;
+    return refuse(worktreeHookRefusal({ reason: "lost", id: name, command }, lang));
   }
   const target = await namedWorktree(git, name);
   if (target.listed) return { code: 0, stdout: target.folder, stderr: "" };

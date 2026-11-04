@@ -26,6 +26,7 @@ import { ActionError, type Bilingual, SpectyData } from "../data/records";
 import { reportFailure } from "../review/spec-sections";
 import { Preferences } from "../theme/preferences";
 import { DropEntry } from "./drop-entry";
+import { changeLine, entryLine } from "./memory-lines";
 import { type MemoryItem, memorySections } from "./memory-view";
 
 /** Each kind of entry: its name and the phase color it borrows. */
@@ -267,65 +268,12 @@ export class MemoryPage {
 
   /** Under an entry: who proposed to drop it and why, or who took it, its quote and its origin. */
   protected entryLine(item: MemoryItem, entry: MemoryEntry): string {
-    const t = this.t();
-    if (item.kind === "proposal" && entry.drop !== undefined)
-      return t(
-        `Propuesta para descartar por ${entry.drop.by}: «${entry.drop.reason}»`,
-        `Proposed to drop by ${entry.drop.by}: “${entry.drop.reason}”`,
-      );
-    const by = entry.origin.by === "person" ? t("la persona", "the person") : entry.origin.by;
-    const closed =
-      item.kind !== "closed"
-        ? []
-        : [entry.status === "done" ? t("hecha", "done") : t("descartada", "dropped")];
-    return [
-      ...closed,
-      ...(entry.taken === undefined
-        ? []
-        : [t(`tomada por ${entry.taken.change}`, `taken by ${entry.taken.change}`)]),
-      ...(entry.quote === undefined ? [] : [`«${entry.quote}»`]),
-      ...(entry.origin.change === undefined ? [] : [entry.origin.change]),
-      by,
-      entry.created.slice(0, 10),
-      ...(entry.paths === undefined ? [] : [`${t("en", "in")} ${entry.paths.join(", ")}`]),
-    ].join(" · ");
+    return entryLine(item, entry, this.t());
   }
 
   /** Under a change: its id and kind, who it waits for, and who holds it or that it is orphaned. */
   protected changeLine(change: StatusEntry): string {
-    const t = this.t();
-    const waits = {
-      agent: t("espera al agente", "waits for the agent"),
-      human: t("espera tu decisión", "waits for your decision"),
-      nobody: "—",
-    }[change.waitingFor];
-    return [`${change.id} · ${change.kind}`, waits, this.heldBy(change)].join(" · ");
-  }
-
-  private heldBy(change: StatusEntry): string {
-    const t = this.t();
-    const { holder } = change;
-    if (holder === undefined)
-      return change.orphan === true
-        ? t("ninguna sesión lo lleva", "no session holds it")
-        : t("sin sesión conocida", "no session seen");
-    return t(
-      `lo lleva ${holder.tool}, ${this.ago(holder.ago)}`,
-      `held by ${holder.tool}, ${this.ago(holder.ago)}`,
-    );
-  }
-
-  /** How long ago, from minutes: under a minute, minutes, hours up to two days, then days. */
-  private ago(minutes: number): string {
-    const t = this.t();
-    if (minutes < 1) return t("ahora mismo", "just now");
-    const [count, unit] =
-      minutes < 60
-        ? [Math.floor(minutes), "min"]
-        : minutes < 48 * 60
-          ? [Math.floor(minutes / 60), "h"]
-          : [Math.floor(minutes / (24 * 60)), "d"];
-    return t(`hace ${count} ${unit}`, `${count} ${unit} ago`);
+    return changeLine(change, this.t());
   }
 
   protected message(error: unknown): string {

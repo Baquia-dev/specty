@@ -252,6 +252,19 @@ describe("what `init` did", () => {
       'es un proyecto nuevo: hazle al usuario las preguntas de PRODUCT.md, complétalo con sus respuestas y crea el primer cambio, el esqueleto del proyecto, con `specty new "Esqueleto del proyecto" --request "<petición literal del usuario>"`.',
     );
   });
+
+  it("AC4: with its commit failed, ends with an error and asks to run it again", () => {
+    const failed = { done: [], detected: [], warnings: [], unfilled: [], failed: true } as const;
+    const es = initCard(failed, ES);
+    expect(es.status).toBe("invalid");
+    expect(es.next).toBe(
+      "corrige lo que impidió el commit (en AVISOS) y vuelve a ejecutar `specty init`.",
+    );
+    expect(initCard({ ...failed, product: "interviewed" }, EN).next).toBe(
+      "fix what stopped the commit (under WARNINGS) and run `specty init` again.",
+    );
+    expect(initCard({ ...failed, failed: false }, ES).status).toBe("ok");
+  });
 });
 
 describe("the dry run of `init`", () => {

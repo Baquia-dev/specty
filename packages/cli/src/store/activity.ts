@@ -62,14 +62,26 @@ export async function conversationStep(
   return activityOf(parseJson(await readText(path)));
 }
 
-/** Every conversation's activity, also of those that ended. */
-export async function readActivity(git: Git): Promise<Activity[]> {
+/**
+ * Every conversation's activity, also of those that ended, with its conversation: what its file
+ * name (`<tool>-<conversation>.json`) says after the agent the record names.
+ */
+export async function readActivity(
+  git: Git,
+): Promise<(Activity & { readonly conversation: string })[]> {
   const folder = await activityFolder(git);
   const names = await readdir(folder).catch((): string[] => []);
   const read = await Promise.all(
     names
       .filter((name) => name.endsWith(".json"))
-      .map(async (name) => activityOf(parseJson(await readText(join(folder, name))))),
+      .map(async (name) => {
+        const activity = activityOf(parseJson(await readText(join(folder, name))));
+        if (activity === undefined) return undefined;
+        const stem = name.slice(0, -".json".length);
+        const prefix = `${activity.tool}-`;
+        const conversation = stem.startsWith(prefix) ? stem.slice(prefix.length) : stem;
+        return { ...activity, conversation };
+      }),
   );
   return read.flatMap((activity) => (activity === undefined ? [] : [activity]));
 }

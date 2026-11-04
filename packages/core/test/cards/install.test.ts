@@ -10,6 +10,7 @@ import {
   gitHooksLine,
   gitHooksManualWarning,
   guardLine,
+  installCommitFailedWarning,
   installCommitLine,
   installCommitSubject,
   noHooksWarning,
@@ -80,6 +81,16 @@ describe("the commit of `init`", () => {
     );
     expect(yoursUncommittedWarning(["AGENTS.md"], "es")).toBe(
       "Ya tenían cambios tuyos y quedan sin commit: AGENTS.md.",
+    );
+  });
+
+  it("AC4: says why its commit failed and which files it undid", () => {
+    const detail = "git commit: error: gpg failed to sign the data";
+    expect(installCommitFailedWarning(["AGENTS.md", "CLAUDE.md"], detail, "es")).toBe(
+      "No se pudo hacer el commit de lo instalado (git commit: error: gpg failed to sign the data); se deshizo lo escrito en AGENTS.md, CLAUDE.md.",
+    );
+    expect(installCommitFailedWarning(["AGENTS.md"], detail, "en")).toBe(
+      "Could not commit what was installed (git commit: error: gpg failed to sign the data); what was written to AGENTS.md was undone.",
     );
   });
 

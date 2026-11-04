@@ -1,0 +1,26 @@
+---
+kind: quick
+---
+
+# Las worktrees de Gemini dentro del repo no cuentan como código del cambio
+
+## Objetivo
+
+Gemini CLI crea sus worktrees dentro del repositorio, en `.gemini/worktrees/<nombre>` y con una rama del mismo nombre, como Claude Code en `.claude/worktrees/`. Specty ya las reconoce porque `git worktree list` las incluye, sin depender de la carpeta, pero ningún test lo comprueba con la de Gemini y ARCHITECTURE.md solo nombra la de Claude Code. El test de la worktree dentro del repositorio añade una en `.gemini/worktrees/` con su rama y comprueba que tampoco cuenta como código sin spec ni entra en los commits de Specty, y el documento nombra las dos carpetas y dice que la regla vale para cualquier worktree del repositorio.
+
+## Archivos
+
+- modificar packages/cli/test/worktrees.test.ts — una worktree en `.gemini/worktrees/` con su rama junto a la de Claude Code
+- modificar docs/ARCHITECTURE.md — nombrar `.gemini/worktrees/` y decir que Specty las reconoce porque git las lista como worktrees del repositorio
+
+## Tareas
+
+- [x] T1: Las worktrees de Gemini CLI dentro del repositorio no cuentan como código del cambio
+  - files: packages/cli/test/worktrees.test.ts, docs/ARCHITECTURE.md
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts -t "a worktree inside the repository" && pnpm typecheck
+
+## Cierre
+
+### Resumen
+
+El test de la worktree dentro del repositorio añade una de Gemini CLI en .gemini/worktrees/ con su rama y comprueba que no cuenta como código sin spec ni entra en los commits; ARCHITECTURE nombra las dos carpetas y dice que la regla vale para cualquier worktree del repositorio

@@ -161,6 +161,9 @@ function identityOf(
   | "approved"
   | "branch"
   | "folder"
+  | "lost"
+  | "orphan"
+  | "away"
   | "phaseSince"
   | "createdAt"
   | "closedAt"
@@ -176,6 +179,9 @@ function identityOf(
     ...approvedIn(state),
     ...(state.branch === undefined ? {} : { branch: state.branch }),
     ...(record.folder === undefined ? {} : { folder: record.folder }),
+    ...(record.lost === true ? { lost: true } : {}),
+    ...(record.orphan === true ? { orphan: true } : {}),
+    ...(record.away === undefined ? {} : { away: record.away }),
     phaseSince: record.phaseSince,
     ...timestampsOf(record, state, audit),
     goal: spec.sections.goal ?? spec.sections.reason ?? "",

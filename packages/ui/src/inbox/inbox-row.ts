@@ -13,7 +13,7 @@ import { KindBadge, PhaseBadge } from "../components/badge";
 import { Button } from "../components/button";
 import { ItemTooltips } from "../components/item-tooltip";
 import { formatDuration } from "../data/progress";
-import { type Bilingual, type ChangeView, type DecisionKind } from "../data/records";
+import type { Bilingual, ChangeView, DecisionKind } from "../data/records";
 import { Preferences } from "../theme/preferences";
 
 const DECISIONS: Readonly<
@@ -102,6 +102,14 @@ const ROW =
       }
       @if (folder(); as place) {
         <span class="font-mono text-xs break-all text-text-muted" [attr.title]="change().folder" data-folder>{{ place }}</span>
+      }
+      @if (change().away; as away) {
+        <span class="text-[13px]" style="color: var(--color-phase-review)" data-unheld>{{ t()('Su conversación (' + away.tool + ') salió de su carpeta', 'Its conversation (' + away.tool + ') left its folder') }}</span>
+      } @else if (change().orphan) {
+        <span class="text-[13px]" style="color: var(--color-phase-review)" data-unheld>{{ t()('Ninguna conversación lo lleva', 'No conversation holds it') }}</span>
+      }
+      @if (change().lost) {
+        <span class="text-[13px]" style="color: var(--color-phase-review)" data-lost>{{ t()('Sin carpeta', 'No folder') }}</span>
       }
       @if (change().shared; as shared) {
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-shared>

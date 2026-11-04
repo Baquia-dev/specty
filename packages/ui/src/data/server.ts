@@ -192,6 +192,10 @@ export class ServerData extends SpectyData {
     return this.act(change, "verify", {});
   }
 
+  override restoreFolder(change: string): Promise<void> {
+    return this.act(change, "restore", {});
+  }
+
   /** The diff of a task or of the whole change; it is read, so even an agent's server gives it. */
   override async diff(change: string, task?: string): Promise<string> {
     const query = task === undefined ? "" : `?task=${encodeURIComponent(task)}`;

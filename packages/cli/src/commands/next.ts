@@ -9,9 +9,12 @@ import {
   sessionEntries,
 } from "@baquia-dev/specty-core";
 import { toolExclusions } from "../detect/formatters";
+import { conversationChange } from "../enforce/sessions";
 import { commitState, resolveActive } from "../flow/active";
 import { finishEpic } from "../flow/epic";
+import { lostChanges } from "../flow/lost";
 import { changeView } from "../flow/views";
+import { entersByName } from "../install/agents";
 import { freshProject } from "../install/product";
 import { pathsOf } from "../io/git";
 import type { Session } from "../session";
@@ -19,6 +22,7 @@ import { readSpec, type StoredChange } from "../store/changes";
 import { liveHolds } from "../store/front-owners";
 import { readMemory } from "../store/memory";
 import { pendingIntegration } from "./integrate";
+import { openChanges } from "./status";
 
 /**
  * `specty next`: what to do now. In `implementing` it activates the next pending task, or moves an
@@ -28,6 +32,10 @@ import { pendingIntegration } from "./integrate";
 export async function next(session: Session): Promise<Output> {
   const active = await resolveActive(session);
   if (active === undefined) {
+    const byName = await entersByName(session.root);
+    // A conversation that left its change's folder goes back there (`specty new`, `enter`).
+    const own = await conversationChange(session);
+    if (own !== undefined) return nextCard({ dirty: [], own, byName }, session.cards);
     const dirty = await dirtyGoverned(session);
     // Without code yet, the first change is the project's skeleton (ARCHITECTURE §14).
     const fresh = dirty.length === 0 && (await freshProject(session));
@@ -38,7 +46,13 @@ export async function next(session: Session): Promise<Output> {
     const view = fronts.length === 0 ? {} : { fronts: await frontsView(session, fronts) };
     // Specty doesn't edit the tools that see what it writes: the agent tells the user (ADR 0018).
     const exclusions = (await toolExclusions(session.root)).filter((tool) => !tool.excluded);
-    const start = { memory, exclusions, ...view };
+    const orphans = await orphanChanges(session);
+    const lost = (await lostChanges(session)).map(({ id, title, state }) => ({
+      id,
+      title,
+      phase: state.phase,
+    }));
+    const start = { memory, exclusions, orphans, lost, byName, ...view };
     return nextCard({ dirty, ...(fresh ? { fresh } : {}), ...start }, session.cards);
   }
   const pending = await pendingIntegration(session, active, "close");
@@ -50,6 +64,13 @@ export async function next(session: Session): Promise<Output> {
         ? await finishEpic(session, current)
         : await activateNextTask(session, current);
   return nextCard({ change: await changeView(session, change), dirty: [] }, session.cards);
+}
+
+/** The open changes no conversation holds, as `status` tells its orphans, with their folders. */
+async function orphanChanges(session: Session) {
+  return (await openChanges(session))
+    .filter((entry) => entry.orphan === true)
+    .map(({ id, title, phase, folder }) => ({ id, title, phase, folder: folder ?? "." }));
 }
 
 /**

@@ -25,6 +25,15 @@ export interface StatusEntry {
   readonly holder?: { readonly tool: string; readonly ago: number };
   /** It waits for the agent, and no session stepped in it nor wrote to it lately. */
   readonly orphan?: boolean;
+  /**
+   * It waits for the agent, nobody stepped in its folder lately, and the conversation bound to
+   * that folder stepped last in another one: its agent, and how many minutes ago.
+   */
+  readonly away?: { readonly tool: string; readonly ago: number };
+  /** The messages left for its session that it has not taken yet, when there are any. */
+  readonly messages?: number;
+  /** Its folder is gone and its branch is still there: `specty restore` brings the folder back. */
+  readonly lost?: boolean;
 }
 
 /** A front of the memory in `status`: its open entries in order, and its live owner. */
@@ -56,7 +65,7 @@ export function statusCard(
   view: FrontsView = { fronts: [], owners: [] },
 ): StatusOutput {
   const t = translator(ctx.lang);
-  const lines = entries.map((entry) => statusLine(entry, t));
+  const lines = entries.map((entry) => statusLine(entry, t, ctx.command));
   const fronts = statusFronts(view, memory);
   return {
     status: "ok",
@@ -119,7 +128,7 @@ function frontLine(front: StatusFront, t: Translate): string {
 }
 
 /** One open change: the one here marked, who it waits for, its pending scope and its folder. */
-function statusLine(entry: StatusEntry, t: Translate): string {
+function statusLine(entry: StatusEntry, t: Translate, command: string): string {
   const who = {
     agent: t("al agente", "the agent"),
     human: t("a ti", "you"),
@@ -134,8 +143,21 @@ function statusLine(entry: StatusEntry, t: Translate): string {
           ` · scope: ${entry.pendingScope.join(", ")}`,
         );
   const where = entry.folder === undefined ? "" : ` · ${t("en", "in")} ${entry.folder}`;
-  const held = heldBy(entry, t);
-  return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}${where}${held === undefined ? "" : ` · ${held}`}`;
+  const held =
+    entry.lost === true
+      ? lostText(entry.id, t, command)
+      : entry.away === undefined
+        ? heldBy(entry, t)
+        : awayText(entry.away, t, command);
+  return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}${where}${held === undefined ? "" : ` · ${held}`}${messagesText(entry.messages, t)}`;
+}
+
+/** The messages waiting for the change's session, after a separator; nothing without any. */
+function messagesText(messages: number | undefined, t: Translate): string {
+  if (messages === undefined || messages === 0) return "";
+  return messages === 1
+    ? t(" · 1 mensaje espera", " · 1 message waiting")
+    : t(` · ${messages} mensajes esperan`, ` · ${messages} messages waiting`);
 }
 
 /** Who holds the change and since when, or that it is an orphan; nothing when neither is known. */
@@ -158,6 +180,23 @@ export function heldBy(
         `lo lleva ${holder.tool}, ${ago(holder.ago, t)}`,
         `held by ${holder.tool}, ${ago(holder.ago, t)}`,
       );
+}
+
+/** The conversation of the change is outside its folder: `specty next` there tells it how to go back. */
+function awayText(away: NonNullable<StatusEntry["away"]>, t: Translate, command: string): string {
+  const when = ago(away.ago, t);
+  return t(
+    `fuera de su carpeta: ${away.tool} dio su último paso en otra carpeta ${when}; en esa conversación, \`${command} next\` dice cómo volver`,
+    `outside its folder: ${away.tool} last stepped in another folder ${when}; in that conversation, \`${command} next\` tells how to go back`,
+  );
+}
+
+/** The change's folder is gone: `restore` brings it back from its branch. */
+function lostText(id: string, t: Translate, command: string): string {
+  return t(
+    `sin carpeta: se recupera desde su rama con \`${command} restore ${id}\``,
+    `no folder: \`${command} restore ${id}\` brings it back from its branch`,
+  );
 }
 
 /** How long ago, from minutes: under a minute, minutes, hours up to two days, then days. */

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { realpath, stat } from "node:fs/promises";
 import {
+  type ChangeState,
   isIntegrating,
   localDay,
   type Output,
@@ -12,11 +13,14 @@ import {
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
 import { locateChanges } from "../flow/changes";
+import { lostChanges } from "../flow/lost";
 import type { Session } from "../session";
 import { type Activity, readActivity } from "../store/activity";
 import { readSpec, type StoredChange } from "../store/changes";
 import { liveHolds } from "../store/front-owners";
+import { readBindings } from "../store/local";
 import { readMemory } from "../store/memory";
+import { anyMessages, waitingCount } from "../store/messages";
 import { posixRelative } from "../store/paths";
 
 const MINUTE_MS = 60_000;
@@ -26,35 +30,57 @@ const MINUTE_MS = 60_000;
  * memory's fronts with who holds each in «FRENTES», and its open reminders in «TE TOCA» (ADR 0016).
  */
 export async function status(session: Session): Promise<Output> {
-  const entries = await openChanges(session);
+  const open = await openChanges(session);
+  const known = new Set(open.map((entry) => entry.id));
+  const lost = (await lostEntries(session)).filter((entry) => !known.has(entry.id));
+  const entries = [...open, ...lost];
   const memory = await readMemory(session.git, session.config.memory.branch);
   const now = session.environment.now();
   const owners =
     memory.fronts.length === 0
       ? []
       : await liveHolds(session.git, now, session.config.memory.orphanAfterMin);
-  const open = sessionEntries(memory.entries, localDay(now));
-  return statusCard(entries, session.cards, open, { fronts: memory.fronts, owners });
+  const reminders = sessionEntries(memory.entries, localDay(now));
+  return statusCard(entries, session.cards, reminders, { fronts: memory.fronts, owners });
+}
+
+/** The open changes whose folder is gone, read from their branches (`lost`). */
+async function lostEntries(session: Session): Promise<StatusEntry[]> {
+  return (await lostChanges(session)).map(({ id, state, title }) => ({
+    id,
+    kind: state.kind,
+    phase: state.phase,
+    title,
+    waitingFor: waitingForOf(state),
+    current: false,
+    pendingScope: state.pending.scopeRequests.map((request) => request.id),
+    lost: true,
+  }));
+}
+
+/** Who the change waits for: the person while a scope request is pending, else as its phase says. */
+function waitingForOf(state: ChangeState): StatusEntry["waitingFor"] {
+  if (state.pending.scopeRequests.length > 0) return "human";
+  const submitted =
+    (state.phase === "testing" ? state.testsSubmittedAt : state.closingSubmittedAt) !== undefined;
+  return phasePermissions(state.phase, submitted, isIntegrating(state)).waitingFor;
 }
 
 /** The open changes of every worktree as `status` shows them: phase, who they wait for and who holds them. */
 export async function openChanges(session: Session): Promise<StatusEntry[]> {
   const located = (await locateChanges(session)).filter(({ change }) => !isFinished(change.state));
-  const steps = await stepsByFolder(session);
+  const activity = await readActivity(session.git);
+  const steps = await stepsByFolder(activity);
+  const away = await awayByFolder(session, activity);
+  // Only when some message waits does it look at each change's folder of messages.
+  const counting = await anyMessages(session.git);
   return Promise.all(
     located.map(async ({ change, session: there, current }): Promise<StatusEntry> => {
       const { state } = change;
+      const root = await real(there.root);
       const title = parseSpec(await readSpec(change.files), { language: there.lang }).spec.title;
       const folder = posixRelative(session.root, there.root);
-      const waitingFor =
-        state.pending.scopeRequests.length > 0
-          ? "human"
-          : phasePermissions(
-              state.phase,
-              (state.phase === "testing" ? state.testsSubmittedAt : state.closingSubmittedAt) !==
-                undefined,
-              isIntegrating(state),
-            ).waitingFor;
+      const waitingFor = waitingForOf(state);
       return {
         id: state.id,
         kind: state.kind,
@@ -64,16 +90,26 @@ export async function openChanges(session: Session): Promise<StatusEntry[]> {
         current,
         pendingScope: state.pending.scopeRequests.map((request) => request.id),
         ...(folder.length > 0 ? { folder } : {}),
-        ...(await holding(session, change, steps.get(await real(there.root)), waitingFor)),
+        ...(await holding(session, change, waitingFor, {
+          step: steps.get(root),
+          away: away.get(root),
+        })),
+        ...(counting ? await waiting(session, state.id) : {}),
       };
     }),
   );
 }
 
+/** The messages waiting for the session of change `id`, when there are any. */
+async function waiting(session: Session, id: string): Promise<Pick<StatusEntry, "messages">> {
+  const messages = await waitingCount(session.git, id);
+  return messages > 0 ? { messages } : {};
+}
+
 /** The last step noted in each folder, by its real path. */
-async function stepsByFolder(session: Session): Promise<ReadonlyMap<string, Activity>> {
+async function stepsByFolder(steps: readonly Activity[]): Promise<ReadonlyMap<string, Activity>> {
   const last = new Map<string, Activity>();
-  for (const activity of await readActivity(session.git)) {
+  for (const activity of steps) {
     const folder = await real(activity.folder);
     const known = last.get(folder);
     if (known === undefined || Date.parse(activity.last) > Date.parse(known.last))
@@ -83,30 +119,62 @@ async function stepsByFolder(session: Session): Promise<ReadonlyMap<string, Acti
 }
 
 /**
+ * By the real path of each folder a conversation is bound to (`sessions/`), the bound
+ * conversation that stepped last in another folder within `memory.orphanAfterMin` minutes: its
+ * agent, and how many minutes ago. With several, the one that stepped last.
+ */
+async function awayByFolder(
+  session: Session,
+  steps: readonly (Activity & { readonly conversation: string })[],
+): Promise<ReadonlyMap<string, NonNullable<StatusEntry["away"]>>> {
+  const now = session.environment.now().getTime();
+  const limit = session.config.memory.orphanAfterMin * MINUTE_MS;
+  const byConversation = new Map(steps.map((step) => [step.conversation, step]));
+  const away = new Map<string, Activity>();
+  for (const binding of await readBindings(session.git)) {
+    const step = byConversation.get(binding.conversation);
+    if (step === undefined || now - Date.parse(step.last) > limit) continue;
+    const folder = await real(binding.folder);
+    if ((await real(step.folder)) === folder) continue;
+    const known = away.get(folder);
+    if (known === undefined || Date.parse(step.last) > Date.parse(known.last))
+      away.set(folder, step);
+  }
+  return new Map(
+    [...away].map(([folder, step]) => [
+      folder,
+      { tool: step.tool, ago: minutesAgo(now, step.last) },
+    ]),
+  );
+}
+
+/**
  * Who holds the change: the agent of the last step in its folder, and how many minutes ago. An
  * orphan waits for the agent, and neither a step nor a write to its state happened lately
- * (`memory.orphanAfterMin`, ADR 0016).
+ * (`memory.orphanAfterMin`, ADR 0016). One that waits for the agent with nobody stepping in its
+ * folder lately is away when its conversation stepped last in another folder (`awayByFolder`).
  */
 async function holding(
   session: Session,
   change: StoredChange,
-  step: Activity | undefined,
   waitingFor: StatusEntry["waitingFor"],
-): Promise<Pick<StatusEntry, "holder" | "orphan">> {
+  seen: { readonly step: Activity | undefined; readonly away: StatusEntry["away"] },
+): Promise<Pick<StatusEntry, "holder" | "orphan" | "away">> {
+  const { step } = seen;
   const now = session.environment.now().getTime();
   const limit = session.config.memory.orphanAfterMin * MINUTE_MS;
-  const holder =
-    step === undefined
-      ? undefined
-      : {
-          tool: step.tool,
-          ago: Math.max(0, Math.floor((now - Date.parse(step.last)) / MINUTE_MS)),
-        };
-  const held = holder === undefined ? {} : { holder };
+  const held =
+    step === undefined ? {} : { holder: { tool: step.tool, ago: minutesAgo(now, step.last) } };
   if (waitingFor !== "agent") return held;
   if (step !== undefined && now - Date.parse(step.last) <= limit) return held;
+  const out = seen.away === undefined ? held : { ...held, away: seen.away };
   const written = (await stat(change.files.state).catch(() => undefined))?.mtimeMs;
-  return written !== undefined && now - written <= limit ? held : { ...held, orphan: true };
+  return written !== undefined && now - written <= limit ? out : { ...out, orphan: true };
+}
+
+/** Whole minutes from `at` (ISO 8601) to `now`, never fewer than none. */
+function minutesAgo(now: number, at: string): number {
+  return Math.max(0, Math.floor((now - Date.parse(at)) / MINUTE_MS));
 }
 
 /** The real path of `folder`, or `folder` itself when it no longer exists. */

@@ -26,8 +26,11 @@ export type DoctorLine =
     }
   /** Claude Code's settings lack the permission for the person's commands. */
   | { readonly code: "no-claude-permissions" }
-  /** Claude Code's `SessionStart` hook is from before the card at a session's start. */
-  | { readonly code: "claude-startup" }
+  /**
+   * Claude Code's `SessionStart` hook is from before the card at a session's start, or runs at
+   * a session's start and not when it resumes.
+   */
+  | { readonly code: "claude-startup" | "claude-resume" }
   /** The agent's guard is there, and its end of turn lacks the memory's safety net (ADR 0016). */
   | { readonly code: "memory-stop"; readonly tool: AgentTool }
   | { readonly code: "cursor-guard" | "no-cursor-guard" }

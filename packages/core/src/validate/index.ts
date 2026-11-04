@@ -3,7 +3,13 @@ import type { Diagnostic } from "../spec/diagnostics";
 import type { Spec } from "../spec/model";
 import type { Rule, ValidationContext } from "./context";
 import { checkAdjusting, checkClosing, checkIdReuse } from "./phase";
-import { checkCriteria, checkFileReasons, checkSplit, checkTaskQuality } from "./quality";
+import {
+  checkCriteria,
+  checkFileReasons,
+  checkSplit,
+  checkTaskQuality,
+  checkTypecheck,
+} from "./quality";
 import { checkCoverage, checkSlices, checkTasks } from "./references";
 import { checkQuickLane, checkSections, checkSpikeClosing } from "./structure";
 
@@ -18,6 +24,7 @@ const RULES: readonly Rule[] = [
   checkSlices,
   checkCriteria,
   checkTaskQuality,
+  checkTypecheck,
   checkFileReasons,
   checkSplit,
   checkAdjusting,

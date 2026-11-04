@@ -5,12 +5,13 @@ import {
   messageRefusalCard,
   messagesNote,
   type Output,
+  type StatusEntry,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
 import { isFinished, resolveActive } from "../flow/active";
-import { locateChanges } from "../flow/changes";
 import type { Session } from "../session";
 import { anyMessages, leaveMessage, takeMessages } from "../store/messages";
+import { openChanges } from "./status";
 
 type Run = (handler: (session: Session) => Promise<Output>) => () => Promise<void>;
 
@@ -31,12 +32,22 @@ export function messageCommand(program: Command, run: Run): void {
 async function message(session: Session, id: string, text: string): Promise<Output> {
   const written = text.trim();
   if (written.length === 0) return messageRefusalCard({ reason: "empty", id }, session.cards);
-  const located = await locateChanges(session);
-  const open = located.some(({ change }) => change.state.id === id && !isFinished(change.state));
-  if (!open) return messageRefusalCard({ reason: "no-change", id }, session.cards);
+  const change = (await openChanges(session)).find((open) => open.id === id);
+  if (change === undefined) return messageRefusalCard({ reason: "no-change", id }, session.cards);
   const at = session.environment.now().toISOString();
   await leaveMessage(session.git, id, { at, text: written, from: await senderOf(session) });
-  return messageLeftCard(id, written, session.cards);
+  return messageLeftCard(id, written, session.cards, workingNow(session, change));
+}
+
+/**
+ * The agent of the session that works on the change now: it stepped in the change's folder within
+ * `memory.orphanAfterMin` minutes. Undefined when none did.
+ */
+function workingNow(session: Session, change: StatusEntry): StatusEntry["holder"] {
+  const { holder } = change;
+  return holder !== undefined && holder.ago <= session.config.memory.orphanAfterMin
+    ? holder
+    : undefined;
 }
 
 /**
