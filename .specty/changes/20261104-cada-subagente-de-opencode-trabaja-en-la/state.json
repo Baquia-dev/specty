@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-cada-subagente-de-opencode-trabaja-en-la",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-cada-subagente-de-opencode-trabaja-en-la",
   "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
   "revision": 1,
@@ -50,6 +50,10 @@
     "T": 1,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T12:50:14.929Z"
+  "lockedTests": {
+    "packages/cli/test/fake-chat.ts": "sha256:1c1a07c6ddfc5205051f49fe96aeda29583aac3611c59ca7e89f3b89cecf3241",
+    "packages/cli/test/opencode-e2e.test.ts": "sha256:42112123b2d8ff0a8b98d898be0969719a15b74801f1adfcb6fdb346fe4cc00b",
+    "packages/cli/test/opencode.test.ts": "sha256:68107042af433cae9ddbf2ce7a2a6246615ab54c37d6522234f4d602764ac632",
+    "packages/core/test/capabilities.test.ts": "sha256:bc95a9fdfbf9e9e58b7ae4a558a26699da91a5ff17debc3f9c17f7f1d1fc6174"
+  }
 }
