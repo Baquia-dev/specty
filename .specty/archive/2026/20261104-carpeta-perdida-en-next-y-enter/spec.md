@@ -69,3 +69,22 @@ Desde el cambio anterior, `specty status` lista los cambios abiertos sin carpeta
 
 - R1: `next` sin cambio activo lee las ramas en cada `SessionStart`. Mitigación: es la misma lectura que `status` (un proceso de git para todas las ramas marcadas sin carpeta).
 - R2: Filtrar en `namedWorktree` las carpetas que no existen cambia lo que reciben `enter` y el hook. Mitigación: una carpeta que no existe no sirve a ninguno; el hook rechaza antes el id de un cambio sin carpeta.
+
+## Cierre
+
+### Resumen
+
+Las salidas que hoy perdían de vista un cambio sin carpeta ahora llevan a `specty restore <id>`. `specty next` sin cambio activo los lista, con su fase y su título, y dice que su carpeta se recupera con `restore` en lugar de crear otro cambio. Una conversación enlazada a una carpeta perdida oye en `next` y en su `SessionStart` que la carpeta se perdió, y `SIGUIENTE:` le pide `restore`. `EnterWorktree` con el id de un cambio sin carpeta falla en el hook `WorktreeCreate` sin crear ninguna worktree, y `specty enter` pide recuperarla y volver a entrar, sin enlazar la conversación a la carpeta perdida. Con esto queda cubierto el corte C2 de la épica `20261104-sesiones-con-su-carpeta` (AC6 en `next`, AC9 y AC10).
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- `namedWorktree` deja de tomar por preparada una carpeta que git lista pero que ya no existe: así ni `enter` ni el hook entregan una carpeta inexistente.
+- El enlace apunta a una carpeta perdida si git la sigue listando para la rama del cambio o si se llama como su id; no hace falta un registro nuevo.
+
+### Pendientes
+
+- Ninguno

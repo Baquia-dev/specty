@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-carpeta-perdida-en-next-y-enter",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-carpeta-perdida-en-next-y-enter",
   "baseCommit": "2b239513dd1a5121a54c36052fc6dc1c27b1de89",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:9bd2366800d8ee12a73c1b9fb7e6c27fed187f8219616482b5797610879ef58c",
@@ -56,12 +56,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bdc4a9cfe3e523b1b4c8bf502f1c2457df148e7b",
+      "attempts": 1,
       "startedAt": "2026-11-04T08:49:53.139Z",
       "doneAt": "2026-11-04T08:53:49.127Z",
-      "summary": "next lista los cambios sin carpeta y conversationChange reconoce una carpeta perdida; enter y el hook WorktreeCreate llevan a specty restore sin crear ni enlazar nada (namedWorktree ignora carpetas que no existen); ARCHITECTURE §6, §7 y §10"
+      "summary": "next lista los cambios sin carpeta y conversationChange reconoce una carpeta perdida; enter y el hook WorktreeCreate llevan a specty restore sin crear ni enlazar nada (namedWorktree ignora carpetas que no existen); ARCHITECTURE §6, §7 y §10",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,6 +74,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-04T09:04:18.432Z",
   "lockedTests": {
     "packages/cli/test/lost-folder.test.ts": "sha256:6af657a657d6bac83b2a51fdd96bc225e083521c4dfe0cb094a4ac70ab149dbe",
     "packages/core/test/cards/lost-folder.test.ts": "sha256:1ee118f65b82c3b077ea13b02dc49d4d37ebdbf3a04ee86b6a0fefcfd25f4cb2"
