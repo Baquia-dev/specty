@@ -47,7 +47,7 @@ Cuando un cambio entra en la rama principal, la carpeta que la tiene queda con e
 
 ## Tareas
 
-- [ ] T1: `git.afterLanding` y sus textos
+- [x] T1: `git.afterLanding` y sus textos
   - files: packages/core/src/schema/git.ts, packages/core/src/cards/land.ts, packages/core/src/cards/index.ts, packages/core/src/index.ts, packages/core/test/cards/after-landing.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/after-landing.test.ts && pnpm typecheck && pnpm lint && pnpm sources

@@ -216,10 +216,13 @@ export {
   undoOutsideNext,
 } from "./integration";
 export {
+  type AfterLanding,
+  afterLandingLine,
   backOnTargetLine,
   folderRemovedLine,
   folderStaysLine,
   landedLine,
+  landingNote,
   leaveFolderNext,
   notLandedLine,
   retryLandingNext,
