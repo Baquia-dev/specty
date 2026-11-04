@@ -56,7 +56,7 @@ Hoy, cuando Claude Code reanuda una sesión (`--resume`, `--continue` o reabrir 
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/test/cards/doctor.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: `init` con `resume` y el aviso de `doctor`, y la documentación
+- [x] T2: `init` con `resume` y el aviso de `doctor`, y la documentación
   - files: packages/cli/src/agents/claude-code.ts, .claude/settings.json, packages/cli/test/setup.test.ts, packages/cli/test/session-resume.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-resume.test.ts test/setup.test.ts src/agents/claude-code.test.ts test/session-return.test.ts test/session-start.test.ts && pnpm typecheck && pnpm lint

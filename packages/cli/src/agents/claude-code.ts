@@ -39,7 +39,8 @@ import {
  * command, after each Bash command, whether it succeeded or failed, when Claude Code creates or
  * removes a worktree, which takes no matcher, and when a session starts, which brings Specty's
  * memory, and starts again after a compaction or a `/clear`, which the closing advises when the
- * session grew big; and when a session ends, `/clear` included, which frees its front.
+ * session grew big, or when it resumes, which brings back its change's card; and when a session
+ * ends, `/clear` included, which frees its front.
  */
 const EVENTS: Readonly<Record<string, string | undefined>> = {
   PreToolUse: "Edit|MultiEdit|Write|NotebookEdit|Bash|EnterWorktree",
@@ -47,7 +48,7 @@ const EVENTS: Readonly<Record<string, string | undefined>> = {
   PostToolUseFailure: "Bash",
   WorktreeCreate: undefined,
   WorktreeRemove: undefined,
-  SessionStart: "startup|clear|compact",
+  SessionStart: "startup|clear|compact|resume",
   SessionEnd: undefined,
 };
 /** After a Bash command, whether it succeeded or failed. */
@@ -67,7 +68,7 @@ const OLD_ASK = "ExitWorktree(action:remove)";
 
 /**
  * Claude Code (ARCHITECTURE §10): `PreToolUse`, `PostToolUse` and `PostToolUseFailure`, the
- * worktree events, `SessionStart` when a session starts and after a compaction or a `/clear`,
+ * worktree events, `SessionStart` when a session starts or resumes and after a compaction or a `/clear`,
  * whose output it adds to the context, `SessionEnd` when a session ends, and `Stop` at the end
  * of each turn.
  */
@@ -143,7 +144,9 @@ export const claudeCode: AgentAdapter = {
       if (compact !== "") problems.push({ code: "claude-compact", events: compact });
       if (end !== "") problems.push({ code: "claude-session-end", events: end });
     }
-    if (startsBefore(settings)) problems.push({ code: "claude-startup" });
+    // An install from before the card at a session's start lacks `resume` too: one `init` fixes both.
+    if (missesSource(settings, "startup")) problems.push({ code: "claude-startup" });
+    else if (missesSource(settings, "resume")) problems.push({ code: "claude-resume" });
     problems.push(...memoryStopLines(settings, "claude-code"));
     if (missingPermissions(settings).length > 0) {
       problems.push({ code: "no-claude-permissions" });
@@ -207,9 +210,9 @@ function missingPermissions(settings: readonly (string | undefined)[]): string[]
 
 /**
  * Whether the guard's `SessionStart` is in these settings files (their text) and none of its
- * entries runs when a session starts: an install from before the card at a session's start.
+ * entries runs when a session starts from `source`: an install from before the card then.
  */
-function startsBefore(settings: readonly (string | undefined)[]): boolean {
+function missesSource(settings: readonly (string | undefined)[], source: string): boolean {
   const ours = settings.flatMap((text): unknown[] => {
     const value: unknown = text === undefined ? undefined : parse(text);
     const hooks = isRecord(value) && isRecord(value.hooks) ? value.hooks : {};
@@ -218,7 +221,7 @@ function startsBefore(settings: readonly (string | undefined)[]): boolean {
   });
   return (
     ours.length > 0 &&
-    !ours.some((entry) => runsAtSessionStart(isRecord(entry) ? entry.matcher : undefined))
+    !ours.some((entry) => runsAtSessionStart(isRecord(entry) ? entry.matcher : undefined, source))
   );
 }
 
