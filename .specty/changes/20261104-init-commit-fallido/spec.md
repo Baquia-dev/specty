@@ -54,7 +54,7 @@ Cuando falla el commit de lo que instala `specty init` (o `specty check --instal
 
 ## Tareas
 
-- [ ] T1: El aviso del commit fallido y la tarjeta de `init` que lo refleja
+- [x] T1: El aviso del commit fallido y la tarjeta de `init` que lo refleja
   - files: packages/core/src/cards/install.ts, packages/core/src/cards/init.ts, packages/core/src/cards/index.ts, packages/core/test/cards/install.test.ts, packages/core/test/cards/init.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/install.test.ts test/cards/init.test.ts && pnpm lint

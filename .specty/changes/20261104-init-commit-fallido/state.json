@@ -32,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ab2c19586f7c2bbaa9e6fb28b5a91bee4c4302b9",
+      "startedAt": "2026-11-04T05:57:54.973Z",
+      "doneAt": "2026-11-04T05:58:28.233Z",
+      "summary": "installCommitFailedWarning (es/en) exportado; InitView.failed: tarjeta con estado invalid y SIGUIENTE de volver a ejecutar init"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
