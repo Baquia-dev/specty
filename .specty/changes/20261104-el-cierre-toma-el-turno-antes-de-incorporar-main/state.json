@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261104-el-cierre-toma-el-turno-antes-de-incorporar-main",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-el-cierre-toma-el-turno-antes-de-incorporar-main",
+  "baseCommit": "2950e27c26894203e230bc0b9164829ece6c2e6c",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:773b9ccae3bc6f41be6e6c4914909026f084d35d57a659ca1ae76c032992c685",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3a8f3b24e810e52e4e3d1aa567f042594dbd7696f35bfc61d7f99242ab51ee0d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:484a526a76dcd2b56d44f6b4849c11fbe9d9261fc8d1da73b0cb0d212f40a445",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:92107dd0a0b675019cfcb17f39c425b3aa03c023e4f8a2f98d44b16fde322965",
+    "at": "2026-11-04T06:30:09.454Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
