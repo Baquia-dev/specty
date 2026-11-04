@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-subagentes-claude-code-en-su-carpeta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-subagentes-claude-code-en-su-carpeta",
   "baseCommit": "cb6838409f3dba5834c2ee9722cae08987438784",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "206b2a8594d2bb2fc09a28ca4b04b0c1bfe7d673",
+      "attempts": 1,
       "startedAt": "2026-11-04T10:20:30.715Z",
       "doneAt": "2026-11-04T10:21:51.882Z",
-      "summary": "El código de new --subagent llegó con T1, que amplió su alcance: no ata a la conversación que lo ejecuta y su SIGUIENTE pide entrar con specty enter."
+      "summary": "El código de new --subagent llegó con T1, que amplió su alcance: no ata a la conversación que lo ejecuta y su SIGUIENTE pide entrar con specty enter.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1baeba6ff5e548fc0a5be4c5fc5fe54bab072b99",
+      "startedAt": "2026-11-04T10:21:52.980Z",
+      "doneAt": "2026-11-04T10:24:09.652Z",
+      "summary": "La tabla de capacidades gana la columna Cortes en subagentes: Claude Code en sí; Gemini CLI, Antigravity y Devin en no posible con su motivo; Codex, OpenCode y Cursor sin ella hasta su corte. ARCHITECTURE explica cómo el guard trata a los subagentes."
     }
   },
   "pending": {

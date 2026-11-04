@@ -77,7 +77,7 @@ Hoy el guard reconoce una conversación por el `session_id` de sus hooks, y los 
   - files: packages/cli/src/commands/new.ts, packages/cli/src/commands/agent-commands.ts, packages/core/src/cards/new.ts, packages/cli/test/subagents.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/subagents.test.ts
-- [ ] T3: La tabla de capacidades dice qué herramientas reparten los cortes entre subagentes
+- [x] T3: La tabla de capacidades dice qué herramientas reparten los cortes entre subagentes
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts
   - ac: AC6
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
