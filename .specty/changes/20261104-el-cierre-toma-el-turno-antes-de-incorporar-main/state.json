@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "52c6ce7e8c75ebc2a7d6decc2fc6d27d5b0c8c44",
+      "startedAt": "2026-11-04T06:32:58.969Z",
+      "doneAt": "2026-11-04T06:37:53.822Z",
+      "summary": "close, su reintento y el cierre del carril rápido toman el turno de la verificación completa (landingTurn) antes de incorporar main y lo sueltan cuando main avanzó"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

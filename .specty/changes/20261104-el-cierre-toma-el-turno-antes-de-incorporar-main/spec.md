@@ -46,7 +46,7 @@ Hoy `close` incorpora main a la rama del cambio y solo después pide el turno de
 
 ## Tareas
 
-- [ ] T1: El cierre toma el turno antes de incorporar main y lo suelta cuando main avanzó
+- [x] T1: El cierre toma el turno antes de incorporar main y lo suelta cuando main avanzó
   - files: packages/cli/src/flow/full-verification.ts, packages/cli/src/commands/finish.ts, packages/cli/src/commands/accept.ts, packages/cli/test/close-turn.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/close-turn.test.ts test/integrate.test.ts src/flow/full-verification.test.ts && pnpm typecheck && pnpm lint
