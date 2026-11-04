@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-specty-sabe-la-conversacion-de-codex-en-sus",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-specty-sabe-la-conversacion-de-codex-en-sus",
   "baseCommit": "4bacdf24afc367be9ed57975303bbf796b47c586",
   "revision": 1,
@@ -37,6 +37,8 @@
     "AC": 3,
     "T": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-04T17:48:58.720Z"
+  "lockedTests": {
+    "packages/cli/test/codex-e2e.test.ts": "sha256:c4ad698a3c5ad25fa9439eb9c08915d7759424ee09c863f960f19acdd1551447",
+    "packages/cli/test/front-start-codex.test.ts": "sha256:adb8ed7b5a329528011cc274ba86136459bcf80b6cabe5efd71d05ecb9a43321"
+  }
 }
