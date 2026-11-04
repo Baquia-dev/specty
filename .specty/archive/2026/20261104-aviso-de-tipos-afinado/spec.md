@@ -25,3 +25,10 @@ Resuelve P69, P70 y P71, lo que dejó el cambio `20261104-fallo-de-tipos-con-con
   - files: packages/cli/test/doctor-watchers.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-watchers.test.ts && pnpm lint
   - type: test
+
+## Cierre
+
+### Resumen
+
+checkTypecheck ignora un typecheck o verify.full vacíos y no avisa si la última tarea de código ya está hecha; tests de quick y de closing; formats.md §2 lo cuenta.
+El caso Expo de AC5 en doctor-watchers escribe su package.json con doctorAfter, tras crear el cambio, para que new no instale Expo y React Native de la red; las aserciones no cambian.
