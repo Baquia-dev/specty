@@ -65,7 +65,7 @@ Resuelve P62 y P66. `specty check --all` avisa en `max-lines` de cinco archivos:
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts --include src/components/item-refs.test.ts --include src/history/history-tab.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
   - type: refactor
-- [ ] T3: Las decisiones sobre la muestra, fuera de la fuente del prototipo
+- [x] T3: Las decisiones sobre la muestra, fuera de la fuente del prototipo
   - files: packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-review.ts, packages/ui/src/data/sample-acceptance.ts, packages/ui/src/data/sample-memory.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/fixtures.test.ts --include src/data/decisions.test.ts --include src/review/review-actions.test.ts --include src/acceptance/closing-actions.test.ts --include src/memory/memory-actions.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip

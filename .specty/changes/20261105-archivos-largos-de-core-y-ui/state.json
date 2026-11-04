@@ -45,12 +45,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "40c06355e4943ae91db850e558284d3d4e61ea9f",
+      "attempts": 1,
       "startedAt": "2026-11-04T18:41:25.837Z",
       "doneAt": "2026-11-04T18:45:56.374Z",
-      "summary": "item-tooltip.ts queda con ItemTooltips e ItemText; las siglas (nombres, mapas, itemTarget, itemLabel) pasan a item-refs.ts y la burbuja en el DOM (renderBubble, paleta, arrastre, posiciones) a item-bubble.ts."
+      "summary": "item-tooltip.ts queda con ItemTooltips e ItemText; las siglas (nombres, mapas, itemTarget, itemLabel) pasan a item-refs.ts y la burbuja en el DOM (renderBubble, paleta, arrastre, posiciones) a item-bubble.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b3f589a6442dcdcc23da1a6f842ebba7beb20f4f",
+      "startedAt": "2026-11-04T18:45:56.795Z",
+      "doneAt": "2026-11-04T18:48:44.391Z",
+      "summary": "Lo que cada decisión de la revisión hace a un registro pasa de fixtures.ts a sample-review.ts (decideAssumptionIn, comentarios, approveIn); confirmar el cierre, a confirmClosingIn en sample-acceptance.ts; y decided, a decidedIn en sample-memory.ts."
     }
   },
   "pending": {
