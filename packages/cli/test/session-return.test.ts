@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import {
   APP,
   CHANGE,
+  CONFIG,
   cli,
   folderOf,
   inWorktree,
@@ -215,5 +216,74 @@ describe("the changes no conversation holds", () => {
     const next = await cli(root, ["next"], { env: claude() });
     expect(next.out).toContain("TU CAMBIO:");
     expect(next.out).not.toContain("CAMBIOS SIN CONVERSACIÓN");
+  });
+});
+
+describe("the conversation of an epic that hands its slices to subagents", () => {
+  it("AC1: in the epic's own worktree, is asked to leave it before launching the briefs", async () => {
+    const root = await tempRepo(APP);
+    const epic = await approvedEpic(root);
+    expect((await enter(root, epic)).code).toBe(0);
+    const next = await cli(epic, ["next"], { env: claude() });
+    expect(next.code).toBe(0);
+    expect(next.out).toContain("ENCARGO C1:");
+    expect(next.out).toContain(
+      'SIGUIENTE: sal antes de la carpeta de la épica sin borrarla (en Claude Code, `ExitWorktree` con `action: "keep"`)',
+    );
+  });
+
+  it("AC3: outside the epic's folder, gets the epic's card with its briefs instead of going back", async () => {
+    const root = await tempRepo(APP);
+    const epic = await approvedEpic(root);
+    await enter(root, epic);
+    const next = await cli(root, ["next"], { env: claude() });
+    expect(next.code).toBe(0);
+    expect(next.out).toContain(
+      `TU ÉPICA:\n  Esta conversación lleva la épica ${EPIC} («Panel»), en ${epic}, y reparte sus cortes desde fuera de esa carpeta`,
+    );
+    expect(next.out).toContain("ENCARGO C1:");
+    expect(next.out).not.toContain("TU CAMBIO");
+    expect(next.out).toContain(
+      "SIGUIENTE: lanza en paralelo, en un solo mensaje, un subagente por encargo con su texto tal cual; cuando terminen, vuelve a ejecutar `specty next` aquí.",
+    );
+  });
+
+  it("AC3: outside the epic's folder, waits there for the subagent of a slice in progress", async () => {
+    const root = await tempRepo(APP);
+    const epic = await approvedEpic(root);
+    await enter(root, epic);
+    const slice = ["new", "--worktree", "Inicio", "--epic", EPIC, "--slice", "C1", "--subagent"];
+    expect((await cli(root, slice, { env: claude() })).code).toBe(0);
+    const next = await cli(root, ["next"], { env: claude() });
+    expect(next.out).toContain(`C1 Inicio — en curso: ${SLICE}, en draft`);
+    expect(next.out).toContain(
+      "SIGUIENTE: los cortes en curso siguen con sus subagentes: espera sus informes y, cuando terminen, vuelve a ejecutar `specty next` aquí.",
+    );
+  });
+
+  it("AC4: with subagents: false, is asked to go back to the epic as before", async () => {
+    const root = await tempRepo(APP);
+    const epic = await approvedEpic(root);
+    await enter(root, epic);
+    await writeFiles(root, { ".specty/config.yaml": `${CONFIG()}subagents: false\n` });
+    const next = await cli(root, ["next"], { env: claude() });
+    expect(next.out).toContain("TU CAMBIO:");
+    expect(next.out).toContain(`SIGUIENTE: vuelve a ${epic}:`);
+    expect(next.out).not.toContain("ENCARGO");
+  });
+
+  it("AC6: `new` of a slice in the epic's worktree asks to leave it first, and from the main folder does not", async () => {
+    const root = await tempRepo(APP);
+    const epic = await approvedEpic(root);
+    await enter(root, epic);
+    const slice = ["new", "--worktree", "Inicio", "--epic", EPIC, "--slice", "C1"];
+    const inEpic = await cli(epic, slice, { env: claude() });
+    expect(inEpic.code).toBe(0);
+    expect(inEpic.out).toContain(
+      `SIGUIENTE: continúa en ${folderOf(root, SLICE)}: sal antes de esta carpeta sin borrarla (en Claude Code, \`ExitWorktree\` con \`action: "keep"\`); después, cambia allí la carpeta de trabajo de tu sesión`,
+    );
+    const fromMain = await cli(root, ["new", "--worktree", "Otro cambio"], { env: claude("s2") });
+    expect(fromMain.code).toBe(0);
+    expect(fromMain.out).not.toContain("ExitWorktree");
   });
 });

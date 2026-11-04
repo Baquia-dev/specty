@@ -6,6 +6,13 @@
   "branch": "specty/20261105-la-sesion-de-una-epica-sale-de-su-carpeta-antes",
   "baseCommit": "f374134873dd21f2f9c61c4f60dd97f9b5c0e4f1",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:be3ba1ce1e843fd408a2223c626621fb5f77daef12bf91baaf536d93275fc9a3",
+    "at": "2026-11-04T17:44:42.494Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -45,12 +52,6 @@
     "T": 5,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:be3ba1ce1e843fd408a2223c626621fb5f77daef12bf91baaf536d93275fc9a3",
-    "at": "2026-11-04T17:44:42.494Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-04T17:47:31.370Z"
 }

@@ -154,3 +154,45 @@ describe("a change created by `new`", () => {
     );
   });
 });
+
+describe("a change created by `new` in the folder of another change", () => {
+  /** A slice created from its epic's worktree, which Claude Code's session entered. */
+  const FROM_EPIC: WorktreeCreated = {
+    id: "20261020-saludo",
+    branch: "specty/20261020-saludo",
+    folder: "/repo.worktrees/20261020-saludo",
+    from: "main (d64c425)",
+    copied: [],
+    removed: [],
+    byName: true,
+    agent: "claude-code",
+    fromWorktree: true,
+  };
+
+  it("AC6: asks Claude Code's session to leave that folder without removing it, then enter by name", () => {
+    expect(worktreeCreatedCard(FROM_EPIC, ES).next).toBe(
+      'continúa en /repo.worktrees/20261020-saludo: sal antes de esta carpeta sin borrarla (en Claude Code, `ExitWorktree` con `action: "keep"`); después, cambia allí la carpeta de trabajo de tu sesión (en Claude Code, `EnterWorktree` con `name: "20261020-saludo"`; o abre allí un agente) y ejecuta `specty next`; esta carpeta sigue con su propio trabajo.',
+    );
+    expect(worktreeCreatedCard(FROM_EPIC, EN).next).toBe(
+      'carry on in /repo.worktrees/20261020-saludo: leave this folder first without removing it (in Claude Code, `ExitWorktree` with `action: "keep"`); then switch your session\'s working folder there (in Claude Code, `EnterWorktree` with `name: "20261020-saludo"`; or open an agent there) and run `specty next`; this folder carries on with its own work.',
+    );
+    // An agent Specty does not recognize gets the same way on.
+    expect(worktreeCreatedCard({ ...FROM_EPIC, agent: undefined }, ES).next).toContain(
+      "ExitWorktree",
+    );
+  });
+
+  it("AC6: is today's card for a subagent, for an agent that enters with `specty enter`, and from the main folder", () => {
+    const today = (created: WorktreeCreated) => {
+      const { fromWorktree: _, ...main } = created;
+      return worktreeCreatedCard(main, ES).next;
+    };
+    for (const created of [
+      { ...FROM_EPIC, subagent: true },
+      { ...FROM_EPIC, agent: "codex" as const },
+    ]) {
+      expect(worktreeCreatedCard(created, ES).next).toBe(today(created));
+    }
+    expect(today(FROM_EPIC)).not.toContain("ExitWorktree");
+  });
+});
