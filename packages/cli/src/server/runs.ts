@@ -39,8 +39,8 @@ const TASKS_EVERY = 500;
 
 /**
  * The full verifications the person starts from the UI, one per change: `verify.full` runs with
- * the shell in the change's folder, `heard` gets the run as it goes and `undefined` once it ends,
- * and the result goes to the change's audit as `change.verified`.
+ * the shell in the change's folder, `heard` gets the run as it goes and `undefined` once it ends
+ * and its turn is free, and the result goes to the change's audit as `change.verified`.
  */
 export function changeRuns(
   session: Session,
@@ -107,6 +107,7 @@ interface FullRun {
 /**
  * Shows the run at once and runs it on the full verification's turn, after this server's earlier
  * ones: while another session holds the turn, the note of who it waits for goes to its output.
+ * Its end is heard once the turn is free, so whoever hears it can take the turn at once.
  */
 function runFull(target: RunTarget, job: FullRun): void {
   const { id, there, command } = job;
@@ -117,13 +118,18 @@ function runFull(target: RunTarget, job: FullRun): void {
   target.heard(id, live.current());
   const io = { ...there.environment.io, err: (text: string) => live.add(text.split("\n")) };
   const waiting = { ...there, environment: { ...there.environment, io } };
-  target.inTurn(() =>
-    oneAtATime(waiting, command, () =>
-      spawned(target, job, live, (kill) => {
-        stop = kill;
-      }),
-    ),
-  );
+  target.inTurn(async () => {
+    try {
+      await oneAtATime(waiting, command, () =>
+        spawned(target, job, live, (kill) => {
+          stop = kill;
+        }),
+      );
+    } finally {
+      // Not while the server closes, nor if the change has a run going on, which it would hide.
+      if (!target.closing() && !target.going.has(id)) target.heard(id, undefined);
+    }
+  });
 }
 
 /** Runs the command, unless the server is closing, and settles once its result is recorded. */
@@ -238,7 +244,6 @@ async function ended(
     output,
     ...(ran === undefined ? {} : { tree: ran }),
   }).catch(() => undefined);
-  target.heard(id, undefined);
 }
 
 /**

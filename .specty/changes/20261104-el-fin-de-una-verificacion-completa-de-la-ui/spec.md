@@ -15,7 +15,7 @@ Resuelve P84. Hoy el servidor de `specty ui` avisa del fin de una verificación 
 
 ## Tareas
 
-- [ ] T1: El aviso de fin de una verificación completa de la UI llega con su turno ya libre
+- [x] T1: El aviso de fin de una verificación completa de la UI llega con su turno ya libre
   - files: packages/cli/src/server/runs.ts, packages/cli/test/server/runs-turn.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/runs-turn.test.ts test/server/runs.test.ts && pnpm typecheck && pnpm lint
   - type: fix
