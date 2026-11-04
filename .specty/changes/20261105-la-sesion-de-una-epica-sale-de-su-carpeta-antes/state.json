@@ -67,12 +67,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cc3e600260e64525de9c2912fdf5d02923151ac6",
+      "attempts": 1,
       "startedAt": "2026-11-04T17:54:42.715Z",
       "doneAt": "2026-11-04T17:55:33.668Z",
-      "summary": "Hecha en T2, cuya verificación corría el test de AC6: new desde la worktree de otro cambio pide ExitWorktree keep antes de EnterWorktree con name; desde la carpeta principal, con --subagent o con specty enter, el SIGUIENTE es el de hoy."
+      "summary": "Hecha en T2, cuya verificación corría el test de AC6: new desde la worktree de otro cambio pide ExitWorktree keep antes de EnterWorktree con name; desde la carpeta principal, con --subagent o con specty enter, el SIGUIENTE es el de hoy.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "616925177e5d24dd6a6d50b131111ca791fa205f",
+      "startedAt": "2026-11-04T17:55:34.481Z",
+      "doneAt": "2026-11-04T17:58:17.708Z",
+      "summary": "El modelo guionizado corre con los permisos de las evals, EnterWorktree y ExitWorktree y el specty de la rama. Claude Code real: tras ExitWorktree keep, el subagente escribe en su corte; sin salir, Claude Code lo aísla en la worktree de la épica."
     }
   },
   "pending": {

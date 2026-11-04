@@ -79,7 +79,7 @@ Con Claude Code, la sesión principal entra en la carpeta de la épica con `Ente
   - files: packages/core/src/cards/new.ts, packages/cli/src/commands/new.ts, packages/core/test/cards/new.test.ts, packages/cli/test/session-return.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/new.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/session-return.test.ts && pnpm typecheck
-- [ ] T4: Con Claude Code real, la sesión sale de la épica y su subagente escribe en su corte
+- [x] T4: Con Claude Code real, la sesión sale de la épica y su subagente escribe en su corte
   - files: packages/cli/test/fake-model.ts, packages/cli/test/subagents.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/subagents.test.ts test/agent-e2e.test.ts
