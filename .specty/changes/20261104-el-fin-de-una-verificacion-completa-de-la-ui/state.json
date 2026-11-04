@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "id": "20261104-el-fin-de-una-verificacion-completa-de-la-ui",
+  "kind": "quick",
+  "phase": "testing",
+  "branch": "specty/20261104-el-fin-de-una-verificacion-completa-de-la-ui",
+  "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:06c2c45682a2eaba19061bd5e4e96da1a41c766f711787034d6c4901c8486632",
+    "at": "2026-11-04T12:21:24.833Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
