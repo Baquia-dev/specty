@@ -24,6 +24,7 @@ import {
   scopeRulesFrom,
   shortHash,
   type TestsRefusal,
+  testCases,
   testRules,
   testsApprovedLine,
   testsLockedLead,
@@ -186,10 +187,27 @@ async function redOf(
   }
   if (failed.length === 0) return { kind: "refused", refusal: { reason: "green", commands } };
   const said = output.join("\n");
-  const unnamed = tests.filter((path) => !namesOf(path).some((name) => said.includes(name)));
+  const unnamed = (await declaringCases(session, tests)).filter(
+    (path) => !namesOf(path).some((name) => said.includes(name)),
+  );
   return unnamed.length > 0
     ? { kind: "refused", refusal: { reason: "unnamed", paths: unnamed } }
     : { kind: "red", failed };
+}
+
+/**
+ * The tests among `paths` that declare some case, by the catalog of `testCases`: a support file
+ * of the tests, such as a helper, never shows up in a runner's output, so it is not asked to fail.
+ * A path that cannot be read stays.
+ */
+async function declaringCases(session: Session, paths: readonly string[]): Promise<string[]> {
+  const found = await Promise.all(
+    paths.map(async (path) => {
+      const text = await readText(join(session.root, path));
+      return text !== undefined && testCases(text) === 0 ? [] : [path];
+    }),
+  );
+  return found.flat();
 }
 
 /** How a runner names a test file: its path, its name, or its name without the extension. */

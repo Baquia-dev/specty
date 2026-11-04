@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261104-apoyo-de-los-tests-sin-rojo",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261104-apoyo-de-los-tests-sin-rojo",
+  "baseCommit": "76e0eca1da6b2bc6fa42d0e1a0b555f88690dc3d",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f81a76956c2a5fb34180049e089e4de2285770ee257b3c33f1cd2a0180fddf9",
+    "at": "2026-11-04T05:59:43.757Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "9ef14f0ca9edcc9d935dec211be888da1f8d02ea",
+      "attempts": 1,
+      "startedAt": "2026-11-04T06:01:11.928Z",
+      "doneAt": "2026-11-04T06:02:19.608Z",
+      "summary": "El rojo de la fase de tests solo exige que la salida nombre los tests que declaran algún caso (testCases de core); un archivo de apoyo sin casos va en el envío y se bloquea con los demás. ARCHITECTURE §4 lo cuenta.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/cli/test/testing-phase.test.ts": "sha256:7d2d5f1c5de70fc0d0ccbae1c3b70855147565bd1e1d32198d8c271fb3ee09ce"
+  }
+}
