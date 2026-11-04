@@ -36,12 +36,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "96554ecd0841f28178ae3e9bb54ea3dbc4f8aa70",
+      "attempts": 1,
       "startedAt": "2026-11-04T18:39:59.454Z",
       "doneAt": "2026-11-04T18:41:25.162Z",
-      "summary": "La tarjeta sin cambio activo (noChangeCard, con withoutSpecCard, skeletonCard, idleCard y los textos de specty new) pasa de cards/next.ts a cards/idle.ts; next.ts la importa."
+      "summary": "La tarjeta sin cambio activo (noChangeCard, con withoutSpecCard, skeletonCard, idleCard y los textos de specty new) pasa de cards/next.ts a cards/idle.ts; next.ts la importa.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "40c06355e4943ae91db850e558284d3d4e61ea9f",
+      "startedAt": "2026-11-04T18:41:25.837Z",
+      "doneAt": "2026-11-04T18:45:56.374Z",
+      "summary": "item-tooltip.ts queda con ItemTooltips e ItemText; las siglas (nombres, mapas, itemTarget, itemLabel) pasan a item-refs.ts y la burbuja en el DOM (renderBubble, paleta, arrastre, posiciones) a item-bubble.ts."
     }
   },
   "pending": {

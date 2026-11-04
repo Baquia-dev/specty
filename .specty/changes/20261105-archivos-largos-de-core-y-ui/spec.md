@@ -60,7 +60,7 @@ Resuelve P62 y P66. `specty check --all` avisa en `max-lines` de cinco archivos:
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm knip
   - type: refactor
-- [ ] T2: Las siglas y su burbuja, fuera de la directiva
+- [x] T2: Las siglas y su burbuja, fuera de la directiva
   - files: packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-refs.ts, packages/ui/src/components/item-bubble.ts, packages/ui/src/components/item-tooltip.test.ts, packages/ui/src/components/item-refs.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts --include src/components/item-refs.test.ts --include src/history/history-tab.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip

@@ -5,14 +5,8 @@ import { sampleRecords } from "../data/fixtures";
 import type { ChangeView } from "../data/records";
 import { deriveViews } from "../data/views";
 import { Preferences } from "../theme/preferences";
-import {
-  formatItemTooltip,
-  ItemText,
-  ItemTooltips,
-  itemsOfChange,
-  itemsOfReview,
-  splitItemRefs,
-} from "./item-tooltip";
+import { formatItemTooltip, itemsOfChange, itemsOfReview, splitItemRefs } from "./item-refs";
+import { ItemText, ItemTooltips } from "./item-tooltip";
 
 const EVOLUCION = "20261020-evolucion-trimestre";
 
