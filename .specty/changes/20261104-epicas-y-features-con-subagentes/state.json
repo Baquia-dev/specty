@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "20261104-epicas-y-features-con-subagentes",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261104-epicas-y-features-con-subagentes",
+  "baseCommit": "c5e6b9058c3198ae970fb5670e26ff9cbfc4e296",
+  "revision": 2,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2ca29762cfc2b17d69d348c0c15b12152a666009fb37fbac14aff6bd7e92f981",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:82b1e7b11fe185eccfe69a07943a10e3c564592e3f89353943a1a397e491205e",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:7428efc06f382ddc4ef79db4fb3671aa38f6946d67dfdba6c34ffd219a8b5f16",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:a72107185116d0b5373102ff8f1f1275ca94a2e324f6fef8f542e4f1eade6c5c",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:a13149ea367e277099baf860175a6b7797510407449272606f661c04ec490a97",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:426c3eaffa5462ae4ee0e0986a9713b67c77cbc29b8b876574e66d4fad4331a1",
+      "decision": "implicit"
+    },
+    "A10": {
+      "hash": "sha256:3a12a05f193ae633b9044e9475a475db5b4c854d55c7386a739251d52e8bab09",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 10,
+    "AC": 22,
+    "C": 10,
+    "R": 7
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c338a9d294ac7717220f9b455fe1ae1e8ca992243952df0378f292f0c9f2157b",
+    "at": "2026-11-04T09:30:42.250Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
