@@ -2,24 +2,25 @@
   "schema": 1,
   "id": "20261104-subagentes-claude-code-en-su-carpeta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261104-subagentes-claude-code-en-su-carpeta",
   "baseCommit": "cb6838409f3dba5834c2ee9722cae08987438784",
-  "revision": 1,
+  "revision": 3,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:96dbc6573af0aaf8dd77721478436ff20ba0788725a0f4911039a79019d74e06",
-    "at": "2026-11-04T09:48:47.262Z",
+    "revision": 3,
+    "hash": "sha256:fe062b63fa87951109c5bf523590ddf78ceb9929f3156dc4e24da55d4ba7440a",
+    "at": "2026-11-04T10:29:46.879Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "L",
-    "score": 14,
+    "score": 15,
     "adjust": 0,
     "reasons": [
       "12 archivos",
-      "2 módulos"
+      "2 módulos",
+      "4 tareas"
     ]
   },
   "items": {
@@ -65,12 +66,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1baeba6ff5e548fc0a5be4c5fc5fe54bab072b99",
+      "attempts": 1,
       "startedAt": "2026-11-04T10:21:52.980Z",
       "doneAt": "2026-11-04T10:24:09.652Z",
-      "summary": "La tabla de capacidades gana la columna Cortes en subagentes: Claude Code en sí; Gemini CLI, Antigravity y Devin en no posible con su motivo; Codex, OpenCode y Cursor sin ella hasta su corte. ARCHITECTURE explica cómo el guard trata a los subagentes."
+      "summary": "La tabla de capacidades gana la columna Cortes en subagentes: Claude Code en sí; Gemini CLI, Antigravity y Devin en no posible con su motivo; Codex, OpenCode y Cursor sin ella hasta su corte. ARCHITECTURE explica cómo el guard trata a los subagentes.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -80,7 +81,7 @@
   "maxIds": {
     "A": 4,
     "AC": 7,
-    "T": 3,
+    "T": 4,
     "R": 4
   },
   "lockedTests": {

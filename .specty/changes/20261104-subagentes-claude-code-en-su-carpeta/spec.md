@@ -81,6 +81,11 @@ Hoy el guard reconoce una conversación por el `session_id` de sus hooks, y los 
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts
   - ac: AC6
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
+- [ ] T4: `fakeModel` deja de exportarse, porque solo la usa su propio archivo
+  - files: packages/cli/test/fake-model.ts
+  - ac: —
+  - verify: pnpm typecheck && pnpm knip
+  - type: refactor
 
 ## Riesgos
 
