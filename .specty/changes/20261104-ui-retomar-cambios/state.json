@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-ui-retomar-cambios",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-ui-retomar-cambios",
   "baseCommit": "2bd6cf73dc77785caeb5ec988958323a0e167772",
   "revision": 1,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2443b0ac7fd024d9c80c2607245c064e3b471f03",
+      "attempts": 1,
       "startedAt": "2026-11-04T10:51:47.199Z",
       "doneAt": "2026-11-04T10:59:43.630Z",
-      "summary": "changeRecords añade a cada registro abierto orphan y away tal como los calcula status (openChanges), por id"
+      "summary": "changeRecords añade a cada registro abierto orphan y away tal como los calcula status (openChanges), por id",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2a37249d735194a267bbe65f5c271db302d4175d",
+      "startedAt": "2026-11-04T10:59:44.476Z",
+      "doneAt": "2026-11-04T11:01:50.318Z",
+      "summary": "orphan y away en los datos de la UI, la marca en la fila de la Bandeja y el panel sp-resume-hints encima de las pestañas con la orden de cada agente, Copiar, la entrada desde una sesión abierta y specty next; ARCHITECTURE §15"
     }
   },
   "pending": {

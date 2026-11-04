@@ -57,7 +57,7 @@ follows:
   - files: packages/cli/src/server/records.ts, packages/cli/test/server-holds.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-holds.test.ts test/server-restore.test.ts test/server.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
-- [ ] T2: La marca en la Bandeja y cómo retomarlo en la página, y la documentación
+- [x] T2: La marca en la Bandeja y cómo retomarlo en la página, y la documentación
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/inbox/inbox-row.ts, packages/ui/src/change/resume-hints.ts, packages/ui/src/change/change-page.ts, packages/ui/src/change/resume-hints.test.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/resume-hints.test.ts --include src/change/lost-folder.test.ts --include src/change/change-page.test.ts --include src/data/views.test.ts && pnpm typecheck && pnpm lint

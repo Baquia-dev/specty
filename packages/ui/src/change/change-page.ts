@@ -47,6 +47,7 @@ import { Preferences } from "../theme/preferences";
 import { ChangeBar } from "./change-bar";
 import { ChangeFacts } from "./change-facts";
 import { LostFolder } from "./lost-folder";
+import { ResumeHints } from "./resume-hints";
 
 const TABS: readonly ChangeTab[] = ["spec", "progress", "acceptance", "history"];
 
@@ -97,6 +98,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     TestsActions,
     HistoryTab,
     LostFolder,
+    ResumeHints,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -168,6 +170,9 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
           @if (change.lost) {
             <sp-lost-folder [change]="change" />
           } @else {
+          @if (change.orphan || change.away) {
+            <sp-resume-hints [change]="change" />
+          }
           <sp-tabs [label]="t()('Secciones del cambio', 'Change sections')" [selected]="tab()" (selectedChange)="select($event)">
             <sp-tab-panel value="spec" label="Spec">
               <sp-spec-review [change]="change" [(reading)]="reading" />
