@@ -53,7 +53,7 @@ El servidor de `specty ui` ya da en `GET /api/sessions` cada conversación de ag
   - files: packages/ui/src/sessions/sessions-page.ts, packages/ui/src/sessions/sessions-page.test.ts, packages/ui/src/app/routes.ts, packages/ui/src/app/shell.ts, packages/ui/src/memory/memory-lines.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/sessions/sessions-page.test.ts --include src/app/shell.test.ts --include src/memory/memory-lines.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: La documentación
+- [x] T3: La documentación
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
