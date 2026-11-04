@@ -54,7 +54,7 @@ Resuelve P6. Con `policy.tests: contract`, `task done` no ejecuta la comprobaci�
 
 ## Tareas
 
-- [ ] T1: La validación avisa de una última tarea de código sin comprobación de tipos
+- [x] T1: La validación avisa de una última tarea de código sin comprobación de tipos
   - files: packages/core/src/validate/quality.ts, packages/core/src/validate/index.ts, packages/core/src/validate/context.ts, packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/validate/quality.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/quality.test.ts && pnpm typecheck && pnpm lint

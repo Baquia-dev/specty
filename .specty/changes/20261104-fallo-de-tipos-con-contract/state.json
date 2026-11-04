@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "982c4fb05f60bdf22bb227729f606dbe9a6a0c93",
+      "startedAt": "2026-11-04T06:37:58.731Z",
+      "doneAt": "2026-11-04T06:39:30.150Z",
+      "summary": "Regla checkTypecheck (aviso task-no-typecheck): con contract, avisa si la verificación de la última tarea de código, como la ejecuta task done, no contiene la comprobación de tipos del proyecto (ValidationContext.typecheck) ni verify.full."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
