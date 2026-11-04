@@ -55,7 +55,7 @@ Para repartir los cortes de una épica entre subagentes, el guard tiene que atar
 
 ## Tareas
 
-- [ ] T1: Cada subagente de OpenCode trabaja en la carpeta de su cambio, y la tabla lo dice
+- [x] T1: Cada subagente de OpenCode trabaja en la carpeta de su cambio, y la tabla lo dice
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, packages/cli/test/opencode.test.ts, packages/cli/test/opencode-e2e.test.ts, packages/cli/test/fake-chat.ts, docs/ARCHITECTURE.md, docs/dominio.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run --reporter=verbose test/opencode.test.ts test/opencode-e2e.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts && pnpm lint && pnpm typecheck && pnpm knip
