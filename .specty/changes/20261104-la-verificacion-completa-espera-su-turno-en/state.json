@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261104-la-verificacion-completa-espera-su-turno-en",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-la-verificacion-completa-espera-su-turno-en",
+  "baseCommit": "b7f1b8f4d4b10f3978cd306250b73338b1c0687f",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4d912bccb3d85c502aea4220f12be69690419c312c3a80415446a88dfcf3ef6c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2a3cdd405ffd534a433dd40019bb5439b0170b39f882e695dda7f7092b98692a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:590d56b7ada448773e45aaec24c8586f208aca697b01ddb7a9fbe39b9daed499",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b00a206a8d778a82ceafe08591613a60e32d50a92c35fb99babb0c898a9f945a",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:59378ef6641ccd7e541f4f1fa4853a66719d10b66f05fc436e1f9dc1fd53f7c1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:5c4e40769b9ccb85793624febe2fb3408aa9bcaf099df219c6c57e8cfcecf5bf",
+    "at": "2026-11-04T13:39:05.694Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
