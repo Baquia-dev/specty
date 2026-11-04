@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fb062e1e7873e027d05ac8f018341271aa958b5c",
+      "attempts": 1,
       "startedAt": "2026-11-04T13:39:31.934Z",
       "doneAt": "2026-11-04T13:40:36.590Z",
-      "summary": "Run gana seconds, que el ejecutor mide con el reloj alrededor del agente; summarize da su media entera y la tabla del informe la columna Tiempo (s). El coste sigue en Consumo."
+      "summary": "Run gana seconds, que el ejecutor mide con el reloj alrededor del agente; summarize da su media entera y la tabla del informe la columna Tiempo (s). El coste sigue en Consumo.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "35262a4edbf2a2c982dce941660185281066bf25",
+      "startedAt": "2026-11-04T13:40:38.216Z",
+      "doneAt": "2026-11-04T13:57:31.394Z",
+      "summary": "Experimentos epic y epic-subagent: una épica aprobada de tres cortes en .worktrees, en modo delegado y sin conversación; epic con subagents false. Se juzgan en la carpeta principal por los cortes archivados que nombran cada archivo."
     }
   },
   "pending": {

@@ -62,7 +62,7 @@ Hoy las evals miden el coste de tres cambios seguidos, pero no el de una épica 
   - files: evals/src/report.ts, evals/run/compliance.eval.ts, evals/test/report.test.ts, evals/test/consumption.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/report.test.ts test/consumption.test.ts && pnpm lint
-- [ ] T2: Los experimentos construyen una épica en orden y con un subagente por corte
+- [x] T2: Los experimentos construyen una épica en orden y con un subagente por corte
   - files: evals/src/experiments.ts, evals/test/experiments.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/experiments.test.ts && pnpm typecheck && pnpm lint && pnpm knip
