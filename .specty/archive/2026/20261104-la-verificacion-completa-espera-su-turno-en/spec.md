@@ -81,3 +81,23 @@ Hoy `oneAtATime` (`flow/full-verification.ts`) espera el turno de la verificaci�
 
 - R1: Una sesión cuyo titular se queda colgado sin morir (un portátil suspendido) hace esperar a las demás más que hoy — el comando del titular se corta a los `verify.timeoutSec` y el aviso dice quién es, su pid y su carpeta, para que la persona lo pare.
 - R2: Un proceso que deja su archivo en la cola y muere no bloquea a nadie — su pid deja de existir o su archivo deja de renovarse, y el siguiente que mira lo borra.
+
+## Cierre
+
+### Resumen
+
+La verificación completa ya no corre nunca sin turno: quien espera hace cola por orden de llegada en `locks/full-verification.queue/` (`store/turn-queue.ts`), solo el primero intenta el turno, y el aviso dice una vez cuántas sesiones esperan delante, en español y en inglés. Un proceso que ya tiene el turno no hace cola, y un archivo de la cola cuyo proceso murió o que lleva 30 s sin renovarse no cuenta y se borra. `accept` anota el tiempo de `change.verified` desde que el comando arranca (`runLive` con `onStart`), sin la espera del turno de otra sesión.
+
+### Desviaciones
+
+- El nombre de cada archivo de la cola lleva, además de la hora de llegada y el pid, un contador del proceso (`<llegada>-<pid>-<n>.json`), para que dos esperas del mismo proceso en el mismo milisegundo no choquen; formats §1 lo recoge.
+- Al aceptar, main había añadido `landRetrying` (el cierre vuelve a incorporar main si avanzó) y su párrafo de ARCHITECTURE §9 chocó con el de la cola: se juntaron los dos, sin la frase de que la espera del turno acaba en `verify.timeoutSec`, que ya no es cierta.
+
+### Decisiones
+
+- Esperar sin límite mientras el titular siga vivo: el comando del titular ya se corta a los `verify.timeoutSec`, y ninguna pregunta a la persona ocurre con el turno tomado.
+- La cola son archivos con la hora de llegada en el nombre, que cada proceso renueva en cada vuelta, en lugar de un único archivo compartido que habría que bloquear para escribirlo.
+
+### Pendientes
+
+- Ninguno

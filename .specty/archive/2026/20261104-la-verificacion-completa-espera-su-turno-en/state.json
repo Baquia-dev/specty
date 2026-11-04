@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-la-verificacion-completa-espera-su-turno-en",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-la-verificacion-completa-espera-su-turno-en",
   "baseCommit": "b7f1b8f4d4b10f3978cd306250b73338b1c0687f",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:5c4e40769b9ccb85793624febe2fb3408aa9bcaf099df219c6c57e8cfcecf5bf",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f6cfbf759f345da7b6da41bf0ccd08f6856a5f40",
+      "attempts": 1,
       "startedAt": "2026-11-04T13:49:05.439Z",
       "doneAt": "2026-11-04T13:49:33.855Z",
-      "summary": "ARCHITECTURE §9 describe la cola del turno (orden de llegada, archivos que caducan, nunca sin turno, el tiempo de accept desde su turno) y formats.md §1 la carpeta locks/full-verification.queue/"
+      "summary": "ARCHITECTURE §9 describe la cola del turno (orden de llegada, archivos que caducan, nunca sin turno, el tiempo de accept desde su turno) y formats.md §1 la carpeta locks/full-verification.queue/",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,9 +93,64 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-04T18:49:36.695Z",
   "lockedTests": {
     "packages/cli/src/flow/full-verification.test.ts": "sha256:db5583cb93c00a51f2c9518a685194e42628ccc37da7dddfecfef33746d877e9",
     "packages/core/test/cards/lock.test.ts": "sha256:13028a2471300666f7f04d63380dc58b8178e6334ea2fcaf4cb05aed3ed5dd4c",
     "packages/cli/test/accept-turn-time.test.ts": "sha256:920d7c7123ef17a3daf0a90e46d30802c1fbe13d458a097952ae84f5fa2f9e04"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "9c97bf0754ec7523b4d7255fd2f72e45a8420334",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/src/agents/codex.ts",
+      "packages/cli/src/agents/run.ts",
+      "packages/cli/src/agents/windsurf.ts",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/finish.ts",
+      "packages/cli/src/commands/scope.ts",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/flow/ci-github.ts",
+      "packages/cli/src/flow/full-verification.test.ts",
+      "packages/cli/src/flow/full-verification.ts",
+      "packages/cli/src/flow/land.ts",
+      "packages/cli/src/flow/live-run.ts",
+      "packages/cli/src/flow/usage.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/sessions.ts",
+      "packages/cli/src/store/lock.ts",
+      "packages/cli/src/store/turn-queue.ts",
+      "packages/cli/test/accept-turn-time.test.ts",
+      "packages/cli/test/agents.test.ts",
+      "packages/cli/test/close-moved.test.ts",
+      "packages/cli/test/codex-e2e.test.ts",
+      "packages/cli/test/codex.test.ts",
+      "packages/cli/test/front-start-codex.test.ts",
+      "packages/cli/test/server/sessions.test.ts",
+      "packages/cli/test/session-start-codex.test.ts",
+      "packages/cli/test/session-start-devin.test.ts",
+      "packages/cli/test/session-start.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/cards/lock.ts",
+      "packages/core/src/cards/new.ts",
+      "packages/core/src/guard/git.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/light.ts",
+      "packages/core/src/memory/sessions.ts",
+      "packages/core/test/cards/doctor-codex-startup.test.ts",
+      "packages/core/test/cards/lock.test.ts"
+    ],
+    "at": "2026-11-04T18:27:02.849Z",
+    "resolved": {
+      "commit": "e4308d4",
+      "at": "2026-11-04T18:37:36.533Z"
+    }
   }
 }
