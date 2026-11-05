@@ -130,6 +130,15 @@ const TOOLS: readonly Tool[] = [
     view: false,
   },
   {
+    name: "specty_verify",
+    description:
+      "Run the full verification fresh: every unit, without the record of those that passed; one that fails runs once more.",
+    properties: {},
+    required: [],
+    // Unlike the checks, it shows in the view: in a change's folder, it is that change's run.
+    argv: () => ["verify", "--fresh"],
+  },
+  {
     name: "specty_task_done",
     description:
       "Complete the active task: check its scope, run its checks and verification, commit it and move on.",

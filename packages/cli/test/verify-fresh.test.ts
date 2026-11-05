@@ -2,7 +2,9 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, CONFIG, cli, tempRepo } from "./support";
+import { createGit } from "../src/io/git";
+import { readRuns } from "../src/store/runs";
+import { APP, CHANGE, CONFIG, cli, tempRepo, testEnv } from "./support";
 
 /** A script that appends `text` to the file `MARKS` names: what ran, in order. */
 const mark = (text: string) => `require('fs').appendFileSync(process.env.MARKS,'${text}')`;
@@ -13,6 +15,13 @@ const flaky = (text: string) =>
 
 /** Marks `text`, and always fails. */
 const failing = (text: string) => `${mark(text)};console.log('rompe ${text}');process.exit(1)`;
+
+/** Marks `text`, says «dice `text`» and waits two seconds: a unit to watch while it runs. */
+const slow = (text: string) => `${mark(text)};console.log('dice ${text}');setTimeout(()=>{},2000)`;
+
+/** Marks `text` and fails at once the first time; run again, says «otra vez `text`» and waits. */
+const slowAgain = (text: string) =>
+  `${mark(text)};const f=process.env.MARKS+'.${text}';require('fs').existsSync(f)?(console.log('otra vez ${text}'),setTimeout(()=>{},2000)):(require('fs').writeFileSync(f,''),process.exit(1))`;
 
 /** The shell command of a unit that runs `script` with Node. */
 const command = (script: string) => `node -e "${script}"`;
@@ -44,6 +53,18 @@ const recorded = async (root: string) =>
 
 /** The open entries of the memory, as `specty memory` lists them. */
 const memory = async (root: string) => (await cli(root, ["memory"])).out;
+
+/** The verifications going on in `root`'s clone, by change, as the UI and the MCP App read them. */
+const going = (root: string) => readRuns(createGit(root, testEnv()));
+
+/** Waits for `check` to hold, up to 20 s of real time. */
+async function until(check: () => Promise<boolean>): Promise<void> {
+  const deadline = Date.now() + 20_000;
+  while (!(await check())) {
+    if (Date.now() > deadline) throw new Error("timed out");
+    await new Promise((done) => setTimeout(done, 50));
+  }
+}
 
 /**
  * A unit's tests as a script: `node scripts/report.cjs <unit> <mode>` marks the unit and, like a
@@ -225,5 +246,45 @@ describe("specty verify --fresh", () => {
     expect(nothing.code).toBe(1);
     expect(nothing.out).toContain("no da `verify.full` ni `verify.units`");
     expect(await recorded(none)).toHaveLength(0);
+  });
+});
+
+describe("specty verify --fresh, live", () => {
+  it("AC1: in the folder of an open change, each attempt is that change's full verification going on, with its unit's command and output, and none is left", async () => {
+    const root = await repo(
+      withUnits(
+        `${unit("a", ["src/app.ts"], slow("a"))}${unit("c", ["src/extra.ts"], slowAgain("c"))}`,
+      ),
+    );
+    expect((await cli(root, ["new", "Saludo personalizado"])).code).toBe(0);
+    const running = verify(root);
+    for (const [name, said] of [
+      ["a", "dice a"],
+      ["c", "otra vez c"],
+    ] as const) {
+      await until(async () => (await going(root)).get(CHANGE)?.output.includes(said) === true);
+      const run = (await going(root)).get(CHANGE);
+      const script = name === "a" ? slow(name) : slowAgain(name);
+      expect(run).toMatchObject({ command: command(script), output: [said], pid: process.pid });
+      expect(run?.task).toBeUndefined();
+    }
+    const done = await running;
+    expect(done.code).toBe(0);
+    expect(await marks(root)).toBe("acc");
+    expect(done.out).toMatch(/c · inestable: falló y pasó al repetirla · \d+ s \+ \d+ s\n/);
+    expect((await going(root)).size).toBe(0);
+  });
+
+  it("AC2: without an open change in the folder, runs as before and leaves no verification going on", async () => {
+    const root = await repo(withUnits(unit("a", ["src/app.ts"], slow("a"))));
+    const running = verify(root);
+    await until(async () => (await marks(root)) === "a");
+    await new Promise((done) => setTimeout(done, 500));
+    expect((await going(root)).size).toBe(0);
+    const done = await running;
+    expect(done.code).toBe(0);
+    expect(done.out).toMatch(/a · correcta · \d+ s\n/);
+    expect(await recorded(root)).toHaveLength(1);
+    expect((await going(root)).size).toBe(0);
   });
 });
