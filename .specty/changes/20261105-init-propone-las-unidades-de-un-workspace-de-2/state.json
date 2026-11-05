@@ -6,6 +6,13 @@
   "branch": "specty/20261105-init-propone-las-unidades-de-un-workspace-de-2",
   "baseCommit": "e32b8471a8fcbd51783303ebf5f3275ca0c3e864",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e1b9ef6f5dbb795dfc564dffdfca7bb88d4014807e7c68f0e40134c98fda2a95",
+    "at": "2026-11-05T14:12:09.618Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -51,12 +58,6 @@
     "T": 1,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e1b9ef6f5dbb795dfc564dffdfca7bb88d4014807e7c68f0e40134c98fda2a95",
-    "at": "2026-11-05T14:12:09.618Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T14:16:52.763Z"
 }
