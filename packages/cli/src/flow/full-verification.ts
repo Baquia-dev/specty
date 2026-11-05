@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-import { fullVerificationWaitNote } from "@baquia-dev/specty-core";
+import {
+  fullVerificationWaitNote,
+  type ResolvedConfig,
+  type VerifyUnit,
+} from "@baquia-dev/specty-core";
 import type { Session } from "../session";
 import { holdsFullVerification, liveHolder, lockFullVerification } from "../store/lock";
 import { joinTurnQueue } from "../store/turn-queue";
@@ -11,6 +15,19 @@ const POLL_MS = 2000;
 
 /** The id under which `liveHolder` finds the full verification's turn. */
 const FULL_VERIFICATION = "full-verification";
+
+/**
+ * The command of the full verification: `verify.full` or, with `verify.units`, the commands of
+ * every unit joined with `&&`, which do the same; none without either.
+ */
+export function fullCommand(config: Pick<ResolvedConfig, "verify">): string | undefined {
+  const { units, full } = config.verify;
+  return units === undefined ? full : unitsCommand(units);
+}
+
+/** The commands of `units` joined with `&&`: in order, and the first that fails stops the rest. */
+export const unitsCommand = (units: readonly VerifyUnit[]): string =>
+  units.map(({ command }) => command).join(" && ");
 
 /**
  * Runs `run`, a full verification with `command`, on this session's turn and with every one of
@@ -86,6 +103,6 @@ export function landingTurn<T>(
   plan: Integration | undefined,
   run: () => Promise<T>,
 ): Promise<T> {
-  const command = session.config.verify.full ?? session.config.verify.default;
+  const command = fullCommand(session.config) ?? session.config.verify.default;
   return plan === undefined || command === undefined ? run() : onTurn(session, command, run, {});
 }

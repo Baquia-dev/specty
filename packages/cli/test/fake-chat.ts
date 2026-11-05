@@ -5,8 +5,8 @@ import type { AddressInfo } from "node:net";
 /**
  * A fake of OpenAI's chat completions API that plays a fixed script of tool calls, so a real agent
  * that speaks it (OpenCode, through `@ai-sdk/openai-compatible`) runs against it for free and
- * deterministically. It reads how far the conversation got from the `tool` messages the agent
- * sends back, and keeps every request.
+ * deterministically. It reads how far each conversation got from the `tool` messages the agent
+ * sends back, and keeps every request. A subagent gets a script of its own (`fakeChat`).
  */
 
 export interface ToolCall {
@@ -25,15 +25,27 @@ interface Message {
 export interface FakeChat {
   /** For the provider's `baseURL`. */
   readonly url: string;
-  /** Each request that carried tools, as its messages. */
+  /** Each request that carried tools, as its messages: the main conversation's and its subagents'. */
   readonly requests: () => readonly (readonly Message[])[];
-  /** The text of each tool result of the last request: the whole conversation's. */
+  /** The text of each tool result of the main conversation's last request: the whole conversation's. */
   readonly results: () => readonly string[];
+  /** The same, for the subagent whose task carries `mark`. */
+  readonly subagentResults: (mark: string) => readonly string[];
   readonly close: () => Promise<void>;
 }
 
-export async function fakeChat(script: readonly ToolCall[]): Promise<FakeChat> {
+/**
+ * Plays `script` to the main conversation and, to a subagent whose task (its first user message)
+ * carries one of the marks of `subagents`, that mark's script, each conversation on its own.
+ */
+export async function fakeChat(
+  script: readonly ToolCall[],
+  subagents: Readonly<Record<string, readonly ToolCall[]>> = {},
+): Promise<FakeChat> {
   const requests: Message[][] = [];
+  // Each conversation's last request that carried tools, by its mark: "" for the main one.
+  const last = new Map<string, readonly Message[]>();
+  const marks = Object.keys(subagents);
   const server = createServer((request, response) => {
     void read(request).then((text) => {
       const body = parse(text);
@@ -44,18 +56,27 @@ export async function fakeChat(script: readonly ToolCall[]): Promise<FakeChat> {
       // Requests without tools (titles, summaries) get the closing text and leave the script.
       const tools = Array.isArray(body.tools) && body.tools.length > 0;
       const messages = messagesOf(body);
-      if (tools) requests.push(messages);
+      const task = messages.find((message) => message.role === "user")?.text ?? "";
+      const mark = marks.find((candidate) => task.includes(candidate));
+      if (tools) {
+        requests.push(messages);
+        last.set(mark ?? "", messages);
+      }
+      const steps = mark === undefined ? script : (subagents[mark] ?? []);
       const done = messages.filter((message) => message.role === "tool").length;
-      answer(response, tools ? script[done] : undefined, requests.length);
+      // The count of requests numbers the calls: each conversation's get ids of their own.
+      answer(response, tools ? steps[done] : undefined, requests.length);
     });
   });
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
   const { port } = server.address() as AddressInfo;
+  const resultsOf = (messages: readonly Message[] | undefined) =>
+    (messages ?? []).filter((message) => message.role === "tool").map(({ text }) => text);
   return {
     url: `http://127.0.0.1:${port}/v1`,
     requests: () => requests,
-    results: () =>
-      (requests.at(-1) ?? []).filter((message) => message.role === "tool").map(({ text }) => text),
+    results: () => resultsOf(last.get("")),
+    subagentResults: (mark) => resultsOf(last.get(mark)),
     close: () => new Promise((resolve) => server.close(() => resolve())),
   };
 }

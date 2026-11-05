@@ -16,15 +16,17 @@ import {
   resolveIncorporationNext,
   section,
   targetConflictsLine,
+  unitsLines,
   verifyingNote,
 } from "@baquia-dev/specty-core";
-import { type ExecResult, execute, tail } from "../io/exec";
+import { type ExecResult, tail } from "../io/exec";
 import { type Git, resolved } from "../io/git";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { commitState } from "./active";
 import { commitWithReceipt, decisionTrailers } from "./commits";
-import { oneAtATime } from "./full-verification";
+import { fullCommand } from "./full-verification";
+import { type FullRan, fullPlan, runFull } from "./units";
 import { codeTree, recordFullVerification, touchesCode } from "./verified";
 import { targetBranch } from "./worktree";
 
@@ -71,6 +73,9 @@ export type Absorbed =
   | { readonly ok: true; readonly lines: readonly string[] }
   | { readonly ok: false; readonly output: Output };
 
+/** Nothing moved, or the merge waits for the agent: what the person sees. */
+type Refused = Extract<Absorbed, { readonly ok: false }>;
+
 /**
  * Before the change lands: refuses when the folder that holds the main branch has uncommitted
  * changes, which the fast-forward could overwrite, and then merges the main branch (`mergeTarget`).
@@ -110,11 +115,9 @@ export async function mergeTarget(
   const merged = await git.run(["merge", "--no-ff", "--no-commit", plan.target]);
   if (merged.code !== 0) return mergeStopped(session, absorbing, merged);
   const verification = await mergeVerification(session, plan, state);
-  if (verification.kind === "passed") {
-    const failed = await failedVerification(session, absorbing, verification.command);
-    if (failed !== undefined) return failed;
-  }
-  return commitAbsorbed(session, plan, verification);
+  if (verification.kind !== "passed") return commitAbsorbed(session, plan, verification);
+  const verified = await verifyMerged(session, absorbing, verification.command);
+  return verified.ok ? commitAbsorbed(session, plan, verified.verification) : verified;
 }
 
 /**
@@ -128,7 +131,7 @@ async function mergeVerification(
   state: ChangeState,
 ): Promise<MergeVerification> {
   if (state.kind === "epic") return { kind: "epic" };
-  const command = session.config.verify.full ?? session.config.verify.default;
+  const command = fullCommand(session.config) ?? session.config.verify.default;
   if (command === undefined) return { kind: "none" };
   if (!(await touchesCode(session, plan.target))) return { kind: "no-code" };
   return { kind: "passed", command };
@@ -184,46 +187,69 @@ async function mergeStopped(
   return refused(session, change.state, failed, byHand);
 }
 
-/** Runs the verification on the merged code; when it fails, as when the merge stops. */
-async function failedVerification(
+/**
+ * Runs the full verification with `command` on the merged code, live: with `verify.units`, only
+ * the units that have not passed, and none when every one did. What verified it or, when it
+ * fails, as when the merge stops.
+ */
+async function verifyMerged(
   session: Session,
   absorbing: Absorbing,
   command: string,
-): Promise<Absorbed | undefined> {
-  const { git, lang } = session;
-  const { plan, change, again, byHand } = absorbing;
-  session.environment.io.err(verifyingNote(command, lang));
+): Promise<{ readonly ok: true; readonly verification: MergeVerification } | Refused> {
+  const { change } = absorbing;
+  const plan = await fullPlan(session, command);
+  if (plan.units?.pending.length === 0) {
+    const units = { reused: plan.units.reused, passed: [], skipped: [] };
+    return { ok: true, verification: { kind: "passed", command, units } };
+  }
+  session.environment.io.err(verifyingNote(plan.runs, session.lang));
   let started = Date.now();
   // One full verification at a time in the clone: the time counted starts with its turn.
-  const result = await oneAtATime(session, command, () => {
+  const ran = await runFull(session, change.state.id, plan, () => {
     started = Date.now();
-    return execute(command, [], {
-      cwd: session.root,
-      shell: true,
-      env: session.environment.env,
-      timeoutMs: session.config.verify.timeoutSec * 1000,
-      lowPriority: true,
-    });
   });
-  if (result.code === 0) {
-    // In the audit, so that `accept` does not run it again on this code; a closed change's audit
-    // is already archived.
-    if (change.state.phase !== "done") {
-      const run = { command, started, code: 0, ms: Date.now() - started, output: tail(result) };
-      const tree = await codeTree(session);
-      await recordFullVerification(session, change, tree === undefined ? run : { ...run, tree });
-    }
-    return undefined;
+  if (ran.code !== 0) return failedVerification(session, absorbing, ran);
+  const units = ran.units === undefined ? {} : { units: ran.units };
+  // In the audit, so that `accept` does not run it again on this code; a closed change's audit
+  // is already archived.
+  if (change.state.phase !== "done") {
+    const run = {
+      command,
+      started,
+      code: 0,
+      ms: Date.now() - started,
+      output: ran.output,
+      ...units,
+    };
+    const tree = await codeTree(session);
+    await recordFullVerification(session, change, tree === undefined ? run : { ...run, tree });
   }
-  const reason = mergedVerifyFailsLine(plan.target, command, lang);
-  const details = { title: incorporationTitle("verification", lang), lines: tail(result, 15) };
+  return { ok: true, verification: { kind: "passed", command, ...units } };
+}
+
+/**
+ * The verification of the merged code failed, as `ran` says: the merge stays for an open change's
+ * agent, with the output of what failed and what each unit did; a closed change's is aborted.
+ */
+async function failedVerification(
+  session: Session,
+  absorbing: Absorbing,
+  ran: FullRan,
+): Promise<Refused> {
+  const { git, lang } = session;
+  const { plan, change, again, byHand } = absorbing;
+  const reason = mergedVerifyFailsLine(plan.target, ran.command, lang);
+  const done = ran.units === undefined ? [] : unitsLines(ran.units, lang);
+  const lines = [...ran.output.slice(-15), ...done];
+  const details = { title: incorporationTitle("verification", lang), lines };
   if (absorbing.forAgent)
     return leaveForAgent(session, plan, change, again, { reason, conflicts: [], details });
   await git.run(["merge", "--abort"]);
   return refused(session, change.state, reason, byHand, details);
 }
 
-/** Commits the merge, and says what checked it. */
+/** Commits the merge, and says what checked it: with `verify.units`, also what each unit did. */
 async function commitAbsorbed(
   session: Session,
   plan: Integration,
@@ -235,7 +261,10 @@ async function commitAbsorbed(
     stage: [],
     receipt: { change: plan.id, kind: "close" },
   });
-  return { ok: true, lines: [absorbedLine(plan.target, commit, verification, session.lang)] };
+  const { lang } = session;
+  const units = verification.kind === "passed" ? verification.units : undefined;
+  const done = units === undefined ? [] : unitsLines(units, lang);
+  return { ok: true, lines: [absorbedLine(plan.target, commit, verification, lang), ...done] };
 }
 
 /** Nothing moved: the change stays in its phase, its branch and its folder as they were. */
@@ -245,7 +274,7 @@ function refused(
   reason: string,
   next: string,
   details?: OutputBlock,
-): Absorbed {
+): Refused {
   const lead = notYetLine(state.phase, "unchanged", session.lang);
   return { ok: false, output: blocked(state, [lead, reason], details, next) };
 }
@@ -260,7 +289,7 @@ async function leaveForAgent(
   change: StoredChange,
   again: "close" | "accept",
   failure: { readonly reason: string; readonly conflicts: string[]; readonly details: OutputBlock },
-): Promise<Absorbed> {
+): Promise<Refused> {
   const { git } = session;
   const base = await git.output(["merge-base", "HEAD", plan.target]);
   const changed = async (to: string) =>

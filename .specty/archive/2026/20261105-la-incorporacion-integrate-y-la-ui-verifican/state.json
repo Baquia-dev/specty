@@ -1,0 +1,177 @@
+{
+  "schema": 1,
+  "id": "20261105-la-incorporacion-integrate-y-la-ui-verifican",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-la-incorporacion-integrate-y-la-ui-verifican",
+  "baseCommit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2c7cbbe6ad2f5e2814de37aa540b8bb259b9707c2f265f3cf753cc7cc2409821",
+    "at": "2026-11-05T06:27:18.327Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:68c0c99f22bb8cce74b6ef09cbb067fd536e6f873c39edc66e0707d56ae12826",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7e6edc937e2775141e64a8a2ce9df8bd3df81564c22069323cd8c989fb70b3f5",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f49947e4d7013805410f4436ba2f11a7592034e38de0f2086b6456cc18843411",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:44ad018e2e49ca55c75339672755d29786e5ec4e7e83a22dc9b8c5db8f537796",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:7cdc970217f09048d8c33670b951589cf72014370c53028efcbefef4d53eb4a1",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:c775132a8c3383923a961fdabb69d5dd2fd84ea16c05acfd18b29039771e9a47",
+      "decision": "confirmed"
+    },
+    "A7": {
+      "hash": "sha256:5e4b586b65731de5fe408c50feab978be30f7e86e71cb66de2fdbabe23573e7d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "f0b30ef158217d2df87fe5040efc4de99d60e952",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:37:37.370Z",
+      "doneAt": "2026-11-05T06:38:39.591Z",
+      "summary": "absorbedLine dice que pasaron las unidades de la verificación completa cuando MergeVerification lleva units",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "402ae1e9c7953ff4a815c1e6a71bf3f671d27020",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:38:40.043Z",
+      "doneAt": "2026-11-05T06:47:20.724Z",
+      "summary": "La incorporación de main verifica con fullPlan y runFull: solo las unidades que faltan, anotadas en el registro y en change.verified; runUnits recibe cómo ejecutar cada comando y fullCommand pasa a full-verification.ts, donde landingTurn lo usa",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "47685a75276f1b9b8aa35e9180da01f12efb96ef",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:47:21.260Z",
+      "doneAt": "2026-11-05T06:52:52.051Z",
+      "summary": "specty integrate verifica el merge resuelto con fullPlan y runFull: solo las unidades que faltan, en vivo, y dice por la salida de error lo que hizo cada una",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "df6f58d5ae74b7895846e066f545fe399db72c95",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:52:52.395Z",
+      "doneAt": "2026-11-05T06:58:15.360Z",
+      "summary": "El servidor de la UI ejecuta con fullPlan y runUnits solo las unidades que faltan, cada una en su proceso y en vivo, y anota units en change.verified; lee el árbol y las huellas en orden (dos lecturas a la vez compartían el índice temporal); formato de flow/integrate.ts",
+      "scopeExtra": [
+        "packages/cli/src/flow/integrate.ts"
+      ]
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "5ac030092a5bba1407065f48c37be0de814b713a",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:58:15.682Z",
+      "doneAt": "2026-11-05T07:03:04.632Z",
+      "summary": "ARCHITECTURE §9 y formats.md §4 y §6: la incorporación, integrate y la UI verifican por unidades",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 6,
+    "T": 5,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T07:19:11.372Z",
+  "lockedTests": {
+    "packages/core/test/cards/incorporation.test.ts": "sha256:3c3318dd288f705e8e45b8f1aa0bcdb32e98de74c0a87092353b074854ce0d11",
+    "packages/cli/test/incorporation-units.test.ts": "sha256:282d918fa20abaa79eff390e79d0710fd7fe276bc10c8d55443855bf11afd1ed",
+    "packages/cli/test/integrate-units.test.ts": "sha256:32a3f0b5d20bced67cd0064bb89da8a8069a7268d272a7b596e318d0d896e42c",
+    "packages/cli/test/server/verify-units.test.ts": "sha256:8957f2d7ec35999a7f356e3a3f5319882df199b3756c7509ea7acea84a30f7e9"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "4478cfdabd45bb9df95eee9d49eb0d7bb55cc2d0",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/checks.en.md",
+      "docs/checks.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "packages/cli/src/check/common.ts",
+      "packages/cli/src/check/coverage.ts",
+      "packages/cli/src/check/test-time.ts",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/integrate.ts",
+      "packages/cli/src/commands/verify.ts",
+      "packages/cli/src/flow/archive-memory.ts",
+      "packages/cli/src/flow/duplicates.ts",
+      "packages/cli/src/flow/full-verification.ts",
+      "packages/cli/src/flow/integrate.ts",
+      "packages/cli/src/flow/units.ts",
+      "packages/cli/src/install/opencode.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/test/accept-test-time.test.ts",
+      "packages/cli/test/check-docs.test.ts",
+      "packages/cli/test/check-test-time.test.ts",
+      "packages/cli/test/duplicates-slice.test.ts",
+      "packages/cli/test/incorporation-units.test.ts",
+      "packages/cli/test/integrate-units.test.ts",
+      "packages/cli/test/opencode.test.ts",
+      "packages/cli/test/server/verify-units.test.ts",
+      "packages/cli/test/verify-fresh.test.ts",
+      "packages/core/src/cards/fresh.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/integration.ts",
+      "packages/core/src/cards/test-time.ts",
+      "packages/core/src/checks/junit.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/checks.ts",
+      "packages/core/test/cards/fresh.test.ts",
+      "packages/core/test/cards/incorporation.test.ts",
+      "packages/core/test/cards/test-time.test.ts",
+      "packages/core/test/checks/junit.test.ts"
+    ],
+    "at": "2026-11-05T07:03:41.911Z",
+    "resolved": {
+      "commit": "c1db3b7",
+      "at": "2026-11-05T07:12:46.447Z"
+    }
+  }
+}

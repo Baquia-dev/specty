@@ -22,13 +22,15 @@ import {
   section,
   stillResolvingLine,
   undoOutsideNext,
+  unitsLines,
+  unitsReusedNote,
   verifyingNote,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { changeTrailers, commitWithReceipt } from "../flow/commits";
-import { oneAtATime } from "../flow/full-verification";
+import { fullCommand } from "../flow/full-verification";
 import { blocked } from "../flow/integrate";
-import { execute, tail } from "../io/exec";
+import { fullPlan, runFull } from "../flow/units";
 import { readText } from "../io/files";
 import { pathsOf } from "../io/git";
 import type { Session } from "../session";
@@ -54,7 +56,7 @@ export async function integrate(session: Session): Promise<Output> {
   if ((await git.run(["rev-parse", "-q", "--verify", "MERGE_HEAD"])).code !== 0) {
     return blocked(state, [mergeAbortedLine(lang)], undefined, runAgainNext(again, cards));
   }
-  const problem = await mergeProblem(session, integration);
+  const problem = await mergeProblem(session, change, integration);
   if (problem !== undefined) {
     return {
       status: "blocked",
@@ -78,12 +80,13 @@ interface MergeProblem {
 /** Conflict markers left, changes outside the files the merge brings together, or a failing verification. */
 async function mergeProblem(
   session: Session,
+  change: StoredChange,
   integration: Integration,
 ): Promise<MergeProblem | undefined> {
   return (
     (await markersLeft(session, integration)) ??
     (await outsideChanges(session, integration)) ??
-    (await failedVerification(session))
+    (await failedVerification(session, change))
   );
 }
 
@@ -122,25 +125,31 @@ async function outsideChanges(
   };
 }
 
-async function failedVerification(session: Session): Promise<MergeProblem | undefined> {
+/**
+ * The full verification of the merged code, live: with `verify.units`, only the units that have
+ * not passed, none when every one did, and what each did goes to the error output.
+ */
+async function failedVerification(
+  session: Session,
+  change: StoredChange,
+): Promise<MergeProblem | undefined> {
   const { config, lang } = session;
-  const command = config.verify.full ?? config.verify.default;
+  const { err } = session.environment.io;
+  const command = fullCommand(config) ?? config.verify.default;
   if (command === undefined) return undefined;
-  session.environment.io.err(verifyingNote(command, lang));
+  const plan = await fullPlan(session, command);
+  if (plan.units?.pending.length === 0) {
+    err(unitsReusedNote(plan.units.reused, lang).text);
+    return undefined;
+  }
+  err(verifyingNote(plan.runs, lang));
   // A full verification like any other: on its turn, with every place of the clone.
-  const result = await oneAtATime(session, command, () =>
-    execute(command, [], {
-      cwd: session.root,
-      shell: true,
-      env: session.environment.env,
-      timeoutMs: config.verify.timeoutSec * 1000,
-      lowPriority: true,
-    }),
-  );
-  if (result.code === 0) return undefined;
+  const ran = await runFull(session, change.state.id, plan, () => undefined);
+  if (ran.units !== undefined) err(unitsLines(ran.units, lang).join("\n"));
+  if (ran.code === 0) return undefined;
   return {
-    reason: commandFailsLine(command, lang),
-    details: { title: incorporationTitle("verification", lang), lines: tail(result, 15) },
+    reason: commandFailsLine(ran.command, lang),
+    details: { title: incorporationTitle("verification", lang), lines: ran.output.slice(-15) },
   };
 }
 

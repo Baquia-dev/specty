@@ -13,6 +13,78 @@ verify:
   default: "pnpm test"
   full: "pnpm check"
   timeoutSec: 2000
+  units:
+    - name: estático
+      command: "pnpm lint && pnpm typecheck && pnpm sources && pnpm knip"
+      paths:
+        [
+          "packages/**",
+          "evals/**",
+          "scripts/**",
+          "package.json",
+          "pnpm-lock.yaml",
+          "pnpm-workspace.yaml",
+          "tsconfig.base.json",
+          "biome.json",
+          "knip.json",
+        ]
+    - name: core
+      command: "pnpm --filter @baquia-dev/specty-core test"
+      paths:
+        [
+          "packages/core/**",
+          "docs/ARCHITECTURE.md",
+          "package.json",
+          "pnpm-lock.yaml",
+          "tsconfig.base.json",
+        ]
+    - name: exporters
+      command: "pnpm --filter @baquia-dev/specty-exporters test"
+      paths:
+        [
+          "packages/exporters/**",
+          "packages/core/**",
+          "package.json",
+          "pnpm-lock.yaml",
+          "tsconfig.base.json",
+        ]
+    - name: vscode
+      command: "pnpm --filter specty-vscode test"
+      paths:
+        [
+          "packages/vscode/**",
+          "packages/core/**",
+          "package.json",
+          "pnpm-lock.yaml",
+          "tsconfig.base.json",
+        ]
+    - name: ui
+      command: "pnpm --filter @baquia-dev/specty-ui test"
+      paths:
+        [
+          "packages/ui/**",
+          "packages/core/**",
+          "packages/exporters/**",
+          "package.json",
+          "pnpm-lock.yaml",
+          "tsconfig.base.json",
+        ]
+    - name: cli
+      command: "pnpm --filter @baquia-dev/specty test"
+      paths:
+        [
+          "packages/cli/**",
+          "packages/core/**",
+          "packages/exporters/**",
+          "docs/**",
+          "scripts/**",
+          "action.yml",
+          ".github/**",
+          "package.json",
+          "pnpm-lock.yaml",
+          "tsconfig.base.json",
+        ]
+
 scope:
   implicitTests: true
   generated: []
@@ -23,6 +95,7 @@ retro:
   mode: agent
 git:
   branchPerChange: true
+  afterLanding: "pnpm --filter @baquia-dev/specty build"
 split:
   maxModules: 3
 lines:

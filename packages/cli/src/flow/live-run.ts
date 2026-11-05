@@ -10,18 +10,25 @@ const KEPT = 1000;
 /** At most this often, in milliseconds, the live file is written again. */
 const EVERY = 250;
 
+/** How a live run starts. */
+interface LiveOptions {
+  /** Hears the moment the command starts: a full one first waits for its turn. */
+  readonly onStart?: () => void;
+  /** A unit of a full verification that holds the turn and the places already: it takes none. */
+  readonly held?: boolean;
+}
+
 /**
  * Runs the verification of `task` of change `change`, or with no task the full one, and keeps it
  * live for the local server and the MCP App (`store/runs.ts`): the file is written as lines
  * come, at most every 250 ms, and removed once the command ends, whether it passed or not.
- * `onStart` hears the moment the command starts: a full one first waits for its turn.
  */
 export async function runLive(
   session: Session,
   change: string,
   task: string | undefined,
   command: string,
-  onStart?: () => void,
+  { onStart, held = false }: LiveOptions = {},
 ): Promise<ExecResult> {
   const startedAt = session.environment.now().toISOString();
   let output: string[] = [];
@@ -52,14 +59,25 @@ export async function runLive(
     });
   };
   try {
-    // A full verification, with no task, waits for its turn and every place of the clone; a
-    // task's, for one place.
-    return await (task === undefined
-      ? oneAtATime(session, command, go)
-      : inSlots(session, 1, command, go));
+    return await placed(session, task, command, held, go);
   } finally {
     clearTimeout(pending);
     await writing;
     await clearRun(session.git, change).catch(() => undefined);
   }
+}
+
+/**
+ * Runs `go` in its places: a full verification, with no task, waits for its turn and every place
+ * of the clone; a task's, for one place; a unit of a full verification that holds them, for none.
+ */
+function placed(
+  session: Session,
+  task: string | undefined,
+  command: string,
+  held: boolean,
+  go: () => Promise<ExecResult>,
+): Promise<ExecResult> {
+  if (held) return go();
+  return task === undefined ? oneAtATime(session, command, go) : inSlots(session, 1, command, go);
 }

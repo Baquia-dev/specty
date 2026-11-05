@@ -60,6 +60,7 @@ export {
   type ScriptProject,
   scriptImports,
 } from "./checks/imports-script";
+export { parseJunit, slowTests, type TestTime } from "./checks/junit";
 export {
   type LayerViolation,
   layerOf,
@@ -240,6 +241,7 @@ export {
   type ResolvedConfig,
   resolveConfig,
   type TestsPolicy,
+  type VerifyUnit,
 } from "./schema/config";
 export {
   type ChangeState,

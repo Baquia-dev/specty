@@ -92,6 +92,17 @@ export {
   withLead,
 } from "./flow";
 export {
+  type FreshOutcome,
+  type FreshRefusal,
+  type FreshResult,
+  type FreshTarget,
+  type FreshUnit,
+  freshCard,
+  freshMemoryText,
+  freshProgressLine,
+  freshRefusalCard,
+} from "./fresh";
+export {
   foreignFrontsBlock,
   frontFreedCard,
   frontHeldDenial,
@@ -363,6 +374,7 @@ export {
   taskDoneCard,
   taskDoneRefusalCard,
 } from "./task";
+export { slowTestLines, slowTestMessage } from "./test-time";
 export {
   approveTestsQuestion,
   type TestsRefusal,
@@ -389,6 +401,13 @@ export {
   removedCard,
   unwatchedChangeWarning,
 } from "./uninstall";
+export {
+  timedOutLine,
+  type UnitsOutcome,
+  type UnitTime,
+  unitsLines,
+  unitsReusedNote,
+} from "./units";
 export {
   ccusageAddedLine,
   ccusageFailedWarning,

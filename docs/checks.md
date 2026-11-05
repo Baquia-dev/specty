@@ -316,6 +316,16 @@ Dice qué parte de las líneas ejecutables que añade el cambio ejecutó algún 
 
 **Desactivar:** `levels: { diff-coverage: off }`.
 
+### `test-time`
+
+**Stack:** cualquiera cuyos tests escriban un informe JUnit XML: Vitest (`reporters: ["junit"]`), Jest (jest-junit), pytest (`--junitxml`), Maven y Gradle, go-junit-report, PHPUnit (`--log-junit`) y casi todas las demás.
+
+Avisa de cada test que tarda más de `maxMs`, del más lento al más rápido, con su archivo, su nombre y su tiempo: `test/sum.test.ts «sum > adds big numbers» tarda 2,6 s (más de 1 s)`. Como `diff-coverage`, Specty no ejecuta los tests: lee los informes que dejan los tests del proyecto en la misma ejecución de `specty check`, así que corre después de las demás y solo lee los informes modificados desde que empezó. Sin `testTime`, sin los tests o con un informe de antes, no aparece; con informes nuevos y ningún test lento, pasa. El archivo de un test es su atributo `file`, el de su `<testsuite>` o su `classname` (en Vitest, la ruta del archivo; en JUnit de Java, la clase); uno relativo a la carpeta de su paquete se ancla a la carpeta más profunda del informe donde existe. Solo avisa, aunque su nivel sea `error`. La nota de la verificación completa de `accept` también muestra los cinco más lentos que dejaron sus informes, y cuántos más hay.
+
+**Configuración:** `testTime: { reports: ["reports/junit.xml", "*/*/reports/junit.xml"], maxMs: 2000 }`. `reports` son las rutas donde los tests dejan sus informes, con `*` dentro de un tramo, y `maxMs`, los milisegundos por encima de los que avisa de un test; los dos son obligatorios y no tienen valor por defecto. Los tests del proyecto tienen que escribir el informe: en Vitest, por ejemplo, `reporters: ["default", "junit"]` y `outputFile: { junit: "reports/junit.xml" }`.
+
+**Desactivar:** quita `testTime`, o `levels: { test-time: off }`.
+
 ### `spec-approved`
 
 **Con:** `--spec`.

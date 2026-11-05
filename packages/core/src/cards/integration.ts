@@ -3,7 +3,8 @@ import type { Phase } from "../flow/phases";
 import type { Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import { blockedCard } from "./flow";
-import { runNext, translator } from "./text";
+import { runNext, type Translate, translator } from "./text";
+import type { UnitsOutcome } from "./units";
 import type { CardContext, ChangeView, IntegrationView } from "./view";
 
 // Bringing the main branch into a change before it closes (ARCHITECTURE §9): what `next` shows
@@ -138,7 +139,8 @@ export function mergedVerifyFailsLine(target: string, command: string, lang: Lan
 
 /** What checked the merge: the full verification, nothing for an epic, or nothing configured. */
 export type MergeVerification =
-  | { readonly kind: "passed"; readonly command: string }
+  /** With `verify.units`, also what each unit did. */
+  | { readonly kind: "passed"; readonly command: string; readonly units?: UnitsOutcome }
   | { readonly kind: "epic" }
   | { readonly kind: "none" }
   /** The change touches no code, only free files: the merged code is the target's. */
@@ -167,13 +169,25 @@ export function absorbedLine(
     ),
   };
   const verified =
-    verification.kind === "passed"
-      ? t(` y \`${verification.command}\` pasó`, ` and \`${verification.command}\` passed`)
-      : unverified[verification.kind];
+    verification.kind === "passed" ? passedText(verification, t) : unverified[verification.kind];
   return t(
     `Antes, ${target} se incorporó a la rama del cambio (merge ${commit})${verified}.`,
     `First, ${target} was merged into the change's branch (merge ${commit})${verified}.`,
   );
+}
+
+/** How the full verification passed: its command or, with `verify.units`, its units. */
+function passedText(
+  verification: Extract<MergeVerification, { kind: "passed" }>,
+  t: Translate,
+): string {
+  const { command, units } = verification;
+  return units === undefined
+    ? t(` y \`${command}\` pasó`, ` and \`${command}\` passed`)
+    : t(
+        " y pasaron las unidades de su verificación completa",
+        " and the units of its full verification passed",
+      );
 }
 
 /**

@@ -1,9 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import { type ChildProcessByStdio, spawn } from "node:child_process";
 import type { Readable } from "node:stream";
-import { headerOf, type Output, runRefusalCard, runStartedCard } from "@baquia-dev/specty-core";
+import {
+  headerOf,
+  type Output,
+  runRefusalCard,
+  runStartedCard,
+  type UnitsOutcome,
+  unitsLines,
+} from "@baquia-dev/specty-core";
 import { locateChanges } from "../flow/changes";
-import { oneAtATime } from "../flow/full-verification";
+import { fullCommand, oneAtATime } from "../flow/full-verification";
+import { fullPlan, runUnits } from "../flow/units";
 import { codeTree, recordFullVerification } from "../flow/verified";
 import { lowerPriority } from "../io/exec";
 import type { Session } from "../session";
@@ -39,8 +47,8 @@ const EVERY = 250;
 const TASKS_EVERY = 500;
 
 /**
- * The full verifications the person starts from the UI, one per change: `verify.full` runs with
- * the shell in the change's folder, `heard` gets the run as it goes and `undefined` once it ends
+ * The full verifications the person starts from the UI, one per change: `verify.full`, or the
+ * units of `verify.units` that have not passed, run with the shell in the change's folder, `heard` gets the run as it goes and `undefined` once it ends
  * and its turn is free, and the result goes to the change's audit as `change.verified`.
  */
 export function changeRuns(
@@ -67,7 +75,7 @@ export function changeRuns(
         return runRefusalCard({ reason: "no-change", id }, headerOf(), cards);
       const { change, session: there } = found;
       const header = headerOf(id, change.state.phase);
-      const command = there.config.verify.full;
+      const command = fullCommand(there.config);
       if (change.state.phase !== "acceptance")
         return runRefusalCard({ reason: "not-in-acceptance" }, header, cards);
       if (command === undefined) return runRefusalCard({ reason: "no-full-verify" }, header, cards);
@@ -122,7 +130,7 @@ function runFull(target: RunTarget, job: FullRun): void {
   target.inTurn(async () => {
     try {
       await oneAtATime(waiting, command, () =>
-        spawned(target, job, live, (kill) => {
+        verified(target, job, live, (kill) => {
           stop = kill;
         }),
       );
@@ -133,18 +141,49 @@ function runFull(target: RunTarget, job: FullRun): void {
   });
 }
 
-/** Runs the command, unless the server is closing, and settles once its result is recorded. */
-function spawned(
+/** What the full verification's command, or one of its units, did. */
+interface Ran {
+  /** Exit code; undefined when it was cut. */
+  readonly code: number | undefined;
+  /** The non-empty lines of the output of what ran last: the unit that failed, if one did. */
+  readonly output: readonly string[];
+  /** With `verify.units`, what each unit did. */
+  readonly units?: UnitsOutcome;
+}
+
+/**
+ * Runs the full verification, unless the server is closing, and settles once its result is
+ * recorded: its command or, with `verify.units`, the units that have not passed, in order and
+ * each in a process of its own; those that pass go into the clone's record.
+ */
+async function verified(
   target: RunTarget,
   job: FullRun,
   live: LiveRun,
   stoppable: (stop: () => void) => void,
 ): Promise<void> {
-  if (target.closing()) return Promise.resolve();
-  const { there, command } = job;
-  // The code it runs on, read as it starts: `accept` need not verify it again.
-  const tree = codeTree(there);
+  if (target.closing()) return;
+  const { id, there, command } = job;
   const started = Date.now();
+  // The code it runs on, read as it starts: `accept` need not verify it again. Read before the
+  // units' fingerprints, not alongside: each reading builds a tree in a temporary index.
+  const tree = await codeTree(there);
+  const plan = await fullPlan(there, command);
+  const run = (line: string) => spawned(target, there, line, live, stoppable);
+  const ran: Ran =
+    plan.units === undefined ? await run(command) : await runUnits(there, id, plan.units, run);
+  await ended(target, job, live, { ...ran, started, tree });
+}
+
+/** Runs `command` in the change's folder, live, unless the server is closing. */
+function spawned(
+  target: RunTarget,
+  there: Session,
+  command: string,
+  live: LiveRun,
+  stoppable: (stop: () => void) => void,
+): Promise<Ran> {
+  if (target.closing()) return Promise.resolve({ code: undefined, output: [] });
   const child = spawn(command, {
     cwd: there.root,
     env: there.environment.env,
@@ -158,31 +197,40 @@ function spawned(
     setTimeout(() => child.kill("SIGKILL"), 2000).unref();
   };
   stoppable(stop);
-  const rests = streamed(child, live);
+  // Its own lines, which the audit keeps: the run's are also the other units' and the wait's.
+  const output: string[] = [];
+  const add = (lines: readonly string[]) => {
+    output.push(...lines.filter((line) => line.length > 0));
+    if (output.length > KEPT) output.splice(0, output.length - KEPT);
+    live.add(lines);
+  };
+  const rests = streamed(child, add);
   const limit = setTimeout(stop, there.config.verify.timeoutSec * 1000);
   return new Promise((done) => {
     let finished = false;
-    const finish = async (code: number | undefined) => {
+    const finish = (code: number | undefined) => {
       if (finished) return;
       finished = true;
-      live.add([rests.stdout, rests.stderr].filter((line) => line.trim() !== ""));
+      add([rests.stdout, rests.stderr].filter((line) => line.trim() !== ""));
       clearTimeout(limit);
-      await ended(target, job, live, { code, started, tree });
-      done();
+      done({ code, output });
     };
-    child.on("error", () => void finish(127));
-    child.on("close", (code) => void finish(code ?? undefined));
+    child.on("error", () => finish(127));
+    child.on("close", (code) => finish(code ?? undefined));
   });
 }
 
-/** Sends the child's output to the run line by line; what is left of each stream ends no line yet. */
-function streamed(child: ChildProcessByStdio<null, Readable, Readable>, live: LiveRun) {
+/** Sends the child's output to `add` line by line; what is left of each stream ends no line yet. */
+function streamed(
+  child: ChildProcessByStdio<null, Readable, Readable>,
+  add: (lines: readonly string[]) => void,
+) {
   const rests = { stdout: "", stderr: "" };
   for (const stream of ["stdout", "stderr"] as const) {
     child[stream].on("data", (chunk: Buffer) => {
       const lines = `${rests[stream]}${chunk.toString("utf8")}`.split("\n");
       rests[stream] = lines.pop() ?? "";
-      live.add(lines.map((line) => line.trimEnd()));
+      add(lines.map((line) => line.trimEnd()));
     });
   }
   return rests;
@@ -225,27 +273,24 @@ async function ended(
   target: RunTarget,
   job: FullRun,
   live: LiveRun,
-  end: {
-    readonly code: number | undefined;
-    readonly started: number;
-    readonly tree: ReturnType<typeof codeTree>;
-  },
+  end: Ran & { readonly started: number; readonly tree: string | undefined },
 ): Promise<void> {
   const { id, there, change, command } = job;
+  // What each unit did, as the run's last lines.
+  if (end.units !== undefined) live.add(unitsLines(end.units, there.lang));
   const pending = live.settle();
   target.going.delete(id);
   if (target.closing()) return;
   // The last lines first, so whoever follows it sees them before it ends.
   if (pending) target.heard(id, live.current());
-  const output = live.current().output.filter((line) => line.length > 0);
-  const ran = await end.tree;
   await recordFullVerification(there, change, {
     command,
     started: end.started,
     code: end.code,
     ms: Date.now() - end.started,
-    output,
-    ...(ran === undefined ? {} : { tree: ran }),
+    output: end.output,
+    ...(end.tree === undefined ? {} : { tree: end.tree }),
+    ...(end.units === undefined ? {} : { units: end.units }),
   }).catch(() => undefined);
 }
 

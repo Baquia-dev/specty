@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { execFile, spawn, spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
-import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readdir, writeFile } from "node:fs/promises";
 import { type AddressInfo, createServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -92,9 +92,16 @@ async function isolated(chat: FakeChat): Promise<NodeJS.ProcessEnv> {
   };
 }
 
-/** `opencode run` in `root` against a fake that plays `script`. */
-async function opencodeRun(root: string, script: readonly ToolCall[]): Promise<FakeChat> {
-  const chat = await fakeChat(script);
+/**
+ * `opencode run` in `root` against a fake that plays `script`, and to each subagent whose task
+ * carries a mark of `subagents`, that mark's script.
+ */
+async function opencodeRun(
+  root: string,
+  script: readonly ToolCall[],
+  subagents: Readonly<Record<string, readonly ToolCall[]>> = {},
+): Promise<FakeChat> {
+  const chat = await fakeChat(script, subagents);
   const env = await isolated(chat);
   const args = ["run", "--dir", root, "--model", "fake/scripted", "Sigue el guion."];
   await new Promise<void>((resolve) => {
@@ -156,6 +163,27 @@ const bash = (command: string): ToolCall => ({
   name: "bash",
   arguments: { command, description: "Sigue el guion" },
 });
+/** A subagent launched with a task that carries `mark`, so the fake plays it its own script. */
+const delegate = (mark: string, task: string): ToolCall => ({
+  name: "task",
+  arguments: { description: task, prompt: `${mark}: ${task}`, subagent_type: "general" },
+});
+
+const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
+const OTHER_SPEC = `.specty/changes/${OTHER}/spec.md`;
+
+/** The folder the guard bound each conversation of `root` to, by OpenCode's session. */
+async function bindings(root: string): Promise<Readonly<Record<string, string>>> {
+  const sessions = ".git/common/specty/sessions";
+  const files = existsSync(join(root, sessions)) ? await readdir(join(root, sessions)) : [];
+  const bound = await Promise.all(
+    files.map(async (file) => {
+      const { folder } = JSON.parse(await read(root, join(sessions, file)));
+      return [file.replace(/\.json$/, ""), String(folder)] as const;
+    }),
+  );
+  return Object.fromEntries(bound);
+}
 
 describe.skipIf(OPENCODE === undefined)(
   "OpenCode with a scripted model (needs OpenCode: SPECTY_E2E_OPENCODE or the PATH)",
@@ -224,6 +252,50 @@ describe.skipIf(OPENCODE === undefined)(
         expect(ran).toContain(folder);
       },
     );
+
+    describe("AC3: a subagent that OpenCode launches with task (subagents)", () => {
+      it(
+        "works in the folder its child session entered, and its session stays in its own",
+        LONG,
+        async () => {
+          const root = await initialized();
+          expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+          expect((await cli(root, ["new", "--worktree", "Otro cambio"])).code).toBe(0);
+          const [first, second] = [folderOf(root), folderOf(root, OTHER)];
+          const chat = await opencodeRun(
+            root,
+            [
+              bash(`node "${DIST}" enter ${CHANGE}`),
+              delegate("SUBAGENTE-1", "Entra en el otro cambio"),
+              bash("pwd"),
+            ],
+            {
+              "SUBAGENTE-1": [
+                bash(`node "${DIST}" enter ${OTHER}`),
+                write(OTHER_SPEC, "# Plan del otro\n"),
+                bash("pwd"),
+              ],
+            },
+          );
+          const [entered, delegated, ran] = chat.results();
+          const [subagentEntered, written, subagentRan] = chat.subagentResults("SUBAGENTE-1");
+          expect(entered).toContain(`Esta conversación trabaja ahora en \`${first}\``);
+          expect(subagentEntered).toContain(`Esta conversación trabaja ahora en \`${second}\``);
+          expect(written).not.toMatch(/SIGUIENTE: |rejected|denied/i);
+          expect(await read(second, OTHER_SPEC)).toBe("# Plan del otro\n");
+          expect(existsSync(join(root, OTHER_SPEC))).toBe(false);
+          expect(subagentRan).toContain(second);
+          // Once the subagent is done, its session still works in the folder it had entered.
+          expect(ran).toContain(first);
+          expect(ran).not.toContain(second);
+          // The subagent's binding is its child session's: the id `task` answers with.
+          const child = /<task id="([\w-]+)"/.exec(delegated ?? "")?.[1] ?? "";
+          const bound = await bindings(root);
+          expect(bound[child]).toBe(second);
+          expect(Object.values(bound).toSorted()).toEqual([first, second].toSorted());
+        },
+      );
+    });
 
     it("brings the card back in the request after a compaction (AC4)", LONG, async () => {
       const root = await implementing();

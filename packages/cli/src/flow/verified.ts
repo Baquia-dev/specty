@@ -4,6 +4,7 @@ import {
   hashText,
   isGoverned,
   type ResolvedConfig,
+  type UnitsOutcome,
 } from "@baquia-dev/specty-core";
 import { changeCoverage } from "../check/coverage";
 import { checkContext } from "../check/files";
@@ -24,6 +25,8 @@ export interface FullRun {
   readonly output: readonly string[];
   /** The code it ran on (`codeTree`), when it could be read. */
   readonly tree?: string;
+  /** With `verify.units`, what each unit did. */
+  readonly units?: UnitsOutcome;
 }
 
 /** The coverage of the lines the change adds that a full verification measured (formats.md §4). */
@@ -60,6 +63,7 @@ export async function recordFullVerification(
       ...(run.tree === undefined ? {} : { tree: run.tree }),
       ...(run.code === 0 ? {} : { outputTail: run.output.slice(-10) }),
       ...(coverage === undefined ? {} : { coverage }),
+      ...(run.units === undefined ? {} : { units: run.units }),
     }),
   );
   return coverage;
@@ -144,16 +148,28 @@ export async function passedOnThisCode(
  * their paths and contents, taken without touching the index; undefined when git cannot tell.
  */
 export async function codeTree(session: Session): Promise<string | undefined> {
+  const files = await workingFiles(session);
+  if (files === undefined) return undefined;
+  const code = files.filter(({ path }) => isCode(path, session.config));
+  return hashText(code.map(({ entry }) => entry).join("\n"));
+}
+
+/**
+ * The files of the working tree as a commit of HEAD would have them, also those not committed yet:
+ * each with its path and its `git ls-tree -r` entry (mode, blob and path), taken without touching
+ * the index; undefined when git cannot tell.
+ */
+export async function workingFiles(
+  session: Session,
+): Promise<readonly { readonly path: string; readonly entry: string }[] | undefined> {
   try {
     const tree = await session.git.treeWith(["."]);
     const listed = await session.git.run(["ls-tree", "-r", "-z", tree]);
     if (listed.code !== 0) return undefined;
-    const entries = listed.stdout
+    return listed.stdout
       .split("\0")
-      .filter(
-        (entry) => entry !== "" && isCode(entry.slice(entry.indexOf("\t") + 1), session.config),
-      );
-    return hashText(entries.join("\n"));
+      .filter((entry) => entry !== "")
+      .map((entry) => ({ path: entry.slice(entry.indexOf("\t") + 1), entry }));
   } catch {
     return undefined;
   }

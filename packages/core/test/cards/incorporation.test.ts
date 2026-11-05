@@ -101,6 +101,17 @@ describe("bringing the main branch into a change", () => {
     expect(verifyingNote("pnpm check", "es")).toBe("specty: verificando `pnpm check`…");
     expect(verifyingNote("pnpm check", "en")).toBe("specty: verifying `pnpm check`…");
   });
+
+  it("AC6: says when the units of its full verification passed, in Spanish and in English", () => {
+    const units = { reused: ["core"], passed: [{ name: "cli", ms: 2000 }], skipped: [] };
+    const passed = { kind: "passed", command: "pnpm lint && pnpm test", units } as const;
+    expect(absorbedLine("main", "a1b2c3d", passed, "es")).toBe(
+      "Antes, main se incorporó a la rama del cambio (merge a1b2c3d) y pasaron las unidades de su verificación completa.",
+    );
+    expect(absorbedLine("main", "a1b2c3d", passed, "en")).toBe(
+      "First, main was merged into the change's branch (merge a1b2c3d) and the units of its full verification passed.",
+    );
+  });
 });
 
 describe("`specty integrate`", () => {
@@ -165,6 +176,47 @@ describe("landing a closed change", () => {
     );
     expect(leaveFolderNext({ folder: "/w/x", main: "/repo", removed: false }, EN)).toBe(
       'leave /w/x (in Claude Code, `ExitWorktree`) and carry on in /repo; for another change, `specty new "<title>"`.',
+    );
+  });
+});
+
+describe("leaving a slice's folder for its epic", () => {
+  const CLAUDE: CardContext = { ...ES, tool: "claude-code" };
+  const epic = { id: "20261105-panel", folder: "/w/panel", inMain: false, byName: true };
+  const left = { folder: "/w/c1", main: "/repo", removed: true, epic };
+
+  it("AC1: Claude Code leaves it keeping it and goes back to the epic by name, then runs `next`", () => {
+    expect(leaveFolderNext(left, CLAUDE)).toBe(
+      '/w/c1 ya no existe: sal de ella (en Claude Code, `ExitWorktree` con `action: "keep"`) y vuelve a la épica 20261105-panel, en /w/panel: en Claude Code, `EnterWorktree` con `name: "20261105-panel"`, y ejecuta `specty next`.',
+    );
+    expect(leaveFolderNext({ ...left, removed: false }, { ...CLAUDE, lang: "en" })).toBe(
+      'leave /w/c1 (in Claude Code, `ExitWorktree` with `action: "keep"`) and go back to epic 20261105-panel, in /w/panel: in Claude Code, `EnterWorktree` with `name: "20261105-panel"`, and run `specty next`.',
+    );
+  });
+
+  it("AC3: with the epic in the main folder, carries on with it there with `next`", () => {
+    const inMain = { ...left, epic: { ...epic, folder: "/repo", inMain: true } };
+    expect(leaveFolderNext(inMain, CLAUDE)).toBe(
+      '/w/c1 ya no existe: sal de ella (en Claude Code, `ExitWorktree` con `action: "keep"`) y sigue con la épica 20261105-panel en /repo: ejecuta `specty next`.',
+    );
+    expect(leaveFolderNext(inMain, { ...CLAUDE, lang: "en" })).toBe(
+      '/w/c1 no longer exists: leave it (in Claude Code, `ExitWorktree` with `action: "keep"`) and carry on with epic 20261105-panel in /repo: run `specty next`.',
+    );
+  });
+
+  it("AC4: a tool that enters with `specty enter` goes back with it, and Claude Code without the hooks switches its folder", () => {
+    expect(leaveFolderNext(left, { ...ES, tool: "cursor" })).toBe(
+      "/w/c1 ya no existe: sal de ella y vuelve a la épica 20261105-panel, en /w/panel: ejecuta `specty enter 20261105-panel` y sigue su salida.",
+    );
+    expect(leaveFolderNext(left, { ...EN, tool: "cursor" })).toBe(
+      "/w/c1 no longer exists: leave it and go back to epic 20261105-panel, in /w/panel: run `specty enter 20261105-panel` and follow its output.",
+    );
+    const without = { ...left, epic: { ...epic, byName: false } };
+    expect(leaveFolderNext(without, CLAUDE)).toBe(
+      '/w/c1 ya no existe: sal de ella (en Claude Code, `ExitWorktree` con `action: "keep"`) y vuelve a la épica 20261105-panel, en /w/panel: cambia allí la carpeta de trabajo de tu sesión o abre allí un agente, y ejecuta `specty next`.',
+    );
+    expect(leaveFolderNext(without, { ...CLAUDE, lang: "en" })).toBe(
+      '/w/c1 no longer exists: leave it (in Claude Code, `ExitWorktree` with `action: "keep"`) and go back to epic 20261105-panel, in /w/panel: switch your session\'s working folder there or open an agent there, and run `specty next`.',
     );
   });
 });

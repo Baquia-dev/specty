@@ -16,6 +16,7 @@ import {
   folderOf,
   person,
   type Run,
+  read,
   SPEC,
   SPEC_PATH,
   tempRepo,
@@ -300,6 +301,63 @@ describe("Specty's plugin and OpenCode's sessions", () => {
   });
 });
 
+type SessionRequest = { readonly path: { readonly id: string } };
+
+/** OpenCode 1's client whose `session.get` answers with `get`, keeping what it was asked. */
+function withSessions(get: (request: SessionRequest) => Promise<unknown>) {
+  const opencode = client();
+  const asked: SessionRequest[] = [];
+  const session = {
+    ...opencode.session,
+    get: (request: SessionRequest) => {
+      asked.push(request);
+      return get(request);
+    },
+  };
+  return { sent: opencode.sent, asked, session };
+}
+
+/** OpenCode 1's `session.idle` for session `id`. */
+const idle = (id: string) => ({ event: { type: "session.idle", properties: { sessionID: id } } });
+
+describe("the end of turn of OpenCode 1's sessions, with subagents", () => {
+  it("checks no end of turn of a subagent's child session, only the main session's", async () => {
+    const root = await failing();
+    // As OpenCode 1.19.5 answers: the child session `task` opened carries its parent's id.
+    const opencode = withSessions(async ({ path: { id } }) => ({
+      data: id === "ses_child" ? { id, parentID: "ses_main" } : { id },
+    }));
+    const hooks = await (await loadPlugin(600)).server({ directory: root, client: opencode });
+    await hooks.event?.(idle("ses_child"));
+    expect(opencode.asked).toEqual([{ path: { id: "ses_child" } }]);
+    expect(opencode.sent).toEqual([]);
+    // The report reaches the main session at the end of its own turn.
+    await hooks.event?.(idle("ses_main"));
+    expect(opencode.sent).toHaveLength(1);
+    expect(opencode.sent[0]).toMatchObject({ path: { id: "ses_main" } });
+    expect(JSON.stringify(opencode.sent[0])).toContain(
+      "`specty check --changed` falla; corrígelo antes de terminar el turno:",
+    );
+  });
+
+  it("checks the end of turn as before when OpenCode 1 does not give the session", async () => {
+    const root = await failing();
+    const answers = [
+      async () => {
+        throw new Error("offline");
+      },
+      async () => ({ error: { name: "NotFoundError", data: { message: "no session" } } }),
+    ];
+    for (const get of answers) {
+      const opencode = withSessions(get);
+      const hooks = await (await loadPlugin(600)).server({ directory: root, client: opencode });
+      await expect(hooks.event?.(idle("s"))).resolves.toBeUndefined();
+      expect(opencode.sent).toHaveLength(1);
+      expect(opencode.sent[0]).toMatchObject({ path: { id: "s" } });
+    }
+  });
+});
+
 /** A repository with a change in its own folder, which OpenCode's session `s1` entered. */
 async function entered(): Promise<{ readonly root: string; readonly folder: string }> {
   const root = await tempRepo(APP);
@@ -394,5 +452,70 @@ describe("OpenCode in the folder of the change its conversation entered", () => 
     const input: Record<string, unknown> = { command: "ls", workdir: "src" };
     await hooks.get("execute.before")?.({ tool: "shell", sessionID: "s1", id: "c3", input });
     expect(input).toEqual({ command: "ls", workdir: join(folder, "src") });
+  });
+});
+
+/** OpenCode's main session, and the child session `task` opened for its subagent. */
+const [PARENT, CHILD] = ["ses_parent", "ses_child"];
+const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
+
+const boundFolder = async (root: string, conversation: string): Promise<string> =>
+  JSON.parse(await read(root, `.git/common/specty/sessions/${conversation}.json`)).folder;
+
+/**
+ * Two changes, each in its own folder, and the plugin's hooks before a tool there: `tool` as
+ * OpenCode 1.19.5 calls it, with the session that runs the tool (a subagent's child session),
+ * and `shell` as OpenCode 2 does. Each gives back the input the tool would run with.
+ */
+async function subagentTools() {
+  const root = await tempRepo(APP);
+  expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+  expect((await cli(root, ["new", "--worktree", "Otro cambio"])).code).toBe(0);
+  const plugin = await loadPlugin();
+  const before = (await plugin.server({ directory: root }))["tool.execute.before"];
+  const hooks = new Map<string, Hook>();
+  const hook = async (name: string, run: Hook) => void hooks.set(name, run);
+  await plugin.setup({ location: { directory: root }, tool: { hook } });
+  const tool = async (sessionID: string, name: string, args: Record<string, unknown>) => {
+    await before?.({ tool: name, sessionID, callID: `call_${name}` }, { args });
+    return args;
+  };
+  const shell = async (sessionID: string, input: Record<string, unknown>) => {
+    await hooks.get("execute.before")?.({ tool: "shell", sessionID, id: "call_shell", input });
+    return input;
+  };
+  return { root, first: folderOf(root), second: folderOf(root, OTHER), tool, shell };
+}
+
+describe("a subagent of OpenCode, in the child session task opened", () => {
+  it("AC1: binds the child session to the change's folder it enters, and its session stays in its own", async () => {
+    const { root, first, second, tool } = await subagentTools();
+    await tool(PARENT, "bash", { command: `specty enter ${CHANGE}` });
+    await tool(CHILD, "bash", { command: `specty enter ${OTHER}` });
+    expect(await boundFolder(root, CHILD)).toBe(second);
+    expect(await boundFolder(root, PARENT)).toBe(first);
+  });
+
+  it("AC2: moves the subagent's tools to its change's folder, judged by its rules, in OpenCode 1 and 2", async () => {
+    const { first, second, tool, shell } = await subagentTools();
+    await tool(PARENT, "bash", { command: `specty enter ${CHANGE}` });
+    // Until it enters a folder of its own, the subagent works where OpenCode does.
+    expect(await tool(CHILD, "bash", { command: "ls" })).toEqual({ command: "ls" });
+    await tool(CHILD, "bash", { command: `specty enter ${OTHER}` });
+    expect(await tool(CHILD, "write", { filePath: "notas.md", content: "x" })).toEqual({
+      filePath: join(second, "notas.md"),
+      content: "x",
+    });
+    expect(await tool(CHILD, "grep", { pattern: "x" })).toEqual({ pattern: "x", path: second });
+    expect(await shell(CHILD, { command: "ls" })).toEqual({ command: "ls", workdir: second });
+    await expect(tool(CHILD, "write", { filePath: "src/nuevo.ts", content: "x" })).rejects.toThrow(
+      `El cambio ${OTHER} está en fase`,
+    );
+    // Its session's tools go on in the folder the session entered.
+    expect(await tool(PARENT, "write", { filePath: "notas.md", content: "x" })).toEqual({
+      filePath: join(first, "notas.md"),
+      content: "x",
+    });
+    expect(await shell(PARENT, { command: "ls" })).toEqual({ command: "ls", workdir: first });
   });
 });
