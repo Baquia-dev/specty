@@ -16,7 +16,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: La API y lo compartido salen de server/http.ts
+- [x] T1: La API y lo compartido salen de server/http.ts
   - files: packages/cli/src/server/http.ts, packages/cli/src/server/api.ts, packages/cli/src/server/context.ts
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/server test/server.test.ts test/server-holds.test.ts test/server-restore.test.ts
   - type: refactor
