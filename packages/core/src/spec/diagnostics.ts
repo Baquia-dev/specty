@@ -52,6 +52,7 @@ export type DiagnosticCode =
   | "task-too-large"
   | "task-no-tests"
   | "task-no-typecheck"
+  | "task-early-typecheck"
   | "file-reason-missing"
   | "size-near-split"
   | "possible-new-scope";
@@ -84,6 +85,7 @@ const WARNINGS: ReadonlySet<DiagnosticCode> = new Set<DiagnosticCode>([
   "task-too-large",
   "task-no-tests",
   "task-no-typecheck",
+  "task-early-typecheck",
   "file-reason-missing",
   "size-near-split",
   "possible-new-scope",

@@ -157,18 +157,38 @@ function needsTests(task: Pick<Task, "type">, policy: TestsPolicy): boolean {
 /**
  * Under `contract`, the last code task checks the project's types: `task done` does not run the
  * project's commands for a task with its own verification, so a type error would only show up
- * at acceptance. Earlier tasks need not, as every test is written before them. Its verification
- * counts as `task done` runs it, `verify.quick` first; running `verify.full` counts too. A done
- * task is left alone: an adjustment without new code tasks adds no code to check.
+ * at acceptance. A code task before it should not: see `earlyTypechecks`.
  */
 export const checkTypecheck: Rule = (spec, ctx, lang) => {
   const typecheck = ctx.typecheck?.trim();
   if (typecheck === undefined || typecheck === "" || !typesApply(spec, ctx)) return [];
-  const last = (spec.sections.tasks?.items ?? [])
-    .filter((task) => CODE_TYPES.has(task.type ?? "feat"))
-    .at(-1);
+  const code = (spec.sections.tasks?.items ?? []).filter((task) =>
+    CODE_TYPES.has(task.type ?? "feat"),
+  );
+  const types = { ctx, lang, typecheck };
+  return [...earlyTypechecks(spec, code, types), ...lastTypecheck(code, types)];
+};
+
+/** What the type check rules share: the context, the language and the project's type check. */
+interface TypesInput {
+  readonly ctx: ValidationContext;
+  readonly lang: Lang;
+  readonly typecheck: string;
+}
+
+/**
+ * The last code task's verification, as `task done` runs it, `verify.quick` first, runs the type
+ * check or `verify.full`. A done task is left alone: an adjustment without new code tasks adds no
+ * code to check.
+ */
+function lastTypecheck(code: readonly Task[], { ctx, lang, typecheck }: TypesInput): Diagnostic[] {
+  const last = code.at(-1);
   if (last === undefined || ctx.doneTasks?.has(last.id) === true) return [];
-  if (checksTypes(last, ctx.config, typecheck)) return [];
+  const { quick } = ctx.config.verify;
+  const runs = [quick, last.verify ?? ctx.config.verify.default]
+    .filter((part) => part !== undefined)
+    .join(" && ");
+  if (typesCommand(runs, ctx.config, typecheck) !== undefined) return [];
   return [
     report(lang, {
       code: "task-no-typecheck",
@@ -177,7 +197,39 @@ export const checkTypecheck: Rule = (spec, ctx, lang) => {
       target: last.id,
     }),
   ];
-};
+}
+
+/**
+ * A code task before the last one whose verification, its `verify` or `verify.default`, runs the
+ * type check or `verify.full` also compiles the tests of the later code tasks. With a testing
+ * phase they are written before their code and import what does not exist yet, so the task would
+ * not complete (P129): it should run only its tests. `verify.quick` is left out, as the spec
+ * cannot take it away; done tasks too, as their code already exists.
+ */
+function earlyTypechecks(
+  spec: Spec,
+  code: readonly Task[],
+  { ctx, lang, typecheck }: TypesInput,
+): Diagnostic[] {
+  const done = ctx.doneTasks ?? new Set<string>();
+  if (testCycle(spec, ctx.config.policy.tests, done) === undefined) return [];
+  return code.slice(0, -1).flatMap((task, index): Diagnostic[] => {
+    const runs = task.verify ?? ctx.config.verify.default;
+    const command = runs === undefined ? undefined : typesCommand(runs, ctx.config, typecheck);
+    const later = code
+      .slice(index + 1)
+      .filter((next) => !done.has(next.id) && next.files.some(isTestFile));
+    if (done.has(task.id) || command === undefined || later.length === 0) return [];
+    return [
+      report(lang, {
+        code: "task-early-typecheck",
+        params: { id: task.id, value: command, ref: later.map((next) => next.id).join(", ") },
+        line: itemLine(ctx, task.id),
+        target: task.id,
+      }),
+    ];
+  });
+}
 
 /** The type check is asked of a standard or quick change under `contract`, until its closing. */
 function typesApply(spec: Spec, ctx: ValidationContext): boolean {
@@ -190,20 +242,17 @@ function typesApply(spec: Spec, ctx: ValidationContext): boolean {
 }
 
 /**
- * Whether `task`'s verification, as `task done` runs it, runs `typecheck` or `verify.full`; an
+ * The command of `typecheck` and `verify.full` that the verification `runs` runs, if any; an
  * empty command runs nothing, though every text contains it.
  */
-function checksTypes(
-  task: Pick<Task, "verify">,
+function typesCommand(
+  runs: string,
   config: ValidationContext["config"],
   typecheck: string,
-): boolean {
-  const { quick, full } = config.verify;
-  const runs = [quick, task.verify ?? config.verify.default]
-    .filter((part) => part !== undefined)
-    .join(" && ");
-  return [typecheck, full?.trim()].some(
-    (command) => command !== undefined && command !== "" && runs.includes(command),
+): string | undefined {
+  return [typecheck, config.verify.full?.trim()].find(
+    (command): command is string =>
+      command !== undefined && command !== "" && runs.includes(command),
   );
 }
 
