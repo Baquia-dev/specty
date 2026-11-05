@@ -68,3 +68,23 @@ Los tests de la CLI, core y exporters crean sus temporales en una carpeta propia
 
 - R1: Las rutas de los temporales crecen unos 27 caracteres (`specty-tests-<pid>-XXXXXX/`), y un socket Unix en la carpeta temporal podría pasar del límite de 104 de macOS — hoy ni los tests ni la CLI crean sockets ahí; si alguno falla por eso, se verá en `pnpm check` de este cambio.
 - R2: Un test que compara rutas con la carpeta temporal del sistema dejaría de casar — todos usan `tmpdir()` en el momento, y `pnpm check` de este cambio ejecuta la suite entera con el ayudante.
+
+## Cierre
+
+### Resumen
+
+`packages/core/vitest-temp-dir.ts` es el `globalSetup` de Vitest que comparten los paquetes: borra en la carpeta temporal del sistema las `specty-tests-<pid>-…` cuyo proceso ya no existe, crea la de la ejecución, le apunta `TMPDIR`, `TMP` y `TEMP`, y su teardown restaura las tres variables y la borra, también si fallan tests. Lo nombran el `vitest.config.ts` de core, exporters y la CLI (en la CLI, antes de `test/global-setup.ts`), y `docs/ARCHITECTURE.md` lo cuenta en Pruebas. Los tests nuevos comprueban que los tests y los procesos que lanzan usan la carpeta de la ejecución (core, exporters y la CLI), que el teardown la borra, que una ejecución anidada de Vitest con un test que falla no deja la suya, y que solo se borran las carpetas de procesos que ya no existen. `specty verify --fresh` pasó todas las unidades (estático, core, exporters, vscode, ui y cli) y, al terminar, la carpeta temporal del sistema no tenía ninguna `specty-tests-…`.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El ayudante va en `packages/core/`, junto a `vitest.config.ts` y fuera de `src/` y `test/`: todas las unidades de `verify.units` que ejecutan tests miran `packages/core/**`, así que no hace falta ampliar ningún `paths`; en `scripts/` solo lo verían estático y cli.
+- Si el teardown no puede borrar la carpeta, no hace fallar la ejecución: la borra la siguiente, cuando su proceso ya no existe.
+- `packages/cli/test/global-setup.ts`, que evals reutiliza, no cambia: evals y el resto de paquetes son del corte C2.
+
+### Pendientes
+
+- P182: la caché del E2E de OpenCode (`specty-e2e-opencode-cache`) queda dentro de la carpeta de cada ejecución, así que con OpenCode instalado el proveedor se descarga en cada pasada.
