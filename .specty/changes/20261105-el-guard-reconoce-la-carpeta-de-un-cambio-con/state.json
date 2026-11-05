@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261105-el-guard-reconoce-la-carpeta-de-un-cambio-con",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-el-guard-reconoce-la-carpeta-de-un-cambio-con",
+  "baseCommit": "e5f9af3ba8f543fe35b900a7904128389ed94e83",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:73f8fa1cc7276c8cdc3c904acf2930edccac85a6f7e10aa2083dba8b5b0a6d57",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1a39ec31dc342ec32af7993cee37ac7c29882f8510ca9809cc63c5582d7990f9",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:939d9ea6ebbd2634e2d519d0b4ee0fd337fa50c88ffd74200e71c8f6bafd28d3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9dbf45ed662f31cf2584f3e976a6e688be38d19641840df7aae431b3aa67c74b",
+    "at": "2026-11-05T09:47:45.586Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
