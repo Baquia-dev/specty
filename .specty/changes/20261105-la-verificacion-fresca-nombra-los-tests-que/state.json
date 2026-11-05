@@ -6,6 +6,13 @@
   "branch": "specty/20261105-la-verificacion-fresca-nombra-los-tests-que",
   "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:79100b4e68b8486ad12ea34684b551fdb39f6ebaf910e8f5dcc69b8681e77a21",
+    "at": "2026-11-05T08:33:57.333Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:79100b4e68b8486ad12ea34684b551fdb39f6ebaf910e8f5dcc69b8681e77a21",
-    "at": "2026-11-05T08:33:57.333Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T08:39:20.336Z"
 }

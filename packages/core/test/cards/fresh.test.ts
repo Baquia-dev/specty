@@ -151,6 +151,90 @@ describe("the card of a fresh verification", () => {
   });
 });
 
+describe("the tests that failed, in the card", () => {
+  const D = { name: "d", command: "pnpm --filter d lint" };
+
+  /** `count` tests of `c` that failed, each with its file. */
+  const failedOf = (count: number) =>
+    Array.from({ length: count }, (_, index) => ({
+      path: "test/c.test.ts",
+      name: `c > rompe ${index + 1}`,
+    }));
+
+  /** A flaky unit whose test names no file, `c` with `count` tests that failed, and `d` with none. */
+  const named = (count: number): readonly FreshUnit[] => [
+    {
+      ...B,
+      result: "flaky",
+      ms: [3_400, 2_100],
+      output: ["FAIL b > tarda"],
+      failedTests: [{ name: "b > tarda" }],
+    },
+    {
+      ...C,
+      result: "failed",
+      ms: [1_000, 2_000],
+      output: ["rompe c"],
+      failedTests: failedOf(count),
+    },
+    { ...D, result: "failed", ms: [1_000, 1_000], output: ["lint falla"] },
+  ];
+
+  /** The lines of the card's block titled `title`. */
+  const linesOf = (units: readonly FreshUnit[], ctx: CardContext, title: string) =>
+    freshCard({ units, recorded: [], remembered: [] }, ctx).blocks.find(
+      (block) => block.title === title,
+    )?.lines;
+
+  it("AC3: names each unit's tests that failed, before its output, ten at most and how many more, in Spanish", () => {
+    const card = freshCard({ units: named(12), recorded: [], remembered: [] }, ES);
+    expect(card.blocks).toEqual([
+      {
+        title: "VERIFICACIÓN FRESCA, SIN EL REGISTRO",
+        lines: [
+          "b · inestable: falló y pasó al repetirla · 3 s + 2 s",
+          "c · falló las dos veces · 1 s + 2 s",
+          "d · falló las dos veces · 1 s + 1 s",
+        ],
+      },
+      { title: "TESTS QUE FALLARON EN b", lines: ["«b > tarda»"] },
+      { title: "SALIDA DEL FALLO DE b", lines: ["FAIL b > tarda"] },
+      {
+        title: "TESTS QUE FALLARON EN c",
+        lines: [
+          ...failedOf(10).map(({ name }) => `test/c.test.ts «${name}»`),
+          "Otros 2 tests que fallaron.",
+        ],
+      },
+      { title: "SALIDA DEL FALLO DE c", lines: ["rompe c"] },
+      { title: "SALIDA DEL FALLO DE d", lines: ["lint falla"] },
+    ]);
+    expect(card.next).toBe(
+      "corrige el fallo de c, d (su salida está arriba) y vuelve a ejecutar `specty verify --fresh`.",
+    );
+    expect(linesOf(named(11), ES, "TESTS QUE FALLARON EN c")?.at(-1)).toBe("Otro test que falló.");
+    expect(linesOf(named(10), ES, "TESTS QUE FALLARON EN c")).toHaveLength(10);
+  });
+
+  it("AC3: says the same in English", () => {
+    const card = freshCard({ units: named(11), recorded: [], remembered: [] }, EN);
+    expect(card.blocks.map(({ title }) => title)).toEqual([
+      "FRESH VERIFICATION, WITHOUT THE RECORD",
+      "TESTS THAT FAILED IN b",
+      "OUTPUT OF THE FAILURE OF b",
+      "TESTS THAT FAILED IN c",
+      "OUTPUT OF THE FAILURE OF c",
+      "OUTPUT OF THE FAILURE OF d",
+    ]);
+    expect(linesOf(named(11), EN, "TESTS THAT FAILED IN c")).toEqual([
+      ...failedOf(10).map(({ name }) => `test/c.test.ts «${name}»`),
+      "1 more failed test.",
+    ]);
+    expect(linesOf(named(12), EN, "TESTS THAT FAILED IN c")?.at(-1)).toBe("2 more failed tests.");
+    expect(linesOf(named(12), EN, "TESTS THAT FAILED IN b")).toEqual(["«b > tarda»"]);
+  });
+});
+
 describe("why specty verify runs nothing", () => {
   it("AC5: without --fresh, in Spanish and in English", () => {
     const es = freshRefusalCard({ reason: "no-flag" }, ES);
