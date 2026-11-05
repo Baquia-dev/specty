@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-incorporacion-integrate-y-la-ui-verifican",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-la-incorporacion-integrate-y-la-ui-verifican",
   "baseCommit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
   "revision": 1,
@@ -64,6 +64,10 @@
     "T": 5,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T06:36:59.719Z"
+  "lockedTests": {
+    "packages/core/test/cards/incorporation.test.ts": "sha256:3c3318dd288f705e8e45b8f1aa0bcdb32e98de74c0a87092353b074854ce0d11",
+    "packages/cli/test/incorporation-units.test.ts": "sha256:282d918fa20abaa79eff390e79d0710fd7fe276bc10c8d55443855bf11afd1ed",
+    "packages/cli/test/integrate-units.test.ts": "sha256:32a3f0b5d20bced67cd0064bb89da8a8069a7268d272a7b596e318d0d896e42c",
+    "packages/cli/test/server/verify-units.test.ts": "sha256:8957f2d7ec35999a7f356e3a3f5319882df199b3756c7509ea7acea84a30f7e9"
+  }
 }
