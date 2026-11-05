@@ -67,7 +67,7 @@ Hoy `accept` ejecuta la verificación completa aunque el cambio solo toque docum
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/reuse.test.ts && pnpm --filter @baquia-dev/specty typecheck
   - type: perf
-- [ ] T3: accept y la incorporación no ejecutan la verificación completa en un cambio sin código
+- [x] T3: accept y la incorporación no ejecutan la verificación completa en un cambio sin código
   - files: packages/cli/src/flow/verified.ts, packages/cli/src/flow/integrate.ts, packages/cli/src/commands/accept.ts, packages/cli/test/no-code.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/no-code.test.ts test/reuse.test.ts test/integrate.test.ts test/close-moved.test.ts && pnpm typecheck && pnpm lint && pnpm knip

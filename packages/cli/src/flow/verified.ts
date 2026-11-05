@@ -160,6 +160,22 @@ export async function codeTree(session: Session): Promise<string | undefined> {
 }
 
 /**
+ * Whether the working tree has code that `target` does not, also code not committed yet: false
+ * when the change touches only free files, so that its code is `target`'s. When git cannot tell,
+ * it does, and the verification runs.
+ */
+export async function touchesCode(session: Session, target: string): Promise<boolean> {
+  try {
+    const tree = await session.git.treeWith(["."]);
+    const diff = await session.git.run(["diff", "--name-only", "--no-renames", "-z", target, tree]);
+    if (diff.code !== 0) return true;
+    return diff.stdout.split("\0").some((path) => path !== "" && isCode(path, session.config));
+  } catch {
+    return true;
+  }
+}
+
+/**
  * Whether a file is code, which a verification reads: any outside `.specty/` and `ignored`, even
  * one outside `governed`, such as a manifest.
  */

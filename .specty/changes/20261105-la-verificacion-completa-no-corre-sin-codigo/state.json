@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1d80a308cbdfeae29efbe8319e354fc21a83f879",
+      "attempts": 1,
       "startedAt": "2026-11-05T01:11:40.979Z",
       "doneAt": "2026-11-05T01:14:35.110Z",
-      "summary": "codeTree hashea ls-tree -r -z del árbol de trabajo solo con los archivos de código (fuera de .specty/ y de ignored, aunque no estén en governed, con isCode); un cambio en un archivo libre ya no obliga a repetir una verificación que pasó (AC4 en reuse.test.ts)"
+      "summary": "codeTree hashea ls-tree -r -z del árbol de trabajo solo con los archivos de código (fuera de .specty/ y de ignored, aunque no estén en governed, con isCode); un cambio en un archivo libre ya no obliga a repetir una verificación que pasó (AC4 en reuse.test.ts)",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "403549ac00d5abce19faeff5cbe9856563374b6e",
+      "startedAt": "2026-11-05T01:14:35.747Z",
+      "doneAt": "2026-11-05T01:19:21.061Z",
+      "summary": "touchesCode en verified.ts dice si el árbol de trabajo tiene código distinto de la rama destino; la incorporación (mergeVerification) y accept no ejecutan la verificación completa sin código y lo dicen; AC1-AC3 en no-code.test.ts"
     }
   },
   "pending": {
