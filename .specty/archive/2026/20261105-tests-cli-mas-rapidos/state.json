@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-tests-cli-mas-rapidos",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-tests-cli-mas-rapidos",
   "baseCommit": "4682745ea93f383506c210b4e0a5a9dc170f4011",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:e7c1b3461fca27ac4d0552521e5fc926187fc39406c6356a462a1a55fe25e8f7",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "89acb2c420bc612d88e889d2d9e0ebc1945b746d",
+      "attempts": 1,
       "startedAt": "2026-11-05T10:54:34.612Z",
       "doneAt": "2026-11-05T10:55:00.625Z",
-      "summary": "ARCHITECTURE explica la apertura con un solo proceso de git (openRepository), las respuestas recordadas 2 s de cada Git (io/git-memo.ts) y la medida de flow.test.ts."
+      "summary": "ARCHITECTURE explica la apertura con un solo proceso de git (openRepository), las respuestas recordadas 2 s de cada Git (io/git-memo.ts) y la medida de flow.test.ts.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,5 +68,6 @@
     "AC": 5,
     "T": 2,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-11-05T11:01:00.404Z"
 }

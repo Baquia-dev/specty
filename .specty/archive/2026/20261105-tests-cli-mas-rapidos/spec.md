@@ -64,3 +64,24 @@ La unidad cli de la verificación completa tarda unos 4 minutos y corre en casi 
 ## Riesgos
 
 - R1: Una consulta recordada podría quedar vieja si otro proceso cambia la rama, HEAD, la configuración o las worktrees en esos 2 s — es el mismo margen que ya hay entre dos consultas seguidas, y el propio `Git` olvida todo tras cualquier comando que pueda cambiarlas.
+
+## Cierre
+
+### Resumen
+
+Cada comando de Specty abre su sesión con un solo proceso de git, que da la raíz y las rutas `specty` y `common` (`openRepository`), y cada `Git` recuerda durante 2 s su rama, su HEAD, cada clave de configuración y la lista de worktrees (`recall` en `io/git-memo.ts`), que olvida antes y después de cualquier comando de git suyo que no solo lea (`mayChangeRecalled`). Lo mismo vale para el guard y para cualquier comando, no solo para los tests. `test/flow.test.ts` pasó de 1468 a 1097 procesos de git (−25 %) y de 16,3 a 12,6 s; en la verificación completa de `accept`, la unidad cli tardó 3 min, cuando en los cierres de hoy tardaba de 3:47 a 4:43 con una carga parecida. Los tests que ya había no cambiaron.
+
+### Desviaciones
+
+- El plan inicial era crear los repositorios de los tests desde una plantilla. Medido antes de escribir la spec, crearlos era el 5 % de los procesos de git, y el resto eran las consultas repetidas de cada comando: se cambió el objetivo a esas consultas.
+- `mayChangeRecalled` pasaba de la complejidad máxima (11 de 10): sus reglas por comando van en una tabla (`CHANGES_WHEN`).
+
+### Decisiones
+
+- Solo se recuerda lo que cambia a través de git (refs, configuración y worktrees), con 2 s de vida, porque el servidor de `specty ui` usa el mismo `Git` durante horas y otras sesiones mueven main por fuera.
+- Un comando desconocido cuenta como uno que puede cambiarlo todo; los de lectura son una lista cerrada.
+- `findRoot` sigue para `init` y los hooks de worktree, que no abren una sesión.
+
+### Pendientes
+
+- Quedan otras consultas repetidas por comando: en `flow.test.ts`, 47 `rev-parse --verify refs/heads/specty-memory^{commit}`, 42 `log -n 500` con los trailers y 107 `symbolic-ref`; recordarlas o juntarlas bajaría más la unidad cli.
