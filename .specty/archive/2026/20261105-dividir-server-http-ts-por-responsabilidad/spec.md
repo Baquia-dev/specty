@@ -20,3 +20,9 @@ kind: quick
   - files: packages/cli/src/server/http.ts, packages/cli/src/server/api.ts, packages/cli/src/server/context.ts
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/server test/server.test.ts test/server-holds.test.ts test/server-restore.test.ts
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Las lecturas y las acciones de la API pasan a server/api.ts, y el contexto de cada petición, send, las cabeceras seguras y las comprobaciones de host y cookie a server/context.ts; http.ts se queda con arrancar, escuchar, enrutar, el inicio de sesión y la UI (de 303 a 139 líneas).
