@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261105-tests-cli-mas-rapidos",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261105-tests-cli-mas-rapidos",
+  "baseCommit": "4682745ea93f383506c210b4e0a5a9dc170f4011",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:03b5d29655f212c3ff3e8b0f0a95ec7dbaef01ceb2b7a7824c402dc19363f172",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bb8069282e07eda8d6959a1003f3b3e442564223df7089ed65bb1cc5f8755681",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f4adbc7e37ecfa989f81e24a31f638ca4ad75075bae1dd243e6a33c08f06a865",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:5403b52e33116cbfd1ac92b436a525b6b869a81275e376dc3d6153c1aff75387",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e7c1b3461fca27ac4d0552521e5fc926187fc39406c6356a462a1a55fe25e8f7",
+    "at": "2026-11-05T10:48:44.876Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
