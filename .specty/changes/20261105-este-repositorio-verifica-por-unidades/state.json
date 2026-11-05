@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-este-repositorio-verifica-por-unidades",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-este-repositorio-verifica-por-unidades",
   "baseCommit": "9ed6ce9d9b5885c2d5ec1a74774fa65f91fa07f8",
   "revision": 1,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2bc82029a2726dc7de16aebe6e3137bdbb451d98",
+      "attempts": 1,
       "startedAt": "2026-11-05T07:32:00.100Z",
       "doneAt": "2026-11-05T07:33:20.180Z",
-      "summary": "repo-units.test.ts lee las unidades del repositorio: AC1 acepta dos cambios que solo tocan packages/ui y el segundo solo repite estático y ui, no cli; AC2 comprueba que entre todas ejecutan los pasos de pnpm check"
+      "summary": "repo-units.test.ts lee las unidades del repositorio: AC1 acepta dos cambios que solo tocan packages/ui y el segundo solo repite estático y ui, no cli; AC2 comprueba que entre todas ejecutan los pasos de pnpm check",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a234f2c63cd30574b62afc81add5bb3e3b348e6e",
+      "startedAt": "2026-11-05T07:33:20.492Z",
+      "doneAt": "2026-11-05T07:33:33.613Z",
+      "summary": "AGENTS.md, en Convenciones, dice que la verificación completa va por unidades y pide avisar a la persona para mantener sus paths al día"
     }
   },
   "pending": {

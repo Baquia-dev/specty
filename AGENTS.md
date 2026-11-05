@@ -64,6 +64,7 @@ Lo que ya verifica una herramienta no se repite aquí: el core sin APIs de Node 
 - La API pública de core son listas explícitas: `packages/core/src/index.ts` y, para los textos, `packages/core/src/cards/index.ts`; además, `packages/core/src/light.ts` (`@baquia-dev/specty-core/light`) es la entrada ligera, sin el parser, zod ni yaml: el hilo principal de la UI importa de ella y no del índice, que solo usan el worker y los chunks perezosos. Si una tarea añade algo que usa otro paquete, pon en sus archivos la lista que toca.
 - Nada que conceda permisos sobre el código (aprobar, aceptar, cerrar) puede habilitarse con una variable de entorno: las pruebas inyectan una terminal.
 - Los formatos (`spec.md`, `state.json`, `config.yaml`) se definen en `docs/formats.md`; si cambias el código, actualiza ese documento.
+- La verificación completa de Specty va por las unidades de `verify.units` (`.specty/config.yaml`) y solo repite las que cambiaron: si un test lee un archivo de fuera de su paquete, o añades un paquete, pide a la persona que lo añada a los `paths` de su unidad (el agente no edita ese archivo). `packages/cli/test/repo-units.test.ts` comprueba que entre todas ejecutan `pnpm check`.
 
 ## Terminado
 

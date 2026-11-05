@@ -48,7 +48,7 @@ Desde los cortes C1 y C2, la verificación completa ejecuta solo las unidades de
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/repo-units.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
   - type: test
-- [ ] T2: AGENTS.md pide mantener al día los paths de las unidades
+- [x] T2: AGENTS.md pide mantener al día los paths de las unidades
   - files: AGENTS.md
   - ac: —
   - verify: pnpm lint
