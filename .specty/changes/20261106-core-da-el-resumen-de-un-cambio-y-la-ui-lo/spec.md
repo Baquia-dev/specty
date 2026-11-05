@@ -62,7 +62,7 @@ Hoy las reglas del resumen de un cambio viven solo en la UI, en `data/views.ts`.
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/summary.test.ts test/light.test.ts test/listing.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm sources
   - type: refactor
-- [ ] T2: La UI deriva la vista de un cambio con el resumen de core
+- [x] T2: La UI deriva la vista de un cambio con el resumen de core
   - files: packages/ui/src/data/views.ts, packages/ui/src/data/records.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch && pnpm typecheck && pnpm lint && pnpm knip

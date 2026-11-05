@@ -4,6 +4,7 @@
 import type {
   ChangeKind,
   ChangeState,
+  ChangeTab,
   EffortLevel,
   Lang,
   MemoryEntry,
@@ -282,7 +283,8 @@ export interface ReviewView {
 /** What a change waits for from the person, if anything. */
 export type DecisionKind = "review" | "tests" | "scope" | "acceptance" | "closing";
 
-export type ChangeTab = "spec" | "progress" | "acceptance" | "history";
+/** The tab a change opens on: core's, by which the summary of a change gives it. */
+export type { ChangeTab };
 
 interface ScopeRequestView {
   readonly id: string;
