@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "25cbcf0335124fa8daa7290a7e75f866340e4078",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:33:51.140Z",
       "doneAt": "2026-11-05T16:40:45.368Z",
-      "summary": "El servidor da el cambio abierto de una worktree cuya configuración no se lee (unreadableChanges en flow/changes.ts), en la lista y por id, con configIssues; la huella incluye la config.yaml de cada worktree. Los comandos no cambian."
+      "summary": "El servidor da el cambio abierto de una worktree cuya configuración no se lee (unreadableChanges en flow/changes.ts), en la lista y por id, con configIssues; la huella incluye la config.yaml de cada worktree. Los comandos no cambian.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d1c5c9cd8c27cf90d9442b9e1ab0c0d6ae85c355",
+      "startedAt": "2026-11-05T16:40:45.705Z",
+      "doneAt": "2026-11-05T16:44:04.877Z",
+      "summary": "La fila de la Bandeja lleva la marca «Su configuración no se pudo leer» y la cabecera de la página dice cómo seguir (reiniciar specty ui o corregirla) y cita cada error; configIssues pasa del registro a la vista."
     }
   },
   "pending": {

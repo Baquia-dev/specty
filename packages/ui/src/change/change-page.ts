@@ -164,6 +164,17 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               {{ problem }}
             </p>
           }
+          @if (change.configIssues; as issues) {
+            <div class="mt-2 flex items-start gap-2 text-sm" role="note" data-config-issues>
+              <svg class="mt-0.5 shrink-0" [lucideIcon]="warning" size="14" aria-hidden="true" style="color: var(--color-phase-review)"></svg>
+              <div class="flex min-w-0 flex-col gap-1">
+                <span data-config-hint>{{ t()('No se pudo leer la configuración de su carpeta (.specty/config.yaml). Si la escribió un Specty más nuevo que el de este servidor, reinicia specty ui; si no, corrígela.', 'Its folder’s configuration (.specty/config.yaml) could not be read. If a newer Specty than this server’s wrote it, restart specty ui; otherwise, fix it.') }}</span>
+                @for (issue of issues; track issue) {
+                  <code class="font-mono text-xs break-all" data-config-issue>{{ issue }}</code>
+                }
+              </div>
+            </div>
+          }
         </header>
 
         <div [class]="page + ' mt-2'">
