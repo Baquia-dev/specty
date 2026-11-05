@@ -55,7 +55,7 @@ Cuando una unidad falla en `specty verify --fresh`, la tarjeta solo muestra las 
 
 ## Tareas
 
-- [ ] T1: Los tests que fallaron, en los informes JUnit y en la tarjeta
+- [x] T1: Los tests que fallaron, en los informes JUnit y en la tarjeta
   - files: packages/core/src/checks/junit.ts, packages/core/src/index.ts, packages/core/src/cards/fresh.ts, packages/core/test/checks/junit.test.ts, packages/core/test/cards/fresh.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/junit.test.ts test/cards/fresh.test.ts && pnpm --filter @baquia-dev/specty-core typecheck

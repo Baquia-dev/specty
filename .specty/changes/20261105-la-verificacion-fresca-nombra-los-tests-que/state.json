@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "76764d21b1a1b232f8d442f1a04c860d256249d9",
+      "startedAt": "2026-11-05T08:39:47.711Z",
+      "doneAt": "2026-11-05T08:44:31.312Z",
+      "summary": "core lee los tests que fallaron de un informe JUnit (parseJunitFailures y FailedTest en checks/junit.ts, con la misma lectura de cada testcase que parseJunit) y la tarjeta de la verificación fresca los nombra, hasta diez y cuántos más, antes de la salida del fallo (FreshUnit.failedTests)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
