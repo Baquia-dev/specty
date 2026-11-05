@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-al-cerrar-un-corte-vuelve-a-su-epica",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-al-cerrar-un-corte-vuelve-a-su-epica",
   "baseCommit": "5b6bc9668f16d343478ee1c07ef91711815bc550",
   "revision": 1,
@@ -51,6 +51,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T06:37:57.423Z"
+  "lockedTests": {
+    "packages/core/test/cards/incorporation.test.ts": "sha256:6227366e89308c072166708bee95e5298e020d66bcedabc9f8b86417a20ce2cb",
+    "packages/cli/test/epic-return.test.ts": "sha256:a8d7f8d4452c4cd0e8f2ffcb6382488969926a9b4f9f91e1cf6875cfa109a259"
+  }
 }
