@@ -6,6 +6,13 @@
   "branch": "specty/20261105-el-registro-de-unidades-se-limpia-y-sus",
   "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:dca3d353849d1b7a8448df87413c986aa01521676186970a09253b294b2a10ac",
+    "at": "2026-11-05T07:59:49.735Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -45,12 +52,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:dca3d353849d1b7a8448df87413c986aa01521676186970a09253b294b2a10ac",
-    "at": "2026-11-05T07:59:49.735Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T08:03:27.814Z"
 }
