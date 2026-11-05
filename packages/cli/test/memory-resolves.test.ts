@@ -36,8 +36,9 @@ describe("specty new --resolves", () => {
     expect(listed).toContain(`P1 · pendiente · tomada por ${CHANGE} · Uno`);
     expect(listed).toContain(`P3 · pendiente · tomada por ${CHANGE} · Tres`);
     expect(listed).toContain("P2 · pendiente · Dos");
+    // AC1: the card with no active change lists no entry, taken or free.
     const card = (await cli(root, ["next"])).out;
-    expect(card).toContain("Las primeras libres:\n  P2 · pendiente · Dos\n  No las empieces");
+    for (const id of ["P1", "P2", "P3"]) expect(card).not.toContain(`${id} ·`);
     const audit = await read(folderOf(root), `.specty/changes/${CHANGE}/audit.jsonl`);
     expect(JSON.parse(audit.split("\n")[0] ?? "")).toMatchObject({
       event: "change.created",
