@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-los-comandos-de-specty-salen-del-sandbox-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-los-comandos-de-specty-salen-del-sandbox-de",
   "baseCommit": "6c68190ea4eb28fdfeadfcaba7f8797b3aac1be8",
   "revision": 1,
@@ -86,12 +86,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "cb510335d2b8d3813b31cd273845bc02f4bd81a6",
+      "attempts": 2,
       "startedAt": "2026-11-05T13:56:48.001Z",
       "doneAt": "2026-11-05T14:04:58.981Z",
-      "summary": "doctor confirma command(specty) o unsandboxed(specty) en los ajustes del CLI de Antigravity o pide init (solo si existe su carpeta), y uninstall dice que la regla se queda; doctor recibe env y los agentes pueden decir qué dejan en la carpeta del usuario (stays)."
+      "summary": "doctor confirma command(specty) o unsandboxed(specty) en los ajustes del CLI de Antigravity o pide init (solo si existe su carpeta), y uninstall dice que la regla se queda; doctor recibe env y los agentes pueden decir qué dejan en la carpeta del usuario (stays).",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6c3cf2c583cd4b84736eec5e0e5e1ed170db0640",
+      "startedAt": "2026-11-05T14:04:59.306Z",
+      "doneAt": "2026-11-05T14:09:15.173Z",
+      "summary": "ADR 0013 gana la excepción D4 (la regla command(specty) del CLI de Antigravity) y ARCHITECTURE recoge P167, la regla de init, el límite de BypassSandbox, lo comprobado en el editor (P168) y el límite de agy -p (P152)."
     }
   },
   "pending": {

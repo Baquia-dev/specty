@@ -104,7 +104,7 @@ En el sandbox de terminal de Antigravity CLI (`agy` 1.5.1, `--sandbox`), nada pu
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-cli-rule.test.ts test/antigravity.test.ts test/doctor-enter.test.ts test/uninstall.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T4: La documentación
+- [x] T4: La documentación
   - files: docs/decisions/0013-specty-no-escribe-en-la-carpeta-del-usuario.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
