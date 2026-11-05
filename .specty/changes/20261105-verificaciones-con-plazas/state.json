@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261105-verificaciones-con-plazas",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261105-verificaciones-con-plazas",
+  "baseCommit": "0da7da13c18aa1b2e2877af07aba3635cc918d00",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d26b68910ef9369f0c818302a4760076324c1ecfd2c501e99df23f231b43fad5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3ab5a60e3d2a06a091ad79a92a48bbf320a3089fbb4f9838657da659a56d5d6f",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:b70c96386ad2566262c2704429b58e3b04ceb8228f2819550d732679c5edc2fd",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:9b8bc230370fa8abaa587177f05b1337059144003c6f94c79c52ba21a96876a9",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:36f1dbb6b3b026f05fcc362a49132968a9cc5d21bedb54d316367b8cc3b30230",
+    "at": "2026-11-05T03:29:35.147Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
