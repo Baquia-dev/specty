@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable, inject } from "@angular/core";
 import type { ChangeState, MemoryEntry } from "@baquia-dev/specty-core";
+import type { SessionView } from "@baquia-dev/specty-core/light";
 import { Commands } from "../components/command-palette";
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
@@ -144,6 +145,32 @@ export class FixtureData extends SpectyData {
   /** A memory with an entry of every kind and status, and changes held, waiting and orphaned. */
   override memory(): Promise<MemoryRecord> {
     return Promise.resolve(this.remembered);
+  }
+
+  /** A live Claude Code session on a change, with its usage, and a quiet Codex one elsewhere. */
+  override sessions(): Promise<readonly SessionView[]> {
+    const before = (minutes: number) => new Date(Date.now() - minutes * 60_000).toISOString();
+    const change = this.remembered.changes[0]?.id;
+    return Promise.resolve([
+      {
+        tool: "claude-code",
+        conversation: "sesion-1",
+        folder: change === undefined ? "" : `.worktrees/${change}`,
+        ...(change === undefined ? {} : { change }),
+        first: before(95),
+        last: before(1),
+        live: true,
+        usage: { tokens: 2_350_000, cost: 4.82 },
+      },
+      {
+        tool: "codex",
+        conversation: "hilo-7",
+        folder: ".worktrees/20261103-exportar-notas",
+        first: before(300),
+        last: before(140),
+        live: false,
+      },
+    ]);
   }
 
   /** The prototype decides like the person at their terminal: the entry changes at once. */

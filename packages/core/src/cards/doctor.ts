@@ -42,7 +42,7 @@ export type DoctorLine =
   /** Codex's guard, its rule for Specty's commands and OpenCode's plugin, in the project: `file`. */
   | { readonly code: "codex-guard" | "no-codex-guard"; readonly file: string }
   /** Codex's guard is there, without the hook that brings the card back after a compaction. */
-  | { readonly code: "codex-compact"; readonly file: string }
+  | { readonly code: "codex-compact" | "codex-startup"; readonly file: string }
   | { readonly code: "codex-rules" | "no-codex-rules"; readonly file: string }
   | {
       readonly code: "opencode-guard" | "opencode-after-command" | "no-opencode-guard";

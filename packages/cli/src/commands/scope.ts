@@ -27,6 +27,12 @@ import { changeView } from "../flow/views";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 
+/** The task a scope request is for: the one `--task` names, or the active one; upper case. */
+function requestedTask(state: ChangeState, option: string | undefined): string {
+  const active = Object.entries(state.tasks).find(([, task]) => task.status === "active")?.[0];
+  return (option ?? active ?? "").toUpperCase();
+}
+
 /** `specty scope add`: extends the active task's scope, by policy or on a person's approval. */
 export async function scopeAdd(
   session: Session,
@@ -41,11 +47,7 @@ export async function scopeAdd(
   }
   const { state } = active;
   const header = headerOf(state.id, "implementing");
-  const taskId = (
-    taskOption ??
-    Object.entries(state.tasks).find(([, task]) => task.status === "active")?.[0] ??
-    ""
-  ).toUpperCase();
+  const taskId = requestedTask(state, taskOption);
   const stored = state.tasks[taskId];
   if (stored?.status !== "active") {
     return scopeAddRefusalCard({ reason: "not-active", task: taskId }, header, cards);
