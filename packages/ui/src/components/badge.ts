@@ -46,7 +46,7 @@ const KIND_ICONS = {
 
 const KIND_LABELS: Readonly<Record<ChangeKind, Readonly<Record<Lang, string>>>> = {
   epic: { es: "Épica", en: "Epic" },
-  standard: { es: "Individual", en: "Standalone" },
+  standard: { es: "Feature", en: "Feature" },
   quick: { es: "Quick", en: "Quick" },
   retro: { es: "Manual", en: "Manual" },
   spike: { es: "Spike", en: "Spike" },
@@ -88,7 +88,10 @@ export class PhaseBadge {
   protected readonly label = computed(() => PHASE_LABELS[this.phase()][this.lang()]);
 }
 
-/** Identifies the kind of a change (or the epic slice it implements) with an icon and label. */
+/**
+ * Identifies the kind of a change with an icon and label. A slice of an epic is a «Feature» with
+ * its id: inside its epic's group, with the title the epic gives it; elsewhere, with the epic's.
+ */
 @Component({
   selector: "sp-kind-badge",
   imports: [LucideDynamicIcon],
@@ -107,6 +110,8 @@ export class PhaseBadge {
 export class KindBadge {
   readonly kind = input.required<ChangeKind>();
   readonly epic = input<ChangeView["epic"] | undefined>(undefined);
+  /** Shown inside its epic's group, under the epic: the slice's own title, not the epic's. */
+  readonly inEpic = input(false);
 
   private readonly preferences = inject(Preferences);
   protected readonly icon = computed(() =>
@@ -116,8 +121,10 @@ export class KindBadge {
     const epic = this.epic();
     const lang = this.preferences.lang();
     if (epic === undefined) return KIND_LABELS[this.kind()][lang];
-    const prefix = lang === "es" ? "Corte" : "Slice";
-    const head = epic.slice ? `${prefix} ${epic.slice}` : prefix;
-    return `${head} · ${epic.title}`;
+    // A slice is a feature: under its epic, the epic need not be said again.
+    const title = this.inEpic() ? epic.sliceTitle : epic.title;
+    return [KIND_LABELS.standard[lang], epic.slice, title]
+      .filter((part) => part !== undefined && part !== "")
+      .join(" · ");
   });
 }

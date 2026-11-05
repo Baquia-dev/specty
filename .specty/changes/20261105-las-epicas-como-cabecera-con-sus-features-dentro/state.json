@@ -55,12 +55,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "edb48930f822558399ca5a6300400ff31865dbb3",
+      "attempts": 1,
       "startedAt": "2026-11-05T12:12:38.847Z",
       "doneAt": "2026-11-05T12:13:29.298Z",
-      "summary": "ChangeView gana slices (los cortes de una épica, de su sección Cortes) y epic.sliceTitle; deriveView da slices con slicesIn y deriveViews copia en cada corte el título de su épica y el que la épica le da al corte (epicOf)"
+      "summary": "ChangeView gana slices (los cortes de una épica, de su sección Cortes) y epic.sliceTitle; deriveView da slices con slicesIn y deriveViews copia en cada corte el título de su épica y el que la épica le da al corte (epicOf)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3e1a9f09e848ae7c3aa3b11b4cc1b32d19a9f701",
+      "startedAt": "2026-11-05T12:13:29.586Z",
+      "doneAt": "2026-11-05T12:14:18.835Z",
+      "summary": "sp-kind-badge dice «Feature» para un estándar suelto y «Feature · C2 · <título>» para un corte: con inEpic, el título que le da su épica (sliceTitle); fuera, el de la épica. InboxRow gana inEpic y lo pasa a su insignia; la sección de los sueltos de Agrupar por épica se llama «Features»"
     }
   },
   "pending": {

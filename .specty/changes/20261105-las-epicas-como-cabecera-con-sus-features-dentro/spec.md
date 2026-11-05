@@ -70,7 +70,7 @@ En la Bandeja, una épica pasa a ser la cabecera del grupo de sus cortes: si est
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts && pnpm lint
   - type: feat
-- [ ] T2: Las etiquetas «Feature» de la insignia y de la sección de los sueltos
+- [x] T2: Las etiquetas «Feature» de la insignia y de la sección de los sueltos
   - files: packages/ui/src/components/badge.ts, packages/ui/src/components/badge.test.ts, packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-view.ts, packages/ui/src/inbox/inbox-toolbar.test.ts
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/badge.test.ts --include src/inbox/inbox-toolbar.test.ts && pnpm lint

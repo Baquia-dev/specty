@@ -118,7 +118,7 @@ const ROW =
     <div class="flex min-w-0 flex-col gap-0.5">
       <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
         <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change().id]" [queryParams]="{ tab: change().tab }" (focus)="picked.emit()">{{ change().title }}</a>
-        <sp-kind-badge [kind]="change().kind" [epic]="change().epic" />
+        <sp-kind-badge [kind]="change().kind" [epic]="change().epic" [inEpic]="inEpic()" />
       </div>
       @if (waits(); as line) {
         <span class="text-[13px] text-text-muted" data-waits>{{ line }}</span>
@@ -176,6 +176,8 @@ export class InboxRow {
   readonly change = input.required<ChangeView>();
   /** Picked with j/k: highlighted, with its action as the main one. */
   readonly current = input(false);
+  /** A slice under its epic's header: its badge names the slice, not the epic. */
+  readonly inEpic = input(false);
   /** The clock of the page, so "hace 3 min" moves on. */
   readonly now = input(Date.now());
   /** The person reached it with the keyboard or the pointer. */

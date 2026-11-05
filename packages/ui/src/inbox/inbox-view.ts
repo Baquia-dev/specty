@@ -45,7 +45,7 @@ const STATES: readonly { readonly key: InboxState; readonly label: Bilingual }[]
 ];
 
 const KIND_SECTIONS: readonly { readonly key: ChangeKind; readonly label: Bilingual }[] = [
-  { key: "standard", label: { es: "Specs individuales", en: "Standalone specs" } },
+  { key: "standard", label: { es: "Features", en: "Features" } },
   { key: "quick", label: { es: "Cambios quick", en: "Quick changes" } },
   { key: "retro", label: { es: "Cambios manuales", en: "Manual changes" } },
   { key: "spike", label: { es: "Spikes", en: "Spikes" } },
