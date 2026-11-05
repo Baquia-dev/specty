@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
   ElementRef,
   effect,
+  Injector,
   inject,
   signal,
   viewChild,
@@ -22,6 +24,7 @@ import { ActionError, type ChangeView } from "../data/records";
 import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences } from "../theme/preferences";
 import { InboxEpic } from "./inbox-epic";
+import { askWithFilters, InboxMore, pastTheEnd, withFinishedCounts } from "./inbox-more";
 import { InboxRow } from "./inbox-row";
 import { InboxState } from "./inbox-state";
 import { InboxToolbar, InboxViewOptions } from "./inbox-toolbar";
@@ -32,6 +35,7 @@ import {
   phaseCounts,
   sectionBlocks,
   stateOf,
+  visibleChanges,
 } from "./inbox-view";
 
 const TICK_MS = 30_000;
@@ -46,6 +50,7 @@ const TICK_MS = 30_000;
     EmptyState,
     Skeleton,
     InboxEpic,
+    InboxMore,
     InboxRow,
     InboxToolbar,
     InboxViewOptions,
@@ -64,24 +69,24 @@ const TICK_MS = 30_000;
         <sp-inbox-view-options />
       </header>
 
-      @if (store.views.error(); as error) {
+      @if (failure(); as error) {
         <div [class]="page + ' pt-3'">
         <div role="alert" class="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-surface p-4">
           <svg [lucideIcon]="warning" size="16" aria-hidden="true" style="color: var(--color-phase-cancelled)"></svg>
           <p class="m-0 flex-1 text-sm">
             {{ t()('No se pudieron leer los cambios', 'Could not read the changes') }}: {{ message(error) }}
           </p>
-          <sp-button size="sm" (pressed)="store.views.reload()">{{ t()('Reintentar', 'Retry') }}</sp-button>
+          <sp-button size="sm" (pressed)="retry()">{{ t()('Reintentar', 'Retry') }}</sp-button>
         </div>
         </div>
-      } @else if (!store.views.hasValue()) {
+      } @else if (!store.views.hasValue() || !store.pages.ready()) {
         <div [class]="page + ' flex flex-col gap-3 pt-3'">
           <sp-skeleton height="2.5rem" />
           <sp-skeleton height="4.5rem" [announce]="false" />
           <sp-skeleton height="4.5rem" [announce]="false" />
         </div>
       } @else {
-        <sp-inbox-toolbar [counts]="counts()" [shown]="shown()" [total]="store.all().length" />
+        <sp-inbox-toolbar [counts]="counts()" [shown]="shown()" [total]="total()" />
         <div [class]="page + ' flex flex-col gap-8 pt-5'">
         @for (section of sections(); track section.key) {
           <section [attr.aria-labelledby]="'inbox-' + section.key" [attr.data-section]="section.key">
@@ -104,7 +109,9 @@ const TICK_MS = 30_000;
             </div>
           </section>
         } @empty {
-          @if (state.filtered()) {
+          @if (store.pages.loading()) {
+            <!-- A new search, phase or sort: its first page is on its way. -->
+          } @else if (state.filtered()) {
             <sp-empty-state [heading]="t()('Ningún cambio coincide', 'No change matches')" [icon]="noMatch">
               <p class="m-0">{{ t()('Prueba con otro texto u otra fase.', 'Try another text or phase.') }}</p>
               <sp-button size="sm" (pressed)="state.clear()">{{ t()('Limpiar filtros', 'Clear filters') }}</sp-button>
@@ -114,6 +121,9 @@ const TICK_MS = 30_000;
               <p class="m-0">{{ t()('Crea el primero desde la terminal con specty new.', 'Create the first one in the terminal with specty new.') }}</p>
             </sp-empty-state>
           }
+        }
+        @if (!store.pages.complete()) {
+          <sp-inbox-more />
         }
         </div>
       }
@@ -133,14 +143,29 @@ export class Inbox {
   protected readonly now = signal(Date.now());
   private readonly rows = viewChildren(InboxRow);
   private readonly toolbar = viewChild(InboxToolbar, { read: ElementRef });
+  private readonly injector = inject(Injector);
 
+  /** Why the changes could not be read: the open ones or a page of the finished ones. */
+  protected readonly failure = computed(() => this.store.views.error() ?? this.store.pages.error());
+  /** What the Inbox lists: every open change and the finished ones of the pages loaded. */
+  private readonly listed = computed(() => [...this.store.open(), ...this.store.finished()]);
   protected readonly sections = computed(() =>
-    inboxSections(this.store.all(), this.state.filters(), this.preferences.lang()),
+    inboxSections(this.listed(), this.state.filters(), this.preferences.lang()),
   );
-  protected readonly counts = computed(() => phaseCounts(this.store.all(), this.state.query()));
+  /** Each phase's count: the open ones here, the finished ones as the source counts them. */
+  protected readonly counts = computed(() =>
+    withFinishedCounts(
+      phaseCounts(this.store.open(), this.state.query()),
+      this.store.pages.counts(),
+    ),
+  );
   /** The rows j/k walk through, in the order they are shown. */
   private readonly order = computed(() => this.sections().flatMap((section) => section.changes));
-  protected readonly shown = computed(() => this.order().length);
+  /** How many changes the filters let through, loaded or not, and how many there are. */
+  protected readonly shown = computed(
+    () => visibleChanges(this.store.open(), this.state.filters()).length + this.store.pages.total(),
+  );
+  protected readonly total = computed(() => this.store.open().length + this.store.pages.finished());
   /** The row picked with j/k: the first one until the person moves. */
   protected readonly selectedId = signal<string | undefined>(undefined);
   private readonly selected = computed(() => {
@@ -152,11 +177,11 @@ export class Inbox {
   protected readonly summary = computed(() => {
     const t = this.t();
     const count = (state: string) =>
-      this.store.all().filter((change) => stateOf(change) === state).length;
+      this.store.open().filter((change) => stateOf(change) === state).length;
     const parts = [
       [count("decision"), t("decisión", "decision"), t("decisiones", "decisions")],
       [count("active"), t("en curso", "in progress"), t("en curso", "in progress")],
-      [count("recent"), t("reciente", "recent"), t("recientes", "recent")],
+      [this.store.pages.finished(), t("reciente", "recent"), t("recientes", "recent")],
     ] as const;
     return parts
       .filter(([n]) => n > 0)
@@ -165,17 +190,21 @@ export class Inbox {
   });
 
   constructor() {
+    askWithFilters(this.store.pages);
     const shortcuts = inject(Shortcuts);
-    const move = (step: number) => () => {
+    const move = (step: number) => (): void => {
       const order = this.order();
       if (order.length === 0) return;
       const at = order.findIndex((change) => change.id === this.selected());
+      // Past the last row loaded, the next page of finished changes, and then on to it.
+      if (step > 0 && at === order.length - 1) {
+        void pastTheEnd(this.store.pages, move(step));
+        return;
+      }
       const next = order[Math.min(Math.max(at + step, 0), order.length - 1)];
       if (next === undefined) return;
       this.selectedId.set(next.id);
-      this.rows()
-        .find((row) => row.change().id === next.id)
-        ?.focus();
+      this.focus(next.id);
     };
     shortcuts.register({
       keys: "j",
@@ -211,7 +240,20 @@ export class Inbox {
   }
 
   protected blocksOf(section: InboxSection): readonly InboxBlock[] {
-    return sectionBlocks(section, this.store.all());
+    return sectionBlocks(section, this.listed());
+  }
+
+  protected retry(): void {
+    this.store.views.reload();
+    void this.store.pages.reload();
+  }
+
+  /** Focuses the row of `id`, or once it is drawn: a row of a page that just arrived. */
+  private focus(id: string): void {
+    const row = () => this.rows().find((item) => item.change().id === id);
+    const now = row();
+    if (now !== undefined) now.focus();
+    else afterNextRender(() => row()?.focus(), { injector: this.injector });
   }
 
   protected message(error: unknown): string {

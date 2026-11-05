@@ -5,9 +5,11 @@ import {
   Injectable,
   InjectionToken,
   inject,
+  PendingTasks,
   resource,
   type Signal,
 } from "@angular/core";
+import { FinishedPages } from "./finished-pages";
 import {
   type ChangeRecord,
   type ChangeView,
@@ -74,7 +76,7 @@ export const inThread: Deriver = async (records) => (await import("./views")).de
 /**
  * The changes as the screens see them. It reads from whatever `SpectyData` is provided, derives
  * the views with the `DERIVER` and reloads when the source says something changed, keeping the
- * previous views on screen meanwhile.
+ * previous views on screen meanwhile. The finished changes the Inbox shows come in pages, apart.
  */
 @Injectable({ providedIn: "root" })
 export class ChangesStore {
@@ -82,10 +84,27 @@ export class ChangesStore {
   private readonly derive = inject(DERIVER);
 
   readonly views = resource({ loader: async () => this.derive(await this.data.changes()) });
+  /** The pages of finished changes the Inbox asked for (`data/finished-pages.ts`). */
+  readonly pages = new FinishedPages(this.data, this.derive, inject(PendingTasks));
 
-  readonly all: Signal<readonly ChangeView[]> = computed(() =>
-    this.views.hasValue() ? this.views.value() : [],
-  );
+  private readonly listed = computed(() => (this.views.hasValue() ? this.views.value() : []));
+  /** The open changes: waiting for the person, in progress, or whose folder was lost. */
+  readonly open = computed(() => this.listed().filter((view) => !isFinished(view)));
+  /**
+   * The finished changes of the loaded pages, in their order, each with its epic as known: the
+   * epic open or loaded in a page, or else the title the page gives.
+   */
+  readonly finished = computed(() => {
+    const loaded = new Map([...this.open(), ...this.pages.views()].map((view) => [view.id, view]));
+    const titles = this.pages.epics();
+    return this.pages.views().map((view) => withEpic(view, loaded, titles));
+  });
+  /** Every change loaded: those the source lists and those of the pages, each once. */
+  readonly all: Signal<readonly ChangeView[]> = computed(() => {
+    const listed = this.listed();
+    const ids = new Set(listed.map((view) => view.id));
+    return [...listed, ...this.finished().filter((view) => !ids.has(view.id))];
+  });
   /** Waiting for the person, the longest first. */
   readonly decisions = computed(() =>
     this.all()
@@ -107,7 +126,10 @@ export class ChangesStore {
   );
 
   constructor() {
-    const stop = this.data.subscribe(() => this.views.reload());
+    const stop = this.data.subscribe(() => {
+      this.views.reload();
+      void this.pages.reload();
+    });
     inject(DestroyRef).onDestroy(stop);
   }
 
@@ -128,9 +150,11 @@ export class ChangesStore {
     const stop = this.data.subscribe(() => asked.reload());
     inject(DestroyRef).onDestroy(stop);
     return {
-      view: computed(
-        () => loaded() ?? withEpicTitle(asked.hasValue() ? asked.value() : undefined, this.all()),
-      ),
+      view: computed(() => {
+        const view = asked.hasValue() ? asked.value() : undefined;
+        const all = new Map(this.all().map((other) => [other.id, other]));
+        return loaded() ?? (view === undefined ? undefined : withEpic(view, all, {}));
+      }),
       missing: computed(
         () =>
           loaded() === undefined &&
@@ -149,14 +173,30 @@ export interface FoundChange {
   readonly missing: Signal<boolean>;
 }
 
-/** `view` with the title of its epic when the epic is loaded, as the list derives it. */
-function withEpicTitle(
-  view: ChangeView | undefined,
-  loaded: readonly ChangeView[],
-): ChangeView | undefined {
-  const epic = view?.epic;
-  const title = loaded.find((other) => other.id === epic?.id)?.title;
-  return view === undefined || epic === undefined || title === undefined
-    ? view
-    : { ...view, epic: { ...epic, title } };
+function isFinished(view: ChangeView): boolean {
+  return view.phase === "done" || view.phase === "cancelled";
+}
+
+/**
+ * `view` with its epic as the list derives it: the title of the epic when it is loaded, or else the
+ * one in `titles`, and the title the loaded epic gives its slice.
+ */
+function withEpic(
+  view: ChangeView,
+  loaded: ReadonlyMap<string, ChangeView>,
+  titles: Readonly<Record<string, string>>,
+): ChangeView {
+  const { epic } = view;
+  if (epic === undefined) return view;
+  const own = loaded.get(epic.id);
+  const title = own?.title ?? titles[epic.id];
+  const sliceTitle = own?.slices?.find((slice) => slice.id === epic.slice)?.title;
+  return {
+    ...view,
+    epic: {
+      ...epic,
+      ...(title === undefined ? {} : { title }),
+      ...(sliceTitle === undefined ? {} : { sliceTitle }),
+    },
+  };
 }
