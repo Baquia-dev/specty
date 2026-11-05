@@ -100,18 +100,42 @@ export type Opened =
 /** Name used in instructions; hooks use `Invocation.command` instead. */
 export const COMMAND = "specty";
 
-export async function openSession(environment: Environment): Promise<Opened> {
+/**
+ * A valid configuration of the same repository for a folder whose own is not: the guard judges
+ * that folder with it (`guardSession`). Undefined when there is none.
+ */
+type ConfigFallback = (git: Git) => Promise<ResolvedConfig | undefined>;
+
+/**
+ * The session of the folder `environment.cwd`. With `fallback`, a folder whose configuration is
+ * not valid opens with the one it gives, if any; the commands never pass one.
+ */
+export async function openSession(
+  environment: Environment,
+  fallback?: ConfigFallback,
+): Promise<Opened> {
   const root = await findRoot(environment.cwd);
   if (root === undefined) return { kind: "no-git" };
   const paths = repoPaths(root);
   const git = createGit(root, environment.env);
   const loaded = await loadConfig(paths);
   if (loaded.kind === "missing") return { kind: "missing", root, paths, git };
-  if (loaded.kind === "invalid") return { kind: "invalid", issues: loaded.issues };
+  if (loaded.kind === "ok") return await opened(environment, root, git, loaded.config);
+  const replaced = await fallback?.(git);
+  if (replaced === undefined) return { kind: "invalid", issues: loaded.issues };
+  return await opened(environment, root, git, replaced);
+}
+
+async function opened(
+  environment: Environment,
+  root: string,
+  git: Git,
+  config: ResolvedConfig,
+): Promise<Opened> {
   const delegated = (await readDelegation(git)) !== undefined;
   return {
     kind: "ok",
-    session: sessionFrom(environment, root, paths, git, loaded.config, delegated),
+    session: sessionFrom(environment, root, repoPaths(root), git, config, delegated),
   };
 }
 

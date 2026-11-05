@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a5f4a4994ac4ae02c8967149ca3d0fbad5bc1751",
+      "startedAt": "2026-11-05T09:49:03.352Z",
+      "doneAt": "2026-11-05T09:51:08.025Z",
+      "summary": "El guard abre una carpeta con la configuración inválida con una de repuesto (la de la herramienta si la conversación entró con specty enter; si no, la de la carpeta principal): reconoce la carpeta del cambio, aplica su fase y protege .specty/config.yaml."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

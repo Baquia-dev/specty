@@ -46,7 +46,7 @@ Cuando la `.specty/config.yaml` de la carpeta de un cambio no es válida, el gua
 
 ## Tareas
 
-- [ ] T1: El guard juzga la carpeta de un cambio con la configuración inválida
+- [x] T1: El guard juzga la carpeta de un cambio con la configuración inválida
   - files: packages/cli/src/session.ts, packages/cli/src/enforce/sessions.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/invalid-config-guard.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/invalid-config-guard.test.ts test/enter.test.ts test/invalid-config.test.ts && pnpm typecheck
