@@ -178,6 +178,7 @@ export {
   parseItemId,
   slugify,
 } from "./ids";
+export { CHANGE_SORTS, type ChangeSort, matchesQuery, sortChanges } from "./listing";
 export {
   type ClaimProblem,
   claimable,

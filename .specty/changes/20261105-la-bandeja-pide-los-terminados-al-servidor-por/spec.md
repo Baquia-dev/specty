@@ -61,7 +61,7 @@ Hoy la única forma de leer los cambios terminados es `GET /api/changes`, que lo
 
 ## Tareas
 
-- [ ] T1: Core busca y ordena los cambios para la UI y el servidor
+- [x] T1: Core busca y ordena los cambios para la UI y el servidor
   - files: packages/core/src/listing.ts, packages/core/src/index.ts, packages/core/src/light.ts, packages/core/test/listing.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/listing.test.ts test/light.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

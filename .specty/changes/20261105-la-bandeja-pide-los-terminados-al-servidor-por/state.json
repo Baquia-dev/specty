@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "016c317204fa1aa1c60970ebfa1a9a38d8e1f4c3",
+      "startedAt": "2026-11-05T13:07:16.529Z",
+      "doneAt": "2026-11-05T13:08:30.321Z",
+      "summary": "listing.ts en core con matchesQuery (sobre fold), sortChanges (desempate por id) y CHANGE_SORTS/ChangeSort, exportados en index.ts y light.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
