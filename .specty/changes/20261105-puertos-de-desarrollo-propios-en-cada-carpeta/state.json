@@ -6,6 +6,13 @@
   "branch": "specty/20261105-puertos-de-desarrollo-propios-en-cada-carpeta",
   "baseCommit": "53733e01b4bb1d0786f65620876e1ccd67a98705",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c7e7883695f7700ae1878e8092af95c21a0840274e490bafc5909b0e21cefafe",
+    "at": "2026-11-05T02:14:59.576Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -35,12 +42,6 @@
     "AC": 4,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c7e7883695f7700ae1878e8092af95c21a0840274e490bafc5909b0e21cefafe",
-    "at": "2026-11-05T02:14:59.576Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T02:17:19.305Z"
 }
