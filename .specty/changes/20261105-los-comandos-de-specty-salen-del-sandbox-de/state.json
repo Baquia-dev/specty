@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "id": "20261105-los-comandos-de-specty-salen-del-sandbox-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-los-comandos-de-specty-salen-del-sandbox-de",
+  "baseCommit": "6c68190ea4eb28fdfeadfcaba7f8797b3aac1be8",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:76fcdd75cb075d04da6a3099b8c90a55770b82e2f2397d5daabbb44f3dcea1eb",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1ee91c94b7d24b195a0e50273f0688e43519af73ca4ac86cace19b8f5b53d542",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9d324416fb8cc1bbbd2bbe17bc26023dc67c81d835cff6c8a2ad5815477c0939",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d6381438d25fed8e328124fea265ee99e8ea07508efd7bb08b4e3bfc7613b8a8",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:49aae54020a5a6e29c71c51f4aa543aefaf389a6bc1dc7660e616c933542bfd6",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:2785fe71de63364da95f37191e0a2687cd1da9aac14c61903e4cf597a2e2bf4f",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:d3e4d55737998c8767cb10c0282cc010929fb43ffdedae2dfd0fbcdad198a17e",
+      "decision": "confirmed"
+    },
+    "A8": {
+      "hash": "sha256:864fb4d5e2147825545840200c64ed064966da8eb188ba2ab363b0fd2dde0f49",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:b349d24660e129ad96b77fc6df4cf018d01c72439397432d7b7b557346bc3b5f",
+      "decision": "implicit"
+    },
+    "A10": {
+      "hash": "sha256:67279003bc9dbf0619e08f0447815a097f9373eef9172b47eb8075c2d3587a0f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 10,
+    "AC": 8,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d8aa99ec4d9ec3868417d2c4c13ac3ccd71e172a1e7846481d9609b358e7bb62",
+    "at": "2026-11-05T13:47:56.869Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
