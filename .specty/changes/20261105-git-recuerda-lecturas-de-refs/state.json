@@ -58,6 +58,15 @@
       "doneAt": "2026-11-05T12:05:19.668Z",
       "summary": "ARCHITECTURE explica la apertura con HEAD y la rama, las lecturas de refs recordadas 2 s (recalling, rememberHead) y la nueva medida de flow.test.ts.",
       "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f7583cd20d30549e39951f0043d9c78711efc1eb",
+      "startedAt": "2026-11-05T12:12:59.194Z",
+      "doneAt": "2026-11-05T12:14:44.394Z",
+      "summary": "Git.forget olvida lo recordado; el servidor de specty ui lo llama al empezar cada petición y cada sondeo de eventos, así que nunca responde con una lectura de antes de un commit de otro proceso (trace.test.ts vuelve a pasar)."
     }
   },
   "pending": {

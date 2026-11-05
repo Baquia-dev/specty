@@ -140,6 +140,8 @@ interface GitOptions {
 export interface Recalling {
   run(args: readonly string[], options?: GitOptions): Promise<ExecResult>;
   remember(args: readonly string[], result: ExecResult): void;
+  /** Forgets every recalled answer: what another process changed counts from now on. */
+  forget(): void;
 }
 
 /** One argument list as a key: git's arguments never hold a NUL. */
@@ -166,6 +168,7 @@ export function recalling(
       return result;
     },
     remember: (args, result) => recent.remember(keyOf(args), result),
+    forget: () => memory.forget(),
   };
 }
 

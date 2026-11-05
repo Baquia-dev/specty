@@ -61,6 +61,11 @@ export interface Git {
   worktrees(): Promise<Worktree[]>;
   /** Repository-relative folders of the other worktrees that live inside this one. */
   nestedWorktrees(): Promise<string[]>;
+  /**
+   * Forgets the reads it recalls (`io/git-memo.ts`): what another process changed counts from now
+   * on. Whoever keeps one `Git` for long, as the server of `specty ui`, calls it before each turn.
+   */
+  forget(): void;
 }
 
 export interface Worktree {
@@ -136,6 +141,7 @@ export function createGit(
     config: (key) => git.optional(["config", "--get", key]),
     worktrees: repository.worktrees,
     nestedWorktrees: repository.nestedWorktrees,
+    forget: git.forget,
   };
 }
 
@@ -185,7 +191,7 @@ interface Runner extends Pick<Git, "root" | "run" | "output"> {
 type Repository = Runner & Pick<Git, "head" | "gitPath" | "worktrees" | "nestedWorktrees">;
 
 function runner(root: string, baseEnv: NodeJS.ProcessEnv): Runner & Recalling {
-  const { run, remember } = recalling((args, options: RunOptions) =>
+  const { run, remember, forget } = recalling((args, options: RunOptions) =>
     execute("git", args, {
       cwd: root,
       env: { ...baseEnv, ...options.env },
@@ -204,7 +210,7 @@ function runner(root: string, baseEnv: NodeJS.ProcessEnv): Runner & Recalling {
     const value = result.stdout.trim();
     return result.code === 0 && value.length > 0 ? value : undefined;
   };
-  return { root, run, output, optional, remember };
+  return { root, run, output, optional, remember, forget };
 }
 
 function worktreeQueries(git: Runner): Pick<Git, "worktrees" | "nestedWorktrees"> {

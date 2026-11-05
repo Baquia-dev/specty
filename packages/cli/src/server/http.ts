@@ -138,6 +138,8 @@ async function handle(request: IncomingMessage, response: ServerResponse, contex
   // Another host name means DNS rebinding: a page elsewhere pointing its name at this server.
   if (!isLocal(request.headers.host, context.port))
     return send(response, 403, TEXT, "specty: host");
+  // The server keeps one `Git` for hours: what it recalls from before this request may be old.
+  context.session.git.forget();
   const url = new URL(request.url ?? "/", "http://localhost");
   if (request.method === "POST" && url.pathname.startsWith("/api/"))
     return act(request, response, context, url.pathname);

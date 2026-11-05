@@ -102,6 +102,8 @@ function fingerprintWatch(session: Session, interval: number, moved: () => void)
     if (looking) return;
     looking = true;
     try {
+      // Another process may have moved what the server's `Git` recalls since the last look.
+      session.git.forget();
       const now = await fingerprint(session);
       if (last !== undefined && now !== last) moved();
       last = now;

@@ -63,7 +63,7 @@ Desde 20261105-tests-cli-mas-rapidos, cada comando abre su sesión con un proces
   - ac: —
   - verify: pnpm lint
   - type: docs
-- [ ] T3: El servidor de la UI olvida lo recordado en cada petición y cada sondeo
+- [x] T3: El servidor de la UI olvida lo recordado en cada petición y cada sondeo
   - files: packages/cli/src/io/git-memo.ts, packages/cli/src/io/git.ts, packages/cli/src/server/http.ts, packages/cli/src/server/events.ts, packages/cli/test/git-memo.test.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-memo.test.ts test/server/trace.test.ts test/server.test.ts test/server/verify-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip
