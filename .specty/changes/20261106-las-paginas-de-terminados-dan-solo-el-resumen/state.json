@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-las-paginas-de-terminados-dan-solo-el-resumen",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-las-paginas-de-terminados-dan-solo-el-resumen",
   "baseCommit": "01598fbba743bc0a0f39a0b88a99b3e9cf6b2223",
   "revision": 1,
@@ -59,6 +59,11 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T19:01:01.999Z"
+  "lockedTests": {
+    "packages/cli/test/server-restore.test.ts": "sha256:7ab7199ff9ca687851431a84ec40a318a06c3a844f3b6822d46081b1639474a4",
+    "packages/cli/test/server.test.ts": "sha256:27545f4a201858d65ea794954476167afdc145fe1354cf3c522fe6a49d1a7bda",
+    "packages/cli/test/server/finished.test.ts": "sha256:ef997e04f36a46100b950430f15c591d759293f0281f0458c640f72c541e439e",
+    "packages/ui/src/data/finished-pages.test.ts": "sha256:264e284346d44be743350f189319876c6df12d8063bc080620d1980918ce5567",
+    "packages/ui/src/data/finished-source.test.ts": "sha256:0704866e75fd84ca59034bdc02111ca93141123a34ea5682391ae0e5456799f4"
+  }
 }
