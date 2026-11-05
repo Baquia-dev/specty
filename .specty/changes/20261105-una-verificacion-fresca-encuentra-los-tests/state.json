@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261105-una-verificacion-fresca-encuentra-los-tests",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-una-verificacion-fresca-encuentra-los-tests",
+  "baseCommit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1112c67aebf231999d9a41985c8d4668f8cf977438b698f7d9899bdd920bc717",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ca55bd2f93424af8647ccbfeda54adb6858d558288c937c6e078a1cc73b8944a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3fbe6c9b14440648ec11f7d690b1c7590fb6cab4def1cf23e32eea8f3e874035",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:2ae1edcd9eeb4bf1ef102007070d4ac27d987a80f592e6b62d6e2a4a3ca28a08",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:3ec820a63459e62aebfb112711089c9edaea8b866e908c29c5ac176030076133",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:ac07bb211dc6de50ce0d6bc3263005391e7956abf23ab9588c0d0fb4437d65ee",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:96373cf8bf4eb2e0db84898e37c830a0e56644e9c7f60225d1912f44d7cae881",
+    "at": "2026-11-05T06:27:19.913Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
