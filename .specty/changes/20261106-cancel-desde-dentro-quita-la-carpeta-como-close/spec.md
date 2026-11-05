@@ -45,7 +45,7 @@ Hoy, cuando el agente cancela en modo delegado desde la carpeta del cambio, `spe
 
 ## Tareas
 
-- [ ] T1: cancel desde dentro quita la carpeta y pide salir, como close
+- [x] T1: cancel desde dentro quita la carpeta y pide salir, como close
   - files: packages/cli/src/flow/land.ts, packages/cli/src/flow/prune.ts, packages/cli/src/commands/finish.ts, packages/cli/test/cancel-folder.test.ts, packages/cli/test/epic-return.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cancel-folder.test.ts test/epic-return.test.ts test/delegated-integration.test.ts test/prune.test.ts && pnpm typecheck && pnpm lint && pnpm knip
