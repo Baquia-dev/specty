@@ -45,3 +45,21 @@ slice: C2
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/templates.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+La sección `verify` de `.specty/config.yaml` pasa de `packages/core/src/schema/config.ts` a `packages/core/src/schema/verify.ts`, con la forma de `dev.ts` y `memory.ts`: `VerifyUnit`, `VerifyConfig`, `DEFAULT_VERIFY`, `VerifySchema` (con el esquema privado de las unidades) y `resolveVerify`. `config.ts` la importa y baja de 377 a 315 líneas, unas 270 de código, así que `max-lines` ya no avisa de él. El índice de core exporta `VerifyUnit` desde su módulo, con el mismo nombre. Lo que se acepta y cómo se resuelve no cambia: los tests de `test/schema` y `test/templates.test.ts` pasan sin cambios, igual que `pnpm typecheck`, `pnpm lint` y `pnpm knip`.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `reviewOf` sigue tomando el límite por defecto de la revisión de `verify.timeoutSec` y, sin él, de `DEFAULT_CONFIG.verify.timeoutSec`, que ahora es `DEFAULT_VERIFY`.
+
+### Pendientes
+
+- Ninguno.

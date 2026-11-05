@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-verify-tiene-su-propio-modulo-del-esquema",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-verify-tiene-su-propio-modulo-del-esquema",
   "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:4026b60d4b807fe2c2ced9da99353d0befc1315a946105cb5ad767a3f88c2425",
@@ -38,12 +38,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "960a68901fa5f1d6d56ad49381fd03eebbdc6919",
+      "attempts": 1,
       "startedAt": "2026-11-05T07:56:43.858Z",
       "doneAt": "2026-11-05T07:57:54.040Z",
-      "summary": "La sección verify (VerifyUnit, VerifyConfig, DEFAULT_VERIFY, VerifySchema y resolveVerify) pasa de schema/config.ts a schema/verify.ts, con la forma de dev.ts y memory.ts; config.ts la importa y el índice exporta VerifyUnit desde su módulo."
+      "summary": "La sección verify (VerifyUnit, VerifyConfig, DEFAULT_VERIFY, VerifySchema y resolveVerify) pasa de schema/config.ts a schema/verify.ts, con la forma de dev.ts y memory.ts; config.ts la importa y el índice exporta VerifyUnit desde su módulo.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -54,5 +54,6 @@
     "A": 3,
     "AC": 1,
     "T": 1
-  }
+  },
+  "closingSubmittedAt": "2026-11-05T08:10:59.304Z"
 }
