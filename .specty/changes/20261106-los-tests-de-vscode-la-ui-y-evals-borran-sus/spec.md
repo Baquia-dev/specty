@@ -60,7 +60,7 @@ Los tests de la extensión de VS Code, de la UI y de evals, y la suite de cumpli
   - files: packages/ui/vitest-base.config.ts, packages/ui/src/temp-dir.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/temp-dir.test.ts && pnpm lint && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm knip
-- [ ] T3: Los tests y la suite de evals usan la carpeta de la ejecución, y el informe queda fuera
+- [x] T3: Los tests y la suite de evals usan la carpeta de la ejecución, y el informe queda fuera
   - files: evals/vitest.config.ts, evals/run/compliance.eval.ts, evals/test/temp-dir.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/temp-dir.test.ts && pnpm lint && pnpm typecheck && pnpm knip

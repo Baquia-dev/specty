@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-los-tests-de-vscode-la-ui-y-evals-borran-sus",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-los-tests-de-vscode-la-ui-y-evals-borran-sus",
   "baseCommit": "e88c26238e7aa7d12eb91cf63dfd32b091313002",
   "revision": 2,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ecd98fc15e99a43017b790c21c809147da6f9674",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:36:00.213Z",
       "doneAt": "2026-11-05T16:40:51.080Z",
-      "summary": "El globalSetup de packages/ui/vitest-base.config.ts, que el constructor de Angular carga con runnerConfig, nombra ../core/vitest-temp-dir.ts: los tests de la UI usan la carpeta de la ejecución"
+      "summary": "El globalSetup de packages/ui/vitest-base.config.ts, que el constructor de Angular carga con runnerConfig, nombra ../core/vitest-temp-dir.ts: los tests de la UI usan la carpeta de la ejecución",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "55eb5fb683ff1c090f3959775201b66162d78aa3",
+      "startedAt": "2026-11-05T16:40:51.390Z",
+      "doneAt": "2026-11-05T16:43:38.222Z",
+      "summary": "evals/vitest.config.ts nombra el ayudante y da con provide la carpeta del informe (specty-evals/ de la temporal del sistema), que compliance.eval.ts lee con inject; ARCHITECTURE.md lo cuenta"
     }
   },
   "pending": {
