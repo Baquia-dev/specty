@@ -52,7 +52,7 @@ Los tests de la extensión de VS Code, de la UI y de evals, y la suite de cumpli
 
 ## Tareas
 
-- [ ] T1: Los tests de la extensión de VS Code usan la carpeta de la ejecución
+- [x] T1: Los tests de la extensión de VS Code usan la carpeta de la ejecución
   - files: packages/vscode/vitest.config.ts, packages/vscode/test/temp-dir.test.ts
   - ac: AC1
   - verify: pnpm --filter specty-vscode exec vitest run test/temp-dir.test.ts && pnpm lint && pnpm --filter specty-vscode typecheck && pnpm knip

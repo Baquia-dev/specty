@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "708fd1d956466a7bcf3b093e854cb0ad032e1009",
+      "startedAt": "2026-11-05T16:35:43.692Z",
+      "doneAt": "2026-11-05T16:35:59.848Z",
+      "summary": "El globalSetup de packages/vscode/vitest.config.ts nombra ../core/vitest-temp-dir.ts: sus tests y los procesos que lanzan usan la carpeta de la ejecución"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
