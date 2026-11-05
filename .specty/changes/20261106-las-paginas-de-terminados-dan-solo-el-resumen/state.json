@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261106-las-paginas-de-terminados-dan-solo-el-resumen",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-las-paginas-de-terminados-dan-solo-el-resumen",
+  "baseCommit": "01598fbba743bc0a0f39a0b88a99b3e9cf6b2223",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5d5c64bf6b64eba6bc79aae1ebfb0e7af034b2ca7f40d96090acfe5c7b855b9f",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c0863a2072f8ac703ee90ed5153f3919110dd6f6aa99118e06f0e0c61e05f3f1",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:303886b79bac462d4000d2b48d6d8c925f5e6c60257b9af019092f1666037c77",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:6ee297941efceb8b7612c55b619034684f45de0927df9e197ae60ce553a24b19",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:44d10081e32d629802ace1a50e1b104bf96b9f4cc8810c1fec32323f40fc13d5",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:30b8ec47a61532a92c39b89138ba56c788f1beb041f9a6dec92842b130c30cad",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5e42ec1644d5415e5df3a0b476d7decf4770d07231e35a385fff4740c3f6c970",
+    "at": "2026-11-05T18:53:27.110Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
