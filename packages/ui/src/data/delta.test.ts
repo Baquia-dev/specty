@@ -201,3 +201,78 @@ describe("the delta in the view", () => {
     expect(review({ approved: undefined }, APPROVED).delta).toBeUndefined();
   });
 });
+
+/** An epic, as approved: three slices. */
+const APPROVED_EPIC = `---
+kind: epic
+---
+
+# Panel académico
+
+## Objetivo
+
+El docente sigue la asistencia y las faltas de sus cursos en un panel.
+
+## Fuera de alcance
+
+- Las notas.
+
+## Supuestos
+
+- A1: Los datos de asistencia ya existen.
+
+## Criterios de aceptación
+
+- AC1: CUANDO el docente abre el panel ENTONCES ve la asistencia de cada curso.
+- AC2: CUANDO la familia justifica una falta ENTONCES el docente la ve justificada.
+
+## Cortes
+
+- C1: Asistencia por curso
+  - ac: AC1
+- C2: Justificar faltas
+  - ac: AC2
+  - depends: C1
+- C3: Avisos a las familias
+  - ac: AC1
+`;
+
+/** The epic adjusted: C2 renamed, covering AC1 too and no longer after C1; C3 split into C4. */
+const ADJUSTED_EPIC = APPROVED_EPIC.replace(
+  "- C2: Justificar faltas\n  - ac: AC2\n  - depends: C1\n",
+  "- C2: Justificar faltas desde la app\n  - ac: AC1, AC2\n",
+).replace(
+  "- C3: Avisos a las familias\n  - ac: AC1\n",
+  "- C4: Avisos por correo\n  - ac: AC1\n  - depends: C1, C2\n",
+);
+
+describe("the slices of an epic in the delta", () => {
+  const delta = deriveDelta(parseSpec(ADJUSTED_EPIC).spec, parseSpec(APPROVED_EPIC).spec, 1);
+  const entry = (key: string) => delta.entries.find((candidate) => candidate.key === key);
+
+  it("AC6: lists the slices added, modified and removed, in the Cortes section", () => {
+    expect(delta.entries.map((item) => `${item.change} ${item.section} ${item.key}`)).toEqual([
+      "modified slices C2",
+      "removed slices C3",
+      "added slices C4",
+    ]);
+    expect(entry("C2")).toMatchObject({ kind: "slice", details: [], newScope: [] });
+    expect(changed(entry("C2")?.text ?? [], "added")).toContain("desde la app");
+    expect(entry("C3")?.text).toEqual([{ text: "Avisos a las familias" }]);
+    expect(entry("C4")?.text).toEqual([{ text: "Avisos por correo" }]);
+  });
+
+  it("AC6: gives each slice its criteria and the slices it depends on as chips, marking changes", () => {
+    expect(entry("C2")?.chips).toEqual([
+      { label: "AC1", kind: "criterion", change: "added", newScope: false },
+      { label: "AC2", kind: "criterion", newScope: false },
+      { label: "C1", kind: "slice", change: "removed", newScope: false },
+    ]);
+    expect(entry("C3")?.chips).toEqual([{ label: "AC1", kind: "criterion", newScope: false }]);
+    expect(entry("C4")?.chips).toEqual([
+      { label: "AC1", kind: "criterion", newScope: false },
+      { label: "C1", kind: "slice", newScope: false },
+      { label: "C2", kind: "slice", newScope: false },
+    ]);
+  });
+});

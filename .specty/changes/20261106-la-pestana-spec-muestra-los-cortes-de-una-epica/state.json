@@ -6,6 +6,13 @@
   "branch": "specty/20261106-la-pestana-spec-muestra-los-cortes-de-una-epica",
   "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a5ccc72dbfbcca89e35eda433e690363b4400ccacac751e409b0fc9433bcbca8",
+    "at": "2026-11-05T16:38:02.858Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -48,12 +55,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:a5ccc72dbfbcca89e35eda433e690363b4400ccacac751e409b0fc9433bcbca8",
-    "at": "2026-11-05T16:38:02.858Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T16:59:28.683Z"
 }

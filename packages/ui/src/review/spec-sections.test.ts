@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { type ChangeState, parseSpec } from "@baquia-dev/specty-core";
+import { provideRouter } from "@angular/router";
+import { type ChangeState, type Phase, parseSpec } from "@baquia-dev/specty-core";
 import { Toasts } from "../components/toast";
 import {
   type AssumptionView,
@@ -10,7 +11,10 @@ import {
   SpectyData,
 } from "../data/records";
 import { deriveReview } from "../data/review";
+import { deriveViews } from "../data/views";
 import { AssumptionRow } from "./assumption-row";
+import { SECTION_LABELS } from "./comments";
+import { SECTION_META } from "./section-meta";
 import { ReviewItems } from "./spec-sections";
 
 const SPEC = `# Entrar con Google
@@ -348,5 +352,167 @@ describe("ReviewItems", () => {
     expect(TestBed.inject(Toasts).items()).toEqual([
       expect.objectContaining({ kind: "error", text: "Error: boom" }),
     ]);
+  });
+});
+
+/** An epic with three slices: C2 after C1, and C3 after both. */
+const EPIC = `---
+kind: epic
+---
+
+# Panel académico
+
+## Objetivo
+
+El docente sigue la asistencia y las faltas de sus cursos en un panel.
+
+## Criterios de aceptación
+
+- AC1: CUANDO el docente abre el panel ENTONCES ve la asistencia de cada curso.
+- AC2: CUANDO la familia justifica una falta ENTONCES el docente la ve justificada.
+
+## Cortes
+
+- C1: Asistencia por curso
+  - ac: AC1
+- C2: Justificar faltas
+  - ac: AC2
+  - depends: C1
+- C3: Avisos a las familias
+  - ac: AC1, AC2
+  - depends: C1, C2
+`;
+
+const EPIC_ID = "20261101-panel-academico";
+
+const EPIC_REVIEW = deriveReview(
+  parseSpec(EPIC).spec,
+  { ...STATE, id: EPIC_ID, kind: "epic", tasks: {} },
+  [],
+);
+
+/** A change implementing `slice` of `epic`, in `phase`. */
+function sliceRecord(id: string, slice: string, phase: Phase, epic = EPIC_ID): ChangeRecord {
+  return {
+    spec: `---\nkind: standard\nepic: ${epic}\nslice: ${slice}\n---\n\n${SPEC}`,
+    state: { ...STATE, id, phase },
+    phaseSince: "2026-11-01T10:00:00.000Z",
+  };
+}
+
+/**
+ * The loaded changes: C1 has a cancelled, an open and a closed change; C2 two open ones; C3 only
+ * a change of another epic.
+ */
+const LOADED = deriveViews([
+  sliceRecord("20261102-asistencia-cancelada", "C1", "cancelled"),
+  sliceRecord("20261103-asistencia-bis", "C1", "implementing"),
+  sliceRecord("20261104-asistencia", "C1", "done"),
+  sliceRecord("20261105-justificar", "C2", "implementing"),
+  sliceRecord("20261106-justificar-otra-vez", "C2", "draft"),
+  sliceRecord("20261107-avisos-de-otra-epica", "C3", "implementing", "20261101-otra-epica"),
+]);
+
+/** The slices of the epic, as `sp-review-items` shows them; links only with `epic` and `changes`. */
+async function renderSlices(
+  options: { readonly links?: boolean; readonly lang?: "es" | "en" } = {},
+) {
+  window.matchMedia = (() => ({
+    matches: false,
+    addEventListener: () => undefined,
+  })) as unknown as typeof window.matchMedia;
+  localStorage.setItem("specty.lang", options.lang ?? "es");
+  TestBed.resetTestingModule();
+  TestBed.configureTestingModule({
+    providers: [provideRouter([]), { provide: SpectyData, useValue: new Recording() }],
+  });
+  const fixture = TestBed.createComponent(ReviewItems);
+  fixture.componentRef.setInput("review", EPIC_REVIEW);
+  fixture.componentRef.setInput("section", "slices");
+  fixture.componentRef.setInput("editable", true);
+  if (options.links === true) {
+    fixture.componentRef.setInput("epic", EPIC_ID);
+    fixture.componentRef.setInput("changes", LOADED);
+  }
+  const anchors: CommentAnchor[] = [];
+  fixture.componentInstance.comment.subscribe((anchor) => anchors.push(anchor));
+  await fixture.whenStable();
+  const element: HTMLElement = fixture.nativeElement;
+  const row = (id: string) => element.querySelector<HTMLElement>(`[data-item=${id}]`);
+  return { element, row, anchors };
+}
+
+/** The text of each element under `row` that `selector` finds. */
+const badges = (row: Element | null, selector: string) =>
+  [...(row?.querySelectorAll(selector) ?? [])].map((badge) => text(badge));
+
+describe("ReviewItems on an epic's slices", () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  it("AC1: shows each slice as a row with its id, its title, its criteria and the slices it depends on", async () => {
+    const { element, row } = await renderSlices();
+    expect(
+      [...element.querySelectorAll<HTMLElement>("[data-item]")].map((item) => item.dataset.item),
+    ).toEqual(["C1", "C2", "C3"]);
+    expect(text(row("C1")?.querySelector(".font-mono"))).toBe("C1");
+    expect(text(row("C1"))).toContain("Asistencia por curso");
+    expect(badges(row("C1"), "sp-badge")).toEqual(["AC1"]);
+    expect(row("C1")?.querySelector("[data-depends]")).toBeNull();
+    expect(text(row("C2")?.querySelector("[data-depends]"))).toMatch(/^Depende de/);
+    expect(badges(row("C2"), "[data-depends] sp-badge")).toEqual(["C1"]);
+    expect(badges(row("C3"), "sp-badge")).toEqual(["AC1", "AC2", "C1", "C2"]);
+    expect(badges(row("C3"), "[data-depends] sp-badge")).toEqual(["C1", "C2"]);
+    // A row of the document, like a task: indented, without lines between the rows.
+    expect(row("C1")?.className.split(" ")).toContain("hover:bg-text/4");
+    expect(row("C1")?.className).not.toMatch(/\bborder-[bt]\b/);
+  });
+
+  it("AC2: offers «Comentar» on each slice of an editable review, anchored to its id", async () => {
+    const { row, anchors } = await renderSlices();
+    expect(row("C2")?.querySelector("sp-icon-button button")?.getAttribute("aria-label")).toBe(
+      "Comentar C2",
+    );
+    row("C2")?.querySelector<HTMLButtonElement>("sp-icon-button button")?.click();
+    row("C1")?.querySelector<HTMLButtonElement>("sp-icon-button button")?.click();
+    expect(anchors).toEqual([{ item: "C2" }, { item: "C1" }]);
+  });
+
+  it("AC3: links each slice to the change that implements it, with its phase", async () => {
+    const { row } = await renderSlices({ links: true });
+    // C1: the closed change wins over the open one, and the cancelled one does not count.
+    const first = row("C1")?.querySelector<HTMLAnchorElement>("a");
+    expect(text(first)).toBe("Asistencia por curso");
+    expect(first?.getAttribute("href")).toBe("/changes/20261104-asistencia");
+    expect(row("C1")?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("done");
+    // C2: no closed change, so the first of the others.
+    const second = row("C2")?.querySelector<HTMLAnchorElement>("a");
+    expect(second?.getAttribute("href")).toBe("/changes/20261105-justificar");
+    expect(row("C2")?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe(
+      "implementing",
+    );
+    // C3: only a change of another epic names it.
+    expect(row("C3")?.querySelector("a")).toBeNull();
+    expect(row("C3")?.querySelector("sp-phase-badge")).toBeNull();
+    expect(text(row("C3"))).toContain("Avisos a las familias");
+  });
+
+  it("AC3: shows no link nor phase without the loaded changes", async () => {
+    const { element } = await renderSlices();
+    expect(element.querySelector("a")).toBeNull();
+    expect(element.querySelector("sp-phase-badge")).toBeNull();
+  });
+
+  it("AC5: names the Cortes section, its hint and «Depende de» in Spanish and English", async () => {
+    expect(SECTION_LABELS).toMatchObject({ slices: { es: "Cortes", en: "Slices" } });
+    expect(SECTION_META).toMatchObject({
+      slices: {
+        hint: {
+          es: "Los cambios en que se reparte la épica, y en qué orden.",
+          en: "The changes the epic is split into, and in what order.",
+        },
+      },
+    });
+    const { row } = await renderSlices({ lang: "en" });
+    expect(text(row("C2")?.querySelector("[data-depends]"))).toMatch(/^Depends on/);
   });
 });

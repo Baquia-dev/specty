@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { type ChangeState, parseSpec } from "@baquia-dev/specty-core";
-import { ActionError, type ChangeRecord, type CommentRecord, SpectyData } from "./records";
+import {
+  ActionError,
+  type ChangeRecord,
+  type CommentRecord,
+  type SectionIndexView,
+  SpectyData,
+} from "./records";
 import { deriveReview, sectionOf } from "./review";
 
 const SPEC = `---
@@ -93,6 +99,58 @@ const COMMENTS: readonly CommentRecord[] = [
 
 const review = () => deriveReview(parseSpec(SPEC).spec, STATE, COMMENTS);
 
+/** An epic: no files nor tasks, and its Cortes section between the criteria and the risks. */
+const EPIC = `---
+kind: epic
+---
+
+# Panel académico
+
+## Objetivo
+
+El docente sigue la asistencia y las faltas de sus cursos en un panel.
+
+## Fuera de alcance
+
+- Las notas.
+
+## Supuestos
+
+- A1: Los datos de asistencia ya existen.
+
+## Criterios de aceptación
+
+- AC1: CUANDO el docente abre el panel ENTONCES ve la asistencia de cada curso.
+- AC2: CUANDO la familia justifica una falta ENTONCES el docente la ve justificada.
+
+## Cortes
+
+- C1: Asistencia por curso
+  - ac: AC1
+- C2: Justificar faltas
+  - ac: AC2
+  - depends: C1
+- C3: Avisos a las familias
+  - ac: AC1, AC2
+  - depends: C1, C2
+
+## Riesgos
+
+- R1: Los datos llegan tarde. Mitigación: avisar en el panel.
+`;
+
+/** The index of a review by the key of each section. */
+const byKey = (index: readonly SectionIndexView[]) =>
+  Object.fromEntries(index.map((entry) => [entry.key, entry]));
+
+const EPIC_STATE: ChangeState = {
+  ...STATE,
+  id: "20261101-panel-academico",
+  kind: "epic",
+  items: {},
+  tasks: {},
+};
+
 describe("deriveReview", () => {
   it("lists assumptions with impact, decision and the reason of a rejection (AC2)", () => {
     expect(review().assumptions).toEqual([
@@ -164,6 +222,7 @@ describe("deriveReview", () => {
       "criteria",
       "files",
       "tasks",
+      "slices",
       "risks",
       "design",
     ]);
@@ -174,6 +233,57 @@ describe("deriveReview", () => {
     expect(goal).toContain("**familias**");
     expect(design).toContain("google_sign_in");
     expect(risks[0]?.id).toBe("R1");
+  });
+
+  it("AC1: gives an epic's slices, with their criteria and dependencies, between tasks and risks", () => {
+    const epic = deriveReview(parseSpec(EPIC).spec, EPIC_STATE, []);
+    expect(epic).toMatchObject({
+      slices: [
+        { id: "C1", title: "Asistencia por curso", ac: ["AC1"], depends: [] },
+        { id: "C2", title: "Justificar faltas", ac: ["AC2"], depends: ["C1"] },
+        { id: "C3", title: "Avisos a las familias", ac: ["AC1", "AC2"], depends: ["C1", "C2"] },
+      ],
+    });
+    expect(epic.index.filter((entry) => entry.present).map((entry) => entry.key)).toEqual([
+      "goal",
+      "outOfScope",
+      "assumptions",
+      "criteria",
+      "slices",
+      "risks",
+    ]);
+    // A spec without a Cortes section has no slices, and the section is not there.
+    expect(review()).toMatchObject({ slices: [] });
+    expect(byKey(review().index)).toMatchObject({ slices: { present: false } });
+  });
+
+  it("AC2: puts a comment on a slice in the Cortes section and counts the open ones there", () => {
+    const comments: readonly CommentRecord[] = [
+      {
+        id: "c1",
+        revision: 1,
+        anchor: { item: "C2" },
+        author: "Ana Gómez",
+        body: "¿Antes que la asistencia?",
+        createdAt: "2026-10-21T10:00:00.000Z",
+      },
+      {
+        id: "c2",
+        revision: 1,
+        anchor: { item: "C3" },
+        author: "Ana Gómez",
+        body: "Ya está.",
+        createdAt: "2026-10-21T10:05:00.000Z",
+        resolvedInRevision: 2,
+      },
+    ];
+    const epic = deriveReview(parseSpec(EPIC).spec, EPIC_STATE, comments);
+    expect(sectionOf({ item: "C2" })).toBe("slices");
+    expect(epic.comments.map((comment) => [comment.id, comment.section])).toEqual([
+      ["c1", "slices"],
+      ["c2", "slices"],
+    ]);
+    expect(byKey(epic.index)).toMatchObject({ slices: { present: true, comments: 1 } });
   });
 
   it("puts unresolved comments first and finds each one's section", () => {

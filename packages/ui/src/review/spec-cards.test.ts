@@ -216,4 +216,103 @@ describe("SpecCards", () => {
     const unrevised = await render(viewOf(record(COMMENTED)));
     expect(unrevised.element.querySelector("[data-changed]")).toBeNull();
   });
+
+  it("AC4: shows an epic's slices as a card with their count, and rows without links or phases", async () => {
+    const { element, card, toggle, settle } = await render(epicView());
+    const slices = card("slices");
+    expect(slices).not.toBeNull();
+    const keys = [...element.querySelectorAll<HTMLElement>("section[data-card]")].map(
+      (section) => section.dataset.card,
+    );
+    expect(keys.indexOf("slices")).toBe(keys.indexOf("criteria") + 1);
+    expect(text(slices?.querySelector("h2"))).toContain("Cortes");
+    expect(text(slices)).toContain("Los cambios en que se reparte la épica, y en qué orden.");
+    expect(text(slices?.querySelector("[data-summary]"))).toBe("2");
+    toggle("slices")?.click();
+    await settle();
+    const rows = [...(slices?.querySelectorAll<HTMLElement>("[data-card-body] [data-item]") ?? [])];
+    expect(rows.map((row) => row.dataset.item)).toEqual(["C1", "C2"]);
+    expect(text(slices?.querySelector("[data-item=C2]"))).toContain("Justificar faltas");
+    // In the chat nobody navigates: no link to a slice's change, nor its phase.
+    expect(slices?.querySelector("a, sp-phase-badge")).toBeNull();
+  });
+
+  it("AC6: marks the Cortes card «Cambió» when the slices changed since the approved revision", async () => {
+    const revised = await render(
+      epicView(EPIC_SPEC.replace("- C2: Justificar faltas\n", "- C2: Justificar ausencias\n")),
+    );
+    expect(text(revised.card("slices")?.querySelector("[data-changed]"))).toBe("Cambió");
+    const same = await render(epicView(EPIC_SPEC));
+    expect(same.card("slices")?.querySelector("[data-changed]")).toBeNull();
+  });
 });
+
+/** An epic with two slices, C2 after C1. */
+const EPIC_SPEC = `---
+kind: epic
+---
+
+# Panel académico
+
+## Objetivo
+
+El docente sigue la asistencia y las faltas de sus cursos en un panel.
+
+## Criterios de aceptación
+
+- AC1: CUANDO el docente abre el panel ENTONCES ve la asistencia de cada curso.
+- AC2: CUANDO la familia justifica una falta ENTONCES el docente la ve justificada.
+
+## Cortes
+
+- C1: Asistencia por curso
+  - ac: AC1
+- C2: Justificar faltas
+  - ac: AC2
+  - depends: C1
+`;
+
+/**
+ * The epic in review; with `approved`, revision 1 is approved with that text, and a change of it
+ * that implements C1 is loaded too.
+ */
+function epicView(approved?: string): ChangeView {
+  const base = record(COMMENTED);
+  const epic: ChangeRecord = {
+    spec: EPIC_SPEC,
+    state: {
+      ...base.state,
+      id: "20261101-panel-academico",
+      kind: "epic",
+      phase: "review",
+      revision: 2,
+      items: {},
+      tasks: {},
+      ...(approved === undefined
+        ? {}
+        : {
+            approved: {
+              revision: 1,
+              hash: `sha256:${"b".repeat(64)}`,
+              at: "2026-11-01T10:00:00.000Z",
+              by: "Ana Gómez",
+              channel: "ui",
+            },
+          }),
+    },
+    phaseSince: "2026-11-01T10:00:00.000Z",
+    comments: [],
+    ...(approved === undefined ? {} : { approvedSpec: approved }),
+  };
+  const slice: ChangeRecord = {
+    ...base,
+    spec: base.spec.replace(
+      "kind: standard",
+      "kind: standard\nepic: 20261101-panel-academico\nslice: C1",
+    ),
+    state: { ...base.state, id: "20261102-asistencia", phase: "implementing" },
+  };
+  const view = deriveViews([epic, slice])[0];
+  if (view === undefined) throw new Error("no view of the epic");
+  return view;
+}
