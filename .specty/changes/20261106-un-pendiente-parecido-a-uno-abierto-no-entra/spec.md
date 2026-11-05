@@ -70,7 +70,7 @@ Desde C1 un agente ya no ve los pendientes abiertos al empezar, así que puede v
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/similar.test.ts test/flow/duplicates.test.ts test/memory/claims.test.ts
   - type: feat
-- [ ] T2: La tarjeta del freno de parecidos, en español y en inglés
+- [x] T2: La tarjeta del freno de parecidos, en español y en inglés
   - files: packages/core/src/cards/memory-similar.ts, packages/core/src/cards/memory.ts, packages/core/src/cards/index.ts, packages/core/test/cards/memory-similar.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/memory-similar.test.ts test/cards/memory-resolve.test.ts test/memory/claims.test.ts

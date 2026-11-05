@@ -290,6 +290,7 @@ export {
   memoryKeptCard,
 } from "./memory-drop";
 export { type MemoryRefusal, memoryRefusalCard } from "./memory-refusals";
+export { memorySimilarCard } from "./memory-similar";
 export { memoryStopReason } from "./memory-turn";
 export {
   type MessageRefusal,

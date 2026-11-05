@@ -186,7 +186,7 @@ function frontLines(
 }
 
 /** A pending item or improvement: its id, kind and first line. */
-function workLine(entry: MemoryEntry, t: Translate): string {
+export function workLine(entry: MemoryEntry, t: Translate): string {
   return `${entry.id} · ${t(...KINDS[entry.kind])} · ${firstLine(entry.text)}`;
 }
 

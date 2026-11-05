@@ -52,12 +52,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "72680827344b50b043571f1ec743d6c7c86f7469",
+      "attempts": 1,
       "startedAt": "2026-11-05T21:43:24.306Z",
       "doneAt": "2026-11-05T21:47:13.849Z",
-      "summary": "similarEntries en core/memory/similar.ts: los pendientes y las mejoras abiertos (isOpenEntry) cuyo texto completo se parece al nuevo con similarTexts, por fecha, sin los de distinctFrom (leídos con parseEntryId) y ninguno para otro tipo; exportada en index.ts"
+      "summary": "similarEntries en core/memory/similar.ts: los pendientes y las mejoras abiertos (isOpenEntry) cuyo texto completo se parece al nuevo con similarTexts, por fecha, sin los de distinctFrom (leídos con parseEntryId) y ninguno para otro tipo; exportada en index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f1786cc230c6432320423da62a7ce05e747b79a6",
+      "startedAt": "2026-11-05T21:47:14.214Z",
+      "doneAt": "2026-11-05T21:50:47.242Z",
+      "summary": "memorySimilarCard (cards/memory-similar.ts): bloqueada, nombra cada parecido con workLine, que ahora exporta cards/memory.ts, y pide no añadir ni mencionar la misma o repetir memory add con --distinct-from y esos ids; en español y en inglés"
     }
   },
   "pending": {
