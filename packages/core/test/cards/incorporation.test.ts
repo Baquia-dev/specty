@@ -5,6 +5,7 @@ import {
   backOnTargetLine,
   type CardContext,
   commandFailsLine,
+  commitOrDiscardNext,
   folderRemovedLine,
   folderStaysLine,
   holderDirtyLine,
@@ -24,6 +25,7 @@ import {
   notLandedLine,
   notYetLine,
   outsideIncorporationLine,
+  personOnlyLine,
   renderText,
   resolveIncorporationNext,
   retryLandingNext,
@@ -31,6 +33,7 @@ import {
   stillResolvingLine,
   targetAheadLine,
   targetConflictsLine,
+  uncommittedOverlapLine,
   undoOutsideNext,
   verifyingNote,
 } from "../../src";
@@ -217,6 +220,35 @@ describe("leaving a slice's folder for its epic", () => {
     );
     expect(leaveFolderNext(without, { ...CLAUDE, lang: "en" })).toBe(
       '/w/c1 no longer exists: leave it (in Claude Code, `ExitWorktree` with `action: "keep"`) and go back to epic 20261105-panel, in /w/panel: switch your session\'s working folder there or open an agent there, and run `specty next`.',
+    );
+  });
+});
+
+describe("the uncommitted files the main branch also changed", () => {
+  it("AC3: names them, says who commits Specty's own, and what next, in Spanish, in English and delegated", () => {
+    expect(uncommittedOverlapLine("main", "es")).toBe(
+      "main también cambió archivos que aquí tienen cambios sin commit: el merge los pisaría, así que no empezó.",
+    );
+    expect(uncommittedOverlapLine("main", "en")).toBe(
+      "main also changed files with uncommitted changes here: the merge would overwrite them, so it did not start.",
+    );
+    expect(personOnlyLine([".specty/config.yaml"], "es")).toBe(
+      "Solo la persona puede hacer el commit de los cambios de .specty/config.yaml o descartarlos: el guard no deja que el agente edite lo que gestiona Specty.",
+    );
+    expect(personOnlyLine([".specty/config.yaml", ".husky/pre-commit"], "en")).toBe(
+      "Only the person can commit or discard the changes to .specty/config.yaml, .husky/pre-commit: the guard does not let the agent edit what Specty manages.",
+    );
+    expect(commitOrDiscardNext("close", ES)).toBe(
+      "haz el commit de esos archivos o descarta sus cambios en esta carpeta y vuelve a ejecutar `specty close`.",
+    );
+    expect(commitOrDiscardNext("accept", EN)).toBe(
+      "commit those files or discard their changes in this folder and run `specty accept` again.",
+    );
+    expect(commitOrDiscardNext("close", DELEGATED)).toBe(
+      "modo delegado: pide al usuario que haga el commit de esos archivos o descarte sus cambios en esta carpeta (tú no haces commits) y, cuando lo haga, vuelve a ejecutar tú `specty close`.",
+    );
+    expect(commitOrDiscardNext("accept", { ...EN, delegated: true })).toBe(
+      "delegated mode: ask the user to commit those files or discard their changes in this folder (you do not make commits), and once they do, run `specty accept` again yourself.",
     );
   });
 });

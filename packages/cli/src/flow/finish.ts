@@ -12,6 +12,7 @@ import { fireReminders, harvestEntries, settleEntries } from "./archive-memory";
 import { closingFollowUps } from "./carried";
 import { commitWithReceipt, decisionTrailers } from "./commits";
 import { remarkHarvest } from "./review-remarks";
+import { uncommittedChangedBy } from "./uncommitted";
 
 /** A change in the archive, with the reminders that waited for it, which it fired. */
 export interface ArchivedChange extends StoredChange {
@@ -93,12 +94,7 @@ export async function commitClosing(
   target: string,
 ): Promise<void> {
   const paths = [session.paths.relative(change.files.dir), ...(await glossaryPath(session))];
-  const uncommitted = [
-    ...(await names(session, ["diff", "--name-only", "-z", "HEAD", "--", ...paths])),
-    ...(await names(session, ["ls-files", "--others", "--exclude-standard", "-z", "--", ...paths])),
-  ];
-  const theirs = new Set(await names(session, ["diff", "--name-only", "-z", `HEAD...${target}`]));
-  if (!uncommitted.some((path) => theirs.has(path))) return;
+  if ((await uncommittedChangedBy(session, target, paths)).length === 0) return;
   await commitWithReceipt(session, {
     subject: closingCommitSubject(title, session.lang),
     trailers: decisionTrailers(session, change.state.id),
@@ -106,11 +102,6 @@ export async function commitClosing(
     only: paths,
     receipt: { change: change.state.id, kind: "close" },
   });
-}
-
-/** The repository-relative paths a git command prints with `-z`. */
-async function names(session: Session, args: readonly string[]): Promise<string[]> {
-  return (await session.git.output(args)).split("\0").filter((name) => name.length > 0);
 }
 
 /** The glossary, where a closing adds the terms it introduced or renamed (ADR 0014), if it exists. */

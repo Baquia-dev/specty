@@ -208,6 +208,7 @@ export {
 export {
   absorbedLine,
   commandFailsLine,
+  commitOrDiscardNext,
   holderDirtyLine,
   holderDirtyNext,
   incorporationTitle,
@@ -217,16 +218,20 @@ export {
   markersLeftLine,
   mergeAbortedLine,
   mergeByHandNext,
+  mergedConfigInvalidLine,
+  mergedConfigNext,
   mergedVerifyFailsLine,
   mergeFailedLine,
   mergingLabel,
   noIncorporationCard,
   notYetLine,
   outsideIncorporationLine,
+  personOnlyLine,
   resolveIncorporationNext,
   runAgainNext,
   stillResolvingLine,
   targetConflictsLine,
+  uncommittedOverlapLine,
   undoOutsideNext,
 } from "./integration";
 export {

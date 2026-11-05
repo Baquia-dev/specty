@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261105-la-incorporacion-nombra-los-archivos-sin-commit",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-la-incorporacion-nombra-los-archivos-sin-commit",
+  "baseCommit": "e5f9af3ba8f543fe35b900a7904128389ed94e83",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:16ddd4852360ce8b0922cc49f7951fca72ff3687b237c1262174a2a24dd216d7",
+    "at": "2026-11-05T09:48:13.176Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3ebcb3c4f51cc274c32e30b61cf53f8e856f4c375f97ed6b76e332ac6c7d4a19",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d5bb6da0434cc07093bdb46359d91439e458ae0a06d596509459c77ca45bf794",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:83d1dbc0ad87ebf940d9fdd420a7e04e4a08d0a3d71f0d42392f889afca85e02",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:cfbf41f500e091de64a89844bddf44e423ed8ac236a4a38eaaec55bfe51139e4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e43d3ab1d618423d85c5004733a19217c8ea88f6",
+      "attempts": 1,
+      "startedAt": "2026-11-05T09:49:59.795Z",
+      "doneAt": "2026-11-05T09:50:33.124Z",
+      "summary": "core exporta managedBySpecty (la lista del guard, que usa protectedDenial) y los textos uncommittedOverlapLine, personOnlyLine y commitOrDiscardNext, en español, en inglés y en modo delegado",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "fadc5ac1b499b043b901c11b1d6ae395c1fe94ff",
+      "attempts": 1,
+      "startedAt": "2026-11-05T09:50:33.446Z",
+      "doneAt": "2026-11-05T09:52:23.437Z",
+      "summary": "mergeTarget no empieza el merge si main cambió archivos sin commit de la carpeta: los nombra bajo SIN COMMIT, dice que los de Specty solo los toca la persona y pide su commit o descartarlos (flow/uncommitted.ts, que también usa commitClosing); ARCHITECTURE §9 lo documenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T10:01:35.873Z",
+  "lockedTests": {
+    "packages/core/test/cards/incorporation.test.ts": "sha256:cfc49171ddeabdbf81a78cf6646c5e199a702f301272357060deb8bb947edeaa",
+    "packages/cli/test/uncommitted-merge.test.ts": "sha256:98895c41dd5268eb62a6f07c41389f6567cc1573efa5ab78b3dc863202326d72"
+  }
+}

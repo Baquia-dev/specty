@@ -103,6 +103,41 @@ export function holderDirtyNext(
   );
 }
 
+/** The main branch changed files with uncommitted changes in the change's folder: no merge. */
+export function uncommittedOverlapLine(target: string, lang: Lang): string {
+  return translator(lang)(
+    `${target} también cambió archivos que aquí tienen cambios sin commit: el merge los pisaría, así que no empezó.`,
+    `${target} also changed files with uncommitted changes here: the merge would overwrite them, so it did not start.`,
+  );
+}
+
+/** Of those files, the ones Specty manages: the guard does not let the agent edit them. */
+export function personOnlyLine(paths: readonly string[], lang: Lang): string {
+  const list = paths.join(", ");
+  return translator(lang)(
+    `Solo la persona puede hacer el commit de los cambios de ${list} o descartarlos: el guard no deja que el agente edite lo que gestiona Specty.`,
+    `Only the person can commit or discard the changes to ${list}: the guard does not let the agent edit what Specty manages.`,
+  );
+}
+
+/**
+ * Those files get committed or their changes discarded, and then `again` runs. In delegated mode
+ * the agent reads this: it does not make commits, so it asks the person, and then runs `again`.
+ */
+export function commitOrDiscardNext(again: "close" | "accept", ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  const run = `\`${ctx.command} ${again}\``;
+  return ctx.delegated === true
+    ? t(
+        `modo delegado: pide al usuario que haga el commit de esos archivos o descarte sus cambios en esta carpeta (tú no haces commits) y, cuando lo haga, vuelve a ejecutar tú ${run}.`,
+        `delegated mode: ask the user to commit those files or discard their changes in this folder (you do not make commits), and once they do, run ${run} again yourself.`,
+      )
+    : t(
+        `haz el commit de esos archivos o descarta sus cambios en esta carpeta y vuelve a ejecutar ${run}.`,
+        `commit those files or discard their changes in this folder and run ${run} again.`,
+      );
+}
+
 /** When the merge cannot wait for the agent: the person does it by hand. */
 export function mergeByHandNext(
   target: string,
@@ -135,6 +170,36 @@ export function mergedVerifyFailsLine(target: string, command: string, lang: Lan
     `Con ${target} incorporado, \`${command}\` falla.`,
     `With ${target} merged in, \`${command}\` fails.`,
   );
+}
+
+/** The configuration that came with `target` is not valid, as `issues` says: the merge was undone. */
+export function mergedConfigInvalidLine(target: string, issues: string, lang: Lang): string {
+  return translator(lang)(
+    `Con ${target} incorporado, .specty/config.yaml no es válida: ${issues}.`,
+    `With ${target} merged in, .specty/config.yaml is not valid: ${issues}.`,
+  );
+}
+
+/**
+ * Only the person fixes the configuration, in `target`: the guard does not let an agent edit it.
+ * In delegated mode the agent reads this, so it asks them, and then runs `again` itself.
+ */
+export function mergedConfigNext(
+  target: string,
+  again: "close" | "accept",
+  ctx: CardContext,
+): string {
+  const t = translator(ctx.lang);
+  const run = `\`${ctx.command} ${again}\``;
+  return ctx.delegated === true
+    ? t(
+        `modo delegado: el usuario corrige .specty/config.yaml en ${target} (el guard no te deja editarla): pídeselo con el error de arriba y, cuando lo haga, vuelve a ejecutar tú ${run}.`,
+        `delegated mode: the user fixes .specty/config.yaml in ${target} (the guard does not let you edit it): ask them, with the error above, and once they do, run ${run} again yourself.`,
+      )
+    : t(
+        `corrige .specty/config.yaml en ${target} y vuelve a ejecutar ${run}.`,
+        `fix .specty/config.yaml in ${target} and run ${run} again.`,
+      );
 }
 
 /** What checked the merge: the full verification, nothing for an epic, or nothing configured. */

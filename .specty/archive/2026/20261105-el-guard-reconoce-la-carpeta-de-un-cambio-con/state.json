@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "id": "20261105-el-guard-reconoce-la-carpeta-de-un-cambio-con",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-el-guard-reconoce-la-carpeta-de-un-cambio-con",
+  "baseCommit": "e5f9af3ba8f543fe35b900a7904128389ed94e83",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9dbf45ed662f31cf2584f3e976a6e688be38d19641840df7aae431b3aa67c74b",
+    "at": "2026-11-05T09:47:45.586Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:73f8fa1cc7276c8cdc3c904acf2930edccac85a6f7e10aa2083dba8b5b0a6d57",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1a39ec31dc342ec32af7993cee37ac7c29882f8510ca9809cc63c5582d7990f9",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:939d9ea6ebbd2634e2d519d0b4ee0fd337fa50c88ffd74200e71c8f6bafd28d3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "a5f4a4994ac4ae02c8967149ca3d0fbad5bc1751",
+      "attempts": 1,
+      "startedAt": "2026-11-05T09:49:03.352Z",
+      "doneAt": "2026-11-05T09:51:08.025Z",
+      "summary": "El guard abre una carpeta con la configuración inválida con una de repuesto (la de la herramienta si la conversación entró con specty enter; si no, la de la carpeta principal): reconoce la carpeta del cambio, aplica su fase y protege .specty/config.yaml.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "123ecc297491841e0588d8ae1d7b6f062294c8b2",
+      "attempts": 1,
+      "startedAt": "2026-11-05T09:51:08.336Z",
+      "doneAt": "2026-11-05T09:51:24.115Z",
+      "summary": "ARCHITECTURE §10 y formats.md §6 dicen con qué configuración juzga el guard una carpeta cuya configuración no es válida y que sigue protegiendo .specty/config.yaml.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T09:57:09.165Z",
+  "lockedTests": {
+    "packages/cli/test/invalid-config-guard.test.ts": "sha256:eaebe71adf7caad636dfd7a5eaf1f85979993f62783abfbe7e475bd0d5abab4a"
+  }
+}

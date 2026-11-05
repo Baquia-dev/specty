@@ -26,6 +26,8 @@ import type { StoredChange } from "../store/changes";
 import { commitState } from "./active";
 import { commitWithReceipt, decisionTrailers } from "./commits";
 import { fullCommand } from "./full-verification";
+import { invalidMergedConfig } from "./merged-config";
+import { uncommittedRefusal } from "./uncommitted";
 import { type FullRan, fullPlan, runFull } from "./units";
 import { codeTree, recordFullVerification, touchesCode } from "./verified";
 import { targetBranch } from "./worktree";
@@ -93,9 +95,11 @@ export async function absorbTarget(
 
 /**
  * When the main branch moved, merges it into the change's branch, here, and commits the merge
- * only after the verification passes. With conflicts or a failing verification, the merge stays
- * in progress for the agent; a closed change's merge is aborted instead, as is any other failure,
- * and nothing moves. `again` is the command the person runs afterwards; `beforeMerge` runs only
+ * only after the verification passes. Uncommitted files here that it changed keep the merge from
+ * starting (`uncommittedRefusal`). A merged configuration that is not valid aborts it, with or
+ * without conflicts (`invalidMergedConfig`). With conflicts or a failing verification, the merge
+ * stays in progress for the agent; a closed change's merge is aborted instead, as is any other
+ * failure, and nothing moves. `again` is the command the person runs afterwards; `beforeMerge` runs only
  * when there is a merge to make, right before it.
  */
 export async function mergeTarget(
@@ -109,6 +113,9 @@ export async function mergeTarget(
   const { state } = change;
   if (await contains(git, "HEAD", plan.target)) return { ok: true, lines: [] };
   await beforeMerge?.(plan.target);
+  const uncommitted = await uncommittedRefusal(session, plan.target, again);
+  if (uncommitted !== undefined)
+    return refused(session, state, uncommitted.reasons, uncommitted.next, uncommitted.details);
   const absorbing: Absorbing = {
     plan,
     change,
@@ -117,6 +124,8 @@ export async function mergeTarget(
     byHand: mergeByHandNext(plan.target, again, cards),
   };
   const merged = await git.run(["merge", "--no-ff", "--no-commit", plan.target]);
+  const config = await invalidMergedConfig(session, plan.target, again);
+  if (config !== undefined) return refused(session, state, config.reason, config.next);
   if (merged.code !== 0) return mergeStopped(session, absorbing, merged);
   const verification = await mergeVerification(session, plan, state);
   if (verification.kind !== "passed") return commitAbsorbed(session, plan, verification);
@@ -275,12 +284,13 @@ async function commitAbsorbed(
 function refused(
   session: Session,
   state: ChangeState,
-  reason: string,
+  reason: string | readonly string[],
   next: string,
   details?: OutputBlock,
 ): Refused {
   const lead = notYetLine(state.phase, "unchanged", session.lang);
-  return { ok: false, output: blocked(state, [lead, reason], details, next) };
+  const reasons = typeof reason === "string" ? [reason] : reason;
+  return { ok: false, output: blocked(state, [lead, ...reasons], details, next) };
 }
 
 /**

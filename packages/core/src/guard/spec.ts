@@ -36,9 +36,18 @@ interface Denial {
   readonly next: string;
 }
 
+/**
+ * True when Specty manages `path`, so the guard does not let an agent edit it: only the person,
+ * or Specty's commands, change it. The change's own spec is the exception, which the guard decides
+ * by phase before this.
+ */
+export function managedBySpecty(path: string): boolean {
+  return matchesAny(path, PROTECTED) || path.startsWith(".specty/");
+}
+
 /** Why `path` may not be edited by hand: Specty manages it. Undefined when it may. */
 export function protectedDenial(path: string, lang: Lang, command: string): Denial | undefined {
-  if (!matchesAny(path, PROTECTED) && !path.startsWith(".specty/")) return undefined;
+  if (!managedBySpecty(path)) return undefined;
   const t = (es: string, en: string) => (lang === "es" ? es : en);
   return {
     reason: t(

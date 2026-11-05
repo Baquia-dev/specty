@@ -5,14 +5,17 @@ import {
   type BoundSession,
   type GuardAction,
   parseSpec,
+  type ResolvedConfig,
 } from "@baquia-dev/specty-core";
 import { isFinished, resolveActive } from "../flow/active";
 import { lostChanges } from "../flow/lost";
 import { exists } from "../io/files";
-import { resolved } from "../io/git";
-import { type Environment, openSession, type Session } from "../session";
+import { type Git, resolved } from "../io/git";
+import { type Environment, type Opened, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
+import { loadConfig } from "../store/config";
 import { readBinding, type SessionBinding, writeBinding } from "../store/local";
+import { repoPaths } from "../store/paths";
 import { conversationOf, type GuardTool, subagentOf } from "./actions";
 import { namedWorktree } from "./worktree-hooks";
 
@@ -115,8 +118,28 @@ async function enteredFolder(
     binding !== undefined && (await exists(binding.folder)) ? binding.folder : undefined;
   if (bound === undefined) return { session };
   if (bound === session.root) return { session, bound };
-  const opened = await openSession({ ...session.environment, cwd: bound });
+  // A folder whose configuration broke is still the conversation's: judged with its tool's (P154).
+  const opened = await openSession(
+    { ...session.environment, cwd: bound },
+    async () => session.config,
+  );
   return opened.kind === "ok" ? { session: opened.session, bound } : { session };
+}
+
+/**
+ * The session of the folder its tool works in, as the guard judges it: a change's folder whose
+ * configuration is not valid opens with the main folder's, so the guard still judges its change
+ * and keeps its `.specty/config.yaml` protected (P154).
+ */
+export async function guardSession(environment: Environment, cwd: string): Promise<Opened> {
+  return await openSession({ ...environment, cwd }, mainConfig);
+}
+
+/** The configuration of the repository's main folder, its first worktree, if it is valid. */
+async function mainConfig(git: Git): Promise<ResolvedConfig | undefined> {
+  const main = (await git.worktrees())[0]?.folder ?? git.root;
+  const loaded = await loadConfig(repoPaths(main));
+  return loaded.kind === "ok" ? loaded.config : undefined;
 }
 
 async function bindingOf(

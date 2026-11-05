@@ -20,7 +20,7 @@ import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
 import { gitCommonFolder } from "../flow/worktree";
 import { isRecord, parseJson, remove } from "../io/files";
-import { COMMAND, type Environment, openSession, type Session } from "../session";
+import { COMMAND, type Environment, type Session } from "../session";
 import { noteActivity } from "../store/activity";
 import { readSpec, type StoredChange } from "../store/changes";
 import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
@@ -28,7 +28,7 @@ import { enterCommand } from "./enter-command";
 import { endConversation, judgeFronts } from "./fronts";
 import { leavePending, type PendingKind, takePending } from "./pending";
 import { redirection, resolveAction } from "./place";
-import { bindSession, enterAction, enteredSession } from "./sessions";
+import { bindSession, enterAction, enteredSession, guardSession } from "./sessions";
 import {
   DELEGATION_KEY,
   pruneSnapshots,
@@ -81,7 +81,7 @@ export async function guard(
     const kind = agent.kind(event);
     // They make and remove worktrees for Claude Code, so they answer even outside a session.
     if (kind === "worktree") return await worktreeHook(environment, event, cwd);
-    const opened = await openSession({ ...environment, cwd });
+    const opened = await guardSession(environment, cwd);
     if (opened.kind !== "ok") return agent.reply(ALLOW, kind === "before" ? "before" : "after");
     // A conversation that entered a change's folder is answered in that folder's session.
     const entered = await enteredSession(agent.tool, opened.session, event);
