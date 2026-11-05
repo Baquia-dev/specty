@@ -66,7 +66,7 @@ Solo la verificación completa espera su turno: las verificaciones de las tareas
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts test/cards/lock.test.ts && pnpm --filter @baquia-dev/specty-core typecheck
   - type: perf
-- [ ] T2: Las plazas de verificación del clon, por orden de llegada
+- [x] T2: Las plazas de verificación del clon, por orden de llegada
   - files: packages/cli/src/store/turn-queue.ts, packages/cli/src/store/verify-slots.ts, packages/cli/src/store/verify-slots.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/store/verify-slots.test.ts src/flow/full-verification.test.ts && pnpm --filter @baquia-dev/specty typecheck

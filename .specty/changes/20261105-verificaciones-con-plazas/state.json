@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8088019721391187d5cf30ae56f0a36f705c4090",
+      "attempts": 1,
       "startedAt": "2026-11-05T03:29:36.439Z",
       "doneAt": "2026-11-05T03:32:42.126Z",
-      "summary": "verify.slots (entero ≥ 1, 2 por defecto) en el esquema de la configuración, y verifySlotsWaitNote(running, slots, lang, ahead) en cards/lock.ts, exportada: quién ocupa las plazas y cuántas sesiones esperan delante, en es/en"
+      "summary": "verify.slots (entero ≥ 1, 2 por defecto) en el esquema de la configuración, y verifySlotsWaitNote(running, slots, lang, ahead) en cards/lock.ts, exportada: quién ocupa las plazas y cuántas sesiones esperan delante, en es/en",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e11d417bfc2ceaf9440113460e42457fd9746eac",
+      "startedAt": "2026-11-05T03:32:42.710Z",
+      "doneAt": "2026-11-05T03:34:26.105Z",
+      "summary": "store/verify-slots.ts: inSlots(session, weight, command, run) hace cola por orden de llegada (joinQueue, la cola del turno con su carpeta como parámetro) y corre cuando su peso cabe en verify.slots junto a los archivos vivos de locks/verify-slots/; AC1 y AC2 en verify-slots.test.ts"
     }
   },
   "pending": {
