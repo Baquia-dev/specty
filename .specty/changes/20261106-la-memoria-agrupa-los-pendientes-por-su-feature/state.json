@@ -52,12 +52,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c8506212d03eee5c5e58ce0650d0ede59791dcd0",
+      "attempts": 1,
       "startedAt": "2026-11-05T20:16:41.150Z",
       "doneAt": "2026-11-05T20:20:49.984Z",
-      "summary": "memoryOrigins (server/origins.ts) da el título, el tipo, la fase y la épica de cada cambio de origen, de los abiertos (locateChanges) y de los archivados (archivedRecords con summaryOf, ahora exportado); GET /api/memory añade origins"
+      "summary": "memoryOrigins (server/origins.ts) da el título, el tipo, la fase y la épica de cada cambio de origen, de los abiertos (locateChanges) y de los archivados (archivedRecords con summaryOf, ahora exportado); GET /api/memory añade origins",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1ea96dab49cf5a354b0e1b254fa4242fd3019d61",
+      "startedAt": "2026-11-05T20:20:50.304Z",
+      "doneAt": "2026-11-05T20:24:42.622Z",
+      "summary": "MemoryRecord.origins con su validación; la sección work va por grupos (feature, épica con sus cortes, «Sin feature» al final) ordenados por su entrada más reciente, y la búsqueda mira los títulos de la feature y su épica"
     }
   },
   "pending": {

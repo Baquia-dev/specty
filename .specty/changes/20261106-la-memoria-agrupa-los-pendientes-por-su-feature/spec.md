@@ -82,7 +82,7 @@ En la página Memoria, «Pendientes y mejoras» es hoy una lista por fecha, y pa
   - files: packages/cli/src/server/origins.ts, packages/cli/src/server/api.ts, packages/cli/src/server/finished.ts, packages/cli/test/server/memory-origins.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/memory-origins.test.ts test/server/memory.test.ts test/server/finished.test.ts && pnpm --filter @baquia-dev/specty typecheck
-- [ ] T2: La vista de la Memoria agrupa los pendientes por feature y busca por su título
+- [x] T2: La vista de la Memoria agrupa los pendientes por feature y busca por su título
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/memory/memory-view.ts, packages/ui/src/memory/memory-groups.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-groups.test.ts --include src/memory/memory-view.test.ts --include src/memory/memory-filter.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck
