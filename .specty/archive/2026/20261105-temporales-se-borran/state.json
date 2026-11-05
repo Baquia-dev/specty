@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261105-temporales-se-borran",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261105-temporales-se-borran",
   "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e15dd339556930f0734b815b4ff47139b3917b63fa1232d981d355fbb309b8b7",
+    "at": "2026-11-05T15:45:19.048Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -42,11 +49,5 @@
     "AC": 5,
     "C": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e15dd339556930f0734b815b4ff47139b3917b63fa1232d981d355fbb309b8b7",
-    "at": "2026-11-05T15:45:19.048Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-05T17:19:42.171Z"
 }

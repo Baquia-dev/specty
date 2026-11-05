@@ -43,3 +43,25 @@ El 2026-11-05 el disco llegó a 156 MiB libres: en la carpeta temporal del siste
 - C4: prune borra los restos de los procesos que murieron
   - ac: AC4, AC5
   - depends: C3
+
+## Cierre
+
+### Resumen
+
+Los tests de los seis paquetes (core, exporters, la CLI, vscode, la UI y evals, también la suite de cumplimiento) crean sus temporales en una carpeta `specty-tests-<pid>-…` de cada ejecución, a la que apuntan `TMPDIR`, `TMP` y `TEMP` desde el `globalSetup` común (`packages/core/vitest-temp-dir.ts`), y la borran al terminar, también si fallan tests; al empezar borran las de ejecuciones cuyo proceso ya no existe (C1, C2). El informe de la suite de cumplimiento se guarda fuera, en `specty-evals/`, porque sí sirve después. `specty cancel` quita la carpeta del cambio cuando no tiene nada sin commit ni una sesión de agente en ella, y la rama se queda (C3). `specty prune` borra las escrituras a medias y las verificaciones en vivo de procesos que murieron y los índices temporales de git de más de una hora (C4). Tras una verificación completa, la carpeta temporal del sistema ya no gana carpetas `specty-tests-…`.
+
+### Desviaciones
+
+- El borrado de los 130 GB ya acumulados lo hizo la persona: al agente el control de permisos no le dejó barrer una carpeta temporal compartida.
+- Dos tests que ya existían se adaptaron al nuevo comportamiento sin rebajar lo que comprueban: `prune.test.ts` (C3) bloquea la carpeta del cambio cancelado para que se quede y `prune` la quite, y `prune-units.test.ts` (C4) usa el pid del propio test para la escritura a medias que debe quedarse.
+- El subagente de C2 terminó con un error de sesión justo después de cerrar su corte; no quedó nada a medias.
+
+### Decisiones
+
+- El ayudante de los tests va en `packages/core/`, fuera de `src/` y `test/`, porque todas las unidades que ejecutan tests miran `packages/core/**`: un cambio suyo las repite sin tocar `.specty/config.yaml`.
+- Nada se borra si puede ser de un proceso vivo (su pid existe) o de una persona (`backups/`, cambios sin commit).
+
+### Pendientes
+
+- P182: la caché del E2E de OpenCode queda dentro de la carpeta de cada ejecución y se descarga en cada pasada.
+- P183: con el agente cancelando desde dentro en modo delegado, `cancel` deja la carpeta, mientras que `close` la quita y le pide salir.
