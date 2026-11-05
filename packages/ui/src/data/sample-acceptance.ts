@@ -126,7 +126,10 @@ export function decideResultIn(
   now: number,
 ): ChangeRecord {
   const { state } = record;
-  if (state.phase !== "acceptance") {
+  // An epic is also adjusted while its slices are implemented, to split one of them.
+  const epicAdjusted =
+    decision.kind === "adjust" && state.kind === "epic" && state.phase === "implementing";
+  if (state.phase !== "acceptance" && !epicAdjusted) {
     throw new ActionError({
       es: "Este cambio ya no espera que aceptes el resultado.",
       en: "This change no longer waits for you to accept the result.",

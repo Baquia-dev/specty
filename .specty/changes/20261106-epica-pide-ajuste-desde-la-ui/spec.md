@@ -62,7 +62,7 @@ Desde P165, una épica en `implementing` se ajusta con `specty adjust` para estr
   - ac: AC1, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/change-page.epic.test.ts --include src/change/change-page.test.ts --include src/change/change-page.closing.test.ts --include src/change/change-page.tests.test.ts --include src/acceptance/acceptance-actions.test.ts && pnpm lint && pnpm knip
   - type: feat
-- [ ] T2: El diálogo del ajuste de una épica, en sus dos fases
+- [x] T2: El diálogo del ajuste de una épica, en sus dos fases
   - files: packages/ui/src/acceptance/result-dialogs.ts, packages/ui/src/data/sample-acceptance.ts, packages/ui/src/acceptance/epic-adjust.test.ts
   - ac: AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/epic-adjust.test.ts --include src/acceptance/acceptance-actions.test.ts --include src/acceptance/criterion-row.test.ts --include src/data/acceptance.test.ts && pnpm typecheck && pnpm lint && pnpm knip

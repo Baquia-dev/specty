@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "abc672bff94fb80e08c93a28d60c5aee66adccfa",
+      "attempts": 1,
       "startedAt": "2026-11-05T20:36:13.488Z",
       "doneAt": "2026-11-05T20:41:13.308Z",
-      "summary": "sp-epic-actions (acceptance/epic-actions.ts) ofrece «Pedir ajustes…» de una épica en implementing, con la línea de para qué sirve o el motivo del bloqueo; la cabecera y la barra compacta lo montan con adjustsWhileImplemented"
+      "summary": "sp-epic-actions (acceptance/epic-actions.ts) ofrece «Pedir ajustes…» de una épica en implementing, con la línea de para qué sirve o el motivo del bloqueo; la cabecera y la barra compacta lo montan con adjustsWhileImplemented",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "72f52265646f3911d9e52eec2b7c1aa71279f752",
+      "startedAt": "2026-11-05T20:41:13.618Z",
+      "doneAt": "2026-11-05T20:46:13.461Z",
+      "summary": "AdjustResult elige por el tipo del cambio la explicación (las formas de ajustar una épica o la clasificación por tareas), la descripción, el ejemplo, el aviso y la nota (data-note), que en una épica depende de su fase; decideResultIn de la fuente de muestra admite adjust de una épica en implementing"
     }
   },
   "pending": {
