@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261105-un-corte-no-compara-con-otros-cambios-la",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-un-corte-no-compara-con-otros-cambios-la",
   "baseCommit": "5b6bc9668f16d343478ee1c07ef91711815bc550",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:dd3042c773145253ee1b3ec29a3b3de8a5efb521fe0b19bfde7e95c30a1fd956",
+    "at": "2026-11-05T06:27:45.622Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:dd3042c773145253ee1b3ec29a3b3de8a5efb521fe0b19bfde7e95c30a1fd956",
-    "at": "2026-11-05T06:27:45.622Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/duplicates-slice.test.ts": "sha256:4b551493844fe9c9eb95030574d499fb13c599bfbf8463b4cd681bc43a7d737d"
+  }
 }
