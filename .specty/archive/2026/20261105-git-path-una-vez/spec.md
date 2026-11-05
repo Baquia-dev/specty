@@ -57,3 +57,21 @@ Cada comando de Specty pregunta a git dónde está cada uno de sus archivos con 
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Cada `Git` pregunta a git una sola vez por cada ruta de su carpeta y recuerda la respuesta (`gitPaths` en `io/git.ts`); toda ruta bajo `specty/` o `common/` sale de la respuesta para ese tramo, así que un comando pregunta dos veces en lugar de una por archivo, con las mismas rutas que da git, en el checkout principal y en una worktree. Los repositorios de los tests apagan el mantenimiento automático de git. En `reuse.test.ts`, las preguntas de rutas quedaron en 68 de 757 procesos de git (9 %) y el mantenimiento en 0; en la muestra de antes eran el 29 % y el 2 %.
+
+### Desviaciones
+
+- No se midió `reuse.test.ts` con el código de antes: cambiarlo para medirlo quedaba fuera del alcance de la tarea. La comparación es con la muestra de dos tests que dio pie al cambio.
+
+### Decisiones
+
+- Solo se recuerdan las rutas de git: la rama, las worktrees y la configuración pueden cambiar dentro de un comando.
+
+### Pendientes
+
+- Ninguno
