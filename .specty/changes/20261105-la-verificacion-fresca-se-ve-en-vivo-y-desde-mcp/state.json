@@ -43,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9399416daa0ace45acc11d8253ac2d27d946b4eb",
+      "startedAt": "2026-11-05T09:36:54.177Z",
+      "doneAt": "2026-11-05T09:37:47.645Z",
+      "summary": "La verificación fresca corre cada intento con runLive (held) en la carpeta de un cambio abierto, como la verificación completa en curso de ese cambio; sin cambio abierto, con execute como antes."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

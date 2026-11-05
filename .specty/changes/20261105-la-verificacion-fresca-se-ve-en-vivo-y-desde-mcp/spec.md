@@ -53,7 +53,7 @@ Hoy `specty verify --fresh` corre a ciegas: la UI y la MCP App no ven nada hasta
 
 ## Tareas
 
-- [ ] T1: La verificación fresca corre en vivo en la carpeta de un cambio abierto
+- [x] T1: La verificación fresca corre en vivo en la carpeta de un cambio abierto
   - files: packages/cli/src/commands/verify.ts, packages/cli/test/verify-fresh.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-fresh.test.ts test/live-run.test.ts
