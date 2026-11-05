@@ -6,6 +6,13 @@
   "branch": "specty/20261105-la-lista-de-cambios-del-servidor-solo-da-los",
   "baseCommit": "77ec35b2a1dc3c1654f7e75785c75d3b006542cd",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:09f7958271de976c6cee243cfb6157d8f337a65b08defe8f92bd6404a9930209",
+    "at": "2026-11-05T14:27:28.213Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:09f7958271de976c6cee243cfb6157d8f337a65b08defe8f92bd6404a9930209",
-    "at": "2026-11-05T14:27:28.213Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T14:38:56.504Z"
 }
