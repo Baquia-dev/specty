@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-la-pagina-de-un-cambio-muestra-sus-pendientes",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-la-pagina-de-un-cambio-muestra-sus-pendientes",
   "baseCommit": "6ef9be39fe338ef87c02a31d85387cf713968cb8",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:bfc174d820e9c0cd6100a7403ba623b5f1c399c4447d467410f4e28242de8bd1",
@@ -74,12 +74,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2568b08956cb30162772da122055b31ca58e2e83",
+      "attempts": 1,
       "startedAt": "2026-11-05T21:42:11.076Z",
       "doneAt": "2026-11-05T21:42:39.567Z",
-      "summary": "ui.md cuenta la sección «En la memoria» de la página de un cambio y que la Memoria lee q y closed=1 de la URL."
+      "summary": "ui.md cuenta la sección «En la memoria» de la página de un cambio y que la Memoria lee q y closed=1 de la URL.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -92,6 +92,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T21:47:49.542Z",
   "lockedTests": {
     "packages/ui/src/change/change-memory.test.ts": "sha256:ac5e8e697ea19ce87e398bdedfe6ac894568c215593cac9f174ec2e2904837be",
     "packages/ui/src/data/sample-memory.test.ts": "sha256:744dcb5e49d9bc57cec6abe8b4f43c1dcaf390c48084fc2d779b0029f18e105e",

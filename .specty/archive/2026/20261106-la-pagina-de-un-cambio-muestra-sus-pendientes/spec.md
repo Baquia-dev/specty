@@ -87,3 +87,23 @@ Hoy, para saber qué pendientes dejó un cambio o cuáles resolvió, hay que ir 
 
 - R1: La página de un cambio pide toda la memoria con cada aviso de la fuente, y `GET /api/memory` lee los orígenes. Mitigación: es la misma petición de la Memoria, que el servidor sirve con los archivados que ya guarda; sin entradas con cambio de origen no lee nada.
 - R2: Las pruebas de la página de un cambio con el prototipo ven la sección nueva en el cambio terminado de muestra. Mitigación: la sección no usa insignias de fase, `h1`, `role=status` ni `[data-event]`, que leen esas pruebas, y sus verificaciones entran en la de T3.
+
+## Cierre
+
+### Resumen
+
+La página de un cambio tiene al final de su cabecera amplia la sección «En la memoria» («In the memory»), de `sp-change-memory` (`change/change-memory.ts`). Lista por fecha las entradas de la memoria que salieron del cambio o que él tomó. Cada fila lleva su id, que enlaza a la Memoria con la entrada buscada, la etiqueta de su tipo y su primera línea. Debajo dice si salió del cambio o la tomó, quién la anotó y cuándo, y a la derecha va su estado con el tono de una fase. Los datos salen de `SpectyData.memory()`, la petición que ya hace la Memoria, y la sección no aparece sin entradas o sin memoria. La página Memoria lee de la URL la búsqueda (`q`) y las hechas y descartadas (`closed=1`). `ENTRY_KINDS` y `firstLine` pasan a `memory/memory-lines.ts`, así las dos páginas pintan igual el tipo y la primera línea. El prototipo trae un pendiente que dejó el cambio terminado de muestra y una mejora que tomó. `docs/ui.md` lo cuenta. Lo comprueban los tests de cada tarea, los 717 de la UI, `pnpm knip` y la verificación completa de la aceptación.
+
+### Desviaciones
+
+- Ninguna: las cuatro tareas salieron como las planeó la revisión 2.
+
+### Decisiones
+
+- `closed` solo marca «Ver hechas y descartadas» con el valor `1`, el que dan los enlaces.
+- El estado va en una etiqueta a la derecha de la fila, en el sitio de las acciones de la Memoria, porque la página de un cambio no decide sobre las entradas.
+- La sección no avisa si la fuente no puede leer la memoria: la página Memoria ya dice el error, y en la de un cambio la memoria es secundaria.
+
+### Pendientes
+
+- Ninguno nuevo.
