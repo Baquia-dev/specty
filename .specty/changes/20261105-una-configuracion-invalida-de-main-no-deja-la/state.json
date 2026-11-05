@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261105-una-configuracion-invalida-de-main-no-deja-la",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-una-configuracion-invalida-de-main-no-deja-la",
   "baseCommit": "8daf2d378b4c44a850f120507c49df3dcc6723ad",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7593e6a3e1fb9f2dd8f865ed88b2b9845d9fd4a2d48906687d0aa1dc637641b5",
+    "at": "2026-11-05T09:16:17.328Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -44,12 +51,8 @@
     "T": 3,
     "R": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:7593e6a3e1fb9f2dd8f865ed88b2b9845d9fd4a2d48906687d0aa1dc637641b5",
-    "at": "2026-11-05T09:16:17.328Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/invalid-config-merge.test.ts": "sha256:e23c3a3bf4c6d75d91329cba94e0d8969830504423437470aeef981bba2dea40",
+    "packages/cli/test/invalid-config.test.ts": "sha256:8f7d98dd8210aeedf567d419ecc9136cb7e2b6941cb49670d1d90f21842e210a"
+  }
 }
