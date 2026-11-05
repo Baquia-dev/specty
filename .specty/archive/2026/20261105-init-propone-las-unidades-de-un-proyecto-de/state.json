@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "id": "20261105-init-propone-las-unidades-de-un-proyecto-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-init-propone-las-unidades-de-un-proyecto-de",
+  "baseCommit": "e0230281b45808ed67da361b02c917cb2dbbbf59",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c3d3ba3bef1ff562f315045dc0256fc5af11499aa06752a45aff3eb8660bd299",
+    "at": "2026-11-05T13:51:39.373Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:88cc5d084cfe15761dea25869cbf4f928536997f622eaaecf609711c8fa21742",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9b719897caed36fcb7e8f845a16aed15a7cffecae680411eef371e9d847eed3a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:0bc094387afad83d7e2af7153ba82287b6e8347fd70002e473e328b3298ae79b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1b6b3f3cb5f4bea21f2b4e6b0673fdd378f8884d147ab0e3a6326aed31808e8b",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:90e74af6ee3bd2957da757377c5c57dc7df015b0c5e650133f422dfa0de9e430",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "36e8221606f70903607d69061bf0cdcaf1c6c997",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:53:21.113Z",
+      "doneAt": "2026-11-05T13:55:32.599Z",
+      "summary": "Detector gradleWorkspace (detect/units-gradle.ts): subproyectos de los include de settings.gradle(.kts), tests en src/test con su tarea test, dependencias por project(\":…\") o accesor tipado y lo compartido de la raíz; DETECTORS lo prueba tras Cargo y Go.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 1,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T14:00:52.573Z",
+  "lockedTests": {
+    "packages/cli/test/units-gradle.test.ts": "sha256:e3c9f33497b0380661252d327fb1662df0128e70020f195ddd5b4ac5f1f4edf8"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "cfad7b02db3c6b8fd1175ca7ffc5f8fdb679575a",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/cli/src/detect/workspace-units.ts"
+    ],
+    "paths": [
+      "packages/cli/src/detect/units-gradle.ts",
+      "packages/cli/src/detect/units-uv.ts",
+      "packages/cli/src/detect/workspace-units.ts",
+      "packages/cli/test/units-gradle.test.ts",
+      "packages/cli/test/units-uv.test.ts"
+    ],
+    "at": "2026-11-05T13:55:45.982Z",
+    "resolved": {
+      "commit": "5c5dc6e",
+      "at": "2026-11-05T13:59:55.999Z"
+    }
+  }
+}

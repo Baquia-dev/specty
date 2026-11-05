@@ -19,7 +19,8 @@ import {
 } from "./actions";
 import { changeDiff, type DiffAnswer } from "./diff";
 import { type ChangeEvents, changeEvents } from "./events";
-import { changeRecord, changeRecords } from "./records";
+import { finishedPage } from "./finished";
+import { changeRecord, openRecords } from "./records";
 import { changeRuns, type Runs } from "./runs";
 import { sessionsView } from "./sessions";
 import { changeTrace, traceReply } from "./trace";
@@ -173,8 +174,8 @@ async function readApi(
   if (foreign || !hasSession(request.headers.cookie, context))
     return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
   const view = VIEWS.get(url.pathname);
-  if (view !== undefined)
-    return send(response, 200, JSON_TYPE, JSON.stringify(await view(context.session)));
+  const answer = view === undefined ? undefined : await view(context.session, url.searchParams);
+  if (answer !== undefined) return send(response, 200, JSON_TYPE, JSON.stringify(answer));
   if (url.pathname === "/api/events") return context.events.add(response);
   if (url.pathname === "/api/session") {
     const actions = context.actions === true;
@@ -190,12 +191,13 @@ async function readApi(
   return readChange(response, context, url);
 }
 
-/** The reads that only look at the session: each path and what it answers, as JSON. */
-const VIEWS: ReadonlyMap<string, (session: Session) => Promise<unknown>> = new Map<
-  string,
-  (session: Session) => Promise<unknown>
->([
-  ["/api/changes", changeRecords],
+/** A read that looks at the session and the URL's parameters, and what it answers, as JSON. */
+type View = (session: Session, params: URLSearchParams) => Promise<unknown>;
+
+/** The reads that need nothing else: each path and its view. */
+const VIEWS: ReadonlyMap<string, View> = new Map<string, View>([
+  ["/api/changes", openRecords],
+  ["/api/changes/finished", finishedPage],
   ["/api/delegation", delegationView],
   ["/api/memory", memoryView],
   ["/api/sessions", sessionsView],
@@ -210,7 +212,7 @@ async function memoryView(session: Session) {
   return { entries, changes: await openChanges(session) };
 }
 
-/** A change by its id, open or archived, as `/api/changes` gives it; 404 when there is none. */
+/** A change by its id, open or archived, as `changeRecords` gives it; 404 when there is none. */
 async function readRecord(response: ServerResponse, context: Context, id: string) {
   const record = await changeRecord(context.session, decodeURIComponent(id));
   return record === undefined

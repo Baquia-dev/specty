@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "id": "20261105-la-bandeja-carga-los-terminados-por-paginas-al",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-la-bandeja-carga-los-terminados-por-paginas-al",
+  "baseCommit": "a3ae2fa34485824f34790bd2759bbf555793fe31",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:3162d7aec035e073afdd023cfe55c0df0fbe91b5342744e3ab665995fa60860f",
+    "at": "2026-11-05T13:35:43.071Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:36d441da231f1177051133c585328b828f74c37c26da6cf3f059c8c947014f90",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:09f3ea695d96d6c45147028be945535600c685b7d6fa2a5fc9c3ef9f1d26ca9d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e31b57a16d0f692062126e5505861ec87bfe3fce052283b85c496c897f51bbce",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d88097b76956da13c82b3015be2fdf05f55afdcb2758a7e19bbd3afe571790b7",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:0b57f36e76be66b069e1a398153784b0933aed32ce2dfd60ba69d3671d599d6a",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:347d1bd94293354aeae83fbfc9d5cddcbd35d68d7e6c53393331a46ca2fdb8c1",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:56a36ca21089d6018f7d015a840efdf9a9939fd7ab83b78c39db1023f4d163e5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "cc5a3b77f0de86d70dbce8faeaf1c3082336d381",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:49:23.953Z",
+      "doneAt": "2026-11-05T13:52:42.166Z",
+      "summary": "SpectyData.finished(request) con FinishedRequest y FinishedPage: por defecto pagina en memoria los terminados de changes() con matchesQuery y sortChanges (deriveViews en un chunk perezoso); ServerData.finished pide GET /api/changes/finished y comprueba la respuesta con isFinishedPage.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "00bc0d6fb6b21d9c29cce977283622b24986113d",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:52:42.466Z",
+      "doneAt": "2026-11-05T13:53:54.691Z",
+      "summary": "FinishedPages (data/finished-pages.ts) pide, sigue y recarga las páginas de terminados sin repetir cambios y descartando respuestas viejas; ChangesStore separa open de finished, con la épica de cada corte, y all da los dos una vez.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "3cc62907e5635a7fa5b5883dc144b940e4121003",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:53:55.008Z",
+      "doneAt": "2026-11-05T13:56:42.032Z",
+      "summary": "La Bandeja lista los abiertos y las páginas de terminados (abiertos primero), pide páginas con sp-inbox-more («Cargar más» y su observador) y con j tras la última fila, busca con 250 ms de espera y cuenta con los totales de la fuente.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "4885b210e43c8bf1cdad6a384ee6d6ddc4784559",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:56:42.347Z",
+      "doneAt": "2026-11-05T13:59:57.132Z",
+      "summary": "docs/ui.md cuenta la Bandeja por páginas: los abiertos y las páginas de terminados, «Cargar más», j, la búsqueda con espera, los contadores y la recarga.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 7,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-05T14:08:42.765Z",
+  "lockedTests": {
+    "packages/ui/src/data/finished-pages.test.ts": "sha256:b78579eb10ecdfcab50bd61f75ed4b98fdfb1cecd315f666d244a71a14a23630",
+    "packages/ui/src/data/finished-source.test.ts": "sha256:aae88ec1a161fa7e9002ff00322e0ebd81a2e9c64752f08b82d9ef0d8fe72e13",
+    "packages/ui/src/inbox/inbox-more.test.ts": "sha256:e252cbd3e5a0feaba8418d80cf62006072097e4f6ab8bed55c45e1ff78124edc"
+  }
+}

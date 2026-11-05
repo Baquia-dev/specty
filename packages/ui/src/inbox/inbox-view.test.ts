@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
+import { matchesQuery, sortChanges } from "@baquia-dev/specty-core/light";
 import { sampleRecords } from "../data/fixtures";
 import type { ChangeView } from "../data/records";
 import { deriveViews } from "../data/views";
 import * as inboxViewModule from "./inbox-view";
 import {
+  INBOX_SORTS,
   type InboxFilters,
   type InboxSection,
   inboxSections,
-  matchesQuery,
   phaseCounts,
-  sortChanges,
   stateOf,
   visibleChanges,
 } from "./inbox-view";
@@ -101,6 +101,21 @@ describe("inbox view", () => {
       change.size ? order[change.size.level] : 0,
     );
     expect(sizes).toEqual(sizes.toSorted((a, b) => b - a));
+  });
+
+  it("AC5: searches and sorts with core's functions, as the server does: ties go by id", () => {
+    const { epic: _epic, ...plain } = CHANGES[0] ?? fail();
+    const at = "2026-11-02T10:00:00.000Z";
+    const tied = ["20261102-c", "20261102-a", "20261102-b"].map(
+      (id) => ({ ...plain, id, title: "Igual", kind: "standard", phaseSince: at }) as ChangeView,
+    );
+    for (const sort of INBOX_SORTS) {
+      const [section] = inboxSections(tied, { ...DEFAULTS, group: "none", sort }, "es");
+      expect([sort, ids(section?.changes ?? [])]).toEqual([sort, ["a", "b", "c"]]);
+    }
+    expect(visibleChanges(CHANGES, { query: "EVOLUCIÓN", phase: "all" })).toEqual(
+      CHANGES.filter((change) => matchesQuery(change, "evolucion")),
+    );
   });
 
   it("AC1: heads the group of an epic in its section with the epic, its slices below, in j/k order", () => {

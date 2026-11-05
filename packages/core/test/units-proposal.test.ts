@@ -66,6 +66,48 @@ describe("the units proposed for a workspace", () => {
     expect(units?.map((unit) => unit.name)).toEqual(["apps/web/utils", "libs/utils"]);
   });
 
+  it("AC1: a package that brings its own test command gets a unit with it, without a manager", () => {
+    const shared = ["Cargo.toml", "Cargo.lock"];
+    const units = proposeUnits({
+      packages: [
+        {
+          dir: "crates/cli",
+          name: "cli",
+          tests: true,
+          uses: ["core"],
+          command: "cargo test -p cli",
+        },
+        { dir: "crates/core", name: "core", tests: true, uses: [], command: "cargo test -p core" },
+        { dir: "crates/docs", name: "docs", tests: true, uses: [] },
+      ],
+      shared,
+      checks: [],
+      lang: "en",
+    });
+    expect(units).toEqual([
+      { name: "core", command: "cargo test -p core", paths: ["crates/core/**", ...shared] },
+      {
+        name: "cli",
+        command: "cargo test -p cli",
+        paths: ["crates/cli/**", "crates/core/**", ...shared],
+      },
+    ]);
+  });
+
+  it("AC1: a package's own command wins over the manager's, and without either it counts as untested", () => {
+    const own = WORKSPACE.packages.map((pkg) =>
+      pkg.dir === "packages/core" ? { ...pkg, command: "pnpm --filter @demo/core test:unit" } : pkg,
+    );
+    expect(proposeUnits({ ...WORKSPACE, packages: own })?.map((unit) => unit.command)).toEqual([
+      "pnpm lint && pnpm typecheck",
+      "pnpm --filter @demo/core test:unit",
+      "pnpm --filter @demo/exporters test",
+      "pnpm --filter @demo/cli test",
+    ]);
+    const withoutManager = proposeUnits({ packages: own, shared: SHARED, checks: [], lang: "es" });
+    expect(withoutManager).toBeUndefined();
+  });
+
   it("AC1: with fewer than two packages with tests there is nothing to propose", () => {
     const one = WORKSPACE.packages.filter(
       (pkg) => pkg.dir !== "packages/cli" && pkg.dir !== "packages/exporters",
