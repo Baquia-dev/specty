@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-tests-cli-mas-rapidos",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-tests-cli-mas-rapidos",
   "baseCommit": "4682745ea93f383506c210b4e0a5a9dc170f4011",
   "revision": 1,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bf170a290930779c529b82225b1f402b0450cb18",
+      "attempts": 1,
       "startedAt": "2026-11-05T10:48:45.331Z",
       "doneAt": "2026-11-05T10:54:34.310Z",
-      "summary": "openRepository abre la sesión con un solo rev-parse; cada Git recuerda 2 s la rama, HEAD, la configuración y las worktrees (io/git-memo.ts) y lo olvida tras un comando que pueda cambiarlos; flow.test.ts: de 1468 a 1097 procesos de git y de 16,3 a 12,6 s"
+      "summary": "openRepository abre la sesión con un solo rev-parse; cada Git recuerda 2 s la rama, HEAD, la configuración y las worktrees (io/git-memo.ts) y lo olvida tras un comando que pueda cambiarlos; flow.test.ts: de 1468 a 1097 procesos de git y de 16,3 a 12,6 s",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "89acb2c420bc612d88e889d2d9e0ebc1945b746d",
+      "startedAt": "2026-11-05T10:54:34.612Z",
+      "doneAt": "2026-11-05T10:55:00.625Z",
+      "summary": "ARCHITECTURE explica la apertura con un solo proceso de git (openRepository), las respuestas recordadas 2 s de cada Git (io/git-memo.ts) y la medida de flow.test.ts."
     }
   },
   "pending": {

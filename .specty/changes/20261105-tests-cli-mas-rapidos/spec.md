@@ -55,7 +55,7 @@ La unidad cli de la verificación completa tarda unos 4 minutos y corre en casi 
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-memo.test.ts test/git-paths.test.ts test/flow.test.ts test/enter.test.ts test/worktree-hooks.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: perf
-- [ ] T2: La documentación de las consultas recordadas
+- [x] T2: La documentación de las consultas recordadas
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
