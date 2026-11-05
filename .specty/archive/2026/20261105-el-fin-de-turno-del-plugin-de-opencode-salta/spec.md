@@ -21,3 +21,9 @@ Resuelve P92. Con `specty check --install` (`STOP`), el plugin de OpenCode ejecu
   - files: packages/cli/src/install/opencode.ts, packages/cli/test/opencode.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/opencode-install.test.ts && pnpm typecheck
   - type: fix
+
+## Cierre
+
+### Resumen
+
+En OpenCode 1, el plugin pide la sesión de cada session.idle con client.session.get y salta el fin de turno de una sesión hija (con parentID); si no la obtiene, la comprueba como hoy. OpenCode 2 sigue igual (P93). Docs en ARCHITECTURE §10 y formats.

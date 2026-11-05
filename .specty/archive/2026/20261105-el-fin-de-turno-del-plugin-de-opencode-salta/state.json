@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-el-fin-de-turno-del-plugin-de-opencode-salta",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-el-fin-de-turno-del-plugin-de-opencode-salta",
   "baseCommit": "5b6bc9668f16d343478ee1c07ef91711815bc550",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2f11be8cda43cdc8078ca01d8b2d101b31263366",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:36:54.176Z",
       "doneAt": "2026-11-05T06:39:20.057Z",
-      "summary": "En OpenCode 1, el plugin pide la sesión de cada session.idle con client.session.get y salta el fin de turno de una sesión hija (con parentID); si no la obtiene, la comprueba como hoy. OpenCode 2 sigue igual (P93). Docs en ARCHITECTURE §10 y formats."
+      "summary": "En OpenCode 1, el plugin pide la sesión de cada session.idle con client.session.get y salta el fin de turno de una sesión hija (con parentID); si no la obtiene, la comprueba como hoy. OpenCode 2 sigue igual (P93). Docs en ARCHITECTURE §10 y formats.",
+      "scopeExtra": []
     }
   },
   "pending": {
