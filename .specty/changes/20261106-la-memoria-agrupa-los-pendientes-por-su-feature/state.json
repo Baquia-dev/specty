@@ -49,7 +49,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c8506212d03eee5c5e58ce0650d0ede59791dcd0",
+      "startedAt": "2026-11-05T20:16:41.150Z",
+      "doneAt": "2026-11-05T20:20:49.984Z",
+      "summary": "memoryOrigins (server/origins.ts) da el título, el tipo, la fase y la épica de cada cambio de origen, de los abiertos (locateChanges) y de los archivados (archivedRecords con summaryOf, ahora exportado); GET /api/memory añade origins"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -141,9 +141,9 @@ async function openSide(session: Session) {
 
 /**
  * What the UI would derive of `record` for its list, with core's own function and its spec read
- * as the UI reads it: read once, then kept with the record.
+ * as the UI reads it: read once, then kept with the record. The memory's origins read it too.
  */
-function summaryOf(record: ChangeRecord): ChangeSummary {
+export function summaryOf(record: ChangeRecord): ChangeSummary {
   const known = SUMMARIES.get(record);
   if (known !== undefined) return known;
   const summary = summarizeChange({

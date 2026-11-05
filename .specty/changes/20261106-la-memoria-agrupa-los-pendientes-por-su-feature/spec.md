@@ -78,7 +78,7 @@ En la página Memoria, «Pendientes y mejoras» es hoy una lista por fecha, y pa
 
 ## Tareas
 
-- [ ] T1: El servidor da la feature de origen de cada entrada de la memoria
+- [x] T1: El servidor da la feature de origen de cada entrada de la memoria
   - files: packages/cli/src/server/origins.ts, packages/cli/src/server/api.ts, packages/cli/src/server/finished.ts, packages/cli/test/server/memory-origins.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/memory-origins.test.ts test/server/memory.test.ts test/server/finished.test.ts && pnpm --filter @baquia-dev/specty typecheck
