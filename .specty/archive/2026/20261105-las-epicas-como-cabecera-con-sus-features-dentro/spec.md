@@ -90,3 +90,26 @@ En la Bandeja, una épica pasa a ser la cabecera del grupo de sus cortes: si est
 
 - R1: Angular proyecta un bloque `@if` con un solo elemento raíz según ese elemento; si no lo hiciera, la fila de la épica caería entre sus cortes — el test de AC1 comprueba que la cabecera va antes de los cortes y fuera del sangrado.
 - R2: El corte C3, en aceptación, también cambia `data/records.ts` (la fuente de datos) — son partes distintas del archivo, y la integración con main las junta.
+
+## Cierre
+
+### Resumen
+
+En la Bandeja, una épica es ahora la cabecera del grupo de sus cortes (`sp-inbox-epic`, en `inbox/inbox-epic.ts`). Si está en la misma sección, la cabecera es su propia fila, con su fase, los tiempos del corte C1, su enlace, lo que espera y su botón, y `j`/`k` pasan por ella y después por cada corte, también en «Agrupar por épica». Si está en otra sección, la cabecera es su fase, su título con el enlace a su página y la insignia «Épica», sin tiempos ni botón, y `j`/`k` no paran en ella. Los cortes van debajo, sangrados. Se quitaron «Total: …» (`epicDuration`, el pendiente P162 de C1) y el número de cambios. La insignia de un corte dice «Feature · C2 · <título del corte>» dentro del grupo, con el título que le da la sección Cortes de la épica (`epic.sliceTitle`, que deriva `data/views.ts`), o «Feature · C2» si no lo nombra; en la cabecera de su página dice «Feature · C2 · <título de la épica>». Un cambio estándar suelto dice «Feature», y su sección de «Agrupar por épica» se llama «Features». docs/ui.md lo cuenta. Los 13 tests de AC1–AC5 pasaron por la fase de tests antes del código (1b5220f), y la verificación completa pasó al aceptar, después de integrar main (4195e97).
+
+### Desviaciones
+
+- Al escribir los tests de contrato cambié el nombre de los tests de cambios anteriores que estos criterios reescriben: los de las etiquetas «Individual» y «Corte C1», el del grupo de épica y el de «Total». `open()` de `inbox/inbox.test.ts` acepta ahora unos registros y una agrupación, así que los tests de épica no repiten la preparación. Aun así, el archivo pasa de 377 a 418 líneas, por encima del aviso de 400 para tests. No se dividió: solo es un aviso.
+- El primer `task done T3` se rechazó porque el resumen pasaba de 300 caracteres; lo repetí con uno más corto.
+
+### Decisiones
+
+- La fila de la épica se proyecta en el hueco `[data-epic-head]` de `sp-inbox-epic` desde la plantilla de la Bandeja, igual que los cortes. Así `viewChildren(InboxRow)` sigue encontrando todas las filas para `j`/`k`. Angular proyecta el bloque `@if`, que tiene un solo elemento raíz, según ese elemento, y R1 no llegó a pasar.
+- `sectionBlocks(section, all)` da para cada épica `head` (la épica, si está en la sección), `epic` (la épica cargada de todos los cambios, que da la fase y la pestaña del enlace de la cabecera sin fila) y `slices`. Si la épica no está cargada, la cabecera usa el título que trae cada corte y no tiene fase.
+- La etiqueta de un corte junta las partes que no están vacías: la de un estándar («Feature»), su id de corte y, dentro del grupo, su `sliceTitle`; fuera del grupo, el título de la épica. «Feature» es la etiqueta de la UI para un cambio estándar, sea corte o suelto, y no un término nuevo del dominio, así que `docs/dominio.md` no cambia.
+- El grupo conserva el contenedor y el sangrado con línea a la izquierda que ya tenía.
+- Los tests de contrato llaman a la firma nueva de `sectionBlocks` con un cast, así compilaban antes del código.
+
+### Pendientes
+
+- `packages/ui/src/data/views.ts` pasó de 298 a 319 líneas, por encima del aviso de 300, al añadir `slicesIn` y `epicOf`. Falta decidir si se divide por responsabilidad (por ejemplo, los cortes de una épica y el título de cada corte en un módulo propio) o se deja así.

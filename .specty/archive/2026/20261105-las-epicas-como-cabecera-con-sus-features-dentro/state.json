@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-las-epicas-como-cabecera-con-sus-features-dentro",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-las-epicas-como-cabecera-con-sus-features-dentro",
   "baseCommit": "a7a61ce66f0f4169b2b9107552bef3b33ff2b6fa",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:cb093a6395c82670a31eb89aea893b112e25e9b8b7765693a0b2eea07571e033",
@@ -82,12 +82,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "55b307afa8277b78e5c86258e5d049a4bee39e3d",
+      "attempts": 1,
       "startedAt": "2026-11-05T12:18:35.411Z",
       "doneAt": "2026-11-05T12:19:00.743Z",
-      "summary": "docs/ui.md cuenta la épica como cabecera de su grupo (con su fila o con su fase, título y enlace), las etiquetas «Feature» de la insignia y la sección «Features» de Agrupar por épica"
+      "summary": "docs/ui.md cuenta la épica como cabecera de su grupo (con su fila o con su fase, título y enlace), las etiquetas «Feature» de la insignia y la sección «Features» de Agrupar por épica",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -100,6 +100,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T12:24:16.782Z",
   "lockedTests": {
     "packages/ui/src/components/badge.test.ts": "sha256:db377b81c29f723873eaaddc2b17c10ff0638e6b7be5d7986c43d2c060838414",
     "packages/ui/src/data/views.test.ts": "sha256:0990565de3dffa49607520a4b81be0b07919bb0d121c7ecf938e94adc5daa871",
