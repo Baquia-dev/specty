@@ -81,3 +81,24 @@ Desde P165, una épica en `implementing` se ajusta con `specty adjust` para estr
 ## Riesgos
 
 - R1: Una persona pide el ajuste de la épica sin saber que detiene los cortes nuevos hasta aprobarlo — el diálogo lo dice antes de enviar, y los cortes en curso siguen.
+
+## Cierre
+
+### Resumen
+
+La página de una épica en `implementing` ofrece «Pedir ajustes…» junto al título y, en pequeño, en la barra compacta (`sp-epic-actions`, en `acceptance/epic-actions.ts`; lo decide `adjustsWhileImplemented`). Bajo el botón de la cabecera, una línea dice para qué sirve; con una fuente de solo lectura, el motivo. Ningún otro cambio lo ofrece en esa fase. El diálogo «Pedir ajustes» es el de aceptación: para una épica, en sus dos fases, explica cómo la ajusta el agente (dividir un corte, corte nuevo o alcance nuevo) en lugar de la clasificación por tareas, con su propio ejemplo y su propio aviso al enviar. Su última línea (`data-note`) dice que los cortes cerrados no se tocan y que la épica vuelve a revisión; en implementación, que ningún corte nuevo empieza hasta aprobar el ajuste y que los cortes en curso siguen. La fuente de muestra admite el ajuste de una épica en implementación. El servidor no cambió: un test nuevo comprueba que `/adjust` ajusta una épica en implementación en su propia carpeta y rechaza con 409 una feature en esa fase. `docs/ui.md` lo cuenta.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `sp-epic-actions` es un componente propio y no un modo de `AcceptanceActions`: no decide sobre un resultado, no lleva «Aceptar resultado» ni la línea de la verificación completa, y su grupo se nombra «Ajuste de la épica».
+- El diálogo cambia por el tipo del cambio y no por la fase, así que una épica en aceptación ya no ve la clasificación por tareas. La forma «Alcance nuevo» es la misma entrada en los dos diálogos.
+- Los tests de la UI pasan por la página y por `ResultDialogs`, que ya existían, sin importar el componente nuevo, para que compilaran antes que el código.
+- El test del servidor es una tarea `type: test` que se escribió al implementar: el servidor ya lo admitía, así que no podía estar en rojo en el envío de los tests.
+
+### Pendientes
+
+- Ninguno.
