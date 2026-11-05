@@ -15,7 +15,7 @@ En la revisión de una épica (`specty ui`), el tooltip del id de un corte (C1 e
 
 ## Tareas
 
-- [ ] T1: El tooltip del id de un corte da su título
+- [x] T1: El tooltip del id de un corte da su título
   - files: packages/ui/src/components/item-refs.ts, packages/ui/src/components/item-tooltip.test.ts
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts && pnpm typecheck
   - type: fix
