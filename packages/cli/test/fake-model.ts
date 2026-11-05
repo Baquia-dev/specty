@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { execFile, spawnSync } from "node:child_process";
 import { existsSync, readdirSync } from "node:fs";
-import { mkdtemp } from "node:fs/promises";
+import { chmod, mkdtemp, writeFile } from "node:fs/promises";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
 import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
 import { expect } from "vitest";
-import { CONFIG, cli, git, tempRepo, tryGit, writeFiles } from "./support";
+import { CONFIG, cli, DIST, git, tempRepo, tryGit, writeFiles } from "./support";
 
 /**
  * Claude Code against a scripted model: a fake of Anthropic's Messages API that plays a fixed
@@ -167,6 +167,27 @@ export async function initialized(): Promise<string> {
 export interface RunOptions {
   readonly session?: string;
   readonly subagents?: Readonly<Record<string, readonly ToolUse[]>>;
+  /**
+   * With the permissions of the evals (`acceptEdits` and their allowed tools) instead of skipping
+   * them: Claude Code then keeps its subagents to the folders its session works in.
+   */
+  readonly asInEvals?: boolean;
+  /** The model also gets `EnterWorktree` and `ExitWorktree`. */
+  readonly worktrees?: boolean;
+}
+
+/** The tools the model gets: `Agent` and `Read` only for a run with subagents. */
+function toolsOf(delegates: boolean, worktrees: boolean): string {
+  const base = delegates ? ["Write", "Bash", "Read", "Agent"] : ["Write", "Bash"];
+  return [...base, ...(worktrees ? ["EnterWorktree", "ExitWorktree"] : [])].join(",");
+}
+
+/** A folder whose `specty` runs this branch's bundle, to go first on the PATH, as in the evals. */
+async function spectyBin(): Promise<string> {
+  const bin = await mkdtemp(join(tmpdir(), "specty-bin-"));
+  await writeFile(join(bin, "specty"), `#!/bin/sh\nexec node "${DIST}" "$@"\n`);
+  await chmod(join(bin, "specty"), 0o755);
+  return bin;
 }
 
 /**
@@ -176,14 +197,14 @@ export interface RunOptions {
 export async function claudeWith(
   root: string,
   script: readonly ToolUse[],
-  { session, subagents = {} }: RunOptions = {},
+  { session, subagents = {}, asInEvals = false, worktrees = false }: RunOptions = {},
 ): Promise<FakeModel> {
   const model = await fakeModel(script, subagents);
   const delegates = Object.keys(subagents).length > 0;
   const steps = Object.values(subagents).reduce((sum, steps) => sum + steps.length, script.length);
   const home = await mkdtemp(join(tmpdir(), "specty-claude-"));
   const env = {
-    PATH: process.env.PATH ?? "",
+    PATH: `${await spectyBin()}:${process.env.PATH ?? ""}`,
     HOME: home,
     CLAUDE_CONFIG_DIR: join(home, "config"),
     ANTHROPIC_BASE_URL: model.url,
@@ -202,8 +223,10 @@ export async function claudeWith(
     "project,local",
     "--strict-mcp-config",
     "--tools",
-    delegates ? "Write,Bash,Read,Agent" : "Write,Bash",
-    "--dangerously-skip-permissions",
+    toolsOf(delegates, worktrees),
+    ...(asInEvals
+      ? ["--permission-mode", "acceptEdits", "--allowedTools", "Bash,Read,Write,Edit,Agent"]
+      : ["--dangerously-skip-permissions"]),
     "--max-turns",
     String(steps + 2),
     "--output-format",

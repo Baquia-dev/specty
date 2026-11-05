@@ -23,6 +23,7 @@ import { epicSlices } from "./epic";
 import { closingRemarks } from "./review-remarks";
 import { listed } from "./shared";
 import { taskViews } from "./task-views";
+import { apartFromMain } from "./worktree";
 
 /** Everything the cards need about a change, read from its files and from git. */
 export async function changeView(session: Session, change: StoredChange): Promise<ChangeView> {
@@ -54,9 +55,19 @@ export async function changeView(session: Session, change: StoredChange): Promis
     ...integrationView(state),
     ...notesOf(audit),
     ...(await pathEntriesOf(session, filesAtHand(state.phase, spec, active))),
-    ...(state.kind === "epic" ? { slices: await epicSlices(session, change, spec) } : {}),
+    ...(state.kind === "epic" ? await epicFacts(session, change, spec) : {}),
     ...(await glossaryView(session)),
   };
+}
+
+/** An epic's slices, and whether it lives in a worktree of its own, apart from the main folder. */
+async function epicFacts(
+  session: Session,
+  change: StoredChange,
+  spec: Spec,
+): Promise<Pick<ChangeView, "slices" | "inWorktree">> {
+  const slices = await epicSlices(session, change, spec);
+  return (await apartFromMain(session.git)) ? { slices, inWorktree: true } : { slices };
 }
 
 /** The project's glossary (formats.md §6), when its file defines some term. */
