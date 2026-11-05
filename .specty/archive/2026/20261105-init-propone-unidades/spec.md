@@ -72,3 +72,22 @@ La verificación completa solo salta lo que no cambió si `.specty/config.yaml` 
 ## Riesgos
 
 - R1: Una propuesta con `paths` cortos saltaría tests — la persona la revisa antes de añadirla, y los tests que leen archivos de fuera de su paquete no se ven en los `package.json`; la línea de la tarjeta lo pide.
+
+## Cierre
+
+### Resumen
+
+En un workspace de pnpm, npm o yarn con al menos dos paquetes con script `test`, y sin `verify.units` en la configuración, `specty init` propone en su tarjeta las unidades, listas para pegar bajo `verify:`. La primera lleva el lint y los tipos detectados, con `paths: ["**"]`, y le sigue una por paquete con tests, ordenadas de las que dependen de menos paquetes a las que dependen de más. Cada una ejecuta los tests con el gestor del workspace, y sus `paths` son su carpeta, las de los paquetes de los que depende (también de forma indirecta, según sus `package.json`) y los archivos de la raíz que comparten. No escribe nada en `.specty/config.yaml`, y la tarjeta dice que la persona las añade tras comprobar que entre todas ejecutan lo mismo que `verify.full`. La propuesta la arma core (`proposeUnits`, `unitsYaml`) y la CLI lee el workspace (`detect/workspace-units.ts`).
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Proponer y no escribir: las unidades reemplazan a `verify.full`, que suele ser un script (`check`) que Specty no sabe descomponer, y un test que lee archivos de fuera de su paquete no se ve en los `package.json`.
+- El gestor sale de los archivos de la raíz (`pnpm-workspace.yaml`, `yarn.lock`, y npm si no), como ya hace la detección del stack.
+
+### Pendientes
+
+- Proponer también las unidades de otros workspaces (Cargo, `go.work`, melos, Gradle, uv), cada uno con su forma de nombrar sus paquetes, ejecutar sus tests y declarar de qué depende cada uno.

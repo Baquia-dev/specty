@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-init-propone-unidades",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-init-propone-unidades",
   "baseCommit": "bd48aacf6aa987f9dcce0d5aa2a20cb564068e48",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:4cfcb5d38efd4be807c25da285f96ca73699a4757ed69d342f4fba063ef4c61c",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8be1890d634b81c4a27bc13632e02f4c7559f8fc",
+      "attempts": 1,
       "startedAt": "2026-11-05T12:45:41.998Z",
       "doneAt": "2026-11-05T12:46:33.708Z",
-      "summary": "formats.md §6 y ARCHITECTURE §9 dicen que init propone las unidades de un workspace de pnpm, npm o yarn, cómo las arma y por qué no las escribe."
+      "summary": "formats.md §6 y ARCHITECTURE §9 dicen que init propone las unidades de un workspace de pnpm, npm o yarn, cómo las arma y por qué no las escribe.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -79,6 +79,7 @@
     "T": 3,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-05T12:51:05.492Z",
   "lockedTests": {
     "packages/cli/test/init-units.test.ts": "sha256:4a58d1f71e1c9e3971399c40d5ba986b3ebad57894d4e0b0a07adb6747de72f4",
     "packages/core/test/cards/init-units.test.ts": "sha256:6af4bc6dcbab7e4aa2d2fb2db737b30ce979eda0d6e33736fc4234c168e86ef7",
