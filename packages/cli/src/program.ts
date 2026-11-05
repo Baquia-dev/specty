@@ -123,7 +123,9 @@ function sessionRunner(environment: CliEnvironment, emit: Emit): Run {
         return emit(notInitializedCard(cards), cards.lang);
       case "invalid": {
         const issues = opened.issues.map((issue) => `${issue.path}: ${issue.message}`).join("; ");
-        return emit(invalidConfigCard(issues, cards), cards.lang);
+        // Without a person at the terminal, an agent runs it, and only the person may fix it.
+        const by = environment.terminal.interactive ? "person" : "agent";
+        return emit(invalidConfigCard(issues, cards, by), cards.lang);
       }
       case "ok": {
         const { session } = opened;

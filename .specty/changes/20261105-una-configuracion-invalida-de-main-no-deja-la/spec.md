@@ -63,7 +63,7 @@ Una `.specty/config.yaml` inválida en main (una coma de más en `git.branchPerC
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/invalid-config-merge.test.ts test/integrate.test.ts test/close-shared-file.test.ts
   - type: fix
-- [ ] T2: next le dice al agente que la persona corrige la configuración inválida
+- [x] T2: next le dice al agente que la persona corrige la configuración inválida
   - files: packages/core/src/cards/refusals.ts, packages/cli/src/program.ts, packages/cli/test/invalid-config.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/invalid-config.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor.test.ts && pnpm typecheck

@@ -58,15 +58,23 @@ export function notGitCard(ctx: CardContext): Output {
   );
 }
 
-/** `.specty/config.yaml` is not valid: `issues` says why, and no command runs until it is. */
-export function invalidConfigCard(issues: string, ctx: CardContext): Output {
+/**
+ * `.specty/config.yaml` is not valid: `issues` says why, and no command runs until it is. Only
+ * the person fixes it, since the guard does not let an agent edit it: run `by` an agent, the
+ * card tells it to ask them.
+ */
+export function invalidConfigCard(
+  issues: string,
+  ctx: CardContext,
+  by: "person" | "agent" = "person",
+): Output {
   const t = translator(ctx.lang);
-  return {
-    ...blockedCard(
-      headerOf(),
-      issues,
-      t("corrige .specty/config.yaml.", "fix .specty/config.yaml."),
-    ),
-    status: "invalid",
-  };
+  const next =
+    by === "agent"
+      ? t(
+          "el usuario corrige .specty/config.yaml en esta carpeta (el guard no te deja editarla): pídeselo con el error de arriba.",
+          "the user fixes .specty/config.yaml in this folder (the guard does not let you edit it): ask them, with the error above.",
+        )
+      : t("corrige .specty/config.yaml.", "fix .specty/config.yaml.");
+  return { ...blockedCard(headerOf(), issues, next), status: "invalid" };
 }
