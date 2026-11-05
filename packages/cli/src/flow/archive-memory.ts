@@ -8,6 +8,7 @@ import {
   type MemoryEntry,
   nextEntryId,
   type Output,
+  resolvedBlocks,
   settledEntry,
   waitingFor,
 } from "@baquia-dev/specty-core";
@@ -74,27 +75,31 @@ export async function rememberEntries(
 
 /**
  * The entries a change took, once it is archived: done if it closed, free again if it was
- * cancelled, one commit each. Only those still taken by it; none, no commit.
+ * cancelled, one commit each. Only those still taken by it; none, no commit. The ones it marked
+ * done, in order; none if it was cancelled.
  */
-export async function settleEntries(session: Session, state: ChangeState): Promise<void> {
+export async function settleEntries(session: Session, state: ChangeState): Promise<MemoryEntry[]> {
   const takenHere = (entry: MemoryEntry) =>
     entry.status === "taken" && entry.taken?.change === state.id;
   const { entries } = await readMemory(session.git, session.config.memory.branch);
   const ids = entries.filter(takenHere).map((entry) => entry.id);
-  if (ids.length === 0) return;
+  if (ids.length === 0) return [];
   const target = targetOf(session, state.id);
   const closed =
     state.phase === "done"
       ? { at: session.environment.now().toISOString(), by: authorOf(session) }
       : undefined;
+  const done: MemoryEntry[] = [];
   for (const id of ids) {
-    await editMemory(session.git, target, (memory) => {
-      const now = memory.entries.find((entry) => entry.id === id);
+    const entry = await editMemory(session.git, target, (memory) => {
+      const now = memory.entries.find((known) => known.id === id);
       if (now === undefined || !takenHere(now)) return { result: undefined };
-      const entry = settledEntry(now, closed);
-      return { write: { entry, operation: closed ? "done" : "free" }, result: undefined };
+      const settled = settledEntry(now, closed);
+      return { write: { entry: settled, operation: closed ? "done" : "free" }, result: settled };
     });
+    if (entry !== undefined && closed !== undefined) done.push(entry);
   }
+  return done;
 }
 
 /**
@@ -119,14 +124,16 @@ export async function fireReminders(session: Session, change: string): Promise<M
 
 /**
  * The card of the command that archived a change, with what it left in the memory after what it
- * says: the reminders it fired and the pending items its closing left.
+ * says: the entries its closing marked done, the reminders it fired and the pending items its
+ * closing left.
  */
 export function withArchivedMemory(
   session: Session,
   card: Output,
-  archived: Pick<ArchivedChange, "fired" | "harvested">,
+  archived: Pick<ArchivedChange, "resolved" | "fired" | "harvested">,
 ): Output {
   const blocks = [
+    ...resolvedBlocks(archived.resolved, session.cards),
     ...firedRemindersBlocks(archived.fired, session.cards),
     ...harvestedBlocks(archived.harvested, session.cards),
   ];

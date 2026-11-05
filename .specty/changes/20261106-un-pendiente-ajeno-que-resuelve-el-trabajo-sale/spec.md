@@ -78,7 +78,7 @@ Hoy un pendiente que el trabajo de una sesión resuelve sin haberlo tomado con `
   - ac: AC1, AC2, AC3, AC4, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/memory-resolve.test.ts test/cards/archived-memory.test.ts test/memory/claims.test.ts test/memory/lessons.test.ts
   - type: feat
-- [ ] T2: El cierre dice qué entradas tomadas resolvió, y que la persona ve los pendientes que deja
+- [x] T2: El cierre dice qué entradas tomadas resolvió, y que la persona ve los pendientes que deja
   - files: packages/cli/src/flow/archive-memory.ts, packages/cli/src/flow/finish.ts, packages/cli/test/close-harvest.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/close-harvest.test.ts test/memory-settle.test.ts test/memory-harvest.test.ts && pnpm lint
