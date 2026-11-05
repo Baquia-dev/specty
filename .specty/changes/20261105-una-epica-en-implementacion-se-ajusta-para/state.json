@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-una-epica-en-implementacion-se-ajusta-para",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-una-epica-en-implementacion-se-ajusta-para",
   "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
   "revision": 1,
@@ -71,12 +71,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f13d682ef1886d49504145764cd3aeae36cab5dc",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:33:15.207Z",
       "doneAt": "2026-11-05T16:34:10.568Z",
-      "summary": "adjust pasa epic al rechazo not-in-acceptance; el ajuste de una épica en implementing funciona de punta a punta (AC1-AC5 en test/epic-adjust.test.ts)"
+      "summary": "adjust pasa epic al rechazo not-in-acceptance; el ajuste de una épica en implementing funciona de punta a punta (AC1-AC5 en test/epic-adjust.test.ts)",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1afbf35436982215a5cb65f17c1e712ceaaaf4d0",
+      "startedAt": "2026-11-05T16:34:10.916Z",
+      "doneAt": "2026-11-05T16:35:09.709Z",
+      "summary": "ARCHITECTURE: diagrama y tabla de fases, adjust en la tabla de comandos, la épica en carriles, Dividir con slice-split-required y «El ajuste de una épica» en §12; formats: el error de tamaño de un corte"
     }
   },
   "pending": {

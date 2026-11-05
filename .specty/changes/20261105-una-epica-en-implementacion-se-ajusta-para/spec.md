@@ -77,7 +77,7 @@ Un corte que al redactarse sale demasiado grande no tiene salida hoy: `propose` 
   - files: packages/cli/src/commands/adjust.ts, packages/cli/test/epic-adjust.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-adjust.test.ts test/epic.test.ts test/commands.test.ts && pnpm typecheck && pnpm lint
-- [ ] T5: La documentación del ajuste de una épica en implementación
+- [x] T5: La documentación del ajuste de una épica en implementación
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm lint

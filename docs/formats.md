@@ -242,7 +242,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - Hay una tarea sin `verify` y no existe una verificación por defecto.
 - En `adjusting`: se modifica o elimina una tarea completada.
 - En `closing`: hay cambios fuera de la sección Cierre.
-- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. La tarea única de `quick` solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección.
+- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. La tarea única de `quick` solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección. El corte de una épica (con `epic` en el frontmatter) no se divide en otra épica: su error pide estrecharlo y llevar el resto a cortes nuevos de su épica, que se ajusta también mientras se implementa.
 - Una tarea de código de un cambio `standard` no lista ningún test en sus archivos, si la política es `required` o `contract`. Con `contract`, un `refactor` o un `perf` no lo necesita: su contrato son los tests que ya existen, y `task done` no lo completa si les quita aserciones.
 
 **Avisos**, que se muestran en la salida y en la UI:
