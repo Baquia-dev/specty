@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c6b094f9c8985e6d2219960eb1e98d85c3f03fce",
+      "startedAt": "2026-11-05T21:18:24.474Z",
+      "doneAt": "2026-11-05T21:19:45.304Z",
+      "summary": "Tarjetas de memory resolve (lo que toma y por qué no toma nada, con no-change) en memory-claims.ts, el bloque PENDIENTES QUE RESOLVIÓ ESTE CAMBIO y la nueva última línea de los pendientes que deja el cierre"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

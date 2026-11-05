@@ -73,7 +73,7 @@ Hoy un pendiente que el trabajo de una sesión resuelve sin haberlo tomado con `
 
 ## Tareas
 
-- [ ] T1: Las tarjetas de `memory resolve` y de lo que resolvió el cierre
+- [x] T1: Las tarjetas de `memory resolve` y de lo que resolvió el cierre
   - files: packages/core/src/cards/memory-claims.ts, packages/core/src/cards/archived-memory.ts, packages/core/src/cards/index.ts, packages/core/test/cards/memory-resolve.test.ts, packages/core/test/cards/archived-memory.test.ts
   - ac: AC1, AC2, AC3, AC4, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/memory-resolve.test.ts test/cards/archived-memory.test.ts test/memory/claims.test.ts test/memory/lessons.test.ts
