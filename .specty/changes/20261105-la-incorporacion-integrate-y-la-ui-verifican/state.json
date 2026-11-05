@@ -53,7 +53,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f0b30ef158217d2df87fe5040efc4de99d60e952",
+      "startedAt": "2026-11-05T06:37:37.370Z",
+      "doneAt": "2026-11-05T06:38:39.591Z",
+      "summary": "absorbedLine dice que pasaron las unidades de la verificación completa cuando MergeVerification lleva units"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

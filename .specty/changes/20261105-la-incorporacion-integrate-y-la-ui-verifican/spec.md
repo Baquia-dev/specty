@@ -67,7 +67,7 @@ Desde el corte C1, la verificación completa de `accept` ejecuta solo las unidad
 
 ## Tareas
 
-- [ ] T1: La línea de una incorporación por unidades
+- [x] T1: La línea de una incorporación por unidades
   - files: packages/core/src/cards/integration.ts, packages/core/test/cards/incorporation.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/incorporation.test.ts && pnpm --filter @baquia-dev/specty-core typecheck
