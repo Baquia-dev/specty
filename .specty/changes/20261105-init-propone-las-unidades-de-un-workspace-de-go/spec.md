@@ -45,7 +45,7 @@ Desde C1, `proposedUnits` prueba en orden una lista de detectores de workspace, 
 
 ## Tareas
 
-- [ ] T1: init propone las unidades de un workspace de Go
+- [x] T1: init propone las unidades de un workspace de Go
   - files: packages/cli/src/detect/units-go.ts, packages/cli/src/detect/workspace-units.ts, packages/cli/test/units-go.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-go.test.ts test/workspace-units.test.ts test/init-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip
