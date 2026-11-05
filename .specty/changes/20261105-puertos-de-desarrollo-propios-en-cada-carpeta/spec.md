@@ -55,7 +55,7 @@ Con varios cambios abiertos, cada uno en su worktree, dos sesiones que arrancan 
   - files: packages/cli/src/store/ports.ts, packages/cli/src/commands/new.ts, packages/cli/src/commands/next.ts, packages/cli/test/dev-ports.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/dev-ports.test.ts test/commands.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: La documentación
+- [x] T3: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

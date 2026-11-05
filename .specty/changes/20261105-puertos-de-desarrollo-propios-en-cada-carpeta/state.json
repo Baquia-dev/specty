@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-puertos-de-desarrollo-propios-en-cada-carpeta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-puertos-de-desarrollo-propios-en-cada-carpeta",
   "baseCommit": "53733e01b4bb1d0786f65620876e1ccd67a98705",
   "revision": 1,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8a412f41f0878587f879148bfc8c15158dc93a31",
+      "attempts": 1,
       "startedAt": "2026-11-05T02:19:19.609Z",
       "doneAt": "2026-11-05T02:22:44.424Z",
-      "summary": "store/ports.ts: portsOf da a cada carpeta de cambio dev.ports más su posición (la libre más baja desde 1, guardada en .git/common/specty/ports.json; la de una carpeta que ya no existe se libera); new y next pasan su tarjeta por withDevPorts"
+      "summary": "store/ports.ts: portsOf da a cada carpeta de cambio dev.ports más su posición (la libre más baja desde 1, guardada en .git/common/specty/ports.json; la de una carpeta que ya no existe se libera); new y next pasan su tarjeta por withDevPorts",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ec532e06e6569f17caf83634ba13d74a6ccbe5d0",
+      "startedAt": "2026-11-05T02:22:44.797Z",
+      "doneAt": "2026-11-05T03:14:10.987Z",
+      "summary": "formats: dev.ports y ports.json; ARCHITECTURE: los puertos de desarrollo por carpeta"
     }
   },
   "pending": {
