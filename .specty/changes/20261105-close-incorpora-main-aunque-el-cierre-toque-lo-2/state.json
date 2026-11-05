@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261105-close-incorpora-main-aunque-el-cierre-toque-lo-2",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-close-incorpora-main-aunque-el-cierre-toque-lo-2",
   "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9ab42e551eb43563ff96a8766e59276aa699953fa9f6fcb61f5bc49f49db70d9",
+    "at": "2026-11-05T08:00:31.359Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -44,12 +51,7 @@
     "T": 1,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9ab42e551eb43563ff96a8766e59276aa699953fa9f6fcb61f5bc49f49db70d9",
-    "at": "2026-11-05T08:00:31.359Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/close-shared-file.test.ts": "sha256:bf0d397fc9850b0ce7081afdb05c25fcd91001ae11d76c8e8e2a1dd1a51740a9"
+  }
 }
