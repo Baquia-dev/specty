@@ -6,6 +6,13 @@
   "branch": "specty/20261105-al-cerrar-un-corte-vuelve-a-su-epica",
   "baseCommit": "5b6bc9668f16d343478ee1c07ef91711815bc550",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d837133e95695d7b3d00d657abf4b18fb545eee7176c59557a3e71a10354cd09",
+    "at": "2026-11-05T06:33:04.799Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -44,12 +51,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d837133e95695d7b3d00d657abf4b18fb545eee7176c59557a3e71a10354cd09",
-    "at": "2026-11-05T06:33:04.799Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T06:37:57.423Z"
 }
