@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-los-tiempos-de-cada-cambio-en-la-bandeja",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-los-tiempos-de-cada-cambio-en-la-bandeja",
   "baseCommit": "4682745ea93f383506c210b4e0a5a9dc170f4011",
   "revision": 2,
@@ -54,6 +54,8 @@
     "T": 3,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T10:38:03.722Z"
+  "lockedTests": {
+    "packages/ui/src/data/progress.test.ts": "sha256:f76178e7b02152d715c60769c5ec67b94a089f0d757e56748aa42d6a126d9147",
+    "packages/ui/src/inbox/inbox-row.test.ts": "sha256:0cf073a561d8803ae4d814c160af70f1368c90f4f8484e658815b606e4c0012a"
+  }
 }
