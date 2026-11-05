@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b752a0bd869502428736004e7a2338cca5d575c7",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:05:34.363Z",
       "doneAt": "2026-11-05T16:06:21.756Z",
-      "summary": "packages/core/vitest-temp-dir.ts: globalSetup que borra las carpetas specty-tests-<pid>- de procesos muertos, crea la de la ejecución, le apunta TMPDIR/TMP/TEMP y la borra en el teardown; core lo usa y ARCHITECTURE lo cuenta en Pruebas"
+      "summary": "packages/core/vitest-temp-dir.ts: globalSetup que borra las carpetas specty-tests-<pid>- de procesos muertos, crea la de la ejecución, le apunta TMPDIR/TMP/TEMP y la borra en el teardown; core lo usa y ARCHITECTURE lo cuenta en Pruebas",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3dc5fe9edf1ed6b97288ec09237c7769d6598476",
+      "startedAt": "2026-11-05T16:06:22.085Z",
+      "doneAt": "2026-11-05T16:06:55.159Z",
+      "summary": "exporters nombra ../core/vitest-temp-dir.ts en su globalSetup"
     }
   },
   "pending": {
