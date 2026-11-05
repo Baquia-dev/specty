@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-bandeja-guarda-solo-el-resumen-de-los",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-la-bandeja-guarda-solo-el-resumen-de-los",
   "baseCommit": "85be27d0ad5ba373872c2aa19c4dad4331511ef4",
   "revision": 2,
@@ -55,6 +55,8 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T17:59:42.615Z"
+  "lockedTests": {
+    "packages/ui/src/change/change-page.finished.test.ts": "sha256:8d3d61328fb0dc05cffd4327ea5f4dc92dbffbe1eaafa4646123b5ad1a094ec0",
+    "packages/ui/src/data/finished-summaries.test.ts": "sha256:bb5a2664ee1efbcc6586ff71c2be949e35b4ae464a4c0c99db08c4e200b10656"
+  }
 }
