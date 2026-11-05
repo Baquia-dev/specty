@@ -78,3 +78,27 @@ Hoy la única forma de leer los cambios terminados es `GET /api/changes`, que lo
 
 - R1: Un archivado guardado en memoria podría quedar viejo si algo reescribe su carpeta sin tocar `state.json`. Mitigación: el archivo solo se escribe al archivar (estado y auditoría antes de mover la carpeta) o al incorporar la rama, y la memoria se descarta si cambia la hora de `state.json`.
 - R2: `server/http.ts` ya tiene 302 líneas de código (P163). Mitigación: la página va en `server/finished.ts` y en http.ts solo queda el enganche.
+
+## Cierre
+
+### Resumen
+
+El servidor local da los cambios terminados por páginas con `GET /api/changes/finished` (`server/finished.ts`). Admite `offset`, `limit` (30 por defecto; 0 da solo las cuentas), `q`, `phase`, `sort` y `lang`, y responde `{ records, total, counts, finished, epics }`. Los registros salen como en `/api/changes`, con el commit de sus tareas, y llevan el título de la épica de cada corte. Busca y ordena con `matchesQuery` y `sortChanges`, que pasan a core (`core/src/listing.ts`) y se exportan en `index.ts` y en `@baquia-dev/specty-core/light`. La Bandeja usa ahora esas mismas funciones y quita sus copias de `inbox/inbox-view.ts`. El servidor guarda en memoria cada archivado que leyó, por su carpeta, mientras su `state.json` no cambie (`archivedRecords` en `server/records.ts`), y también lo que deriva de él para buscar y ordenar. `/api/changes`, `/api/changes/<id>` y el MCP App responden lo mismo que antes, pero más rápido. `http.ts` solo engancha la ruta en `VIEWS`. ARCHITECTURE §15 cuenta la ruta y la memoria.
+
+### Desviaciones
+
+- El corte C4 de la épica salió XL en `specty propose`: 23 archivos gobernados en core, CLI y UI, y 6 tareas. La persona eligió dividirlo en tres tramos. Este, el primero, cubre solo core y el servidor: la búsqueda y el orden compartidos, `GET /api/changes/finished` y la memoria de los archivados. `/api/changes` no cambia, así que la Bandeja de main sigue igual.
+- Los criterios AC7–AC9 de la épica quedan para dos cortes nuevos, que el agente principal añade a la épica con un ajuste cuando llegue a aceptación. C5: la Bandeja pide los terminados por páginas (al llegar al final, «Cargar más», `j` en la última fila), con los contadores de todos los que coinciden y los abiertos antes que los terminados en cada sección (A4 de la épica). C6: `GET /api/changes` da solo los abiertos y los que perdieron su carpeta.
+- La respuesta amplía el A2 de la épica con `finished` (los terminados sin búsqueda ni fase, para el «X de N» y el resumen de C5) y con el parámetro `lang` (para ordenar por título como la UI en su idioma). `limit=0` da solo las cuentas.
+
+### Decisiones
+
+- `matchesQuery` compara con `fold`, que ya estaba en core y además junta los espacios, en lugar de mover `folded`. `sortChanges` desempata por id, para que las páginas del servidor y la Bandeja tengan siempre el mismo orden. Antes, dos cambios empatados quedaban en el orden en que llegaban.
+- La memoria de los archivados vive en un `WeakMap` por sesión y comprueba la hora de modificación de `state.json`, por si un cierre o una incorporación reescriben el estado. No guarda un archivado que no se puede leer. El resumen para buscar y ordenar se guarda en otro `WeakMap`, por registro.
+- `phase` admite cualquier fase: una abierta no encuentra ningún terminado, pero las cuentas siguen siendo las de la búsqueda, para los filtros por fase de C5. Un valor que no se entiende toma el de por defecto, en lugar de responder 400.
+- Un archivado cuyo id está abierto en alguna worktree no sale entre los terminados. Un id archivado en varias worktrees sale una vez, con el de la carpeta principal. El título de una épica abierta se lee de su spec con `locateChanges`; el de una épica que perdió su carpeta es su id.
+- Las lecturas de `VIEWS` reciben también los parámetros de la URL. Así `/api/changes/finished` es una entrada más del mapa y `http.ts` no crece con otra función.
+
+### Pendientes
+
+- Ninguno nuevo. `server/http.ts` sigue en unas 303 líneas de código, sobre el aviso de 300 (P163, ya en la memoria).

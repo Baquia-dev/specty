@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-la-bandeja-pide-los-terminados-al-servidor-por",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-la-bandeja-pide-los-terminados-al-servidor-por",
   "baseCommit": "bd48aacf6aa987f9dcce0d5aa2a20cb564068e48",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:ae2e6d3382d23661625f9dd968d67151a4e9859af94b184028614036f49f1bf0",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7e124f6f653a720d228c0888a00d3724aa126c71",
+      "attempts": 1,
       "startedAt": "2026-11-05T13:10:45.674Z",
       "doneAt": "2026-11-05T13:11:29.989Z",
-      "summary": "inbox-view.ts importa matchesQuery, sortChanges y CHANGE_SORTS de core light y quita sus copias (folded, matchesQuery, sortChanges); InboxSort es ChangeSort"
+      "summary": "inbox-view.ts importa matchesQuery, sortChanges y CHANGE_SORTS de core light y quita sus copias (folded, matchesQuery, sortChanges); InboxSort es ChangeSort",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,6 +83,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T13:19:39.903Z",
   "lockedTests": {
     "packages/ui/src/inbox/inbox-view.test.ts": "sha256:b0253a88c67d2c6dc48b814e99c6f2691fafa68cb2dcbeae1d644797607888dc",
     "packages/cli/test/server/finished.test.ts": "sha256:2a3415a346738a8dd1a19c3f9a227c7f5be4f06817789fd740fa87e27bd9e00d",
