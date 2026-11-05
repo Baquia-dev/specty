@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261105-la-verificacion-completa-no-corre-sin-codigo",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261105-la-verificacion-completa-no-corre-sin-codigo",
+  "baseCommit": "445c69b3939c77f9aeb254565139e65901f50c59",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:798c5c8d51d9040711f88e9df595cbbe7229578b95799937dac5cc5261400805",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:cdd2631d3c9c172a0db7b5bffaab2b20d08d6281e42838fe855615ed5bd5b229",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:c3cd5aba0fd3fa8aa7a25f09fba8dcad506d7bec3cfadd7561b159ef4400c5df",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:61950f942801a68c621c93cbfea37149b7bfeaed78de14f297808a5d282179e0",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:2e36df23b773034125ff19f40d762ff189e580a219f72470f289ba8974ca1c7f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:13d8f1f07f2c4322a4d48025ef6d59cf5d579274150527294d9118b0133efbc7",
+    "at": "2026-11-05T01:10:05.598Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
