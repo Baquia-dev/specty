@@ -245,7 +245,7 @@ function eventWords(data: AuditEvent["data"], t: T): EventWords {
 }
 
 /** `2 min 5 s` or `41 s`, from milliseconds. */
-function duration(ms: unknown): string {
+export function duration(ms: unknown): string {
   if (typeof ms !== "number") return "—";
   const seconds = Math.round(ms / 1000);
   if (seconds < 60) return `${seconds} s`;

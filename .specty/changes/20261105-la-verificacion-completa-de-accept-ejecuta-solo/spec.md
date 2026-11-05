@@ -70,7 +70,7 @@ Hoy la verificación completa de `accept` es un solo comando (`verify.full`), qu
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/units.test.ts test/schema/schema.test.ts
   - type: feat
-- [ ] T2: Las notas de las unidades
+- [x] T2: Las notas de las unidades
   - files: packages/core/src/cards/units.ts, packages/core/src/cards/index.ts, packages/core/src/cards/audit.ts, packages/core/test/cards/units.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/units.test.ts test/cards/audit.test.ts && pnpm --filter @baquia-dev/specty-core typecheck

@@ -56,12 +56,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2c5948dba0dc5a06b891ad803fc2f4b746de8c9f",
+      "attempts": 1,
       "startedAt": "2026-11-05T05:33:36.507Z",
       "doneAt": "2026-11-05T05:34:16.388Z",
-      "summary": "verify.units en la configuración: cada unidad con name único, command y paths no vacíos, al menos una; tipo VerifyUnit en la API pública de core"
+      "summary": "verify.units en la configuración: cada unidad con name único, command y paths no vacíos, al menos una; tipo VerifyUnit en la API pública de core",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "350caf4eb6806f988a658d8ab9fcb4691e9fa21c",
+      "startedAt": "2026-11-05T05:34:16.710Z",
+      "doneAt": "2026-11-05T05:34:38.274Z",
+      "summary": "Las notas de las unidades en cards/units.ts: unitsLines (reutilizadas, ejecutadas con su tiempo, la que falló y las que no corrieron) y unitsReusedNote, en español y en inglés; duration de cards/audit.ts exportada"
     }
   },
   "pending": {
