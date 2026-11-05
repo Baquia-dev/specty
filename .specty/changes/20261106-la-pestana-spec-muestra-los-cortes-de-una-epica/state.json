@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-pestana-spec-muestra-los-cortes-de-una-epica",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-la-pestana-spec-muestra-los-cortes-de-una-epica",
   "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
   "revision": 2,
@@ -55,6 +55,11 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T16:59:28.683Z"
+  "lockedTests": {
+    "packages/ui/src/data/delta.test.ts": "sha256:eb2cad5834d4988badd88c0b7cd52457a91401969392ba904a851e475aba1f7e",
+    "packages/ui/src/data/review.test.ts": "sha256:cecc588404b5e9dc9e5d2f09ca12ec7d9051670656e09a437cc6874203adf07f",
+    "packages/ui/src/review/delta-review.test.ts": "sha256:d41876883fa8b5b743110349f238804c89c5f5eb323396e1f5ec96986bbe3627",
+    "packages/ui/src/review/spec-cards.test.ts": "sha256:d47c1aea0599a185d74af5a904e3959504a66500b237a84df763df7f17b41511",
+    "packages/ui/src/review/spec-sections.test.ts": "sha256:e879f941dfa3304bf840bd63e098c264083c436b55b1deb6e406d8c22c969a4c"
+  }
 }
