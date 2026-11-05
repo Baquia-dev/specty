@@ -82,6 +82,8 @@ export const MESSAGES_ES: MessageCatalog = {
     `El corte es demasiado grande (${v(p, "detail")}) y un corte no puede ser una épica: estréchalo a lo que cabe en un cambio y lleva el resto a cortes nuevos de la épica ${v(p, "epic")}, que se ajusta en su carpeta mientras se implementa (\`adjust\`, los cortes nuevos en «Cortes» con su \`depends\` y \`propose\`); la persona vuelve a aprobarla.`,
   "done-task-changed": (p) =>
     `${v(p, "id")} ya está completada y no se puede modificar ni eliminar; añade una tarea nueva.`,
+  "closed-slice-changed": (p) =>
+    `El corte ${v(p, "id")} ya se cerró con el cambio ${v(p, "change")} y un ajuste de la épica no puede modificarlo ni eliminarlo; lleva lo que falte a un corte nuevo, con su \`ac\` y su \`depends\`.`,
   "closing-outside": (p) =>
     `Durante el cierre solo se puede modificar la sección Cierre; cambió ${v(p, "target")}.`,
   "closing-premature": () =>

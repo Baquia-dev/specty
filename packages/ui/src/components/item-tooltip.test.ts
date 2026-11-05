@@ -95,6 +95,20 @@ describe("ItemTooltips and ItemText", () => {
     expect(bubble()?.textContent).toContain("Tarea T1:");
   });
 
+  it("names each slice of an epic's review by its title", () => {
+    const { review } = sampleChange();
+    const slices = [
+      { id: "C1", title: "La bandeja lista los cambios", ac: ["AC1"], depends: [] },
+      { id: "C2", title: "La pestaña Spec muestra los cortes", ac: ["AC2"], depends: ["C1"] },
+    ];
+    const items = itemsOfReview({ ...review, slices });
+    expect(items.get("C1")).toBe("La bandeja lista los cambios");
+    expect(items.get("C2")).toBe("La pestaña Spec muestra los cortes");
+    expect(formatItemTooltip("C1", "es", items.get("C1"))).toBe(
+      "Corte C1: La bandeja lista los cambios",
+    );
+  });
+
   it("AC3: shows the sigla type and id when no content is available, in the active language", async () => {
     expect(formatItemTooltip("C2", "es")).toBe("Corte C2");
     expect(formatItemTooltip("C2", "en")).toBe("Slice C2");

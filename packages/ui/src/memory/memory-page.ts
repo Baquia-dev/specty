@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
+import { NgTemplateOutlet } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -26,6 +27,7 @@ import { ActionError, type Bilingual, SpectyData } from "../data/records";
 import { reportFailure } from "../review/spec-sections";
 import { Preferences } from "../theme/preferences";
 import { DropEntry } from "./drop-entry";
+import { MemoryGroupView } from "./memory-group";
 import { changeLine, entryLine } from "./memory-lines";
 import { type MemoryItem, memorySections } from "./memory-view";
 
@@ -61,6 +63,7 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
 @Component({
   selector: "sp-memory-page",
   imports: [
+    NgTemplateOutlet,
     RouterLink,
     LucideDynamicIcon,
     PhaseBadge,
@@ -69,6 +72,7 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
     Skeleton,
     Segmented,
     Button,
+    MemoryGroupView,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -114,57 +118,70 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
         @for (section of sections(); track section.key) {
           <section [attr.aria-labelledby]="'memory-' + section.key" [attr.data-section]="section.key">
             <sp-section-divider [heading]="t()(section.label.es, section.label.en)" [headingId]="'memory-' + section.key" [meta]="section.items.length" [level]="2" />
-            <div role="list" [class]="list + ' mt-2'">
-              @for (item of section.items; track keyOf(item)) {
-                @if (entryOf(item); as entry) {
-                  <div role="listitem" [class]="row" [attr.data-entry]="entry.id">
-                    <span class="pt-0.5 font-mono text-xs text-text-muted tabular-nums">{{ entry.id }}</span>
-                    <div class="flex min-w-0 flex-col gap-0.5">
-                      <span class="text-sm break-words">
-                        <span class="mr-1.5 inline-flex h-5 items-center rounded-full px-2 text-[11px] font-medium" [style.color]="'var(--color-phase-' + kinds[entry.kind].tone + ')'" [style.background]="'var(--color-phase-' + kinds[entry.kind].tone + '-bg)'">{{ t()(kinds[entry.kind].label.es, kinds[entry.kind].label.en) }}</span>{{ firstLine(entry.text) }}
-                      </span>
-                      <span class="text-xs text-text-muted">{{ entryLine(item, entry) }}</span>
-                    </div>
-                    <div class="flex items-center gap-1.5">
-                      @if (decisions.allowed()) {
-                        @switch (item.kind) {
-                          @case ('proposal') {
-                            <sp-button size="sm" variant="primary" (pressed)="drop(entry)">{{ t()('Descartar', 'Drop') }}</sp-button>
-                            <sp-button size="sm" (pressed)="keep(entry)">{{ t()('Mantener', 'Keep') }}</sp-button>
-                          }
-                          @case ('reminder') {
-                            <sp-button size="sm" (pressed)="done(entry)">{{ t()('Marcar hecho', 'Mark done') }}</sp-button>
-                          }
-                          @case ('closed') {}
-                          @default {
-                            <span [class]="reveal"><sp-button size="sm" (pressed)="drop(entry)">{{ t()('Descartar', 'Drop') }}</sp-button></span>
-                          }
-                        }
-                      }
-                    </div>
-                  </div>
-                } @else if (changeOf(item); as change) {
-                  <div role="listitem" [class]="row" [attr.data-change]="change.id">
-                    <span></span>
-                    <div class="flex min-w-0 flex-col gap-0.5">
-                      <span class="flex flex-wrap items-center gap-2">
-                        <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change.id]">{{ change.title }}</a>
-                        <sp-phase-badge [phase]="change.phase" />
-                        @if (change.orphan) {
-                          <span class="inline-flex h-5 items-center rounded-full px-2 text-[11px] font-medium" style="color: var(--color-phase-review); background: var(--color-phase-review-bg)">{{ t()('huérfano', 'orphaned') }}</span>
-                        }
-                      </span>
-                      <span class="text-xs break-all text-text-muted">{{ changeLine(change) }}</span>
-                    </div>
-                    <span></span>
-                  </div>
+            @if (section.groups; as groups) {
+              <div [class]="list + ' mt-2'">
+                @for (group of groups; track group.change?.id ?? 'none') {
+                  <sp-memory-group [group]="group" [row]="entryRow" />
                 }
-              }
-            </div>
+              </div>
+            } @else {
+              <div role="list" [class]="list + ' mt-2'">
+                @for (item of section.items; track keyOf(item)) {
+                  @if (entryOf(item)) {
+                    <ng-container *ngTemplateOutlet="entryRow; context: { $implicit: item }" />
+                  } @else if (changeOf(item); as change) {
+                    <div role="listitem" [class]="row" [attr.data-change]="change.id">
+                      <span></span>
+                      <div class="flex min-w-0 flex-col gap-0.5">
+                        <span class="flex flex-wrap items-center gap-2">
+                          <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change.id]">{{ change.title }}</a>
+                          <sp-phase-badge [phase]="change.phase" />
+                          @if (change.orphan) {
+                            <span class="inline-flex h-5 items-center rounded-full px-2 text-[11px] font-medium" style="color: var(--color-phase-review); background: var(--color-phase-review-bg)">{{ t()('huérfano', 'orphaned') }}</span>
+                          }
+                        </span>
+                        <span class="text-xs break-all text-text-muted">{{ changeLine(change) }}</span>
+                      </div>
+                      <span></span>
+                    </div>
+                  }
+                }
+              </div>
+            }
           </section>
         }
       }
     </div>
+    <ng-template #entryRow let-item>
+      @if (entryOf(item); as entry) {
+        <div role="listitem" [class]="row" [attr.data-entry]="entry.id">
+          <span class="pt-0.5 font-mono text-xs text-text-muted tabular-nums">{{ entry.id }}</span>
+          <div class="flex min-w-0 flex-col gap-0.5">
+            <span class="text-sm break-words">
+              <span class="mr-1.5 inline-flex h-5 items-center rounded-full px-2 text-[11px] font-medium" [style.color]="'var(--color-phase-' + kinds[entry.kind].tone + ')'" [style.background]="'var(--color-phase-' + kinds[entry.kind].tone + '-bg)'">{{ t()(kinds[entry.kind].label.es, kinds[entry.kind].label.en) }}</span>{{ firstLine(entry.text) }}
+            </span>
+            <span class="text-xs text-text-muted">{{ entryLine(item, entry) }}</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            @if (decisions.allowed()) {
+              @switch (item.kind) {
+                @case ('proposal') {
+                  <sp-button size="sm" variant="primary" (pressed)="drop(entry)">{{ t()('Descartar', 'Drop') }}</sp-button>
+                  <sp-button size="sm" (pressed)="keep(entry)">{{ t()('Mantener', 'Keep') }}</sp-button>
+                }
+                @case ('reminder') {
+                  <sp-button size="sm" (pressed)="done(entry)">{{ t()('Marcar hecho', 'Mark done') }}</sp-button>
+                }
+                @case ('closed') {}
+                @default {
+                  <span [class]="reveal"><sp-button size="sm" (pressed)="drop(entry)">{{ t()('Descartar', 'Drop') }}</sp-button></span>
+                }
+              }
+            }
+          </div>
+        </div>
+      }
+    </ng-template>
   `,
 })
 export class MemoryPage {

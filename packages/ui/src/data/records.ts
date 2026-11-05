@@ -121,12 +121,26 @@ export interface CommentRecord {
 export type Bilingual = Readonly<Record<Lang, string>>;
 
 /**
- * `GET /api/memory` (ADR 0016): every entry of Specty's memory, done and dropped too, and the open
- * changes of every worktree as `specty status` sees them, with who holds each one.
+ * `GET /api/memory` (ADR 0016): every entry of Specty's memory, done and dropped too, the open
+ * changes of every worktree as `specty status` sees them, with who holds each one, and what each
+ * change the entries came from is.
  */
 export interface MemoryRecord {
   readonly entries: readonly MemoryEntry[];
   readonly changes: readonly StatusEntry[];
+  /** Each change the entries came from (`origin.change`), by its id; a source may not give it. */
+  readonly origins?: Readonly<Record<string, MemoryOrigin>>;
+}
+
+/**
+ * A change an entry of the memory came from: its title, kind and phase and, for a slice, its epic
+ * with its title; of a change the server does not find, only its id, as its title.
+ */
+export interface MemoryOrigin {
+  readonly title: string;
+  readonly kind?: ChangeKind;
+  readonly phase?: Phase;
+  readonly epic?: { readonly id: string; readonly title: string; readonly slice?: string };
 }
 
 /**
