@@ -67,3 +67,28 @@ La verificación completa (`verify.full`, aquí `pnpm check`) es un solo comando
   - depends: C1
 - C5: La verificación avisa de los tests que pasan de un tiempo
   - ac: AC8
+
+## Cierre
+
+### Resumen
+
+La verificación completa se divide en unidades (`verify.units`, cada una con su comando y sus `paths`). Un registro del clon (`.git/common/specty/verified/`) recuerda las que pasaron con cada huella, y la verificación completa solo ejecuta las que faltan, en orden y parando en la primera que falla: en `accept` (C1), en la incorporación de main, en `specty integrate` y en la UI (C2). Este repositorio configura seis unidades (estático, core, exporters, vscode, ui y cli), y un test vigila que un cambio solo de `packages/ui` no ejecuta los tests del CLI y que entre todas cubren `pnpm check` (C3). `specty verify --fresh` lo ejecuta todo sin el registro, repite una vez la unidad que falla y anota en la memoria las inestables como lecciones y las rotas como pendientes (C4). `checks.testTime` avisa de los tests JUnit que pasan de `maxMs`, también en la nota de `accept` (C5). En la primera aceptación por unidades, la incorporación ejecutó las seis (la de cli, 4 min 16 s) y la verificación de `accept` no repitió ninguna.
+
+### Desviaciones
+
+- Las unidades de este repositorio las escribió la persona en `.specty/config.yaml` (9ed6ce9), porque el guard no deja al agente editar ese archivo; C3 solo añadió el test que las vigila y la regla de AGENTS.md.
+- Una coma de más en `git.branchPerChange` que llegó de main (e75097af, corregida en 26f0facd) dejó sin `specty` las carpetas de C1 y C5 hasta que la persona la corrigió en ellas; el cierre de C5 incorporó primero solo esa corrección de main y después el resto con `specty integrate`, porque su merge chocaba en `commands/accept.ts` con C1.
+- C2 corrigió al incorporar main el import de `fullCommand` en `commands/verify.ts` (de C4), que C2 había movido a `flow/full-verification.ts`.
+
+### Decisiones
+
+- Los cortes los hicieron subagentes, uno por corte, en paralelo cuando no dependían entre sí (C1 y C5, luego C2 y C4, y C3 al final), y las aprobaciones, aceptaciones y cierres los decidió el agente principal en modo delegado.
+- `checks.testTime` no se activó en este repositorio: necesita antes el informe JUnit de Vitest en cada paquete.
+
+### Pendientes
+
+- P127: activar `test-time` en este repositorio (informe JUnit de Vitest en cada paquete y `checks.testTime` en `.specty/config.yaml`).
+- P141: añadir `LICENSE` y `NOTICE` a los `paths` de la unidad cli, y `.agents/**` y `.claude/**` a los de estático.
+- P125: borrar los archivos viejos del registro de unidades.
+- P139: hacer único el nombre del índice temporal de `treeWith`.
+- P130 y P133: una configuración inválida que llega de main deja la carpeta sin `specty`, y el merge de `close` falla si el cierre sin commit toca un archivo que main también cambió.

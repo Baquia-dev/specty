@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261105-verificacion-por-unidades",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261105-verificacion-por-unidades",
   "baseCommit": "b4686dfe63d4d149247ca21552eac202ab157426",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:31dedcc5036a2545af83a090196967017979fd3abb0f5b8c867289cc4a7a0f3f",
+    "at": "2026-11-05T04:09:32.737Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -58,11 +65,5 @@
     "AC": 10,
     "C": 5
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:31dedcc5036a2545af83a090196967017979fd3abb0f5b8c867289cc4a7a0f3f",
-    "at": "2026-11-05T04:09:32.737Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-05T07:41:16.157Z"
 }
