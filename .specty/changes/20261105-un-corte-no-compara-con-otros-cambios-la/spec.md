@@ -16,7 +16,7 @@ Resuelve P89. La sesión que lanza los cortes de una épica suele pasar a cada `
 
 ## Tareas
 
-- [ ] T1: Un corte no compara con otros cambios la petición de su épica
+- [x] T1: Un corte no compara con otros cambios la petición de su épica
   - files: packages/cli/src/flow/duplicates.ts, packages/cli/test/duplicates-slice.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/duplicates-slice.test.ts test/duplicates.test.ts test/duplicates-epic.test.ts test/epic.test.ts test/check-docs.test.ts && pnpm typecheck && pnpm lint
   - type: fix
