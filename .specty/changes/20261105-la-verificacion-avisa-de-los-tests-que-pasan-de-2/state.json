@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-verificacion-avisa-de-los-tests-que-pasan-de-2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-verificacion-avisa-de-los-tests-que-pasan-de-2",
   "baseCommit": "b4686dfe63d4d149247ca21552eac202ab157426",
   "revision": 1,
@@ -78,14 +78,23 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/check/test-time.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "faebc94bfc49107a7e1cea5e86c63ee2082b7cb0",
+      "attempts": 1,
       "startedAt": "2026-11-05T05:38:04.314Z",
       "doneAt": "2026-11-05T05:39:04.253Z",
-      "summary": "La nota de la verificación completa de accept añade, tras la cobertura, los tests de los informes JUnit nuevos que pasan de maxMs (slowTestNote con slowTestsSince y slowTestLines); test-time.ts vuelve a exportar slowTestsSince"
+      "summary": "La nota de la verificación completa de accept añade, tras la cobertura, los tests de los informes JUnit nuevos que pasan de maxMs (slowTestNote con slowTestsSince y slowTestLines); test-time.ts vuelve a exportar slowTestsSince",
+      "scopeExtra": [
+        "packages/cli/src/check/test-time.ts"
+      ]
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fe38fdabc8c2daf35f9f503ee23f336500b1c6d4",
+      "startedAt": "2026-11-05T05:39:04.588Z",
+      "doneAt": "2026-11-05T05:40:09.944Z",
+      "summary": "test-time en checks.md y checks.en.md, checks.testTime y la verificación en formats.md §6, y en ARCHITECTURE la verificación y la nota de accept; check-docs cuenta test-time entre las que solo aparecen con informes"
     }
   },
   "pending": {

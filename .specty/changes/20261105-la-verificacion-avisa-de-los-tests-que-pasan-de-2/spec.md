@@ -82,7 +82,7 @@ Un test que tarda cada vez más pasa desapercibido hasta que la suite entera se 
   - files: packages/cli/src/commands/accept.ts, packages/cli/test/accept-test-time.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-test-time.test.ts test/accept-coverage.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T5: La documentación de `test-time`
+- [x] T5: La documentación de `test-time`
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md, docs/ARCHITECTURE.md, packages/cli/test/check-docs.test.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts && pnpm lint
