@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-una-epica-en-implementacion-se-ajusta-para",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-una-epica-en-implementacion-se-ajusta-para",
   "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
   "revision": 1,
@@ -52,6 +52,11 @@
     "T": 5,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T16:18:16.040Z"
+  "lockedTests": {
+    "packages/core/test/cards/adjust.test.ts": "sha256:57bbf98fc0d5efa8a94cd78bcf16f42f93f131390eda7c3cc41ad5bb936d06a0",
+    "packages/core/test/cards/adjusting.test.ts": "sha256:c198637760dc3a1a1fcef0975444d7a20631d4041e00548ecc5a271c8df8234f",
+    "packages/core/test/flow/machine.test.ts": "sha256:660c6b466e192068cbb01a00dd794c572c7318846ec117c27719f045e47baa89",
+    "packages/cli/test/epic-adjust.test.ts": "sha256:0c39d7c4ceea5ecf283d8cd6c0b536efb69715ada1b564b08844580cee6c719c",
+    "packages/core/test/validate/split-slice.test.ts": "sha256:3a7e5bb5cee5f9ae8a992f6d790451bc149b3bae9b60e2e219c7b26e5871a238"
+  }
 }
