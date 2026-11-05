@@ -76,7 +76,7 @@ Quien revisa una épica en la pestaña Spec de `specty ui` ve su sección «Cort
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/delta.test.ts && pnpm lint
   - type: feat
-- [ ] T3: Las filas de los cortes, enlazadas a su cambio, en la revisión y en las tarjetas
+- [x] T3: Las filas de los cortes, enlazadas a su cambio, en la revisión y en las tarjetas
   - files: packages/ui/src/review/spec-sections.ts, packages/ui/src/review/spec-sections.test.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-cards.ts, packages/ui/src/review/spec-cards.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-sections.test.ts --include src/review/spec-cards.test.ts --include src/review/spec-review.test.ts --include src/review/spec-review-modes.test.ts --include src/app/embedded.test.ts && pnpm lint && pnpm knip
