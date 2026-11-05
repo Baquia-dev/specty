@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-verificacion-completa-de-accept-ejecuta-solo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-verificacion-completa-de-accept-ejecuta-solo",
   "baseCommit": "b4686dfe63d4d149247ca21552eac202ab157426",
   "revision": 1,
@@ -74,12 +74,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2188ae437e9c4327d87729d9a96a3ba15c76c05c",
+      "attempts": 1,
       "startedAt": "2026-11-05T05:34:38.592Z",
       "doneAt": "2026-11-05T05:35:48.339Z",
-      "summary": "accept ejecuta solo las unidades sin huella en el registro del clon (flow/units.ts), en orden y en un turno, parando en la primera que falla; anota las que pasan y units en change.verified"
+      "summary": "accept ejecuta solo las unidades sin huella en el registro del clon (flow/units.ts), en orden y en un turno, parando en la primera que falla; anota las que pasan y units en change.verified",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6ae56d6896380338a0b36a83d7731a75b4105d69",
+      "startedAt": "2026-11-05T05:35:48.666Z",
+      "doneAt": "2026-11-05T05:37:25.827Z",
+      "summary": "La documentación de las unidades y el registro: ARCHITECTURE §9 y formats.md §1 (verified/), §4 (units en change.verified) y §6 (verify.units)"
     }
   },
   "pending": {

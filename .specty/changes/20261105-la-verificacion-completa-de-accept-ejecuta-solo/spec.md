@@ -80,7 +80,7 @@ Hoy la verificación completa de `accept` es un solo comando (`verify.full`), qu
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-units.test.ts test/reuse.test.ts test/accept-turn-time.test.ts test/accept-live.test.ts test/accept-coverage.test.ts test/live-run.test.ts test/unverified.test.ts && pnpm typecheck && pnpm lint && pnpm knip && pnpm sources
   - type: feat
-- [ ] T4: La documentación de las unidades y el registro
+- [x] T4: La documentación de las unidades y el registro
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm lint
