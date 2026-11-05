@@ -6,6 +6,13 @@
   "branch": "specty/20261105-init-propone-las-unidades-de-un-proyecto-de",
   "baseCommit": "e0230281b45808ed67da361b02c917cb2dbbbf59",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c3d3ba3bef1ff562f315045dc0256fc5af11499aa06752a45aff3eb8660bd299",
+    "at": "2026-11-05T13:51:39.373Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -47,12 +54,6 @@
     "T": 1,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c3d3ba3bef1ff562f315045dc0256fc5af11499aa06752a45aff3eb8660bd299",
-    "at": "2026-11-05T13:51:39.373Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T13:53:08.427Z"
 }
