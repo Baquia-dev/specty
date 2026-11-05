@@ -69,3 +69,22 @@ Los tests de la extensión de VS Code, de la UI y de evals, y la suite de cumpli
 
 - R1: Si el constructor de Angular no ejecutara el `globalSetup` de `runnerConfig`, o lo ejecutara dos veces (en la raíz y en su proyecto) — el test de T2 lo detecta en el primer caso; en el segundo, la segunda carpeta queda dentro de la primera y las dos se borran.
 - R2: `pnpm test:evals` no corre en `pnpm check` ni en `verify.units`, solo en el CI — la verificación de T3 ejecuta su test nuevo, y `pnpm test:evals` entero se ejecuta antes de cerrar.
+
+## Cierre
+
+### Resumen
+
+El `globalSetup` de la extensión de VS Code (`packages/vscode/vitest.config.ts`), de la UI (`packages/ui/vitest-base.config.ts`, que el constructor de Angular carga con `runnerConfig`) y de evals (`evals/vitest.config.ts`, antes del de la CLI) nombra `packages/core/vitest-temp-dir.ts`, el ayudante de C1: sus tests, y en vscode y evals también los procesos que lanzan, usan una carpeta `specty-tests-…` de la ejecución que se borra al terminar. La configuración de evals lee la carpeta temporal del sistema antes del `globalSetup` y se la da a la suite con `provide`, así que `compliance.eval.ts` escribe el informe en `specty-evals/` de la carpeta del sistema, fuera de la que se borra. `docs/ARCHITECTURE.md` lo cuenta en Pruebas y en la suite de cumplimiento. Las verificaciones de las tres tareas, la verificación completa al aceptar y `pnpm test:evals` entero pasaron.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- La carpeta del informe llega a la suite con `provide` e `inject`, con su tipo en `ProvidedContext`, y no con una variable de entorno nueva ni cambiando el ayudante de core.
+- La suite de cumplimiento también usa la carpeta de la ejecución: los repositorios desechables de los agentes se borran al terminar y queda el informe.
+
+### Pendientes
+
+- Ninguno nuevo; sigue abierto P182 (la caché del E2E de OpenCode) del corte C1.
