@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "708fd1d956466a7bcf3b093e854cb0ad032e1009",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:35:43.692Z",
       "doneAt": "2026-11-05T16:35:59.848Z",
-      "summary": "El globalSetup de packages/vscode/vitest.config.ts nombra ../core/vitest-temp-dir.ts: sus tests y los procesos que lanzan usan la carpeta de la ejecución"
+      "summary": "El globalSetup de packages/vscode/vitest.config.ts nombra ../core/vitest-temp-dir.ts: sus tests y los procesos que lanzan usan la carpeta de la ejecución",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ecd98fc15e99a43017b790c21c809147da6f9674",
+      "startedAt": "2026-11-05T16:36:00.213Z",
+      "doneAt": "2026-11-05T16:40:51.080Z",
+      "summary": "El globalSetup de packages/ui/vitest-base.config.ts, que el constructor de Angular carga con runnerConfig, nombra ../core/vitest-temp-dir.ts: los tests de la UI usan la carpeta de la ejecución"
     }
   },
   "pending": {
