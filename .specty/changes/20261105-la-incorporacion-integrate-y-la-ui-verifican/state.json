@@ -65,12 +65,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "402ae1e9c7953ff4a815c1e6a71bf3f671d27020",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:38:40.043Z",
       "doneAt": "2026-11-05T06:47:20.724Z",
-      "summary": "La incorporación de main verifica con fullPlan y runFull: solo las unidades que faltan, anotadas en el registro y en change.verified; runUnits recibe cómo ejecutar cada comando y fullCommand pasa a full-verification.ts, donde landingTurn lo usa"
+      "summary": "La incorporación de main verifica con fullPlan y runFull: solo las unidades que faltan, anotadas en el registro y en change.verified; runUnits recibe cómo ejecutar cada comando y fullCommand pasa a full-verification.ts, donde landingTurn lo usa",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "47685a75276f1b9b8aa35e9180da01f12efb96ef",
+      "startedAt": "2026-11-05T06:47:21.260Z",
+      "doneAt": "2026-11-05T06:52:52.051Z",
+      "summary": "specty integrate verifica el merge resuelto con fullPlan y runFull: solo las unidades que faltan, en vivo, y dice por la salida de error lo que hizo cada una"
     }
   },
   "pending": {
