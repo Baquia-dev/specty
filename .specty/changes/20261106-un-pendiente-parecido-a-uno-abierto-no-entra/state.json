@@ -61,12 +61,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f1786cc230c6432320423da62a7ce05e747b79a6",
+      "attempts": 1,
       "startedAt": "2026-11-05T21:47:14.214Z",
       "doneAt": "2026-11-05T21:50:47.242Z",
-      "summary": "memorySimilarCard (cards/memory-similar.ts): bloqueada, nombra cada parecido con workLine, que ahora exporta cards/memory.ts, y pide no añadir ni mencionar la misma o repetir memory add con --distinct-from y esos ids; en español y en inglés"
+      "summary": "memorySimilarCard (cards/memory-similar.ts): bloqueada, nombra cada parecido con workLine, que ahora exporta cards/memory.ts, y pide no añadir ni mencionar la misma o repetir memory add con --distinct-from y esos ids; en español y en inglés",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "09f93a79d76e69bcbe05d48e91916054e39dbebd",
+      "startedAt": "2026-11-05T21:50:47.551Z",
+      "doneAt": "2026-11-05T21:51:33.020Z",
+      "summary": "memory add registra --distinct-from <ids...> y, si la sesión no es de la persona, pide similarEntries dentro de editMemory: con parecidos devuelve memorySimilarCard sin escribir; las demás negativas siguen antes"
     }
   },
   "pending": {

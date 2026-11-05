@@ -10,9 +10,11 @@ import {
   memoryDoneCard,
   memoryListCard,
   memoryRefusalCard,
+  memorySimilarCard,
   nextEntryId,
   type Output,
   parseEntryId,
+  similarEntries,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
@@ -32,6 +34,8 @@ interface AddOptions {
   readonly path?: readonly string[];
   readonly due?: string;
   readonly onClose?: string;
+  /** Open entries the agent said this one does not repeat, though it looks like them. */
+  readonly distinctFrom?: readonly string[];
 }
 
 /** What gives a reminder its trigger in `memory add`. */
@@ -62,6 +66,7 @@ export function memoryCommand(program: Command, run: Run): void {
     .option("--path <globs...>", "the paths of the code it is about; a lesson needs them")
     .option("--due <day>", "a reminder: the day (YYYY-MM-DD) it waits for before showing")
     .option("--on-close <id>", "a reminder: the open change it waits for, until it is archived")
+    .option("--distinct-from <ids...>", "open entries it looks like and does not repeat")
     .action((text: string, options: AddOptions) =>
       run((session) => addEntry(session, text, options))(),
     );
@@ -154,7 +159,14 @@ async function addEntry(session: Session, text: string, options: AddOptions): Pr
   if (refusal !== undefined) return memoryRefusalCard(refusal, session.cards);
   const change = await openChange(session);
   const target = targetOf(session, change);
-  return editMemory(session.git, target, ({ ids }) => {
+  return editMemory(session.git, target, ({ ids, entries }) => {
+    // An agent's pending item like an open one does not get in twice (ADR 0016); the person's does.
+    const distinctFrom = options.distinctFrom ?? [];
+    const alike =
+      session.actor === "human"
+        ? []
+        : similarEntries(entries, { kind, text: written, distinctFrom });
+    if (alike.length > 0) return { result: memorySimilarCard(alike, session.cards) };
     const entry: MemoryEntry = {
       id: nextEntryId(kind, ids),
       kind,

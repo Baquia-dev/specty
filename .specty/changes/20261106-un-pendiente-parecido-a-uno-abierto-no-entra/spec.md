@@ -75,7 +75,7 @@ Desde C1 un agente ya no ve los pendientes abiertos al empezar, así que puede v
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/memory-similar.test.ts test/cards/memory-resolve.test.ts test/memory/claims.test.ts
   - type: feat
-- [ ] T3: El `memory add` de un agente no escribe un pendiente parecido a uno abierto
+- [x] T3: El `memory add` de un agente no escribe un pendiente parecido a uno abierto
   - files: packages/cli/src/commands/memory.ts, packages/cli/test/memory-similar.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-similar.test.ts test/memory.test.ts test/memory-kind.test.ts test/memory-resolve.test.ts test/commands-named.test.ts && pnpm typecheck && pnpm lint
