@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261105-init-propone-las-unidades-de-un-workspace-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-init-propone-las-unidades-de-un-workspace-de",
+  "baseCommit": "6c68190ea4eb28fdfeadfcaba7f8797b3aac1be8",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:35193a91a5901df0edd985cec024f3a11ada5134669410bc281724a6587a9ab3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7772ae74344a2ed3927e8b92ebdb3bdaa0836fb4a175054fb44a9b7a4a156cc7",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:30dbf2ad85cc622227fe4554a0b6f68f4f8cdca62fec9cece2550a2e006c52d0",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:cc9fd46ed784e6a22b0f26b79c6be2362f143ec11c0f64c6fff9c1d595743233",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:4b2761e7075f78995e74d5661987a4ee2348b6f11b3be1e30f5f23a484a0b13c",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:98ffc40f7e67d2c8d4e66c8acb90ef7fc71fa5411e13e07beb72c390dc151c59",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ed171ce3b7a63923168dcd76bc1b5aa695f3d7ff203efb1782f9064e9053b5ec",
+    "at": "2026-11-05T13:32:01.669Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
