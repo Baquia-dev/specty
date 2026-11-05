@@ -129,8 +129,9 @@ export const AGENT_CAPABILITIES = {
       "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, y el plugin de Specty lleva allí las rutas, los parches, las búsquedas y los comandos de sus herramientas.",
       "with `specty enter <id>`: the guard binds the conversation to the change's folder, and Specty's plugin moves its tools' paths, patches, searches and commands there.",
     ),
-    // Until its slice of the epic checks its subagents' child sessions.
-    subagentSlices: unsupported,
+    // Each subagent of `task` is a child session, and its tools reach the plugin with that
+    // session's id (checked with OpenCode 1.19.5): it enters with `specty enter`.
+    subagentSlices: yes,
     endOfTurn: yes,
     // `permission.read` in `opencode.json`.
     exclusion: yes,

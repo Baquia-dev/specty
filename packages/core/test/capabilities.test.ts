@@ -78,7 +78,7 @@ describe("the capability table", () => {
       "| Codex | sí | sí | sí | indirecto | sí | sí | no posible | sí | sí | `.codex` |",
     );
     expect(es).toContain(
-      "| OpenCode | sí | sí | sí | indirecto | — | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
+      "| OpenCode | sí | sí | sí | indirecto | sí | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
     );
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — | — |");
     expect(es).toContain(
@@ -132,7 +132,7 @@ describe("the capability table", () => {
     for (const tool of ["gemini-cli", "windsurf", "antigravity"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("impossible");
     }
-    for (const tool of ["opencode", "copilot"] as const) {
+    for (const tool of ["copilot"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("unsupported");
     }
     const es = capabilityTable("es");
@@ -143,6 +143,16 @@ describe("the capability table", () => {
       "- Cortes en subagentes (Devin (Windsurf), Antigravity): sus hooks no documentan las acciones de sus subagentes (consultado el 2026-11-04).",
     );
     expect(capabilityTable("en")).toContain("| Slices in subagents |");
+  });
+
+  it("AC4: says that OpenCode hands an epic's slices to its subagents", () => {
+    expect(AGENT_CAPABILITIES.opencode.subagentSlices.state).toBe("yes");
+    expect(capabilityTable("es")).toContain(
+      "| OpenCode | sí | sí | sí | indirecto | sí | sí | sí | sí | sí |",
+    );
+    expect(capabilityTable("en")).toContain(
+      "| OpenCode | yes | yes | yes | indirect | yes | yes | yes | yes | yes |",
+    );
   });
 
   it("AC6: says that Cursor hands an epic's slices to subagents, each one a conversation of its own", () => {
