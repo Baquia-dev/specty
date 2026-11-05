@@ -53,3 +53,22 @@ Hoy, cuando el agente cancela en modo delegado desde la carpeta del cambio, `spe
 ## Riesgos
 
 - R1: Otro test cancela como agente desde la carpeta de un cambio y la sigue usando después — la verificación de la tarea corre los de `cancel`, `close` y `prune`; si falla otro en la aceptación, se pide su archivo con `specty scope add`.
+
+## Cierre
+
+### Resumen
+
+Cuando el agente cancela en modo delegado desde la carpeta del cambio, `specty cancel` hace ahora lo mismo que `close` (P183): quita la carpeta si no tiene nada sin commit, aunque el guard tenga ligada a ella la sesión del propio agente, y su SIGUIENTE le pide salir de ella y seguir en la carpeta principal o, si era un corte de una épica abierta que llevaba su conversación, volver a la épica, a cuya carpeta queda ligada. Con algo sin commit la carpeta se queda, la tarjeta lo dice como antes y el SIGUIENTE igualmente le pide salir. La persona sigue como estaba. `leaveChangeFolder` en `flow/land.ts` quita la carpeta y prepara la salida del agente, y lo comparten `close` (`landChange`) y `cancel` (`removeCancelled`). AC1 y AC2 tienen sus tests en `packages/cli/test/cancel-folder.test.ts` y AC3 en `packages/cli/test/epic-return.test.ts`. La verificación completa pasó en la aceptación.
+
+### Desviaciones
+
+- Ninguna respecto al plan aprobado. En `cancel-folder.test.ts` se quitó el test del cambio anterior que esperaba que la carpeta quedara cuando el agente cancela desde dentro: era justo el comportamiento que P183 pide cambiar, y lo sustituyen los de AC1 y AC2.
+
+### Decisiones
+
+- Para el agente que cancela desde dentro, las sesiones ligadas a la carpeta no la retienen, como en `close`: entre ellas está la suya, y no todas las herramientas le dicen a Specty qué conversación ejecuta el comando. Para la persona, o el agente desde otra carpeta, una sesión ligada en el último día sigue reteniéndola.
+- No hay textos nuevos: la línea de carpeta quitada y el SIGUIENTE son los de `close` (`folderRemovedLine`, `leaveFolderNext`), y la de cambios sin commit es la que ya tenía `cancel`.
+
+### Pendientes
+
+- Ninguno.
