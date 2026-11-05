@@ -13,7 +13,7 @@ Así, una instalación servía en todos los repositorios de la persona, pero que
 
 Decisión del usuario del 2026-10-26: nada de Specty escribe en la carpeta del usuario; Specty escribe en la del proyecto.
 
-- **Specty escribe solo dentro del proyecto**: su carpeta de trabajo y su directorio de git. Nunca en la configuración del usuario (`~`, `$CODEX_HOME`, `$XDG_CONFIG_HOME` u otras).
+- **Specty escribe solo dentro del proyecto**: su carpeta de trabajo y su directorio de git. Nunca en la configuración del usuario (`~`, `$CODEX_HOME`, `$XDG_CONFIG_HOME` u otras), salvo la excepción de la regla del CLI de Antigravity (abajo).
 - **El guard de cada agente vive en el proyecto**: `.claude/settings.json`, `.cursor/hooks.json`, `.codex/hooks.json` y `.opencode/plugins/specty.js`. Se versiona cuando el comando de Specty está en el PATH; si lleva una ruta de la máquina, queda excluido en `.git/info/exclude` y `specty new` lo copia a cada worktree.
 - **La configuración del usuario solo se lee**: para la guía de gentle-ai y para lo que `uninstall` dice que queda allí de una instalación anterior.
 - **Lo que escriben las herramientas que Specty ejecuta es de esas herramientas**: el gestor de paquetes al preparar una worktree, la caché de `npx`, el modelo de `review.command`, o Codex al guardar la confianza de la persona.
@@ -25,3 +25,13 @@ Decisión del usuario del 2026-10-26: nada de Specty escribe en la carpeta del u
 - El guard viaja con el repositorio: lo tiene quien lo clona, y no corre en los demás repositorios de la persona.
 - Cada proyecto actualiza su guard con su propio `specty init`, en lugar de una vez por máquina.
 - Los formateadores y linters del proyecto ven `.codex/hooks.json` y el JavaScript del plugin; `doctor` dice qué exclusión añadir.
+
+## Excepción: la regla del CLI de Antigravity (2026-11-05)
+
+Decisión del usuario del 2026-11-05 (D4): «para p157 entonces agrega una execpcion para que se agrege el command(specty) se agrege a los permisos de antigravity en la carpeta del usuario».
+
+- El sandbox de terminal de Antigravity CLI (`agy` 1.5.1, `--sandbox`) no deja escribir en `.git`, ni dentro del espacio de trabajo, ni arrancar un `specty` global de nvm, así que el agente no podía ejecutar `specty enter`, `next` ni `task done` (P157). Los `permissionOverrides` que da el guard no cambian ese sandbox, y las reglas de `permissions.allow` de `~/.gemini/antigravity-cli/settings.json` sí (P167). Antigravity no tiene un archivo de permisos en el proyecto.
+- Por eso `specty init --tools antigravity` añade `command(specty)` a esa lista, solo si la carpeta del CLI existe: sin duplicarla, respetando `unsandboxed(specty)` (la de las cuentas de empresa) y sin tocar unos ajustes que no puede editar, de los que avisa con la regla que añadir.
+- Solo esa regla. Ninguna regla de rutas (`read_file`, `write_file`), que llevan rutas de la máquina de cada repositorio, y nada en los ajustes de la app, que no están en un archivo legible: para la app, `init` dice qué regla añadir.
+- `doctor` comprueba la regla cuando existe la carpeta del CLI. `uninstall` la deja, porque la comparten todos los proyectos de la persona, y dice dónde está y cómo quitarla.
+- El resto de esta decisión sigue igual.

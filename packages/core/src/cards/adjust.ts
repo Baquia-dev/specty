@@ -7,8 +7,8 @@ import type { CardContext } from "./view";
 /** Why `specty adjust` records nothing in the active change. */
 export type AdjustRefusal =
   | { readonly reason: "no-request" }
-  /** Adjustments are asked for while the result is in acceptance. */
-  | { readonly reason: "not-in-acceptance" }
+  /** Adjustments are asked for while the result is in acceptance; an epic's, also while implemented. */
+  | { readonly reason: "not-in-acceptance"; readonly epic?: boolean }
   /** The merge of `target` an acceptance left is still in progress: the agent finishes it first. */
   | { readonly reason: "merging"; readonly target: string };
 
@@ -35,10 +35,15 @@ export function adjustRefusalCard(
     case "not-in-acceptance":
       return blockedCard(
         header,
-        t(
-          "Los ajustes se piden cuando el resultado está en aceptación.",
-          "Adjustments are requested while the result is in acceptance.",
-        ),
+        refusal.epic === true
+          ? t(
+              "Los ajustes de una épica se piden mientras se implementan sus cortes o con el resultado en aceptación.",
+              "An epic's adjustments are requested while its slices are implemented or with the result in acceptance.",
+            )
+          : t(
+              "Los ajustes se piden cuando el resultado está en aceptación.",
+              "Adjustments are requested while the result is in acceptance.",
+            ),
         runNext(ctx),
       );
     case "merging":

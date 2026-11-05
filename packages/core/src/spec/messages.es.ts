@@ -78,6 +78,8 @@ export const MESSAGES_ES: MessageCatalog = {
     `El cambio no cabe en el carril quick (${v(p, "detail")}); usa \`kind: standard\`.`,
   "split-required": (p) =>
     `El cambio es demasiado grande (${v(p, "detail")}); divídelo en una épica con cortes verticales, o en un spike si el problema es la incertidumbre.`,
+  "slice-split-required": (p) =>
+    `El corte es demasiado grande (${v(p, "detail")}) y un corte no puede ser una épica: estréchalo a lo que cabe en un cambio y lleva el resto a cortes nuevos de la épica ${v(p, "epic")}, que se ajusta en su carpeta mientras se implementa (\`adjust\`, los cortes nuevos en «Cortes» con su \`depends\` y \`propose\`); la persona vuelve a aprobarla.`,
   "done-task-changed": (p) =>
     `${v(p, "id")} ya está completada y no se puede modificar ni eliminar; añade una tarea nueva.`,
   "closing-outside": (p) =>

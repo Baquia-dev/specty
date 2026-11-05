@@ -34,6 +34,8 @@ type AgentCode =
   | "antigravity-hooks"
   | "antigravity-acp"
   | "antigravity-cli"
+  | "antigravity-cli-rule"
+  | "no-antigravity-cli-rule"
   | "windsurf-guard"
   | "no-windsurf-guard"
   | "windsurf-hooks"
@@ -176,6 +178,16 @@ export const AGENT_WRITERS: {
     t(
       `Antigravity: ${line.file} es de antes de las herramientas de su CLI (\`agy\`), así que el guard no ve lo que lee, escribe y edita allí; ejecuta \`${command} init --tools antigravity\`.`,
       `Antigravity: ${line.file} predates the tools of its CLI (\`agy\`), so the guard does not see what it reads, writes and edits there; run \`${command} init --tools antigravity\`.`,
+    ),
+  "antigravity-cli-rule": (line, t) =>
+    t(
+      `Antigravity CLI: regla de Specty en ${line.file}.`,
+      `Antigravity CLI: Specty's rule in ${line.file}.`,
+    ),
+  "no-antigravity-cli-rule": (line, t, command) =>
+    t(
+      `Antigravity CLI: falta \`command(${command})\` en \`permissions.allow\` de ${line.file}, así que los comandos de Specty piden permiso o fallan en su sandbox; ejecuta \`${command} init --tools antigravity\`.`,
+      `Antigravity CLI: \`command(${command})\` is missing from \`permissions.allow\` in ${line.file}, so Specty's commands ask for permission or fail in its sandbox; run \`${command} init --tools antigravity\`.`,
     ),
   "windsurf-guard": (line, t) =>
     t(

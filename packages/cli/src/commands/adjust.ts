@@ -28,7 +28,11 @@ export async function adjust(session: Session, request: string): Promise<Output>
     actor: session.actor,
     event: { type: "adjust" },
   });
-  if (!moved.ok) return adjustRefusalCard({ reason: "not-in-acceptance" }, header, cards);
+  // An epic is also adjusted while its slices are implemented, to split one of them.
+  if (!moved.ok) {
+    const epic = state.kind === "epic";
+    return adjustRefusalCard({ reason: "not-in-acceptance", epic }, header, cards);
+  }
   // The merge `accept` left here comes first; one someone aborted is forgotten.
   const { integration } = state;
   const pending = await pendingIntegration(session, active, "accept");

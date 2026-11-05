@@ -120,14 +120,22 @@ export interface AgentAdapter {
    * memory's safety net reads the pending items it lists (ADR 0016).
    */
   readonly lastMessage?: (event: Event) => string | undefined;
-  /** Writes its guard and its settings in the repository, never in the user's folder (ADR 0013). */
+  /**
+   * Writes its guard and its settings in the repository, never in the user's folder (ADR 0013),
+   * save the one exception that ADR names: the rule of Antigravity's CLI.
+   */
   readonly install: (context: InstallContext) => Promise<Installed>;
   /** Takes them out again for `uninstall`, and leaves everything else as it was. */
   readonly remove: (root: string, files: InstallFiles, git: Git) => Promise<void>;
-  /** What `doctor` finds in place and what it finds missing. */
-  readonly doctor: (root: string, git: Git) => Promise<DoctorLines>;
+  /** What `doctor` finds in place and what it finds missing, in the repository and the user's folder. */
+  readonly doctor: (root: string, git: Git, env: NodeJS.ProcessEnv) => Promise<DoctorLines>;
   /** Its guard in the user's folder, which Specty only reads: `uninstall` says it stays there. */
   readonly userFile?: (env: NodeJS.ProcessEnv) => string;
+  /**
+   * What `uninstall` leaves of it in the user's folder because every project shares it, each with
+   * where it is and how to remove it: the rule of Antigravity's CLI.
+   */
+  readonly stays?: (env: NodeJS.ProcessEnv, lang: Lang) => Promise<readonly string[]>;
 }
 
 export interface DoctorLines {
@@ -152,6 +160,8 @@ interface InstallContext {
   readonly invocation: Invocation;
   readonly files: InstallFiles;
   readonly lang: Lang;
+  /** Where the person's folder is, for the one rule Specty writes there (Antigravity's CLI). */
+  readonly env: NodeJS.ProcessEnv;
 }
 
 /** What an agent's install says in `init`'s output, and the files git tracks that it wrote. */
