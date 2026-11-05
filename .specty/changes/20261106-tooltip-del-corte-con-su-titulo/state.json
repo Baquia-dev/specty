@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "id": "20261106-tooltip-del-corte-con-su-titulo",
+  "kind": "quick",
+  "phase": "testing",
+  "branch": "specty/20261106-tooltip-del-corte-con-su-titulo",
+  "baseCommit": "7f6fa02d6bfda934258c5956b042f838136178dc",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2be3d0d5cd6cefc085314f40604457b14bbc7b0ee582393f2aefb2d5ecd1f06b",
+    "at": "2026-11-05T20:36:54.104Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
