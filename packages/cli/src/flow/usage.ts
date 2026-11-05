@@ -115,6 +115,34 @@ function pricesFor(
   return new Map([...modelPrices(costs(rows)), ...modelPrices(costs(own))]);
 }
 
+/**
+ * What each Claude Code session spent, by its id, from one ccusage report of its sessions: the
+ * tokens of every kind and the cost of its models, summed. Empty without ccusage or when it fails.
+ */
+export async function sessionTotals(
+  session: Session,
+): Promise<ReadonlyMap<string, { readonly tokens: number; readonly cost: number }>> {
+  const source = SOURCES.get("claude-code") ?? "claude";
+  const rows = sessionCosts(await report(session, [source, "session", "--json", "--offline"]));
+  return new Map(
+    rows.map((row) => [
+      row.id,
+      {
+        tokens: row.models.reduce(
+          (sum, model) =>
+            sum +
+            model.inputTokens +
+            model.outputTokens +
+            model.cacheCreationTokens +
+            model.cacheReadTokens,
+          0,
+        ),
+        cost: row.models.reduce((sum, model) => sum + model.cost, 0),
+      },
+    ]),
+  );
+}
+
 /** The sessions the audit's lines name, each with its agent's ccusage source. */
 function namedSessions(audit: Audit): ReadonlyMap<string, string> {
   const sessions = new Map<string, string>();

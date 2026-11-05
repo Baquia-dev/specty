@@ -28,7 +28,7 @@ import { verifyHints, withVerifyHints } from "../flow/detected";
 import { archive, commitArchive } from "../flow/finish";
 import { landingTurn } from "../flow/full-verification";
 import { absorbTarget, type Integration, integrationOf, isIncorporated } from "../flow/integrate";
-import { type Landed, landChange, withIntegration } from "../flow/land";
+import { type Landed, landRetrying, withIntegration } from "../flow/land";
 import { measureUsage, withUsage } from "../flow/usage";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
@@ -114,7 +114,7 @@ async function closeOnTurn(
   );
   // Read while the folder exists: landing removes a worktree of its own.
   const hints = await verifyHints(session, plan?.main ?? session.root);
-  const landed = plan === undefined ? undefined : await landChange(session, plan);
+  const landed = plan === undefined ? undefined : await landRetrying(session, plan);
   const card = withIntegration(
     session,
     closedCard(
@@ -144,7 +144,7 @@ async function landClosed(session: Session, change: StoredChange): Promise<Outpu
   return landingTurn(session, plan, async () => {
     const absorbed = await absorbTarget(session, plan, change, "close");
     if (!absorbed.ok) return absorbed.output;
-    return landedAgain(session, state, absorbed.lines, await landChange(session, plan));
+    return landedAgain(session, state, absorbed.lines, await landRetrying(session, plan));
   });
 }
 

@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 // Specty's memory in the prototype (ADR 0016): an entry of every kind and status, and open changes
 // held by an agent, waiting for the person and orphaned, as `GET /api/memory` gives them.
+import type { MemoryEntry } from "@baquia-dev/specty-core";
 import type { MemoryRecord } from "./records";
+import type { MemoryVerb } from "./source";
 
 const CLOSED = { at: "2026-11-03T12:00:00.000Z", by: "person" };
 
@@ -114,3 +116,20 @@ const CHANGES: MemoryRecord["changes"] = [
     orphan: true,
   },
 ];
+
+/** `entry` once the person decides on it in the prototype: dropped, kept or done. */
+export function decidedIn(
+  entry: MemoryEntry,
+  verb: MemoryVerb,
+  reason: string | undefined,
+  at: string,
+): MemoryEntry {
+  const closed = { at, by: "person" };
+  if (verb === "done") return { ...entry, status: "done", closed };
+  if (verb === "drop") {
+    const why = reason !== undefined && reason !== "" ? reason : (entry.drop?.reason ?? "");
+    return { ...entry, status: "dropped", drop: { reason: why, by: "person", at }, closed };
+  }
+  const { drop: _drop, ...kept } = entry;
+  return { ...kept, status: "open" };
+}

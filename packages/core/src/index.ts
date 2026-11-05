@@ -154,6 +154,8 @@ export { analyzeShell, type ShellAnalysis } from "./guard/shell";
 export {
   type ForeignPath,
   nativeEnterDenial,
+  subagentEnterDenial,
+  subagentNewDenial,
   type Unreachable,
   unreachableEnterDenial,
 } from "./guard/worktrees";
@@ -203,6 +205,7 @@ export {
   serializeFront,
 } from "./memory/fronts";
 export { entriesForPaths } from "./memory/paths";
+export type { SessionView } from "./memory/sessions";
 export { isDay, localDay, sessionEntries } from "./memory/triggers";
 export { pendingInMessage } from "./memory/turn-end";
 export {

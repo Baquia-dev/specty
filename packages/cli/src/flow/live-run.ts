@@ -2,6 +2,7 @@
 import { type ExecResult, execute } from "../io/exec";
 import type { Session } from "../session";
 import { clearRun, writeRun } from "../store/runs";
+import { inSlots } from "../store/verify-slots";
 import { oneAtATime } from "./full-verification";
 
 /** Lines a live run keeps: its end is what matters. */
@@ -13,12 +14,14 @@ const EVERY = 250;
  * Runs the verification of `task` of change `change`, or with no task the full one, and keeps it
  * live for the local server and the MCP App (`store/runs.ts`): the file is written as lines
  * come, at most every 250 ms, and removed once the command ends, whether it passed or not.
+ * `onStart` hears the moment the command starts: a full one first waits for its turn.
  */
 export async function runLive(
   session: Session,
   change: string,
   task: string | undefined,
   command: string,
+  onStart?: () => void,
 ): Promise<ExecResult> {
   const startedAt = session.environment.now().toISOString();
   let output: string[] = [];
@@ -32,12 +35,14 @@ export async function runLive(
     writing = writing.then(() => writeRun(session.git, change, run)).catch(() => undefined);
   };
   write();
-  const go = () =>
-    execute(command, [], {
+  const go = () => {
+    onStart?.();
+    return execute(command, [], {
       cwd: session.root,
       shell: true,
       env: session.environment.env,
       timeoutMs: session.config.verify.timeoutSec * 1000,
+      lowPriority: true,
       onOutput: (stream, text) => {
         const lines = `${rests[stream]}${text}`.split("\n");
         rests[stream] = lines.pop() ?? "";
@@ -45,9 +50,13 @@ export async function runLive(
         pending ??= setTimeout(write, EVERY);
       },
     });
+  };
   try {
-    // A full verification, with no task, waits for its turn: one at a time in the clone.
-    return await (task === undefined ? oneAtATime(session, command, go) : go());
+    // A full verification, with no task, waits for its turn and every place of the clone; a
+    // task's, for one place.
+    return await (task === undefined
+      ? oneAtATime(session, command, go)
+      : inSlots(session, 1, command, go));
   } finally {
     clearTimeout(pending);
     await writing;

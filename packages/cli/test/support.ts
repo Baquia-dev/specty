@@ -18,10 +18,18 @@ export const NOW = new Date(Math.floor(Date.now() / 60_000) * 60_000);
 /** Where `close` archives a change today. */
 export const ARCHIVE = `.specty/archive/${NOW.getFullYear()}`;
 
-/** Isolated git: no global or system configuration, fixed identity. */
+/**
+ * Isolated git: no global or system configuration, fixed identity, and no automatic maintenance,
+ * a process after each commit that no test needs.
+ */
 const GIT_ENV = {
   GIT_CONFIG_GLOBAL: "/dev/null",
   GIT_CONFIG_NOSYSTEM: "1",
+  GIT_CONFIG_COUNT: "2",
+  GIT_CONFIG_KEY_0: "maintenance.auto",
+  GIT_CONFIG_VALUE_0: "false",
+  GIT_CONFIG_KEY_1: "gc.auto",
+  GIT_CONFIG_VALUE_1: "0",
   GIT_AUTHOR_NAME: "Ana",
   GIT_AUTHOR_EMAIL: "ana@example.com",
   GIT_COMMITTER_NAME: "Ana",

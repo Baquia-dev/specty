@@ -17,6 +17,16 @@ export class GitError extends Error {
   }
 }
 
+/** Git's command and its error on one line, without its hints: what is read of a failure. */
+export function gitFailure(error: GitError): string {
+  const lines = error.result.stderr
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0 && !line.startsWith("hint:"));
+  const detail = lines.length > 0 ? lines.join(" ") : `exit ${error.result.code ?? "?"}`;
+  return `git ${error.args[0] ?? ""}: ${detail}`;
+}
+
 interface RunOptions {
   readonly env?: Readonly<Record<string, string>>;
   readonly input?: string;
@@ -66,10 +76,7 @@ export async function findRoot(cwd: string): Promise<string | undefined> {
 export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env): Git {
   const git = runner(root, baseEnv);
   const head = () => git.optional(["rev-parse", "--verify", "-q", "HEAD"]);
-  const gitPath = async (name: string) => {
-    const path = await git.output(["rev-parse", "--git-path", name]);
-    return isAbsolute(path) ? path : resolve(root, path);
-  };
+  const gitPath = gitPaths(git);
   const repository: Repository = { ...git, head, gitPath, ...worktreeQueries(git) };
   return {
     root,
@@ -84,6 +91,37 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
     config: (key) => git.optional(["config", "--get", key]),
     worktrees: repository.worktrees,
     nestedWorktrees: repository.nestedWorktrees,
+  };
+}
+
+/**
+ * Git keeps every path under these first segments in one folder: `specty/` in the worktree's git
+ * folder, and `common/`, which is in git's list of shared paths, in the common one.
+ */
+const ONE_FOLDER: ReadonlySet<string> = new Set(["specty", "common"]);
+
+/**
+ * Where git keeps each path of its folder (`git rev-parse --git-path`), asking git once per path:
+ * a path under `specty/` or `common/` comes from the answer for that segment, so one question
+ * serves them all. A question that fails is not kept.
+ */
+function gitPaths(git: Runner): (name: string) => Promise<string> {
+  const answers = new Map<string, Promise<string>>();
+  const ask = (name: string): Promise<string> => {
+    const known = answers.get(name);
+    if (known !== undefined) return known;
+    const answer = git.output(["rev-parse", "--git-path", name]);
+    answers.set(name, answer);
+    answer.catch(() => answers.delete(name));
+    return answer;
+  };
+  return async (name) => {
+    const [segment, ...rest] = name.split("/");
+    const path =
+      segment !== undefined && rest.length > 0 && ONE_FOLDER.has(segment)
+        ? `${await ask(segment)}/${rest.join("/")}`
+        : await ask(name);
+    return isAbsolute(path) ? path : resolve(git.root, path);
   };
 }
 

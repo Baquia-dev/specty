@@ -75,7 +75,7 @@ describe("the capability table", () => {
       "| Claude Code | sí | sí | sí | sí | sí | sí | sí | sí | sí | `.claude`, `CLAUDE.md` |",
     );
     expect(es).toContain(
-      "| Codex | sí | sí | sí | indirecto | — | sí | no posible | sí | sí | `.codex` |",
+      "| Codex | sí | sí | sí | indirecto | sí | sí | no posible | sí | sí | `.codex` |",
     );
     expect(es).toContain(
       "| OpenCode | sí | sí | sí | indirecto | — | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
@@ -132,7 +132,7 @@ describe("the capability table", () => {
     for (const tool of ["gemini-cli", "windsurf", "antigravity"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("impossible");
     }
-    for (const tool of ["codex", "opencode", "copilot"] as const) {
+    for (const tool of ["opencode", "copilot"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("unsupported");
     }
     const es = capabilityTable("es");
@@ -149,6 +149,13 @@ describe("the capability table", () => {
     expect(AGENT_CAPABILITIES.cursor.subagentSlices.state).toBe("yes");
     expect(capabilityTable("es")).toContain(
       "| Cursor | sí | sí | indirecto | indirecto | sí | sí | sí | sí | no posible |",
+    );
+  });
+
+  it("AC5: says that Codex hands an epic's slices to subagents", () => {
+    expect(AGENT_CAPABILITIES.codex.subagentSlices.state).toBe("yes");
+    expect(capabilityTable("en")).toContain(
+      "| Codex | yes | yes | yes | indirect | yes | yes | not possible | yes | yes | `.codex` |",
     );
   });
 

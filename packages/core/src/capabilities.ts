@@ -106,8 +106,10 @@ export const AGENT_CAPABILITIES = {
       "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, pone un `cd` a ella delante de cada comando y lleva allí las rutas de cada parche (`updatedInput`).",
       "with `specty enter <id>`: the guard binds the conversation to the change's folder, puts a `cd` to it before each command and moves each patch's paths there (`updatedInput`).",
     ),
-    // Until its slice of the epic checks its subagents' `agent_id`.
-    subagentSlices: unsupported,
+    // Each subagent's events carry the root thread's `session_id` and its own `agent_id` (0.134 or
+    // later, checked with 0.166.0 in `codex-e2e.test.ts`): it enters with `specty enter`, and the
+    // guard moves its commands and patches to its folder.
+    subagentSlices: yes,
     endOfTurn: yes,
     exclusion: impossible(
       "lee los archivos por la shell y no tiene un archivo de exclusión.",

@@ -88,4 +88,15 @@ describe("accept", () => {
     expect((await cli(root, ["accept"], { terminal: person() })).code).toBe(0);
     expect(await runs(root)).toBe(3);
   });
+
+  it("does not run it again when only free files changed since (AC4)", async () => {
+    const root = await implemented();
+    await writeFiles(root, { "docs/guia.md": "# Guía\n", "README.md": "# App\n" });
+    git(root, "add", "docs/guia.md", "README.md");
+    git(root, "commit", "-q", "-m", "Documentación");
+    const terminal = person();
+    expect((await cli(root, ["accept"], { terminal })).code).toBe(0);
+    expect(await runs(root)).toBe(2);
+    expect(terminal.notes.join("\n")).toContain("ya pasó con este mismo código en T2");
+  });
 });

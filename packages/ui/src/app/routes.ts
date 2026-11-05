@@ -23,6 +23,11 @@ export function appRoutes(devTools: boolean): Routes {
       title: "Specty · Memoria",
     },
     {
+      path: "sessions",
+      loadComponent: () => import("../sessions/sessions-page").then((page) => page.SessionsPage),
+      title: "Specty · Sesiones",
+    },
+    {
       path: "changes/:id",
       loadComponent: () => import("../change/change-page").then((page) => page.ChangePage),
       title: "Specty · Cambio",

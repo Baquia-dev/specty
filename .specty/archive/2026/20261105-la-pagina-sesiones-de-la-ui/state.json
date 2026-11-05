@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "id": "20261105-la-pagina-sesiones-de-la-ui",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-la-pagina-sesiones-de-la-ui",
+  "baseCommit": "9c97bf0754ec7523b4d7255fd2f72e45a8420334",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4ec5429b9755e5b48015c16895bfb3bea8adc27ecaefe033337f1fcb67fd8122",
+    "at": "2026-11-04T18:26:33.639Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5f4818d52e6a513b1df4372a2c5b9fe8d02c068a522592e80dee5a8eb18f135f",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:12f85431b2e1ec826e31cf97161c3913681478bb6e3b4c088a98122f2803db43",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c279c126d0539b398f26a60c8a7901573310b18a",
+      "attempts": 1,
+      "startedAt": "2026-11-04T18:27:52.125Z",
+      "doneAt": "2026-11-04T18:28:56.369Z",
+      "summary": "UI: sessions() en la fuente de datos, GET /api/sessions en ServerData validado con isSessionList, y dos sesiones de ejemplo en FixtureData",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b46d8533e43a06338046401d2e05f08ab09213bf",
+      "attempts": 1,
+      "startedAt": "2026-11-04T18:28:56.751Z",
+      "doneAt": "2026-11-04T18:36:02.065Z",
+      "summary": "Página «Sesiones» (sessions/sessions-page.ts) con resumen, lista y estado vacío; ruta /sessions y enlace del menú tras Memoria; ago de memory-lines.ts exportado; shell.test.ts incluye /sessions en la lista de enlaces",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "883c71b0a3829900ce6e1d12aa9d61fede12ba42",
+      "attempts": 1,
+      "startedAt": "2026-11-04T18:36:02.899Z",
+      "doneAt": "2026-11-04T18:36:19.597Z",
+      "summary": "ARCHITECTURE: la página Sesiones de la UI",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-11-04T18:43:14.382Z",
+  "lockedTests": {
+    "packages/ui/src/sessions/sessions-page.test.ts": "sha256:e7d780aafa459294a45e5189d8eae8a7119bfbaec7da600476b9a12255668fbd"
+  }
+}

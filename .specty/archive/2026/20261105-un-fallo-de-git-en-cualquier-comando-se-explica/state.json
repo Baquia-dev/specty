@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261105-un-fallo-de-git-en-cualquier-comando-se-explica",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-un-fallo-de-git-en-cualquier-comando-se-explica",
+  "baseCommit": "6db2938c9910024d6bb77d016af7fb938225ed67",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a98ea1f5320f02e052504df9858f367c072a8ec5e4ee67163cb8109bb187d693",
+    "at": "2026-11-05T03:36:16.046Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cb93ef75b39aa477d11c23231a7de83c28e25acc7feb556796668d8509448567",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:21eb901a43664446d4205f1eb4c1bce1627d8a58ba8ddb9d3e408cad57c4498d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "81b4cc392204f525f3c1715f17b82c633e359fda",
+      "attempts": 1,
+      "startedAt": "2026-11-05T03:37:55.918Z",
+      "doneAt": "2026-11-05T03:39:10.729Z",
+      "summary": "core: gitFailedCard (cards/git-failed.ts) con la orden de git y su error, y un SIGUIENTE para corregirlo y repetir el comando",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "29aa2a33245301f51d55cd95dbc5a150810325b9",
+      "attempts": 1,
+      "startedAt": "2026-11-05T03:39:11.312Z",
+      "doneAt": "2026-11-05T03:43:12.494Z",
+      "summary": "sessionRunner (program.ts) captura un GitError del comando y emite gitFailedCard con gitFailure (io/git.ts), la orden de git y su error en una línea sin hint:, que ahora también usa install/commit.ts",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "742ee2bdbfcc538aadcdafb025f2a6de27eefd68",
+      "attempts": 1,
+      "startedAt": "2026-11-05T03:43:13.621Z",
+      "doneAt": "2026-11-05T03:43:36.827Z",
+      "summary": "ARCHITECTURE: cómo sale un fallo de git en cualquier comando",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-11-05T03:50:09.304Z",
+  "lockedTests": {
+    "packages/cli/test/git-failed.test.ts": "sha256:3edc4299bd27c5d9a4ccd048b7eb82f574f3c34c087d93cccec0196acb2a8ea6",
+    "packages/core/test/cards/git-failed.test.ts": "sha256:22aa04af7a6bde2569e339dfa4ca87f7091d5d03c589848f6e9a60bb04bfd109"
+  }
+}

@@ -7,6 +7,7 @@ import {
   NOTE_MAX,
   nextCard,
   renderText,
+  type SliceView,
   type TaskView,
 } from "../../src";
 
@@ -125,5 +126,49 @@ describe("the task card's budget", () => {
   it("would not keep to it with summaries as long as some agents wrote them (AC2)", () => {
     // Before the limit, archived changes had summaries of almost 1,000 characters.
     expect(tokens(card(largest(980), ES))).toBeGreaterThan(BUDGET);
+  });
+});
+
+/**
+ * The largest reasonable card of an epic that hands its slices to subagents: 9 slices, as many as
+ * the largest archived epics whose slices could start at once, 6 of them ready, each title as long
+ * as the 90th percentile of theirs (86 characters). A brief costs about 150 tokens: with more than
+ * 7 ready slices at once, the card goes past the budget.
+ */
+function epicWithBriefs(): ChangeView {
+  const id = "20261104-una-epica-con-un-titulo-largo-de-verdad";
+  const slices = Array.from(
+    { length: 9 },
+    (_, index): SliceView => ({
+      id: `C${index + 1}`,
+      title: prose(86),
+      depends: index < 6 ? [] : ["C1"],
+      status: index < 6 ? "ready" : "waiting",
+    }),
+  );
+  return {
+    id,
+    kind: "epic",
+    phase: "implementing",
+    title: prose(80),
+    specPath: `.specty/changes/${id}/spec.md`,
+    revision: 1,
+    tasks: [],
+    conventions: [],
+    pendingScope: [],
+    rejected: [],
+    closingSubmitted: false,
+    specChanged: false,
+    slices,
+  };
+}
+
+describe("the epic card's budget", () => {
+  it("AC8: keeps a card with six briefs within about 1,500 tokens, in both languages", () => {
+    for (const ctx of [ES, EN]) {
+      const text = card(epicWithBriefs(), { ...ctx, tool: "claude-code" });
+      expect(text.match(/^(ENCARGO|BRIEF) C\d:$/gm)).toHaveLength(6);
+      expect(tokens(text)).toBeLessThanOrEqual(BUDGET);
+    }
   });
 });
