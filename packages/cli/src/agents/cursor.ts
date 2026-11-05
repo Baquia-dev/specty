@@ -50,7 +50,9 @@ const AFTER: ReadonlySet<unknown> = new Set(["postToolUse", "postToolUseFailure"
  * `postToolUseFailure`, `preCompact` and `stop`. It always reads JSON: a `permission` before an
  * action, and after a command, which it cannot block, an `additional_context` that goes into the
  * conversation. `preCompact` only observes, so the card after a compaction comes with the next
- * command's result instead.
+ * command's result instead. Each subagent sends a `conversation_id` of its own, with nothing that
+ * links it to the conversation that launched it, so it needs no `normalize`: it already is a
+ * conversation of its own, which enters a change's folder with `specty enter`.
  */
 export const cursor: AgentAdapter = {
   tool: "cursor",

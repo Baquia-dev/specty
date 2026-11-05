@@ -91,7 +91,7 @@ describe("the capability table", () => {
       "| Antigravity | sí | indirecto | indirecto | indirecto | no posible | sí | sí | sí | no posible |",
     );
     expect(capabilityTable("en")).toContain(
-      "| Cursor | yes | yes | indirect | indirect | — | yes | yes | yes | not possible |",
+      "| Cursor | yes | yes | indirect | indirect | yes | yes | yes | yes | not possible |",
     );
   });
 
@@ -132,7 +132,7 @@ describe("the capability table", () => {
     for (const tool of ["gemini-cli", "windsurf", "antigravity"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("impossible");
     }
-    for (const tool of ["cursor", "copilot"] as const) {
+    for (const tool of ["copilot"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("unsupported");
     }
     const es = capabilityTable("es");
@@ -152,6 +152,13 @@ describe("the capability table", () => {
     );
     expect(capabilityTable("en")).toContain(
       "| OpenCode | yes | yes | yes | indirect | yes | yes | yes | yes | yes |",
+    );
+  });
+
+  it("AC6: says that Cursor hands an epic's slices to subagents, each one a conversation of its own", () => {
+    expect(AGENT_CAPABILITIES.cursor.subagentSlices.state).toBe("yes");
+    expect(capabilityTable("es")).toContain(
+      "| Cursor | sí | sí | indirecto | indirecto | sí | sí | sí | sí | no posible |",
     );
   });
 
