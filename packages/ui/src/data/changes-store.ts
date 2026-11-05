@@ -87,7 +87,7 @@ export class ChangesStore {
 
   readonly views = resource({ loader: async () => this.derive(await this.data.changes()) });
   /** The pages of finished changes the Inbox asked for (`data/finished-pages.ts`). */
-  readonly pages = new FinishedPages(this.data, this.derive, inject(PendingTasks));
+  readonly pages = new FinishedPages(this.data, inject(PendingTasks));
 
   /**
    * The changes the source lists, each whole: with the local server, the open ones and those whose
@@ -98,14 +98,13 @@ export class ChangesStore {
   readonly open = computed(() => this.listed().filter((view) => !isFinished(view)));
   /**
    * The summaries of the finished changes of the loaded pages, in their order, each with its epic
-   * as known: the epic open or loaded in a page, or else the title the page gives.
+   * as known: the epic open or loaded in a page, or else as the summary gives it.
    */
   readonly finished = computed(() => {
     const loaded = new Map<string, ChangeSummary>(
       [...this.open(), ...this.pages.views()].map((change) => [change.id, change]),
     );
-    const titles = this.pages.epics();
-    return this.pages.views().map((summary) => withEpic(summary, loaded, titles));
+    return this.pages.views().map((summary) => withEpic(summary, loaded));
   });
   /**
    * Every change loaded, each once: those the source lists, whole, and the summaries of the pages'
@@ -165,7 +164,7 @@ export class ChangesStore {
       view: computed(() => {
         const view = asked.hasValue() ? asked.value() : undefined;
         const all = new Map<string, ChangeSummary>(this.all().map((other) => [other.id, other]));
-        return loaded() ?? (view === undefined ? undefined : withEpic(view, all, {}));
+        return loaded() ?? (view === undefined ? undefined : withEpic(view, all));
       }),
       missing: computed(
         () =>
@@ -191,17 +190,16 @@ function isFinished(view: ChangeSummary): boolean {
 
 /**
  * `change`, a summary or a whole view, with its epic as the list derives it: the title of the epic
- * when it is loaded, or else the one in `titles`, and the title the loaded epic gives its slice.
+ * when it is loaded, or else the one it carries, and the title the loaded epic gives its slice.
  */
 function withEpic<T extends ChangeSummary>(
   change: T,
   loaded: ReadonlyMap<string, ChangeSummary>,
-  titles: Readonly<Record<string, string>>,
 ): T {
   const { epic } = change;
   if (epic === undefined) return change;
   const own = loaded.get(epic.id);
-  const title = own?.title ?? titles[epic.id];
+  const title = own?.title;
   const sliceTitle = own?.slices?.find((slice) => slice.id === epic.slice)?.title;
   return {
     ...change,

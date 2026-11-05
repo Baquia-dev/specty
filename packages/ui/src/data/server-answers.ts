@@ -3,7 +3,7 @@
 // refusal means, in both languages. Pure.
 import type { SessionView } from "@baquia-dev/specty-core/light";
 import type { RunRecord } from "./progress";
-import type { Bilingual, ChangeRecord, Delegation, MemoryRecord } from "./records";
+import type { Bilingual, ChangeRecord, ChangeSummary, Delegation, MemoryRecord } from "./records";
 import type { FinishedPage } from "./source";
 
 export const NO_SESSION: Bilingual = {
@@ -161,18 +161,49 @@ export function isRecords(value: unknown): value is readonly ChangeRecord[] {
   return Array.isArray(value) && value.every(isChangeRecord);
 }
 
-/** `GET /api/changes/finished`'s answer: its records, with the same light check, and its numbers. */
+/** `GET /api/changes/finished`'s answer: each change's summary, lightly checked, and its numbers. */
 export function isFinishedPage(value: unknown): value is FinishedPage {
-  if (!isObject(value) || !isRecords(value.records) || !isObject(value.counts)) return false;
-  const { counts, epics } = value;
+  if (!isObject(value) || !Array.isArray(value.changes) || !isObject(value.counts)) return false;
+  const { counts } = value;
   return (
+    value.changes.every(isChangeSummary) &&
     typeof value.total === "number" &&
     typeof value.finished === "number" &&
     typeof counts.done === "number" &&
-    typeof counts.cancelled === "number" &&
-    isObject(epics) &&
-    Object.values(epics).every(isText)
+    typeof counts.cancelled === "number"
   );
+}
+
+/** The texts every summary carries. */
+const SUMMARY_TEXTS = ["id", "title", "kind", "phase", "phaseSince", "createdAt", "tab"];
+
+/**
+ * A light check of a change's summary, as the server gives it: the texts and numbers its row
+ * reads, its epic with its id and title, and its size with its level and its reasons.
+ */
+function isChangeSummary(value: unknown): value is ChangeSummary {
+  return (
+    isObject(value) &&
+    SUMMARY_TEXTS.every((key) => isText(value[key])) &&
+    isTaskCount(value.tasks) &&
+    (value.epic === undefined || isEpicNamed(value.epic)) &&
+    (value.size === undefined || isSized(value.size))
+  );
+}
+
+/** A summary's tasks: how many are done, of how many. */
+function isTaskCount(value: unknown): boolean {
+  return isObject(value) && typeof value.done === "number" && typeof value.total === "number";
+}
+
+/** A summary's epic: its id and its title. */
+function isEpicNamed(value: unknown): boolean {
+  return isObject(value) && isText(value.id) && isText(value.title);
+}
+
+/** A summary's size: its level and its reasons. */
+function isSized(value: unknown): boolean {
+  return isObject(value) && isText(value.level) && Array.isArray(value.reasons);
 }
 
 /** The same light check, of one change. */

@@ -79,7 +79,7 @@ Hoy cada página de terminados del servidor local da los 30 registros completos,
   - files: packages/cli/src/server/finished.ts, packages/cli/src/server/records.ts, packages/cli/test/server/finished.test.ts, packages/cli/test/server.test.ts, packages/cli/test/server-restore.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/finished.test.ts test/server.test.ts test/server-restore.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T2: La Bandeja guarda los resúmenes de cada página tal como llegan
+- [x] T2: La Bandeja guarda los resúmenes de cada página tal como llegan
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/finished-pages.ts, packages/ui/src/data/changes-store.ts, packages/ui/src/data/finished-source.test.ts, packages/ui/src/data/finished-pages.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch && pnpm typecheck && pnpm lint && pnpm knip

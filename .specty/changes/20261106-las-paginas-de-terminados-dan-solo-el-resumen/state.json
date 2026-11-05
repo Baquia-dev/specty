@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "32a3c8da6d90d8579976181c1cf00024ee446d65",
+      "attempts": 1,
       "startedAt": "2026-11-05T19:01:40.756Z",
       "doneAt": "2026-11-05T19:03:31.553Z",
-      "summary": "finishedPage da { changes, total, counts, finished }: cada cambio por su resumen de core (summarizeChange, spec leída como la UI), con el título de su épica abierta o archivada (o su id) y el de su corte. Sin records, epics ni commits; se borra withTaskCommits."
+      "summary": "finishedPage da { changes, total, counts, finished }: cada cambio por su resumen de core (summarizeChange, spec leída como la UI), con el título de su épica abierta o archivada (o su id) y el de su corte. Sin records, epics ni commits; se borra withTaskCommits.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d559767a55cc8d8108c79145eb7535faddca71fe",
+      "startedAt": "2026-11-05T19:03:31.833Z",
+      "doneAt": "2026-11-05T19:05:52.772Z",
+      "summary": "FinishedPage da changes (resúmenes); isFinishedPage los comprueba con isChangeSummary; la página en memoria da summaryOf de cada vista; FinishedPages guarda los resúmenes tal como llegan, sin derivador ni epics; withEpic ya no recibe títulos."
     }
   },
   "pending": {
