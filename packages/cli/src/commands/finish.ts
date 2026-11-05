@@ -15,6 +15,7 @@ import {
   confirmCloseQuestion,
   headerOf,
   landQuestion,
+  leaveFolderNext,
   nothingPendingCard,
   type Output,
   parseSpec,
@@ -218,16 +219,21 @@ async function cancelConfirmed(
   const withCode = Object.values(state.tasks).some((task) => task.status === "done");
   // Once the archive is committed, the branch keeps it all: the folder goes if nothing is lost.
   const folder =
-    state.branch === undefined ? undefined : await removeCancelled(session, state.branch);
+    state.branch === undefined
+      ? undefined
+      : await removeCancelled(session, { id: state.id, branch: state.branch });
+  const card = cancelledCard(
+    headerOf(state.id, "cancelled"),
+    cancelledLine(commit, session.lang),
+    state.branch === undefined ? undefined : { name: state.branch, withCode },
+    session.cards,
+    folder?.line,
+  );
+  // The agent that cancelled from inside leaves the folder, as after `close`.
+  const left = folder?.left;
   return withArchivedMemory(
     session,
-    cancelledCard(
-      headerOf(state.id, "cancelled"),
-      cancelledLine(commit, session.lang),
-      state.branch === undefined ? undefined : { name: state.branch, withCode },
-      session.cards,
-      folder,
-    ),
+    left === undefined ? card : { ...card, next: leaveFolderNext(left, session.cards) },
     archived,
   );
 }
