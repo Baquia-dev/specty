@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-el-guard-ve-las-lecturas-y-escrituras-del-cli",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-el-guard-ve-las-lecturas-y-escrituras-del-cli",
   "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "85ed76946e5ee3988901356bec247a90ebc3dd9f",
+      "attempts": 1,
       "startedAt": "2026-11-05T09:07:17.563Z",
       "doneAt": "2026-11-05T09:12:30.819Z",
-      "summary": "stop.acts de Antigravity actúa con terminationReason model_stop o NO_TOOL_CALL, y no con fullyIdle false (mientras corren sus subagentes): responde stop sin el check ni gastar la vuelta."
+      "summary": "stop.acts de Antigravity actúa con terminationReason model_stop o NO_TOOL_CALL, y no con fullyIdle false (mientras corren sus subagentes): responde stop sin el check ni gastar la vuelta.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c597dde4265010bdceb21463f5b7f8c7a7221f13",
+      "startedAt": "2026-11-05T09:12:31.174Z",
+      "doneAt": "2026-11-05T09:18:33.483Z",
+      "summary": "ARCHITECTURE: read_file, write_file y edit_file del CLI de Antigravity en §10 y en la tabla de herramientas, el fin de turno con NO_TOOL_CALL y fullyIdle, y la comprobación con agy 1.5.1."
     }
   },
   "pending": {

@@ -65,7 +65,7 @@ En el CLI de Antigravity (`agy` 1.5.1), el agente lee con `read_file` (también 
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-turn.test.ts test/check-agent-stop.test.ts && pnpm typecheck && pnpm lint
   - type: fix
-- [ ] T4: La documentación
+- [x] T4: La documentación
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
