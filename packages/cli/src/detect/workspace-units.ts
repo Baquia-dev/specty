@@ -5,6 +5,7 @@ import { cargoWorkspace } from "./units-cargo";
 import { goWorkspace } from "./units-go";
 import { gradleWorkspace } from "./units-gradle";
 import { jsWorkspace } from "./units-js";
+import { uvWorkspace } from "./units-uv";
 
 /** What a detector knows of its workspace: its packages, its manager if any and the shared root files. */
 export type WorkspaceFacts = Omit<UnitsFacts, "checks" | "lang">;
@@ -15,11 +16,12 @@ export type UnitsDetector = (
   detection: Detection,
 ) => Promise<WorkspaceFacts | undefined>;
 
-/** The detectors `init` tries, in order: pnpm, npm and yarn first, then Cargo, `go.work` and Gradle. */
+/** The detectors `init` tries, in order: pnpm, npm and yarn first, then Cargo, `go.work`, uv and Gradle. */
 export const DETECTORS: readonly UnitsDetector[] = [
   jsWorkspace,
   cargoWorkspace,
   goWorkspace,
+  uvWorkspace,
   gradleWorkspace,
 ];
 
