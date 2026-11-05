@@ -72,7 +72,7 @@ Desde P165, una épica en `implementing` se ajusta con `specty adjust` para estr
   - ac: AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/epic-adjust.test.ts test/server/actions.test.ts && pnpm lint
   - type: test
-- [ ] T4: La documentación del ajuste de una épica desde la UI
+- [x] T4: La documentación del ajuste de una épica desde la UI
   - files: docs/ui.md
   - ac: —
   - verify: pnpm lint
