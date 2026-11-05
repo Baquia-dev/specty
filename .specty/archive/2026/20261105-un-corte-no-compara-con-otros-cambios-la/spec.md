@@ -20,3 +20,9 @@ Resuelve P89. La sesión que lanza los cortes de una épica suele pasar a cada `
   - files: packages/cli/src/flow/duplicates.ts, packages/cli/test/duplicates-slice.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/duplicates-slice.test.ts test/duplicates.test.ts test/duplicates-epic.test.ts test/epic.test.ts test/check-docs.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+duplicatesOf no compara la petición de un corte que es la misma que la de su épica (comparedRequest, con la petición del change.created de la épica vía findChange); requestOf reúne la lectura de la petición del audit; ARCHITECTURE.md documenta la regla en la fila de specty new

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-un-corte-no-compara-con-otros-cambios-la",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-un-corte-no-compara-con-otros-cambios-la",
   "baseCommit": "5b6bc9668f16d343478ee1c07ef91711815bc550",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "64e7a561835ba45d5bab575a04b93cd0ce369286",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:28:36.840Z",
       "doneAt": "2026-11-05T06:30:01.031Z",
-      "summary": "duplicatesOf no compara la petición de un corte que es la misma que la de su épica (comparedRequest, con la petición del change.created de la épica vía findChange); requestOf reúne la lectura de la petición del audit; ARCHITECTURE.md documenta la regla en la fila de specty new"
+      "summary": "duplicatesOf no compara la petición de un corte que es la misma que la de su épica (comparedRequest, con la petición del change.created de la épica vía findChange); requestOf reúne la lectura de la petición del audit; ARCHITECTURE.md documenta la regla en la fila de specty new",
+      "scopeExtra": []
     }
   },
   "pending": {
