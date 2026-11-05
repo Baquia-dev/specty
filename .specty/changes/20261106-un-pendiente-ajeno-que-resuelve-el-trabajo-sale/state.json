@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3d22aa5e39704b3aff4949aac53a6d524694ac88",
+      "attempts": 1,
       "startedAt": "2026-11-05T21:19:45.612Z",
       "doneAt": "2026-11-05T21:20:51.381Z",
-      "summary": "settleEntries devuelve las entradas que marcó hechas, archive las guarda en resolved y withArchivedMemory las muestra primero en PENDIENTES QUE RESOLVIÓ ESTE CAMBIO"
+      "summary": "settleEntries devuelve las entradas que marcó hechas, archive las guarda en resolved y withArchivedMemory las muestra primero en PENDIENTES QUE RESOLVIÓ ESTE CAMBIO",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "99893cfcd2d795216ae6feea720aa87cfbc5eb3e",
+      "startedAt": "2026-11-05T21:20:51.702Z",
+      "doneAt": "2026-11-05T21:22:38.718Z",
+      "summary": "memory resolve (commands/memory-resolve.ts) toma las entradas para el cambio abierto de la carpeta con las reglas de --resolves; claimEntries y takeEntries salen de memory.ts, y los subcomandos de estado van en statusCommands"
     }
   },
   "pending": {

@@ -41,7 +41,8 @@ import { initialState, type StoredChange } from "../store/changes";
 import { writePointer } from "../store/local";
 import { changeFiles, repoPaths } from "../store/paths";
 import { portsOf } from "../store/ports";
-import { claimEntries, takeEntries } from "./memory";
+import { targetOf } from "./memory";
+import { claimEntries, takeEntries } from "./memory-resolve";
 import { dirtyGoverned } from "./next";
 
 export interface NewOptions {
@@ -296,7 +297,7 @@ async function createChange(
     "change.created",
     createdData(options, branch),
   );
-  await takeEntries(session, id, options.claimed ?? []);
+  await takeEntries(session, targetOf(session, id), id, options.claimed ?? []);
   return created;
 }
 

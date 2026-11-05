@@ -83,7 +83,7 @@ Hoy un pendiente que el trabajo de una sesión resuelve sin haberlo tomado con `
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/close-harvest.test.ts test/memory-settle.test.ts test/memory-harvest.test.ts && pnpm lint
   - type: feat
-- [ ] T3: `specty memory resolve` toma las entradas para el cambio de la carpeta
+- [x] T3: `specty memory resolve` toma las entradas para el cambio de la carpeta
   - files: packages/cli/src/commands/memory-resolve.ts, packages/cli/src/commands/memory.ts, packages/cli/src/commands/new.ts, packages/cli/test/memory-resolve.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-resolve.test.ts test/memory-resolves.test.ts test/memory-settle.test.ts test/memory-drop.test.ts test/commands-named.test.ts && pnpm lint
