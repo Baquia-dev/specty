@@ -19,3 +19,9 @@ La tarjeta de `specty next` nombra «Cortes» («Slices» en inglés) la secció
   - files: packages/core/src/cards/next.ts, packages/core/test/cards.test.ts
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+SECTIONS de cards/next.ts nombra la sección slices «Cortes»/«Slices»: un comentario citado en los cortes de una épica se lee con su sección
