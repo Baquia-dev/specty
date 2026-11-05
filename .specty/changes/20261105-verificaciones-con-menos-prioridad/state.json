@@ -38,12 +38,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "99d5735c399fae93ad8be74d705d49bf818691e3",
+      "attempts": 1,
       "startedAt": "2026-11-05T03:51:04.266Z",
       "doneAt": "2026-11-05T03:52:30.724Z",
-      "summary": "execute acepta lowPriority: tras lanzar el proceso, setPriority(pid, 10) dentro de un try; los procesos que lanza después la heredan; AC1 en exec.test.ts"
+      "summary": "execute acepta lowPriority: tras lanzar el proceso, setPriority(pid, 10) dentro de un try; los procesos que lanza después la heredan; AC1 en exec.test.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/io/exec.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "9391131989a22c4a55c71d5f3214230afcabfbb9",
+      "startedAt": "2026-11-05T03:52:31.245Z",
+      "doneAt": "2026-11-05T03:54:49.007Z",
+      "summary": "La verificación de una tarea, la completa de accept, la de una incorporación, la de specty integrate y la que lanza la UI corren con prioridad 10 (lowPriority, y lowerPriority exportada para el spawn del servidor); AC2 y AC3 en verify-priority.test.ts"
     }
   },
   "pending": {

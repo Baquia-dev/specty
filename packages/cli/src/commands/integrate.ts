@@ -134,6 +134,7 @@ async function failedVerification(session: Session): Promise<MergeProblem | unde
       shell: true,
       env: session.environment.env,
       timeoutMs: config.verify.timeoutSec * 1000,
+      lowPriority: true,
     }),
   );
   if (result.code === 0) return undefined;

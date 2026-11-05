@@ -50,7 +50,7 @@ Las verificaciones que lanza Specty (la de cada tarea, la completa y la de una i
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/exec.test.ts && pnpm --filter @baquia-dev/specty typecheck
   - type: perf
-- [ ] T2: Las verificaciones de Specty corren con menos prioridad
+- [x] T2: Las verificaciones de Specty corren con menos prioridad
   - files: packages/cli/src/flow/live-run.ts, packages/cli/src/flow/integrate.ts, packages/cli/src/commands/integrate.ts, packages/cli/src/server/runs.ts, packages/cli/test/verify-priority.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-priority.test.ts test/accept-live.test.ts test/live-run.test.ts && pnpm typecheck && pnpm lint && pnpm knip

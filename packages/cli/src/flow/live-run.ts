@@ -42,6 +42,7 @@ export async function runLive(
       shell: true,
       env: session.environment.env,
       timeoutMs: session.config.verify.timeoutSec * 1000,
+      lowPriority: true,
       onOutput: (stream, text) => {
         const lines = `${rests[stream]}${text}`.split("\n");
         rests[stream] = lines.pop() ?? "";

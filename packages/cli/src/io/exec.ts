@@ -34,8 +34,11 @@ export interface ExecResult {
 /** What `execute` keeps of each stream, unless `whole`: an output this long lost its beginning. */
 export const MAX_OUTPUT = 512 * 1024;
 
-/** Lowers the priority of process `pid`; a system that refuses leaves it as it is. */
-function lower(pid: number): void {
+/**
+ * Lowers the priority of process `pid`, as `lowPriority` does, for a command not launched by
+ * `execute`; a system that refuses leaves it as it is.
+ */
+export function lowerPriority(pid: number): void {
   try {
     setPriority(pid, LOW_PRIORITY);
   } catch {
@@ -56,7 +59,7 @@ export function execute(
       shell: options.shell ?? false,
       stdio: ["pipe", "pipe", "pipe"],
     });
-    if (options.lowPriority === true && child.pid !== undefined) lower(child.pid);
+    if (options.lowPriority === true && child.pid !== undefined) lowerPriority(child.pid);
     let stdout = "";
     let stderr = "";
     let timedOut = false;

@@ -202,6 +202,7 @@ async function failedVerification(
       shell: true,
       env: session.environment.env,
       timeoutMs: session.config.verify.timeoutSec * 1000,
+      lowPriority: true,
     });
   });
   if (result.code === 0) {

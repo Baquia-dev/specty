@@ -5,6 +5,7 @@ import { headerOf, type Output, runRefusalCard, runStartedCard } from "@baquia-d
 import { locateChanges } from "../flow/changes";
 import { oneAtATime } from "../flow/full-verification";
 import { codeTree, recordFullVerification } from "../flow/verified";
+import { lowerPriority } from "../io/exec";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { clearRun, readRuns } from "../store/runs";
@@ -150,6 +151,8 @@ function spawned(
     shell: true,
     stdio: ["ignore", "pipe", "pipe"],
   });
+  // Below the rest of the machine, as every verification.
+  if (child.pid !== undefined) lowerPriority(child.pid);
   const stop = () => {
     child.kill("SIGTERM");
     setTimeout(() => child.kill("SIGKILL"), 2000).unref();
