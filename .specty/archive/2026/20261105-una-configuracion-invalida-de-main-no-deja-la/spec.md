@@ -77,3 +77,24 @@ Una `.specty/config.yaml` inválida en main (una coma de más en `git.branchPerC
 ## Riesgos
 
 - R1: Un cambio cuya propia rama tocó `.specty/config.yaml` y choca con main en ella ya no deja ese conflicto al agente, sino que la incorporación se niega — el agente no puede editar ese archivo de todos modos, y la salida da el error para que lo resuelva la persona.
+
+## Cierre
+
+### Resumen
+
+Una `.specty/config.yaml` inválida que llega con main ya no deja la carpeta del cambio sin salida (P130). `mergeTarget` la valida justo después de `git merge`, antes de mirar los conflictos y de verificar, con `invalidMergedConfig` de `flow/merged-config.ts`: si no es válida, aborta el merge y rechaza la incorporación como cualquier otra («No se aceptó y nada cambió.»), con el error y un SIGUIENTE que pide corregirla en main y repetir `accept` o `close` (AC1, AC2). En modo delegado, el SIGUIENTE le dice al agente que se lo pida al usuario. Y si la configuración de una carpeta no es válida, la tarjeta de `next` (y de cualquier comando) le dice a un agente, sin terminal interactiva, que la corrige el usuario porque el guard no le deja editarla y que se lo pida con el error; a una persona le sigue pidiendo que la corrija (AC3). Los textos están en español y en inglés (AC4). ARCHITECTURE §9 (paso 2 de la incorporación) y formats.md §6 lo documentan.
+
+### Desviaciones
+
+- Los textos de las tarjetas para el agente dicen «el usuario», no «la persona», como las demás tarjetas que le hablan al agente de quien decide.
+- Los textos nuevos de `cards/integration.ts` se prueban desde los tests del CLI, no desde los de core: la cobertura del cambio que mide `accept` (73 % de las líneas añadidas) no cuenta esos tests para core, y avisa de `integration.ts:142-159`.
+
+### Decisiones
+
+- La validación va en su propio módulo, `flow/merged-config.ts`, porque `flow/integrate.ts` está cerca de las 300 líneas de código; `mergeTarget` solo la llama y devuelve `refused` con su motivo.
+- El merge se aborta también con conflictos, o cuando la propia configuración choca: un merge en curso con una configuración inválida dejaría al agente sin `specty next` y sin poder editarla.
+- Quién ejecuta un comando con la configuración inválida se decide como en la sesión (`actor`): sin terminal interactiva es un agente.
+
+### Pendientes
+
+- El guard sigue tratando como «otra worktree» la carpeta de un cambio cuya configuración no es válida, porque no puede abrir su sesión (la otra mitad de P131): con la configuración corregida la reconoce, pero mientras tanto el agente no puede escribir en ella.
