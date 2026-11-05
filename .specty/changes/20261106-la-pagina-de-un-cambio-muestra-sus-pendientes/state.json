@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-pagina-de-un-cambio-muestra-sus-pendientes",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-la-pagina-de-un-cambio-muestra-sus-pendientes",
   "baseCommit": "6ef9be39fe338ef87c02a31d85387cf713968cb8",
   "revision": 2,
@@ -55,6 +55,9 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T21:33:00.916Z"
+  "lockedTests": {
+    "packages/ui/src/change/change-memory.test.ts": "sha256:ac5e8e697ea19ce87e398bdedfe6ac894568c215593cac9f174ec2e2904837be",
+    "packages/ui/src/data/sample-memory.test.ts": "sha256:744dcb5e49d9bc57cec6abe8b4f43c1dcaf390c48084fc2d779b0029f18e105e",
+    "packages/ui/src/memory/memory-url.test.ts": "sha256:e276441e45c805fa1fc5eca4d4a199e4860d580a1c177f62b8890b8a62192203"
+  }
 }
