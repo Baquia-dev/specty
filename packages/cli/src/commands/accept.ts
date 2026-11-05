@@ -13,6 +13,7 @@ import {
   decisionCard,
   delegatedFailureCard,
   headerOf,
+  noCodeVerificationNote,
   nothingPendingCard,
   type Output,
   parseSpec,
@@ -41,7 +42,7 @@ import {
 import { landRetrying, withIntegration } from "../flow/land";
 import { runLive } from "../flow/live-run";
 import { measureUsage, withUsage } from "../flow/usage";
-import { codeTree, passedOnThisCode, recordFullVerification } from "../flow/verified";
+import { codeTree, passedOnThisCode, recordFullVerification, touchesCode } from "../flow/verified";
 import { changeView } from "../flow/views";
 import { tail } from "../io/exec";
 import { writeText } from "../io/files";
@@ -64,7 +65,8 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
   const pending = await pendingIntegration(session, guard.change, "accept");
   if (pending.kind === "wait") return pending.output;
   const { change } = pending;
-  const merged = await mergeFirst(session, change);
+  const plan = await integrationOf(session, change.state);
+  const merged = await mergeFirst(session, plan, change);
   if (!merged.ok) return merged.output;
   const { terminal } = session.environment;
   const view = await changeView(session, change);
@@ -74,7 +76,7 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
     session.config.verify.full === undefined &&
     session.config.verify.default === undefined;
   terminal.note(view.title, acceptanceSummary(view, unverified, cards));
-  const stopped = await verifyBeforeAccepting(session, change, verify);
+  const stopped = await verifyBeforeAccepting(session, change, plan?.target, verify);
   if (stopped !== undefined) return stopped;
   if (!(await terminal.confirm(acceptQuestion(view.title, session.lang))))
     return postponed(session, change.state);
@@ -86,23 +88,27 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
  * merged code, and `close` has nothing left to merge unless main moves again. Main's folder is
  * not checked here: nothing lands yet.
  */
-async function mergeFirst(session: Session, change: StoredChange): Promise<Absorbed> {
-  const plan = await integrationOf(session, change.state);
+async function mergeFirst(
+  session: Session,
+  plan: Integration | undefined,
+  change: StoredChange,
+): Promise<Absorbed> {
   return plan === undefined
     ? { ok: true, lines: [] }
     : mergeTarget(session, plan, change, "accept");
 }
 
 /**
- * The full verification before accepting, unless it already passed on this code or the person
- * declines to run it: what stops the acceptance, or nothing.
+ * The full verification before accepting, unless it need not run or the person declines to run
+ * it: what stops the acceptance, or nothing. `target` is the branch the change goes to, if any.
  */
 async function verifyBeforeAccepting(
   session: Session,
   change: StoredChange,
+  target: string | undefined,
   verify: boolean | undefined,
 ): Promise<Output | undefined> {
-  const full = await verificationToRun(session, change);
+  const full = await verificationToRun(session, change, target);
   if (full === undefined) return undefined;
   // In delegated mode the agent always runs the full verification, and never accepts a failure.
   const delegated = session.actor === "agent";
@@ -113,19 +119,29 @@ async function verifyBeforeAccepting(
   return run ? runFullVerification(session, change, full, delegated) : undefined;
 }
 
-/** The configured full verification, unless the change is an epic or it passed on this code. */
+/**
+ * The configured full verification, unless the change is an epic, it passed on this code, or the
+ * change touches no code, so that its code is the `target` branch's.
+ */
 async function verificationToRun(
   session: Session,
   change: StoredChange,
+  target: string | undefined,
 ): Promise<string | undefined> {
   // An epic has no code of its own: each of its slices was verified when it closed.
   const configured = change.state.kind === "epic" ? undefined : session.config.verify.full;
   if (configured === undefined) return undefined;
+  const { terminal } = session.environment;
   // It need not run again when it already passed on this same code: in the last task, say.
   const passed = await passedOnThisCode(session, change, configured);
-  if (passed === undefined) return configured;
-  const note = verificationReusedNote(configured, passed.task, session.lang);
-  session.environment.terminal.note(note.title, note.text);
+  if (passed !== undefined) {
+    const note = verificationReusedNote(configured, passed.task, session.lang);
+    terminal.note(note.title, note.text);
+    return undefined;
+  }
+  if (target === undefined || (await touchesCode(session, target))) return configured;
+  const note = noCodeVerificationNote(configured, target, session.lang);
+  terminal.note(note.title, note.text);
   return undefined;
 }
 
