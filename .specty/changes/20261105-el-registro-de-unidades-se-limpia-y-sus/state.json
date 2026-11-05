@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "beb9ed4fa1488d33ca7c023972c7e13b00e3ec48",
+      "attempts": 1,
       "startedAt": "2026-11-05T08:04:57.009Z",
       "doneAt": "2026-11-05T08:10:36.462Z",
-      "summary": "pruneCard recibe units (removed, days) y dice cuántas unidades borró del registro, en español y en inglés, tras los mensajes; las secciones de los registros de Specty salen de recordSections y counted."
+      "summary": "pruneCard recibe units (removed, days) y dice cuántas unidades borró del registro, en español y en inglés, tras los mensajes; las secciones de los registros de Specty salen de recordSections y counted.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "45e66f58161d92037245ddb57e095f37dbcd0e60",
+      "startedAt": "2026-11-05T08:10:36.853Z",
+      "doneAt": "2026-11-05T08:17:16.145Z",
+      "summary": "specty prune borra del registro de unidades los archivos anotados hace más de 30 días (RECORD_DAYS) o sin fecha legible, con pruneRecord en flow/units.ts, y pasa el recuento a la tarjeta."
     }
   },
   "pending": {

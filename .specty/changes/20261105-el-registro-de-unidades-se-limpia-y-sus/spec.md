@@ -61,7 +61,7 @@ El registro de las unidades que pasaron (`.git/common/specty/verified/`) crece c
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/prune-units.test.ts test/cards/prune-live.test.ts test/cards/parallel.test.ts && pnpm --filter @baquia-dev/specty-core typecheck
   - type: feat
-- [ ] T3: specty prune borra del registro lo anotado hace más de 30 días
+- [x] T3: specty prune borra del registro lo anotado hace más de 30 días
   - files: packages/cli/src/flow/units.ts, packages/cli/src/commands/prune.ts, packages/cli/test/prune-units.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-units.test.ts test/prune-live.test.ts test/prune.test.ts test/accept-units.test.ts && pnpm typecheck
