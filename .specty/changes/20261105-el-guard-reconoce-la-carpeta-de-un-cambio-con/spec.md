@@ -51,7 +51,7 @@ Cuando la `.specty/config.yaml` de la carpeta de un cambio no es válida, el gua
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/invalid-config-guard.test.ts test/enter.test.ts test/invalid-config.test.ts && pnpm typecheck
   - type: fix
-- [ ] T2: Documentar qué hace el guard con una configuración inválida
+- [x] T2: Documentar qué hace el guard con una configuración inválida
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1, AC2, AC3
   - verify: pnpm lint

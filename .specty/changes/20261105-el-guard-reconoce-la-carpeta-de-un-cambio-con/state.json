@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-el-guard-reconoce-la-carpeta-de-un-cambio-con",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-el-guard-reconoce-la-carpeta-de-un-cambio-con",
   "baseCommit": "e5f9af3ba8f543fe35b900a7904128389ed94e83",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a5f4a4994ac4ae02c8967149ca3d0fbad5bc1751",
+      "attempts": 1,
       "startedAt": "2026-11-05T09:49:03.352Z",
       "doneAt": "2026-11-05T09:51:08.025Z",
-      "summary": "El guard abre una carpeta con la configuración inválida con una de repuesto (la de la herramienta si la conversación entró con specty enter; si no, la de la carpeta principal): reconoce la carpeta del cambio, aplica su fase y protege .specty/config.yaml."
+      "summary": "El guard abre una carpeta con la configuración inválida con una de repuesto (la de la herramienta si la conversación entró con specty enter; si no, la de la carpeta principal): reconoce la carpeta del cambio, aplica su fase y protege .specty/config.yaml.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "123ecc297491841e0588d8ae1d7b6f062294c8b2",
+      "startedAt": "2026-11-05T09:51:08.336Z",
+      "doneAt": "2026-11-05T09:51:24.115Z",
+      "summary": "ARCHITECTURE §10 y formats.md §6 dicen con qué configuración juzga el guard una carpeta cuya configuración no es válida y que sigue protegiendo .specty/config.yaml."
     }
   },
   "pending": {
