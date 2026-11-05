@@ -4,6 +4,7 @@ import { antigravityTrustWarning, type DoctorLine, guardLine } from "@baquia-dev
 import { parse } from "jsonc-parser";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import { ANTIGRAVITY_HOOKS, excludeLocally, guardMatcher, removeFromJson } from "../install/agents";
+import { allowSpecty } from "../install/antigravity-cli";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
 import { type AgentAdapter, jsonStop } from "./adapter";
@@ -123,7 +124,7 @@ export const antigravity: AgentAdapter = {
       return { ...value, [HOOK]: { ...ours, Stop: [{ type: "command", command, timeout }] } };
     }),
   },
-  install: async ({ root, git, invocation, files, lang }) => {
+  install: async ({ root, git, invocation, files, lang, env }) => {
     const local = !invocation.portable;
     const command = `${invocation.command} guard --tool antigravity`;
     const update = (value: Record<string, unknown>) => {
@@ -134,9 +135,11 @@ export const antigravity: AgentAdapter = {
     };
     await rewriteJson(join(root, ANTIGRAVITY_HOOKS), update, true, files);
     if (local) await excludeLocally(git, ANTIGRAVITY_HOOKS, files);
+    // Its permissions live in the person's folder, outside git: they are not in `written`.
+    const rule = await allowSpecty(env, files, lang);
     return {
-      done: [guardLine("Antigravity", ANTIGRAVITY_HOOKS, local, lang)],
-      warnings: [antigravityTrustWarning(lang)],
+      done: [guardLine("Antigravity", ANTIGRAVITY_HOOKS, local, lang), ...rule.done],
+      warnings: [antigravityTrustWarning(lang), ...rule.warnings],
       written: local ? [] : [ANTIGRAVITY_HOOKS],
     };
   },

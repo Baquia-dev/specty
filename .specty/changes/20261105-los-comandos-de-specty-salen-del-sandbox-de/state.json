@@ -68,12 +68,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "63e008159c87cd2d3d18d0e5b16d2b6c49d082ff",
+      "attempts": 1,
       "startedAt": "2026-11-05T13:53:26.592Z",
       "doneAt": "2026-11-05T13:54:13.652Z",
-      "summary": "Textos en español e inglés de la regla command(specty) del CLI de Antigravity: línea de init, aviso de ajustes que no se pueden editar, aviso de la app, líneas de doctor (antigravity-cli-rule y no-antigravity-cli-rule) y la línea de uninstall; exportados en cards/index.ts."
+      "summary": "Textos en español e inglés de la regla command(specty) del CLI de Antigravity: línea de init, aviso de ajustes que no se pueden editar, aviso de la app, líneas de doctor (antigravity-cli-rule y no-antigravity-cli-rule) y la línea de uninstall; exportados en cards/index.ts.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b0b75ce45ec3ea7123a85354b224ab3e53393851",
+      "startedAt": "2026-11-05T13:54:13.948Z",
+      "doneAt": "2026-11-05T13:56:47.692Z",
+      "summary": "init --tools antigravity añade command(specty) a permissions.allow del CLI de Antigravity si su carpeta existe (sin duplicar; avisa si no puede editar) y avisa de la regla para la app; InstallContext lleva env y testEnv aísla la carpeta."
     }
   },
   "pending": {
