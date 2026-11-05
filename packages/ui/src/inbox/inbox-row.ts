@@ -134,6 +134,9 @@ const ROW =
       @if (change().lost) {
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-lost>{{ t()('Sin carpeta', 'No folder') }}</span>
       }
+      @if (change().configIssues) {
+        <span class="text-[13px]" style="color: var(--color-phase-review)" data-config>{{ t()('Su configuración no se pudo leer', 'Its configuration could not be read') }}</span>
+      }
       @if (change().shared; as shared) {
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-shared>
           {{ t()('Comparte', 'Shares') }}
