@@ -73,3 +73,28 @@ Hoy el guard reconoce una conversación de Codex por el `session_id` de sus hook
 - R1: Codex cambia los campos que envían sus hooks dentro de un subagente, o la forma de lanzarlos (`multi_agent_v2` ya existe, apagado por defecto). Mitigación: AC4 lo comprueba con la versión instalada.
 - R2: La prueba con Codex real se salta donde no está Codex, también en `pnpm check`. Mitigación: las pruebas del guard con los eventos grabados de 0.166.0 cubren AC1, AC2 y AC3 siempre.
 - R3: C7 y C8 tocan a la vez las mismas líneas de la tabla de capacidades y de su test. Mitigación: al incorporar main, la tabla se regenera desde `capabilityTable` y el test conserva las filas de los tres cortes.
+
+## Cierre
+
+### Resumen
+
+- El guard distingue a cada subagente de Codex por su `agent_id`: el módulo de Codex compone `asSubagentConversation`, así que la conversación de un subagente es `<session_id>--<agent_id>`, con su propio enlace a una carpeta, sus pasos en `status` y su frente.
+- Un subagente de Codex entra con `specty enter <id>` en la carpeta de un cambio sin mover al hilo principal. Desde entonces el guard le reescribe las acciones con `updatedInput` (un `cd` a su carpeta delante de cada comando y las rutas de cada parche dentro de ella) y las juzga con las reglas de ese cambio.
+- La tabla de capacidades pone a Codex en «sí» en «Cortes en subagentes», y ARCHITECTURE §10 explica sus subagentes.
+- Comprobado con Codex 0.166.0 real contra el modelo guionizado (AC4, en `codex-e2e.test.ts`). `spawn_agent` es una herramienta diferida de `multi_agent_v1` que el modelo encuentra con `tool_search`. Los eventos del hijo traen el `session_id` del hilo raíz, su `agent_id` y `agent_type: "default"`; los del hilo principal no los traen, y el hijo arranca en la carpeta del turno del padre.
+
+### Desviaciones (respecto al plan)
+
+- Codex no estaba instalado en la máquina: se instaló 0.166.0 en una carpeta temporal de la sesión, sin tocar la instalación global, y las pruebas con Codex real corrieron con `SPECTY_E2E_CODEX`. En `pnpm check` se saltan, como los demás E2E de Codex.
+- El primer `specty propose` de los tests se rechazó por AC4. Specty lee el id de un criterio solo en la línea que declara el test o en un comentario, y Biome había pasado el nombre largo del test a la línea siguiente. Se acortó el nombre para que quepa en la línea de `it(`.
+
+### Decisiones
+
+- Las pruebas del guard van en un archivo nuevo, `codex-subagents.test.ts`, con los eventos tal como los envía Codex 0.166.0. No van en `subagents.test.ts` ni en `codex.test.ts`, para no chocar con los cortes C7 y C8, que se hacen a la vez.
+- Lo que el falso de la API Responses sabe de los subagentes de Codex queda dentro de `fake-responses.ts`: el espacio de nombres `multi_agent_v1`, el `agent_id` que devuelve `spawn_agent` y la espera con `wait_agent`. El guion usa `spawnAgent()` y los pasos `{ search }` y `{ wait: "spawned" }`.
+- Antes de enviar los tests, sus escenarios se comprobaron contra una copia del build con el `normalize` ya añadido, para no tener que pedir un desbloqueo después.
+
+### Pendientes
+
+- El fin de turno de un subagente de Codex llega como `SubagentStop`, que Specty no escucha: al terminar el turno de un subagente no corren ni el aviso de `specty check --changed` ni la red de la memoria.
+- Codex 0.166.0 trae `multi_agent_v2`, estable pero apagado por defecto. Cuando sea el modo por defecto, comprobar con la prueba de Codex real que sus subagentes siguen enviando `agent_id` y que `spawn_agent` no cambió.
