@@ -3,6 +3,7 @@ import { type Lang, proposeUnits, type UnitsFacts, unitsYaml } from "@baquia-dev
 import type { Detection } from "./project";
 import { cargoWorkspace } from "./units-cargo";
 import { goWorkspace } from "./units-go";
+import { gradleWorkspace } from "./units-gradle";
 import { jsWorkspace } from "./units-js";
 import { uvWorkspace } from "./units-uv";
 
@@ -15,12 +16,13 @@ export type UnitsDetector = (
   detection: Detection,
 ) => Promise<WorkspaceFacts | undefined>;
 
-/** The detectors `init` tries, in order: pnpm, npm and yarn first, then Cargo, `go.work` and uv. */
+/** The detectors `init` tries, in order: pnpm, npm and yarn first, then Cargo, `go.work`, uv and Gradle. */
 export const DETECTORS: readonly UnitsDetector[] = [
   jsWorkspace,
   cargoWorkspace,
   goWorkspace,
   uvWorkspace,
+  gradleWorkspace,
 ];
 
 /**
