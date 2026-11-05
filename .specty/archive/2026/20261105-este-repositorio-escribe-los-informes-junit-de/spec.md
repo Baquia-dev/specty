@@ -48,3 +48,22 @@ Los tests de este repositorio no dejan ningún informe JUnit, así que `checks.t
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/repo-junit.test.ts && pnpm --filter @baquia-dev/specty-exporters test && test -s packages/exporters/coverage/junit.xml && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
   - type: build
+
+## Cierre
+
+### Resumen
+
+Los tests de core, exporters y la CLI dejan su informe JUnit en `coverage/junit.xml` de su paquete: sus `vitest.config.ts` añaden el reporter `junit` a los de Vitest por defecto (`configDefaults.reporters`), con `outputFile: { junit: "coverage/junit.xml" }`, así que siguen el reporter breve con un agente y las anotaciones en GitHub Actions. `packages/cli/test/repo-junit.test.ts` importa la configuración de los tres paquetes y comprueba sus reporters y su `outputFile`. Con la cobertura, el informe convive con `lcov.info` en la misma carpeta.
+
+### Desviaciones
+
+- La primera redacción cubría los seis paquetes y `propose` la rechazó: tocaba 6 módulos, y `split.maxModules` es 3. Se dividió como el LCOV: este cambio cubre core, exporters y la CLI, y vscode, la UI y evals quedan para un cambio de continuación.
+
+### Decisiones
+
+- Los reporters son los de Vitest por defecto más `junit`, y no una lista fija, para no perder el reporter breve con un agente ni las anotaciones de GitHub Actions.
+- El informe va en `coverage/`, que `.gitignore` ya ignora y donde la cobertura deja `lcov.info`: el reporter `junit` abre su archivo después de que la cobertura limpie la carpeta.
+
+### Pendientes
+
+- Continuación de C7: que los tests de vscode, la UI y evals dejen su informe JUnit en `coverage/junit.xml`. La UI, con `reporters` y `outputFile` de `@angular/build:unit-test` en `angular.json`, que no pueden leer los reporters por defecto de Vitest. Hay que ampliar `repo-junit.test.ts` a esos paquetes y pedir a la persona que añada a los `paths` de la unidad cli los archivos de fuera que lea.
