@@ -17,10 +17,19 @@ import {
 const CLAUDE = { env: { CLAUDECODE: "1" } };
 
 const SECTION = "PENDIENTES QUE QUEDAN EN LA MEMORIA";
+const RESOLVED = "PENDIENTES QUE RESOLVIÓ ESTE CAMBIO";
 
-/** Closes SPEC's change, in its own folder, with `followUps` under «### Pendientes»: its output. */
-async function closedWith(root: string, followUps: readonly string[]): Promise<string> {
-  expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+/**
+ * Closes SPEC's change, in its own folder, with `followUps` under «### Pendientes» and created
+ * with `options` too: its output.
+ */
+async function closedWith(
+  root: string,
+  followUps: readonly string[],
+  ...options: string[]
+): Promise<string> {
+  const created = await cli(root, ["new", "--worktree", "Saludo personalizado", ...options]);
+  expect(created.code).toBe(0);
   const folder = folderOf(root);
   await toAcceptance(folder);
   await cli(folder, ["accept"], { terminal: person() });
@@ -34,15 +43,29 @@ async function closedWith(root: string, followUps: readonly string[]): Promise<s
 }
 
 describe("what `specty close` says of the pending items its closing leaves", () => {
-  it("AC1: names each new one with its id and first line, and that sessions will see them", async () => {
+  it("AC6: names each new one with its id and first line, and that the person sees them", async () => {
     const root = await tempRepo(APP);
     const out = await closedWith(root, ["Ordenar por fecha.", "Exportar a CSV."]);
     expect(out).toContain(
-      `${SECTION}:\n  P1 · Ordenar por fecha.\n  P2 · Exportar a CSV.\n  Las sesiones los verán al empezar; todos, con \`specty memory\`.\n`,
+      `${SECTION}:\n  P1 · Ordenar por fecha.\n  P2 · Exportar a CSV.\n  La persona los ve en la página Memoria de \`specty ui\` y con \`specty memory\`.\n`,
     );
+    expect(out).not.toContain("Las sesiones los verán al empezar");
   });
 
-  it("AC2: has no such section when the closing leaves none new", async () => {
+  it("AC2: names first the entries it took and the closing marked done", async () => {
+    const root = await tempRepo(APP);
+    for (const text of ["Uno", "Dos"]) {
+      expect((await cli(root, ["memory", "add", text], CLAUDE)).code).toBe(0);
+    }
+    const out = await closedWith(root, ["Exportar a CSV."], "--resolves", "P1");
+    expect(out).toContain(
+      `${RESOLVED}:\n  P1 · Uno\n  Quedan hechos y salen de la lista de abiertos.\n`,
+    );
+    expect(out.indexOf(RESOLVED)).toBeLessThan(out.indexOf(SECTION));
+    expect(out).not.toContain("P2 · Dos");
+  });
+
+  it("AC6: has no such section when the closing leaves none new", async () => {
     const root = await tempRepo(APP);
     expect((await cli(root, ["memory", "add", "Uno"], CLAUDE)).code).toBe(0);
     const out = await closedWith(root, ["P1: sigue abierto.", "Uno", "Ninguno."]);

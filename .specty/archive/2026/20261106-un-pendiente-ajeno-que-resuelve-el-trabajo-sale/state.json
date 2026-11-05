@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "id": "20261106-un-pendiente-ajeno-que-resuelve-el-trabajo-sale",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-un-pendiente-ajeno-que-resuelve-el-trabajo-sale",
+  "baseCommit": "88d9019e8b696fe0180cfa8ff5d79807a856fc6d",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:07cb2eaee807f632ef4002ed20a55085e9a277ccabeb067e210a43b68540a429",
+    "at": "2026-11-05T21:14:19.130Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9a37d3f54f6b8138aa81a140629538c0e99af118ddee565e2cf0713aaeda4bf7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:19cc9c3bf39550220e51adfc10adf4930ccbe4f778fbc3c51fafcd43d6b9c8ee",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b1922e1fa5f7541eccf2089bd7bc2a0f9fd9d46e34bcdbdf14ad509536c09a22",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ca2bf166e60811e40a40fb6ceddeac0193201ccf7c48788bb1373f97919b3fde",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:44393421700caf2268514d5625d06f618eb5a38aae75c9285f702e6e9e25111e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c6b094f9c8985e6d2219960eb1e98d85c3f03fce",
+      "attempts": 1,
+      "startedAt": "2026-11-05T21:18:24.474Z",
+      "doneAt": "2026-11-05T21:19:45.304Z",
+      "summary": "Tarjetas de memory resolve (lo que toma y por qué no toma nada, con no-change) en memory-claims.ts, el bloque PENDIENTES QUE RESOLVIÓ ESTE CAMBIO y la nueva última línea de los pendientes que deja el cierre",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "3d22aa5e39704b3aff4949aac53a6d524694ac88",
+      "attempts": 1,
+      "startedAt": "2026-11-05T21:19:45.612Z",
+      "doneAt": "2026-11-05T21:20:51.381Z",
+      "summary": "settleEntries devuelve las entradas que marcó hechas, archive las guarda en resolved y withArchivedMemory las muestra primero en PENDIENTES QUE RESOLVIÓ ESTE CAMBIO",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "99893cfcd2d795216ae6feea720aa87cfbc5eb3e",
+      "attempts": 1,
+      "startedAt": "2026-11-05T21:20:51.702Z",
+      "doneAt": "2026-11-05T21:22:38.718Z",
+      "summary": "memory resolve (commands/memory-resolve.ts) toma las entradas para el cambio abierto de la carpeta con las reglas de --resolves; claimEntries y takeEntries salen de memory.ts, y los subcomandos de estado van en statusCommands",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "f5b01882343e3a237c9909469534ee044181e439",
+      "attempts": 1,
+      "startedAt": "2026-11-05T21:22:39.030Z",
+      "doneAt": "2026-11-05T21:23:40.893Z",
+      "summary": "La regla del reporte final pide marcar con memory resolve los pendientes ajenos resueltos; formats.md, ARCHITECTURE.md y el ADR 0016 cuentan memory resolve y la salida del cierre",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T21:28:58.496Z",
+  "lockedTests": {
+    "packages/cli/test/close-harvest.test.ts": "sha256:d40f69b1f1429d77fde60f4a44d91a1b2144ffbcb4419a976b0c9b777e827e25",
+    "packages/core/test/cards.test.ts": "sha256:b4d65e1aa8c18596281b1d8319f4c758c2a6cbb7f2aab4108f9a19351bc70fb6",
+    "packages/core/test/cards/archived-memory.test.ts": "sha256:bfc4dbff8de70de28ff1d4370ed6ce326100973cd5cb4734b6415b60abfdfcfb",
+    "packages/cli/test/memory-resolve.test.ts": "sha256:03d4d1a1a75e5c6433dfaa0effbf5008c76cca7a9ce7eed70b48550e227ba93a",
+    "packages/core/test/cards/memory-resolve.test.ts": "sha256:d26bf84966b127279c823c327ec7e3e636fcc864d64ea71d758098c301c57b6d"
+  }
+}

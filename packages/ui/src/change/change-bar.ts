@@ -2,6 +2,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
 import { AcceptanceActions } from "../acceptance/acceptance-actions";
 import { ClosingActions } from "../acceptance/closing-actions";
+import { adjustsWhileImplemented, EpicActions } from "../acceptance/epic-actions";
 import { PhaseBadge } from "../components/badge";
 import type { ChangeView, ReviewSection } from "../data/records";
 import { revisionName, revisionState } from "../data/revision";
@@ -20,11 +21,18 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
 /**
  * The change at a glance while scrolling: phase, title, revision, the section being read, what
  * is still to decide and the decision waiting: on the spec in review, on the tests the agent
- * sent, on the result in acceptance.
+ * sent, on the result in acceptance; for an epic in implementation, asking for an adjustment.
  */
 @Component({
   selector: "sp-change-bar",
-  imports: [PhaseBadge, ReviewActions, TestsActions, AcceptanceActions, ClosingActions],
+  imports: [
+    PhaseBadge,
+    ReviewActions,
+    TestsActions,
+    AcceptanceActions,
+    ClosingActions,
+    EpicActions,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     "[class]": "shown() ? barShown : barHidden",
@@ -59,6 +67,8 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
         <sp-acceptance-actions class="ml-auto shrink-0" [change]="change()" [compact]="true" />
       } @else if (change().decision === 'closing') {
         <sp-closing-actions class="ml-auto shrink-0" [change]="change()" [compact]="true" />
+      } @else if (adjustable(change())) {
+        <sp-epic-actions class="ml-auto shrink-0" [change]="change()" [compact]="true" />
       }
     </div>
   `,
@@ -74,6 +84,7 @@ export class ChangeBar {
   protected readonly t = this.preferences.t;
   protected readonly barShown = BAR_SHOWN;
   protected readonly barHidden = BAR_HIDDEN;
+  protected readonly adjustable = adjustsWhileImplemented;
 
   /** «Revisión 3» and «por aprobar»; a draft never proposed is «Sin proponer», with no state. */
   protected readonly revision = computed(() => {

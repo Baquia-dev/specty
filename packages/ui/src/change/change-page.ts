@@ -20,6 +20,7 @@ import { LucideDynamicIcon } from "@lucide/angular";
 import { AcceptanceActions } from "../acceptance/acceptance-actions";
 import { AcceptanceTab } from "../acceptance/acceptance-tab";
 import { ClosingActions } from "../acceptance/closing-actions";
+import { adjustsWhileImplemented, EpicActions } from "../acceptance/epic-actions";
 import { KindBadge, PhaseBadge } from "../components/badge";
 import { PAGE } from "../components/document";
 import { EmptyState } from "../components/empty-state";
@@ -97,6 +98,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     AcceptanceTab,
     AcceptanceActions,
     ClosingActions,
+    EpicActions,
     TestsActions,
     HistoryTab,
     LostFolder,
@@ -135,11 +137,12 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
             </div>
             <!--
               Beside the title: the decision waiting (on the spec in review, on the tests once the
-              agent sent them, on the result in acceptance, on the closing once the agent sent it)
-              and, as a suggestion rather than a fact of the change, the effort for the agent.
-              Under the title, at its edge.
+              agent sent them, on the result in acceptance, on the closing once the agent sent it),
+              asking for an adjustment of an epic while its slices are implemented and, as a
+              suggestion rather than a fact of the change, the effort for the agent. Under the
+              title, at its edge.
             -->
-            @if (change.phase === 'review' || change.phase === 'acceptance' || change.decision === 'closing' || change.decision === 'tests' || (showEffort && change.effort)) {
+            @if (change.phase === 'review' || change.phase === 'acceptance' || change.decision === 'closing' || change.decision === 'tests' || adjustable(change) || (showEffort && change.effort)) {
               <div class="mt-1 flex flex-col items-end gap-3 max-lg:items-start">
                 @if (change.phase === 'review') {
                   <sp-review-actions class="max-lg:items-start" [change]="change" />
@@ -149,6 +152,8 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
                   <sp-acceptance-actions class="flex-wrap" [change]="change" />
                 } @else if (change.decision === 'closing') {
                   <sp-closing-actions [change]="change" />
+                } @else if (adjustable(change)) {
+                  <sp-epic-actions [change]="change" />
                 }
                 @if (showEffort && change.effort; as effort) {
                   <p class="m-0 flex max-w-80 items-start gap-2 text-[13px] text-text-muted" data-effort>
@@ -236,6 +241,7 @@ export class ChangePage {
   protected readonly waiting = WAITING;
   protected readonly suggestion = LucideLightbulb;
   protected readonly showEffort = inject(SHOW_EFFORT_HINT);
+  protected readonly adjustable = adjustsWhileImplemented;
   private readonly found = this.store.byId(this.id);
   protected readonly change = this.found.view;
   /** Neither the Inbox nor the source have it: the page says it does not exist. */

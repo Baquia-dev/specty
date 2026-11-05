@@ -3,7 +3,14 @@
 // refusal means, in both languages. Pure.
 import type { SessionView } from "@baquia-dev/specty-core/light";
 import type { RunRecord } from "./progress";
-import type { Bilingual, ChangeRecord, ChangeSummary, Delegation, MemoryRecord } from "./records";
+import type {
+  Bilingual,
+  ChangeRecord,
+  ChangeSummary,
+  Delegation,
+  MemoryRecord,
+  SliceChangeRecord,
+} from "./records";
 import type { FinishedPage } from "./source";
 
 export const NO_SESSION: Bilingual = {
@@ -164,6 +171,17 @@ function isText(value: unknown): value is string {
 /** A light check of the answer: the worker parses each spec, and each state is Specty's own file. */
 export function isRecords(value: unknown): value is readonly ChangeRecord[] {
   return Array.isArray(value) && value.every(isChangeRecord);
+}
+
+/** `GET /api/changes/<id>/slices`'s answer: each slice with the id and the phase of its change. */
+export function isSliceChanges(value: unknown): value is readonly SliceChangeRecord[] {
+  return (
+    Array.isArray(value) &&
+    value.every(
+      (item: unknown) =>
+        isObject(item) && ["slice", "id", "phase"].every((key) => isText(item[key])),
+    )
+  );
 }
 
 /** `GET /api/changes/finished`'s answer: each change's summary, lightly checked, and its numbers. */

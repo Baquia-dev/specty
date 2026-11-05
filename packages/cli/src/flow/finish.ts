@@ -14,8 +14,13 @@ import { commitWithReceipt, decisionTrailers } from "./commits";
 import { remarkHarvest } from "./review-remarks";
 import { uncommittedChangedBy } from "./uncommitted";
 
-/** A change in the archive, with the reminders that waited for it, which it fired. */
+/**
+ * A change in the archive, with what archiving it did in the memory: the entries its closing
+ * marked done, the reminders it fired and the pending items its closing left.
+ */
 export interface ArchivedChange extends StoredChange {
+  /** The entries it took that its closing marked done, in order; none if it was cancelled. */
+  readonly resolved: readonly MemoryEntry[];
   readonly fired: readonly MemoryEntry[];
   /** The pending items its closing left in the memory, in order; none if it was cancelled. */
   readonly harvested: readonly MemoryEntry[];
@@ -40,7 +45,7 @@ export async function archive(
   // The memory's entries it took get done if it closed, and free again if it was cancelled;
   // a closed change's follow-ups, and the remarks of its last review that its closing does not
   // cite, become pending items.
-  await settleEntries(session, state);
+  const resolved = await settleEntries(session, state);
   // The reminders that waited for it fire, closed or cancelled, so that none is lost; the
   // messages that waited for its session no longer reach anybody.
   const fired = await fireReminders(session, state.id);
@@ -53,7 +58,7 @@ export async function archive(
           ...(await remarkHarvest(session, files)),
         ])
       : [];
-  return { files, state, archived: true, fired, harvested };
+  return { files, state, archived: true, resolved, fired, harvested };
 }
 
 /**
