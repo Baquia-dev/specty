@@ -35,7 +35,10 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 ├─ locks/<id>.json             # { "pid", "command", "folder", "at" }: el comando que está cambiando ese cambio, uno a la vez (ARCHITECTURE §9); se crea en exclusiva y se borra al terminar, y el de un proceso que ya no existe no cuenta; para reemplazarlo, un comando toma antes `locks/<id>.json.claim`, un permiso exclusivo y breve
 ├─ messages/<id>/<hora>-<n>.json # { "at", "text", "from": { "actor", "tool"?, "change"?, "folder" } }: un mensaje que una sesión o la persona dejó con `specty message` para la sesión del cambio abierto `<id>`, en orden de llegada (`<hora>` es `at` sin separadores y `<n>` lo desempata); el guard lo entrega tras el siguiente comando de shell en la carpeta del cambio y lo borra al entregarlo, así que `specty status` cuenta los que quedan (`messages`) (ARCHITECTURE §10); los que nadie recogió se borran al archivar el cambio, cerrado o cancelado, y `specty prune` borra los de un cambio que ya no está abierto
 ├─ locks/full-verification.json # el turno de la verificación completa (`verify.full`, la de `accept` y la de la incorporación de main), una a la vez en todo el clon; el cierre que integra un cambio en main lo tiene desde antes de incorporar main hasta que main avanza (ARCHITECTURE §9): la misma forma y las mismas reglas que `locks/<id>.json`
+├─ ports.json                 # { "<carpeta>": <posición> }: la posición de cada carpeta de cambio entre los puertos de desarrollo (`dev.ports`, §6); sus puertos son los de `dev.ports` más ella. Una carpeta nueva toma la libre más baja desde 1, y la de una carpeta que ya no existe vuelve a quedar libre (ARCHITECTURE §9)
 ├─ locks/full-verification.queue/<llegada>-<pid>-<n>.json # { "pid", "command", "folder", "at" }: la cola del turno de la verificación completa, un archivo por proceso que espera, con su hora de llegada en milisegundos (15 cifras) en el nombre; solo el primero vivo intenta el turno, cada uno renueva la fecha de su archivo en cada vuelta y se borra al tomarlo, y el de un proceso que ya no existe o que lleva 30 s sin renovarse no cuenta y lo borra el siguiente que mira
+├─ locks/verify-slots/<inicio>-<pid>-<n>.json # { "pid", "command", "folder", "at", "weight" }: una verificación que corre y las plazas de `verify.slots` que ocupa (la de una tarea, 1; la completa, todas); se escribe antes de dejar la cola y se borra al terminar, y el de un proceso que ya no existe no cuenta y lo borra el siguiente que mira
+├─ locks/verify-slots.queue/<llegada>-<pid>-<n>.json # la cola de las plazas, con la forma y las reglas de la del turno: solo el primero vivo puede empezar, cuando su peso cabe entre las plazas libres
 └─ backups/<fecha>/            # lo que había antes de que `init` o `uninstall` lo cambiaran (una carpeta por ejecución)
    ├─ repo/<ruta>              # copia de un archivo del repositorio
    ├─ outside/<ruta absoluta>  # copia de uno de fuera (Codex, OpenCode, .git/info/exclude de una worktree)
@@ -401,6 +404,7 @@ verify:
   full: flutter analyze && flutter test
   quick: dart format --output=none --set-exit-if-changed .  # antes de la verificación de cada tarea
   timeoutSec: 600                 # al vencer, se corta el comando con todos los procesos que lanzó
+  slots: 2                        # verificaciones a la vez en el clon: la de una tarea ocupa 1, la completa todas (ARCHITECTURE §9)
 scope:
   implicitTests: true             # tests junto a los archivos del alcance
   generated: ["**/*.g.dart", "**/*.freezed.dart"]
@@ -458,6 +462,8 @@ ui:
 memory:                           # la memoria de Specty (ADR 0016)
   orphanAfterMin: 60              # minutos sin pasos ni cambios de estado tras los que un cambio que espera al agente es huérfano
   branch: specty-memory           # la rama de las entradas (§1): un nombre de rama válido fuera de `specty/`, donde van las de los cambios
+dev:
+  ports: [4200, 5173]             # los puertos de desarrollo del proyecto en la carpeta principal; cada carpeta de cambio usa estos más su posición (§1, `ports.json`), y `new` y `next` se los dicen al agente; sin la clave: ninguno
 subagents: true                   # false: una épica no reparte sus cortes entre subagentes, aunque su herramienta pueda
 ```
 

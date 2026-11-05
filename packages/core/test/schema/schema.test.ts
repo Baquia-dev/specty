@@ -67,6 +67,18 @@ describe("resolveConfig", () => {
     });
   });
 
+  it("runs two verifications at once in the clone unless told otherwise, one at least (AC5)", () => {
+    const slots = (verify: unknown) => {
+      const result = resolveConfig({ version: 1, verify });
+      return result.ok ? result.config.verify.slots : undefined;
+    };
+    expect(DEFAULT_CONFIG.verify.slots).toBe(2);
+    expect(slots(undefined)).toBe(2);
+    expect(slots({ slots: 1 })).toBe(1);
+    expect(slots({ slots: 4, timeoutSec: 60 })).toBe(4);
+    for (const wrong of [0, -1, 1.5, "2"]) expect(slots({ slots: wrong })).toBeUndefined();
+  });
+
   it("puts each change in a worktree unless told otherwise, prepared as configured", () => {
     expect(DEFAULT_CONFIG.git).toEqual({ branchPerChange: true, worktrees: true });
     const configured = (git: unknown) => {

@@ -11,6 +11,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Incorporación** (`IntegrationState`): traer la rama destino al cambio al cerrarlo.
 - **Recibo** (`Receipt`): lo que deja Specty para que el pre-commit acepte su commit.
 - **Bloqueo** (`LockHolder`): qué comando está cambiando un cambio; uno a la vez.
+- **Plaza de verificación** (`verify.slots`, `inSlots`): una de las verificaciones que corren a la vez en el clon; la de una tarea ocupa una, y la completa, todas.
 - **Cambio huérfano** (`orphan`): uno que espera al agente sin que ninguna sesión trabaje en él.
 - **Cambio sin carpeta** (`lost`, `specty restore`): uno abierto cuya carpeta se borró o git podó, y que sigue en su rama, desde la que se recupera.
 - **Entrada de la memoria** (`MemoryEntry`): un pendiente, una mejora, un recordatorio o una decisión, con id `Pn` o `Dn`.
