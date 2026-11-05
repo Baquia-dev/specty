@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261105-una-epica-en-implementacion-se-ajusta-para",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-una-epica-en-implementacion-se-ajusta-para",
+  "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5fd5cd4633444a7994fd1c28e77e0fb7de17f5643dd0eac4f7b98815735f4d39",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9448e3afcaf1319b6ceba6943b0fda37e3c31429e47e0ac0f0e89a056d415a99",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:79b3d1f6b9cdf0af440c422fc95b63f8ece114764e8222cab9414d87db889322",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:071ae4e07c2ec299bd02c6efe20947f73d263cdc781a923c73296a5764ce08eb",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 5,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fe3580922017d948c61436fc071369b2015e91fa2aad0e53747273f5fcd3d18f",
+    "at": "2026-11-05T16:01:04.149Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
