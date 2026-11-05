@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "id": "20261106-un-pendiente-parecido-a-uno-abierto-no-entra",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-un-pendiente-parecido-a-uno-abierto-no-entra",
+  "baseCommit": "7fe3f0eb898f56a60cbd47a71b709c1dd85319c9",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:76c3882dca0077b803287417f51d9ddcde5a28d9bd43916876986ee7a6856453",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:185c59bba1da27831f0c948a025bb29f58fc99f9067d2399377201a5d5ef57d6",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:40a540b2b8b6f998bf9854feb77ccb9478d407e5293b17bd9a8338e599c7c60b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:36bd489394bc756b58ad371a9d9e8b68e3144f3b7d2a40bf9340835a1b77753a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:43f228ba216d9d609f0906ab99ae8e0953a1db6972a5f9cba0e3eadf66b18f3e",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:5ea5ce9b76b8746e397bff0b99cd6076ff30db2b5336dc6515de25f80bc90792",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:d8f753c1ff65e6c0a60bd544c25ddfece4a84db986bf0a776db0b57a3ba4bae4",
+    "at": "2026-11-05T21:40:10.806Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
