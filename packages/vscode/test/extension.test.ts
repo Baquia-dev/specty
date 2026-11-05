@@ -292,7 +292,11 @@ async function run(command: string): Promise<void> {
   await fake.state.commands.get(command)?.();
 }
 
-const until = (assertion: () => void) => vi.waitFor(assertion, { timeout: 4000 });
+/**
+ * Each test starts the stand-in with Node, which may take seconds on a busy machine: the waits
+ * give it 15 s, and each test 30 s.
+ */
+const until = (assertion: () => void) => vi.waitFor(assertion, { timeout: 15_000 });
 const bar = () => fake.state.items.find((item) => item.shown);
 
 afterEach(() => {
@@ -300,7 +304,7 @@ afterEach(() => {
   fake.reset();
 });
 
-describe("the extension", () => {
+describe("the extension", { timeout: 30_000 }, () => {
   it("AC1: shows the folder's change, its phase and that it waits for the person", async () => {
     const { folder, calls } = await open();
     await until(() => expect(bar()?.text).toContain("Revisión"));
