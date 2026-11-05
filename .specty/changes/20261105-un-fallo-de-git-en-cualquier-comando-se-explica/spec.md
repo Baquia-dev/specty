@@ -54,7 +54,7 @@ Cuando git falla dentro de un comando de Specty que no es `init` (`approve`, `ta
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-failed.test.ts test/init-commit.test.ts test/check-install.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
   - type: fix
-- [ ] T3: La documentación
+- [x] T3: La documentación
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

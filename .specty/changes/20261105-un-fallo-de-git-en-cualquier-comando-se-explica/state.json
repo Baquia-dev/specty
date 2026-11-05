@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-un-fallo-de-git-en-cualquier-comando-se-explica",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-un-fallo-de-git-en-cualquier-comando-se-explica",
   "baseCommit": "6db2938c9910024d6bb77d016af7fb938225ed67",
   "revision": 1,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "29aa2a33245301f51d55cd95dbc5a150810325b9",
+      "attempts": 1,
       "startedAt": "2026-11-05T03:39:11.312Z",
       "doneAt": "2026-11-05T03:43:12.494Z",
-      "summary": "sessionRunner (program.ts) captura un GitError del comando y emite gitFailedCard con gitFailure (io/git.ts), la orden de git y su error en una línea sin hint:, que ahora también usa install/commit.ts"
+      "summary": "sessionRunner (program.ts) captura un GitError del comando y emite gitFailedCard con gitFailure (io/git.ts), la orden de git y su error en una línea sin hint:, que ahora también usa install/commit.ts",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "742ee2bdbfcc538aadcdafb025f2a6de27eefd68",
+      "startedAt": "2026-11-05T03:43:13.621Z",
+      "doneAt": "2026-11-05T03:43:36.827Z",
+      "summary": "ARCHITECTURE: cómo sale un fallo de git en cualquier comando"
     }
   },
   "pending": {
