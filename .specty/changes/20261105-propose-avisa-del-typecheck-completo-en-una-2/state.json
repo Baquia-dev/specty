@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-propose-avisa-del-typecheck-completo-en-una-2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-propose-avisa-del-typecheck-completo-en-una-2",
   "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
   "revision": 2,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "24dd6ee563325be59c441e6ec412ef88cb1ed8b9",
+      "attempts": 1,
       "startedAt": "2026-11-05T08:05:45.368Z",
       "doneAt": "2026-11-05T08:10:48.913Z",
-      "summary": "checkTypecheck da también el aviso task-early-typecheck: una tarea de código anterior a la última que ejecuta el typecheck o verify.full, con tests en tareas de código posteriores y fase de tests; textos es/en en spec/messages."
+      "summary": "checkTypecheck da también el aviso task-early-typecheck: una tarea de código anterior a la última que ejecuta el typecheck o verify.full, con tests en tareas de código posteriores y fase de tests; textos es/en en spec/messages.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7ee3a4d35a2d6ae23d0bee78b193986134279654",
+      "startedAt": "2026-11-05T08:10:49.256Z",
+      "doneAt": "2026-11-05T08:16:44.862Z",
+      "summary": "formats.md §2 describe el aviso task-early-typecheck: cuándo sale, qué comando y tareas nombra, qué sugiere y cuándo no avisa."
     }
   },
   "pending": {

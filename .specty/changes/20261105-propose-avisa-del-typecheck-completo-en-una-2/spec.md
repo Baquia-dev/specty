@@ -53,7 +53,7 @@ Con `policy.tests: contract`, los tests de todas las tareas se escriben y se apr
   - files: packages/core/src/validate/quality.ts, packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/validate/quality.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/quality.test.ts && pnpm typecheck && pnpm lint && pnpm sources
-- [ ] T2: El aviso en formats.md
+- [x] T2: El aviso en formats.md
   - files: docs/formats.md
   - ac: AC1
   - verify: pnpm lint
