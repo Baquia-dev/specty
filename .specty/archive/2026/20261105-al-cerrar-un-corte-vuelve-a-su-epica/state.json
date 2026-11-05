@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "id": "20261105-al-cerrar-un-corte-vuelve-a-su-epica",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-al-cerrar-un-corte-vuelve-a-su-epica",
+  "baseCommit": "5b6bc9668f16d343478ee1c07ef91711815bc550",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d837133e95695d7b3d00d657abf4b18fb545eee7176c59557a3e71a10354cd09",
+    "at": "2026-11-05T06:33:04.799Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bc1edee8b768f08f8b14850f1957b7c4712a26dc08cddc2952bc8bcbeb3f70f2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:80e03f4a8a4fbf30e2410bce47b6211a89dd8770ae06a23e2f29acba1207a1ab",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:cffbacb50b0af8bc46e9ad707394827d741be0a2e775ec9dc086b7eafbb3f8e6",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:0759baefee7754b1f4cb57e45290de6e37fa9f0cfa735dee1be083ddab2b8e5a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "a180efa9820341a516af5d77a1007ba41940424f",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:38:11.294Z",
+      "doneAt": "2026-11-05T06:39:14.381Z",
+      "summary": "leaveFolderNext acepta la épica a la que volver (id, carpeta, inMain, byName) y da el SIGUIENTE por herramienta: specty enter si es indirecta; en Claude Code, ExitWorktree con action keep y EnterWorktree por nombre o cambio de carpeta; specty next con la épica en la principal.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "8e7fb8f31f905760c34d456ee9f1f0410cf0c814",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:39:14.762Z",
+      "doneAt": "2026-11-05T06:47:27.055Z",
+      "summary": "returnToEpic (flow/epic.ts) liga de nuevo a la carpeta de la épica abierta la conversación ligada al corte que se cierra; landChange lo llama antes de borrar la carpeta y pone la épica, con byName, en left.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f19bd59b303e7fc2947901ed18c4b36cb1f6c7ad",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:47:27.417Z",
+      "doneAt": "2026-11-05T06:52:35.029Z",
+      "summary": "ARCHITECTURE §6 (paso 5 del cierre) y §10 (una sesión, una worktree) cuentan que close de un corte vuelve a ligar la conversación a su épica abierta y que su SIGUIENTE la nombra, por herramienta.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T06:58:39.682Z",
+  "lockedTests": {
+    "packages/core/test/cards/incorporation.test.ts": "sha256:6227366e89308c072166708bee95e5298e020d66bcedabc9f8b86417a20ce2cb",
+    "packages/cli/test/epic-return.test.ts": "sha256:a8d7f8d4452c4cd0e8f2ffcb6382488969926a9b4f9f91e1cf6875cfa109a259"
+  }
+}
