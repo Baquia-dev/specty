@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261105-la-lista-de-cambios-del-servidor-solo-da-los",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-la-lista-de-cambios-del-servidor-solo-da-los",
+  "baseCommit": "77ec35b2a1dc3c1654f7e75785c75d3b006542cd",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fc35104e0dd16a9d0a53969095c15c4dc47b7fda873aca1edf6867cbe53e3f91",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a3f06fc4504762fdd0041848dd287ac85dcaa7b4847f38600b05373efe862f7c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b9fb75a266d5354b4b110bc3d1de436ee3b41d0effd0840c00615fdc20e79a1e",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1878fdb3dfee6f67f55bc10ac5d1759e520a07e63cfe2477598a98b2b2de991c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:09f7958271de976c6cee243cfb6157d8f337a65b08defe8f92bd6404a9930209",
+    "at": "2026-11-05T14:27:28.213Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
