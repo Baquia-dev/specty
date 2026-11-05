@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "id": "20261105-verificaciones-con-menos-prioridad",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261105-verificaciones-con-menos-prioridad",
+  "baseCommit": "49e1f4666bbf0e028df657e03134aac4d7c94044",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0e5327d6b1510e6d4f7245959c97985a57edb236269a030c96e2dbc06b35b238",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:381fa55966194fc699fc0b706c30bf276fd7edb260cdef54d82d705464548a35",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:acf780f133eae6d8aace80b7648d0aa5d2f225fc299105395305b5d7f65c5391",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e266a654665384a350ec07e7350dd1afbd8c7e297b2cbe18cfd33d0faedd0c02",
+    "at": "2026-11-05T03:51:03.443Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
