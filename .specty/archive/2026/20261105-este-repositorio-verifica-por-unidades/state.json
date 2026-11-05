@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-este-repositorio-verifica-por-unidades",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-este-repositorio-verifica-por-unidades",
   "baseCommit": "9ed6ce9d9b5885c2d5ec1a74774fa65f91fa07f8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:59312d7bce0673b01da19678d6021015c78991337724a69c5092364e84b986d6",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a234f2c63cd30574b62afc81add5bb3e3b348e6e",
+      "attempts": 1,
       "startedAt": "2026-11-05T07:33:20.492Z",
       "doneAt": "2026-11-05T07:33:33.613Z",
-      "summary": "AGENTS.md, en Convenciones, dice que la verificación completa va por unidades y pide avisar a la persona para mantener sus paths al día"
+      "summary": "AGENTS.md, en Convenciones, dice que la verificación completa va por unidades y pide avisar a la persona para mantener sus paths al día",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,5 +68,6 @@
     "AC": 2,
     "T": 2,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-11-05T07:39:39.601Z"
 }

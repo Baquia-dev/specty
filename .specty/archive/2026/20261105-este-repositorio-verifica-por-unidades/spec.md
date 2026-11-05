@@ -57,3 +57,22 @@ Desde los cortes C1 y C2, la verificación completa ejecuta solo las unidades de
 ## Riesgos
 
 - R1: La unidad cli no lleva `LICENSE` ni `NOTICE`, que lee `bundle.test.ts`, y estático no lleva `.agents/hooks.json`, que revisa Biome — quedan como pendiente para la persona; cambian muy poco, y el CI lo ejecuta todo.
+
+## Cierre
+
+### Resumen
+
+Las unidades de este repositorio, que la persona escribió en `.specty/config.yaml`, tienen un test que las vigila: `packages/cli/test/repo-units.test.ts` las lee con `loadConfig`, como la CLI. AC1 acepta, en un repositorio temporal con esas unidades y comandos que solo marcan, dos cambios que solo tocan `packages/ui`, y comprueba que el segundo solo repite estático y ui y reutiliza los tests del CLI. AC2 comprueba que entre todas ejecutan los pasos de `pnpm check` y los tests de cada paquete de `packages/`. AGENTS.md, en Convenciones, pide mantener al día los `paths` de las unidades.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El test usa la huella y la aceptación reales, con los nombres, el orden y los `paths` de la configuración, pero con comandos que solo dejan una marca, para no ejecutar `pnpm check` dentro de un test.
+- Este cambio no toca `.specty/config.yaml`, que lo gestiona Specty y lo edita la persona: los huecos encontrados quedan como pendiente.
+
+### Pendientes
+
+- P141: añadir `LICENSE` y `NOTICE` a los `paths` de la unidad cli, y `.agents/hooks.json` a los de estático, en `.specty/config.yaml` (lo edita la persona).
