@@ -55,6 +55,34 @@ describe("the follow-ups of a closing that go to the memory", () => {
     expect(harvestable(items, EMPTY)).toEqual(["Ninguno pendiente de X, salvo Y."]);
   });
 
+  it("AC3: leave out a bullet whose first sentence says there are none, also with more after it", () => {
+    const items = [
+      "Ninguno nuevo.",
+      "Ninguno nuevo. C6 hará que `GET /api/changes` dé solo los abiertos.",
+      "No hay.",
+      "Nada pendiente",
+      "Ninguna más: lo demás quedó hecho.",
+      "**Ningún pendiente nuevo.**",
+      "Sin pendientes.",
+      "None.",
+      "None new: the rest is done.",
+      "Nothing new",
+      "Nothing pending.",
+    ];
+    expect(harvestable(items, EMPTY)).toEqual([]);
+  });
+
+  it("AC3: keep a bullet that only starts like one that says there are none", () => {
+    const items = [
+      "Ninguno, salvo revisar el guard.",
+      "No hay tests de la UI para la Memoria.",
+      "Nada más que probar el CLI de main.",
+      "Nothing checks the closing's size again.",
+      "None of the reminders fire on cancel: decide whether they should.",
+    ];
+    expect(harvestable(items, EMPTY)).toEqual(items);
+  });
+
   it("AC2: leave out the text of an open entry, and a bullet repeated", () => {
     const memory = {
       entries: [

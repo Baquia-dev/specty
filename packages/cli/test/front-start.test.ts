@@ -71,45 +71,42 @@ describe("the card with no active change and the fronts", () => {
     expect((await bash(root, "s1", "specty front take B")).code).toBe(0);
     const next = await cli(root, ["next"], inConversation("s1"));
     expect(memoryOf(next.out).slice(0, 3)).toEqual([
-      "Pendientes y mejoras abiertas: 5. Las primeras libres de tu frente, B, en su orden:",
+      "Las primeras entradas libres de tu frente, B, en su orden:",
       "P4 · pendiente · Cuatro",
       "P2 · pendiente · Dos",
     ]);
     for (const outside of ["P1", "P3", "P5"]) expect(next.out).not.toContain(`${outside} ·`);
+    expect(next.out).not.toContain("`specty memory`");
     // The guard knows the conversation by its event, as when the session starts.
     expect((await started(root, "s1")).out).toBe(next.out);
   });
 
-  it("AC2: leaves out the fronts another conversation holds, also when it cannot tell who asks", async () => {
+  it("AC1: gives the other conversations no entry, also when it cannot tell who asks", async () => {
     const root = await withEntries();
     await addFronts(root);
     expect((await bash(root, "s1", "specty front take B")).code).toBe(0);
     const other = await cli(root, ["next"], inConversation("s2"));
-    expect(memoryOf(other.out).slice(0, 5)).toEqual([
-      "Pendientes y mejoras abiertas: 5. Las primeras libres:",
-      "P1 · pendiente · Uno",
-      "P3 · pendiente · Tres",
-      "P5 · pendiente · Cinco",
-      "Las de los frentes con dueño (B) no salen aquí: `specty front` dice quién los lleva.",
-    ]);
+    expect(memoryOf(other.out)).toEqual([]);
+    for (const id of ["P1", "P2", "P3", "P4", "P5"]) expect(other.out).not.toContain(`${id} ·`);
+    expect(other.out).not.toContain("`specty front`");
     expect((await started(root, "s2")).out).toBe(other.out);
     expect((await cli(root, ["next"])).out).toBe(other.out);
     expect((await cli(root, ["next"], CLAUDE)).out).toBe(other.out);
   });
 
-  it("AC3: tells the conversation whose front has no free entry to ask the person", async () => {
+  it("AC1: tells the conversation whose front has no free entry to ask the person", async () => {
     const root = await withEntries();
     await addFronts(root);
     expect((await bash(root, "s1", "specty front take B")).code).toBe(0);
     expect((await bash(root, "s3", "specty front take docs")).code).toBe(0);
     const next = await cli(root, ["next"], inConversation("s3"));
-    expect(memoryOf(next.out)[0]).toBe(
-      "Pendientes y mejoras abiertas: 5; tu frente, docs, no tiene ninguna libre: pregúntale a la persona qué sigue.",
-    );
+    expect(memoryOf(next.out)).toEqual([
+      "Tu frente, docs, no tiene ninguna entrada libre: pregúntale a la persona qué sigue.",
+    ]);
     for (const id of ["P1", "P2", "P3", "P4", "P5"]) expect(next.out).not.toContain(`${id} ·`);
   });
 
-  it("AC4: is the card of before while no front has a live owner", async () => {
+  it("AC1: is the card of before while no front has a live owner", async () => {
     const root = await withEntries();
     const before = (await cli(root, ["next"], inConversation("s1"))).out;
     await addFronts(root);

@@ -6,6 +6,13 @@
   "branch": "specty/20261106-el-agente-solo-ve-y-reporta-los-pendientes-de",
   "baseCommit": "359335f804c6fe7e6dab489c92a0ba63ef54a00e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8d2cde1786185ebf7f88116d1350b3339b8dd6352e4b773871d99976a9a384f7",
+    "at": "2026-11-05T20:06:42.352Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -40,12 +47,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:8d2cde1786185ebf7f88116d1350b3339b8dd6352e4b773871d99976a9a384f7",
-    "at": "2026-11-05T20:06:42.352Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T20:12:06.901Z"
 }
