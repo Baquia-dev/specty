@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-core-da-el-resumen-de-un-cambio-y-la-ui-lo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-core-da-el-resumen-de-un-cambio-y-la-ui-lo",
   "baseCommit": "b2dce6ca9d365d5b073def7a6d271e98a05661f1",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:47333703f4c9472b7dcae3a6b19ec118916cddd706347fd0ff8ec51938b41578",
@@ -60,12 +60,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2fcedb62d7fc9ba5db55ee29bfe73b2261c22c53",
+      "attempts": 1,
       "startedAt": "2026-11-05T18:37:43.316Z",
       "doneAt": "2026-11-05T18:40:03.312Z",
-      "summary": "deriveView toma de summarizeChange de core el id, título, épica (con su id de título), cortes, fase, horas, tamaño, tareas y pestaña; se van TABS, timestampsOf, epicIn y slicesIn. initialTab y ChangeTab se reexportan desde core."
+      "summary": "deriveView toma de summarizeChange de core el id, título, épica (con su id de título), cortes, fase, horas, tamaño, tareas y pestaña; se van TABS, timestampsOf, epicIn y slicesIn. initialTab y ChangeTab se reexportan desde core.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,5 +77,6 @@
     "AC": 2,
     "T": 2,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-11-05T18:46:15.305Z"
 }
