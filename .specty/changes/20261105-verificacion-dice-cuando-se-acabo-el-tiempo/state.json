@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-verificacion-dice-cuando-se-acabo-el-tiempo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-verificacion-dice-cuando-se-acabo-el-tiempo",
   "baseCommit": "ba9d1a63c218f2d52a38f082a13bbff6bc20f9b7",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "851f974f0031f6535837d2849b16b548e83ad223",
+      "attempts": 1,
       "startedAt": "2026-11-05T07:23:56.412Z",
       "doneAt": "2026-11-05T07:25:01.684Z",
-      "summary": "runFull pasa la salida de cada comando por outputOf, que añade timedOutLine con verify.timeoutSec cuando exec lo cortó por tiempo, en verify.full y en cada unidad"
+      "summary": "runFull pasa la salida de cada comando por outputOf, que añade timedOutLine con verify.timeoutSec cuando exec lo cortó por tiempo, en verify.full y en cada unidad",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "162787c2da7f048d03dbec93c831dadc6da524f8",
+      "startedAt": "2026-11-05T07:25:02.036Z",
+      "doneAt": "2026-11-05T07:25:23.580Z",
+      "summary": "formats.md §6: qué dice la salida cuando verify.timeoutSec corta la verificación completa o una de sus unidades"
     }
   },
   "pending": {
