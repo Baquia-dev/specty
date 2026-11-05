@@ -55,7 +55,7 @@ Hoy la carpeta de un cambio cancelado se queda hasta que alguien ejecuta `specty
 
 ## Tareas
 
-- [ ] T1: Los textos de la carpeta de un cambio cancelado
+- [x] T1: Los textos de la carpeta de un cambio cancelado
   - files: packages/core/src/cards/close.ts, packages/core/src/cards/human.ts, packages/core/src/cards/index.ts, packages/core/test/cards/close.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/close.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

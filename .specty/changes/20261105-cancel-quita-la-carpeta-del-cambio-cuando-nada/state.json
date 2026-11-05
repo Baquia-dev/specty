@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "daadc6c26497cd7c4b6db359ce2cc0824416a3e3",
+      "startedAt": "2026-11-05T16:08:27.875Z",
+      "doneAt": "2026-11-05T16:12:38.246Z",
+      "summary": "cancelledFolderStaysLine (es/en) en cards/close.ts y la línea opcional de la carpeta en cancelledCard"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
