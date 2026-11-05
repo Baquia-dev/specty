@@ -215,6 +215,7 @@ export {
 } from "./memory/fronts";
 export { entriesForPaths } from "./memory/paths";
 export type { SessionView } from "./memory/sessions";
+export { similarEntries } from "./memory/similar";
 export { isDay, localDay, sessionEntries } from "./memory/triggers";
 export { pendingInMessage } from "./memory/turn-end";
 export {

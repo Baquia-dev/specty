@@ -65,7 +65,7 @@ Desde C1 un agente ya no ve los pendientes abiertos al empezar, así que puede v
 
 ## Tareas
 
-- [ ] T1: Las entradas abiertas que se parecen a una nueva
+- [x] T1: Las entradas abiertas que se parecen a una nueva
   - files: packages/core/src/memory/similar.ts, packages/core/src/index.ts, packages/core/test/memory/similar.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/similar.test.ts test/flow/duplicates.test.ts test/memory/claims.test.ts
