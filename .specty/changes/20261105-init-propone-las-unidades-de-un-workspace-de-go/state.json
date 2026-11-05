@@ -6,6 +6,13 @@
   "branch": "specty/20261105-init-propone-las-unidades-de-un-workspace-de-go",
   "baseCommit": "6c68190ea4eb28fdfeadfcaba7f8797b3aac1be8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0f61764ae88fae5983c68f706d1e0c9725d441de332de74bcc6709f93dbc50b1",
+    "at": "2026-11-05T13:32:33.231Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -51,12 +58,6 @@
     "T": 1,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:0f61764ae88fae5983c68f706d1e0c9725d441de332de74bcc6709f93dbc50b1",
-    "at": "2026-11-05T13:32:33.231Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T13:33:59.576Z"
 }
