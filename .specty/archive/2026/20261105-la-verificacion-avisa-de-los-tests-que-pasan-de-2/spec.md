@@ -91,3 +91,28 @@ Un test que tarda cada vez más pasa desapercibido hasta que la suite entera se 
 ## Riesgos
 
 - R1: El corte C1 también cambia `commands/accept.ts`, y su incorporación puede chocar con esta — cambios puntuales, y el conflicto se resuelve con `specty integrate`.
+
+## Cierre
+
+### Resumen
+
+`checks.testTime` (`reports` y `maxMs`, sin valores por defecto) activa la verificación `test-time`: tras los tests, lee los informes JUnit XML escritos durante la ejecución y avisa de cada test que pasa de `maxMs`, de mayor a menor tiempo, con su archivo, su nombre y su tiempo, sin hacer fallar `specty check`. El lector (`checks/junit.ts`) toma el archivo de `file`, del de su `<testsuite>` o de `classname`, lo deja relativo a la raíz y lo ancla a la carpeta del paquete del informe. La nota de la verificación completa de `accept` muestra los cinco más lentos y cuántos más hay, en español y en inglés.
+
+### Desviaciones
+
+- La spec se recortó antes de aprobarla (era XL): los tests lentos no se guardan en `change.verified` ni salen en la tarjeta de aceptación o en el resumen antes de aceptar; solo en la nota de la verificación de `accept`.
+- T1 pidió `cards/test-time.ts` y `cards/index.ts` (de T2): su `pnpm typecheck` compilaba los tests ya aprobados de T2, que importan esos textos. T2 quedó sin código propio.
+- T4 pidió `check/test-time.ts` (de T3) para exportar `slowTestsSince`, que T3 dejó sin exportar porque knip rechaza una exportación sin uso.
+- La aceptación incorporó main antes de su corrección 26f0facd (la coma final de `git.branchPerChange` en `.specty/config.yaml`), y la configuración de la carpeta del cambio dejó de ser válida: la persona llevó esa corrección a la carpeta del cambio.
+
+### Decisiones
+
+- Solo avisa, aunque su nivel sea `error`, como pedía la épica (A7).
+- Los informes se buscan con los patrones de `checks.coverage.reports` (`freshReports`, `folderChain` y `deepest`, que `check/coverage.ts` ahora exporta) en lugar de un buscador propio.
+
+### Pendientes
+
+- Activar `test-time` en este repositorio: `checks.testTime` en `.specty/config.yaml` (lo escribe la persona) y el informe JUnit de Vitest en cada paquete (P127).
+- `specty new` dejó una worktree y una rama a medias al fallar por `.git/config` bloqueado (P128).
+- `propose` podría avisar de una tarea que no es la última de código y ejecuta el typecheck completo bajo `contract` (P129).
+- Una configuración inválida que llega de main deja la worktree en closing sin salida (P131).
