@@ -1,44 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
-import { randomBytes, timingSafeEqual } from "node:crypto";
+import { randomBytes } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { extname, join, resolve, sep } from "node:path";
-import { notBuiltPage, type Output } from "@baquia-dev/specty-core";
-import { restore } from "../commands/restore";
-import { openChanges } from "../commands/status";
-import { isRecord, parseJson } from "../io/files";
-import type { Session } from "../session";
-import { readMemory } from "../store/memory";
+import { notBuiltPage } from "@baquia-dev/specty-core";
+import { act, readApi } from "./api";
 import {
-  delegationView,
-  memoryAction,
-  parseAction,
-  parseMemoryAction,
-  runAction,
-  setDelegation,
-} from "./actions";
-import { changeDiff, type DiffAnswer } from "./diff";
-import { type ChangeEvents, changeEvents } from "./events";
-import { finishedPage } from "./finished";
-import { changeRecord, openRecords } from "./records";
-import { changeRuns, type Runs } from "./runs";
-import { sessionsView } from "./sessions";
-import { changeTrace, traceReply } from "./trace";
-
-export interface ServerOptions {
-  readonly session: Session;
-  /** The first port to try, and up to 19 after it; 0 lets the system choose. */
-  readonly port: number;
-  /** The folder of the built UI; without one, a page explains how to build it. */
-  readonly ui: string | undefined;
-  /**
-   * The person may decide from the UI: only when they started the server themselves, since an
-   * agent that starts it sees the link.
-   */
-  readonly actions?: boolean;
-  /** Milliseconds between looks at the changes while someone listens to the events. */
-  readonly interval?: number;
-}
+  type Context,
+  isLocal,
+  JSON_TYPE,
+  SAFE,
+  type ServerOptions,
+  same,
+  send,
+  TEXT,
+} from "./context";
+import { changeEvents } from "./events";
+import { changeRuns } from "./runs";
 
 export interface UiServer {
   readonly port: number;
@@ -47,22 +25,7 @@ export interface UiServer {
   close(): Promise<void>;
 }
 
-interface Context extends ServerOptions {
-  readonly port: number;
-  readonly token: string;
-  /** Cookies of `localhost` reach every port: the name carries this one. */
-  readonly cookie: string;
-  /** Every action carries it in `X-Specty-CSRF`; `GET /api/session` gives it to the page. */
-  readonly csrf: string;
-  readonly events: ChangeEvents;
-  /** Runs the actions one at a time: the commands were not written to overlap. */
-  readonly serial: <T>(task: () => Promise<T>) => Promise<T>;
-  readonly runs: Runs;
-}
-
-const TEXT = "text/plain; charset=utf-8";
 const HTML = "text/html; charset=utf-8";
-const JSON_TYPE = "application/json; charset=utf-8";
 const TYPES: Readonly<Record<string, string>> = {
   ".html": HTML,
   ".js": "text/javascript; charset=utf-8",
@@ -73,13 +36,6 @@ const TYPES: Readonly<Record<string, string>> = {
   ".ico": "image/x-icon",
   ".woff2": "font/woff2",
   ".txt": TEXT,
-};
-/** Sent with every answer: no sniffing, no referrer with the link, no frames, no caching. */
-const SAFE = {
-  "X-Content-Type-Options": "nosniff",
-  "Referrer-Policy": "no-referrer",
-  "X-Frame-Options": "DENY",
-  "Cache-Control": "no-store",
 };
 /** Tells the UI it runs on this server, not on its sample data. */
 const MARKER = '<meta name="specty-data" content="server" />';
@@ -162,166 +118,6 @@ function signIn(response: ServerResponse, context: Context, token: string) {
   return response.end();
 }
 
-/** A read of the API: from this origin and with the session. */
-async function readApi(
-  request: IncomingMessage,
-  response: ServerResponse,
-  context: Context,
-  url: URL,
-) {
-  const origin = request.headers.origin;
-  const foreign = origin !== undefined && !isLocal(origin.replace(/^http:\/\//, ""), context.port);
-  if (foreign || !hasSession(request.headers.cookie, context))
-    return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
-  const view = VIEWS.get(url.pathname);
-  const answer = view === undefined ? undefined : await view(context.session, url.searchParams);
-  if (answer !== undefined) return send(response, 200, JSON_TYPE, JSON.stringify(answer));
-  if (url.pathname === "/api/events") return context.events.add(response);
-  if (url.pathname === "/api/session") {
-    const actions = context.actions === true;
-    return send(
-      response,
-      200,
-      JSON_TYPE,
-      JSON.stringify(actions ? { actions, csrf: context.csrf } : { actions }),
-    );
-  }
-  const one = /^\/api\/changes\/([^/]+)$/.exec(url.pathname)?.[1];
-  if (one !== undefined) return readRecord(response, context, one);
-  return readChange(response, context, url);
-}
-
-/** A read that looks at the session and the URL's parameters, and what it answers, as JSON. */
-type View = (session: Session, params: URLSearchParams) => Promise<unknown>;
-
-/** The reads that need nothing else: each path and its view. */
-const VIEWS: ReadonlyMap<string, View> = new Map<string, View>([
-  ["/api/changes", openRecords],
-  ["/api/changes/finished", finishedPage],
-  ["/api/delegation", delegationView],
-  ["/api/memory", memoryView],
-  ["/api/sessions", sessionsView],
-]);
-
-/**
- * `GET /api/memory` (ADR 0016): every entry of Specty's memory, and the open changes of every
- * worktree as `specty status` sees them, with who holds each one and whether it is an orphan.
- */
-async function memoryView(session: Session) {
-  const { entries } = await readMemory(session.git, session.config.memory.branch);
-  return { entries, changes: await openChanges(session) };
-}
-
-/** A change by its id, open or archived, as `changeRecords` gives it; 404 when there is none. */
-async function readRecord(response: ServerResponse, context: Context, id: string) {
-  const record = await changeRecord(context.session, decodeURIComponent(id));
-  return record === undefined
-    ? send(response, 404, JSON_TYPE, '{"error":"not found"}')
-    : send(response, 200, JSON_TYPE, JSON.stringify(record));
-}
-
-/** A change's verification going on, its traceability, or its diff, whole or of one task. */
-async function readChange(response: ServerResponse, context: Context, url: URL) {
-  const [, id, part] = /^\/api\/changes\/([^/]+)\/(diff|run|trace)$/.exec(url.pathname) ?? [];
-  if (id !== undefined && part === "trace") {
-    const path = url.searchParams.get("path") ?? undefined;
-    const reply = traceReply(await changeTrace(context.session, decodeURIComponent(id), path));
-    return send(response, reply.status, JSON_TYPE, reply.body);
-  }
-  if (id !== undefined && part === "run") {
-    const run = context.runs.current(decodeURIComponent(id)) ?? null;
-    return send(response, 200, JSON_TYPE, JSON.stringify(run));
-  }
-  if (id !== undefined) {
-    const task = url.searchParams.get("task") ?? undefined;
-    return sendDiff(response, await changeDiff(context.session, decodeURIComponent(id), task));
-  }
-  return send(response, 404, JSON_TYPE, '{"error":"not found"}');
-}
-
-/**
- * An action of the person: from this origin, with the session and, when the person started the
- * server, with its CSRF token. The answer is the command's output: 200 done, 409 refused.
- */
-async function act(
-  request: IncomingMessage,
-  response: ServerResponse,
-  context: Context,
-  pathname: string,
-) {
-  const refused = actionRefusal(request, context);
-  if (refused !== undefined) return send(response, 403, JSON_TYPE, refused);
-  const body = await readBody(request);
-  const bad = () => send(response, 400, JSON_TYPE, '{"error":"bad request"}');
-  const done = (output: Output) =>
-    send(response, output.status === "ok" ? 200 : 409, JSON_TYPE, JSON.stringify(output));
-  if (pathname === "/api/delegation") {
-    const on = isRecord(body) ? body.on : undefined;
-    if (typeof on !== "boolean") return bad();
-    return done(await context.serial(() => setDelegation(context.session, on)));
-  }
-  const memory = parseMemoryAction(pathname, body);
-  if (memory === "bad") return bad();
-  if (memory !== undefined)
-    return done(await context.serial(() => memoryAction(context.session, memory)));
-  const verify = /^\/api\/changes\/([^/]+)\/verify$/.exec(pathname)?.[1];
-  // Outside the queue: it takes minutes and changes no state, so the other actions go on.
-  if (verify !== undefined) return done(await context.runs.start(decodeURIComponent(verify)));
-  // A lost folder has no change folder to act in: `restore` finds the change from its branch.
-  const lost = /^\/api\/changes\/([^/]+)\/restore$/.exec(pathname)?.[1];
-  if (lost !== undefined) {
-    const id = decodeURIComponent(lost);
-    return done(await context.serial(() => restore(context.session, id)));
-  }
-  const parsed = parseAction(
-    pathname.split("/").filter((part) => part !== ""),
-    body,
-  );
-  if (parsed === undefined) return bad();
-  return done(await context.serial(() => runAction(context.session, parsed.id, parsed.action)));
-}
-
-/**
- * Why an action is refused, as the body of its 403: from another origin or without the session,
- * on a read-only server, or without the CSRF token.
- */
-function actionRefusal(request: IncomingMessage, context: Context): string | undefined {
-  const origin = request.headers.origin;
-  const here = origin !== undefined && isLocal(origin.replace(/^http:\/\//, ""), context.port);
-  if (!here || !hasSession(request.headers.cookie, context)) return '{"error":"forbidden"}';
-  if (context.actions !== true) return '{"error":"read-only"}';
-  const csrf = request.headers["x-specty-csrf"];
-  if (typeof csrf !== "string" || !same(csrf, context.csrf)) return '{"error":"forbidden"}';
-  return undefined;
-}
-
-/** A diff as text; without one, why: 404 no commits, 413 too large (with its range), 500 git. */
-function sendDiff(response: ServerResponse, answer: DiffAnswer) {
-  if (answer.kind === "diff") return send(response, 200, TEXT, answer.text);
-  if (answer.kind === "missing") return send(response, 404, JSON_TYPE, '{"error":"not found"}');
-  if (answer.kind === "too-large")
-    return send(
-      response,
-      413,
-      JSON_TYPE,
-      JSON.stringify({ error: "too large", range: answer.range }),
-    );
-  return send(response, 500, JSON_TYPE, '{"error":"git"}');
-}
-
-/** A JSON body of at most 64 KiB; anything else reads as nothing. */
-async function readBody(request: IncomingMessage): Promise<unknown> {
-  const parts: Buffer[] = [];
-  let size = 0;
-  for await (const chunk of request) {
-    const part = Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk));
-    size += part.length;
-    if (size > 65_536) return undefined;
-    parts.push(part);
-  }
-  return parseJson(Buffer.concat(parts).toString("utf8"));
-}
-
 /** The built UI's files; app routes, and `index.html` itself, get the marked `index.html`. */
 async function serveUi(response: ServerResponse, context: Context, pathname: string) {
   const { ui } = context;
@@ -340,27 +136,4 @@ async function serveUi(response: ServerResponse, context: Context, pathname: str
   return html === undefined
     ? send(response, 200, HTML, notBuiltPage(context.session.lang))
     : send(response, 200, HTML, html.replace("</head>", `${MARKER}</head>`));
-}
-
-function isLocal(host: string | undefined, port: number): boolean {
-  return host === `localhost:${port}` || host === `127.0.0.1:${port}`;
-}
-
-function hasSession(cookies: string | undefined, context: Context): boolean {
-  const value = (cookies ?? "")
-    .split(";")
-    .map((cookie) => cookie.trim().split("="))
-    .find(([name]) => name === context.cookie)?.[1];
-  return value !== undefined && same(value, context.token);
-}
-
-function same(given: string, expected: string): boolean {
-  const a = Buffer.from(given);
-  const b = Buffer.from(expected);
-  return a.length === b.length && timingSafeEqual(a, b);
-}
-
-function send(response: ServerResponse, status: number, type: string, body: string | Buffer) {
-  response.writeHead(status, { ...SAFE, "Content-Type": type });
-  response.end(body);
 }
