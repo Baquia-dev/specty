@@ -60,3 +60,26 @@ Al cerrar, el cierre que escribió el agente (la spec, el estado y el glosario) 
 ## Riesgos
 
 - R1: Cada cierre con main avanzado y algo sin commit deja un commit más en la historia — solo se hace cuando va a haber merge, y su asunto dice que es el cierre.
+
+## Cierre
+
+### Resumen
+
+`close` ya no se queda sin salida cuando el cierre sin commit toca un archivo que main también cambió (P133). Justo antes de fusionar main, si main cambió alguno de los archivos del cierre que aún no tienen commit (la carpeta del cambio y el glosario), `commitClosing` de `flow/finish.ts` hace con ellos un commit propio, `docs(spec): cierre de <título>`, con recibo de `close` y los trailers de una decisión. Sin conflicto, el merge entra y el cambio se cierra y llega a main (AC1). Con conflicto, el merge queda para el agente y `specty integrate`, como cualquier otro, y después `close` cierra (AC2). `absorbTarget` y `mergeTarget` admiten un `beforeMerge` que solo corre cuando hay merge, y `close` le pasa ese commit. El asunto está en español y en inglés (`closingCommitSubject`, AC3). ARCHITECTURE §9 lo documenta en el paso 2 de la incorporación.
+
+### Desviaciones
+
+- El commit del cierre solo se hace cuando main cambió alguno de sus archivos sin commit, y no siempre que haya algo sin commit (A1). Con la regla del plan, un conflicto en otro archivo movía HEAD, y `integrate.test.ts` comprueba que la rama queda como estaba. Así, además, no hay un commit de más cuando no hace falta.
+- El test de AC3 está en `packages/cli/test/close-shared-file.test.ts` y no en `packages/core/test/cards/close.test.ts`: la verificación aprobada encadena con `&&`, y el test de core no llegaba a ejecutarse mientras el del CLI estaba en rojo, así que el envío de los tests no lo aceptaba. El test de core queda como estaba.
+- El test bloqueado de AC2 esperaba «ejecuta `specty integrate`» en la salida de `close`, pero eso lo dice `specty next` al agente. Con S1, que aprobó la persona, la expectativa pasó a la tarjeta de `close` («dile a tu agente «continúa»») y a la de `next`.
+- La spec se aprobó con una sola tarea de 8 archivos, antes de dividirla en dos como sugería `propose`.
+
+### Decisiones
+
+- `beforeMerge` es un parámetro opcional de `absorbTarget` y `mergeTarget`, y no una condición sobre `close` dentro de `flow/integrate.ts`: así la incorporación no conoce el cierre, y `accept` no cambia.
+- Lo cambiado por main se mira con `git diff --name-only -z HEAD...<destino>`, y lo del cierre sin commit con `git diff` contra HEAD y `git ls-files --others`, todo con `-z`.
+
+### Pendientes
+
+- Un archivo sin commit fuera del cierre (como una corrección de `.specty/config.yaml` en la carpeta del cambio) que main también cambió sigue deteniendo el merge de `close` con «Merge with strategy ort failed». La salida podría nombrar esos archivos y pedir hacer su commit o descartarlos.
+- P146: la worktree y la rama huérfanas del primer `specty new` de este corte.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-close-incorpora-main-aunque-el-cierre-toque-lo-2",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-close-incorpora-main-aunque-el-cierre-toque-lo-2",
   "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:9ab42e551eb43563ff96a8766e59276aa699953fa9f6fcb61f5bc49f49db70d9",
@@ -43,14 +43,14 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/close-shared-file.test.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "034ddddc5272c8a796ff9ac57ab78e0113831392",
+      "attempts": 2,
       "startedAt": "2026-11-05T08:06:00.238Z",
       "doneAt": "2026-11-05T08:23:03.607Z",
-      "summary": "close hace el commit del cierre (carpeta del cambio y glosario) justo antes de incorporar main cuando main cambió alguno de sus archivos sin commit; asunto closingCommitSubject en es/en; ARCHITECTURE §9 lo documenta; corregida con S1 la expectativa del SIGUIENTE de close en el test de AC2"
+      "summary": "close hace el commit del cierre (carpeta del cambio y glosario) justo antes de incorporar main cuando main cambió alguno de sus archivos sin commit; asunto closingCommitSubject en es/en; ARCHITECTURE §9 lo documenta; corregida con S1 la expectativa del SIGUIENTE de close en el test de AC2",
+      "scopeExtra": [
+        "packages/cli/test/close-shared-file.test.ts"
+      ]
     }
   },
   "pending": {
@@ -64,6 +64,7 @@
     "R": 1,
     "S": 1
   },
+  "closingSubmittedAt": "2026-11-05T08:50:55.131Z",
   "lockedTests": {
     "packages/cli/test/close-shared-file.test.ts": "sha256:9276046d2978a86c313cfb2ab030c41b25a6f59f96a8951f504579537312617d"
   }
