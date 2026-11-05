@@ -94,3 +94,24 @@ Hoy cada sesión empieza con «Pendientes y mejoras abiertas: 72. Las primeras l
 
 - R1: Sin ver los pendientes abiertos, un agente puede volver a anotar uno que ya existe — el freno de parecidos del corte C3.
 - R2: Una viñeta real que empieza como las de «no hay ninguno» se perdería — solo cuenta la primera frase entera, hasta «.» o «:», y solo si está en la lista cerrada: «Ninguno, salvo Y» o «Ninguno pendiente de X» se guardan.
+
+## Cierre
+
+### Resumen
+
+La tarjeta de inicio de una sesión y la de `next` sin cambio activo ya no listan ni cuentan los pendientes y las mejoras abiertos, ni remiten a `specty memory`. Mantienen los recordatorios y, si la conversación lleva un frente, las tres primeras entradas libres de ese frente. La última regla del bloque de AGENTS.md pide responder de forma directa y concisa en cada mensaje. En el reporte final, solo los pendientes del trabajo de la sesión y, de los demás, los que ese trabajo resolvió, en español y en inglés. El cierre ya no guarda las viñetas de «Pendientes» cuya primera frase dice que no hay ninguno («Ninguno nuevo.», «No hay.», «None.», también con una explicación tras «.» o «:»). Así resuelve P74, la viñeta «Ninguno nuevo.» que se guardaba como pendiente. formats.md, ARCHITECTURE §6 y el ADR 0016 cuentan qué pendientes ve cada sesión.
+
+### Desviaciones
+
+- Revisión 2: la verificación completa de `accept` falló en `packages/cli/test/setup.test.ts`, que esperaba un pendiente en la tarjeta de inicio y se escapó del alcance aprobado. El ajuste añadió T5 (`type: test`), que lo comprueba con un recordatorio.
+- Bajo carga (carga media 87), `accept-turn-time.test.ts` AC4 falló una vez de forma intermitente. Pasó solo y al repetir la verificación con `integrate`.
+
+### Decisiones
+
+- La regla de respuestas directas y concisas va en la misma viñeta que el reporte final, la última del bloque, para que el bloque siga en 15 líneas y 5 reglas (A2). El AGENTS.md de este repositorio la recibe cuando la persona ejecuta `specty init`.
+- Una viñeta dice que no hay ninguno solo si su primera frase entera, sin mayúsculas, tildes ni énfasis, está en una lista cerrada en español y en inglés. «Ninguno, salvo Y» y «Ninguno pendiente de X» se siguen guardando.
+- Los verify de T2 y T3 se ordenaron para que el rojo de la fase de tests nombrara cada archivo de test: el reporter de Vitest solo nombra los archivos que fallan.
+
+### Pendientes
+
+- Ninguno nuevo.
