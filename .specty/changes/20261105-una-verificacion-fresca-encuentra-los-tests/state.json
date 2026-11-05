@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-una-verificacion-fresca-encuentra-los-tests",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-una-verificacion-fresca-encuentra-los-tests",
   "baseCommit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
   "revision": 1,
@@ -59,6 +59,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T06:29:33.485Z"
+  "lockedTests": {
+    "packages/cli/test/verify-fresh.test.ts": "sha256:b567d95043f013b9b7876802d0e29686c7576904099de5c2cd7e899025b3f4b9",
+    "packages/core/test/cards/fresh.test.ts": "sha256:f83baa1a3da3ec0501f02d529e3c311143da0e07641cdd7f54fa5a473eaa8f3d"
+  }
 }
