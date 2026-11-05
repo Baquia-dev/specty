@@ -65,7 +65,7 @@ Un servidor de `specty ui` arrancado con un CLI más viejo que el que escribió 
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/inbox/inbox-row.ts, packages/ui/src/change/change-page.ts, packages/ui/src/change/unreadable-config.test.ts
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/unreadable-config.test.ts && pnpm typecheck && pnpm lint
-- [ ] T3: ARCHITECTURE cuenta el cambio cuya configuración no se lee
+- [x] T3: ARCHITECTURE cuenta el cambio cuya configuración no se lee
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: grep -q "configIssues" docs/ARCHITECTURE.md

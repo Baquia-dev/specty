@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-servidor-muestra-el-cambio-cuya",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-el-servidor-muestra-el-cambio-cuya",
   "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d1c5c9cd8c27cf90d9442b9e1ab0c0d6ae85c355",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:40:45.705Z",
       "doneAt": "2026-11-05T16:44:04.877Z",
-      "summary": "La fila de la Bandeja lleva la marca «Su configuración no se pudo leer» y la cabecera de la página dice cómo seguir (reiniciar specty ui o corregirla) y cita cada error; configIssues pasa del registro a la vista."
+      "summary": "La fila de la Bandeja lleva la marca «Su configuración no se pudo leer» y la cabecera de la página dice cómo seguir (reiniciar specty ui o corregirla) y cita cada error; configIssues pasa del registro a la vista.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "89f90134d66ccbfb684d3719f47af56a96704924",
+      "startedAt": "2026-11-05T16:44:05.238Z",
+      "doneAt": "2026-11-05T16:49:17.232Z",
+      "summary": "ARCHITECTURE §15 cuenta el cambio de una worktree cuya configuración no se lee: dónde va en la lista, qué lleva (configIssues) y qué muestran la Bandeja y su página; y la configuración de cada worktree en la firma de /api/events."
     }
   },
   "pending": {
