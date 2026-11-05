@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { exists } from "../src/io/files";
 import { createGit, openRepository } from "../src/io/git";
 import { mayChangeRecalled, RECENT_MS } from "../src/io/git-memo";
+import { call, serving } from "./server/support";
 import { CONFIG, cli, git, tempRepo, testEnv } from "./support";
 
 /** A repository, with a source folder, and a worktree of it. */
@@ -228,6 +229,31 @@ describe("the reads that depend only on refs", () => {
     expect((await repo.run(["rev-parse", "--verify", "-q", "refs/heads/nueva"])).code).not.toBe(0);
     await repo.run(["update-ref", "refs/heads/nueva", "HEAD"]);
     expect((await repo.run(["rev-parse", "--verify", "-q", "refs/heads/nueva"])).code).toBe(0);
+  });
+
+  it("AC6: forgetting what it recalls makes the next read ask git again", async () => {
+    const { root } = await withWorktree();
+    const trace = await traceFile();
+    const repo = createGit(root, testEnv({ GIT_TRACE: trace }));
+    await repo.run(["log", "-n", "1", "--format=%h"]);
+    repo.forget();
+    await repo.run(["log", "-n", "1", "--format=%h"]);
+    expect(await traced(trace, "log")).toHaveLength(2);
+  });
+
+  it("AC6: the local server answers each request with what git says then, after another process wrote", async () => {
+    const { root, server, headers } = await serving();
+    try {
+      const before = JSON.parse((await call(server.port, "/api/memory", headers)).body);
+      expect(before.entries).toEqual([]);
+      expect((await cli(root, ["memory", "add", "Una nota desde otra sesión"])).code).toBe(0);
+      const after = JSON.parse((await call(server.port, "/api/memory", headers)).body);
+      expect(after.entries.map((entry: { text: string }) => entry.text)).toEqual([
+        "Una nota desde otra sesión",
+      ]);
+    } finally {
+      await server.close();
+    }
   });
 
   it("AC4: a read of a path of the index, or with its own environment, is asked each time", async () => {
