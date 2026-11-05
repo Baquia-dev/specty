@@ -51,7 +51,7 @@ Cada fila de la Bandeja dice cuánto lleva un cambio en curso desde que empezó 
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
   - type: feat
-- [ ] T2: Los tiempos de cada fila de la Bandeja
+- [x] T2: Los tiempos de cada fila de la Bandeja
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-row.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-row.test.ts --include src/inbox/inbox.test.ts --include src/data/progress.test.ts && pnpm typecheck && pnpm lint && pnpm knip

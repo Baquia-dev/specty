@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "08e293a2f15d058c1eb059dabcc6004fc6ce2472",
+      "attempts": 1,
       "startedAt": "2026-11-05T11:47:30.172Z",
       "doneAt": "2026-11-05T11:48:17.394Z",
-      "summary": "formatDuration dice una duración de un día o más en días y horas, redondeada a la hora («1 d», «2 d 3 h»); por debajo de un día no cambia."
+      "summary": "formatDuration dice una duración de un día o más en días y horas, redondeada a la hora («1 d», «2 d 3 h»); por debajo de un día no cambia.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1f96a9d3e512b8d12e63b549a8456a79f52ff924",
+      "startedAt": "2026-11-05T11:48:17.671Z",
+      "doneAt": "2026-11-05T11:49:24.484Z",
+      "summary": "La fila de la Bandeja dice, de un cambio abierto, «Empezó hace…» y «En esta fase: …» con el reloj de la página, y de uno terminado, «Empezó el 3 nov, 14:05» (con el año si no es el del reloj) y «Tardó …», en español e inglés; se quitan el reloj fijo effectiveNow y totalTime."
     }
   },
   "pending": {
