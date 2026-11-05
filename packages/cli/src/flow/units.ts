@@ -1,4 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
+
+import { readdir } from "node:fs/promises";
+import { join } from "node:path";
 import {
   hashText,
   isGoverned,
@@ -8,7 +11,7 @@ import {
   type VerifyUnit,
 } from "@baquia-dev/specty-core";
 import { type ExecResult, tail } from "../io/exec";
-import { exists, writeText } from "../io/files";
+import { exists, isRecord, parseJson, readText, remove, writeText } from "../io/files";
 import type { Session } from "../session";
 import { oneAtATime, unitsCommand } from "./full-verification";
 import { runLive } from "./live-run";
@@ -19,6 +22,9 @@ import { workingFiles } from "./verified";
  * by every worktree.
  */
 const RECORD = "common/specty/verified";
+
+/** How long a unit stays in the record: `specty prune` removes those recorded before. */
+export const RECORD_DAYS = 30;
 
 /** A unit with the fingerprint of the code it reads; none when git cannot tell, and then it runs. */
 export interface Printed {
@@ -184,3 +190,25 @@ export async function record(
 
 const recordPath = (session: Session, print: string) =>
   session.git.gitPath(`${RECORD}/${print.replace(/^sha256:/, "")}.json`);
+
+/**
+ * Removes from the clone's record the units recorded more than `RECORD_DAYS` ago, and those that
+ * do not say when, and says how many it removed: one that passes again is recorded again.
+ */
+export async function pruneRecord(session: Session): Promise<number> {
+  const folder = await session.git.gitPath(RECORD);
+  const names = await readdir(folder).catch((): string[] => []);
+  const limit = session.environment.now().getTime() - RECORD_DAYS * 24 * 60 * 60 * 1000;
+  const old = await Promise.all(
+    names
+      .filter((name) => name.endsWith(".json"))
+      .map(async (name) => {
+        const entry = parseJson(await readText(join(folder, name)));
+        const at = isRecord(entry) && typeof entry.at === "string" ? Date.parse(entry.at) : NaN;
+        return Number.isNaN(at) || at < limit ? [name] : [];
+      }),
+  );
+  const gone = old.flat();
+  await Promise.all(gone.map((name) => remove(join(folder, name))));
+  return gone.length;
+}

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
-import { headerOf, type Output, section } from "../output";
-import { translator } from "./text";
+import { headerOf, type Output, type OutputBlock, section } from "../output";
+import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
 // Working in parallel, a worktree per change: files another open change also lists, preparing a
@@ -60,17 +60,17 @@ export function pruneCard(
     readonly activity?: number;
     /** The changes, no longer open, whose messages it removed. */
     readonly messages?: readonly string[];
+    /** How many units it removed from the record of those that passed, older than `days`. */
+    readonly units?: { readonly removed: number; readonly days: number };
   },
   ctx: CardContext,
 ): Output {
   const t = translator(ctx.lang);
   const activity = pruned.activity ?? 0;
   const messages = pruned.messages ?? [];
-  const nothing =
-    pruned.folders.length === 0 &&
-    pruned.branches.length === 0 &&
-    activity === 0 &&
-    messages.length === 0;
+  const { removed = 0, days = 0 } = pruned.units ?? {};
+  const counts = [pruned.folders.length, pruned.branches.length, activity, messages.length];
+  const nothing = [...counts, removed].every((count) => count === 0);
   return {
     status: "ok",
     header: headerOf(t("limpieza", "cleanup")),
@@ -81,18 +81,7 @@ export function pruneCard(
       ),
       ...section(t("CARPETAS BORRADAS", "FOLDERS REMOVED"), pruned.folders),
       ...section(t("RAMAS BORRADAS", "BRANCHES DELETED"), pruned.branches),
-      ...section(
-        t("ACTIVIDAD BORRADA", "ACTIVITY REMOVED"),
-        activity === 0
-          ? []
-          : [
-              t(
-                `Registros de conversaciones que ya no trabajan: ${activity}.`,
-                `Records of conversations that no longer work: ${activity}.`,
-              ),
-            ],
-      ),
-      ...section(t("MENSAJES BORRADOS", "MESSAGES REMOVED"), messages),
+      ...recordSections(activity, messages, { removed, days }, t),
       ...section(t("QUEDAN", "KEPT"), pruned.kept),
     ],
     next: t(
@@ -100,4 +89,40 @@ export function pruneCard(
       `for another change, \`${ctx.command} new "<title>"\`.`,
     ),
   };
+}
+
+/**
+ * What `prune` removed of Specty's own records: the activity of conversations, the messages and
+ * the units of the record of those that passed.
+ */
+function recordSections(
+  activity: number,
+  messages: readonly string[],
+  { removed, days }: { readonly removed: number; readonly days: number },
+  t: Translate,
+): OutputBlock[] {
+  return [
+    ...counted(
+      activity,
+      t("ACTIVIDAD BORRADA", "ACTIVITY REMOVED"),
+      t(
+        `Registros de conversaciones que ya no trabajan: ${activity}.`,
+        `Records of conversations that no longer work: ${activity}.`,
+      ),
+    ),
+    ...section(t("MENSAJES BORRADOS", "MESSAGES REMOVED"), messages),
+    ...counted(
+      removed,
+      t("UNIDADES BORRADAS DEL REGISTRO", "UNITS REMOVED FROM THE RECORD"),
+      t(
+        `Anotadas hace más de ${days} días: ${removed}.`,
+        `Recorded more than ${days} days ago: ${removed}.`,
+      ),
+    ),
+  ];
+}
+
+/** A section with the line that counts what went, or none when nothing did. */
+function counted(count: number, title: string, line: string): OutputBlock[] {
+  return section(title, count === 0 ? [] : [line]);
 }
