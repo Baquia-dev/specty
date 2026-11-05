@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "id": "20261105-los-tests-de-vscode-la-ui-y-evals-escriben-su",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261105-los-tests-de-vscode-la-ui-y-evals-escriben-su",
+  "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c3c87e3d54b3f79735e971987d74140948ea36bf82fc07b5bc5cd2893b862578",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:2ef75339a74aac97a7ac56fdb96b16ac07fb38655a454f707b308b973f7ed0a0",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8dcabfbf0695575b1d84dcdd4a9ef51cc0f5b8ec8db3e1499d34e53d98b61707",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:32f292c73f5e523269d2145839025e62743f28c5a702447c03cb487d5048a786",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:ef57a0b7786f1e03a8c8933ff3b2ff428752cea419ade1be060b2a4885f2e42d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 1,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:af495221ee1106704c8d8d50be4c2fe198c5fa012a8ef1552f0e87573522179c",
+    "at": "2026-11-05T08:36:56.492Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
