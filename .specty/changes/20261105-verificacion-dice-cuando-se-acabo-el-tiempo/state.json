@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-verificacion-dice-cuando-se-acabo-el-tiempo",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-verificacion-dice-cuando-se-acabo-el-tiempo",
   "baseCommit": "ba9d1a63c218f2d52a38f082a13bbff6bc20f9b7",
   "revision": 1,
@@ -47,6 +47,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T07:23:16.860Z"
+  "lockedTests": {
+    "packages/core/test/cards/units.test.ts": "sha256:c5b01fabf3c5210e38d5676d063a1e03fc4c365a9bc578b4ff1e7a9e5a49611f",
+    "packages/cli/test/verify-timeout.test.ts": "sha256:4cd0bfb56e7ceefb2638e15e254030fcf49ad65ec56c5b8dee2f434fc1505cbd"
+  }
 }
