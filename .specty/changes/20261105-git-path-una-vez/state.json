@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "20261105-git-path-una-vez",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261105-git-path-una-vez",
+  "baseCommit": "1cadd35299cf53814dcbec4059cac168b812fe41",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:de1144e796453aa5c0adb534fd0352cd14d982dfc4c92e21c2d7db9e63b057a7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:030ba63513f72d9c4ce9419e91d9a34e0c368782ee48a64f2d0474014e608d16",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:d07ababb0e2e2139bca81235cecb54606b7aa83d94f0c50c1eeb49941ab53ce7",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:0ebc6ce2f7a786294de7ef618d8adec2e0b37738ba54fdbe9d7686552a25d146",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6bdc60f70cf26d07f988d2b2e59490b492eeda0a736a384b99b1e7b2e04a3929",
+    "at": "2026-11-05T02:53:43.730Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
