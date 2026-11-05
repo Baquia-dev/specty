@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261105-la-documentacion-de-las-unidades-propuestas-en",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-documentacion-de-las-unidades-propuestas-en",
   "baseCommit": "1b32aba58736b6cca431e5e4a0577649ff352138",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:78aca7423f1019487c9d1248df3eaa76f23721b78d78a605a402289adb8cd1e6",
+    "at": "2026-11-05T14:42:11.761Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -24,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cbf3fbe26488ec8b1c2085867d3e40c2966bf568",
+      "startedAt": "2026-11-05T14:42:12.321Z",
+      "doneAt": "2026-11-05T14:48:04.789Z",
+      "summary": "formats.md §6 lista los seis workspaces que reciben la propuesta de unidades, en el orden en que se prueban, con lo que cuenta como paquete con tests, su comando, de qué depende y los archivos de la raíz que comparten; ARCHITECTURE §9 nombra cada detector, DETECTORS y cuándo no hay propuesta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -33,12 +50,5 @@
     "A": 2,
     "AC": 7,
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:78aca7423f1019487c9d1248df3eaa76f23721b78d78a605a402289adb8cd1e6",
-    "at": "2026-11-05T14:42:11.761Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

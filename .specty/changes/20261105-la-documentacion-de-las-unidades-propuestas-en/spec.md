@@ -37,7 +37,7 @@ Desde C1–C6, `specty init` propone las unidades de `verify.units` en los works
 
 ## Tareas
 
-- [ ] T1: La documentación de las unidades propuestas en cada workspace
+- [x] T1: La documentación de las unidades propuestas en cada workspace
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC7
   - verify: pnpm lint
