@@ -44,7 +44,7 @@ Hoy `proposeUnits` arma el comando de los tests de cada paquete con el gestor de
 
 ## Tareas
 
-- [ ] T1: Cada paquete puede traer su comando de tests
+- [x] T1: Cada paquete puede traer su comando de tests
   - files: packages/core/src/units-proposal.ts, packages/core/test/units-proposal.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/units-proposal.test.ts
