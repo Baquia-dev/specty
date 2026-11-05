@@ -74,7 +74,7 @@ La página de un cambio hoy lo busca solo entre los que cargó la Bandeja, y si 
   - files: packages/ui/src/data/changes-store.ts, packages/ui/src/change/change-page.ts, packages/ui/src/data/changes-store.test.ts, packages/ui/src/data/fixtures.test.ts, packages/ui/src/change/change-page.unloaded.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/changes-store.test.ts --include src/data/fixtures.test.ts --include src/change/change-page.unloaded.test.ts --include src/change/change-page.test.ts && pnpm typecheck
-- [ ] T4: ARCHITECTURE cuenta la lectura de un cambio por su id
+- [x] T4: ARCHITECTURE cuenta la lectura de un cambio por su id
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: grep -q "da el registro de un cambio" docs/ARCHITECTURE.md
