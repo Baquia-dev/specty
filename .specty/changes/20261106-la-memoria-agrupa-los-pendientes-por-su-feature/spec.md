@@ -90,7 +90,7 @@ En la página Memoria, «Pendientes y mejoras» es hoy una lista por fecha, y pa
   - files: packages/ui/src/memory/memory-group.ts, packages/ui/src/memory/memory-page.ts, packages/ui/src/data/sample-memory.ts, packages/ui/src/memory/memory-group.test.ts
   - ac: AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-group.test.ts --include src/memory/memory-page.test.ts --include src/memory/memory-actions.test.ts && pnpm typecheck
-- [ ] T4: ARCHITECTURE y ui.md cuentan los grupos de la Memoria
+- [x] T4: ARCHITECTURE y ui.md cuentan los grupos de la Memoria
   - files: docs/ARCHITECTURE.md, docs/ui.md
   - ac: —
   - verify: grep -q "entries, changes, origins" docs/ARCHITECTURE.md && grep -q "Sin feature" docs/ui.md

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-memoria-agrupa-los-pendientes-por-su-feature",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-la-memoria-agrupa-los-pendientes-por-su-feature",
   "baseCommit": "359335f804c6fe7e6dab489c92a0ba63ef54a00e",
   "revision": 2,
@@ -70,12 +70,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "49d0894a785b19a4fc72a5ed94ca2f9fb74da38a",
+      "attempts": 1,
       "startedAt": "2026-11-05T20:24:42.943Z",
       "doneAt": "2026-11-05T20:29:55.037Z",
-      "summary": "sp-memory-group (memory-group.ts) pinta cada grupo con su cabecera (fase, título con enlace e insignia) y sus filas sangradas, la épica en un bloque con sus cortes; la página usa la fila de entrada como plantilla, y el prototipo da origins"
+      "summary": "sp-memory-group (memory-group.ts) pinta cada grupo con su cabecera (fase, título con enlace e insignia) y sus filas sangradas, la épica en un bloque con sus cortes; la página usa la fila de entrada como plantilla, y el prototipo da origins",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dbc3a0a5bbf42029b281e5b7838d2df71b3647ea",
+      "startedAt": "2026-11-05T20:29:55.367Z",
+      "doneAt": "2026-11-05T20:35:30.227Z",
+      "summary": "ARCHITECTURE §15 cuenta origins en GET /api/memory y la Memoria por grupos; docs/ui.md tiene una sección Memoria con los grupos por feature y épica, su orden y la búsqueda"
     }
   },
   "pending": {
