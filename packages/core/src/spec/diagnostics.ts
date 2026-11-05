@@ -42,6 +42,7 @@ export type DiagnosticCode =
   | "slice-horizontal"
   | "quick-limits"
   | "split-required"
+  | "slice-split-required"
   | "done-task-changed"
   | "closing-outside"
   | "closing-premature"

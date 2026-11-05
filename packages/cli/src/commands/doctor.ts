@@ -73,7 +73,7 @@ async function toolLines(session: Session): Promise<{
   const tools = (await detectProject(root, "")).tools;
   for (const agent of Object.values(ADAPTERS)) {
     if (!tools.includes(agent.tool)) continue;
-    const lines = await agent.doctor(root, git);
+    const lines = await agent.doctor(root, git, session.environment.env);
     ok.push(...lines.ok);
     problems.push(...lines.problems);
   }

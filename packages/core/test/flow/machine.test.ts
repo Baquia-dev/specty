@@ -86,7 +86,13 @@ const TABLE: Readonly<Record<FlowEventType, Row>> = {
       implementing: { epic: "kind-not-allowed", retro: "kind-not-allowed", other: "implementing" },
     },
   },
-  adjust: { actors: ["agent", "human"], next: { acceptance: "adjusting" } },
+  adjust: {
+    actors: ["agent", "human"],
+    next: {
+      implementing: { epic: "adjusting", other: "kind-not-allowed" },
+      acceptance: "adjusting",
+    },
+  },
   accept: { actors: ["human"], next: { acceptance: { quick: "done", other: "closing" } } },
   confirmClose: { actors: ["human"], next: { closing: "done" } },
   childrenDone: {
@@ -185,6 +191,25 @@ describe("transition", () => {
         ok: false,
         code: "actor-not-allowed",
       });
+    }
+  });
+
+  it("AC1: adjusts an epic while its slices are implemented, without granting permissions", () => {
+    for (const actor of ["agent", "human"] as const) {
+      expect(
+        transition({ phase: "implementing", kind: "epic", actor, event: { type: "adjust" } }),
+        actor,
+      ).toEqual({ ok: true, phase: "adjusting" });
+    }
+    expect(EVENT_RULES.adjust.grantsPermission).toBe(false);
+  });
+
+  it("AC3: refuses to adjust any other change while it is implemented", () => {
+    for (const kind of ["standard", "quick", "spike", "retro"] as const) {
+      expect(
+        transition({ phase: "implementing", kind, actor: "agent", event: { type: "adjust" } }),
+        kind,
+      ).toEqual({ ok: false, code: "kind-not-allowed" });
     }
   });
 

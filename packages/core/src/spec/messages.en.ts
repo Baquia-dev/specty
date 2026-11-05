@@ -74,6 +74,8 @@ export const MESSAGES_EN: MessageCatalog = {
     `The change does not fit the quick lane (${v(p, "detail")}); use \`kind: standard\`.`,
   "split-required": (p) =>
     `The change is too large (${v(p, "detail")}); split it into an epic with vertical slices, or into a spike if the problem is uncertainty.`,
+  "slice-split-required": (p) =>
+    `The slice is too large (${v(p, "detail")}) and a slice cannot be an epic: narrow it to what fits in one change and take the rest to new slices of epic ${v(p, "epic")}, which is adjusted in its folder while it is implemented (\`adjust\`, the new slices in "Slices" with their \`depends\`, and \`propose\`); the person approves it again.`,
   "done-task-changed": (p) =>
     `${v(p, "id")} is already done and cannot be modified or removed; add a new task.`,
   "closing-outside": (p) =>

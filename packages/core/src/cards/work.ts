@@ -136,34 +136,67 @@ export function adjustingCard(change: ChangeView, ctx: CardContext): Output {
         t("PETICIÓN", "REQUEST"),
         change.adjustment === undefined ? [] : [change.adjustment],
       ),
-      ...section(t("CÓMO CLASIFICARLA", "HOW TO CLASSIFY IT"), [
-        t(
-          "Defecto (incumple un criterio): añade una tarea `type: fix` que lo referencie en `ac`.",
-          "Defect (a criterion is not met): add a `type: fix` task that references it in `ac`.",
-        ),
-        t(
-          "Fallo solo de tipos, lint o formato, sin cambiar lo que hace el código: añade una tarea `type: refactor` con `ac: —` y el comando que falló en su `verify`; no necesita un test en rojo.",
-          "A types, lint or format failure alone, which does not change what the code does: add a `type: refactor` task with `ac: —` and the failed command in its `verify`; it needs no red test.",
-        ),
-        t(
-          "Refinamiento (cambia un detalle de un criterio): ajusta el criterio y añade una tarea.",
-          "Refinement (a detail of a criterion changes): adjust the criterion and add a task.",
-        ),
-        t(
-          "Alcance nuevo (ningún criterio lo cubre o choca con «Fuera de alcance»): no edites la spec; explícaselo al usuario y propón un cambio de seguimiento.",
-          'New scope (no criterion covers it, or it contradicts "Out of scope"): do not edit the spec; explain it to the user and suggest a follow-up change.',
-        ),
-        t(
-          "No modifiques ni borres tareas completadas; usa ids nuevos.",
-          "Do not modify or remove done tasks; use new ids.",
-        ),
-      ]),
+      ...(change.kind === "epic"
+        ? section(t("CÓMO AJUSTAR LA ÉPICA", "HOW TO ADJUST THE EPIC"), epicAdjustingLines(ctx))
+        : classifyingBlocks(ctx)),
     ],
     next: t(
       `edita ${change.specPath} y ejecuta \`${ctx.command} propose\`.`,
       `edit ${change.specPath} and run \`${ctx.command} propose\`.`,
     ),
   };
+}
+
+/** An epic has no tasks: it is adjusted through its slices, even while they are implemented. */
+function epicAdjustingLines(ctx: CardContext): string[] {
+  const t = translator(ctx.lang);
+  return [
+    t(
+      "Un corte que sale demasiado grande: estréchalo a lo que cabe en un cambio (su título y su `ac` en «Cortes», y su propia spec en su carpeta si ya empezó) y añade el resto como cortes nuevos, con ids nuevos, su `ac` y su `depends`.",
+      'A slice that comes out too large: narrow it to what fits in one change (its title and `ac` in "Slices", and its own spec in its folder if it already started) and add the rest as new slices, with new ids, their `ac` and their `depends`.',
+    ),
+    t(
+      "Algo que falta o no se cumple: añade un corte nuevo que lo cubra, con su `ac` y su `depends`.",
+      "Something missing or not met: add a new slice that covers it, with its `ac` and its `depends`.",
+    ),
+    newScopeLine(ctx),
+    t(
+      "No cambies ni borres los cortes cerrados; usa ids nuevos.",
+      "Do not modify or remove closed slices; use new ids.",
+    ),
+  ];
+}
+
+/** How the agent classifies an adjustment of a change with tasks. */
+function classifyingBlocks(ctx: CardContext) {
+  const t = translator(ctx.lang);
+  return section(t("CÓMO CLASIFICARLA", "HOW TO CLASSIFY IT"), [
+    t(
+      "Defecto (incumple un criterio): añade una tarea `type: fix` que lo referencie en `ac`.",
+      "Defect (a criterion is not met): add a `type: fix` task that references it in `ac`.",
+    ),
+    t(
+      "Fallo solo de tipos, lint o formato, sin cambiar lo que hace el código: añade una tarea `type: refactor` con `ac: —` y el comando que falló en su `verify`; no necesita un test en rojo.",
+      "A types, lint or format failure alone, which does not change what the code does: add a `type: refactor` task with `ac: —` and the failed command in its `verify`; it needs no red test.",
+    ),
+    t(
+      "Refinamiento (cambia un detalle de un criterio): ajusta el criterio y añade una tarea.",
+      "Refinement (a detail of a criterion changes): adjust the criterion and add a task.",
+    ),
+    newScopeLine(ctx),
+    t(
+      "No modifiques ni borres tareas completadas; usa ids nuevos.",
+      "Do not modify or remove done tasks; use new ids.",
+    ),
+  ]);
+}
+
+/** What no criterion covers is not adjusted: it is a follow-up change. */
+function newScopeLine(ctx: CardContext): string {
+  return translator(ctx.lang)(
+    "Alcance nuevo (ningún criterio lo cubre o choca con «Fuera de alcance»): no edites la spec; explícaselo al usuario y propón un cambio de seguimiento.",
+    'New scope (no criterion covers it, or it contradicts "Out of scope"): do not edit the spec; explain it to the user and suggest a follow-up change.',
+  );
 }
 
 /** The closing is written and waits for its confirmation: the agent's, delegated, or the person's. */

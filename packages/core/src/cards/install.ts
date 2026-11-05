@@ -100,6 +100,33 @@ export function antigravityTrustWarning(lang: Lang): string {
   );
 }
 
+/**
+ * The rule for Specty's commands in the permissions of Antigravity's CLI, in the user's folder
+ * (the exception to ADR 0013): it serves every project of the person.
+ */
+export function antigravityCliRuleLine(file: string, command: string, lang: Lang): string {
+  return translator(lang)(
+    `Antigravity CLI: regla \`command(${command})\` en ${file}, para que los comandos de Specty corran sin preguntar; sirve a todos tus proyectos.`,
+    `Antigravity CLI: rule \`command(${command})\` in ${file}, so Specty's commands run without asking; it serves all your projects.`,
+  );
+}
+
+/** Settings of Antigravity's CLI that Specty cannot edit: it leaves them alone and says what to add. */
+export function antigravityCliInvalidWarning(file: string, command: string, lang: Lang): string {
+  return translator(lang)(
+    `Antigravity CLI: ${file} no es un JSON que Specty pueda editar, así que no lo toca; añade \`command(${command})\` a \`permissions.allow\` para que los comandos de Specty corran sin preguntar.`,
+    `Antigravity CLI: ${file} is not JSON that Specty can edit, so Specty leaves it alone; add \`command(${command})\` to \`permissions.allow\` so Specty's commands run without asking.`,
+  );
+}
+
+/** Antigravity's app keeps its permissions in no file Specty can read: the person adds the rule. */
+export function antigravityAppRuleWarning(command: string, lang: Lang): string {
+  return translator(lang)(
+    `Antigravity (app): sus permisos no están en un archivo que Specty pueda editar; añade \`command(${command})\` a sus reglas de permisos (\`unsandboxed(${command})\` con una cuenta de empresa) para que los comandos de Specty corran sin preguntar.`,
+    `Antigravity (app): its permissions are not in a file that Specty can edit; add \`command(${command})\` to its permission rules (\`unsandboxed(${command})\` with a business account) so Specty's commands run without asking.`,
+  );
+}
+
 /** Devin Desktop runs no hook of a workspace open in restricted mode. */
 export function devinRestrictedWarning(lang: Lang): string {
   return translator(lang)(
