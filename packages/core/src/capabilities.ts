@@ -27,6 +27,11 @@ export interface AgentCapabilities {
   readonly afterCompaction: Support;
   /** The agent enters a change's worktree by name, without a permission prompt. */
   readonly worktreeByName: Support;
+  /**
+   * An epic's slices go to subagents: the guard tells each of the tool's subagents apart and binds
+   * it to the folder of its slice's change.
+   */
+  readonly subagentSlices: Support;
   /** When the turn ends with `specty check --changed` failing, the agent goes on with the report. */
   readonly endOfTurn: Support;
   /** The agent does not read dependencies, builds or generated code (`check --install`). */
@@ -41,6 +46,12 @@ const yes = { state: "yes" } as const;
 const unsupported = { state: "unsupported" } as const;
 const impossible = (es: string, en: string) => ({ state: "impossible", why: { es, en } }) as const;
 const indirect = (es: string, en: string) => ({ state: "indirect", how: { es, en } }) as const;
+
+/** Agents whose hooks say nothing of what their subagents do. */
+const UNDOCUMENTED_SUBAGENTS = impossible(
+  "sus hooks no documentan las acciones de sus subagentes (consultado el 2026-11-04).",
+  "its hooks do not document its subagents' actions (checked on 2026-11-04).",
+);
 
 const OWN_SERVER = impossible(
   "su modelo va siempre por el servidor de la herramienta, así que no se puede simular.",
@@ -58,6 +69,8 @@ export const AGENT_CAPABILITIES = {
     afterShell: yes,
     afterCompaction: yes,
     worktreeByName: yes,
+    // Each subagent's events carry its `agent_id` (2.1.69 or later): it enters with `specty enter`.
+    subagentSlices: yes,
     endOfTurn: yes,
     exclusion: yes,
     permissions: yes,
@@ -75,6 +88,9 @@ export const AGENT_CAPABILITIES = {
       "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, pone un `cd` a ella delante de cada comando (`updated_input`) y bloquea con la ruta buena lo que escribiría o leería fuera, porque Cursor no reescribe sus archivos.",
       "with `specty enter <id>`: the guard binds the conversation to the change's folder, puts a `cd` to it before each command (`updated_input`) and blocks what it would write or read elsewhere, with the right path, since Cursor does not rewrite its files.",
     ),
+    // Each subagent's events carry a `conversation_id` of its own (2.4 or later), with nothing that
+    // links it to the conversation that launched it: it enters with `specty enter`.
+    subagentSlices: yes,
     endOfTurn: yes,
     exclusion: yes,
     // `.cursor/sandbox.json` lets Specty's commits through from a change's folder.
@@ -90,6 +106,10 @@ export const AGENT_CAPABILITIES = {
       "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, pone un `cd` a ella delante de cada comando y lleva allí las rutas de cada parche (`updatedInput`).",
       "with `specty enter <id>`: the guard binds the conversation to the change's folder, puts a `cd` to it before each command and moves each patch's paths there (`updatedInput`).",
     ),
+    // Each subagent's events carry the root thread's `session_id` and its own `agent_id` (0.134 or
+    // later, checked with 0.166.0 in `codex-e2e.test.ts`): it enters with `specty enter`, and the
+    // guard moves its commands and patches to its folder.
+    subagentSlices: yes,
     endOfTurn: yes,
     exclusion: impossible(
       "lee los archivos por la shell y no tiene un archivo de exclusión.",
@@ -109,6 +129,9 @@ export const AGENT_CAPABILITIES = {
       "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, y el plugin de Specty lleva allí las rutas, los parches, las búsquedas y los comandos de sus herramientas.",
       "with `specty enter <id>`: the guard binds the conversation to the change's folder, and Specty's plugin moves its tools' paths, patches, searches and commands there.",
     ),
+    // Each subagent of `task` is a child session, and its tools reach the plugin with that
+    // session's id (checked with OpenCode 1.19.5): it enters with `specty enter`.
+    subagentSlices: yes,
     endOfTurn: yes,
     // `permission.read` in `opencode.json`.
     exclusion: yes,
@@ -130,6 +153,10 @@ export const AGENT_CAPABILITIES = {
       "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y lleva allí las rutas, las búsquedas y los comandos de sus herramientas (`hookSpecificOutput.tool_input`).",
       "with `specty enter <id>`: the guard binds the conversation to the change's folder and moves its tools' paths, searches and commands there (`hookSpecificOutput.tool_input`).",
     ),
+    subagentSlices: impossible(
+      "sus hooks traen el `session_id` de la sesión principal sin nada que distinga al subagente, así que el guard no puede atar cada uno a la carpeta de su corte.",
+      "its hooks carry the main session's `session_id` with nothing that tells the subagent apart, so the guard cannot bind each one to its slice's folder.",
+    ),
     // `AfterAgent`, checked with Gemini CLI 0.65.0.
     endOfTurn: yes,
     exclusion: yes,
@@ -144,6 +171,7 @@ export const AGENT_CAPABILITIES = {
     afterShell: unsupported,
     afterCompaction: unsupported,
     worktreeByName: unsupported,
+    subagentSlices: unsupported,
     endOfTurn: unsupported,
     exclusion: unsupported,
     permissions: unsupported,
@@ -162,6 +190,7 @@ export const AGENT_CAPABILITIES = {
       "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y lleva allí las rutas, los parches y los comandos de sus herramientas (`updatedInput`).",
       "with `specty enter <id>`: the guard binds the conversation to the change's folder and moves its tools' paths, patches and commands there (`updatedInput`).",
     ),
+    subagentSlices: UNDOCUMENTED_SUBAGENTS,
     // `Stop`, as Claude Code's.
     endOfTurn: yes,
     exclusion: yes,
@@ -191,6 +220,7 @@ export const AGENT_CAPABILITIES = {
       "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y bloquea con la ruta buena lo que haría o leería fuera; no reescribe sus acciones, porque su `overwrite` se descarta cuando pide permiso. Su agente solo trabaja en las carpetas de su espacio de trabajo: si la del cambio no está en ellas, el guard no lo deja entrar y pide abrirla en una conversación nueva.",
       "with `specty enter <id>`: the guard binds the conversation to the change's folder and blocks what it would do or read elsewhere, with the right path; it does not rewrite its actions, since its `overwrite` is dropped when it asks for permission. Its agent only works in the folders of its workspace: if the change's folder is not among them, the guard does not let it enter and asks to open it in a new conversation.",
     ),
+    subagentSlices: UNDOCUMENTED_SUBAGENTS,
     // `Stop` with `decision: "continue"`; Specty counts the turns it sends back.
     endOfTurn: yes,
     // `.antigravityignore`.
@@ -220,6 +250,7 @@ const COLUMNS: readonly (readonly [Capability, Texts])[] = [
   ["afterShell", { es: "Aviso tras cada comando", en: "Warning after each command" }],
   ["afterCompaction", { es: "Tarjeta tras compactar", en: "Card after compaction" }],
   ["worktreeByName", { es: "Worktree por nombre", en: "Worktree by name" }],
+  ["subagentSlices", { es: "Cortes en subagentes", en: "Slices in subagents" }],
   ["endOfTurn", { es: "Fin de turno", en: "End of turn" }],
   ["exclusion", { es: "Exclusión", en: "Exclusion" }],
   ["permissions", { es: "Permisos", en: "Permissions" }],

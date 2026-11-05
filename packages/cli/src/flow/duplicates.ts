@@ -6,6 +6,7 @@ import { readSpec } from "../store/changes";
 import { isFinished } from "./active";
 import { dataOf, readAudit } from "./carried";
 import { locateChanges } from "./changes";
+import { findChange } from "./find";
 
 /** The change `new` is about to create, and the open changes it does not compare with. */
 export interface DuplicateQuery {
@@ -21,14 +22,16 @@ export interface DuplicateQuery {
 /**
  * The open changes of every worktree a new change may duplicate (ADR 0016), as `status` sees
  * them, each with why: the same `follows`, a similar title or a similar request. Those it follows,
- * its epic and those of `--distinct-from` do not count.
+ * their epics, its own epic, the other slices of its epic and those of `--distinct-from` do not
+ * count.
  */
 export async function duplicatesOf(
   session: Session,
   query: DuplicateQuery,
 ): Promise<DuplicateView[]> {
   const epic = query.epic === undefined ? [] : [query.epic];
-  const skipped = new Set([...query.follows, ...query.distinctFrom, ...epic]);
+  const followed = await epicsOf(session, query.follows);
+  const skipped = new Set([...query.follows, ...query.distinctFrom, ...epic, ...followed]);
   const located = (await locateChanges(session)).filter(
     ({ change }) => !isFinished(change.state) && !skipped.has(change.state.id),
   );
@@ -40,6 +43,8 @@ export async function duplicatesOf(
   const hits = await Promise.all(
     located.map(async ({ change, session: there }) => {
       const spec = parseSpec(await readSpec(change.files), { language: there.lang }).spec;
+      // Slices of one epic look alike on purpose, and `new` gives each slice one change at most.
+      if (query.epic !== undefined && spec.frontmatter.epic === query.epic) return [];
       const created = (await readAudit(change.files)).find(
         (entry) => entry.event === "change.created",
       );
@@ -54,6 +59,30 @@ export async function duplicatesOf(
     }),
   );
   const found = hits.flat();
+  return withViews(session, found);
+}
+
+/**
+ * The epics of the changes `ids`, open or archived: following a slice is working on its epic. One
+ * that is not found, or is no slice, adds none.
+ */
+async function epicsOf(session: Session, ids: readonly string[]): Promise<string[]> {
+  const epics = await Promise.all(
+    ids.map(async (id) => {
+      const change = await findChange(session, id);
+      if (change === undefined) return undefined;
+      return parseSpec(await readSpec(change.files), { language: session.lang }).spec.frontmatter
+        .epic;
+    }),
+  );
+  return epics.filter((epic): epic is string => epic !== undefined);
+}
+
+/** Each change found with its view as `status` sees it. */
+async function withViews(
+  session: Session,
+  found: readonly { readonly id: string; readonly reason: DuplicateView["reason"] }[],
+): Promise<DuplicateView[]> {
   if (found.length === 0) return [];
   const views = await openChanges(session);
   return found.flatMap(({ id, reason }) => {

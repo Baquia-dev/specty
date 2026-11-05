@@ -4,6 +4,7 @@ import { isOpenEntry, type MemoryEntry, type MemoryKind } from "../memory/entrie
 import type { AssignProblem, Front, FrontMove } from "../memory/fronts";
 import { headerOf, type Output, section } from "../output";
 import { firstLine, goOn } from "./memory";
+import { ONE_OF_KIND } from "./memory-kinds";
 import { heldBy } from "./status";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
@@ -18,15 +19,6 @@ export type FrontRefusal =
   | { readonly reason: "empty" }
   | { readonly reason: "unknown-front"; readonly name: string }
   | AssignProblem;
-
-/** Each kind with its article, as a sentence names one entry. */
-const ONE_OF_KIND: Readonly<Record<MemoryKind, readonly [string, string]>> = {
-  pending: ["un pendiente", "a pending item"],
-  improvement: ["una mejora", "an improvement"],
-  reminder: ["un recordatorio", "a reminder"],
-  decision: ["una decisión", "a decision"],
-  lesson: ["una lección", "a lesson"],
-};
 
 const WORK: Readonly<Partial<Record<MemoryKind, readonly [string, string]>>> = {
   pending: ["pendiente", "pending"],

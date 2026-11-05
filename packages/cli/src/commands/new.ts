@@ -13,6 +13,7 @@ import {
   type Output,
   specTemplate,
   type TemplateOptions,
+  withDevPorts,
   withLead,
   worktreeCreatedCard,
 } from "@baquia-dev/specty-core";
@@ -23,7 +24,13 @@ import { duplicatesOf } from "../flow/duplicates";
 import { sliceRefusal } from "../flow/epic";
 import { removeFinished } from "../flow/prune";
 import { changeView } from "../flow/views";
-import { addWorktree, parallelBase, prepareWorktree, worktreesHome } from "../flow/worktree";
+import {
+  addWorktree,
+  apartFromMain,
+  parallelBase,
+  prepareWorktree,
+  worktreesHome,
+} from "../flow/worktree";
 import { entersByName } from "../install/agents";
 import { freshProject } from "../install/product";
 import { exists, writeText } from "../io/files";
@@ -31,6 +38,7 @@ import type { Session } from "../session";
 import { initialState, type StoredChange } from "../store/changes";
 import { writePointer } from "../store/local";
 import { changeFiles, repoPaths } from "../store/paths";
+import { portsOf } from "../store/ports";
 import { claimEntries, takeEntries } from "./memory";
 import { dirtyGoverned } from "./next";
 
@@ -63,6 +71,11 @@ export interface NewOptions {
   readonly slug?: string;
   /** An explicit branch name for the change. */
   readonly branch?: string;
+  /**
+   * A subagent creates it: the conversation that runs `new` (its tool tells the session's, not the
+   * subagent's) is not bound to the change, and the subagent enters it with `specty enter`.
+   */
+  readonly subagent?: boolean;
 }
 
 /**
@@ -192,9 +205,11 @@ async function newInWorktree(
     dir: repoPaths(folder).changeDir(id),
   });
   const prepared = await prepareWorktree(session, folder);
-  // The conversation that creates it works there, even before it enters it.
-  await bindNew(session, folder, options.epic);
-  return worktreeCreatedCard(
+  // The conversation that creates it works there, even before it enters it; a subagent's command
+  // names the session that launched it, which stays where it was.
+  const subagent = options.subagent === true;
+  if (!subagent) await bindNew(session, folder, options.epic);
+  const card = worktreeCreatedCard(
     {
       id,
       branch,
@@ -208,9 +223,14 @@ async function newInWorktree(
       byName: await entersByName(session.root),
       // Any other agent carries on in a session of its own, which the card says how to open.
       agent: session.tool,
+      ...(subagent ? { subagent } : {}),
+      // Claude Code's session does not enter one worktree from another: it leaves this one first.
+      ...((await apartFromMain(git)) ? { fromWorktree: true } : {}),
     },
     cards,
   );
+  // Its development servers get ports of their own (`dev.ports`), apart from other folders'.
+  return withDevPorts(card, await portsOf(session, folder), session.lang);
 }
 
 /**

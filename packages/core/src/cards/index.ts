@@ -7,6 +7,7 @@ export {
   acceptedLine,
   acceptQuestion,
   delegatedFailureCard,
+  noCodeVerificationNote,
   quickClosedLine,
   quickClosing,
   runVerificationQuestion,
@@ -72,7 +73,7 @@ export {
   duplicateCard,
   duplicateFilesBlock,
 } from "./duplicates";
-export { enteredCard, noFolderCard } from "./enter";
+export { enteredCard, lostFolderCard, noFolderCard } from "./enter";
 export { epicCard, type SliceRefusal, sliceLines, sliceRefusalCard } from "./epic";
 export { type ExportRefusal, exportedCard, exportRefusalCard } from "./export";
 export {
@@ -106,6 +107,7 @@ export {
   frontListCard,
   frontRefusalCard,
 } from "./fronts";
+export { gitFailedCard } from "./git-failed";
 export {
   type BlockedCommitView,
   blockedCommitMessage,
@@ -216,10 +218,13 @@ export {
   undoOutsideNext,
 } from "./integration";
 export {
+  type AfterLanding,
+  afterLandingLine,
   backOnTargetLine,
   folderRemovedLine,
   folderStaysLine,
   landedLine,
+  landingNote,
   leaveFolderNext,
   notLandedLine,
   retryLandingNext,
@@ -235,7 +240,12 @@ export {
   legacyStepTitle,
 } from "./legacy";
 export { longFileCard, longFileWarnings, splitAdvice } from "./lines";
-export { busyChangeCard, fullVerificationWaitNote, type LockHolderView } from "./lock";
+export {
+  busyChangeCard,
+  fullVerificationWaitNote,
+  type LockHolderView,
+  verifySlotsWaitNote,
+} from "./lock";
 export { mcpNotOnPathWarning, mcpRegisteredLine, mcpUserFolderWarning } from "./mcp";
 export {
   type MemoryListOutput,
@@ -279,6 +289,7 @@ export {
   sharedTitle,
   workingFolderLine,
 } from "./parallel";
+export { withDevPorts } from "./ports";
 export {
   type Asker,
   checkStatus,

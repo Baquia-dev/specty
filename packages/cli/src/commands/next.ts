@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type ChangeView,
   type Front,
   isGoverned,
   localDay,
@@ -7,19 +8,22 @@ import {
   type Output,
   parseSpec,
   sessionEntries,
+  withDevPorts,
 } from "@baquia-dev/specty-core";
 import { toolExclusions } from "../detect/formatters";
 import { conversationChange } from "../enforce/sessions";
 import { commitState, resolveActive } from "../flow/active";
 import { finishEpic } from "../flow/epic";
+import { lostChanges } from "../flow/lost";
 import { changeView } from "../flow/views";
 import { entersByName } from "../install/agents";
 import { freshProject } from "../install/product";
 import { pathsOf } from "../io/git";
-import type { Session } from "../session";
+import { openSession, type Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { liveHolds } from "../store/front-owners";
 import { readMemory } from "../store/memory";
+import { portsOf } from "../store/ports";
 import { pendingIntegration } from "./integrate";
 import { openChanges } from "./status";
 
@@ -34,7 +38,11 @@ export async function next(session: Session): Promise<Output> {
     const byName = await entersByName(session.root);
     // A conversation that left its change's folder goes back there (`specty new`, `enter`).
     const own = await conversationChange(session);
-    if (own !== undefined) return nextCard({ dirty: [], own, byName }, session.cards);
+    if (own !== undefined) {
+      const epic = await ownEpic(session, own);
+      const view = epic === undefined ? own : { ...own, epic };
+      return nextCard({ dirty: [], own: view, byName }, session.cards);
+    }
     const dirty = await dirtyGoverned(session);
     // Without code yet, the first change is the project's skeleton (ARCHITECTURE §14).
     const fresh = dirty.length === 0 && (await freshProject(session));
@@ -46,7 +54,12 @@ export async function next(session: Session): Promise<Output> {
     // Specty doesn't edit the tools that see what it writes: the agent tells the user (ADR 0018).
     const exclusions = (await toolExclusions(session.root)).filter((tool) => !tool.excluded);
     const orphans = await orphanChanges(session);
-    const start = { memory, exclusions, orphans, byName, ...view };
+    const lost = (await lostChanges(session)).map(({ id, title, state }) => ({
+      id,
+      title,
+      phase: state.phase,
+    }));
+    const start = { memory, exclusions, orphans, lost, byName, ...view };
     return nextCard({ dirty, ...(fresh ? { fresh } : {}), ...start }, session.cards);
   }
   const pending = await pendingIntegration(session, active, "close");
@@ -57,7 +70,25 @@ export async function next(session: Session): Promise<Output> {
       : current.state.kind === "epic"
         ? await finishEpic(session, current)
         : await activateNextTask(session, current);
-  return nextCard({ change: await changeView(session, change), dirty: [] }, session.cards);
+  const card = nextCard({ change: await changeView(session, change), dirty: [] }, session.cards);
+  // In a change's folder, the agent starts its development servers on that folder's ports.
+  return withDevPorts(card, await portsOf(session, session.root), session.lang);
+}
+
+/**
+ * The view of the conversation's own change when it is an approved epic, read in its folder: its
+ * card comes outside that folder while it hands its slices to subagents (ARCHITECTURE §10).
+ */
+async function ownEpic(
+  session: Session,
+  own: { readonly folder: string; readonly lost?: boolean },
+): Promise<ChangeView | undefined> {
+  if (own.lost === true) return undefined;
+  const opened = await openSession({ ...session.environment, cwd: own.folder });
+  if (opened.kind !== "ok") return undefined;
+  const epic = await resolveActive(opened.session);
+  if (epic?.state.kind !== "epic" || epic.state.phase !== "implementing") return undefined;
+  return changeView(opened.session, epic);
 }
 
 /** The open changes no conversation holds, as `status` tells its orphans, with their folders. */

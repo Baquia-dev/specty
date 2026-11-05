@@ -2,9 +2,10 @@
 import { AGENT_CAPABILITIES } from "../capabilities";
 import type { Phase } from "../flow/phases";
 import { headerOf, type Output, type OutputBlock, section } from "../output";
+import { awayEpicCard } from "./epic";
 import { carryOnText } from "./new";
 import { type Translate, translator } from "./text";
-import type { CardContext } from "./view";
+import type { CardContext, ChangeView } from "./view";
 
 /** The open change of another folder that the conversation asking `next` is bound to. */
 export interface OwnChangeView {
@@ -12,6 +13,17 @@ export interface OwnChangeView {
   readonly title: string;
   /** Absolute path of the change's folder. */
   readonly folder: string;
+  /** The folder is gone and the change is still on its branch: `specty restore` brings it back. */
+  readonly lost?: boolean;
+  /** The change's view, when it is an approved epic: its card can be seen from outside its folder. */
+  readonly epic?: ChangeView;
+}
+
+/** An open change whose folder is gone, read from its branch (`specty restore`). */
+export interface LostView {
+  readonly id: string;
+  readonly title: string;
+  readonly phase: Phase;
 }
 
 /** An open change that waits for the agent and that no conversation holds (`status`'s orphan). */
@@ -25,26 +37,63 @@ export interface OrphanView {
 
 /**
  * `next` for a conversation outside the folder of its open change: it goes back there, the way
- * `specty new` told it to go in, instead of creating another change.
+ * `specty new` told it to go in, instead of creating another change. An epic that hands its slices
+ * to subagents is the exception while some slice is left for them: its card comes here, since its
+ * subagents can write in their slices' folders only from outside the epic's (ARCHITECTURE §10).
  */
 export function rejoinCard(own: OwnChangeView, byName: boolean, ctx: CardContext): Output {
+  const away = own.epic === undefined ? undefined : awayEpicCard(own.epic, own.folder, ctx);
+  if (away !== undefined) return away;
   const t = translator(ctx.lang);
-  const carryOn = carryOnText({ ...own, byName, agent: ctx.tool }, ctx, t);
+  const where =
+    own.lost === true
+      ? t(
+          `Esta conversación trabaja en el cambio ${own.id} («${own.title}»), cuya carpeta ${own.folder} se perdió; el cambio sigue en su rama.`,
+          `This conversation works on change ${own.id} («${own.title}»), whose folder ${own.folder} was lost; the change is still on its branch.`,
+        )
+      : t(
+          `Esta conversación trabaja en el cambio ${own.id} («${own.title}»), en ${own.folder}, y ahora está fuera de esa carpeta.`,
+          `This conversation works on change ${own.id} («${own.title}»), in ${own.folder}, and is now outside that folder.`,
+        );
   return {
     status: "ok",
     header: headerOf(),
     blocks: section(t("TU CAMBIO", "YOUR CHANGE"), [
-      t(
-        `Esta conversación trabaja en el cambio ${own.id} («${own.title}»), en ${own.folder}, y ahora está fuera de esa carpeta.`,
-        `This conversation works on change ${own.id} («${own.title}»), in ${own.folder}, and is now outside that folder.`,
-      ),
+      where,
       t(
         "No crees otro cambio para seguir con este: una sesión trabaja un solo cambio a la vez, y otro trabajo va en otra sesión.",
         "Do not create another change to carry on with this one: a session works on one change at a time, and other work goes in another session.",
       ),
     ]),
-    next: t(`vuelve a ${own.folder}: ${carryOn}`, `go back to ${own.folder}: ${carryOn}`),
+    next: rejoinNext(own, byName, ctx, t),
   };
+}
+
+/** Going back to the change's folder, or bringing it back first when it was lost. */
+function rejoinNext(own: OwnChangeView, byName: boolean, ctx: CardContext, t: Translate): string {
+  if (own.lost === true) {
+    const restore = `\`${ctx.command} restore ${own.id}\``;
+    return t(
+      `recupera la carpeta con ${restore} y sigue su salida, que dice cómo volver a ella.`,
+      `bring the folder back with ${restore} and follow its output, which tells how to go back to it.`,
+    );
+  }
+  const carryOn = carryOnText({ ...own, byName, agent: ctx.tool }, ctx, t);
+  return t(`vuelve a ${own.folder}: ${carryOn}`, `go back to ${own.folder}: ${carryOn}`);
+}
+
+/** The open changes whose folder is gone, and how to bring one back instead of a new change. */
+export function lostBlock(lost: readonly LostView[], ctx: CardContext): OutputBlock[] {
+  if (lost.length === 0) return [];
+  const t = translator(ctx.lang);
+  const restore = `\`${ctx.command} restore <id>\``;
+  return section(t("CAMBIOS SIN CARPETA", "CHANGES WITHOUT THEIR FOLDER"), [
+    ...lost.map((change) => `${change.id} · ${change.phase} — ${change.title}`),
+    t(
+      `Si el usuario pide seguir uno de ellos, recupera su carpeta con ${restore} en lugar de crear otro cambio.`,
+      `If the user asks to carry on with one of them, bring its folder back with ${restore} instead of creating another change.`,
+    ),
+  ]);
 }
 
 /** The open changes no conversation holds, each with its folder, and how to resume one of them. */

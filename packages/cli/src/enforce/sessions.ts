@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { resolve } from "node:path";
+import { basename, resolve } from "node:path";
 import {
   AGENT_CAPABILITIES,
   type BoundSession,
@@ -7,12 +7,13 @@ import {
   parseSpec,
 } from "@baquia-dev/specty-core";
 import { isFinished, resolveActive } from "../flow/active";
+import { lostChanges } from "../flow/lost";
 import { exists } from "../io/files";
 import { resolved } from "../io/git";
 import { type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
 import { readBinding, type SessionBinding, writeBinding } from "../store/local";
-import { conversationOf, type GuardTool } from "./actions";
+import { conversationOf, type GuardTool, subagentOf } from "./actions";
 import { namedWorktree } from "./worktree-hooks";
 
 /** `EnterWorktree` as Claude Code sends it: a folder to enter, or a name for a new one. */
@@ -73,9 +74,13 @@ async function enterInto(
   return { kind: "enter", target, bound, ...(epic !== undefined ? { epic } : {}) };
 }
 
-/** Claude Code enters a change's folder with its own tool (`EnterWorktree`), not `specty enter`. */
-export function entersOnItsOwn(tool: GuardTool): boolean {
-  return AGENT_CAPABILITIES[tool].worktreeByName.state === "yes";
+/**
+ * Whether the event's conversation enters a change's folder with its tool's own means: Claude
+ * Code's session does, with `EnterWorktree`. Its subagents start where the session works and keep
+ * no `cd`, so they enter with `specty enter`, as the other agents do.
+ */
+export function entersOnItsOwn(tool: GuardTool, event: Record<string, unknown>): boolean {
+  return AGENT_CAPABILITIES[tool].worktreeByName.state === "yes" && subagentOf(event) === undefined;
 }
 
 /**
@@ -96,14 +101,15 @@ export async function enteredSession(
 /**
  * The session of the change's folder the event's conversation entered with `specty enter`, and
  * that folder, whatever folder its tool works in; otherwise, `session` as it was. Claude Code
- * moves its whole session there itself, and goes on where it is after `ExitWorktree`.
+ * moves its whole session there itself, and goes on where it is after `ExitWorktree`; its
+ * subagents enter with `specty enter`.
  */
 async function enteredFolder(
   tool: GuardTool,
   session: Session,
   event: Record<string, unknown>,
 ): Promise<{ readonly session: Session; readonly bound?: string }> {
-  if (entersOnItsOwn(tool)) return { session };
+  if (entersOnItsOwn(tool, event)) return { session };
   const binding = await bindingOf(session, event);
   const bound =
     binding !== undefined && (await exists(binding.folder)) ? binding.folder : undefined;
@@ -146,17 +152,28 @@ async function openChange(
  * The open change of the folder the session's conversation is bound to, when that folder is not
  * the one the session works in: the conversation left it, and `next` tells it to go back.
  */
-export async function conversationChange(
-  session: Session,
-): Promise<{ readonly id: string; readonly title: string; readonly folder: string } | undefined> {
+export async function conversationChange(session: Session): Promise<
+  | {
+      readonly id: string;
+      readonly title: string;
+      readonly folder: string;
+      readonly lost?: boolean;
+    }
+  | undefined
+> {
   const id = session.conversation?.id;
   const binding = id === undefined ? undefined : await readBinding(session.git, id);
   if (binding === undefined) return undefined;
-  if ((await resolved(binding.folder)) === (await resolved(session.root))) return undefined;
-  const change = await openChange(session.environment, binding.folder);
-  return change === undefined
-    ? undefined
-    : { id: change.id, title: change.title, folder: binding.folder };
+  const { folder } = binding;
+  if ((await resolved(folder)) === (await resolved(session.root))) return undefined;
+  const change = await openChange(session.environment, folder);
+  if (change !== undefined) return { id: change.id, title: change.title, folder };
+  if (await exists(folder)) return undefined;
+  // A folder that is gone and was a lost change's: git still lists it, or it bears the change's id.
+  const lost = (await lostChanges(session)).find(
+    (candidate) => candidate.stale.includes(folder) || candidate.id === basename(folder),
+  );
+  return lost === undefined ? undefined : { id: lost.id, title: lost.title, folder, lost: true };
 }
 
 /**

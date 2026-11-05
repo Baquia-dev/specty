@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-import { spawn } from "node:child_process";
+import { type ChildProcessByStdio, spawn } from "node:child_process";
+import type { Readable } from "node:stream";
 import { headerOf, type Output, runRefusalCard, runStartedCard } from "@baquia-dev/specty-core";
 import { locateChanges } from "../flow/changes";
+import { oneAtATime } from "../flow/full-verification";
 import { codeTree, recordFullVerification } from "../flow/verified";
+import { lowerPriority } from "../io/exec";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { clearRun, readRuns } from "../store/runs";
@@ -37,8 +40,8 @@ const TASKS_EVERY = 500;
 
 /**
  * The full verifications the person starts from the UI, one per change: `verify.full` runs with
- * the shell in the change's folder, `heard` gets the run as it goes and `undefined` once it ends,
- * and the result goes to the change's audit as `change.verified`.
+ * the shell in the change's folder, `heard` gets the run as it goes and `undefined` once it ends
+ * and its turn is free, and the result goes to the change's audit as `change.verified`.
  */
 export function changeRuns(
   session: Session,
@@ -49,7 +52,12 @@ export function changeRuns(
   const tasks = taskRuns(session, (id, run) => {
     if (!going.has(id)) heard(id, run);
   });
-  const target: RunTarget = { going, heard, closing: () => closing };
+  // The turn is this process's: the server queues its own full verifications, one after another.
+  let turns: Promise<void> = Promise.resolve();
+  const inTurn = (run: () => Promise<void>) => {
+    turns = turns.then(run).catch(() => undefined);
+  };
+  const target: RunTarget = { going, heard, closing: () => closing, inTurn };
   return {
     current: (id) => going.get(id)?.run ?? tasks.current(id),
     async start(id) {
@@ -85,6 +93,8 @@ interface RunTarget {
   readonly going: Going;
   readonly heard: (id: string, run: Run | undefined) => void;
   readonly closing: () => boolean;
+  /** Runs `run` after the server's full verifications before it. */
+  readonly inTurn: (run: () => Promise<void>) => void;
 }
 
 /** A full verification to run: change `id`'s, in its folder, with its command. */
@@ -95,8 +105,43 @@ interface FullRun {
   readonly command: string;
 }
 
+/**
+ * Shows the run at once and runs it on the full verification's turn, after this server's earlier
+ * ones: while another session holds the turn, the note of who it waits for goes to its output.
+ * Its end is heard once the turn is free, so whoever hears it can take the turn at once.
+ */
 function runFull(target: RunTarget, job: FullRun): void {
   const { id, there, command } = job;
+  // Until its command starts there is nothing to stop.
+  let stop: () => void = () => undefined;
+  const startedAt = there.environment.now().toISOString();
+  const live = liveRun(target, id, { command, startedAt, output: [] }, () => stop());
+  target.heard(id, live.current());
+  const io = { ...there.environment.io, err: (text: string) => live.add(text.split("\n")) };
+  const waiting = { ...there, environment: { ...there.environment, io } };
+  target.inTurn(async () => {
+    try {
+      await oneAtATime(waiting, command, () =>
+        spawned(target, job, live, (kill) => {
+          stop = kill;
+        }),
+      );
+    } finally {
+      // Not while the server closes, nor if the change has a run going on, which it would hide.
+      if (!target.closing() && !target.going.has(id)) target.heard(id, undefined);
+    }
+  });
+}
+
+/** Runs the command, unless the server is closing, and settles once its result is recorded. */
+function spawned(
+  target: RunTarget,
+  job: FullRun,
+  live: LiveRun,
+  stoppable: (stop: () => void) => void,
+): Promise<void> {
+  if (target.closing()) return Promise.resolve();
+  const { there, command } = job;
   // The code it runs on, read as it starts: `accept` need not verify it again.
   const tree = codeTree(there);
   const started = Date.now();
@@ -106,12 +151,32 @@ function runFull(target: RunTarget, job: FullRun): void {
     shell: true,
     stdio: ["ignore", "pipe", "pipe"],
   });
+  // Below the rest of the machine, as every verification.
+  if (child.pid !== undefined) lowerPriority(child.pid);
   const stop = () => {
     child.kill("SIGTERM");
     setTimeout(() => child.kill("SIGKILL"), 2000).unref();
   };
-  const startedAt = there.environment.now().toISOString();
-  const live = liveRun(target, id, { command, startedAt, output: [] }, stop);
+  stoppable(stop);
+  const rests = streamed(child, live);
+  const limit = setTimeout(stop, there.config.verify.timeoutSec * 1000);
+  return new Promise((done) => {
+    let finished = false;
+    const finish = async (code: number | undefined) => {
+      if (finished) return;
+      finished = true;
+      live.add([rests.stdout, rests.stderr].filter((line) => line.trim() !== ""));
+      clearTimeout(limit);
+      await ended(target, job, live, { code, started, tree });
+      done();
+    };
+    child.on("error", () => void finish(127));
+    child.on("close", (code) => void finish(code ?? undefined));
+  });
+}
+
+/** Sends the child's output to the run line by line; what is left of each stream ends no line yet. */
+function streamed(child: ChildProcessByStdio<null, Readable, Readable>, live: LiveRun) {
   const rests = { stdout: "", stderr: "" };
   for (const stream of ["stdout", "stderr"] as const) {
     child[stream].on("data", (chunk: Buffer) => {
@@ -120,18 +185,7 @@ function runFull(target: RunTarget, job: FullRun): void {
       live.add(lines.map((line) => line.trimEnd()));
     });
   }
-  const limit = setTimeout(stop, there.config.verify.timeoutSec * 1000);
-  let finished = false;
-  const finish = async (code: number | undefined) => {
-    if (finished) return;
-    finished = true;
-    live.add([rests.stdout, rests.stderr].filter((line) => line.trim() !== ""));
-    clearTimeout(limit);
-    await ended(target, job, live, { code, started, tree });
-  };
-  child.on("error", () => void finish(127));
-  child.on("close", (code) => void finish(code ?? undefined));
-  target.heard(id, live.current());
+  return rests;
 }
 
 /** A run's output as it comes: kept among the runs going on, and heard at most every `EVERY` ms. */
@@ -193,7 +247,6 @@ async function ended(
     output,
     ...(ran === undefined ? {} : { tree: ran }),
   }).catch(() => undefined);
-  target.heard(id, undefined);
 }
 
 /**

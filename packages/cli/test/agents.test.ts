@@ -114,7 +114,13 @@ describe("each agent's module", () => {
     expect(kinds("codex", ["PreToolUse", "PostToolUse"])).toEqual(["before", "after"]);
     const codexStart = (source: string) =>
       ADAPTERS.codex.kind({ hook_event_name: "SessionStart", source });
-    expect([codexStart("compact"), codexStart("startup")]).toEqual(["compact", "before"]);
+    expect(["compact", "startup", "resume", "clear", "fork"].map(codexStart)).toEqual([
+      "compact",
+      "compact",
+      "compact",
+      "compact",
+      "before",
+    ]);
     expect(ADAPTERS.opencode.kind({ tool_name: "bash" })).toBe("before");
     expect(kinds("opencode", ["PostToolUse"])).toEqual(["after"]);
     // Specty's plugin asks for the card with Claude Code's `SessionStart`.

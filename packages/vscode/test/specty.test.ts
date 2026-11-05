@@ -97,7 +97,14 @@ async function fakeSpecty(behavior: Behavior = {}) {
   return { bin, command, folder, calls, stopped: () => existsSync(join(bin, "stopped")) };
 }
 
-describe("reading the status", () => {
+/**
+ * Each test starts the stand-in with Node, which may take seconds on a busy machine: the waits
+ * give it 15 s, and each test 30 s.
+ */
+const until = (assertion: () => unknown) => vi.waitFor(assertion, { timeout: 15_000 });
+const SLOW = { timeout: 30_000 };
+
+describe("reading the status", SLOW, () => {
   it("AC1: reads the open changes from `specty --json status`, run in the folder", async () => {
     const { command, folder, calls } = await fakeSpecty();
     const read = await readStatus(command, folder);
@@ -158,7 +165,7 @@ describe("reading the status", () => {
   });
 });
 
-describe("starting the UI", () => {
+describe("starting the UI", SLOW, () => {
   it("AC3: starts `specty ui` in the folder, gives its link and stops it", async () => {
     const { command, folder, calls, stopped } = await fakeSpecty();
     const started = await startUi(command, folder);
@@ -171,16 +178,27 @@ describe("starting the UI", () => {
     expect(stopped()).toBe(true);
   });
 
-  it("AC3: fails when `specty ui` ends without a link, or gives none in time", async () => {
+  it("AC3: fails when `specty ui` ends without a link", async () => {
     const ended = await fakeSpecty({ ui: "exit" });
     const refused = await startUi(ended.command, ended.folder);
     expect(refused.kind).toBe("failed");
     expect(refused.kind === "failed" ? refused.message : "").toContain("ocupado");
+  });
 
-    // Two seconds: time enough for Node to start the stand-in even on a busy machine, so the
-    // stop it gets is the one for not giving a link.
+  it("AC3: fails and stops `specty ui` when it gives no link in time", async () => {
+    // The wait for the link runs on a fake clock that moves only once the stand-in has noted its
+    // call, so it already listens for the stop, however long Node takes to start it. Each try of
+    // `until` also moves that clock 50 ms: in its 15 s, far less than the minute of the wait.
     const silent = await fakeSpecty({ ui: "silent" });
-    expect((await startUi(silent.command, silent.folder, 2000)).kind).toBe("failed");
-    await vi.waitFor(() => expect(silent.stopped()).toBe(true), { timeout: 4000 });
-  }, 10_000);
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    try {
+      const started = startUi(silent.command, silent.folder, 60_000);
+      await until(async () => expect(await silent.calls()).toEqual([`ui @ ${silent.folder}`]));
+      vi.advanceTimersByTime(60_000);
+      expect((await started).kind).toBe("failed");
+    } finally {
+      vi.useRealTimers();
+    }
+    await until(() => expect(silent.stopped()).toBe(true));
+  });
 });

@@ -3,6 +3,7 @@ import * as z from "zod";
 import { defaultGlossary } from "../glossary";
 import type { Lang } from "../i18n";
 import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
+import { DEFAULT_DEV, type DevConfig, DevSchema, resolveDev } from "./dev";
 import { DEFAULT_GIT, type GitConfig, GitSchema, resolveGit } from "./git";
 import { DEFAULT_MEMORY, type MemoryConfig, MemorySchema, resolveMemory } from "./memory";
 
@@ -29,6 +30,8 @@ export interface ResolvedConfig {
     /** A fast check of the whole repository that runs before each task's verification. */
     readonly quick?: string;
     readonly timeoutSec: number;
+    /** Verifications that run at once in the clone: a task's takes one, the full one all. */
+    readonly slots: number;
   };
   readonly scope: {
     readonly implicitTests: boolean;
@@ -63,6 +66,13 @@ export interface ResolvedConfig {
   readonly team: { readonly approvers: readonly string[]; readonly requirePrReview: boolean };
   readonly ui: { readonly port: "auto" | number; readonly requireUserPresence: boolean };
   readonly memory: MemoryConfig;
+  /** The project's development servers: their ports in each folder. */
+  readonly dev: DevConfig;
+  /**
+   * An approved epic hands its ready slices to subagents when the agent's tool can (ARCHITECTURE
+   * §10); `false` keeps them in the session, one after another.
+   */
+  readonly subagents: boolean;
   /**
    * The independent review (ADR 0011): a command the person sets up, which reads the text to
    * review on its standard input. Unset, Specty neither recommends nor runs a review.
@@ -77,7 +87,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   governed: ["**"],
   ignored: ["**/*.md", "docs/**"],
   sensitive: ["**/migrations/**", "**/auth/**", ".github/**", "**/.env*", "**/infra/**"],
-  verify: { timeoutSec: 600 },
+  verify: { timeoutSec: 600, slots: 2 },
   scope: { implicitTests: true, generated: [], autoApprove: "tests-and-generated" },
   lanes: { quick: { maxFiles: 3 } },
   split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 },
@@ -108,6 +118,8 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   team: { approvers: [], requirePrReview: true },
   ui: { port: "auto", requireUserPresence: false },
   memory: DEFAULT_MEMORY,
+  dev: DEFAULT_DEV,
+  subagents: true,
 };
 
 const Globs = z.array(z.string().min(1));
@@ -130,6 +142,7 @@ export const ConfigSchema = z.strictObject({
       full: z.string().min(1).optional(),
       quick: z.string().min(1).optional(),
       timeoutSec: Positive.optional(),
+      slots: Positive.optional(),
     })
     .optional(),
   scope: z
@@ -183,6 +196,8 @@ export const ConfigSchema = z.strictObject({
     .strictObject({ command: z.string().min(1), timeoutSec: Positive.optional() })
     .optional(),
   memory: MemorySchema.optional(),
+  dev: DevSchema.optional(),
+  subagents: z.boolean().optional(),
   /** Per-tool effort table overrides; interpreted by the CLI. */
   effort: z.record(z.string(), z.unknown()).optional(),
 });
@@ -238,6 +253,8 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     team: teamOf(input),
     ui: uiOf(input),
     memory: resolveMemory(input.memory),
+    dev: resolveDev(input.dev),
+    subagents: input.subagents ?? base.subagents,
     ...(review !== undefined ? { review } : {}),
   };
 }
@@ -253,6 +270,7 @@ function verifyOf(input: ConfigInput): ResolvedConfig["verify"] {
     ...(verify?.full !== undefined ? { full: verify.full } : {}),
     ...(verify?.quick !== undefined ? { quick: verify.quick } : {}),
     timeoutSec: verify?.timeoutSec ?? DEFAULT_CONFIG.verify.timeoutSec,
+    slots: verify?.slots ?? DEFAULT_CONFIG.verify.slots,
   };
 }
 

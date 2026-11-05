@@ -75,6 +75,9 @@ export function analyzeGit(args: readonly string[]): GitEffects {
   return { commits: [], bypass: bypassOption || configures, refs: writtenRefs(command, rest) };
 }
 
+/** The options before the git command that take the next argument as their value. */
+const LEADING_VALUED: ReadonlySet<string> = new Set(["-c", "-C", "--git-dir", "--work-tree"]);
+
 /** Options before the git command: their values, and the folders of `-C`. */
 function leadingOptions(args: readonly string[]): {
   end: number;
@@ -84,13 +87,14 @@ function leadingOptions(args: readonly string[]): {
   const values: string[] = [];
   const moves: string[] = [];
   let index = 0;
-  while (index < args.length && (args[index] ?? "").startsWith("-")) {
+  while (args[index]?.startsWith("-") === true) {
     const option = args[index] ?? "";
-    const takesValue =
-      option === "-c" || option === "-C" || option === "--git-dir" || option === "--work-tree";
-    if (takesValue) values.push(args[index + 1] ?? "");
-    if (option === "-C") moves.push(args[index + 1] ?? "");
-    index += takesValue ? 2 : 1;
+    if (LEADING_VALUED.has(option)) {
+      const value = args[index + 1] ?? "";
+      values.push(value);
+      if (option === "-C") moves.push(value);
+    }
+    index += LEADING_VALUED.has(option) ? 2 : 1;
   }
   return { end: index, values, moves };
 }

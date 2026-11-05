@@ -23,8 +23,9 @@ interface EnterCall {
 
 /**
  * A command with `specty enter <id>`: like `EnterWorktree` by name, the conversation enters that
- * change's folder if it may, and the rest of the command is judged as usual. Claude Code is told
- * to use its own tool. Undefined without one, or for a change without a folder: the command says so.
+ * change's folder if it may, and the rest of the command is judged as usual. Claude Code's session
+ * is told to use its own tool; its subagents enter this way. Undefined without one, or for a change
+ * without a folder: the command says so.
  */
 export async function enterCommand(
   call: EnterCall,
@@ -33,7 +34,7 @@ export async function enterCommand(
 ): Promise<{ readonly decision: GuardDecision; readonly target?: string } | undefined> {
   const id = analyzeShell(command).enters.at(-1);
   if (id === undefined) return undefined;
-  if (entersOnItsOwn(call.agent.tool)) {
+  if (entersOnItsOwn(call.agent.tool, call.event)) {
     const { reason, next } = nativeEnterDenial(id, ctx.lang);
     return { decision: { allow: false, rule: "session", reason, next } };
   }

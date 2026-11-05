@@ -55,6 +55,12 @@ describe("the CI", () => {
     expect(String(check?.["continue-on-error"])).toContain("matrix.os == 'windows-latest'");
   });
 
+  it("runs the evals' tests, which pnpm check leaves out, after it (AC3)", async () => {
+    const steps = runs((await workflow("ci.yml")).jobs.check?.steps ?? []);
+    expect(steps.indexOf("pnpm test:evals")).toBeGreaterThan(steps.indexOf("pnpm check"));
+    expect(steps.indexOf("pnpm check")).toBeGreaterThanOrEqual(0);
+  });
+
   it("runs the pull request's own specty check --changed against a local main (AC1)", async () => {
     const job = (await workflow("ci.yml")).jobs["specty-check"];
     expect(job?.if).toBe("github.event_name == 'pull_request'");

@@ -28,6 +28,27 @@ export function conversationOf(event: Record<string, unknown>): string | undefin
   return safeName(event.session_id ?? event.conversation_id);
 }
 
+/**
+ * The subagent the event comes from (the `agent_id` of Claude Code and Codex), safe as a file
+ * name; undefined for an event of the main conversation.
+ */
+export function subagentOf(event: Record<string, unknown>): string | undefined {
+  return safeName(event.agent_id);
+}
+
+/**
+ * The event of a subagent as a conversation of its own, `<session>--<subagent>`: for a tool whose
+ * subagents send the id of the session that launched them, so that its binding, its steps and its
+ * front are its own. Any other event stays as it is.
+ */
+export function asSubagentConversation(event: Record<string, unknown>): Record<string, unknown> {
+  const agent = subagentOf(event);
+  const session = safeName(event.session_id);
+  return agent === undefined || session === undefined
+    ? event
+    : { ...event, session_id: `${session}--${agent}` };
+}
+
 function safeName(id: unknown): string | undefined {
   return typeof id === "string" && /^[\w-]{1,128}$/.test(id) ? id : undefined;
 }

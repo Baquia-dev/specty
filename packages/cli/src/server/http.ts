@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { extname, join, resolve, sep } from "node:path";
 import { notBuiltPage, type Output } from "@baquia-dev/specty-core";
+import { restore } from "../commands/restore";
 import { openChanges } from "../commands/status";
 import { isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
@@ -20,6 +21,7 @@ import { changeDiff, type DiffAnswer } from "./diff";
 import { type ChangeEvents, changeEvents } from "./events";
 import { changeRecords } from "./records";
 import { changeRuns, type Runs } from "./runs";
+import { sessionsView } from "./sessions";
 import { changeTrace, traceReply } from "./trace";
 
 export interface ServerOptions {
@@ -192,6 +194,7 @@ const VIEWS: ReadonlyMap<string, (session: Session) => Promise<unknown>> = new M
   ["/api/changes", changeRecords],
   ["/api/delegation", delegationView],
   ["/api/memory", memoryView],
+  ["/api/sessions", sessionsView],
 ]);
 
 /**
@@ -250,6 +253,12 @@ async function act(
   const verify = /^\/api\/changes\/([^/]+)\/verify$/.exec(pathname)?.[1];
   // Outside the queue: it takes minutes and changes no state, so the other actions go on.
   if (verify !== undefined) return done(await context.runs.start(decodeURIComponent(verify)));
+  // A lost folder has no change folder to act in: `restore` finds the change from its branch.
+  const lost = /^\/api\/changes\/([^/]+)\/restore$/.exec(pathname)?.[1];
+  if (lost !== undefined) {
+    const id = decodeURIComponent(lost);
+    return done(await context.serial(() => restore(context.session, id)));
+  }
   const parsed = parseAction(
     pathname.split("/").filter((part) => part !== ""),
     body,

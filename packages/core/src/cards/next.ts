@@ -2,16 +2,23 @@
 import type { Phase } from "../flow/phases";
 import type { MemoryEntry } from "../memory/entries";
 import { headerOf, type Output, section } from "../output";
-import { COMMIT_TYPES } from "../spec/model";
 import { acceptanceCard } from "./acceptance";
 import { type ExclusionView, exclusionsBlock } from "./exclusions";
 import type { FrontsView } from "./fronts";
 import { termsSection } from "./glossary";
+import { noChangeCard } from "./idle";
 import { integrationCard } from "./integration";
 import { memoryStartBlocks, resolvesLines } from "./memory";
 import { pathEntriesBlock } from "./memory-paths";
 import { notesBlock } from "./notes";
-import { type OrphanView, type OwnChangeView, orphansBlock, rejoinCard } from "./rejoin";
+import {
+  type LostView,
+  lostBlock,
+  type OrphanView,
+  type OwnChangeView,
+  orphansBlock,
+  rejoinCard,
+} from "./rejoin";
 import { testingCard } from "./testing";
 import { draftingGuide, quoted, translator } from "./text";
 import type { CardContext, CarriedView, ChangeView, CommentView } from "./view";
@@ -35,6 +42,8 @@ export interface NextView {
   readonly own?: OwnChangeView;
   /** With no change active, the open changes that wait for the agent and no conversation holds. */
   readonly orphans?: readonly OrphanView[];
+  /** With no change active, the open changes whose folder is gone (`specty restore`). */
+  readonly lost?: readonly LostView[];
   /** Claude Code enters a change's folder by name, with Specty's worktree hooks. */
   readonly byName?: boolean;
 }
@@ -47,7 +56,10 @@ export function nextCard(view: NextView, ctx: CardContext): Output {
     // A conversation bound to an open change elsewhere goes back there, before anything else.
     if (view.own !== undefined) return rejoinCard(view.own, byName, ctx);
     const card = noChangeCard(view.dirty, ctx, view.fresh === true);
-    const orphans = orphansBlock(view.orphans ?? [], byName, ctx);
+    const orphans = [
+      ...orphansBlock(view.orphans ?? [], byName, ctx),
+      ...lostBlock(view.lost ?? [], ctx),
+    ];
     const exclusions = exclusionsBlock(view.exclusions ?? [], ctx, "next");
     const memory = memoryStartBlocks(view.memory ?? [], ctx, view.fronts);
     return { ...card, blocks: [...card.blocks, ...orphans, ...exclusions, ...memory] };
@@ -84,93 +96,6 @@ export function notInitializedCard(ctx: CardContext): Output {
       `if the user wants to use it, run \`${ctx.command} init --language <es|en>\` with the language they speak to you in.`,
     ),
   };
-}
-
-function noChangeCard(dirty: readonly string[], ctx: CardContext, fresh: boolean): Output {
-  if (dirty.length > 0) return withoutSpecCard(dirty, ctx);
-  // ARCHITECTURE §14: the skeleton is the first change, standard, so the scaffolding is traced.
-  return fresh ? skeletonCard(ctx) : idleCard(ctx);
-}
-
-/** Governed code changed with no change active: it is documented with a retro. */
-function withoutSpecCard(dirty: readonly string[], ctx: CardContext): Output {
-  const t = translator(ctx.lang);
-  return {
-    status: "blocked",
-    header: headerOf(),
-    blocks: section(t("CAMBIOS SIN SPEC", "CHANGES WITHOUT A SPEC"), dirty),
-    next: t(
-      `documéntalos: prepáralos con \`git add\` y ejecuta \`${ctx.command} retro\`.`,
-      `document them: stage them with \`git add\` and run \`${ctx.command} retro\`.`,
-    ),
-  };
-}
-
-function skeletonCard(ctx: CardContext): Output {
-  const t = translator(ctx.lang);
-  return {
-    status: "ok",
-    header: headerOf(),
-    blocks: section(undefined, [
-      t(
-        "No hay un cambio activo, y es un proyecto nuevo: aún no hay código.",
-        "There is no active change, and this is a new project: there is no code yet.",
-      ),
-      t(
-        "El primer cambio es el esqueleto del proyecto, a partir de PRODUCT.md; si tiene preguntas sin responder, házselas antes al usuario.",
-        "The first change is the project's skeleton, from PRODUCT.md; if it has unanswered questions, ask the user first.",
-      ),
-    ]),
-    next: t(
-      `ejecuta \`${ctx.command} new "Esqueleto del proyecto" --request "<petición literal del usuario>"\`.`,
-      `run \`${ctx.command} new "Project skeleton" --request "<the user's literal request>"\`.`,
-    ),
-  };
-}
-
-function idleCard(ctx: CardContext): Output {
-  const t = translator(ctx.lang);
-  return {
-    status: "ok",
-    header: headerOf(),
-    blocks: section(undefined, [
-      t("No hay un cambio activo.", "There is no active change."),
-      t(
-        "Si el usuario pidió crear o modificar código, primero va la spec.",
-        "If the user asked to create or modify code, the spec comes first.",
-      ),
-      t(
-        "Para leer, explicar o investigar código no necesitas Specty.",
-        "Reading, explaining or exploring code does not need Specty.",
-      ),
-    ]),
-    next: ctx.branchTypes === true ? typedNewNext(ctx) : untypedNewNext(ctx),
-  };
-}
-
-function untypedNewNext(ctx: CardContext): string {
-  return translator(ctx.lang)(
-    `ejecuta \`${ctx.command} new "<título>" --request "<petición literal del usuario>"\` ${quickHint(ctx)}.`,
-    `run \`${ctx.command} new "<title>" --request "<the user's literal request>"\` ${quickHint(ctx)}.`,
-  );
-}
-
-/** With a `git.flow` that names the branches by type, the agent says what the change is. */
-function typedNewNext(ctx: CardContext): string {
-  const t = translator(ctx.lang);
-  const types = (last: string) =>
-    `${COMMIT_TYPES.slice(0, -1).join(", ")} ${last} ${COMMIT_TYPES.at(-1) ?? ""}`;
-  return t(
-    `ejecuta \`${ctx.command} new "<título>" --type <tipo> --request "<petición literal del usuario>"\`, con el tipo de commit que es el cambio, que nombra su rama: ${types("o")} ${quickHint(ctx)}.`,
-    `run \`${ctx.command} new "<title>" --type <type> --request "<the user's literal request>"\`, with the commit type the change is, which names its branch: ${types("or")} ${quickHint(ctx)}.`,
-  );
-}
-
-function quickHint(ctx: CardContext): string {
-  return translator(ctx.lang)(
-    `(añade \`--kind quick\` si son hasta ${ctx.quickMaxFiles} archivos de código sin rutas sensibles)`,
-    `(add \`--kind quick\` for up to ${ctx.quickMaxFiles} code files without sensitive paths)`,
-  );
 }
 
 function draftCard(change: ChangeView, ctx: CardContext): Output {

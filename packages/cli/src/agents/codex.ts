@@ -8,13 +8,15 @@ import {
   movePatch,
   patchPaths,
 } from "@baquia-dev/specty-core";
-import type { RawAction } from "../enforce/actions";
+import { parse } from "jsonc-parser";
+import { asSubagentConversation, type RawAction } from "../enforce/actions";
 import {
   CODEX_HOOKS,
   CODEX_RULES,
   codexHooksFile,
   excludeLocally,
   hasGuard,
+  isOurs,
   memoryStopLines,
   missingEvents,
   removeFromJson,
@@ -35,6 +37,13 @@ import {
   type Redirect,
   textCard,
 } from "./adapter";
+import { runsAtSessionStart } from "./claude-code";
+
+/**
+ * How a Codex session starts that brings Specty's card: a new one, resumed, after `/clear` or
+ * after a compaction. A fork does not.
+ */
+const SESSION_STARTS: ReadonlySet<unknown> = new Set(["startup", "resume", "clear", "compact"]);
 
 /**
  * The events the guard listens to. Each `matcher` is a regular expression on `tool_name` or, for
@@ -43,7 +52,7 @@ import {
 const EVENTS: Readonly<Record<string, string>> = {
   PreToolUse: "^(Bash|apply_patch)$",
   PostToolUse: "^Bash$",
-  SessionStart: "^compact$",
+  SessionStart: `^(${[...SESSION_STARTS].join("|")})$`,
 };
 /**
  * Codex's execpolicy rule for Specty's commands: an `allow` skips the approval and runs the
@@ -71,15 +80,19 @@ const RULE = [
 
 /**
  * Codex (ARCHITECTURE §10): `PreToolUse` with `Bash` and `apply_patch`, `PostToolUse` with `Bash`,
- * which also comes after a command that failed, `SessionStart` after a compaction, whose output it
- * adds to the context, and `Stop`. It reads them as Claude Code does.
+ * which also comes after a command that failed, `SessionStart` when a session starts, resumes, is
+ * cleared or compacted, whose output it adds to the context, and `Stop`. It reads them as Claude Code does.
  */
 export const codex: AgentAdapter = {
   tool: "codex",
+  // A subagent (0.134 or later) sends the root thread's id with its own `agent_id`: it is a
+  // conversation of its own, which enters with `specty enter` like the main thread.
+  normalize: asSubagentConversation,
   kind: (event) => {
     if (event.hook_event_name === "PostToolUse") return "after";
-    // The matcher lets only a compaction through; the guard checks it again all the same.
-    if (event.hook_event_name === "SessionStart" && event.source === "compact") return "compact";
+    // The matcher lets only these through; the guard checks them again all the same.
+    if (event.hook_event_name === "SessionStart" && SESSION_STARTS.has(event.source))
+      return "compact";
     return "before";
   },
   action,
@@ -155,11 +168,14 @@ export const codex: AgentAdapter = {
     if (!guard) return lines;
     // An install from before the card after a compaction has the guard without `SessionStart`.
     const compact = missingEvents([hooks], ["SessionStart"], "codex").length === 0;
+    // One from before the card as a session starts lets only a compaction through.
+    const starts = !compact || startsSessions(hooks);
     return {
       ...lines,
       problems: [
         ...lines.problems,
         ...(compact ? [] : [{ code: "codex-compact", file: CODEX_HOOKS } as const]),
+        ...(starts ? [] : [{ code: "codex-startup", file: CODEX_HOOKS } as const]),
         ...beforeEnter(rules),
         ...memoryStopLines([hooks], "codex"),
       ],
@@ -232,4 +248,16 @@ function action(event: Readonly<Record<string, unknown>>): RawAction {
     default:
       return { kind: "other" };
   }
+}
+
+/** Whether one of the guard's `SessionStart` entries in Codex's hooks (their text) runs at a start. */
+function startsSessions(hooks: string | undefined): boolean {
+  const value: unknown = hooks === undefined ? undefined : parse(hooks);
+  const events = isRecord(value) && isRecord(value.hooks) ? value.hooks : {};
+  const entries = Array.isArray(events.SessionStart) ? events.SessionStart : [];
+  return entries.some(
+    (entry: unknown) =>
+      isOurs(entry, "codex") &&
+      runsAtSessionStart(isRecord(entry) ? entry.matcher : undefined, "startup"),
+  );
 }

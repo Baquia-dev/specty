@@ -10,7 +10,7 @@ import {
 import { isFinished, resolveActive } from "../flow/active";
 import { commitWithReceipt } from "../flow/commits";
 import { remove } from "../io/files";
-import { type Git, GitError, pathsOf } from "../io/git";
+import { type Git, GitError, gitFailure, pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession } from "../session";
 
 export interface InstallCommit {
@@ -59,7 +59,7 @@ export async function commitInstall(
   } catch (error) {
     if (!(error instanceof GitError)) throw error;
     await undo(session.git, mine);
-    const failed = installCommitFailedWarning(mine, failure(error), lang);
+    const failed = installCommitFailedWarning(mine, gitFailure(error), lang);
     return { done: [], warnings: [...warnings, failed], failed: true };
   }
 }
@@ -83,14 +83,4 @@ async function undo(git: Git, paths: readonly string[]): Promise<void> {
   if (created.length === 0) return;
   await git.output(["rm", "-q", "-f", "--cached", "--ignore-unmatch", "--", ...created]);
   for (const path of created) await remove(join(git.root, path));
-}
-
-/** Git's command and its error on one line, without its hints. */
-function failure(error: GitError): string {
-  const lines = error.result.stderr
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0 && !line.startsWith("hint:"));
-  const detail = lines.length > 0 ? lines.join(" ") : `exit ${error.result.code ?? "?"}`;
-  return `git ${error.args[0] ?? ""}: ${detail}`;
 }

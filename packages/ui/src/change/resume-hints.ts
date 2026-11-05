@@ -1,0 +1,112 @@
+// SPDX-License-Identifier: Apache-2.0
+import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
+import { Button } from "../components/button";
+import { Toasts } from "../components/toast";
+import type { ChangeView } from "../data/records";
+import { Preferences } from "../theme/preferences";
+
+/** One agent and the order that opens it in the change's folder. */
+interface Hint {
+  readonly agent: string;
+  readonly command: string;
+}
+
+/**
+ * The orders that open each agent in a folder: the ones `specty new` proposes (Codex with `-C`,
+ * OpenCode and Cursor with the folder, Gemini CLI and Antigravity CLI after `cd`), and Claude
+ * Code after `cd`.
+ */
+const OPEN_IN: readonly ((folder: string) => Hint)[] = [
+  (folder) => ({ agent: "Claude Code", command: `cd "${folder}" && claude` }),
+  (folder) => ({ agent: "Codex", command: `codex -C "${folder}"` }),
+  (folder) => ({ agent: "OpenCode", command: `opencode "${folder}"` }),
+  (folder) => ({ agent: "Cursor", command: `cursor "${folder}"` }),
+  (folder) => ({ agent: "Gemini CLI", command: `cd "${folder}" && gemini` }),
+  (folder) => ({ agent: "Antigravity CLI", command: `cd "${folder}" && agy` }),
+];
+
+/**
+ * A change that waits for the agent with no conversation in its folder (an orphan, or one whose
+ * conversation left): why, how to resume it with each agent, each order with «Copiar», and how
+ * from a session already open. Above the change's tabs.
+ */
+@Component({
+  selector: "sp-resume-hints",
+  imports: [Button],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <section class="flex flex-col gap-2 pt-4" [attr.aria-label]="t()('Cómo retomarlo', 'How to resume it')">
+      <h2 class="m-0 text-sm font-semibold">{{ t()('Cómo retomarlo', 'How to resume it') }}</h2>
+      <p class="m-0 text-sm" data-why>{{ why() }}</p>
+      <ul class="m-0 flex list-none flex-col gap-1 p-0">
+        @for (hint of hints(); track hint.agent) {
+          <li class="flex flex-wrap items-center gap-2" data-agent>
+            <span class="min-w-32 text-[13px] text-text-muted" data-name>{{ hint.agent }}</span>
+            <code class="font-mono text-xs break-all">{{ hint.command }}</code>
+            <sp-button (pressed)="copy(hint.command)">{{ t()('Copiar', 'Copy') }}</sp-button>
+          </li>
+        }
+      </ul>
+      <p class="m-0 text-[13px] text-text-muted" data-open-session>
+        {{ t()('Desde una sesión ya abierta: en Claude Code,', 'From a session already open: in Claude Code,') }}
+        <code class="font-mono text-xs">EnterWorktree</code> {{ t()('con', 'with') }}
+        <code class="font-mono text-xs">name: "{{ change().id }}"</code>{{ t()('; en las demás,', '; in the others,') }}
+        <code class="font-mono text-xs">specty enter {{ change().id }}</code>.
+      </p>
+      <p class="m-0 text-[13px] text-text-muted" data-then>
+        {{ t()('Ya en la carpeta, el agente sigue con', 'Once in the folder, the agent goes on with') }}
+        <code class="font-mono text-xs">specty next</code>.
+      </p>
+    </section>
+  `,
+})
+export class ResumeHints {
+  readonly change = input.required<ChangeView>();
+  private readonly toasts = inject(Toasts);
+  protected readonly t = inject(Preferences).t;
+
+  /** Why nobody works on it: its conversation left its folder, or no conversation holds it. */
+  protected readonly why = computed(() => {
+    const { away } = this.change();
+    if (away === undefined) {
+      return this.t()(
+        "Ninguna conversación trabaja en su carpeta.",
+        "No conversation works in its folder.",
+      );
+    }
+    const when = minutesAgo(away.ago);
+    return this.t()(
+      `Su conversación (${away.tool}) salió de su carpeta ${when.es}.`,
+      `Its conversation (${away.tool}) left its folder ${when.en}.`,
+    );
+  });
+
+  protected readonly hints = computed(() => {
+    const folder = this.change().folder;
+    return folder === undefined ? [] : OPEN_IN.map((open) => open(folder));
+  });
+
+  /** Puts `command` on the clipboard, and says whether it could. */
+  protected copy(command: string): void {
+    const copied = navigator.clipboard?.writeText(command) ?? Promise.reject(new Error("none"));
+    copied.then(
+      () => this.toasts.show(this.t()("Orden copiada.", "Order copied."), "success"),
+      () =>
+        this.toasts.show(
+          this.t()(
+            "No se pudo copiar la orden: cópiala a mano.",
+            "The order could not be copied: copy it by hand.",
+          ),
+          "error",
+        ),
+    );
+  }
+}
+
+/** How long ago, from minutes, in both languages. */
+function minutesAgo(minutes: number): { readonly es: string; readonly en: string } {
+  if (minutes < 1) return { es: "ahora mismo", en: "just now" };
+  if (minutes < 60) return { es: `hace ${minutes} min`, en: `${minutes} min ago` };
+  const hours = Math.floor(minutes / 60);
+  return { es: `hace ${hours} h`, en: `${hours} h ago` };
+}

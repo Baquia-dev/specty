@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // The data source the screens run on, apart from the data it gives (records.ts, which re-exports
 // it): reading is required, every action is optional.
+import type { SessionView } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
 import type { Bilingual, ChangeRecord, CommentAnchor, Delegation, MemoryRecord } from "./records";
@@ -101,6 +102,11 @@ export abstract class SpectyData {
     return Promise.reject(new ActionError(READ_ONLY));
   }
 
+  /** Brings back the lost folder of an open change from its branch, as `specty restore`. */
+  restoreFolder(_change: string): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
   /** Starts the full verification (`verify.full`); it streams through `watchRun`, with no task. */
   verifyChange(_change: string): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));
@@ -128,6 +134,11 @@ export abstract class SpectyData {
 
   /** Specty's memory and who holds each open change (ADR 0016); nothing when it cannot tell. */
   memory(): Promise<MemoryRecord | undefined> {
+    return Promise.resolve(undefined);
+  }
+
+  /** The agents' sessions in the repository, newest first (ADR 0016); nothing when it cannot tell. */
+  sessions(): Promise<readonly SessionView[] | undefined> {
     return Promise.resolve(undefined);
   }
 

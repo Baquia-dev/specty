@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type ChangeState,
   DELETED,
   decideAfterShell,
   decideGuard,
@@ -9,6 +10,7 @@ import {
   isIntegrating,
   parseSpec,
   renderText,
+  type Spec,
   shellChanges,
 } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
@@ -20,7 +22,7 @@ import { gitCommonFolder } from "../flow/worktree";
 import { isRecord, parseJson, remove } from "../io/files";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { noteActivity } from "../store/activity";
-import { readSpec } from "../store/changes";
+import { readSpec, type StoredChange } from "../store/changes";
 import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
 import { enterCommand } from "./enter-command";
 import { endConversation, judgeFronts } from "./fronts";
@@ -35,6 +37,7 @@ import {
   treeSnapshot,
   withoutSpecty,
 } from "./shell-snapshot";
+import { subagentDenial } from "./subagents";
 import { worktreeHook } from "./worktree-hooks";
 
 const ALLOW: Verdict = { allow: true };
@@ -73,11 +76,7 @@ export async function guard(
   try {
     const parsed = parseJson(stdin);
     if (!isRecord(parsed)) return agent.reply(ALLOW, "before");
-    const given =
-      named === undefined || "hook_event_name" in parsed
-        ? parsed
-        : { ...parsed, hook_event_name: named };
-    const event = agent.normalize?.(given) ?? given;
+    const { given, event } = eventOf(agent, parsed, named);
     const cwd = cwdOf(event, environment.cwd);
     const kind = agent.kind(event);
     // They make and remove worktrees for Claude Code, so they answer even outside a session.
@@ -90,8 +89,28 @@ export async function guard(
     const call = { agent, environment, event, cwd, ...entered };
     return await answer(kind, kind === "before" ? await redirected(call, given) : call);
   } catch (error) {
-    return agent.failed(`specty guard: ${error instanceof Error ? error.message : String(error)}`);
+    return agent.failed(`specty guard: ${messageOf(error)}`);
   }
+}
+
+/**
+ * The hook's input with its event's name, from `--event` when the tool does not send it, and as
+ * the guard reads it: normalized by the agent's adapter, when it has to.
+ */
+function eventOf(
+  agent: AgentAdapter,
+  parsed: Record<string, unknown>,
+  named: string | undefined,
+): { readonly given: Record<string, unknown>; readonly event: Record<string, unknown> } {
+  const given =
+    named === undefined || "hook_event_name" in parsed
+      ? parsed
+      : { ...parsed, hook_event_name: named };
+  return { given, event: agent.normalize?.(given) ?? given };
+}
+
+function messageOf(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
 }
 
 /**
@@ -197,11 +216,14 @@ async function leave(
 async function beforeAction(call: Call): Promise<GuardReply> {
   const { agent, environment, session, event, cwd } = call;
   const raw = agent.action(event);
+  const ctx = await guardContext(session);
+  // A subagent must neither move nor bind the session that launched it (ARCHITECTURE §10).
+  const asked = await subagentDenial(call, raw, ctx);
+  if (asked !== undefined) return agent.reply(verdict(asked, session), "before");
   const action =
     raw.kind === "enter"
       ? await enterAction(environment, session, event, raw.request, cwd)
       : await resolveAction(call, raw);
-  const ctx = await guardContext(session);
   const entry = raw.kind === "shell" ? await enterCommand(call, raw.command, ctx) : undefined;
   const judged = entry?.decision.allow === false ? entry.decision : decideGuard(action, ctx);
   // One front per conversation, and none another one holds (ADR 0016).
@@ -299,6 +321,11 @@ async function guardContext(session: Session) {
     delegated: session.delegated,
   };
   if (active === undefined || isFinished(active.state)) return base;
+  return { ...base, change: await guardChange(session, active) };
+}
+
+/** The active change as the guard judges it: its phase, its active task and what is locked. */
+async function guardChange(session: Session, active: StoredChange): Promise<GuardChange> {
   const { state } = active;
   const taskEntry = Object.entries(state.tasks).find(([, task]) => task.status === "active");
   const testing = state.phase === "testing";
@@ -306,35 +333,50 @@ async function guardContext(session: Session) {
     taskEntry === undefined && !testing
       ? undefined
       : parseSpec(await readSpec(active.files), { language: session.lang }).spec;
-  const files = spec?.sections.tasks?.items.find((task) => task.id === taskEntry?.[0])?.files ?? [];
-  // In the testing phase, the tests of any of the change's files may be written (ADR 0014).
-  const planned = [
-    ...(spec?.sections.files?.items ?? []).map((entry) => entry.path),
-    ...(spec?.sections.tasks?.items ?? []).flatMap((task) => task.files),
-  ];
-  const change: GuardChange = {
+  return {
     id: state.id,
     kind: state.kind,
     phase: state.phase,
     closingSubmitted: state.closingSubmittedAt !== undefined,
     specPath: session.paths.relative(active.files.spec),
     ...(taskEntry !== undefined
-      ? { task: { id: taskEntry[0], files, extras: taskEntry[1].scopeExtra } }
-      : {}),
-    ...(testing ? { files: planned } : {}),
-    // An approved test the person unlocked for the active task is open for it (ADR 0014).
-    ...(state.lockedTests !== undefined
       ? {
-          locked: Object.keys(state.lockedTests).filter(
-            (path) => taskEntry?.[1].scopeExtra.includes(path) !== true,
-          ),
+          task: {
+            id: taskEntry[0],
+            files: taskFiles(spec, taskEntry[0]),
+            extras: taskEntry[1].scopeExtra,
+          },
         }
       : {}),
-    ...(state.integration !== undefined && isIntegrating(state)
-      ? { integration: { target: state.integration.target, paths: state.integration.paths } }
-      : {}),
+    ...(testing ? { files: plannedFiles(spec) } : {}),
+    ...lockedOf(state, taskEntry?.[1].scopeExtra ?? []),
+    ...integrationOf(state),
   };
-  return { ...base, change };
+}
+
+/** The files the spec lists for the task `id`. */
+function taskFiles(spec: Spec | undefined, id: string): readonly string[] {
+  return spec?.sections.tasks?.items.find((task) => task.id === id)?.files ?? [];
+}
+
+/** In the testing phase, the tests of any of the change's files may be written (ADR 0014). */
+function plannedFiles(spec: Spec | undefined): string[] {
+  return [
+    ...(spec?.sections.files?.items ?? []).map((entry) => entry.path),
+    ...(spec?.sections.tasks?.items ?? []).flatMap((task) => task.files),
+  ];
+}
+
+/** The approved tests still locked: one the person unlocked for the active task is open for it (ADR 0014). */
+function lockedOf(state: ChangeState, extras: readonly string[]): Pick<GuardChange, "locked"> {
+  if (state.lockedTests === undefined) return {};
+  return { locked: Object.keys(state.lockedTests).filter((path) => !extras.includes(path)) };
+}
+
+/** The incorporation of the target branch the agent is resolving, if any. */
+function integrationOf(state: ChangeState): Pick<GuardChange, "integration"> {
+  if (state.integration === undefined || !isIntegrating(state)) return {};
+  return { integration: { target: state.integration.target, paths: state.integration.paths } };
 }
 
 /** The decision as each agent's module answers it, with the reason and the next step. */

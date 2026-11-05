@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261105-verificaciones-con-plazas",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-verificaciones-con-plazas",
+  "baseCommit": "0da7da13c18aa1b2e2877af07aba3635cc918d00",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:36f1dbb6b3b026f05fcc362a49132968a9cc5d21bedb54d316367b8cc3b30230",
+    "at": "2026-11-05T03:29:35.147Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d26b68910ef9369f0c818302a4760076324c1ecfd2c501e99df23f231b43fad5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3ab5a60e3d2a06a091ad79a92a48bbf320a3089fbb4f9838657da659a56d5d6f",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:b70c96386ad2566262c2704429b58e3b04ceb8228f2819550d732679c5edc2fd",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:9b8bc230370fa8abaa587177f05b1337059144003c6f94c79c52ba21a96876a9",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "8088019721391187d5cf30ae56f0a36f705c4090",
+      "attempts": 1,
+      "startedAt": "2026-11-05T03:29:36.439Z",
+      "doneAt": "2026-11-05T03:32:42.126Z",
+      "summary": "verify.slots (entero ≥ 1, 2 por defecto) en el esquema de la configuración, y verifySlotsWaitNote(running, slots, lang, ahead) en cards/lock.ts, exportada: quién ocupa las plazas y cuántas sesiones esperan delante, en es/en",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "e11d417bfc2ceaf9440113460e42457fd9746eac",
+      "attempts": 1,
+      "startedAt": "2026-11-05T03:32:42.710Z",
+      "doneAt": "2026-11-05T03:34:26.105Z",
+      "summary": "store/verify-slots.ts: inSlots(session, weight, command, run) hace cola por orden de llegada (joinQueue, la cola del turno con su carpeta como parámetro) y corre cuando su peso cabe en verify.slots junto a los archivos vivos de locks/verify-slots/; AC1 y AC2 en verify-slots.test.ts",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "fd9948f8c5371939312abecb6374b30436a29d29",
+      "attempts": 1,
+      "startedAt": "2026-11-05T03:34:26.622Z",
+      "doneAt": "2026-11-05T03:37:23.594Z",
+      "summary": "oneAtATime es el turno (onTurn) más todas las plazas, solo alrededor del comando; landingTurn toma solo el turno; la verificación de una tarea ocupa una plaza (live-run) y la de specty integrate pasa por oneAtATime; AC3 en integrate-turn.test.ts",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "51f777201a3c192d37a32ffb43ce97c109e358de",
+      "attempts": 1,
+      "startedAt": "2026-11-05T03:37:23.909Z",
+      "doneAt": "2026-11-05T03:38:15.487Z",
+      "summary": "ARCHITECTURE §9: las plazas de verificación (verify.slots, cola, archivos de las que corren, el cierre sin plazas) y que specty integrate toma el turno; formats.md: verify.slots y las carpetas locks/verify-slots/ y su cola",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T03:49:38.631Z"
+}

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable, type Type } from "@angular/core";
+import type { SessionView } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
 import {
@@ -18,6 +19,7 @@ import {
   isObject,
   isRecords,
   isRun,
+  isSessionList,
   NO_DIFF,
   NO_SESSION,
   READ_ONLY,
@@ -129,6 +131,14 @@ export class ServerData extends SpectyData {
     return this.post(`/api/memory/${encodeURIComponent(id)}/${verb}`, body);
   }
 
+  override async sessions(): Promise<readonly SessionView[]> {
+    const response = await fetch("/api/sessions");
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isSessionList(body)) throw new ActionError(UNEXPECTED);
+    return body;
+  }
+
   override async memory(): Promise<MemoryRecord> {
     const response = await fetch("/api/memory");
     if (response.status === 403) throw new ActionError(NO_SESSION);
@@ -190,6 +200,10 @@ export class ServerData extends SpectyData {
   /** Starts it in the server: it answers once it runs, and the output comes through `watchRun`. */
   override verifyChange(change: string): Promise<void> {
     return this.act(change, "verify", {});
+  }
+
+  override restoreFolder(change: string): Promise<void> {
+    return this.act(change, "restore", {});
   }
 
   /** The diff of a task or of the whole change; it is read, so even an agent's server gives it. */
