@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261106-la-pagina-de-un-cambio-muestra-sus-pendientes",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-la-pagina-de-un-cambio-muestra-sus-pendientes",
+  "baseCommit": "6ef9be39fe338ef87c02a31d85387cf713968cb8",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0a5bc7313c7effd6f7296bb2d21a41ac787653299eb5e2b9d72c6fa3c2e2b99e",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7a477cca5fd15c9265611d5ffce28d1b6482526d411147f519364e6305001faf",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:aee9937fea63e03f4f98625322e6bdeedd1ec5b7aadd5c6a1c7d4e1cec85a205",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:32f7319e11aa3bf8b4865f45c330aaa782423f3bae0d79cd2afef6032a1e1e4a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:389a0aa809a09f4e7dabb4b6bf82f9a054fab3d065e505dc4d486122fa30a312",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:bfc174d820e9c0cd6100a7403ba623b5f1c399c4447d467410f4e28242de8bd1",
+    "at": "2026-11-05T21:23:46.405Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
