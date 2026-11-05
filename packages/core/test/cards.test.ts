@@ -132,6 +132,21 @@ describe("next cards", () => {
       "en",
     );
     expect(english).toContain('c2 · Design "Container": Usa CaChip.');
+    const onSlices: ChangeView["requested"] = [
+      { id: "c4", anchor: { section: "slices", quote: "La bandeja" }, body: "Divídelo." },
+    ];
+    expect(text({ ...view("review"), requested: onSlices })).toContain(
+      "c4 · Cortes «La bandeja»: Divídelo.",
+    );
+    expect(
+      renderText(
+        nextCard(
+          { change: { ...view("review"), requested: onSlices }, dirty: [] },
+          { ...ES, lang: "en" },
+        ),
+        "en",
+      ),
+    ).toContain('c4 · Slices "La bandeja": Divídelo.');
     expect(text({ ...view("review"), requested: [] })).toContain(
       "Esperando la revisión del usuario",
     );
