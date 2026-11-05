@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "id": "20261105-verify-tiene-su-propio-modulo-del-esquema",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261105-verify-tiene-su-propio-modulo-del-esquema",
+  "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d201205f7edf0d1e1980931334557a393642c72f4e44efc2e213cdb1de7a7846",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b119bab542590593d4533dcec8677f61fe09d2d516768b19be374a018c23470b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:77447a2f122fc98fe64e401723a53ae38490a113034aef33ac739b3bdbf3b5eb",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 1,
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4026b60d4b807fe2c2ced9da99353d0befc1315a946105cb5ad767a3f88c2425",
+    "at": "2026-11-05T07:56:43.336Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
