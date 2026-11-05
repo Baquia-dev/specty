@@ -52,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "edb48930f822558399ca5a6300400ff31865dbb3",
+      "startedAt": "2026-11-05T12:12:38.847Z",
+      "doneAt": "2026-11-05T12:13:29.298Z",
+      "summary": "ChangeView gana slices (los cortes de una épica, de su sección Cortes) y epic.sliceTitle; deriveView da slices con slicesIn y deriveViews copia en cada corte el título de su épica y el que la épica le da al corte (epicOf)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

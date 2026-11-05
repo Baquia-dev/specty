@@ -65,7 +65,7 @@ En la Bandeja, una épica pasa a ser la cabecera del grupo de sus cortes: si est
 
 ## Tareas
 
-- [ ] T1: El título de cada corte, de la sección Cortes de su épica
+- [x] T1: El título de cada corte, de la sección Cortes de su épica
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts && pnpm lint

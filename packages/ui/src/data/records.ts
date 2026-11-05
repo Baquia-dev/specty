@@ -277,7 +277,11 @@ export interface ChangeView {
     readonly id: string;
     readonly title: string;
     readonly slice?: string;
+    /** The slice's title in its epic's Cortes section, when the epic is loaded and names it. */
+    readonly sliceTitle?: string;
   };
+  /** An epic's slices, from its Cortes section: the id and the title of each. */
+  readonly slices?: readonly { readonly id: string; readonly title: string }[];
   readonly phase: Phase;
   readonly revision: number;
   /**
