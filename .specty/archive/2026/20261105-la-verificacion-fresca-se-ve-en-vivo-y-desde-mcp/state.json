@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-la-verificacion-fresca-se-ve-en-vivo-y-desde-mcp",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-la-verificacion-fresca-se-ve-en-vivo-y-desde-mcp",
   "baseCommit": "0c7a2a1b0de1c629b4da57cc45be19298848fc2e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:20ed2d0025cd4c62d87782b4e994972e830040af04075f05315d46836a4360c6",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bbc1397c164c824a375cd6548a537102f78ae723",
+      "attempts": 1,
       "startedAt": "2026-11-05T09:38:55.303Z",
       "doneAt": "2026-11-05T09:39:26.880Z",
-      "summary": "ARCHITECTURE §6 (verify --fresh en vivo en la carpeta de un cambio, specty_verify en la lista de MCP) y §15 (las verificaciones en vivo), y docs/ui.md (la sección Verificación completa también muestra la de accept y la fresca)."
+      "summary": "ARCHITECTURE §6 (verify --fresh en vivo en la carpeta de un cambio, specty_verify en la lista de MCP) y §15 (las verificaciones en vivo), y docs/ui.md (la sección Verificación completa también muestra la de accept y la fresca).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,6 +82,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T09:45:21.022Z",
   "lockedTests": {
     "packages/cli/test/mcp-app.test.ts": "sha256:4b52e83c1a06b9465345af461d9a8b1dfcc1bc1cd894ffe53d366231a625955d",
     "packages/cli/test/mcp.test.ts": "sha256:b18f3214b4666cb9ba381b9a6e0fac42357183afbde3440e0f1b6b2b6495a7ab",

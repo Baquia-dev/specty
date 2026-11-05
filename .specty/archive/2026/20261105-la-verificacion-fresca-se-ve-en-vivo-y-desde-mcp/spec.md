@@ -73,3 +73,23 @@ Hoy `specty verify --fresh` corre a ciegas: la UI y la MCP App no ven nada hasta
 
 - R1: La verificación fresca podría pisar el archivo en vivo de otra verificación del mismo cambio — corre en el turno de la verificación completa y con todas las plazas del clon, así que ni la de una tarea ni otra completa corren a la vez.
 - R2: Los tests en vivo dependen del tiempo — cada unidad de prueba espera unos segundos mientras el test mira la verificación en curso, con un plazo amplio, como `live-run.test.ts`.
+
+## Cierre
+
+### Resumen
+
+En la carpeta de un cambio abierto, `specty verify --fresh` corre cada intento de cada unidad como la verificación completa en curso de ese cambio (`runLive` con `held`, porque ya tiene el turno y todas las plazas). Lleva el comando de la unidad y su salida según llega, y el archivo se borra al terminar cada intento, así que la UI y la vista de la MCP App la ven en vivo en «Verificación completa», como la de `accept`. Sin un cambio abierto en la carpeta corre como antes, con `execute`. El servidor MCP tiene `specty_verify`, tras `specty_check`: ejecuta `specty verify --fresh` en la carpeta de la llamada y devuelve su tarjeta, con `isError` si alguna unidad falló dos veces. Con MCP Apps enlaza con la vista del cambio. ARCHITECTURE §6 y §15 y docs/ui.md lo describen.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- La llamada a `execute` con la shell solo cambió de sitio dentro de `attempt` (el aviso CWE-78 de `verify.ts`): es la misma de antes, para la carpeta sin cambio abierto.
+- El resultado de la verificación fresca no va a la auditoría del cambio: al terminar, la sección «Verificación completa» vuelve a mostrar el último resultado que tenía.
+- No hubo textos nuevos para la persona: la descripción de `specty_verify` va en inglés, como la de las demás herramientas.
+
+### Pendientes
+
+- Ninguno.
