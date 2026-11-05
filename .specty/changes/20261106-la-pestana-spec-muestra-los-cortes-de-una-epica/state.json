@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261106-la-pestana-spec-muestra-los-cortes-de-una-epica",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-la-pestana-spec-muestra-los-cortes-de-una-epica",
+  "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d911b110575940a54fdd5b55c0b77161f9fa7d3fab8ecca8a6920a88b180cf9f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:635c50f30307007e2feff9e71dc7ef59758e94fc3897b819a350886392e370d4",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:cb8a2b36d4cafe48d777bd85aac3503670a04bd5b8ea64137fb026c6f8ffc385",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:606f7006ccd648f58f540fbd4b2b854781bddac837b255a599362e634fc5e442",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:a3e179beeb896814e292e5ca0454262927f552275451af2daf4327776506e4d6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a5ccc72dbfbcca89e35eda433e690363b4400ccacac751e409b0fc9433bcbca8",
+    "at": "2026-11-05T16:38:02.858Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
