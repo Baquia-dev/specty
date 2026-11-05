@@ -48,7 +48,7 @@ Desde C1, `specty init` prueba en orden una lista de detectores de workspace: ho
 
 ## Tareas
 
-- [ ] T1: init propone las unidades de un workspace de Dart
+- [x] T1: init propone las unidades de un workspace de Dart
   - files: packages/cli/src/detect/units-dart.ts, packages/cli/src/detect/project.ts, packages/cli/src/detect/workspace-units.ts, packages/cli/test/units-dart.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-dart.test.ts test/workspace-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip

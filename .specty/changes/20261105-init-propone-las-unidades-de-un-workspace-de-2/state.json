@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-init-propone-las-unidades-de-un-workspace-de-2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-init-propone-las-unidades-de-un-workspace-de-2",
   "baseCommit": "e32b8471a8fcbd51783303ebf5f3275ca0c3e864",
   "revision": 1,
@@ -47,7 +47,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "624b69d2a7465339951ef07f5286974a12291214",
+      "startedAt": "2026-11-05T14:17:33.940Z",
+      "doneAt": "2026-11-05T14:33:15.495Z",
+      "summary": "Detector dartWorkspace (detect/units-dart.ts) para workspaces de pub y melos: una unidad por paquete con test/ con (cd <carpeta> && dart|flutter test) y sus dependencias; safeYaml exportado y DETECTORS acaba en dartWorkspace."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
