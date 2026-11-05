@@ -38,7 +38,7 @@ import {
   integrationOf,
   mergeTarget,
 } from "../flow/integrate";
-import { landChange, withIntegration } from "../flow/land";
+import { landRetrying, withIntegration } from "../flow/land";
 import { runLive } from "../flow/live-run";
 import { measureUsage, withUsage } from "../flow/usage";
 import { codeTree, passedOnThisCode, recordFullVerification } from "../flow/verified";
@@ -142,8 +142,11 @@ async function runFullVerification(
   const { state } = change;
   const { terminal } = session.environment;
   const tree = await codeTree(session);
-  const started = Date.now();
-  const result = await runLive(session, state.id, undefined, full);
+  // Its time counts from its turn: the wait for another session's is not this verification's.
+  let started = Date.now();
+  const result = await runLive(session, state.id, undefined, full, () => {
+    started = Date.now();
+  });
   const coverage = await recordFullVerification(session, change, {
     command: full,
     started,
@@ -275,7 +278,7 @@ async function closeQuickOnTurn(
   );
   // Read while the folder exists: landing removes a worktree of its own.
   const hints = await verifyHints(session, plan?.main ?? session.root);
-  const landed = plan === undefined ? undefined : await landChange(session, plan);
+  const landed = plan === undefined ? undefined : await landRetrying(session, plan);
   const card = withIntegration(
     session,
     closedCard(

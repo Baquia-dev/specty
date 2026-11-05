@@ -29,11 +29,11 @@ for (const tool of ["claude-code", "codex"] as const) {
   });
 }
 
-describe("Codex's other session starts", () => {
-  it("add nothing, even if its matcher let them through (AC2)", async () => {
+describe("A forked Codex session", () => {
+  it("adds nothing, even if its matcher let it through (AC2)", async () => {
     const root = await tempRepo(APP);
     await cli(root, ["new", "Saludo personalizado"]);
-    for (const source of ["startup", "resume", "clear", "fork"]) {
+    for (const source of ["fork"]) {
       expect(await started(root, "codex", source), source).toMatchObject({
         code: 0,
         out: "",

@@ -194,7 +194,9 @@ describe("installing the guard in Codex", () => {
       { matcher: "^(Bash|apply_patch)$", hooks: [guard] },
     ]);
     expect(hooks.hooks.PostToolUse).toMatchObject([{ matcher: "^Bash$", hooks: [guard] }]);
-    expect(hooks.hooks.SessionStart).toMatchObject([{ matcher: "^compact$", hooks: [guard] }]);
+    expect(hooks.hooks.SessionStart).toMatchObject([
+      { matcher: "^(startup|resume|clear|compact)$", hooks: [guard] },
+    ]);
     expect(await readdir(home)).toEqual([]);
 
     await cli(root, ["init", "--tools", "codex"], { env });

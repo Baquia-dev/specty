@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { busyChangeCard, type CardContext, renderText } from "../../src";
+import { busyChangeCard, type CardContext, fullVerificationWaitNote, renderText } from "../../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
 const EN: CardContext = { ...ES, lang: "en" };
@@ -30,5 +30,20 @@ describe("a change another command is changing", () => {
         "NEXT: wait for it to finish and run your command again; if that process no longer exists, its lock stops counting by itself.",
       ].join("\n"),
     );
+  });
+});
+
+describe("the note of a full verification waiting for its turn", () => {
+  const TURN = { ...HOLDER, command: "pnpm check", folder: "/otra/carpeta" };
+
+  it("AC3: says how many sessions wait ahead in the queue, in Spanish and English, and nothing without any", () => {
+    expect(fullVerificationWaitNote(TURN, "es", 2)).toBe(
+      "specty: otra sesión está haciendo una verificación completa (`pnpm check` en /otra/carpeta, desde las 04:38 UTC); espero a que termine para no correr dos a la vez… Delante en la cola: 2.",
+    );
+    expect(fullVerificationWaitNote(TURN, "en", 1)).toBe(
+      "specty: another session is running a full verification (`pnpm check` in /otra/carpeta, since 04:38 UTC); waiting for it to end so that two do not run at once… Ahead in the queue: 1.",
+    );
+    expect(fullVerificationWaitNote(TURN, "es", 0)).toBe(fullVerificationWaitNote(TURN, "es"));
+    expect(fullVerificationWaitNote(TURN, "es")).not.toContain("cola");
   });
 });

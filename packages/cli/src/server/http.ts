@@ -21,6 +21,7 @@ import { changeDiff, type DiffAnswer } from "./diff";
 import { type ChangeEvents, changeEvents } from "./events";
 import { changeRecords } from "./records";
 import { changeRuns, type Runs } from "./runs";
+import { sessionsView } from "./sessions";
 import { changeTrace, traceReply } from "./trace";
 
 export interface ServerOptions {
@@ -193,6 +194,7 @@ const VIEWS: ReadonlyMap<string, (session: Session) => Promise<unknown>> = new M
   ["/api/changes", changeRecords],
   ["/api/delegation", delegationView],
   ["/api/memory", memoryView],
+  ["/api/sessions", sessionsView],
 ]);
 
 /**
