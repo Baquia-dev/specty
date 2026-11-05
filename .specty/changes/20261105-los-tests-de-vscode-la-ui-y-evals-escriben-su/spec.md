@@ -51,7 +51,7 @@ Los tests de core, exporters y la CLI ya dejan su informe JUnit en `coverage/jun
   - ac: AC1
   - verify: pnpm --filter specty-vscode test && test -s packages/vscode/coverage/junit.xml && pnpm --filter specty-vscode typecheck && pnpm lint && pnpm knip
   - type: build
-- [ ] T2: evals deja su informe JUnit en coverage/junit.xml
+- [x] T2: evals deja su informe JUnit en coverage/junit.xml
   - files: evals/vitest.config.ts, evals/test/repo-junit.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/repo-junit.test.ts && test -s evals/coverage/junit.xml && pnpm --filter @baquia-dev/specty-evals typecheck && pnpm lint && pnpm knip
