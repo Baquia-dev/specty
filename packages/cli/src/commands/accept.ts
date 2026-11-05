@@ -33,7 +33,7 @@ import { commitState } from "../flow/active";
 import { harvestEntries, withArchivedMemory } from "../flow/archive-memory";
 import { verifyHints, withVerifyHints } from "../flow/detected";
 import { archive, commitArchive } from "../flow/finish";
-import { landingTurn } from "../flow/full-verification";
+import { fullCommand, landingTurn } from "../flow/full-verification";
 import {
   type Absorbed,
   absorbTarget,
@@ -42,7 +42,7 @@ import {
   mergeTarget,
 } from "../flow/integrate";
 import { landRetrying, withIntegration } from "../flow/land";
-import { type FullPlan, fullCommand, fullPlan, runFull } from "../flow/units";
+import { type FullPlan, fullPlan, runFull } from "../flow/units";
 import { measureUsage, withUsage } from "../flow/usage";
 import { codeTree, passedOnThisCode, recordFullVerification, touchesCode } from "../flow/verified";
 import { changeView } from "../flow/views";

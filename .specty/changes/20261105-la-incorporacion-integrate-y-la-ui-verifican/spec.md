@@ -72,7 +72,7 @@ Desde el corte C1, la verificación completa de `accept` ejecuta solo las unidad
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/incorporation.test.ts && pnpm --filter @baquia-dev/specty-core typecheck
   - type: feat
-- [ ] T2: La incorporación de main verifica por unidades
+- [x] T2: La incorporación de main verifica por unidades
   - files: packages/cli/src/flow/full-verification.ts, packages/cli/src/flow/units.ts, packages/cli/src/flow/integrate.ts, packages/cli/src/commands/accept.ts, packages/cli/test/incorporation-units.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/incorporation-units.test.ts test/accept-units.test.ts test/integrate.test.ts test/close-turn.test.ts test/delegated-integration.test.ts test/unverified.test.ts

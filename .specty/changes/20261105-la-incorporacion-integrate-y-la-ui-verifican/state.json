@@ -56,12 +56,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f0b30ef158217d2df87fe5040efc4de99d60e952",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:37:37.370Z",
       "doneAt": "2026-11-05T06:38:39.591Z",
-      "summary": "absorbedLine dice que pasaron las unidades de la verificación completa cuando MergeVerification lleva units"
+      "summary": "absorbedLine dice que pasaron las unidades de la verificación completa cuando MergeVerification lleva units",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "402ae1e9c7953ff4a815c1e6a71bf3f671d27020",
+      "startedAt": "2026-11-05T06:38:40.043Z",
+      "doneAt": "2026-11-05T06:47:20.724Z",
+      "summary": "La incorporación de main verifica con fullPlan y runFull: solo las unidades que faltan, anotadas en el registro y en change.verified; runUnits recibe cómo ejecutar cada comando y fullCommand pasa a full-verification.ts, donde landingTurn lo usa"
     }
   },
   "pending": {

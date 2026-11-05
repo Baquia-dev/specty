@@ -2,7 +2,6 @@
 import {
   hashText,
   isGoverned,
-  type ResolvedConfig,
   type UnitsOutcome,
   type UnitTime,
   type VerifyUnit,
@@ -10,7 +9,7 @@ import {
 import { tail } from "../io/exec";
 import { exists, writeText } from "../io/files";
 import type { Session } from "../session";
-import { oneAtATime } from "./full-verification";
+import { oneAtATime, unitsCommand } from "./full-verification";
 import { runLive } from "./live-run";
 import { workingFiles } from "./verified";
 
@@ -26,15 +25,28 @@ interface Printed {
   readonly print: string | undefined;
 }
 
+/** With `verify.units`: the names of those that passed already on this code, and the others. */
+export interface PlannedUnits {
+  readonly reused: readonly string[];
+  readonly pending: readonly Printed[];
+}
+
 /** The full verification to run (formats.md §6). */
 export interface FullPlan {
   /** Its command (`fullCommand`). */
   readonly command: string;
   /** What runs: the command or, with `verify.units`, those of the units that have not passed. */
   readonly runs: string;
-  /** With `verify.units`: the names of those that passed already on this code, and the others. */
-  readonly units?: { readonly reused: readonly string[]; readonly pending: readonly Printed[] };
+  readonly units?: PlannedUnits;
 }
+
+/**
+ * Runs one command of a full verification, on the turn and the places it holds already: its exit
+ * code, undefined when it was cut, and the non-empty lines of its output.
+ */
+export type RunCommand = (
+  command: string,
+) => Promise<{ readonly code: number | undefined; readonly output: readonly string[] }>;
 
 /** What a full verification did. */
 export interface FullRan {
@@ -49,15 +61,6 @@ export interface FullRan {
 }
 
 /**
- * The command of the full verification: `verify.full` or, with `verify.units`, the commands of
- * every unit joined with `&&`, which do the same; none without either.
- */
-export function fullCommand(config: Pick<ResolvedConfig, "verify">): string | undefined {
-  const { units, full } = config.verify;
-  return units === undefined ? full : joined(units);
-}
-
-/**
  * The full verification with `command` to run: with `verify.units`, only the units that have not
  * passed with the fingerprint of the code there is now, in this change or in another of the clone.
  */
@@ -68,7 +71,8 @@ export async function fullPlan(session: Session, command: string): Promise<FullP
   const passed = await Promise.all(printed.map(({ print }) => passedBefore(session, print)));
   const reused = printed.filter((_, index) => passed[index]).map(({ unit }) => unit.name);
   const pending = printed.filter((_, index) => !passed[index]);
-  return { command, runs: joined(pending.map(({ unit }) => unit)), units: { reused, pending } };
+  const runs = unitsCommand(pending.map(({ unit }) => unit));
+  return { command, runs, units: { reused, pending } };
 }
 
 /**
@@ -82,27 +86,31 @@ export async function runFull(
   plan: FullPlan,
   onStart: () => void,
 ): Promise<FullRan> {
-  if (plan.units === undefined) {
+  const { units } = plan;
+  if (units === undefined) {
     const result = await runLive(session, change, undefined, plan.command, { onStart });
     return { code: result.code, output: tail(result), command: plan.command };
   }
-  const { reused, pending } = plan.units;
+  const live: RunCommand = async (command) => {
+    const result = await runLive(session, change, undefined, command, { held: true });
+    return { code: result.code, output: tail(result) };
+  };
   return oneAtATime(session, plan.runs, () => {
     onStart();
-    return runUnits(session, change, reused, pending);
+    return runUnits(session, change, units, live);
   });
 }
 
 /**
- * Runs the `pending` units in order, each live and on the turn this process holds; another
- * session may have passed one meanwhile, and then it is reused. The first that fails stops the
- * rest; each that passes goes into the record.
+ * Runs the pending units of change `change` in order with `run`, on the turn this process holds;
+ * another session may have passed one meanwhile, and then it is reused. The first that fails
+ * stops the rest; each that passes goes into the record.
  */
-async function runUnits(
+export async function runUnits(
   session: Session,
   change: string,
-  reused: readonly string[],
-  pending: readonly Printed[],
+  { reused, pending }: PlannedUnits,
+  run: RunCommand,
 ): Promise<FullRan> {
   const again = [...reused];
   const passed: UnitTime[] = [];
@@ -113,9 +121,9 @@ async function runUnits(
       continue;
     }
     const started = Date.now();
-    const result = await runLive(session, change, undefined, unit.command, { held: true });
+    const result = await run(unit.command);
     const time = { name: unit.name, ms: Date.now() - started };
-    last = { code: result.code, output: tail(result), command: unit.command };
+    last = { code: result.code, output: result.output, command: unit.command };
     if (result.code !== 0) {
       const skipped = pending.slice(index + 1).map((next) => next.unit.name);
       return { ...last, units: { reused: again, passed, failed: time, skipped } };
@@ -157,5 +165,3 @@ async function record(session: Session, printed: Printed, change: string, ms: nu
 
 const recordPath = (session: Session, print: string) =>
   session.git.gitPath(`${RECORD}/${print.replace(/^sha256:/, "")}.json`);
-
-const joined = (units: readonly VerifyUnit[]) => units.map(({ command }) => command).join(" && ");
