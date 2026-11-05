@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-puertos-de-desarrollo-propios-en-cada-carpeta",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-puertos-de-desarrollo-propios-en-cada-carpeta",
   "baseCommit": "53733e01b4bb1d0786f65620876e1ccd67a98705",
   "revision": 1,
@@ -42,6 +42,8 @@
     "AC": 4,
     "T": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T02:17:19.305Z"
+  "lockedTests": {
+    "packages/cli/test/dev-ports.test.ts": "sha256:49901b3e70b0b9e7886afa3dd6373bc5f608f7f3451a9cff36fb48fd53a55662",
+    "packages/core/test/cards/dev-ports.test.ts": "sha256:0314ccc2a8aaac7a535ccd5282f874b7949675eb8670eff377cbbe8d01be51b9"
+  }
 }
