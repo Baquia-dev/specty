@@ -59,7 +59,7 @@ Los tests de la CLI, core y exporters crean sus temporales en una carpeta propia
   - files: packages/exporters/vitest.config.ts, packages/exporters/test/temp-dir.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-exporters exec vitest run test/temp-dir.test.ts && pnpm lint && pnpm --filter @baquia-dev/specty-exporters typecheck && pnpm knip
-- [ ] T3: Los tests de la CLI y los procesos que lanzan usan la carpeta de la ejecución
+- [x] T3: Los tests de la CLI y los procesos que lanzan usan la carpeta de la ejecución
   - files: packages/cli/vitest.config.ts, packages/cli/test/temp-dir.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/temp-dir.test.ts && pnpm lint && pnpm typecheck && pnpm knip

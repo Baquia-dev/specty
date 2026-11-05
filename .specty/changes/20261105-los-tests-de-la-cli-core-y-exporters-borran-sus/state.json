@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-los-tests-de-la-cli-core-y-exporters-borran-sus",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-los-tests-de-la-cli-core-y-exporters-borran-sus",
   "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
   "revision": 2,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3dc5fe9edf1ed6b97288ec09237c7769d6598476",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:06:22.085Z",
       "doneAt": "2026-11-05T16:06:55.159Z",
-      "summary": "exporters nombra ../core/vitest-temp-dir.ts en su globalSetup"
+      "summary": "exporters nombra ../core/vitest-temp-dir.ts en su globalSetup",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f45e77c80bfc5412b542690ea5ff6ee698d3d3c2",
+      "startedAt": "2026-11-05T16:06:55.497Z",
+      "doneAt": "2026-11-05T16:07:32.119Z",
+      "summary": "la CLI nombra ../core/vitest-temp-dir.ts en su globalSetup, antes de test/global-setup.ts"
     }
   },
   "pending": {
