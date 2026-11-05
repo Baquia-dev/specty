@@ -46,7 +46,7 @@ Los tests de core, exporters y la CLI ya dejan su informe JUnit en `coverage/jun
 
 ## Tareas
 
-- [ ] T1: vscode deja su informe JUnit en coverage/junit.xml
+- [x] T1: vscode deja su informe JUnit en coverage/junit.xml
   - files: packages/vscode/vitest.config.ts, packages/vscode/test/repo-junit.test.ts
   - ac: AC1
   - verify: pnpm --filter specty-vscode test && test -s packages/vscode/coverage/junit.xml && pnpm --filter specty-vscode typecheck && pnpm lint && pnpm knip

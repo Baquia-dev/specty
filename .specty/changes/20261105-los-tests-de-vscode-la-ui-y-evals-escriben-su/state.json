@@ -6,6 +6,13 @@
   "branch": "specty/20261105-los-tests-de-vscode-la-ui-y-evals-escriben-su",
   "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:af495221ee1106704c8d8d50be4c2fe198c5fa012a8ef1552f0e87573522179c",
+    "at": "2026-11-05T08:36:56.492Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -37,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "37e7a1649b4ca62012abea92591a14d0e1cd2077",
+      "startedAt": "2026-11-05T08:36:57.443Z",
+      "doneAt": "2026-11-05T08:39:18.058Z",
+      "summary": "vscode añade el reporter junit a los de Vitest por defecto, con su informe en coverage/junit.xml, y test/repo-junit.test.ts lo comprueba"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -46,12 +63,5 @@
     "A": 5,
     "AC": 1,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:af495221ee1106704c8d8d50be4c2fe198c5fa012a8ef1552f0e87573522179c",
-    "at": "2026-11-05T08:36:56.492Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
