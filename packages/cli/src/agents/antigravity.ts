@@ -51,6 +51,8 @@ const WRITES: Readonly<Record<string, string>> = {
   write_file: "Path",
   edit_file: "Path",
 };
+/** How a turn the model ended comes: in its editor, and with no tool call in its CLI. */
+const ENDED: ReadonlySet<string> = new Set(["model_stop", "NO_TOOL_CALL"]);
 /**
  * The events the guard listens to, with the tools each one covers; `undefined` is an event that
  * takes a list of handlers, with no matcher.
@@ -102,8 +104,9 @@ export const antigravity: AgentAdapter = {
       texts.length === 0 ? {} : { injectSteps: texts.map((text) => ({ ephemeralMessage: text })) },
     ),
   stop: {
-    // Only a turn the model ended: not one an error or its step limit stopped.
-    acts: (event) => event.terminationReason === "model_stop",
+    // Only a turn the model ended (not one an error or its step limit stopped), once its
+    // subagents are done: while they run, it comes with `fullyIdle: false`, and again after.
+    acts: (event) => ENDED.has(String(event.terminationReason)) && event.fullyIdle !== false,
     reply: (message) => JSON.stringify({ decision: "continue", reason: message }),
     pass: JSON.stringify({ decision: "stop" }),
     counts: true,

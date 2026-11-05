@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "afcdf46c7e9cfb871543c0d9956129f5ef630b7d",
+      "attempts": 1,
       "startedAt": "2026-11-05T09:00:26.398Z",
       "doneAt": "2026-11-05T09:07:17.244Z",
-      "summary": "Línea de doctor antigravity-cli (es/en) en core; outdatedMatcher la da a un matcher con las herramientas ACP y sin las del CLI, y mantiene antigravity-acp y enter-outdated para los anteriores."
+      "summary": "Línea de doctor antigravity-cli (es/en) en core; outdatedMatcher la da a un matcher con las herramientas ACP y sin las del CLI, y mantiene antigravity-acp y enter-outdated para los anteriores.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "85ed76946e5ee3988901356bec247a90ebc3dd9f",
+      "startedAt": "2026-11-05T09:07:17.563Z",
+      "doneAt": "2026-11-05T09:12:30.819Z",
+      "summary": "stop.acts de Antigravity actúa con terminationReason model_stop o NO_TOOL_CALL, y no con fullyIdle false (mientras corren sus subagentes): responde stop sin el check ni gastar la vuelta."
     }
   },
   "pending": {

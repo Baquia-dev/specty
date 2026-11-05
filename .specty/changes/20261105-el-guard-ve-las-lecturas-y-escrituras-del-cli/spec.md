@@ -60,7 +60,7 @@ En el CLI de Antigravity (`agy` 1.5.1), el agente lee con `read_file` (también 
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-antigravity-cli.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/doctor-enter.test.ts
   - type: fix
-- [ ] T3: El fin de turno de Antigravity corre con `NO_TOOL_CALL` y espera a que acaben sus subagentes
+- [x] T3: El fin de turno de Antigravity corre con `NO_TOOL_CALL` y espera a que acaben sus subagentes
   - files: packages/cli/test/antigravity-turn.test.ts, packages/cli/src/agents/antigravity.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-turn.test.ts test/check-agent-stop.test.ts && pnpm typecheck && pnpm lint
