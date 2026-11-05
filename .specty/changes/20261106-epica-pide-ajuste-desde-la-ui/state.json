@@ -6,6 +6,13 @@
   "branch": "specty/20261106-epica-pide-ajuste-desde-la-ui",
   "baseCommit": "359335f804c6fe7e6dab489c92a0ba63ef54a00e",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:aaa47d9daa46098567cd2b684734ff6345d26a377b5ac78c358b9fc211a89bbe",
+    "at": "2026-11-05T20:19:04.111Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -48,12 +55,6 @@
     "T": 4,
     "R": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:aaa47d9daa46098567cd2b684734ff6345d26a377b5ac78c358b9fc211a89bbe",
-    "at": "2026-11-05T20:19:04.111Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T20:35:29.639Z"
 }
