@@ -34,6 +34,28 @@ describe("the cards of a refused `adjust`", () => {
     );
   });
 
+  it("AC4: name both phases of an epic's adjustments", () => {
+    const epic = "SPECTY · 20261105-bandeja · review";
+    const card = adjustRefusalCard({ reason: "not-in-acceptance", epic: true }, epic, ES);
+    expect(card.status).toBe("blocked");
+    expect(renderText(card, "es")).toBe(
+      [
+        epic,
+        "Los ajustes de una épica se piden mientras se implementan sus cortes o con el resultado en aceptación.",
+        "SIGUIENTE: ejecuta `specty next`.",
+      ].join("\n"),
+    );
+    expect(
+      renderText(adjustRefusalCard({ reason: "not-in-acceptance", epic: true }, epic, EN), "en"),
+    ).toBe(
+      [
+        epic,
+        "An epic's adjustments are requested while its slices are implemented or with the result in acceptance.",
+        "NEXT: run `specty next`.",
+      ].join("\n"),
+    );
+  });
+
   it("send the agent to finish a merge still in progress first", () => {
     const card = adjustRefusalCard({ reason: "merging", target: "main" }, HEADER, ES);
     expect(card.status).toBe("blocked");

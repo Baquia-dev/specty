@@ -81,8 +81,12 @@ describe("specty prune", () => {
     expect((await cli(root, ["new", "--worktree", "Tercero"])).code).toBe(0);
     const cancelled = folderOf(root, OTHER);
     const open = folderOf(root, CHANGE.replace("saludo-personalizado", "tercero"));
-    // A cancelled change: its folder goes, its branch (not in main) stays.
-    await cli(cancelled, ["cancel", "--reason", "Ya no"], { terminal: person() });
+    // A cancelled change whose folder stayed (it was locked then): its folder goes, its branch
+    // (not in main) stays.
+    git(root, "worktree", "lock", cancelled);
+    const kept = await cli(cancelled, ["cancel", "--reason", "Ya no"], { terminal: person() });
+    expect(kept.out).toContain(`La carpeta ${cancelled} queda: `);
+    git(root, "worktree", "unlock", cancelled);
     // A closed change whose folder stayed: its folder goes, its branch (in main) too.
     await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
     await toClosing(folder);

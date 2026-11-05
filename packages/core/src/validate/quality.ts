@@ -305,7 +305,13 @@ export const checkSplit: Rule = (spec, ctx, lang) => {
   const { exceeded, near } = splitBreaches(computeSize(spec, ctx.config, ctx.repo), ctx.config);
   if (exceeded.length > 0) {
     const detail = exceeded.map((breach) => formatBreach(breach, lang)).join("; ");
-    return [report(lang, { code: "split-required", params: { detail } })];
+    // A slice cannot be an epic: what does not fit goes to new slices of its own epic.
+    const { epic } = spec.frontmatter;
+    return [
+      epic === undefined
+        ? report(lang, { code: "split-required", params: { detail } })
+        : report(lang, { code: "slice-split-required", params: { detail, epic } }),
+    ];
   }
   if (near.length === 0) return [];
   const detail = near.map((breach) => formatBreach(breach, lang)).join("; ");
