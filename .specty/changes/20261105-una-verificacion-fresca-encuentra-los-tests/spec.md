@@ -60,7 +60,7 @@ Con las unidades de `verify.units`, la verificación completa salta las que ya p
 
 ## Tareas
 
-- [ ] T1: Los textos de la verificación fresca
+- [x] T1: Los textos de la verificación fresca
   - files: packages/core/src/cards/fresh.ts, packages/core/src/cards/index.ts, packages/core/test/cards/fresh.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/fresh.test.ts && pnpm --filter @baquia-dev/specty-core typecheck

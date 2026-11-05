@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f615679215033a423e52485d11519e92616b9fbe",
+      "startedAt": "2026-11-05T06:33:17.166Z",
+      "doneAt": "2026-11-05T06:36:45.871Z",
+      "summary": "cards/fresh.ts da la tarjeta de specty verify --fresh (resultado y tiempo de cada unidad, salida de los fallos, registro y memoria), la línea antes de cada intento, los textos de la lección y el pendiente y los rechazos, en español y en inglés"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
