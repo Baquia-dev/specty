@@ -27,6 +27,7 @@ import { retroInto } from "./retro-into";
 import { review } from "./review";
 import { scopeAdd } from "./scope";
 import { taskDone } from "./task";
+import { verifyCommand } from "./verify";
 import { type WaitOptions, wait } from "./wait";
 
 type Run = (handler: (session: Session) => Promise<Output | ReportOutput>) => () => Promise<void>;
@@ -66,6 +67,7 @@ export function agentCommands(
     .command("integrate")
     .description("finish the merge of the main branch a closing left here")
     .action(locked(run, "integrate")(integrate));
+  verifyCommand(program, run);
   program
     .command("adjust")
     .description("record the user's adjustment request")

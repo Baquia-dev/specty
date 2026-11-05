@@ -30,12 +30,25 @@ export interface Harvest {
  * follow-ups of its closing as pending items, and the risks its acceptance takes as lessons.
  * Those already in the memory are left out (`harvestable`). The entries it added, in order.
  */
-export async function harvestEntries(
+export function harvestEntries(
   session: Session,
   state: ChangeState,
   items: readonly Harvest[],
 ): Promise<MemoryEntry[]> {
-  const target = targetOf(session, state.id);
+  return rememberEntries(session, state.id, items);
+}
+
+/**
+ * Adds `items` to the memory, one commit each, with `change` as their origin if there is one, as
+ * a fresh verification out of a change: those already in the memory are left out
+ * (`harvestable`). The entries it added, in order.
+ */
+export async function rememberEntries(
+  session: Session,
+  change: string | undefined,
+  items: readonly Harvest[],
+): Promise<MemoryEntry[]> {
+  const target = targetOf(session, change);
   const texts = items.map(({ text }) => text);
   const added: MemoryEntry[] = [];
   for (const text of harvestable(texts, await readMemory(session.git, target.branch))) {
@@ -48,7 +61,7 @@ export async function harvestEntries(
         kind,
         status: "open",
         created: session.environment.now().toISOString(),
-        origin: { change: state.id, by: authorOf(session) },
+        origin: { ...(change === undefined ? {} : { change }), by: authorOf(session) },
         ...(paths === undefined ? {} : { paths }),
         text,
       };

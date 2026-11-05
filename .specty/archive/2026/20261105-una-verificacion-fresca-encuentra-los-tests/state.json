@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "id": "20261105-una-verificacion-fresca-encuentra-los-tests",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-una-verificacion-fresca-encuentra-los-tests",
+  "baseCommit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:96373cf8bf4eb2e0db84898e37c830a0e56644e9c7f60225d1912f44d7cae881",
+    "at": "2026-11-05T06:27:19.913Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1112c67aebf231999d9a41985c8d4668f8cf977438b698f7d9899bdd920bc717",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ca55bd2f93424af8647ccbfeda54adb6858d558288c937c6e078a1cc73b8944a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3fbe6c9b14440648ec11f7d690b1c7590fb6cab4def1cf23e32eea8f3e874035",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:2ae1edcd9eeb4bf1ef102007070d4ac27d987a80f592e6b62d6e2a4a3ca28a08",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:3ec820a63459e62aebfb112711089c9edaea8b866e908c29c5ac176030076133",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:ac07bb211dc6de50ce0d6bc3263005391e7956abf23ab9588c0d0fb4437d65ee",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "f615679215033a423e52485d11519e92616b9fbe",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:33:17.166Z",
+      "doneAt": "2026-11-05T06:36:45.871Z",
+      "summary": "cards/fresh.ts da la tarjeta de specty verify --fresh (resultado y tiempo de cada unidad, salida de los fallos, registro y memoria), la línea antes de cada intento, los textos de la lección y el pendiente y los rechazos, en español y en inglés",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c54d6d10fd3c1284652ad193c9b60909eb841621",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:36:46.369Z",
+      "doneAt": "2026-11-05T06:38:50.511Z",
+      "summary": "commands/verify.ts registra specty verify --fresh: ejecuta todas las unidades (o verify.full) en el turno con todas las plazas, sin el registro, repite una vez la que falla, anota las que pasan en el registro y las inestables o rotas en la memoria (rememberEntries, con origen opcional)",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "6069a4c1c245753e9484ae443a561a1dbc0e5d08",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:38:50.870Z",
+      "doneAt": "2026-11-05T06:39:22.965Z",
+      "summary": "ARCHITECTURE §6 y §9 describen specty verify --fresh; formats.md §1 y §6, el change opcional del registro y la verificación fresca",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T06:53:24.169Z",
+  "lockedTests": {
+    "packages/cli/test/verify-fresh.test.ts": "sha256:b567d95043f013b9b7876802d0e29686c7576904099de5c2cd7e899025b3f4b9",
+    "packages/core/test/cards/fresh.test.ts": "sha256:f83baa1a3da3ec0501f02d529e3c311143da0e07641cdd7f54fa5a473eaa8f3d"
+  }
+}

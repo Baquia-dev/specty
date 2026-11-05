@@ -6,6 +6,7 @@ import { focusedTests, skippedTests, todo } from "./markers";
 import { maxLines } from "./max-lines";
 import type { Provider } from "./provider";
 import { secrets } from "./secrets";
+import { testTime } from "./test-time";
 import { vulnerabilities } from "./vulnerabilities";
 
 /** The checks that apply to every stack, whatever its language. */
@@ -22,5 +23,6 @@ export const commonProvider: Provider = {
     codeRules,
     vulnerabilities,
     diffCoverage,
+    testTime,
   ],
 };

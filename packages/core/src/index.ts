@@ -60,6 +60,7 @@ export {
   type ScriptProject,
   scriptImports,
 } from "./checks/imports-script";
+export { parseJunit, slowTests, type TestTime } from "./checks/junit";
 export {
   type LayerViolation,
   layerOf,
