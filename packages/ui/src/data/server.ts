@@ -10,6 +10,7 @@ import {
   type CommentAnchor,
   type Delegation,
   type MemoryRecord,
+  type SliceChangeRecord,
   SpectyData,
 } from "./records";
 import {
@@ -22,6 +23,7 @@ import {
   isRecords,
   isRun,
   isSessionList,
+  isSliceChanges,
   NO_DIFF,
   NO_SESSION,
   READ_ONLY,
@@ -143,6 +145,16 @@ export class ServerData extends SpectyData {
     } catch (error) {
       return error instanceof ActionError ? error.text : UNEXPECTED;
     }
+  }
+
+  /** The change of each slice of the epic, as the server picks it among every change. */
+  override async sliceChanges(epic: string): Promise<readonly SliceChangeRecord[]> {
+    const response = await fetch(`/api/changes/${encodeURIComponent(epic)}/slices`);
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    if (!response.ok) throw new ActionError(answered(response.status));
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!isSliceChanges(body)) throw new ActionError(UNEXPECTED);
+    return body;
   }
 
   override async delegation(): Promise<Delegation> {

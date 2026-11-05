@@ -394,6 +394,16 @@ export type ChangeSummary = Pick<
   | "tab"
 >;
 
+/**
+ * The change that implements a slice of an epic, as the local server picks it among every change,
+ * archived ones too (`GET /api/changes/<id>/slices`).
+ */
+export interface SliceChangeRecord {
+  readonly slice: string;
+  readonly id: string;
+  readonly phase: Phase;
+}
+
 /** A change as a list shows it: its summary and, when it is loaded whole, everything else. */
 export type ListedChange = ChangeSummary & Partial<ChangeView>;
 

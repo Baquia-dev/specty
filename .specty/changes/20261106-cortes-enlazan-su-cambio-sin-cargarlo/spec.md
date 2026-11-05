@@ -58,7 +58,7 @@ En la pestaña Spec de una épica (`specty ui`), cada corte enlaza con el cambio
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/slices.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
   - type: feat
-- [ ] T2: La sección Cortes enlaza con lo que da el servidor, con los cargados como reserva
+- [x] T2: La sección Cortes enlaza con lo que da el servidor, con los cargados como reserva
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/review/spec-sections.test.ts, docs/ui.md
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch && pnpm typecheck && pnpm lint && pnpm knip

@@ -19,6 +19,7 @@ import type {
   CommentAnchor,
   Delegation,
   MemoryRecord,
+  SliceChangeRecord,
 } from "./records";
 import type { TraceRecord } from "./trace";
 
@@ -196,6 +197,14 @@ export abstract class SpectyData {
   /** `path` as the change left it, in blocks with the commit, change, task and criteria of each. */
   trace(_change: string, _path: string): Promise<TraceRecord> {
     return Promise.reject(new ActionError(NO_TRACE));
+  }
+
+  /**
+   * The change of each slice of the epic `epic` that has one, found among every change, archived
+   * ones too; nothing when the source cannot tell, and the slices link to the changes loaded.
+   */
+  sliceChanges(_epic: string): Promise<readonly SliceChangeRecord[] | undefined> {
+    return Promise.resolve(undefined);
   }
 
   /** Delegated mode as the source knows it; nothing when it cannot tell. */
