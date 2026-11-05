@@ -68,3 +68,25 @@ En la pestaña Spec de una épica (`specty ui`), cada corte enlaza con el cambio
 
 - R1: El constructor de los tests de Angular comprueba los tipos de todos los tests a la vez, y los de T2 se escriben antes que su código — los tests nuevos no usan nada que aún no exista: dan a `ReviewItems` un `ServerData` con `fetch` simulado y miran el documento, así que compilan antes de T2 y fallan solo al ejecutarse.
 - R2: `SpectyData` gana un método y `ReviewItems` una inyección, y muchos tests extienden la fuente o pintan la sección — el método tiene una implementación por defecto y la inyección es opcional; el `verify` de T2 ejecuta la suite entera de la UI.
+
+## Cierre
+
+### Resumen
+
+En la pestaña Spec de una épica, cada corte enlaza con el cambio que lo implementa y muestra su fase aunque la UI no tenga ese cambio cargado, como el corte cerrado de una épica antigua. La sección Cortes se lo pide al servidor con la ruta nueva `GET /api/changes/<id>/slices`, que elige el cambio de cada corte con la misma regla que la tarjeta de la épica, entre los cambios abiertos y los archivados. `GET /api/changes` sigue igual. Si la fuente no lo da (datos de ejemplo, MCP App), mientras el servidor no responde o si falla, los cortes enlazan con los cambios cargados, como antes.
+
+### Desviaciones
+
+- `readChange` (`server/api.ts`) se rehízo con un mapa `PARTS` de las partes de un cambio (diff, run, trace y slices), cada una con su lectura: con la rama nueva de `slices`, su complejidad llegaba a 13 (máximo 10) y el primer `task done` de T1 no pasó. El comportamiento de las demás rutas no cambia, y lo confirman sus tests (`trace`, `diff`, `live`, `verify` y `server.test.ts`). La spec no lo preveía.
+
+### Decisiones
+
+- La sección pide los cambios de los cortes por una ruta propia, y no en `GET /api/changes` ni en `GET /api/changes/<id>`: la UI vuelve a pedir la lista con cada evento `changes`, y cada épica abierta leería entero el archivo en cada lectura.
+- `epicSliceChanges` (`server/slices.ts`) reutiliza `sliceViews` de `flow/epic.ts` a través de `sliceChanges`, para que la regla del cambio de cada corte esté en un solo sitio.
+- `ReviewItems` pide los cambios de los cortes con un `resource` y la inyección opcional de `SpectyData`, sin tocar `spec-review.ts`: las tarjetas de la MCP App pintan la sección sin fuente en sus tests, y solo la sección `slices` con `epic` pregunta. Un `effect` se suscribe a los eventos de la fuente solo entonces.
+- Cuando el servidor responde, la sección usa solo su respuesta; la regla de antes sobre los cambios cargados pasa a `loadedSliceChanges` y queda como reserva (A4).
+- Los tests de la UI dan a `ReviewItems` un `ServerData` real con `fetch` y `EventSource` simulados, así que cubren la lectura, la validación y el enlace sin usar nada que no existiera antes de T2.
+
+### Pendientes
+
+- Ninguno.
