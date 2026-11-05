@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7c888760d8568d98312b6f32fd4f66f61477c606",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:24:27.772Z",
       "doneAt": "2026-11-05T16:30:23.310Z",
-      "summary": "adjustingCard de una épica: «CÓMO AJUSTAR LA ÉPICA» (dividir un corte, cubrir lo que falta con un corte nuevo, alcance nuevo, cortes cerrados intocables); el rechazo not-in-acceptance con epic nombra sus dos fases"
+      "summary": "adjustingCard de una épica: «CÓMO AJUSTAR LA ÉPICA» (dividir un corte, cubrir lo que falta con un corte nuevo, alcance nuevo, cortes cerrados intocables); el rechazo not-in-acceptance con epic nombra sus dos fases",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a46fdae9d31b894e5b8a1b2ccfcc9c0216baa4ce",
+      "startedAt": "2026-11-05T16:30:23.810Z",
+      "doneAt": "2026-11-05T16:33:14.865Z",
+      "summary": "checkSplit da slice-split-required (detail, epic) en lugar de split-required cuando el frontmatter nombra una épica; mensajes es/en: estrechar el corte y llevar el resto a cortes nuevos de su épica con adjust"
     }
   },
   "pending": {

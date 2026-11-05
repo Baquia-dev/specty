@@ -69,7 +69,7 @@ Un corte que al redactarse sale demasiado grande no tiene salida hoy: `propose` 
   - files: packages/core/src/cards/work.ts, packages/core/src/cards/adjust.ts, packages/core/test/cards/adjusting.test.ts, packages/core/test/cards/adjust.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/adjusting.test.ts test/cards/adjust.test.ts
-- [ ] T3: El error de tamaño de un corte lleva a ajustar su épica
+- [x] T3: El error de tamaño de un corte lleva a ajustar su épica
   - files: packages/core/src/validate/quality.ts, packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/validate/split-slice.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/split-slice.test.ts test/validate/quality.test.ts test/validate/split-closing.test.ts
