@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-el-guard-ve-las-lecturas-y-escrituras-del-cli",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-el-guard-ve-las-lecturas-y-escrituras-del-cli",
   "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:150fa9b36ef76bee5c6dcbcba93ad5aed66f6a4898c64d30f6c2b4c27b31fbe9",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c597dde4265010bdceb21463f5b7f8c7a7221f13",
+      "attempts": 1,
       "startedAt": "2026-11-05T09:12:31.174Z",
       "doneAt": "2026-11-05T09:18:33.483Z",
-      "summary": "ARCHITECTURE: read_file, write_file y edit_file del CLI de Antigravity en §10 y en la tabla de herramientas, el fin de turno con NO_TOOL_CALL y fullyIdle, y la comprobación con agy 1.5.1."
+      "summary": "ARCHITECTURE: read_file, write_file y edit_file del CLI de Antigravity en §10 y en la tabla de herramientas, el fin de turno con NO_TOOL_CALL y fullyIdle, y la comprobación con agy 1.5.1.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T09:27:59.082Z",
   "lockedTests": {
     "packages/cli/test/antigravity-turn.test.ts": "sha256:8b86ac9fb13fbc23da9eacdd4a8b3bc1eb36b80a42b6eed83582c7d2eab197b8",
     "packages/cli/test/antigravity.test.ts": "sha256:726b2e189c7691cc7339937828fae815454b590902768cc8c5c59818895ae210",

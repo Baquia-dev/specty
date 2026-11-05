@@ -75,3 +75,28 @@ En el CLI de Antigravity (`agy` 1.5.1), el agente lee con `read_file` (también 
 
 - R1: Otra versión de `agy` cambia los nombres o los campos de sus herramientas — `doctor` solo mira el matcher; el guard deja pasar lo que no reconoce, como hoy. Se comprueba con `agy` real antes de aceptar si se puede.
 - R2: Con `fullyIdle: false` el turno termina sin el check, y si el siguiente `Stop` no llegara, el fin de turno no correría — es lo que pasa hoy en el CLI con cualquier `Stop`; A4 sale del sondeo de P148.
+
+## Cierre
+
+### Resumen
+
+En el CLI de Antigravity (`agy`), el guard ya ve lo que el agente lee, escribe y edita. El matcher de `PreToolUse` que escribe `specty init` en `.agents/hooks.json` suma `read_file|write_file|edit_file` tras los nombres de su editor y de los editores ACP. El guard juzga `read_file` como lectura de `Path` (un archivo o una carpeta, también para la conversación que entró en la carpeta de un cambio) y `write_file` y `edit_file` como escrituras de `Path`. `doctor` reconoce el hook instalado sin esas herramientas con la línea nueva `antigravity-cli` (en español y en inglés) y pide `specty init --tools antigravity`; los hooks anteriores conservan sus avisos (`antigravity-acp` y `enter-outdated`).
+
+El fin de turno corre ahora con `terminationReason` `NO_TOOL_CALL` (el CLI) además de `model_stop` (el editor), y no actúa con `fullyIdle: false`, con el que el `Stop` llega mientras corren sus subagentes: responde `{"decision":"stop"}` sin el check y sin gastar la vuelta de esa conversación. ARCHITECTURE describe las herramientas del CLI y el fin de turno nuevo.
+
+Comprobado con `agy` 1.5.1 de verdad (Gemini 3.8 Flash), con los hooks apuntando al bundle de esta rama en un repositorio temporal: sin cambio activo, `read_file` llegó al guard y pasó, `edit_file` sobre `src/app.ts` se denegó con el motivo y el modelo lo repitió; el `Stop` con `NO_TOOL_CALL` devolvió el turno una vez con el informe de `specty check --changed` y el siguiente dejó terminar. Con un subagente, el `Stop` del padre con `fullyIdle: false` respondió `stop`.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- Sin el campo `fullyIdle`, como en su editor, el fin de turno actúa como antes: solo `fullyIdle: false` lo frena.
+- `doctor` distingue el hook sin las herramientas del CLI por si su matcher ya tenía `client_view_file`, para que el aviso diga lo que falta de verdad.
+
+### Pendientes
+
+- P151: el `Stop` de un subagente de Antigravity (su propio `conversationId`, `fullyIdle: true`, `lastUserInput` vacío) corre el fin de turno, y con el check en rojo el subagente se pone a corregir lo que no era su encargo; decidirlo junto con los cortes en subagentes de Antigravity.
+- P152: en modo print (`agy -p`), si el padre termina mientras su subagente corre, `agy` sale sin mandar el `Stop` con `fullyIdle: true`, y ese turno se queda sin el check.
+- Los proyectos con Antigravity instalado antes de este cambio necesitan `specty init --tools antigravity`; `doctor` lo dice.
