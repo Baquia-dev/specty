@@ -95,3 +95,31 @@ Con Claude Code, la sesión principal entra en la carpeta de la épica con `Ente
 - R1: Si Claude Code también encierra a los subagentes de una sesión que salió con `ExitWorktree`, el arreglo no basta. Mitigación: AC5 lo comprueba con Claude Code real antes de tocar el código, y la medición del cambio siguiente lo confirma con el modelo de verdad.
 - R2: La sesión principal, ya fuera, podría volver a entrar en la épica por costumbre y lanzar desde allí. Mitigación: la tarjeta de dentro vuelve a pedir la salida mientras queden encargos.
 - R3: Otros cambios abiertos tocan archivos cercanos, como las tarjetas de los subagentes de Codex, OpenCode y Cursor. Mitigación: `propose` avisa de los archivos compartidos, y al aceptar los conflictos van a `specty integrate`.
+
+## Cierre
+
+### Resumen
+
+- Con Claude Code, la tarjeta de una épica aprobada que vive en su propia worktree pide, mientras trae encargos, salir antes de su carpeta sin borrarla (`ExitWorktree` con `action: "keep"`), lanzar los encargos y, cuando terminen, ejecutar `specty next` en la carpeta principal (AC1). En la carpeta principal, con otra herramienta o sin encargos, la tarjeta es la de antes (AC2).
+- Fuera de la carpeta de la épica, la conversación ligada a ella recibe su tarjeta: el bloque «TU ÉPICA», sus cortes y sus encargos, y un SIGUIENTE que lanza o espera desde allí mismo (`awayEpicCard`, AC3). Si ya no queda ningún corte listo, huérfano ni en curso, o la épica no reparte sus cortes, pide volver a ella como antes (AC4). `next` lee la vista de la épica en su carpeta, y la vista de una épica sabe si vive en una worktree propia (`inWorktree`, `apartFromMain`).
+- `specty new` sin `--subagent` desde la worktree de otro cambio, como la de su épica, pide salir de ella con `ExitWorktree` y `action: "keep"` antes de entrar con `EnterWorktree` y `name` (`fromWorktree`, AC6, la mitad de P102).
+- Con Claude Code real y el modelo guionizado, con los permisos de las evals, la sesión entra en la épica, sale con `ExitWorktree` y su subagente entra en su corte y escribe allí; `next` en la carpeta principal le trae la tarjeta de la épica (AC5). El modelo guionizado gana los permisos de las evals, `EnterWorktree` y `ExitWorktree`, y un `specty` que ejecuta el bundle de la rama.
+- ARCHITECTURE §5, §6, §7 y §10.
+
+### Desviaciones (respecto al plan)
+
+- El SIGUIENTE de `new` desde otra worktree (AC6) se hizo en T2 y no en T3. La verificación de T2 corría `session-return.test.ts`, que trae el test aprobado de AC6, y no podía pasar sin él. T3 quedó solo con su commit de estado. Por lo mismo, T1 declaró `fromWorktree` en `WorktreeCreated`, porque `pnpm typecheck` compila el test de AC6.
+- La mitad de P102 que tocaba el cierre de un corte salió del plan antes de aprobarlo: con ella, `propose` daba el cambio por demasiado grande (XL).
+- No se repitieron las mediciones `epic` y `epic-subagent` ni se actualizó ARCHITECTURE §16, como dice «Fuera de alcance»: los experimentos de C10 (`20261104-las-evals-miden-el-tiempo-y-el-coste-de-una`) siguen sin estar en main, porque ese cambio espera su cierre.
+
+### Decisiones
+
+- Fuera de la carpeta de la épica, `next` da la tarjeta de la épica en lugar de pedir volver a ella, y no se pide un `cd` a su carpeta. Así cualquier `specty next` de la sesión, también el del `SessionStart`, funciona desde la carpeta principal, y la sesión nunca vuelve a entrar en la worktree que encierra a sus subagentes. Cuando ya no queda nada para los subagentes, la tarjeta pide volver, y allí la épica pasa a aceptación como antes.
+- La salida solo se pide si la épica vive en una worktree propia y la herramienta mueve su sesión entera a la carpeta del cambio (`worktreeByName` en «sí», hoy Claude Code). Las que entran con `specty enter` no cambian de carpeta, y una épica en la carpeta principal no tiene de dónde salir.
+- Se comprobó con Claude Code real (2.1.318 de la extensión) que la causa es el aislamiento de la sesión de worktree y que salir lo resuelve. Sin `ExitWorktree`, la misma prueba falla como en C10: «This session is isolated in the worktree …, so its writes are limited to that folder» para Write, y lo mismo para un `cd` a la carpeta del corte. Esa variante no se dejó como test: fijaría un comportamiento de Claude Code que puede cambiar.
+- El texto de salida suma unos 55 tokens al SIGUIENTE. La tarjeta con 6 encargos sigue por debajo de 1.500 tokens, pero el margen del presupuesto baja de unos 7 encargos a 6 cuando la sesión está dentro de la worktree de la épica. No se tocó `budget.test.ts`, que mide la tarjeta sin `inWorktree`.
+
+### Pendientes
+
+- P107: repetir `epic` y `epic-subagent` (2 ejecuciones como mucho) y actualizar la tabla y la conclusión de ARCHITECTURE §16, en cuanto C10 esté en main.
+- P106: la otra mitad de P102. Al cerrar un corte en orden, el SIGUIENTE debería nombrar la épica a la que volver, con `ExitWorktree` y `action: "keep"` antes de `EnterWorktree`.
