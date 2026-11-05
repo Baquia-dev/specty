@@ -41,8 +41,9 @@ function archived(n: number): ChangeRecord {
 const ARCHIVED = Array.from({ length: 70 }, (_, index) => archived(index + 1));
 
 /**
- * A source that gives every change in `changes`, as `/api/changes` does before C6, and pages the
- * finished ones as any source does by default. It can hold its answers to give them in any order.
+ * A source that gives every change in `changes`, as the prototype and the MCP App do, and pages
+ * the finished ones as any source does by default. It can hold its answers to give them in any
+ * order.
  */
 class Archive extends SpectyData {
   open: readonly ChangeRecord[] = OPEN;

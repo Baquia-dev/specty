@@ -18,12 +18,18 @@ const ID = "20261015-redondeo-promedios";
 /** A source with the sample changes, or none, or one that cannot be read. */
 class Source extends SpectyData {
   records: readonly ChangeRecord[] = sampleRecords(Date.now());
+  /** The changes it gives only by their id, as the local server gives a finished one. */
+  byId: readonly ChangeRecord[] = [];
   failure: Error | undefined;
 
   override changes(): Promise<readonly ChangeRecord[]> {
     return this.failure === undefined
       ? Promise.resolve(this.records)
       : Promise.reject(this.failure);
+  }
+
+  override async change(id: string): Promise<ChangeRecord | undefined> {
+    return this.byId.find((record) => record.state.id === id) ?? super.change(id);
   }
 
   override subscribe(): () => void {
@@ -157,6 +163,17 @@ describe("the export of the History tab", () => {
     await choose(0);
     expect(saved).toEqual([]);
     expect(toasts.items().map((toast) => toast.kind)).toEqual(["error"]);
+  });
+
+  it("AC3: downloads a change the source gives only by its id, as the server a finished one", async () => {
+    const { choose, saved, toasts } = await render((source) => {
+      source.byId = source.records;
+      source.records = [];
+    });
+    await choose(0);
+    expect(saved.map((file) => file.name)).toEqual([`${ID}.md`]);
+    expect(await text(saved[0]?.blob)).toContain("# Auditoría: ");
+    expect(toasts.items()).toEqual([]);
   });
 
   it("AC3: says so and downloads nothing when the source cannot be read", async () => {
