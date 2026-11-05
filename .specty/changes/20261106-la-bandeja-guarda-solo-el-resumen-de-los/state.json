@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-bandeja-guarda-solo-el-resumen-de-los",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-la-bandeja-guarda-solo-el-resumen-de-los",
   "baseCommit": "85be27d0ad5ba373872c2aa19c4dad4331511ef4",
   "revision": 4,
@@ -83,6 +83,15 @@
       "doneAt": "2026-11-05T18:06:32.215Z",
       "summary": "docs/ui.md cuenta el resumen que guarda la Bandeja de cada terminado y que su página pide el registro por id; ARCHITECTURE §15, que la UI pide por id la página de cualquier terminado.",
       "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8cf0c773e7c3ed2ba2f9a58111e7d6f980217bdf",
+      "startedAt": "2026-11-05T18:09:18.003Z",
+      "doneAt": "2026-11-05T18:10:03.499Z",
+      "summary": "El componente de prueba de closing-actions y progress-tab toma el cambio entero de store.listed() en lugar de store.all(), sin tocar ninguna aserción; la suite entera de la UI compila y pasa."
     }
   },
   "pending": {

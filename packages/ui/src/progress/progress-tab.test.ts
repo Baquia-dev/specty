@@ -27,7 +27,7 @@ const PDF = "20261019-boletines-pdf";
 class Host {
   readonly id = input(PDF);
   private readonly store = inject(ChangesStore);
-  readonly change = computed(() => this.store.all().find((view) => view.id === this.id()));
+  readonly change = computed(() => this.store.listed().find((view) => view.id === this.id()));
 }
 
 /** A source that cannot decide: the tab explains why. */

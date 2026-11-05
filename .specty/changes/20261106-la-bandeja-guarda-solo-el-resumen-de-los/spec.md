@@ -86,7 +86,7 @@ Hoy la Bandeja guarda cada cambio terminado de sus páginas entero: su spec revi
   - ac: —
   - verify: grep -q "resumen" docs/ui.md && grep -q "cualquier terminado" docs/ARCHITECTURE.md
   - type: docs
-- [ ] T5: Los tests de closing-actions y progress-tab toman el cambio entero de `listed()`
+- [x] T5: Los tests de closing-actions y progress-tab toman el cambio entero de `listed()`
   - files: packages/ui/src/acceptance/closing-actions.test.ts, packages/ui/src/progress/progress-tab.test.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch && pnpm typecheck
