@@ -74,7 +74,7 @@ Un test que tarda cada vez más pasa desapercibido hasta que la suite entera se 
   - files: packages/core/src/cards/test-time.ts, packages/core/src/cards/index.ts, packages/core/test/cards/test-time.test.ts
   - ac: AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/test-time.test.ts && pnpm typecheck && pnpm lint && pnpm sources
-- [ ] T3: La verificación `test-time` de `specty check`
+- [x] T3: La verificación `test-time` de `specty check`
   - files: packages/cli/src/check/test-time.ts, packages/cli/src/check/coverage.ts, packages/cli/src/check/common.ts, packages/cli/test/check-test-time.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-test-time.test.ts test/check-coverage.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
