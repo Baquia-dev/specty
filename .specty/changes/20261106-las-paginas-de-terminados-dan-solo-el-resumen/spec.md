@@ -83,7 +83,7 @@ Hoy cada página de terminados del servidor local da los 30 registros completos,
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/finished-pages.ts, packages/ui/src/data/changes-store.ts, packages/ui/src/data/finished-source.test.ts, packages/ui/src/data/finished-pages.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch && pnpm typecheck && pnpm lint && pnpm knip
-- [ ] T3: ARCHITECTURE y ui.md cuentan las páginas de resúmenes
+- [x] T3: ARCHITECTURE y ui.md cuentan las páginas de resúmenes
   - files: docs/ARCHITECTURE.md, docs/ui.md
   - ac: —
   - verify: grep -q "changes, total, counts, finished" docs/ARCHITECTURE.md && grep -q "tal como llegan" docs/ui.md

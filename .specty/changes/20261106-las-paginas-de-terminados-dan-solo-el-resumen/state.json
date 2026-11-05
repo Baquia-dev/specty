@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-las-paginas-de-terminados-dan-solo-el-resumen",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-las-paginas-de-terminados-dan-solo-el-resumen",
   "baseCommit": "01598fbba743bc0a0f39a0b88a99b3e9cf6b2223",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d559767a55cc8d8108c79145eb7535faddca71fe",
+      "attempts": 1,
       "startedAt": "2026-11-05T19:03:31.833Z",
       "doneAt": "2026-11-05T19:05:52.772Z",
-      "summary": "FinishedPage da changes (resúmenes); isFinishedPage los comprueba con isChangeSummary; la página en memoria da summaryOf de cada vista; FinishedPages guarda los resúmenes tal como llegan, sin derivador ni epics; withEpic ya no recibe títulos."
+      "summary": "FinishedPage da changes (resúmenes); isFinishedPage los comprueba con isChangeSummary; la página en memoria da summaryOf de cada vista; FinishedPages guarda los resúmenes tal como llegan, sin derivador ni epics; withEpic ya no recibe títulos.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "831e4e9c44e0562d246d0c79bb28e8f21655751e",
+      "startedAt": "2026-11-05T19:05:53.063Z",
+      "doneAt": "2026-11-05T19:06:34.116Z",
+      "summary": "ARCHITECTURE §15 cuenta que /api/changes/finished da { changes, total, counts, finished } con el resumen de core de cada cambio y los títulos de su épica, y que /api/changes/<id> da el registro con sus commits; ui.md, que la Bandeja guarda los resúmenes tal como llegan."
     }
   },
   "pending": {
