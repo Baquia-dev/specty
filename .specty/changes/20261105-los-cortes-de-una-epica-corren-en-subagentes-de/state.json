@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-los-cortes-de-una-epica-corren-en-subagentes-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-los-cortes-de-una-epica-corren-en-subagentes-de",
   "baseCommit": "cf00c4e8324aab6d6871af716f88fad990beb348",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ad7fed820f98e4fea029dbe4ac9dc00994805a20",
+      "attempts": 1,
       "startedAt": "2026-11-05T10:07:17.085Z",
       "doneAt": "2026-11-05T10:09:29.390Z",
-      "summary": "El fin de turno de Antigravity no actúa con lastUserInput vacío (el Stop de un subagente de invoke_subagent): responde stop sin el check ni pending. El E2E con agy 1.5.1 real pasó: el subagente entró en su corte y la principal siguió en el suyo."
+      "summary": "El fin de turno de Antigravity no actúa con lastUserInput vacío (el Stop de un subagente de invoke_subagent): responde stop sin el check ni pending. El E2E con agy 1.5.1 real pasó: el subagente entró en su corte y la principal siguió en el suyo.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e46fa166a70c5fa3a94907f281f27a8cf3c5c745",
+      "startedAt": "2026-11-05T10:09:29.685Z",
+      "doneAt": "2026-11-05T10:09:56.852Z",
+      "summary": "ARCHITECTURE: «Subagentes» (Antigravity) en §10 (invoke_subagent, Workspace inherit, lastUserInput vacío, el E2E con agy real), la tarjeta de la épica desde Antigravity en §7 y su fin de turno sin el Stop de un subagente."
     }
   },
   "pending": {
