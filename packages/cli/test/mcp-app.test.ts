@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 import { createGit } from "../src/io/git";
 import { runCli } from "../src/program";
 import { writeRun } from "../src/store/runs";
-import { AGENT, APP, CHANGE, cli, DIST, NOW, tempRepo, testEnv } from "./support";
+import { AGENT, APP, CHANGE, CONFIG, cli, DIST, NOW, tempRepo, testEnv } from "./support";
 
 type Message = Record<string, unknown>;
 
@@ -55,9 +55,12 @@ const initialize = (id: number, capabilities: Message) =>
   });
 const APPS = { extensions: { [EXTENSION]: { mimeTypes: [MIME] } } };
 
-/** A repository with a change in draft, and a bundle folder with `mcp-app.html` unless `pageless`. */
-async function setUp(pageless = false) {
-  const root = await tempRepo(APP);
+/**
+ * A repository with a change in draft, with `files` over APP's, and a bundle folder with
+ * `mcp-app.html` unless `pageless`.
+ */
+async function setUp(pageless = false, files: Readonly<Record<string, string>> = {}) {
+  const root = await tempRepo({ ...APP, ...files });
   await cli(root, ["new", "Saludo personalizado"]);
   const bundle = await realpath(await mkdtemp(join(tmpdir(), "specty-bundle-")));
   if (!pageless) await writeFile(join(bundle, "mcp-app.html"), PAGE);
@@ -218,5 +221,37 @@ describe("specty mcp as an MCP App", () => {
     expect(now).toMatchObject({
       run: { task: "T1", command: "npm test", output: ["✓ greets Ana"] },
     });
+  });
+
+  it("AC5: links specty_verify to the view, as a change's tools", async () => {
+    const { root, script } = await setUp();
+    const [, list] = await serve(root, script, [initialize(1, APPS), request(2, "tools/list")]);
+    expect(named(toolsOf(list), "specty_verify")?._meta).toEqual({
+      ui: { resourceUri: VIEW, prefersBorder: false },
+    });
+  });
+
+  it("AC3: the view gets the fresh verification going on in the folder while it runs, and none once it ends", async () => {
+    const full = `node -e "console.log('dice F');setTimeout(()=>{},3000)"`;
+    const config = `${CONFIG()}  full: ${JSON.stringify(full)}\n`;
+    const { root, script } = await setUp(false, { ".specty/config.yaml": config });
+    const look = async () => {
+      const [, view] = await serve(root, script, [
+        initialize(1, APPS),
+        call(2, "specty_view", { folder: root }),
+      ]);
+      return resultOf(view).structuredContent as { run?: { output: readonly string[] } };
+    };
+    const running = cli(root, ["verify", "--fresh"]);
+    const deadline = Date.now() + 20_000;
+    let data = await look();
+    while (data.run?.output.includes("dice F") !== true) {
+      if (Date.now() > deadline) throw new Error("timed out");
+      await new Promise((done) => setTimeout(done, 100));
+      data = await look();
+    }
+    expect(data.run).toEqual({ command: full, startedAt: expect.any(String), output: ["dice F"] });
+    expect((await running).code).toBe(0);
+    expect((await look()).run).toBeUndefined();
   });
 });

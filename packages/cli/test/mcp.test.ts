@@ -3,7 +3,7 @@ import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { runCli } from "../src/program";
-import { AGENT, APP, cli, DIST, NOW, tempRepo, testEnv } from "./support";
+import { AGENT, APP, CONFIG, cli, DIST, NOW, tempRepo, testEnv } from "./support";
 
 type Message = Record<string, unknown>;
 
@@ -55,6 +55,7 @@ const TOOLS = [
   "specty_propose",
   "specty_review",
   "specty_check",
+  "specty_verify",
   "specty_task_done",
   "specty_scope_add",
   "specty_adjust",
@@ -146,5 +147,27 @@ describe("specty mcp", () => {
     expect(answers[2]).toMatchObject({ id: 3, error: { code: -32602 } });
     expect(JSON.stringify(answers[2])).toContain("task");
     expect(await readdir(join(root, ".specty"))).not.toContain("changes");
+  });
+
+  it("AC4: specty_verify runs the fresh verification in the folder given and answers its card, an error when a unit failed twice", async () => {
+    const passing = await tempRepo({
+      ...APP,
+      ".specty/config.yaml": `${CONFIG()}  full: "true"\n`,
+    });
+    const failing = await tempRepo({
+      ...APP,
+      ".specty/config.yaml": `${CONFIG()}  full: "false"\n`,
+    });
+    const [passed, failed] = await serve(passing, [
+      call(1, "specty_verify"),
+      call(2, "specty_verify", { folder: failing }),
+    ]);
+    expect(passed).toMatchObject({ id: 1, result: { isError: false } });
+    expect(JSON.stringify(passed)).toMatch(/verify\.full · correcta · \d+ s/);
+    expect(failed).toMatchObject({ id: 2, result: { isError: true } });
+    expect(JSON.stringify(failed)).toMatch(/verify\.full · falló las dos veces · \d+ s \+ \d+ s/);
+    expect(await cli(failing, ["memory"])).toMatchObject({
+      out: expect.stringContaining("P1 · pendiente · La verificación completa (`false`)"),
+    });
   });
 });

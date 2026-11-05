@@ -14,6 +14,7 @@ import { failedTestsSince } from "../check/test-time";
 import { isFinished, resolveActive } from "../flow/active";
 import { type Harvest, rememberEntries } from "../flow/archive-memory";
 import { fullCommand, oneAtATime } from "../flow/full-verification";
+import { runLive } from "../flow/live-run";
 import { type Printed, printsOf, record } from "../flow/units";
 import { execute, tail } from "../io/exec";
 import type { Session } from "../session";
@@ -99,8 +100,8 @@ async function runAll(
   const ran: FreshUnit[] = [];
   const recorded: string[] = [];
   for (const { target, printed } of units) {
-    const first = await attempt(session, target, false);
-    const second = first.code === 0 ? undefined : await attempt(session, target, true);
+    const first = await attempt(session, change, target, false);
+    const second = first.code === 0 ? undefined : await attempt(session, change, target, true);
     const unit = freshUnit(target, first, second);
     ran.push(unit);
     if (unit.result === "failed" || printed?.print === undefined) continue;
@@ -112,18 +113,28 @@ async function runAll(
 
 /**
  * Runs `target` once, as a verification runs: through the shell, by its time and below the rest.
- * When it fails, it reads the JUnit reports it wrote before the next attempt overwrites them.
+ * In the folder of open change `change`, it is that change's full verification going on, live
+ * for the UI and the MCP App; it already holds the turn and every place. When it fails, it reads
+ * the JUnit reports it wrote before the next attempt overwrites them.
  */
-async function attempt(session: Session, target: FreshTarget, again: boolean): Promise<Attempt> {
+async function attempt(
+  session: Session,
+  change: string | undefined,
+  target: FreshTarget,
+  again: boolean,
+): Promise<Attempt> {
   session.environment.io.err(freshProgressLine(target, again, session.lang));
   const started = Date.now();
-  const result = await execute(target.command, [], {
-    cwd: session.root,
-    shell: true,
-    env: session.environment.env,
-    timeoutMs: session.config.verify.timeoutSec * 1000,
-    lowPriority: true,
-  });
+  const result =
+    change === undefined
+      ? await execute(target.command, [], {
+          cwd: session.root,
+          shell: true,
+          env: session.environment.env,
+          timeoutMs: session.config.verify.timeoutSec * 1000,
+          lowPriority: true,
+        })
+      : await runLive(session, change, undefined, target.command, { held: true });
   const ms = Date.now() - started;
   const failedTests = result.code === 0 ? [] : await failedTestsSince(session, started);
   return { code: result.code, ms, output: tail(result, SHOWN), failedTests };
@@ -143,7 +154,7 @@ function freshUnit(target: FreshTarget, first: Attempt, second: Attempt | undefi
   };
 }
 
-/** The open change of this folder, if any: the origin of what the memory keeps. */
+/** The open change of this folder, if any: the origin of what the memory keeps, and it shows live. */
 async function openChange(session: Session): Promise<string | undefined> {
   const active = await resolveActive(session);
   return active === undefined || isFinished(active.state) ? undefined : active.state.id;
