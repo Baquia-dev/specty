@@ -82,7 +82,7 @@ Desde el corte C1, la verificación completa de `accept` ejecuta solo las unidad
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate-units.test.ts test/integrate-turn.test.ts test/integrate-aborted.test.ts test/resolve.test.ts
   - type: feat
-- [ ] T4: La verificación de la UI por unidades
+- [x] T4: La verificación de la UI por unidades
   - files: packages/cli/src/server/runs.ts, packages/cli/test/server/verify-units.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/verify-units.test.ts test/server/verify.test.ts test/server/runs.test.ts test/server/runs-turn.test.ts && pnpm typecheck && pnpm lint && pnpm knip && pnpm sources

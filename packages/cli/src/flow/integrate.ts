@@ -214,7 +214,14 @@ async function verifyMerged(
   // In the audit, so that `accept` does not run it again on this code; a closed change's audit
   // is already archived.
   if (change.state.phase !== "done") {
-    const run = { command, started, code: 0, ms: Date.now() - started, output: ran.output, ...units };
+    const run = {
+      command,
+      started,
+      code: 0,
+      ms: Date.now() - started,
+      output: ran.output,
+      ...units,
+    };
     const tree = await codeTree(session);
     await recordFullVerification(session, change, tree === undefined ? run : { ...run, tree });
   }

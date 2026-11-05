@@ -74,12 +74,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "47685a75276f1b9b8aa35e9180da01f12efb96ef",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:47:21.260Z",
       "doneAt": "2026-11-05T06:52:52.051Z",
-      "summary": "specty integrate verifica el merge resuelto con fullPlan y runFull: solo las unidades que faltan, en vivo, y dice por la salida de error lo que hizo cada una"
+      "summary": "specty integrate verifica el merge resuelto con fullPlan y runFull: solo las unidades que faltan, en vivo, y dice por la salida de error lo que hizo cada una",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/flow/integrate.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "df6f58d5ae74b7895846e066f545fe399db72c95",
+      "startedAt": "2026-11-05T06:52:52.395Z",
+      "doneAt": "2026-11-05T06:58:15.360Z",
+      "summary": "El servidor de la UI ejecuta con fullPlan y runUnits solo las unidades que faltan, cada una en su proceso y en vivo, y anota units en change.verified; lee el árbol y las huellas en orden (dos lecturas a la vez compartían el índice temporal); formato de flow/integrate.ts"
     }
   },
   "pending": {
