@@ -448,6 +448,7 @@ git:
   target: develop                 # rama de la que parten los cambios y a la que se incorporan; sin la clave: la principal
   flow: gitflow                   # specty | github | trunk | gitflow: cómo se nombran las ramas; sin la clave: specty/<id>
   branchPattern: "team/{type}-{slug}"  # opcional: nombre propio con {type}, {slug} e {id}; gana a flow
+  afterLanding: "pnpm build"      # opcional: se ejecuta en la carpeta de la rama destino cada vez que un cambio llega a ella
 team:                             # solo con mode: team
   approvers: []
   requirePrReview: true
