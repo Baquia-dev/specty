@@ -76,3 +76,28 @@ Con Antigravity, la tarjeta de una épica aprobada reparte ya sus cortes entre s
 
 - R1: El modelo real no sigue el prompt del E2E de forma fiable — el test solo corre con la variable; se ejecuta una vez antes de aceptar y, si falla por el modelo tras dos intentos, se anota como pendiente.
 - R2: Una versión de `agy` que mande `lastUserInput` vacío a la conversación principal dejaría su fin de turno sin comprobar — A1 sale de sondear `agy` 1.5.1; el campo ausente se trata como hoy.
+
+## Cierre
+
+### Resumen
+
+Antigravity reparte ya los cortes de una épica entre subagentes: `subagentSlices` está en «sí» en la tabla de capacidades y en ARCHITECTURE §10, y el motivo «sus hooks no documentan las acciones de sus subagentes» queda solo para Devin (Windsurf). Desde Antigravity, el `SIGUIENTE:` de la tarjeta de una épica con encargos (en la épica o fuera de su carpeta) pide lanzar cada uno con `invoke_subagent` y `Workspace: "inherit"`, no `branch`. Va una vez en el `SIGUIENTE:` y no en cada encargo, y la tarjeta con seis encargos cabe en el presupuesto. Con las demás herramientas no cambia.
+
+El fin de turno de Antigravity ya no actúa con `lastUserInput` vacío, el `Stop` de un subagente: responde `{"decision":"stop"}` sin ejecutar `specty check --changed` y sin dejar `pending/<conversación>.stop` (P151). Con el texto de la persona, o sin ese campo, se comprueba como antes. ARCHITECTURE describe «Subagentes» (Antigravity), la tarjeta en §7 y el fin de turno.
+
+El E2E nuevo (`packages/cli/test/antigravity-e2e.test.ts`) solo corre con `SPECTY_E2E_ANTIGRAVITY`. Se ejecutó con `agy` 1.5.1 real y `gemini-3.8-flash-low`. Antes del arreglo falló justo donde debía: el subagente recibió el informe del check y quedó su `pending/<subagente>.stop`; en el sondeo previo, ese subagente se puso a deshacer el `TODO` con `git checkout`. Tras el arreglo pasó a la primera, en 70 s. La conversación principal entró en su cambio con `specty enter`. El subagente, con su propio `conversationId` y el espacio de trabajo de la principal, entró en el del corte y escribió su spec allí. Cada ligadura de `sessions/` apunta a su carpeta y el turno del subagente terminó sin volver.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- Un subagente se reconoce solo por `lastUserInput === ""`. Sin el campo (su editor u otra versión), el evento es de una conversación principal.
+- El E2E no busca `agy` en el PATH, como hace el de OpenCode: usa un modelo real, que cuesta uso, y solo corre cuando la variable da su ruta. Usa `--settings` solo para esa sesión, con `toolPermission: "proceed-in-sandbox"` y `read_file(<carpeta del bundle>)`, y nunca `--dangerously-skip-permissions`.
+
+### Pendientes
+
+- P152: en modo print (`agy -p`), si la conversación principal termina su turno mientras su subagente corre, `agy` sale sin mandar el `Stop` con `fullyIdle: true` (visto otra vez en el sondeo de este cambio).
+- P157: en el sandbox de terminal de `agy` 1.5.1, el agente no puede ejecutar `specty` (un `specty` global de nvm da «operation not permitted») ni un bundle fuera del espacio de trabajo; además, `git restore` no pudo crear `.git/index.lock` pese al `permissionOverrides` del guard.
+- P158: comprobar en su editor que un subagente llega con `lastUserInput` vacío; también que el `Stop` tras un `continue` de la principal aún trae el texto de la persona (A1) y que su modelo lanza varios `invoke_subagent` en un solo mensaje (A4).

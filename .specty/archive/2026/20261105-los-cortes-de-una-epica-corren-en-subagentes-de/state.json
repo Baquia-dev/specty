@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-los-cortes-de-una-epica-corren-en-subagentes-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-los-cortes-de-una-epica-corren-en-subagentes-de",
   "baseCommit": "cf00c4e8324aab6d6871af716f88fad990beb348",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:5644ce877c590a18119322b0236dc938fbd65d6856ebea89ea3cb14f1c145575",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e46fa166a70c5fa3a94907f281f27a8cf3c5c745",
+      "attempts": 1,
       "startedAt": "2026-11-05T10:09:29.685Z",
       "doneAt": "2026-11-05T10:09:56.852Z",
-      "summary": "ARCHITECTURE: «Subagentes» (Antigravity) en §10 (invoke_subagent, Workspace inherit, lastUserInput vacío, el E2E con agy real), la tarjeta de la épica desde Antigravity en §7 y su fin de turno sin el Stop de un subagente."
+      "summary": "ARCHITECTURE: «Subagentes» (Antigravity) en §10 (invoke_subagent, Workspace inherit, lastUserInput vacío, el E2E con agy real), la tarjeta de la épica desde Antigravity en §7 y su fin de turno sin el Stop de un subagente.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T10:15:58.218Z",
   "lockedTests": {
     "packages/cli/test/antigravity-turn.test.ts": "sha256:c8a9feeccf85f34514f9ffac5218fec6befceb80d8760a32911bf2d64591f243",
     "packages/core/test/capabilities.test.ts": "sha256:e6854f8b109fcc8d219b048d8d23f35013f13f9c992cfb92841c03404b9cc409",
