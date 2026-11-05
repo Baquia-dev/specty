@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a180efa9820341a516af5d77a1007ba41940424f",
+      "startedAt": "2026-11-05T06:38:11.294Z",
+      "doneAt": "2026-11-05T06:39:14.381Z",
+      "summary": "leaveFolderNext acepta la épica a la que volver (id, carpeta, inMain, byName) y da el SIGUIENTE por herramienta: specty enter si es indirecta; en Claude Code, ExitWorktree con action keep y EnterWorktree por nombre o cambio de carpeta; specty next con la épica en la principal."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

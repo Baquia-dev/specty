@@ -47,7 +47,7 @@ En una épica en orden, la sesión hace ella misma los cortes (por ejemplo, Clau
 
 ## Tareas
 
-- [ ] T1: El SIGUIENTE de cerrar un corte nombra la épica a la que volver
+- [x] T1: El SIGUIENTE de cerrar un corte nombra la épica a la que volver
   - files: packages/core/src/cards/land.ts, packages/core/test/cards/incorporation.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/incorporation.test.ts && pnpm typecheck
