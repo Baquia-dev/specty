@@ -63,7 +63,7 @@ Hoy cada sesión empieza con «Pendientes y mejoras abiertas: 72. Las primeras l
 
 ## Tareas
 
-- [ ] T1: Las viñetas del cierre que dicen que no hay ningún pendiente no se guardan
+- [x] T1: Las viñetas del cierre que dicen que no hay ningún pendiente no se guardan
   - files: packages/core/src/memory/entries.ts, packages/core/test/memory/harvest.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/harvest.test.ts test/memory/entries.test.ts

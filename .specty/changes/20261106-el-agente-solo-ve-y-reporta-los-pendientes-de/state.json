@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "75932ab0ce4114a3896289f9da2af8480e98cc77",
+      "startedAt": "2026-11-05T20:12:38.023Z",
+      "doneAt": "2026-11-05T20:13:20.470Z",
+      "summary": "harvestable deja fuera una viñeta cuya primera frase, hasta «.» o «:», sin mayúsculas, tildes ni énfasis, dice que no hay ninguno (saysNone con una lista cerrada en español y en inglés)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
