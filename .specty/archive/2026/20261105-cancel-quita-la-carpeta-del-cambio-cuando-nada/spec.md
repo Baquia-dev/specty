@@ -67,3 +67,22 @@ Hoy la carpeta de un cambio cancelado se queda hasta que alguien ejecuta `specty
 ## Riesgos
 
 - R1: Otros tests cancelan un cambio en su worktree y siguen usando la carpeta después — casi todos tienen una sesión ligada a ella, así que se queda; si alguno falla, se pide su archivo con `specty scope add`.
+
+## Cierre
+
+### Resumen
+
+`specty cancel` quita ahora la carpeta del cambio en cuanto lo archiva, con `git worktree remove` sin `--force` desde la carpeta principal, y la rama se queda con su trabajo. La deja si tiene algo sin commit, si una sesión de agente trabaja en ella (el guard la ligó en el último día) o si quien cancela es el agente desde dentro, en modo delegado. También la deja si git no puede quitarla. La tarjeta dice, tras la línea de la rama, si la carpeta se quitó o por qué queda (`removeCancelled` en `flow/prune.ts`, que comparte `workingFolders` con la limpieza, y `cancelledFolderStaysLine` en `cards/close.ts`, en español e inglés). Un cambio que vive en la carpeta principal sigue como antes. Los criterios AC1–AC6 tienen sus tests en `packages/cli/test/cancel-folder.test.ts` y `packages/core/test/cards/close.test.ts`; `prune.test.ts` bloquea la worktree del cambio cancelado para que `prune` aún tenga una carpeta que limpiar. La verificación completa pasó en la aceptación, con main incorporado.
+
+### Desviaciones
+
+- Ninguna respecto al plan aprobado. El test de AC2 recorre sus dos casos con un bucle en un solo `it` y no con `it.each`: `propose` no veía el id del criterio en el nombre, que en `it.each` va en otra línea.
+
+### Decisiones
+
+- Las líneas de carpeta quitada y de fallo de git son las de `close` (`folderRemovedLine`, `folderStaysLine`); solo son nuevas las dos razones propias de `cancel`, que remiten a `specty prune`.
+- Primero se mira si una sesión de agente trabaja en la carpeta, después lo que hay sin commit, y al final se intenta quitar. Si `git status` falla, la carpeta cuenta como con cambios sin commit y se queda.
+
+### Pendientes
+
+- `cancel` en modo delegado desde la carpeta del cambio la deja, porque el agente trabaja en ella; `close` en cambio la quita y le pide salir (y volver a su épica). Hacer que `cancel` haga lo mismo que `close`.
