@@ -43,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "08e293a2f15d058c1eb059dabcc6004fc6ce2472",
+      "startedAt": "2026-11-05T11:47:30.172Z",
+      "doneAt": "2026-11-05T11:48:17.394Z",
+      "summary": "formatDuration dice una duración de un día o más en días y horas, redondeada a la hora («1 d», «2 d 3 h»); por debajo de un día no cambia."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

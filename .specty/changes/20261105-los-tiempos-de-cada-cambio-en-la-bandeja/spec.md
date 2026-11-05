@@ -46,7 +46,7 @@ Cada fila de la Bandeja dice cuánto lleva un cambio en curso desde que empezó 
 
 ## Tareas
 
-- [ ] T1: Las duraciones de un día o más, en días y horas
+- [x] T1: Las duraciones de un día o más, en días y horas
   - files: packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
