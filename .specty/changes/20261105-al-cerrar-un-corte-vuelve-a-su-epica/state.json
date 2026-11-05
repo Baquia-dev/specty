@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-al-cerrar-un-corte-vuelve-a-su-epica",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-al-cerrar-un-corte-vuelve-a-su-epica",
   "baseCommit": "5b6bc9668f16d343478ee1c07ef91711815bc550",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8e7fb8f31f905760c34d456ee9f1f0410cf0c814",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:39:14.762Z",
       "doneAt": "2026-11-05T06:47:27.055Z",
-      "summary": "returnToEpic (flow/epic.ts) liga de nuevo a la carpeta de la épica abierta la conversación ligada al corte que se cierra; landChange lo llama antes de borrar la carpeta y pone la épica, con byName, en left."
+      "summary": "returnToEpic (flow/epic.ts) liga de nuevo a la carpeta de la épica abierta la conversación ligada al corte que se cierra; landChange lo llama antes de borrar la carpeta y pone la épica, con byName, en left.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f19bd59b303e7fc2947901ed18c4b36cb1f6c7ad",
+      "startedAt": "2026-11-05T06:47:27.417Z",
+      "doneAt": "2026-11-05T06:52:35.029Z",
+      "summary": "ARCHITECTURE §6 (paso 5 del cierre) y §10 (una sesión, una worktree) cuentan que close de un corte vuelve a ligar la conversación a su épica abierta y que su SIGUIENTE la nombra, por herramienta."
     }
   },
   "pending": {

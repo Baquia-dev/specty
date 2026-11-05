@@ -55,7 +55,7 @@ En una épica en orden, la sesión hace ella misma los cortes (por ejemplo, Clau
   - files: packages/cli/src/flow/epic.ts, packages/cli/src/flow/land.ts, packages/cli/test/epic-return.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-return.test.ts test/delegated-integration.test.ts test/session-return.test.ts && pnpm typecheck
-- [ ] T3: ARCHITECTURE cuenta la vuelta a la épica al cerrar un corte
+- [x] T3: ARCHITECTURE cuenta la vuelta a la épica al cerrar un corte
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/incorporation.test.ts
