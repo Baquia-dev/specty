@@ -78,7 +78,7 @@ Hoy cada sesión empieza con «Pendientes y mejoras abiertas: 72. Las primeras l
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts test/cards/ test/agents-md.test.ts && pnpm typecheck && pnpm lint && pnpm knip && pnpm sources
   - type: feat
-- [ ] T4: La documentación de qué pendientes ve cada sesión
+- [x] T4: La documentación de qué pendientes ve cada sesión
   - files: docs/formats.md, docs/ARCHITECTURE.md, docs/decisions/0016-la-memoria-de-specty.md
   - ac: —
   - verify: pnpm lint
