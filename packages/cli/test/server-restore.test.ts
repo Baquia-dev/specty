@@ -5,7 +5,20 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { startServer, type UiServer } from "../src/server/http";
 import { call, sessionAt } from "./server/support";
-import { AGENT, CHANGE, cli, inWorktree, person, SPEC, SPEC_PATH, writeFiles } from "./support";
+import {
+  AGENT,
+  ARCHIVE,
+  CHANGE,
+  cli,
+  folderOf,
+  inWorktree,
+  NOW,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  writeFiles,
+} from "./support";
 
 /** A repository whose change, approved in its own folder, lost that folder. */
 async function lostFolder() {
@@ -44,6 +57,27 @@ async function signIn(server: UiServer): Promise<Record<string, string>> {
 }
 
 const RESTORE = `/api/changes/${CHANGE}/restore`;
+const OTHER = `${CHANGE.slice(0, 8)}-otro-cambio`;
+const ARCHIVED = "20260101-archivado";
+
+/**
+ * The repository of `lostFolder` with another change open in its own worktree and, in the main
+ * folder's archive, a finished one: the state of the open one with the archived id.
+ */
+async function withOpenAndArchived(root: string) {
+  expect((await cli(root, ["new", "--worktree", "Otro cambio"])).code).toBe(0);
+  const base = JSON.parse(await read(folderOf(root, OTHER), `.specty/changes/${OTHER}/state.json`));
+  const closed = { ts: NOW.toISOString(), actor: "human", event: "change.closed", data: {} };
+  await writeFiles(root, {
+    [`${ARCHIVE}/${ARCHIVED}/spec.md`]: "---\nkind: standard\n---\n\n# Archivado\n",
+    [`${ARCHIVE}/${ARCHIVED}/state.json`]: `${JSON.stringify({ ...base, id: ARCHIVED, phase: "done" })}\n`,
+    [`${ARCHIVE}/${ARCHIVED}/audit.jsonl`]: `${JSON.stringify(closed)}\n`,
+  });
+}
+
+/** The id of each record, with whether it lost its folder. */
+const listed = (records: readonly { state: { id: string }; lost?: boolean }[]) =>
+  records.map((record) => [record.state.id, record.lost === true]);
 
 describe("the server and a change without its folder", () => {
   it("AC1: lists it with its spec and state, marked lost and with no folder", async () => {
@@ -56,6 +90,26 @@ describe("the server and a change without its folder", () => {
       expect(lost.spec).toContain("# Saludo personalizado");
       expect(lost).not.toHaveProperty("folder");
       expect(Number.isNaN(Date.parse(lost.phaseSince))).toBe(false);
+    } finally {
+      await server.close();
+    }
+  });
+
+  it("AC1: the list gives the open change of each worktree, then those without their folder, and no archived one", async () => {
+    const { root } = await lostFolder();
+    await withOpenAndArchived(root);
+    const { server, headers } = await served(root);
+    try {
+      const list = await call(server.port, "/api/changes", headers);
+      expect(list.status).toBe(200);
+      expect(listed(JSON.parse(list.body))).toEqual([
+        [OTHER, false],
+        [CHANGE, true],
+      ]);
+      // The archived change is there: in its page of finished changes and by its id.
+      const page = JSON.parse((await call(server.port, "/api/changes/finished", headers)).body);
+      expect(listed(page.records)).toEqual([[ARCHIVED, false]]);
+      expect((await call(server.port, `/api/changes/${ARCHIVED}`, headers)).status).toBe(200);
     } finally {
       await server.close();
     }

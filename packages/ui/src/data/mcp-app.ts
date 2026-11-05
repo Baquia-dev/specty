@@ -104,7 +104,7 @@ export class McpAppData extends SpectyData {
    * The id of the change the view shows, or the one the tool's card names: the server finds it
    * in its own folder, or archived once it closed.
    */
-  private change: string | undefined;
+  private shown: string | undefined;
   /** The fingerprint of what the view has. */
   private fingerprint: string | undefined;
   /** The display modes the host offers. */
@@ -194,7 +194,7 @@ export class McpAppData extends SpectyData {
         // The tool already changed the change: read it again. An older server names the folder,
         // and the card names the change, as `specty new`'s, made in a folder of its own.
         this.folder = folderIn(params.structuredContent) ?? this.folder;
-        this.change = changeIn(params.content) ?? this.change;
+        this.shown = changeIn(params.content) ?? this.shown;
         void this.read();
         return;
       case "ui/resource-teardown":
@@ -209,7 +209,7 @@ export class McpAppData extends SpectyData {
     const asked = ++this.reads;
     const since = this.fingerprint === undefined ? {} : { since: this.fingerprint };
     const folder = this.folder === undefined ? {} : { folder: this.folder };
-    const change = this.change === undefined ? {} : { change: this.change };
+    const change = this.shown === undefined ? {} : { change: this.shown };
     const answer = viewOf(
       await this.request("tools/call", {
         name: "specty_view",
@@ -235,7 +235,7 @@ export class McpAppData extends SpectyData {
       this.records = answer.records;
       this.run = answer.run;
       this.fingerprint = answer.fingerprint;
-      this.change = answer.records[0]?.state.id ?? this.change;
+      this.shown = answer.records[0]?.state.id ?? this.shown;
     }
     for (const listener of this.listeners) listener();
     for (const { change, listener } of this.runListeners) listener(this.runOf(change));

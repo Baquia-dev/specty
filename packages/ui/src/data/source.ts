@@ -1,7 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 // The data source the screens run on, apart from the data it gives (records.ts, which re-exports
 // it): reading is required, every action is optional.
-import type { SessionView } from "@baquia-dev/specty-core/light";
+import {
+  type ChangeSort,
+  type Lang,
+  matchesQuery,
+  type Phase,
+  type SessionView,
+  sortChanges,
+} from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
 import type { Bilingual, ChangeRecord, CommentAnchor, Delegation, MemoryRecord } from "./records";
@@ -24,6 +31,31 @@ const NO_TRACE: Bilingual = {
   en: "This source gives no traceability.",
 };
 
+/** A page of the finished changes, as the Inbox asks for it (`GET /api/changes/finished`). */
+export interface FinishedRequest {
+  readonly offset: number;
+  readonly limit: number;
+  /** The search, as `matchesQuery` reads it. */
+  readonly query: string;
+  readonly phase: Phase | "all";
+  readonly sort: ChangeSort;
+  /** The language the titles are sorted in. */
+  readonly lang: Lang;
+}
+
+/** The answer to a `FinishedRequest`, as the local server gives it (ARCHITECTURE §15). */
+export interface FinishedPage {
+  readonly records: readonly ChangeRecord[];
+  /** How many match the search and the phase. */
+  readonly total: number;
+  /** How many done and cancelled ones match the search, whatever the phase. */
+  readonly counts: { readonly done: number; readonly cancelled: number };
+  /** How many finished changes there are, with no search nor phase. */
+  readonly finished: number;
+  /** The title of the epic of each slice in the page, by the epic's id. */
+  readonly epics: Readonly<Record<string, string>>;
+}
+
 /** What the person decides on an entry of Specty's memory (ADR 0016). */
 export type MemoryVerb = "drop" | "keep" | "done";
 
@@ -36,6 +68,46 @@ export abstract class SpectyData {
   abstract changes(): Promise<readonly ChangeRecord[]>;
   /** Calls `listener` whenever the data may have changed; returns how to stop. */
   abstract subscribe(listener: () => void): () => void;
+
+  /**
+   * The change `id`, open or finished, even if `changes` leaves it out; none when there is no
+   * such change. A source that gives every change finds it among them.
+   */
+  async change(id: string): Promise<ChangeRecord | undefined> {
+    return (await this.changes()).find((record) => record.state.id === id);
+  }
+
+  /**
+   * A page of the finished (done or cancelled) changes, found, filtered and sorted as the local
+   * server does. A source that gives every change works it out among them, with the views derived
+   * in a chunk loaded on first use, so the main thread never loads core's parser for it.
+   */
+  async finished(request: FinishedRequest): Promise<FinishedPage> {
+    const records = await this.changes();
+    const views = (await import("./views")).deriveViews(records);
+    const finished = views.flatMap((view, index) => {
+      const record = records[index];
+      return record !== undefined && (view.phase === "done" || view.phase === "cancelled")
+        ? [{ ...view, record }]
+        : [];
+    });
+    const found = finished.filter((view) => matchesQuery(view, request.query));
+    const shown = found.filter((view) => request.phase === "all" || view.phase === request.phase);
+    const page = sortChanges(shown, request.sort, request.lang).slice(
+      request.offset,
+      request.offset + request.limit,
+    );
+    const count = (phase: Phase) => found.filter((view) => view.phase === phase).length;
+    return {
+      records: page.map((view) => view.record),
+      total: shown.length,
+      counts: { done: count("done"), cancelled: count("cancelled") },
+      finished: finished.length,
+      epics: Object.fromEntries(
+        page.flatMap(({ epic }) => (epic === undefined ? [] : [[epic.id, epic.title]])),
+      ),
+    };
+  }
 
   /** Why the person cannot decide from this source, or nothing when they can. */
   readOnly(): Promise<Bilingual | undefined> {

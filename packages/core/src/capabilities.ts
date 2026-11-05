@@ -47,7 +47,7 @@ const unsupported = { state: "unsupported" } as const;
 const impossible = (es: string, en: string) => ({ state: "impossible", why: { es, en } }) as const;
 const indirect = (es: string, en: string) => ({ state: "indirect", how: { es, en } }) as const;
 
-/** Agents whose hooks say nothing of what their subagents do. */
+/** An agent whose hooks say nothing of what its subagents do: Devin (Windsurf). */
 const UNDOCUMENTED_SUBAGENTS = impossible(
   "sus hooks no documentan las acciones de sus subagentes (consultado el 2026-11-04).",
   "its hooks do not document its subagents' actions (checked on 2026-11-04).",
@@ -220,7 +220,9 @@ export const AGENT_CAPABILITIES = {
       "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y bloquea con la ruta buena lo que haría o leería fuera; no reescribe sus acciones, porque su `overwrite` se descarta cuando pide permiso. Su agente solo trabaja en las carpetas de su espacio de trabajo: si la del cambio no está en ellas, el guard no lo deja entrar y pide abrirla en una conversación nueva.",
       "with `specty enter <id>`: the guard binds the conversation to the change's folder and blocks what it would do or read elsewhere, with the right path; it does not rewrite its actions, since its `overwrite` is dropped when it asks for permission. Its agent only works in the folders of its workspace: if the change's folder is not among them, the guard does not let it enter and asks to open it in a new conversation.",
     ),
-    subagentSlices: UNDOCUMENTED_SUBAGENTS,
+    // Each subagent of `invoke_subagent` is a conversation with its own `conversationId` (agy
+    // 1.5.1): launched with `Workspace: "inherit"`, it enters its slice with `specty enter`.
+    subagentSlices: yes,
     // `Stop` with `decision: "continue"`; Specty counts the turns it sends back.
     endOfTurn: yes,
     // `.antigravityignore`.

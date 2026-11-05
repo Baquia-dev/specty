@@ -15,18 +15,31 @@ const IN_THREAD = {
   useValue: (records: readonly ChangeRecordForTest[]) => Promise.resolve(deriveViews(records)),
 };
 
-async function open() {
+/** The sample project, or the given records with how the Inbox groups them. */
+async function open(given?: {
+  readonly records: readonly ChangeRecord[];
+  readonly group?: string;
+}) {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
   })) as unknown as typeof window.matchMedia;
   localStorage.clear();
   localStorage.setItem("specty.lang", "es");
+  if (given?.group !== undefined) localStorage.setItem("specty.inbox.group", given.group);
+  class Given extends SpectyData {
+    changes(): Promise<readonly ChangeRecord[]> {
+      return Promise.resolve(given?.records ?? []);
+    }
+    subscribe(): () => void {
+      return () => undefined;
+    }
+  }
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
     providers: [
       provideRouter(APP_ROUTES, withComponentInputBinding()),
-      { provide: SpectyData, useClass: FixtureData },
+      { provide: SpectyData, useClass: given === undefined ? FixtureData : Given },
       IN_THREAD,
     ],
   });
@@ -246,128 +259,156 @@ describe("Inbox", () => {
     expect(element.querySelector("sp-inbox [role=alert]")).toBeNull();
   });
 
-  it("AC2, AC3, AC5: identifies each change kind in Inbox and ChangePage and groups epic slices visually", async () => {
+  it("AC4: says «Feature» for a standalone standard change, in the Inbox and in its page", async () => {
     const { element, row, router, settle } = await open();
-    expect(
-      row("20261020-evolucion-trimestre")
-        ?.querySelector("sp-kind-badge")
-        ?.getAttribute("data-kind"),
-    ).toBe("standard");
-    expect(text(row("20261020-evolucion-trimestre")?.querySelector("sp-kind-badge"))).toBe(
-      "Individual",
-    );
-    expect(
-      row("20261021-modo-oscuro")?.querySelector("sp-kind-badge")?.getAttribute("data-kind"),
-    ).toBe("quick");
+    const badge = row("20261020-evolucion-trimestre")?.querySelector("sp-kind-badge");
+    expect(badge?.getAttribute("data-kind")).toBe("standard");
+    expect(text(badge)).toBe("Feature");
     expect(text(row("20261021-modo-oscuro")?.querySelector("sp-kind-badge"))).toBe("Quick");
-
     await router.navigateByUrl("/changes/20261020-evolucion-trimestre");
     await settle();
     const heroBadge = element.querySelector("sp-change-page [data-hero] sp-kind-badge");
     expect(heroBadge?.getAttribute("data-kind")).toBe("standard");
-    expect(text(heroBadge)).toBe("Individual");
+    expect(text(heroBadge)).toBe("Feature");
   });
 
-  it("AC3: renders a visual [data-epic-group] container when changes in a section belong to an epic", async () => {
-    const base = sampleRecordsForEpic();
-    class EpicData extends SpectyData {
-      changes(): Promise<readonly ChangeRecord[]> {
-        return Promise.resolve(base);
-      }
-      subscribe(): () => void {
-        return () => undefined;
-      }
-    }
-    TestBed.resetTestingModule();
-    TestBed.configureTestingModule({
-      providers: [
-        provideRouter(APP_ROUTES, withComponentInputBinding()),
-        { provide: SpectyData, useClass: EpicData },
-        IN_THREAD,
-      ],
-    });
-    const fixture = TestBed.createComponent(Shell);
-    await TestBed.inject(Router).navigateByUrl("/");
-    for (let round = 0; round < 40; round++) {
-      await fixture.whenStable();
-      await new Promise((resolve) => setTimeout(resolve));
-    }
-    const element: HTMLElement = fixture.nativeElement;
-    const group = element.querySelector<HTMLElement>('[data-epic-group="20261015-panel"]');
-    expect(group).not.toBeNull();
-    expect(text(group?.querySelector("[data-epic-header]"))).toContain("Épica: Panel académico");
-    const groupRows = [...(group?.querySelectorAll<HTMLElement>("sp-inbox-row") ?? [])];
-    expect(groupRows.map((item) => short(item.dataset.id))).toEqual([
+  it("AC1: heads the group with the epic's own row, its slices below and indented, in j/k order", async () => {
+    // The epic waits for its review, like its two slices: all three in the same section.
+    const { element, fixture, rows, press } = await open({ records: epicRecords("review") });
+    const group = element.querySelector<HTMLElement>(
+      '[data-section="decision"] [data-epic-group="20261015-panel"]',
+    );
+    const head = group?.querySelector<HTMLElement>("sp-inbox-row[data-epic-head]");
+    expect(head?.dataset.id).toBe("20261015-panel");
+    expect(head?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("review");
+    expect(head?.querySelector("[data-started]")).not.toBeNull();
+    expect(head?.querySelector("[data-phase-time]")).not.toBeNull();
+    expect(head?.querySelector("a")?.getAttribute("href")).toBe("/changes/20261015-panel?tab=spec");
+    expect(text(head?.querySelector("sp-button"))).toBe("Revisar spec");
+    expect(text(head?.querySelector("sp-kind-badge"))).toBe("Épica");
+    // No more «Total» nor the count: the epic's own times say it.
+    expect(text(group)).not.toContain("Total");
+    expect(group?.querySelector("[data-epic-duration], [data-epic-count]")).toBeNull();
+    // Its slices go below the head, indented, and the head is not among them.
+    const features = group?.querySelector<HTMLElement>("[data-epic-features]");
+    expect(features?.contains(head ?? null)).toBe(false);
+    expect(head?.compareDocumentPosition(features ?? document.body)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    const slices = [...(features?.querySelectorAll<HTMLElement>("sp-inbox-row") ?? [])];
+    expect(slices.map((item) => short(item.dataset.id))).toEqual([
       "asistencia-curso",
       "justificar-faltas",
     ]);
-    expect(text(groupRows[0]?.querySelector("sp-kind-badge"))).toBe("Corte C1 · Panel académico");
+    // j/k stop at the head and then at each slice.
+    expect(
+      rows()
+        .map((item) => short(item.dataset.id))
+        .slice(0, 3),
+    ).toEqual(["panel", "asistencia-curso", "justificar-faltas"]);
+    expect(rows()[0]?.getAttribute("aria-current")).toBe("true");
+    press("j");
+    await fixture.whenStable();
+    expect(rows()[1]?.getAttribute("aria-current")).toBe("true");
+    press("j");
+    await fixture.whenStable();
+    expect(rows()[2]?.getAttribute("aria-current")).toBe("true");
   });
 
-  it("AC4: shows total time of an epic in data-epic-header", async () => {
-    class EpicData extends SpectyData {
-      changes(): Promise<readonly ChangeRecord[]> {
-        return Promise.resolve(sampleRecordsForEpic());
-      }
-      subscribe(): () => void {
-        return () => undefined;
-      }
-    }
-    TestBed.resetTestingModule();
-    TestBed.configureTestingModule({
-      providers: [
-        provideRouter(APP_ROUTES, withComponentInputBinding()),
-        { provide: SpectyData, useClass: EpicData },
-        IN_THREAD,
-      ],
+  it("AC1: heads each epic's section with the epic when grouping by epic", async () => {
+    const { element, rows } = await open({ records: epicRecords("implementing"), group: "epic" });
+    const section = element.querySelector<HTMLElement>('[data-section="epic:20261015-panel"]');
+    const group = section?.querySelector<HTMLElement>('[data-epic-group="20261015-panel"]');
+    expect(group?.querySelector<HTMLElement>("sp-inbox-row[data-epic-head]")?.dataset.id).toBe(
+      "20261015-panel",
+    );
+    expect(
+      [...(group?.querySelectorAll<HTMLElement>("[data-epic-features] sp-inbox-row") ?? [])].map(
+        (item) => short(item.dataset.id),
+      ),
+    ).toEqual(["asistencia-curso", "justificar-faltas"]);
+    expect(rows()[0]?.dataset.id).toBe("20261015-panel");
+  });
+
+  it("AC2: heads slices whose epic is in another section with its title, link and phase only", async () => {
+    // The epic is in progress; its slices wait for the person.
+    const { element, fixture, rows, row, press } = await open({
+      records: epicRecords("implementing"),
     });
-    const fixture = TestBed.createComponent(Shell);
-    await TestBed.inject(Router).navigateByUrl("/");
-    for (let round = 0; round < 40; round++) {
-      await fixture.whenStable();
-      await new Promise((resolve) => setTimeout(resolve));
-    }
-    const element: HTMLElement = fixture.nativeElement;
-    const group = element.querySelector<HTMLElement>('[data-epic-group="20261015-panel"]');
-    expect(group?.querySelector("[data-epic-duration]")).not.toBeNull();
-    expect(text(group?.querySelector("[data-epic-duration]"))).toMatch(/^Total: /);
+    const group = element.querySelector<HTMLElement>(
+      '[data-section="decision"] [data-epic-group="20261015-panel"]',
+    );
+    expect(group?.querySelector("sp-inbox-row[data-epic-head]")).toBeNull();
+    const header = group?.querySelector<HTMLElement>("[data-epic-header]");
+    expect(header?.closest("sp-inbox-row")).toBeNull();
+    const link = header?.querySelector("a");
+    expect(text(link)).toBe("Panel académico");
+    expect(link?.getAttribute("href")).toBe("/changes/20261015-panel?tab=progress");
+    expect(header?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe(
+      "implementing",
+    );
+    expect(header?.querySelector("[data-started], [data-phase-time], [data-took]")).toBeNull();
+    expect(header?.querySelector("sp-button")).toBeNull();
+    expect(text(group)).not.toContain("Total");
+    expect(
+      [...(group?.querySelectorAll<HTMLElement>("[data-epic-features] sp-inbox-row") ?? [])].map(
+        (item) => short(item.dataset.id),
+      ),
+    ).toEqual(["asistencia-curso", "justificar-faltas"]);
+    // j/k go from the first slice to the next, past the header.
+    expect(rows()[0]?.dataset.id).toBe("20261018-asistencia-curso");
+    press("j");
+    await fixture.whenStable();
+    expect(row("20261016-justificar-faltas")?.getAttribute("aria-current")).toBe("true");
+    // In its own section, without its slices there, the epic is a plain row.
+    const active = element.querySelector<HTMLElement>('[data-section="active"]');
+    expect(active?.querySelector('sp-inbox-row[data-id="20261015-panel"]')).not.toBeNull();
+    expect(active?.querySelector("[data-epic-group]")).toBeNull();
+  });
+
+  it("AC3: labels each slice with its id and title in the group, and with the epic in its page", async () => {
+    const { row, element, router, settle } = await open({ records: epicRecords("implementing") });
+    // The epic's Cortes section names C1, not C2.
+    expect(text(row("20261018-asistencia-curso")?.querySelector("sp-kind-badge"))).toBe(
+      "Feature · C1 · Asistencia por curso",
+    );
+    expect(text(row("20261016-justificar-faltas")?.querySelector("sp-kind-badge"))).toBe(
+      "Feature · C2",
+    );
+    await router.navigateByUrl("/changes/20261016-justificar-faltas");
+    await settle();
+    const heroBadge = element.querySelector("sp-change-page [data-hero] sp-kind-badge");
+    expect(heroBadge?.getAttribute("data-kind")).toBe("slice");
+    expect(text(heroBadge)).toBe("Feature · C2 · Panel académico");
   });
 });
 
-function sampleRecordsForEpic(): readonly ChangeRecord[] {
+/**
+ * The sample project with an epic, «Panel académico», in `phase`, whose Cortes section names C1:
+ * «Asistencia por curso» (C1) and «Justificar faltas» (C2) are its slices.
+ */
+function epicRecords(phase: "review" | "implementing"): readonly ChangeRecord[] {
   const records = sampleRecords(Date.now());
+  const epicSpec = [
+    "---\nkind: epic\n---\n\n# Panel académico\n\n## Objetivo\n\nSeguimiento.\n",
+    "## Cortes\n\n- C1: Asistencia por curso\n  - ac: AC1\n",
+  ].join("\n");
   const epicRecord: ChangeRecord = {
-    spec: "---\nkind: epic\n---\n\n# Panel académico\n\n## Objetivo\n\nSeguimiento.\n",
-    state: {
-      ...(records[0] ?? failRecord()).state,
-      id: "20261015-panel",
-      kind: "epic",
-      phase: "implementing",
-    },
+    spec: epicSpec,
+    state: { ...(records[0] ?? failRecord()).state, id: "20261015-panel", kind: "epic", phase },
     phaseSince: new Date().toISOString(),
+  };
+  const slices: Readonly<Record<string, string>> = {
+    "20261018-asistencia-curso": "C1",
+    "20261016-justificar-faltas": "C2",
   };
   return [
     epicRecord,
     ...records.map((rec) => {
-      if (rec.state.id === "20261018-asistencia-curso") {
-        return {
-          ...rec,
-          spec: rec.spec.replace(
-            "kind: standard",
-            "kind: standard\nepic: 20261015-panel\nslice: C1",
-          ),
-        };
-      }
-      if (rec.state.id === "20261016-justificar-faltas") {
-        return {
-          ...rec,
-          spec: rec.spec.replace(
-            "kind: standard",
-            "kind: standard\nepic: 20261015-panel\nslice: C2",
-          ),
-        };
-      }
-      return rec;
+      const slice = slices[rec.state.id];
+      if (slice === undefined) return rec;
+      const frontmatter = `kind: standard\nepic: 20261015-panel\nslice: ${slice}`;
+      return { ...rec, spec: rec.spec.replace("kind: standard", frontmatter) };
     }),
   ];
 }

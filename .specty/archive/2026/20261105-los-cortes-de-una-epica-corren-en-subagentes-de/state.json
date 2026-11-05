@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "id": "20261105-los-cortes-de-una-epica-corren-en-subagentes-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-los-cortes-de-una-epica-corren-en-subagentes-de",
+  "baseCommit": "cf00c4e8324aab6d6871af716f88fad990beb348",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5644ce877c590a18119322b0236dc938fbd65d6856ebea89ea3cb14f1c145575",
+    "at": "2026-11-05T09:47:42.056Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b47f80583ec3e45197ebef4d0ea4a39a3b5acc8df77de1f9acfed975081adfca",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d453bab6a7470a28683bd04bcd97ef69a58687f2ae3e941c26d15dc6b499ab6d",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:5093221d368a8a586cc68b4fcfa3b9144b6e6828a25f2d61e3de286d8465fce0",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a78d11485d5c4e36956b931f7028fd897e58035393e82e09754ef11edaa1458f",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:76158516a3f72dd79847740cfa1ab53ef6aacca0301696a1f7e59ce1e51f6f69",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "67c5f2dcd8410e99fe4f2e3cc0d7fd76614362f7",
+      "attempts": 1,
+      "startedAt": "2026-11-05T10:01:51.857Z",
+      "doneAt": "2026-11-05T10:06:19.270Z",
+      "summary": "Antigravity tiene «sí» en «Cortes en subagentes» (capabilities.ts) y la tabla de ARCHITECTURE §10 lo refleja; el motivo «no documentan» queda solo para Devin (Windsurf).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "0149e37719ac1c526e14e196b35bba9085ef588c",
+      "attempts": 1,
+      "startedAt": "2026-11-05T10:06:19.722Z",
+      "doneAt": "2026-11-05T10:07:16.779Z",
+      "summary": "Desde Antigravity, el SIGUIENTE de la tarjeta de una épica con encargos pide lanzarlos con invoke_subagent y Workspace: \"inherit\", no branch (launchedWith en cards/epic.ts); las demás herramientas no cambian y cabe en el presupuesto.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "ad7fed820f98e4fea029dbe4ac9dc00994805a20",
+      "attempts": 1,
+      "startedAt": "2026-11-05T10:07:17.085Z",
+      "doneAt": "2026-11-05T10:09:29.390Z",
+      "summary": "El fin de turno de Antigravity no actúa con lastUserInput vacío (el Stop de un subagente de invoke_subagent): responde stop sin el check ni pending. El E2E con agy 1.5.1 real pasó: el subagente entró en su corte y la principal siguió en el suyo.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "e46fa166a70c5fa3a94907f281f27a8cf3c5c745",
+      "attempts": 1,
+      "startedAt": "2026-11-05T10:09:29.685Z",
+      "doneAt": "2026-11-05T10:09:56.852Z",
+      "summary": "ARCHITECTURE: «Subagentes» (Antigravity) en §10 (invoke_subagent, Workspace inherit, lastUserInput vacío, el E2E con agy real), la tarjeta de la épica desde Antigravity en §7 y su fin de turno sin el Stop de un subagente.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T10:15:58.218Z",
+  "lockedTests": {
+    "packages/cli/test/antigravity-turn.test.ts": "sha256:c8a9feeccf85f34514f9ffac5218fec6befceb80d8760a32911bf2d64591f243",
+    "packages/core/test/capabilities.test.ts": "sha256:e6854f8b109fcc8d219b048d8d23f35013f13f9c992cfb92841c03404b9cc409",
+    "packages/core/test/cards/budget.test.ts": "sha256:a82ffb3900c35f990bf71a7305d4270512a1cf5e02e1efa81433c181676617fc",
+    "packages/core/test/cards/epic.test.ts": "sha256:f2ce76bf36babd3cc015811eeb3ca49c08e9ef44141421e253796fc59b98b2a4",
+    "packages/cli/test/antigravity-e2e.test.ts": "sha256:85ff6d8e81b8e5894d633843bf92856d48106ac860f626cde94af047b267aea0"
+  }
+}

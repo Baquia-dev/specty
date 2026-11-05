@@ -178,6 +178,7 @@ export {
   parseItemId,
   slugify,
 } from "./ids";
+export { CHANGE_SORTS, type ChangeSort, matchesQuery, sortChanges } from "./listing";
 export {
   type ClaimProblem,
   claimable,
@@ -336,6 +337,12 @@ export {
   specTemplate,
   type TemplateOptions,
 } from "./templates";
+export {
+  proposeUnits,
+  type UnitsFacts,
+  unitsYaml,
+  type WorkspacePackage,
+} from "./units-proposal";
 export {
   type ChangeUsage,
   changeUsage,

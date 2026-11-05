@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
+import { matchesQuery, sortChanges } from "@baquia-dev/specty-core/light";
 import { sampleRecords } from "../data/fixtures";
 import type { ChangeView } from "../data/records";
 import { deriveViews } from "../data/views";
 import * as inboxViewModule from "./inbox-view";
 import {
+  INBOX_SORTS,
   type InboxFilters,
   type InboxSection,
   inboxSections,
-  matchesQuery,
   phaseCounts,
-  sortChanges,
   stateOf,
   visibleChanges,
 } from "./inbox-view";
@@ -103,45 +103,67 @@ describe("inbox view", () => {
     expect(sizes).toEqual(sizes.toSorted((a, b) => b - a));
   });
 
-  it("AC3: clusters changes of the same epic contiguously in a section and builds epic blocks", () => {
-    const base = CHANGES[0] ?? fail();
-    const epicRef = { id: "20261015-panel", title: "Panel académico", slice: "C1" };
-    const slice1 = {
-      ...base,
-      id: "20261018-corte-1",
-      title: "Corte 1",
-      epic: epicRef,
-    } as ChangeView;
-    const standalone = { ...base, id: "20261019-sola", title: "Spec sola" } as ChangeView;
-    const slice2 = {
-      ...base,
-      id: "20261020-corte-2",
-      title: "Corte 2",
-      epic: { ...epicRef, slice: "C2" },
-    } as ChangeView;
-    const sections = inboxSections([slice1, standalone, slice2], DEFAULTS, "es");
-    expect(ids(sections[0]?.changes ?? [])).toEqual(["corte-1", "corte-2", "sola"]);
-    const sectionBlocks = (
-      inboxViewModule as {
-        sectionBlocks?: (section: InboxSection) => readonly {
-          kind: string;
-          epicId?: string;
-          title?: string;
-          changes?: readonly ChangeView[];
-        }[];
-      }
-    ).sectionBlocks;
-    expect(sectionBlocks).toBeDefined();
-    const blocks = sectionBlocks ? sectionBlocks(sections[0] ?? fail()) : [];
-    expect(blocks.map((b) => [b.kind, b.epicId, b.changes?.length])).toEqual([
-      ["epic", "20261015-panel", 2],
-      ["row", undefined, undefined],
+  it("AC5: searches and sorts with core's functions, as the server does: ties go by id", () => {
+    const { epic: _epic, ...plain } = CHANGES[0] ?? fail();
+    const at = "2026-11-02T10:00:00.000Z";
+    const tied = ["20261102-c", "20261102-a", "20261102-b"].map(
+      (id) => ({ ...plain, id, title: "Igual", kind: "standard", phaseSince: at }) as ChangeView,
+    );
+    for (const sort of INBOX_SORTS) {
+      const [section] = inboxSections(tied, { ...DEFAULTS, group: "none", sort }, "es");
+      expect([sort, ids(section?.changes ?? [])]).toEqual([sort, ["a", "b", "c"]]);
+    }
+    expect(visibleChanges(CHANGES, { query: "EVOLUCIÓN", phase: "all" })).toEqual(
+      CHANGES.filter((change) => matchesQuery(change, "evolucion")),
+    );
+  });
+
+  it("AC1: heads the group of an epic in its section with the epic, its slices below, in j/k order", () => {
+    const { epic, slice1, standalone, slice2 } = epicSamples();
+    const all = [slice1, standalone, epic, slice2];
+    const [section] = inboxSections(all, DEFAULTS, "es");
+    // j/k walk the section's changes: the epic first, then each of its slices.
+    expect(ids(section?.changes ?? [])).toEqual(["panel", "corte-1", "corte-2", "sola"]);
+    expect(blockSummary(blocksOf(section ?? fail(), all))).toEqual([
+      ["epic", "20261015-panel", "Panel académico", "20261015-panel", ["corte-1", "corte-2"]],
+      ["row", undefined, undefined, undefined, []],
+    ]);
+    // Grouped by epic, each epic's section is headed by the epic too.
+    const [byEpic] = inboxSections(all, { ...DEFAULTS, group: "epic" }, "es");
+    expect(ids(byEpic?.changes ?? [])).toEqual(["panel", "corte-1", "corte-2"]);
+    expect(blockSummary(blocksOf(byEpic ?? fail(), all))).toEqual([
+      ["epic", "20261015-panel", "Panel académico", "20261015-panel", ["corte-1", "corte-2"]],
     ]);
     expect(matchesQuery(slice1, "Panel académico")).toBe(true);
     expect(matchesQuery(slice1, "C1")).toBe(true);
   });
 
-  it("AC4: groups by epic into per-epic sections followed by sections per change kind", () => {
+  it("AC2: heads the slices of an epic outside the section with the epic as loaded, or its title", () => {
+    const { epic, slice1, standalone, slice2 } = epicSamples();
+    // In progress, it waits for nothing: no decision.
+    const { decision: _waits, ...rest } = epic;
+    const working: ChangeView = { ...rest, phase: "implementing" };
+    const all = [slice1, standalone, working, slice2];
+    const sections = inboxSections(all, DEFAULTS, "es");
+    const waiting = sections.find((section) => section.key === "decision") ?? fail();
+    expect(ids(waiting.changes)).toEqual(["corte-1", "corte-2", "sola"]);
+    const [group] = blocksOf(waiting, all);
+    expect(blockSummary([group ?? fail()])).toEqual([
+      ["epic", "20261015-panel", "Panel académico", undefined, ["corte-1", "corte-2"]],
+    ]);
+    // The header without a row takes the epic's phase and tab from the epic loaded elsewhere.
+    expect([group?.epic?.id, group?.epic?.phase]).toEqual(["20261015-panel", "implementing"]);
+    // In its own section, without slices there, the epic is a plain row.
+    const active = sections.find((section) => section.key === "active") ?? fail();
+    expect(blockSummary(blocksOf(active, all))).toEqual([
+      ["row", undefined, undefined, undefined, []],
+    ]);
+    // Not loaded at all: the title each slice brings, and no epic.
+    const [lone] = blocksOf(waiting, [slice1, standalone, slice2]);
+    expect([lone?.kind, lone?.title, lone?.epic]).toEqual(["epic", "Panel académico", undefined]);
+  });
+
+  it("AC4, AC5: groups by epic into per-epic sections, then «Features» and the other kinds", () => {
     const base = CHANGES[0] ?? fail();
     const make = (
       id: string,
@@ -168,13 +190,56 @@ describe("inbox view", () => {
     );
     expect(sections.map((s) => [s.key, s.label.es, ids(s.changes)])).toEqual([
       ["epic:20261015-panel", "Épica · Panel académico", ["panel", "corte-1"]],
-      ["standard", "Specs individuales", ["sola"]],
+      ["standard", "Features", ["sola"]],
       ["quick", "Cambios quick", ["rapida"]],
       ["retro", "Cambios manuales", ["manual"]],
       ["spike", "Spikes", ["spike"]],
     ]);
+    expect(sections.find((s) => s.key === "standard")?.label.en).toBe("Features");
   });
 });
+
+/** What the epic blocks bring: an epic, the epic that heads it in the section, and its slices. */
+interface EpicBlockForTest {
+  readonly kind: string;
+  readonly epicId?: string;
+  readonly title?: string;
+  readonly head?: ChangeView;
+  readonly epic?: ChangeView;
+  readonly slices?: readonly ChangeView[];
+}
+
+/** `sectionBlocks` with every change, so a header can take the epic from another section. */
+const blocksOf = inboxViewModule.sectionBlocks as unknown as (
+  section: InboxSection,
+  all: readonly ChangeView[],
+) => readonly EpicBlockForTest[];
+
+const blockSummary = (blocks: readonly EpicBlockForTest[]) =>
+  blocks.map((block) => [
+    block.kind,
+    block.epicId,
+    block.title,
+    block.head?.id,
+    ids(block.slices ?? []),
+  ]);
+
+/** An epic waiting for its review, two of its slices and a standalone change. */
+function epicSamples() {
+  const base = CHANGES[0] ?? fail();
+  const epicRef = { id: "20261015-panel", title: "Panel académico", slice: "C1" };
+  return {
+    epic: { ...base, id: "20261015-panel", title: "Panel académico", kind: "epic" } as ChangeView,
+    slice1: { ...base, id: "20261018-corte-1", title: "Corte 1", epic: epicRef } as ChangeView,
+    standalone: { ...base, id: "20261019-sola", title: "Spec sola" } as ChangeView,
+    slice2: {
+      ...base,
+      id: "20261020-corte-2",
+      title: "Corte 2",
+      epic: { ...epicRef, slice: "C2" },
+    } as ChangeView,
+  };
+}
 
 function fail(): never {
   throw new Error("no sample changes");

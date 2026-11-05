@@ -169,7 +169,8 @@ describe("the local server", () => {
       const ids = JSON.parse(answer.body).map(
         (record: { state: { id: string } }) => record.state.id,
       );
-      expect(ids).toEqual([OTHER, CHANGE]);
+      // The archived change comes in its page of finished changes or by its id, not in the list.
+      expect(ids).toEqual([OTHER]);
 
       const host = `evil.example:${server.port}`;
       expect((await ask(server.port, "/api/changes", { cookie, host })).status).toBe(403);
@@ -180,6 +181,54 @@ describe("the local server", () => {
       expect((await ask(server.port, "/api/changes", { cookie }, "POST")).status).toBe(403);
       expect((await ask(server.port, "/api/changes", { cookie }, "PUT")).status).toBe(405);
       expect((await ask(server.port, "/api/other", { cookie })).status).toBe(404);
+    } finally {
+      await server.close();
+    }
+  });
+
+  it("AC3: gives one change by its id, open or archived, as the list does; 404 for an unknown one", async () => {
+    const { root } = await twoChanges();
+    const server = await startServer({ session: await sessionAt(root), port: 0, ui: undefined });
+    try {
+      const one = (id: string, headers: Record<string, string> = {}) =>
+        ask(server.port, `/api/changes/${encodeURIComponent(id)}`, headers);
+      expect((await one(CHANGE)).status).toBe(403);
+      const cookie = await enter(server);
+      const list: { state: { id: string } }[] = [
+        ...JSON.parse((await ask(server.port, "/api/changes", { cookie })).body),
+        ...JSON.parse((await ask(server.port, "/api/changes/finished", { cookie })).body).records,
+      ];
+      for (const id of [OTHER, CHANGE]) {
+        const answer = await one(id, { cookie });
+        expect([id, answer.status]).toEqual([id, 200]);
+        expect(JSON.parse(answer.body)).toEqual(list.find((record) => record.state.id === id));
+      }
+      const unknown = await one("20990101-no-existe", { cookie });
+      expect([unknown.status, JSON.parse(unknown.body)]).toEqual([404, { error: "not found" }]);
+    } finally {
+      await server.close();
+    }
+  });
+
+  it("AC2: finds an archived change by its id and by its diff, as its page of finished changes gives it", async () => {
+    const { root } = await twoChanges();
+    const server = await startServer({ session: await sessionAt(root), port: 0, ui: undefined });
+    try {
+      const cookie = await enter(server);
+      const page: { records: { state: { id: string } }[] } = JSON.parse(
+        (await ask(server.port, "/api/changes/finished", { cookie })).body,
+      );
+      const finished = page.records.find((record) => record.state.id === CHANGE);
+      expect(finished).toBeDefined();
+      const one = await ask(server.port, `/api/changes/${CHANGE}`, { cookie });
+      expect([one.status, JSON.parse(one.body)]).toEqual([200, finished]);
+      const diff = await ask(server.port, `/api/changes/${CHANGE}/diff`, { cookie });
+      expect([diff.status, diff.headers["content-type"]]).toEqual([
+        200,
+        "text/plain; charset=utf-8",
+      ]);
+      expect(diff.body).toContain("diff --git a/src/app.ts b/src/app.ts");
+      expect(diff.body).toContain("+2");
     } finally {
       await server.close();
     }

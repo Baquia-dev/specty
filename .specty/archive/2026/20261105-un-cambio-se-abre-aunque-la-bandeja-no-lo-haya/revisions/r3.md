@@ -1,0 +1,110 @@
+---
+kind: standard
+epic: 20261105-bandeja-por-paginas
+slice: C3
+---
+
+# Un cambio se abre aunque la Bandeja no lo haya cargado
+
+## Objetivo
+
+La página de un cambio hoy lo busca solo entre los que cargó la Bandeja, y si no está dice «No existe ese cambio». Cuando la Bandeja cargue los terminados por páginas (C4), el enlace a un cambio terminado que aún no cargó llevaría a ese aviso. Con este corte, la página pide a la fuente de datos el cambio que la Bandeja no tiene, por su id, y el servidor local lo da con `GET /api/changes/<id>`; solo si tampoco lo encuentra dice que no existe.
+
+## Fuera de alcance
+
+- Paginar los terminados, cambiar lo que da `GET /api/changes` o servir `GET /api/changes/finished`: es el corte C4.
+- Guardar en memoria los cambios archivados ya leídos para no releerlos (A5 de la épica): también es de C4.
+- Que la paleta de comandos (⌘K) o los tooltips de referencias encuentren cambios que la Bandeja no cargó.
+- Añadir a la Bandeja el cambio leído por su id: solo lo ve su página.
+
+## Supuestos
+
+- A1: Hoy `GET /api/changes` trae todos los cambios, así que la Bandeja siempre tiene el que abre su página y nada cambia para la persona hasta C4. La búsqueda por id solo ocurre cuando el cambio no está entre los cargados.
+- A2: `GET /api/changes/<id>` da el registro con la misma lectura que `/api/changes` (spec, estado con los commits de sus tareas, auditoría, revisiones, carpeta), buscándolo entre todos los cambios, abiertos, sin carpeta y archivados; con un id desconocido, 404. Leer todos para dar uno es lo mismo que ya hace el diff de un cambio (`server/diff.ts`), y C4 hará barata esa lectura.
+  - impacto: alto
+- A3: `SpectyData.change(id)` lo busca por defecto entre `changes()`: los datos de ejemplo y el MCP App, que dan todos sus cambios, lo heredan sin más, y solo `ServerData` lo pide al servidor. C4 lo sobrescribe en los datos de ejemplo cuando los pagine.
+- A4: El cambio leído por su id se deriva solo, en el mismo derivador de la Bandeja, y su épica toma el título de la épica si está entre los cargados, como en la lista. Los archivos compartidos no se calculan, porque solo cuentan entre cambios abiertos, que la Bandeja siempre carga (A1 de la épica).
+- A5: Mientras la página busca el cambio se ve el esqueleto de carga de hoy. Si la fuente falla al buscarlo, la página dice que no existe ese cambio, como cuando no lo encuentra, en lugar de quedarse cargando.
+- A6: Con cada aviso de cambios de la fuente, la página vuelve a pedir el cambio que no estaba cargado, igual que la Bandeja vuelve a leer la lista, sin volver al esqueleto mientras tanto.
+
+## Criterios de aceptación
+
+- AC1: CUANDO se abre por su enlace la página de un cambio que la Bandeja no ha cargado ENTONCES la página lo pide a la fuente por su id y lo muestra como cualquier otro, con el título de su épica si la Bandeja tiene la épica.
+- AC2: CUANDO se abre la página de un id que no es de ningún cambio ENTONCES, después de que la fuente tampoco lo encuentre, dice que no existe ese cambio, como hoy.
+- AC3: CUANDO el navegador con la sesión pide `GET /api/changes/<id>` ENTONCES el servidor da el registro de ese cambio, abierto o archivado, igual que en `/api/changes`; con un id desconocido responde 404, y sin la sesión, 403.
+- AC4: CUANDO la Bandeja ya tiene el cambio ENTONCES su página no lo pide a la fuente.
+
+## Diseño
+
+- CLI `server/records.ts`: `changeRecord(session, id)`, el de `changeRecords` con ese id, o nada.
+- CLI `server/http.ts`: `readChange` sirve `/api/changes/<id>` (sin más segmentos) con `changeRecord`: 200 con el registro o 404 `{"error":"not found"}`. Va tras la comprobación de origen y sesión de todas las lecturas.
+- UI `data/source.ts`: `SpectyData.change(id): Promise<ChangeRecord | undefined>`, por defecto el de `changes()` con ese id.
+- UI `data/server.ts`: `ServerData.change(id)` pide `/api/changes/<id>` (con `encodeURIComponent`): 404 es nada; 403, sin sesión; otro error, `El servidor respondió N.`; un cuerpo que no es un registro, datos inesperados. `data/server-answers.ts` exporta la comprobación de un registro suelto (`isChangeRecord`), la que ya usa `isRecords` para cada uno.
+- UI `data/changes-store.ts`: `byId(id)` devuelve `{ view, missing }`. `view` es el cargado con ese id o, si la lista ya cargó y no lo tiene, el que da un `resource` que pide `change(id)` y lo deriva, con el título de su épica de los cargados; ese `resource` se recarga con cada aviso de la fuente. `missing` es cierto cuando la lista no lo tiene y la fuente respondió que no existe o falló. Como `resource`, se llama en un contexto de inyección y vive lo que vive quien lo llama.
+- UI `change/change-page.ts`: usa `view` y muestra «No existe ese cambio» con `missing()` en lugar de `store.views.hasValue()`.
+- Docs: `docs/ARCHITECTURE.md` §15, la ruta y que la UI la usa para el cambio que la Bandeja no tiene.
+
+## Archivos
+
+- modificar packages/cli/src/server/records.ts — `changeRecord`: el registro de un cambio por su id
+- modificar packages/cli/src/server/http.ts — la ruta `GET /api/changes/<id>`
+- modificar packages/cli/test/server.test.ts — el test de la ruta: abierto, archivado, desconocido y sin sesión
+- modificar packages/ui/src/data/source.ts — `change(id)` en `SpectyData`, por defecto entre `changes()`
+- modificar packages/ui/src/data/server.ts — `change(id)` con `GET /api/changes/<id>`
+- modificar packages/ui/src/data/server-answers.ts — la comprobación exportada de un registro suelto
+- modificar packages/ui/src/data/server.test.ts — los tests de `change(id)` contra el servidor
+- modificar packages/ui/src/data/changes-store.ts — `byId` pide a la fuente el cambio que no tiene y dice si no existe
+- crear packages/ui/src/data/changes-store.test.ts — los tests de `byId`: no cargado, cargado, inexistente y recargado
+- modificar packages/ui/src/data/fixtures.test.ts — el test de `byId`, con su nueva forma
+- modificar packages/ui/src/change/change-page.ts — la página usa la vista y el «no existe» de `byId`
+- crear packages/ui/src/change/change-page.unloaded.test.ts — la página de un cambio terminado que la Bandeja no cargó
+- modificar docs/ARCHITECTURE.md — §15: la ruta `GET /api/changes/<id>` y la lectura por id de la UI
+
+## Tareas
+
+- [x] T1: El servidor da un cambio por su id
+  - files: packages/cli/src/server/records.ts, packages/cli/src/server/http.ts, packages/cli/test/server.test.ts
+  - ac: AC3
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts
+- [x] T2: La fuente de datos da un cambio por su id
+  - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/server.test.ts
+  - ac: AC1, AC2
+  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts
+- [x] T3: La página de un cambio lo pide a la fuente si la Bandeja no lo tiene
+  - files: packages/ui/src/data/changes-store.ts, packages/ui/src/change/change-page.ts, packages/ui/src/data/changes-store.test.ts, packages/ui/src/data/fixtures.test.ts, packages/ui/src/change/change-page.unloaded.test.ts
+  - ac: AC1, AC2, AC4
+  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/changes-store.test.ts --include src/data/fixtures.test.ts --include src/change/change-page.unloaded.test.ts --include src/change/change-page.test.ts && pnpm typecheck
+- [x] T4: ARCHITECTURE cuenta la lectura de un cambio por su id
+  - files: docs/ARCHITECTURE.md
+  - ac: —
+  - verify: grep -q "da el registro de un cambio" docs/ARCHITECTURE.md
+  - type: docs
+
+## Riesgos
+
+- R1: C1 y C2 se hacen a la vez y tocan la Bandeja (`inbox/`, `data/views.ts`, `data/progress.ts`, `components/badge.ts`, `docs/ui.md`). Mitigación: este corte no toca esos archivos, y `propose` avisa si comparte alguno.
+- R2: `GET /api/changes/<id>` lee todos los cambios para dar uno. Mitigación: hoy no se llama nunca (A1), y C4 guarda en memoria los archivados ya leídos antes de que la Bandeja deje de cargarlos.
+
+## Cierre
+
+### Resumen
+
+La página de un cambio ya no depende de que la Bandeja lo haya cargado. El servidor da el registro de un cambio por su id con `GET /api/changes/<id>`, abierto, sin carpeta o archivado, igual que en `/api/changes` (`changeRecord` en `server/records.ts`), o 404 si no existe. En la UI, `SpectyData.change(id)` lo busca por defecto entre `changes()`, y `ServerData.change` lo pide a esa ruta. `ChangesStore.byId` devuelve `{ view, missing }`: el cambio cargado o, si la lista no lo tiene, el que pide a la fuente y deriva aparte, con el título de su épica si está cargada y vuelto a pedir con cada aviso de la fuente. La página dice «No existe ese cambio» solo cuando la fuente tampoco lo tiene o falla. Hoy la Bandeja sigue cargando todos los cambios, así que la búsqueda por id solo se usará cuando C4 pagine los terminados. ARCHITECTURE §15 cuenta la ruta y la lectura por id.
+
+### Desviaciones
+
+- T3 necesitó la solicitud de alcance S1 para `packages/ui/src/data/mcp-app.ts`: `McpAppData` tenía un campo privado `change` (el id que pidió el host) que chocaba con el nuevo método `SpectyData.change`, y se renombró a `shown` sin cambiar su comportamiento.
+- En modo delegado, el clasificador de Claude Code bloqueó que el subagente ejecutara `specty approve` (de la spec, de los tests y de S1) y `specty accept`: los ejecutó el agente principal, con la autorización de la persona en el chat.
+- La ruta `/api/changes/<id>` no la sirve `readChange`, como decía el Diseño, sino `readApi`, que llama a una función nueva, `readRecord`: dentro de `readChange` su complejidad pasaba de 10.
+- En la página, la señal de «no existe» se llama `notFound` y no `missing`, porque `missing` ya era el icono del estado vacío.
+- Los tests de T2 cubren también que una fuente cualquiera encuentra el cambio entre los que da (el `change` por defecto de A3).
+
+### Decisiones
+
+- `SpectyData.change(id)` es un método con una implementación por defecto y no uno abstracto: los datos de ejemplo, el MCP App y las fuentes de los tests lo heredan sin tocarse.
+- `byId` se llama en un contexto de inyección, como `resource`, y vive lo que vive quien lo llama: así su `resource` y su suscripción a la fuente se liberan con la página, en lugar de quedarse en el almacén, que vive en la raíz.
+- Si la fuente falla al buscar el cambio, la página dice que no existe (A5), en lugar de quedarse en el esqueleto de carga.
+
+### Pendientes
+
+- P163: `packages/cli/src/server/http.ts` queda en 302 líneas de código (el aviso salta en 300). C4 debe servir `/api/changes/finished` desde un módulo propio de `server/`.

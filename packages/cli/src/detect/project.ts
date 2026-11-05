@@ -241,7 +241,7 @@ async function workspacePackages(root: string): Promise<string[]> {
 }
 
 /** Expands `dir/*` style workspace patterns into directories that exist. */
-async function expand(root: string, pattern: string): Promise<string[]> {
+export async function expand(root: string, pattern: string): Promise<string[]> {
   const clean = pattern.replace(/^\.\//, "").replace(/\/$/, "");
   if (!/[*?[{]/.test(clean)) return (await isDirectory(join(root, clean))) ? [clean] : [];
   const base = clean.slice(0, clean.search(/[*?[{]/)).replace(/\/[^/]*$/, "");
@@ -272,7 +272,8 @@ function strings(value: unknown): string[] {
     : [];
 }
 
-function safeYaml(text: string | undefined): unknown {
+/** A YAML file's content; undefined when it is missing or cannot be read. */
+export function safeYaml(text: string | undefined): unknown {
   if (text === undefined) return undefined;
   try {
     return parseYaml(text);

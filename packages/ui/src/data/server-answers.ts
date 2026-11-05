@@ -4,6 +4,7 @@
 import type { SessionView } from "@baquia-dev/specty-core/light";
 import type { RunRecord } from "./progress";
 import type { Bilingual, ChangeRecord, Delegation, MemoryRecord } from "./records";
+import type { FinishedPage } from "./source";
 
 export const NO_SESSION: Bilingual = {
   es: "Esta pestaña no tiene sesión: abre el enlace que imprime `specty ui`.",
@@ -157,10 +158,25 @@ function isText(value: unknown): value is string {
 
 /** A light check of the answer: the worker parses each spec, and each state is Specty's own file. */
 export function isRecords(value: unknown): value is readonly ChangeRecord[] {
-  return Array.isArray(value) && value.every(isRecordLike);
+  return Array.isArray(value) && value.every(isChangeRecord);
 }
 
-function isRecordLike(value: unknown): boolean {
+/** `GET /api/changes/finished`'s answer: its records, with the same light check, and its numbers. */
+export function isFinishedPage(value: unknown): value is FinishedPage {
+  if (!isObject(value) || !isRecords(value.records) || !isObject(value.counts)) return false;
+  const { counts, epics } = value;
+  return (
+    typeof value.total === "number" &&
+    typeof value.finished === "number" &&
+    typeof counts.done === "number" &&
+    typeof counts.cancelled === "number" &&
+    isObject(epics) &&
+    Object.values(epics).every(isText)
+  );
+}
+
+/** The same light check, of one change. */
+export function isChangeRecord(value: unknown): value is ChangeRecord {
   return (
     typeof value === "object" &&
     value !== null &&

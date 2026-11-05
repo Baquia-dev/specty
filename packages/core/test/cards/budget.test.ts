@@ -171,4 +171,13 @@ describe("the epic card's budget", () => {
       expect(tokens(text)).toBeLessThanOrEqual(BUDGET);
     }
   });
+
+  it("AC2: keeps it from Antigravity too, whose next step says how to launch each brief", () => {
+    for (const ctx of [ES, EN]) {
+      const text = card(epicWithBriefs(), { ...ctx, tool: "antigravity" });
+      expect(text.match(/^(ENCARGO|BRIEF) C\d:$/gm)).toHaveLength(6);
+      expect(text).toContain("`invoke_subagent`");
+      expect(tokens(text)).toBeLessThanOrEqual(BUDGET);
+    }
+  });
 });

@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "id": "20261105-un-cambio-se-abre-aunque-la-bandeja-no-lo-haya",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-un-cambio-se-abre-aunque-la-bandeja-no-lo-haya",
+  "baseCommit": "4682745ea93f383506c210b4e0a5a9dc170f4011",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:09b5d56b36a7b4d0a89eabb793c53e418e71491598913e06105029dd7c3e60dd",
+    "at": "2026-11-05T11:47:28.999Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:072d4f6d9a8e945010575928019f9cd894ed24e55ec46e96509a39b5730ebacf",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b3b59f7586cea1184ba2c285874e279a2d8630be5f84be4485eb9a41a8eca51e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:cce071edc70e62d52fa77f38f9ae03429a3a0ade154b5539526595ad4dc619c4",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:5587ad22d3a3b915a78d014ac0e4ecfcad2ae07a6e9d4dc9cfa7560967fdef51",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:5f3bb8ee7ba2b28033e1f8c49c956682f0fd6b6eaaf406586ec4cf10ed044d41",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:c058eb880c604b27f224abd02ac0818b1656b7ef6bb6505f2c5b6e806a0387fd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2760390f7cb58128618d5b24a431133d9ae4abfd",
+      "attempts": 1,
+      "startedAt": "2026-11-05T11:51:45.200Z",
+      "doneAt": "2026-11-05T11:56:30.512Z",
+      "summary": "GET /api/changes/<id> da el registro de un cambio, abierto o archivado, con changeRecord en server/records.ts; 404 si no existe",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "4cc0943fce95a3cab6ff08bacb45d6425dbd99cc",
+      "attempts": 1,
+      "startedAt": "2026-11-05T11:56:30.803Z",
+      "doneAt": "2026-11-05T11:57:03.668Z",
+      "summary": "SpectyData.change(id) lo busca por defecto entre changes(); ServerData.change lo pide a GET /api/changes/<id> (404 es nada) con isChangeRecord exportado de server-answers",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "358b2c1b14985d8d20c07dc329b9ab2d51773f0d",
+      "attempts": 2,
+      "startedAt": "2026-11-05T11:57:04.069Z",
+      "doneAt": "2026-11-05T11:59:56.692Z",
+      "summary": "ChangesStore.byId devuelve { view, missing }: el cargado o, si la lista no lo tiene, un resource que pide change(id) a la fuente, lo deriva con el título de su épica y se recarga con cada aviso; la página muestra «No existe ese cambio» con missing. McpAppData renombra su campo change a shown (S1)",
+      "scopeExtra": [
+        "packages/ui/src/data/mcp-app.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "81844c8df77641db8dd0a4ff081d1578c8e289a1",
+      "attempts": 1,
+      "startedAt": "2026-11-05T11:59:57.019Z",
+      "doneAt": "2026-11-05T12:00:18.862Z",
+      "summary": "ARCHITECTURE §15: la ruta GET /api/changes/<id> y cómo la página de un cambio no cargado lo pide por su id (SpectyData.change, ChangesStore.byId)",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 4,
+    "R": 2,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-05T12:06:02.925Z",
+  "lockedTests": {
+    "packages/cli/test/server.test.ts": "sha256:32fb8558972bc37119df48a3360f8cd7fd74ef137d8961219bfe6f273c8be742",
+    "packages/ui/src/data/fixtures.test.ts": "sha256:b426ccc6d7a3b2427463b2b5efd92a950e0b945cf7a4393427f18f06a6171f0f",
+    "packages/ui/src/data/server.test.ts": "sha256:db60000d685828efa07355b687372243f0e87be7ff631a4ff49696ad2fdd4c2c",
+    "packages/ui/src/change/change-page.unloaded.test.ts": "sha256:b97323fc92bb13b6181a7cd9bcc83262469a7dfd737a7d633e6b07c9a2cff6e1",
+    "packages/ui/src/data/changes-store.test.ts": "sha256:251e09088ec3a9c835eaa34be16b3e1134d585bf05e2a67999b6bff158b6ef31"
+  }
+}

@@ -27,6 +27,8 @@ verify:
           "tsconfig.base.json",
           "biome.json",
           "knip.json",
+          ".agents/**",
+          ".claude/**",
         ]
     - name: core
       command: "pnpm --filter @baquia-dev/specty-core test"
@@ -83,6 +85,8 @@ verify:
           "package.json",
           "pnpm-lock.yaml",
           "tsconfig.base.json",
+          "LICENSE",
+          "NOTICE",
         ]
 
 scope:

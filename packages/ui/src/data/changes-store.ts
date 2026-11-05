@@ -5,9 +5,11 @@ import {
   Injectable,
   InjectionToken,
   inject,
+  PendingTasks,
   resource,
   type Signal,
 } from "@angular/core";
+import { FinishedPages } from "./finished-pages";
 import {
   type ChangeRecord,
   type ChangeView,
@@ -74,7 +76,7 @@ export const inThread: Deriver = async (records) => (await import("./views")).de
 /**
  * The changes as the screens see them. It reads from whatever `SpectyData` is provided, derives
  * the views with the `DERIVER` and reloads when the source says something changed, keeping the
- * previous views on screen meanwhile.
+ * previous views on screen meanwhile. The finished changes the Inbox shows come in pages, apart.
  */
 @Injectable({ providedIn: "root" })
 export class ChangesStore {
@@ -82,10 +84,27 @@ export class ChangesStore {
   private readonly derive = inject(DERIVER);
 
   readonly views = resource({ loader: async () => this.derive(await this.data.changes()) });
+  /** The pages of finished changes the Inbox asked for (`data/finished-pages.ts`). */
+  readonly pages = new FinishedPages(this.data, this.derive, inject(PendingTasks));
 
-  readonly all: Signal<readonly ChangeView[]> = computed(() =>
-    this.views.hasValue() ? this.views.value() : [],
-  );
+  private readonly listed = computed(() => (this.views.hasValue() ? this.views.value() : []));
+  /** The open changes: waiting for the person, in progress, or whose folder was lost. */
+  readonly open = computed(() => this.listed().filter((view) => !isFinished(view)));
+  /**
+   * The finished changes of the loaded pages, in their order, each with its epic as known: the
+   * epic open or loaded in a page, or else the title the page gives.
+   */
+  readonly finished = computed(() => {
+    const loaded = new Map([...this.open(), ...this.pages.views()].map((view) => [view.id, view]));
+    const titles = this.pages.epics();
+    return this.pages.views().map((view) => withEpic(view, loaded, titles));
+  });
+  /** Every change loaded: those the source lists and those of the pages, each once. */
+  readonly all: Signal<readonly ChangeView[]> = computed(() => {
+    const listed = this.listed();
+    const ids = new Set(listed.map((view) => view.id));
+    return [...listed, ...this.finished().filter((view) => !ids.has(view.id))];
+  });
   /** Waiting for the person, the longest first. */
   readonly decisions = computed(() =>
     this.all()
@@ -107,11 +126,77 @@ export class ChangesStore {
   );
 
   constructor() {
-    const stop = this.data.subscribe(() => this.views.reload());
+    const stop = this.data.subscribe(() => {
+      this.views.reload();
+      void this.pages.reload();
+    });
     inject(DestroyRef).onDestroy(stop);
   }
 
-  byId(id: Signal<string>): Signal<ChangeView | undefined> {
-    return computed(() => this.all().find((view) => view.id === id()));
+  /**
+   * The change `id`: among the loaded changes or, when they leave it out (a finished change the
+   * Inbox has not loaded), asked to the source by its id, and again whenever the source says
+   * something changed. Called in an injection context, as `resource`: it lasts as long as its caller.
+   */
+  byId(id: Signal<string>): FoundChange {
+    const loaded = computed(() => this.all().find((view) => view.id === id()));
+    const asked = resource({
+      params: () => (this.views.hasValue() && loaded() === undefined ? id() : undefined),
+      loader: async ({ params }) => {
+        const record = await this.data.change(params);
+        return record === undefined ? undefined : (await this.derive([record]))[0];
+      },
+    });
+    const stop = this.data.subscribe(() => asked.reload());
+    inject(DestroyRef).onDestroy(stop);
+    return {
+      view: computed(() => {
+        const view = asked.hasValue() ? asked.value() : undefined;
+        const all = new Map(this.all().map((other) => [other.id, other]));
+        return loaded() ?? (view === undefined ? undefined : withEpic(view, all, {}));
+      }),
+      missing: computed(
+        () =>
+          loaded() === undefined &&
+          (asked.status() === "error" ||
+            (asked.status() === "resolved" && asked.value() === undefined)),
+      ),
+    };
   }
+}
+
+/** A change looked for by its id, as its page reads it. */
+export interface FoundChange {
+  /** Its view, once known. */
+  readonly view: Signal<ChangeView | undefined>;
+  /** Neither the loaded changes nor the source have it, or the source failed to look for it. */
+  readonly missing: Signal<boolean>;
+}
+
+function isFinished(view: ChangeView): boolean {
+  return view.phase === "done" || view.phase === "cancelled";
+}
+
+/**
+ * `view` with its epic as the list derives it: the title of the epic when it is loaded, or else the
+ * one in `titles`, and the title the loaded epic gives its slice.
+ */
+function withEpic(
+  view: ChangeView,
+  loaded: ReadonlyMap<string, ChangeView>,
+  titles: Readonly<Record<string, string>>,
+): ChangeView {
+  const { epic } = view;
+  if (epic === undefined) return view;
+  const own = loaded.get(epic.id);
+  const title = own?.title ?? titles[epic.id];
+  const sliceTitle = own?.slices?.find((slice) => slice.id === epic.slice)?.title;
+  return {
+    ...view,
+    epic: {
+      ...epic,
+      ...(title === undefined ? {} : { title }),
+      ...(sliceTitle === undefined ? {} : { sliceTitle }),
+    },
+  };
 }

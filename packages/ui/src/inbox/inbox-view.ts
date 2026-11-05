@@ -1,16 +1,25 @@
 // SPDX-License-Identifier: Apache-2.0
 // What the Inbox shows, from the change views: filtered, grouped and sorted. Pure.
-import type { ChangeKind, SizeLevel } from "@baquia-dev/specty-core";
-import { type Lang, PHASES, type Phase } from "@baquia-dev/specty-core/light";
+import type { ChangeKind } from "@baquia-dev/specty-core";
+import {
+  CHANGE_SORTS,
+  type ChangeSort,
+  type Lang,
+  matchesQuery,
+  PHASES,
+  type Phase,
+  sortChanges,
+} from "@baquia-dev/specty-core/light";
 import type { Bilingual, ChangeView } from "../data/records";
 import { PHASE_LABELS } from "../theme/tokens";
 
 export type InboxGroup = "state" | "phase" | "none" | "epic";
-export type InboxSort = "waiting" | "recent" | "title" | "size";
+/** The Inbox sorts as the local server does its pages of finished changes. */
+export type InboxSort = ChangeSort;
 export type InboxPhase = Phase | "all";
 
 export const INBOX_GROUPS: readonly InboxGroup[] = ["state", "phase", "none", "epic"];
-export const INBOX_SORTS: readonly InboxSort[] = ["waiting", "recent", "title", "size"];
+export const INBOX_SORTS: readonly InboxSort[] = CHANGE_SORTS;
 
 export interface InboxFilters {
   readonly query: string;
@@ -32,7 +41,12 @@ export type InboxBlock =
       readonly key: string;
       readonly epicId: string;
       readonly title: string;
-      readonly changes: readonly ChangeView[];
+      /** The epic itself, when it is in the section: its own row heads the group. */
+      readonly head?: ChangeView;
+      /** The epic as loaded, from every change: the phase and tab of a header without a row. */
+      readonly epic?: ChangeView;
+      /** Its slices in the section, in the section's order. */
+      readonly slices: readonly ChangeView[];
     };
 
 /** Waiting for the person, in progress, or finished. */
@@ -45,39 +59,15 @@ const STATES: readonly { readonly key: InboxState; readonly label: Bilingual }[]
 ];
 
 const KIND_SECTIONS: readonly { readonly key: ChangeKind; readonly label: Bilingual }[] = [
-  { key: "standard", label: { es: "Specs individuales", en: "Standalone specs" } },
+  { key: "standard", label: { es: "Features", en: "Features" } },
   { key: "quick", label: { es: "Cambios quick", en: "Quick changes" } },
   { key: "retro", label: { es: "Cambios manuales", en: "Manual changes" } },
   { key: "spike", label: { es: "Spikes", en: "Spikes" } },
 ];
 
-const SIZE: Readonly<Record<SizeLevel, number>> = { S: 1, M: 2, L: 3, XL: 4 };
-
 export function stateOf(change: ChangeView): InboxState {
   if (change.decision !== undefined) return "decision";
   return change.phase === "done" || change.phase === "cancelled" ? "recent" : "active";
-}
-
-/** Lower case and without accents, so "evolucion" finds "Evolución". */
-function folded(text: string): string {
-  return text
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase();
-}
-
-/** Whether the title, id or epic metadata contain the query, ignoring case and accents. */
-export function matchesQuery(change: ChangeView, query: string): boolean {
-  const wanted = folded(query.trim());
-  if (wanted === "") return true;
-  const fields = [
-    change.title,
-    change.id,
-    change.epic?.title ?? "",
-    change.epic?.id ?? "",
-    change.epic?.slice ?? "",
-  ];
-  return fields.some((field) => folded(field).includes(wanted));
 }
 
 /** The changes the search and the phase filter let through. */
@@ -107,30 +97,24 @@ export function phaseCounts(
   ]);
 }
 
-export function sortChanges(
-  changes: readonly ChangeView[],
-  sort: InboxSort,
-  lang: Lang,
-): readonly ChangeView[] {
-  const since = (change: ChangeView) => Date.parse(change.phaseSince);
-  const size = (change: ChangeView) => (change.size ? SIZE[change.size.level] : 0);
-  const compare: Readonly<Record<InboxSort, (a: ChangeView, b: ChangeView) => number>> = {
-    // What has waited longest first.
-    waiting: (a, b) => since(a) - since(b),
-    recent: (a, b) => since(b) - since(a),
-    title: (a, b) => a.title.localeCompare(b.title, lang, { sensitivity: "base" }),
-    size: (a, b) => size(b) - size(a) || since(a) - since(b),
-  };
-  return changes.toSorted(compare[sort]);
-}
-
-/** The sections of the Inbox, sorted inside, without empty ones. */
+/**
+ * The sections of the Inbox, sorted inside, without empty ones. The open changes go before the
+ * finished ones, each part in the order chosen, so a new page of finished changes goes at the end
+ * of what is shown (A4 of the epic `20261105-bandeja-por-paginas`).
+ */
 export function inboxSections(
   changes: readonly ChangeView[],
   filters: InboxFilters,
   lang: Lang,
 ): readonly InboxSection[] {
-  const shown = sortChanges(visibleChanges(changes, filters), filters.sort, lang);
+  const visible = visibleChanges(changes, filters);
+  const sorted = (finished: boolean) =>
+    sortChanges(
+      visible.filter((change) => (stateOf(change) === "recent") === finished),
+      filters.sort,
+      lang,
+    );
+  const shown = [...sorted(false), ...sorted(true)];
   const sections: readonly InboxSection[] =
     filters.group === "epic"
       ? epicSections(shown, changes)
@@ -156,8 +140,14 @@ export function inboxSections(
   return sections.filter((section) => section.changes.length > 0);
 }
 
-/** Visual blocks inside a section: changes of the same epic grouped together, others as rows. */
-export function sectionBlocks(section: InboxSection): readonly InboxBlock[] {
+/**
+ * Visual blocks inside a section: the slices of an epic under it, headed by the epic's own row when
+ * it is in the section, and the other changes as rows. `all` gives the epic loaded elsewhere.
+ */
+export function sectionBlocks(
+  section: InboxSection,
+  all: readonly ChangeView[],
+): readonly InboxBlock[] {
   const sliceEpics = new Set(section.changes.flatMap((c) => (c.epic ? [c.epic.id] : [])));
   const seen = new Set<string>();
   return section.changes.flatMap((change): InboxBlock[] => {
@@ -166,11 +156,22 @@ export function sectionBlocks(section: InboxSection): readonly InboxBlock[] {
     if (seen.has(epicId)) return [];
     seen.add(epicId);
     const group = section.changes.filter((item) => epicClusterId(item, sliceEpics) === epicId);
+    const head = group.find((item) => item.id === epicId);
+    const epic = head ?? all.find((item) => item.id === epicId);
     const title =
-      group.find((item) => item.kind === "epic")?.title ??
-      group.find((item) => item.epic !== undefined)?.epic?.title ??
-      epicId;
-    return [{ kind: "epic", key: `epic-${epicId}`, epicId, title, changes: group }];
+      epic?.title ?? group.find((item) => item.epic !== undefined)?.epic?.title ?? epicId;
+    const slices = group.filter((item) => item !== head);
+    return [
+      {
+        kind: "epic",
+        key: `epic-${epicId}`,
+        epicId,
+        title,
+        ...(head === undefined ? {} : { head }),
+        ...(epic === undefined ? {} : { epic }),
+        slices,
+      },
+    ];
   });
 }
 

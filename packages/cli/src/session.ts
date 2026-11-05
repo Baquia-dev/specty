@@ -9,7 +9,7 @@ import {
   type ResolvedConfig,
 } from "@baquia-dev/specty-core";
 import { agentSession } from "./agents/run";
-import { createGit, findRoot, type Git } from "./io/git";
+import { createGit, type Git, openRepository } from "./io/git";
 import { loadConfig } from "./store/config";
 import { readDelegation } from "./store/local";
 import { type RepoPaths, repoPaths } from "./store/paths";
@@ -114,10 +114,11 @@ export async function openSession(
   environment: Environment,
   fallback?: ConfigFallback,
 ): Promise<Opened> {
-  const root = await findRoot(environment.cwd);
-  if (root === undefined) return { kind: "no-git" };
+  const repository = await openRepository(environment.cwd);
+  if (repository === undefined) return { kind: "no-git" };
+  const { root } = repository;
   const paths = repoPaths(root);
-  const git = createGit(root, environment.env);
+  const git = createGit(root, environment.env, repository.known, repository.head);
   const loaded = await loadConfig(paths);
   if (loaded.kind === "missing") return { kind: "missing", root, paths, git };
   if (loaded.kind === "ok") return await opened(environment, root, git, loaded.config);

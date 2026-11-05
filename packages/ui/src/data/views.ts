@@ -94,6 +94,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
   const decision = requested === undefined ? decisionOf(state) : undefined;
   return {
     ...identityOf(record, state, spec, audit),
+    ...slicesIn(spec),
     size: {
       level,
       reasons: size.reasons.map((reason) => ({
@@ -219,6 +220,13 @@ function epicIn(spec: Spec): Pick<ChangeView, "epic"> {
   return { epic: { id: epic, title: epic, ...(slice === undefined ? {} : { slice }) } };
 }
 
+/** An epic's slices, by id and title; nothing without a Cortes section or with none in it. */
+function slicesIn(spec: Spec): Pick<ChangeView, "slices"> {
+  const slices = spec.sections.slices?.items ?? [];
+  if (slices.length === 0) return {};
+  return { slices: slices.map(({ id, title }) => ({ id, title })) };
+}
+
 function approvedIn(state: ChangeState): Pick<ChangeView, "approved"> {
   const { approved } = state;
   if (approved === undefined) return {};
@@ -278,21 +286,34 @@ function deltaOf(record: ChangeRecord, state: ChangeState, spec: Spec): Partial<
   return { delta: deriveDelta(spec, approved, state.approved.revision) };
 }
 
-/** Every change's view, each with the files it shares with the other open changes. */
+/**
+ * Every change's view, each with the files it shares with the other open changes; a slice, with
+ * the title of its epic and the one the epic gives the slice.
+ */
 export function deriveViews(records: readonly ChangeRecord[]): readonly ChangeView[] {
   const shared = sharedFiles(records);
   const views = records.map((record) => deriveView(record));
-  const titles = new Map(views.map((view) => [view.id, view.title]));
+  const byId = new Map(views.map((view) => [view.id, view]));
   return views.map((view) => {
     const mine = shared.get(view.id);
-    const epic =
-      view.epic === undefined
-        ? undefined
-        : { ...view.epic, title: titles.get(view.epic.id) ?? view.epic.title };
+    const epic = view.epic === undefined ? undefined : epicOf(view.epic, byId.get(view.epic.id));
     return {
       ...view,
       ...(mine === undefined ? {} : { shared: mine }),
       ...(epic === undefined ? {} : { epic }),
     };
   });
+}
+
+/** A slice's epic, with the title of the epic when it is loaded and the one it gives the slice. */
+function epicOf(
+  epic: NonNullable<ChangeView["epic"]>,
+  loaded: ChangeView | undefined,
+): NonNullable<ChangeView["epic"]> {
+  const sliceTitle = loaded?.slices?.find((slice) => slice.id === epic.slice)?.title;
+  return {
+    ...epic,
+    title: loaded?.title ?? epic.title,
+    ...(sliceTitle === undefined ? {} : { sliceTitle }),
+  };
 }

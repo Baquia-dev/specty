@@ -18,6 +18,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { toolExclusions } from "../detect/formatters";
 import { detectProject, projectFacts } from "../detect/project";
+import { proposedUnits } from "../detect/workspace-units";
 import { commitInstall } from "../install/commit";
 import { ensureDevelop } from "../install/git-flow";
 import { type InitOptions, type InitSetup, type Installed, install } from "../install/install";
@@ -180,6 +181,11 @@ async function committed(
     ...facts.commands.map((entry) => `${entry.label}: ${entry.command}`),
   ];
   const { product, unfilled } = installed;
+  // Only for a configuration without units: they replace `verify.full`, which the person knows.
+  const units =
+    setup.config?.verify.units === undefined
+      ? await proposedUnits(setup.root, detection, lang)
+      : undefined;
   const view = {
     done,
     detected,
@@ -189,6 +195,7 @@ async function committed(
     ...(installed.chooseFlow ? { chooseFlow: true } : {}),
     exclusions: await missingExclusions(setup),
     ...(result.failed === true ? { failed: true } : {}),
+    ...(units === undefined ? {} : { units }),
   };
   return initCard(view, cards);
 }

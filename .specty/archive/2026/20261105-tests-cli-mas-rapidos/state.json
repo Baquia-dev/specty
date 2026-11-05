@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "20261105-tests-cli-mas-rapidos",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-tests-cli-mas-rapidos",
+  "baseCommit": "4682745ea93f383506c210b4e0a5a9dc170f4011",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e7c1b3461fca27ac4d0552521e5fc926187fc39406c6356a462a1a55fe25e8f7",
+    "at": "2026-11-05T10:48:44.876Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:03b5d29655f212c3ff3e8b0f0a95ec7dbaef01ceb2b7a7824c402dc19363f172",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bb8069282e07eda8d6959a1003f3b3e442564223df7089ed65bb1cc5f8755681",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f4adbc7e37ecfa989f81e24a31f638ca4ad75075bae1dd243e6a33c08f06a865",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:5403b52e33116cbfd1ac92b436a525b6b869a81275e376dc3d6153c1aff75387",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "bf170a290930779c529b82225b1f402b0450cb18",
+      "attempts": 1,
+      "startedAt": "2026-11-05T10:48:45.331Z",
+      "doneAt": "2026-11-05T10:54:34.310Z",
+      "summary": "openRepository abre la sesión con un solo rev-parse; cada Git recuerda 2 s la rama, HEAD, la configuración y las worktrees (io/git-memo.ts) y lo olvida tras un comando que pueda cambiarlos; flow.test.ts: de 1468 a 1097 procesos de git y de 16,3 a 12,6 s",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "89acb2c420bc612d88e889d2d9e0ebc1945b746d",
+      "attempts": 1,
+      "startedAt": "2026-11-05T10:54:34.612Z",
+      "doneAt": "2026-11-05T10:55:00.625Z",
+      "summary": "ARCHITECTURE explica la apertura con un solo proceso de git (openRepository), las respuestas recordadas 2 s de cada Git (io/git-memo.ts) y la medida de flow.test.ts.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T11:01:00.404Z"
+}

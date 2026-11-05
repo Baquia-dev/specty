@@ -54,6 +54,11 @@ const WRITES: Readonly<Record<string, string>> = {
 /** How a turn the model ended comes: in its editor, and with no tool call in its CLI. */
 const ENDED: ReadonlySet<string> = new Set(["model_stop", "NO_TOOL_CALL"]);
 /**
+ * An event of a subagent of `invoke_subagent`: its `lastUserInput` comes empty, while the main
+ * conversation's brings the person's text all through its turn (agy 1.5.1).
+ */
+const ofSubagent = (event: Readonly<Record<string, unknown>>) => event.lastUserInput === "";
+/**
  * The events the guard listens to, with the tools each one covers; `undefined` is an event that
  * takes a list of handlers, with no matcher.
  */
@@ -105,8 +110,11 @@ export const antigravity: AgentAdapter = {
     ),
   stop: {
     // Only a turn the model ended (not one an error or its step limit stopped), once its
-    // subagents are done: while they run, it comes with `fullyIdle: false`, and again after.
-    acts: (event) => ENDED.has(String(event.terminationReason)) && event.fullyIdle !== false,
+    // subagents are done: while they run, it comes with `fullyIdle: false`, and again after. A
+    // subagent's own end is not checked, as Claude Code's `SubagentStop` is not heard: it closes
+    // its tasks with `specty task done`, which checks them.
+    acts: (event) =>
+      ENDED.has(String(event.terminationReason)) && event.fullyIdle !== false && !ofSubagent(event),
     reply: (message) => JSON.stringify({ decision: "continue", reason: message }),
     pass: JSON.stringify({ decision: "stop" }),
     counts: true,

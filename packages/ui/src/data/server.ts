@@ -14,7 +14,9 @@ import {
 } from "./records";
 import {
   answered,
+  isChangeRecord,
   isDelegation,
+  isFinishedPage,
   isMemoryRecord,
   isObject,
   isRecords,
@@ -28,7 +30,7 @@ import {
   tooLarge,
   UNEXPECTED,
 } from "./server-answers";
-import type { MemoryVerb } from "./source";
+import type { FinishedPage, FinishedRequest, MemoryVerb } from "./source";
 import { isStrings, isTrace, type TraceRecord } from "./trace";
 
 /** The mark `specty ui` puts in the page it serves (ARCHITECTURE §15). */
@@ -71,6 +73,35 @@ export class ServerData extends SpectyData {
     const records: unknown = await response.json();
     if (!isRecords(records)) throw new ActionError(UNEXPECTED);
     return records;
+  }
+
+  /** One change by its id, open or finished; none when the server does not know it (404). */
+  override async change(id: string): Promise<ChangeRecord | undefined> {
+    const response = await fetch(`/api/changes/${encodeURIComponent(id)}`);
+    if (response.status === 404) return undefined;
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    if (!response.ok) throw new ActionError(answered(response.status));
+    const record: unknown = await response.json();
+    if (!isChangeRecord(record)) throw new ActionError(UNEXPECTED);
+    return record;
+  }
+
+  /** A page of the finished changes, found, filtered and sorted by the server. */
+  override async finished(request: FinishedRequest): Promise<FinishedPage> {
+    const query = new URLSearchParams({
+      offset: String(request.offset),
+      limit: String(request.limit),
+      q: request.query,
+      phase: request.phase,
+      sort: request.sort,
+      lang: request.lang,
+    });
+    const response = await fetch(`/api/changes/finished?${query}`);
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    if (!response.ok) throw new ActionError(answered(response.status));
+    const page: unknown = await response.json().catch(() => undefined);
+    if (!isFinishedPage(page)) throw new ActionError(UNEXPECTED);
+    return page;
   }
 
   override subscribe(listener: () => void): () => void {

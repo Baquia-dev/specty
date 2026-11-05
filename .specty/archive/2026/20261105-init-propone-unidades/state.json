@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "id": "20261105-init-propone-unidades",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-init-propone-unidades",
+  "baseCommit": "bd48aacf6aa987f9dcce0d5aa2a20cb564068e48",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4cfcb5d38efd4be807c25da285f96ca73699a4757ed69d342f4fba063ef4c61c",
+    "at": "2026-11-05T12:40:33.426Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ac8f1e178b7f6358fb0d0279690be0e3d6550c738894a3ae256671696ad7752c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7019a9128273f5f6ddaee32f604ebaa26a7be548e000c6071a33e049687efd21",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:38b022ee93bee56a472a79ce0c23678b86c99e3520cd3b9a03d9bceefa8fd824",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ea1ca349fa117edb2326da7ecd6cd62dc8ee162c462fb4673e646b7dfc800ca9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0e41c525fdb0eb8166e3225e572a3597167ba127",
+      "attempts": 1,
+      "startedAt": "2026-11-05T12:42:41.199Z",
+      "doneAt": "2026-11-05T12:43:52.036Z",
+      "summary": "core propone las unidades de un workspace (proposeUnits: estático con lint y tipos, una por paquete con tests y los paquetes que usa) y su YAML (unitsYaml); la tarjeta de init las muestra en su bloque y dice que las añade la persona.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2b800c125ca4fa62bc177f77c4607ef042780223",
+      "attempts": 1,
+      "startedAt": "2026-11-05T12:43:52.340Z",
+      "doneAt": "2026-11-05T12:45:41.670Z",
+      "summary": "init propone en su tarjeta las unidades de un workspace de pnpm, npm o yarn (detect/workspace-units.ts lee los package.json, el gestor y los archivos de la raíz) cuando la configuración no tiene verify.units, sin escribirlas.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "8be1890d634b81c4a27bc13632e02f4c7559f8fc",
+      "attempts": 1,
+      "startedAt": "2026-11-05T12:45:41.998Z",
+      "doneAt": "2026-11-05T12:46:33.708Z",
+      "summary": "formats.md §6 y ARCHITECTURE §9 dicen que init propone las unidades de un workspace de pnpm, npm o yarn, cómo las arma y por qué no las escribe.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T12:51:05.492Z",
+  "lockedTests": {
+    "packages/cli/test/init-units.test.ts": "sha256:4a58d1f71e1c9e3971399c40d5ba986b3ebad57894d4e0b0a07adb6747de72f4",
+    "packages/core/test/cards/init-units.test.ts": "sha256:6af4bc6dcbab7e4aa2d2fb2db737b30ce979eda0d6e33736fc4234c168e86ef7",
+    "packages/core/test/units-proposal.test.ts": "sha256:147fd1b5e0f0928d31a51addf93c4ce28b9788f4165d303c311bbc0a1f0965e4"
+  }
+}

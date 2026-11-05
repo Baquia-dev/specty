@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "id": "20261105-las-epicas-como-cabecera-con-sus-features-dentro",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-las-epicas-como-cabecera-con-sus-features-dentro",
+  "baseCommit": "a7a61ce66f0f4169b2b9107552bef3b33ff2b6fa",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cb093a6395c82670a31eb89aea893b112e25e9b8b7765693a0b2eea07571e033",
+    "at": "2026-11-05T12:05:49.785Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c160ff7de9f6ccee3c5155aaf92d43a1a9e2321fc2354391776bb974868cc9e9",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c37b0f79b8f1eeaf15ee63e7dc50bae1f7c17dfe1f789030da2360496be388d3",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3a01264d8cd8cbb794a5959df264e70ab8982c045bff4ff6a77e0d0614c40f6d",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1af1113efadd19d7a577b7a1bbf3729d87d191f008262575506efed16de4a4c4",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:535e37011ca17752ad4ae30aa8163beb62be1a34e3277b0b8f7818364bbe8e51",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:8ce113c51dd0b820d86e503b519d6fad6512cedf5ef3e37db16ddb56a1119b6d",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:7aeea4ee8f3e06f69d87fc2fff1aa61fb81404bac41f482635e85315ac06e259",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "edb48930f822558399ca5a6300400ff31865dbb3",
+      "attempts": 1,
+      "startedAt": "2026-11-05T12:12:38.847Z",
+      "doneAt": "2026-11-05T12:13:29.298Z",
+      "summary": "ChangeView gana slices (los cortes de una épica, de su sección Cortes) y epic.sliceTitle; deriveView da slices con slicesIn y deriveViews copia en cada corte el título de su épica y el que la épica le da al corte (epicOf)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "3e1a9f09e848ae7c3aa3b11b4cc1b32d19a9f701",
+      "attempts": 1,
+      "startedAt": "2026-11-05T12:13:29.586Z",
+      "doneAt": "2026-11-05T12:14:18.835Z",
+      "summary": "sp-kind-badge dice «Feature» para un estándar suelto y «Feature · C2 · <título>» para un corte: con inEpic, el título que le da su épica (sliceTitle); fuera, el de la épica. InboxRow gana inEpic y lo pasa a su insignia; la sección de los sueltos de Agrupar por épica se llama «Features»",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "0ee5886ef2fe328073caed7225b4fb49951f120c",
+      "attempts": 1,
+      "startedAt": "2026-11-05T12:14:19.137Z",
+      "doneAt": "2026-11-05T12:18:35.121Z",
+      "summary": "sp-inbox-epic (nuevo) encabeza el grupo con la fila de la épica proyectada o con su fase, título enlazado e insignia si está en otra sección, y sus cortes debajo sangrados; sectionBlocks da head, epic y slices, y la Bandeja quita «Total» (P162) y el número de cambios",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "55b307afa8277b78e5c86258e5d049a4bee39e3d",
+      "attempts": 1,
+      "startedAt": "2026-11-05T12:18:35.411Z",
+      "doneAt": "2026-11-05T12:19:00.743Z",
+      "summary": "docs/ui.md cuenta la épica como cabecera de su grupo (con su fila o con su fase, título y enlace), las etiquetas «Feature» de la insignia y la sección «Features» de Agrupar por épica",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T12:24:16.782Z",
+  "lockedTests": {
+    "packages/ui/src/components/badge.test.ts": "sha256:db377b81c29f723873eaaddc2b17c10ff0638e6b7be5d7986c43d2c060838414",
+    "packages/ui/src/data/views.test.ts": "sha256:0990565de3dffa49607520a4b81be0b07919bb0d121c7ecf938e94adc5daa871",
+    "packages/ui/src/inbox/inbox-toolbar.test.ts": "sha256:bc73749a305190d1452e1688874073879bca28b84c545a11faebf065348219bb",
+    "packages/ui/src/inbox/inbox-view.test.ts": "sha256:fde6ed8c0f7811894de552c71ac4937da66addb4e0d05223219ea72b1b80f0ea",
+    "packages/ui/src/inbox/inbox.test.ts": "sha256:740d2f2bccbb434c76905f7b6b95d806cad7e140a0049a7943872729ff6e62db"
+  }
+}

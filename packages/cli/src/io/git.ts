@@ -5,6 +5,7 @@ import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import type { ChangedFile } from "@baquia-dev/specty-core";
 import { type ExecResult, execute } from "./exec";
 import { exists, remove } from "./files";
+import { type OpenedHead, type Recalling, recalling, rememberHead } from "./git-memo";
 
 /** Hash of git's empty tree, used to diff against a repository without commits. */
 const EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
@@ -60,6 +61,11 @@ export interface Git {
   worktrees(): Promise<Worktree[]>;
   /** Repository-relative folders of the other worktrees that live inside this one. */
   nestedWorktrees(): Promise<string[]>;
+  /**
+   * Forgets the reads it recalls (`io/git-memo.ts`): what another process changed counts from now
+   * on. Whoever keeps one `Git` for long, as the server of `specty ui`, calls it before each turn.
+   */
+  forget(): void;
 }
 
 export interface Worktree {
@@ -74,16 +80,59 @@ export async function findRoot(cwd: string): Promise<string | undefined> {
   return result.code === 0 ? result.stdout.trim() : undefined;
 }
 
-export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env): Git {
+/** The repository that contains a folder, and what git already said of it. */
+export interface OpenedRepository {
+  readonly root: string;
+  /** The paths of its git folder, by name. */
+  readonly known: Readonly<Record<string, string>>;
+  /** Undefined in a branch without commits. */
+  readonly head?: OpenedHead;
+}
+
+const OPENING = ["rev-parse", "--show-toplevel", "--git-path", "specty", "--git-path", "common"];
+
+/**
+ * The repository that contains `cwd`, with where git keeps `specty/` and `common/`, HEAD and its
+ * branch, in one question to git; undefined outside git. In a branch without commits that question
+ * fails, and one without HEAD gives the rest.
+ */
+export async function openRepository(cwd: string): Promise<OpenedRepository | undefined> {
+  const full = await execute("git", [...OPENING, "HEAD", "--abbrev-ref", "HEAD"], { cwd });
+  const result = full.code === 0 ? full : await execute("git", OPENING, { cwd });
+  const [root, specty, common, commit, branch] = result.stdout.trim().split("\n");
+  if (result.code !== 0 || root === undefined || specty === undefined || common === undefined)
+    return undefined;
+  // A relative path of git's folder is relative to where it was asked.
+  const known = { specty: resolve(cwd, specty), common: resolve(cwd, common) };
+  if (commit === undefined || branch === undefined) return { root, known };
+  return { root, known, head: { commit, branch } };
+}
+
+/**
+ * Git in `root`. `known` are paths of its folder git already gave and `head`, HEAD and its branch
+ * (`openRepository`); the reads that depend only on refs, objects or the configuration are
+ * recalled for a while (`io/git-memo.ts`).
+ */
+export function createGit(
+  root: string,
+  baseEnv: NodeJS.ProcessEnv = process.env,
+  known: Readonly<Record<string, string>> = {},
+  head?: OpenedHead,
+): Git {
   const git = runner(root, baseEnv);
-  const head = () => git.optional(["rev-parse", "--verify", "-q", "HEAD"]);
-  const gitPath = gitPaths(git);
-  const repository: Repository = { ...git, head, gitPath, ...worktreeQueries(git) };
+  if (head !== undefined) rememberHead(git, head);
+  const gitPath = gitPaths(git, known);
+  const repository: Repository = {
+    ...git,
+    head: () => git.optional(["rev-parse", "--verify", "-q", "HEAD"]),
+    gitPath,
+    ...worktreeQueries(git),
+  };
   return {
     root,
     run: git.run,
     output: git.output,
-    head,
+    head: repository.head,
     branch: () => git.optional(["symbolic-ref", "--short", "-q", "HEAD"]),
     gitPath,
     ...changeQueries(repository),
@@ -92,6 +141,7 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
     config: (key) => git.optional(["config", "--get", key]),
     worktrees: repository.worktrees,
     nestedWorktrees: repository.nestedWorktrees,
+    forget: git.forget,
   };
 }
 
@@ -106,8 +156,13 @@ const ONE_FOLDER: ReadonlySet<string> = new Set(["specty", "common"]);
  * a path under `specty/` or `common/` comes from the answer for that segment, so one question
  * serves them all. A question that fails is not kept.
  */
-function gitPaths(git: Runner): (name: string) => Promise<string> {
-  const answers = new Map<string, Promise<string>>();
+function gitPaths(
+  git: Runner,
+  known: Readonly<Record<string, string>>,
+): (name: string) => Promise<string> {
+  const answers = new Map<string, Promise<string>>(
+    Object.entries(known).map(([name, path]) => [name, Promise.resolve(path)]),
+  );
   const ask = (name: string): Promise<string> => {
     const known = answers.get(name);
     if (known !== undefined) return known;
@@ -135,15 +190,16 @@ interface Runner extends Pick<Git, "root" | "run" | "output"> {
 /** A runner that also knows HEAD, the git directory and the worktrees. */
 type Repository = Runner & Pick<Git, "head" | "gitPath" | "worktrees" | "nestedWorktrees">;
 
-function runner(root: string, baseEnv: NodeJS.ProcessEnv): Runner {
-  const run = (args: readonly string[], options: RunOptions = {}) =>
+function runner(root: string, baseEnv: NodeJS.ProcessEnv): Runner & Recalling {
+  const { run, remember, forget } = recalling((args, options: RunOptions) =>
     execute("git", args, {
       cwd: root,
       env: { ...baseEnv, ...options.env },
       // A diff or a file is read whole: cut, it would lose its beginning.
       whole: true,
       ...(options.input !== undefined ? { input: options.input } : {}),
-    });
+    }),
+  );
   const output = async (args: readonly string[], options: RunOptions = {}) => {
     const result = await run(args, options);
     if (result.code !== 0) throw new GitError(args, result);
@@ -154,7 +210,7 @@ function runner(root: string, baseEnv: NodeJS.ProcessEnv): Runner {
     const value = result.stdout.trim();
     return result.code === 0 && value.length > 0 ? value : undefined;
   };
-  return { root, run, output, optional };
+  return { root, run, output, optional, remember, forget };
 }
 
 function worktreeQueries(git: Runner): Pick<Git, "worktrees" | "nestedWorktrees"> {

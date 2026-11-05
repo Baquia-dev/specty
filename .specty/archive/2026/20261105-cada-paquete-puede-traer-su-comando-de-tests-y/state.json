@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "id": "20261105-cada-paquete-puede-traer-su-comando-de-tests-y",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-cada-paquete-puede-traer-su-comando-de-tests-y",
+  "baseCommit": "f1e2f5e7390264b8e484bee3611f61ba57dc762d",
+  "revision": 3,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:602ed57bf87503c31ded1340e590b45ab7c55c51101d855bcca51c14cde49b52",
+    "at": "2026-11-05T13:12:19.370Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6129b1f4dc12d41283597ddc6dc43fe7f9bcb0f867d8ab58b493435c1c5b8459",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1f7c0ee6c6d5f4d793595f4e377c65ddffa7ce8b01287f06047baed44ebaa08b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:08008713970a0629acada3a54dc42ea8c9ed47af52275c7bf76184784ebf6134",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "5aa1861ae05b0d49e07488904e87d4e2f0f86af3",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:14:38.766Z",
+      "doneAt": "2026-11-05T13:18:53.176Z",
+      "summary": "WorkspacePackage admite su propio comando de tests y UnitsFacts.manager es opcional: la unidad de cada paquete usa su comando o, sin él, el del gestor; sin ninguno no cuenta como paquete con tests",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b78549bfe5411ebcf1b80ae18909b07a296a7fc6",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:18:53.521Z",
+      "doneAt": "2026-11-05T13:20:09.790Z",
+      "summary": "La CLI prueba en orden la lista DETECTORS y propone con el primero que encuentra un workspace; el de pnpm, npm y yarn pasa a detect/units-js.ts, va primero y solo reclama un workspace con dos paquetes con package.json, así que deja pasar uno de melos",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 1,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T13:26:43.588Z",
+  "lockedTests": {
+    "packages/core/test/units-proposal.test.ts": "sha256:7fe7d5661de892fa3ff8156ae8bbc56c101ec1972a4d43956ebaa069d237f06d",
+    "packages/cli/test/workspace-units.test.ts": "sha256:27743246667fef5d5c782f727e55580a0c656138a9f8ea1c1f0997827fa397b6"
+  }
+}

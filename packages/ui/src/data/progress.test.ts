@@ -338,4 +338,13 @@ describe("durations", () => {
     expect(formatDuration(65 * 60_000, "en")).toBe("1 h 5 min");
     expect(formatDuration(120 * 60_000, "es")).toBe("2 h");
   });
+
+  it("AC3: a day or more reads in days and hours, rounded to the hour", () => {
+    const hour = 3_600_000;
+    expect(formatDuration(23 * hour + 50 * 60_000, "es")).toBe("23 h 50 min");
+    expect(formatDuration(24 * hour, "es")).toBe("1 d");
+    expect(formatDuration(51 * hour + 20 * 60_000, "es")).toBe("2 d 3 h");
+    expect(formatDuration(51 * hour + 40 * 60_000, "en")).toBe("2 d 4 h");
+    expect(formatDuration(72 * hour + 10 * 60_000, "en")).toBe("3 d");
+  });
 });

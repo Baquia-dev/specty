@@ -126,15 +126,28 @@ function subagentsNext(
     );
   }
   if (briefs > 0) {
+    const how = launchedWith(ctx);
     return t(
-      `lanza en paralelo, en un solo mensaje, un subagente por encargo con su texto tal cual; cuando terminen, vuelve a ejecutar ${next} ${here}.`,
-      `launch in parallel, in a single message, one subagent per brief with its text as is; once they finish, run ${next} again ${here}.`,
+      `lanza en paralelo, en un solo mensaje, un subagente por encargo con su texto tal cual${how}; cuando terminen, vuelve a ejecutar ${next} ${here}.`,
+      `launch in parallel, in a single message, one subagent per brief with its text as is${how}; once they finish, run ${next} again ${here}.`,
     );
   }
   if (!slices.some((slice) => slice.status === "open")) return settledNext(slices, ctx);
   return t(
     `los cortes en curso siguen con sus subagentes: espera sus informes y, cuando terminen, vuelve a ejecutar ${next} ${here}.`,
     `the slices in progress go on with their subagents: wait for their reports and, once they finish, run ${next} again ${here}.`,
+  );
+}
+
+/**
+ * How the tool launches each brief's subagent, when it needs saying: Antigravity's subagent works
+ * in its slice's folder only with the workspace of the conversation that launches it.
+ */
+function launchedWith(ctx: CardContext): string {
+  if (ctx.tool !== "antigravity") return "";
+  return translator(ctx.lang)(
+    ' (en Antigravity, `invoke_subagent` con `Workspace: "inherit"`, no `branch`, que le daría una carpeta que no es la de su corte)',
+    ' (in Antigravity, `invoke_subagent` with `Workspace: "inherit"`, not `branch`, which would give it a folder other than its slice\'s)',
   );
 }
 

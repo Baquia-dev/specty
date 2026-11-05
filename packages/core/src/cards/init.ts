@@ -149,6 +149,8 @@ export interface InitView {
   readonly exclusions?: readonly ExclusionView[];
   /** Its commit failed and what it wrote was undone: the warnings say why. */
   readonly failed?: boolean;
+  /** The units of `verify.units` it proposes, as YAML lines under `verify:`; the person adds them. */
+  readonly units?: readonly string[];
 }
 
 /**
@@ -164,6 +166,7 @@ export function initCard(view: InitView, ctx: CardContext): Output {
       ...section(t("CONFIGURADO", "CONFIGURED"), view.done),
       ...section(t("DETECTADO", "DETECTED"), view.detected),
       ...section(t("AVISOS", "WARNINGS"), view.warnings),
+      ...unitsBlock(view.units, ctx),
       ...exclusionsBlock(view.exclusions ?? [], ctx, "init"),
     ],
     next:
@@ -176,6 +179,19 @@ export function initCard(view: InitView, ctx: CardContext): Output {
           ? existingProjectNext(view.unfilled, ctx)
           : newProjectNext(view.product === "interviewed", ctx, view.chooseFlow === true),
   };
+}
+
+/** The proposed units, ready to paste, and who adds them: they replace `verify.full`. */
+function unitsBlock(units: readonly string[] | undefined, ctx: CardContext) {
+  if (units === undefined) return [];
+  const t = translator(ctx.lang);
+  return section(t("UNIDADES DE VERIFICACIÓN PROPUESTAS", "PROPOSED VERIFICATION UNITS"), [
+    ...units,
+    t(
+      "Añádelas tú a `verify:` en .specty/config.yaml tras comprobar que entre todas ejecutan lo mismo que `verify.full`, al que reemplazan; Specty no las escribe.",
+      "Add them yourself under `verify:` in .specty/config.yaml after checking that together they run what `verify.full` runs, which they replace; Specty does not write them.",
+    ),
+  ]);
 }
 
 /** What comes after `init` in a project that exists: the empty sections of AGENTS.md, if any. */

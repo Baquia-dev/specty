@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,6 +10,7 @@ import {
   output,
 } from "@angular/core";
 import { RouterLink } from "@angular/router";
+import type { Lang } from "@baquia-dev/specty-core/light";
 import { KindBadge, PhaseBadge } from "../components/badge";
 import { Button } from "../components/button";
 import { ItemTooltips } from "../components/item-tooltip";
@@ -62,6 +64,27 @@ function detailOf(change: ChangeView, t: (es: string, en: string) => string): st
     : t(` · ${sent} tests nuevos`, ` · ${sent} new tests`);
 }
 
+/** The milliseconds from an ISO time to `end`; none when the time cannot be read or comes later. */
+function elapsed(from: string, end: number): number {
+  const start = Date.parse(from);
+  return Number.isFinite(start) && Number.isFinite(end) ? Math.max(0, end - start) : 0;
+}
+
+/** «3 nov, 14:05» in the viewer's zone, with the year only when it is not the clock's. */
+function dayAndTime(iso: string, now: number, lang: Lang): string {
+  const date = new Date(iso);
+  if (!Number.isFinite(date.getTime())) return "";
+  const year =
+    date.getFullYear() === new Date(now).getFullYear() ? {} : { year: "numeric" as const };
+  return new Intl.DateTimeFormat(lang, {
+    day: "numeric",
+    month: "short",
+    ...year,
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}
+
 /**
  * A document row; the one picked with j/k keeps the highlight the others show on hover. Its
  * scroll margin keeps it clear of the pinned search when j/k bring it into view.
@@ -85,17 +108,17 @@ const ROW =
     <!-- How long under the phase; on a phone, beside it. -->
     <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5 sm:flex-col sm:items-start sm:gap-0.5">
       <sp-phase-badge [phase]="change().phase" />
+      <span class="text-xs whitespace-nowrap text-text-muted" data-since data-started>{{ started() }}</span>
       @if (isFinished()) {
-        <span class="text-xs whitespace-nowrap text-text-muted" data-since data-total-time>{{ totalTime() }}</span>
+        <span class="text-xs whitespace-nowrap text-text-muted" data-took>{{ took() }}</span>
       } @else {
-        <span class="text-xs whitespace-nowrap text-text-muted" data-since data-phase-time>{{ phaseTime() }}</span>
-        <span class="text-xs whitespace-nowrap text-text-muted" data-total-time>{{ totalTime() }}</span>
+        <span class="text-xs whitespace-nowrap text-text-muted" data-phase-time>{{ phaseTime() }}</span>
       }
     </div>
     <div class="flex min-w-0 flex-col gap-0.5">
       <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
         <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change().id]" [queryParams]="{ tab: change().tab }" (focus)="picked.emit()">{{ change().title }}</a>
-        <sp-kind-badge [kind]="change().kind" [epic]="change().epic" />
+        <sp-kind-badge [kind]="change().kind" [epic]="change().epic" [inEpic]="inEpic()" />
       </div>
       @if (waits(); as line) {
         <span class="text-[13px] text-text-muted" data-waits>{{ line }}</span>
@@ -153,6 +176,8 @@ export class InboxRow {
   readonly change = input.required<ChangeView>();
   /** Picked with j/k: highlighted, with its action as the main one. */
   readonly current = input(false);
+  /** A slice under its epic's header: its badge names the slice, not the epic. */
+  readonly inEpic = input(false);
   /** The clock of the page, so "hace 3 min" moves on. */
   readonly now = input(Date.now());
   /** The person reached it with the keyboard or the pointer. */
@@ -224,29 +249,35 @@ export class InboxRow {
     return phase === "done" || phase === "cancelled";
   });
 
-  private readonly effectiveNow = computed(() => {
-    const phaseSinceMs = Date.parse(this.change().phaseSince);
-    if (phaseSinceMs === Date.parse("2026-10-21T11:45:00.000Z")) {
-      return Date.parse("2026-10-21T12:00:00.000Z");
+  /** Open: how long since it started, by the page clock. Finished: the day and time it started. */
+  protected readonly started = computed(() => {
+    const { createdAt } = this.change();
+    const lang = this.preferences.lang();
+    if (this.isFinished()) {
+      const day = dayAndTime(createdAt, this.now(), lang);
+      return this.t()(`Empezó el ${day}`, `Started ${day}`);
     }
-    return this.now();
+    const since = formatDuration(elapsed(createdAt, this.now()), lang);
+    return this.t()(`Empezó hace ${since}`, `Started ${since} ago`);
   });
 
+  /** How long an open change has been in its phase, by the page clock. */
   protected readonly phaseTime = computed(() => {
-    const change = this.change();
-    const start = Date.parse(change.phaseSince);
-    const elapsed = Number.isFinite(start) ? Math.max(0, this.effectiveNow() - start) : 0;
-    const formatted = formatDuration(elapsed, this.preferences.lang());
-    return this.t()(`Fase: ${formatted}`, `Phase: ${formatted}`);
+    const since = formatDuration(
+      elapsed(this.change().phaseSince, this.now()),
+      this.preferences.lang(),
+    );
+    return this.t()(`En esta fase: ${since}`, `In this phase: ${since}`);
   });
 
-  protected readonly totalTime = computed(() => {
-    const change = this.change();
-    const start = Date.parse(change.createdAt);
-    const end = change.closedAt ? Date.parse(change.closedAt) : this.effectiveNow();
-    const elapsed = Number.isFinite(start) && Number.isFinite(end) ? Math.max(0, end - start) : 0;
-    const formatted = formatDuration(elapsed, this.preferences.lang());
-    return this.t()(`Total: ${formatted}`, `Total: ${formatted}`);
+  /** How long a finished change took, from its start to its closing or cancelling. */
+  protected readonly took = computed(() => {
+    const { createdAt, closedAt, phaseSince } = this.change();
+    const took = formatDuration(
+      elapsed(createdAt, Date.parse(closedAt ?? phaseSince)),
+      this.preferences.lang(),
+    );
+    return this.t()(`Tardó ${took}`, `Took ${took}`);
   });
 
   /** Moves focus to the row's link, so Enter opens it, and brings the row into view. */

@@ -1,7 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
-import { join } from "node:path";
+import { existsSync } from "node:fs";
+import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, CONFIG, cli, person, read, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import {
+  APP,
+  CHANGE,
+  CONFIG,
+  cli,
+  folderOf,
+  git,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  writeFiles,
+} from "./support";
 
 // Put together from parts, so that this file does not trip `specty check`.
 const TODO = "TODO";
@@ -17,12 +31,16 @@ const common = (root: string, conversation = "c1") => ({
   modelName: "gemini",
 });
 
-/** Its end of turn, as `Stop` sends it; `fullyIdle` is false while its subagents run. */
+/**
+ * Its end of turn, as `Stop` sends it; `fullyIdle` is false while its subagents run, and
+ * `lastUserInput` is the person's text in the main conversation and empty in a subagent's.
+ */
 const stop = (
   root: string,
   conversation: string,
   terminationReason = "model_stop",
   fullyIdle = true,
+  lastUserInput?: string,
 ) =>
   cli(root, ["hook", "agent-stop", "antigravity"], {
     stdin: JSON.stringify({
@@ -30,8 +48,18 @@ const stop = (
       executionNum: 0,
       terminationReason,
       fullyIdle,
+      ...(lastUserInput === undefined ? {} : { lastUserInput }),
     }),
   });
+
+/** Whether Specty left the turn of `conversation` pending (sent back) in the folder `root`. */
+const pending = (root: string, conversation: string) =>
+  existsSync(
+    join(
+      resolve(root, git(root, "rev-parse", "--git-path", "specty/pending")),
+      `${conversation}.stop`,
+    ),
+  );
 
 /** A repository whose `specty check --changed` fails. */
 async function failing(): Promise<string> {
@@ -106,6 +134,20 @@ describe("the end of Antigravity's turn", () => {
     expect((await answer(stop(root, "c1", "NO_TOOL_CALL"))).decision).toBe("continue");
   });
 
+  it("AC3: lets a subagent's turn end unchecked, and still checks the main conversation's", async () => {
+    const root = await failing();
+    // A subagent of `invoke_subagent`: its own conversation, with an empty `lastUserInput`.
+    expect(await answer(stop(root, "sub", "NO_TOOL_CALL", true, ""))).toEqual({ decision: "stop" });
+    expect(await answer(stop(root, "sub", "model_stop", true, ""))).toEqual({ decision: "stop" });
+    expect(pending(root, "sub")).toBe(false);
+    // The main conversation brings the person's text, or no such field in its editor.
+    const main = await answer(stop(root, "c1", "NO_TOOL_CALL", true, "Reparte los cortes"));
+    expect(main.decision).toBe("continue");
+    expect(main.reason).toContain("FALLA todo");
+    expect(pending(root, "c1")).toBe(true);
+    expect((await answer(stop(root, "c2", "NO_TOOL_CALL"))).decision).toBe("continue");
+  });
+
   it("is offered by check --install inside Specty's hook, once, and init keeps it (AC2)", async () => {
     const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
     await cli(root, ["init", "--language", "es", "--tools", "antigravity"]);
@@ -126,6 +168,56 @@ describe("the end of Antigravity's turn", () => {
     expect((await cli(root, ["check", "--install", "--dry-run"])).out).not.toContain("agent-stop");
     await cli(root, ["init", "--language", "es", "--tools", "antigravity"]);
     expect((await specty()).Stop).toEqual(turn);
+  });
+});
+
+const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
+const OTHER_SPEC = `.specty/changes/${OTHER}/spec.md`;
+
+describe("a subagent that Antigravity launches with invoke_subagent (Workspace inherit)", () => {
+  it("AC4: enters its slice's folder, the main conversation stays in its own, and its turn ends there unchecked", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}${CHECKS}` });
+    expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+    expect((await cli(root, ["new", "--worktree", "--subagent", "Otro cambio"])).code).toBe(0);
+    const [first, second] = [folderOf(root), folderOf(root, OTHER)];
+    await writeFiles(second, {
+      "src/app.ts": `export const greet = () => 'hola';\n// ${TODO}: later\n`,
+    });
+    // As agy 1.5.1 sends them: the subagent has a conversation of its own, the workspace of the
+    // one that launched it and an empty `lastUserInput`.
+    const event = (conversation: string, said: string, step: number, call: unknown) =>
+      JSON.stringify({
+        ...common(root, conversation),
+        lastUserInput: said,
+        toolCall: call,
+        stepIdx: step,
+      });
+    const pre = (conversation: string, said: string, step: number, call: unknown) =>
+      answer(
+        cli(root, ["guard", "--tool", "antigravity", "--event", "PreToolUse"], {
+          stdin: event(conversation, said, step, call),
+        }),
+      );
+    const run = (line: string) => ({ name: "run_command", args: { CommandLine: line, Cwd: root } });
+    const said = "Reparte los cortes de la épica";
+    expect((await pre("main", said, 1, run(`specty enter ${CHANGE}`))).decision).toBe("allow");
+    expect((await pre("sub", "", 1, run(`specty enter ${OTHER}`))).decision).toBe("allow");
+    const write = {
+      name: "write_file",
+      args: { Path: join(second, OTHER_SPEC), Content: "# Plan del corte\n" },
+    };
+    expect((await pre("sub", "", 2, write)).decision).toBe("allow");
+    const bound = async (conversation: string) =>
+      JSON.parse(await read(root, `.git/common/specty/sessions/${conversation}.json`)).folder;
+    expect(await bound("sub")).toBe(second);
+    expect(await bound("main")).toBe(first);
+    // `specty check --changed` fails in its folder, and its end of turn is not sent back.
+    expect(await answer(stop(root, "sub", "NO_TOOL_CALL", true, ""))).toEqual({ decision: "stop" });
+    expect(pending(second, "sub")).toBe(false);
+    // The same end with the person's text would have been: the check runs in its folder.
+    const checked = await answer(stop(root, "sub", "NO_TOOL_CALL", true, said));
+    expect(checked.decision).toBe("continue");
+    expect(pending(second, "sub")).toBe(true);
   });
 });
 

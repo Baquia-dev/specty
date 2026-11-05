@@ -67,11 +67,36 @@ const ENTERS: Readonly<Record<Phase, readonly string[]>> = {
 };
 
 /**
- * Every change of the repository, once: the open change of each worktree (and this folder's
- * without a branch of their own), then the archived ones of each worktree, the main folder first,
- * so a closed change that did not reach the main branch still shows from its own worktree.
+ * The open changes, once each: the open change of each worktree (and this folder's without a
+ * branch of their own), then those whose folder is gone. What `GET /api/changes` gives: an
+ * archived change comes in its page of finished ones (`finished.ts`) or by its id.
+ */
+export async function openRecords(session: Session): Promise<ChangeRecord[]> {
+  return completed(session, await openOnes(session));
+}
+
+/**
+ * Every change of the repository, once: the open ones, as `openRecords` gives them, then the
+ * archived ones of each worktree, the main folder first, so a closed change that did not reach
+ * the main branch still shows from its own worktree.
  */
 export async function changeRecords(session: Session): Promise<ChangeRecord[]> {
+  const { records, sessions } = await openOnes(session);
+  const all = [...records];
+  for (const record of await archivedRecords(session)) {
+    if (!all.some((seen) => seen.state.id === record.state.id)) all.push(record);
+  }
+  return completed(session, { records: all, sessions });
+}
+
+/** The changes read, each id once, and the session of each open one, in its folder. */
+interface Read {
+  readonly records: readonly ChangeRecord[];
+  readonly sessions: ReadonlyMap<string, Session>;
+}
+
+/** The open changes of each worktree, then those whose folder is gone, as their files are. */
+async function openOnes(session: Session): Promise<Read> {
   const records: ChangeRecord[] = [];
   const add = (record: ChangeRecord | undefined) => {
     if (record !== undefined && !records.some((seen) => seen.state.id === record.state.id))
@@ -86,15 +111,14 @@ export async function changeRecords(session: Session): Promise<ChangeRecord[]> {
   }
   // The open changes whose folder is gone, read from their branches (ARCHITECTURE §9).
   for (const lost of await lostChanges(session)) add(await lostRecord(session, lost));
-  for (const { folder } of await session.git.worktrees()) {
-    const { archive } = repoPaths(folder);
-    for (const year of await listDir(archive)) {
-      for (const id of await listDir(join(archive, year))) {
-        if (!records.some((seen) => seen.state.id === id))
-          add(await readRecord(changeFiles(join(archive, year, id)), folder, undefined));
-      }
-    }
-  }
+  return { records, sessions };
+}
+
+/**
+ * The records read, completed: the commit of each task done, the marks of who holds each and, in
+ * acceptance, the tests of each criterion.
+ */
+async function completed(session: Session, { records, sessions }: Read): Promise<ChangeRecord[]> {
   const commits = await taskCommits(session);
   const holds = await holdsById(session);
   return Promise.all(
@@ -105,6 +129,75 @@ export async function changeRecords(session: Session): Promise<ChangeRecord[]> {
       return there === undefined ? withTasks : withCriteriaTests(there, withTasks, tasks);
     }),
   );
+}
+
+/** An archived change the session read, and the time of its `state.json` then. */
+interface Kept {
+  readonly stamp: number;
+  readonly record: ChangeRecord;
+}
+
+/** The archived changes each session already read, by their folder (the server keeps one). */
+const KEPT = new WeakMap<Session, Map<string, Kept>>();
+
+/**
+ * The archived changes of every worktree, the main folder first, once each, without the commits
+ * of their tasks. What the session already read stays in memory while its state keeps its time.
+ */
+export async function archivedRecords(session: Session): Promise<ChangeRecord[]> {
+  const kept = KEPT.get(session) ?? new Map<string, Kept>();
+  KEPT.set(session, kept);
+  const records: ChangeRecord[] = [];
+  const seen = new Set<string>();
+  for (const { folder } of await session.git.worktrees()) {
+    const { archive } = repoPaths(folder);
+    for (const year of await listDir(archive)) {
+      for (const id of await listDir(join(archive, year))) {
+        if (seen.has(id)) continue;
+        const record = await archivedRecord(kept, changeFiles(join(archive, year, id)), folder);
+        if (record === undefined) continue;
+        seen.add(id);
+        records.push(record);
+      }
+    }
+  }
+  return records;
+}
+
+/** `records` with the commit of each task done, found by its trailer. */
+export async function withTaskCommits(
+  session: Session,
+  records: readonly ChangeRecord[],
+): Promise<ChangeRecord[]> {
+  const commits = await taskCommits(session);
+  return records.map((record) => withCommits(record, commits.get(record.state.id)));
+}
+
+/** An archived change, from memory if its state kept its time; one that cannot be read, none. */
+async function archivedRecord(
+  kept: Map<string, Kept>,
+  files: ChangeFiles,
+  folder: string,
+): Promise<ChangeRecord | undefined> {
+  const stamp = await stat(files.state).then(
+    (info) => info.mtimeMs,
+    () => undefined,
+  );
+  if (stamp === undefined) return undefined;
+  const known = kept.get(files.dir);
+  if (known?.stamp === stamp) return known.record;
+  const record = await readRecord(files, folder, undefined);
+  if (record === undefined) kept.delete(files.dir);
+  else kept.set(files.dir, { stamp, record });
+  return record;
+}
+
+/** The change `id` as `changeRecords` gives it, open or archived; none when there is no such change. */
+export async function changeRecord(
+  session: Session,
+  id: string,
+): Promise<ChangeRecord | undefined> {
+  return (await changeRecords(session)).find((record) => record.state.id === id);
 }
 
 /**
