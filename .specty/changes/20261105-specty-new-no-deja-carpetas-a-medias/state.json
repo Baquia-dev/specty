@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f7a297095afaacddbd4203587a7bcf991d91796b",
+      "startedAt": "2026-11-05T08:05:17.253Z",
+      "doneAt": "2026-11-05T08:10:37.636Z",
+      "summary": "gitFailedCard admite undone (carpeta y rama) y añade la línea de lo que Specty deshizo, en español y en inglés"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

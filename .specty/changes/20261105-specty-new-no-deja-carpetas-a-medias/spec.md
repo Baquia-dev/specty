@@ -47,7 +47,7 @@ Cuando otro proceso del clon tiene bloqueada la configuración de git (`.git/con
 
 ## Tareas
 
-- [ ] T1: La tarjeta del fallo de git dice qué se deshizo
+- [x] T1: La tarjeta del fallo de git dice qué se deshizo
   - files: packages/core/src/cards/git-failed.ts, packages/core/test/cards/git-failed.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/git-failed.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm sources
