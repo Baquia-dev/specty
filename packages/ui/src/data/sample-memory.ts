@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// Specty's memory in the prototype (ADR 0016): an entry of every kind and status, and open changes
-// held by an agent, waiting for the person and orphaned, as `GET /api/memory` gives them.
+// Specty's memory in the prototype (ADR 0016): an entry of every kind and status, open changes
+// held by an agent, waiting for the person and orphaned, and the changes the entries came from, a
+// feature and a slice of an epic, as `GET /api/memory` gives them.
 import type { MemoryEntry } from "@baquia-dev/specty-core";
 import type { MemoryRecord } from "./records";
 import type { MemoryVerb } from "./source";
@@ -8,7 +9,7 @@ import type { MemoryVerb } from "./source";
 const CLOSED = { at: "2026-11-03T12:00:00.000Z", by: "person" };
 
 export function sampleMemory(): MemoryRecord {
-  return { entries: ENTRIES, changes: CHANGES };
+  return { entries: ENTRIES, changes: CHANGES, origins: ORIGINS };
 }
 
 const ENTRIES: MemoryRecord["entries"] = [
@@ -116,6 +117,24 @@ const CHANGES: MemoryRecord["changes"] = [
     orphan: true,
   },
 ];
+
+const ORIGINS: NonNullable<MemoryRecord["origins"]> = {
+  "20261103-memoria-tarjeta-de-inicio-2": {
+    title: "La tarjeta de inicio muestra los pendientes",
+    kind: "standard",
+    phase: "done",
+    epic: {
+      id: "20261030-memoria-de-specty",
+      title: "Memoria de Specty: sesiones, pendientes y trabajo sin duplicar",
+      slice: "C2",
+    },
+  },
+  "20261103-sin-permisos-devin-cursor": {
+    title: "Devin y Cursor sin permisos en la carpeta del usuario",
+    kind: "standard",
+    phase: "acceptance",
+  },
+};
 
 /** `entry` once the person decides on it in the prototype: dropped, kept or done. */
 export function decidedIn(

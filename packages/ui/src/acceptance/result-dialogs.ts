@@ -72,8 +72,14 @@ interface ResultData {
   readonly full?: Signal<FullState | undefined>;
 }
 
+/** A way the agent takes a request: its name and what it does, in each language. */
+interface Way {
+  readonly es: readonly [string, string];
+  readonly en: readonly [string, string];
+}
+
 /** How the agent will classify the request (the adjusting card of the CLI, in short). */
-const CLASSES = [
+const CLASSES: readonly [Way, Way, Way] = [
   {
     es: ["Defecto", "Un criterio no se cumple: añade una tarea de corrección."],
     en: ["Defect", "A criterion is not met: it adds a fix task."],
@@ -92,23 +98,104 @@ const CLASSES = [
       'No criterion covers it, or it contradicts "Out of scope": it leaves the spec alone and suggests a separate change.',
     ],
   },
-] as const;
+];
 
-/** The request goes to the agent word for word, as `specty adjust "<request>"` would. */
+/** How the agent adjusts an epic, which has no tasks (the adjusting card of an epic, in short). */
+const EPIC_WAYS: readonly Way[] = [
+  {
+    es: [
+      "Dividir un corte",
+      "Un corte que sale demasiado grande: lo estrecha y añade el resto como cortes nuevos.",
+    ],
+    en: [
+      "Split a slice",
+      "A slice that comes out too large: it narrows it and adds the rest as new slices.",
+    ],
+  },
+  {
+    es: ["Corte nuevo", "Algo falta o no se cumple: añade un corte que lo cubra."],
+    en: ["New slice", "Something is missing or not met: it adds a slice that covers it."],
+  },
+  CLASSES[2],
+];
+
+/** What the dialog says around the request: how it is taken, an example and the notice once sent. */
+interface Said {
+  readonly description: Bilingual;
+  readonly placeholder: Bilingual;
+  readonly sent: Bilingual;
+}
+
+const TASKS_SAID: Said = {
+  description: {
+    es: "Escribe qué hay que cambiar, con tus palabras. El agente recibe la petición tal cual y la clasifica:",
+    en: "Write what needs to change, in your own words. The agent gets the request as it is and classifies it:",
+  },
+  placeholder: {
+    es: "Por ejemplo: el porcentaje debería mostrar un decimal",
+    en: "For example: the percentage should show one decimal",
+  },
+  sent: {
+    es: "Pediste ajustes: el agente los clasificará en specty next.",
+    en: "You asked for adjustments: the agent will classify them in specty next.",
+  },
+};
+
+const EPIC_SAID: Said = {
+  description: {
+    es: "Escribe qué hay que cambiar, con tus palabras. El agente recibe la petición tal cual y ajusta la épica:",
+    en: "Write what needs to change, in your own words. The agent gets the request as it is and adjusts the epic:",
+  },
+  placeholder: {
+    es: "Por ejemplo: C2 sale demasiado grande, divídelo",
+    en: "For example: C2 comes out too large, split it",
+  },
+  sent: {
+    es: "Pediste ajustes de la épica: el agente la ajustará en specty next y volverá a tu revisión.",
+    en: "You asked to adjust the epic: the agent will adjust it in specty next and send it back for your review.",
+  },
+};
+
+/**
+ * What stays and what comes after: the done tasks of a change; the closed slices of an epic,
+ * which goes back to review, and while its slices are implemented, those in progress go on.
+ */
+function noteOf(change: ChangeView): Bilingual {
+  if (change.kind !== "epic") {
+    return {
+      es: "Las tareas hechas no se tocan: lo nuevo llega como tareas nuevas en Progreso.",
+      en: "Done tasks stay as they are: what is new arrives as new tasks in Progress.",
+    };
+  }
+  return change.phase === "implementing"
+    ? {
+        es: "Los cortes cerrados no se tocan. La épica vuelve a revisión: ningún corte nuevo empieza hasta que apruebes el ajuste, y los que están en curso siguen.",
+        en: "Closed slices stay as they are. The epic goes back to review: no new slice starts until you approve the adjustment, and those in progress go on.",
+      }
+    : {
+        es: "Los cortes cerrados no se tocan. La épica vuelve a revisión, y sus cortes nuevos empiezan cuando apruebes el ajuste.",
+        en: "Closed slices stay as they are. The epic goes back to review, and its new slices start once you approve the adjustment.",
+      };
+}
+
+/**
+ * The request goes to the agent word for word, as `specty adjust "<request>"` would; for an
+ * epic, the dialog tells how an epic is adjusted instead of how a request is classified.
+ */
 @Component({
   selector: "sp-adjust-result",
   imports: [DialogFrame, Field, Button],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <sp-dialog #frame [heading]="t()('Pedir ajustes', 'Ask for adjustments')" [description]="t()('Escribe qué hay que cambiar, con tus palabras. El agente recibe la petición tal cual y la clasifica:', 'Write what needs to change, in your own words. The agent gets the request as it is and classifies it:')">
+    <sp-dialog #frame [heading]="t()('Pedir ajustes', 'Ask for adjustments')" [description]="said.description[lang()]">
       <dl class="m-0 grid grid-cols-[max-content_minmax(0,1fr)] gap-x-3.5 gap-y-2 text-sm" data-classes>
         @for (kind of classes; track $index) {
           <dt class="font-semibold">{{ kind[lang()][0] }}</dt>
           <dd class="m-0 text-text-muted">{{ kind[lang()][1] }}</dd>
         }
       </dl>
-      <sp-field [label]="t()('Tu petición', 'Your request')" [multiline]="true" [placeholder]="t()('Por ejemplo: el porcentaje debería mostrar un decimal', 'For example: the percentage should show one decimal')" [(value)]="request" />
-      <p class="m-0 text-[13px] text-text-muted">{{ t()('Las tareas hechas no se tocan: lo nuevo llega como tareas nuevas en Progreso.', 'Done tasks stay as they are: what is new arrives as new tasks in Progress.') }}</p>
+      <sp-field [label]="t()('Tu petición', 'Your request')" [multiline]="true" [placeholder]="said.placeholder[lang()]" [(value)]="request" />
+      <p class="m-0 text-[13px] text-text-muted" data-note>{{ note[lang()] }}</p>
       <sp-button actions (pressed)="frame.close()">{{ t()('Cancelar', 'Cancel') }}</sp-button>
       <sp-button actions variant="primary" [disabledReason]="request().trim() ? '' : t()('Escribe qué hay que ajustar.', 'Write what to adjust.')" (pressed)="send()">
         {{ t()('Enviar al agente', 'Send to the agent') }}
@@ -125,7 +212,10 @@ class AdjustResult {
   private readonly failed = reportFailure(this.toasts, this.preferences);
   protected readonly t = this.preferences.t;
   protected readonly lang = this.preferences.lang;
-  protected readonly classes = CLASSES;
+  private readonly epic = this.data.change.kind === "epic";
+  protected readonly classes = this.epic ? EPIC_WAYS : CLASSES;
+  protected readonly said = this.epic ? EPIC_SAID : TASKS_SAID;
+  protected readonly note = noteOf(this.data.change);
   protected readonly request = signal(this.data.request ?? "");
 
   constructor() {
@@ -144,13 +234,7 @@ class AdjustResult {
     const request = this.request().trim();
     this.source.decideResult(this.data.change.id, { kind: "adjust", request }).then(() => {
       this.ref.close();
-      this.toasts.show(
-        this.t()(
-          "Pediste ajustes: el agente los clasificará en specty next.",
-          "You asked for adjustments: the agent will classify them in specty next.",
-        ),
-        "success",
-      );
+      this.toasts.show(this.said.sent[this.lang()], "success");
     }, this.failed);
   }
 }

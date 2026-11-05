@@ -17,6 +17,7 @@ import {
 import { type Context, hasSession, isLocal, JSON_TYPE, same, send, TEXT } from "./context";
 import { changeDiff, type DiffAnswer } from "./diff";
 import { finishedPage } from "./finished";
+import { memoryOrigins } from "./origins";
 import { changeRecord, openRecords } from "./records";
 import { sessionsView } from "./sessions";
 import { epicSliceChanges } from "./slices";
@@ -64,12 +65,17 @@ const VIEWS: ReadonlyMap<string, View> = new Map<string, View>([
 ]);
 
 /**
- * `GET /api/memory` (ADR 0016): every entry of Specty's memory, and the open changes of every
- * worktree as `specty status` sees them, with who holds each one and whether it is an orphan.
+ * `GET /api/memory` (ADR 0016): every entry of Specty's memory, the open changes of every worktree
+ * as `specty status` sees them, with who holds each one and whether it is an orphan, and what each
+ * change the entries came from is: its title, kind, phase and epic (`memoryOrigins`).
  */
 async function memoryView(session: Session) {
   const { entries } = await readMemory(session.git, session.config.memory.branch);
-  return { entries, changes: await openChanges(session) };
+  return {
+    entries,
+    changes: await openChanges(session),
+    origins: await memoryOrigins(session, entries),
+  };
 }
 
 /** A change by its id, open or archived, as `changeRecords` gives it; 404 when there is none. */
