@@ -53,7 +53,7 @@ Desde C1, `specty init` prueba en orden una lista de detectores de workspace, pe
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-cargo.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T2: init prueba el detector de Cargo tras el de JavaScript
+- [x] T2: init prueba el detector de Cargo tras el de JavaScript
   - files: packages/cli/src/detect/workspace-units.ts, packages/cli/test/units-cargo.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-cargo.test.ts test/workspace-units.test.ts test/init-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip

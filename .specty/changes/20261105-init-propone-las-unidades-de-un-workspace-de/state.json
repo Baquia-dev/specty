@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-init-propone-las-unidades-de-un-workspace-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-init-propone-las-unidades-de-un-workspace-de",
   "baseCommit": "6c68190ea4eb28fdfeadfcaba7f8797b3aac1be8",
   "revision": 2,
@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a457f2f0a8a279e629d0fe2323e5737538ec4024",
+      "attempts": 1,
       "startedAt": "2026-11-05T13:34:14.674Z",
       "doneAt": "2026-11-05T13:40:02.508Z",
-      "summary": "cargoWorkspace (detect/units-cargo.ts) lee el workspace de Cargo con smol-toml: miembros por members/exclude con expand, ya exportado; cada uno con cargo test -p <nombre>, sus dependencias por path o workspace = true y los archivos de la raíz; no reclama una raíz con [package]."
+      "summary": "cargoWorkspace (detect/units-cargo.ts) lee el workspace de Cargo con smol-toml: miembros por members/exclude con expand, ya exportado; cada uno con cargo test -p <nombre>, sus dependencias por path o workspace = true y los archivos de la raíz; no reclama una raíz con [package].",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e662c8312bd12c534625225d27200bba1f8f7f80",
+      "startedAt": "2026-11-05T13:40:02.814Z",
+      "doneAt": "2026-11-05T13:41:30.144Z",
+      "summary": "DETECTORS prueba cargoWorkspace tras jsWorkspace, así que specty init propone las unidades de un workspace de Cargo."
     }
   },
   "pending": {
