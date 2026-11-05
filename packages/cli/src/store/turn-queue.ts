@@ -24,9 +24,17 @@ export interface QueuePlace {
 /** Places this process took, so two of its own in the same millisecond keep their order. */
 let taken = 0;
 
-/** Joins the queue for `holder`, after everyone already in it. */
-export async function joinTurnQueue(git: Git, holder: LockHolder): Promise<QueuePlace> {
-  const folder = await git.gitPath(QUEUE);
+/** Joins the queue of the full verification's turn for `holder`, after everyone already in it. */
+export function joinTurnQueue(git: Git, holder: LockHolder): Promise<QueuePlace> {
+  return joinQueue(git, QUEUE, holder);
+}
+
+/**
+ * Joins the queue whose folder is git's path `name` for `holder`, after everyone already in it:
+ * the full verification's turn, or the clone's verification places (`verify-slots.ts`).
+ */
+export async function joinQueue(git: Git, name: string, holder: LockHolder): Promise<QueuePlace> {
+  const folder = await git.gitPath(name);
   await mkdir(folder, { recursive: true });
   taken += 1;
   const own = `${String(Date.now()).padStart(15, "0")}-${holder.pid}-${taken}.json`;

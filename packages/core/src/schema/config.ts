@@ -30,6 +30,8 @@ export interface ResolvedConfig {
     /** A fast check of the whole repository that runs before each task's verification. */
     readonly quick?: string;
     readonly timeoutSec: number;
+    /** Verifications that run at once in the clone: a task's takes one, the full one all. */
+    readonly slots: number;
   };
   readonly scope: {
     readonly implicitTests: boolean;
@@ -85,7 +87,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   governed: ["**"],
   ignored: ["**/*.md", "docs/**"],
   sensitive: ["**/migrations/**", "**/auth/**", ".github/**", "**/.env*", "**/infra/**"],
-  verify: { timeoutSec: 600 },
+  verify: { timeoutSec: 600, slots: 2 },
   scope: { implicitTests: true, generated: [], autoApprove: "tests-and-generated" },
   lanes: { quick: { maxFiles: 3 } },
   split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 },
@@ -140,6 +142,7 @@ export const ConfigSchema = z.strictObject({
       full: z.string().min(1).optional(),
       quick: z.string().min(1).optional(),
       timeoutSec: Positive.optional(),
+      slots: Positive.optional(),
     })
     .optional(),
   scope: z
@@ -267,6 +270,7 @@ function verifyOf(input: ConfigInput): ResolvedConfig["verify"] {
     ...(verify?.full !== undefined ? { full: verify.full } : {}),
     ...(verify?.quick !== undefined ? { quick: verify.quick } : {}),
     timeoutSec: verify?.timeoutSec ?? DEFAULT_CONFIG.verify.timeoutSec,
+    slots: verify?.slots ?? DEFAULT_CONFIG.verify.slots,
   };
 }
 

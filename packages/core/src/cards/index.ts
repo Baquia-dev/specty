@@ -107,6 +107,7 @@ export {
   frontListCard,
   frontRefusalCard,
 } from "./fronts";
+export { gitFailedCard } from "./git-failed";
 export {
   type BlockedCommitView,
   blockedCommitMessage,
@@ -239,7 +240,12 @@ export {
   legacyStepTitle,
 } from "./legacy";
 export { longFileCard, longFileWarnings, splitAdvice } from "./lines";
-export { busyChangeCard, fullVerificationWaitNote, type LockHolderView } from "./lock";
+export {
+  busyChangeCard,
+  fullVerificationWaitNote,
+  type LockHolderView,
+  verifySlotsWaitNote,
+} from "./lock";
 export { mcpNotOnPathWarning, mcpRegisteredLine, mcpUserFolderWarning } from "./mcp";
 export {
   type MemoryListOutput,

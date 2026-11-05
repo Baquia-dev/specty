@@ -2,6 +2,7 @@
 import { type ExecResult, execute } from "../io/exec";
 import type { Session } from "../session";
 import { clearRun, writeRun } from "../store/runs";
+import { inSlots } from "../store/verify-slots";
 import { oneAtATime } from "./full-verification";
 
 /** Lines a live run keeps: its end is what matters. */
@@ -50,8 +51,11 @@ export async function runLive(
     });
   };
   try {
-    // A full verification, with no task, waits for its turn: one at a time in the clone.
-    return await (task === undefined ? oneAtATime(session, command, go) : go());
+    // A full verification, with no task, waits for its turn and every place of the clone; a
+    // task's, for one place.
+    return await (task === undefined
+      ? oneAtATime(session, command, go)
+      : inSlots(session, 1, command, go));
   } finally {
     clearTimeout(pending);
     await writing;
