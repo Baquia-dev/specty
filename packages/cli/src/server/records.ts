@@ -1,10 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import { stat } from "node:fs/promises";
 import { basename, join } from "node:path";
-import { type ChangeState, type ChangeView, type Phase, parseSpec } from "@baquia-dev/specty-core";
+import {
+  type ChangeState,
+  type ChangeView,
+  type ConfigIssue,
+  type Phase,
+  parseSpec,
+} from "@baquia-dev/specty-core";
 import { openChanges } from "../commands/status";
 import { isFinished } from "../flow/active";
-import { locateChanges } from "../flow/changes";
+import { locateChanges, unreadableChanges } from "../flow/changes";
 import { criteriaTests } from "../flow/criteria-tests";
 import { type LostChange, lostChanges } from "../flow/lost";
 import { isRecord, parseJson, readText } from "../io/files";
@@ -41,6 +47,11 @@ export interface ChangeRecord {
   readonly reviews?: readonly ReviewRecord[];
   /** In acceptance, each criterion with the tests that carry its id (ADR 0014). */
   readonly criteriaTests?: NonNullable<ChangeView["criteriaTests"]>;
+  /**
+   * Its folder's `.specty/config.yaml` cannot be read: each issue, as the CLI prints it. No command
+   * runs there; a server older than the Specty that wrote it sees this (ARCHITECTURE §15).
+   */
+  readonly configIssues?: readonly string[];
 }
 
 /** An independent review (ADR 0011): of the spec or of the result, with what the reviewer said. */
@@ -109,9 +120,19 @@ async function openOnes(session: Session): Promise<Read> {
     add(await readRecord(change.files, there.root, there.config.verify.full));
     sessions.set(change.state.id, there);
   }
+  // The open changes of a folder whose configuration cannot be read: shown, with why.
+  for (const { change, folder, issues } of await unreadableChanges(session)) {
+    const record = await readRecord(change.files, folder, undefined);
+    if (record !== undefined) add({ ...record, configIssues: issues.map(issueLine) });
+  }
   // The open changes whose folder is gone, read from their branches (ARCHITECTURE §9).
   for (const lost of await lostChanges(session)) add(await lostRecord(session, lost));
   return { records, sessions };
+}
+
+/** A configuration's issue as the CLI prints it: `path: message`, or the message at the root. */
+function issueLine({ path, message }: ConfigIssue): string {
+  return path === "" ? message : `${path}: ${message}`;
 }
 
 /**

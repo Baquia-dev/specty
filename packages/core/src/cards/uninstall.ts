@@ -106,6 +106,14 @@ export function globalGuardStaysLine(tool: string, file: string, lang: Lang): st
   );
 }
 
+/** The rule for Specty's commands in the settings of Antigravity's CLI, which every project shares. */
+export function antigravityRuleStaysLine(file: string, command: string, lang: Lang): string {
+  return translator(lang)(
+    `Antigravity CLI: la regla \`command(${command})\` sigue en ${file}, que sirve a todos tus proyectos; quítala de \`permissions.allow\` si ya no usas Specty.`,
+    `Antigravity CLI: the rule \`command(${command})\` stays in ${file}, which serves all your projects; remove it from \`permissions.allow\` if you no longer use Specty.`,
+  );
+}
+
 export function claudePointerStaysLine(lang: Lang): string {
   return translator(lang)(
     "CLAUDE.md sigue importando AGENTS.md.",

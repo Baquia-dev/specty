@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "id": "20261106-el-servidor-muestra-el-cambio-cuya",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-el-servidor-muestra-el-cambio-cuya",
+  "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:21016d79ccbf2dd84a6788c3b3119045ae8f01d4e06ddc1631fb1a5431acdef5",
+    "at": "2026-11-05T16:22:08.580Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:77193c46a4e91380b7026d6e678e6f9b1dc0eb859cc6270c9fe77581bc21d8ca",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3534fa2db030c2952b34d69c771d3bb985b8944f9dc6b1e7c3db2c4cf843622c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:44b1495a85648bf72d30075444ec2cf0bf4b963fe7ed93a543d5548cf0d8d047",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:44091df7687941538e01222c5b36b9afa0222dd875a62ef93a68b0b25ec393be",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:93ad70e81eb38519b4df1197726bf9c2d01f2e396d2fc73fbb78274cbb5dd704",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "25cbcf0335124fa8daa7290a7e75f866340e4078",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:33:51.140Z",
+      "doneAt": "2026-11-05T16:40:45.368Z",
+      "summary": "El servidor da el cambio abierto de una worktree cuya configuración no se lee (unreadableChanges en flow/changes.ts), en la lista y por id, con configIssues; la huella incluye la config.yaml de cada worktree. Los comandos no cambian.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "d1c5c9cd8c27cf90d9442b9e1ab0c0d6ae85c355",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:40:45.705Z",
+      "doneAt": "2026-11-05T16:44:04.877Z",
+      "summary": "La fila de la Bandeja lleva la marca «Su configuración no se pudo leer» y la cabecera de la página dice cómo seguir (reiniciar specty ui o corregirla) y cita cada error; configIssues pasa del registro a la vista.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "89f90134d66ccbfb684d3719f47af56a96704924",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:44:05.238Z",
+      "doneAt": "2026-11-05T16:49:17.232Z",
+      "summary": "ARCHITECTURE §15 cuenta el cambio de una worktree cuya configuración no se lee: dónde va en la lista, qué lleva (configIssues) y qué muestran la Bandeja y su página; y la configuración de cada worktree en la firma de /api/events.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-11-05T17:05:44.659Z",
+  "lockedTests": {
+    "packages/cli/test/server/unreadable-config.test.ts": "sha256:8f8abd04f4b52db67644f36ff28e121ea5f8099bdcb01241c1559c6ec30c7664",
+    "packages/ui/src/change/unreadable-config.test.ts": "sha256:90e4df7d1e6ff7c25cf347e70d5fc314db11b8be1b23cd614e3d280440d7d34d"
+  }
+}

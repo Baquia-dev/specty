@@ -7,6 +7,8 @@ export default defineConfig({
     reporters: [...configDefaults.reporters, "junit"],
     outputFile: { junit: "coverage/junit.xml" },
     include: ["test/**/*.test.ts"],
+    // The run's temporary files go in a folder of its own, removed at the end.
+    globalSetup: ["../core/vitest-temp-dir.ts"],
     coverage: {
       provider: "v8",
       include: ["src/**"],
