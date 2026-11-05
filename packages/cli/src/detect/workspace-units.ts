@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { type Lang, proposeUnits, type UnitsFacts, unitsYaml } from "@baquia-dev/specty-core";
 import type { Detection } from "./project";
+import { cargoWorkspace } from "./units-cargo";
 import { goWorkspace } from "./units-go";
 import { jsWorkspace } from "./units-js";
 import { uvWorkspace } from "./units-uv";
@@ -14,8 +15,13 @@ export type UnitsDetector = (
   detection: Detection,
 ) => Promise<WorkspaceFacts | undefined>;
 
-/** The detectors `init` tries, in order: pnpm, npm and yarn first, then `go.work` and uv. */
-export const DETECTORS: readonly UnitsDetector[] = [jsWorkspace, goWorkspace, uvWorkspace];
+/** The detectors `init` tries, in order: pnpm, npm and yarn first, then Cargo, `go.work` and uv. */
+export const DETECTORS: readonly UnitsDetector[] = [
+  jsWorkspace,
+  cargoWorkspace,
+  goWorkspace,
+  uvWorkspace,
+];
 
 /**
  * The units `init` proposes for the repository's workspace, as YAML lines under `verify:`, with
