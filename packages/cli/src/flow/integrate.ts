@@ -26,6 +26,7 @@ import type { StoredChange } from "../store/changes";
 import { commitState } from "./active";
 import { commitWithReceipt, decisionTrailers } from "./commits";
 import { fullCommand } from "./full-verification";
+import { invalidMergedConfig } from "./merged-config";
 import { type FullRan, fullPlan, runFull } from "./units";
 import { codeTree, recordFullVerification, touchesCode } from "./verified";
 import { targetBranch } from "./worktree";
@@ -85,26 +86,31 @@ export async function absorbTarget(
   plan: Integration,
   change: StoredChange,
   again: "close" | "accept",
+  beforeMerge?: (target: string) => Promise<void>,
 ): Promise<Absorbed> {
   const dirty = await holderDirty(session, plan, change.state, again);
-  return dirty ?? mergeTarget(session, plan, change, again);
+  return dirty ?? mergeTarget(session, plan, change, again, beforeMerge);
 }
 
 /**
  * When the main branch moved, merges it into the change's branch, here, and commits the merge
- * only after the verification passes. With conflicts or a failing verification, the merge stays
- * in progress for the agent; a closed change's merge is aborted instead, as is any other failure,
- * and nothing moves. `again` is the command the person runs afterwards.
+ * only after the verification passes. A merged configuration that is not valid aborts it, with or
+ * without conflicts (`invalidMergedConfig`). With conflicts or a failing verification, the merge
+ * stays in progress for the agent; a closed change's merge is aborted instead, as is any other
+ * failure, and nothing moves. `again` is the command the person runs afterwards; `beforeMerge` runs only
+ * when there is a merge to make, right before it.
  */
 export async function mergeTarget(
   session: Session,
   plan: Integration,
   change: StoredChange,
   again: "close" | "accept",
+  beforeMerge?: (target: string) => Promise<void>,
 ): Promise<Absorbed> {
   const { git, cards } = session;
   const { state } = change;
   if (await contains(git, "HEAD", plan.target)) return { ok: true, lines: [] };
+  await beforeMerge?.(plan.target);
   const absorbing: Absorbing = {
     plan,
     change,
@@ -113,6 +119,8 @@ export async function mergeTarget(
     byHand: mergeByHandNext(plan.target, again, cards),
   };
   const merged = await git.run(["merge", "--no-ff", "--no-commit", plan.target]);
+  const config = await invalidMergedConfig(session, plan.target, again);
+  if (config !== undefined) return refused(session, state, config.reason, config.next);
   if (merged.code !== 0) return mergeStopped(session, absorbing, merged);
   const verification = await mergeVerification(session, plan, state);
   if (verification.kind !== "passed") return commitAbsorbed(session, plan, verification);

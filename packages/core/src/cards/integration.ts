@@ -137,6 +137,36 @@ export function mergedVerifyFailsLine(target: string, command: string, lang: Lan
   );
 }
 
+/** The configuration that came with `target` is not valid, as `issues` says: the merge was undone. */
+export function mergedConfigInvalidLine(target: string, issues: string, lang: Lang): string {
+  return translator(lang)(
+    `Con ${target} incorporado, .specty/config.yaml no es válida: ${issues}.`,
+    `With ${target} merged in, .specty/config.yaml is not valid: ${issues}.`,
+  );
+}
+
+/**
+ * Only the person fixes the configuration, in `target`: the guard does not let an agent edit it.
+ * In delegated mode the agent reads this, so it asks them, and then runs `again` itself.
+ */
+export function mergedConfigNext(
+  target: string,
+  again: "close" | "accept",
+  ctx: CardContext,
+): string {
+  const t = translator(ctx.lang);
+  const run = `\`${ctx.command} ${again}\``;
+  return ctx.delegated === true
+    ? t(
+        `modo delegado: el usuario corrige .specty/config.yaml en ${target} (el guard no te deja editarla): pídeselo con el error de arriba y, cuando lo haga, vuelve a ejecutar tú ${run}.`,
+        `delegated mode: the user fixes .specty/config.yaml in ${target} (the guard does not let you edit it): ask them, with the error above, and once they do, run ${run} again yourself.`,
+      )
+    : t(
+        `corrige .specty/config.yaml en ${target} y vuelve a ejecutar ${run}.`,
+        `fix .specty/config.yaml in ${target} and run ${run} again.`,
+      );
+}
+
 /** What checked the merge: the full verification, nothing for an epic, or nothing configured. */
 export type MergeVerification =
   /** With `verify.units`, also what each unit did. */

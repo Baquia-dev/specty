@@ -90,6 +90,8 @@ export const MESSAGES_EN: MessageCatalog = {
   "task-no-tests": (p) => `${v(p, "id")} includes no tests (policy: ${v(p, "policy")}).`,
   "task-no-typecheck": (p) =>
     `${v(p, "id")} is the last code task and its verification does not check the types with \`${v(p, "value")}\`: a type error would only show up at acceptance. Add it to its \`verify\`.`,
+  "task-early-typecheck": (p) =>
+    `${v(p, "id")} is not the last code task and its verification runs \`${v(p, "value")}\`, which also compiles the tests of ${v(p, "ref")}, written before their code: ${v(p, "id")} would not complete until what they import exists. Run only its tests in its \`verify\`; the last code task already checks the types.`,
   "file-reason-missing": (p) => `${v(p, "path")} has no reason; add it after an em dash (—).`,
   "size-near-split": (p) => `The change is close to the split threshold (${v(p, "detail")}).`,
   "possible-new-scope": (p) =>

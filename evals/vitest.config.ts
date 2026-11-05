@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 
 /** `pnpm evals` sets it: the suite runs the agents. Otherwise only its tests, which judge. */
 const suite = process.env.SPECTY_EVALS === "1";
 
 export default defineConfig({
   test: {
+    // Vitest's reporters, plus the JUnit report that `checks.testTime` reads.
+    reporters: [...configDefaults.reporters, "junit"],
+    outputFile: { junit: "coverage/junit.xml" },
     include: suite ? ["run/**/*.eval.ts"] : ["test/**/*.test.ts"],
     // The repositories' hooks run the real bundle, so it is built first, as for the CLI's tests.
     globalSetup: ["../packages/cli/test/global-setup.ts"],

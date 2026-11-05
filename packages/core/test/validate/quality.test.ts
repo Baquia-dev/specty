@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  analyzeSpec,
   DEFAULT_CONFIG,
   parseSpec,
   testCycle,
@@ -248,5 +249,131 @@ describe("the type check under contract", () => {
       "task-no-typecheck:T1",
     ]);
     expect(warned(STANDARD, { phase: "closing", config: contract, typecheck: TYPES })).toEqual([]);
+  });
+});
+
+describe("the type check in a code task that is not the last", () => {
+  const contract = withConfig({ policy: { tests: "contract" } });
+  const TYPES = "flutter analyze";
+  const early = (text: string, ctx: Partial<ValidationContext>) =>
+    check(text, ctx).filter((label) => label.startsWith("task-early-typecheck"));
+  /** The standard example with T1, a code task before the last one, also running `command`. */
+  const firstRuns = (command: string, text = STANDARD) =>
+    text.replace(
+      "verify: flutter test test/features/home",
+      `verify: flutter test test/features/home && ${command}`,
+    );
+  /** `text` with one more task before the risks. */
+  const withTask = (text: string, task: string) =>
+    text.replace("\n## Riesgos", `${task}\n\n## Riesgos`);
+  const T3 =
+    "- [ ] T3: Extra\n  - files: test/features/home/extra_test.dart\n  - ac: AC1\n  - verify: flutter test test/features/home";
+  /** A valid English spec under `contract` whose two code tasks, each with its test, run the type check. */
+  const ENGLISH = [
+    "---\nkind: standard\n---\n\n# Fix the sign-in label\n",
+    '## Goal\n\nThe sign-in button reads "Sing in"; it must read "Sign in".\n',
+    "## Out of scope\n\n- The other buttons.\n",
+    "## Assumptions\n\n- A1: The label lives in its own module.\n",
+    '## Acceptance criteria\n\n- AC1: WHEN the sign-in page opens THEN its button reads "Sign in".\n',
+    "## Files\n",
+    "- modify src/components/label.ts — the label",
+    "- create src/components/label.test.ts — its test",
+    "- modify src/components/sign-in-button.tsx — the button uses it",
+    "- create src/components/sign-in-button.test.tsx — its test\n",
+    "## Tasks\n",
+    "- [ ] T1: The label",
+    "  - files: src/components/label.ts, src/components/label.test.ts",
+    "  - ac: AC1",
+    "  - verify: pnpm test src/components && pnpm typecheck",
+    "- [ ] T2: The button",
+    "  - files: src/components/sign-in-button.tsx, src/components/sign-in-button.test.tsx",
+    "  - ac: AC1",
+    "  - verify: pnpm test src/components && pnpm typecheck\n",
+  ].join("\n");
+
+  it("AC1: warns on that task, with the command and the later tasks, and suggests running only its tests", () => {
+    const { spec, locations } = parseSpec(firstRuns(TYPES, withTask(STANDARD, T3)));
+    const found = validateSpec(spec, {
+      phase: "draft",
+      config: contract,
+      locations,
+      typecheck: TYPES,
+    }).filter((entry) => entry.code === "task-early-typecheck");
+    expect(found.map((entry) => entry.target)).toEqual(["T1"]);
+    expect(found[0]?.message).toContain("`flutter analyze`");
+    expect(found[0]?.message).toContain("T2, T3");
+    expect(found[0]?.message).toContain("solo sus tests");
+    const both = withTask(STANDARD, T3).replace(
+      "verify: flutter test test/features/analytics",
+      `verify: flutter test test/features/analytics && ${TYPES}`,
+    );
+    expect(early(firstRuns(TYPES, both), { config: contract, typecheck: TYPES })).toEqual([
+      "task-early-typecheck:T1",
+      "task-early-typecheck:T2",
+    ]);
+  });
+
+  it("AC1: counts verify.full in its verify, and verify.default when it has none", () => {
+    const full = withConfig({
+      policy: { tests: "contract" },
+      verify: { ...DEFAULT_CONFIG.verify, full: "make check" },
+    });
+    expect(early(firstRuns("make check"), { config: full, typecheck: TYPES })).toEqual([
+      "task-early-typecheck:T1",
+    ]);
+    const byDefault = withConfig({
+      policy: { tests: "contract" },
+      verify: { ...DEFAULT_CONFIG.verify, default: TYPES },
+    });
+    const own = STANDARD.replace("\n  - verify: flutter test test/features/home", "");
+    expect(early(own, { config: byDefault, typecheck: TYPES })).toEqual([
+      "task-early-typecheck:T1",
+    ]);
+  });
+
+  it("AC2: does not warn on a task that runs only its tests, is done, or has no later code task with tests", () => {
+    expect(early(STANDARD, { config: contract, typecheck: TYPES })).toEqual([]);
+    const adjusting = { phase: "adjusting", config: contract, typecheck: TYPES } as const;
+    expect(early(firstRuns(TYPES), { ...adjusting, doneTasks: new Set(["T1"]) })).toEqual([]);
+    expect(early(firstRuns(TYPES), { ...adjusting, doneTasks: new Set(["T2"]) })).toEqual([]);
+    const untested = firstRuns(TYPES).replace(
+      ", test/features/analytics/evolucion_card_test.dart",
+      "",
+    );
+    expect(early(untested, { config: contract, typecheck: TYPES })).toEqual([]);
+    const docs = withTask(untested, `${T3}\n  - type: docs`);
+    expect(early(docs, { config: contract, typecheck: TYPES })).toEqual([]);
+    expect(early(withTask(untested, T3), { config: contract, typecheck: TYPES })).toEqual([
+      "task-early-typecheck:T1",
+    ]);
+  });
+
+  it("AC3: does not warn without contract, a type check command or a testing phase, nor while closing", () => {
+    const text = firstRuns(TYPES);
+    const required = withConfig({ policy: { tests: "required" } });
+    expect(early(text, { config: required, typecheck: TYPES })).toEqual([]);
+    expect(early(text, { config: contract })).toEqual([]);
+    expect(early(text, { config: contract, typecheck: "" })).toEqual([]);
+    expect(early(text, { phase: "closing", config: contract, typecheck: TYPES })).toEqual([]);
+    const refactors = text.replace(/(\n {2}- verify: [^\n]+)/g, "$1\n  - type: refactor");
+    expect(early(refactors, { config: contract, typecheck: TYPES })).toEqual([]);
+  });
+
+  it("AC4: is a warning that does not stop the proposal, in Spanish and in English", () => {
+    const ctx = { phase: "draft", config: contract, typecheck: "pnpm typecheck" } as const;
+    const analysis = analyzeSpec(ENGLISH, ctx);
+    const errors = analysis.diagnostics.filter((entry) => entry.severity === "error");
+    expect(errors.map((entry) => `${entry.code}: ${entry.message}`)).toEqual([]);
+    expect(analysis.valid).toBe(true);
+    const found = analysis.diagnostics.filter((entry) => entry.code === "task-early-typecheck");
+    expect(found.map((entry) => [entry.target, entry.severity])).toEqual([["T1", "warning"]]);
+    expect(found[0]?.message).toContain("is not the last code task");
+    expect(found[0]?.message).toContain("`pnpm typecheck`");
+    expect(found[0]?.message).toContain("only its tests");
+    const es = analyzeSpec(firstRuns(TYPES), { ...ctx, typecheck: TYPES }).diagnostics.find(
+      (entry) => entry.code === "task-early-typecheck",
+    );
+    expect(es?.severity).toBe("warning");
+    expect(es?.message).toContain("no es la última tarea de código");
   });
 });

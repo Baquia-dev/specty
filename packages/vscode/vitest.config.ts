@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
+    // Vitest's reporters, plus the JUnit report that `checks.testTime` reads.
+    reporters: [...configDefaults.reporters, "junit"],
+    outputFile: { junit: "coverage/junit.xml" },
     include: ["test/**/*.test.ts"],
     coverage: {
       provider: "v8",

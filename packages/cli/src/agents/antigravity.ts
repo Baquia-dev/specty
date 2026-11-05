@@ -21,7 +21,9 @@ const BEFORE_ACP =
  * editor carries out: the guard sees them as it sees its own.
  */
 const CLIENT_TOOLS = "client_view_file|client_edit_file|client_create_file";
-const TOOLS = `${BEFORE_ACP}|${CLIENT_TOOLS}`;
+/** In its CLI (`agy`), it reads a file or a folder, writes and edits with these. */
+const CLI_TOOLS = "read_file|write_file|edit_file";
+const TOOLS = `${BEFORE_ACP}|${CLIENT_TOOLS}|${CLI_TOOLS}`;
 
 /**
  * Its tools that read or search, with the field that names the file or the folder: the guard
@@ -33,6 +35,7 @@ const READS: Readonly<Record<string, string>> = {
   grep_search: "SearchPath",
   find_by_name: "SearchDirectory",
   client_view_file: "absolute_path",
+  read_file: "Path",
 };
 
 /**
@@ -45,7 +48,11 @@ const WRITES: Readonly<Record<string, string>> = {
   multi_replace_file_content: "TargetFile",
   client_edit_file: "target_file",
   client_create_file: "target_file",
+  write_file: "Path",
+  edit_file: "Path",
 };
+/** How a turn the model ended comes: in its editor, and with no tool call in its CLI. */
+const ENDED: ReadonlySet<string> = new Set(["model_stop", "NO_TOOL_CALL"]);
 /**
  * The events the guard listens to, with the tools each one covers; `undefined` is an event that
  * takes a list of handlers, with no matcher.
@@ -97,8 +104,9 @@ export const antigravity: AgentAdapter = {
       texts.length === 0 ? {} : { injectSteps: texts.map((text) => ({ ephemeralMessage: text })) },
     ),
   stop: {
-    // Only a turn the model ended: not one an error or its step limit stopped.
-    acts: (event) => event.terminationReason === "model_stop",
+    // Only a turn the model ended (not one an error or its step limit stopped), once its
+    // subagents are done: while they run, it comes with `fullyIdle: false`, and again after.
+    acts: (event) => ENDED.has(String(event.terminationReason)) && event.fullyIdle !== false,
     reply: (message) => JSON.stringify({ decision: "continue", reason: message }),
     pass: JSON.stringify({ decision: "stop" }),
     counts: true,
@@ -152,13 +160,16 @@ export const antigravity: AgentAdapter = {
 };
 
 /**
- * A guard from an older `init`: one from before `specty enter` does not see the reads, and one from
- * before the ACP editors does not see what it reads and writes there.
+ * A guard from an older `init`: one from before `specty enter` does not see the reads, one from
+ * before the ACP editors does not see what it reads and writes there, and one from before its CLI
+ * does not see what it reads, writes and edits in it.
  */
 function outdatedMatcher(ours: Record<string, unknown>, file: string): DoctorLine[] {
   const matcher = guardMatcher(ours, "PreToolUse", "antigravity");
   if (matcher === TOOLS) return [];
-  return typeof matcher === "string" && matcher.split("|").includes("view_file")
+  const tools = typeof matcher === "string" ? matcher.split("|") : [];
+  if (tools.includes("client_view_file")) return [{ code: "antigravity-cli", file }];
+  return tools.includes("view_file")
     ? [{ code: "antigravity-acp", file }]
     : [{ code: "enter-outdated", tool: "antigravity", file }];
 }
