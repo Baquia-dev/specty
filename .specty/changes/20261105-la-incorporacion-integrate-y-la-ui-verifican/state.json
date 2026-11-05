@@ -6,6 +6,13 @@
   "branch": "specty/20261105-la-incorporacion-integrate-y-la-ui-verifican",
   "baseCommit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2c7cbbe6ad2f5e2814de37aa540b8bb259b9707c2f265f3cf753cc7cc2409821",
+    "at": "2026-11-05T06:27:18.327Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -57,12 +64,6 @@
     "T": 5,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2c7cbbe6ad2f5e2814de37aa540b8bb259b9707c2f265f3cf753cc7cc2409821",
-    "at": "2026-11-05T06:27:18.327Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T06:36:59.719Z"
 }

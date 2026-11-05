@@ -101,6 +101,17 @@ describe("bringing the main branch into a change", () => {
     expect(verifyingNote("pnpm check", "es")).toBe("specty: verificando `pnpm check`…");
     expect(verifyingNote("pnpm check", "en")).toBe("specty: verifying `pnpm check`…");
   });
+
+  it("AC6: says when the units of its full verification passed, in Spanish and in English", () => {
+    const units = { reused: ["core"], passed: [{ name: "cli", ms: 2000 }], skipped: [] };
+    const passed = { kind: "passed", command: "pnpm lint && pnpm test", units } as const;
+    expect(absorbedLine("main", "a1b2c3d", passed, "es")).toBe(
+      "Antes, main se incorporó a la rama del cambio (merge a1b2c3d) y pasaron las unidades de su verificación completa.",
+    );
+    expect(absorbedLine("main", "a1b2c3d", passed, "en")).toBe(
+      "First, main was merged into the change's branch (merge a1b2c3d) and the units of its full verification passed.",
+    );
+  });
 });
 
 describe("`specty integrate`", () => {
