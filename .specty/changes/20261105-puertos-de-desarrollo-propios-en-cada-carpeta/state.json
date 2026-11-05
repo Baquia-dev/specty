@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261105-puertos-de-desarrollo-propios-en-cada-carpeta",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-puertos-de-desarrollo-propios-en-cada-carpeta",
+  "baseCommit": "53733e01b4bb1d0786f65620876e1ccd67a98705",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:929af852d4793510f0200389f934a3334d0ef886895fd318ca55786bc41d38b0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0f2461664699d4c4052af197d07cec70fb5ebb5bdce87a9a662340f633ab214f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c7e7883695f7700ae1878e8092af95c21a0840274e490bafc5909b0e21cefafe",
+    "at": "2026-11-05T02:14:59.576Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
