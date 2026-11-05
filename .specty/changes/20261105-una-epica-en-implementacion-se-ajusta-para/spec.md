@@ -65,7 +65,7 @@ Un corte que al redactarse sale demasiado grande no tiene salida hoy: `propose` 
   - files: packages/core/src/flow/machine.ts, packages/core/test/flow/machine.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow/machine.test.ts
-- [ ] T2: La tarjeta del ajuste de una épica y su rechazo fuera de sus fases
+- [x] T2: La tarjeta del ajuste de una épica y su rechazo fuera de sus fases
   - files: packages/core/src/cards/work.ts, packages/core/src/cards/adjust.ts, packages/core/test/cards/adjusting.test.ts, packages/core/test/cards/adjust.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/adjusting.test.ts test/cards/adjust.test.ts
