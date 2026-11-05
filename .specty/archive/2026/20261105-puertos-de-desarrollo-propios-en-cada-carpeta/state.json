@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-puertos-de-desarrollo-propios-en-cada-carpeta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-puertos-de-desarrollo-propios-en-cada-carpeta",
   "baseCommit": "53733e01b4bb1d0786f65620876e1ccd67a98705",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c7e7883695f7700ae1878e8092af95c21a0840274e490bafc5909b0e21cefafe",
@@ -53,12 +53,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ec532e06e6569f17caf83634ba13d74a6ccbe5d0",
+      "attempts": 1,
       "startedAt": "2026-11-05T02:22:44.797Z",
       "doneAt": "2026-11-05T03:14:10.987Z",
-      "summary": "formats: dev.ports y ports.json; ARCHITECTURE: los puertos de desarrollo por carpeta"
+      "summary": "formats: dev.ports y ports.json; ARCHITECTURE: los puertos de desarrollo por carpeta",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,6 +70,7 @@
     "AC": 4,
     "T": 3
   },
+  "closingSubmittedAt": "2026-11-05T03:30:24.666Z",
   "lockedTests": {
     "packages/cli/test/dev-ports.test.ts": "sha256:49901b3e70b0b9e7886afa3dd6373bc5f608f7f3451a9cff36fb48fd53a55662",
     "packages/core/test/cards/dev-ports.test.ts": "sha256:0314ccc2a8aaac7a535ccd5282f874b7949675eb8670eff377cbbe8d01be51b9"

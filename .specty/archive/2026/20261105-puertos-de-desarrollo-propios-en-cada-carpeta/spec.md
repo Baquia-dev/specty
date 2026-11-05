@@ -60,3 +60,22 @@ Con varios cambios abiertos, cada uno en su worktree, dos sesiones que arrancan 
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`dev.ports` en `config.yaml` nombra los puertos de desarrollo del proyecto. Cada carpeta de cambio tiene una posición propia en `.git/common/specty/ports.json` (la libre más baja desde 1, que conserva mientras existe; la de una carpeta que ya no existe queda libre), y sus puertos son los de `dev.ports` más esa posición: con `[4200, 5173]`, la primera carpeta usa 4201 y 5174, y la segunda 4202 y 5175. La tarjeta de `new` que crea la carpeta y la de `next` en ella se los dicen al agente; la carpeta principal sigue con los de siempre y no dice nada. Sin `dev.ports`, nada cambia. Con el comando tras incorporar de `git.afterLanding`, cierra el punto «recursos de desarrollo por carpeta» de la épica «Memoria de Specty».
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- La línea se añade a la tarjeta con `withDevPorts` de core, en vez de añadir un campo a los datos de cada tarjeta.
+- `ports.json` solo se reescribe cuando una carpeta toma su posición o una carpeta que ya no existe libera la suya.
+
+### Pendientes
+
+- Nombrar los puertos de desarrollo de este repositorio: la persona añade `dev:\n  ports: [4200]` (el de `ng serve` de la UI) en `.specty/config.yaml`, si quiere que cada carpeta de cambio tenga el suyo.
