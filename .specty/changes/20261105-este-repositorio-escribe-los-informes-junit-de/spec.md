@@ -43,7 +43,7 @@ Los tests de este repositorio no dejan ningún informe JUnit, así que `checks.t
 
 ## Tareas
 
-- [ ] T1: core, exporters y la CLI dejan su informe JUnit en coverage/junit.xml
+- [x] T1: core, exporters y la CLI dejan su informe JUnit en coverage/junit.xml
   - files: packages/core/vitest.config.ts, packages/exporters/vitest.config.ts, packages/cli/vitest.config.ts, packages/cli/test/repo-junit.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/repo-junit.test.ts && pnpm --filter @baquia-dev/specty-exporters test && test -s packages/exporters/coverage/junit.xml && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
