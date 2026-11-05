@@ -6,6 +6,13 @@
   "branch": "specty/20261105-la-bandeja-pide-los-terminados-al-servidor-por",
   "baseCommit": "bd48aacf6aa987f9dcce0d5aa2a20cb564068e48",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ae2e6d3382d23661625f9dd968d67151a4e9859af94b184028614036f49f1bf0",
+    "at": "2026-11-05T12:59:41.648Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ae2e6d3382d23661625f9dd968d67151a4e9859af94b184028614036f49f1bf0",
-    "at": "2026-11-05T12:59:41.648Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T13:06:33.588Z"
 }
