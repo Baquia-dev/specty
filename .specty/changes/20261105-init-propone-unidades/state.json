@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-init-propone-unidades",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-init-propone-unidades",
   "baseCommit": "bd48aacf6aa987f9dcce0d5aa2a20cb564068e48",
   "revision": 1,
@@ -51,6 +51,9 @@
     "T": 3,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T12:42:30.324Z"
+  "lockedTests": {
+    "packages/cli/test/init-units.test.ts": "sha256:4a58d1f71e1c9e3971399c40d5ba986b3ebad57894d4e0b0a07adb6747de72f4",
+    "packages/core/test/cards/init-units.test.ts": "sha256:6af4bc6dcbab7e4aa2d2fb2db737b30ce979eda0d6e33736fc4234c168e86ef7",
+    "packages/core/test/units-proposal.test.ts": "sha256:147fd1b5e0f0928d31a51addf93c4ce28b9788f4165d303c311bbc0a1f0965e4"
+  }
 }
