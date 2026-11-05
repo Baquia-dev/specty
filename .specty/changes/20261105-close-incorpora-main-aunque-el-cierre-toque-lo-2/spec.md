@@ -51,7 +51,7 @@ Al cerrar, el cierre que escribió el agente (la spec, el estado y el glosario) 
 
 ## Tareas
 
-- [ ] T1: close hace el commit del cierre antes de incorporar main
+- [x] T1: close hace el commit del cierre antes de incorporar main
   - files: packages/core/src/cards/close.ts, packages/core/src/cards/index.ts, packages/core/test/cards/close.test.ts, packages/cli/src/flow/finish.ts, packages/cli/src/flow/integrate.ts, packages/cli/src/commands/finish.ts, packages/cli/test/close-shared-file.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/close-shared-file.test.ts test/integrate.test.ts test/resolve.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/close.test.ts

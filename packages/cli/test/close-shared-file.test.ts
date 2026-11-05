@@ -67,10 +67,12 @@ describe("closing when the closing and main changed the same file", () => {
     const { root, folder } = await bothChangeTheGlossary(`${TERMS}${NAME}`, `${TERMS}${FAREWELL}`);
     const stopped = await cli(folder, ["close"], { terminal: person() });
     expect(stopped.code).toBe(2);
-    expect(stopped.out).toContain("ejecuta `specty integrate`");
+    expect(stopped.out).toContain("dile a tu agente «continúa»");
     expect(tryGit(folder, "rev-parse", "-q", "--verify", "MERGE_HEAD").status).toBe(0);
     expect(await stateIn(folder)).toHaveProperty("integration.conflicts", [GLOSSARY]);
-    expect((await cli(folder, ["next"])).out).toContain(`CONFLICTOS:\n  ${GLOSSARY}`);
+    const next = (await cli(folder, ["next"])).out;
+    expect(next).toContain(`CONFLICTOS:\n  ${GLOSSARY}`);
+    expect(next).toContain("ejecuta `specty integrate`");
 
     const resolved = `${TERMS}${FAREWELL}${NAME}`;
     await writeFiles(folder, { [GLOSSARY]: resolved });
