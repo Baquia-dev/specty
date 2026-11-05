@@ -6,6 +6,13 @@
   "branch": "specty/20261105-cada-paquete-puede-traer-su-comando-de-tests-y",
   "baseCommit": "f1e2f5e7390264b8e484bee3611f61ba57dc762d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:602ed57bf87503c31ded1340e590b45ab7c55c51101d855bcca51c14cde49b52",
+    "at": "2026-11-05T13:12:19.370Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -40,12 +47,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:602ed57bf87503c31ded1340e590b45ab7c55c51101d855bcca51c14cde49b52",
-    "at": "2026-11-05T13:12:19.370Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T13:13:56.258Z"
 }
