@@ -32,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "81b4cc392204f525f3c1715f17b82c633e359fda",
+      "startedAt": "2026-11-05T03:37:55.918Z",
+      "doneAt": "2026-11-05T03:39:10.729Z",
+      "summary": "core: gitFailedCard (cards/git-failed.ts) con la orden de git y su error, y un SIGUIENTE para corregirlo y repetir el comando"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

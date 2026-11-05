@@ -107,6 +107,7 @@ export {
   frontListCard,
   frontRefusalCard,
 } from "./fronts";
+export { gitFailedCard } from "./git-failed";
 export {
   type BlockedCommitView,
   blockedCommitMessage,

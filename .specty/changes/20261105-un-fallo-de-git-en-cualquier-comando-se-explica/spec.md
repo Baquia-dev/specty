@@ -44,7 +44,7 @@ Cuando git falla dentro de un comando de Specty que no es `init` (`approve`, `ta
 
 ## Tareas
 
-- [ ] T1: La tarjeta del fallo de git
+- [x] T1: La tarjeta del fallo de git
   - files: packages/core/src/cards/git-failed.ts, packages/core/src/cards/index.ts, packages/core/test/cards/git-failed.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/git-failed.test.ts && pnpm typecheck && pnpm lint && pnpm sources
