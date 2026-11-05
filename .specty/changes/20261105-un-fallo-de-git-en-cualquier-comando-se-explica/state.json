@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261105-un-fallo-de-git-en-cualquier-comando-se-explica",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-un-fallo-de-git-en-cualquier-comando-se-explica",
   "baseCommit": "6db2938c9910024d6bb77d016af7fb938225ed67",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a98ea1f5320f02e052504df9858f367c072a8ec5e4ee67163cb8109bb187d693",
+    "at": "2026-11-05T03:36:16.046Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -35,12 +42,8 @@
     "AC": 2,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a98ea1f5320f02e052504df9858f367c072a8ec5e4ee67163cb8109bb187d693",
-    "at": "2026-11-05T03:36:16.046Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/git-failed.test.ts": "sha256:3edc4299bd27c5d9a4ccd048b7eb82f574f3c34c087d93cccec0196acb2a8ea6",
+    "packages/core/test/cards/git-failed.test.ts": "sha256:22aa04af7a6bde2569e339dfa4ca87f7091d5d03c589848f6e9a60bb04bfd109"
+  }
 }
