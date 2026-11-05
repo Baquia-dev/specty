@@ -372,6 +372,34 @@ export interface ChangeView {
   readonly history: readonly HistoryEntry[];
 }
 
+/**
+ * What the lists show of a change, and all the Inbox keeps of a finished one: its page asks the
+ * source for the rest by its id (`ChangesStore.byId`).
+ */
+export type ChangeSummary = Pick<
+  ChangeView,
+  | "id"
+  | "title"
+  | "kind"
+  | "epic"
+  | "slices"
+  | "phase"
+  | "phaseSince"
+  | "createdAt"
+  | "closedAt"
+  | "size"
+  | "tasks"
+  | "tab"
+>;
+
+/** A change as a list shows it: its summary and, when it is loaded whole, everything else. */
+export type ListedChange = ChangeSummary & Partial<ChangeView>;
+
+/** Whether a listed change is loaded whole: only a whole view carries its review. */
+export function isWhole(change: ListedChange): change is ChangeView {
+  return change.review !== undefined;
+}
+
 /** Messages to and from the derivation worker. */
 export interface DeriveRequest {
   readonly id: number;

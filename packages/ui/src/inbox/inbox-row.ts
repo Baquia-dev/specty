@@ -15,7 +15,7 @@ import { KindBadge, PhaseBadge } from "../components/badge";
 import { Button } from "../components/button";
 import { ItemTooltips } from "../components/item-tooltip";
 import { formatDuration } from "../data/progress";
-import type { Bilingual, ChangeView, DecisionKind } from "../data/records";
+import { type Bilingual, type DecisionKind, isWhole, type ListedChange } from "../data/records";
 import { Preferences } from "../theme/preferences";
 
 const DECISIONS: Readonly<
@@ -47,8 +47,8 @@ const DECISIONS: Readonly<
  * What goes after the decision: the revision in review, against the approved one when there is a
  * delta, or how many tests wait for approval.
  */
-function detailOf(change: ChangeView, t: (es: string, en: string) => string): string {
-  const delta = change.review.delta;
+function detailOf(change: ListedChange, t: (es: string, en: string) => string): string {
+  const delta = change.review?.delta;
   if (change.decision === "review") {
     return delta
       ? t(
@@ -92,7 +92,10 @@ function dayAndTime(iso: string, now: number, lang: Lang): string {
 const ROW =
   "group -mx-3 grid scroll-mt-[calc(var(--sp-sticky-top,9rem)+0.5rem)] scroll-mb-4 grid-cols-1 items-start gap-x-4 gap-y-2 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-text/4 focus-within:bg-text/4 motion-reduce:transition-none sm:grid-cols-[8.5rem_minmax(0,1fr)_auto]";
 
-/** One change in the Inbox: its phase, what it waits for, how long, and the way into it. */
+/**
+ * One change in the Inbox: its phase, what it waits for, how long, and the way into it. A finished
+ * change of a page comes by its summary: what only an open change has is missing from it.
+ */
 @Component({
   selector: "sp-inbox-row",
   imports: [RouterLink, PhaseBadge, KindBadge, Button],
@@ -146,10 +149,10 @@ const ROW =
           {{ t()('con', 'with') }} {{ sharers() }}
         </span>
       }
-      @if (change().highImpactPending > 0) {
+      @if ((change().highImpactPending ?? 0) > 0) {
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-note>{{ pending() }}</span>
       }
-      @for (request of change().scopeRequests; track request.id) {
+      @for (request of change().scopeRequests ?? []; track request.id) {
         <span class="text-[13px] text-text-muted" data-note>
           <span [attr.data-item-ref]="request.task">{{ request.task }}</span> {{ t()('pide', 'asks for') }}
           @for (path of request.paths; track path) {
@@ -176,7 +179,7 @@ const ROW =
   `,
 })
 export class InboxRow {
-  readonly change = input.required<ChangeView>();
+  readonly change = input.required<ListedChange>();
   /** Picked with j/k: highlighted, with its action as the main one. */
   readonly current = input(false);
   /** A slice under its epic's header: its badge names the slice, not the epic. */
@@ -193,7 +196,11 @@ export class InboxRow {
   protected readonly decisions = DECISIONS;
 
   constructor() {
-    inject(ItemTooltips).setSource(() => this.change());
+    // Its items' texts come with the whole change: a summary has none to show.
+    inject(ItemTooltips).setSource(() => {
+      const change = this.change();
+      return isWhole(change) ? change : undefined;
+    });
   }
 
   /** What it waits for, or what it is doing, and its size. */

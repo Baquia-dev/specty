@@ -20,7 +20,7 @@ import { ItemTooltips } from "../components/item-tooltip";
 import type { Toasts } from "../components/toast";
 import {
   ActionError,
-  type ChangeView,
+  type ChangeSummary,
   type CommentAnchor,
   type DiffPart,
   type FileView,
@@ -246,7 +246,7 @@ export class ReviewItems {
   /** The change under review, whose slices link to their changes; none in the chat's cards. */
   readonly epic = input<string | undefined>(undefined);
   /** The changes loaded, among which each slice of `epic` finds the one that implements it. */
-  readonly changes = input<readonly ChangeView[]>([]);
+  readonly changes = input<readonly ChangeSummary[]>([]);
   readonly comment = output<CommentAnchor>();
 
   private readonly preferences = inject(Preferences);
@@ -265,9 +265,9 @@ export class ReviewItems {
    * The change of each slice of `epic`: a closed one or, without one, the first of the others; a
    * cancelled change frees its slice, as in the epic's card (`flow/epic.ts`).
    */
-  protected readonly sliceChanges = computed((): ReadonlyMap<string, ChangeView> => {
+  protected readonly sliceChanges = computed((): ReadonlyMap<string, ChangeSummary> => {
     const epic = this.epic();
-    const found = new Map<string, ChangeView>();
+    const found = new Map<string, ChangeSummary>();
     if (epic === undefined) return found;
     for (const change of this.changes()) {
       const slice = change.epic?.id === epic ? change.epic.slice : undefined;

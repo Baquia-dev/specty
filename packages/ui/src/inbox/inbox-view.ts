@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// What the Inbox shows, from the change views: filtered, grouped and sorted. Pure.
+// What the Inbox shows, from the changes listed: filtered, grouped and sorted. Pure.
 import type { ChangeKind } from "@baquia-dev/specty-core";
 import {
   CHANGE_SORTS,
@@ -10,7 +10,7 @@ import {
   type Phase,
   sortChanges,
 } from "@baquia-dev/specty-core/light";
-import type { Bilingual, ChangeView } from "../data/records";
+import type { Bilingual, ListedChange } from "../data/records";
 import { PHASE_LABELS } from "../theme/tokens";
 
 export type InboxGroup = "state" | "phase" | "none" | "epic";
@@ -28,25 +28,26 @@ export interface InboxFilters {
   readonly sort: InboxSort;
 }
 
-export interface InboxSection {
+/** A section of the Inbox, with the changes as they were given: summaries, whole views or both. */
+export interface InboxSection<T extends ListedChange = ListedChange> {
   readonly key: string;
   readonly label: Bilingual;
-  readonly changes: readonly ChangeView[];
+  readonly changes: readonly T[];
 }
 
-export type InboxBlock =
-  | { readonly kind: "row"; readonly key: string; readonly change: ChangeView }
+export type InboxBlock<T extends ListedChange = ListedChange> =
+  | { readonly kind: "row"; readonly key: string; readonly change: T }
   | {
       readonly kind: "epic";
       readonly key: string;
       readonly epicId: string;
       readonly title: string;
       /** The epic itself, when it is in the section: its own row heads the group. */
-      readonly head?: ChangeView;
+      readonly head?: T;
       /** The epic as loaded, from every change: the phase and tab of a header without a row. */
-      readonly epic?: ChangeView;
+      readonly epic?: T;
       /** Its slices in the section, in the section's order. */
-      readonly slices: readonly ChangeView[];
+      readonly slices: readonly T[];
     };
 
 /** Waiting for the person, in progress, or finished. */
@@ -65,16 +66,16 @@ const KIND_SECTIONS: readonly { readonly key: ChangeKind; readonly label: Biling
   { key: "spike", label: { es: "Spikes", en: "Spikes" } },
 ];
 
-export function stateOf(change: ChangeView): InboxState {
+export function stateOf(change: ListedChange): InboxState {
   if (change.decision !== undefined) return "decision";
   return change.phase === "done" || change.phase === "cancelled" ? "recent" : "active";
 }
 
 /** The changes the search and the phase filter let through. */
-export function visibleChanges(
-  changes: readonly ChangeView[],
+export function visibleChanges<T extends ListedChange>(
+  changes: readonly T[],
   filters: Pick<InboxFilters, "query" | "phase">,
-): readonly ChangeView[] {
+): readonly T[] {
   return changes.filter(
     (change) =>
       matchesQuery(change, filters.query) &&
@@ -84,7 +85,7 @@ export function visibleChanges(
 
 /** How many changes of each phase the search lets through, for the phase filters. */
 export function phaseCounts(
-  changes: readonly ChangeView[],
+  changes: readonly ListedChange[],
   query: string,
 ): ReadonlyMap<InboxPhase, number> {
   const found = changes.filter((change) => matchesQuery(change, query));
@@ -102,11 +103,11 @@ export function phaseCounts(
  * finished ones, each part in the order chosen, so a new page of finished changes goes at the end
  * of what is shown (A4 of the epic `20261105-bandeja-por-paginas`).
  */
-export function inboxSections(
-  changes: readonly ChangeView[],
+export function inboxSections<T extends ListedChange>(
+  changes: readonly T[],
   filters: InboxFilters,
   lang: Lang,
-): readonly InboxSection[] {
+): readonly InboxSection<T>[] {
   const visible = visibleChanges(changes, filters);
   const sorted = (finished: boolean) =>
     sortChanges(
@@ -115,7 +116,7 @@ export function inboxSections(
       lang,
     );
   const shown = [...sorted(false), ...sorted(true)];
-  const sections: readonly InboxSection[] =
+  const sections: readonly InboxSection<T>[] =
     filters.group === "epic"
       ? epicSections(shown, changes)
       : filters.group === "state"
@@ -144,13 +145,13 @@ export function inboxSections(
  * Visual blocks inside a section: the slices of an epic under it, headed by the epic's own row when
  * it is in the section, and the other changes as rows. `all` gives the epic loaded elsewhere.
  */
-export function sectionBlocks(
-  section: InboxSection,
-  all: readonly ChangeView[],
-): readonly InboxBlock[] {
+export function sectionBlocks<T extends ListedChange>(
+  section: InboxSection<T>,
+  all: readonly T[],
+): readonly InboxBlock<T>[] {
   const sliceEpics = new Set(section.changes.flatMap((c) => (c.epic ? [c.epic.id] : [])));
   const seen = new Set<string>();
-  return section.changes.flatMap((change): InboxBlock[] => {
+  return section.changes.flatMap((change): InboxBlock<T>[] => {
     const epicId = epicClusterId(change, sliceEpics);
     if (epicId === undefined) return [{ kind: "row", key: change.id, change }];
     if (seen.has(epicId)) return [];
@@ -175,12 +176,12 @@ export function sectionBlocks(
   });
 }
 
-function epicClusterId(change: ChangeView, sliceEpics: ReadonlySet<string>): string | undefined {
+function epicClusterId(change: ListedChange, sliceEpics: ReadonlySet<string>): string | undefined {
   if (change.epic !== undefined) return change.epic.id;
   return change.kind === "epic" && sliceEpics.has(change.id) ? change.id : undefined;
 }
 
-function clusterByEpic(changes: readonly ChangeView[]): readonly ChangeView[] {
+function clusterByEpic<T extends ListedChange>(changes: readonly T[]): readonly T[] {
   const sliceEpics = new Set(changes.flatMap((c) => (c.epic ? [c.epic.id] : [])));
   const seen = new Set<string>();
   return changes.flatMap((change) => {
@@ -194,13 +195,13 @@ function clusterByEpic(changes: readonly ChangeView[]): readonly ChangeView[] {
   });
 }
 
-function epicSections(
-  shown: readonly ChangeView[],
-  all: readonly ChangeView[],
-): readonly InboxSection[] {
-  const epicOf = (c: ChangeView) => (c.kind === "epic" ? c.id : c.epic?.id);
+function epicSections<T extends ListedChange>(
+  shown: readonly T[],
+  all: readonly T[],
+): readonly InboxSection<T>[] {
+  const epicOf = (c: ListedChange) => (c.kind === "epic" ? c.id : c.epic?.id);
   const epicIds = [...new Set(shown.flatMap((c) => (epicOf(c) ? [epicOf(c) ?? ""] : [])))];
-  const byEpic: InboxSection[] = epicIds.map((epicId) => {
+  const byEpic: InboxSection<T>[] = epicIds.map((epicId) => {
     const group = shown
       .filter((c) => epicOf(c) === epicId)
       .toSorted((a, b) => Number(b.kind === "epic") - Number(a.kind === "epic"));
@@ -215,7 +216,7 @@ function epicSections(
     };
   });
   const rest = shown.filter((c) => epicOf(c) === undefined);
-  const byKind: InboxSection[] = KIND_SECTIONS.map(({ key, label }) => ({
+  const byKind: InboxSection<T>[] = KIND_SECTIONS.map(({ key, label }) => ({
     key,
     label,
     changes: rest.filter((c) => c.kind === key),

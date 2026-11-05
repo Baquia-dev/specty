@@ -70,7 +70,7 @@ Hoy la Bandeja guarda cada cambio terminado de sus páginas entero: su spec revi
   - files: packages/ui/src/data/changes-store.ts, packages/ui/src/change/change-page.finished.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/change-page.finished.test.ts --include src/change/change-page.unloaded.test.ts --include src/data/changes-store.test.ts
-- [ ] T2: La Bandeja y los cortes de una épica leen el resumen de un cambio
+- [x] T2: La Bandeja y los cortes de una épica leen el resumen de un cambio
   - files: packages/ui/src/data/records.ts, packages/ui/src/inbox/inbox-view.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-epic.ts, packages/ui/src/review/spec-sections.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-row.test.ts --include src/inbox/inbox-view.test.ts --include src/inbox/inbox.test.ts --include src/review/spec-sections.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck
