@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261105-la-verificacion-fresca-se-ve-en-vivo-y-desde-mcp",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-la-verificacion-fresca-se-ve-en-vivo-y-desde-mcp",
+  "baseCommit": "0c7a2a1b0de1c629b4da57cc45be19298848fc2e",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:832f6814852e813d5e8de810dc2c769500692d0e2cebc75cdededac0c0b33adb",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2663c1d36524fcca8880c34d743c811301b25a5cf0768f74968cc92b846c786d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:34f82bafc02664149181b39c4323a04649a5405eac162c6621997af087e7f530",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:11e3f6278e444277ff0ff16d7357c8857b40d98dac2324fd5f7d13439d1697bf",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:7dd89774494888c55102ed83dc53bb2548be3b1538427d114ad6ec2ed19a4def",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:20ed2d0025cd4c62d87782b4e994972e830040af04075f05315d46836a4360c6",
+    "at": "2026-11-05T09:27:08.468Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
