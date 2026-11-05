@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { randomUUID } from "node:crypto";
 import { mkdir, realpath } from "node:fs/promises";
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import type { ChangedFile } from "@baquia-dev/specty-core";
@@ -219,7 +220,8 @@ function commitOperations(
   return {
     writeTree: (options) => git.output(["write-tree"], options),
     async treeWith(paths) {
-      const index = await git.gitPath(`specty/index-${process.pid}-${Date.now()}`);
+      // A name of its own on every call: two readings at once in this process must not share it.
+      const index = await git.gitPath(`specty/index-${process.pid}-${randomUUID()}`);
       const env = { GIT_INDEX_FILE: index };
       await mkdir(dirname(index), { recursive: true });
       try {

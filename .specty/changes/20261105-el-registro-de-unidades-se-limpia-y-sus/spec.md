@@ -51,7 +51,7 @@ El registro de las unidades que pasaron (`.git/common/specty/verified/`) crece c
 
 ## Tareas
 
-- [ ] T1: Cada lectura del árbol usa su propio índice temporal
+- [x] T1: Cada lectura del árbol usa su propio índice temporal
   - files: packages/cli/src/io/git.ts, packages/cli/src/server/runs.ts, packages/cli/test/git-tree.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-tree.test.ts test/git-paths.test.ts test/server/verify-units.test.ts test/server/verify.test.ts

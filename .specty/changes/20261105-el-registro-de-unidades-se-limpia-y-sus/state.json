@@ -41,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "74c0fcd182e816948b9328cb0194129b44aa79ac",
+      "startedAt": "2026-11-05T08:04:21.271Z",
+      "doneAt": "2026-11-05T08:04:56.647Z",
+      "summary": "treeWith nombra su índice temporal con randomUUID además del pid, así que dos lecturas del árbol a la vez en el mismo proceso no lo comparten; el servidor de la UI lee el árbol del código y las huellas de las unidades a la vez con Promise.all."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
