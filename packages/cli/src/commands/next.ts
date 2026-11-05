@@ -8,6 +8,7 @@ import {
   type Output,
   parseSpec,
   sessionEntries,
+  withDevPorts,
 } from "@baquia-dev/specty-core";
 import { toolExclusions } from "../detect/formatters";
 import { conversationChange } from "../enforce/sessions";
@@ -22,6 +23,7 @@ import { openSession, type Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { liveHolds } from "../store/front-owners";
 import { readMemory } from "../store/memory";
+import { portsOf } from "../store/ports";
 import { pendingIntegration } from "./integrate";
 import { openChanges } from "./status";
 
@@ -68,7 +70,9 @@ export async function next(session: Session): Promise<Output> {
       : current.state.kind === "epic"
         ? await finishEpic(session, current)
         : await activateNextTask(session, current);
-  return nextCard({ change: await changeView(session, change), dirty: [] }, session.cards);
+  const card = nextCard({ change: await changeView(session, change), dirty: [] }, session.cards);
+  // In a change's folder, the agent starts its development servers on that folder's ports.
+  return withDevPorts(card, await portsOf(session, session.root), session.lang);
 }
 
 /**
