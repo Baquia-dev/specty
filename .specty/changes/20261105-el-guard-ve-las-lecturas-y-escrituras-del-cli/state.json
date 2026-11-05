@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261105-el-guard-ve-las-lecturas-y-escrituras-del-cli",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-el-guard-ve-las-lecturas-y-escrituras-del-cli",
+  "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5c60e4ebc39c956e043e36dfd48208c635d17dd5db6c5d5ee21e0aa4f69b83bb",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:cb060596bfc5c34ef82590598a26b9d7b99b0cc845ff0518a604b2040b3ada2f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:923bfed23c2d8d545c5fafd79083344905da9d440e0d8061a637300bbd3b6059",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b79df15a52bc1489dccaa5fe22299d029ab20df5ec338a984211d37968802526",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:9fcf2664ad597801769e7c38f29046d599b4fa2b78d22178da73ac48e34bd05b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:150fa9b36ef76bee5c6dcbcba93ad5aed66f6a4898c64d30f6c2b4c27b31fbe9",
+    "at": "2026-11-05T08:38:50.200Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
