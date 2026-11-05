@@ -17,18 +17,19 @@ function viewOf(id: string): ChangeView {
 
 @Component({
   imports: [InboxRow],
-  template: `<sp-inbox-row [change]="change()" />`,
+  template: `<sp-inbox-row [change]="change()" [now]="now()" />`,
 })
 class Host {
   readonly change = signal(viewOf(LOGIN));
+  readonly now = signal(Date.now());
 }
 
-async function render() {
+async function render(lang: "es" | "en" = "es") {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
   })) as unknown as typeof window.matchMedia;
-  localStorage.setItem("specty.lang", "es");
+  localStorage.setItem("specty.lang", lang);
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({ providers: [provideRouter([])] });
   const fixture = TestBed.createComponent(Host);
@@ -80,35 +81,108 @@ describe("InboxRow", () => {
     expect(text(element.querySelector("sp-button"))).toBe("Aprobar tests");
   });
 
-  it("AC2: shows time in current phase and total execution time for in-progress changes", async () => {
+  it("AC1: an open change says how long since it started and in its phase, moving with the page clock", async () => {
     const { element, fixture, host } = await render();
-    const now = Date.parse("2026-10-21T12:00:00.000Z");
-    const change = {
+    const now = Date.parse("2026-11-05T12:00:00.000Z");
+    host.now.set(now);
+    host.change.set({
       ...viewOf(LOGIN),
-      phase: "implementing" as const,
-      phaseSince: new Date(now - 15 * 60_000).toISOString(),
-      createdAt: new Date(now - 75 * 60_000).toISOString(),
-    };
-    host.change.set(change as unknown as ChangeView);
+      phase: "implementing",
+      createdAt: new Date(now - 135 * 60_000).toISOString(),
+      phaseSince: new Date(now - 25 * 60_000).toISOString(),
+    });
     await fixture.whenStable();
-    expect(text(element.querySelector("[data-phase-time]"))).toBe("Fase: 15 min");
-    expect(text(element.querySelector("[data-total-time]"))).toBe("Total: 1 h 15 min");
+    expect(text(element.querySelector("[data-started]"))).toBe("Empezó hace 2 h 15 min");
+    expect(text(element.querySelector("[data-phase-time]"))).toBe("En esta fase: 25 min");
+    expect(element.querySelector("[data-took]")).toBeNull();
+    // The times go under the phase.
+    expect(element.querySelector("[data-started]")?.hasAttribute("data-since")).toBe(true);
+    host.now.set(now + 10 * 60_000);
+    await fixture.whenStable();
+    expect(text(element.querySelector("[data-started]"))).toBe("Empezó hace 2 h 25 min");
+    expect(text(element.querySelector("[data-phase-time]"))).toBe("En esta fase: 35 min");
   });
 
-  it("AC3: shows total time for finished changes", async () => {
+  it("AC1: a change waiting for a decision also says both times", async () => {
     const { element, fixture, host } = await render();
-    const created = "2026-10-20T10:00:00.000Z";
-    const closed = "2026-10-20T10:45:00.000Z";
-    const change = {
+    const now = Date.parse("2026-11-05T12:00:00.000Z");
+    host.now.set(now);
+    host.change.set({
       ...viewOf(LOGIN),
-      phase: "done" as const,
-      createdAt: created,
+      phase: "acceptance",
+      decision: "acceptance",
+      createdAt: new Date(now - 51 * 3_600_000).toISOString(),
+      phaseSince: new Date(now - 5 * 60_000).toISOString(),
+    });
+    await fixture.whenStable();
+    expect(text(element.querySelector("[data-started]"))).toBe("Empezó hace 2 d 3 h");
+    expect(text(element.querySelector("[data-phase-time]"))).toBe("En esta fase: 5 min");
+  });
+
+  it("AC2: a finished change says the day and time it started and how long it took, not its phase time", async () => {
+    const { element, fixture, host } = await render();
+    host.now.set(new Date(2026, 10, 5, 9, 0).getTime());
+    const started = new Date(2026, 10, 3, 14, 5).getTime();
+    const closed = new Date(started + 130 * 60_000).toISOString();
+    host.change.set({
+      ...viewOf(LOGIN),
+      phase: "done",
+      createdAt: new Date(started).toISOString(),
       closedAt: closed,
       phaseSince: closed,
-    };
-    host.change.set(change as unknown as ChangeView);
+    });
     await fixture.whenStable();
+    expect(text(element.querySelector("[data-started]"))).toBe("Empezó el 3 nov, 14:05");
+    expect(text(element.querySelector("[data-took]"))).toBe("Tardó 2 h 10 min");
     expect(element.querySelector("[data-phase-time]")).toBeNull();
-    expect(text(element.querySelector("[data-total-time]"))).toBe("Total: 45 min");
+    // A later clock changes nothing: it already ended.
+    host.now.set(new Date(2026, 10, 6, 9, 0).getTime());
+    await fixture.whenStable();
+    expect(text(element.querySelector("[data-took]"))).toBe("Tardó 2 h 10 min");
+  });
+
+  it("AC2: a cancelled change from another year says the year it started", async () => {
+    const { element, fixture, host } = await render();
+    host.now.set(new Date(2026, 0, 10, 9, 0).getTime());
+    const started = new Date(2025, 10, 3, 14, 5).getTime();
+    const closed = new Date(started + 45 * 60_000).toISOString();
+    host.change.set({
+      ...viewOf(LOGIN),
+      phase: "cancelled",
+      createdAt: new Date(started).toISOString(),
+      closedAt: closed,
+      phaseSince: closed,
+    });
+    await fixture.whenStable();
+    expect(text(element.querySelector("[data-started]"))).toBe("Empezó el 3 nov 2025, 14:05");
+    expect(text(element.querySelector("[data-took]"))).toBe("Tardó 45 min");
+    expect(element.querySelector("[data-phase-time]")).toBeNull();
+  });
+
+  it("AC4: the times read in English too", async () => {
+    const { element, fixture, host } = await render("en");
+    const now = new Date(2026, 10, 5, 9, 0).getTime();
+    host.now.set(now);
+    host.change.set({
+      ...viewOf(LOGIN),
+      phase: "implementing",
+      createdAt: new Date(now - 135 * 60_000).toISOString(),
+      phaseSince: new Date(now - 25 * 60_000).toISOString(),
+    });
+    await fixture.whenStable();
+    expect(text(element.querySelector("[data-started]"))).toBe("Started 2 h 15 min ago");
+    expect(text(element.querySelector("[data-phase-time]"))).toBe("In this phase: 25 min");
+    const started = new Date(2026, 10, 3, 14, 5).getTime();
+    const closed = new Date(started + 130 * 60_000).toISOString();
+    host.change.set({
+      ...viewOf(LOGIN),
+      phase: "done",
+      createdAt: new Date(started).toISOString(),
+      closedAt: closed,
+      phaseSince: closed,
+    });
+    await fixture.whenStable();
+    expect(text(element.querySelector("[data-started]"))).toBe("Started Nov 3, 2:05 PM");
+    expect(text(element.querySelector("[data-took]"))).toBe("Took 2 h 10 min");
   });
 });

@@ -300,7 +300,7 @@ export function formatClock(ms: number): string {
     : `${minutes}:${seconds}`;
 }
 
-/** «18 s» for a verification, «14 min» or «1 h 5 min» for a task. */
+/** «18 s» for a verification, «14 min» or «1 h 5 min» for a task, «2 d 3 h» for a change. */
 export function formatDuration(ms: number, lang: Lang): string {
   if (ms < 60_000) {
     if (ms < 1_000) return lang === "es" ? "menos de 1 s" : "under 1 s";
@@ -308,7 +308,14 @@ export function formatDuration(ms: number, lang: Lang): string {
   }
   const minutes = Math.round(ms / 60_000);
   if (minutes < 60) return `${minutes} min`;
-  const hours = Math.floor(minutes / 60);
-  const rest = minutes % 60;
-  return rest === 0 ? `${hours} h` : `${hours} h ${rest} min`;
+  if (minutes < 1_440) {
+    const hours = Math.floor(minutes / 60);
+    const rest = minutes % 60;
+    return rest === 0 ? `${hours} h` : `${hours} h ${rest} min`;
+  }
+  // A day or more, to the hour: «2 d 3 h».
+  const hours = Math.round(ms / 3_600_000);
+  const days = Math.floor(hours / 24);
+  const rest = hours % 24;
+  return rest === 0 ? `${days} d` : `${days} d ${rest} h`;
 }

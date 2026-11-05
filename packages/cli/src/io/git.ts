@@ -5,6 +5,7 @@ import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import type { ChangedFile } from "@baquia-dev/specty-core";
 import { type ExecResult, execute } from "./exec";
 import { exists, remove } from "./files";
+import { mayChangeRecalled, type Recall, recall } from "./git-memo";
 
 /** Hash of git's empty tree, used to diff against a repository without commits. */
 const EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
@@ -74,22 +75,54 @@ export async function findRoot(cwd: string): Promise<string | undefined> {
   return result.code === 0 ? result.stdout.trim() : undefined;
 }
 
-export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env): Git {
-  const git = runner(root, baseEnv);
-  const head = () => git.optional(["rev-parse", "--verify", "-q", "HEAD"]);
-  const gitPath = gitPaths(git);
-  const repository: Repository = { ...git, head, gitPath, ...worktreeQueries(git) };
+/** The repository that contains a folder, and the paths of its git folder git already gave. */
+export interface OpenedRepository {
+  readonly root: string;
+  readonly known: Readonly<Record<string, string>>;
+}
+
+/**
+ * The repository that contains `cwd`, with where git keeps `specty/` and `common/`, in one question
+ * to git instead of three; undefined outside git.
+ */
+export async function openRepository(cwd: string): Promise<OpenedRepository | undefined> {
+  const args = ["rev-parse", "--show-toplevel", "--git-path", "specty", "--git-path", "common"];
+  const result = await execute("git", args, { cwd });
+  const [root, specty, common] = result.stdout.trim().split("\n");
+  if (result.code !== 0 || root === undefined || specty === undefined || common === undefined)
+    return undefined;
+  // A relative path of git's folder is relative to where it was asked.
+  return { root, known: { specty: resolve(cwd, specty), common: resolve(cwd, common) } };
+}
+
+/**
+ * Git in `root`. `known` are paths of its folder git already gave (`openRepository`), and the
+ * branch, HEAD, the configuration and the worktrees are recalled for a while (`io/git-memo.ts`).
+ */
+export function createGit(
+  root: string,
+  baseEnv: NodeJS.ProcessEnv = process.env,
+  known: Readonly<Record<string, string>> = {},
+): Git {
+  const memory = recall();
+  const git = runner(root, baseEnv, memory);
+  const head = memory.keep(() => git.optional(["rev-parse", "--verify", "-q", "HEAD"]));
+  const branch = memory.keep(() => git.optional(["symbolic-ref", "--short", "-q", "HEAD"]));
+  const config = memory.keep((key) => git.optional(["config", "--get", key]));
+  const gitPath = gitPaths(git, known);
+  const queries = worktreeQueries(git, memory);
+  const repository: Repository = { ...git, head: () => head(""), gitPath, ...queries };
   return {
     root,
     run: git.run,
     output: git.output,
-    head,
-    branch: () => git.optional(["symbolic-ref", "--short", "-q", "HEAD"]),
+    head: repository.head,
+    branch: () => branch(""),
     gitPath,
     ...changeQueries(repository),
     ...commitOperations(repository),
     ...fileQueries(git),
-    config: (key) => git.optional(["config", "--get", key]),
+    config,
     worktrees: repository.worktrees,
     nestedWorktrees: repository.nestedWorktrees,
   };
@@ -106,8 +139,13 @@ const ONE_FOLDER: ReadonlySet<string> = new Set(["specty", "common"]);
  * a path under `specty/` or `common/` comes from the answer for that segment, so one question
  * serves them all. A question that fails is not kept.
  */
-function gitPaths(git: Runner): (name: string) => Promise<string> {
-  const answers = new Map<string, Promise<string>>();
+function gitPaths(
+  git: Runner,
+  known: Readonly<Record<string, string>>,
+): (name: string) => Promise<string> {
+  const answers = new Map<string, Promise<string>>(
+    Object.entries(known).map(([name, path]) => [name, Promise.resolve(path)]),
+  );
   const ask = (name: string): Promise<string> => {
     const known = answers.get(name);
     if (known !== undefined) return known;
@@ -135,15 +173,22 @@ interface Runner extends Pick<Git, "root" | "run" | "output"> {
 /** A runner that also knows HEAD, the git directory and the worktrees. */
 type Repository = Runner & Pick<Git, "head" | "gitPath" | "worktrees" | "nestedWorktrees">;
 
-function runner(root: string, baseEnv: NodeJS.ProcessEnv): Runner {
-  const run = (args: readonly string[], options: RunOptions = {}) =>
-    execute("git", args, {
+function runner(root: string, baseEnv: NodeJS.ProcessEnv, memory: Recall): Runner {
+  const run = async (args: readonly string[], options: RunOptions = {}) => {
+    // What it recalls may change with this command: forgotten before, and after for an answer
+    // asked while it ran.
+    const changes = mayChangeRecalled(args);
+    if (changes) memory.forget();
+    const result = await execute("git", args, {
       cwd: root,
       env: { ...baseEnv, ...options.env },
       // A diff or a file is read whole: cut, it would lose its beginning.
       whole: true,
       ...(options.input !== undefined ? { input: options.input } : {}),
     });
+    if (changes) memory.forget();
+    return result;
+  };
   const output = async (args: readonly string[], options: RunOptions = {}) => {
     const result = await run(args, options);
     if (result.code !== 0) throw new GitError(args, result);
@@ -157,11 +202,12 @@ function runner(root: string, baseEnv: NodeJS.ProcessEnv): Runner {
   return { root, run, output, optional };
 }
 
-function worktreeQueries(git: Runner): Pick<Git, "worktrees" | "nestedWorktrees"> {
+function worktreeQueries(git: Runner, memory: Recall): Pick<Git, "worktrees" | "nestedWorktrees"> {
+  const listed = memory.keep(() => git.output(["worktree", "list", "--porcelain"]));
   // `--porcelain` prints one block per worktree: `worktree <folder>`, then `branch refs/heads/…`
   // unless it is detached.
   const worktrees = async () =>
-    (await git.output(["worktree", "list", "--porcelain"])).split("\n\n").flatMap((block) => {
+    (await listed("")).split("\n\n").flatMap((block) => {
       const lines = block.split("\n");
       const value = (prefix: string) =>
         lines.find((line) => line.startsWith(prefix))?.slice(prefix.length);
