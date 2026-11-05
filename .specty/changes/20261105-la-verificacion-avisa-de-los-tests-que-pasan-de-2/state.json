@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261105-la-verificacion-avisa-de-los-tests-que-pasan-de-2",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-la-verificacion-avisa-de-los-tests-que-pasan-de-2",
+  "baseCommit": "b4686dfe63d4d149247ca21552eac202ab157426",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8607f321177c903b47cfc90112ceeb110d3ec0edaea34adda7f5ac4e6af0075f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:89be8f750f25df13c9e0dd341f75f01f638725098003d5c77ffd0e5f13c87aa7",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:97dc05a8f0aa023f75db5e2f0ee3ead320ddc680ed2152f3162a44ab76e0f022",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:cd5b7d44dfb9545ab969bac7f4d451fb25afa76c959aaa656b39eb49e6b9421f",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:99b3a1c0a21e0921edf6ef414c8584b5b39085c5c9116b53f2871ee4778b51a1",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 5,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b6bb776b022172837f7c2a846ec5fe55bc6cb4d4c03a37f7f20143c5ff2c85f1",
+    "at": "2026-11-05T04:39:39.639Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  },
+  "testCycle": "feature"
+}
