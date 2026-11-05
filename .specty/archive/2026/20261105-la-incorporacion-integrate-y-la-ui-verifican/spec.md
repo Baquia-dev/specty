@@ -97,3 +97,25 @@ Desde el corte C1, la verificación completa de `accept` ejecuta solo las unidad
 
 - R1: La verificación de la incorporación pasa a correr en vivo también sin unidades, y la UI la ve como la verificación completa del cambio — es la misma que `accept` ya mostraba; la de un cambio cerrado deja un archivo de `runs/` que se borra al terminar.
 - R2: Unos `paths` que no cubren lo que lee una unidad saltan tests en la incorporación como en `accept` — es responsabilidad de quien los escribe (A4 de la épica); el CI lo ejecuta todo.
+
+## Cierre
+
+### Resumen
+
+La incorporación de main (dentro de `accept` y al cerrar), `specty integrate` y la verificación que la persona lanza desde la UI usan las unidades de `verify.units` y el registro del clon como `accept`: solo corren las que no pasaron con su huella, en orden y en un turno con todas las plazas, y las que pasan se anotan para los demás cambios. La línea de la incorporación dice que pasaron sus unidades y qué hizo cada una, y `change.verified` lleva `units`, así que `accept` no repite lo que verificó la incorporación. `integrate` lo dice por la salida de error, y el servidor de la UI ejecuta cada unidad en su proceso, en vivo. Con solo `verify.units`, el aterrizaje también toma el turno de la verificación completa.
+
+### Desviaciones
+
+- `server/runs.ts` lee el árbol del código (`codeTree`) y las huellas de las unidades (`fullPlan`) uno tras otro, y no a la vez como se escribió primero: las dos lecturas arman su árbol en un índice temporal con el mismo nombre (pid y milisegundo), y a la vez daban huellas erróneas y repetían unidades que ya habían pasado.
+- La incorporación de main que trajo el corte C4 dejó `commands/verify.ts` importando `fullCommand` de `flow/units.ts`, de donde este cambio lo movió a `flow/full-verification.ts`; se corrigió el import al resolver el merge, junto con los conflictos de docs/ARCHITECTURE.md y docs/formats.md, donde se conservaron los textos de los dos cortes.
+- T4 dio formato con Biome a una línea de `flow/integrate.ts` (de T2), que `pnpm lint` rechazaba, con una ampliación del alcance.
+
+### Decisiones
+
+- La verificación de la incorporación y la de `specty integrate` corren con `runFull` también sin unidades, en vivo como la de `accept`, para que la UI las vea.
+- Si todas las unidades ya pasaron, la incorporación no anota `change.verified`, como `accept`; la verificación de la UI sí lo anota, con todas en `reused`, porque la persona la pidió.
+- `fullCommand` pasa a `flow/full-verification.ts`, con `unitsCommand`, para que `landingTurn` lo use sin un import circular con `flow/units.ts`; `runUnits` recibe cómo ejecutar cada comando (`runLive` en la CLI, un proceso propio en la UI).
+
+### Pendientes
+
+- P139: hacer único el nombre del índice temporal de `treeWith` (`packages/cli/src/io/git.ts`), que hoy dos lecturas del árbol a la vez en el mismo proceso y el mismo milisegundo comparten.

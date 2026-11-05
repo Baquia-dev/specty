@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-la-incorporacion-integrate-y-la-ui-verifican",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-la-incorporacion-integrate-y-la-ui-verifican",
   "baseCommit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2c7cbbe6ad2f5e2814de37aa540b8bb259b9707c2f265f3cf753cc7cc2409821",
@@ -94,12 +94,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5ac030092a5bba1407065f48c37be0de814b713a",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:58:15.682Z",
       "doneAt": "2026-11-05T07:03:04.632Z",
-      "summary": "ARCHITECTURE §9 y formats.md §4 y §6: la incorporación, integrate y la UI verifican por unidades"
+      "summary": "ARCHITECTURE §9 y formats.md §4 y §6: la incorporación, integrate y la UI verifican por unidades",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -112,10 +112,66 @@
     "T": 5,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T07:19:11.372Z",
   "lockedTests": {
     "packages/core/test/cards/incorporation.test.ts": "sha256:3c3318dd288f705e8e45b8f1aa0bcdb32e98de74c0a87092353b074854ce0d11",
     "packages/cli/test/incorporation-units.test.ts": "sha256:282d918fa20abaa79eff390e79d0710fd7fe276bc10c8d55443855bf11afd1ed",
     "packages/cli/test/integrate-units.test.ts": "sha256:32a3f0b5d20bced67cd0064bb89da8a8069a7268d272a7b596e318d0d896e42c",
     "packages/cli/test/server/verify-units.test.ts": "sha256:8957f2d7ec35999a7f356e3a3f5319882df199b3756c7509ea7acea84a30f7e9"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "4478cfdabd45bb9df95eee9d49eb0d7bb55cc2d0",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/checks.en.md",
+      "docs/checks.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "packages/cli/src/check/common.ts",
+      "packages/cli/src/check/coverage.ts",
+      "packages/cli/src/check/test-time.ts",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/integrate.ts",
+      "packages/cli/src/commands/verify.ts",
+      "packages/cli/src/flow/archive-memory.ts",
+      "packages/cli/src/flow/duplicates.ts",
+      "packages/cli/src/flow/full-verification.ts",
+      "packages/cli/src/flow/integrate.ts",
+      "packages/cli/src/flow/units.ts",
+      "packages/cli/src/install/opencode.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/test/accept-test-time.test.ts",
+      "packages/cli/test/check-docs.test.ts",
+      "packages/cli/test/check-test-time.test.ts",
+      "packages/cli/test/duplicates-slice.test.ts",
+      "packages/cli/test/incorporation-units.test.ts",
+      "packages/cli/test/integrate-units.test.ts",
+      "packages/cli/test/opencode.test.ts",
+      "packages/cli/test/server/verify-units.test.ts",
+      "packages/cli/test/verify-fresh.test.ts",
+      "packages/core/src/cards/fresh.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/integration.ts",
+      "packages/core/src/cards/test-time.ts",
+      "packages/core/src/checks/junit.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/checks.ts",
+      "packages/core/test/cards/fresh.test.ts",
+      "packages/core/test/cards/incorporation.test.ts",
+      "packages/core/test/cards/test-time.test.ts",
+      "packages/core/test/checks/junit.test.ts"
+    ],
+    "at": "2026-11-05T07:03:41.911Z",
+    "resolved": {
+      "commit": "c1db3b7",
+      "at": "2026-11-05T07:12:46.447Z"
+    }
   }
 }
