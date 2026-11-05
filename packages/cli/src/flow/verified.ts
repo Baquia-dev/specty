@@ -1,5 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { type CoverageGap, hashText } from "@baquia-dev/specty-core";
+import {
+  type CoverageGap,
+  hashText,
+  isGoverned,
+  type ResolvedConfig,
+} from "@baquia-dev/specty-core";
 import { changeCoverage } from "../check/coverage";
 import { checkContext } from "../check/files";
 import { isRecord } from "../io/files";
@@ -134,20 +139,30 @@ export async function passedOnThisCode(
 }
 
 /**
- * The code a verification runs on: the working tree without `.specty/`, whose files change with
- * every record. A hash of its top-level entries, taken without touching the index; undefined when
- * git cannot tell.
+ * The code a verification runs on: the working tree's code files, without `.specty/`, whose files
+ * change with every record, nor the free ones of `ignored`, such as the documentation. A hash of
+ * their paths and contents, taken without touching the index; undefined when git cannot tell.
  */
 export async function codeTree(session: Session): Promise<string | undefined> {
   try {
     const tree = await session.git.treeWith(["."]);
-    const listed = await session.git.run(["ls-tree", tree]);
+    const listed = await session.git.run(["ls-tree", "-r", "-z", tree]);
     if (listed.code !== 0) return undefined;
     const entries = listed.stdout
-      .split("\n")
-      .filter((line) => line !== "" && !line.endsWith("\t.specty"));
+      .split("\0")
+      .filter(
+        (entry) => entry !== "" && isCode(entry.slice(entry.indexOf("\t") + 1), session.config),
+      );
     return hashText(entries.join("\n"));
   } catch {
     return undefined;
   }
+}
+
+/**
+ * Whether a file is code, which a verification reads: any outside `.specty/` and `ignored`, even
+ * one outside `governed`, such as a manifest.
+ */
+function isCode(path: string, config: Pick<ResolvedConfig, "ignored">): boolean {
+  return isGoverned(path, { governed: ["**"], ignored: config.ignored });
 }

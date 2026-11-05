@@ -62,7 +62,7 @@ Hoy `accept` ejecuta la verificación completa aunque el cambio solo toque docum
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/accept.test.ts test/cards/incorporation.test.ts && pnpm --filter @baquia-dev/specty-core typecheck
   - type: perf
-- [ ] T2: El tree de una verificación solo cuenta el código
+- [x] T2: El tree de una verificación solo cuenta el código
   - files: packages/cli/src/flow/verified.ts, packages/cli/test/reuse.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/reuse.test.ts && pnpm --filter @baquia-dev/specty typecheck

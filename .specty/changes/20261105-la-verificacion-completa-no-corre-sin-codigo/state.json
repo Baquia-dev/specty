@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "83a2fafeb7b493e495155de522142294cf82e571",
+      "attempts": 1,
       "startedAt": "2026-11-05T01:10:06.562Z",
       "doneAt": "2026-11-05T01:11:40.018Z",
-      "summary": "core: noCodeVerificationNote(command, target, lang) en cards/accept.ts (exportada) y MergeVerification no-code en absorbedLine, que dice que el código es el de la rama destino; tests es/en en accept.test.ts e incorporation.test.ts"
+      "summary": "core: noCodeVerificationNote(command, target, lang) en cards/accept.ts (exportada) y MergeVerification no-code en absorbedLine, que dice que el código es el de la rama destino; tests es/en en accept.test.ts e incorporation.test.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1d80a308cbdfeae29efbe8319e354fc21a83f879",
+      "startedAt": "2026-11-05T01:11:40.979Z",
+      "doneAt": "2026-11-05T01:14:35.110Z",
+      "summary": "codeTree hashea ls-tree -r -z del árbol de trabajo solo con los archivos de código (fuera de .specty/ y de ignored, aunque no estén en governed, con isCode); un cambio en un archivo libre ya no obliga a repetir una verificación que pasó (AC4 en reuse.test.ts)"
     }
   },
   "pending": {
