@@ -47,7 +47,7 @@ Con varios cambios abiertos, cada uno en su worktree, dos sesiones que arrancan 
 
 ## Tareas
 
-- [ ] T1: `dev.ports` y la línea de los puertos
+- [x] T1: `dev.ports` y la línea de los puertos
   - files: packages/core/src/schema/dev.ts, packages/core/src/schema/config.ts, packages/core/src/cards/ports.ts, packages/core/src/cards/index.ts, packages/core/test/cards/dev-ports.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/dev-ports.test.ts test/schema && pnpm typecheck && pnpm lint && pnpm sources

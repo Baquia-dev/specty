@@ -32,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "17b74916f3400469c647eab54a735ca4da56ab26",
+      "startedAt": "2026-11-05T02:17:21.258Z",
+      "doneAt": "2026-11-05T02:19:18.299Z",
+      "summary": "core: dev.ports en config.yaml (schema/dev.ts, puertos enteros de 1 a 65535) y withDevPorts (cards/ports.ts) que añade a una tarjeta los puertos de la carpeta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

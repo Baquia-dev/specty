@@ -282,6 +282,7 @@ export {
   sharedTitle,
   workingFolderLine,
 } from "./parallel";
+export { withDevPorts } from "./ports";
 export {
   type Asker,
   checkStatus,
