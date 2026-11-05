@@ -78,3 +78,33 @@ Hoy las evals miden el coste de tres cambios seguidos, pero no el de una épica 
 - R2: Pocas ejecuciones no dan una medida estable, porque el modelo varía de una a otra. Mitigación: §16 da las cifras de cada experimento y una conclusión prudente.
 - R3: En orden, Claude Code cambia de carpeta con `EnterWorktree` entre la épica y cada corte; si sin interfaz no lo consigue, el experimento queda sin avance. Mitigación: el informe lo cuenta así, y §16 lo apunta como hallazgo con su pendiente.
 - R4: Sin interfaz (`claude -p`), los subagentes pueden correr en segundo plano y no aparecer en el `stream-json`, o morir al terminar el turno principal. Mitigación: la primera ejecución se revisa en las transcripciones de Claude Code antes de repetirla, y §16 dice qué cuentan las rondas.
+
+## Cierre
+
+### Resumen
+
+- El informe de las evals da, por agente y escenario o experimento, el tiempo medio de reloj en la columna «Tiempo (s)», junto a las ejecuciones que cumplieron y sus rondas. El ejecutor lo mide desde que lanza el agente hasta que termina o lo corta su límite (`Run.seconds`). El coste sigue en «Consumo».
+- Experimentos `epic` (con `subagents: false`) y `epic-subagent` (configuración por defecto). Los dos preparan la misma épica aprobada de tres cortes independientes en `.worktrees/`, en modo delegado y sin conversación que la retenga, y tienen el mismo encargo. Se juzgan en la carpeta principal por los cortes archivados que nombran cada archivo, con 200 turnos y 45 minutos.
+- Dos ejecuciones reales de cada uno con Claude Code 2.1.318 y Opus 5.5, por 5,56 USD en total:
+  - en orden: cumplió 2 de 2, en 228 y 298 s, con 64 y 59 rondas y 1,06 y 1,08 USD;
+  - con un subagente por corte: cumplió 1 de 2, en 411 y 144 s, con 109 y 47 rondas y 2,19 y 1,23 USD. La segunda quedó sin avance.
+- La causa: el reparto no llegó a trabajar en paralelo. La sesión principal entra en la épica con `EnterWorktree`, como le pide Specty, y Claude Code aísla a sus subagentes en esa worktree. En la carpeta de su corte les rechaza Write, Edit y los Bash complejos, y sin interfaz les deniega `EnterWorktree`.
+  - En la primera ejecución, un subagente cerró su corte escribiendo con `printf`, y la sesión principal rehízo en orden los otros dos.
+  - En la segunda, los tres se rindieron.
+- ARCHITECTURE §16 describe los dos experimentos y el tiempo del informe, y da la tabla con las dos ejecuciones y la conclusión.
+
+### Desviaciones (respecto al plan)
+
+- La primera ejecución de cada experimento se hizo antes de completar T2, para probar el arnés mientras su código aún podía ajustarse. No hizo falta tocarlo, así que cuenta como una de las dos.
+- La tabla de §16 da las dos cifras de cada experimento y no su media, porque con subagentes la media mezclaría una ejecución que cumplió con otra sin avance.
+
+### Decisiones
+
+- El tiempo lo mide el ejecutor con el reloj, y no lo toma del `duration_ms` del `stream-json`: así vale para cualquier agente y para una ejecución cortada por su límite.
+- Las rondas suman las de la sesión principal y las de sus subagentes. Se comprobó en las transcripciones de Claude Code que el `stream-json` las trae aunque los subagentes corran en segundo plano (53 más 56 en la primera ejecución con subagentes).
+- Sin tercera ejecución: las dos de `epic-subagent` fallaron por la misma causa, y otra no habría medido el reparto. La medida del ahorro queda para cuando se arregle (P101).
+
+### Pendientes
+
+- P101: con Claude Code, los subagentes de una épica no pueden escribir en la carpeta de su corte cuando la sesión principal entró en la épica con `EnterWorktree`. Arreglo a decidir (salir de la worktree antes de lanzar los encargos, o que el encargo lo resuelva), y después repetir `epic-subagent`.
+- P102: en orden, `EnterWorktree` con `name` no entra en un corte desde la worktree de la épica hasta salir con `ExitWorktree keep`. El agente se recuperó solo, pero gasta rondas en cada corte; las tarjetas de `new` y `close` podrían pedirlo primero.
