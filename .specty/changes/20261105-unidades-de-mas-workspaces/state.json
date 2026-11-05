@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "20261105-unidades-de-mas-workspaces",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261105-unidades-de-mas-workspaces",
+  "baseCommit": "f1e2f5e7390264b8e484bee3611f61ba57dc762d",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fc7407504ddac686b53af9554bad8e73fc8284d3a17872e03ecf303429b82de0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a965e8e5cf99f660e353d2e812a4717a4a7253587b1dab3b4e2bd8a22fea8a09",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3ecd41272f7b3d9590e97c026a977fdec94cf1808d45b23a8aad6165d636e836",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:522f0e2924c215caba4c46e74d6baf3a6d8cddd3ff914b9d842a795ca01f2ed0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "C": 7
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:76600e936901dce11225d123710fdc91af493ed7a41f6e8169d6d285938da7ec",
+    "at": "2026-11-05T13:08:46.485Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
