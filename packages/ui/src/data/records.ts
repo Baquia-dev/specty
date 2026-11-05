@@ -145,6 +145,7 @@ export type ReviewSection =
   | "criteria"
   | "files"
   | "tasks"
+  | "slices"
   | "risks"
   | "design";
 
@@ -179,6 +180,14 @@ export interface TaskItemView {
   readonly ac: readonly string[];
   readonly files: readonly string[];
   readonly warnings: readonly Bilingual[];
+}
+
+/** A slice of an epic: the criteria it covers and the slices that must close before it. */
+export interface SliceItemView {
+  readonly id: string;
+  readonly title: string;
+  readonly ac: readonly string[];
+  readonly depends: readonly string[];
 }
 
 export interface CommentView extends CommentRecord {
@@ -245,6 +254,8 @@ export interface ReviewView {
   readonly criteria: readonly CriterionView[];
   readonly files: readonly { readonly module: string; readonly files: readonly FileView[] }[];
   readonly tasks: readonly TaskItemView[];
+  /** An epic's slices, from its Cortes section; none in any other spec. */
+  readonly slices: readonly SliceItemView[];
   readonly risks: readonly { readonly id: string; readonly text: string }[];
   /** Unresolved first, then oldest first. */
   readonly comments: readonly CommentView[];

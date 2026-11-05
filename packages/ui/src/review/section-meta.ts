@@ -29,6 +29,12 @@ export const SECTION_META: Readonly<Record<ReviewSection, { readonly hint: Bilin
   tasks: {
     hint: { es: "El orden en que trabajará el agente.", en: "The order the agent will work in." },
   },
+  slices: {
+    hint: {
+      es: "Los cambios en que se reparte la épica, y en qué orden.",
+      en: "The changes the epic is split into, and in what order.",
+    },
+  },
   risks: {
     hint: {
       es: "Qué puede salir mal y cómo se mitiga.",

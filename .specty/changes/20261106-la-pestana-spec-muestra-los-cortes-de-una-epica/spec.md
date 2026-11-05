@@ -66,7 +66,7 @@ Quien revisa una épica en la pestaña Spec de `specty ui` ve su sección «Cort
 
 ## Tareas
 
-- [ ] T1: Los cortes en los datos de la revisión
+- [x] T1: Los cortes en los datos de la revisión
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/review.ts, packages/ui/src/data/review.test.ts, packages/ui/src/review/comments.ts, packages/ui/src/review/section-meta.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/review.test.ts && pnpm lint

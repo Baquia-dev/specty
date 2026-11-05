@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7c9a082905dbe0e043034e8b6db5bc4a80a93ea3",
+      "startedAt": "2026-11-05T17:00:58.835Z",
+      "doneAt": "2026-11-05T17:08:21.985Z",
+      "summary": "La revisión deriva los cortes de una épica (id, título, ac y depends) y pone Cortes en el índice entre Tareas y Riesgos; el prefijo C lleva a la sección slices; título «Cortes»/«Slices» y su pista en las dos lenguas."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

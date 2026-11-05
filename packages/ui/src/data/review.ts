@@ -19,6 +19,7 @@ import type {
   ReviewSection,
   ReviewView,
   SectionIndexView,
+  SliceItemView,
 } from "./records";
 
 const SECTIONS: readonly ReviewSection[] = [
@@ -28,6 +29,7 @@ const SECTIONS: readonly ReviewSection[] = [
   "criteria",
   "files",
   "tasks",
+  "slices",
   "risks",
   "design",
 ];
@@ -36,6 +38,7 @@ const SECTION_BY_PREFIX: Readonly<Record<string, ReviewSection>> = {
   A: "assumptions",
   AC: "criteria",
   T: "tasks",
+  C: "slices",
   R: "risks",
 };
 
@@ -82,6 +85,7 @@ export function deriveReview(
   }));
   const groups = fileGroups(spec);
   const tasks = taskViews(spec, state, warningsFor);
+  const slices = sliceViews(spec);
   const reviewComments = commentViews(comments);
 
   const present: Readonly<Record<ReviewSection, boolean>> = {
@@ -91,6 +95,7 @@ export function deriveReview(
     criteria: criteria.length > 0,
     files: groups.size > 0,
     tasks: tasks.length > 0,
+    slices: slices.length > 0,
     risks: (sections.risks?.items.length ?? 0) > 0,
     design: Boolean(sections.design),
   };
@@ -102,6 +107,7 @@ export function deriveReview(
     criteria,
     files: [...groups].map(([module, files]) => ({ module, files })),
     tasks,
+    slices,
     risks: (sections.risks?.items ?? []).map((risk) => ({ id: risk.id, text: risk.text })),
     comments: reviewComments,
     index: sectionIndex(present, assumptions, reviewComments, found),
@@ -155,6 +161,16 @@ function taskViews(
     ac: task.ac === "none" || task.ac === undefined ? [] : task.ac,
     files: task.files,
     warnings: warningsFor(task.id).map((warning) => warning.text),
+  }));
+}
+
+/** Each slice of an epic with the criteria it covers and the slices it depends on. */
+function sliceViews(spec: Spec): SliceItemView[] {
+  return (spec.sections.slices?.items ?? []).map(({ id, title, ac, depends }) => ({
+    id,
+    title,
+    ac,
+    depends,
   }));
 }
 
