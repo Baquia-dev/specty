@@ -88,7 +88,7 @@ Hoy un pendiente que el trabajo de una sesión resuelve sin haberlo tomado con `
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-resolve.test.ts test/memory-resolves.test.ts test/memory-settle.test.ts test/memory-drop.test.ts test/commands-named.test.ts && pnpm lint
   - type: feat
-- [ ] T4: La regla del reporte final pide marcar con `memory resolve` los pendientes ajenos resueltos, y la documentación lo cuenta
+- [x] T4: La regla del reporte final pide marcar con `memory resolve` los pendientes ajenos resueltos, y la documentación lo cuenta
   - files: packages/core/src/agents-md.ts, packages/core/test/cards.test.ts, docs/formats.md, docs/ARCHITECTURE.md, docs/decisions/0016-la-memoria-de-specty.md
   - ac: AC5, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts test/agents-md.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/commands-named.test.ts && pnpm typecheck && pnpm lint && pnpm sources && pnpm knip

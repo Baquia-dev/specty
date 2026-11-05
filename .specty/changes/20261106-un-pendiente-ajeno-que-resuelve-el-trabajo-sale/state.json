@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-un-pendiente-ajeno-que-resuelve-el-trabajo-sale",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-un-pendiente-ajeno-que-resuelve-el-trabajo-sale",
   "baseCommit": "88d9019e8b696fe0180cfa8ff5d79807a856fc6d",
   "revision": 2,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "99893cfcd2d795216ae6feea720aa87cfbc5eb3e",
+      "attempts": 1,
       "startedAt": "2026-11-05T21:20:51.702Z",
       "doneAt": "2026-11-05T21:22:38.718Z",
-      "summary": "memory resolve (commands/memory-resolve.ts) toma las entradas para el cambio abierto de la carpeta con las reglas de --resolves; claimEntries y takeEntries salen de memory.ts, y los subcomandos de estado van en statusCommands"
+      "summary": "memory resolve (commands/memory-resolve.ts) toma las entradas para el cambio abierto de la carpeta con las reglas de --resolves; claimEntries y takeEntries salen de memory.ts, y los subcomandos de estado van en statusCommands",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f5b01882343e3a237c9909469534ee044181e439",
+      "startedAt": "2026-11-05T21:22:39.030Z",
+      "doneAt": "2026-11-05T21:23:40.893Z",
+      "summary": "La regla del reporte final pide marcar con memory resolve los pendientes ajenos resueltos; formats.md, ARCHITECTURE.md y el ADR 0016 cuentan memory resolve y la salida del cierre"
     }
   },
   "pending": {
