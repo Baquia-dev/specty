@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "id": "20261105-un-cambio-se-abre-aunque-la-bandeja-no-lo-haya",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-un-cambio-se-abre-aunque-la-bandeja-no-lo-haya",
+  "baseCommit": "4682745ea93f383506c210b4e0a5a9dc170f4011",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:072d4f6d9a8e945010575928019f9cd894ed24e55ec46e96509a39b5730ebacf",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b3b59f7586cea1184ba2c285874e279a2d8630be5f84be4485eb9a41a8eca51e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:cce071edc70e62d52fa77f38f9ae03429a3a0ade154b5539526595ad4dc619c4",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:5587ad22d3a3b915a78d014ac0e4ecfcad2ae07a6e9d4dc9cfa7560967fdef51",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:5f3bb8ee7ba2b28033e1f8c49c956682f0fd6b6eaaf406586ec4cf10ed044d41",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:c058eb880c604b27f224abd02ac0818b1656b7ef6bb6505f2c5b6e806a0387fd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:09b5d56b36a7b4d0a89eabb793c53e418e71491598913e06105029dd7c3e60dd",
+    "at": "2026-11-05T11:47:28.999Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
