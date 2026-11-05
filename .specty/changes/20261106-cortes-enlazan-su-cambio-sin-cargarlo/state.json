@@ -6,6 +6,13 @@
   "branch": "specty/20261106-cortes-enlazan-su-cambio-sin-cargarlo",
   "baseCommit": "3fadac74be8a5c2b2c5becf7bf901084b2bf2210",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ab0c325a687a33bd9d32ace2b08be2e99e4d2057a739a80cb8a2785166c49106",
+    "at": "2026-11-05T21:13:22.896Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:ab0c325a687a33bd9d32ace2b08be2e99e4d2057a739a80cb8a2785166c49106",
-    "at": "2026-11-05T21:13:22.896Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T21:17:59.237Z"
 }
