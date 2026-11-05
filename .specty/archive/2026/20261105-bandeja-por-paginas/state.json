@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-bandeja-por-paginas",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261105-bandeja-por-paginas",
   "baseCommit": "ace864380aa3b35f7287846a6b14a8c68752c43e",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:07a01cb812ba580e43b443dffe019d77accf16ef86acc9fad3ecd1cfb6d89785",
@@ -77,5 +77,6 @@
     "AC": 10,
     "C": 6,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-11-05T14:53:39.727Z"
 }

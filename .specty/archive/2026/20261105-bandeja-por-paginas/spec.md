@@ -81,3 +81,29 @@ Hoy la Bandeja recibe del servidor todos los cambios de una vez, unos 500 en est
 - R1: Un cambio que se archiva mientras la Bandeja está abierta desplaza los `offset` de las páginas — la recarga pide desde el principio todo lo cargado y la lista quita repetidos por id.
 - R2: La paleta de comandos deja de ofrecer «Abrir» para los terminados no cargados — queda fuera de alcance y se anota en la memoria si molesta.
 - R3: `inbox/inbox.ts` y `server/http.ts` ya son largos — la cabecera de épica y la paginación del servidor van en módulos propios.
+
+## Cierre
+
+### Resumen
+
+Cada fila de la Bandeja dice, de un cambio abierto, cuánto lleva desde que empezó y en su fase, y de uno terminado, cuándo empezó y cuánto tardó; las duraciones de un día o más van en días y horas (C1). Una épica encabeza su grupo con su propia fila, sus cortes van sangrados debajo con la insignia «Feature · C2 · <título del corte>», y un cambio estándar suelto dice «Feature» (C2). La página de un cambio que la Bandeja no cargó lo pide por su id a `GET /api/changes/<id>` (C3). El servidor da los terminados por páginas en `GET /api/changes/finished`, con la búsqueda y el orden en core, compartidos con la UI, y guarda en memoria los archivados ya leídos (C4). La Bandeja carga esas páginas al bajar, con «Cargar más» y `j`, y cuenta todos los terminados según el servidor (C5). `GET /api/changes` da solo los abiertos y los que perdieron su carpeta (C6). Medido en este repositorio, con 525 terminados, `/api/changes` pasó de 9,5 MB con 512 registros a 94 KB con 4, y la primera página de terminados pesa 682 KB.
+
+### Desviaciones
+
+- El primer borrador se creó como `standard`. Cuando la persona eligió paginar también el servidor, lo canceló, y la petición se rehízo como esta épica.
+- C4 salió XL al redactarse, y una épica en curso no admite cortes nuevos (P165). La persona eligió tres tramos: C4 hizo solo core y servidor, y un ajuste en la aceptación de la épica (revisión 2) añadió C5 (la Bandeja por páginas) y C6 (`/api/changes` solo con los abiertos).
+- En modo delegado, el clasificador de Claude Code bloqueó las aprobaciones de los subagentes como autoaprobación, y dos `specty wait` esperaron cerca de una hora cada uno. Desde que la persona lo autorizó en el chat («aprueba, acepta y cierra en todo lo necesario»), el agente principal ejecutó approve, accept y close, y los subagentes paraban antes.
+- Se adaptaron dos tests que ya existían, por cambios que pedía la épica. «sorts by title» de `inbox-toolbar.test.ts` (C5) ahora pone los abiertos antes que los terminados (A4). Los de `server/finished.test.ts` (de C4, cambiados en C6) leen los archivados de `/api/changes/<id>` en lugar de `/api/changes`.
+- C3 pidió `packages/ui/src/data/mcp-app.ts` con una solicitud de alcance (S1), para renombrar a `shown` un campo que chocaba con `SpectyData.change`.
+- Durante C6 el disco se quedó casi sin espacio (un comando falló con ENOSPC). La persona liberó espacio y las verificaciones siguieron.
+
+### Decisiones
+
+- Paginar también el servidor, y solo los terminados, que son casi todos (A1). Lo eligió la persona al empezar.
+- La insignia de un corte dentro de su épica lleva el título del corte («Feature · C2 · <título>»), a petición de la persona, y no repite el de la épica.
+- Un subagente por corte, en paralelo cuando no dependían entre sí (C1 y C3); el agente principal revisó cada spec y cada diff antes de aprobar y aceptar.
+
+### Pendientes
+
+- P159, P160, P163, P164 y P165, ya en la memoria: la revisión de la UI no muestra los cortes de una épica, un servidor viejo oculta los cambios que no puede leer, `server/http.ts` y `data/views.ts` pasan del aviso de 300 líneas, y un corte XL no tiene salida en una épica en curso.
+- La primera página de terminados pesa 682 KB por 30 registros completos (spec, auditoría y comentarios de cada uno), aunque la Bandeja solo necesita su resumen. `GET /api/changes/finished` podría dar resúmenes, y la página de un cambio pediría el registro completo por su id, como ya hace con uno no cargado.
