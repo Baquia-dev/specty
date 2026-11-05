@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7e1f0a11d4ce4f4848ef66235b3b12fb240ee2be",
+      "startedAt": "2026-11-05T16:43:54.736Z",
+      "doneAt": "2026-11-05T16:49:20.609Z",
+      "summary": "pruneCard recibe leftovers { writes, runs, indexes } y añade la sección «RESTOS DE PROCESOS QUE MURIERON» / «LEFTOVERS OF PROCESSES THAT DIED» tras el registro de unidades, con una línea por tipo que no es cero; cuentan para «No había nada que limpiar.»"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

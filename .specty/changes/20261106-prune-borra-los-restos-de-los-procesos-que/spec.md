@@ -49,7 +49,7 @@ Un proceso de Specty que muere a mitad deja restos en las carpetas de git que na
 
 ## Tareas
 
-- [ ] T1: La tarjeta de prune dice qué restos borró
+- [x] T1: La tarjeta de prune dice qué restos borró
   - files: packages/core/src/cards/parallel.ts, packages/core/test/cards/prune-leftovers.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/prune-leftovers.test.ts test/cards/prune-units.test.ts test/cards/prune-live.test.ts test/cards/parallel.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
