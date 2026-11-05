@@ -8,6 +8,7 @@ import {
   type CardContext,
   type ChangeView,
   delegatedFailureCard,
+  noCodeVerificationNote,
   quickClosedLine,
   quickClosing,
   renderText,
@@ -93,6 +94,17 @@ describe("the full verification before accepting", () => {
     expect(verificationReusedNote("pnpm check", undefined, "en").text).toBe(
       "The full verification (`pnpm check`) already passed on this same code in an earlier run: it does not run again.",
     );
+  });
+
+  it("does not run when the change touches no code, and says why (AC5)", () => {
+    expect(noCodeVerificationNote("pnpm check", "main", "es")).toEqual({
+      title: "Verificación completa",
+      text: "El cambio no toca código, solo archivos libres (`ignored` y `.specty/`): su código es el de main, y la verificación completa (`pnpm check`) no corre.",
+    });
+    expect(noCodeVerificationNote("pnpm check", "main", "en")).toEqual({
+      title: "Full verification",
+      text: "The change touches no code, only free files (`ignored` and `.specty/`): its code is main's, and the full verification (`pnpm check`) does not run.",
+    });
   });
 
   it("is offered, shown and, in delegated mode, required to pass", () => {
