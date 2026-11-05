@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-verificaciones-con-menos-prioridad",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-verificaciones-con-menos-prioridad",
   "baseCommit": "49e1f4666bbf0e028df657e03134aac4d7c94044",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:e266a654665384a350ec07e7350dd1afbd8c7e297b2cbe18cfd33d0faedd0c02",
@@ -58,12 +58,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8ec11989665e61f4c819987117e2773552948482",
+      "attempts": 1,
       "startedAt": "2026-11-05T03:54:49.328Z",
       "doneAt": "2026-11-05T03:55:16.466Z",
-      "summary": "ARCHITECTURE §9: las verificaciones corren con prioridad 10, qué comandos, cómo se hereda y por qué es de mejor esfuerzo"
+      "summary": "ARCHITECTURE §9: las verificaciones corren con prioridad 10, qué comandos, cómo se hereda y por qué es de mejor esfuerzo",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,5 +74,6 @@
     "A": 3,
     "AC": 3,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-11-05T03:59:59.191Z"
 }

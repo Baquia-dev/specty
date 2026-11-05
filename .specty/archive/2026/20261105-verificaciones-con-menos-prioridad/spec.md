@@ -60,3 +60,21 @@ Las verificaciones que lanza Specty (la de cada tarea, la completa y la de una i
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`execute` acepta `lowPriority`: tras lanzar el proceso le baja la prioridad a 10 (`os.setPriority`), y los procesos que lanza después la heredan. La piden la verificación de cada tarea, la completa de `accept`, la de una incorporación, la de `specty integrate` y la que lanza la UI (con `lowerPriority`, porque el servidor lanza la suya con `spawn`). Git y los demás comandos siguen con su prioridad.
+
+### Desviaciones
+
+- T2 pidió `io/exec.ts` en su alcance para exportar `lowerPriority`: el servidor de la UI no lanza su verificación con `execute`, y así no se duplica la bajada.
+
+### Decisiones
+
+- Sin clave en la configuración: 10 cede la CPU a lo interactivo sin dejar la verificación sin ella.
+
+### Pendientes
+
+- Ninguno
