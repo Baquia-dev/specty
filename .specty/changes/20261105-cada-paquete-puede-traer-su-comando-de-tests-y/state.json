@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261105-cada-paquete-puede-traer-su-comando-de-tests-y",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-cada-paquete-puede-traer-su-comando-de-tests-y",
+  "baseCommit": "f1e2f5e7390264b8e484bee3611f61ba57dc762d",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6129b1f4dc12d41283597ddc6dc43fe7f9bcb0f867d8ab58b493435c1c5b8459",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1f7c0ee6c6d5f4d793595f4e377c65ddffa7ce8b01287f06047baed44ebaa08b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:08008713970a0629acada3a54dc42ea8c9ed47af52275c7bf76184784ebf6134",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 1,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:602ed57bf87503c31ded1340e590b45ab7c55c51101d855bcca51c14cde49b52",
+    "at": "2026-11-05T13:12:19.370Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
