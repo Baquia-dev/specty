@@ -57,3 +57,25 @@ Desde 20261105-init-propone-unidades, `specty init` propone en su tarjeta las un
 - C7: La documentación de las unidades propuestas en cada workspace
   - ac: AC7
   - depends: C5, C6
+
+## Cierre
+
+### Resumen
+
+`specty init` propone las unidades de `verify.units` de seis tipos de workspace, en este orden: pnpm, npm o yarn; Cargo (`cargo test -p <nombre>`); `go.work` (`go test ./<carpeta>/...`); uv (`uv run --package <nombre> pytest <carpeta>`); Gradle (`./gradlew :<proyecto>:test`); y pub o melos (`(cd <carpeta> && dart test)` o `flutter test`). El núcleo deja que cada paquete traiga su comando (C1), y cada workspace tiene su detector en `detect/units-<stack>.ts`, que lee sus manifiestos (TOML con `smol-toml`) para sacar sus paquetes, si tienen tests, de cuáles dependen y qué archivos de la raíz comparten (C2–C6). Sigue siendo una propuesta: `init` no escribe la configuración. formats.md §6 y ARCHITECTURE §9 dicen qué recibe cada workspace (C7).
+
+### Desviaciones
+
+- Los detectores de C2, C3, C5 y C4 tocaban la misma línea de `DETECTORS`: cada incorporación de main chocó en ella y se resolvió conservando todos, en el orden de la épica.
+- El primer `task done` de C6 se paró con ENOSPC, con el disco lleno; con espacio libre volvió a pasar.
+- C2 y C5 añadieron `smol-toml` y la exportación de `expand` con las mismas líneas, que git unió solas.
+
+### Decisiones
+
+- Las dependencias de los cortes se encadenaron (C4 tras C2, C5 tras C3, C6 tras C4) para no tener más de dos subagentes a la vez, porque con seis la máquina se saturó en la épica anterior.
+- Un workspace en el que la carpeta de un paquete sería la raíz entera (un `Cargo.toml` o un `pyproject.toml` de la raíz que también es paquete, `use .` en Go, tests en la raíz de Gradle o Dart) no recibe propuesta, porque esa unidad correría con cualquier cambio.
+
+### Pendientes
+
+- P170: proponer también un workspace de Cargo cuya raíz es además un paquete.
+- P172: unificar el lector de TOML que repiten `units-cargo.ts` y `units-uv.ts`.

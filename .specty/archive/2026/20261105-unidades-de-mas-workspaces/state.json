@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261105-unidades-de-mas-workspaces",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261105-unidades-de-mas-workspaces",
   "baseCommit": "f1e2f5e7390264b8e484bee3611f61ba57dc762d",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:76600e936901dce11225d123710fdc91af493ed7a41f6e8169d6d285938da7ec",
+    "at": "2026-11-05T13:08:46.485Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -42,11 +49,5 @@
     "AC": 7,
     "C": 7
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:76600e936901dce11225d123710fdc91af493ed7a41f6e8169d6d285938da7ec",
-    "at": "2026-11-05T13:08:46.485Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-05T14:54:17.063Z"
 }
