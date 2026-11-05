@@ -64,12 +64,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "00bc0d6fb6b21d9c29cce977283622b24986113d",
+      "attempts": 1,
       "startedAt": "2026-11-05T13:52:42.466Z",
       "doneAt": "2026-11-05T13:53:54.691Z",
-      "summary": "FinishedPages (data/finished-pages.ts) pide, sigue y recarga las páginas de terminados sin repetir cambios y descartando respuestas viejas; ChangesStore separa open de finished, con la épica de cada corte, y all da los dos una vez."
+      "summary": "FinishedPages (data/finished-pages.ts) pide, sigue y recarga las páginas de terminados sin repetir cambios y descartando respuestas viejas; ChangesStore separa open de finished, con la épica de cada corte, y all da los dos una vez.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3cc62907e5635a7fa5b5883dc144b940e4121003",
+      "startedAt": "2026-11-05T13:53:55.008Z",
+      "doneAt": "2026-11-05T13:56:42.032Z",
+      "summary": "La Bandeja lista los abiertos y las páginas de terminados (abiertos primero), pide páginas con sp-inbox-more («Cargar más» y su observador) y con j tras la última fila, busca con 250 ms de espera y cuenta con los totales de la fuente."
     }
   },
   "pending": {

@@ -78,7 +78,7 @@ Desde C4, el servidor local da los cambios terminados por páginas en `GET /api/
   - files: packages/ui/src/data/finished-pages.ts, packages/ui/src/data/changes-store.ts, packages/ui/src/data/finished-pages.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/finished-pages.test.ts --include src/data/changes-store.test.ts --include src/data/fixtures.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
-- [ ] T3: La Bandeja carga los terminados por páginas al bajar
+- [x] T3: La Bandeja carga los terminados por páginas al bajar
   - files: packages/ui/src/inbox/inbox-view.ts, packages/ui/src/inbox/inbox-more.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox-view.test.ts, packages/ui/src/inbox/inbox-more.test.ts
   - ac: AC1, AC2, AC3, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui test && pnpm typecheck && pnpm lint && pnpm knip

@@ -97,13 +97,24 @@ export function phaseCounts(
   ]);
 }
 
-/** The sections of the Inbox, sorted inside, without empty ones. */
+/**
+ * The sections of the Inbox, sorted inside, without empty ones. The open changes go before the
+ * finished ones, each part in the order chosen, so a new page of finished changes goes at the end
+ * of what is shown (A4 of the epic `20261105-bandeja-por-paginas`).
+ */
 export function inboxSections(
   changes: readonly ChangeView[],
   filters: InboxFilters,
   lang: Lang,
 ): readonly InboxSection[] {
-  const shown = sortChanges(visibleChanges(changes, filters), filters.sort, lang);
+  const visible = visibleChanges(changes, filters);
+  const sorted = (finished: boolean) =>
+    sortChanges(
+      visible.filter((change) => (stateOf(change) === "recent") === finished),
+      filters.sort,
+      lang,
+    );
+  const shown = [...sorted(false), ...sorted(true)];
   const sections: readonly InboxSection[] =
     filters.group === "epic"
       ? epicSections(shown, changes)
