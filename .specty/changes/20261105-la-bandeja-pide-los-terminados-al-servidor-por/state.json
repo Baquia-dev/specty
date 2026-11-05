@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261105-la-bandeja-pide-los-terminados-al-servidor-por",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-la-bandeja-pide-los-terminados-al-servidor-por",
+  "baseCommit": "bd48aacf6aa987f9dcce0d5aa2a20cb564068e48",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7a2f3cb4930ac849631feae19c3a6bff899e5cc50f9bede3dfe20f058a0a0fa7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:29ac83c8b3794d9e52f908c314752a240ffeca67c37565fff53ed6efb4ff872f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b1b65bc7fc94eca2527079db91ba180425644834f6345bdf0a72e84b52cfa877",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:789d19cd94ac410d0993c8eacd2e79d9026dc97a57c3de833d0affac12a5831a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:17d3d19c2913864919bdc390dbf2c8407b5052f127155a759efe61a2d0619164",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ae2e6d3382d23661625f9dd968d67151a4e9859af94b184028614036f49f1bf0",
+    "at": "2026-11-05T12:59:41.648Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
