@@ -69,6 +69,12 @@ Hoy la Bandeja recibe del servidor todos los cambios de una vez, unos 500 en est
 - C4: La Bandeja pide los terminados al servidor por páginas
   - ac: AC7, AC8, AC9, AC10
   - depends: C2, C3
+- C5: La Bandeja carga los terminados por páginas al bajar
+  - ac: AC7, AC8, AC9, AC10
+  - depends: C4
+- C6: La lista de cambios del servidor solo da los abiertos
+  - ac: AC7
+  - depends: C5
 
 ## Riesgos
 

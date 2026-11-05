@@ -5,7 +5,14 @@
   "phase": "implementing",
   "branch": "specty/20261105-bandeja-por-paginas",
   "baseCommit": "ace864380aa3b35f7287846a6b14a8c68752c43e",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:07a01cb812ba580e43b443dffe019d77accf16ef86acc9fad3ecd1cfb6d89785",
+    "at": "2026-11-05T13:21:07.254Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -68,14 +75,7 @@
   "maxIds": {
     "A": 11,
     "AC": 10,
-    "C": 4,
+    "C": 6,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7cafb66c592117a01e9acba8e9049f7ac5245136dad00f4595e03a8201c167b8",
-    "at": "2026-11-05T10:31:04.975Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "ui"
   }
 }
