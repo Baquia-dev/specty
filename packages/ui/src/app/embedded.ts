@@ -97,7 +97,7 @@ export class Embedded {
   protected readonly t = this.preferences.t;
   protected readonly decide = DECIDE;
   /** The one change the host's tool worked on. */
-  protected readonly change = computed(() => this.store.all()[0]);
+  protected readonly change = computed(() => this.store.listed()[0]);
   protected readonly tab = computed(() => {
     const change = this.change();
     return change === undefined ? "spec" : TAB[change.phase];

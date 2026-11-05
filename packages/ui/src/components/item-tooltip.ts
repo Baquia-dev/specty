@@ -236,7 +236,7 @@ export class ItemTooltips {
   }
 
   private fromStore(id: string, lang: Lang): ItemMap {
-    const all = this.injector.get(SpectyData, null) ? this.injector.get(ChangesStore).all() : [];
+    const all = this.injector.get(SpectyData, null) ? this.injector.get(ChangesStore).listed() : [];
     const found = all.find((view) => view.id === id);
     return found ? itemsOfChange(found, lang) : new Map();
   }

@@ -12,6 +12,7 @@ import {
 import { FinishedPages } from "./finished-pages";
 import {
   type ChangeRecord,
+  type ChangeSummary,
   type ChangeView,
   type DeriveRequest,
   type DeriveResponse,
@@ -76,7 +77,8 @@ export const inThread: Deriver = async (records) => (await import("./views")).de
 /**
  * The changes as the screens see them. It reads from whatever `SpectyData` is provided, derives
  * the views with the `DERIVER` and reloads when the source says something changed, keeping the
- * previous views on screen meanwhile. The finished changes the Inbox shows come in pages, apart.
+ * previous views on screen meanwhile. The finished changes the Inbox shows come in pages, apart,
+ * and the store keeps only their summary.
  */
 @Injectable({ providedIn: "root" })
 export class ChangesStore {
@@ -87,40 +89,49 @@ export class ChangesStore {
   /** The pages of finished changes the Inbox asked for (`data/finished-pages.ts`). */
   readonly pages = new FinishedPages(this.data, this.derive, inject(PendingTasks));
 
-  private readonly listed = computed(() => (this.views.hasValue() ? this.views.value() : []));
+  /**
+   * The changes the source lists, each whole: with the local server, the open ones and those whose
+   * folder was lost; with a source that gives every change, all of them.
+   */
+  readonly listed = computed(() => (this.views.hasValue() ? this.views.value() : []));
   /** The open changes: waiting for the person, in progress, or whose folder was lost. */
   readonly open = computed(() => this.listed().filter((view) => !isFinished(view)));
   /**
-   * The finished changes of the loaded pages, in their order, each with its epic as known: the
-   * epic open or loaded in a page, or else the title the page gives.
+   * The summaries of the finished changes of the loaded pages, in their order, each with its epic
+   * as known: the epic open or loaded in a page, or else the title the page gives.
    */
   readonly finished = computed(() => {
-    const loaded = new Map([...this.open(), ...this.pages.views()].map((view) => [view.id, view]));
+    const loaded = new Map<string, ChangeSummary>(
+      [...this.open(), ...this.pages.views()].map((change) => [change.id, change]),
+    );
     const titles = this.pages.epics();
-    return this.pages.views().map((view) => withEpic(view, loaded, titles));
+    return this.pages.views().map((summary) => withEpic(summary, loaded, titles));
   });
-  /** Every change loaded: those the source lists and those of the pages, each once. */
-  readonly all: Signal<readonly ChangeView[]> = computed(() => {
+  /**
+   * Every change loaded, each once: those the source lists, whole, and the summaries of the pages'
+   * finished changes.
+   */
+  readonly all: Signal<readonly ChangeSummary[]> = computed(() => {
     const listed = this.listed();
     const ids = new Set(listed.map((view) => view.id));
     return [...listed, ...this.finished().filter((view) => !ids.has(view.id))];
   });
-  /** Waiting for the person, the longest first. */
+  /** Waiting for the person, the longest first: only an open change, always whole, can wait. */
   readonly decisions = computed(() =>
-    this.all()
+    this.listed()
       .filter((view) => view.decision !== undefined)
       .toSorted((a, b) => a.phaseSince.localeCompare(b.phaseSince)),
   );
   /** In progress without a pending decision. */
   readonly active = computed(() =>
-    this.all().filter(
+    this.listed().filter(
       (view) => view.decision === undefined && view.phase !== "done" && view.phase !== "cancelled",
     ),
   );
   /** Finished or cancelled, the newest first. */
   readonly recent = computed(() =>
     this.all()
-      .filter((view) => view.phase === "done" || view.phase === "cancelled")
+      .filter((change) => change.phase === "done" || change.phase === "cancelled")
       .toSorted((a, b) => b.phaseSince.localeCompare(a.phaseSince))
       .slice(0, RECENT),
   );
@@ -153,7 +164,7 @@ export class ChangesStore {
     return {
       view: computed(() => {
         const view = asked.hasValue() ? asked.value() : undefined;
-        const all = new Map(this.all().map((other) => [other.id, other]));
+        const all = new Map<string, ChangeSummary>(this.all().map((other) => [other.id, other]));
         return loaded() ?? (view === undefined ? undefined : withEpic(view, all, {}));
       }),
       missing: computed(
@@ -174,26 +185,26 @@ export interface FoundChange {
   readonly missing: Signal<boolean>;
 }
 
-function isFinished(view: ChangeView): boolean {
+function isFinished(view: ChangeSummary): boolean {
   return view.phase === "done" || view.phase === "cancelled";
 }
 
 /**
- * `view` with its epic as the list derives it: the title of the epic when it is loaded, or else the
- * one in `titles`, and the title the loaded epic gives its slice.
+ * `change`, a summary or a whole view, with its epic as the list derives it: the title of the epic
+ * when it is loaded, or else the one in `titles`, and the title the loaded epic gives its slice.
  */
-function withEpic(
-  view: ChangeView,
-  loaded: ReadonlyMap<string, ChangeView>,
+function withEpic<T extends ChangeSummary>(
+  change: T,
+  loaded: ReadonlyMap<string, ChangeSummary>,
   titles: Readonly<Record<string, string>>,
-): ChangeView {
-  const { epic } = view;
-  if (epic === undefined) return view;
+): T {
+  const { epic } = change;
+  if (epic === undefined) return change;
   const own = loaded.get(epic.id);
   const title = own?.title ?? titles[epic.id];
   const sliceTitle = own?.slices?.find((slice) => slice.id === epic.slice)?.title;
   return {
-    ...view,
+    ...change,
     epic: {
       ...epic,
       ...(title === undefined ? {} : { title }),

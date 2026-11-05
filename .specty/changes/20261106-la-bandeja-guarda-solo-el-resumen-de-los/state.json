@@ -56,12 +56,24 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "7dcb7845ea34fc3fe7f5fa5394128a0229fd9f4e",
+      "attempts": 2,
       "startedAt": "2026-11-05T18:00:39.399Z",
       "doneAt": "2026-11-05T18:04:03.925Z",
-      "summary": "ChangeSummary, ListedChange e isWhole en records.ts; las funciones de la Bandeja son genéricas sobre ListedChange, la fila lee como opcional lo que solo tiene un abierto y solo da a sus tooltips el cambio entero, y los cortes enlazan con un ChangeSummary."
+      "summary": "ChangeSummary, ListedChange e isWhole en records.ts; las funciones de la Bandeja son genéricas sobre ListedChange, la fila lee como opcional lo que solo tiene un abierto y solo da a sus tooltips el cambio entero, y los cortes enlazan con un ChangeSummary.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/acceptance/full-verification.test.ts",
+        "packages/ui/src/acceptance/acceptance-actions.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "beed6a65ce59dd6a3517149e69581ebf901a4520",
+      "startedAt": "2026-11-05T18:04:04.212Z",
+      "doneAt": "2026-11-05T18:06:11.057Z",
+      "summary": "FinishedPages guarda de cada terminado su resumen (summaryOf); finished y all del almacén son de ChangeSummary y listed es público; el MCP App, los tooltips por id y tres tests que leen un cambio entero pasan a listed()."
     }
   },
   "pending": {

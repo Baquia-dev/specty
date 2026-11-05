@@ -23,7 +23,7 @@ class Host {
   readonly unconfigured = input(false);
   private readonly store = inject(ChangesStore);
   readonly change = computed(() => {
-    const view = this.store.all().find((item) => item.id === this.id());
+    const view = this.store.listed().find((item) => item.id === this.id());
     if (view === undefined || !this.unconfigured()) return view;
     return { ...view, progress: { tasks: view.progress.tasks } };
   });
@@ -83,7 +83,7 @@ async function render(source: typeof FixtureData = FixtureData, compact = false,
     [...(dialog()?.querySelectorAll<HTMLButtonElement>("sp-button button") ?? [])].find(
       (button) => text(button) === label,
     );
-  const view = () => store.all().find((item) => item.id === ASISTENCIA);
+  const view = () => store.listed().find((item) => item.id === ASISTENCIA);
   const toasts = () =>
     TestBed.inject(Toasts)
       .items()

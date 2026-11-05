@@ -48,7 +48,7 @@ describe("FixtureData actions", () => {
   it("starts with a review that only waits for decisions, with two comments", async () => {
     const { store, settle } = setup();
     await settle();
-    const review = store.all().find((view) => view.id === REVIEW)?.review;
+    const review = store.listed().find((view) => view.id === REVIEW)?.review;
     expect(review?.errors).toEqual([]);
     expect(review?.comments.map((comment) => comment.section)).toEqual(["assumptions", "design"]);
     // "rápido" is vague, and the criterion lacks CUANDO … ENTONCES.
@@ -62,7 +62,7 @@ describe("FixtureData actions", () => {
     await fixtures.decideAssumption(REVIEW, "A2", "rejected", "Son periodos del colegio.");
     await fixtures.addComment(REVIEW, { item: "AC3" }, "¿Cuánto es rápido?");
     await settle();
-    const view = store.all().find((change) => change.id === REVIEW);
+    const view = store.listed().find((change) => change.id === REVIEW);
     expect(view?.review.assumptions.find((item) => item.id === "A2")).toMatchObject({
       decision: "rejected",
       comment: "Son periodos del colegio.",
@@ -83,7 +83,7 @@ describe("FixtureData actions", () => {
     await fixtures.editComment(REVIEW, "c2", "Texto editado");
     await settle();
     const comment = store
-      .all()
+      .listed()
       .find((c) => c.id === REVIEW)
       ?.review.comments.find((c) => c.id === "c2");
     expect(comment?.body).toBe("Texto editado");
@@ -95,7 +95,7 @@ describe("FixtureData actions", () => {
     await fixtures.deleteComment(REVIEW, "c2");
     await settle();
     const comment = store
-      .all()
+      .listed()
       .find((c) => c.id === REVIEW)
       ?.review.comments.find((c) => c.id === "c2");
     expect(comment).toBeUndefined();
@@ -104,7 +104,7 @@ describe("FixtureData actions", () => {
   it("keeps the work in progress: times, commits, attempts and a failure's last lines", async () => {
     const { store, settle } = setup();
     await settle();
-    const progress = store.all().find((change) => change.id === PDF)?.progress;
+    const progress = store.listed().find((change) => change.id === PDF)?.progress;
     const [first, second, third] = progress?.tasks ?? [];
     expect(first).toMatchObject({ status: "done", commit: "a1b2c3d", attempts: 1 });
     expect(first?.verification).toMatchObject({ passed: true, ms: 18_000, output: [] });
@@ -125,7 +125,7 @@ describe("FixtureData actions", () => {
     expect(scope()?.id).toBe("S1");
     await fixtures.decideScope(PDF, "S1", "rejected", "Usa el maquetador del boletín.");
     await settle();
-    let view = store.all().find((change) => change.id === PDF);
+    let view = store.listed().find((change) => change.id === PDF);
     expect(view?.decision).toBeUndefined();
     expect(view?.progress.tasks[2]?.scopeRequests).toEqual([]);
     // Already decided: the source explains it instead of deciding twice.
@@ -138,7 +138,7 @@ describe("FixtureData actions", () => {
     await fresh.settle();
     fresh.fixtures.approveScope();
     await fresh.settle();
-    view = fresh.store.all().find((change) => change.id === PDF);
+    view = fresh.store.listed().find((change) => change.id === PDF);
     expect(view?.decision).toBeUndefined();
     const records = await fresh.fixtures.changes();
     const record = records.find((item) => item.state.id === PDF);
@@ -160,11 +160,11 @@ describe("FixtureData actions", () => {
     await fixtures.requestChanges(REVIEW);
     await settle();
     // Noted as the server does: the change now waits for the agent's next revision (AC4).
-    const asked = store.all().find((change) => change.id === REVIEW);
+    const asked = store.listed().find((change) => change.id === REVIEW);
     expect([asked?.decision, asked?.changesRequested?.revision]).toEqual([undefined, 2]);
     await fixtures.approve(REVIEW, 2);
     await settle();
-    const view = store.all().find((change) => change.id === REVIEW);
+    const view = store.listed().find((change) => change.id === REVIEW);
     expect(view?.phase).toBe("implementing");
     await expect(fixtures.addComment("20990101-nada", { item: "A1" }, "x")).rejects.toMatchObject({
       text: { en: "There is no change 20990101-nada." },
@@ -179,7 +179,7 @@ describe("FixtureData actions", () => {
     const { fixtures, store, settle } = setup();
     await settle();
     const id = "20261022-avisos-calificaciones";
-    const view = () => store.all().find((change) => change.id === id);
+    const view = () => store.listed().find((change) => change.id === id);
     const files = ["test/grades/grade_notice_test.dart", "test/grades/notice_view_test.dart"];
     expect([view()?.phase, view()?.decision, view()?.tests?.files]).toEqual([
       "testing",
@@ -203,7 +203,7 @@ describe("FixtureData actions", () => {
   it("AC3: gives the change in acceptance the tests of its criteria", async () => {
     const { store, settle } = setup();
     await settle();
-    const view = store.all().find((change) => change.id === "20261018-asistencia-curso");
+    const view = store.listed().find((change) => change.id === "20261018-asistencia-curso");
     expect(view?.criteriaTests?.map((item) => [item.id, item.tests.length])).toEqual([
       ["AC1", 2],
       ["AC2", 1],
@@ -219,7 +219,7 @@ describe("FixtureData actions", () => {
     await expect(fixtures.confirmClosing(panel)).rejects.toMatchObject(refused("aún no"));
     await fixtures.confirmClosing(mail);
     await settle();
-    const view = store.all().find((change) => change.id === mail);
+    const view = store.listed().find((change) => change.id === mail);
     expect(view?.phase).toBe("done");
     expect(view?.closing?.pending).toContain("La plantilla en inglés");
     const closed = (await fixtures.changes()).find((item) => item.state.id === mail);
@@ -296,7 +296,7 @@ describe("ChangesStore", () => {
     fixtures.toggleOutage();
     await settle();
     expect(store.views.error()).toBeUndefined();
-    expect(store.all()).toHaveLength(10);
+    expect(store.listed()).toHaveLength(10);
   });
 
   it("derives through a web worker when there is one (AC10)", async () => {
@@ -314,14 +314,14 @@ describe("ChangesStore", () => {
     const { store, settle } = setup(false);
     await settle();
     expect(posted).toEqual([0]);
-    expect(store.all()).toHaveLength(10);
+    expect(store.listed()).toHaveLength(10);
   });
 
   it("AC4: derives in the main thread when there are no web workers and no deriver was given", async () => {
     const { store, settle } = setup(false);
     await settle();
     expect(store.views.error()).toBeUndefined();
-    expect(store.all()).toHaveLength(10);
+    expect(store.listed()).toHaveLength(10);
   });
 
   it("AC4: derives in the main thread when creating the worker fails, as a sandbox's CSP makes it", async () => {
@@ -334,7 +334,7 @@ describe("ChangesStore", () => {
     const { store, settle } = setup(false);
     await settle();
     expect(store.views.error()).toBeUndefined();
-    expect(store.all()).toHaveLength(10);
+    expect(store.listed()).toHaveLength(10);
   });
 
   it("finds a change by id", async () => {
@@ -359,6 +359,6 @@ describe("ChangesStore", () => {
     });
     const store = TestBed.inject(ChangesStore);
     await settled(store);
-    expect(store.all().map((view) => view.decision)).toEqual(["review"]);
+    expect(store.listed().map((view) => view.decision)).toEqual(["review"]);
   });
 });

@@ -75,7 +75,7 @@ Hoy la Bandeja guarda cada cambio terminado de sus páginas entero: su spec revi
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-row.test.ts --include src/inbox/inbox-view.test.ts --include src/inbox/inbox.test.ts --include src/review/spec-sections.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck
   - type: refactor
-- [ ] T3: La Bandeja guarda solo el resumen de cada terminado
+- [x] T3: La Bandeja guarda solo el resumen de cada terminado
   - files: packages/ui/src/data/finished-pages.ts, packages/ui/src/data/changes-store.ts, packages/ui/src/app/embedded.ts, packages/ui/src/components/item-tooltip.ts, packages/ui/src/data/finished-summaries.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/finished-summaries.test.ts --include src/data/finished-pages.test.ts --include src/data/fixtures.test.ts --include src/app/embedded.test.ts --include src/components/item-tooltip.test.ts && pnpm typecheck
