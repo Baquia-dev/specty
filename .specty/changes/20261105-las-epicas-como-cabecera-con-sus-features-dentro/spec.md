@@ -80,7 +80,7 @@ En la Bandeja, una épica pasa a ser la cabecera del grupo de sus cortes: si est
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-view.test.ts --include src/inbox/inbox.test.ts --include src/inbox/inbox-toolbar.test.ts --include src/inbox/inbox-row.test.ts --include src/components/badge.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T4: La documentación de la épica como cabecera
+- [x] T4: La documentación de la épica como cabecera
   - files: docs/ui.md
   - ac: —
   - verify: pnpm lint

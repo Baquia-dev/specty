@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-las-epicas-como-cabecera-con-sus-features-dentro",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-las-epicas-como-cabecera-con-sus-features-dentro",
   "baseCommit": "a7a61ce66f0f4169b2b9107552bef3b33ff2b6fa",
   "revision": 1,
@@ -73,12 +73,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0ee5886ef2fe328073caed7225b4fb49951f120c",
+      "attempts": 1,
       "startedAt": "2026-11-05T12:14:19.137Z",
       "doneAt": "2026-11-05T12:18:35.121Z",
-      "summary": "sp-inbox-epic (nuevo) encabeza el grupo con la fila de la épica proyectada o con su fase, título enlazado e insignia si está en otra sección, y sus cortes debajo sangrados; sectionBlocks da head, epic y slices, y la Bandeja quita «Total» (P162) y el número de cambios"
+      "summary": "sp-inbox-epic (nuevo) encabeza el grupo con la fila de la épica proyectada o con su fase, título enlazado e insignia si está en otra sección, y sus cortes debajo sangrados; sectionBlocks da head, epic y slices, y la Bandeja quita «Total» (P162) y el número de cambios",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "55b307afa8277b78e5c86258e5d049a4bee39e3d",
+      "startedAt": "2026-11-05T12:18:35.411Z",
+      "doneAt": "2026-11-05T12:19:00.743Z",
+      "summary": "docs/ui.md cuenta la épica como cabecera de su grupo (con su fila o con su fase, título y enlace), las etiquetas «Feature» de la insignia y la sección «Features» de Agrupar por épica"
     }
   },
   "pending": {
