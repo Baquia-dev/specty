@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { realpath } from "node:fs/promises";
 import {
+  cancelledFolderStaysLine,
+  folderRemovedLine,
+  folderStaysLine,
   type Lang,
   notInTargetBranchLine,
   notInTargetFolderLine,
@@ -38,12 +41,7 @@ const SESSION_DAY = 24 * 60 * 60 * 1000;
 export async function removeFinished(session: Session): Promise<Cleanup> {
   const { lang } = session;
   const main = (await session.git.worktrees())[0]?.folder ?? session.root;
-  const now = session.environment.now().getTime();
-  const working = await Promise.all(
-    (await readBindings(session.git))
-      .filter(({ at }) => now - Date.parse(at) < SESSION_DAY)
-      .map(({ folder }) => resolved(folder)),
-  );
+  const working = await workingFolders(session);
   const removed: string[] = [];
   const kept: string[] = [];
   for (const { change, session: there } of await locateChanges(session)) {
@@ -60,6 +58,53 @@ export async function removeFinished(session: Session): Promise<Cleanup> {
     else kept.push(`${there.root}: ${reasonOf(result)}`);
   }
   return { removed, kept };
+}
+
+/** The folders agent sessions work in, as the guard recorded them in the last day, resolved. */
+async function workingFolders(session: Session): Promise<string[]> {
+  const now = session.environment.now().getTime();
+  return Promise.all(
+    (await readBindings(session.git))
+      .filter(({ at }) => now - Date.parse(at) < SESSION_DAY)
+      .map(({ folder }) => resolved(folder)),
+  );
+}
+
+/**
+ * The folder of the change `session` has just cancelled goes at once, as the clean-up would take
+ * it later, when nothing is lost: nothing uncommitted in it, and no agent session works in it, the
+ * agent that cancels from inside it included. A person who cancels from inside loses it, as with
+ * `close`. Never the main folder, and the branch stays. Returns the card's line: removed, or why it
+ * stays; nothing when the change lives in the main folder.
+ */
+export async function removeCancelled(
+  session: Session,
+  branch: string,
+): Promise<string | undefined> {
+  const { git, lang } = session;
+  const main = (await git.worktrees())[0]?.folder ?? session.root;
+  const folder = git.root;
+  if ((await resolved(folder)) === (await resolved(main))) return undefined;
+  const reason = await cancelledKeptBecause(session, folder);
+  if (reason !== undefined) return cancelledFolderStaysLine(folder, reason, session.cards);
+  const removed = await git.run(["-C", main, "worktree", "remove", folder]);
+  return removed.code === 0
+    ? folderRemovedLine(folder, branch, main, lang)
+    : folderStaysLine(folder, reasonOf(removed), lang);
+}
+
+/**
+ * Why the cancelled change's folder stays: an agent session works in it, or it has uncommitted
+ * changes (tracked files that differ, or untracked ones git does not ignore).
+ */
+async function cancelledKeptBecause(
+  session: Session,
+  folder: string,
+): Promise<"working" | "uncommitted" | undefined> {
+  const inside = session.actor === "agent" && (await within(session.environment.cwd, folder));
+  if (inside || (await workingFolders(session)).includes(await resolved(folder))) return "working";
+  const status = await session.git.run(["status", "--porcelain"]);
+  return status.code !== 0 || status.stdout.trim().length > 0 ? "uncommitted" : undefined;
 }
 
 /** Why a finished change's folder stays: an agent session works in it, or it is not in its target. */

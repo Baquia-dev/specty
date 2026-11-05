@@ -43,6 +43,8 @@ export interface ChangeRecord {
   readonly orphan?: boolean;
   /** It waits for the agent and its conversation stepped last in another folder, minutes ago. */
   readonly away?: { readonly tool: string; readonly ago: number };
+  /** Its folder's `.specty/config.yaml` could not be read: each issue, as the server says it. */
+  readonly configIssues?: readonly string[];
   /** The independent reviews that answered, with their text, oldest first (ADR 0011). */
   readonly reviews?: readonly ReviewRecord[];
   /** In acceptance, each criterion with the tests that carry its id, from the server (ADR 0014). */
@@ -325,6 +327,8 @@ export interface ChangeView {
   readonly orphan?: boolean;
   /** Its conversation left its folder: which agent, and how many minutes ago. */
   readonly away?: { readonly tool: string; readonly ago: number };
+  /** Its folder's configuration could not be read: each issue; none when it was. */
+  readonly configIssues?: readonly string[];
   /** Governed files that other open changes also list. */
   readonly shared?: readonly SharedFile[];
   readonly phaseSince: string;

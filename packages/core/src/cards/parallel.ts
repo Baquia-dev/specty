@@ -50,6 +50,16 @@ export function notInTargetBranchLine(branch: string, target: string, lang: Lang
   return translator(lang)(`${branch}: no está en ${target}.`, `${branch}: not in ${target}.`);
 }
 
+/**
+ * What processes that died left in git's folders, by kind: half-done writes (`<file>.<pid>.tmp`),
+ * the live runs of verifications cut off, and temporary git indexes over an hour old.
+ */
+interface Leftovers {
+  readonly writes: number;
+  readonly runs: number;
+  readonly indexes: number;
+}
+
 /** `specty prune`: the folders and branches it removed, and the ones it kept, with why. */
 export function pruneCard(
   pruned: {
@@ -62,6 +72,8 @@ export function pruneCard(
     readonly messages?: readonly string[];
     /** How many units it removed from the record of those that passed, older than `days`. */
     readonly units?: { readonly removed: number; readonly days: number };
+    /** What processes that died left in git's folders, and it removed. */
+    readonly leftovers?: Leftovers;
   },
   ctx: CardContext,
 ): Output {
@@ -69,8 +81,9 @@ export function pruneCard(
   const activity = pruned.activity ?? 0;
   const messages = pruned.messages ?? [];
   const { removed = 0, days = 0 } = pruned.units ?? {};
+  const { writes = 0, runs = 0, indexes = 0 } = pruned.leftovers ?? {};
   const counts = [pruned.folders.length, pruned.branches.length, activity, messages.length];
-  const nothing = [...counts, removed].every((count) => count === 0);
+  const nothing = [...counts, removed, writes, runs, indexes].every((count) => count === 0);
   return {
     status: "ok",
     header: headerOf(t("limpieza", "cleanup")),
@@ -82,6 +95,7 @@ export function pruneCard(
       ...section(t("CARPETAS BORRADAS", "FOLDERS REMOVED"), pruned.folders),
       ...section(t("RAMAS BORRADAS", "BRANCHES DELETED"), pruned.branches),
       ...recordSections(activity, messages, { removed, days }, t),
+      ...leftoverSection({ writes, runs, indexes }, t),
       ...section(t("QUEDAN", "KEPT"), pruned.kept),
     ],
     next: t(
@@ -120,6 +134,25 @@ function recordSections(
       ),
     ),
   ];
+}
+
+/** The leftovers of processes that died that `prune` removed: a line for each kind with some. */
+function leftoverSection({ writes, runs, indexes }: Leftovers, t: Translate): OutputBlock[] {
+  const lines: readonly (readonly [number, string])[] = [
+    [writes, t(`Escrituras a medias: ${writes}.`, `Half-done writes: ${writes}.`)],
+    [runs, t(`Verificaciones cortadas: ${runs}.`, `Cut-off verifications: ${runs}.`)],
+    [
+      indexes,
+      t(
+        `Índices temporales de git de más de una hora: ${indexes}.`,
+        `Temporary git indexes over an hour old: ${indexes}.`,
+      ),
+    ],
+  ];
+  return section(
+    t("RESTOS DE PROCESOS QUE MURIERON", "LEFTOVERS OF PROCESSES THAT DIED"),
+    lines.flatMap(([count, line]) => (count === 0 ? [] : [line])),
+  );
 }
 
 /** A section with the line that counts what went, or none when nothing did. */

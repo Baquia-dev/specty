@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import type { ConfigIssue } from "@baquia-dev/specty-core";
 import { createGit, resolved } from "../io/git";
 import { type Session, sessionFrom } from "../session";
 import { listOpenChanges, type StoredChange } from "../store/changes";
@@ -38,6 +39,32 @@ export async function locateChanges(session: Session): Promise<Located[]> {
       located.push({ change, session, current: false });
   }
   return located;
+}
+
+/** An open change whose folder's configuration cannot be read, and why. */
+export interface Unreadable {
+  readonly change: StoredChange;
+  readonly folder: string;
+  readonly issues: readonly ConfigIssue[];
+}
+
+/**
+ * The open change of each other worktree whose `.specty/config.yaml` cannot be read, with its
+ * issues: `locateChanges` leaves it out, since no session opens there, and its commands keep
+ * refusing. Without a session, it is the open change whose branch is the worktree's.
+ */
+export async function unreadableChanges(session: Session): Promise<Unreadable[]> {
+  const own = await resolved(session.root);
+  const found: Unreadable[] = [];
+  for (const { folder, branch } of await session.git.worktrees()) {
+    if (branch === undefined || (await resolved(folder)) === own) continue;
+    const paths = repoPaths(folder);
+    const loaded = await loadConfig(paths);
+    if (loaded.kind !== "invalid") continue;
+    const change = (await listOpenChanges(paths)).find((open) => open.state.branch === branch);
+    if (change !== undefined) found.push({ change, folder, issues: loaded.issues });
+  }
+  return found;
 }
 
 /** The decisions only a person takes, from any folder. */

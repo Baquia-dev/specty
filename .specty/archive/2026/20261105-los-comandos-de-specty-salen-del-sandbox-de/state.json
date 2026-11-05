@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "id": "20261105-los-comandos-de-specty-salen-del-sandbox-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-los-comandos-de-specty-salen-del-sandbox-de",
+  "baseCommit": "6c68190ea4eb28fdfeadfcaba7f8797b3aac1be8",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d8aa99ec4d9ec3868417d2c4c13ac3ccd71e172a1e7846481d9609b358e7bb62",
+    "at": "2026-11-05T13:47:56.869Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:76fcdd75cb075d04da6a3099b8c90a55770b82e2f2397d5daabbb44f3dcea1eb",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1ee91c94b7d24b195a0e50273f0688e43519af73ca4ac86cace19b8f5b53d542",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9d324416fb8cc1bbbd2bbe17bc26023dc67c81d835cff6c8a2ad5815477c0939",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d6381438d25fed8e328124fea265ee99e8ea07508efd7bb08b4e3bfc7613b8a8",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:49aae54020a5a6e29c71c51f4aa543aefaf389a6bc1dc7660e616c933542bfd6",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:2785fe71de63364da95f37191e0a2687cd1da9aac14c61903e4cf597a2e2bf4f",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:d3e4d55737998c8767cb10c0282cc010929fb43ffdedae2dfd0fbcdad198a17e",
+      "decision": "confirmed"
+    },
+    "A8": {
+      "hash": "sha256:864fb4d5e2147825545840200c64ed064966da8eb188ba2ab363b0fd2dde0f49",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:b349d24660e129ad96b77fc6df4cf018d01c72439397432d7b7b557346bc3b5f",
+      "decision": "implicit"
+    },
+    "A10": {
+      "hash": "sha256:67279003bc9dbf0619e08f0447815a097f9373eef9172b47eb8075c2d3587a0f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "63e008159c87cd2d3d18d0e5b16d2b6c49d082ff",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:53:26.592Z",
+      "doneAt": "2026-11-05T13:54:13.652Z",
+      "summary": "Textos en español e inglés de la regla command(specty) del CLI de Antigravity: línea de init, aviso de ajustes que no se pueden editar, aviso de la app, líneas de doctor (antigravity-cli-rule y no-antigravity-cli-rule) y la línea de uninstall; exportados en cards/index.ts.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b0b75ce45ec3ea7123a85354b224ab3e53393851",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:54:13.948Z",
+      "doneAt": "2026-11-05T13:56:47.692Z",
+      "summary": "init --tools antigravity añade command(specty) a permissions.allow del CLI de Antigravity si su carpeta existe (sin duplicar; avisa si no puede editar) y avisa de la regla para la app; InstallContext lleva env y testEnv aísla la carpeta.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "cb510335d2b8d3813b31cd273845bc02f4bd81a6",
+      "attempts": 2,
+      "startedAt": "2026-11-05T13:56:48.001Z",
+      "doneAt": "2026-11-05T14:04:58.981Z",
+      "summary": "doctor confirma command(specty) o unsandboxed(specty) en los ajustes del CLI de Antigravity o pide init (solo si existe su carpeta), y uninstall dice que la regla se queda; doctor recibe env y los agentes pueden decir qué dejan en la carpeta del usuario (stays).",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "6c3cf2c583cd4b84736eec5e0e5e1ed170db0640",
+      "attempts": 1,
+      "startedAt": "2026-11-05T14:04:59.306Z",
+      "doneAt": "2026-11-05T14:09:15.173Z",
+      "summary": "ADR 0013 gana la excepción D4 (la regla command(specty) del CLI de Antigravity) y ARCHITECTURE recoge P167, la regla de init, el límite de BypassSandbox, lo comprobado en el editor (P168) y el límite de agy -p (P152).",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 10,
+    "AC": 8,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-05T14:18:06.543Z",
+  "lockedTests": {
+    "packages/cli/test/support.ts": "sha256:ad9e34ef1453718de558735a403357bbf80644356d5b1509f9f23c95b9269721",
+    "packages/cli/test/antigravity-cli-rule.test.ts": "sha256:efe828b79b4e8a1d96494ff4a33cc00dab6d42b62d8b55aeaee00320ea6cf40b",
+    "packages/core/test/cards/antigravity-cli-rule.test.ts": "sha256:30f41c4b21ed15ff878449ce3ea6878e0789410f4f1f88f9bd0c6008b62cf9f2"
+  }
+}

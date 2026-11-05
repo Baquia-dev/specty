@@ -12,8 +12,8 @@ const WATCHED: readonly string[] = ["spec.md", "state.json", "audit.jsonl", "com
 
 /**
  * What the changes look like on disk: the open changes of each worktree, by their files' time and
- * size, the name of every archived change, and the delegated mode switch. The same fingerprint
- * means the same data.
+ * size, and its configuration's; the name of every archived change, and the delegated mode
+ * switch. The same fingerprint means the same data.
  */
 export async function fingerprint(session: Session): Promise<string> {
   const parts: string[] = [`delegated ${JSON.stringify(await readDelegation(session.git))}`];
@@ -26,7 +26,10 @@ export async function fingerprint(session: Session): Promise<string> {
   ]);
   parts.push(`memory ${tip.stdout.trim()}`);
   for (const { folder } of await session.git.worktrees()) {
-    const { changes, archive } = repoPaths(folder);
+    const { changes, archive, config } = repoPaths(folder);
+    // A configuration that stops reading, or reads again, changes what its change shows.
+    const read = await stat(config).catch(() => undefined);
+    parts.push(`${folder} config ${read?.mtimeMs ?? "-"} ${read?.size ?? "-"}`);
     for (const id of await listDir(changes)) {
       for (const name of WATCHED) {
         const info = await stat(join(changes, id, name)).catch(() => undefined);

@@ -22,6 +22,7 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 ├─ receipts.json               # recibos de commit
 ├─ active                      # cambio activo cuando no hay rama por cambio
 ├─ shell/<tool_use_id>.json    # foto del árbol antes de cada comando de Bash del agente
+├─ index-<pid>-<uuid>          # índice temporal con el que `treeWith` lee el árbol de trabajo (ARCHITECTURE §9); se borra al terminar, y `specty prune` borra los de más de una hora, que dejó un proceso que murió
 ├─ pending/<conversación>.card # tarjeta que una compactación dejó para el siguiente comando (Cursor); se entrega una vez y caduca en un día
 ├─ pending/<conversación>.warning # aviso tras un comando que la herramienta no deja dar en el momento (Antigravity); va en la siguiente llamada al modelo, una vez, y caduca en un día
 ├─ pending/<conversación>.stop # turno que el fin de turno devolvió al trabajo, para una herramienta que no lo marca (Antigravity): su siguiente fin de turno termina; caduca en un día
@@ -39,11 +40,13 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 ├─ locks/full-verification.queue/<llegada>-<pid>-<n>.json # { "pid", "command", "folder", "at" }: la cola del turno de la verificación completa, un archivo por proceso que espera, con su hora de llegada en milisegundos (15 cifras) en el nombre; solo el primero vivo intenta el turno, cada uno renueva la fecha de su archivo en cada vuelta y se borra al tomarlo, y el de un proceso que ya no existe o que lleva 30 s sin renovarse no cuenta y lo borra el siguiente que mira
 ├─ locks/verify-slots/<inicio>-<pid>-<n>.json # { "pid", "command", "folder", "at", "weight" }: una verificación que corre y las plazas de `verify.slots` que ocupa (la de una tarea, 1; la completa, todas); se escribe antes de dejar la cola y se borra al terminar, y el de un proceso que ya no existe no cuenta y lo borra el siguiente que mira
 ├─ locks/verify-slots.queue/<llegada>-<pid>-<n>.json # la cola de las plazas, con la forma y las reglas de la del turno: solo el primero vivo puede empezar, cuando su peso cabe entre las plazas libres
+├─ runs/<id>.json              # { "task"?, "command", "startedAt", "output", "pid" }: la verificación en curso del cambio `<id>`, de `task done` o, sin `task`, la completa de `accept` (ARCHITECTURE §15); se borra al terminar, y el servidor de la UI y `specty prune` borran la de un proceso que ya no existe
 ├─ verified/<huella>.json      # { "unit", "command", "change", "at", "ms" }: una unidad de `verify.units` que pasó con esa huella (el hash de su comando y de los archivos de sus `paths`, sin el prefijo `sha256:`), en el cambio `change` (sin él, si pasó en una verificación fresca fuera de un cambio); la verificación completa no vuelve a ejecutar una unidad cuya huella está aquí, en ningún cambio del clon (ARCHITECTURE §9). Se escribe de forma atómica cuando la unidad pasa, también en `specty verify --fresh`, que no lo lee, y nunca cuando falla; `specty prune` borra los que tienen un `at` de hace más de 30 días o ninguno legible, y una unidad que vuelve a pasar se anota de nuevo
 └─ backups/<fecha>/            # lo que había antes de que `init` o `uninstall` lo cambiaran (una carpeta por ejecución)
    ├─ repo/<ruta>              # copia de un archivo del repositorio
    ├─ outside/<ruta absoluta>  # copia de uno de fuera (Codex, OpenCode, .git/info/exclude de una worktree)
    └─ manifest.json            # [{ "path", "created", "removed"?, "copy"? }]: cada archivo creado, cambiado o borrado
+                               # Specty escribe estos archivos a través de uno temporal, `<archivo>.<pid>.tmp`, que renombra al terminar: `specty prune` borra los de un proceso que ya no existe, salvo en `backups/`
 
 specty-memory                  # rama propia de la memoria duradera (ADR 0016; `memory.branch`), compartida por todas las worktrees
 ├─ README.md                   # índice de las entradas abiertas por tipo, en el idioma del proyecto; Specty lo rehace en cada commit
@@ -242,7 +245,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - Hay una tarea sin `verify` y no existe una verificación por defecto.
 - En `adjusting`: se modifica o elimina una tarea completada.
 - En `closing`: hay cambios fuera de la sección Cierre.
-- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. La tarea única de `quick` solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección.
+- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. La tarea única de `quick` solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección. El corte de una épica (con `epic` en el frontmatter) no se divide en otra épica: su error pide estrecharlo y llevar el resto a cortes nuevos de su épica, que se ajusta también mientras se implementa.
 - Una tarea de código de un cambio `standard` no lista ningún test en sus archivos, si la política es `required` o `contract`. Con `contract`, un `refactor` o un `perf` no lo necesita: su contrato son los tests que ya existen, y `task done` no lo completa si les quita aserciones.
 
 **Avisos**, que se muestran en la salida y en la UI:

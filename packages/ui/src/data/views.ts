@@ -165,6 +165,7 @@ function identityOf(
   | "lost"
   | "orphan"
   | "away"
+  | "configIssues"
   | "phaseSince"
   | "createdAt"
   | "closedAt"
@@ -183,6 +184,7 @@ function identityOf(
     ...(record.lost === true ? { lost: true } : {}),
     ...(record.orphan === true ? { orphan: true } : {}),
     ...(record.away === undefined ? {} : { away: record.away }),
+    ...(record.configIssues === undefined ? {} : { configIssues: record.configIssues }),
     phaseSince: record.phaseSince,
     ...timestampsOf(record, state, audit),
     goal: spec.sections.goal ?? spec.sections.reason ?? "",

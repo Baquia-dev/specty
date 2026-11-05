@@ -85,7 +85,14 @@ export async function installHooks(options: {
   }
   for (const agent of Object.values(ADAPTERS)) {
     if (!tools.includes(agent.tool)) continue;
-    const installed = await agent.install({ root, git, invocation, files, lang });
+    const installed = await agent.install({
+      root,
+      git,
+      invocation,
+      files,
+      lang,
+      env: environment.env,
+    });
     done.push(...installed.done);
     warnings.push(...installed.warnings);
     written.push(...installed.written);

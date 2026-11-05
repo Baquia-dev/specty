@@ -7,5 +7,8 @@ export default defineConfig({
     // Vitest's reporters, plus the JUnit report that `checks.testTime` reads.
     reporters: [...configDefaults.reporters, "junit"],
     outputFile: { junit: "coverage/junit.xml" },
+    // The run's temporary files go in a folder of its own, removed at the end. The builder runs
+    // Vitest from `packages/ui`.
+    globalSetup: ["../core/vitest-temp-dir.ts"],
   },
 });
