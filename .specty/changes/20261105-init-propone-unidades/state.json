@@ -6,6 +6,13 @@
   "branch": "specty/20261105-init-propone-unidades",
   "baseCommit": "bd48aacf6aa987f9dcce0d5aa2a20cb564068e48",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4cfcb5d38efd4be807c25da285f96ca73699a4757ed69d342f4fba063ef4c61c",
+    "at": "2026-11-05T12:40:33.426Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -44,12 +51,6 @@
     "T": 3,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4cfcb5d38efd4be807c25da285f96ca73699a4757ed69d342f4fba063ef4c61c",
-    "at": "2026-11-05T12:40:33.426Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T12:42:30.324Z"
 }
