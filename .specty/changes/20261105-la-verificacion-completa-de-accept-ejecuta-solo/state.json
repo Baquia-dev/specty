@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-verificacion-completa-de-accept-ejecuta-solo",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-la-verificacion-completa-de-accept-ejecuta-solo",
   "baseCommit": "b4686dfe63d4d149247ca21552eac202ab157426",
   "revision": 1,
@@ -64,6 +64,9 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T04:45:56.791Z"
+  "lockedTests": {
+    "packages/cli/test/accept-units.test.ts": "sha256:6662ab98cfeb5b059fb91682c86c153caaedb6de28b8e5cd8a964ca157aa229b",
+    "packages/core/test/cards/units.test.ts": "sha256:909485e31af95ea63436a61de56080841e17125cff0c5e8faed35a916347fa7f",
+    "packages/core/test/schema/units.test.ts": "sha256:2eabad73a78e5631251a5120070cdbcc943a0a3cc9794c06eb48adbe7b57c212"
+  }
 }
