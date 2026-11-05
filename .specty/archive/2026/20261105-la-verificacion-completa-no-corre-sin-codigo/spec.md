@@ -81,3 +81,23 @@ Hoy `accept` ejecuta la verificación completa aunque el cambio solo toque docum
 ## Riesgos
 
 - R1: Un cambio de solo documentación que rompe un test que la lee llega a main sin verse — el CI ejecuta `pnpm check` en cada push y en cada pull request, y el siguiente `accept` que verifique lo verá fallar.
+
+## Cierre
+
+### Resumen
+
+El `tree` de cada verificación solo cuenta los archivos de código (fuera de `.specty/` y de `ignored`, aunque no estén en `governed`), así que corregir la documentación tras verificar ya no obliga a repetir la verificación completa. Un cambio que solo toca archivos libres no ejecuta la verificación completa en `accept`, y la incorporación de main no verifica su merge: `touchesCode` compara con la rama destino los archivos del árbol de trabajo, y la nota de `accept` y la línea de la incorporación dicen por qué, en español y en inglés. Con código, todo corre como antes.
+
+### Desviaciones
+
+- `commitAbsorbed` recibe ya la `MergeVerification` que eligió `mergeVerification`, en vez de reconstruirla a partir de la épica y el comando.
+- El primer `accept` falló dos veces por tiempo con la máquina saturada (carga 40-66), en tests ajenos al cambio que pasan solos (`vscode/test/specty.test.ts` e `init-usage.test.ts`); pasó a la tercera, con la carga en 13. Queda anotado como P118.
+
+### Decisiones
+
+- Si git no puede decir qué difiere de la rama destino, el cambio cuenta como que toca código y la verificación corre.
+- Sin incorporación (modo equipo, sin rama o un spike) no se salta nada: no hay con qué comparar.
+
+### Pendientes
+
+- Ninguno
