@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261105-cancel-quita-la-carpeta-del-cambio-cuando-nada",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-cancel-quita-la-carpeta-del-cambio-cuando-nada",
+  "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d037a22a2371cdeab2f68fecdd6701d8a2d151b5d55080b8ace0087d4dd58735",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:61634e0c943ed45d4f921493c8cc96af8256160ec968400026863cac8d22db0a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:6714901ab0415e5c7f74f3a91ca0c0c9c3f446e587732a83f45e24e7f27f2ed0",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0804e619bde89659806045bdc2b5eddca1a064aec4ef9fc805e1b0c06c7c550d",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:eb129641c378bec7b09a76a747f469f2732053799989336fb17a1dd839ea36ab",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:529fdf39a08bee5bb955dce6d6586f0d6d54e07bd23dbb76895ae24ab22d4628",
+    "at": "2026-11-05T16:03:07.220Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
