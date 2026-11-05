@@ -41,7 +41,7 @@ export const testTime: CheckDefinition = {
  * since `started`, the longest first: what `test-time` warns of, and what the note of a full
  * verification shows. Undefined without `checks.testTime` or without a fresh report.
  */
-async function slowTestsSince(
+export async function slowTestsSince(
   session: Session,
   started: number,
 ): Promise<readonly TestTime[] | undefined> {

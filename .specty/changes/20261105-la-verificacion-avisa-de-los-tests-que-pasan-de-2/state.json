@@ -69,12 +69,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "509109a1df886669c06f5a4bcbbef3444e2bd92a",
+      "attempts": 2,
       "startedAt": "2026-11-05T05:36:53.972Z",
       "doneAt": "2026-11-05T05:38:03.977Z",
-      "summary": "check/test-time.ts: la verificación test-time (after) avisa de cada test de los informes JUnit nuevos que pasa de maxMs, anclando su archivo a la carpeta del informe. coverage.ts exporta freshReports, folderChain y deepest"
+      "summary": "check/test-time.ts: la verificación test-time (after) avisa de cada test de los informes JUnit nuevos que pasa de maxMs, anclando su archivo a la carpeta del informe. coverage.ts exporta freshReports, folderChain y deepest",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/check/test-time.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "faebc94bfc49107a7e1cea5e86c63ee2082b7cb0",
+      "startedAt": "2026-11-05T05:38:04.314Z",
+      "doneAt": "2026-11-05T05:39:04.253Z",
+      "summary": "La nota de la verificación completa de accept añade, tras la cobertura, los tests de los informes JUnit nuevos que pasan de maxMs (slowTestNote con slowTestsSince y slowTestLines); test-time.ts vuelve a exportar slowTestsSince"
     }
   },
   "pending": {

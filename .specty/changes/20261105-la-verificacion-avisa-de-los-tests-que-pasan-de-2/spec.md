@@ -78,7 +78,7 @@ Un test que tarda cada vez más pasa desapercibido hasta que la suite entera se 
   - files: packages/cli/src/check/test-time.ts, packages/cli/src/check/coverage.ts, packages/cli/src/check/common.ts, packages/cli/test/check-test-time.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-test-time.test.ts test/check-coverage.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T4: La nota de la verificación completa de `accept` muestra los tests lentos
+- [x] T4: La nota de la verificación completa de `accept` muestra los tests lentos
   - files: packages/cli/src/commands/accept.ts, packages/cli/test/accept-test-time.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-test-time.test.ts test/accept-coverage.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
