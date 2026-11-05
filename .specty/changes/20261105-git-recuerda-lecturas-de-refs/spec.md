@@ -68,7 +68,7 @@ Desde 20261105-tests-cli-mas-rapidos, cada comando abre su sesión con un proces
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-memo.test.ts test/server/trace.test.ts test/server.test.ts test/server/verify-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: fix
-- [ ] T4: La documentación del olvido en el servidor
+- [x] T4: La documentación del olvido en el servidor
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-git-recuerda-lecturas-de-refs",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-git-recuerda-lecturas-de-refs",
   "baseCommit": "a0ad1aa4a6e619d229ad7a430d3afdd50e426ba8",
   "revision": 2,
@@ -61,12 +61,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f7583cd20d30549e39951f0043d9c78711efc1eb",
+      "attempts": 1,
       "startedAt": "2026-11-05T12:12:59.194Z",
       "doneAt": "2026-11-05T12:14:44.394Z",
-      "summary": "Git.forget olvida lo recordado; el servidor de specty ui lo llama al empezar cada petición y cada sondeo de eventos, así que nunca responde con una lectura de antes de un commit de otro proceso (trace.test.ts vuelve a pasar)."
+      "summary": "Git.forget olvida lo recordado; el servidor de specty ui lo llama al empezar cada petición y cada sondeo de eventos, así que nunca responde con una lectura de antes de un commit de otro proceso (trace.test.ts vuelve a pasar).",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3ff3b1e4fec0d9b22d56aa50b06b469a57f4d79f",
+      "startedAt": "2026-11-05T12:14:44.700Z",
+      "doneAt": "2026-11-05T12:15:00.766Z",
+      "summary": "ARCHITECTURE explica que el servidor de specty ui olvida lo recordado al empezar cada petición y cada sondeo de eventos (Git.forget)."
     }
   },
   "pending": {
