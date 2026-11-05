@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-tooltip-del-corte-con-su-titulo",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-tooltip-del-corte-con-su-titulo",
   "baseCommit": "7f6fa02d6bfda934258c5956b042f838136178dc",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "18368cb99215b295366217c5b8e0d856b1669fcf",
+      "attempts": 1,
       "startedAt": "2026-11-05T20:41:10.623Z",
       "doneAt": "2026-11-05T20:46:10.941Z",
-      "summary": "itemsOfReview añade cada corte de review.slices con su título: el tooltip del id de un corte dice «Corte C1: <título>»"
+      "summary": "itemsOfReview añade cada corte de review.slices con su título: el tooltip del id de un corte dice «Corte C1: <título>»",
+      "scopeExtra": []
     }
   },
   "pending": {

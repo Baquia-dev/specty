@@ -19,3 +19,9 @@ En la revisión de una épica (`specty ui`), el tooltip del id de un corte (C1 e
   - files: packages/ui/src/components/item-refs.ts, packages/ui/src/components/item-tooltip.test.ts
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts && pnpm typecheck
   - type: fix
+
+## Cierre
+
+### Resumen
+
+itemsOfReview añade cada corte de review.slices con su título: el tooltip del id de un corte dice «Corte C1: <título>»
