@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7b4e0267469a299d0555fc29b943d37e43f102ed",
+      "startedAt": "2026-11-05T20:25:29.768Z",
+      "doneAt": "2026-11-05T20:29:35.465Z",
+      "summary": "checkClosedSlices en validate/phase.ts: en adjusting y review con una revisión aprobada, un corte de closedSlices (nuevo en el contexto de validación) que falta o cuyo hash no es el de la aprobada ni el de la última propuesta da closed-slice-changed, con sus mensajes es/en"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

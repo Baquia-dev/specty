@@ -59,7 +59,7 @@ Hoy, la tarjeta de `adjusting` de una épica pide no tocar los cortes cerrados, 
 
 ## Tareas
 
-- [ ] T1: La validación rechaza un corte cerrado que cambia o desaparece
+- [x] T1: La validación rechaza un corte cerrado que cambia o desaparece
   - files: packages/core/src/validate/context.ts, packages/core/src/validate/phase.ts, packages/core/src/validate/index.ts, packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/validate/closed-slices.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/closed-slices.test.ts test/validate/phase.test.ts

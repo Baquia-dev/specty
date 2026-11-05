@@ -18,6 +18,11 @@ export interface ValidationContext {
   /** Last proposed revision; with `maxIds`, detects reused ids. */
   readonly previous?: Spec;
   readonly doneTasks?: ReadonlySet<string>;
+  /**
+   * An epic's slices whose change is closed (`done`), each with that change's id: an adjustment
+   * does not modify or remove them. Core reads no disk, so the CLI passes them.
+   */
+  readonly closedSlices?: ReadonlyMap<string, string>;
   readonly maxIds?: Readonly<Partial<Record<ItemPrefix, number>>>;
   readonly repo?: RepoSignals;
   /**
