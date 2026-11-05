@@ -76,3 +76,24 @@ Hoy, la tarjeta de `adjusting` de una épica pide no tocar los cortes cerrados, 
 ## Riesgos
 
 - R1: Buscar los cambios de la épica lee las specs archivadas en cada `propose` de una épica ajustada — es lo que ya hace su tarjeta en cada `next`, y solo se parsean las que nombran la épica.
+
+## Cierre
+
+### Resumen
+
+El ajuste de una épica ya no puede cambiar ni borrar un corte cerrado. `analyzeChange` pasa a la validación los cortes de una épica aprobada cuyo cambio está en `done` (`closedSlices` en `flow/epic.ts`, sobre los mismos cambios que cuenta la tarjeta de la épica). `checkClosedSlices` (`validate/phase.ts`) corre en `adjusting` y en la revisión del ajuste. Si un corte cerrado falta, o no es como en la revisión aprobada ni como en la última propuesta, da `closed-slice-changed`: un error que nombra el corte y su cambio y pide llevar lo que falte a un corte nuevo. Los cortes nuevos, y los que no tienen cambio o lo tienen abierto o cancelado, se siguen ajustando. formats.md §2 y ARCHITECTURE (tabla de fases y §12) lo documentan.
+
+### Desviaciones
+
+- **Ninguna respecto al plan.**
+
+### Decisiones
+
+- Un corte está cerrado cuando su cambio está en `done`. Uno cancelado no lo cierra, porque su corte puede empezar de nuevo, y uno abierto, en cualquier fase, aún se puede ajustar.
+- La regla también corre en `review` con una revisión aprobada, porque la propuesta que sigue a los comentarios de la persona sale de esa fase. Si solo corriera en `adjusting`, bastaría con volver a proponer para saltársela.
+- Un corte cerrado se acepta tal como estaba en la revisión aprobada o en la última propuesta. Así, un corte que el ajuste estrechó mientras su cambio seguía abierto, y que se cerró antes de la aprobación, no bloquea las propuestas siguientes. Borrar un corte cerrado siempre es un error, aunque la última propuesta ya lo hubiera borrado.
+- La tarjeta de `adjusting` de la épica no cambió: ya pedía no cambiar ni borrar los cortes cerrados, y ahora el error lo explica cuando pasa.
+
+### Pendientes
+
+- P191: `checkAdjusting` solo corre en `adjusting`. La propuesta que sigue a los comentarios de la persona en `review` puede cambiar o borrar una tarea hecha sin `done-task-changed`. Falta decidir si esa regla corre también en `review` con una revisión aprobada, como la de los cortes cerrados.
