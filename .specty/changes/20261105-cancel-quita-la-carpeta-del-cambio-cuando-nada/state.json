@@ -6,6 +6,13 @@
   "branch": "specty/20261105-cancel-quita-la-carpeta-del-cambio-cuando-nada",
   "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:529fdf39a08bee5bb955dce6d6586f0d6d54e07bd23dbb76895ae24ab22d4628",
+    "at": "2026-11-05T16:03:07.220Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -48,12 +55,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:529fdf39a08bee5bb955dce6d6586f0d6d54e07bd23dbb76895ae24ab22d4628",
-    "at": "2026-11-05T16:03:07.220Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T16:07:45.338Z"
 }
