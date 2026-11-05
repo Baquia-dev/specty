@@ -65,7 +65,7 @@ Con las unidades de `verify.units`, la verificación completa salta las que ya p
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/fresh.test.ts && pnpm --filter @baquia-dev/specty-core typecheck
   - type: feat
-- [ ] T2: specty verify --fresh ejecuta todo, repite lo que falla y lo anota en la memoria
+- [x] T2: specty verify --fresh ejecuta todo, repite lo que falla y lo anota en la memoria
   - files: packages/cli/src/commands/verify.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/src/flow/units.ts, packages/cli/src/flow/archive-memory.ts, packages/cli/test/verify-fresh.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-fresh.test.ts test/accept-units.test.ts test/risk-lessons.test.ts test/close-harvest.test.ts && pnpm typecheck && pnpm lint && pnpm knip && pnpm sources
