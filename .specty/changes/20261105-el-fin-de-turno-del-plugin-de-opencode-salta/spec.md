@@ -17,7 +17,7 @@ Resuelve P92. Con `specty check --install` (`STOP`), el plugin de OpenCode ejecu
 
 ## Tareas
 
-- [ ] T1: El plugin de OpenCode 1 salta el fin de turno de las sesiones hijas
+- [x] T1: El plugin de OpenCode 1 salta el fin de turno de las sesiones hijas
   - files: packages/cli/src/install/opencode.ts, packages/cli/test/opencode.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/opencode-install.test.ts && pnpm typecheck
   - type: fix
