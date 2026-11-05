@@ -214,6 +214,11 @@ export interface ChangeView {
   readonly coverage?: CoverageView;
   /** An epic's slices, in the order of its spec. */
   readonly slices?: readonly SliceView[];
+  /**
+   * An epic that lives in a worktree of its own, not in the main folder: a session that moved
+   * there with its tool (Claude Code's `EnterWorktree`) leaves it before handing out its slices.
+   */
+  readonly inWorktree?: boolean;
   /** The project's glossary, when it defines some term (formats.md §6). */
   readonly glossary?: {
     readonly path: string;
