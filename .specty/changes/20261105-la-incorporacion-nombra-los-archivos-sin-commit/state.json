@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-incorporacion-nombra-los-archivos-sin-commit",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-incorporacion-nombra-los-archivos-sin-commit",
   "baseCommit": "e5f9af3ba8f543fe35b900a7904128389ed94e83",
   "revision": 2,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e43d3ab1d618423d85c5004733a19217c8ea88f6",
+      "attempts": 1,
       "startedAt": "2026-11-05T09:49:59.795Z",
       "doneAt": "2026-11-05T09:50:33.124Z",
-      "summary": "core exporta managedBySpecty (la lista del guard, que usa protectedDenial) y los textos uncommittedOverlapLine, personOnlyLine y commitOrDiscardNext, en español, en inglés y en modo delegado"
+      "summary": "core exporta managedBySpecty (la lista del guard, que usa protectedDenial) y los textos uncommittedOverlapLine, personOnlyLine y commitOrDiscardNext, en español, en inglés y en modo delegado",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fadc5ac1b499b043b901c11b1d6ae395c1fe94ff",
+      "startedAt": "2026-11-05T09:50:33.446Z",
+      "doneAt": "2026-11-05T09:52:23.437Z",
+      "summary": "mergeTarget no empieza el merge si main cambió archivos sin commit de la carpeta: los nombra bajo SIN COMMIT, dice que los de Specty solo los toca la persona y pide su commit o descartarlos (flow/uncommitted.ts, que también usa commitClosing); ARCHITECTURE §9 lo documenta"
     }
   },
   "pending": {

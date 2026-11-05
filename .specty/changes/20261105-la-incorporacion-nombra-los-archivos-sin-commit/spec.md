@@ -58,7 +58,7 @@ Si en la carpeta del cambio hay un archivo sin commit fuera del cierre, como una
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/incorporation.test.ts test/guard/decide.test.ts
   - type: fix
-- [ ] T2: la incorporación se niega y nombra los archivos sin commit que cambió main
+- [x] T2: la incorporación se niega y nombra los archivos sin commit que cambió main
   - files: packages/cli/src/flow/uncommitted.ts, packages/cli/src/flow/integrate.ts, packages/cli/src/flow/finish.ts, packages/cli/test/uncommitted-merge.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/uncommitted-merge.test.ts test/close-shared-file.test.ts test/invalid-config-merge.test.ts test/integrate.test.ts && pnpm typecheck
