@@ -70,7 +70,7 @@ Desde C4, el servidor local da los cambios terminados por páginas en `GET /api/
 
 ## Tareas
 
-- [ ] T1: La fuente de datos da los terminados por páginas
+- [x] T1: La fuente de datos da los terminados por páginas
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/finished-source.test.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/finished-source.test.ts --include src/data/server.test.ts && pnpm lint

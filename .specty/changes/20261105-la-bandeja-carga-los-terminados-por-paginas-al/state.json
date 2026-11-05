@@ -52,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cc5a3b77f0de86d70dbce8faeaf1c3082336d381",
+      "startedAt": "2026-11-05T13:49:23.953Z",
+      "doneAt": "2026-11-05T13:52:42.166Z",
+      "summary": "SpectyData.finished(request) con FinishedRequest y FinishedPage: por defecto pagina en memoria los terminados de changes() con matchesQuery y sortChanges (deriveViews en un chunk perezoso); ServerData.finished pide GET /api/changes/finished y comprueba la respuesta con isFinishedPage."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
