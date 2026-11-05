@@ -77,7 +77,7 @@ Hoy, para saber qué pendientes dejó un cambio o cuáles resolvió, hay que ir 
   - files: packages/ui/src/data/sample-memory.ts, packages/ui/src/data/sample-memory.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/sample-memory.test.ts --include src/change/change-page.unloaded.test.ts --include src/history/history-tab.test.ts --include src/history/history-export.test.ts --include src/memory/memory-toolbar.test.ts --include src/memory/memory-actions.test.ts && pnpm typecheck
-- [ ] T4: ui.md cuenta la sección de la página de un cambio y los parámetros de la Memoria
+- [x] T4: ui.md cuenta la sección de la página de un cambio y los parámetros de la Memoria
   - files: docs/ui.md
   - ac: —
   - verify: grep -q "En la memoria" docs/ui.md && grep -q "closed=1" docs/ui.md

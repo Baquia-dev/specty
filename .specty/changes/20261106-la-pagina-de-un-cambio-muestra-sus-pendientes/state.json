@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-pagina-de-un-cambio-muestra-sus-pendientes",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-la-pagina-de-un-cambio-muestra-sus-pendientes",
   "baseCommit": "6ef9be39fe338ef87c02a31d85387cf713968cb8",
   "revision": 2,
@@ -65,12 +65,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2fb96fb568fb0e35775f35aff28e25f517f3a5ba",
+      "attempts": 1,
       "startedAt": "2026-11-05T21:40:46.208Z",
       "doneAt": "2026-11-05T21:42:10.776Z",
-      "summary": "El prototipo da un pendiente abierto que salió de 20261015-redondeo-promedios y una mejora que ese cambio tomó y quedó hecha, con su origen en origins."
+      "summary": "El prototipo da un pendiente abierto que salió de 20261015-redondeo-promedios y una mejora que ese cambio tomó y quedó hecha, con su origen en origins.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2568b08956cb30162772da122055b31ca58e2e83",
+      "startedAt": "2026-11-05T21:42:11.076Z",
+      "doneAt": "2026-11-05T21:42:39.567Z",
+      "summary": "ui.md cuenta la sección «En la memoria» de la página de un cambio y que la Memoria lee q y closed=1 de la URL."
     }
   },
   "pending": {
