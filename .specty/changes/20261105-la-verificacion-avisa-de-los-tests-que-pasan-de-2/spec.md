@@ -70,7 +70,7 @@ Un test que tarda cada vez más pasa desapercibido hasta que la suite entera se 
   - files: packages/core/src/schema/checks.ts, packages/core/src/checks/junit.ts, packages/core/src/index.ts, packages/core/test/checks/junit.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/junit.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: Los textos de los tests lentos
+- [x] T2: Los textos de los tests lentos
   - files: packages/core/src/cards/test-time.ts, packages/core/src/cards/index.ts, packages/core/test/cards/test-time.test.ts
   - ac: AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/test-time.test.ts && pnpm typecheck && pnpm lint && pnpm sources

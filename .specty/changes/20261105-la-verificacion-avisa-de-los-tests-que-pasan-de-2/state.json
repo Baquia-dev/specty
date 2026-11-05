@@ -48,15 +48,24 @@
   "tasks": {
     "T1": {
       "status": "done",
+      "baseCommit": "86c9b0bdca6047751e69cdd20474cb176d07c397",
+      "attempts": 2,
+      "startedAt": "2026-11-05T05:33:28.712Z",
+      "doneAt": "2026-11-05T05:36:34.367Z",
+      "summary": "checks.testTime en el esquema; checks/junit.ts: parseJunit da cada test con su archivo (file, el de su suite o classname, desde la raíz), nombre y tiempo, y slowTests los que pasan de maxMs. Adelanta los textos de T2 (slowTestMessage, slowTestLines): el typecheck compila sus tests",
       "scopeExtra": [
         "packages/core/src/cards/test-time.ts",
         "packages/core/src/cards/index.ts"
-      ],
-      "attempts": 2,
-      "baseCommit": "86c9b0bdca6047751e69cdd20474cb176d07c397",
-      "startedAt": "2026-11-05T05:33:28.712Z",
-      "doneAt": "2026-11-05T05:36:34.367Z",
-      "summary": "checks.testTime en el esquema; checks/junit.ts: parseJunit da cada test con su archivo (file, el de su suite o classname, desde la raíz), nombre y tiempo, y slowTests los que pasan de maxMs. Adelanta los textos de T2 (slowTestMessage, slowTestLines): el typecheck compila sus tests"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c74646b75fb634af90539d6a39feee80b45a7069",
+      "startedAt": "2026-11-05T05:36:34.689Z",
+      "doneAt": "2026-11-05T05:36:53.646Z",
+      "summary": "Sin código nuevo: slowTestMessage y slowTestLines (es/en, cinco tests y cuántos más) llegaron en T1, porque su typecheck compilaba estos tests; T2 comprueba sus tests y pnpm sources"
     }
   },
   "pending": {
