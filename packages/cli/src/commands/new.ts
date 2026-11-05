@@ -13,6 +13,7 @@ import {
   type Output,
   specTemplate,
   type TemplateOptions,
+  withDevPorts,
   withLead,
   worktreeCreatedCard,
 } from "@baquia-dev/specty-core";
@@ -31,6 +32,7 @@ import type { Session } from "../session";
 import { initialState, type StoredChange } from "../store/changes";
 import { writePointer } from "../store/local";
 import { changeFiles, repoPaths } from "../store/paths";
+import { portsOf } from "../store/ports";
 import { claimEntries, takeEntries } from "./memory";
 import { dirtyGoverned } from "./next";
 
@@ -201,7 +203,7 @@ async function newInWorktree(
   // names the session that launched it, which stays where it was.
   const subagent = options.subagent === true;
   if (!subagent) await bindNew(session, folder, options.epic);
-  return worktreeCreatedCard(
+  const card = worktreeCreatedCard(
     {
       id,
       branch,
@@ -219,6 +221,8 @@ async function newInWorktree(
     },
     cards,
   );
+  // Its development servers get ports of their own (`dev.ports`), apart from other folders'.
+  return withDevPorts(card, await portsOf(session, folder), session.lang);
 }
 
 /**

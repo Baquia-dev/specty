@@ -51,7 +51,7 @@ Con varios cambios abiertos, cada uno en su worktree, dos sesiones que arrancan 
   - files: packages/core/src/schema/dev.ts, packages/core/src/schema/config.ts, packages/core/src/cards/ports.ts, packages/core/src/cards/index.ts, packages/core/test/cards/dev-ports.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/dev-ports.test.ts test/schema && pnpm typecheck && pnpm lint && pnpm sources
-- [ ] T2: Cada carpeta de cambio con sus puertos en `new` y `next`
+- [x] T2: Cada carpeta de cambio con sus puertos en `new` y `next`
   - files: packages/cli/src/store/ports.ts, packages/cli/src/commands/new.ts, packages/cli/src/commands/next.ts, packages/cli/test/dev-ports.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/dev-ports.test.ts test/commands.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip

@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "17b74916f3400469c647eab54a735ca4da56ab26",
+      "attempts": 1,
       "startedAt": "2026-11-05T02:17:21.258Z",
       "doneAt": "2026-11-05T02:19:18.299Z",
-      "summary": "core: dev.ports en config.yaml (schema/dev.ts, puertos enteros de 1 a 65535) y withDevPorts (cards/ports.ts) que añade a una tarjeta los puertos de la carpeta"
+      "summary": "core: dev.ports en config.yaml (schema/dev.ts, puertos enteros de 1 a 65535) y withDevPorts (cards/ports.ts) que añade a una tarjeta los puertos de la carpeta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8a412f41f0878587f879148bfc8c15158dc93a31",
+      "startedAt": "2026-11-05T02:19:19.609Z",
+      "doneAt": "2026-11-05T02:22:44.424Z",
+      "summary": "store/ports.ts: portsOf da a cada carpeta de cambio dev.ports más su posición (la libre más baja desde 1, guardada en .git/common/specty/ports.json; la de una carpeta que ya no existe se libera); new y next pasan su tarjeta por withDevPorts"
     }
   },
   "pending": {
