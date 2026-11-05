@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261105-la-medicion-de-una-epica-con-subagentes-tras",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261105-la-medicion-de-una-epica-con-subagentes-tras",
+  "baseCommit": "98ffc3ae219a8ae85c9393303734d11f62146501",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c58c7a13f5d86908d0354f14b887db7e999abb40a824b8a33b04682ccceee73f",
+    "at": "2026-11-05T06:09:13.282Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
