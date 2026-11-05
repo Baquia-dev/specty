@@ -162,3 +162,84 @@ describe("which git commands can change what is recalled", () => {
     for (const args of changes) expect(mayChangeRecalled(args), args.join(" ")).toBe(true);
   });
 });
+
+describe("the reads that depend only on refs", () => {
+  it("AC1: opening a repository with commits also gives HEAD and its branch, which a Git then does not ask", async () => {
+    const { root } = await withWorktree();
+    const opened = await openRepository(root);
+    expect(opened?.head).toEqual({ commit: git(root, "rev-parse", "HEAD"), branch: "main" });
+    const trace = await traceFile();
+    const repo = createGit(root, testEnv({ GIT_TRACE: trace }), opened?.known, opened?.head);
+    expect(await repo.branch()).toBe("main");
+    expect(await repo.head()).toBe(opened?.head?.commit);
+    expect(await repo.output(["rev-parse", "HEAD"])).toBe(opened?.head?.commit);
+    expect(await traced(trace, "symbolic-ref")).toEqual([]);
+    expect(await traced(trace, "rev-parse")).toEqual([]);
+  });
+
+  it("AC1: a command asks git neither for HEAD nor for its branch after opening its session", async () => {
+    const root = await tempRepo({ ".specty/config.yaml": CONFIG(), "src/app.ts": "export {};\n" });
+    const trace = await traceFile();
+    await tracing(trace, () => cli(root, ["next"], { env: { GIT_TRACE: trace } }));
+    expect(await traced(trace, "symbolic-ref --short -q HEAD")).toEqual([]);
+    expect(await traced(trace, "rev-parse --verify -q HEAD")).toEqual([]);
+  });
+
+  it("AC1: without commits, or with HEAD detached, it opens as before and answers as git", async () => {
+    const empty = await mkdtemp(join(tmpdir(), "specty-empty-"));
+    git(empty, "init", "-q", "-b", "main");
+    const unborn = await openRepository(empty);
+    expect(unborn?.head).toBeUndefined();
+    expect(unborn?.known.specty).toBe(answer(empty, "specty"));
+    const { root } = await withWorktree();
+    git(root, "switch", "-q", "--detach");
+    const opened = await openRepository(root);
+    expect(opened?.head?.branch).toBe("HEAD");
+    const repo = createGit(root, testEnv(), opened?.known, opened?.head);
+    expect(await repo.branch()).toBeUndefined();
+    expect(await repo.head()).toBe(git(root, "rev-parse", "HEAD"));
+  });
+
+  it("AC2: a log, a ref, a merge base or a tree read again while nothing changes is asked once, also when it failed", async () => {
+    const { root } = await withWorktree();
+    const trace = await traceFile();
+    const repo = createGit(root, testEnv({ GIT_TRACE: trace }));
+    for (let i = 0; i < 3; i++) {
+      await repo.run(["log", "-n", "5", "--format=%h"]);
+      expect((await repo.run(["rev-parse", "--verify", "-q", "refs/heads/nada"])).code).not.toBe(0);
+      await repo.run(["merge-base", "HEAD", "otro"]);
+      await repo.run(["ls-tree", "-r", "HEAD"]);
+    }
+    for (const command of ["log", "rev-parse --verify -q refs/heads/nada", "merge-base", "ls-tree"])
+      expect(await traced(trace, command), command).toHaveLength(1);
+  });
+
+  it("AC3: preparing files keeps what it recalls; a commit or a moved ref asks again", async () => {
+    const { root } = await withWorktree();
+    const trace = await traceFile();
+    const repo = createGit(root, testEnv({ GIT_TRACE: trace }));
+    const before = await repo.output(["log", "-n", "5", "--format=%h"]);
+    await repo.run(["add", "-A"]);
+    await repo.output(["log", "-n", "5", "--format=%h"]);
+    expect(await traced(trace, "log")).toHaveLength(1);
+    await repo.run(["commit", "-q", "--allow-empty", "-m", "otro"]);
+    expect(await repo.output(["log", "-n", "5", "--format=%h"])).not.toBe(before);
+    expect(await traced(trace, "log")).toHaveLength(2);
+    expect((await repo.run(["rev-parse", "--verify", "-q", "refs/heads/nueva"])).code).not.toBe(0);
+    await repo.run(["update-ref", "refs/heads/nueva", "HEAD"]);
+    expect((await repo.run(["rev-parse", "--verify", "-q", "refs/heads/nueva"])).code).toBe(0);
+  });
+
+  it("AC4: a read of a path of the index, or with its own environment, is asked each time", async () => {
+    const { root } = await withWorktree();
+    const trace = await traceFile();
+    const repo = createGit(root, testEnv({ GIT_TRACE: trace }));
+    const index = join(await mkdtemp(join(tmpdir(), "specty-index-")), "index");
+    for (let i = 0; i < 2; i++) {
+      await repo.run(["rev-parse", ":src/app.ts"]);
+      await repo.run(["log", "-n", "1", "--format=%h"], { env: { GIT_INDEX_FILE: index } });
+    }
+    expect(await traced(trace, "rev-parse :src/app.ts")).toHaveLength(2);
+    expect(await traced(trace, "log")).toHaveLength(2);
+  });
+});

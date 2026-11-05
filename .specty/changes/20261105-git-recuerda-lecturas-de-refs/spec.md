@@ -50,7 +50,7 @@ Desde 20261105-tests-cli-mas-rapidos, cada comando abre su sesión con un proces
 
 ## Tareas
 
-- [ ] T1: La apertura da HEAD y la rama, y el runner recuerda las lecturas de refs
+- [x] T1: La apertura da HEAD y la rama, y el runner recuerda las lecturas de refs
   - files: packages/cli/src/io/git-memo.ts, packages/cli/src/io/git.ts, packages/cli/src/session.ts, packages/cli/test/git-memo.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-memo.test.ts test/git-paths.test.ts test/flow.test.ts test/enter.test.ts test/worktree-hooks.test.ts test/memory.test.ts && pnpm typecheck && pnpm lint && pnpm knip

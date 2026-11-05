@@ -118,7 +118,7 @@ export async function openSession(
   if (repository === undefined) return { kind: "no-git" };
   const { root } = repository;
   const paths = repoPaths(root);
-  const git = createGit(root, environment.env, repository.known);
+  const git = createGit(root, environment.env, repository.known, repository.head);
   const loaded = await loadConfig(paths);
   if (loaded.kind === "missing") return { kind: "missing", root, paths, git };
   if (loaded.kind === "ok") return await opened(environment, root, git, loaded.config);
