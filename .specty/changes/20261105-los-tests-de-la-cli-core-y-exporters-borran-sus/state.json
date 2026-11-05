@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b752a0bd869502428736004e7a2338cca5d575c7",
+      "startedAt": "2026-11-05T16:05:34.363Z",
+      "doneAt": "2026-11-05T16:06:21.756Z",
+      "summary": "packages/core/vitest-temp-dir.ts: globalSetup que borra las carpetas specty-tests-<pid>- de procesos muertos, crea la de la ejecución, le apunta TMPDIR/TMP/TEMP y la borra en el teardown; core lo usa y ARCHITECTURE lo cuenta en Pruebas"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

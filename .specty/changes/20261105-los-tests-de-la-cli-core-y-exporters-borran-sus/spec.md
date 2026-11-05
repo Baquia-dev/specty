@@ -51,7 +51,7 @@ Los tests de la CLI, core y exporters crean sus temporales en una carpeta propia
 
 ## Tareas
 
-- [ ] T1: Los tests de core crean sus temporales en una carpeta de la ejecución que se borra al terminar
+- [x] T1: Los tests de core crean sus temporales en una carpeta de la ejecución que se borra al terminar
   - files: packages/core/vitest-temp-dir.ts, packages/core/vitest.config.ts, packages/core/test/vitest-temp-dir.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/vitest-temp-dir.test.ts && pnpm lint && pnpm --filter @baquia-dev/specty-core typecheck && pnpm knip
