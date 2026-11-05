@@ -6,6 +6,13 @@
   "branch": "specty/20261106-el-servidor-muestra-el-cambio-cuya",
   "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:21016d79ccbf2dd84a6788c3b3119045ae8f01d4e06ddc1631fb1a5431acdef5",
+    "at": "2026-11-05T16:22:08.580Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -47,12 +54,6 @@
     "AC": 5,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:21016d79ccbf2dd84a6788c3b3119045ae8f01d4e06ddc1631fb1a5431acdef5",
-    "at": "2026-11-05T16:22:08.580Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T16:30:38.294Z"
 }
