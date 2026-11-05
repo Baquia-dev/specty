@@ -41,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "45d5c36773f94d15572a6802f774ffa1c42d6f4a",
+      "startedAt": "2026-11-05T16:19:14.824Z",
+      "doneAt": "2026-11-05T16:24:27.320Z",
+      "summary": "adjust admite implementing en EVENT_RULES; adjustOutcome rechaza con kind-not-allowed el adjust de un cambio que no es una épica en implementing (endOutcome recibe la fase)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

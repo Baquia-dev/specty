@@ -61,7 +61,7 @@ Un corte que al redactarse sale demasiado grande no tiene salida hoy: `propose` 
 
 ## Tareas
 
-- [ ] T1: La máquina de estados deja ajustar una épica en implementación
+- [x] T1: La máquina de estados deja ajustar una épica en implementación
   - files: packages/core/src/flow/machine.ts, packages/core/test/flow/machine.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow/machine.test.ts
