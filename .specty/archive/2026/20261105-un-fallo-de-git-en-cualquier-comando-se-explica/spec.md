@@ -59,3 +59,21 @@ Cuando git falla dentro de un comando de Specty que no es `init` (`approve`, `ta
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Cuando git falla dentro de un comando de Specty (un hook que rechaza el commit, la firma, un archivo bloqueado), el comando ya no sale con una traza de Node: `sessionRunner` en `program.ts` captura el `GitError` y responde con `gitFailedCard`, en el idioma de la sesión, con la orden de git y su error en una línea sin las líneas `hint:` y un SIGUIENTE que pide corregirlo y volver a ejecutar el comando; termina con código 1. La línea la arma `gitFailure` en `io/git.ts`, la misma que ya usaba `init` y que ahora comparten.
+
+### Desviaciones
+
+- La tarjeta sale con el estado `invalid` (código 1), porque las tarjetas de Specty no tienen un estado de error aparte.
+
+### Decisiones
+
+- Solo se captura el `GitError`; cualquier otro error sigue subiendo como antes.
+
+### Pendientes
+
+Ninguno.

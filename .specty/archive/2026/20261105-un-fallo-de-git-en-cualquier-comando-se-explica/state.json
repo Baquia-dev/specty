@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-un-fallo-de-git-en-cualquier-comando-se-explica",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-un-fallo-de-git-en-cualquier-comando-se-explica",
   "baseCommit": "6db2938c9910024d6bb77d016af7fb938225ed67",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:a98ea1f5320f02e052504df9858f367c072a8ec5e4ee67163cb8109bb187d693",
@@ -53,12 +53,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "742ee2bdbfcc538aadcdafb025f2a6de27eefd68",
+      "attempts": 1,
       "startedAt": "2026-11-05T03:43:13.621Z",
       "doneAt": "2026-11-05T03:43:36.827Z",
-      "summary": "ARCHITECTURE: cómo sale un fallo de git en cualquier comando"
+      "summary": "ARCHITECTURE: cómo sale un fallo de git en cualquier comando",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,6 +70,7 @@
     "AC": 2,
     "T": 3
   },
+  "closingSubmittedAt": "2026-11-05T03:50:09.304Z",
   "lockedTests": {
     "packages/cli/test/git-failed.test.ts": "sha256:3edc4299bd27c5d9a4ccd048b7eb82f574f3c34c087d93cccec0196acb2a8ea6",
     "packages/core/test/cards/git-failed.test.ts": "sha256:22aa04af7a6bde2569e339dfa4ca87f7091d5d03c589848f6e9a60bb04bfd109"
