@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261105-este-repositorio-verifica-por-unidades",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261105-este-repositorio-verifica-por-unidades",
+  "baseCommit": "9ed6ce9d9b5885c2d5ec1a74774fa65f91fa07f8",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b5e020105406ebd7f17a27f4f7af40d1e8c03cc0ecf4793f0dcc635bbf4fcb2d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:37dbabc54c177838b6a3d55313fd391075e41f5ca240a975cd5a4da137b44b9a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:0de606947251d3232da4fd00181007092f7bc106a8584db13a97ba1f44955a48",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e8677774cded2649f10b1ba55763cd024057615396f38d89c934b4a898d5dba7",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:59312d7bce0673b01da19678d6021015c78991337724a69c5092364e84b986d6",
+    "at": "2026-11-05T07:31:59.709Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
