@@ -56,3 +56,23 @@ Desde C1, `specty init` prueba en orden una lista de detectores de workspace: ho
 
 - R1: C5 añade el detector de uv a la misma línea de `DETECTORS` en paralelo — el conflicto al incorporar main es de una línea y se resuelve con los dos detectores.
 - R2: Leer los `include` y las dependencias con expresiones regulares, sin evaluar el script, falla con construcciones poco habituales — la propuesta es una sugerencia que la persona revisa antes de añadirla.
+
+## Cierre
+
+### Resumen
+
+`specty init` propone las unidades de `verify.units` de un proyecto de Gradle con al menos dos subproyectos con tests. El detector nuevo, `gradleWorkspace` en `detect/units-gradle.ts`, lee los `include` de `settings.gradle.kts` o `settings.gradle` (en Kotlin o Groovy, con o sin paréntesis, en varias líneas y sin los comentarios). Por cada subproyecto con carpeta mira si tiene `src/test`, le da `./gradlew :<ruta>:test`, o `gradle :<ruta>:test` sin wrapper, y busca en su archivo de construcción los subproyectos que nombra con `project(":…")` o con su accesor tipado. Como compartidos devuelve los archivos de la raíz, `gradle/**`, `buildSrc/**` y las carpetas de `includeBuild`. No encuentra proyecto con menos de dos subproyectos con tests ni cuando la raíz tiene `src/test`. Va en `DETECTORS` tras los de Cargo, Go y uv.
+
+### Desviaciones
+
+- Al incorporar main, que ya traía el detector de uv (C5), `DETECTORS` queda `[jsWorkspace, cargoWorkspace, goWorkspace, uvWorkspace, gradleWorkspace]`: el de Gradle va también tras el de uv, no solo tras los de Cargo y Go.
+
+### Decisiones
+
+- Los comentarios se quitan con un lector que respeta las cadenas, para que `https://` dentro de una cadena o `"**/*.kt"` no se tomen por comentarios.
+- Los subproyectos sin tests no reciben unidad, pero cuentan como dependencias intermedias, así que una unidad incluye las carpetas a las que llega a través de ellos.
+- Un `project(…)` o un accesor que no nombra un subproyecto del proyecto no cuenta, y un subproyecto no se cuenta como dependencia de sí mismo.
+
+### Pendientes
+
+- Ninguno

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-init-propone-las-unidades-de-un-proyecto-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-init-propone-las-unidades-de-un-proyecto-de",
   "baseCommit": "e0230281b45808ed67da361b02c917cb2dbbbf59",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c3d3ba3bef1ff562f315045dc0256fc5af11499aa06752a45aff3eb8660bd299",
@@ -46,12 +46,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "36e8221606f70903607d69061bf0cdcaf1c6c997",
+      "attempts": 1,
       "startedAt": "2026-11-05T13:53:21.113Z",
       "doneAt": "2026-11-05T13:55:32.599Z",
-      "summary": "Detector gradleWorkspace (detect/units-gradle.ts): subproyectos de los include de settings.gradle(.kts), tests en src/test con su tarea test, dependencias por project(\":…\") o accesor tipado y lo compartido de la raíz; DETECTORS lo prueba tras Cargo y Go."
+      "summary": "Detector gradleWorkspace (detect/units-gradle.ts): subproyectos de los include de settings.gradle(.kts), tests en src/test con su tarea test, dependencias por project(\":…\") o accesor tipado y lo compartido de la raíz; DETECTORS lo prueba tras Cargo y Go.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,7 +64,28 @@
     "T": 1,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T14:00:52.573Z",
   "lockedTests": {
     "packages/cli/test/units-gradle.test.ts": "sha256:e3c9f33497b0380661252d327fb1662df0128e70020f195ddd5b4ac5f1f4edf8"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "cfad7b02db3c6b8fd1175ca7ffc5f8fdb679575a",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/cli/src/detect/workspace-units.ts"
+    ],
+    "paths": [
+      "packages/cli/src/detect/units-gradle.ts",
+      "packages/cli/src/detect/units-uv.ts",
+      "packages/cli/src/detect/workspace-units.ts",
+      "packages/cli/test/units-gradle.test.ts",
+      "packages/cli/test/units-uv.test.ts"
+    ],
+    "at": "2026-11-05T13:55:45.982Z",
+    "resolved": {
+      "commit": "5c5dc6e",
+      "at": "2026-11-05T13:59:55.999Z"
+    }
   }
 }
