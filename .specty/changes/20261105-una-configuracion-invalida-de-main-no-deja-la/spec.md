@@ -58,7 +58,7 @@ Una `.specty/config.yaml` inválida en main (una coma de más en `git.branchPerC
 
 ## Tareas
 
-- [ ] T1: accept y close deshacen la incorporación de main que trae una configuración inválida
+- [x] T1: accept y close deshacen la incorporación de main que trae una configuración inválida
   - files: packages/cli/src/flow/merged-config.ts, packages/cli/src/flow/integrate.ts, packages/core/src/cards/integration.ts, packages/core/src/cards/index.ts, packages/cli/test/invalid-config-merge.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/invalid-config-merge.test.ts test/integrate.test.ts test/close-shared-file.test.ts

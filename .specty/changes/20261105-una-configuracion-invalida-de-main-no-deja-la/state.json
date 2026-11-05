@@ -40,7 +40,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9be3e4c3422248495e3fc19fdfb6b54933c22490",
+      "startedAt": "2026-11-05T09:25:44.571Z",
+      "doneAt": "2026-11-05T09:28:09.084Z",
+      "summary": "mergeTarget valida .specty/config.yaml tras git merge (flow/merged-config.ts): si no es válida, aborta el merge y la salida da el error y pide corregirla en la rama destino; textos en es/en, con variante del modo delegado."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
