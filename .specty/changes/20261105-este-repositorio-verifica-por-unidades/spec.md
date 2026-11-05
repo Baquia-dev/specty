@@ -43,7 +43,7 @@ Desde los cortes C1 y C2, la verificación completa ejecuta solo las unidades de
 
 ## Tareas
 
-- [ ] T1: Un test vigila las unidades de este repositorio
+- [x] T1: Un test vigila las unidades de este repositorio
   - files: packages/cli/test/repo-units.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/repo-units.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
