@@ -73,7 +73,7 @@ Hoy cada sesión empieza con «Pendientes y mejoras abiertas: 72. Las primeras l
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-start.test.ts test/front-start.test.ts test/front-start-codex.test.ts test/memory-resolves.test.ts test/memory-settle.test.ts test/memory-harvest.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/memory-start.test.ts test/cards/front-start.test.ts test/cards/exclusions.test.ts && pnpm lint
   - type: feat
-- [ ] T3: Las reglas de AGENTS.md piden respuestas concisas y reportar solo los pendientes propios
+- [x] T3: Las reglas de AGENTS.md piden respuestas concisas y reportar solo los pendientes propios
   - files: packages/core/src/agents-md.ts, packages/core/test/cards.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts test/cards/ test/agents-md.test.ts && pnpm typecheck && pnpm lint && pnpm knip && pnpm sources

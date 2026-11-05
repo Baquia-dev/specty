@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9e5109c9f5ba1ac44d29c129f9d3d5a681df49be",
+      "attempts": 1,
       "startedAt": "2026-11-05T20:13:20.784Z",
       "doneAt": "2026-11-05T20:14:15.571Z",
-      "summary": "La tarjeta sin cambio activo deja de listar y contar los pendientes y las mejoras abiertas y de remitir a specty memory: «MEMORIA DE SPECTY» solo sale con el frente de la conversación (frontLines, sin el total), y los recordatorios no cambian"
+      "summary": "La tarjeta sin cambio activo deja de listar y contar los pendientes y las mejoras abiertas y de remitir a specty memory: «MEMORIA DE SPECTY» solo sale con el frente de la conversación (frontLines, sin el total), y los recordatorios no cambian",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6d105127fa020ca56949852139ffc131367bbbc4",
+      "startedAt": "2026-11-05T20:14:15.891Z",
+      "doneAt": "2026-11-05T20:15:02.964Z",
+      "summary": "La última regla del bloque de AGENTS.md pide primero respuestas directas y concisas en cada mensaje y después un reporte final con solo los pendientes del trabajo de la sesión y, de los demás, los que ese trabajo resolvió, en español y en inglés"
     }
   },
   "pending": {
