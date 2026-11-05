@@ -67,7 +67,7 @@ Hoy, la tarjeta de `adjusting` de una épica pide no tocar los cortes cerrados, 
   - files: packages/cli/src/flow/epic.ts, packages/cli/src/flow/analysis.ts, packages/cli/test/epic-closed-slices.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-closed-slices.test.ts test/epic-adjust.test.ts test/epic.test.ts && pnpm typecheck && pnpm lint
-- [ ] T3: La documentación de la regla de los cortes cerrados
+- [x] T3: La documentación de la regla de los cortes cerrados
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
