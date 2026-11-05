@@ -62,3 +62,24 @@ Cuando la verificación completa se corta por `verify.timeoutSec`, `accept`, la 
 
 - R1: El test espera a que se cumpla un tiempo límite real. Mitigación: `verify.timeoutSec: 1` y un comando que tarda mucho más, así que el test tarda alrededor de un segundo por caso y no depende de la carga.
 - R2: Otras sesiones siguen con la épica de verificación por unidades y pueden tocar `flow/units.ts`. Mitigación: el cambio es puntual, y `propose` avisa si comparten archivos.
+
+## Cierre
+
+### Resumen
+
+- Cuando `verify.timeoutSec` corta la verificación completa, o una de sus unidades, su salida acaba en una línea que dice que se agotó el tiempo, a cuántos segundos, que se cortó antes de terminar y que, si la máquina estaba cargada, reintentar con menos carga puede bastar; si no, la persona puede subir `verify.timeoutSec` (AC1, AC2). Una verificación que falla por su cuenta sale como antes, sin esa línea (AC3). El texto está en español y en inglés (`timedOutLine` en core `cards/units.ts`, AC4).
+- La línea se añade en un solo sitio, `runFull` de `flow/units.ts` (`outputOf`), por el que pasan desde el corte C2 de la épica de verificación por unidades `accept`, la incorporación de main y `specty integrate`, así que llega a sus tres tarjetas sin tocarlas.
+- formats.md §6 cuenta qué hace `verify.timeoutSec` y qué dice la salida al cumplirse.
+
+### Desviaciones (respecto al plan)
+
+- Ninguna.
+
+### Decisiones
+
+- La línea va al final de la salida en lugar de cambiar el motivo de cada tarjeta («falla `pnpm check`»): así basta un cambio en `runFull` para `accept`, la incorporación y `integrate`, y la línea sale justo después de lo último que imprimió el comando, donde se ve que se cortó.
+- Se esperó a que el corte C2 de la épica `20261105-verificacion-por-unidades` llegara a main antes de crear el cambio: ese corte movió la incorporación y `integrate` a `runFull`, y hacerlo antes habría chocado con su trabajo en los mismos archivos.
+
+### Pendientes
+
+- La verificación completa que la persona lanza desde la UI (`server/runs.ts`) corre sus comandos por su cuenta y no añade la línea cuando `verify.timeoutSec` la corta: la ejecución en vivo de la UI se corta sin decir que se acabó el tiempo.
