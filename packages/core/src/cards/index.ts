@@ -52,6 +52,7 @@ export {
   cancelReasonQuestion,
   closeCommitSubject,
   closedLine,
+  closingCommitSubject,
   confirmCloseQuestion,
   landQuestion,
   resolvedIntegrationNote,

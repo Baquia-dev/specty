@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "id": "20261105-los-tests-de-vscode-la-ui-y-evals-escriben-su",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-los-tests-de-vscode-la-ui-y-evals-escriben-su",
+  "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:af495221ee1106704c8d8d50be4c2fe198c5fa012a8ef1552f0e87573522179c",
+    "at": "2026-11-05T08:36:56.492Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c3c87e3d54b3f79735e971987d74140948ea36bf82fc07b5bc5cd2893b862578",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:2ef75339a74aac97a7ac56fdb96b16ac07fb38655a454f707b308b973f7ed0a0",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8dcabfbf0695575b1d84dcdd4a9ef51cc0f5b8ec8db3e1499d34e53d98b61707",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:32f292c73f5e523269d2145839025e62743f28c5a702447c03cb487d5048a786",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:ef57a0b7786f1e03a8c8933ff3b2ff428752cea419ade1be060b2a4885f2e42d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "37e7a1649b4ca62012abea92591a14d0e1cd2077",
+      "attempts": 1,
+      "startedAt": "2026-11-05T08:36:57.443Z",
+      "doneAt": "2026-11-05T08:39:18.058Z",
+      "summary": "vscode añade el reporter junit a los de Vitest por defecto, con su informe en coverage/junit.xml, y test/repo-junit.test.ts lo comprueba",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "77ed292a7a363b74422dbe63140f2666d452f2b5",
+      "attempts": 1,
+      "startedAt": "2026-11-05T08:39:18.434Z",
+      "doneAt": "2026-11-05T08:44:31.485Z",
+      "summary": "evals añade el reporter junit a los de Vitest por defecto, con su informe en coverage/junit.xml, y test/repo-junit.test.ts lo comprueba",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f404bcc6436d5ab392a7016f43a7a2d6bff90bc6",
+      "attempts": 1,
+      "startedAt": "2026-11-05T08:44:31.938Z",
+      "doneAt": "2026-11-05T08:50:06.116Z",
+      "summary": "la UI carga vitest-base.config.ts (runnerConfig en angular.json), que añade el reporter junit a los de Vitest por defecto con su informe en coverage/junit.xml, y src/repo-junit.test.ts lo comprueba",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 1,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-11-05T09:02:08.637Z"
+}
