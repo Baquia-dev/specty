@@ -6,6 +6,13 @@
   "branch": "specty/20261106-un-pendiente-parecido-a-uno-abierto-no-entra",
   "baseCommit": "7fe3f0eb898f56a60cbd47a71b709c1dd85319c9",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:d8f753c1ff65e6c0a60bd544c25ddfece4a84db986bf0a776db0b57a3ba4bae4",
+    "at": "2026-11-05T21:40:10.806Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -53,12 +60,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:d8f753c1ff65e6c0a60bd544c25ddfece4a84db986bf0a776db0b57a3ba4bae4",
-    "at": "2026-11-05T21:40:10.806Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T21:43:01.524Z"
 }
