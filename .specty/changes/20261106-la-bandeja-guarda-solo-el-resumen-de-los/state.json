@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261106-la-bandeja-guarda-solo-el-resumen-de-los",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-la-bandeja-guarda-solo-el-resumen-de-los",
+  "baseCommit": "85be27d0ad5ba373872c2aa19c4dad4331511ef4",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b334d5c994ddf47dcd255ffc66eb3e7eb3a5347d643bb0523644d8a100aba029",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a33ceb26ab78f8739558bfd8655ac990613a04ce93475d9000dc63e3c7697da3",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:d02220d093beacabbd4242089af94a620bb0f9933995b1c8bd646ac7bc13d631",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:8253d3c62480068d9d918b6927083663c2e01e24fe99b42807b776e0d9162ac2",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:8e459d16e401ea0fa106103ce30d1e78669398fbd640e209e2aed5d49d454bbc",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ed5c9483eecabb06d4e21b0a096f3ce89aaf57c017c4d22d277adae35d907dcc",
+    "at": "2026-11-05T17:54:29.426Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
