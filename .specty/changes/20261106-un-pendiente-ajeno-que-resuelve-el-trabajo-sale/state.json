@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-un-pendiente-ajeno-que-resuelve-el-trabajo-sale",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-un-pendiente-ajeno-que-resuelve-el-trabajo-sale",
   "baseCommit": "88d9019e8b696fe0180cfa8ff5d79807a856fc6d",
   "revision": 2,
@@ -56,6 +56,11 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T21:18:06.895Z"
+  "lockedTests": {
+    "packages/cli/test/close-harvest.test.ts": "sha256:d40f69b1f1429d77fde60f4a44d91a1b2144ffbcb4419a976b0c9b777e827e25",
+    "packages/core/test/cards.test.ts": "sha256:b4d65e1aa8c18596281b1d8319f4c758c2a6cbb7f2aab4108f9a19351bc70fb6",
+    "packages/core/test/cards/archived-memory.test.ts": "sha256:bfc4dbff8de70de28ff1d4370ed6ce326100973cd5cb4734b6415b60abfdfcfb",
+    "packages/cli/test/memory-resolve.test.ts": "sha256:03d4d1a1a75e5c6433dfaa0effbf5008c76cca7a9ce7eed70b48550e227ba93a",
+    "packages/core/test/cards/memory-resolve.test.ts": "sha256:d26bf84966b127279c823c327ec7e3e636fcc864d64ea71d758098c301c57b6d"
+  }
 }
