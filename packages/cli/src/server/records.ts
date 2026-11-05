@@ -107,6 +107,14 @@ export async function changeRecords(session: Session): Promise<ChangeRecord[]> {
   );
 }
 
+/** The change `id` as `changeRecords` gives it, open or archived; none when there is no such change. */
+export async function changeRecord(
+  session: Session,
+  id: string,
+): Promise<ChangeRecord | undefined> {
+  return (await changeRecords(session)).find((record) => record.state.id === id);
+}
+
 /**
  * The open changes that wait for the agent with no conversation in their folder, by id, as
  * `status` marks them: orphans, and those whose conversation stepped last in another folder.

@@ -62,7 +62,7 @@ La página de un cambio hoy lo busca solo entre los que cargó la Bandeja, y si 
 
 ## Tareas
 
-- [ ] T1: El servidor da un cambio por su id
+- [x] T1: El servidor da un cambio por su id
   - files: packages/cli/src/server/records.ts, packages/cli/src/server/http.ts, packages/cli/test/server.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts

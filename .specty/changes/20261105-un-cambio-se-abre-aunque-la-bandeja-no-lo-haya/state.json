@@ -49,7 +49,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2760390f7cb58128618d5b24a431133d9ae4abfd",
+      "startedAt": "2026-11-05T11:51:45.200Z",
+      "doneAt": "2026-11-05T11:56:30.512Z",
+      "summary": "GET /api/changes/<id> da el registro de un cambio, abierto o archivado, con changeRecord en server/records.ts; 404 si no existe"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
