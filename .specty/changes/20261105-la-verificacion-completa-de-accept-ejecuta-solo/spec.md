@@ -65,7 +65,7 @@ Hoy la verificación completa de `accept` es un solo comando (`verify.full`), qu
 
 ## Tareas
 
-- [ ] T1: verify.units en la configuración
+- [x] T1: verify.units en la configuración
   - files: packages/core/src/schema/config.ts, packages/core/src/index.ts, packages/core/test/schema/units.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/units.test.ts test/schema/schema.test.ts

@@ -53,7 +53,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2c5948dba0dc5a06b891ad803fc2f4b746de8c9f",
+      "startedAt": "2026-11-05T05:33:36.507Z",
+      "doneAt": "2026-11-05T05:34:16.388Z",
+      "summary": "verify.units en la configuración: cada unidad con name único, command y paths no vacíos, al menos una; tipo VerifyUnit en la API pública de core"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
