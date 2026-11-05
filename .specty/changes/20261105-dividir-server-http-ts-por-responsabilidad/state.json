@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261105-dividir-server-http-ts-por-responsabilidad",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261105-dividir-server-http-ts-por-responsabilidad",
+  "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
+  "revision": 2,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:631635a7c2b824b51b311deb93e5d2770ad65afccbbded166dc06df50a937014",
+    "at": "2026-11-05T15:57:10.943Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
