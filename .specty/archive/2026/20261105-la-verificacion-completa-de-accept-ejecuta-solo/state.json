@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "id": "20261105-la-verificacion-completa-de-accept-ejecuta-solo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-la-verificacion-completa-de-accept-ejecuta-solo",
+  "baseCommit": "b4686dfe63d4d149247ca21552eac202ab157426",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6813e9bd52f8be0eb645d7b34a3ea770f8a47d2d923c5f15df6000ec0eaa0894",
+    "at": "2026-11-05T04:38:25.617Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:25f79b687e71edc55e4632a01863d130f7239f62268d00bd16277fecb69b3f9e",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e2013a3b3248f00fc70b368d3846f8b637c2d712147e63f16df2f305e3d20873",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e23244963fa017cc618778ec26ed69d6071c20205ee129db8f95b4b06880fd85",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:9efbcb0793133e3932fdfeb344ede7130b221127aa4267638be830e578dbd919",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:8531817b658d3eacbf091947fb9088cfb5fd472a4f7f798f1a6291128c03a6bc",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:edd8f71dc0ad475829882eb2555067d85bf72014ceb5d7e7f395e66ead1e1cd8",
+      "decision": "confirmed"
+    },
+    "A7": {
+      "hash": "sha256:311c750938b86b85d6458e6f554c6a1734178418cca1c150588448cca6a600c6",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2c5948dba0dc5a06b891ad803fc2f4b746de8c9f",
+      "attempts": 1,
+      "startedAt": "2026-11-05T05:33:36.507Z",
+      "doneAt": "2026-11-05T05:34:16.388Z",
+      "summary": "verify.units en la configuración: cada unidad con name único, command y paths no vacíos, al menos una; tipo VerifyUnit en la API pública de core",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "350caf4eb6806f988a658d8ab9fcb4691e9fa21c",
+      "attempts": 1,
+      "startedAt": "2026-11-05T05:34:16.710Z",
+      "doneAt": "2026-11-05T05:34:38.274Z",
+      "summary": "Las notas de las unidades en cards/units.ts: unitsLines (reutilizadas, ejecutadas con su tiempo, la que falló y las que no corrieron) y unitsReusedNote, en español y en inglés; duration de cards/audit.ts exportada",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "2188ae437e9c4327d87729d9a96a3ba15c76c05c",
+      "attempts": 1,
+      "startedAt": "2026-11-05T05:34:38.592Z",
+      "doneAt": "2026-11-05T05:35:48.339Z",
+      "summary": "accept ejecuta solo las unidades sin huella en el registro del clon (flow/units.ts), en orden y en un turno, parando en la primera que falla; anota las que pasan y units en change.verified",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "6ae56d6896380338a0b36a83d7731a75b4105d69",
+      "attempts": 1,
+      "startedAt": "2026-11-05T05:35:48.666Z",
+      "doneAt": "2026-11-05T05:37:25.827Z",
+      "summary": "La documentación de las unidades y el registro: ARCHITECTURE §9 y formats.md §1 (verified/), §4 (units en change.verified) y §6 (verify.units)",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T06:11:31.647Z",
+  "lockedTests": {
+    "packages/cli/test/accept-units.test.ts": "sha256:6662ab98cfeb5b059fb91682c86c153caaedb6de28b8e5cd8a964ca157aa229b",
+    "packages/core/test/cards/units.test.ts": "sha256:909485e31af95ea63436a61de56080841e17125cff0c5e8faed35a916347fa7f",
+    "packages/core/test/schema/units.test.ts": "sha256:2eabad73a78e5631251a5120070cdbcc943a0a3cc9794c06eb48adbe7b57c212"
+  }
+}

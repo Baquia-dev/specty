@@ -390,6 +390,7 @@ export {
   removedCard,
   unwatchedChangeWarning,
 } from "./uninstall";
+export { type UnitsOutcome, type UnitTime, unitsLines, unitsReusedNote } from "./units";
 export {
   ccusageAddedLine,
   ccusageFailedWarning,

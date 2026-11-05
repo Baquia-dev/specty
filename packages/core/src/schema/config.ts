@@ -10,6 +10,14 @@ import { DEFAULT_MEMORY, type MemoryConfig, MemorySchema, resolveMemory } from "
 /** `contract`, above `required`: a feature's tests are written and approved before its code (ADR 0014). */
 export type TestsPolicy = "contract" | "required" | "recommended" | "off";
 
+/** A part of the full verification (`verify.units`): its command and the files it reads. */
+export interface VerifyUnit {
+  readonly name: string;
+  readonly command: string;
+  /** Globs of the files whose content its result depends on, such as its package's. */
+  readonly paths: readonly string[];
+}
+
 /** `.specty/config.yaml` with every default applied. */
 /** Lines of code: a warning past `warn`, a block past `fail`, or never with `false`. */
 export interface LineLimits {
@@ -32,6 +40,11 @@ export interface ResolvedConfig {
     readonly timeoutSec: number;
     /** Verifications that run at once in the clone: a task's takes one, the full one all. */
     readonly slots: number;
+    /**
+     * The full verification in parts, run in order in place of `full`: each runs again only when
+     * its command or the files of its `paths` change.
+     */
+    readonly units?: readonly VerifyUnit[];
   };
   readonly scope: {
     readonly implicitTests: boolean;
@@ -129,6 +142,27 @@ const LineLimitsSchema = z.strictObject({
   fail: z.union([Positive, z.literal(false)]).optional(),
 });
 
+/** The units of the full verification: at least one, each with a name no other has. */
+const UnitsSchema = z
+  .array(
+    z.strictObject({
+      name: z.string().min(1),
+      command: z.string().min(1),
+      paths: Globs.min(1),
+    }),
+  )
+  .min(1)
+  .superRefine((units, context) => {
+    for (const [index, { name }] of units.entries()) {
+      if (units.findIndex((other) => other.name === name) === index) continue;
+      context.addIssue({
+        code: "custom",
+        message: `Another unit is already named ${name}.`,
+        path: [index, "name"],
+      });
+    }
+  });
+
 export const ConfigSchema = z.strictObject({
   version: z.literal(1),
   language: z.enum(["es", "en"]).optional(),
@@ -143,6 +177,7 @@ export const ConfigSchema = z.strictObject({
       quick: z.string().min(1).optional(),
       timeoutSec: Positive.optional(),
       slots: Positive.optional(),
+      units: UnitsSchema.optional(),
     })
     .optional(),
   scope: z
@@ -271,6 +306,7 @@ function verifyOf(input: ConfigInput): ResolvedConfig["verify"] {
     ...(verify?.quick !== undefined ? { quick: verify.quick } : {}),
     timeoutSec: verify?.timeoutSec ?? DEFAULT_CONFIG.verify.timeoutSec,
     slots: verify?.slots ?? DEFAULT_CONFIG.verify.slots,
+    ...(verify?.units !== undefined ? { units: verify.units } : {}),
   };
 }
 

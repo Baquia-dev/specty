@@ -241,6 +241,7 @@ export {
   type ResolvedConfig,
   resolveConfig,
   type TestsPolicy,
+  type VerifyUnit,
 } from "./schema/config";
 export {
   type ChangeState,
