@@ -65,3 +65,32 @@ Para repartir los cortes de una épica entre subagentes, el guard tiene que atar
 - R1: OpenCode 2 sale de beta con otra forma para sus subagentes. Mitigación: el test del plugin fija lo que espera de OpenCode 2 (la sesión hija en `execute.before`), y la memoria ya pide volver a comprobar OpenCode 2 cuando salga de beta.
 - R2: C6 y C8 tocan las mismas líneas de la tabla, de su test y de §10. Mitigación: al incorporar main, el conflicto se resuelve regenerando la tabla con `capabilityTable("es")`.
 - R3: Sin OpenCode instalado, el E2E se salta, como los demás, así que en la CI solo corre el test del plugin. Mitigación: ese test usa la forma de los eventos de OpenCode 1.19.5, y el E2E se ejecuta aquí con 1.19.5 (`SPECTY_E2E_OPENCODE`).
+
+## Cierre
+
+### Resumen
+
+- En OpenCode, cada subagente de `task` es una sesión hija con su propio `sessionID`, y OpenCode llama a `tool.execute.before` con el de la sesión que ejecuta la herramienta. El plugin de Specty ya enviaba ese id al guard, así que cada subagente era una conversación propia sin cambiar el guard ni el plugin.
+- Comprobado con OpenCode 1.19.5 real (AC3, `opencode-e2e.test.ts`): la sesión principal entra en un cambio y lanza un subagente con `task`; el subagente entra en otro con `specty enter`, escribe y ejecuta allí, y la sesión principal sigue en el suyo. Cada sesión tiene su enlace, y el del subagente lleva el id que devuelve `task`.
+- El test del plugin (AC1 y AC2, `opencode.test.ts`) llama a sus hooks con la forma de OpenCode 1.19.5 y de OpenCode 2, con una sesión principal y una hija, y corre sin OpenCode instalado.
+- `fakeChat` juega un guion por subagente, elegido por una marca en su encargo, como `fakeModel` en C1.
+- La tabla de capacidades dice «sí» para OpenCode en «Cortes en subagentes» (AC4). ARCHITECTURE §10 explica los subagentes de OpenCode, y el glosario nombra la sesión hija.
+
+### Desviaciones (respecto al plan)
+
+- El E2E de AC3 va dentro de un `describe("AC3: …")`: Biome parte en varias líneas el `it(` de los E2E, y la línea del nombre no cuenta para `criteria-tested`.
+- La primera incorporación de main en `accept` falló porque `pnpm check` se cortó, casi seguro por `verify.timeoutSec`, con la máquina muy cargada por otras sesiones (P95). La siguiente dio un conflicto en `docs/dominio.md`: se conservaron las dos entradas, «Subagente» con la sesión hija de OpenCode y «Encargo» de main (merge 56ad53a), y `accept` volvió a incorporar main (merge b8344cc). Las verificaciones completas se lanzaron con la máquina libre, y pasaron.
+
+### Decisiones
+
+- Ni el guard ni el plugin cambian: el comportamiento ya existía, y el corte lo fija con tests y lo declara en la tabla.
+- Una sola tarea. Su verificación ejecuta primero los tests del CLI con `--reporter=verbose`, que pasan desde el principio y así salen nombrados en la salida roja, y después el de la tabla de core, el único en rojo antes del cambio.
+- `specty new` se ejecutó con `--distinct-from 20261104-complejidad-de-cli-y-core`: el freno de duplicados lo marcó solo por la petición, que es la misma frase de autorización en todos los cambios de esta tanda (P89).
+- OpenCode 1.19.5 se instaló en el scratchpad de la sesión, sin sus scripts de instalación, para ejecutar el E2E con `SPECTY_E2E_OPENCODE`.
+
+### Pendientes
+
+- P92: con `check --install`, el fin de turno del plugin también corre cuando termina una sesión hija, y en rojo le devuelve el turno al subagente cuando `task` ya respondió a la sesión principal.
+- P93: comprobar los subagentes de OpenCode 2 (su herramienta `subagent`) cuando salga de beta; es el supuesto A3.
+- P95: cuando `verify.full` se corta por `verify.timeoutSec`, la tarjeta no dice que se acabó el tiempo.
+- P89: el freno de duplicados de `specty new` salta con la petición común de los cortes de una épica.
