@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7b4e0267469a299d0555fc29b943d37e43f102ed",
+      "attempts": 1,
       "startedAt": "2026-11-05T20:25:29.768Z",
       "doneAt": "2026-11-05T20:29:35.465Z",
-      "summary": "checkClosedSlices en validate/phase.ts: en adjusting y review con una revisión aprobada, un corte de closedSlices (nuevo en el contexto de validación) que falta o cuyo hash no es el de la aprobada ni el de la última propuesta da closed-slice-changed, con sus mensajes es/en"
+      "summary": "checkClosedSlices en validate/phase.ts: en adjusting y review con una revisión aprobada, un corte de closedSlices (nuevo en el contexto de validación) que falta o cuyo hash no es el de la aprobada ni el de la última propuesta da closed-slice-changed, con sus mensajes es/en",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a9d0f86d7fa63ba056aca93e576774f0350384cf",
+      "startedAt": "2026-11-05T20:29:35.813Z",
+      "doneAt": "2026-11-05T20:35:34.408Z",
+      "summary": "closedSlices en flow/epic.ts da los cortes con un cambio en done (de childrenOf) y su id; analyzeChange los pasa a la validación de una épica con una revisión aprobada"
     }
   },
   "pending": {
