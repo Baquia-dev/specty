@@ -23,8 +23,8 @@ retro:
   mode: agent
 git:
   branchPerChange: true
+  afterLanding: "pnpm --filter @baquia-dev/specty build"
 split:
   maxModules: 3
 lines:
   exclude: ["packages/core/src/index.ts", "packages/core/src/cards/index.ts"]
-afterLanding: "pnpm --filter @baquia-dev/specty build"
