@@ -69,3 +69,24 @@ Hoy `GET /api/changes` da los cambios abiertos, los que perdieron su carpeta y t
 
 - R1: Otro lector de `/api/changes` podría esperar los archivados. Mitigación: se buscaron todos. En la UI, `ServerData.changes` solo lo usan el almacén de la Bandeja, las fuentes por defecto de `change` y `finished` y «Exportar», que pasa a pedir por id. La extensión de VS Code y los exporters no leen la ruta, y los tests de la CLI que la leen se ajustan aquí.
 - R2: `server/http.ts` ya pasa del aviso de 300 líneas de código (P163). Mitigación: solo cambian la función de la entrada de `VIEWS`, su import y un comentario, sin líneas nuevas.
+
+## Cierre
+
+### Resumen
+
+`GET /api/changes` da solo el cambio abierto de cada worktree (y los de esta carpeta sin rama propia) y después los abiertos que perdieron su carpeta: `openRecords` en `server/records.ts`, que la entrada de `VIEWS` de `server/http.ts` sirve ahora. Un terminado llega en su página de `GET /api/changes/finished` o por su id. `changeRecords` sigue dando todos, los abiertos y después los archivados, para `GET /api/changes/<id>`, el diff, la traza y `specty_view`, que responden igual que antes. En la UI, «Exportar» del Historial pide el cambio con `SpectyData.change(id)`, así que con el servidor local también exporta un terminado que la Bandeja no cargó. `docs/ARCHITECTURE.md` §15 y `docs/ui.md` cuentan lo que da cada ruta y de dónde lee «Exportar». Los tests: AC1 en `server-restore.test.ts` (un abierto, uno sin carpeta y un archivado que no sale en la lista), AC2 en `server.test.ts` (el archivado por su id y su diff, igual que en su página) y AC3 en `history-export.test.ts`.
+
+### Desviaciones
+
+- `packages/cli/test/server/finished.test.ts`, de C4, no se envió en la fase de tests. Sus tests pasaban, y Vitest 5 no nombra en su salida los archivos que pasan, así que `specty propose` lo habría rechazado por no salir en el rojo. Lo cambió T2, con el visto bueno de la persona a través del agente principal: solo cambia `/api/changes` por `/api/changes/<id>` en AC1 y AC3 de C4, y las comprobaciones de la caché de los archivados siguen iguales.
+
+### Decisiones
+
+- `openRecords` y `changeRecords` comparten la lectura de los abiertos y de los que perdieron su carpeta (`openOnes`, con la sesión de cada abierto en su carpeta) y el completado de los registros (`completed`: el commit de cada tarea, quién lo lleva y, en aceptación, los tests de cada criterio). `changeRecords` añade después los archivados cuyo id no está ya, como antes.
+- El test de AC2 pasa antes y después del cambio: fija lo que no debía cambiar.
+- En `server.test.ts`, el test de C3 que pide un cambio por su id lo compara ahora con la lista y con la página de terminados juntas. La lista ya no tiene el archivado.
+- Las fuentes de prueba de la Bandeja (`inbox/inbox-more.test.ts` y `data/finished-pages.test.ts`) siguen dando todos los cambios en `changes()`, como el prototipo y el MCP App. Solo cambió su comentario.
+
+### Pendientes
+
+- Ninguno.
