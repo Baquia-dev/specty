@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "abc672bff94fb80e08c93a28d60c5aee66adccfa",
+      "startedAt": "2026-11-05T20:36:13.488Z",
+      "doneAt": "2026-11-05T20:41:13.308Z",
+      "summary": "sp-epic-actions (acceptance/epic-actions.ts) ofrece «Pedir ajustes…» de una épica en implementing, con la línea de para qué sirve o el motivo del bloqueo; la cabecera y la barra compacta lo montan con adjustsWhileImplemented"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

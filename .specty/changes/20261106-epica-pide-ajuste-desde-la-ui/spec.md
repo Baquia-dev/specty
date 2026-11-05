@@ -57,7 +57,7 @@ Desde P165, una épica en `implementing` se ajusta con `specty adjust` para estr
 
 ## Tareas
 
-- [ ] T1: «Pedir ajustes…» en la página de una épica en implementación
+- [x] T1: «Pedir ajustes…» en la página de una épica en implementación
   - files: packages/ui/src/acceptance/epic-actions.ts, packages/ui/src/change/change-page.ts, packages/ui/src/change/change-bar.ts, packages/ui/src/change/change-page.epic.test.ts
   - ac: AC1, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/change-page.epic.test.ts --include src/change/change-page.test.ts --include src/change/change-page.closing.test.ts --include src/change/change-page.tests.test.ts --include src/acceptance/acceptance-actions.test.ts && pnpm lint && pnpm knip
