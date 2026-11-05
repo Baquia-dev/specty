@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e43d3ab1d618423d85c5004733a19217c8ea88f6",
+      "startedAt": "2026-11-05T09:49:59.795Z",
+      "doneAt": "2026-11-05T09:50:33.124Z",
+      "summary": "core exporta managedBySpecty (la lista del guard, que usa protectedDenial) y los textos uncommittedOverlapLine, personOnlyLine y commitOrDiscardNext, en español, en inglés y en modo delegado"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

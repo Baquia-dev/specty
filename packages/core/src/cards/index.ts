@@ -208,6 +208,7 @@ export {
 export {
   absorbedLine,
   commandFailsLine,
+  commitOrDiscardNext,
   holderDirtyLine,
   holderDirtyNext,
   incorporationTitle,
@@ -225,10 +226,12 @@ export {
   noIncorporationCard,
   notYetLine,
   outsideIncorporationLine,
+  personOnlyLine,
   resolveIncorporationNext,
   runAgainNext,
   stillResolvingLine,
   targetConflictsLine,
+  uncommittedOverlapLine,
   undoOutsideNext,
 } from "./integration";
 export {

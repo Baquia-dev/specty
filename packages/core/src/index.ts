@@ -158,6 +158,7 @@ export type { GuardIntegration } from "./guard/integration";
 export { movePatch, type PatchPaths, patchPaths } from "./guard/patch";
 export type { BoundSession } from "./guard/session";
 export { analyzeShell, type ShellAnalysis } from "./guard/shell";
+export { managedBySpecty } from "./guard/spec";
 export {
   type ForeignPath,
   nativeEnterDenial,

@@ -53,7 +53,7 @@ Si en la carpeta del cambio hay un archivo sin commit fuera del cierre, como una
 
 ## Tareas
 
-- [ ] T1: core da los textos de los archivos sin commit y qué gestiona Specty
+- [x] T1: core da los textos de los archivos sin commit y qué gestiona Specty
   - files: packages/core/src/guard/spec.ts, packages/core/src/index.ts, packages/core/src/cards/integration.ts, packages/core/src/cards/index.ts, packages/core/test/cards/incorporation.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/incorporation.test.ts test/guard/decide.test.ts

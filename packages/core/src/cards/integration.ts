@@ -103,6 +103,41 @@ export function holderDirtyNext(
   );
 }
 
+/** The main branch changed files with uncommitted changes in the change's folder: no merge. */
+export function uncommittedOverlapLine(target: string, lang: Lang): string {
+  return translator(lang)(
+    `${target} también cambió archivos que aquí tienen cambios sin commit: el merge los pisaría, así que no empezó.`,
+    `${target} also changed files with uncommitted changes here: the merge would overwrite them, so it did not start.`,
+  );
+}
+
+/** Of those files, the ones Specty manages: the guard does not let the agent edit them. */
+export function personOnlyLine(paths: readonly string[], lang: Lang): string {
+  const list = paths.join(", ");
+  return translator(lang)(
+    `Solo la persona puede hacer el commit de los cambios de ${list} o descartarlos: el guard no deja que el agente edite lo que gestiona Specty.`,
+    `Only the person can commit or discard the changes to ${list}: the guard does not let the agent edit what Specty manages.`,
+  );
+}
+
+/**
+ * Those files get committed or their changes discarded, and then `again` runs. In delegated mode
+ * the agent reads this: it does not make commits, so it asks the person, and then runs `again`.
+ */
+export function commitOrDiscardNext(again: "close" | "accept", ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  const run = `\`${ctx.command} ${again}\``;
+  return ctx.delegated === true
+    ? t(
+        `modo delegado: pide al usuario que haga el commit de esos archivos o descarte sus cambios en esta carpeta (tú no haces commits) y, cuando lo haga, vuelve a ejecutar tú ${run}.`,
+        `delegated mode: ask the user to commit those files or discard their changes in this folder (you do not make commits), and once they do, run ${run} again yourself.`,
+      )
+    : t(
+        `haz el commit de esos archivos o descarta sus cambios en esta carpeta y vuelve a ejecutar ${run}.`,
+        `commit those files or discard their changes in this folder and run ${run} again.`,
+      );
+}
+
 /** When the merge cannot wait for the agent: the person does it by hand. */
 export function mergeByHandNext(
   target: string,
