@@ -42,3 +42,21 @@ Desde C1–C6, `specty init` propone las unidades de `verify.units` en los works
   - ac: AC7
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La documentación de `verify.units` dice qué workspaces reciben la propuesta de `specty init` y con qué comando. formats.md §6 tiene ahora un párrafo propio para la propuesta y una lista con los seis workspaces en el orden en que se prueban: pnpm, npm o yarn; Cargo; `go.work`; uv; Gradle; y pub o melos. Para cada uno dice qué paquetes cuenta y cuáles tienen tests, el comando que los ejecuta, cómo se sabe de qué paquetes depende y los archivos de la raíz que comparten, y cuándo no hay propuesta porque la carpeta de un paquete sería la raíz entera. ARCHITECTURE §9 nombra el detector de cada workspace en `detect/units-*.ts`, su orden en `DETECTORS`, el paso a `proposeUnits` en core y `smol-toml` para los TOML, y el motivo para no escribir las unidades habla de los manifiestos en general.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Una lista por workspace en formats.md, en vez de una tabla: cada entrada tiene frases largas (globs, exclusiones, dependencias) que una tabla de seis columnas haría ilegible.
+
+### Pendientes
+
+- Ninguno
