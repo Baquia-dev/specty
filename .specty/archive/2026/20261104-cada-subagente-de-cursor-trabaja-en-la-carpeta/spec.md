@@ -68,3 +68,26 @@ La tabla de capacidades aún no deja a Cursor repartir los cortes de una épica 
 - R2: Cursor arregla su bug como lo hace Claude Code, con el `conversation_id` de la conversación principal y un id del subagente. Mitigación: §10 dice de qué depende el guard, y bastaría con darle a Cursor un `normalize` como `asSubagentConversation`.
 - R3: Cursor envía a veces los eventos de herramientas con `conversation_id` y `session_id` vacíos (su foro, 2026-07-30), y el guard los juzga como de una conversación sin carpeta: un comando así de un subagente correría sin el `cd`. Mitigación: la comprobación tras el comando sigue avisando de lo que cambie fuera del flujo; queda en la memoria.
 - R4: C6 y C7 cambian a la vez las mismas líneas de la tabla y de `capabilities.test.ts`. Mitigación: al incorporar main, la tabla se regenera y el conflicto se resuelve en `specty integrate`.
+
+## Cierre
+
+### Resumen
+
+- El guard ya distinguía a cada subagente de Cursor por su `conversation_id`, y ahora una prueba lo demuestra: `cursor-subagents.test.ts` le envía eventos con la forma real de Cursor. Llevan los campos comunes de sus hooks y un `session_id` igual al `conversation_id`; los del subagente, además, `transcript_path` nulo y nada que lo enlace a la conversación principal.
+- Un subagente entra con `specty enter <id>` y queda atado a la carpeta de su cambio sin mover a la conversación que lo lanzó. Sus comandos van allí con un `cd` (`updated_input`), su `beforeShellExecution` se juzga con su carpeta y sus archivos de fuera se bloquean con la ruta buena. La comprobación tras cada comando mira su carpeta, y la regla «una conversación, un cambio abierto» le vale como a una conversación.
+- La tabla de capacidades dice «sí» para Cursor en «Cortes en subagentes». ARCHITECTURE §10 tiene el párrafo «Subagentes (Cursor)», con los hechos de su foro y lo que queda supuesto.
+
+### Desviaciones (respecto al plan)
+
+- Ninguna. La prueba no encontró nada que corregir en `agents/cursor.ts`, que solo ganó el comentario de por qué no necesita `normalize`.
+
+### Decisiones
+
+- T1 fue de tipo `test` y no `feat`. El guard ya hacía lo que piden AC1 a AC5, así que su prueba no podía fallar antes del código, y vitest, con su reporter por defecto, no nombra un archivo cuyos tests pasan. La fase de tests llevó solo el test de la tabla (AC6), que sí se vio fallar; la prueba del guard llegó con T1, en un archivo nuevo (ADR 0014).
+- El cambio se creó con `--distinct-from 20261104-complejidad-de-cli-y-core 20261104-cada-subagente-de-opencode-trabaja-en-la`, sin preguntar a la persona. El freno de duplicados saltó por la petición literal que comparten todos los cortes y por el título parecido del corte hermano C7, y los dos son otro trabajo (P89).
+
+### Pendientes
+
+- P87: comprobar con Cursor real que el `beforeShellExecution` de un subagente trae su propio `conversation_id` (A2).
+- P88: los eventos de Cursor con `conversation_id` y `session_id` vacíos se juzgan como de una conversación sin carpeta.
+- P89: el freno de duplicados frena los cortes hermanos de una épica y las peticiones literales que comparten.
