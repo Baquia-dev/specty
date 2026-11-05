@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-los-tests-que-esperan-a-un-proceso-tienen",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-los-tests-que-esperan-a-un-proceso-tienen",
   "baseCommit": "7cb8240350923a2eb916c2aefcb59d512fb9ac1c",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1ef216294eec2904099e7eec3c3339bcf57c13e0",
+      "attempts": 1,
       "startedAt": "2026-11-05T02:46:05.084Z",
       "doneAt": "2026-11-05T02:49:18.380Z",
-      "summary": "La espera del enlace del sustituto mudo corre con reloj falso desde que anota su llamada; esperas de 15 s y límite de 30 s en los tests de vscode; AC2 de fresh-session en tres tests"
+      "summary": "La espera del enlace del sustituto mudo corre con reloj falso desde que anota su llamada; esperas de 15 s y límite de 30 s en los tests de vscode; AC2 de fresh-session en tres tests",
+      "scopeExtra": []
     }
   },
   "pending": {
