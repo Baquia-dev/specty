@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable, inject } from "@angular/core";
-import type { ChangeState, MemoryEntry } from "@baquia-dev/specty-core";
+import type { ChangeState } from "@baquia-dev/specty-core";
 import type { SessionView } from "@baquia-dev/specty-core/light";
 import { Commands } from "../components/command-palette";
 import type { ResultDecision } from "./acceptance";
@@ -10,17 +10,23 @@ import {
   type Bilingual,
   type ChangeRecord,
   type CommentAnchor,
-  type CommentRecord,
   type Delegation,
   type MemoryRecord,
   SpectyData,
 } from "./records";
-import { decideResultIn } from "./sample-acceptance";
+import { confirmClosingIn, decideResultIn } from "./sample-acceptance";
 import { sampleDelegation } from "./sample-delegation";
 import { sampleDiffOf } from "./sample-diffs";
-import { sampleMemory } from "./sample-memory";
+import { decidedIn, sampleMemory } from "./sample-memory";
 import { decideScopeIn } from "./sample-progress";
-import { HASH, REVIEWER, requestChangesIn, sampleRecords } from "./sample-records";
+import { requestChangesIn, sampleRecords } from "./sample-records";
+import {
+  addCommentIn,
+  approveIn,
+  decideAssumptionIn,
+  deleteCommentIn,
+  editCommentIn,
+} from "./sample-review";
 import {
   canFinishTask,
   finishTaskIn,
@@ -29,7 +35,6 @@ import {
   runTarget,
   verifiedIn,
 } from "./sample-run";
-import { approveTestsIn } from "./sample-tests";
 import { sampleTrace, sampleTraceFiles } from "./sample-trace";
 import type { MemoryVerb } from "./source";
 import type { TraceRecord } from "./trace";
@@ -177,7 +182,7 @@ export class FixtureData extends SpectyData {
   override memoryAction(id: string, verb: MemoryVerb, reason?: string): Promise<void> {
     const at = new Date().toISOString();
     const entries = this.remembered.entries.map((entry) =>
-      entry.id === id ? decided(entry, verb, reason, at) : entry,
+      entry.id === id ? decidedIn(entry, verb, reason, at) : entry,
     );
     this.remembered = { ...this.remembered, entries };
     this.notify();
@@ -221,49 +226,19 @@ export class FixtureData extends SpectyData {
     decision: "confirmed" | "rejected",
     comment?: string,
   ): Promise<void> {
-    return this.edit(change, (record) => ({
-      ...record,
-      state: {
-        ...record.state,
-        items: {
-          ...record.state.items,
-          [item]: { hash: HASH, decision, ...(comment ? { comment } : {}) },
-        },
-      },
-    }));
+    return this.edit(change, (record) => decideAssumptionIn(record, item, decision, comment));
   }
 
   override addComment(change: string, anchor: CommentAnchor, body: string): Promise<void> {
-    return this.edit(change, (record) => {
-      const comments = record.comments ?? [];
-      const comment: CommentRecord = {
-        id: `c${comments.length + 1}`,
-        revision: record.state.revision,
-        anchor,
-        author: REVIEWER,
-        body,
-        createdAt: new Date().toISOString(),
-      };
-      return { ...record, comments: [...comments, comment] };
-    });
+    return this.edit(change, (record) => addCommentIn(record, anchor, body, Date.now()));
   }
 
   override editComment(change: string, id: string, body: string): Promise<void> {
-    return this.edit(change, (record) => {
-      const comments = record.comments ?? [];
-      const updated = comments.map((comment) =>
-        comment.id === id ? { ...comment, body } : comment,
-      );
-      return { ...record, comments: updated };
-    });
+    return this.edit(change, (record) => editCommentIn(record, id, body));
   }
 
   override deleteComment(change: string, id: string): Promise<void> {
-    return this.edit(change, (record) => {
-      const comments = record.comments ?? [];
-      const filtered = comments.filter((comment) => comment.id !== id);
-      return { ...record, comments: filtered };
-    });
+    return this.edit(change, (record) => deleteCommentIn(record, id));
   }
 
   /** Noted in the audit, as the server does: the agent gets the comments in `specty next`. */
@@ -272,26 +247,7 @@ export class FixtureData extends SpectyData {
   }
 
   override approve(change: string, revision: number): Promise<void> {
-    return this.edit(change, (record) => {
-      if (record.state.revision !== revision) {
-        throw new ActionError({
-          es: `La spec cambió: ahora es la revisión ${record.state.revision}. Revísala de nuevo.`,
-          en: `The spec changed: it is now revision ${record.state.revision}. Review it again.`,
-        });
-      }
-      // In testing, the approval is the tests' (the gate 2), as on the server.
-      if (record.state.phase === "testing") return approveTestsIn(record, Date.now(), HASH);
-      const at = new Date().toISOString();
-      return {
-        ...record,
-        phaseSince: at,
-        state: {
-          ...record.state,
-          phase: "implementing",
-          approved: { revision, hash: HASH, at, by: REVIEWER, channel: "ui" },
-        },
-      };
-    });
+    return this.edit(change, (record) => approveIn(record, revision, Date.now()));
   }
 
   override decideScope(
@@ -311,31 +267,7 @@ export class FixtureData extends SpectyData {
 
   /** As `specty close`: only a closing the agent sent; the change is done (archived, in the CLI). */
   override confirmClosing(change: string): Promise<void> {
-    return this.edit(change, (record) => {
-      const { state } = record;
-      if (state.phase !== "closing") {
-        throw new ActionError({
-          es: "Este cambio no espera que confirmes un cierre.",
-          en: "This change is not waiting for you to confirm a closing.",
-        });
-      }
-      if (state.closingSubmittedAt === undefined) {
-        throw new ActionError({
-          es: "El agente aún no ha enviado el cierre: espera a que lo haga.",
-          en: "The agent has not sent the closing yet: wait for it.",
-        });
-      }
-      const at = new Date().toISOString();
-      return {
-        ...record,
-        phaseSince: at,
-        state: { ...state, phase: "done" },
-        audit: [
-          ...(record.audit ?? []),
-          { ts: at, actor: "human", event: "change.closed", data: {} },
-        ],
-      };
-    });
+    return this.edit(change, (record) => confirmClosingIn(record, Date.now()));
   }
 
   /** Applies `change` to one record and tells the subscribers; a thrown ActionError rejects. */
@@ -376,21 +308,4 @@ export class FixtureData extends SpectyData {
   private notify(): void {
     for (const listener of this.listeners) listener();
   }
-}
-
-/** `entry` once the person decides on it in the prototype: dropped, kept or done. */
-function decided(
-  entry: MemoryEntry,
-  verb: MemoryVerb,
-  reason: string | undefined,
-  at: string,
-): MemoryEntry {
-  const closed = { at, by: "person" };
-  if (verb === "done") return { ...entry, status: "done", closed };
-  if (verb === "drop") {
-    const why = reason !== undefined && reason !== "" ? reason : (entry.drop?.reason ?? "");
-    return { ...entry, status: "dropped", drop: { reason: why, by: "person", at }, closed };
-  }
-  const { drop: _drop, ...kept } = entry;
-  return { ...kept, status: "open" };
 }
