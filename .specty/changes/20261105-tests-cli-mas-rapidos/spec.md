@@ -50,7 +50,7 @@ La unidad cli de la verificación completa tarda unos 4 minutos y corre en casi 
 
 ## Tareas
 
-- [ ] T1: Cada comando abre su sesión con un proceso de git y recuerda unos instantes sus consultas
+- [x] T1: Cada comando abre su sesión con un proceso de git y recuerda unos instantes sus consultas
   - files: packages/cli/src/io/git-memo.ts, packages/cli/src/io/git.ts, packages/cli/src/session.ts, packages/cli/test/git-memo.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-memo.test.ts test/git-paths.test.ts test/flow.test.ts test/enter.test.ts test/worktree-hooks.test.ts && pnpm typecheck && pnpm lint && pnpm knip
