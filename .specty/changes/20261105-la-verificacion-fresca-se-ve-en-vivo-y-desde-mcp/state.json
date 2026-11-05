@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9399416daa0ace45acc11d8253ac2d27d946b4eb",
+      "attempts": 1,
       "startedAt": "2026-11-05T09:36:54.177Z",
       "doneAt": "2026-11-05T09:37:47.645Z",
-      "summary": "La verificación fresca corre cada intento con runLive (held) en la carpeta de un cambio abierto, como la verificación completa en curso de ese cambio; sin cambio abierto, con execute como antes."
+      "summary": "La verificación fresca corre cada intento con runLive (held) en la carpeta de un cambio abierto, como la verificación completa en curso de ese cambio; sin cambio abierto, con execute como antes.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fd94ca3a6ecced50a3491222abf8349e0cee8990",
+      "startedAt": "2026-11-05T09:37:48.041Z",
+      "doneAt": "2026-11-05T09:38:54.929Z",
+      "summary": "specty_verify en el servidor MCP: ejecuta specty verify --fresh en la carpeta de la llamada, va tras specty_check y enlaza con la vista del cambio, que ve la verificación fresca en vivo."
     }
   },
   "pending": {

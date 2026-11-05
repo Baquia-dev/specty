@@ -58,7 +58,7 @@ Hoy `specty verify --fresh` corre a ciegas: la UI y la MCP App no ven nada hasta
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-fresh.test.ts test/live-run.test.ts
   - type: feat
-- [ ] T2: La herramienta specty_verify del servidor MCP
+- [x] T2: La herramienta specty_verify del servidor MCP
   - files: packages/cli/src/mcp/tools.ts, packages/cli/test/mcp.test.ts, packages/cli/test/mcp-app.test.ts
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp.test.ts test/mcp-app.test.ts test/verify-fresh.test.ts && pnpm typecheck && pnpm lint && pnpm knip && pnpm sources
