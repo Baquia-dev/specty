@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-verificacion-avisa-de-los-tests-que-pasan-de-2",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-la-verificacion-avisa-de-los-tests-que-pasan-de-2",
   "baseCommit": "b4686dfe63d4d149247ca21552eac202ab157426",
   "revision": 1,
@@ -56,6 +56,10 @@
     "T": 5,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T04:46:00.516Z"
+  "lockedTests": {
+    "packages/cli/test/accept-test-time.test.ts": "sha256:7fa58f602babc2ede56aba53eb74d678e264644ef432b1671954bdf2a0d5a260",
+    "packages/cli/test/check-test-time.test.ts": "sha256:dd26c0d9359647bb76fc9f5255c183c103b9e52a3a26c104d5f1529c25cd471e",
+    "packages/core/test/cards/test-time.test.ts": "sha256:7eff9de001e35a659f3948ff12102ef44314f540b4c0072d9847aef018d903f7",
+    "packages/core/test/checks/junit.test.ts": "sha256:5083f9a0de401181172c8a0b94842527e57a8d7768de9a2fb3f2989b804d5749"
+  }
 }
