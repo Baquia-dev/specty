@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-init-propone-las-unidades-de-un-workspace-de-uv",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-init-propone-las-unidades-de-un-workspace-de-uv",
   "baseCommit": "d6543b9f4616101e9cf4c130031457af62cd967d",
   "revision": 1,
@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5c03e20c71cb2b0dd419a9e64c321462a81b06e3",
+      "startedAt": "2026-11-05T13:47:35.902Z",
+      "doneAt": "2026-11-05T13:48:52.266Z",
+      "summary": "Detector uvWorkspace (detect/units-uv.ts) tras el de Go: lee [tool.uv.workspace] con smol-toml, expande members/exclude con expand exportado y propone uv run --package <nombre> pytest <carpeta> por miembro con tests, con sus dependencias entre miembros."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

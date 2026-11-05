@@ -50,7 +50,7 @@ Desde C1, `proposedUnits` prueba en orden una lista de detectores de workspace, 
 
 ## Tareas
 
-- [ ] T1: init propone las unidades de un workspace de uv
+- [x] T1: init propone las unidades de un workspace de uv
   - files: packages/cli/package.json, pnpm-lock.yaml, packages/cli/src/detect/project.ts, packages/cli/src/detect/units-uv.ts, packages/cli/src/detect/workspace-units.ts, packages/cli/test/units-uv.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-uv.test.ts test/workspace-units.test.ts test/init-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip
