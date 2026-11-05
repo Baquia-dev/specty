@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-git-recuerda-lecturas-de-refs",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-git-recuerda-lecturas-de-refs",
   "baseCommit": "a0ad1aa4a6e619d229ad7a430d3afdd50e426ba8",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:2514577618a35dc0534ee440bc794d31cd6419d1bfd83862c28c6ca269d29abb",
@@ -70,12 +70,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3ff3b1e4fec0d9b22d56aa50b06b469a57f4d79f",
+      "attempts": 1,
       "startedAt": "2026-11-05T12:14:44.700Z",
       "doneAt": "2026-11-05T12:15:00.766Z",
-      "summary": "ARCHITECTURE explica que el servidor de specty ui olvida lo recordado al empezar cada petición y cada sondeo de eventos (Git.forget)."
+      "summary": "ARCHITECTURE explica que el servidor de specty ui olvida lo recordado al empezar cada petición y cada sondeo de eventos (Git.forget).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,6 +88,7 @@
     "T": 4,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-05T12:18:55.434Z",
   "lockedTests": {
     "packages/cli/test/git-memo.test.ts": "sha256:03f764c01240574a8b67e489764c89da10761ec8dff0c6fff088c6a4d75a55e6"
   }

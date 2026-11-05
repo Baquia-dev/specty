@@ -77,3 +77,23 @@ Desde 20261105-tests-cli-mas-rapidos, cada comando abre su sesión con un proces
 ## Riesgos
 
 - R1: Una lectura recordada podría quedar vieja si otro proceso mueve una ref en esos 2 s — es el margen que ya acepta el cambio anterior, y el propio `Git` olvida todo tras cualquier comando suyo que pueda cambiarla.
+
+## Cierre
+
+### Resumen
+
+La pregunta que abre la sesión da también el commit de HEAD y su rama, que el `Git` toma como las respuestas de `rev-parse --verify -q HEAD`, `rev-parse HEAD` y `symbolic-ref --short -q HEAD` (`rememberHead`). Y el `Git` recuerda 2 s, con su resultado entero, toda lectura que solo depende de las refs, los objetos o la configuración, sin entorno propio ni entrada ni una ruta del índice (`recalling` en `io/git-memo.ts`); preparar archivos o crear objetos ya no le hace olvidar. El servidor de `specty ui` olvida lo recordado al empezar cada petición y cada sondeo de eventos (`Git.forget`). `test/flow.test.ts` pasó de 1097 a 920 procesos de git (−16 %) y de 12,6 a 11,3 s; desde antes de 20261105-tests-cli-mas-rapidos, de 1468 a 920 (−37 %) y de 16,3 a 11,3 s. En `accept`, la unidad cli tardó 2:50 con la carga de la máquina entre 10 y 14.
+
+### Desviaciones
+
+- La primera aceptación falló en `test/server/trace.test.ts` AC1: el servidor usa el mismo `Git` durante horas y respondía con un `log` recordado de antes de un commit de otro proceso. Se abortó el merge de main que había dejado `accept`, se pidió el ajuste y se añadieron AC6, T3 (`Git.forget` en el servidor) y T4, con dos archivos del servidor que no estaban en la spec.
+- Para no pasar de 300 líneas de código en `io/git.ts`, cómo pasan los comandos por lo recordado (`recalling`) y la siembra de HEAD (`rememberHead`) viven en `io/git-memo.ts`.
+
+### Decisiones
+
+- Lo recordado vale dentro de un comando o de una petición: los comandos duran poco, y el servidor olvida al empezar cada turno, en lugar de no recordar nada en los procesos largos.
+- Los resultados que fallan también se recuerdan, porque son la respuesta (una ref que no existe); un comando que la crea los olvida.
+
+### Pendientes
+
+- Ninguno.
