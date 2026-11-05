@@ -1,16 +1,25 @@
 // SPDX-License-Identifier: Apache-2.0
 // What the Inbox shows, from the change views: filtered, grouped and sorted. Pure.
-import type { ChangeKind, SizeLevel } from "@baquia-dev/specty-core";
-import { type Lang, PHASES, type Phase } from "@baquia-dev/specty-core/light";
+import type { ChangeKind } from "@baquia-dev/specty-core";
+import {
+  CHANGE_SORTS,
+  type ChangeSort,
+  type Lang,
+  matchesQuery,
+  PHASES,
+  type Phase,
+  sortChanges,
+} from "@baquia-dev/specty-core/light";
 import type { Bilingual, ChangeView } from "../data/records";
 import { PHASE_LABELS } from "../theme/tokens";
 
 export type InboxGroup = "state" | "phase" | "none" | "epic";
-export type InboxSort = "waiting" | "recent" | "title" | "size";
+/** The Inbox sorts as the local server does its pages of finished changes. */
+export type InboxSort = ChangeSort;
 export type InboxPhase = Phase | "all";
 
 export const INBOX_GROUPS: readonly InboxGroup[] = ["state", "phase", "none", "epic"];
-export const INBOX_SORTS: readonly InboxSort[] = ["waiting", "recent", "title", "size"];
+export const INBOX_SORTS: readonly InboxSort[] = CHANGE_SORTS;
 
 export interface InboxFilters {
   readonly query: string;
@@ -56,33 +65,9 @@ const KIND_SECTIONS: readonly { readonly key: ChangeKind; readonly label: Biling
   { key: "spike", label: { es: "Spikes", en: "Spikes" } },
 ];
 
-const SIZE: Readonly<Record<SizeLevel, number>> = { S: 1, M: 2, L: 3, XL: 4 };
-
 export function stateOf(change: ChangeView): InboxState {
   if (change.decision !== undefined) return "decision";
   return change.phase === "done" || change.phase === "cancelled" ? "recent" : "active";
-}
-
-/** Lower case and without accents, so "evolucion" finds "Evolución". */
-function folded(text: string): string {
-  return text
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase();
-}
-
-/** Whether the title, id or epic metadata contain the query, ignoring case and accents. */
-export function matchesQuery(change: ChangeView, query: string): boolean {
-  const wanted = folded(query.trim());
-  if (wanted === "") return true;
-  const fields = [
-    change.title,
-    change.id,
-    change.epic?.title ?? "",
-    change.epic?.id ?? "",
-    change.epic?.slice ?? "",
-  ];
-  return fields.some((field) => folded(field).includes(wanted));
 }
 
 /** The changes the search and the phase filter let through. */
@@ -110,23 +95,6 @@ export function phaseCounts(
       found.filter((change) => change.phase === phase).length,
     ]),
   ]);
-}
-
-export function sortChanges(
-  changes: readonly ChangeView[],
-  sort: InboxSort,
-  lang: Lang,
-): readonly ChangeView[] {
-  const since = (change: ChangeView) => Date.parse(change.phaseSince);
-  const size = (change: ChangeView) => (change.size ? SIZE[change.size.level] : 0);
-  const compare: Readonly<Record<InboxSort, (a: ChangeView, b: ChangeView) => number>> = {
-    // What has waited longest first.
-    waiting: (a, b) => since(a) - since(b),
-    recent: (a, b) => since(b) - since(a),
-    title: (a, b) => a.title.localeCompare(b.title, lang, { sensitivity: "base" }),
-    size: (a, b) => size(b) - size(a) || since(a) - since(b),
-  };
-  return changes.toSorted(compare[sort]);
 }
 
 /** The sections of the Inbox, sorted inside, without empty ones. */

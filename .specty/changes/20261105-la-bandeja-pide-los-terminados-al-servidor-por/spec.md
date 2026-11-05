@@ -69,7 +69,7 @@ Hoy la única forma de leer los cambios terminados es `GET /api/changes`, que lo
   - files: packages/cli/src/server/records.ts, packages/cli/src/server/finished.ts, packages/cli/src/server/http.ts, packages/cli/test/server/finished.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/finished.test.ts test/server.test.ts test/server/records.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
-- [ ] T3: La Bandeja busca y ordena con las funciones de core
+- [x] T3: La Bandeja busca y ordena con las funciones de core
   - files: packages/ui/src/inbox/inbox-view.ts, packages/ui/src/inbox/inbox-view.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-view.test.ts --include src/inbox/inbox.test.ts && pnpm typecheck && pnpm lint && pnpm knip

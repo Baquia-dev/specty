@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-bandeja-pide-los-terminados-al-servidor-por",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-bandeja-pide-los-terminados-al-servidor-por",
   "baseCommit": "bd48aacf6aa987f9dcce0d5aa2a20cb564068e48",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4a1c23f3969b3719756efc4397bff4e27ea91134",
+      "attempts": 1,
       "startedAt": "2026-11-05T13:08:30.627Z",
       "doneAt": "2026-11-05T13:10:45.343Z",
-      "summary": "server/finished.ts sirve GET /api/changes/finished con la búsqueda y el orden de core; records.ts guarda en memoria los archivados mientras su state.json no cambie; http.ts solo engancha la ruta; ARCHITECTURE §15"
+      "summary": "server/finished.ts sirve GET /api/changes/finished con la búsqueda y el orden de core; records.ts guarda en memoria los archivados mientras su state.json no cambie; http.ts solo engancha la ruta; ARCHITECTURE §15",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7e124f6f653a720d228c0888a00d3724aa126c71",
+      "startedAt": "2026-11-05T13:10:45.674Z",
+      "doneAt": "2026-11-05T13:11:29.989Z",
+      "summary": "inbox-view.ts importa matchesQuery, sortChanges y CHANGE_SORTS de core light y quita sus copias (folded, matchesQuery, sortChanges); InboxSort es ChangeSort"
     }
   },
   "pending": {
