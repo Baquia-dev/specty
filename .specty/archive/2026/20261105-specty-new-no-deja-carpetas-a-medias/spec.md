@@ -66,3 +66,23 @@ Cuando otro proceso del clon tiene bloqueada la configuración de git (`.git/con
 ## Riesgos
 
 - R1: El test de AC1 suelta el bloqueo mientras `new` corre — lo suelta poco después de que aparezca la carpeta, con más de un segundo de margen sobre los reintentos; si `new` llegara a ligar la rama después de soltarlo, el test pasa igual, y AC3 comprueba los reintentos con un git simulado.
+
+## Cierre
+
+### Resumen
+
+`specty new` ya no deja una worktree y su rama sin cambio dentro cuando otro proceso del clon tiene bloqueada la configuración de git (P103, P128). `markBranch` (`flow/branches.ts`) reintenta la escritura de `branch.<rama>.specty` tras 50, 100, 200, 400 y 800 ms, y después del último intento lanza el `GitError`. Si `new --worktree` sigue sin poder ligar la rama, `markOrUndo` (`commands/new.ts`) quita la carpeta (`git worktree remove --force`) y la rama (`git branch -D`) y responde con `gitFailedCard`, que ahora admite `undone` y añade la línea «Specty deshizo lo que había creado: la carpeta … y la rama …», en español y en inglés. Al repetirlo, el cambio sale con el mismo id, sin `-2`. ARCHITECTURE lo cuenta junto a la marca de la rama.
+
+### Desviaciones
+
+- `gitFailedCard` arma la tarjeta directamente en vez de con `blockedCard`, que solo admite una línea; el estado sigue siendo `invalid` (código 1).
+
+### Decisiones
+
+- Se reintenta cualquier fallo de esa escritura, no solo el del bloqueo, porque el mensaje de git puede llegar traducido (A1).
+- Sin worktree, `new` también reintenta, pero no deshace la rama a la que ya cambió la carpeta (fuera de alcance).
+- El propio `specty new` de este cambio falló así al crearse a la vez que otros cortes: quité a mano su worktree vacía y su rama (en `main`, sin trabajo dentro) y lo repetí con el mismo id.
+
+### Pendientes
+
+Ninguno.

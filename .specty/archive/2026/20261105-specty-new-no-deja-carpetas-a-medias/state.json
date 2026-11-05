@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-specty-new-no-deja-carpetas-a-medias",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-specty-new-no-deja-carpetas-a-medias",
   "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:4dcdb37d061e112098e2623f40a430aa892dbac28062de424a7505dea36f1c5d",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "33127e8734e120baed84507a4bb2e814d815ca89",
+      "attempts": 1,
       "startedAt": "2026-11-05T08:17:12.797Z",
       "doneAt": "2026-11-05T08:22:18.383Z",
-      "summary": "ARCHITECTURE explica los reintentos de markBranch y que new --worktree deshace la carpeta y la rama si no puede ligarla"
+      "summary": "ARCHITECTURE explica los reintentos de markBranch y que new --worktree deshace la carpeta y la rama si no puede ligarla",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -75,6 +75,7 @@
     "T": 3,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-05T08:39:39.738Z",
   "lockedTests": {
     "packages/core/test/cards/git-failed.test.ts": "sha256:1633947dbeac7ddc7163f3809d01f4e13d8a8ed2c00bfcb0b870db6b40580cad",
     "packages/cli/test/new-locked-config.test.ts": "sha256:b3d6bf5f72fdc0f21daa28a43858fa180953e67f1222598f6fb0e493ac4fbf27"
