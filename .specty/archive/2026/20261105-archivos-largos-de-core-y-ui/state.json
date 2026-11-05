@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-archivos-largos-de-core-y-ui",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-archivos-largos-de-core-y-ui",
   "baseCommit": "555d8540abbd360891f992252bcb564c64542ed6",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:d24bf2c30049185ab5f2e690f8013653946bcb6b47f6551cb76c3cf1999f3b25",
@@ -63,15 +63,15 @@
     },
     "T4": {
       "status": "done",
+      "baseCommit": "6079aab45e6ac643cbe4d7c54696d25cf94e41c5",
+      "attempts": 1,
+      "startedAt": "2026-11-04T18:48:45.008Z",
+      "doneAt": "2026-11-04T18:53:14.328Z",
+      "summary": "El andamiaje de los tests del MCP App pasa a data/testing/mcp-host.ts y el de los tooltips a components/testing/item-host.ts, sin mover ningún test: con contract, mover tests de archivo cuenta como aserciones quitadas.",
       "scopeExtra": [
         "packages/ui/src/components/item-tooltip.test.ts",
         "packages/ui/src/components/testing/item-host.ts"
-      ],
-      "attempts": 1,
-      "baseCommit": "6079aab45e6ac643cbe4d7c54696d25cf94e41c5",
-      "startedAt": "2026-11-04T18:48:45.008Z",
-      "doneAt": "2026-11-04T18:53:14.328Z",
-      "summary": "El andamiaje de los tests del MCP App pasa a data/testing/mcp-host.ts y el de los tooltips a components/testing/item-host.ts, sin mover ningún test: con contract, mover tests de archivo cuenta como aserciones quitadas."
+      ]
     }
   },
   "pending": {
@@ -83,5 +83,37 @@
     "AC": 2,
     "T": 4,
     "S": 1
+  },
+  "closingSubmittedAt": "2026-11-05T01:44:00.593Z",
+  "integration": {
+    "target": "main",
+    "commit": "445c69b3939c77f9aeb254565139e65901f50c59",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      ".github/workflows/ci.yml",
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md",
+      "package.json",
+      "packages/cli/test/workflows.test.ts",
+      "packages/core/src/cards/idle.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/ui/src/components/item-bubble.ts",
+      "packages/ui/src/components/item-refs.ts",
+      "packages/ui/src/components/item-tooltip.test.ts",
+      "packages/ui/src/components/item-tooltip.ts",
+      "packages/ui/src/components/testing/item-host.ts",
+      "packages/ui/src/data/fixtures.ts",
+      "packages/ui/src/data/mcp-app.test.ts",
+      "packages/ui/src/data/sample-acceptance.ts",
+      "packages/ui/src/data/sample-memory.ts",
+      "packages/ui/src/data/sample-review.ts",
+      "packages/ui/src/data/testing/mcp-host.ts"
+    ],
+    "at": "2026-11-05T01:17:28.962Z",
+    "resolved": {
+      "commit": "3711655",
+      "at": "2026-11-05T01:27:55.034Z"
+    }
   }
 }

@@ -75,3 +75,25 @@ Resuelve P62 y P66. `specty check --all` avisa en `max-lines` de cinco archivos:
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/mcp-app.test.ts --include src/data/mcp-app-live.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los cinco archivos de los que `max-lines` avisaba quedan por debajo de su límite, sin cambiar lo que hacen: la tarjeta sin cambio activo pasa de `cards/next.ts` a `cards/idle.ts` (P66); `item-tooltip.ts` queda con la directiva y `ItemText`, con las siglas en `item-refs.ts` y la burbuja en `item-bubble.ts`; lo que las decisiones de la revisión hacen a un registro sale de `fixtures.ts` a `sample-review.ts`, `confirmClosingIn` y `decidedIn`; y el andamiaje de los dos tests largos pasa a `data/testing/mcp-host.ts` y `components/testing/item-host.ts`. Ningún test cambió lo que comprueba.
+
+### Desviaciones
+
+- Ningún test cambió de archivo: no se crearon `item-refs.test.ts` ni `mcp-app-live.test.ts`. Con `policy.tests: contract`, `task done` rechaza que un refactor quite aserciones de un test que ya existía, y mover un test a otro archivo cuenta como quitarlas. La spec ya estaba bloqueada para cambiar el tipo de la tarea, así que los dos tests bajan de 400 líneas sacando solo su andamiaje, que no tiene aserciones.
+- T4 amplió su alcance (S1, aprobada en modo delegado) con `item-tooltip.test.ts` y `components/testing/item-host.ts`.
+- AC1 se comprobó con `specty check --changed` sobre los archivos del cambio (`max-lines` en OK), no con `specty check --all` entero.
+- Al incorporar main, `fixtures.ts` chocó con «La página Sesiones» (su import de `SessionView` y `sessions()`); se quedaron las dos cosas. Una verificación falló por tiempo en un test de vscode con la máquina cargada (P113) y pasó al repetirla.
+
+### Decisiones
+
+- El andamiaje que solo usan los tests va en una carpeta `testing/` junto al código que prueba, la convención de Angular; no usa globales de Vitest, así que compila también con la app.
+- `itemLabel` sustituye el cast `match[1] as ItemPrefix` por un guard de tipo (`isPrefix`).
+
+### Pendientes
+
+- `assertionLosses` (packages/cli/src/flow/assertions.ts) solo mira los tests que ya existían y no los nuevos del mismo diff, así que un refactor no puede mover un test a otro archivo bajo `policy.tests: contract`: que cuente como movida una aserción quitada que aparece igual en otro test del diff.
