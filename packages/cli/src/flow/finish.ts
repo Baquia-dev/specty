@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
-import type { ChangeState, MemoryEntry } from "@baquia-dev/specty-core";
+import { type ChangeState, closingCommitSubject, type MemoryEntry } from "@baquia-dev/specty-core";
 import { exists, move } from "../io/files";
 import type { Session } from "../session";
 import { appendAudit, type StoredChange, saveState } from "../store/changes";
@@ -67,12 +67,10 @@ export async function commitArchive(
 ): Promise<string> {
   // A change never approved was never committed: git does not know its old folder.
   const old = session.paths.relative(before.files.dir);
-  const { glossary } = session.config;
-  const terms = after.state.phase === "done" && (await exists(join(session.root, glossary)));
   const paths = [
     ...((await session.git.isTracked(old)) ? [old] : []),
     session.paths.relative(after.files.dir),
-    ...(terms ? [glossary] : []),
+    ...(after.state.phase === "done" ? await glossaryPath(session) : []),
   ];
   return commitWithReceipt(session, {
     subject,
@@ -81,6 +79,44 @@ export async function commitArchive(
     only: paths,
     receipt: { change: after.state.id, kind: "close" },
   });
+}
+
+/**
+ * Commits the closing still in the change's folder, with the glossary, before `target` comes in,
+ * when `target` changed one of its uncommitted files: uncommitted, that file would stop the merge,
+ * and a conflict could not wait for the agent. Otherwise nothing, and the branch stays as it was.
+ */
+export async function commitClosing(
+  session: Session,
+  change: StoredChange,
+  title: string,
+  target: string,
+): Promise<void> {
+  const paths = [session.paths.relative(change.files.dir), ...(await glossaryPath(session))];
+  const uncommitted = [
+    ...(await names(session, ["diff", "--name-only", "-z", "HEAD", "--", ...paths])),
+    ...(await names(session, ["ls-files", "--others", "--exclude-standard", "-z", "--", ...paths])),
+  ];
+  const theirs = new Set(await names(session, ["diff", "--name-only", "-z", `HEAD...${target}`]));
+  if (!uncommitted.some((path) => theirs.has(path))) return;
+  await commitWithReceipt(session, {
+    subject: closingCommitSubject(title, session.lang),
+    trailers: decisionTrailers(session, change.state.id),
+    stage: [paths],
+    only: paths,
+    receipt: { change: change.state.id, kind: "close" },
+  });
+}
+
+/** The repository-relative paths a git command prints with `-z`. */
+async function names(session: Session, args: readonly string[]): Promise<string[]> {
+  return (await session.git.output(args)).split("\0").filter((name) => name.length > 0);
+}
+
+/** The glossary, where a closing adds the terms it introduced or renamed (ADR 0014), if it exists. */
+async function glossaryPath(session: Session): Promise<string[]> {
+  const { glossary } = session.config;
+  return (await exists(join(session.root, glossary))) ? [glossary] : [];
 }
 
 /**

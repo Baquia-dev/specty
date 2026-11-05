@@ -85,26 +85,30 @@ export async function absorbTarget(
   plan: Integration,
   change: StoredChange,
   again: "close" | "accept",
+  beforeMerge?: (target: string) => Promise<void>,
 ): Promise<Absorbed> {
   const dirty = await holderDirty(session, plan, change.state, again);
-  return dirty ?? mergeTarget(session, plan, change, again);
+  return dirty ?? mergeTarget(session, plan, change, again, beforeMerge);
 }
 
 /**
  * When the main branch moved, merges it into the change's branch, here, and commits the merge
  * only after the verification passes. With conflicts or a failing verification, the merge stays
  * in progress for the agent; a closed change's merge is aborted instead, as is any other failure,
- * and nothing moves. `again` is the command the person runs afterwards.
+ * and nothing moves. `again` is the command the person runs afterwards; `beforeMerge` runs only
+ * when there is a merge to make, right before it.
  */
 export async function mergeTarget(
   session: Session,
   plan: Integration,
   change: StoredChange,
   again: "close" | "accept",
+  beforeMerge?: (target: string) => Promise<void>,
 ): Promise<Absorbed> {
   const { git, cards } = session;
   const { state } = change;
   if (await contains(git, "HEAD", plan.target)) return { ok: true, lines: [] };
+  await beforeMerge?.(plan.target);
   const absorbing: Absorbing = {
     plan,
     change,

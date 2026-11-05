@@ -25,7 +25,7 @@ import {
 import { isFinished } from "../flow/active";
 import { withArchivedMemory } from "../flow/archive-memory";
 import { verifyHints, withVerifyHints } from "../flow/detected";
-import { archive, commitArchive } from "../flow/finish";
+import { archive, commitArchive, commitClosing } from "../flow/finish";
 import { landingTurn } from "../flow/full-verification";
 import { absorbTarget, type Integration, integrationOf, isIncorporated } from "../flow/integrate";
 import { type Landed, landRetrying, withIntegration } from "../flow/land";
@@ -85,9 +85,11 @@ async function closeOnTurn(
   plan: Integration | undefined,
 ): Promise<Output> {
   const { state } = change;
-  // The main branch comes into the change before anything is archived: a refusal changes nothing.
+  // The main branch comes into the change before anything is archived: a refusal leaves it in its
+  // phase. If main changed the closing's uncommitted files, the closing gets its commit first.
+  const closing = (target: string) => commitClosing(session, change, spec.title, target);
   const absorbed =
-    plan === undefined ? undefined : await absorbTarget(session, plan, change, "close");
+    plan === undefined ? undefined : await absorbTarget(session, plan, change, "close", closing);
   if (absorbed?.ok === false) return absorbed.output;
   const moved = transition({
     phase: "closing",

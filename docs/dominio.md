@@ -13,7 +13,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Bloqueo** (`LockHolder`): qué comando está cambiando un cambio; uno a la vez.
 - **Plaza de verificación** (`verify.slots`, `inSlots`): una de las verificaciones que corren a la vez en el clon; la de una tarea ocupa una, y la completa, todas.
 - **Unidad de verificación** (`verify.units`, `VerifyUnit`): una parte de la verificación completa, con su comando y los archivos de los que depende; no se repite si ya pasó con la misma huella en el clon.
-- **Registro de unidades** (`.git/common/specty/verified/`, `fullPlan`): las unidades que pasaron, una por huella, en cualquier cambio y worktree del clon; la verificación completa de `accept`, la incorporación, `specty integrate` y la UI no repiten las que están en él.
+- **Registro de unidades** (`.git/common/specty/verified/`, `fullPlan`): las unidades que pasaron, una por huella, en cualquier cambio y worktree del clon; la verificación completa de `accept`, la incorporación, `specty integrate` y la UI no repiten las que están en él; `specty prune` borra las anotadas hace más de 30 días (`pruneRecord`).
 - **Test lento** (`checks.testTime`, `test-time`): un test que, según el informe JUnit que dejó la misma ejecución, tardó más de `maxMs`; `specty check` avisa de él y la nota de la verificación de `accept` muestra los cinco primeros.
 - **Verificación fresca** (`specty verify --fresh`): la verificación completa entera, sin el registro de las unidades que ya pasaron, que repite una vez la que falla.
 - **Unidad inestable** (`flaky`): una unidad que en una verificación fresca falla y pasa al repetirla; queda en la memoria como lección de sus `paths`.
