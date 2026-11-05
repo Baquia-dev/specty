@@ -37,18 +37,19 @@ function pullRequest(env: NodeJS.ProcessEnv): CiOptions {
 async function push(env: NodeJS.ProcessEnv): Promise<CiOptions> {
   const path = env.GITHUB_EVENT_PATH;
   const payload = path === undefined ? undefined : parseJson(await readText(path));
-  const before = isRecord(payload) && typeof payload.before === "string" ? payload.before : "";
-  const repository = isRecord(payload) && isRecord(payload.repository) ? payload.repository : {};
-  const main =
-    typeof repository.default_branch === "string" ? repository.default_branch : undefined;
-  const base = /^[0-9a-f]*[1-9a-f][0-9a-f]*$/.test(before)
-    ? before
-    : main === undefined
-      ? undefined
-      : `origin/${main}`;
+  const base = isRecord(payload) ? pushBase(payload) : undefined;
   const into = env.GITHUB_REF_NAME;
   return {
     ...(base !== undefined ? { base } : {}),
     ...(into !== undefined && into !== "" ? { into } : {}),
   };
+}
+
+/** The push's commit before, unless it is all zeros; then the repository's default branch. */
+function pushBase(payload: Record<string, unknown>): string | undefined {
+  const before = typeof payload.before === "string" ? payload.before : "";
+  if (/^[0-9a-f]*[1-9a-f][0-9a-f]*$/.test(before)) return before;
+  const repository = isRecord(payload.repository) ? payload.repository : {};
+  const main = repository.default_branch;
+  return typeof main === "string" ? `origin/${main}` : undefined;
 }

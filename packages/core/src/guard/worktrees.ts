@@ -90,6 +90,51 @@ export function nativeEnterDenial(id: string, lang: Lang): Denial {
   };
 }
 
+/**
+ * A subagent of Claude Code enters a change's folder with `specty enter`, which binds only it:
+ * `EnterWorktree` would move the session that launched it. `id` is the change the tool's input
+ * names; without one, the agent fills it in.
+ */
+export function subagentEnterDenial(id: string | undefined, lang: Lang, command: string): Denial {
+  const t = (es: string, en: string) => (lang === "es" ? es : en);
+  const enter = `\`${command} enter ${id ?? "<id>"}\``;
+  return {
+    reason: t(
+      "Un subagente no entra con `EnterWorktree`: llevaría a esa carpeta a la sesión que lo lanzó.",
+      "A subagent does not enter with `EnterWorktree`: it would take the session that launched it into that folder.",
+    ),
+    next:
+      id === undefined
+        ? t(
+            `entra con ${enter}, con el id del cambio en el que trabajas: te ata a su carpeta, y la sesión que te lanzó sigue donde está.`,
+            `enter with ${enter}, with the id of the change you work on: it binds you to its folder, and the session that launched you stays where it is.`,
+          )
+        : t(
+            `entra con ${enter}: te ata a la carpeta del cambio, y la sesión que te lanzó sigue donde está.`,
+            `enter with ${enter}: it binds you to the change's folder, and the session that launched you stays where it is.`,
+          ),
+  };
+}
+
+/**
+ * A subagent's commands carry the session that launched it (in Claude Code,
+ * `CLAUDE_CODE_SESSION_ID`): `specty new` without `--subagent` would bind that session to the new
+ * change.
+ */
+export function subagentNewDenial(lang: Lang, command: string): Denial {
+  const t = (es: string, en: string) => (lang === "es" ? es : en);
+  return {
+    reason: t(
+      "Los comandos de un subagente llevan la sesión que lo lanzó: sin `--subagent`, `new` ataría esa sesión al cambio nuevo.",
+      "A subagent's commands carry the session that launched it: without `--subagent`, `new` would bind that session to the new change.",
+    ),
+    next: t(
+      `vuelve a ejecutarlo con \`--subagent\` (\`${command} new … --subagent\`): crea el cambio sin atar a nadie, y su salida te dice cómo entrar en él.`,
+      `run it again with \`--subagent\` (\`${command} new … --subagent\`): it creates the change without binding anyone, and its output tells you how to enter it.`,
+    ),
+  };
+}
+
 /** A change's folder outside every folder its tool lets its agent work in. */
 export interface Unreachable {
   readonly id: string;

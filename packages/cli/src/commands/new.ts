@@ -13,6 +13,7 @@ import {
   type Output,
   specTemplate,
   type TemplateOptions,
+  withDevPorts,
   withLead,
   worktreeCreatedCard,
 } from "@baquia-dev/specty-core";
@@ -23,7 +24,13 @@ import { duplicatesOf } from "../flow/duplicates";
 import { sliceRefusal } from "../flow/epic";
 import { removeFinished } from "../flow/prune";
 import { changeView } from "../flow/views";
-import { addWorktree, parallelBase, prepareWorktree, worktreesHome } from "../flow/worktree";
+import {
+  addWorktree,
+  apartFromMain,
+  parallelBase,
+  prepareWorktree,
+  worktreesHome,
+} from "../flow/worktree";
 import { entersByName } from "../install/agents";
 import { freshProject } from "../install/product";
 import { exists, writeText } from "../io/files";
@@ -31,6 +38,7 @@ import type { Session } from "../session";
 import { initialState, type StoredChange } from "../store/changes";
 import { writePointer } from "../store/local";
 import { changeFiles, repoPaths } from "../store/paths";
+import { portsOf } from "../store/ports";
 import { claimEntries, takeEntries } from "./memory";
 import { dirtyGoverned } from "./next";
 
@@ -201,7 +209,7 @@ async function newInWorktree(
   // names the session that launched it, which stays where it was.
   const subagent = options.subagent === true;
   if (!subagent) await bindNew(session, folder, options.epic);
-  return worktreeCreatedCard(
+  const card = worktreeCreatedCard(
     {
       id,
       branch,
@@ -216,9 +224,13 @@ async function newInWorktree(
       // Any other agent carries on in a session of its own, which the card says how to open.
       agent: session.tool,
       ...(subagent ? { subagent } : {}),
+      // Claude Code's session does not enter one worktree from another: it leaves this one first.
+      ...((await apartFromMain(git)) ? { fromWorktree: true } : {}),
     },
     cards,
   );
+  // Its development servers get ports of their own (`dev.ports`), apart from other folders'.
+  return withDevPorts(card, await portsOf(session, folder), session.lang);
 }
 
 /**

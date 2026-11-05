@@ -35,6 +35,10 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 ├─ locks/<id>.json             # { "pid", "command", "folder", "at" }: el comando que está cambiando ese cambio, uno a la vez (ARCHITECTURE §9); se crea en exclusiva y se borra al terminar, y el de un proceso que ya no existe no cuenta; para reemplazarlo, un comando toma antes `locks/<id>.json.claim`, un permiso exclusivo y breve
 ├─ messages/<id>/<hora>-<n>.json # { "at", "text", "from": { "actor", "tool"?, "change"?, "folder" } }: un mensaje que una sesión o la persona dejó con `specty message` para la sesión del cambio abierto `<id>`, en orden de llegada (`<hora>` es `at` sin separadores y `<n>` lo desempata); el guard lo entrega tras el siguiente comando de shell en la carpeta del cambio y lo borra al entregarlo, así que `specty status` cuenta los que quedan (`messages`) (ARCHITECTURE §10); los que nadie recogió se borran al archivar el cambio, cerrado o cancelado, y `specty prune` borra los de un cambio que ya no está abierto
 ├─ locks/full-verification.json # el turno de la verificación completa (`verify.full`, la de `accept` y la de la incorporación de main), una a la vez en todo el clon; el cierre que integra un cambio en main lo tiene desde antes de incorporar main hasta que main avanza (ARCHITECTURE §9): la misma forma y las mismas reglas que `locks/<id>.json`
+├─ ports.json                 # { "<carpeta>": <posición> }: la posición de cada carpeta de cambio entre los puertos de desarrollo (`dev.ports`, §6); sus puertos son los de `dev.ports` más ella. Una carpeta nueva toma la libre más baja desde 1, y la de una carpeta que ya no existe vuelve a quedar libre (ARCHITECTURE §9)
+├─ locks/full-verification.queue/<llegada>-<pid>-<n>.json # { "pid", "command", "folder", "at" }: la cola del turno de la verificación completa, un archivo por proceso que espera, con su hora de llegada en milisegundos (15 cifras) en el nombre; solo el primero vivo intenta el turno, cada uno renueva la fecha de su archivo en cada vuelta y se borra al tomarlo, y el de un proceso que ya no existe o que lleva 30 s sin renovarse no cuenta y lo borra el siguiente que mira
+├─ locks/verify-slots/<inicio>-<pid>-<n>.json # { "pid", "command", "folder", "at", "weight" }: una verificación que corre y las plazas de `verify.slots` que ocupa (la de una tarea, 1; la completa, todas); se escribe antes de dejar la cola y se borra al terminar, y el de un proceso que ya no existe no cuenta y lo borra el siguiente que mira
+├─ locks/verify-slots.queue/<llegada>-<pid>-<n>.json # la cola de las plazas, con la forma y las reglas de la del turno: solo el primero vivo puede empezar, cuando su peso cabe entre las plazas libres
 └─ backups/<fecha>/            # lo que había antes de que `init` o `uninstall` lo cambiaran (una carpeta por ejecución)
    ├─ repo/<ruta>              # copia de un archivo del repositorio
    ├─ outside/<ruta absoluta>  # copia de uno de fuera (Codex, OpenCode, .git/info/exclude de una worktree)
@@ -339,14 +343,14 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `tests.approved` | la persona aprobó los tests enviados (el gate 2 de ADR 0014): canal (`tty`, `ui` o `delegated`) |
 | `tests.locked` | en el ciclo de un bug, Specty bloqueó los tests en rojo sin esperar a la persona: `count` y `files` |
 | `task.started` | tarea, commit base |
-| `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló, y `tree`: el código sobre el que corrió, un hash del árbol de trabajo sin `.specty/` tomado antes de verificar |
+| `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló, y `tree`: el código sobre el que corrió, un hash de las rutas y los contenidos de los archivos de código del árbol de trabajo (los de fuera de `.specty/` y de `ignored`), tomado antes de verificar |
 | `task.completed` | tarea, commit, resumen (300 caracteres como máximo) y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden, de 300 caracteres como máximo cada uno; si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |
 | `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban); si la persona aprueba el desbloqueo de tests aprobados, `unlock` (sus rutas) y `task`; la solicitud de `retro --into` lleva `retro` (la huella de lo preparado), y si lo preparado cambió antes de aprobarla, Specty la rechaza (actor `specty`) con el motivo |
 | `epic.slicesDone` | todos los cortes de una épica tienen un cambio cerrado, y `specty next` la pasa a aceptación (actor `specty`): `slices`, el cambio de cada corte |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
 | `review.completed` | la revisión independiente (ADR 0011), anotada por `specty review` (actor `specty`): `target` (`spec` o `diff`), revisión, comando, código de salida, duración y, si respondió, el archivo de la respuesta |
-| `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta, por el servidor local cuando la persona la lanza desde la UI, o al incorporar la rama principal en un cambio abierto, si pasa (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, las últimas 10 líneas si falló, y `tree`, como en `task.verified`. `accept` no la repite si la última verificación con ese comando (también la de una tarea, sola o tras `verify.quick`) pasó con el mismo `tree`. Si dejó un informe de `checks.coverage.reports` que mide líneas que añade el cambio, también `coverage`: `measured`, `covered`, los cinco primeros tramos sin ejecutar en `gaps` (`{path, from, to}`) y cuántos son en `stretches`; las líneas cuentan desde el merge-base con la rama destino o, con un merge de esta en curso, desde el commit que entra. La aceptación muestra la de la última que pasó con el `tree` actual |
+| `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta, por el servidor local cuando la persona la lanza desde la UI, o al incorporar la rama principal en un cambio abierto, si pasa (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, las últimas 10 líneas si falló, y `tree`, como en `task.verified`. `accept` no la repite si la última verificación con ese comando (también la de una tarea, sola o tras `verify.quick`) pasó con el mismo `tree`, y no la ejecuta ni la anota si el cambio no toca código respecto a la rama destino (ARCHITECTURE §6). Si dejó un informe de `checks.coverage.reports` que mide líneas que añade el cambio, también `coverage`: `measured`, `covered`, los cinco primeros tramos sin ejecutar en `gaps` (`{path, from, to}`) y cuántos son en `stretches`; las líneas cuentan desde el merge-base con la rama destino o, con un merge de esta en curso, desde el commit que entra. La aceptación muestra la de la última que pasó con el `tree` actual |
 | `change.accepted` | revisión aceptada |
 | `retro.confirmed` | en una retro aparte, el modo (`agent` o `minimal`); con `retro --into`, en el cambio activo, la solicitud (`request`) y sus rutas (`paths`) |
 | `change.usage` | lo que consumió el cambio, medido con ccusage al cerrarlo, o al aceptar uno quick, justo antes de archivarlo (actor `specty`): `calls`, las llamadas al modelo de las sesiones que nombran sus líneas (`session`) desde `change.created`; `input`, `output`, `cacheWrite` y `cacheRead`, sus tokens de cada tipo, y `cost`, en USD, si cada modelo de esas llamadas tiene precios, ninguno negativo, que expliquen al céntimo el coste de nueve de cada diez de sus sesiones en el informe de ccusage, y de al menos cuatro. Sin ccusage, sin una respuesta válida o sin sesiones, no hay evento |
@@ -400,6 +404,7 @@ verify:
   full: flutter analyze && flutter test
   quick: dart format --output=none --set-exit-if-changed .  # antes de la verificación de cada tarea
   timeoutSec: 600                 # al vencer, se corta el comando con todos los procesos que lanzó
+  slots: 2                        # verificaciones a la vez en el clon: la de una tarea ocupa 1, la completa todas (ARCHITECTURE §9)
 scope:
   implicitTests: true             # tests junto a los archivos del alcance
   generated: ["**/*.g.dart", "**/*.freezed.dart"]
@@ -447,6 +452,7 @@ git:
   target: develop                 # rama de la que parten los cambios y a la que se incorporan; sin la clave: la principal
   flow: gitflow                   # specty | github | trunk | gitflow: cómo se nombran las ramas; sin la clave: specty/<id>
   branchPattern: "team/{type}-{slug}"  # opcional: nombre propio con {type}, {slug} e {id}; gana a flow
+  afterLanding: "pnpm build"      # opcional: se ejecuta en la carpeta de la rama destino cada vez que un cambio llega a ella
 team:                             # solo con mode: team
   approvers: []
   requirePrReview: true
@@ -456,6 +462,8 @@ ui:
 memory:                           # la memoria de Specty (ADR 0016)
   orphanAfterMin: 60              # minutos sin pasos ni cambios de estado tras los que un cambio que espera al agente es huérfano
   branch: specty-memory           # la rama de las entradas (§1): un nombre de rama válido fuera de `specty/`, donde van las de los cambios
+dev:
+  ports: [4200, 5173]             # los puertos de desarrollo del proyecto en la carpeta principal; cada carpeta de cambio usa estos más su posición (§1, `ports.json`), y `new` y `next` se los dicen al agente; sin la clave: ninguno
 subagents: true                   # false: una épica no reparte sus cortes entre subagentes, aunque su herramienta pueda
 ```
 

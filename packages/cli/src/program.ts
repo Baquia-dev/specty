@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   EXIT_CODES,
+  gitFailedCard,
   invalidConfigCard,
   type Lang,
   notGitCard,
@@ -27,6 +28,7 @@ import { ui } from "./commands/ui";
 import { uninstallCommand } from "./commands/uninstall";
 import { why } from "./commands/why";
 import { enforcementCommands } from "./enforce/commands";
+import { GitError, gitFailure } from "./io/git";
 import { bareCards, type Environment, openSession, type Session, systemLanguage } from "./session";
 
 export interface CliEnvironment extends Environment {
@@ -123,8 +125,16 @@ function sessionRunner(environment: CliEnvironment, emit: Emit): Run {
         const issues = opened.issues.map((issue) => `${issue.path}: ${issue.message}`).join("; ");
         return emit(invalidConfigCard(issues, cards), cards.lang);
       }
-      case "ok":
-        return emit(await handler(opened.session), opened.session.lang);
+      case "ok": {
+        const { session } = opened;
+        try {
+          return emit(await handler(session), session.lang);
+        } catch (error) {
+          // Git failed under the command: its card says which git command and why, not a trace.
+          if (!(error instanceof GitError)) throw error;
+          return emit(gitFailedCard(gitFailure(error), session.cards), session.lang);
+        }
+      }
     }
   };
 }

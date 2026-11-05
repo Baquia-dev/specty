@@ -25,7 +25,7 @@ import type { StoredChange } from "../store/changes";
 import { commitState } from "./active";
 import { commitWithReceipt, decisionTrailers } from "./commits";
 import { oneAtATime } from "./full-verification";
-import { codeTree, recordFullVerification } from "./verified";
+import { codeTree, recordFullVerification, touchesCode } from "./verified";
 import { targetBranch } from "./worktree";
 
 /** How a finished change reaches the main branch (ARCHITECTURE §9, "Incorporación"). */
@@ -109,14 +109,29 @@ export async function mergeTarget(
   };
   const merged = await git.run(["merge", "--no-ff", "--no-commit", plan.target]);
   if (merged.code !== 0) return mergeStopped(session, absorbing, merged);
-  // An epic has no code of its own: each of its slices was verified when it closed.
-  const epic = state.kind === "epic";
-  const command = epic ? undefined : (session.config.verify.full ?? session.config.verify.default);
-  if (command !== undefined) {
-    const failed = await failedVerification(session, absorbing, command);
+  const verification = await mergeVerification(session, plan, state);
+  if (verification.kind === "passed") {
+    const failed = await failedVerification(session, absorbing, verification.command);
     if (failed !== undefined) return failed;
   }
-  return commitAbsorbed(session, plan, epic, command);
+  return commitAbsorbed(session, plan, verification);
+}
+
+/**
+ * What verifies the merged code: the configured command, which must pass, or nothing, and why.
+ * An epic has no code of its own: each of its slices was verified when it closed. A change that
+ * touches only free files leaves the target's code, which was verified when it landed.
+ */
+async function mergeVerification(
+  session: Session,
+  plan: Integration,
+  state: ChangeState,
+): Promise<MergeVerification> {
+  if (state.kind === "epic") return { kind: "epic" };
+  const command = session.config.verify.full ?? session.config.verify.default;
+  if (command === undefined) return { kind: "none" };
+  if (!(await touchesCode(session, plan.target))) return { kind: "no-code" };
+  return { kind: "passed", command };
 }
 
 /** A merge of the target branch under way, and what follows when it cannot be committed. */
@@ -187,6 +202,7 @@ async function failedVerification(
       shell: true,
       env: session.environment.env,
       timeoutMs: session.config.verify.timeoutSec * 1000,
+      lowPriority: true,
     });
   });
   if (result.code === 0) {
@@ -211,8 +227,7 @@ async function failedVerification(
 async function commitAbsorbed(
   session: Session,
   plan: Integration,
-  epic: boolean,
-  command: string | undefined,
+  verification: MergeVerification,
 ): Promise<Absorbed> {
   const commit = await commitWithReceipt(session, {
     subject: `Merge branch '${plan.target}' into ${plan.branch}`,
@@ -220,12 +235,6 @@ async function commitAbsorbed(
     stage: [],
     receipt: { change: plan.id, kind: "close" },
   });
-  // Each task ran its own `verify`; with neither of these, nothing checked the merge.
-  const verification: MergeVerification = epic
-    ? { kind: "epic" }
-    : command === undefined
-      ? { kind: "none" }
-      : { kind: "passed", command };
   return { ok: true, lines: [absorbedLine(plan.target, commit, verification, session.lang)] };
 }
 

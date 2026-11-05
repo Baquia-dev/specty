@@ -151,15 +151,8 @@ function clausesOf(body: string): {
   readonly outcome?: string;
   readonly text: string;
 } {
-  const clauses: { key: "given" | "when" | "then"; text: string }[] = [];
-  for (const line of body.split("\n")) {
-    const [, key, text] = /^\s*-\s*\*\*(GIVEN|WHEN|THEN|AND)\*\*\s*(.*)$/i.exec(line) ?? [];
-    if (key === undefined || text === undefined) continue;
-    const last = clauses[clauses.length - 1];
-    if (key.toUpperCase() === "AND" && last !== undefined) last.text = `${last.text} and ${text}`;
-    else if (key.toUpperCase() !== "AND") clauses.push({ key: lower(key), text });
-  }
-  const found = (key: "given" | "when" | "then") => clauses.find((clause) => clause.key === key);
+  const clauses = clauseList(body);
+  const found = (key: Clause["key"]) => clauses.find((clause) => clause.key === key);
   const [given, when, then] = [found("given"), found("when"), found("then")];
   return {
     ...(given === undefined ? {} : { given: given.text }),
@@ -167,6 +160,25 @@ function clausesOf(body: string): {
     ...(then === undefined ? {} : { outcome: then.text }),
     text: clauses.map((clause) => `${clause.key.toUpperCase()} ${clause.text}`).join(" "),
   };
+}
+
+interface Clause {
+  readonly key: "given" | "when" | "then";
+  readonly text: string;
+}
+
+/** The scenario's GIVEN, WHEN and THEN bullets in order, each AND joined to the clause before. */
+function clauseList(body: string): readonly Clause[] {
+  const clauses: Clause[] = [];
+  for (const line of body.split("\n")) {
+    const [, key, text] = /^\s*-\s*\*\*(GIVEN|WHEN|THEN|AND)\*\*\s*(.*)$/i.exec(line) ?? [];
+    if (key === undefined || text === undefined) continue;
+    const last = clauses.at(-1);
+    if (key.toUpperCase() !== "AND") clauses.push({ key: lower(key), text });
+    else if (last !== undefined)
+      clauses[clauses.length - 1] = { ...last, text: `${last.text} and ${text}` };
+  }
+  return clauses;
 }
 
 function lower(key: string): "given" | "when" | "then" {

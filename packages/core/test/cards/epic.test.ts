@@ -178,7 +178,7 @@ describe("the card of an epic whose tool hands its slices to subagents", () => {
     expect(today).toContain(
       `SIGUIENTE: sigue con el corte C2 en su carpeta, ${FOLDER}: ejecuta \`specty next\` allí.`,
     );
-    for (const tool of ["gemini-cli", "codex", "copilot"] as const) {
+    for (const tool of ["gemini-cli", "antigravity", "copilot"] as const) {
       expect(card(change, { ...ES, tool })).toBe(today);
     }
     expect(card(change, { ...CLAUDE, subagents: false })).toBe(today);
@@ -238,6 +238,37 @@ describe("the card of an epic whose tool hands its slices to subagents", () => {
     // With nothing in progress nor ready, it says what it says today.
     const stuck = epic("implementing", [slice("C1", "waiting", { depends: ["C2"] })]);
     expect(card(stuck, CLAUDE)).toBe(card(stuck));
+  });
+});
+
+/** The same epic, in a worktree of its own: Claude Code's session entered it with `EnterWorktree`. */
+const apart = (change: ChangeView): ChangeView => ({ ...change, inWorktree: true });
+
+const LEAVE =
+  'SIGUIENTE: sal antes de la carpeta de la épica sin borrarla (en Claude Code, `ExitWorktree` con `action: "keep"`), porque desde ella tus subagentes no pueden escribir en las carpetas de sus cortes; después, lanza en paralelo, en un solo mensaje, un subagente por encargo con su texto tal cual y, cuando terminen, ejecuta `specty next` en la carpeta principal.';
+
+describe("the card of an epic in a worktree of its own, from Claude Code", () => {
+  it("AC1: asks to leave the epic's folder without removing it before launching the briefs", () => {
+    const text = card(apart(epic("implementing", [DONE, slice("C2", "ready")])), CLAUDE);
+    expect(text).toContain("ENCARGO C2:");
+    expect(text.endsWith(LEAVE)).toBe(true);
+    // An orphan's brief is launched the same way.
+    expect(card(apart(epic("implementing", [ORPHAN])), CLAUDE)).toContain(LEAVE);
+    expect(card(apart(epic("implementing", [slice("C1", "ready")])), CLAUDE_EN)).toContain(
+      "NEXT: leave the epic's folder first without removing it (in Claude Code, `ExitWorktree` with `action: \"keep\"`), since from it your subagents cannot write in their slices' folders; then launch in parallel, in a single message, one subagent per brief with its text as is and, once they finish, run `specty next` in the main folder.",
+    );
+  });
+
+  it("AC2: is today's card in the main folder, with no brief to launch, or with no tool that moves its session", () => {
+    const ready = epic("implementing", [slice("C1", "ready")]);
+    expect(card(ready, CLAUDE)).toContain(LAUNCH);
+    expect(card(ready, CLAUDE)).not.toContain("ExitWorktree");
+    // The slices in progress go on with their subagents: nothing to launch, nothing to leave.
+    const waiting = epic("implementing", [DONE, OPEN]);
+    expect(card(apart(waiting), CLAUDE)).toBe(card(waiting, CLAUDE));
+    for (const ctx of [ES, { ...ES, tool: "codex" as const }, { ...CLAUDE, subagents: false }]) {
+      expect(card(apart(ready), ctx)).toBe(card(ready, ctx));
+    }
   });
 });
 

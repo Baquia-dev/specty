@@ -75,7 +75,7 @@ describe("the capability table", () => {
       "| Claude Code | sí | sí | sí | sí | sí | sí | sí | sí | sí | `.claude`, `CLAUDE.md` |",
     );
     expect(es).toContain(
-      "| Codex | sí | sí | sí | indirecto | — | sí | no posible | sí | sí | `.codex` |",
+      "| Codex | sí | sí | sí | indirecto | sí | sí | no posible | sí | sí | `.codex` |",
     );
     expect(es).toContain(
       "| OpenCode | sí | sí | sí | indirecto | — | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
@@ -91,7 +91,7 @@ describe("the capability table", () => {
       "| Antigravity | sí | indirecto | indirecto | indirecto | no posible | sí | sí | sí | no posible |",
     );
     expect(capabilityTable("en")).toContain(
-      "| Cursor | yes | yes | indirect | indirect | — | yes | yes | yes | not possible |",
+      "| Cursor | yes | yes | indirect | indirect | yes | yes | yes | yes | not possible |",
     );
   });
 
@@ -132,7 +132,7 @@ describe("the capability table", () => {
     for (const tool of ["gemini-cli", "windsurf", "antigravity"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("impossible");
     }
-    for (const tool of ["cursor", "codex", "opencode", "copilot"] as const) {
+    for (const tool of ["opencode", "copilot"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("unsupported");
     }
     const es = capabilityTable("es");
@@ -143,6 +143,20 @@ describe("the capability table", () => {
       "- Cortes en subagentes (Devin (Windsurf), Antigravity): sus hooks no documentan las acciones de sus subagentes (consultado el 2026-11-04).",
     );
     expect(capabilityTable("en")).toContain("| Slices in subagents |");
+  });
+
+  it("AC6: says that Cursor hands an epic's slices to subagents, each one a conversation of its own", () => {
+    expect(AGENT_CAPABILITIES.cursor.subagentSlices.state).toBe("yes");
+    expect(capabilityTable("es")).toContain(
+      "| Cursor | sí | sí | indirecto | indirecto | sí | sí | sí | sí | no posible |",
+    );
+  });
+
+  it("AC5: says that Codex hands an epic's slices to subagents", () => {
+    expect(AGENT_CAPABILITIES.codex.subagentSlices.state).toBe("yes");
+    expect(capabilityTable("en")).toContain(
+      "| Codex | yes | yes | yes | indirect | yes | yes | not possible | yes | yes | `.codex` |",
+    );
   });
 
   it("AC1: says that Antigravity does not enter a change's folder outside its workspace, here and in ARCHITECTURE", () => {

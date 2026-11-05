@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "id": "20261105-archivos-largos-de-core-y-ui",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-archivos-largos-de-core-y-ui",
+  "baseCommit": "555d8540abbd360891f992252bcb564c64542ed6",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d24bf2c30049185ab5f2e690f8013653946bcb6b47f6551cb76c3cf1999f3b25",
+    "at": "2026-11-04T18:39:58.611Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6c6c5e6f7ae939b30b03513c4484df5b7eab630f6cf1b8b2eb14ef8b156adc80",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:64cfee4e8151c427f4ccdc490a294ee82c5632de46c6dc7605a41b3206f918ff",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "96554ecd0841f28178ae3e9bb54ea3dbc4f8aa70",
+      "attempts": 1,
+      "startedAt": "2026-11-04T18:39:59.454Z",
+      "doneAt": "2026-11-04T18:41:25.162Z",
+      "summary": "La tarjeta sin cambio activo (noChangeCard, con withoutSpecCard, skeletonCard, idleCard y los textos de specty new) pasa de cards/next.ts a cards/idle.ts; next.ts la importa.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "40c06355e4943ae91db850e558284d3d4e61ea9f",
+      "attempts": 1,
+      "startedAt": "2026-11-04T18:41:25.837Z",
+      "doneAt": "2026-11-04T18:45:56.374Z",
+      "summary": "item-tooltip.ts queda con ItemTooltips e ItemText; las siglas (nombres, mapas, itemTarget, itemLabel) pasan a item-refs.ts y la burbuja en el DOM (renderBubble, paleta, arrastre, posiciones) a item-bubble.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "b3f589a6442dcdcc23da1a6f842ebba7beb20f4f",
+      "attempts": 1,
+      "startedAt": "2026-11-04T18:45:56.795Z",
+      "doneAt": "2026-11-04T18:48:44.391Z",
+      "summary": "Lo que cada decisión de la revisión hace a un registro pasa de fixtures.ts a sample-review.ts (decideAssumptionIn, comentarios, approveIn); confirmar el cierre, a confirmClosingIn en sample-acceptance.ts; y decided, a decidedIn en sample-memory.ts.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "6079aab45e6ac643cbe4d7c54696d25cf94e41c5",
+      "attempts": 1,
+      "startedAt": "2026-11-04T18:48:45.008Z",
+      "doneAt": "2026-11-04T18:53:14.328Z",
+      "summary": "El andamiaje de los tests del MCP App pasa a data/testing/mcp-host.ts y el de los tooltips a components/testing/item-host.ts, sin mover ningún test: con contract, mover tests de archivo cuenta como aserciones quitadas.",
+      "scopeExtra": [
+        "packages/ui/src/components/item-tooltip.test.ts",
+        "packages/ui/src/components/testing/item-host.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 4,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-05T01:44:00.593Z",
+  "integration": {
+    "target": "main",
+    "commit": "445c69b3939c77f9aeb254565139e65901f50c59",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      ".github/workflows/ci.yml",
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md",
+      "package.json",
+      "packages/cli/test/workflows.test.ts",
+      "packages/core/src/cards/idle.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/ui/src/components/item-bubble.ts",
+      "packages/ui/src/components/item-refs.ts",
+      "packages/ui/src/components/item-tooltip.test.ts",
+      "packages/ui/src/components/item-tooltip.ts",
+      "packages/ui/src/components/testing/item-host.ts",
+      "packages/ui/src/data/fixtures.ts",
+      "packages/ui/src/data/mcp-app.test.ts",
+      "packages/ui/src/data/sample-acceptance.ts",
+      "packages/ui/src/data/sample-memory.ts",
+      "packages/ui/src/data/sample-review.ts",
+      "packages/ui/src/data/testing/mcp-host.ts"
+    ],
+    "at": "2026-11-05T01:17:28.962Z",
+    "resolved": {
+      "commit": "3711655",
+      "at": "2026-11-05T01:27:55.034Z"
+    }
+  }
+}

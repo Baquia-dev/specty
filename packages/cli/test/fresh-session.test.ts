@@ -108,15 +108,20 @@ describe("the advice of a fresh session at the closing", () => {
     expect(out).toContain(ADVICE);
   });
 
-  it("AC2: does not come with 150,000 tokens or fewer, without a transcript or a session", async () => {
+  // One accepted change per test: three in one would not fit its time on a busy machine.
+  it("AC2: does not come with 150,000 tokens or fewer", async () => {
     const small = await claudeFolder(150_000);
-    expect(await acceptedQuick(claudeCode(small), { CLAUDE_CONFIG_DIR: small })).not.toContain(
-      "sesión nueva",
-    );
+    const out = await acceptedQuick(claudeCode(small), { CLAUDE_CONFIG_DIR: small });
+    expect(out).not.toContain("sesión nueva");
+  });
+
+  it("AC2: does not come without a transcript", async () => {
     const empty = await claudeFolder();
-    expect(await acceptedQuick(claudeCode(empty), { CLAUDE_CONFIG_DIR: empty })).not.toContain(
-      "sesión nueva",
-    );
+    const out = await acceptedQuick(claudeCode(empty), { CLAUDE_CONFIG_DIR: empty });
+    expect(out).not.toContain("sesión nueva");
+  });
+
+  it("AC2: does not come without a session", async () => {
     // No agent named its session: nothing to read.
     const big = await claudeFolder(620_002);
     expect(await acceptedQuick({}, { CLAUDE_CONFIG_DIR: big })).not.toContain("sesión nueva");

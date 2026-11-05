@@ -126,16 +126,21 @@ function newRefusalNext(refusal: NewRefusal, t: Translate, command: string): str
         "name an existing branch with `--from <branch>`.",
       );
     case "in-progress":
-      return refusal.branchPerChange
-        ? t(
-            `termínalo (\`${command} next\`) o crea el nuevo en paralelo, en otra carpeta: \`${command} new --worktree "<título>"\`.`,
-            `finish it (\`${command} next\`) or create the new one in parallel, in another folder: \`${command} new --worktree "<title>"\`.`,
-          )
-        : t(
-            `termínalo (\`${command} next\`) o cámbiate a otra rama antes de crear otro.`,
-            `finish it (\`${command} next\`) or switch to another branch before creating a new one.`,
-          );
+      return inProgressNext(refusal.branchPerChange, t, command);
   }
+}
+
+/** With a change in progress: finish it, or make the new one in another folder or branch. */
+function inProgressNext(branchPerChange: boolean, t: Translate, command: string): string {
+  return branchPerChange
+    ? t(
+        `termínalo (\`${command} next\`) o crea el nuevo en paralelo, en otra carpeta: \`${command} new --worktree "<título>"\`.`,
+        `finish it (\`${command} next\`) or create the new one in parallel, in another folder: \`${command} new --worktree "<title>"\`.`,
+      )
+    : t(
+        `termínalo (\`${command} next\`) o cámbiate a otra rama antes de crear otro.`,
+        `finish it (\`${command} next\`) or switch to another branch before creating a new one.`,
+      );
 }
 
 /** The lead of `specty new` when the change is created in this folder. */
@@ -174,6 +179,11 @@ export interface WorktreeCreated {
   readonly agent?: AgentTool | undefined;
   /** A subagent ran it (`--subagent`): it enters the folder with `specty enter`, whatever its tool. */
   readonly subagent?: boolean;
+  /**
+   * `new` ran in another change's worktree, not in the main folder: a session that moved there
+   * with its tool (Claude Code) leaves it before entering the new change's.
+   */
+  readonly fromWorktree?: boolean;
 }
 
 /**
@@ -291,13 +301,17 @@ export function worktreeCreatedNext(
 }
 
 /** A change's folder and how the agent that asks enters it: what `carryOnText` needs. */
-type CarryOnTarget = Pick<WorktreeCreated, "id" | "folder" | "byName" | "agent" | "subagent">;
+type CarryOnTarget = Pick<
+  WorktreeCreated,
+  "id" | "folder" | "byName" | "agent" | "subagent" | "fromWorktree"
+>;
 
 /**
  * How the session carries on in the change's folder: an agent with Specty's guard enters it from
  * the same session (`specty enter`), or the person opens its tool there; Claude Code enters it on
  * its own, and an unknown agent hears both ways. A subagent always enters with `specty enter`,
- * since its tool's own way would move the session that launched it.
+ * since its tool's own way would move the session that launched it. Claude Code's session does
+ * not enter one worktree from another: from another change's, it leaves that one first.
  */
 export function carryOnText(created: CarryOnTarget, ctx: CardContext, t: Translate): string {
   const { id, folder, agent } = created;
@@ -327,8 +341,14 @@ export function carryOnText(created: CarryOnTarget, ctx: CardContext, t: Transla
         `in Claude Code, \`EnterWorktree\` with \`name: "${id}"\`; `,
       )
     : "";
+  const leave = created.fromWorktree
+    ? t(
+        'sal antes de esta carpeta sin borrarla (en Claude Code, `ExitWorktree` con `action: "keep"`); después, ',
+        'leave this folder first without removing it (in Claude Code, `ExitWorktree` with `action: "keep"`); then ',
+      )
+    : "";
   return t(
-    `cambia allí la carpeta de trabajo de tu sesión (${byName}o abre allí un agente) y ejecuta \`${ctx.command} next\`; esta carpeta sigue con su propio trabajo.`,
-    `switch your session's working folder there (${byName}or open an agent there) and run \`${ctx.command} next\`; this folder carries on with its own work.`,
+    `${leave}cambia allí la carpeta de trabajo de tu sesión (${byName}o abre allí un agente) y ejecuta \`${ctx.command} next\`; esta carpeta sigue con su propio trabajo.`,
+    `${leave}switch your session's working folder there (${byName}or open an agent there) and run \`${ctx.command} next\`; this folder carries on with its own work.`,
   );
 }

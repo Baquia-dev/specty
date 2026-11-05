@@ -61,11 +61,23 @@ function changesView(changes: readonly OpenChange[], lang: Lang): StatusView {
   }
   const tooltip = [...changes.map((change) => lineOf(change, lang)), click].join("\n");
   const here = changes.find((change) => change.current);
-  if (here !== undefined) {
-    const { icon, name } = PHASES[here.phase];
-    const waits = here.waitingFor === "human" ? ` · ${es ? "te espera" : "waiting for you"}` : "";
-    return { text: `${icon} Specty: ${name[lang]}${waits}`, tooltip, warning: false };
-  }
+  const text =
+    here === undefined
+      ? `${CHANGES_ICON} Specty: ${countsOf(changes, lang)}`
+      : hereText(here, lang);
+  return { text, tooltip, warning: false };
+}
+
+/** The bar on the folder's own change: its phase, and whether it waits for the person. */
+function hereText(here: OpenChange, lang: Lang): string {
+  const { icon, name } = PHASES[here.phase];
+  const yours = lang === "es" ? "te espera" : "waiting for you";
+  return `${icon} Specty: ${name[lang]}${here.waitingFor === "human" ? ` · ${yours}` : ""}`;
+}
+
+/** With none in this folder: how many changes are open, and how many wait for the person. */
+function countsOf(changes: readonly OpenChange[], lang: Lang): string {
+  const es = lang === "es";
   const waiting = changes.filter((change) => change.waitingFor === "human").length;
   const open = es
     ? `${changes.length} ${changes.length === 1 ? "cambio abierto" : "cambios abiertos"}`
@@ -73,8 +85,7 @@ function changesView(changes: readonly OpenChange[], lang: Lang): StatusView {
   const yours = es
     ? `${waiting} ${waiting === 1 ? "te espera" : "te esperan"}`
     : `${waiting} waiting for you`;
-  const text = `${CHANGES_ICON} Specty: ${open}${waiting > 0 ? ` · ${yours}` : ""}`;
-  return { text, tooltip, warning: false };
+  return `${open}${waiting > 0 ? ` · ${yours}` : ""}`;
 }
 
 /** `id · phase · who it waits for — title`, and where it lives when it is another folder. */

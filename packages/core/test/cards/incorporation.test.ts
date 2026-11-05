@@ -91,6 +91,13 @@ describe("bringing the main branch into a change", () => {
     expect(absorbedLine("main", "a1b2c3d", { kind: "none" }, "es")).toBe(
       "Antes, main se incorporó a la rama del cambio (merge a1b2c3d) sin verificar: .specty/config.yaml no tiene `verify.full` ni `verify.default`.",
     );
+    // AC5
+    expect(absorbedLine("main", "a1b2c3d", { kind: "no-code" }, "es")).toBe(
+      "Antes, main se incorporó a la rama del cambio (merge a1b2c3d) sin verificar: el cambio no toca código, así que el código es el de main.",
+    );
+    expect(absorbedLine("main", "a1b2c3d", { kind: "no-code" }, "en")).toBe(
+      "First, main was merged into the change's branch (merge a1b2c3d) without a verification: the change touches no code, so the code is main's.",
+    );
     expect(verifyingNote("pnpm check", "es")).toBe("specty: verificando `pnpm check`…");
     expect(verifyingNote("pnpm check", "en")).toBe("specty: verifying `pnpm check`…");
   });
