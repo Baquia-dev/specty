@@ -44,7 +44,7 @@ Cuando la verificación completa se corta por `verify.timeoutSec`, `accept`, la 
 
 ## Tareas
 
-- [ ] T1: El texto de una verificación completa cortada por tiempo
+- [x] T1: El texto de una verificación completa cortada por tiempo
   - files: packages/core/src/cards/units.ts, packages/core/src/cards/index.ts, packages/core/test/cards/units.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/units.test.ts && pnpm typecheck
