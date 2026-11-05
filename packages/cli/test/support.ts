@@ -40,6 +40,11 @@ const GIT_ENV = {
 export const CODEX_HOME = join(tmpdir(), `specty-codex-${process.pid}`);
 /** Where OpenCode's global configuration goes in the tests, instead of `~/.config`. */
 const XDG_CONFIG_HOME = join(tmpdir(), `specty-config-${process.pid}`);
+/**
+ * Antigravity CLI's folder for the tests, which none of them creates, so `init` never touches the
+ * real `~/.gemini/antigravity-cli`; a test that wants one passes its own.
+ */
+export const ANTIGRAVITY_CLI_DIR = join(tmpdir(), `specty-antigravity-cli-${process.pid}`);
 
 export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
   const {
@@ -64,7 +69,15 @@ export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
     LC_MESSAGES: _j,
     ...rest
   } = process.env;
-  return { ...rest, ...GIT_ENV, LANG: "es_ES.UTF-8", CODEX_HOME, XDG_CONFIG_HOME, ...extra };
+  return {
+    ...rest,
+    ...GIT_ENV,
+    LANG: "es_ES.UTF-8",
+    CODEX_HOME,
+    XDG_CONFIG_HOME,
+    SPECTY_ANTIGRAVITY_CLI_DIR: ANTIGRAVITY_CLI_DIR,
+    ...extra,
+  };
 }
 
 export function git(cwd: string, ...args: string[]): string {
