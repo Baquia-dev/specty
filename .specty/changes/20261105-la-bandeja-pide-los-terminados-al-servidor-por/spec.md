@@ -65,7 +65,7 @@ Hoy la única forma de leer los cambios terminados es `GET /api/changes`, que lo
   - files: packages/core/src/listing.ts, packages/core/src/index.ts, packages/core/src/light.ts, packages/core/test/listing.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/listing.test.ts test/light.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: El servidor da los terminados por páginas y recuerda los archivados
+- [x] T2: El servidor da los terminados por páginas y recuerda los archivados
   - files: packages/cli/src/server/records.ts, packages/cli/src/server/finished.ts, packages/cli/src/server/http.ts, packages/cli/test/server/finished.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/finished.test.ts test/server.test.ts test/server/records.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
