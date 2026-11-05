@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "id": "20261105-la-verificacion-avisa-de-los-tests-que-pasan-de-2",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-la-verificacion-avisa-de-los-tests-que-pasan-de-2",
+  "baseCommit": "b4686dfe63d4d149247ca21552eac202ab157426",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b6bb776b022172837f7c2a846ec5fe55bc6cb4d4c03a37f7f20143c5ff2c85f1",
+    "at": "2026-11-05T04:39:39.639Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8607f321177c903b47cfc90112ceeb110d3ec0edaea34adda7f5ac4e6af0075f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:89be8f750f25df13c9e0dd341f75f01f638725098003d5c77ffd0e5f13c87aa7",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:97dc05a8f0aa023f75db5e2f0ee3ead320ddc680ed2152f3162a44ab76e0f022",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:cd5b7d44dfb9545ab969bac7f4d451fb25afa76c959aaa656b39eb49e6b9421f",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:99b3a1c0a21e0921edf6ef414c8584b5b39085c5c9116b53f2871ee4778b51a1",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "86c9b0bdca6047751e69cdd20474cb176d07c397",
+      "attempts": 2,
+      "startedAt": "2026-11-05T05:33:28.712Z",
+      "doneAt": "2026-11-05T05:36:34.367Z",
+      "summary": "checks.testTime en el esquema; checks/junit.ts: parseJunit da cada test con su archivo (file, el de su suite o classname, desde la raíz), nombre y tiempo, y slowTests los que pasan de maxMs. Adelanta los textos de T2 (slowTestMessage, slowTestLines): el typecheck compila sus tests",
+      "scopeExtra": [
+        "packages/core/src/cards/test-time.ts",
+        "packages/core/src/cards/index.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c74646b75fb634af90539d6a39feee80b45a7069",
+      "attempts": 1,
+      "startedAt": "2026-11-05T05:36:34.689Z",
+      "doneAt": "2026-11-05T05:36:53.646Z",
+      "summary": "Sin código nuevo: slowTestMessage y slowTestLines (es/en, cinco tests y cuántos más) llegaron en T1, porque su typecheck compilaba estos tests; T2 comprueba sus tests y pnpm sources",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "509109a1df886669c06f5a4bcbbef3444e2bd92a",
+      "attempts": 2,
+      "startedAt": "2026-11-05T05:36:53.972Z",
+      "doneAt": "2026-11-05T05:38:03.977Z",
+      "summary": "check/test-time.ts: la verificación test-time (after) avisa de cada test de los informes JUnit nuevos que pasa de maxMs, anclando su archivo a la carpeta del informe. coverage.ts exporta freshReports, folderChain y deepest",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "faebc94bfc49107a7e1cea5e86c63ee2082b7cb0",
+      "attempts": 1,
+      "startedAt": "2026-11-05T05:38:04.314Z",
+      "doneAt": "2026-11-05T05:39:04.253Z",
+      "summary": "La nota de la verificación completa de accept añade, tras la cobertura, los tests de los informes JUnit nuevos que pasan de maxMs (slowTestNote con slowTestsSince y slowTestLines); test-time.ts vuelve a exportar slowTestsSince",
+      "scopeExtra": [
+        "packages/cli/src/check/test-time.ts"
+      ]
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "fe38fdabc8c2daf35f9f503ee23f336500b1c6d4",
+      "attempts": 1,
+      "startedAt": "2026-11-05T05:39:04.588Z",
+      "doneAt": "2026-11-05T05:40:09.944Z",
+      "summary": "test-time en checks.md y checks.en.md, checks.testTime y la verificación en formats.md §6, y en ARCHITECTURE la verificación y la nota de accept; check-docs cuenta test-time entre las que solo aparecen con informes",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 5,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T06:13:54.092Z",
+  "lockedTests": {
+    "packages/cli/test/accept-test-time.test.ts": "sha256:7fa58f602babc2ede56aba53eb74d678e264644ef432b1671954bdf2a0d5a260",
+    "packages/cli/test/check-test-time.test.ts": "sha256:dd26c0d9359647bb76fc9f5255c183c103b9e52a3a26c104d5f1529c25cd471e",
+    "packages/core/test/cards/test-time.test.ts": "sha256:7eff9de001e35a659f3948ff12102ef44314f540b4c0072d9847aef018d903f7",
+    "packages/core/test/checks/junit.test.ts": "sha256:5083f9a0de401181172c8a0b94842527e57a8d7768de9a2fb3f2989b804d5749"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/cli/src/commands/accept.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/checks.en.md",
+      "docs/checks.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "packages/cli/src/check/common.ts",
+      "packages/cli/src/check/coverage.ts",
+      "packages/cli/src/check/test-time.ts",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/flow/live-run.ts",
+      "packages/cli/src/flow/units.ts",
+      "packages/cli/src/flow/verified.ts",
+      "packages/cli/test/accept-test-time.test.ts",
+      "packages/cli/test/accept-units.test.ts",
+      "packages/cli/test/check-docs.test.ts",
+      "packages/cli/test/check-test-time.test.ts",
+      "packages/core/src/cards/audit.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/test-time.ts",
+      "packages/core/src/cards/units.ts",
+      "packages/core/src/checks/junit.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/checks.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/test/cards/test-time.test.ts",
+      "packages/core/test/cards/units.test.ts",
+      "packages/core/test/checks/junit.test.ts",
+      "packages/core/test/schema/units.test.ts"
+    ],
+    "at": "2026-11-05T06:16:06.621Z",
+    "resolved": {
+      "commit": "1de598c",
+      "at": "2026-11-05T06:22:10.248Z"
+    }
+  }
+}

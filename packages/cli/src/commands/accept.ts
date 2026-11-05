@@ -23,12 +23,14 @@ import {
   riskLessonsLine,
   runVerificationQuestion,
   serializeSpec,
+  slowTestLines,
   transition,
   unitsLines,
   unitsReusedNote,
   verificationNoteTitle,
   verificationReusedNote,
 } from "@baquia-dev/specty-core";
+import { slowTestsSince } from "../check/test-time";
 import { commitState } from "../flow/active";
 import { harvestEntries, withArchivedMemory } from "../flow/archive-memory";
 import { verifyHints, withVerifyHints } from "../flow/detected";
@@ -185,7 +187,9 @@ async function runFullVerification(
   const done = units === undefined ? [] : unitsLines(units, lang);
   terminal.note(
     verificationNoteTitle(code === 0, lang),
-    [...output.slice(-15), ...done, ...measured].join("\n"),
+    [...output.slice(-15), ...done, ...measured, ...(await slowTestNote(session, started))].join(
+      "\n",
+    ),
   );
   if (code === 0) return undefined;
   if (delegated)
@@ -193,6 +197,17 @@ async function runFullVerification(
   return (await terminal.confirm(acceptAnywayQuestion(session.lang)))
     ? undefined
     : postponed(session, state);
+}
+
+/**
+ * The tests over `checks.testTime.maxMs` in the reports the full verification left since it
+ * started, as its note shows them; reading them never stops the acceptance.
+ */
+async function slowTestNote(session: Session, started: number): Promise<string[]> {
+  const { testTime } = session.config.checks;
+  const slow = await slowTestsSince(session, started).catch(() => undefined);
+  if (testTime === undefined || slow === undefined) return [];
+  return slowTestLines(slow, testTime.maxMs, session.lang);
 }
 
 /**

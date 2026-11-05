@@ -31,11 +31,19 @@ async function checkIds(): Promise<string[]> {
   expect(decided.code).toBe(0);
   // `secrets` is off above, so that no scanner on the machine runs; its level puts it back.
   // `tests-locked` only shows where a change has approved tests (ADR 0014), `diff-coverage`
-  // only where the tests leave a coverage report, `vulnerabilities` only where a lockfile
-  // changes, and `code-rules` only where the root has Opengrep or Semgrep rules.
+  // only where the tests leave a coverage report, `test-time` only where they leave a JUnit
+  // report that `checks.testTime` names, `vulnerabilities` only where a lockfile changes, and
+  // `code-rules` only where the root has Opengrep or Semgrep rules.
   const run = await cli(root, ["check", "--spec", "--verbose", "--json"]);
   const report: { checks: { id: string }[] } = JSON.parse(run.out);
-  const hidden = ["secrets", "tests-locked", "diff-coverage", "vulnerabilities", "code-rules"];
+  const hidden = [
+    "secrets",
+    "tests-locked",
+    "diff-coverage",
+    "test-time",
+    "vulnerabilities",
+    "code-rules",
+  ];
   return [...report.checks.map((check) => check.id), ...hidden].toSorted();
 }
 

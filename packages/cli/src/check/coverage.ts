@@ -97,7 +97,7 @@ async function anchored(
 }
 
 /** `folder` and each folder above it, deepest first, as repository-relative paths. */
-function folderChain(folder: string): readonly string[] {
+export function folderChain(folder: string): readonly string[] {
   const chain: string[] = [];
   for (let current = folder; current !== "." && current !== ""; current = dirname(current))
     chain.push(current);
@@ -105,7 +105,7 @@ function folderChain(folder: string): readonly string[] {
 }
 
 /** The first of `folders` that holds `key`, joined to it. */
-async function deepest(
+export async function deepest(
   root: string,
   folders: readonly string[],
   key: string,
@@ -118,7 +118,7 @@ async function deepest(
 }
 
 /** The reports `patterns` name (with `*` inside a segment) written since `started`. */
-async function freshReports(
+export async function freshReports(
   root: string,
   patterns: readonly string[],
   started: number,
