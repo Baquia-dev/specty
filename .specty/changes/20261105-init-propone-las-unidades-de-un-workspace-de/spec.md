@@ -44,20 +44,19 @@ Desde C1, `specty init` prueba en orden una lista de detectores de workspace, pe
 - modificar packages/cli/src/detect/project.ts — exportar `expand`
 - crear packages/cli/src/detect/units-cargo.ts — el detector de los workspaces de Cargo
 - modificar packages/cli/src/detect/workspace-units.ts — el detector de Cargo, tras el de JavaScript
-- crear packages/cli/test/units-cargo.test.ts — los casos del detector de Cargo
-- crear packages/cli/test/init-units-cargo.test.ts — init en un workspace de Cargo, con el detector tras el de JavaScript
+- crear packages/cli/test/units-cargo.test.ts — los casos del detector de Cargo e init en un workspace de Cargo
 
 ## Tareas
 
-- [ ] T1: El detector lee los miembros de un workspace de Cargo
+- [x] T1: El detector lee los miembros de un workspace de Cargo
   - files: packages/cli/package.json, pnpm-lock.yaml, packages/cli/src/detect/project.ts, packages/cli/src/detect/units-cargo.ts, packages/cli/test/units-cargo.test.ts
   - ac: AC2
-  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-cargo.test.ts && pnpm lint
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-cargo.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
 - [ ] T2: init prueba el detector de Cargo tras el de JavaScript
-  - files: packages/cli/src/detect/workspace-units.ts, packages/cli/test/init-units-cargo.test.ts
+  - files: packages/cli/src/detect/workspace-units.ts, packages/cli/test/units-cargo.test.ts
   - ac: AC2
-  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-cargo.test.ts test/init-units-cargo.test.ts test/workspace-units.test.ts test/init-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-cargo.test.ts test/workspace-units.test.ts test/init-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
 
 ## Riesgos

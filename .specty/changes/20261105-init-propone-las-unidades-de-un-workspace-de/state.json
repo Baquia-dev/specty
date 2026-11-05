@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a457f2f0a8a279e629d0fe2323e5737538ec4024",
+      "startedAt": "2026-11-05T13:34:14.674Z",
+      "doneAt": "2026-11-05T13:40:02.508Z",
+      "summary": "cargoWorkspace (detect/units-cargo.ts) lee el workspace de Cargo con smol-toml: miembros por members/exclude con expand, ya exportado; cada uno con cargo test -p <nombre>, sus dependencias por path o workspace = true y los archivos de la raíz; no reclama una raíz con [package]."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
