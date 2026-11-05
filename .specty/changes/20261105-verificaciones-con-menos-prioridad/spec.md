@@ -55,7 +55,7 @@ Las verificaciones que lanza Specty (la de cada tarea, la completa y la de una i
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-priority.test.ts test/accept-live.test.ts test/live-run.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: perf
-- [ ] T3: La documentación de la prioridad de las verificaciones
+- [x] T3: La documentación de la prioridad de las verificaciones
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

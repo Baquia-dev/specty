@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-verificaciones-con-menos-prioridad",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-verificaciones-con-menos-prioridad",
   "baseCommit": "49e1f4666bbf0e028df657e03134aac4d7c94044",
   "revision": 1,
@@ -47,14 +47,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/io/exec.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "9391131989a22c4a55c71d5f3214230afcabfbb9",
+      "attempts": 1,
       "startedAt": "2026-11-05T03:52:31.245Z",
       "doneAt": "2026-11-05T03:54:49.007Z",
-      "summary": "La verificación de una tarea, la completa de accept, la de una incorporación, la de specty integrate y la que lanza la UI corren con prioridad 10 (lowPriority, y lowerPriority exportada para el spawn del servidor); AC2 y AC3 en verify-priority.test.ts"
+      "summary": "La verificación de una tarea, la completa de accept, la de una incorporación, la de specty integrate y la que lanza la UI corren con prioridad 10 (lowPriority, y lowerPriority exportada para el spawn del servidor); AC2 y AC3 en verify-priority.test.ts",
+      "scopeExtra": [
+        "packages/cli/src/io/exec.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8ec11989665e61f4c819987117e2773552948482",
+      "startedAt": "2026-11-05T03:54:49.328Z",
+      "doneAt": "2026-11-05T03:55:16.466Z",
+      "summary": "ARCHITECTURE §9: las verificaciones corren con prioridad 10, qué comandos, cómo se hereda y por qué es de mejor esfuerzo"
     }
   },
   "pending": {
