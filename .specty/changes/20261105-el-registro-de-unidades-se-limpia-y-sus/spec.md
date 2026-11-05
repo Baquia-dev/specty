@@ -66,7 +66,7 @@ El registro de las unidades que pasaron (`.git/common/specty/verified/`) crece c
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-units.test.ts test/prune-live.test.ts test/prune.test.ts test/accept-units.test.ts && pnpm typecheck
   - type: feat
-- [ ] T4: La documentación de la limpieza del registro y de las lecturas del árbol
+- [x] T4: La documentación de la limpieza del registro y de las lecturas del árbol
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

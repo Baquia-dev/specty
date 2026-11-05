@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-el-registro-de-unidades-se-limpia-y-sus",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-el-registro-de-unidades-se-limpia-y-sus",
   "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
   "revision": 2,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "45e66f58161d92037245ddb57e095f37dbcd0e60",
+      "attempts": 1,
       "startedAt": "2026-11-05T08:10:36.853Z",
       "doneAt": "2026-11-05T08:17:16.145Z",
-      "summary": "specty prune borra del registro de unidades los archivos anotados hace más de 30 días (RECORD_DAYS) o sin fecha legible, con pruneRecord en flow/units.ts, y pasa el recuento a la tarjeta."
+      "summary": "specty prune borra del registro de unidades los archivos anotados hace más de 30 días (RECORD_DAYS) o sin fecha legible, con pruneRecord en flow/units.ts, y pasa el recuento a la tarjeta.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d525460c561bf583a1ab01c5055ee65dfe8aebc9",
+      "startedAt": "2026-11-05T08:17:16.498Z",
+      "doneAt": "2026-11-05T08:22:20.076Z",
+      "summary": "formats.md §1 y ARCHITECTURE §9 dicen que specty prune borra del registro de unidades lo anotado hace más de 30 días, y que cada lectura del árbol usa su propio índice temporal, así que el servidor lee el árbol y las huellas a la vez."
     }
   },
   "pending": {
