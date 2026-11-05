@@ -61,12 +61,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1ea96dab49cf5a354b0e1b254fa4242fd3019d61",
+      "attempts": 1,
       "startedAt": "2026-11-05T20:20:50.304Z",
       "doneAt": "2026-11-05T20:24:42.622Z",
-      "summary": "MemoryRecord.origins con su validación; la sección work va por grupos (feature, épica con sus cortes, «Sin feature» al final) ordenados por su entrada más reciente, y la búsqueda mira los títulos de la feature y su épica"
+      "summary": "MemoryRecord.origins con su validación; la sección work va por grupos (feature, épica con sus cortes, «Sin feature» al final) ordenados por su entrada más reciente, y la búsqueda mira los títulos de la feature y su épica",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "49d0894a785b19a4fc72a5ed94ca2f9fb74da38a",
+      "startedAt": "2026-11-05T20:24:42.943Z",
+      "doneAt": "2026-11-05T20:29:55.037Z",
+      "summary": "sp-memory-group (memory-group.ts) pinta cada grupo con su cabecera (fase, título con enlace e insignia) y sus filas sangradas, la épica en un bloque con sus cortes; la página usa la fila de entrada como plantilla, y el prototipo da origins"
     }
   },
   "pending": {

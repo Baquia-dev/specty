@@ -86,7 +86,7 @@ En la página Memoria, «Pendientes y mejoras» es hoy una lista por fecha, y pa
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/memory/memory-view.ts, packages/ui/src/memory/memory-groups.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-groups.test.ts --include src/memory/memory-view.test.ts --include src/memory/memory-filter.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck
-- [ ] T3: La página Memoria muestra cada grupo con su cabecera y sus filas sangradas
+- [x] T3: La página Memoria muestra cada grupo con su cabecera y sus filas sangradas
   - files: packages/ui/src/memory/memory-group.ts, packages/ui/src/memory/memory-page.ts, packages/ui/src/data/sample-memory.ts, packages/ui/src/memory/memory-group.test.ts
   - ac: AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-group.test.ts --include src/memory/memory-page.test.ts --include src/memory/memory-actions.test.ts && pnpm typecheck
