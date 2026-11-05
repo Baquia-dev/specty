@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-lista-de-cambios-del-servidor-solo-da-los",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-la-lista-de-cambios-del-servidor-solo-da-los",
   "baseCommit": "77ec35b2a1dc3c1654f7e75785c75d3b006542cd",
   "revision": 2,
@@ -51,6 +51,9 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T14:38:56.504Z"
+  "lockedTests": {
+    "packages/cli/test/server-restore.test.ts": "sha256:3cde5dd9e4c9f4bf61bd01f9588e42575585d939d0636b498ab26a5141cc84e9",
+    "packages/cli/test/server.test.ts": "sha256:98206978b20adf5f838123f18403bc58a7e6761eff4d9d5d752d46ecc5ef96a4",
+    "packages/ui/src/history/history-export.test.ts": "sha256:e760093c40dc1639444856083b5dcdf8acc85efa7b680fdf9fdd2b3ebd2f2525"
+  }
 }
