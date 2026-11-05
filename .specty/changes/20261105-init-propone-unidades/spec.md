@@ -53,7 +53,7 @@ La verificación completa solo salta lo que no cambió si `.specty/config.yaml` 
 
 ## Tareas
 
-- [ ] T1: Las unidades que se proponen para un workspace, y su bloque en la tarjeta de init
+- [x] T1: Las unidades que se proponen para un workspace, y su bloque en la tarjeta de init
   - files: packages/core/src/units-proposal.ts, packages/core/src/index.ts, packages/core/test/units-proposal.test.ts, packages/core/src/cards/init.ts, packages/core/test/cards/init-units.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/units-proposal.test.ts test/cards/init-units.test.ts

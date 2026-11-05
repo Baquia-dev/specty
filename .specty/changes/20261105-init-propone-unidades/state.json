@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0e41c525fdb0eb8166e3225e572a3597167ba127",
+      "startedAt": "2026-11-05T12:42:41.199Z",
+      "doneAt": "2026-11-05T12:43:52.036Z",
+      "summary": "core propone las unidades de un workspace (proposeUnits: estático con lint y tipos, una por paquete con tests y los paquetes que usa) y su YAML (unitsYaml); la tarjeta de init las muestra en su bloque y dice que las añade la persona."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
