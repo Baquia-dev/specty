@@ -3,7 +3,7 @@ import { spawnSync } from "node:child_process";
 import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
-import { expect, it } from "vitest";
+import { expect, inject, it } from "vitest";
 import { AGENTS, type Agent, consumptionOf, countsOf } from "../src/agents";
 import { type Experiment, namedExperiments } from "../src/experiments";
 import { DIST } from "../src/repo";
@@ -14,7 +14,8 @@ import { SCENARIOS, type Scenario } from "../src/scenarios";
  * The compliance suite with real agents (ARCHITECTURE §16), which only `pnpm evals` runs: each
  * installed agent, with the person's own session, through each scenario in a throwaway
  * repository, as many times as `SPECTY_EVALS_RUNS` says. The report goes to the system's
- * temporary folder, `specty-evals/`, in Markdown and JSON.
+ * temporary folder, `specty-evals/`, in Markdown and JSON: the configuration gives it, since the
+ * run's temporary folder, with the repositories, is removed at the end.
  */
 
 const RUNS = Math.max(1, Number(process.env.SPECTY_EVALS_RUNS ?? "1") || 1);
@@ -122,7 +123,7 @@ it("runs each agent through each scenario and writes the report", async () => {
   }
   const summary = summarize(runs, omitted);
   const date = new Date().toISOString().slice(0, 10);
-  const folder = join(tmpdir(), "specty-evals");
+  const folder = inject("reports");
   await mkdir(folder, { recursive: true });
   const base = join(folder, new Date().toISOString().replaceAll(":", "-"));
   await writeFile(`${base}.md`, reportMarkdown(summary, date));

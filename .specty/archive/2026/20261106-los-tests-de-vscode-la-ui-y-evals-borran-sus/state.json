@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "id": "20261106-los-tests-de-vscode-la-ui-y-evals-borran-sus",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-los-tests-de-vscode-la-ui-y-evals-borran-sus",
+  "baseCommit": "e88c26238e7aa7d12eb91cf63dfd32b091313002",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:2c5242ee2c11c4d0a4559a5c2f07a181241c5e5832d313f8af8cb922401e3c05",
+    "at": "2026-11-05T16:34:13.748Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0fb3d86971e772ba75a596f8c879e6583f9a1634eab8cb049f20d8fa93bbda47",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6801597417316bb37ba5a4ba7e776eea070ef40a60c96bac76d0f2bf1185e30b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:9b9fb00ec46c79e91ee48e66d59b69219b10ead20ac70751edf628a2570f4652",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:404e755adccaadea37ed88a1b2377bffb498e79e54c0bbdab8ccde4a809c9912",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "708fd1d956466a7bcf3b093e854cb0ad032e1009",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:35:43.692Z",
+      "doneAt": "2026-11-05T16:35:59.848Z",
+      "summary": "El globalSetup de packages/vscode/vitest.config.ts nombra ../core/vitest-temp-dir.ts: sus tests y los procesos que lanzan usan la carpeta de la ejecución",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ecd98fc15e99a43017b790c21c809147da6f9674",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:36:00.213Z",
+      "doneAt": "2026-11-05T16:40:51.080Z",
+      "summary": "El globalSetup de packages/ui/vitest-base.config.ts, que el constructor de Angular carga con runnerConfig, nombra ../core/vitest-temp-dir.ts: los tests de la UI usan la carpeta de la ejecución",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "55eb5fb683ff1c090f3959775201b66162d78aa3",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:40:51.390Z",
+      "doneAt": "2026-11-05T16:43:38.222Z",
+      "summary": "evals/vitest.config.ts nombra el ayudante y da con provide la carpeta del informe (specty-evals/ de la temporal del sistema), que compliance.eval.ts lee con inject; ARCHITECTURE.md lo cuenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T16:49:41.267Z",
+  "lockedTests": {
+    "evals/test/temp-dir.test.ts": "sha256:f432c50333327aa9a70f76dfedbf79db6f7a6e7d87b3ffa7c19c3cf09899fcfc",
+    "packages/ui/src/temp-dir.test.ts": "sha256:b8fa351018eb693ad61c6a61d2cde4b6e0ba3d61619d72f956e2eb15d107ec8c",
+    "packages/vscode/test/temp-dir.test.ts": "sha256:a22f7050f82a554f3d57873d0e7c14a5c70472b0cb56b414492a1a64430fd0fa"
+  }
+}
