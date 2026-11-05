@@ -57,7 +57,7 @@ Cuando otro proceso del clon tiene bloqueada la configuración de git (`.git/con
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/new-locked-config.test.ts test/worktrees.test.ts test/git-failed.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
   - type: fix
-- [ ] T3: La documentación
+- [x] T3: La documentación
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
