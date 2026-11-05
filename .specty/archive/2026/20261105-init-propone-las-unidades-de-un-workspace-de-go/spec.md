@@ -54,3 +54,22 @@ Desde C1, `proposedUnits` prueba en orden una lista de detectores de workspace, 
 ## Riesgos
 
 - R1: C2 añade el detector de Cargo a la misma línea de `DETECTORS` en paralelo — el conflicto al incorporar main es de una línea y se resuelve con los dos detectores tras el de JavaScript.
+
+## Cierre
+
+### Resumen
+
+`specty init` propone las unidades de `verify.units` de un workspace de `go.work` con al menos dos módulos. El detector nuevo, `goWorkspace` en `detect/units-go.ts`, lee las carpetas de las directivas `use` (en bloque o de una línea, con comillas y comentarios), el `go.mod` de cada una (su `module` como nombre y sus `require`) y devuelve un paquete por módulo con su propio comando, `go test ./<carpeta>/...`, los módulos del workspace que requiere y `go.work` y `go.work.sum` como archivos compartidos. Ignora las rutas que salen del repositorio y las carpetas sin `go.mod`, y no encuentra workspace con menos de dos módulos o cuando usa la raíz. Va en `DETECTORS` detrás del de pnpm, npm y yarn.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Un solo lector de directivas sirve para `use` de `go.work` y para `module` y `require` de `go.mod`, porque los dos archivos comparten la sintaxis de bloques `verbo ( … )`, líneas sueltas, comillas y comentarios `//`.
+- Los tests de los casos límite van por `proposedUnits` con la detección del proyecto, no por `goWorkspace`, para no atarlos a la firma del detector; el criterio principal se comprueba con `specty init` de punta a punta.
+
+### Pendientes
+
+- Ninguno
