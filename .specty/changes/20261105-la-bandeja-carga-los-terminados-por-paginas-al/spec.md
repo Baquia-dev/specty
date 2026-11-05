@@ -82,7 +82,7 @@ Desde C4, el servidor local da los cambios terminados por páginas en `GET /api/
   - files: packages/ui/src/inbox/inbox-view.ts, packages/ui/src/inbox/inbox-more.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox-view.test.ts, packages/ui/src/inbox/inbox-more.test.ts
   - ac: AC1, AC2, AC3, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui test && pnpm typecheck && pnpm lint && pnpm knip
-- [ ] T4: ui.md cuenta la Bandeja por páginas
+- [x] T4: ui.md cuenta la Bandeja por páginas
   - files: docs/ui.md
   - ac: —
   - verify: grep -q "Cargar más" docs/ui.md
