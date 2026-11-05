@@ -481,6 +481,8 @@ subagents: true                   # false: una épica no reparte sus cortes entr
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
 
+Si `config.yaml` no es válida, ningún comando se ejecuta y la salida da el error. A una persona le pide corregirla; a un agente (sin terminal interactiva) le dice que la corrige el usuario, porque el guard no le deja editarla, y que se lo pida con ese error. `accept` y `close` la validan justo después de incorporar la rama principal y, si no es válida, deshacen el merge (ARCHITECTURE §9).
+
 `subagents` (por defecto `true`) deja que la tarjeta de una épica aprobada reparta sus cortes listos, y los huérfanos, entre subagentes, con un encargo por corte, cuando la herramienta detectada puede (columna «Cortes en subagentes» de [ARCHITECTURE §10](ARCHITECTURE.md#10-cumplimiento-por-capas); el encargo, en [§7](ARCHITECTURE.md#7-contexto-para-el-agente)). Con `false`, la tarjeta propone los cortes de uno en uno, como con una herramienta sin subagentes. Una feature suelta, o el corte de una épica, nunca pide subagentes.
 
 `review` activa la revisión independiente (ADR 0011), que solo configura la persona:

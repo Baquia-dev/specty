@@ -68,7 +68,7 @@ Una `.specty/config.yaml` inválida en main (una coma de más en `git.branchPerC
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/invalid-config.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor.test.ts && pnpm typecheck
   - type: fix
-- [ ] T3: Documentar la configuración inválida al incorporar y en next
+- [x] T3: Documentar la configuración inválida al incorporar y en next
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1, AC2, AC3
   - verify: pnpm lint

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-una-configuracion-invalida-de-main-no-deja-la",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-una-configuracion-invalida-de-main-no-deja-la",
   "baseCommit": "8daf2d378b4c44a850f120507c49df3dcc6723ad",
   "revision": 2,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "70e1b2b711f8308ce986a8463978fc1f424fb57a",
+      "attempts": 1,
       "startedAt": "2026-11-05T09:28:09.467Z",
       "doneAt": "2026-11-05T09:28:55.360Z",
-      "summary": "invalidConfigCard tiene la variante del agente: el usuario corrige .specty/config.yaml porque el guard no deja editarla, y se lo pide con el error; program.ts la usa sin terminal interactiva."
+      "summary": "invalidConfigCard tiene la variante del agente: el usuario corrige .specty/config.yaml porque el guard no deja editarla, y se lo pide con el error; program.ts la usa sin terminal interactiva.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "47afb69de4ba240dd2324aea99003bf9fa97b4e8",
+      "startedAt": "2026-11-05T09:28:55.733Z",
+      "doneAt": "2026-11-05T09:29:28.371Z",
+      "summary": "ARCHITECTURE §9 (paso 2) y formats.md §6 documentan la validación de la configuración tras incorporar main y quién corrige una configuración inválida."
     }
   },
   "pending": {
