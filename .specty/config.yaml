@@ -22,7 +22,7 @@ policy:
 retro:
   mode: agent
 git:
-  branchPerChange: true,
+  branchPerChange: true
   afterLanding: "pnpm --filter @baquia-dev/specty build"
 split:
   maxModules: 3
