@@ -71,8 +71,9 @@ Se lee como un documento bien maquetado, no como un tablero de tarjetas.
   3. Criterios, con los avisos de vaguedad en línea.
   4. Archivos, en árbol por módulo, con insignias de crear / modificar / borrar y marca de ruta sensible.
   5. Tareas, con chips de criterios y de archivos. Se pueden reordenar en `draft` y `review`.
-  6. Riesgos.
-  7. Diseño, plegado, con Markdown enriquecido y código resaltado.
+  6. Cortes, en una épica: cada corte con su id, su título, los criterios que cubre como insignias y, si depende de otros, «Depende de» con sus ids, y «Comentar» como los demás ítems. Si un cambio cargado implementa el corte (su `epic` y su `slice` lo nombran), el título enlaza a su página y su fase va a la derecha: de varios, el cerrado o, si no hay, el primero de los demás, y uno cancelado no cuenta. Sale de los cambios que la UI tiene cargados (los abiertos y las páginas de terminados ya pedidas): un corte cuyo cambio no está cargado se ve sin enlace ni fase, sin decir que no ha empezado.
+  7. Riesgos.
+  8. Diseño, plegado, con Markdown enriquecido y código resaltado.
 - **Revisión independiente de la spec** (`review/independent-review.ts`): si `specty review` revisó la spec con otro modelo (ADR 0011), su respuesta va arriba del centro, antes de las secciones, con su revisión y cuándo se hizo, como en Aceptación: es información, y decide la persona. Se muestra la última que respondió.
 - **Columna derecha**: comentarios y actividad.
 - **Comentarios**: al seleccionar texto o pasar el cursor sobre un ítem aparece "Comentar", solo mientras la spec está en revisión. Cada comentario se ancla al ítem o a la cita, y llega al agente en `specty next` cuando la persona pide los cambios.
@@ -89,6 +90,7 @@ Muestra «Qué cambió desde la revisión 2» y, encima, cuál está aprobada, c
 - **Modificado**: el texto final, limpio, con lo nuevo resaltado con suavidad (fondo tenue y subrayado fino). Solo si se quitaron palabras, una línea «Antes» atenuada con lo quitado tachado. La puntuación se compara aparte, y cada tramo cambiado se muestra entero, no en trocitos.
 - **Añadido**: texto normal con su marca. **Eliminado**: atenuado y tachado.
 - **Tareas**: título y chips de criterios y archivos, como en la revisión; los chips añadidos o quitados se distinguen, y el archivo que es "posible alcance nuevo" va en ámbar con icono y su aviso. Lo que cambia sin texto propio (impacto de un supuesto, verificación o tipo de una tarea) se cuenta en una línea aparte.
+- **Cortes** (épicas): entre Tareas y Riesgos, cada corte añadido, modificado o eliminado con su id, su título y, como chips, los criterios que cubre y los cortes de los que depende («depende de C1»), con los añadidos y los quitados marcados como en las tareas. Es lo que la persona aprueba cuando un ajuste divide un corte.
 
 ### Progreso
 
@@ -144,7 +146,7 @@ La vista de un anfitrión de MCP Apps ([ADR 0015](decisions/0015-mcp-apps-solo-p
 - **En vivo:** mientras el cambio está en tests, implementación, ajustes, aceptación o cierre, vuelve a preguntar un segundo después de cada respuesta, con la huella de lo que tiene (`since`). Solo se actualiza si algo cambió, y la verificación en curso le llega por `watchRun`: la de cada tarea en Progreso y la completa de `specty accept` en Aceptación. En las demás fases el cambio espera a una persona o ya terminó, y no pregunta. Para con `ui/resource-teardown`.
 - **Fijada:** si el anfitrión ofrece `pip` y el cambio está en tests, implementación o ajustes, pide quedar fijada (`ui/request-display-mode`), una vez.
 - **Qué muestra:** una card de cabecera con la fase, el id y el título del cambio, y debajo solo la pestaña de la fase. Es la Spec en borrador y revisión, el Progreso en tests, implementación y ajustes, la Aceptación en aceptación, cierre y terminado, y el Historial si se canceló. La vista ocupa el ancho del chat.
-- **La Spec en cards** (`review/spec-cards.ts`): en lugar de la revisión de `specty ui`, la spec va en cards compactas, una por sección presente.
+- **La Spec en cards** (`review/spec-cards.ts`): en lugar de la revisión de `specty ui`, la spec va en cards compactas, una por sección presente. La de Cortes, en una épica, lista sus cortes sin enlaces ni fases, porque en el chat no se navega.
   - **La cabecera de cada card:** una sola línea con el número, el título y la pista, recortada si no cabe; el cuerpo usa texto de 14 px. A la derecha va su resumen: el progreso de la sección o, si no lo tiene, cuántos ítems lista. También sus marcas: pendientes y avisos en ámbar, sus comentarios, y «Cambió» si la sección tiene cambios desde la revisión aprobada.
   - **Abrir y cerrar:** la cabecera es un botón que abre o cierra la card (`aria-expanded`). Al empezar solo está abierta Objetivo. Las que abra la persona siguen abiertas mientras se actualiza el mismo cambio; con otro cambio, vuelve a abrirse solo Objetivo.
   - **Cards aparte:** la revisión independiente (`specty review`) va en una card antes de las secciones. Los comentarios van en otra al final, solo para leer y solo si los hay.

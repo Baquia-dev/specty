@@ -385,7 +385,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 ]
 ```
 
-Un ancla puede ser un ítem (`{ "item": "A1" }`) o una cita dentro de una sección (`{ "section", "quote" }`); `section` es la clave de la sección (`goal`, `outOfScope`, `assumptions`, `criteria`, `design`, `files`, `tasks`, `risks`).
+Un ancla puede ser un ítem (`{ "item": "A1" }`) o una cita dentro de una sección (`{ "section", "quote" }`); `section` es la clave de la sección (`goal`, `outOfScope`, `assumptions`, `criteria`, `design`, `files`, `tasks`, `slices`, `risks`).
 
 - La persona comenta solo durante la revisión (fase `review`), desde la UI. `id` es `c<n>` por orden de llegada, `revision` es la revisión comentada y `author`, el `user.name` de git. Un comentario vacío se rechaza.
 - Comentar no entra en la auditoría; pedir cambios, sí: `review.changes_requested` con los ids de los comentarios sin resolver. Sin comentarios sin resolver ni supuestos rechazados, no hay nada que pedir y se rechaza.

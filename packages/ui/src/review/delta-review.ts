@@ -59,6 +59,7 @@ const GROUPS: readonly DeltaEntryView["section"][] = [
   "criteria",
   "files",
   "tasks",
+  "slices",
   "risks",
   "design",
 ];
@@ -73,10 +74,14 @@ const ITEM_KINDS: ReadonlySet<DeltaEntryView["kind"]> = new Set([
   "assumption",
   "criterion",
   "task",
+  "slice",
   "risk",
 ]);
 
-/** A task's chip: added ones on a faint tint, removed ones struck out, possible new scope in amber. */
+/**
+ * A chip of a task or a slice: added ones on a faint tint, removed ones struck out, possible new
+ * scope in amber. A slice's dependency says «depende de C1».
+ */
 const CHIP = "inline-flex h-6 items-center gap-1 rounded-md border px-1.5 text-xs";
 const CHIP_TONE = {
   added: "border-phase-done bg-phase-done-bg/70",
@@ -171,7 +176,7 @@ class ChangeMark {
                   @if (entry.change === 'removed') {
                     <p class="m-0 whitespace-pre-wrap text-text-muted line-through decoration-text-muted/60" data-removed><span class="sr-only">{{ t()('Eliminado: ', 'Removed: ') }}</span>{{ plain(entry) }}</p>
                   } @else {
-                    <sp-word-diff [class.font-medium]="entry.kind === 'task'" [parts]="entry.text" />
+                    <sp-word-diff [class.font-medium]="entry.kind === 'task' || entry.kind === 'slice'" [parts]="entry.text" />
                   }
                   @if (entry.before; as before) {
                     <sp-before-line [parts]="before" />
@@ -185,6 +190,9 @@ class ChangeMark {
                           }
                           @if (chip.change) {
                             <span class="sr-only">{{ chip.change === 'added' ? t()('añadido:', 'added:') : t()('quitado:', 'removed:') }}&ngsp;</span>
+                          }
+                          @if (chip.kind === 'slice') {
+                            {{ t()('depende de', 'depends on') }}&ngsp;
                           }
                           {{ chip.label }}
                         </span>

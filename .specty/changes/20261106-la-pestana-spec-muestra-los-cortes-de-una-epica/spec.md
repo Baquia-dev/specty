@@ -81,7 +81,7 @@ Quien revisa una épica en la pestaña Spec de `specty ui` ve su sección «Cort
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-sections.test.ts --include src/review/spec-cards.test.ts --include src/review/spec-review.test.ts --include src/review/spec-review-modes.test.ts --include src/app/embedded.test.ts && pnpm lint && pnpm knip
   - type: feat
-- [ ] T4: Los cortes en «Ver solo los cambios», y la documentación
+- [x] T4: Los cortes en «Ver solo los cambios», y la documentación
   - files: packages/ui/src/review/delta-review.ts, packages/ui/src/review/delta-review.test.ts, docs/ui.md, docs/formats.md
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/delta-review.test.ts --include src/review/spec-review-modes.test.ts && pnpm typecheck && pnpm lint && pnpm knip

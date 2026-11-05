@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-pestana-spec-muestra-los-cortes-de-una-epica",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-la-pestana-spec-muestra-los-cortes-de-una-epica",
   "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
   "revision": 2,
@@ -65,12 +65,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2cb111b3550e17ae6115234bfd4d0799de97e5ab",
+      "attempts": 1,
       "startedAt": "2026-11-05T17:12:25.718Z",
       "doneAt": "2026-11-05T17:18:05.125Z",
-      "summary": "Los cortes se ven como filas (id, título, criterios, «Depende de», Comentar); en la revisión cada uno enlaza a su cambio con su fase, y en las tarjetas salen sin enlaces. itemSection queda compartida."
+      "summary": "Los cortes se ven como filas (id, título, criterios, «Depende de», Comentar); en la revisión cada uno enlaza a su cambio con su fase, y en las tarjetas salen sin enlaces. itemSection queda compartida.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d4d55c13c764f41dc8bdd296550974afd6502466",
+      "startedAt": "2026-11-05T17:18:05.441Z",
+      "doneAt": "2026-11-05T17:18:55.926Z",
+      "summary": "«Ver solo los cambios» agrupa los cortes entre Tareas y Riesgos, con su id, «Comentar», el título en negrita y chips «depende de C1»; ui.md y formats.md documentan la sección Cortes y el ancla slices."
     }
   },
   "pending": {
