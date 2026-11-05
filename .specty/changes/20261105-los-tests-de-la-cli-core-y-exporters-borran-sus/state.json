@@ -6,6 +6,13 @@
   "branch": "specty/20261105-los-tests-de-la-cli-core-y-exporters-borran-sus",
   "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:88d72c062ac0be7153695fbb012cbc8f5c16015d0a6064901ca94fb12fb7fe22",
+    "at": "2026-11-05T15:59:41.697Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -44,12 +51,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:88d72c062ac0be7153695fbb012cbc8f5c16015d0a6064901ca94fb12fb7fe22",
-    "at": "2026-11-05T15:59:41.697Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T16:05:06.869Z"
 }
