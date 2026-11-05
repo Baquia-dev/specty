@@ -57,7 +57,7 @@ Un servidor de `specty ui` arrancado con un CLI más viejo que el que escribió 
 
 ## Tareas
 
-- [ ] T1: El servidor da el cambio cuya configuración no puede leer, con sus errores
+- [x] T1: El servidor da el cambio cuya configuración no puede leer, con sus errores
   - files: packages/cli/src/flow/changes.ts, packages/cli/src/server/records.ts, packages/cli/src/server/events.ts, packages/cli/test/server/unreadable-config.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/unreadable-config.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint

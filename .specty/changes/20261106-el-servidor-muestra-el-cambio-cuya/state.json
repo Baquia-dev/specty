@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "25cbcf0335124fa8daa7290a7e75f866340e4078",
+      "startedAt": "2026-11-05T16:33:51.140Z",
+      "doneAt": "2026-11-05T16:40:45.368Z",
+      "summary": "El servidor da el cambio abierto de una worktree cuya configuración no se lee (unreadableChanges en flow/changes.ts), en la lista y por id, con configIssues; la huella incluye la config.yaml de cada worktree. Los comandos no cambian."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
