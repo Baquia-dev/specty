@@ -6,6 +6,13 @@
   "branch": "specty/20261105-propose-avisa-del-typecheck-completo-en-una-2",
   "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c9eddacb58201aa2570d7b3a1907adb5f1d5b4e5c32a7840156359f2a9403fbf",
+    "at": "2026-11-05T07:59:53.537Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -42,12 +49,6 @@
     "AC": 4,
     "T": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:c9eddacb58201aa2570d7b3a1907adb5f1d5b4e5c32a7840156359f2a9403fbf",
-    "at": "2026-11-05T07:59:53.537Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T08:04:41.941Z"
 }
