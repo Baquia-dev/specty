@@ -12,11 +12,14 @@ import {
 } from "@baquia-dev/specty-core";
 import { openChanges } from "../commands/status";
 import { readText } from "../io/files";
+import { resolved } from "../io/git";
 import type { Session } from "../session";
 import { listDir, loadState, readSpec, type StoredChange } from "../store/changes";
+import { readBinding, writeBinding } from "../store/local";
 import { changeFiles, repoPaths } from "../store/paths";
 import { commitState, isFinished } from "./active";
 import { locateChanges } from "./changes";
+import { findChange } from "./find";
 
 /** A change that implements a slice of an epic. */
 interface Child {
@@ -157,6 +160,52 @@ export async function finishEpic(session: Session, epic: StoredChange): Promise<
     { slices: Object.fromEntries(slices.map((slice) => [slice.id, slice.child?.id])) },
     "specty",
   );
+}
+
+/** The open epic a conversation goes back to once it closes one of its slices. */
+export interface EpicReturn {
+  readonly id: string;
+  /** Where the epic is worked on. */
+  readonly folder: string;
+  /** That folder is the main one. */
+  readonly inMain: boolean;
+}
+
+/**
+ * The epic the conversation that closes slice `id`, in `folder`, goes back to, bound again to the
+ * epic's folder, as it was before it started the slice (ARCHITECTURE §10). Undefined, with nothing
+ * touched, unless that conversation is bound to `folder` (a subagent's commands carry the id of
+ * its session, bound to the epic), the change's spec names an epic, and that epic is still open.
+ */
+export async function returnToEpic(
+  session: Session,
+  id: string,
+  folder: string,
+): Promise<EpicReturn | undefined> {
+  const conversation = await conversationIn(session, folder);
+  const change = conversation === undefined ? undefined : await findChange(session, id);
+  if (conversation === undefined || change === undefined) return undefined;
+  const { epic } = parseSpec(await readSpec(change.files), { language: session.lang }).spec
+    .frontmatter;
+  const open = (await locateChanges(session)).find(
+    (located) => located.change.state.id === epic && !isFinished(located.change.state),
+  );
+  if (epic === undefined || open === undefined) return undefined;
+  const there = open.session.root;
+  await writeBinding(session.git, conversation, {
+    folder: there,
+    at: session.environment.now().toISOString(),
+  });
+  const main = (await session.git.worktrees())[0]?.folder ?? session.root;
+  return { id: epic, folder: there, inMain: (await resolved(there)) === (await resolved(main)) };
+}
+
+/** The conversation that runs the command, when it is bound to `folder`. */
+async function conversationIn(session: Session, folder: string): Promise<string | undefined> {
+  const id = session.conversation?.id;
+  const binding = id === undefined ? undefined : await readBinding(session.git, id);
+  if (binding === undefined) return undefined;
+  return (await resolved(binding.folder)) === (await resolved(folder)) ? id : undefined;
 }
 
 /**

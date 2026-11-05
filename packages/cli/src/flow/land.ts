@@ -14,9 +14,11 @@ import {
   section,
   targetAheadLine,
 } from "@baquia-dev/specty-core";
+import { entersByName } from "../install/agents";
 import { type ExecResult, execute, tail } from "../io/exec";
 import { resolved } from "../io/git";
 import type { Session } from "../session";
+import { returnToEpic } from "./epic";
 import { findChange } from "./find";
 import { absorbTarget, contains, type Integration, reasonOf } from "./integrate";
 
@@ -24,8 +26,11 @@ export interface Landed {
   /** The main branch now contains the change. */
   readonly landed: boolean;
   readonly lines: readonly string[];
-  /** The agent that closed works inside the change's folder, removed or not: it must leave it. */
-  readonly left?: { readonly folder: string; readonly main: string; readonly removed: boolean };
+  /**
+   * The agent that closed works inside the change's folder, removed or not: it must leave it, for
+   * the epic when the change was a slice its conversation carried.
+   */
+  readonly left?: Parameters<typeof leaveFolderNext>[0];
 }
 
 /**
@@ -50,13 +55,20 @@ async function landChange(session: Session, plan: Integration): Promise<Landed> 
   // Its work is in the target now: the folder goes, even from under whoever closed in it. An
   // agent's session (delegated mode) must then leave it; a person reads where to carry on.
   const inside = session.actor === "agent" && (await within(session.environment.cwd, git.root));
+  // The slice's spec is read before its folder goes: the conversation goes back to its epic.
+  const epic = inside ? await returnToEpic(session, plan.id, git.root) : undefined;
   const removed = await git.run(["-C", plan.main, "worktree", "remove", git.root]);
   lines.push(
     removed.code === 0
       ? folderRemovedLine(git.root, plan.branch, plan.main, lang)
       : folderStaysLine(git.root, reasonOf(removed), lang),
   );
-  const left = { folder: git.root, main: plan.main, removed: removed.code === 0 };
+  const left = {
+    folder: git.root,
+    main: plan.main,
+    removed: removed.code === 0,
+    ...(epic === undefined ? {} : { epic: { ...epic, byName: await entersByName(plan.main) } }),
+  };
   return { landed: true, lines, ...(inside ? { left } : {}) };
 }
 

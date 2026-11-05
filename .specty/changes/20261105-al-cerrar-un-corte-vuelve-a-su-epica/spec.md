@@ -51,7 +51,7 @@ En una épica en orden, la sesión hace ella misma los cortes (por ejemplo, Clau
   - files: packages/core/src/cards/land.ts, packages/core/test/cards/incorporation.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/incorporation.test.ts && pnpm typecheck
-- [ ] T2: `close` de un corte vuelve a ligar la conversación a su épica y se lo dice
+- [x] T2: `close` de un corte vuelve a ligar la conversación a su épica y se lo dice
   - files: packages/cli/src/flow/epic.ts, packages/cli/src/flow/land.ts, packages/cli/test/epic-return.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-return.test.ts test/delegated-integration.test.ts test/session-return.test.ts && pnpm typecheck

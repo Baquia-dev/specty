@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a180efa9820341a516af5d77a1007ba41940424f",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:38:11.294Z",
       "doneAt": "2026-11-05T06:39:14.381Z",
-      "summary": "leaveFolderNext acepta la épica a la que volver (id, carpeta, inMain, byName) y da el SIGUIENTE por herramienta: specty enter si es indirecta; en Claude Code, ExitWorktree con action keep y EnterWorktree por nombre o cambio de carpeta; specty next con la épica en la principal."
+      "summary": "leaveFolderNext acepta la épica a la que volver (id, carpeta, inMain, byName) y da el SIGUIENTE por herramienta: specty enter si es indirecta; en Claude Code, ExitWorktree con action keep y EnterWorktree por nombre o cambio de carpeta; specty next con la épica en la principal.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8e7fb8f31f905760c34d456ee9f1f0410cf0c814",
+      "startedAt": "2026-11-05T06:39:14.762Z",
+      "doneAt": "2026-11-05T06:47:27.055Z",
+      "summary": "returnToEpic (flow/epic.ts) liga de nuevo a la carpeta de la épica abierta la conversación ligada al corte que se cierra; landChange lo llama antes de borrar la carpeta y pone la épica, con byName, en left."
     }
   },
   "pending": {
