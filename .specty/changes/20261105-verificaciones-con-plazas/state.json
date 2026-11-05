@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e11d417bfc2ceaf9440113460e42457fd9746eac",
+      "attempts": 1,
       "startedAt": "2026-11-05T03:32:42.710Z",
       "doneAt": "2026-11-05T03:34:26.105Z",
-      "summary": "store/verify-slots.ts: inSlots(session, weight, command, run) hace cola por orden de llegada (joinQueue, la cola del turno con su carpeta como parámetro) y corre cuando su peso cabe en verify.slots junto a los archivos vivos de locks/verify-slots/; AC1 y AC2 en verify-slots.test.ts"
+      "summary": "store/verify-slots.ts: inSlots(session, weight, command, run) hace cola por orden de llegada (joinQueue, la cola del turno con su carpeta como parámetro) y corre cuando su peso cabe en verify.slots junto a los archivos vivos de locks/verify-slots/; AC1 y AC2 en verify-slots.test.ts",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fd9948f8c5371939312abecb6374b30436a29d29",
+      "startedAt": "2026-11-05T03:34:26.622Z",
+      "doneAt": "2026-11-05T03:37:23.594Z",
+      "summary": "oneAtATime es el turno (onTurn) más todas las plazas, solo alrededor del comando; landingTurn toma solo el turno; la verificación de una tarea ocupa una plaza (live-run) y la de specty integrate pasa por oneAtATime; AC3 en integrate-turn.test.ts"
     }
   },
   "pending": {

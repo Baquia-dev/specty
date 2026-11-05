@@ -71,7 +71,7 @@ Solo la verificación completa espera su turno: las verificaciones de las tareas
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/store/verify-slots.test.ts src/flow/full-verification.test.ts && pnpm --filter @baquia-dev/specty typecheck
   - type: perf
-- [ ] T3: La verificación de una tarea ocupa una plaza, la completa todas, y la de integrate pide el turno
+- [x] T3: La verificación de una tarea ocupa una plaza, la completa todas, y la de integrate pide el turno
   - files: packages/cli/src/flow/full-verification.ts, packages/cli/src/flow/live-run.ts, packages/cli/src/commands/integrate.ts, packages/cli/test/integrate-turn.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate-turn.test.ts src/flow/full-verification.test.ts test/accept-turn-time.test.ts test/close-turn.test.ts test/integrate.test.ts && pnpm typecheck && pnpm lint && pnpm knip
