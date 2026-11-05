@@ -132,6 +132,35 @@ describe("the guard in Antigravity", () => {
     expect(await answer(antigravity(root, "PreToolUse", view))).toEqual({ decision: "allow" });
   });
 
+  it("AC1: judges what it writes and edits with the tools of its CLI like any write", async () => {
+    const root = await implementing();
+    const write = (index: number, path: string) =>
+      step(index, "write_file", {
+        Path: join(root, path),
+        Content: "x\n",
+        Overwrite: true,
+        Append: false,
+      });
+    const edit = (index: number, path: string) =>
+      step(index, "edit_file", { Path: join(root, path), Target: "hola", Replacement: "adiós" });
+    expect(await answer(antigravity(root, "PreToolUse", write(1, "src/app.ts")))).toEqual({
+      decision: "allow",
+    });
+    expect(await answer(antigravity(root, "PreToolUse", edit(2, "src/app.ts")))).toEqual({
+      decision: "allow",
+    });
+    const outside = await answer(antigravity(root, "PreToolUse", write(3, "src/other.ts")));
+    expect(outside.decision).toBe("deny");
+    expect(outside.reason).toContain("`src/other.ts` está fuera del alcance de T1.");
+    expect(outside.reason).toMatch(/^SIGUIENTE: /m);
+    const edited = await answer(antigravity(root, "PreToolUse", edit(4, "src/third.ts")));
+    expect(edited.decision).toBe("deny");
+    expect(edited.reason).toContain("`src/third.ts` está fuera del alcance de T1.");
+    const config = await answer(antigravity(root, "PreToolUse", edit(5, ".specty/config.yaml")));
+    expect(config.decision).toBe("deny");
+    expect(config.reason).toContain("`.specty/config.yaml` lo gestiona Specty");
+  });
+
   it("lets everything through, with exit 0, outside Specty and on an event it cannot read (AC3)", async () => {
     const root = await tempRepo({ "src/app.ts": "x\n" });
     const command = step(1, "run_command", { CommandLine: "rm -rf src", Cwd: root });
@@ -239,6 +268,25 @@ describe("Antigravity in the folder of the change its conversation entered", () 
     expect((await answer(antigravity(root, "PreToolUse", inside))).decision).toBe("allow");
   });
 
+  it("AC2: blocks a file or a folder it reads outside that folder with read_file in its CLI, with the same path inside", async () => {
+    const { root, folder } = await entered();
+    for (const [index, path] of ["src/app.ts", "src"].entries()) {
+      const outside = step(index + 2, "read_file", { Path: join(root, path) });
+      const denied = await answer(antigravity(root, "PreToolUse", outside));
+      expect(denied.decision).toBe("deny");
+      expect(denied.reason).toContain(
+        `SIGUIENTE: usa la misma ruta dentro de ella: \`${join(folder, path)}\`.`,
+      );
+    }
+    const inside = step(4, "read_file", { Path: join(folder, "src/app.ts") });
+    expect((await answer(antigravity(root, "PreToolUse", inside))).decision).toBe("allow");
+    // A conversation that entered nothing reads anywhere.
+    const free = step(5, "read_file", { Path: join(root, "src/app.ts") });
+    expect(
+      await answer(antigravity(root, "PreToolUse", { ...free, conversationId: "c2" })),
+    ).toEqual({ decision: "allow" });
+  });
+
   it("AC2: opens only git's common folder with each action it allows, not the worktrees' one", async () => {
     const { root, folder } = await entered();
     const view = step(10, "view_file", { AbsolutePath: join(folder, "src/app.ts") });
@@ -258,7 +306,10 @@ const HOOKS = ".agents/hooks.json";
 /** The guard's matcher before Antigravity's tools in ACP editors: with the reads, without them. */
 const BEFORE_ACP =
   "run_command|write_to_file|replace_file_content|multi_replace_file_content|manage_task|view_file|list_dir|grep_search|find_by_name";
-const TOOLS = `${BEFORE_ACP}|client_view_file|client_edit_file|client_create_file`;
+/** The guard's matcher before the tools of its CLI (`agy`): with those of ACP editors. */
+const BEFORE_CLI = `${BEFORE_ACP}|client_view_file|client_edit_file|client_create_file`;
+// AC3: init writes the tools of its CLI too, after those of its editor and of ACP editors.
+const TOOLS = `${BEFORE_CLI}|read_file|write_file|edit_file`;
 
 describe("installing the guard in Antigravity", () => {
   it("writes the specty hook next to the person's, out of git, and doctor and uninstall find it (AC4)", async () => {
@@ -322,6 +373,27 @@ describe("installing the guard in Antigravity", () => {
     expect(doctor.out).toContain(line);
     // Not the older warning: that hook already sees the reads.
     expect(doctor.out).not.toContain("es de antes de `specty enter`");
+    expect((await cli(root, ["init", "--language", "es", "--tools", "antigravity"])).code).toBe(0);
+    expect(JSON.parse(await read(root, HOOKS)).specty.PreToolUse[0].matcher).toBe(TOOLS);
+    expect((await cli(root, ["doctor"])).out).not.toContain(line);
+  });
+
+  it("AC4: doctor names a hook from before the tools of its CLI, and init brings it up to date", async () => {
+    const root = await tempRepo(PACKAGE);
+    expect((await cli(root, ["init", "--language", "es", "--tools", "antigravity"])).code).toBe(0);
+    const line =
+      "Antigravity: .agents/hooks.json es de antes de las herramientas de su CLI (`agy`), así que el guard no ve lo que lee, escribe y edita allí; ejecuta `specty init --tools antigravity`.";
+    expect((await cli(root, ["doctor"])).out).not.toContain(line);
+    const hooks = JSON.parse(await read(root, HOOKS));
+    const older = [{ ...hooks.specty.PreToolUse[0], matcher: BEFORE_CLI }];
+    await writeFiles(root, {
+      [HOOKS]: JSON.stringify({ ...hooks, specty: { ...hooks.specty, PreToolUse: older } }),
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(line);
+    // Not the older warning: that hook already sees its tools in ACP editors.
+    expect(doctor.out).not.toContain("es de antes de sus herramientas en los editores ACP");
     expect((await cli(root, ["init", "--language", "es", "--tools", "antigravity"])).code).toBe(0);
     expect(JSON.parse(await read(root, HOOKS)).specty.PreToolUse[0].matcher).toBe(TOOLS);
     expect((await cli(root, ["doctor"])).out).not.toContain(line);

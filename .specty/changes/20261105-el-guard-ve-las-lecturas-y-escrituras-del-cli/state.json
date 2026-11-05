@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261105-el-guard-ve-las-lecturas-y-escrituras-del-cli",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-el-guard-ve-las-lecturas-y-escrituras-del-cli",
   "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:150fa9b36ef76bee5c6dcbcba93ad5aed66f6a4898c64d30f6c2b4c27b31fbe9",
+    "at": "2026-11-05T08:38:50.200Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -49,12 +56,9 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:150fa9b36ef76bee5c6dcbcba93ad5aed66f6a4898c64d30f6c2b4c27b31fbe9",
-    "at": "2026-11-05T08:38:50.200Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/antigravity-turn.test.ts": "sha256:8b86ac9fb13fbc23da9eacdd4a8b3bc1eb36b80a42b6eed83582c7d2eab197b8",
+    "packages/cli/test/antigravity.test.ts": "sha256:726b2e189c7691cc7339937828fae815454b590902768cc8c5c59818895ae210",
+    "packages/core/test/cards/doctor-antigravity-cli.test.ts": "sha256:8563aba41678a080c1c47bf2fc37af790a909472aec713005f0a1bb53c642828"
+  }
 }

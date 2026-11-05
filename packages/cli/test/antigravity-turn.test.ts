@@ -17,16 +17,30 @@ const common = (root: string, conversation = "c1") => ({
   modelName: "gemini",
 });
 
-/** Its end of turn, as `Stop` sends it. */
-const stop = (root: string, conversation: string, terminationReason = "model_stop") =>
+/** Its end of turn, as `Stop` sends it; `fullyIdle` is false while its subagents run. */
+const stop = (
+  root: string,
+  conversation: string,
+  terminationReason = "model_stop",
+  fullyIdle = true,
+) =>
   cli(root, ["hook", "agent-stop", "antigravity"], {
     stdin: JSON.stringify({
       ...common(root, conversation),
       executionNum: 0,
       terminationReason,
-      fullyIdle: true,
+      fullyIdle,
     }),
   });
+
+/** A repository whose `specty check --changed` fails. */
+async function failing(): Promise<string> {
+  const root = await tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}${CHECKS}` });
+  await writeFiles(root, {
+    "src/app.ts": `export const greet = () => 'hola';\n// ${TODO}: later\n`,
+  });
+  return root;
+}
 
 const guard = (root: string, event: string, input: Record<string, unknown>) =>
   cli(root, ["guard", "--tool", "antigravity", "--event", event], {
@@ -71,6 +85,25 @@ describe("the end of Antigravity's turn", () => {
 
     const clean = await tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}${CHECKS}` });
     expect(await answer(stop(clean, "c1"))).toEqual({ decision: "stop" });
+  });
+
+  it("AC5: sends it back once per turn when its CLI ends the turn with no tool call", async () => {
+    const root = await failing();
+    const back = await answer(stop(root, "c1", "NO_TOOL_CALL"));
+    expect(back.decision).toBe("continue");
+    expect(back.reason).toContain(
+      "`specty check --changed` falla; corrígelo antes de terminar el turno:",
+    );
+    expect(await answer(stop(root, "c1", "NO_TOOL_CALL"))).toEqual({ decision: "stop" });
+    expect((await answer(stop(root, "c1", "NO_TOOL_CALL"))).decision).toBe("continue");
+  });
+
+  it("AC6: lets the turn end while its subagents run, and sends it back once they are done", async () => {
+    const root = await failing();
+    expect(await answer(stop(root, "c1", "NO_TOOL_CALL", false))).toEqual({ decision: "stop" });
+    expect(await answer(stop(root, "c1", "model_stop", false))).toEqual({ decision: "stop" });
+    // The turn's way back is still there: the end once they are done is checked.
+    expect((await answer(stop(root, "c1", "NO_TOOL_CALL"))).decision).toBe("continue");
   });
 
   it("is offered by check --install inside Specty's hook, once, and init keeps it (AC2)", async () => {
