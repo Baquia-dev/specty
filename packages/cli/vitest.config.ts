@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 
 const isSingleTest = process.argv
   .slice(2)
@@ -7,6 +7,9 @@ const isSingleTest = process.argv
 
 export default defineConfig({
   test: {
+    // Vitest's reporters, plus the JUnit report that `checks.testTime` reads.
+    reporters: [...configDefaults.reporters, "junit"],
+    outputFile: { junit: "coverage/junit.xml" },
     include: ["test/**/*.test.ts", "src/**/*.test.ts"],
     // Git hooks run the real bundle, so it is built once before the tests.
     globalSetup: ["test/global-setup.ts"],
