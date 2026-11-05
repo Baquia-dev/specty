@@ -51,6 +51,7 @@
             "buildTarget": "specty-ui:build:development",
             "tsConfig": "tsconfig.test.json",
             "runner": "vitest",
+            "runnerConfig": true,
             "include": ["src/**/*.test.ts"],
             "coverageInclude": ["src/**/*.ts"],
             "coverageExclude": ["src/**/*.test.ts", "src/main.ts"],

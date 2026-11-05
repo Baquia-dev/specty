@@ -56,7 +56,7 @@ Los tests de core, exporters y la CLI ya dejan su informe JUnit en `coverage/jun
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/repo-junit.test.ts && test -s evals/coverage/junit.xml && pnpm --filter @baquia-dev/specty-evals typecheck && pnpm lint && pnpm knip
   - type: build
-- [ ] T3: la UI deja su informe JUnit en coverage/junit.xml
+- [x] T3: la UI deja su informe JUnit en coverage/junit.xml
   - files: packages/ui/vitest-base.config.ts, packages/ui/angular.json, packages/ui/src/repo-junit.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/repo-junit.test.ts && test -s packages/ui/coverage/junit.xml && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
