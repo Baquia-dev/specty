@@ -79,7 +79,7 @@ Hoy la Bandeja guarda cada cambio terminado de sus páginas entero: su spec revi
   - files: packages/ui/src/data/finished-pages.ts, packages/ui/src/data/changes-store.ts, packages/ui/src/app/embedded.ts, packages/ui/src/components/item-tooltip.ts, packages/ui/src/data/finished-summaries.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/finished-summaries.test.ts --include src/data/finished-pages.test.ts --include src/data/fixtures.test.ts --include src/app/embedded.test.ts --include src/components/item-tooltip.test.ts && pnpm typecheck
-- [ ] T4: ui.md y ARCHITECTURE cuentan el resumen de los terminados
+- [x] T4: ui.md y ARCHITECTURE cuentan el resumen de los terminados
   - files: docs/ui.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: grep -q "resumen" docs/ui.md && grep -q "cualquier terminado" docs/ARCHITECTURE.md

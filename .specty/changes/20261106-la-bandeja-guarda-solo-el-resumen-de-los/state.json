@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-bandeja-guarda-solo-el-resumen-de-los",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-la-bandeja-guarda-solo-el-resumen-de-los",
   "baseCommit": "85be27d0ad5ba373872c2aa19c4dad4331511ef4",
   "revision": 2,
@@ -65,15 +65,24 @@
     },
     "T3": {
       "status": "done",
+      "baseCommit": "beed6a65ce59dd6a3517149e69581ebf901a4520",
+      "attempts": 1,
+      "startedAt": "2026-11-05T18:04:04.212Z",
+      "doneAt": "2026-11-05T18:06:11.057Z",
+      "summary": "FinishedPages guarda de cada terminado su resumen (summaryOf); finished y all del almacén son de ChangeSummary y listed es público; el MCP App, los tooltips por id y tres tests que leen un cambio entero pasan a listed().",
       "scopeExtra": [
         "packages/ui/src/acceptance/full-verification.test.ts",
         "packages/ui/src/acceptance/acceptance-actions.test.ts"
-      ],
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
       "attempts": 1,
-      "baseCommit": "beed6a65ce59dd6a3517149e69581ebf901a4520",
-      "startedAt": "2026-11-05T18:04:04.212Z",
-      "doneAt": "2026-11-05T18:06:11.057Z",
-      "summary": "FinishedPages guarda de cada terminado su resumen (summaryOf); finished y all del almacén son de ChangeSummary y listed es público; el MCP App, los tooltips por id y tres tests que leen un cambio entero pasan a listed()."
+      "baseCommit": "cfb8cd9dee85be945031e8bdd1bcfec00198808a",
+      "startedAt": "2026-11-05T18:06:11.340Z",
+      "doneAt": "2026-11-05T18:06:32.215Z",
+      "summary": "docs/ui.md cuenta el resumen que guarda la Bandeja de cada terminado y que su página pide el registro por id; ARCHITECTURE §15, que la UI pide por id la página de cualquier terminado."
     }
   },
   "pending": {
