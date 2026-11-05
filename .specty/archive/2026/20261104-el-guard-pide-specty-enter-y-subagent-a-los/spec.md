@@ -66,3 +66,27 @@ Desde C1, un subagente de Claude Code entra con `specty enter` en la carpeta de 
 ## Riesgos
 
 - R1: Otros cortes de la épica tocan a la vez `guard.ts` o el párrafo «Subagentes» de ARCHITECTURE §10. Mitigación: este cambio solo añade un módulo y una llamada en `beforeAction`, y los conflictos al incorporar main van a `specty integrate`.
+
+## Cierre
+
+### Resumen
+
+- El guard bloquea `EnterWorktree` a un subagente de Claude Code, porque llevaría a la carpeta a la sesión que lo lanzó. Su SIGUIENTE pide `specty enter <id>`: el id es su `name`, o el del cambio cuya carpeta preparada nombra su `path`, y si no nombra ninguno queda `<id>` por rellenar.
+- También le bloquea un comando con un `specty new` sin `--subagent`, que ataría a la sesión principal al cambio nuevo, y su SIGUIENTE pide repetirlo con `--subagent`.
+- `analyzeShell` dice cada `specty new` y si lleva `--subagent` (`news`). `enforce/subagents.ts` lo consulta antes de juzgar la acción, solo para eventos con `agent_id`: la sesión principal y las demás herramientas se juzgan como antes.
+- ARCHITECTURE §10 («Subagentes») y la fila de `new` en §6 lo cuentan.
+
+### Desviaciones (respecto al plan)
+
+- Ninguna en el código ni en las tareas. La verificación completa de `accept` avisó de que los tests ejecutan el 73 % de las líneas que añade el cambio: los textos nuevos de `core/src/guard/worktrees.ts` solo los ejecutan los tests del CLI, que no cuentan en la cobertura de core (P90).
+
+### Decisiones
+
+- El guard bloquea la acción del subagente y no la reescribe, como en C1: reescribir exige responder «allow», que saltaría los permisos de la persona.
+- La red de `new` vale para cualquier evento con `agent_id`, no solo para los de Claude Code: hoy solo los envía Claude Code, y para otra herramienta que lo enviara, `--subagent` también sería lo seguro.
+- Si `EnterWorktree` trae `name` y `path`, el SIGUIENTE usa el `name`.
+- Al crear el cambio, el freno de duplicados señaló tres cambios abiertos: los cortes de OpenCode (C7) y de Cursor (C8) y la complejidad del CLI y de core. Son otro trabajo, y la petición de la persona era seguir con cada P, así que se creó con `--distinct-from`.
+
+### Pendientes
+
+- P90: los textos `subagentEnterDenial` y `subagentNewDenial` no tienen test en core, y su versión en inglés no la prueba ningún test.
