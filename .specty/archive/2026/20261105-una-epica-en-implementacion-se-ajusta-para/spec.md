@@ -87,3 +87,25 @@ Un corte que al redactarse sale demasiado grande no tiene salida hoy: `propose` 
 
 - R1: Un ajuste de la épica deja sin empezar los cortes listos mientras la persona no la aprueba — los cortes en curso siguen, y la aprobación de un ajuste que solo añade cortes es corta.
 - R2: Un ajuste estrecha un corte cerrado y deja un criterio sin cubrir — la tarjeta pide no tocar los cortes cerrados, y la persona revisa el delta antes de aprobar.
+
+## Cierre
+
+### Resumen
+
+Una épica en `implementing` se ajusta con `specty adjust` (`adjustOutcome` en `flow/machine.ts`); cualquier otro cambio en esa fase recibe el rechazo de siempre. Su tarjeta de `adjusting` explica cómo dividir un corte que salió demasiado grande: estrecharlo y añadir cortes nuevos con su `ac` y su `depends`, sin tocar los cerrados. La persona vuelve a aprobar la épica, y los cortes nuevos empiezan cuando se cierran sus dependencias. Un corte que supera los umbrales ya no pide dividirse en una épica: `slice-split-required` nombra su épica y dice que se estrecha y que el resto va en cortes nuevos de ella. Fuera de sus dos fases, el rechazo de `adjust` a una épica las nombra. ARCHITECTURE (§4, §5, §6, §11 y §12) y formats lo documentan.
+
+### Desviaciones
+
+- `endOutcome` superó la complejidad máxima al recibir la fase: el resultado de `adjust` quedó en su propia función, `adjustOutcome`.
+- La línea de alcance nuevo de la tarjeta de `adjusting` pasó a `newScopeLine`, compartida entre la tarjeta de una épica y la de un cambio con tareas.
+
+### Decisiones
+
+- Se descartaron las épicas anidadas: dividir un corte es ajustar su épica, con la aprobación de la persona como antes.
+- `childrenDone` sigue saliendo solo de `implementing`: si todos los cortes se cierran mientras la épica se ajusta, el `next` que sigue a su aprobación la pasa a aceptación.
+- Mientras la épica se ajusta no empieza ningún corte nuevo, porque `new --epic` exige `implementing`; los cortes en curso siguen.
+
+### Pendientes
+
+- P184: la UI solo pide ajustes en aceptación; una épica en implementación aún no se ajusta desde la UI.
+- P185: Specty no valida que el ajuste de una épica no cambie ni borre un corte cerrado; solo lo pide la tarjeta.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-una-epica-en-implementacion-se-ajusta-para",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-una-epica-en-implementacion-se-ajusta-para",
   "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:fe3580922017d948c61436fc071369b2015e91fa2aad0e53747273f5fcd3d18f",
@@ -80,12 +80,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1afbf35436982215a5cb65f17c1e712ceaaaf4d0",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:34:10.916Z",
       "doneAt": "2026-11-05T16:35:09.709Z",
-      "summary": "ARCHITECTURE: diagrama y tabla de fases, adjust en la tabla de comandos, la épica en carriles, Dividir con slice-split-required y «El ajuste de una épica» en §12; formats: el error de tamaño de un corte"
+      "summary": "ARCHITECTURE: diagrama y tabla de fases, adjust en la tabla de comandos, la épica en carriles, Dividir con slice-split-required y «El ajuste de una épica» en §12; formats: el error de tamaño de un corte",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -98,6 +98,7 @@
     "T": 5,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T16:45:15.756Z",
   "lockedTests": {
     "packages/core/test/cards/adjust.test.ts": "sha256:57bbf98fc0d5efa8a94cd78bcf16f42f93f131390eda7c3cc41ad5bb936d06a0",
     "packages/core/test/cards/adjusting.test.ts": "sha256:c198637760dc3a1a1fcef0975444d7a20631d4041e00548ecc5a271c8df8234f",
