@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-los-cortes-de-una-epica-corren-en-subagentes-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-los-cortes-de-una-epica-corren-en-subagentes-de",
   "baseCommit": "cf00c4e8324aab6d6871af716f88fad990beb348",
   "revision": 1,
@@ -56,6 +56,11 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T10:01:22.605Z"
+  "lockedTests": {
+    "packages/cli/test/antigravity-turn.test.ts": "sha256:c8a9feeccf85f34514f9ffac5218fec6befceb80d8760a32911bf2d64591f243",
+    "packages/core/test/capabilities.test.ts": "sha256:e6854f8b109fcc8d219b048d8d23f35013f13f9c992cfb92841c03404b9cc409",
+    "packages/core/test/cards/budget.test.ts": "sha256:a82ffb3900c35f990bf71a7305d4270512a1cf5e02e1efa81433c181676617fc",
+    "packages/core/test/cards/epic.test.ts": "sha256:f2ce76bf36babd3cc015811eeb3ca49c08e9ef44141421e253796fc59b98b2a4",
+    "packages/cli/test/antigravity-e2e.test.ts": "sha256:85ff6d8e81b8e5894d633843bf92856d48106ac860f626cde94af047b267aea0"
+  }
 }
