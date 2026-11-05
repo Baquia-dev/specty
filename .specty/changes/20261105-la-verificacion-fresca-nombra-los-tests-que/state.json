@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-verificacion-fresca-nombra-los-tests-que",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-la-verificacion-fresca-nombra-los-tests-que",
   "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
   "revision": 1,
@@ -55,6 +55,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T08:39:20.336Z"
+  "lockedTests": {
+    "packages/cli/test/verify-fresh.test.ts": "sha256:4ede472a8c8a96f8c7f188ce89ab982e872b54e9c58e6cfdd15b5dbe0e95e15c",
+    "packages/core/test/cards/fresh.test.ts": "sha256:3a4385e12550009f2119171689101944bd6b19a3f927eb0114b18f71025aa45a",
+    "packages/core/test/checks/junit.test.ts": "sha256:53058cffa9fb9bb07b295246ea68673ffc4815bb07176f1216692ff12b4a1701"
+  }
 }
