@@ -338,6 +338,12 @@ export {
   type TemplateOptions,
 } from "./templates";
 export {
+  proposeUnits,
+  type UnitsFacts,
+  unitsYaml,
+  type WorkspacePackage,
+} from "./units-proposal";
+export {
   type ChangeUsage,
   changeUsage,
   type ModelCost,
