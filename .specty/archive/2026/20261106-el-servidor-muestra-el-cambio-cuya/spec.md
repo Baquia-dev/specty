@@ -70,3 +70,24 @@ Un servidor de `specty ui` arrancado con un CLI más viejo que el que escribió 
   - ac: —
   - verify: grep -q "configIssues" docs/ARCHITECTURE.md
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Un servidor de `specty ui` ya no deja fuera, sin avisar, el cambio de una worktree cuya `.specty/config.yaml` no puede leer, como la que escribió un Specty más nuevo. `unreadableChanges` (`flow/changes.ts`) da el cambio abierto de cada otra worktree cuya configuración da `invalid`: el que tiene como rama la de esa worktree, junto con sus errores. `openOnes` (`server/records.ts`) lo añade después de los cambios localizados y antes de los que perdieron su carpeta, con `configIssues` (`ruta: mensaje`, o solo el mensaje en la raíz), así que llega en `GET /api/changes` y por su id. La huella de `/api/events` incluye la `config.yaml` de cada worktree. En la UI, `configIssues` pasa del registro a la vista: la fila de la Bandeja lleva la marca «Su configuración no se pudo leer», y la cabecera de la página explica que hay que reiniciar `specty ui` si la configuración la escribió un Specty más nuevo, o corregirla si no, y cita cada error. `locateChanges`, los comandos y el guard no cambian: siguen rechazando esa carpeta. ARCHITECTURE §15 lo cuenta.
+
+### Desviaciones
+
+- Los tests añaden dos casos a los previstos: AC1 con una clave desconocida dentro de una sección (`verify: Unrecognized key: "nueva"`) y AC5 con la página de un cambio cuya configuración sí se lee, que no lleva la nota.
+- El subagente no ejecutó `specty approve` (spec y tests) ni `specty accept`: los ejecutó la sesión principal que lo orquesta. Antes de aceptar se incorporó main (merge a22a3c2).
+
+### Decisiones
+
+- El servidor muestra el cambio con sus errores en lugar de detectar que su CLI es más viejo (A1): no puede distinguir una clave de un Specty más nuevo de una errata, así que el texto da las dos salidas.
+- `unreadableChanges` se salta la carpeta de la propia sesión: su cambio ya lo da `locateChanges` con la configuración que el servidor leyó al arrancar.
+- Los textos de la marca y de la nota van en sus plantillas con `t()` (A5), y el servidor solo da los errores, como datos.
+
+### Pendientes
+
+- Ninguno.

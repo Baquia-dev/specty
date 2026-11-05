@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-el-servidor-muestra-el-cambio-cuya",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-el-servidor-muestra-el-cambio-cuya",
   "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:21016d79ccbf2dd84a6788c3b3119045ae8f01d4e06ddc1631fb1a5431acdef5",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "89f90134d66ccbfb684d3719f47af56a96704924",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:44:05.238Z",
       "doneAt": "2026-11-05T16:49:17.232Z",
-      "summary": "ARCHITECTURE §15 cuenta el cambio de una worktree cuya configuración no se lee: dónde va en la lista, qué lleva (configIssues) y qué muestran la Bandeja y su página; y la configuración de cada worktree en la firma de /api/events."
+      "summary": "ARCHITECTURE §15 cuenta el cambio de una worktree cuya configuración no se lee: dónde va en la lista, qué lleva (configIssues) y qué muestran la Bandeja y su página; y la configuración de cada worktree en la firma de /api/events.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,6 +82,7 @@
     "AC": 5,
     "T": 3
   },
+  "closingSubmittedAt": "2026-11-05T17:05:44.659Z",
   "lockedTests": {
     "packages/cli/test/server/unreadable-config.test.ts": "sha256:8f8abd04f4b52db67644f36ff28e121ea5f8099bdcb01241c1559c6ec30c7664",
     "packages/ui/src/change/unreadable-config.test.ts": "sha256:90e4df7d1e6ff7c25cf347e70d5fc314db11b8be1b23cd614e3d280440d7d34d"
