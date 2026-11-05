@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "20261105-la-incorporacion-integrate-y-la-ui-verifican",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-la-incorporacion-integrate-y-la-ui-verifican",
+  "baseCommit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:68c0c99f22bb8cce74b6ef09cbb067fd536e6f873c39edc66e0707d56ae12826",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7e6edc937e2775141e64a8a2ce9df8bd3df81564c22069323cd8c989fb70b3f5",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f49947e4d7013805410f4436ba2f11a7592034e38de0f2086b6456cc18843411",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:44ad018e2e49ca55c75339672755d29786e5ec4e7e83a22dc9b8c5db8f537796",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:7cdc970217f09048d8c33670b951589cf72014370c53028efcbefef4d53eb4a1",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:c775132a8c3383923a961fdabb69d5dd2fd84ea16c05acfd18b29039771e9a47",
+      "decision": "confirmed"
+    },
+    "A7": {
+      "hash": "sha256:5e4b586b65731de5fe408c50feab978be30f7e86e71cb66de2fdbabe23573e7d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 6,
+    "T": 5,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2c7cbbe6ad2f5e2814de37aa540b8bb259b9707c2f265f3cf753cc7cc2409821",
+    "at": "2026-11-05T06:27:18.327Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
