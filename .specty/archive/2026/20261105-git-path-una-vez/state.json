@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "id": "20261105-git-path-una-vez",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-git-path-una-vez",
+  "baseCommit": "1cadd35299cf53814dcbec4059cac168b812fe41",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6bdc60f70cf26d07f988d2b2e59490b492eeda0a736a384b99b1e7b2e04a3929",
+    "at": "2026-11-05T02:53:43.730Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:de1144e796453aa5c0adb534fd0352cd14d982dfc4c92e21c2d7db9e63b057a7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:030ba63513f72d9c4ce9419e91d9a34e0c368782ee48a64f2d0474014e608d16",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:d07ababb0e2e2139bca81235cecb54606b7aa83d94f0c50c1eeb49941ab53ce7",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:0ebc6ce2f7a786294de7ef618d8adec2e0b37738ba54fdbe9d7686552a25d146",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "13ceb443b5a35c11d4ca7266b00435196b82b55c",
+      "attempts": 1,
+      "startedAt": "2026-11-05T02:53:44.194Z",
+      "doneAt": "2026-11-05T02:55:34.058Z",
+      "summary": "gitPath sale de gitPaths, que recuerda cada respuesta de git (sin las que fallan) y arma las rutas bajo specty/ y common/ con la respuesta para ese tramo: una pregunta por carpeta; AC1 (GIT_TRACE) y AC2 (iguales a git en el checkout y en una worktree) en git-paths.test.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "36b53cb3b92bbc0154834ecd8b89ef47c46e26ea",
+      "attempts": 1,
+      "startedAt": "2026-11-05T02:55:34.698Z",
+      "doneAt": "2026-11-05T02:58:01.012Z",
+      "summary": "GIT_ENV de los tests añade maintenance.auto=false y gc.auto=0 por GIT_CONFIG_COUNT: ningún commit de un test lanza el mantenimiento automático de git (AC3 en git-paths.test.ts)",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "84aab9dec822a21892ae73f2b37b51470da0b215",
+      "attempts": 1,
+      "startedAt": "2026-11-05T02:58:01.710Z",
+      "doneAt": "2026-11-05T02:58:29.700Z",
+      "summary": "ARCHITECTURE (rendimiento de los hooks) explica que cada Git recuerda las rutas de git y pregunta una vez por specty/ y otra por common/, y que los tests apagan el mantenimiento automático de git",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-11-05T03:08:18.744Z"
+}

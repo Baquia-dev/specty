@@ -9,7 +9,7 @@ import {
   patchPaths,
 } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
-import type { RawAction } from "../enforce/actions";
+import { asSubagentConversation, type RawAction } from "../enforce/actions";
 import {
   CODEX_HOOKS,
   CODEX_RULES,
@@ -85,6 +85,9 @@ const RULE = [
  */
 export const codex: AgentAdapter = {
   tool: "codex",
+  // A subagent (0.134 or later) sends the root thread's id with its own `agent_id`: it is a
+  // conversation of its own, which enters with `specty enter` like the main thread.
+  normalize: asSubagentConversation,
   kind: (event) => {
     if (event.hook_event_name === "PostToolUse") return "after";
     // The matcher lets only these through; the guard checks them again all the same.
