@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-cortes-enlazan-su-cambio-sin-cargarlo",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-cortes-enlazan-su-cambio-sin-cargarlo",
   "baseCommit": "3fadac74be8a5c2b2c5becf7bf901084b2bf2210",
   "revision": 2,
@@ -51,6 +51,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T21:17:59.237Z"
+  "lockedTests": {
+    "packages/ui/src/review/spec-sections.test.ts": "sha256:5b0e405b7136b1e079dbd48c12ac32d66e1767bcfedc7c65a1948febe7f64669",
+    "packages/cli/test/server/slices.test.ts": "sha256:96ae926eacad8f7dd5665f9e0a3a6ee59abca4cb21f69881cb52c005f778f88d"
+  }
 }
