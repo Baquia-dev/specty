@@ -60,3 +60,24 @@ Cuando un cambio entra en la rama principal, la carpeta que la tiene queda con e
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`git.afterLanding` en `config.yaml` nombra un comando que Specty ejecuta con la shell en la carpeta que tiene la rama destino cada vez que un cambio llega a ella, en `close`, en su reintento y en el `accept` del carril rápido (en la carpeta principal, tras volver a la rama destino), con el límite de `verify.timeoutSec`. El cierre dice si pasó, con el comando y la carpeta, o, si falló, su última línea; el cambio sigue incorporado igualmente. Sin la clave, o si la rama no avanzó, no se ejecuta nada.
+
+### Desviaciones
+
+- La spec preveía activarlo en `.specty/config.yaml` de este repositorio, pero el guard no deja al agente editar ese archivo: lo activa la persona.
+- `afterLandingLine` recibe un objeto con el comando, la carpeta, si pasó y su última línea, en vez de cinco argumentos.
+- `landChange` pasaba de complejidad 10: lo de un cambio que vivía en la carpeta principal salió a `landedInMain`.
+- La incorporación de main tardó varios intentos por tests intermitentes con la máquina cargada (P10, de la extensión de VS Code, y P117, cinco tests de `init` que pasan de 60 s); a mano pasaron todos.
+
+### Decisiones
+
+- El comando corre antes de quitar la worktree del cambio y con la misma shell y el mismo límite que `git.setup`.
+
+### Pendientes
+
+- Activar en este repositorio el comando tras cada cierre: la persona añade `afterLanding: "pnpm --filter @baquia-dev/specty build"` en la sección `git` de `.specty/config.yaml`, para que el `specty` global no se quede con el dist de antes.
