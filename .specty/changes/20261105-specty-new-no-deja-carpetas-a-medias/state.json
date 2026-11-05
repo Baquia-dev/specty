@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f7a297095afaacddbd4203587a7bcf991d91796b",
+      "attempts": 1,
       "startedAt": "2026-11-05T08:05:17.253Z",
       "doneAt": "2026-11-05T08:10:37.636Z",
-      "summary": "gitFailedCard admite undone (carpeta y rama) y añade la línea de lo que Specty deshizo, en español y en inglés"
+      "summary": "gitFailedCard admite undone (carpeta y rama) y añade la línea de lo que Specty deshizo, en español y en inglés",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b473015411948f54ee960601782a930afd5bc5d0",
+      "startedAt": "2026-11-05T08:10:38.025Z",
+      "doneAt": "2026-11-05T08:17:12.410Z",
+      "summary": "markBranch reintenta el git config con esperas (50-800 ms) y lanza GitError tras el último intento; new --worktree, si no puede ligar la rama, quita la carpeta y la rama y devuelve gitFailedCard con lo que deshizo"
     }
   },
   "pending": {

@@ -52,7 +52,7 @@ Cuando otro proceso del clon tiene bloqueada la configuración de git (`.git/con
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/git-failed.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm sources
   - type: fix
-- [ ] T2: new reintenta y, si no puede, deshace la carpeta y la rama
+- [x] T2: new reintenta y, si no puede, deshace la carpeta y la rama
   - files: packages/cli/src/flow/branches.ts, packages/cli/src/commands/new.ts, packages/cli/test/new-locked-config.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/new-locked-config.test.ts test/worktrees.test.ts test/git-failed.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
