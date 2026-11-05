@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-una-verificacion-fresca-encuentra-los-tests",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-una-verificacion-fresca-encuentra-los-tests",
   "baseCommit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c54d6d10fd3c1284652ad193c9b60909eb841621",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:36:46.369Z",
       "doneAt": "2026-11-05T06:38:50.511Z",
-      "summary": "commands/verify.ts registra specty verify --fresh: ejecuta todas las unidades (o verify.full) en el turno con todas las plazas, sin el registro, repite una vez la que falla, anota las que pasan en el registro y las inestables o rotas en la memoria (rememberEntries, con origen opcional)"
+      "summary": "commands/verify.ts registra specty verify --fresh: ejecuta todas las unidades (o verify.full) en el turno con todas las plazas, sin el registro, repite una vez la que falla, anota las que pasan en el registro y las inestables o rotas en la memoria (rememberEntries, con origen opcional)",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6069a4c1c245753e9484ae443a561a1dbc0e5d08",
+      "startedAt": "2026-11-05T06:38:50.870Z",
+      "doneAt": "2026-11-05T06:39:22.965Z",
+      "summary": "ARCHITECTURE §6 y §9 describen specty verify --fresh; formats.md §1 y §6, el change opcional del registro y la verificación fresca"
     }
   },
   "pending": {

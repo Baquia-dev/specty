@@ -70,7 +70,7 @@ Con las unidades de `verify.units`, la verificación completa salta las que ya p
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-fresh.test.ts test/accept-units.test.ts test/risk-lessons.test.ts test/close-harvest.test.ts && pnpm typecheck && pnpm lint && pnpm knip && pnpm sources
   - type: feat
-- [ ] T3: La documentación de la verificación fresca
+- [x] T3: La documentación de la verificación fresca
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm lint
