@@ -45,7 +45,7 @@ Las verificaciones que lanza Specty (la de cada tarea, la completa y la de una i
 
 ## Tareas
 
-- [ ] T1: execute puede lanzar un comando con menos prioridad
+- [x] T1: execute puede lanzar un comando con menos prioridad
   - files: packages/cli/src/io/exec.ts, packages/cli/test/exec.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/exec.test.ts && pnpm --filter @baquia-dev/specty typecheck

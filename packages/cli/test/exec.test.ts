@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { getPriority, tmpdir } from "node:os";
 import { describe, expect, it } from "vitest";
 import { execute, MAX_OUTPUT } from "../src/io/exec";
 import { createGit } from "../src/io/git";
@@ -51,4 +52,27 @@ describe("a command past its time limit", () => {
     expect(result).toMatchObject({ code: undefined, timedOut: true });
     expect(Date.now() - started).toBeLessThan(10_000);
   }, 20_000);
+});
+
+/** Prints its priority and, 100 ms later, that of a process it starts then. */
+const PRIORITIES = `const os = require("node:os");
+const { execFileSync } = require("node:child_process");
+const own = os.getPriority();
+setTimeout(() => {
+  const child = execFileSync(process.execPath, ["-e", "process.stdout.write(String(require('node:os').getPriority()))"]);
+  process.stdout.write(own + " " + child);
+}, 100);`;
+
+describe("a command with less priority", () => {
+  it("runs at priority 10, as does a process it starts afterwards; otherwise at Specty's (AC1)", async () => {
+    // Already below 10, as under a verification that runs with less priority, it stays there.
+    const low = String(Math.max(getPriority(), 10));
+    const lowered = await execute(process.execPath, ["-e", PRIORITIES], {
+      cwd: tmpdir(),
+      lowPriority: true,
+    });
+    expect(lowered.stdout).toBe(`${low} ${low}`);
+    const plain = await execute(process.execPath, ["-e", PRIORITIES], { cwd: tmpdir() });
+    expect(plain.stdout).toBe(`${getPriority()} ${getPriority()}`);
+  });
 });

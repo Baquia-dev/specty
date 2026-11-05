@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { execFile, spawn } from "node:child_process";
+import { setPriority } from "node:os";
 
 export interface ExecOptions {
   readonly cwd: string;
@@ -12,7 +13,15 @@ export interface ExecOptions {
   readonly onOutput?: (stream: "stdout" | "stderr", text: string) => void;
   /** Keep all of the output, as for git, whose output is data rather than a log. */
   readonly whole?: boolean;
+  /**
+   * Run it below the rest of the machine (priority 10), as verifications do: the processes it
+   * starts afterwards inherit it. Best effort: where the system refuses, it runs as it is.
+   */
+  readonly lowPriority?: boolean;
 }
+
+/** The priority of a command that yields the CPU to the rest of the machine, as `nice -n 10`. */
+const LOW_PRIORITY = 10;
 
 export interface ExecResult {
   /** Exit code, or undefined when the process was killed (timeout or signal). */
@@ -24,6 +33,15 @@ export interface ExecResult {
 
 /** What `execute` keeps of each stream, unless `whole`: an output this long lost its beginning. */
 export const MAX_OUTPUT = 512 * 1024;
+
+/** Lowers the priority of process `pid`; a system that refuses leaves it as it is. */
+function lower(pid: number): void {
+  try {
+    setPriority(pid, LOW_PRIORITY);
+  } catch {
+    // Best effort: the command runs all the same.
+  }
+}
 
 /** Runs a process and collects its output: the last 512 KB of each stream, or all with `whole`. */
 export function execute(
@@ -38,6 +56,7 @@ export function execute(
       shell: options.shell ?? false,
       stdio: ["pipe", "pipe", "pipe"],
     });
+    if (options.lowPriority === true && child.pid !== undefined) lower(child.pid);
     let stdout = "";
     let stderr = "";
     let timedOut = false;

@@ -6,6 +6,13 @@
   "branch": "specty/20261105-verificaciones-con-menos-prioridad",
   "baseCommit": "49e1f4666bbf0e028df657e03134aac4d7c94044",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e266a654665384a350ec07e7350dd1afbd8c7e297b2cbe18cfd33d0faedd0c02",
+    "at": "2026-11-05T03:51:03.443Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "99d5735c399fae93ad8be74d705d49bf818691e3",
+      "startedAt": "2026-11-05T03:51:04.266Z",
+      "doneAt": "2026-11-05T03:52:30.724Z",
+      "summary": "execute acepta lowPriority: tras lanzar el proceso, setPriority(pid, 10) dentro de un try; los procesos que lanza después la heredan; AC1 en exec.test.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -37,12 +54,5 @@
     "A": 3,
     "AC": 3,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e266a654665384a350ec07e7350dd1afbd8c7e297b2cbe18cfd33d0faedd0c02",
-    "at": "2026-11-05T03:51:03.443Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
