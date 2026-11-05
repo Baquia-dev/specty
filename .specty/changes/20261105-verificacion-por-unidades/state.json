@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "20261105-verificacion-por-unidades",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261105-verificacion-por-unidades",
+  "baseCommit": "b4686dfe63d4d149247ca21552eac202ab157426",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:10675340dba7bcdf875d69c82b5507e89ef283149c198d4a5a0231efacabc299",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6f156be1deb048369f14315dd2e868c2dd8d6b701e1b79f358fc3de61cf369a3",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:935d470d8ea77dbe14bee0cfaf3ba3e72eae8bea3d1ddd09b9c70aa4455c825d",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:457248c3f5df5bd940e5937051e901efc9b799593765e7828a550028b024e222",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:50974a90aaac8d9c0c31e2aef8b9097f827a512eb63526453d846a6179b4bb07",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:1a902550a9b5e712631e9d7572b918b769893e8d1b12fb6fae0dfcf89156cf66",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:7b3d57560ecd6e6e1cd4d9196a9b4fa1b858c3afec6e86aecfb031984ffde1e4",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:5633c1b1836daf0bf3222cf4a6ea9f303eae19a8f742e76665c7dffdeff671ee",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 8,
+    "AC": 10,
+    "C": 5
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:31dedcc5036a2545af83a090196967017979fd3abb0f5b8c867289cc4a7a0f3f",
+    "at": "2026-11-05T04:09:32.737Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
