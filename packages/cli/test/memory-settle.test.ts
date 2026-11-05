@@ -43,9 +43,9 @@ describe("the entries a change took", () => {
     const open = (await cli(root, ["memory"])).out;
     expect(open).toContain("P1 · pendiente · Uno");
     expect(open).not.toContain("tomada");
-    expect((await cli(root, ["next"])).out).toContain(
-      "Las primeras libres:\n  P1 · pendiente · Uno\n  P2 · pendiente · Dos\n",
-    );
+    // AC1: the card with no active change does not list them, free again or not.
+    const card = (await cli(root, ["next"])).out;
+    for (const id of ["P1", "P2"]) expect(card).not.toContain(`${id} ·`);
   });
 
   it("AC3: show in the draft card of the change that took them", async () => {

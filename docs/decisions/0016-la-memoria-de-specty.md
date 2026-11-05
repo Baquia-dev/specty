@@ -29,6 +29,12 @@ Quién decide:
 - Ningún modelo decide solo si dos trabajos son el mismo.
 - Descartar una entrada de la memoria es solo de la persona y nunca se delega, como desbloquear un test (decisión de la persona del 2026-10-30): si lo pide un agente, la entrada queda propuesta para descartar.
 
+Quién ve qué pendientes (épica `20261106-pendientes-de-la-sesion-por-feature`, 2026-11-06):
+
+- Un agente solo ve los pendientes y las mejoras de su trabajo. La tarjeta de inicio y la de `next` sin cambio activo no listan ni cuentan los abiertos, ni remiten a `specty memory`. Solo la conversación que lleva un frente recibe sus primeras entradas libres, porque ese es su trabajo. Los recordatorios salen en todas, porque alguien los programó para las sesiones.
+- El reporte final de un agente solo nombra los pendientes de su trabajo y, de los demás, los que ese trabajo resolvió (la última regla del bloque de AGENTS.md).
+- La persona los ve todos, en `specty memory`, en «TE TOCA» de `specty status` y en la página Memoria de la UI.
+
 ## Consecuencias
 
 - El estado común vive fuera de las ramas del código. Lo en vivo es local a cada clon; lo duradero viaja con la rama `specty-memory` si la persona la sube.
