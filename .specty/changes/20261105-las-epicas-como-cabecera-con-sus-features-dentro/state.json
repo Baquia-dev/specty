@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-las-epicas-como-cabecera-con-sus-features-dentro",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-las-epicas-como-cabecera-con-sus-features-dentro",
   "baseCommit": "a7a61ce66f0f4169b2b9107552bef3b33ff2b6fa",
   "revision": 1,
@@ -63,6 +63,11 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T12:12:14.685Z"
+  "lockedTests": {
+    "packages/ui/src/components/badge.test.ts": "sha256:db377b81c29f723873eaaddc2b17c10ff0638e6b7be5d7986c43d2c060838414",
+    "packages/ui/src/data/views.test.ts": "sha256:0990565de3dffa49607520a4b81be0b07919bb0d121c7ecf938e94adc5daa871",
+    "packages/ui/src/inbox/inbox-toolbar.test.ts": "sha256:bc73749a305190d1452e1688874073879bca28b84c545a11faebf065348219bb",
+    "packages/ui/src/inbox/inbox-view.test.ts": "sha256:fde6ed8c0f7811894de552c71ac4937da66addb4e0d05223219ea72b1b80f0ea",
+    "packages/ui/src/inbox/inbox.test.ts": "sha256:740d2f2bccbb434c76905f7b6b95d806cad7e140a0049a7943872729ff6e62db"
+  }
 }
