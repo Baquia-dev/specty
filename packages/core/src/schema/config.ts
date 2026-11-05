@@ -6,17 +6,10 @@ import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "
 import { DEFAULT_DEV, type DevConfig, DevSchema, resolveDev } from "./dev";
 import { DEFAULT_GIT, type GitConfig, GitSchema, resolveGit } from "./git";
 import { DEFAULT_MEMORY, type MemoryConfig, MemorySchema, resolveMemory } from "./memory";
+import { DEFAULT_VERIFY, resolveVerify, type VerifyConfig, VerifySchema } from "./verify";
 
 /** `contract`, above `required`: a feature's tests are written and approved before its code (ADR 0014). */
 export type TestsPolicy = "contract" | "required" | "recommended" | "off";
-
-/** A part of the full verification (`verify.units`): its command and the files it reads. */
-export interface VerifyUnit {
-  readonly name: string;
-  readonly command: string;
-  /** Globs of the files whose content its result depends on, such as its package's. */
-  readonly paths: readonly string[];
-}
 
 /** `.specty/config.yaml` with every default applied. */
 /** Lines of code: a warning past `warn`, a block past `fail`, or never with `false`. */
@@ -32,20 +25,7 @@ export interface ResolvedConfig {
   readonly governed: readonly string[];
   readonly ignored: readonly string[];
   readonly sensitive: readonly string[];
-  readonly verify: {
-    readonly default?: string;
-    readonly full?: string;
-    /** A fast check of the whole repository that runs before each task's verification. */
-    readonly quick?: string;
-    readonly timeoutSec: number;
-    /** Verifications that run at once in the clone: a task's takes one, the full one all. */
-    readonly slots: number;
-    /**
-     * The full verification in parts, run in order in place of `full`: each runs again only when
-     * its command or the files of its `paths` change.
-     */
-    readonly units?: readonly VerifyUnit[];
-  };
+  readonly verify: VerifyConfig;
   readonly scope: {
     readonly implicitTests: boolean;
     readonly generated: readonly string[];
@@ -100,7 +80,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   governed: ["**"],
   ignored: ["**/*.md", "docs/**"],
   sensitive: ["**/migrations/**", "**/auth/**", ".github/**", "**/.env*", "**/infra/**"],
-  verify: { timeoutSec: 600, slots: 2 },
+  verify: DEFAULT_VERIFY,
   scope: { implicitTests: true, generated: [], autoApprove: "tests-and-generated" },
   lanes: { quick: { maxFiles: 3 } },
   split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 },
@@ -142,27 +122,6 @@ const LineLimitsSchema = z.strictObject({
   fail: z.union([Positive, z.literal(false)]).optional(),
 });
 
-/** The units of the full verification: at least one, each with a name no other has. */
-const UnitsSchema = z
-  .array(
-    z.strictObject({
-      name: z.string().min(1),
-      command: z.string().min(1),
-      paths: Globs.min(1),
-    }),
-  )
-  .min(1)
-  .superRefine((units, context) => {
-    for (const [index, { name }] of units.entries()) {
-      if (units.findIndex((other) => other.name === name) === index) continue;
-      context.addIssue({
-        code: "custom",
-        message: `Another unit is already named ${name}.`,
-        path: [index, "name"],
-      });
-    }
-  });
-
 export const ConfigSchema = z.strictObject({
   version: z.literal(1),
   language: z.enum(["es", "en"]).optional(),
@@ -170,16 +129,7 @@ export const ConfigSchema = z.strictObject({
   governed: Globs.optional(),
   ignored: Globs.optional(),
   sensitive: Globs.optional(),
-  verify: z
-    .strictObject({
-      default: z.string().min(1).optional(),
-      full: z.string().min(1).optional(),
-      quick: z.string().min(1).optional(),
-      timeoutSec: Positive.optional(),
-      slots: Positive.optional(),
-      units: UnitsSchema.optional(),
-    })
-    .optional(),
+  verify: VerifySchema.optional(),
   scope: z
     .strictObject({
       implicitTests: z.boolean().optional(),
@@ -276,7 +226,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     governed: input.governed ?? base.governed,
     ignored: input.ignored ?? base.ignored,
     sensitive: input.sensitive ?? base.sensitive,
-    verify: verifyOf(input),
+    verify: resolveVerify(input.verify),
     scope: scopeOf(input),
     ...limitsOf(input),
     lines: linesOf(input),
@@ -296,18 +246,6 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
 
 function glossaryOf(input: ConfigInput): string {
   return input.glossary ?? defaultGlossary(input.language ?? DEFAULT_CONFIG.language);
-}
-
-function verifyOf(input: ConfigInput): ResolvedConfig["verify"] {
-  const { verify } = input;
-  return {
-    ...(verify?.default !== undefined ? { default: verify.default } : {}),
-    ...(verify?.full !== undefined ? { full: verify.full } : {}),
-    ...(verify?.quick !== undefined ? { quick: verify.quick } : {}),
-    timeoutSec: verify?.timeoutSec ?? DEFAULT_CONFIG.verify.timeoutSec,
-    slots: verify?.slots ?? DEFAULT_CONFIG.verify.slots,
-    ...(verify?.units !== undefined ? { units: verify.units } : {}),
-  };
 }
 
 function scopeOf(input: ConfigInput): ResolvedConfig["scope"] {

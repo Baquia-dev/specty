@@ -241,7 +241,6 @@ export {
   type ResolvedConfig,
   resolveConfig,
   type TestsPolicy,
-  type VerifyUnit,
 } from "./schema/config";
 export {
   type ChangeState,
@@ -252,6 +251,7 @@ export {
   parseChangeState,
   type StateResult,
 } from "./schema/state";
+export type { VerifyUnit } from "./schema/verify";
 export { type AssertionLoss, removedAssertions } from "./scope/assertions";
 export { isGoverned } from "./scope/governed";
 export { isLockfile, isLockfileFor, isManifest } from "./scope/lockfiles";
