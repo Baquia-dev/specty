@@ -86,3 +86,23 @@ Solo la verificación completa espera su turno: las verificaciones de las tareas
 
 - R1: Una verificación de tarea larga hace esperar a las de otras sesiones más que hoy — el aviso dice quién ocupa las plazas, y `verify.slots` las amplía.
 - R2: Un proceso que muere con su plaza no la bloquea — su pid deja de existir y el siguiente que mira borra su archivo.
+
+## Cierre
+
+### Resumen
+
+Las verificaciones del clon comparten `verify.slots` plazas (2 por defecto) por orden de llegada (`inSlots` en `store/verify-slots.ts`, con la cola del turno generalizada en `joinQueue`): la de una tarea ocupa una, y la completa, todas, así que espera a que acaben las que corren y ninguna empieza mientras corre. Quien espera dice una vez quién ocupa las plazas y cuántas sesiones tiene delante, en español y en inglés. `specty integrate` ya verifica en el turno y con todas las plazas, como `accept`; antes verificaba sin turno.
+
+### Desviaciones
+
+- El plan inicial también bajaba la prioridad de los comandos de verificación, pero la spec salió de tamaño XL; esa parte va en un cambio propio.
+- `oneAtATime` quedó como el turno (`onTurn`) más todas las plazas solo alrededor del comando, y `landingTurn` toma solo el turno: si el cierre entero ocupara las plazas, la verificación de su incorporación se esperaría a sí misma.
+
+### Decisiones
+
+- Nadie adelanta al primero de la cola, aunque espere más plazas de las que hay libres: así una verificación completa no espera para siempre detrás de las de tarea.
+- El aviso CWE-78 de `commands/integrate.ts` es la misma llamada a `execute` con `verify.full`, ahora dentro del turno; se aceptó como riesgo conocido (P124).
+
+### Pendientes
+
+- Ninguno
