@@ -32,7 +32,12 @@ export type InboxBlock =
       readonly key: string;
       readonly epicId: string;
       readonly title: string;
-      readonly changes: readonly ChangeView[];
+      /** The epic itself, when it is in the section: its own row heads the group. */
+      readonly head?: ChangeView;
+      /** The epic as loaded, from every change: the phase and tab of a header without a row. */
+      readonly epic?: ChangeView;
+      /** Its slices in the section, in the section's order. */
+      readonly slices: readonly ChangeView[];
     };
 
 /** Waiting for the person, in progress, or finished. */
@@ -156,8 +161,14 @@ export function inboxSections(
   return sections.filter((section) => section.changes.length > 0);
 }
 
-/** Visual blocks inside a section: changes of the same epic grouped together, others as rows. */
-export function sectionBlocks(section: InboxSection): readonly InboxBlock[] {
+/**
+ * Visual blocks inside a section: the slices of an epic under it, headed by the epic's own row when
+ * it is in the section, and the other changes as rows. `all` gives the epic loaded elsewhere.
+ */
+export function sectionBlocks(
+  section: InboxSection,
+  all: readonly ChangeView[],
+): readonly InboxBlock[] {
   const sliceEpics = new Set(section.changes.flatMap((c) => (c.epic ? [c.epic.id] : [])));
   const seen = new Set<string>();
   return section.changes.flatMap((change): InboxBlock[] => {
@@ -166,11 +177,22 @@ export function sectionBlocks(section: InboxSection): readonly InboxBlock[] {
     if (seen.has(epicId)) return [];
     seen.add(epicId);
     const group = section.changes.filter((item) => epicClusterId(item, sliceEpics) === epicId);
+    const head = group.find((item) => item.id === epicId);
+    const epic = head ?? all.find((item) => item.id === epicId);
     const title =
-      group.find((item) => item.kind === "epic")?.title ??
-      group.find((item) => item.epic !== undefined)?.epic?.title ??
-      epicId;
-    return [{ kind: "epic", key: `epic-${epicId}`, epicId, title, changes: group }];
+      epic?.title ?? group.find((item) => item.epic !== undefined)?.epic?.title ?? epicId;
+    const slices = group.filter((item) => item !== head);
+    return [
+      {
+        kind: "epic",
+        key: `epic-${epicId}`,
+        epicId,
+        title,
+        ...(head === undefined ? {} : { head }),
+        ...(epic === undefined ? {} : { epic }),
+        slices,
+      },
+    ];
   });
 }
 

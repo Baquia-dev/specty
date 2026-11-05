@@ -64,12 +64,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3e1a9f09e848ae7c3aa3b11b4cc1b32d19a9f701",
+      "attempts": 1,
       "startedAt": "2026-11-05T12:13:29.586Z",
       "doneAt": "2026-11-05T12:14:18.835Z",
-      "summary": "sp-kind-badge dice «Feature» para un estándar suelto y «Feature · C2 · <título>» para un corte: con inEpic, el título que le da su épica (sliceTitle); fuera, el de la épica. InboxRow gana inEpic y lo pasa a su insignia; la sección de los sueltos de Agrupar por épica se llama «Features»"
+      "summary": "sp-kind-badge dice «Feature» para un estándar suelto y «Feature · C2 · <título>» para un corte: con inEpic, el título que le da su épica (sliceTitle); fuera, el de la épica. InboxRow gana inEpic y lo pasa a su insignia; la sección de los sueltos de Agrupar por épica se llama «Features»",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0ee5886ef2fe328073caed7225b4fb49951f120c",
+      "startedAt": "2026-11-05T12:14:19.137Z",
+      "doneAt": "2026-11-05T12:18:35.121Z",
+      "summary": "sp-inbox-epic (nuevo) encabeza el grupo con la fila de la épica proyectada o con su fase, título enlazado e insignia si está en otra sección, y sus cortes debajo sangrados; sectionBlocks da head, epic y slices, y la Bandeja quita «Total» (P162) y el número de cambios"
     }
   },
   "pending": {

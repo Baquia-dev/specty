@@ -15,13 +15,13 @@ import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { LIST, PAGE, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
-import { LucideInbox, LucideLayers, LucideSearchX, LucideTriangleAlert } from "../components/icons";
+import { LucideInbox, LucideSearchX, LucideTriangleAlert } from "../components/icons";
 import { Skeleton } from "../components/skeleton";
 import { ChangesStore } from "../data/changes-store";
-import { formatDuration } from "../data/progress";
 import { ActionError, type ChangeView } from "../data/records";
 import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences } from "../theme/preferences";
+import { InboxEpic } from "./inbox-epic";
 import { InboxRow } from "./inbox-row";
 import { InboxState } from "./inbox-state";
 import { InboxToolbar, InboxViewOptions } from "./inbox-toolbar";
@@ -45,6 +45,7 @@ const TICK_MS = 30_000;
     SectionDivider,
     EmptyState,
     Skeleton,
+    InboxEpic,
     InboxRow,
     InboxToolbar,
     InboxViewOptions,
@@ -88,23 +89,14 @@ const TICK_MS = 30_000;
             <div role="list" [class]="list + ' mt-2'">
               @for (block of blocksOf(section); track block.key) {
                 @if (block.kind === 'epic') {
-                  <div class="my-1.5 flex flex-col gap-1 rounded-xl border border-border/80 bg-surface/50 px-3 py-2.5" [attr.data-epic-group]="block.epicId">
-                    <div class="flex flex-wrap items-center justify-between gap-2 pb-1 text-xs text-text-muted" data-epic-header>
-                      <span class="flex items-center gap-1.5 font-medium text-text">
-                        <svg [lucideIcon]="epicIcon" size="13" aria-hidden="true"></svg>
-                        <span>{{ t()('Épica', 'Epic') }}: {{ block.title }}</span>
-                      </span>
-                      <div class="flex items-center gap-3">
-                        <span class="font-mono text-[11px]" data-epic-duration>{{ epicDuration(block.changes) }}</span>
-                        <span class="font-mono text-[11px]" data-epic-count>{{ epicCount(block.changes.length) }}</span>
-                      </div>
-                    </div>
-                    <div class="flex flex-col gap-0.5 border-l-2 border-border pl-3">
-                      @for (change of block.changes; track change.id) {
-                        <sp-inbox-row [change]="change" [current]="isSelected(change)" [now]="now()" (picked)="selectedId.set(change.id)" />
-                      }
-                    </div>
-                  </div>
+                  <sp-inbox-epic [epicId]="block.epicId" [title]="block.title" [epic]="block.epic" [headed]="block.head !== undefined">
+                    @if (block.head; as head) {
+                      <sp-inbox-row data-epic-head [change]="head" [current]="isSelected(head)" [now]="now()" (picked)="selectedId.set(head.id)" />
+                    }
+                    @for (change of block.slices; track change.id) {
+                      <sp-inbox-row [change]="change" [inEpic]="true" [current]="isSelected(change)" [now]="now()" (picked)="selectedId.set(change.id)" />
+                    }
+                  </sp-inbox-epic>
                 } @else {
                   <sp-inbox-row [change]="block.change" [current]="isSelected(block.change)" [now]="now()" (picked)="selectedId.set(block.change.id)" />
                 }
@@ -136,7 +128,6 @@ export class Inbox {
   protected readonly page = PAGE;
   protected readonly list = LIST;
   protected readonly warning = LucideTriangleAlert;
-  protected readonly epicIcon = LucideLayers;
   protected readonly noMatch = LucideSearchX;
   protected readonly empty = LucideInbox;
   protected readonly now = signal(Date.now());
@@ -220,35 +211,7 @@ export class Inbox {
   }
 
   protected blocksOf(section: InboxSection): readonly InboxBlock[] {
-    return sectionBlocks(section);
-  }
-
-  protected epicCount(count: number): string {
-    return count === 1
-      ? this.t()("1 cambio", "1 change")
-      : this.t()(`${count} cambios`, `${count} changes`);
-  }
-
-  protected epicDuration(changes: readonly ChangeView[]): string {
-    const epic = changes.find((c) => c.kind === "epic");
-    let elapsed = 0;
-    if (epic !== undefined) {
-      const start = Date.parse(epic.createdAt);
-      const end = epic.closedAt ? Date.parse(epic.closedAt) : this.now();
-      elapsed = Number.isFinite(start) && Number.isFinite(end) ? Math.max(0, end - start) : 0;
-    } else {
-      const starts = changes.map((c) => Date.parse(c.createdAt)).filter(Number.isFinite);
-      const minStart = starts.length > 0 ? Math.min(...starts) : this.now();
-      const inProgress = changes.some((c) => c.phase !== "done" && c.phase !== "cancelled");
-      const ends = changes
-        .map((c) => (c.closedAt ? Date.parse(c.closedAt) : Date.parse(c.phaseSince)))
-        .filter(Number.isFinite);
-      const maxEnd = ends.length > 0 ? Math.max(...ends) : this.now();
-      const end = inProgress ? this.now() : maxEnd;
-      elapsed = Math.max(0, end - minStart);
-    }
-    const formatted = formatDuration(elapsed, this.preferences.lang());
-    return this.t()(`Total: ${formatted}`, `Total: ${formatted}`);
+    return sectionBlocks(section, this.store.all());
   }
 
   protected message(error: unknown): string {
