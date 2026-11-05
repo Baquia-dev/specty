@@ -62,3 +62,24 @@ Desde C1, `specty init` prueba en orden una lista de detectores de workspace, pe
 ## Riesgos
 
 - R1: Un repositorio que es a la vez un workspace de JavaScript y uno de Cargo, como una app de Tauri con varios paquetes de JavaScript, recibe la propuesta del de JavaScript, el primero de la lista — es la decisión de C1, y un test comprueba que el de Cargo va después.
+
+## Cierre
+
+### Resumen
+
+`specty init` propone las unidades de `verify.units` de un workspace de Cargo. El detector `cargoWorkspace` (`detect/units-cargo.ts`) lee el `Cargo.toml` de la raíz con `smol-toml`, nueva `devDependency` de la CLI: expande `workspace.members` con `expand`, ahora exportado de `detect/project.ts`, quita los de `workspace.exclude` y devuelve cada miembro con `cargo test -p <nombre>`, los miembros de los que depende por `path` o por `workspace = true` y los archivos de la raíz que existen. `DETECTORS` lo prueba tras el de pnpm, npm y yarn, y, tras incorporar C3, antes del de `go.work`.
+
+### Desviaciones
+
+- Los tests de `specty init` en un workspace de Cargo van en su propio archivo, `packages/cli/test/init-units-cargo.test.ts`, que no figura en «Archivos»; la verificación de T2 no lo ejecuta, pero la de la aceptación sí.
+
+### Decisiones
+
+- Un `exclude` quita su carpeta y todo lo que hay debajo, como en Cargo, y no admite globs.
+- Un miembro que nombra a otro varias veces, por ejemplo en `dependencies` y en `dev-dependencies`, lo usa una sola vez.
+- El test del orden comprueba que el de Cargo va después del de JavaScript, no cuántos detectores hay, para que los cortes siguientes no lo rompan.
+- Al incorporar main, `DETECTORS` queda `[jsWorkspace, cargoWorkspace, goWorkspace]`.
+
+### Pendientes
+
+- Un workspace cuyo `Cargo.toml` de la raíz es también un paquete (`[workspace]` con `[package]`) no recibe propuesta todavía: la carpeta de ese paquete es la raíz entera.
