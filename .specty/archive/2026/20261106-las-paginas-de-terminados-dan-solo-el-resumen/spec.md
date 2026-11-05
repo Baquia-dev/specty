@@ -93,3 +93,25 @@ Hoy cada página de terminados del servidor local da los 30 registros completos,
 
 - R1: Un resumen del servidor que difiera del que derivaría la UI cambiaría la fila de un terminado según la fuente. Mitigación: los dos lados usan `summarizeChange` de core (C2a) y leen la spec igual (A3), y la regla de la épica es la de `deriveViews` (A2). AC1 y AC2 comprueban resúmenes completos en el servidor, y los tests de C1 (`finished-summaries`, `change-page.finished`) siguen pasando con la fuente en memoria.
 - R2: Una página que un servidor más viejo respondiera con registros no pasaría la validación, y la Bandeja diría que el servidor devolvió datos inesperados. Mitigación: la UI y el servidor salen de la misma compilación de `specty`, y ese mensaje ya existe para una respuesta que no se entiende.
+
+## Cierre
+
+### Resumen
+
+`GET /api/changes/finished` da `{ changes, total, counts, finished }`, con cada cambio terminado por su resumen y sin `records` ni `epics`. El servidor hace ese resumen con `summarizeChange` de core (C2a), la misma función con la que deriva la UI, y lo guarda con el registro archivado. A la épica de un corte le pone el título de la épica, abierta o archivada, o su id si ya no existe, y el título que le da su sección Cortes al corte. La página ya no lleva la spec, el estado, la auditoría ni el commit de las tareas, y `withTaskCommits` desaparece: ya no hace una búsqueda en el historial de git en cada petición. En la UI, `FinishedPage.changes` es de `ChangeSummary`, y `isFinishedPage` comprueba cada resumen de forma ligera. La página en memoria da el resumen de cada vista (`summaryOf`, ahora en `source.ts`). `FinishedPages` guarda los resúmenes tal como llegan, sin derivador ni `epics`, y `withEpic` prefiere el título de una épica abierta cargada y, si no, deja el que trae el resumen. ARCHITECTURE §15 y `docs/ui.md` lo cuentan. Lo comprueban los tests de la CLI, la suite entera de la UI (con los tests de C1 sin cambios) y `pnpm check` en la aceptación.
+
+Medición (AC5), con el mismo script y el servidor sobre este repositorio: la primera página de terminados pasó de 682.121 bytes (30 registros completos, de 539 terminados) a 12.482 bytes (30 resúmenes, de 540 terminados), unas 55 veces menos.
+
+### Desviaciones
+
+- `isChangeSummary` se partió en `isTaskCount`, `isEpicNamed` e `isSized`, porque `specty check` rechazó su complejidad (13, con un máximo de 10). Lo que comprueba es lo mismo que decía A5.
+
+### Decisiones
+
+- El servidor lee la spec de un archivado sin indicar idioma (`parseSpec(record.spec)`), como la UI, para que su resumen sea el mismo que derivaría la UI. Antes la leía con el idioma del repositorio, aunque solo para buscar y ordenar. Las épicas abiertas también se leen sin idioma.
+- La regla del título de la épica de un corte, y del título de su corte, no pasa a core: la aplica quien conoce las épicas. En el servidor es `listedOf`, con las abiertas y las archivadas; en la UI, `deriveViews`, y `withEpic` en el store prefiere una épica abierta cargada. Es una regla corta, y en core necesitaría la lista de épicas de cada lado.
+- `isFinishedPage` sigue siendo una comprobación ligera, como la de los registros: los textos y números que lee la fila, la épica con su id y su título y el tamaño con su nivel y sus motivos.
+
+### Pendientes
+
+- Ninguno: con este cambio, P178 queda resuelto.
