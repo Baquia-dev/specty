@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "id": "20261105-pendientes-de-las-unidades",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261105-pendientes-de-las-unidades",
+  "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7e7e12a550afa084f9d03c5291ee07dda8034a866892b5318dfbf702014d3a4f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:5e607b093149ec2f382c6d9e2edd3a3f295d800eb5a6f2c31e5bc263eddea392",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e75c990f3075c33455c44517e60968b6522e3f630cf461041feec44c5a450122",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:3139ca9cb85cd8f0ff6f3e7bfa121382ef4dad33d7d66da912e1a067a07b848a",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:8d93cef1931fb389f9d08cc42c4886e7437df9f51dab23566adbd65031b8cc5c",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:2e86a7d0baaed97008bf65ab468d2a7fe60ce156a9692af1c70dc2750ed59760",
+      "decision": "confirmed"
+    },
+    "A7": {
+      "hash": "sha256:ebe178475057abbc90f6860640da76b2c1a0c2c8d9c7967c62766a7f0e6f2701",
+      "decision": "confirmed"
+    },
+    "A8": {
+      "hash": "sha256:8ae092d2f074d37946c5bd2105d45b792f451e6f8ea9e2e4842fc51171959789",
+      "decision": "confirmed"
+    },
+    "A9": {
+      "hash": "sha256:733b8012ff1ca3398fa3fac84d2b48d13b82a08b98a34f479e84071a46675392",
+      "decision": "implicit"
+    },
+    "A10": {
+      "hash": "sha256:54f4f6c1f1eba5a961103eec71387f3f71d6b4df212ffb913ab2f412c91ea29f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 10,
+    "AC": 13,
+    "C": 9
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:552803f780b0f6d5e32d9fc1edb547c4428680e1f62d358c8e2ffed47b713ab6",
+    "at": "2026-11-05T07:52:54.730Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
