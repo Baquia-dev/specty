@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "13ceb443b5a35c11d4ca7266b00435196b82b55c",
+      "attempts": 1,
       "startedAt": "2026-11-05T02:53:44.194Z",
       "doneAt": "2026-11-05T02:55:34.058Z",
-      "summary": "gitPath sale de gitPaths, que recuerda cada respuesta de git (sin las que fallan) y arma las rutas bajo specty/ y common/ con la respuesta para ese tramo: una pregunta por carpeta; AC1 (GIT_TRACE) y AC2 (iguales a git en el checkout y en una worktree) en git-paths.test.ts"
+      "summary": "gitPath sale de gitPaths, que recuerda cada respuesta de git (sin las que fallan) y arma las rutas bajo specty/ y common/ con la respuesta para ese tramo: una pregunta por carpeta; AC1 (GIT_TRACE) y AC2 (iguales a git en el checkout y en una worktree) en git-paths.test.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "36b53cb3b92bbc0154834ecd8b89ef47c46e26ea",
+      "startedAt": "2026-11-05T02:55:34.698Z",
+      "doneAt": "2026-11-05T02:58:01.012Z",
+      "summary": "GIT_ENV de los tests añade maintenance.auto=false y gc.auto=0 por GIT_CONFIG_COUNT: ningún commit de un test lanza el mantenimiento automático de git (AC3 en git-paths.test.ts)"
     }
   },
   "pending": {

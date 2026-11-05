@@ -47,7 +47,7 @@ Cada comando de Specty pregunta a git dónde está cada uno de sus archivos con 
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-paths.test.ts test/lock.test.ts test/delegate.test.ts && pnpm --filter @baquia-dev/specty typecheck
   - type: perf
-- [ ] T2: Los repositorios de los tests no lanzan el mantenimiento automático de git
+- [x] T2: Los repositorios de los tests no lanzan el mantenimiento automático de git
   - files: packages/cli/test/support.ts, packages/cli/test/git-paths.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-paths.test.ts test/reuse.test.ts && pnpm typecheck && pnpm lint && pnpm knip

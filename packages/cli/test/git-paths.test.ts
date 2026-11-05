@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
+import { execFileSync } from "node:child_process";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { createGit } from "../src/io/git";
-import { git, tempRepo, testEnv } from "./support";
+import { git, tempRepo, testEnv, writeFiles } from "./support";
 
 /** Paths under `specty/`, under `common/`, and of other folders of git. */
 const NAMES = [
@@ -54,5 +55,17 @@ describe("the paths of git's folder", () => {
     for (const name of [...NAMES.slice(1, 5), ...NAMES.slice(1, 5)]) await repo.gitPath(name);
     const asked = await traced(trace, "rev-parse --git-path");
     expect(asked.map((line) => line.split("--git-path ")[1])).toEqual(["specty", "common"]);
+  });
+});
+
+describe("a test's repository", () => {
+  it("does not start git's automatic maintenance after a commit (AC3)", async () => {
+    const root = await tempRepo({ "src/app.ts": "export const a = 1;\n" });
+    const trace = join(await mkdtemp(join(tmpdir(), "specty-trace-")), "git.log");
+    await writeFiles(root, { "src/app.ts": "export const a = 2;\n" });
+    const env = testEnv({ GIT_TRACE: trace });
+    execFileSync("git", ["commit", "-q", "-am", "otro"], { cwd: root, env });
+    expect(await traced(trace, "commit")).toHaveLength(1);
+    expect(await traced(trace, "maintenance")).toEqual([]);
   });
 });
