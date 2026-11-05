@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "67c5f2dcd8410e99fe4f2e3cc0d7fd76614362f7",
+      "attempts": 1,
       "startedAt": "2026-11-05T10:01:51.857Z",
       "doneAt": "2026-11-05T10:06:19.270Z",
-      "summary": "Antigravity tiene «sí» en «Cortes en subagentes» (capabilities.ts) y la tabla de ARCHITECTURE §10 lo refleja; el motivo «no documentan» queda solo para Devin (Windsurf)."
+      "summary": "Antigravity tiene «sí» en «Cortes en subagentes» (capabilities.ts) y la tabla de ARCHITECTURE §10 lo refleja; el motivo «no documentan» queda solo para Devin (Windsurf).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0149e37719ac1c526e14e196b35bba9085ef588c",
+      "startedAt": "2026-11-05T10:06:19.722Z",
+      "doneAt": "2026-11-05T10:07:16.779Z",
+      "summary": "Desde Antigravity, el SIGUIENTE de la tarjeta de una épica con encargos pide lanzarlos con invoke_subagent y Workspace: \"inherit\", no branch (launchedWith en cards/epic.ts); las demás herramientas no cambian y cabe en el presupuesto."
     }
   },
   "pending": {

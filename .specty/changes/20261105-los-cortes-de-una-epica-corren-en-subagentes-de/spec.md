@@ -57,7 +57,7 @@ Con Antigravity, la tarjeta de una épica aprobada reparte ya sus cortes entre s
   - files: packages/core/test/capabilities.test.ts, packages/core/src/capabilities.ts, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
-- [ ] T2: La tarjeta de la épica pide lanzar los encargos con `invoke_subagent` y `Workspace: "inherit"` en Antigravity
+- [x] T2: La tarjeta de la épica pide lanzar los encargos con `invoke_subagent` y `Workspace: "inherit"` en Antigravity
   - files: packages/core/test/cards/epic.test.ts, packages/core/test/cards/budget.test.ts, packages/core/src/cards/epic.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts test/cards/budget.test.ts
