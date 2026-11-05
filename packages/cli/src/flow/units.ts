@@ -21,7 +21,7 @@ import { workingFiles } from "./verified";
 const RECORD = "common/specty/verified";
 
 /** A unit with the fingerprint of the code it reads; none when git cannot tell, and then it runs. */
-interface Printed {
+export interface Printed {
   readonly unit: VerifyUnit;
   readonly print: string | undefined;
 }
@@ -130,7 +130,7 @@ async function runUnits(
  * The fingerprint of each unit: a hash of its command and of the files of the working tree that
  * match its `paths`, outside `.specty/`, with their paths and contents, also those not committed.
  */
-async function printsOf(session: Session, units: readonly VerifyUnit[]): Promise<Printed[]> {
+export async function printsOf(session: Session, units: readonly VerifyUnit[]): Promise<Printed[]> {
   const files = await workingFiles(session);
   return units.map((unit) => {
     if (files === undefined) return { unit, print: undefined };
@@ -146,12 +146,20 @@ async function passedBefore(session: Session, print: string | undefined): Promis
   return print !== undefined && (await exists(await recordPath(session, print)));
 }
 
-/** Puts a unit that passed into the clone's record, unless git could not tell its fingerprint. */
-async function record(session: Session, printed: Printed, change: string, ms: number) {
+/**
+ * Puts a unit that passed in change `change` into the clone's record, unless git could not tell
+ * its fingerprint; without a change, as a fresh verification out of one, the record names none.
+ */
+export async function record(
+  session: Session,
+  printed: Printed,
+  change: string | undefined,
+  ms: number,
+) {
   if (printed.print === undefined) return;
   const { name, command } = printed.unit;
   const at = session.environment.now().toISOString();
-  const entry = { unit: name, command, change, at, ms };
+  const entry = { unit: name, command, ...(change === undefined ? {} : { change }), at, ms };
   await writeText(await recordPath(session, printed.print), `${JSON.stringify(entry)}\n`);
 }
 
