@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "20261105-temporales-se-borran",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261105-temporales-se-borran",
+  "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fa9b1781be08a5aaaadac253026894f8302919c6a82a0c5353dce00e6a074fab",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:23d702641854b30412319a1d12b53ad29c77bb8de1b5d91e301c4d8010de4941",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:2a71274e766f93cd48bb7914a7538eba1df844884d0b588ed55feddf3d04e2da",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a3760edd97201cc2b2b00ce43ae340e325f6fa162d713e0589146ffb0f872b2a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "C": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e15dd339556930f0734b815b4ff47139b3917b63fa1232d981d355fbb309b8b7",
+    "at": "2026-11-05T15:45:19.048Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
