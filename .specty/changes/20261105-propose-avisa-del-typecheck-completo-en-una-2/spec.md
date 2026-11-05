@@ -49,7 +49,7 @@ Con `policy.tests: contract`, los tests de todas las tareas se escriben y se apr
 
 ## Tareas
 
-- [ ] T1: El aviso de la comprobación de tipos en una tarea que no es la última
+- [x] T1: El aviso de la comprobación de tipos en una tarea que no es la última
   - files: packages/core/src/validate/quality.ts, packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/validate/quality.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/quality.test.ts && pnpm typecheck && pnpm lint && pnpm sources

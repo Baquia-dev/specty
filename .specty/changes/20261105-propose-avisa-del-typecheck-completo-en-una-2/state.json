@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "24dd6ee563325be59c441e6ec412ef88cb1ed8b9",
+      "startedAt": "2026-11-05T08:05:45.368Z",
+      "doneAt": "2026-11-05T08:10:48.913Z",
+      "summary": "checkTypecheck da también el aviso task-early-typecheck: una tarea de código anterior a la última que ejecuta el typecheck o verify.full, con tests en tareas de código posteriores y fase de tests; textos es/en en spec/messages."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
