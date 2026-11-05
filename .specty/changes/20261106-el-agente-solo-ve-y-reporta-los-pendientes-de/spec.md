@@ -84,7 +84,7 @@ Hoy cada sesión empieza con «Pendientes y mejoras abiertas: 72. Las primeras l
   - ac: —
   - verify: pnpm lint
   - type: docs
-- [ ] T5: El test de la tarjeta de inicio de Claude Code comprueba la memoria con un recordatorio
+- [x] T5: El test de la tarjeta de inicio de Claude Code comprueba la memoria con un recordatorio
   - files: packages/cli/test/setup.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/setup.test.ts
