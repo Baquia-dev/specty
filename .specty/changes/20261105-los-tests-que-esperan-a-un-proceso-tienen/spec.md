@@ -18,7 +18,7 @@ Con este cambio, la espera del enlace del test del sustituto mudo corre con un r
 
 ## Tareas
 
-- [ ] T1: Dar margen a los tests que esperan a un proceso
+- [x] T1: Dar margen a los tests que esperan a un proceso
   - files: packages/vscode/test/specty.test.ts, packages/vscode/test/extension.test.ts, packages/cli/test/fresh-session.test.ts
   - verify: pnpm --filter specty-vscode exec vitest run test/specty.test.ts test/extension.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/fresh-session.test.ts
   - type: test
