@@ -3,6 +3,7 @@ import { type Lang, proposeUnits, type UnitsFacts, unitsYaml } from "@baquia-dev
 import type { Detection } from "./project";
 import { cargoWorkspace } from "./units-cargo";
 import { goWorkspace } from "./units-go";
+import { gradleWorkspace } from "./units-gradle";
 import { jsWorkspace } from "./units-js";
 
 /** What a detector knows of its workspace: its packages, its manager if any and the shared root files. */
@@ -14,8 +15,13 @@ export type UnitsDetector = (
   detection: Detection,
 ) => Promise<WorkspaceFacts | undefined>;
 
-/** The detectors `init` tries, in order: pnpm, npm and yarn first, then Cargo and `go.work`. */
-export const DETECTORS: readonly UnitsDetector[] = [jsWorkspace, cargoWorkspace, goWorkspace];
+/** The detectors `init` tries, in order: pnpm, npm and yarn first, then Cargo, `go.work` and Gradle. */
+export const DETECTORS: readonly UnitsDetector[] = [
+  jsWorkspace,
+  cargoWorkspace,
+  goWorkspace,
+  gradleWorkspace,
+];
 
 /**
  * The units `init` proposes for the repository's workspace, as YAML lines under `verify:`, with

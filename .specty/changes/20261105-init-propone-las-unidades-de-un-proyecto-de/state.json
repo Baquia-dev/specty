@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-init-propone-las-unidades-de-un-proyecto-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-init-propone-las-unidades-de-un-proyecto-de",
   "baseCommit": "e0230281b45808ed67da361b02c917cb2dbbbf59",
   "revision": 1,
@@ -43,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "36e8221606f70903607d69061bf0cdcaf1c6c997",
+      "startedAt": "2026-11-05T13:53:21.113Z",
+      "doneAt": "2026-11-05T13:55:32.599Z",
+      "summary": "Detector gradleWorkspace (detect/units-gradle.ts): subproyectos de los include de settings.gradle(.kts), tests en src/test con su tarea test, dependencias por project(\":…\") o accesor tipado y lo compartido de la raíz; DETECTORS lo prueba tras Cargo y Go."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
