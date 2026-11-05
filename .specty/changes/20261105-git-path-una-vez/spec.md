@@ -52,7 +52,7 @@ Cada comando de Specty pregunta a git dónde está cada uno de sus archivos con 
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-paths.test.ts test/reuse.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: perf
-- [ ] T3: La documentación de las rutas de git que recuerda cada comando
+- [x] T3: La documentación de las rutas de git que recuerda cada comando
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

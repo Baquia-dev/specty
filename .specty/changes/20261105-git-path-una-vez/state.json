@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-git-path-una-vez",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-git-path-una-vez",
   "baseCommit": "1cadd35299cf53814dcbec4059cac168b812fe41",
   "revision": 1,
@@ -51,12 +51,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "36b53cb3b92bbc0154834ecd8b89ef47c46e26ea",
+      "attempts": 1,
       "startedAt": "2026-11-05T02:55:34.698Z",
       "doneAt": "2026-11-05T02:58:01.012Z",
-      "summary": "GIT_ENV de los tests añade maintenance.auto=false y gc.auto=0 por GIT_CONFIG_COUNT: ningún commit de un test lanza el mantenimiento automático de git (AC3 en git-paths.test.ts)"
+      "summary": "GIT_ENV de los tests añade maintenance.auto=false y gc.auto=0 por GIT_CONFIG_COUNT: ningún commit de un test lanza el mantenimiento automático de git (AC3 en git-paths.test.ts)",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "84aab9dec822a21892ae73f2b37b51470da0b215",
+      "startedAt": "2026-11-05T02:58:01.710Z",
+      "doneAt": "2026-11-05T02:58:29.700Z",
+      "summary": "ARCHITECTURE (rendimiento de los hooks) explica que cada Git recuerda las rutas de git y pregunta una vez por specty/ y otra por common/, y que los tests apagan el mantenimiento automático de git"
     }
   },
   "pending": {
