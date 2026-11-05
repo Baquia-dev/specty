@@ -74,7 +74,7 @@ Desde C4, el servidor local da los cambios terminados por páginas en `GET /api/
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/finished-source.test.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/finished-source.test.ts --include src/data/server.test.ts && pnpm lint
-- [ ] T2: El store guarda las páginas de terminados aparte de los abiertos
+- [x] T2: El store guarda las páginas de terminados aparte de los abiertos
   - files: packages/ui/src/data/finished-pages.ts, packages/ui/src/data/changes-store.ts, packages/ui/src/data/finished-pages.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/finished-pages.test.ts --include src/data/changes-store.test.ts --include src/data/fixtures.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint

@@ -55,12 +55,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cc5a3b77f0de86d70dbce8faeaf1c3082336d381",
+      "attempts": 1,
       "startedAt": "2026-11-05T13:49:23.953Z",
       "doneAt": "2026-11-05T13:52:42.166Z",
-      "summary": "SpectyData.finished(request) con FinishedRequest y FinishedPage: por defecto pagina en memoria los terminados de changes() con matchesQuery y sortChanges (deriveViews en un chunk perezoso); ServerData.finished pide GET /api/changes/finished y comprueba la respuesta con isFinishedPage."
+      "summary": "SpectyData.finished(request) con FinishedRequest y FinishedPage: por defecto pagina en memoria los terminados de changes() con matchesQuery y sortChanges (deriveViews en un chunk perezoso); ServerData.finished pide GET /api/changes/finished y comprueba la respuesta con isFinishedPage.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "00bc0d6fb6b21d9c29cce977283622b24986113d",
+      "startedAt": "2026-11-05T13:52:42.466Z",
+      "doneAt": "2026-11-05T13:53:54.691Z",
+      "summary": "FinishedPages (data/finished-pages.ts) pide, sigue y recarga las páginas de terminados sin repetir cambios y descartando respuestas viejas; ChangesStore separa open de finished, con la épica de cada corte, y all da los dos una vez."
     }
   },
   "pending": {
