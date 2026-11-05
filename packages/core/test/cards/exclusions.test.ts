@@ -49,22 +49,23 @@ describe("the tools that see what Specty writes, where the agent reads them", ()
     ]);
   });
 
-  it("AC1: the block goes before Specty's memory", () => {
+  it("AC1: the block goes before the reminders of Specty's memory, without its pending items", () => {
+    const open = {
+      status: "open" as const,
+      created: "2026-11-01T10:00:00.000Z",
+      origin: { by: "claude-code" },
+    };
     const memory = [
-      {
-        id: "P1",
-        kind: "pending" as const,
-        status: "open" as const,
-        created: "2026-11-01T10:00:00.000Z",
-        origin: { by: "claude-code" },
-        text: "Algo pendiente",
-      },
+      { ...open, id: "P1", kind: "reminder" as const, text: "Algo que recordar" },
+      { ...open, id: "P2", kind: "pending" as const, text: "Algo pendiente" },
     ];
     const text = renderText(nextCard({ dirty: [], exclusions: [VITEST], memory }, ES), "es");
     expect(text.indexOf("HERRAMIENTAS QUE VEN LO QUE ESCRIBE SPECTY:")).toBeGreaterThan(-1);
     expect(text.indexOf("HERRAMIENTAS QUE VEN LO QUE ESCRIBE SPECTY:")).toBeLessThan(
-      text.indexOf("MEMORIA DE SPECTY:"),
+      text.indexOf("RECORDATORIOS:"),
     );
+    expect(text).not.toContain("MEMORIA DE SPECTY:");
+    expect(text).not.toContain("Algo pendiente");
   });
 
   it("AC2: next adds no block when every tool excludes it", () => {

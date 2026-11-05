@@ -69,7 +69,7 @@ function outputText(body: unknown): string | undefined {
 
 /**
  * `GET /api/memory`'s answer: the entries of Specty's memory and the open changes, each with the
- * fields the memory page reads.
+ * fields the memory page reads, and the changes the entries came from, each with its title.
  */
 export function isMemoryRecord(value: unknown): value is MemoryRecord {
   if (!isObject(value) || !Array.isArray(value.entries) || !Array.isArray(value.changes))
@@ -81,7 +81,12 @@ export function isMemoryRecord(value: unknown): value is MemoryRecord {
   const change = (item: unknown) =>
     isObject(item) &&
     ["id", "kind", "phase", "title", "waitingFor"].every((key) => isText(item[key]));
-  return value.entries.every(entry) && value.changes.every(change);
+  // Each change of origin has its title at least: one the server does not find, its id.
+  const origin = (item: unknown) => isObject(item) && isText(item.title);
+  const origins =
+    value.origins === undefined ||
+    (isObject(value.origins) && Object.values(value.origins).every(origin));
+  return value.entries.every(entry) && value.changes.every(change) && origins;
 }
 
 /**

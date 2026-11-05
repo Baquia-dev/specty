@@ -41,6 +41,39 @@ export const checkAdjusting: Rule = (spec, ctx, lang) => {
   return [...changed, ...newScope];
 };
 
+/** The phases where an adjustment is proposed: once proposed, it goes on in its review. */
+const ADJUSTMENT_PHASES: ReadonlySet<string> = new Set(["adjusting", "review"]);
+
+/**
+ * An epic's adjustment does not modify or remove a closed slice: each one stays as approved, or as
+ * the adjustment's last proposal left it, which Specty validated while its change was still open.
+ * Only an adjustment has an approved revision in review.
+ */
+export const checkClosedSlices: Rule = (spec, ctx, lang) => {
+  const { approved, closedSlices } = ctx;
+  if (!ADJUSTMENT_PHASES.has(ctx.phase) || approved === undefined || closedSlices === undefined) {
+    return [];
+  }
+  const before = itemHashes(approved);
+  const kept = [before, ...(ctx.previous === undefined ? [] : [itemHashes(ctx.previous)])];
+  const after = itemHashes(spec);
+  // A removed slice matches nothing, also when the last proposal had removed it.
+  const isKept = (id: string) => {
+    const now = after.get(id);
+    return now !== undefined && kept.some((hashes) => hashes.get(id) === now);
+  };
+  return [...closedSlices]
+    .filter(([id]) => before.has(id) && !isKept(id))
+    .map(([id, change]) =>
+      report(lang, {
+        code: "closed-slice-changed",
+        params: { id, change },
+        line: itemLine(ctx, id),
+        target: id,
+      }),
+    );
+};
+
 /** While closing, only the Closing section may change. */
 export const checkClosing: Rule = (spec, ctx, lang) => {
   const approved = ctx.approved;

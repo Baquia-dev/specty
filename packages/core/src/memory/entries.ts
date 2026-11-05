@@ -226,7 +226,69 @@ export function settledEntry(
   return { ...free, status: "open" };
 }
 
-const NONE = new Set(["ninguno", "ninguna", "none"]);
+/**
+ * What a follow-up says when there are none, in Specty's two languages: its first sentence, as
+ * `saysNone` leaves it.
+ */
+const NONE = new Set([
+  "ninguno",
+  "ninguna",
+  "ninguno nuevo",
+  "ninguna nueva",
+  "ninguno mas",
+  "ninguna mas",
+  "ninguno pendiente",
+  "ninguna pendiente",
+  "ningun pendiente",
+  "ningun pendiente nuevo",
+  "no hay",
+  "no hay ninguno",
+  "no hay ninguna",
+  "no hay nada",
+  "no hay nada pendiente",
+  "no hay nada nuevo",
+  "no hay pendientes",
+  "no hay pendientes nuevos",
+  "no queda ninguno",
+  "no queda nada",
+  "no quedan pendientes",
+  "nada",
+  "nada pendiente",
+  "nada nuevo",
+  "nada mas",
+  "sin pendientes",
+  "sin pendientes nuevos",
+  "none",
+  "none new",
+  "none left",
+  "none pending",
+  "none remaining",
+  "nothing",
+  "nothing new",
+  "nothing pending",
+  "nothing left",
+  "nothing else",
+  "nothing more",
+  "no pending items",
+  "no new pending items",
+  "no pending items left",
+]);
+
+/**
+ * Whether a follow-up only says there are none: its first sentence, up to the first «.» or «:»,
+ * without case, accents or Markdown emphasis, is one of `NONE`. What follows that sign does not
+ * count («Ninguno nuevo. C6 hará…»), but a longer sentence does («Ninguno, salvo Y»).
+ */
+function saysNone(text: string): boolean {
+  const first = (text.split(/[.:]/, 1)[0] ?? "")
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/[*_`]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+  return NONE.has(first);
+}
 
 /**
  * The follow-ups of a closing that become pending items, trimmed and once each. Left out: an
@@ -242,7 +304,7 @@ export function harvestable(
   const kept: string[] = [];
   for (const item of items) {
     const text = item.trim();
-    const none = NONE.has(text.replace(/\.$/, "").toLowerCase());
+    const none = saysNone(text);
     const cites = (text.match(/\b[PD][1-9]\d*\b/g) ?? []).some((id) => known.has(id));
     if (text.length > 0 && !none && !cites && !open.has(text) && !kept.includes(text))
       kept.push(text);

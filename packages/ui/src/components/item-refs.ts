@@ -57,6 +57,7 @@ export function itemsOfReview(review: ReviewView): ItemMap {
   for (const i of [...review.assumptions, ...review.criteria, ...review.risks])
     map.set(i.id, i.text);
   for (const t of review.tasks) map.set(t.id, t.title);
+  for (const s of review.slices) map.set(s.id, s.title);
   for (const e of review.delta?.entries ?? []) {
     const text = e.text
       .filter((p) => p.change !== "removed")

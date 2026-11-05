@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261106-tooltip-del-corte-con-su-titulo",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261106-tooltip-del-corte-con-su-titulo",
+  "baseCommit": "7f6fa02d6bfda934258c5956b042f838136178dc",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2be3d0d5cd6cefc085314f40604457b14bbc7b0ee582393f2aefb2d5ecd1f06b",
+    "at": "2026-11-05T20:36:54.104Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "18368cb99215b295366217c5b8e0d856b1669fcf",
+      "attempts": 1,
+      "startedAt": "2026-11-05T20:41:10.623Z",
+      "doneAt": "2026-11-05T20:46:10.941Z",
+      "summary": "itemsOfReview añade cada corte de review.slices con su título: el tooltip del id de un corte dice «Corte C1: <título>»",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/ui/src/components/item-tooltip.test.ts": "sha256:a3d1591bfeb5705706de850946461abc863c527a0f798dae7ae3e8ca56c6d645"
+  }
+}

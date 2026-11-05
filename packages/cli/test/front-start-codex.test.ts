@@ -59,25 +59,22 @@ describe("the card with no active change in a Codex thread that holds a front", 
     expect((await bash(root, "t1", "specty front take B")).code).toBe(0);
     const next = await cli(root, ["next"], inThread("t1"));
     expect(memoryOf(next.out).slice(0, 3)).toEqual([
-      "Pendientes y mejoras abiertas: 5. Las primeras libres de tu frente, B, en su orden:",
+      "Las primeras entradas libres de tu frente, B, en su orden:",
       "P4 · pendiente · Cuatro",
       "P2 · pendiente · Dos",
     ]);
     for (const outside of ["P1", "P3", "P5"]) expect(next.out).not.toContain(`${outside} ·`);
+    expect(next.out).not.toContain("`specty memory`");
     // The guard knows the thread by its event, as when the session starts.
     expect((await started(root, "t1")).out).toBe(next.out);
   });
 
-  it("AC2: leaves that front's entries out for another Codex thread", async () => {
+  it("AC1: gives another Codex thread no entry", async () => {
     const root = await withFront();
     expect((await bash(root, "t1", "specty front take B")).code).toBe(0);
     const other = await cli(root, ["next"], inThread("t2"));
-    expect(memoryOf(other.out).slice(0, 4)).toEqual([
-      "Pendientes y mejoras abiertas: 5. Las primeras libres:",
-      "P1 · pendiente · Uno",
-      "P3 · pendiente · Tres",
-      "P5 · pendiente · Cinco",
-    ]);
+    expect(memoryOf(other.out)).toEqual([]);
+    for (const id of ["P1", "P2", "P3", "P4", "P5"]) expect(other.out).not.toContain(`${id} ·`);
     expect((await started(root, "t2")).out).toBe(other.out);
   });
 });

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { MemoryEntry, StatusEntry } from "@baquia-dev/specty-core";
 import { fold, localDay, sessionEntries } from "@baquia-dev/specty-core/light";
-import type { Bilingual, MemoryRecord } from "../data/records";
+import type { Bilingual, MemoryOrigin, MemoryRecord } from "../data/records";
 
 // The memory page (ADR 0016): what is the person's turn, who holds each open change, and the open
 // pending items, improvements and decisions, without showing an entry twice.
@@ -27,7 +27,30 @@ export interface MemorySection {
   readonly key: "turn" | "holders" | "work" | "decisions" | "lessons" | "waiting" | "closed";
   readonly label: Bilingual;
   readonly items: readonly MemoryItem[];
+  /** «Pendientes y mejoras»: its entries by the feature they came from, `items` in their order. */
+  readonly groups?: readonly MemoryGroup[];
 }
+
+/** An open pending item or improvement, as a group of «Pendientes y mejoras» lists it. */
+type WorkItem = Extract<MemoryItem, { readonly kind: "work" }>;
+
+/** The change heading a group of «Pendientes y mejoras»: its id, with what the source says of it. */
+export interface MemoryFeature extends MemoryOrigin {
+  readonly id: string;
+}
+
+/**
+ * A group of «Pendientes y mejoras»: the change its entries came from, with them by date, the
+ * oldest first; for an epic, its own entries and then its slices with entries, each a group.
+ * «Sin feature», the entries of no change, has none.
+ */
+export interface MemoryGroup {
+  readonly change?: MemoryFeature;
+  readonly items: readonly WorkItem[];
+  readonly features: readonly MemoryGroup[];
+}
+
+type Origins = Readonly<Record<string, MemoryOrigin>>;
 
 /** What the page's toolbar keeps: the search, one kind of entry or all, and the closed ones. */
 export interface MemoryFilter {
@@ -86,10 +109,7 @@ export function memorySections(
       "holders",
       changes.map((change): MemoryItem => ({ kind: "holder", change })),
     ),
-    section(
-      "work",
-      of(["pending", "improvement"]).map((entry): MemoryItem => ({ kind: "work", entry })),
-    ),
+    workSection(of(["pending", "improvement"]), record.origins ?? {}),
     section(
       "decisions",
       of(["decision"]).map((entry): MemoryItem => ({ kind: "decision", entry })),
@@ -107,9 +127,14 @@ export function memorySections(
   return sections.filter((found) => found.items.length > 0);
 }
 
-/** What the search and the kind keep: a kind leaves out the changes, which are not entries. */
+/**
+ * What the search and the kind keep: a kind leaves out the changes, which are not entries. An
+ * entry is found by the title of the change it came from and by that of its epic too.
+ */
 function filtered(record: MemoryRecord, filter: MemoryFilter): MemoryRecord {
   const query = fold(filter.query);
+  const origin = (entry: MemoryEntry) =>
+    entry.origin.change === undefined ? undefined : record.origins?.[entry.origin.change];
   const entries = record.entries.filter(
     (entry) =>
       (filter.kind === "all" || entry.kind === filter.kind) &&
@@ -118,6 +143,8 @@ function filtered(record: MemoryRecord, filter: MemoryFilter): MemoryRecord {
         entry.text,
         entry.quote,
         entry.origin.change,
+        origin(entry)?.title,
+        origin(entry)?.epic?.title,
         entry.taken?.change,
         ...(entry.paths ?? []),
       ]),
@@ -140,6 +167,81 @@ function matches(query: string, fields: readonly (string | undefined)[]): boolea
 
 function section(key: MemorySection["key"], items: readonly MemoryItem[]): MemorySection {
   return { key, label: LABELS[key], items };
+}
+
+/** «Pendientes y mejoras», by groups (`featureGroups`), and its entries in their order. */
+function workSection(entries: readonly MemoryEntry[], origins: Origins): MemorySection {
+  const groups = featureGroups(entries, origins);
+  return { ...section("work", groups.flatMap(itemsOf)), groups };
+}
+
+/**
+ * The groups of `entries`, already by date: each change's entries under it, a slice's inside the
+ * group of its epic, after the epic's own, and the groups by their newest entry, the newest first;
+ * then the entries of no change, in «Sin feature». A change the source says nothing of goes by its
+ * id; an epic it does not give, with the title its slices give it.
+ */
+function featureGroups(entries: readonly MemoryEntry[], origins: Origins): readonly MemoryGroup[] {
+  const own = new Map<string, MemoryEntry[]>();
+  for (const entry of entries) {
+    const id = entry.origin.change ?? "";
+    own.set(id, [...(own.get(id) ?? []), entry]);
+  }
+  const heads = new Map<string, MemoryFeature>();
+  const slices = new Map<string, MemoryGroup[]>();
+  for (const [id, mine] of own) {
+    if (id === "") continue;
+    const change = featureOf(id, origins);
+    const epic = change.epic;
+    if (epic === undefined) {
+      heads.set(id, change);
+      continue;
+    }
+    if (!heads.has(epic.id))
+      heads.set(epic.id, featureOf(epic.id, origins, { title: epic.title, kind: "epic" }));
+    slices.set(epic.id, [...(slices.get(epic.id) ?? []), groupOf(change, mine, [])]);
+  }
+  const groups = [...heads.values()].map((change) =>
+    groupOf(change, own.get(change.id) ?? [], byNewest(slices.get(change.id) ?? [])),
+  );
+  const loose = own.get("");
+  return [...byNewest(groups), ...(loose === undefined ? [] : [groupOf(undefined, loose, [])])];
+}
+
+/** The change `id` as the source says it, or as `fallback`, by its id when there is none. */
+function featureOf(
+  id: string,
+  origins: Origins,
+  fallback: MemoryOrigin = { title: id },
+): MemoryFeature {
+  return { id, ...(origins[id] ?? fallback) };
+}
+
+function groupOf(
+  change: MemoryFeature | undefined,
+  entries: readonly MemoryEntry[],
+  features: readonly MemoryGroup[],
+): MemoryGroup {
+  return {
+    ...(change === undefined ? {} : { change }),
+    items: entries.map((entry): WorkItem => ({ kind: "work", entry })),
+    features,
+  };
+}
+
+/** The entries of a group: its own, then those of its slices. */
+function itemsOf(group: MemoryGroup): readonly WorkItem[] {
+  return [...group.items, ...group.features.flatMap(itemsOf)];
+}
+
+/** By their newest entry, the newest first; on the same date, as they came. */
+function byNewest(groups: readonly MemoryGroup[]): readonly MemoryGroup[] {
+  const newest = (group: MemoryGroup) =>
+    itemsOf(group).reduce(
+      (latest, { entry }) => (entry.created > latest ? entry.created : latest),
+      "",
+    );
+  return groups.toSorted((a, b) => newest(b).localeCompare(newest(a)));
 }
 
 /** By date and, on the same date, the P ids before the D ones, each by number. */

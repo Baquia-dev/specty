@@ -77,72 +77,54 @@ const sectionOf = (text: string, title: string): string[] => {
 };
 
 describe("the memory in the card with no active change, with fronts", () => {
-  it("AC1: shows the asker's own front: its first three free entries, in the front's order", () => {
-    const lines = sectionOf(card([owner("B"), owner("ui")], "B"), "MEMORIA DE SPECTY");
-    expect(lines.slice(0, 4)).toEqual([
-      "Pendientes y mejoras abiertas: 7. Las primeras libres de tu frente, B, en su orden:",
+  it("AC1: shows the asker's own front: its first three free entries, in order, without the memory's total", () => {
+    const text = card([owner("B"), owner("ui")], "B");
+    expect(sectionOf(text, "MEMORIA DE SPECTY")).toEqual([
+      "Las primeras entradas libres de tu frente, B, en su orden:",
       "P6 · mejora · Texto de P6",
       "P5 · pendiente · Texto de P5",
       "P4 · pendiente · Texto de P4",
+      "No las empieces si el usuario no lo pide. Para tomar una, crea su cambio con `specty new` y cita su id en la petición.",
     ]);
-    const text = card([owner("B"), owner("ui")], "B");
     for (const outside of ["P1", "P3", "P7", "P2"]) expect(text).not.toContain(`${outside} ·`);
-    expect(lines.at(-1)).toContain("`specty new`");
+    expect(text).not.toContain("`specty memory`");
   });
 
-  it("AC1: says so in English", () => {
-    const lines = sectionOf(card([owner("B")], "B", EN), "SPECTY'S MEMORY");
-    expect(lines[0]).toBe(
-      "Open pending items and improvements: 7. The first free ones of your front, B, in its order:",
-    );
-    expect(lines[1]).toBe("P6 · improvement · Texto de P6");
-  });
-
-  it("AC2: leaves out the entries of the fronts other sessions hold, and names those fronts", () => {
-    const lines = sectionOf(card([owner("B"), owner("ui")]), "MEMORIA DE SPECTY");
-    expect(lines.slice(0, 4)).toEqual([
-      "Pendientes y mejoras abiertas: 7. Las primeras libres:",
-      "P1 · pendiente · Texto de P1",
-      "P3 · pendiente · Texto de P3",
-      "Las de los frentes con dueño (B, ui) no salen aquí: `specty front` dice quién los lleva.",
-    ]);
-    const en = sectionOf(card([owner("ui")], undefined, EN), "SPECTY'S MEMORY");
-    expect(en.slice(0, 4)).toEqual([
-      "Open pending items and improvements: 7. The first free ones:",
-      "P1 · pending · Texto de P1",
-      "P3 · pending · Texto de P3",
+  it("AC4: says so in English", () => {
+    expect(sectionOf(card([owner("B")], "B", EN), "SPECTY'S MEMORY")).toEqual([
+      "The first free entries of your front, B, in its order:",
+      "P6 · improvement · Texto de P6",
+      "P5 · pending · Texto de P5",
       "P4 · pending · Texto de P4",
+      "Do not start them unless the user asks. To take one, create its change with `specty new` and cite its id in the request.",
     ]);
-    expect(en[4]).toBe(
-      "Those of the fronts with an owner (ui) are left out: `specty front` says who holds them.",
-    );
   });
 
-  it("AC2: says none is free when every free entry belongs to a front with an owner", () => {
-    const memory = [entry("P4"), entry("P5"), entry("P7")];
-    const lines = sectionOf(
-      card([owner("B"), owner("ui")], undefined, ES, memory),
-      "MEMORIA DE SPECTY",
-    );
-    expect(lines[0]).toBe("Pendientes y mejoras abiertas: 3; ninguna está libre.");
-    expect(lines[1]).toBe(
-      "Las de los frentes con dueño (B, ui) no salen aquí: `specty front` dice quién los lleva.",
-    );
+  it("AC1: gives a conversation without a front of its own no entry, nor the fronts others hold", () => {
+    for (const owners of [[owner("B"), owner("ui")], [owner("ui")], []]) {
+      const text = card(owners);
+      expect(sectionOf(text, "MEMORIA DE SPECTY")).toEqual([]);
+      for (const id of ["P1", "P3", "P4", "P5", "P6", "P7"]) expect(text).not.toContain(`${id} ·`);
+      expect(text).not.toContain("`specty front`");
+    }
+    expect(sectionOf(card([owner("ui")], undefined, EN), "SPECTY'S MEMORY")).toEqual([]);
   });
 
-  it("AC3: says the asker's front has no free entry and to ask the person, with no other entry", () => {
+  it("AC1: says the asker's front has no free entry and to ask the person, with no other entry", () => {
     const text = card([owner("docs"), owner("B")], "docs");
-    const lines = sectionOf(text, "MEMORIA DE SPECTY");
-    expect(lines[0]).toBe(
-      "Pendientes y mejoras abiertas: 7; tu frente, docs, no tiene ninguna libre: pregúntale a la persona qué sigue.",
-    );
+    expect(sectionOf(text, "MEMORIA DE SPECTY")).toEqual([
+      "Tu frente, docs, no tiene ninguna entrada libre: pregúntale a la persona qué sigue.",
+    ]);
     for (const id of ["P1", "P3", "P4", "P5", "P6", "P7"]) expect(text).not.toContain(`${id} ·`);
-    expect(sectionOf(card([owner("docs")], "docs", EN), "SPECTY'S MEMORY")[0]).toBe(
-      "Open pending items and improvements: 7; your front, docs, has none free: ask the person what comes next.",
-    );
   });
 
-  it("AC4: is the card of before when no front has a live owner and the asker holds none", () => {
+  it("AC4: says the asker's front has no free entry in English too", () => {
+    expect(sectionOf(card([owner("docs")], "docs", EN), "SPECTY'S MEMORY")).toEqual([
+      "Your front, docs, has no free entry: ask the person what comes next.",
+    ]);
+  });
+
+  it("AC1: is the card of before when no front has a live owner and the asker holds none", () => {
     const before = renderText(nextCard({ dirty: [], memory: MEMORY }, ES), "es");
     expect(card([])).toBe(before);
     const english = renderText(nextCard({ dirty: [], memory: MEMORY }, EN), "en");
