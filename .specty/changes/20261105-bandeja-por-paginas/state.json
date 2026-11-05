@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "id": "20261105-bandeja-por-paginas",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261105-bandeja-por-paginas",
+  "baseCommit": "ace864380aa3b35f7287846a6b14a8c68752c43e",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5279868b26e327e5abe3f632c95ec77c1d718668a6862c23ab8577592190656f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2aaeb72e0fcbc9439a87427a5794482a10e891ad5623ced30c4761c7e708bf85",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:cb1585b3d599af79afee02ed77e4fcf2d9778d4405df53cdcdec7d608a168c51",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:000e4495a01063fd408aac46ce94c316328bc90be630fc167c6e0d4425956cac",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:a30ceda6ea127fdbf07818bddee2f83eab66b278f78075130c2f2743c3e02889",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:c61633ca814b4558371c8ce1687e5119d5452352fef5d6901db3b25d01585de5",
+      "decision": "confirmed"
+    },
+    "A7": {
+      "hash": "sha256:e05b6433722723e4576027983223bc9a64459617ef75e2e8a664db833e678d7a",
+      "decision": "confirmed"
+    },
+    "A8": {
+      "hash": "sha256:de88f5629eda2d475ffba36442e52213a7678b8dfd20a89cddc066b3b3f3dc61",
+      "decision": "confirmed"
+    },
+    "A9": {
+      "hash": "sha256:ac777035201fcdfc3661c4a73b66d2984a797b57e2dca1ebe28b30360030aef6",
+      "decision": "confirmed"
+    },
+    "A10": {
+      "hash": "sha256:e16f12f58210acea745ef118340cfcb755c73a6d816f723b12cf727af7c09996",
+      "decision": "confirmed"
+    },
+    "A11": {
+      "hash": "sha256:7c45a7da7c72d34304df4a75b07c7fda6f53e08c4a17777f830486adaa98e579",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 11,
+    "AC": 10,
+    "C": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7cafb66c592117a01e9acba8e9049f7ac5245136dad00f4595e03a8201c167b8",
+    "at": "2026-11-05T10:31:04.975Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  }
+}
