@@ -71,3 +71,27 @@ La épica `20261105-verificacion-por-unidades` dejó once pendientes en la memor
 - C9: La verificación fresca se ve en vivo y desde MCP
   - ac: AC11, AC12, AC13
   - depends: C8
+
+## Cierre
+
+### Resumen
+
+Los once pendientes de la épica de unidades quedan resueltos en nueve cortes. `specty prune` borra del registro de unidades lo anotado hace más de 30 días, y cada lectura del árbol usa su propio índice temporal (C1). `verify` tiene su módulo del esquema y `schema/config.ts` baja de 300 líneas de código (C2). `specty new` reintenta la configuración de git bloqueada y, si no puede, deshace la carpeta y la rama que creó (C3). `propose` avisa de un typecheck completo en una tarea que no es la última (C4). `close` hace el commit del cierre antes de incorporar main cuando main tocó sus archivos (C5). Una configuración inválida que llega de main deshace el merge, y `next` le dice al agente que la corrige la persona (C6). Los tests de core, exporters y cli escriben su informe JUnit (C7), y la continuación lo extendió a vscode, la UI y evals (330b043). `specty verify --fresh` nombra los tests que fallaron (C8), se ve en vivo y tiene la herramienta MCP `specty_verify` (C9). Las verificaciones de estos cambios ya reutilizaron unidades del registro: la continuación de JUnit no repitió core, exporters ni cli.
+
+### Desviaciones
+
+- C7 tocaba seis paquetes y `split.maxModules` es 3: se redujo a core, exporters y cli, y vscode, la UI y evals fueron a un cambio de continuación fuera de la épica (P149, cerrado en 330b043).
+- Los seis `specty new` lanzados a la vez reprodujeron P128 en C4 y C5: dejaron dos carpetas vacías en main, que se borraron, y esos cortes llevan el sufijo `-2`.
+- La aceptación de C2 falló dos veces por el entorno, no por el código: un test de la UI por carga y la carpeta de cobertura ocupada por otro Vitest de la misma carpeta (anotado en la memoria).
+- C5 cambió con S1 una expectativa equivocada de su propio test, que la persona desbloqueó.
+
+### Decisiones
+
+- Cada corte lo llevó un subagente, en paralelo cuando no dependía de otro; las aprobaciones, aceptaciones y cierres los tomó el agente principal en modo delegado, salvo desbloquear el test de C5, que es de la persona.
+- Las carpetas vacías que dejaba el fallo de P128 se borraron solo tras comprobar que no tenían cambio, ni nada sin commit, y que su rama ya estaba en main.
+
+### Pendientes
+
+- P154: el guard sigue tratando como «otra worktree» una carpeta con la configuración inválida (en curso en su propio cambio).
+- P150: el merge de una incorporación se detiene sin nombrar el archivo sin commit que main también cambió (en curso en su propio cambio).
+- P141: los `paths` que faltan en las unidades y `checks.testTime` en `.specty/config.yaml` los escribe la persona.

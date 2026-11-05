@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261105-pendientes-de-las-unidades",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261105-pendientes-de-las-unidades",
   "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:552803f780b0f6d5e32d9fc1edb547c4428680e1f62d358c8e2ffed47b713ab6",
+    "at": "2026-11-05T07:52:54.730Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -66,11 +73,5 @@
     "AC": 13,
     "C": 9
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:552803f780b0f6d5e32d9fc1edb547c4428680e1f62d358c8e2ffed47b713ab6",
-    "at": "2026-11-05T07:52:54.730Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-05T09:46:34.501Z"
 }
