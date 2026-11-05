@@ -71,7 +71,7 @@ Quien revisa una épica en la pestaña Spec de `specty ui` ve su sección «Cort
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/review.test.ts && pnpm lint
   - type: feat
-- [ ] T2: Los cortes en el delta desde la revisión aprobada
+- [x] T2: Los cortes en el delta desde la revisión aprobada
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/delta.ts, packages/ui/src/data/delta.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/delta.test.ts && pnpm lint

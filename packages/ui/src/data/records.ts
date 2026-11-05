@@ -210,10 +210,13 @@ export interface DiffPart {
   readonly change?: "added" | "removed";
 }
 
-/** A criterion or a file of a task, as a chip, with what happened to it since the approval. */
+/**
+ * A criterion or a file of a task, or a criterion or a slice it depends on of a slice, as a chip,
+ * with what happened to it since the approval.
+ */
 export interface DeltaChipView {
   readonly label: string;
-  readonly kind: "criterion" | "file";
+  readonly kind: "criterion" | "file" | "slice";
   readonly change?: "added" | "removed";
   /** A file the approved revision did not list: "possible new scope". */
   readonly newScope: boolean;
@@ -223,14 +226,22 @@ export interface DeltaChipView {
 export interface DeltaEntryView {
   /** An item id (`AC3`), a file path, or the section key of a text (`goal`). */
   readonly key: string;
-  readonly kind: "title" | "section" | "assumption" | "criterion" | "task" | "risk" | "file";
+  readonly kind:
+    | "title"
+    | "section"
+    | "assumption"
+    | "criterion"
+    | "task"
+    | "slice"
+    | "risk"
+    | "file";
   readonly change: "added" | "removed" | "modified";
   readonly section: ReviewSection | "title";
   /** The text now, with the added words marked if modified; the text it had, if removed. */
   readonly text: readonly DiffPart[];
   /** Only when words were removed: the approved text, with the removed words marked. */
   readonly before?: readonly DiffPart[];
-  /** A task's criteria and files. */
+  /** A task's criteria and files; a slice's criteria and the slices it depends on. */
   readonly chips?: readonly DeltaChipView[];
   /** What changed without text of its own: an assumption's impact, a task's verification… */
   readonly details: readonly Bilingual[];
