@@ -6,6 +6,13 @@
   "branch": "specty/20261106-la-pagina-de-un-cambio-muestra-sus-pendientes",
   "baseCommit": "6ef9be39fe338ef87c02a31d85387cf713968cb8",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:bfc174d820e9c0cd6100a7403ba623b5f1c399c4447d467410f4e28242de8bd1",
+    "at": "2026-11-05T21:23:46.405Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -48,12 +55,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:bfc174d820e9c0cd6100a7403ba623b5f1c399c4447d467410f4e28242de8bd1",
-    "at": "2026-11-05T21:23:46.405Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T21:33:00.916Z"
 }
