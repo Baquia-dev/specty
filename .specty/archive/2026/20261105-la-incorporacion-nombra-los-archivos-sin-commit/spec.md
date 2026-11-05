@@ -67,3 +67,23 @@ Si en la carpeta del cambio hay un archivo sin commit fuera del cierre, como una
 ## Riesgos
 
 - R1: Se niega a un merge que git habría aceptado, como cuando el archivo sin commit ya tiene en el índice lo mismo que trae main — es raro, y la salida dice qué hacer para seguir.
+
+## Cierre
+
+### Resumen
+
+Al cerrar o aceptar, si main cambió archivos que en la carpeta del cambio tienen cambios sin commit (como una corrección de `.specty/config.yaml` o un archivo sin seguimiento que main añadió), el merge ya no empieza para fallar con «Merge with strategy ort failed» y un SIGUIENTE de `git merge main` a mano (P150). `mergeTarget` lo comprueba justo antes del merge con `uncommittedRefusal` (`flow/uncommitted.ts`): nada cambia, la salida nombra esos archivos bajo «SIN COMMIT», dice que solo la persona puede hacer el commit de los que gestiona Specty o descartarlos, y pide hacer su commit o descartar sus cambios y repetir el comando; en modo delegado, le pide al agente que se lo pida al usuario (AC1, AC2). Core da `managedBySpecty`, la lista del guard, y los textos en español y en inglés (AC3). `commitClosing` usa la misma cuenta, `uncommittedChangedBy`. ARCHITECTURE §9 lo documenta en el paso 2 de la incorporación.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Los archivos se comprueban antes del merge con git (`diff --name-only HEAD`, `ls-files --others --exclude-standard` y `diff --name-only --no-renames HEAD...<destino>`), en lugar de leer el error de `git merge`, que cambia con el idioma de git.
+- La comprobación va después de `beforeMerge`: si `close` ya hizo el commit del cierre, ese commit queda, como en A2 de `20261105-close-incorpora-main-aunque-el-cierre-toque-lo-2`.
+- En modo delegado, el SIGUIENTE pide al agente que se lo pida al usuario para todos los archivos, también los que no gestiona Specty, porque el agente no hace commits y descartar cambios ajenos podría perder trabajo.
+
+### Pendientes
+
+- Ninguno.
