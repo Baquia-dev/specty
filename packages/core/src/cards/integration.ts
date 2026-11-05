@@ -140,7 +140,9 @@ export function mergedVerifyFailsLine(target: string, command: string, lang: Lan
 export type MergeVerification =
   | { readonly kind: "passed"; readonly command: string }
   | { readonly kind: "epic" }
-  | { readonly kind: "none" };
+  | { readonly kind: "none" }
+  /** The change touches no code, only free files: the merged code is the target's. */
+  | { readonly kind: "no-code" };
 
 /** The main branch came into the change: its merge, and what verified it. */
 export function absorbedLine(
@@ -150,18 +152,24 @@ export function absorbedLine(
   lang: Lang,
 ): string {
   const t = translator(lang);
+  const unverified: Record<Exclude<MergeVerification["kind"], "passed">, string> = {
+    epic: t(
+      " sin verificar: una épica no tiene código propio",
+      " without a verification: an epic has no code of its own",
+    ),
+    none: t(
+      " sin verificar: .specty/config.yaml no tiene `verify.full` ni `verify.default`",
+      " without a verification: .specty/config.yaml has neither `verify.full` nor `verify.default`",
+    ),
+    "no-code": t(
+      ` sin verificar: el cambio no toca código, así que el código es el de ${target}`,
+      ` without a verification: the change touches no code, so the code is ${target}'s`,
+    ),
+  };
   const verified =
-    verification.kind === "epic"
-      ? t(
-          " sin verificar: una épica no tiene código propio",
-          " without a verification: an epic has no code of its own",
-        )
-      : verification.kind === "none"
-        ? t(
-            " sin verificar: .specty/config.yaml no tiene `verify.full` ni `verify.default`",
-            " without a verification: .specty/config.yaml has neither `verify.full` nor `verify.default`",
-          )
-        : t(` y \`${verification.command}\` pasó`, ` and \`${verification.command}\` passed`);
+    verification.kind === "passed"
+      ? t(` y \`${verification.command}\` pasó`, ` and \`${verification.command}\` passed`)
+      : unverified[verification.kind];
   return t(
     `Antes, ${target} se incorporó a la rama del cambio (merge ${commit})${verified}.`,
     `First, ${target} was merged into the change's branch (merge ${commit})${verified}.`,
