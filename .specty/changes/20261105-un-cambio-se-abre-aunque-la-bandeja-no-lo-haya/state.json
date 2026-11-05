@@ -6,6 +6,13 @@
   "branch": "specty/20261105-un-cambio-se-abre-aunque-la-bandeja-no-lo-haya",
   "baseCommit": "4682745ea93f383506c210b4e0a5a9dc170f4011",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:09b5d56b36a7b4d0a89eabb793c53e418e71491598913e06105029dd7c3e60dd",
+    "at": "2026-11-05T11:47:28.999Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -53,12 +60,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:09b5d56b36a7b4d0a89eabb793c53e418e71491598913e06105029dd7c3e60dd",
-    "at": "2026-11-05T11:47:28.999Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T11:50:09.571Z"
 }
