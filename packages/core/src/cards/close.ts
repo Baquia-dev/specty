@@ -96,3 +96,24 @@ export function cancelledLine(commit: string, lang: Lang): string {
     `Change cancelled and archived (commit ${commit}).`,
   );
 }
+
+/**
+ * Why `cancel` leaves the change's folder: it has uncommitted changes, which would be lost, or an
+ * agent session works in it. `prune` removes it once that is no longer so.
+ */
+export function cancelledFolderStaysLine(
+  folder: string,
+  reason: "uncommitted" | "working",
+  ctx: CardContext,
+): string {
+  const t = translator(ctx.lang);
+  return reason === "uncommitted"
+    ? t(
+        `La carpeta ${folder} queda: tiene cambios sin commit, que se perderían. Cuando ya no los necesites, descártalos y \`${ctx.command} prune\` la quitará.`,
+        `Folder ${folder} stays: it has uncommitted changes, which would be lost. Once you no longer need them, discard them and \`${ctx.command} prune\` will remove it.`,
+      )
+    : t(
+        `La carpeta ${folder} queda: una sesión de agente trabaja en ella. \`${ctx.command} prune\` la quitará cuando ya ninguna sesión trabaje en ella.`,
+        `Folder ${folder} stays: an agent session works in it. \`${ctx.command} prune\` will remove it once no session works in it.`,
+      );
+}
