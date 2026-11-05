@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-prune-borra-los-restos-de-los-procesos-que",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-prune-borra-los-restos-de-los-procesos-que",
   "baseCommit": "b17c91d05fd636c040d175009fbd7f6401903279",
   "revision": 2,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7e1f0a11d4ce4f4848ef66235b3b12fb240ee2be",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:43:54.736Z",
       "doneAt": "2026-11-05T16:49:20.609Z",
-      "summary": "pruneCard recibe leftovers { writes, runs, indexes } y añade la sección «RESTOS DE PROCESOS QUE MURIERON» / «LEFTOVERS OF PROCESSES THAT DIED» tras el registro de unidades, con una línea por tipo que no es cero; cuentan para «No había nada que limpiar.»"
+      "summary": "pruneCard recibe leftovers { writes, runs, indexes } y añade la sección «RESTOS DE PROCESOS QUE MURIERON» / «LEFTOVERS OF PROCESSES THAT DIED» tras el registro de unidades, con una línea por tipo que no es cero; cuentan para «No había nada que limpiar.»",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4461a5c23063940a554e22df61faf9c8a6fd5ff9",
+      "startedAt": "2026-11-05T16:49:21.126Z",
+      "doneAt": "2026-11-05T16:55:03.933Z",
+      "summary": "removeLeftovers (store/leftovers.ts) borra las escrituras a medias y verificaciones en vivo de procesos muertos en .git/common/specty/ (salvo backups/) y los índices index-* de más de una hora de cada worktree; prune pasa los números a la tarjeta y los docs lo cuentan."
     }
   },
   "pending": {
