@@ -53,7 +53,7 @@ Con Antigravity, la tarjeta de una épica aprobada reparte ya sus cortes entre s
 
 ## Tareas
 
-- [ ] T1: Antigravity reparte los cortes de una épica en subagentes
+- [x] T1: Antigravity reparte los cortes de una épica en subagentes
   - files: packages/core/test/capabilities.test.ts, packages/core/src/capabilities.ts, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts

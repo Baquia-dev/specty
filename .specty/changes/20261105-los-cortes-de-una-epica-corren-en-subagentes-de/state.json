@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "67c5f2dcd8410e99fe4f2e3cc0d7fd76614362f7",
+      "startedAt": "2026-11-05T10:01:51.857Z",
+      "doneAt": "2026-11-05T10:06:19.270Z",
+      "summary": "Antigravity tiene «sí» en «Cortes en subagentes» (capabilities.ts) y la tabla de ARCHITECTURE §10 lo refleja; el motivo «no documentan» queda solo para Devin (Windsurf)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

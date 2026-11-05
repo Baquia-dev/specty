@@ -454,7 +454,7 @@ Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decis
 | Gemini CLI | sí | sí | indirecto | indirecto | no posible | sí | sí | sí | sí | `.gemini`, `GEMINI.md` |
 | GitHub Copilot | — | — | — | — | — | — | — | — | — | `.github/copilot-instructions.md`, `.github/instructions` |
 | Devin (Windsurf) | sí | sí | indirecto | indirecto | no posible | sí | sí | sí | no posible | `.windsurf`, `.windsurfrules`, `.devin` |
-| Antigravity | sí | indirecto | indirecto | indirecto | no posible | sí | sí | sí | no posible | `.agents/hooks.json`, `.agents/rules`, `.agents/workflows`, `.agent`, `.antigravityignore` |
+| Antigravity | sí | indirecto | indirecto | indirecto | sí | sí | sí | sí | no posible | `.agents/hooks.json`, `.agents/rules`, `.agents/workflows`, `.agent`, `.antigravityignore` |
 
 **Indirecto:**
 
@@ -473,7 +473,7 @@ Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decis
 **No posible:**
 
 - Cortes en subagentes (Gemini CLI): sus hooks traen el `session_id` de la sesión principal sin nada que distinga al subagente, así que el guard no puede atar cada uno a la carpeta de su corte.
-- Cortes en subagentes (Devin (Windsurf), Antigravity): sus hooks no documentan las acciones de sus subagentes (consultado el 2026-11-04).
+- Cortes en subagentes (Devin (Windsurf)): sus hooks no documentan las acciones de sus subagentes (consultado el 2026-11-04).
 - Exclusión (Codex): lee los archivos por la shell y no tiene un archivo de exclusión.
 - Prueba de extremo a extremo (Cursor, Devin (Windsurf), Antigravity): su modelo va siempre por el servidor de la herramienta, así que no se puede simular.
 <!-- specty:capabilities:end -->
