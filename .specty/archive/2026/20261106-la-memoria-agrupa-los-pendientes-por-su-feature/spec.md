@@ -100,3 +100,23 @@ En la página Memoria, «Pendientes y mejoras» es hoy una lista por fecha, y pa
 
 - R1: Leer el título de cada cambio de origen hace más lento `GET /api/memory`, que la página pide con cada evento. Mitigación: los archivados salen de lo que el servidor ya guarda en memoria, con su resumen; los abiertos son pocos, y sin entradas con cambio de origen no se lee nada.
 - R2: La página crece al pintar los grupos (284 líneas). Mitigación: el grupo y su cabecera van en `memory-group.ts`, y la fila de una entrada se escribe una sola vez, como plantilla.
+
+## Cierre
+
+### Resumen
+
+`GET /api/memory` da `{ entries, changes, origins }`. `origins` lleva, de cada cambio de origen de las entradas, abierto o archivado, su título, su tipo, su fase y, si es un corte, su épica con su id, su título y su corte. Uno que no encuentra lleva solo su id como título. Lo hace `memoryOrigins` (`server/origins.ts`): los abiertos salen de su spec y su estado, y los archivados del resumen que el servidor ya guarda con cada registro (`summaryOf`, ahora exportado de `finished.ts`). Sin entradas con cambio de origen, no lee nada. En la UI, `MemoryRecord.origins` es opcional y `isMemoryRecord` rechaza un origen sin título. La sección «Pendientes y mejoras» va por grupos (`MemoryGroup`): cada feature, y cada corte dentro del bloque de su épica, con las entradas que salieron de la épica antes de sus cortes. Los grupos van por su entrada más reciente, con «Sin feature» al final, y la búsqueda mira también los títulos de la feature y de su épica. `sp-memory-group` (`memory/memory-group.ts`) pinta cada cabecera con su fase, su título con el enlace y su insignia («Feature · C2», «Épica»). Las filas van sangradas con la línea de la Bandeja. La página da la fila de una entrada como plantilla, así es la misma en todas las secciones. El prototipo trae orígenes de ejemplo. ARCHITECTURE §15 y `docs/ui.md` (sección «Memoria») lo cuentan. Lo comprueban los tests de la CLI y de la UI de cada tarea, y la verificación completa de la incorporación de main.
+
+### Desviaciones
+
+- La primera aceptación falló en la unidad estática al incorporar main: knip marcó `MemoryGroupHead` como export sin usar, porque solo lo usa `sp-memory-group` en su mismo archivo. Se le quitó el `export` en la incorporación de main (`specty integrate`), que pasó entera.
+
+### Decisiones
+
+- `origins` da también el tipo de cada cambio, además de lo que pedía A7 de la épica, para que la insignia de una feature diga su tipo («Quick», «Spike»…). Un origen sin tipo es uno que el servidor no encontró: su cabecera no tiene enlace.
+- De la épica de un corte, `origins` da solo el id y el título. Su cabecera lleva la fase solo cuando la épica también dejó entradas (A6).
+- La sección conserva su lista plana (`items`) en el orden de los grupos, así su número y los tests de antes siguen igual.
+
+### Pendientes
+
+- Ninguno nuevo.

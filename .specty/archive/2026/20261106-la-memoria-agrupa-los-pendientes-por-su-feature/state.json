@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-la-memoria-agrupa-los-pendientes-por-su-feature",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-la-memoria-agrupa-los-pendientes-por-su-feature",
   "baseCommit": "359335f804c6fe7e6dab489c92a0ba63ef54a00e",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:f0483309ae8ead30d4572a278bc1573ee44ffd3d4225271c43db3fcd3f2c2d9e",
@@ -79,12 +79,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dbc3a0a5bbf42029b281e5b7838d2df71b3647ea",
+      "attempts": 1,
       "startedAt": "2026-11-05T20:29:55.367Z",
       "doneAt": "2026-11-05T20:35:30.227Z",
-      "summary": "ARCHITECTURE §15 cuenta origins en GET /api/memory y la Memoria por grupos; docs/ui.md tiene una sección Memoria con los grupos por feature y épica, su orden y la búsqueda"
+      "summary": "ARCHITECTURE §15 cuenta origins en GET /api/memory y la Memoria por grupos; docs/ui.md tiene una sección Memoria con los grupos por feature y épica, su orden y la búsqueda",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -97,9 +97,44 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T20:57:57.259Z",
   "lockedTests": {
     "packages/cli/test/server/memory-origins.test.ts": "sha256:9a19cdac9ada2c929c2a9b4ade9075e05511b0a1f8d595a36830297916948c32",
     "packages/ui/src/memory/memory-group.test.ts": "sha256:b02f098304781f30f2b597bc50c4e363366e096f4394c679f7ed4dba196bd166",
     "packages/ui/src/memory/memory-groups.test.ts": "sha256:d173f19f3fe3fe22be6da44e3338989d54504df83ea009afb1fd32760c1fcb49"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "7f6fa02d6bfda934258c5956b042f838136178dc",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/finish.ts",
+      "packages/cli/src/flow/land.ts",
+      "packages/cli/src/flow/prune.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/finished.ts",
+      "packages/cli/src/server/origins.ts",
+      "packages/cli/test/cancel-folder.test.ts",
+      "packages/cli/test/epic-return.test.ts",
+      "packages/cli/test/server/memory-origins.test.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/core/test/cards.test.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/sample-memory.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/memory/memory-group.test.ts",
+      "packages/ui/src/memory/memory-group.ts",
+      "packages/ui/src/memory/memory-groups.test.ts",
+      "packages/ui/src/memory/memory-page.ts",
+      "packages/ui/src/memory/memory-view.ts"
+    ],
+    "at": "2026-11-05T20:41:24.931Z",
+    "resolved": {
+      "commit": "e47696f",
+      "at": "2026-11-05T20:56:46.134Z"
+    }
   }
 }
