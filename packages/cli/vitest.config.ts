@@ -11,8 +11,9 @@ export default defineConfig({
     reporters: [...configDefaults.reporters, "junit"],
     outputFile: { junit: "coverage/junit.xml" },
     include: ["test/**/*.test.ts", "src/**/*.test.ts"],
-    // Git hooks run the real bundle, so it is built once before the tests.
-    globalSetup: ["test/global-setup.ts"],
+    // The run's temporary files go in a folder of its own, removed at the end. Git hooks run the
+    // real bundle, so it is built once before the tests.
+    globalSetup: ["../core/vitest-temp-dir.ts", "test/global-setup.ts"],
     testTimeout: 60_000,
     coverage: {
       provider: "v8",
