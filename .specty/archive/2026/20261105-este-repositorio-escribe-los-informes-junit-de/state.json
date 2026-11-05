@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "id": "20261105-este-repositorio-escribe-los-informes-junit-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-este-repositorio-escribe-los-informes-junit-de",
+  "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6dbd1653ba613cd8ed83fc9c35887d967d14a6670ddcb5796d7b7c8835387b5e",
+    "at": "2026-11-05T08:03:38.132Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5ff8bcd6692c0eaceb7821fda0e7e575ddac80741381e8da812b3b75b7ff82bd",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:018208869fe2918d20b83581333b32a88c1febced758a489b28a83c81fa3a6f6",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:8ead342c6658b4245ef7bbe1286f9a8fa3be3d54cf3cdfd77e2a14e170c41f12",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:693ebca34bc8a0707eea0ee300e63369ee60bd6eac8a57c14ef7a0ab09d5b2e7",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ead733288e9431b2717e4d14f14271d2ad5265f2",
+      "attempts": 2,
+      "startedAt": "2026-11-05T08:03:39.204Z",
+      "doneAt": "2026-11-05T08:05:06.186Z",
+      "summary": "core, exporters y la CLI añaden el reporter junit a los de Vitest por defecto, con outputFile en coverage/junit.xml; repo-junit.test.ts lo comprueba en los tres",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 1,
+    "T": 1
+  },
+  "closingSubmittedAt": "2026-11-05T08:18:22.712Z"
+}

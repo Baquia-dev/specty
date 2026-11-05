@@ -165,10 +165,9 @@ async function verified(
   if (target.closing()) return;
   const { id, there, command } = job;
   const started = Date.now();
-  // The code it runs on, read as it starts: `accept` need not verify it again. Read before the
-  // units' fingerprints, not alongside: each reading builds a tree in a temporary index.
-  const tree = await codeTree(there);
-  const plan = await fullPlan(there, command);
+  // The code it runs on, read as it starts: `accept` need not verify it again. Each reading of
+  // the tree builds it in a temporary index of its own, so it goes alongside the fingerprints.
+  const [tree, plan] = await Promise.all([codeTree(there), fullPlan(there, command)]);
   const run = (line: string) => spawned(target, there, line, live, stoppable);
   const ran: Ran =
     plan.units === undefined ? await run(command) : await runUnits(there, id, plan.units, run);

@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "id": "20261105-el-registro-de-unidades-se-limpia-y-sus",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-el-registro-de-unidades-se-limpia-y-sus",
+  "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:dca3d353849d1b7a8448df87413c986aa01521676186970a09253b294b2a10ac",
+    "at": "2026-11-05T07:59:49.735Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:70350d30ad2ec27273c4bbaa316e3fb346ed8df29ade067e0b05b0a74492a646",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ab4b290fa7f5c6a452977c5c9a4d4accdf90e3fc42890fffa35f44a6bf17644a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f493ca1789afc20c354bece7c7784e1c22b04130b5f44b989dbbf979179609f0",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d60b8ac01cae5292ca5ed0ab1ef38ff3c867ac138fb25c5774c6d032e9e11aaa",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "74c0fcd182e816948b9328cb0194129b44aa79ac",
+      "attempts": 1,
+      "startedAt": "2026-11-05T08:04:21.271Z",
+      "doneAt": "2026-11-05T08:04:56.647Z",
+      "summary": "treeWith nombra su índice temporal con randomUUID además del pid, así que dos lecturas del árbol a la vez en el mismo proceso no lo comparten; el servidor de la UI lee el árbol del código y las huellas de las unidades a la vez con Promise.all.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "beb9ed4fa1488d33ca7c023972c7e13b00e3ec48",
+      "attempts": 1,
+      "startedAt": "2026-11-05T08:04:57.009Z",
+      "doneAt": "2026-11-05T08:10:36.462Z",
+      "summary": "pruneCard recibe units (removed, days) y dice cuántas unidades borró del registro, en español y en inglés, tras los mensajes; las secciones de los registros de Specty salen de recordSections y counted.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "45e66f58161d92037245ddb57e095f37dbcd0e60",
+      "attempts": 1,
+      "startedAt": "2026-11-05T08:10:36.853Z",
+      "doneAt": "2026-11-05T08:17:16.145Z",
+      "summary": "specty prune borra del registro de unidades los archivos anotados hace más de 30 días (RECORD_DAYS) o sin fecha legible, con pruneRecord en flow/units.ts, y pasa el recuento a la tarjeta.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "d525460c561bf583a1ab01c5055ee65dfe8aebc9",
+      "attempts": 1,
+      "startedAt": "2026-11-05T08:17:16.498Z",
+      "doneAt": "2026-11-05T08:22:20.076Z",
+      "summary": "formats.md §1 y ARCHITECTURE §9 dicen que specty prune borra del registro de unidades lo anotado hace más de 30 días, y que cada lectura del árbol usa su propio índice temporal, así que el servidor lee el árbol y las huellas a la vez.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T08:33:47.843Z",
+  "lockedTests": {
+    "packages/cli/test/git-tree.test.ts": "sha256:e54cadd40302c65acf1359ecc35abb6f55844a8f3223d0dd07697d9b2d8653a4",
+    "packages/cli/test/prune-units.test.ts": "sha256:931b07b2c1d2e7ec41e054cb77868678a27901ed6c86fa8bc7a6109e5c3f21e0",
+    "packages/core/test/cards/prune-units.test.ts": "sha256:76e94fe12e9b7ecfe8faba078987a8f955fe44562c9c186400bf60229e533d64"
+  }
+}
