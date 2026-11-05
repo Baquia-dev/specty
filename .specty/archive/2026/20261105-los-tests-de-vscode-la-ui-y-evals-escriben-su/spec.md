@@ -61,3 +61,23 @@ Los tests de core, exporters y la CLI ya dejan su informe JUnit en `coverage/jun
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/repo-junit.test.ts && test -s packages/ui/coverage/junit.xml && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
   - type: build
+
+## Cierre
+
+### Resumen
+
+Los tests de vscode, la UI y evals dejan su informe JUnit en `coverage/junit.xml` de su paquete, como ya hacían core, exporters y la CLI. vscode y evals añaden en su `vitest.config.ts` el reporter `junit` a los de Vitest por defecto, con `outputFile: { junit: "coverage/junit.xml" }`. La UI activa `runnerConfig: true` en el target `test` de `angular.json`, y el builder carga `packages/ui/vitest-base.config.ts`, que declara esos mismos `reporters` y `outputFile`. Cada paquete tiene su `repo-junit.test.ts`, que comprueba su propia configuración; el de la UI también comprueba que `angular.json` carga ese archivo y no fija `reporters` ni `outputFile`.
+
+### Desviaciones
+
+- Ninguna: se siguió el plan aprobado.
+
+### Decisiones
+
+- La UI no usa las opciones `reporters` y `outputFile` del builder `@angular/build:unit-test`: la lista fija de `angular.json` sustituiría a los reporters de Vitest por defecto y perdería el reporter breve con un agente y las anotaciones en GitHub Actions. En su lugar, el target carga un `vitest-base.config.ts` (el nombre que busca el builder con `runnerConfig: true`), cuyos `reporters` y `outputFile` el builder conserva.
+- Cada paquete vigila su configuración con un test suyo, que solo lee archivos del paquete, así que no hace falta tocar los `paths` de ninguna unidad.
+- El informe de la UI va a `coverage/junit.xml`, al lado de `coverage/specty-ui/`, donde el builder deja la cobertura: limpiar la cobertura no lo borra.
+
+### Pendientes
+
+- Ninguno.
