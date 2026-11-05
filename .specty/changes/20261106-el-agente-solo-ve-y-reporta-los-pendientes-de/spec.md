@@ -68,7 +68,7 @@ Hoy cada sesión empieza con «Pendientes y mejoras abiertas: 72. Las primeras l
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/harvest.test.ts test/memory/entries.test.ts
   - type: feat
-- [ ] T2: La tarjeta sin cambio activo solo da el frente propio y los recordatorios
+- [x] T2: La tarjeta sin cambio activo solo da el frente propio y los recordatorios
   - files: packages/core/src/cards/memory.ts, packages/core/test/cards/memory-start.test.ts, packages/core/test/cards/front-start.test.ts, packages/core/test/cards/exclusions.test.ts, packages/cli/test/memory-start.test.ts, packages/cli/test/front-start.test.ts, packages/cli/test/front-start-codex.test.ts, packages/cli/test/memory-resolves.test.ts, packages/cli/test/memory-settle.test.ts, packages/cli/test/memory-harvest.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-start.test.ts test/front-start.test.ts test/front-start-codex.test.ts test/memory-resolves.test.ts test/memory-settle.test.ts test/memory-harvest.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/memory-start.test.ts test/cards/front-start.test.ts test/cards/exclusions.test.ts && pnpm lint
