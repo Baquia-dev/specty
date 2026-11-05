@@ -58,7 +58,7 @@ La verificación completa solo salta lo que no cambió si `.specty/config.yaml` 
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/units-proposal.test.ts test/cards/init-units.test.ts
   - type: feat
-- [ ] T2: init propone las unidades de un workspace de pnpm, npm o yarn
+- [x] T2: init propone las unidades de un workspace de pnpm, npm o yarn
   - files: packages/cli/src/detect/workspace-units.ts, packages/cli/src/commands/init.ts, packages/cli/test/init-units.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-units.test.ts test/setup.test.ts && pnpm typecheck && pnpm lint && pnpm knip
