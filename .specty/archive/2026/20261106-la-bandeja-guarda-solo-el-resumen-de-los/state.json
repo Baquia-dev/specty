@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-la-bandeja-guarda-solo-el-resumen-de-los",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-la-bandeja-guarda-solo-el-resumen-de-los",
   "baseCommit": "85be27d0ad5ba373872c2aa19c4dad4331511ef4",
-  "revision": 4,
+  "revision": 5,
   "approved": {
     "revision": 4,
     "hash": "sha256:f4e6cd2b4a09275c05cf908decae9a19b173de1040af139648ca38587c588489",
@@ -86,12 +86,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8cf0c773e7c3ed2ba2f9a58111e7d6f980217bdf",
+      "attempts": 1,
       "startedAt": "2026-11-05T18:09:18.003Z",
       "doneAt": "2026-11-05T18:10:03.499Z",
-      "summary": "El componente de prueba de closing-actions y progress-tab toma el cambio entero de store.listed() en lugar de store.all(), sin tocar ninguna aserción; la suite entera de la UI compila y pasa."
+      "summary": "El componente de prueba de closing-actions y progress-tab toma el cambio entero de store.listed() en lugar de store.all(), sin tocar ninguna aserción; la suite entera de la UI compila y pasa.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -104,6 +104,7 @@
     "T": 5,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T18:19:33.162Z",
   "lockedTests": {
     "packages/ui/src/change/change-page.finished.test.ts": "sha256:8d3d61328fb0dc05cffd4327ea5f4dc92dbffbe1eaafa4646123b5ad1a094ec0",
     "packages/ui/src/data/finished-summaries.test.ts": "sha256:bb5a2664ee1efbcc6586ff71c2be949e35b4ae464a4c0c99db08c4e200b10656"

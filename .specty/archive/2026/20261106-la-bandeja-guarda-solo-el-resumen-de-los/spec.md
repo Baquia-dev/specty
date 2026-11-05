@@ -96,3 +96,27 @@ Hoy la Bandeja guarda cada cambio terminado de sus páginas entero: su spec revi
 
 - R1: Abrir un terminado con el servidor local muestra el esqueleto de carga hasta que llega su registro, aunque la Bandeja tenga su resumen. Mitigación: es una lectura local de un archivado que el servidor ya tiene en memoria (`archivedRecords`), y es el mismo camino que ya usa un cambio no cargado.
 - R2: `isWhole` decide por `review` si un cambio de la lista está entero; un resumen que algún día lo trajera engañaría a la fila. Mitigación: `ChangeSummary` es un `Pick` sin `review`, y AC1 comprueba que el resumen guardado no trae nada más.
+
+## Cierre
+
+### Resumen
+
+La Bandeja guarda de cada terminado de sus páginas solo su resumen, `ChangeSummary` en `data/records.ts`. Es un `Pick` de `ChangeView` con el id, el título, el tipo, la épica, los cortes, la fase, `phaseSince`, el inicio, el fin, el tamaño, las tareas y la pestaña. No guarda la spec revisada, el progreso ni el historial. `FinishedPages` sigue derivando los registros de cada página en el worker y se queda con `summaryOf(view)`. En `ChangesStore`, `finished` y `all` son de `ChangeSummary`, y `listed`, ahora público, da los cambios enteros que lista la fuente. `byId` solo da por cargados esos cambios enteros, así que la página de un terminado pide siempre su registro por id, aunque la Bandeja tenga su resumen. Lo que lee la lista acepta un resumen: la Bandeja (`inbox-view.ts`, genérico sobre `ListedChange`; `inbox.ts`, `inbox-row.ts` e `inbox-epic.ts`) y los enlaces de los cortes de una épica (`spec-sections.ts`). La fila se ve igual que con el cambio entero, y solo da a sus tooltips un cambio entero (`isWhole`). El MCP App y los tooltips por id de un cambio leen `listed()`. `docs/ui.md` y ARCHITECTURE §15 lo cuentan. Lo que manda el servidor no cambia todavía: la primera página de terminados sigue pesando unos 680 KB.
+
+### Desviaciones
+
+- Ajuste en la revisión 4 (T5): la suite entera de la UI no compilaba por las plantillas de los componentes de prueba de `acceptance/closing-actions.test.ts` y `progress/progress-tab.test.ts`, que pasaban un cambio de `store.all()` a componentes que piden uno entero. `pnpm typecheck` no compila las plantillas de los tests, y el verify de T3 no incluía esos archivos. T5 cambió el acceso a `store.listed()`, sin tocar ninguna aserción, y su verify ejecuta la suite entera de la UI.
+- T3 cambió también el acceso en `data/fixtures.test.ts`, `acceptance/full-verification.test.ts` y `acceptance/acceptance-actions.test.ts`, de `store.all()` a `store.listed()`, porque leen la revisión o el progreso de un cambio entero y dejaron de compilar. Los dos de `acceptance/` llegaron por una ampliación de alcance que aprobó la política. No se tocó ninguna aserción.
+- Las funciones de `inbox-view.ts` son genéricas sobre `ListedChange` (`InboxSection<T>`, `InboxBlock<T>`), y no solo de `ListedChange` como decía el Diseño: así, un test que les pasa vistas enteras recibe vistas enteras y no hubo que cambiarlo (`inbox-more.test.ts`).
+
+### Decisiones
+
+- El resumen es un `Pick` de `ChangeView`, y no un tipo propio, para que la fila, la cabecera de una épica y los enlaces de los cortes lean los mismos campos de un resumen que de una vista entera. Es la forma que recibirá la UI cuando el servidor mande resúmenes.
+- `ListedChange` es `ChangeSummary & Partial<ChangeView>`: lo que solo tiene un abierto se lee como opcional, y el compilador impide que una lista lea de un resumen algo que no trae.
+- `isWhole` decide por `review` si un cambio de la lista está entero, porque solo la vista entera la trae.
+- `all()` sigue dando todos los cambios cargados, también los terminados por su resumen, para que los enlaces de los cortes (P159) y la paleta de comandos los vean. Lo que necesita un cambio entero lee `listed()`.
+- El resumen guarda las tareas aunque la fila de un terminado no las pinte: cuestan poco y la fila las lee.
+
+### Pendientes
+
+- P178 sigue abierto: lo resuelve el cambio siguiente, que hace que `GET /api/changes/finished` mande solo estos resúmenes (y `SpectyData.finished` en memoria), para que la página de 30 terminados pase de unos 680 KB a unos pocos KB.
