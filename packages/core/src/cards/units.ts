@@ -61,6 +61,17 @@ export function unitsLines(outcome: UnitsOutcome, lang: Lang): string[] {
   ];
 }
 
+/**
+ * The last line of the output of a full verification, or of one of its units, that its time limit
+ * (`verify.timeoutSec`, `seconds`) cut: it did not fail, it ran out of time.
+ */
+export function timedOutLine(seconds: number, lang: Lang): string {
+  return translator(lang)(
+    `Se agotó el tiempo: la verificación se cortó a los ${seconds} s (\`verify.timeoutSec\`), antes de terminar. Si la máquina estaba cargada, por ejemplo con otras verificaciones a la vez, reintentar con menos carga puede bastar; si no, la persona puede subir \`verify.timeoutSec\`.`,
+    `Time ran out: the verification was cut at ${seconds} s (\`verify.timeoutSec\`), before it finished. If the machine was busy, for example with other verifications at once, retrying with less load may be enough; otherwise, the person can raise \`verify.timeoutSec\`.`,
+  );
+}
+
 /** Every unit of the full verification already passed on this same code: none runs again. */
 export function unitsReusedNote(
   names: readonly string[],

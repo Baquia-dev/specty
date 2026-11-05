@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { type UnitsOutcome, unitsLines, unitsReusedNote } from "../../src";
+import { timedOutLine, type UnitsOutcome, unitsLines, unitsReusedNote } from "../../src";
 
 /** Two units reused, two that ran and passed, one that failed and one left after it. */
 const FAILED: UnitsOutcome = {
@@ -53,5 +53,16 @@ describe("the note when every unit already passed on this code", () => {
       title: "Full verification",
       text: "Every unit already passed on this same code, in this change or another of the clone: core, cli. None runs again.",
     });
+  });
+});
+
+describe("the line of a full verification that its time limit cut", () => {
+  it("AC4: says the time ran out, at how many seconds, and that less load may be enough, in Spanish and in English", () => {
+    expect(timedOutLine(2000, "es")).toBe(
+      "Se agotó el tiempo: la verificación se cortó a los 2000 s (`verify.timeoutSec`), antes de terminar. Si la máquina estaba cargada, por ejemplo con otras verificaciones a la vez, reintentar con menos carga puede bastar; si no, la persona puede subir `verify.timeoutSec`.",
+    );
+    expect(timedOutLine(2000, "en")).toBe(
+      "Time ran out: the verification was cut at 2000 s (`verify.timeoutSec`), before it finished. If the machine was busy, for example with other verifications at once, retrying with less load may be enough; otherwise, the person can raise `verify.timeoutSec`.",
+    );
   });
 });

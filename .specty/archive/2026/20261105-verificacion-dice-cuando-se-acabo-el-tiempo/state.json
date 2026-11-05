@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "id": "20261105-verificacion-dice-cuando-se-acabo-el-tiempo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-verificacion-dice-cuando-se-acabo-el-tiempo",
+  "baseCommit": "ba9d1a63c218f2d52a38f082a13bbff6bc20f9b7",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:96fc9ea7ebfdb6cd290d2d21f8f3be4b4882e9326514266b734fc7c5227eba30",
+    "at": "2026-11-05T07:21:38.169Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:57c4c969fa03d6e6165615f1172dc6e3fa2d4f802419b87e872b0523579e8c7f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:535c43849c443c83e8585ea68a8a3ae8deb69f782c565091424fe2e417aa1561",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:913b92a8b63e41b665a403296b6b99f5fdfe4c6eab9a3c2a728d9d057a2fe69b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "d6945c904d93d0e0bf97dada0e5802c74076ba25",
+      "attempts": 1,
+      "startedAt": "2026-11-05T07:23:24.651Z",
+      "doneAt": "2026-11-05T07:23:56.042Z",
+      "summary": "timedOutLine(seconds, lang) en core cards/units.ts, en español y en inglés, exportada en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "851f974f0031f6535837d2849b16b548e83ad223",
+      "attempts": 1,
+      "startedAt": "2026-11-05T07:23:56.412Z",
+      "doneAt": "2026-11-05T07:25:01.684Z",
+      "summary": "runFull pasa la salida de cada comando por outputOf, que añade timedOutLine con verify.timeoutSec cuando exec lo cortó por tiempo, en verify.full y en cada unidad",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "162787c2da7f048d03dbec93c831dadc6da524f8",
+      "attempts": 1,
+      "startedAt": "2026-11-05T07:25:02.036Z",
+      "doneAt": "2026-11-05T07:25:23.580Z",
+      "summary": "formats.md §6: qué dice la salida cuando verify.timeoutSec corta la verificación completa o una de sus unidades",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T07:30:48.922Z",
+  "lockedTests": {
+    "packages/core/test/cards/units.test.ts": "sha256:c5b01fabf3c5210e38d5676d063a1e03fc4c365a9bc578b4ff1e7a9e5a49611f",
+    "packages/cli/test/verify-timeout.test.ts": "sha256:4cd0bfb56e7ceefb2638e15e254030fcf49ad65ec56c5b8dee2f434fc1505cbd"
+  }
+}

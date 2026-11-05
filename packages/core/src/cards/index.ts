@@ -401,7 +401,13 @@ export {
   removedCard,
   unwatchedChangeWarning,
 } from "./uninstall";
-export { type UnitsOutcome, type UnitTime, unitsLines, unitsReusedNote } from "./units";
+export {
+  timedOutLine,
+  type UnitsOutcome,
+  type UnitTime,
+  unitsLines,
+  unitsReusedNote,
+} from "./units";
 export {
   ccusageAddedLine,
   ccusageFailedWarning,
