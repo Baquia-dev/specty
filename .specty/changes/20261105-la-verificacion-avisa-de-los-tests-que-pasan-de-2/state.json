@@ -45,7 +45,20 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/test-time.ts",
+        "packages/core/src/cards/index.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "86c9b0bdca6047751e69cdd20474cb176d07c397",
+      "startedAt": "2026-11-05T05:33:28.712Z",
+      "doneAt": "2026-11-05T05:36:34.367Z",
+      "summary": "checks.testTime en el esquema; checks/junit.ts: parseJunit da cada test con su archivo (file, el de su suite o classname, desde la raíz), nombre y tiempo, y slowTests los que pasan de maxMs. Adelanta los textos de T2 (slowTestMessage, slowTestLines): el typecheck compila sus tests"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

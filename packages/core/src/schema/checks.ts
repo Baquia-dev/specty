@@ -24,6 +24,8 @@ export interface ChecksConfig {
   /** The project's commands for the command checks, over the ones Specty detects. */
   readonly commands: Readonly<Partial<Record<CommandCheck, string>>>;
   readonly coverage: CoverageConfig;
+  /** The JUnit reports `test-time` reads and the limit of each test; without it, it does not run. */
+  readonly testTime?: TestTimeConfig;
 }
 
 /**
@@ -34,6 +36,15 @@ interface CoverageConfig {
   readonly reports: readonly string[];
   readonly warn: number;
   readonly error?: number;
+}
+
+/**
+ * Where `test-time` looks for the JUnit reports the tests leave (paths with `*` inside a segment),
+ * and the milliseconds over which it warns of a test.
+ */
+interface TestTimeConfig {
+  readonly reports: readonly string[];
+  readonly maxMs: number;
 }
 
 /** A layer: the files in it, the layers it may import besides itself, and the packages it may not. */
@@ -191,6 +202,12 @@ export const ChecksSchema = z.strictObject({
       error: z.number().min(0).max(100).optional(),
     })
     .optional(),
+  testTime: z
+    .strictObject({
+      reports: z.array(z.string().min(1)).min(1),
+      maxMs: z.number().int().positive(),
+    })
+    .optional(),
 });
 
 export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): ChecksConfig {
@@ -212,6 +229,9 @@ export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): 
     preCommit: input?.preCommit ?? DEFAULT_CHECKS.preCommit,
     commands: commandsOf(input),
     coverage: coverageOf(input),
+    ...(input?.testTime === undefined
+      ? {}
+      : { testTime: { reports: input.testTime.reports, maxMs: input.testTime.maxMs } }),
   };
 }
 

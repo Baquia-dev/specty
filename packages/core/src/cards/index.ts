@@ -363,6 +363,7 @@ export {
   taskDoneCard,
   taskDoneRefusalCard,
 } from "./task";
+export { slowTestLines, slowTestMessage } from "./test-time";
 export {
   approveTestsQuestion,
   type TestsRefusal,

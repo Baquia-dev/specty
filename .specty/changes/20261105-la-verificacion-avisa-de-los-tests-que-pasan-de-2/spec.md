@@ -66,7 +66,7 @@ Un test que tarda cada vez más pasa desapercibido hasta que la suite entera se 
 
 ## Tareas
 
-- [ ] T1: El lector de JUnit y `checks.testTime`
+- [x] T1: El lector de JUnit y `checks.testTime`
   - files: packages/core/src/schema/checks.ts, packages/core/src/checks/junit.ts, packages/core/src/index.ts, packages/core/test/checks/junit.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/junit.test.ts && pnpm typecheck && pnpm lint
