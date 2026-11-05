@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2604716e53df3badbc461acae24737fe81f3b47e",
+      "attempts": 1,
       "startedAt": "2026-11-05T21:33:22.455Z",
       "doneAt": "2026-11-05T21:38:25.763Z",
-      "summary": "La página Memoria lee de la URL la búsqueda (q) y las hechas y descartadas (closed=1) con entradas del router; query y closed son linkedSignal de ellas, así la barra las sigue cambiando."
+      "summary": "La página Memoria lee de la URL la búsqueda (q) y las hechas y descartadas (closed=1) con entradas del router; query y closed son linkedSignal de ellas, así la barra las sigue cambiando.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "72047ed80ef3117998d922af1e16fe32a555305f",
+      "startedAt": "2026-11-05T21:38:26.086Z",
+      "doneAt": "2026-11-05T21:40:45.914Z",
+      "summary": "sp-change-memory pinta en la cabecera «En la memoria»: las entradas que salieron del cambio o que tomó, con su estado y su id enlazado a la Memoria buscada. ENTRY_KINDS y firstLine pasan a memory-lines.ts."
     }
   },
   "pending": {

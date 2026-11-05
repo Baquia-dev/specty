@@ -30,19 +30,8 @@ import { reportFailure } from "../review/spec-sections";
 import { Preferences } from "../theme/preferences";
 import { DropEntry } from "./drop-entry";
 import { MemoryGroupView } from "./memory-group";
-import { changeLine, entryLine } from "./memory-lines";
+import { changeLine, ENTRY_KINDS, entryLine, firstLine } from "./memory-lines";
 import { type MemoryItem, memorySections } from "./memory-view";
-
-/** Each kind of entry: its name and the phase color it borrows. */
-const KINDS: Readonly<
-  Record<MemoryEntry["kind"], { readonly label: Bilingual; readonly tone: string }>
-> = {
-  pending: { label: { es: "pendiente", en: "pending" }, tone: "draft" },
-  improvement: { label: { es: "mejora", en: "improvement" }, tone: "implementing" },
-  reminder: { label: { es: "recordatorio", en: "reminder" }, tone: "acceptance" },
-  decision: { label: { es: "decisión", en: "decision" }, tone: "review" },
-  lesson: { label: { es: "lección", en: "lesson" }, tone: "testing" },
-};
 
 /** The toolbar's choices of kind: every entry, or one kind. */
 const KIND_FILTERS = ["all", "pending", "improvement", "reminder", "decision", "lesson"] as const;
@@ -204,7 +193,8 @@ export class MemoryPage {
   protected readonly list = LIST;
   protected readonly row = ROW;
   protected readonly reveal = REVEAL;
-  protected readonly kinds = KINDS;
+  protected readonly kinds = ENTRY_KINDS;
+  protected readonly firstLine = firstLine;
 
   /** «Descartar»: the dialog with the reason, which brings the one of a proposal. */
   protected drop(entry: MemoryEntry): void {
@@ -284,10 +274,6 @@ export class MemoryPage {
 
   protected changeOf(item: MemoryItem): StatusEntry | undefined {
     return "change" in item ? item.change : undefined;
-  }
-
-  protected firstLine(text: string): string {
-    return text.trim().split("\n")[0] ?? "";
   }
 
   /** Under an entry: who proposed to drop it and why, or who took it, its quote and its origin. */

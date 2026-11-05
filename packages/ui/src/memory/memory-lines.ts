@@ -1,9 +1,26 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { MemoryEntry, StatusEntry } from "@baquia-dev/specty-core";
+import type { Bilingual } from "../data/records";
 import type { MemoryItem } from "./memory-view";
 
 /** The page's translator: the Spanish and the English text, and it picks one. */
 type Translate = (es: string, en: string) => string;
+
+/** Each kind of entry: its name and the phase color it borrows, on the memory and a change's page. */
+export const ENTRY_KINDS: Readonly<
+  Record<MemoryEntry["kind"], { readonly label: Bilingual; readonly tone: string }>
+> = {
+  pending: { label: { es: "pendiente", en: "pending" }, tone: "draft" },
+  improvement: { label: { es: "mejora", en: "improvement" }, tone: "implementing" },
+  reminder: { label: { es: "recordatorio", en: "reminder" }, tone: "acceptance" },
+  decision: { label: { es: "decisión", en: "decision" }, tone: "review" },
+  lesson: { label: { es: "lección", en: "lesson" }, tone: "testing" },
+};
+
+/** The first line of an entry's text, which its row shows. */
+export function firstLine(text: string): string {
+  return text.trim().split("\n")[0] ?? "";
+}
 
 /** Under an entry: who proposed to drop it and why, or who took it, its quote and its origin. */
 export function entryLine(item: MemoryItem, entry: MemoryEntry, t: Translate): string {
