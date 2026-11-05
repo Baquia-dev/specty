@@ -57,7 +57,7 @@ Hoy `accept` ejecuta la verificación completa aunque el cambio solo toque docum
 
 ## Tareas
 
-- [ ] T1: La nota de accept y la línea de la incorporación dicen cuándo el cambio no toca código
+- [x] T1: La nota de accept y la línea de la incorporación dicen cuándo el cambio no toca código
   - files: packages/core/src/cards/accept.ts, packages/core/src/cards/integration.ts, packages/core/src/cards/index.ts, packages/core/test/cards/accept.test.ts, packages/core/test/cards/incorporation.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/accept.test.ts test/cards/incorporation.test.ts && pnpm --filter @baquia-dev/specty-core typecheck

@@ -60,6 +60,25 @@ export function verificationReusedNote(
   };
 }
 
+/**
+ * The change touches no code, only free files (`ignored` and `.specty/`): its code is `target`'s,
+ * and the full verification does not run.
+ */
+export function noCodeVerificationNote(
+  command: string,
+  target: string,
+  lang: Lang,
+): { readonly title: string; readonly text: string } {
+  const t = translator(lang);
+  return {
+    title: t("Verificación completa", "Full verification"),
+    text: t(
+      `El cambio no toca código, solo archivos libres (\`ignored\` y \`.specty/\`): su código es el de ${target}, y la verificación completa (\`${command}\`) no corre.`,
+      `The change touches no code, only free files (\`ignored\` and \`.specty/\`): its code is ${target}'s, and the full verification (\`${command}\`) does not run.`,
+    ),
+  };
+}
+
 export function runVerificationQuestion(command: string, lang: Lang): string {
   return translator(lang)(
     `¿Ejecutar antes la verificación completa (\`${command}\`)?`,

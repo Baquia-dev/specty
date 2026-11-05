@@ -6,6 +6,13 @@
   "branch": "specty/20261105-la-verificacion-completa-no-corre-sin-codigo",
   "baseCommit": "445c69b3939c77f9aeb254565139e65901f50c59",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:13d8f1f07f2c4322a4d48025ef6d59cf5d579274150527294d9118b0133efbc7",
+    "at": "2026-11-05T01:10:05.598Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "83a2fafeb7b493e495155de522142294cf82e571",
+      "startedAt": "2026-11-05T01:10:06.562Z",
+      "doneAt": "2026-11-05T01:11:40.018Z",
+      "summary": "core: noCodeVerificationNote(command, target, lang) en cards/accept.ts (exportada) y MergeVerification no-code en absorbedLine, que dice que el código es el de la rama destino; tests es/en en accept.test.ts e incorporation.test.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +65,5 @@
     "AC": 5,
     "T": 4,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:13d8f1f07f2c4322a4d48025ef6d59cf5d579274150527294d9118b0133efbc7",
-    "at": "2026-11-05T01:10:05.598Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
