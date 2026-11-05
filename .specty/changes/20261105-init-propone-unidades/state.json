@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-init-propone-unidades",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-init-propone-unidades",
   "baseCommit": "bd48aacf6aa987f9dcce0d5aa2a20cb564068e48",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2b800c125ca4fa62bc177f77c4607ef042780223",
+      "attempts": 1,
       "startedAt": "2026-11-05T12:43:52.340Z",
       "doneAt": "2026-11-05T12:45:41.670Z",
-      "summary": "init propone en su tarjeta las unidades de un workspace de pnpm, npm o yarn (detect/workspace-units.ts lee los package.json, el gestor y los archivos de la raíz) cuando la configuración no tiene verify.units, sin escribirlas."
+      "summary": "init propone en su tarjeta las unidades de un workspace de pnpm, npm o yarn (detect/workspace-units.ts lee los package.json, el gestor y los archivos de la raíz) cuando la configuración no tiene verify.units, sin escribirlas.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8be1890d634b81c4a27bc13632e02f4c7559f8fc",
+      "startedAt": "2026-11-05T12:45:41.998Z",
+      "doneAt": "2026-11-05T12:46:33.708Z",
+      "summary": "formats.md §6 y ARCHITECTURE §9 dicen que init propone las unidades de un workspace de pnpm, npm o yarn, cómo las arma y por qué no las escribe."
     }
   },
   "pending": {

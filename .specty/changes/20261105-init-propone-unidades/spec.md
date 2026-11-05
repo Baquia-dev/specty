@@ -63,7 +63,7 @@ La verificación completa solo salta lo que no cambió si `.specty/config.yaml` 
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-units.test.ts test/setup.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T3: La documentación de la propuesta de unidades
+- [x] T3: La documentación de la propuesta de unidades
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
