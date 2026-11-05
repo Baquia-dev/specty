@@ -55,7 +55,7 @@ Desde 20261105-tests-cli-mas-rapidos, cada comando abre su sesión con un proces
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-memo.test.ts test/git-paths.test.ts test/flow.test.ts test/enter.test.ts test/worktree-hooks.test.ts test/memory.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: perf
-- [ ] T2: La documentación de las lecturas recordadas
+- [x] T2: La documentación de las lecturas recordadas
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

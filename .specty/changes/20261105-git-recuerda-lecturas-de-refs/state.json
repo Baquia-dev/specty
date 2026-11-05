@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-git-recuerda-lecturas-de-refs",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-git-recuerda-lecturas-de-refs",
   "baseCommit": "a0ad1aa4a6e619d229ad7a430d3afdd50e426ba8",
   "revision": 1,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 3,
       "baseCommit": "c135d83000b8784ae7f085b7ed8d5fb98b6657d0",
+      "attempts": 3,
       "startedAt": "2026-11-05T11:54:12.678Z",
       "doneAt": "2026-11-05T12:01:15.490Z",
-      "summary": "La apertura da también HEAD y la rama (un solo rev-parse) y el runner recuerda 2 s toda lectura que solo depende de refs, objetos o configuración (io/git-memo.ts); flow.test.ts: de 1097 a 920 procesos de git y de 12,6 a 11,3 s"
+      "summary": "La apertura da también HEAD y la rama (un solo rev-parse) y el runner recuerda 2 s toda lectura que solo depende de refs, objetos o configuración (io/git-memo.ts); flow.test.ts: de 1097 a 920 procesos de git y de 12,6 a 11,3 s",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a7e5767d697ccdc21807527604c82794abc43f5e",
+      "startedAt": "2026-11-05T12:01:15.801Z",
+      "doneAt": "2026-11-05T12:05:19.668Z",
+      "summary": "ARCHITECTURE explica la apertura con HEAD y la rama, las lecturas de refs recordadas 2 s (recalling, rememberHead) y la nueva medida de flow.test.ts."
     }
   },
   "pending": {
