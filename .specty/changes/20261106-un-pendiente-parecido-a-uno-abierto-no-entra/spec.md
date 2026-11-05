@@ -80,7 +80,7 @@ Desde C1 un agente ya no ve los pendientes abiertos al empezar, así que puede v
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-similar.test.ts test/memory.test.ts test/memory-kind.test.ts test/memory-resolve.test.ts test/commands-named.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T4: La documentación cuenta el freno de parecidos
+- [x] T4: La documentación cuenta el freno de parecidos
   - files: docs/formats.md, docs/ARCHITECTURE.md, docs/decisions/0016-la-memoria-de-specty.md
   - ac: AC1, AC2, AC4
   - verify: pnpm typecheck && pnpm lint && pnpm sources && pnpm knip
