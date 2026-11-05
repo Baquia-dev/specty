@@ -6,6 +6,13 @@
   "branch": "specty/20261106-un-pendiente-ajeno-que-resuelve-el-trabajo-sale",
   "baseCommit": "88d9019e8b696fe0180cfa8ff5d79807a856fc6d",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:07cb2eaee807f632ef4002ed20a55085e9a277ccabeb067e210a43b68540a429",
+    "at": "2026-11-05T21:14:19.130Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:07cb2eaee807f632ef4002ed20a55085e9a277ccabeb067e210a43b68540a429",
-    "at": "2026-11-05T21:14:19.130Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T21:18:06.895Z"
 }
