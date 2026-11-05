@@ -2,24 +2,24 @@
   "schema": 1,
   "id": "20261106-la-bandeja-guarda-solo-el-resumen-de-los",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261106-la-bandeja-guarda-solo-el-resumen-de-los",
   "baseCommit": "85be27d0ad5ba373872c2aa19c4dad4331511ef4",
-  "revision": 2,
+  "revision": 4,
   "approved": {
-    "revision": 2,
-    "hash": "sha256:ed5c9483eecabb06d4e21b0a096f3ce89aaf57c017c4d22d277adae35d907dcc",
-    "at": "2026-11-05T17:54:29.426Z",
+    "revision": 4,
+    "hash": "sha256:f4e6cd2b4a09275c05cf908decae9a19b173de1040af139648ca38587c588489",
+    "at": "2026-11-05T18:09:17.686Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "L",
-    "score": 13,
+    "score": 16,
     "adjust": 0,
     "reasons": [
-      "12 archivos",
-      "4 tareas"
+      "14 archivos",
+      "5 tareas"
     ]
   },
   "items": {
@@ -77,12 +77,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cfb8cd9dee85be945031e8bdd1bcfec00198808a",
+      "attempts": 1,
       "startedAt": "2026-11-05T18:06:11.340Z",
       "doneAt": "2026-11-05T18:06:32.215Z",
-      "summary": "docs/ui.md cuenta el resumen que guarda la Bandeja de cada terminado y que su página pide el registro por id; ARCHITECTURE §15, que la UI pide por id la página de cualquier terminado."
+      "summary": "docs/ui.md cuenta el resumen que guarda la Bandeja de cada terminado y que su página pide el registro por id; ARCHITECTURE §15, que la UI pide por id la página de cualquier terminado.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -92,7 +92,7 @@
   "maxIds": {
     "A": 5,
     "AC": 4,
-    "T": 4,
+    "T": 5,
     "R": 2
   },
   "lockedTests": {

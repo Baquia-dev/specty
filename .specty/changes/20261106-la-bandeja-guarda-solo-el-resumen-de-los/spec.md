@@ -61,6 +61,8 @@ Hoy la Bandeja guarda cada cambio terminado de sus páginas entero: su spec revi
 - modificar packages/ui/src/components/item-tooltip.ts — los tooltips por id buscan entre los cambios enteros
 - crear packages/ui/src/change/change-page.finished.test.ts — la página de un terminado de una página pide su registro por id
 - crear packages/ui/src/data/finished-summaries.test.ts — el resumen que guarda la Bandeja, su fila y el enlace de su corte
+- modificar packages/ui/src/acceptance/closing-actions.test.ts — su componente de prueba toma el cambio entero de `listed()`
+- modificar packages/ui/src/progress/progress-tab.test.ts — su componente de prueba toma el cambio entero de `listed()`
 - modificar docs/ui.md — Terminados por páginas: el resumen y el registro por id
 - modificar docs/ARCHITECTURE.md — §15: la UI pide por id la página de cualquier terminado
 
@@ -84,6 +86,11 @@ Hoy la Bandeja guarda cada cambio terminado de sus páginas entero: su spec revi
   - ac: —
   - verify: grep -q "resumen" docs/ui.md && grep -q "cualquier terminado" docs/ARCHITECTURE.md
   - type: docs
+- [ ] T5: Los tests de closing-actions y progress-tab toman el cambio entero de `listed()`
+  - files: packages/ui/src/acceptance/closing-actions.test.ts, packages/ui/src/progress/progress-tab.test.ts
+  - ac: —
+  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch && pnpm typecheck
+  - type: refactor
 
 ## Riesgos
 
