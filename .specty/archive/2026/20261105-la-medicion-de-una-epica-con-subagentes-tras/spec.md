@@ -19,3 +19,9 @@ ARCHITECTURE §16 termina diciendo que el reparto de una épica entre subagentes
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts
   - type: docs
+
+## Cierre
+
+### Resumen
+
+ARCHITECTURE §16 da la medición del 2026-11-05 de epic y epic-subagent tras el arreglo de P101 (2 de 2 en los dos; reparto 27 % más rápido y 25 % más caro) y su conclusión.
