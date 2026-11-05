@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-verificaciones-con-plazas",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-verificaciones-con-plazas",
   "baseCommit": "0da7da13c18aa1b2e2877af07aba3635cc918d00",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fd9948f8c5371939312abecb6374b30436a29d29",
+      "attempts": 1,
       "startedAt": "2026-11-05T03:34:26.622Z",
       "doneAt": "2026-11-05T03:37:23.594Z",
-      "summary": "oneAtATime es el turno (onTurn) más todas las plazas, solo alrededor del comando; landingTurn toma solo el turno; la verificación de una tarea ocupa una plaza (live-run) y la de specty integrate pasa por oneAtATime; AC3 en integrate-turn.test.ts"
+      "summary": "oneAtATime es el turno (onTurn) más todas las plazas, solo alrededor del comando; landingTurn toma solo el turno; la verificación de una tarea ocupa una plaza (live-run) y la de specty integrate pasa por oneAtATime; AC3 en integrate-turn.test.ts",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "51f777201a3c192d37a32ffb43ce97c109e358de",
+      "startedAt": "2026-11-05T03:37:23.909Z",
+      "doneAt": "2026-11-05T03:38:15.487Z",
+      "summary": "ARCHITECTURE §9: las plazas de verificación (verify.slots, cola, archivos de las que corren, el cierre sin plazas) y que specty integrate toma el turno; formats.md: verify.slots y las carpetas locks/verify-slots/ y su cola"
     }
   },
   "pending": {

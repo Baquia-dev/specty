@@ -76,7 +76,7 @@ Solo la verificación completa espera su turno: las verificaciones de las tareas
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate-turn.test.ts src/flow/full-verification.test.ts test/accept-turn-time.test.ts test/close-turn.test.ts test/integrate.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: perf
-- [ ] T4: La documentación de las plazas
+- [x] T4: La documentación de las plazas
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm lint
