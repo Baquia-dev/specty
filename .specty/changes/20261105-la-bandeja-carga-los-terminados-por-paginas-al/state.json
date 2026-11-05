@@ -6,6 +6,13 @@
   "branch": "specty/20261105-la-bandeja-carga-los-terminados-por-paginas-al",
   "baseCommit": "a3ae2fa34485824f34790bd2759bbf555793fe31",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:3162d7aec035e073afdd023cfe55c0df0fbe91b5342744e3ab665995fa60860f",
+    "at": "2026-11-05T13:35:43.071Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -56,12 +63,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:3162d7aec035e073afdd023cfe55c0df0fbe91b5342744e3ab665995fa60860f",
-    "at": "2026-11-05T13:35:43.071Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T13:48:55.183Z"
 }
