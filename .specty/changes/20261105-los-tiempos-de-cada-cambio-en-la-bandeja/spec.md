@@ -1,0 +1,67 @@
+---
+kind: standard
+epic: 20261105-bandeja-por-paginas
+slice: C1
+---
+
+# Los tiempos de cada cambio en la Bandeja
+
+## Objetivo
+
+Cada fila de la Bandeja dice cuánto lleva un cambio en curso desde que empezó y en su fase actual, y de uno terminado, cuándo empezó y cuánto tardó. Hoy dice «Fase: 15 min» y «Total: 1 h 15 min», con un reloj fijo para una fecha de prueba, y una duración de varios días se dice en horas («50 h»).
+
+## Fuera de alcance
+
+- La cabecera de los grupos de épica y su «Total», que rehace el corte C2 al hacer de la épica la cabecera de su grupo.
+- Paginar los terminados (corte C4) y abrir un cambio que la Bandeja no cargó (corte C3).
+- El tiempo de la cabecera de la página de un cambio («hace 3 min» en su fase), que no cambia.
+
+## Supuestos
+
+- A1: Un cambio empieza en su `change.created` y termina en la entrada de la auditoría que lo cerró o lo canceló: son el `createdAt` y el `closedAt` que ya derivan las vistas en `data/views.ts`, que no cambian. Su fase empieza en `phaseSince`.
+- A2: Los textos son «Empezó hace 2 h 15 min» y «En esta fase: 25 min» para un cambio abierto, y «Empezó el 3 nov, 14:05» y «Tardó 2 h 10 min» para uno terminado; en inglés, «Started 2 h 15 min ago», «In this phase: 25 min», «Started Nov 3, 2:05 PM» y «Took 2 h 10 min». La fecha sale de `Intl.DateTimeFormat` en el idioma elegido y la zona del navegador, con el año solo si no es el del reloj de la página.
+- A3: Una duración de un día o más se dice en días y horas, redondeada a la hora: «2 d 3 h», o «2 d» si no sobran horas, en las dos lenguas. Por debajo de un día no cambia. Las demás pantallas que usan `formatDuration` (Progreso, Aceptación, Historial) también lo dicen así.
+- A4: Bajo la fase va primero cuándo empezó y después el tiempo en la fase (abierto) o lo que tardó (terminado). El primero conserva `data-since`, que la Bandeja usa para comprobar que los tiempos van bajo la fase.
+- A5: Se quita `effectiveNow`, el reloj fijo para la fecha de prueba 2026-10-21T11:45: la fila usa siempre el `now` que le pasa la Bandeja, que avanza cada 30 s.
+
+## Criterios de aceptación
+
+- AC1: CUANDO un cambio está en curso o espera una decisión ENTONCES su fila en la Bandeja dice cuánto lleva desde que empezó («Empezó hace 2 h 15 min») y cuánto lleva en su fase actual («En esta fase: 25 min»), y los dos avanzan con el reloj de la página.
+- AC2: CUANDO un cambio está hecho o cancelado ENTONCES su fila dice la fecha y la hora en que empezó («Empezó el 3 nov, 14:05», con el año si no es el actual) y cuánto tardó de principio a fin («Tardó 2 h 10 min»), y no el tiempo en su fase.
+- AC3: CUANDO una duración es de un día o más ENTONCES se dice en días y horas («2 d 3 h»), en la Bandeja y en las demás pantallas que dicen duraciones.
+- AC4: CUANDO salen los textos de los tiempos ENTONCES salen en español y en inglés.
+
+## Diseño
+
+- `data/progress.ts`: `formatDuration` gana el tramo de días: con un día o más, redondea a la hora y da «N d» o «N d M h».
+- `inbox/inbox-row.ts`: `started` (abierto: «Empezó hace» más la duración desde `createdAt`; terminado: «Empezó el» más la fecha de `createdAt`), `phaseTime` («En esta fase:», solo abierto) y `took` («Tardó», de `createdAt` a `closedAt`, solo terminado). Se quitan `effectiveNow` y `totalTime`. Las marcas del DOM son `data-started` (con `data-since`), `data-phase-time` y `data-took`.
+
+## Archivos
+
+- modificar packages/ui/src/data/progress.ts — `formatDuration` en días y horas desde un día
+- modificar packages/ui/src/data/progress.test.ts — el test de las duraciones de un día o más
+- modificar packages/ui/src/inbox/inbox-row.ts — los tiempos de la fila, sin el reloj fijo
+- modificar packages/ui/src/inbox/inbox-row.test.ts — los tests de los tiempos de un cambio abierto y de uno terminado, en las dos lenguas
+- modificar docs/ui.md — los tiempos de cada fila de la Bandeja
+
+## Tareas
+
+- [ ] T1: Las duraciones de un día o más, en días y horas
+  - files: packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts
+  - ac: AC3
+  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
+  - type: feat
+- [ ] T2: Los tiempos de cada fila de la Bandeja
+  - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-row.test.ts
+  - ac: AC1, AC2, AC4
+  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-row.test.ts --include src/inbox/inbox.test.ts --include src/data/progress.test.ts && pnpm typecheck && pnpm lint && pnpm knip
+  - type: feat
+- [ ] T3: La documentación de los tiempos de la Bandeja
+  - files: docs/ui.md
+  - ac: —
+  - verify: pnpm lint
+  - type: docs
+
+## Riesgos
+
+- R1: El formato de la fecha depende de los datos de idioma del navegador (ICU), y el inglés separa la hora de «PM» con un espacio estrecho — los tests normalizan los espacios y construyen las fechas en la hora local, así no dependen de la zona.
