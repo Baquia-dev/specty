@@ -6,6 +6,13 @@
   "branch": "specty/20261105-verificacion-dice-cuando-se-acabo-el-tiempo",
   "baseCommit": "ba9d1a63c218f2d52a38f082a13bbff6bc20f9b7",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:96fc9ea7ebfdb6cd290d2d21f8f3be4b4882e9326514266b734fc7c5227eba30",
+    "at": "2026-11-05T07:21:38.169Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -40,12 +47,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:96fc9ea7ebfdb6cd290d2d21f8f3be4b4882e9326514266b734fc7c5227eba30",
-    "at": "2026-11-05T07:21:38.169Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T07:23:16.860Z"
 }
