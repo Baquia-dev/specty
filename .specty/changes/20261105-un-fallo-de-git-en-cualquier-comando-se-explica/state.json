@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261105-un-fallo-de-git-en-cualquier-comando-se-explica",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-un-fallo-de-git-en-cualquier-comando-se-explica",
+  "baseCommit": "6db2938c9910024d6bb77d016af7fb938225ed67",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cb93ef75b39aa477d11c23231a7de83c28e25acc7feb556796668d8509448567",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:21eb901a43664446d4205f1eb4c1bce1627d8a58ba8ddb9d3e408cad57c4498d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a98ea1f5320f02e052504df9858f367c072a8ec5e4ee67163cb8109bb187d693",
+    "at": "2026-11-05T03:36:16.046Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
