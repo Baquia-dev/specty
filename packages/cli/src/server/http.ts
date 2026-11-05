@@ -19,7 +19,7 @@ import {
 } from "./actions";
 import { changeDiff, type DiffAnswer } from "./diff";
 import { type ChangeEvents, changeEvents } from "./events";
-import { changeRecords } from "./records";
+import { changeRecord, changeRecords } from "./records";
 import { changeRuns, type Runs } from "./runs";
 import { sessionsView } from "./sessions";
 import { changeTrace, traceReply } from "./trace";
@@ -138,6 +138,8 @@ async function handle(request: IncomingMessage, response: ServerResponse, contex
   // Another host name means DNS rebinding: a page elsewhere pointing its name at this server.
   if (!isLocal(request.headers.host, context.port))
     return send(response, 403, TEXT, "specty: host");
+  // The server keeps one `Git` for hours: what it recalls from before this request may be old.
+  context.session.git.forget();
   const url = new URL(request.url ?? "/", "http://localhost");
   if (request.method === "POST" && url.pathname.startsWith("/api/"))
     return act(request, response, context, url.pathname);
@@ -183,6 +185,8 @@ async function readApi(
       JSON.stringify(actions ? { actions, csrf: context.csrf } : { actions }),
     );
   }
+  const one = /^\/api\/changes\/([^/]+)$/.exec(url.pathname)?.[1];
+  if (one !== undefined) return readRecord(response, context, one);
   return readChange(response, context, url);
 }
 
@@ -204,6 +208,14 @@ const VIEWS: ReadonlyMap<string, (session: Session) => Promise<unknown>> = new M
 async function memoryView(session: Session) {
   const { entries } = await readMemory(session.git, session.config.memory.branch);
   return { entries, changes: await openChanges(session) };
+}
+
+/** A change by its id, open or archived, as `/api/changes` gives it; 404 when there is none. */
+async function readRecord(response: ServerResponse, context: Context, id: string) {
+  const record = await changeRecord(context.session, decodeURIComponent(id));
+  return record === undefined
+    ? send(response, 404, JSON_TYPE, '{"error":"not found"}')
+    : send(response, 200, JSON_TYPE, JSON.stringify(record));
 }
 
 /** A change's verification going on, its traceability, or its diff, whole or of one task. */

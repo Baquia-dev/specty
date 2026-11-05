@@ -189,7 +189,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
           </sp-tabs>
           }
         </div>
-      } @else if (store.views.hasValue()) {
+      } @else if (notFound()) {
         <sp-empty-state [class]="page" [heading]="t()('No existe ese cambio', 'That change does not exist')" [icon]="missing" [level]="1">
           <p class="m-0 text-sm text-text-muted">
             <code class="font-mono">{{ id() }}</code>
@@ -211,7 +211,7 @@ export class ChangePage {
   readonly id = input.required<string>();
   readonly tabParam = input<string | undefined>(undefined, { alias: "tab" });
 
-  protected readonly store = inject(ChangesStore);
+  private readonly store = inject(ChangesStore);
   private readonly preferences = inject(Preferences);
   private readonly router = inject(Router);
   protected readonly t = this.preferences.t;
@@ -222,7 +222,10 @@ export class ChangePage {
   protected readonly waiting = WAITING;
   protected readonly suggestion = LucideLightbulb;
   protected readonly showEffort = inject(SHOW_EFFORT_HINT);
-  protected readonly change = this.store.byId(this.id);
+  private readonly found = this.store.byId(this.id);
+  protected readonly change = this.found.view;
+  /** Neither the Inbox nor the source have it: the page says it does not exist. */
+  protected readonly notFound = this.found.missing;
   /** The wide header is out of view: show the compact bar. */
   protected readonly compact = signal(false);
   /** The spec section being read, from the review. */

@@ -185,6 +185,29 @@ describe("the local server", () => {
     }
   });
 
+  it("AC3: gives one change by its id, open or archived, as the list does; 404 for an unknown one", async () => {
+    const { root } = await twoChanges();
+    const server = await startServer({ session: await sessionAt(root), port: 0, ui: undefined });
+    try {
+      const one = (id: string, headers: Record<string, string> = {}) =>
+        ask(server.port, `/api/changes/${encodeURIComponent(id)}`, headers);
+      expect((await one(CHANGE)).status).toBe(403);
+      const cookie = await enter(server);
+      const list: { state: { id: string } }[] = JSON.parse(
+        (await ask(server.port, "/api/changes", { cookie })).body,
+      );
+      for (const id of [OTHER, CHANGE]) {
+        const answer = await one(id, { cookie });
+        expect([id, answer.status]).toEqual([id, 200]);
+        expect(JSON.parse(answer.body)).toEqual(list.find((record) => record.state.id === id));
+      }
+      const unknown = await one("20990101-no-existe", { cookie });
+      expect([unknown.status, JSON.parse(unknown.body)]).toEqual([404, { error: "not found" }]);
+    } finally {
+      await server.close();
+    }
+  });
+
   it("tells its listeners when a change moves (AC3)", async () => {
     const { root, other } = await twoChanges();
     const server = await startServer({

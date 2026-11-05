@@ -37,6 +37,14 @@ export abstract class SpectyData {
   /** Calls `listener` whenever the data may have changed; returns how to stop. */
   abstract subscribe(listener: () => void): () => void;
 
+  /**
+   * The change `id`, open or finished, even if `changes` leaves it out; none when there is no
+   * such change. A source that gives every change finds it among them.
+   */
+  async change(id: string): Promise<ChangeRecord | undefined> {
+    return (await this.changes()).find((record) => record.state.id === id);
+  }
+
   /** Why the person cannot decide from this source, or nothing when they can. */
   readOnly(): Promise<Bilingual | undefined> {
     return Promise.resolve(READ_ONLY);

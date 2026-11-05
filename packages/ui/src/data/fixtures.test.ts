@@ -340,8 +340,8 @@ describe("ChangesStore", () => {
   it("finds a change by id", async () => {
     const { store, settle } = setup();
     await settle();
-    const found = store.byId(signal("20261021-login-google"));
-    expect(found()?.title).toBe("Login con Google");
+    const found = TestBed.runInInjectionContext(() => store.byId(signal("20261021-login-google")));
+    expect(found.view()?.title).toBe("Login con Google");
   });
 
   it("works with any source that keeps the contract (AC7)", async () => {

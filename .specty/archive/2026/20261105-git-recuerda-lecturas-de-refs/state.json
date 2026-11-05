@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "id": "20261105-git-recuerda-lecturas-de-refs",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-git-recuerda-lecturas-de-refs",
+  "baseCommit": "a0ad1aa4a6e619d229ad7a430d3afdd50e426ba8",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:2514577618a35dc0534ee440bc794d31cd6419d1bfd83862c28c6ca269d29abb",
+    "at": "2026-11-05T12:11:40.603Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8351e1a1f60fadfc2e790b36bd465095021c8d4ced36214e2a6391040a33f39a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fc62977d67554006cf9beca861c3d9bdbf969635095e22f0abb1a209885fb22e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8b6b3fd198e2194349ee65fad2aa1ff509a8ba8def9b80d049ef25486dc1bbc3",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:43f15d547ba8e0cfed0a205ce33c4134fcfb26bb85e9c3acb562515c15865f13",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c135d83000b8784ae7f085b7ed8d5fb98b6657d0",
+      "attempts": 3,
+      "startedAt": "2026-11-05T11:54:12.678Z",
+      "doneAt": "2026-11-05T12:01:15.490Z",
+      "summary": "La apertura da también HEAD y la rama (un solo rev-parse) y el runner recuerda 2 s toda lectura que solo depende de refs, objetos o configuración (io/git-memo.ts); flow.test.ts: de 1097 a 920 procesos de git y de 12,6 a 11,3 s",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "a7e5767d697ccdc21807527604c82794abc43f5e",
+      "attempts": 1,
+      "startedAt": "2026-11-05T12:01:15.801Z",
+      "doneAt": "2026-11-05T12:05:19.668Z",
+      "summary": "ARCHITECTURE explica la apertura con HEAD y la rama, las lecturas de refs recordadas 2 s (recalling, rememberHead) y la nueva medida de flow.test.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f7583cd20d30549e39951f0043d9c78711efc1eb",
+      "attempts": 1,
+      "startedAt": "2026-11-05T12:12:59.194Z",
+      "doneAt": "2026-11-05T12:14:44.394Z",
+      "summary": "Git.forget olvida lo recordado; el servidor de specty ui lo llama al empezar cada petición y cada sondeo de eventos, así que nunca responde con una lectura de antes de un commit de otro proceso (trace.test.ts vuelve a pasar).",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "3ff3b1e4fec0d9b22d56aa50b06b469a57f4d79f",
+      "attempts": 1,
+      "startedAt": "2026-11-05T12:14:44.700Z",
+      "doneAt": "2026-11-05T12:15:00.766Z",
+      "summary": "ARCHITECTURE explica que el servidor de specty ui olvida lo recordado al empezar cada petición y cada sondeo de eventos (Git.forget).",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 4,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T12:18:55.434Z",
+  "lockedTests": {
+    "packages/cli/test/git-memo.test.ts": "sha256:03f764c01240574a8b67e489764c89da10761ec8dff0c6fff088c6a4d75a55e6"
+  }
+}

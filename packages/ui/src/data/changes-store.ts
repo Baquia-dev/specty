@@ -111,7 +111,52 @@ export class ChangesStore {
     inject(DestroyRef).onDestroy(stop);
   }
 
-  byId(id: Signal<string>): Signal<ChangeView | undefined> {
-    return computed(() => this.all().find((view) => view.id === id()));
+  /**
+   * The change `id`: among the loaded changes or, when they leave it out (a finished change the
+   * Inbox has not loaded), asked to the source by its id, and again whenever the source says
+   * something changed. Called in an injection context, as `resource`: it lasts as long as its caller.
+   */
+  byId(id: Signal<string>): FoundChange {
+    const loaded = computed(() => this.all().find((view) => view.id === id()));
+    const asked = resource({
+      params: () => (this.views.hasValue() && loaded() === undefined ? id() : undefined),
+      loader: async ({ params }) => {
+        const record = await this.data.change(params);
+        return record === undefined ? undefined : (await this.derive([record]))[0];
+      },
+    });
+    const stop = this.data.subscribe(() => asked.reload());
+    inject(DestroyRef).onDestroy(stop);
+    return {
+      view: computed(
+        () => loaded() ?? withEpicTitle(asked.hasValue() ? asked.value() : undefined, this.all()),
+      ),
+      missing: computed(
+        () =>
+          loaded() === undefined &&
+          (asked.status() === "error" ||
+            (asked.status() === "resolved" && asked.value() === undefined)),
+      ),
+    };
   }
+}
+
+/** A change looked for by its id, as its page reads it. */
+export interface FoundChange {
+  /** Its view, once known. */
+  readonly view: Signal<ChangeView | undefined>;
+  /** Neither the loaded changes nor the source have it, or the source failed to look for it. */
+  readonly missing: Signal<boolean>;
+}
+
+/** `view` with the title of its epic when the epic is loaded, as the list derives it. */
+function withEpicTitle(
+  view: ChangeView | undefined,
+  loaded: readonly ChangeView[],
+): ChangeView | undefined {
+  const epic = view?.epic;
+  const title = loaded.find((other) => other.id === epic?.id)?.title;
+  return view === undefined || epic === undefined || title === undefined
+    ? view
+    : { ...view, epic: { ...epic, title } };
 }

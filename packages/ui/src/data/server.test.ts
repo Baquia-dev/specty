@@ -67,6 +67,48 @@ describe("ServerData", () => {
     expect(await failure()).toBe("El servidor devolvió datos inesperados.");
   });
 
+  it("AC1: reads one change of the local server by its id", async () => {
+    const [record] = sampleRecords(Date.now());
+    const fetched = answering(200, record);
+    expect(await new ServerData().change("2026 una/otra")).toEqual(record);
+    expect(fetched).toHaveBeenCalledWith("/api/changes/2026%20una%2Fotra");
+  });
+
+  it("AC2: gives no change for an id the server does not know, and explains why it could not ask", async () => {
+    answering(404, { error: "not found" });
+    expect(await new ServerData().change("20990101-no-existe")).toBeUndefined();
+    const why = async () => {
+      const error: unknown = await new ServerData()
+        .change("20990101-no-existe")
+        .catch((caught: unknown) => caught);
+      return error instanceof ActionError ? error.text.es : "no falló con su motivo";
+    };
+    answering(403, { error: "forbidden" });
+    expect(await why()).toBe(
+      "Esta pestaña no tiene sesión: abre el enlace que imprime `specty ui`.",
+    );
+    answering(500, {});
+    expect(await why()).toBe("El servidor respondió 500.");
+    answering(200, { spec: "# Sin estado" });
+    expect(await why()).toBe("El servidor devolvió datos inesperados.");
+  });
+
+  it("AC1: any other source finds one change among the ones it gives", async () => {
+    const records = sampleRecords(Date.now());
+    class Listed extends SpectyData {
+      changes(): Promise<readonly ChangeRecord[]> {
+        return Promise.resolve(records);
+      }
+
+      subscribe(): () => void {
+        return () => undefined;
+      }
+    }
+    const [first] = records;
+    expect(await new Listed().change(first?.state.id ?? "")).toEqual(first);
+    expect(await new Listed().change("20990101-no-existe")).toBeUndefined();
+  });
+
   it("reads again on each `changes` event, until it stops (AC1)", () => {
     vi.stubGlobal("EventSource", FakeEvents);
     const heard = vi.fn();
