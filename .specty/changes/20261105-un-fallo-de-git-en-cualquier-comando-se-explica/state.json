@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "81b4cc392204f525f3c1715f17b82c633e359fda",
+      "attempts": 1,
       "startedAt": "2026-11-05T03:37:55.918Z",
       "doneAt": "2026-11-05T03:39:10.729Z",
-      "summary": "core: gitFailedCard (cards/git-failed.ts) con la orden de git y su error, y un SIGUIENTE para corregirlo y repetir el comando"
+      "summary": "core: gitFailedCard (cards/git-failed.ts) con la orden de git y su error, y un SIGUIENTE para corregirlo y repetir el comando",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "29aa2a33245301f51d55cd95dbc5a150810325b9",
+      "startedAt": "2026-11-05T03:39:11.312Z",
+      "doneAt": "2026-11-05T03:43:12.494Z",
+      "summary": "sessionRunner (program.ts) captura un GitError del comando y emite gitFailedCard con gitFailure (io/git.ts), la orden de git y su error en una línea sin hint:, que ahora también usa install/commit.ts"
     }
   },
   "pending": {

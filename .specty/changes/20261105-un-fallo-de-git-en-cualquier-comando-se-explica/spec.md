@@ -49,7 +49,7 @@ Cuando git falla dentro de un comando de Specty que no es `init` (`approve`, `ta
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/git-failed.test.ts && pnpm typecheck && pnpm lint && pnpm sources
   - type: fix
-- [ ] T2: Los comandos explican un fallo de git
+- [x] T2: Los comandos explican un fallo de git
   - files: packages/cli/src/io/git.ts, packages/cli/src/install/commit.ts, packages/cli/src/program.ts, packages/cli/test/git-failed.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-failed.test.ts test/init-commit.test.ts test/check-install.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip

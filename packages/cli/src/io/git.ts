@@ -17,6 +17,16 @@ export class GitError extends Error {
   }
 }
 
+/** Git's command and its error on one line, without its hints: what is read of a failure. */
+export function gitFailure(error: GitError): string {
+  const lines = error.result.stderr
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0 && !line.startsWith("hint:"));
+  const detail = lines.length > 0 ? lines.join(" ") : `exit ${error.result.code ?? "?"}`;
+  return `git ${error.args[0] ?? ""}: ${detail}`;
+}
+
 interface RunOptions {
   readonly env?: Readonly<Record<string, string>>;
   readonly input?: string;
