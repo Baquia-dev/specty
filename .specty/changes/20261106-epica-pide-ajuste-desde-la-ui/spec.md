@@ -67,7 +67,7 @@ Desde P165, una épica en `implementing` se ajusta con `specty adjust` para estr
   - ac: AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/epic-adjust.test.ts --include src/acceptance/acceptance-actions.test.ts --include src/acceptance/criterion-row.test.ts --include src/data/acceptance.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T3: El servidor ajusta una épica en implementación y rechaza otro cambio en esa fase
+- [x] T3: El servidor ajusta una épica en implementación y rechaza otro cambio en esa fase
   - files: packages/cli/test/server/epic-adjust.test.ts
   - ac: AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/epic-adjust.test.ts test/server/actions.test.ts && pnpm lint

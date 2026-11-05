@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "72f52265646f3911d9e52eec2b7c1aa71279f752",
+      "attempts": 1,
       "startedAt": "2026-11-05T20:41:13.618Z",
       "doneAt": "2026-11-05T20:46:13.461Z",
-      "summary": "AdjustResult elige por el tipo del cambio la explicación (las formas de ajustar una épica o la clasificación por tareas), la descripción, el ejemplo, el aviso y la nota (data-note), que en una épica depende de su fase; decideResultIn de la fuente de muestra admite adjust de una épica en implementing"
+      "summary": "AdjustResult elige por el tipo del cambio la explicación (las formas de ajustar una épica o la clasificación por tareas), la descripción, el ejemplo, el aviso y la nota (data-note), que en una épica depende de su fase; decideResultIn de la fuente de muestra admite adjust de una épica en implementing",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "774d4b35cb04f6d45c87830445c6ef863a502db0",
+      "startedAt": "2026-11-05T20:46:13.854Z",
+      "doneAt": "2026-11-05T20:51:43.617Z",
+      "summary": "test/server/epic-adjust.test.ts: el servidor ajusta por /adjust una épica en implementing en su propia carpeta (pasa a adjusting con la petición) y responde 409 a una feature en implementing sin cambiar su fase; el servidor no cambió"
     }
   },
   "pending": {
