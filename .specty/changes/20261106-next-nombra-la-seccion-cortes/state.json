@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "id": "20261106-next-nombra-la-seccion-cortes",
+  "kind": "quick",
+  "phase": "testing",
+  "branch": "specty/20261106-next-nombra-la-seccion-cortes",
+  "baseCommit": "359335f804c6fe7e6dab489c92a0ba63ef54a00e",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2fbab363beca9a4368e7393017c7c1c94ce98031a53ceebfe9e7dfe4d8aa19cd",
+    "at": "2026-11-05T20:15:56.954Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
