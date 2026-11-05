@@ -21,7 +21,9 @@ const BEFORE_ACP =
  * editor carries out: the guard sees them as it sees its own.
  */
 const CLIENT_TOOLS = "client_view_file|client_edit_file|client_create_file";
-const TOOLS = `${BEFORE_ACP}|${CLIENT_TOOLS}`;
+/** In its CLI (`agy`), it reads a file or a folder, writes and edits with these. */
+const CLI_TOOLS = "read_file|write_file|edit_file";
+const TOOLS = `${BEFORE_ACP}|${CLIENT_TOOLS}|${CLI_TOOLS}`;
 
 /**
  * Its tools that read or search, with the field that names the file or the folder: the guard
@@ -33,6 +35,7 @@ const READS: Readonly<Record<string, string>> = {
   grep_search: "SearchPath",
   find_by_name: "SearchDirectory",
   client_view_file: "absolute_path",
+  read_file: "Path",
 };
 
 /**
@@ -45,6 +48,8 @@ const WRITES: Readonly<Record<string, string>> = {
   multi_replace_file_content: "TargetFile",
   client_edit_file: "target_file",
   client_create_file: "target_file",
+  write_file: "Path",
+  edit_file: "Path",
 };
 /**
  * The events the guard listens to, with the tools each one covers; `undefined` is an event that

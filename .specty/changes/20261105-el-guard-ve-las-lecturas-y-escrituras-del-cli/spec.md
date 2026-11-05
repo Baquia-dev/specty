@@ -50,7 +50,7 @@ En el CLI de Antigravity (`agy` 1.5.1), el agente lee con `read_file` (también 
 
 ## Tareas
 
-- [ ] T1: El guard juzga `read_file`, `write_file` y `edit_file` de Antigravity, e `init` los pone en su matcher
+- [x] T1: El guard juzga `read_file`, `write_file` y `edit_file` de Antigravity, e `init` los pone en su matcher
   - files: packages/cli/src/agents/antigravity.ts, packages/cli/test/antigravity.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts -t "AC1|AC2|AC3|AC4: doctor names a hook from before its tools in ACP|writes the specty hook"
