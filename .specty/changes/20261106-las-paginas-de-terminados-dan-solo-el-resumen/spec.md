@@ -75,7 +75,7 @@ Hoy cada página de terminados del servidor local da los 30 registros completos,
 
 ## Tareas
 
-- [ ] T1: El servidor da el resumen de cada terminado en sus páginas
+- [x] T1: El servidor da el resumen de cada terminado en sus páginas
   - files: packages/cli/src/server/finished.ts, packages/cli/src/server/records.ts, packages/cli/test/server/finished.test.ts, packages/cli/test/server.test.ts, packages/cli/test/server-restore.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/finished.test.ts test/server.test.ts test/server-restore.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip

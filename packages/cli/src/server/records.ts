@@ -185,15 +185,6 @@ export async function archivedRecords(session: Session): Promise<ChangeRecord[]>
   return records;
 }
 
-/** `records` with the commit of each task done, found by its trailer. */
-export async function withTaskCommits(
-  session: Session,
-  records: readonly ChangeRecord[],
-): Promise<ChangeRecord[]> {
-  const commits = await taskCommits(session);
-  return records.map((record) => withCommits(record, commits.get(record.state.id)));
-}
-
 /** An archived change, from memory if its state kept its time; one that cannot be read, none. */
 async function archivedRecord(
   kept: Map<string, Kept>,
