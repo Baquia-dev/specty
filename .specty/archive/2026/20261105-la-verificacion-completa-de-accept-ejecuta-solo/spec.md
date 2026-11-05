@@ -90,3 +90,25 @@ Hoy la verificación completa de `accept` es un solo comando (`verify.full`), qu
 
 - R1: Unos `paths` que no cubren lo que lee una unidad saltan tests que debían correr — es responsabilidad de quien los escribe (A4 de la épica); `specty verify --fresh` (corte C4) y el CI lo ejecutan todo.
 - R2: El registro crece con cada unidad que pasa — es un archivo pequeño por huella; borrar los viejos queda como pendiente.
+
+## Cierre
+
+### Resumen
+
+`.specty/config.yaml` puede dividir la verificación completa en unidades (`verify.units`, cada una con `name`, `command` y `paths`), y `accept` solo ejecuta las que no pasaron ya con su huella, el hash de su comando y de los archivos de sus `paths`, en este cambio o en otro del clon (el registro `.git/common/specty/verified/`). Las que faltan corren en orden en un solo turno; la primera que falla para las siguientes, y solo se anotan las que pasan. La nota de la verificación y `change.verified` (`units`) dicen qué se reutilizó, qué corrió y cuánto tardó, qué falló y qué no corrió, en español y en inglés. Si ya pasaron todas, `accept` no pregunta ni toma el turno.
+
+### Desviaciones
+
+- La incorporación de main que hizo `accept` trajo un `.specty/config.yaml` roto (`branchPerChange: true,`), que main corrigió después en 26f0facd; la persona llevó la misma corrección a la carpeta del cambio para poder cerrar.
+
+### Decisiones
+
+- Dentro del turno se vuelve a mirar el registro antes de cada unidad, porque otra sesión pudo pasarla mientras esta esperaba.
+- Si todas las unidades ya pasaron, no se anota `change.verified`, como hoy cuando la verificación completa ya pasó con este código.
+- Con unidades, el comando de la verificación completa (para `passedOnThisCode`, la nota sin código y el `cmd` de la auditoría) son los de todas unidos con ` && `; la tarjeta del modo delegado nombra el de la unidad que falló.
+
+### Pendientes
+
+- P125: borrar los archivos viejos del registro de unidades.
+- P126: dividir `packages/core/src/schema/config.ts` (320 líneas de código) moviendo `verify` a `schema/verify.ts`.
+- Hasta el corte C2, la incorporación de main, `specty integrate` y la UI siguen ejecutando `verify.full`.

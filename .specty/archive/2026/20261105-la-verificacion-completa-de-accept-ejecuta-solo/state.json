@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-la-verificacion-completa-de-accept-ejecuta-solo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-la-verificacion-completa-de-accept-ejecuta-solo",
   "baseCommit": "b4686dfe63d4d149247ca21552eac202ab157426",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:6813e9bd52f8be0eb645d7b34a3ea770f8a47d2d923c5f15df6000ec0eaa0894",
@@ -83,12 +83,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6ae56d6896380338a0b36a83d7731a75b4105d69",
+      "attempts": 1,
       "startedAt": "2026-11-05T05:35:48.666Z",
       "doneAt": "2026-11-05T05:37:25.827Z",
-      "summary": "La documentación de las unidades y el registro: ARCHITECTURE §9 y formats.md §1 (verified/), §4 (units en change.verified) y §6 (verify.units)"
+      "summary": "La documentación de las unidades y el registro: ARCHITECTURE §9 y formats.md §1 (verified/), §4 (units en change.verified) y §6 (verify.units)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -101,6 +101,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T06:11:31.647Z",
   "lockedTests": {
     "packages/cli/test/accept-units.test.ts": "sha256:6662ab98cfeb5b059fb91682c86c153caaedb6de28b8e5cd8a964ca157aa229b",
     "packages/core/test/cards/units.test.ts": "sha256:909485e31af95ea63436a61de56080841e17125cff0c5e8faed35a916347fa7f",
