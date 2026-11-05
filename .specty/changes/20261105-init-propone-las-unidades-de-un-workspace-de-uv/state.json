@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-init-propone-las-unidades-de-un-workspace-de-uv",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-init-propone-las-unidades-de-un-workspace-de-uv",
   "baseCommit": "d6543b9f4616101e9cf4c130031457af62cd967d",
   "revision": 1,
@@ -59,6 +59,7 @@
     "T": 1,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T13:47:00.823Z"
+  "lockedTests": {
+    "packages/cli/test/units-uv.test.ts": "sha256:687eae4ac3409703a32252763054b7a03362876e38abb062d37c282292bacfed"
+  }
 }
