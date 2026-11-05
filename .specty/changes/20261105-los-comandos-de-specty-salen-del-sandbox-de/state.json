@@ -77,12 +77,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b0b75ce45ec3ea7123a85354b224ab3e53393851",
+      "attempts": 1,
       "startedAt": "2026-11-05T13:54:13.948Z",
       "doneAt": "2026-11-05T13:56:47.692Z",
-      "summary": "init --tools antigravity añade command(specty) a permissions.allow del CLI de Antigravity si su carpeta existe (sin duplicar; avisa si no puede editar) y avisa de la regla para la app; InstallContext lleva env y testEnv aísla la carpeta."
+      "summary": "init --tools antigravity añade command(specty) a permissions.allow del CLI de Antigravity si su carpeta existe (sin duplicar; avisa si no puede editar) y avisa de la regla para la app; InstallContext lleva env y testEnv aísla la carpeta.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "cb510335d2b8d3813b31cd273845bc02f4bd81a6",
+      "startedAt": "2026-11-05T13:56:48.001Z",
+      "doneAt": "2026-11-05T14:04:58.981Z",
+      "summary": "doctor confirma command(specty) o unsandboxed(specty) en los ajustes del CLI de Antigravity o pide init (solo si existe su carpeta), y uninstall dice que la regla se queda; doctor recibe env y los agentes pueden decir qué dejan en la carpeta del usuario (stays)."
     }
   },
   "pending": {

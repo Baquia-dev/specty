@@ -1,13 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
-import { antigravityTrustWarning, type DoctorLine, guardLine } from "@baquia-dev/specty-core";
+import {
+  antigravityRuleStaysLine,
+  antigravityTrustWarning,
+  type DoctorLine,
+  guardLine,
+} from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import { ANTIGRAVITY_HOOKS, excludeLocally, guardMatcher, removeFromJson } from "../install/agents";
-import { allowSpecty } from "../install/antigravity-cli";
+import { allowSpecty, cliRule } from "../install/antigravity-cli";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
-import { type AgentAdapter, jsonStop } from "./adapter";
+import { COMMAND } from "../session";
+import { type AgentAdapter, type DoctorLines, doctorLines, jsonStop } from "./adapter";
 
 /** The name of Specty's hook among the person's in `.agents/hooks.json`. */
 const HOOK = "specty";
@@ -150,25 +156,46 @@ export const antigravity: AgentAdapter = {
       ({ [HOOK]: _, ...rest }: Record<string, unknown>) => rest,
       files,
     ),
-  doctor: async (root) => {
-    const value: unknown = parse((await readText(join(root, ANTIGRAVITY_HOOKS))) ?? "null");
-    const ours = isRecord(value) && isRecord(value[HOOK]) ? value[HOOK] : {};
-    const missing = Object.keys(EVENTS).filter(
-      (event) => !JSON.stringify(ours[event] ?? null).includes(`--event ${event}`),
-    );
-    const file = ANTIGRAVITY_HOOKS;
-    if (missing.includes("PreToolUse")) {
-      return { ok: [], problems: [{ code: "no-antigravity-guard", file }] };
-    }
-    if (missing.length > 0) {
-      return {
-        ok: [],
-        problems: [{ code: "antigravity-hooks", file, events: missing.join(", ") }],
-      };
-    }
-    return { ok: [{ code: "antigravity-guard", file }], problems: outdatedMatcher(ours, file) };
+  doctor: async (root, _git, env) => {
+    const hooks = await hooksDoctor(root);
+    // The rule of its CLI, in the person's folder, only when the person uses its CLI.
+    const rule = await cliRule(env);
+    if (rule === undefined) return hooks;
+    const { file } = rule;
+    const lines = doctorLines([
+      [
+        rule.there,
+        { code: "antigravity-cli-rule", file },
+        { code: "no-antigravity-cli-rule", file },
+      ],
+    ]);
+    return { ok: [...hooks.ok, ...lines.ok], problems: [...hooks.problems, ...lines.problems] };
+  },
+  stays: async (env, lang) => {
+    const rule = await cliRule(env);
+    return rule?.there === true ? [antigravityRuleStaysLine(rule.file, COMMAND, lang)] : [];
   },
 };
+
+/** Specty's hooks in `.agents/hooks.json`: whether every event has one, and from which `init`. */
+async function hooksDoctor(root: string): Promise<DoctorLines> {
+  const value: unknown = parse((await readText(join(root, ANTIGRAVITY_HOOKS))) ?? "null");
+  const ours = isRecord(value) && isRecord(value[HOOK]) ? value[HOOK] : {};
+  const missing = Object.keys(EVENTS).filter(
+    (event) => !JSON.stringify(ours[event] ?? null).includes(`--event ${event}`),
+  );
+  const file = ANTIGRAVITY_HOOKS;
+  if (missing.includes("PreToolUse")) {
+    return { ok: [], problems: [{ code: "no-antigravity-guard", file }] };
+  }
+  if (missing.length > 0) {
+    return {
+      ok: [],
+      problems: [{ code: "antigravity-hooks", file, events: missing.join(", ") }],
+    };
+  }
+  return { ok: [{ code: "antigravity-guard", file }], problems: outdatedMatcher(ours, file) };
+}
 
 /**
  * A guard from an older `init`: one from before `specty enter` does not see the reads, one from

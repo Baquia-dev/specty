@@ -127,10 +127,15 @@ export interface AgentAdapter {
   readonly install: (context: InstallContext) => Promise<Installed>;
   /** Takes them out again for `uninstall`, and leaves everything else as it was. */
   readonly remove: (root: string, files: InstallFiles, git: Git) => Promise<void>;
-  /** What `doctor` finds in place and what it finds missing. */
-  readonly doctor: (root: string, git: Git) => Promise<DoctorLines>;
+  /** What `doctor` finds in place and what it finds missing, in the repository and the user's folder. */
+  readonly doctor: (root: string, git: Git, env: NodeJS.ProcessEnv) => Promise<DoctorLines>;
   /** Its guard in the user's folder, which Specty only reads: `uninstall` says it stays there. */
   readonly userFile?: (env: NodeJS.ProcessEnv) => string;
+  /**
+   * What `uninstall` leaves of it in the user's folder because every project shares it, each with
+   * where it is and how to remove it: the rule of Antigravity's CLI.
+   */
+  readonly stays?: (env: NodeJS.ProcessEnv, lang: Lang) => Promise<readonly string[]>;
 }
 
 export interface DoctorLines {

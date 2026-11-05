@@ -8,7 +8,7 @@ import {
   type Lang,
 } from "@baquia-dev/specty-core";
 import { applyEdits, modify, type ParseError, parse } from "jsonc-parser";
-import { exists, isRecord } from "../io/files";
+import { exists, isRecord, readText } from "../io/files";
 import { COMMAND } from "../session";
 import type { InstallFiles } from "./files";
 
@@ -22,7 +22,7 @@ const FORMAT = { formattingOptions: { insertSpaces: true, tabSize: 2, eol: "\n" 
  * The settings of Antigravity's CLI: in `$SPECTY_ANTIGRAVITY_CLI_DIR` when it has a value, which
  * the tests point elsewhere, or in `~/.gemini/antigravity-cli`. Agy does not know the variable.
  */
-export function antigravityCliSettings(env: NodeJS.ProcessEnv): string {
+function antigravityCliSettings(env: NodeJS.ProcessEnv): string {
   const folder =
     env.SPECTY_ANTIGRAVITY_CLI_DIR || join(env.HOME ?? homedir(), ".gemini", "antigravity-cli");
   return join(folder, "settings.json");
@@ -72,4 +72,18 @@ export async function allowSpecty(
     await files.write(file, final.endsWith("\n") ? final : `${final}\n`);
   }
   return { done: [antigravityCliRuleLine(file, COMMAND, lang)], warnings: [app] };
+}
+
+/**
+ * Whether the settings of Antigravity's CLI hold Specty's rule (or the one of business accounts),
+ * for `doctor` and `uninstall`; undefined when the person does not use its CLI. Settings that are
+ * missing or that Specty cannot read do not hold it.
+ */
+export async function cliRule(
+  env: NodeJS.ProcessEnv,
+): Promise<{ readonly file: string; readonly there: boolean } | undefined> {
+  const file = antigravityCliSettings(env);
+  if (!(await exists(dirname(file)))) return undefined;
+  const rules = rulesIn((await readText(file)) ?? "");
+  return { file, there: rules?.some((rule) => RULES.includes(rule)) === true };
 }

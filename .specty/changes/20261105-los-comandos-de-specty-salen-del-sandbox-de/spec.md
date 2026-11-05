@@ -99,7 +99,7 @@ En el sandbox de terminal de Antigravity CLI (`agy` 1.5.1, `--sandbox`), nada pu
   - ac: AC1, AC2, AC3, AC4, AC5, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-cli-rule.test.ts -t "AC1|AC2|AC3|AC4|AC5|AC8" && pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/codex.test.ts test/opencode-install.test.ts && pnpm lint
   - type: feat
-- [ ] T3: `doctor` comprueba la regla y `uninstall` dice que se queda
+- [x] T3: `doctor` comprueba la regla y `uninstall` dice que se queda
   - files: packages/cli/test/antigravity-cli-rule.test.ts, packages/cli/src/agents/antigravity.ts, packages/cli/src/agents/adapter.ts, packages/cli/src/commands/doctor.ts, packages/cli/src/commands/uninstall.ts, packages/cli/src/install/antigravity-cli.ts
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-cli-rule.test.ts test/antigravity.test.ts test/doctor-enter.test.ts test/uninstall.test.ts && pnpm typecheck && pnpm lint && pnpm knip
