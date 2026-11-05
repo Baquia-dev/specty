@@ -89,3 +89,38 @@ Hoy una sesión construye una épica corte a corte, aunque su herramienta pueda 
 - R5: Varios subagentes ejecutan `specty new` a la vez: worktrees, ramas y preparación de carpetas en paralelo. Mitigación: C2 lo prueba con cortes simultáneos. Si git choca con sus bloqueos, el encargo pide crear los cambios en orden.
 - R6: Un subagente de Claude Code olvida el `cd` y su comando correría en la carpeta de la sesión principal. Mitigación: el guard lo bloquea con el comando bueno (A6), y el encargo lo avisa desde el principio.
 - R7: La tarjeta de la épica crece con los encargos. Mitigación: el test de presupuesto del core, y encargos de pocas líneas que remiten a `specty next`.
+
+## Cierre
+
+### Resumen
+
+- Una épica con cortes listos los reparte, uno por subagente, cuando su herramienta lo admite y `subagents: false` no lo apaga. Una feature suelta o el corte de una épica nunca lanza subagentes, y sus tareas van en orden.
+- C1: Claude Code distingue a cada subagente por su `agent_id` (la conversación `<session_id>--<agent_id>`). El subagente entra con `specty enter <id>` y crea el cambio de su corte con `specty new --subagent`.
+- C2: la tarjeta de la épica trae un encargo por cada corte listo o huérfano.
+- C6, C7 y C8: Codex, OpenCode y Cursor pasan a «sí» en «Cortes en subagentes». Gemini CLI queda en «no posible»; Antigravity y Devin, sin documentar.
+- C10: los experimentos `epic` y `epic-subagent` miden tiempo, rondas y coste.
+- Fuera de los cortes, también cerrados:
+  - P81: el guard bloquea el `EnterWorktree` de un subagente y el `new` sin `--subagent`.
+  - P101: la sesión de Claude Code sale de la worktree de la épica antes de repartir, y `next` desde la carpeta principal trae la tarjeta de la épica.
+  - Márgenes para los tests que fallaban por tiempo con la máquina cargada.
+
+### Desviaciones (respecto al plan)
+
+- Las oleadas de tareas en subagentes se quitaron por decisión del usuario: un subagente por feature, con sus tareas en orden. Los cortes C3–C5 y C9 se descartaron, y sus ids no se reutilizan.
+- C1 salía demasiado grande, así que sus redes del guard pasaron a P81, un cambio aparte.
+- La primera medición de C10 encontró P101: los subagentes de una sesión que está en la worktree de la épica no pueden escribir en sus cortes. Se arregló en un cambio aparte; la nueva medición queda pendiente (P107).
+- Con varias sesiones a la vez, muchas verificaciones completas fallaron por carga, tiempo o tests inestables. La persona subió `verify.timeoutSec` a 2000, y los cierres se hicieron de uno en uno con la máquina libre.
+
+### Decisiones
+
+- Repartir es el comportamiento por defecto (A1): en una épica se cambia coste por tiempo, lo que revisa la conclusión de §16.
+- A los subagentes de Claude Code el guard no les reescribe las acciones, porque `updatedInput` exige «allow» y saltaría los permisos de la persona: les bloquea lo que cae fuera, con la ruta o el `cd` buenos. A los de Codex sí se las reescribe.
+- Antes de lanzar los encargos, la sesión de Claude Code sale de la worktree de la épica con `ExitWorktree` y `action: "keep"`. Lo eligió el usuario.
+
+### Pendientes
+
+- P107: repetir `epic` y `epic-subagent` (2 ejecuciones como mucho) y actualizar la tabla y la conclusión de §16.
+- P106: al cerrar un corte, el SIGUIENTE debería nombrar la épica a la que volver.
+- P82: los hooks de los subagentes de Antigravity y Devin, sin documentar.
+- P89: el freno de duplicados de `specty new` salta por la petición común de los cortes.
+- P92, P93 y P95: el fin de turno de OpenCode en sesiones hijas, OpenCode 2 fuera de beta, y la tarjeta cuando la verificación se corta por `verify.timeoutSec`.

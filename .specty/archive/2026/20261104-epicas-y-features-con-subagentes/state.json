@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261104-epicas-y-features-con-subagentes",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261104-epicas-y-features-con-subagentes",
   "baseCommit": "c5e6b9058c3198ae970fb5670e26ff9cbfc4e296",
-  "revision": 2,
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c338a9d294ac7717220f9b455fe1ae1e8ca992243952df0378f292f0c9f2157b",
+    "at": "2026-11-04T09:30:42.250Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -55,11 +62,5 @@
     "C": 10,
     "R": 7
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:c338a9d294ac7717220f9b455fe1ae1e8ca992243952df0378f292f0c9f2157b",
-    "at": "2026-11-04T09:30:42.250Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-05T05:52:35.358Z"
 }
