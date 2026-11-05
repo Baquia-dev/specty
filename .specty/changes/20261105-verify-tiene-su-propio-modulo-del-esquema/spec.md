@@ -40,7 +40,7 @@ slice: C2
 
 ## Tareas
 
-- [ ] T1: La sección verify, en su propio módulo del esquema
+- [x] T1: La sección verify, en su propio módulo del esquema
   - files: packages/core/src/schema/verify.ts, packages/core/src/schema/config.ts, packages/core/src/index.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/templates.test.ts && pnpm typecheck && pnpm lint && pnpm knip
