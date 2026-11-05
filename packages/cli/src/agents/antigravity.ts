@@ -157,13 +157,16 @@ export const antigravity: AgentAdapter = {
 };
 
 /**
- * A guard from an older `init`: one from before `specty enter` does not see the reads, and one from
- * before the ACP editors does not see what it reads and writes there.
+ * A guard from an older `init`: one from before `specty enter` does not see the reads, one from
+ * before the ACP editors does not see what it reads and writes there, and one from before its CLI
+ * does not see what it reads, writes and edits in it.
  */
 function outdatedMatcher(ours: Record<string, unknown>, file: string): DoctorLine[] {
   const matcher = guardMatcher(ours, "PreToolUse", "antigravity");
   if (matcher === TOOLS) return [];
-  return typeof matcher === "string" && matcher.split("|").includes("view_file")
+  const tools = typeof matcher === "string" ? matcher.split("|") : [];
+  if (tools.includes("client_view_file")) return [{ code: "antigravity-cli", file }];
+  return tools.includes("view_file")
     ? [{ code: "antigravity-acp", file }]
     : [{ code: "enter-outdated", tool: "antigravity", file }];
 }

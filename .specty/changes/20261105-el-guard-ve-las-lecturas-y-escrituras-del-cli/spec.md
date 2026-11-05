@@ -55,7 +55,7 @@ En el CLI de Antigravity (`agy` 1.5.1), el agente lee con `read_file` (también 
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts -t "AC1|AC2|AC3|AC4: doctor names a hook from before its tools in ACP|writes the specty hook"
   - type: fix
-- [ ] T2: `doctor` avisa del hook de Antigravity sin las herramientas de su CLI
+- [x] T2: `doctor` avisa del hook de Antigravity sin las herramientas de su CLI
   - files: packages/core/test/cards/doctor-antigravity-cli.test.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/cli/src/agents/antigravity.ts, packages/cli/test/antigravity.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-antigravity-cli.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/doctor-enter.test.ts

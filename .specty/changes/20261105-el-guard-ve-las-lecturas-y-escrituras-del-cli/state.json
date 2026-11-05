@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cd7affa424a674dcbc23b36194c976c8d9a528d3",
+      "attempts": 1,
       "startedAt": "2026-11-05T08:55:01.188Z",
       "doneAt": "2026-11-05T09:00:25.507Z",
-      "summary": "El guard de Antigravity juzga read_file como lectura de Path y write_file y edit_file como escrituras de Path; init añade read_file|write_file|edit_file al matcher de PreToolUse, tras los nombres del IDE y de ACP."
+      "summary": "El guard de Antigravity juzga read_file como lectura de Path y write_file y edit_file como escrituras de Path; init añade read_file|write_file|edit_file al matcher de PreToolUse, tras los nombres del IDE y de ACP.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "afcdf46c7e9cfb871543c0d9956129f5ef630b7d",
+      "startedAt": "2026-11-05T09:00:26.398Z",
+      "doneAt": "2026-11-05T09:07:17.244Z",
+      "summary": "Línea de doctor antigravity-cli (es/en) en core; outdatedMatcher la da a un matcher con las herramientas ACP y sin las del CLI, y mantiene antigravity-acp y enter-outdated para los anteriores."
     }
   },
   "pending": {
