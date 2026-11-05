@@ -6,6 +6,13 @@
   "branch": "specty/20261106-la-bandeja-guarda-solo-el-resumen-de-los",
   "baseCommit": "85be27d0ad5ba373872c2aa19c4dad4331511ef4",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ed5c9483eecabb06d4e21b0a096f3ce89aaf57c017c4d22d277adae35d907dcc",
+    "at": "2026-11-05T17:54:29.426Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -48,12 +55,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:ed5c9483eecabb06d4e21b0a096f3ce89aaf57c017c4d22d277adae35d907dcc",
-    "at": "2026-11-05T17:54:29.426Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T17:59:42.615Z"
 }
