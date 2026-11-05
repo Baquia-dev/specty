@@ -88,7 +88,7 @@ describe("the capability table", () => {
       "| Devin (Windsurf) | sí | sí | indirecto | indirecto | no posible | sí | sí | sí | no posible |",
     );
     expect(es).toContain(
-      "| Antigravity | sí | indirecto | indirecto | indirecto | no posible | sí | sí | sí | no posible |",
+      "| Antigravity | sí | indirecto | indirecto | indirecto | sí | sí | sí | sí | no posible |",
     );
     expect(capabilityTable("en")).toContain(
       "| Cursor | yes | yes | indirect | indirect | yes | yes | yes | yes | not possible |",
@@ -129,7 +129,7 @@ describe("the capability table", () => {
 
   it("AC6: says which tools hand an epic's slices to subagents, and why it is not possible elsewhere", () => {
     expect(AGENT_CAPABILITIES["claude-code"].subagentSlices.state).toBe("yes");
-    for (const tool of ["gemini-cli", "windsurf", "antigravity"] as const) {
+    for (const tool of ["gemini-cli", "windsurf"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("impossible");
     }
     for (const tool of ["copilot"] as const) {
@@ -140,9 +140,29 @@ describe("the capability table", () => {
       "- Cortes en subagentes (Gemini CLI): sus hooks traen el `session_id` de la sesión principal sin nada que distinga al subagente, así que el guard no puede atar cada uno a la carpeta de su corte.",
     );
     expect(es).toContain(
-      "- Cortes en subagentes (Devin (Windsurf), Antigravity): sus hooks no documentan las acciones de sus subagentes (consultado el 2026-11-04).",
+      "- Cortes en subagentes (Devin (Windsurf)): sus hooks no documentan las acciones de sus subagentes (consultado el 2026-11-04).",
     );
     expect(capabilityTable("en")).toContain("| Slices in subagents |");
+  });
+
+  it("AC1: says that Antigravity hands an epic's slices to subagents, and Devin (Windsurf) still cannot", () => {
+    expect(AGENT_CAPABILITIES.antigravity.subagentSlices.state).toBe("yes");
+    expect(AGENT_CAPABILITIES.windsurf.subagentSlices.state).toBe("impossible");
+    const es = capabilityTable("es");
+    expect(es).toContain(
+      "| Antigravity | sí | indirecto | indirecto | indirecto | sí | sí | sí | sí | no posible |",
+    );
+    expect(capabilityTable("en")).toContain(
+      "| Antigravity | yes | indirect | indirect | indirect | yes | yes | yes | yes | not possible |",
+    );
+    const notPossible = es.slice(es.indexOf("**No posible:**"));
+    expect(notPossible).toContain(
+      "- Cortes en subagentes (Devin (Windsurf)): sus hooks no documentan",
+    );
+    expect(notPossible).not.toMatch(/Cortes en subagentes \([^)]*Antigravity/);
+    expect(readFileSync(ARCHITECTURE, "utf8")).toContain(
+      "| Antigravity | sí | indirecto | indirecto | indirecto | sí | sí | sí | sí | no posible |",
+    );
   });
 
   it("AC4: says that OpenCode hands an epic's slices to its subagents", () => {

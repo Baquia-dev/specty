@@ -6,6 +6,13 @@
   "branch": "specty/20261105-los-cortes-de-una-epica-corren-en-subagentes-de",
   "baseCommit": "cf00c4e8324aab6d6871af716f88fad990beb348",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5644ce877c590a18119322b0236dc938fbd65d6856ebea89ea3cb14f1c145575",
+    "at": "2026-11-05T09:47:42.056Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5644ce877c590a18119322b0236dc938fbd65d6856ebea89ea3cb14f1c145575",
-    "at": "2026-11-05T09:47:42.056Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T10:01:22.605Z"
 }

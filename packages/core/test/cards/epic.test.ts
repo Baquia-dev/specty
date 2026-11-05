@@ -8,6 +8,7 @@ import {
   type SliceView,
   type TaskView,
 } from "../../src";
+import { awayEpicCard } from "../../src/cards/epic";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
 const EN: CardContext = { ...ES, lang: "en" };
@@ -178,7 +179,7 @@ describe("the card of an epic whose tool hands its slices to subagents", () => {
     expect(today).toContain(
       `SIGUIENTE: sigue con el corte C2 en su carpeta, ${FOLDER}: ejecuta \`specty next\` allí.`,
     );
-    for (const tool of ["gemini-cli", "antigravity", "copilot"] as const) {
+    for (const tool of ["gemini-cli", "windsurf", "copilot"] as const) {
       expect(card(change, { ...ES, tool })).toBe(today);
     }
     expect(card(change, { ...CLAUDE, subagents: false })).toBe(today);
@@ -269,6 +270,42 @@ describe("the card of an epic in a worktree of its own, from Claude Code", () =>
     for (const ctx of [ES, { ...ES, tool: "codex" as const }, { ...CLAUDE, subagents: false }]) {
       expect(card(apart(ready), ctx)).toBe(card(ready, ctx));
     }
+  });
+});
+
+/** Antigravity, whose subagents of `invoke_subagent` take an epic's slices (ARCHITECTURE §10). */
+const ANTIGRAVITY: CardContext = { ...ES, tool: "antigravity" };
+const ANTIGRAVITY_EN: CardContext = { ...EN, tool: "antigravity" };
+
+const AGY_LAUNCH =
+  'SIGUIENTE: lanza en paralelo, en un solo mensaje, un subagente por encargo con su texto tal cual (en Antigravity, `invoke_subagent` con `Workspace: "inherit"`, no `branch`, que le daría una carpeta que no es la de su corte); cuando terminen, vuelve a ejecutar `specty next` aquí, en la épica.';
+
+describe("the card of an epic from Antigravity", () => {
+  it("AC2: brings a brief per ready or orphaned slice, and asks to launch each with invoke_subagent and Workspace inherit", () => {
+    const change = epic("implementing", [DONE, slice("C2", "ready"), ORPHAN]);
+    const text = card(change, ANTIGRAVITY);
+    expect(text).toContain(readyBrief("C2"));
+    expect(text).toContain("ENCARGO C3 (huérfano):");
+    expect(text.endsWith(AGY_LAUNCH)).toBe(true);
+    expect(card(epic("implementing", [slice("C1", "ready")]), ANTIGRAVITY_EN)).toContain(
+      'NEXT: launch in parallel, in a single message, one subagent per brief with its text as is (in Antigravity, `invoke_subagent` with `Workspace: "inherit"`, not `branch`, which would give it a folder other than its slice\'s); once they finish, run `specty next` again here, in the epic.',
+    );
+  });
+
+  it("AC2: asks the same from outside the epic's folder, and leaves the other tools' card as it was", () => {
+    const away = awayEpicCard(epic("implementing", [slice("C1", "ready")]), "/repos", ANTIGRAVITY);
+    expect(away?.next).toContain(
+      '(en Antigravity, `invoke_subagent` con `Workspace: "inherit"`, no `branch`, que le daría una carpeta que no es la de su corte); cuando terminen, vuelve a ejecutar `specty next` aquí.',
+    );
+    const ready = epic("implementing", [slice("C1", "ready")]);
+    for (const ctx of [CLAUDE, CLAUDE_EN, { ...ES, tool: "codex" as const }]) {
+      expect(card(ready, ctx)).not.toContain("invoke_subagent");
+    }
+    expect(card(ready, CLAUDE)).toContain(LAUNCH);
+    // With nothing to launch, it waits as with any other tool.
+    const waiting = epic("implementing", [DONE, OPEN]);
+    expect(card(waiting, ANTIGRAVITY)).toBe(card(waiting, CLAUDE));
+    expect(card(waiting, { ...ANTIGRAVITY, subagents: false })).toBe(card(waiting));
   });
 });
 
