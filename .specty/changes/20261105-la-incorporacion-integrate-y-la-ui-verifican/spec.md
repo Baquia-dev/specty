@@ -87,7 +87,7 @@ Desde el corte C1, la verificación completa de `accept` ejecuta solo las unidad
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/verify-units.test.ts test/server/verify.test.ts test/server/runs.test.ts test/server/runs-turn.test.ts && pnpm typecheck && pnpm lint && pnpm knip && pnpm sources
   - type: feat
-- [ ] T5: La documentación de la incorporación, integrate y la UI por unidades
+- [x] T5: La documentación de la incorporación, integrate y la UI por unidades
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm lint

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-incorporacion-integrate-y-la-ui-verifican",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-incorporacion-integrate-y-la-ui-verifican",
   "baseCommit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
   "revision": 1,
@@ -83,14 +83,23 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/flow/integrate.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "df6f58d5ae74b7895846e066f545fe399db72c95",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:52:52.395Z",
       "doneAt": "2026-11-05T06:58:15.360Z",
-      "summary": "El servidor de la UI ejecuta con fullPlan y runUnits solo las unidades que faltan, cada una en su proceso y en vivo, y anota units en change.verified; lee el árbol y las huellas en orden (dos lecturas a la vez compartían el índice temporal); formato de flow/integrate.ts"
+      "summary": "El servidor de la UI ejecuta con fullPlan y runUnits solo las unidades que faltan, cada una en su proceso y en vivo, y anota units en change.verified; lee el árbol y las huellas en orden (dos lecturas a la vez compartían el índice temporal); formato de flow/integrate.ts",
+      "scopeExtra": [
+        "packages/cli/src/flow/integrate.ts"
+      ]
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5ac030092a5bba1407065f48c37be0de814b713a",
+      "startedAt": "2026-11-05T06:58:15.682Z",
+      "doneAt": "2026-11-05T07:03:04.632Z",
+      "summary": "ARCHITECTURE §9 y formats.md §4 y §6: la incorporación, integrate y la UI verifican por unidades"
     }
   },
   "pending": {
