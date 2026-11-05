@@ -14,6 +14,7 @@ import {
 } from "./records";
 import {
   answered,
+  isChangeRecord,
   isDelegation,
   isMemoryRecord,
   isObject,
@@ -71,6 +72,17 @@ export class ServerData extends SpectyData {
     const records: unknown = await response.json();
     if (!isRecords(records)) throw new ActionError(UNEXPECTED);
     return records;
+  }
+
+  /** One change by its id, open or finished; none when the server does not know it (404). */
+  override async change(id: string): Promise<ChangeRecord | undefined> {
+    const response = await fetch(`/api/changes/${encodeURIComponent(id)}`);
+    if (response.status === 404) return undefined;
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    if (!response.ok) throw new ActionError(answered(response.status));
+    const record: unknown = await response.json();
+    if (!isChangeRecord(record)) throw new ActionError(UNEXPECTED);
+    return record;
   }
 
   override subscribe(listener: () => void): () => void {
