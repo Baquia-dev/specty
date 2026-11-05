@@ -26,8 +26,8 @@ describe("`specty prune` and the record of units", () => {
       [`${RECORD}/ddd.json`]: passed("core", 0),
       // Specty always writes `at`: a record without one is rubbish.
       [`${RECORD}/eee.json`]: `${JSON.stringify({ unit: "cli" })}\n`,
-      // Half a write in progress, which is not a record yet.
-      [`${RECORD}/fff.json.123.tmp`]: passed("ui", 400),
+      // Half a write in progress, by a live process, which is not a record yet.
+      [`${RECORD}/fff.json.${process.pid}.tmp`]: passed("ui", 400),
     });
     const pruned = await cli(root, ["prune"], CLAUDE);
     expect(pruned.code).toBe(0);
@@ -37,7 +37,8 @@ describe("`specty prune` and the record of units", () => {
     expect(pruned.out).not.toContain("No había nada que limpiar.");
     const left = (name: string) => existsSync(join(root, RECORD, name));
     expect(["aaa.json", "bbb.json", "eee.json"].map(left)).toEqual([false, false, false]);
-    expect(["ccc.json", "ddd.json", "fff.json.123.tmp"].map(left)).toEqual([true, true, true]);
+    const writing = `fff.json.${process.pid}.tmp`;
+    expect(["ccc.json", "ddd.json", writing].map(left)).toEqual([true, true, true]);
     const again = await cli(root, ["prune"], CLAUDE);
     expect(again.out).not.toContain("UNIDADES BORRADAS DEL REGISTRO");
   });

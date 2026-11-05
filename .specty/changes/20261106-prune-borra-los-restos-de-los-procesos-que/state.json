@@ -6,6 +6,13 @@
   "branch": "specty/20261106-prune-borra-los-restos-de-los-procesos-que",
   "baseCommit": "b17c91d05fd636c040d175009fbd7f6401903279",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:de0d74360b71fd30015c5a7a72ec3b566b121acf484a5c9918c6e63e095bbc00",
+    "at": "2026-11-05T16:37:30.599Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:de0d74360b71fd30015c5a7a72ec3b566b121acf484a5c9918c6e63e095bbc00",
-    "at": "2026-11-05T16:37:30.599Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T16:43:13.880Z"
 }
