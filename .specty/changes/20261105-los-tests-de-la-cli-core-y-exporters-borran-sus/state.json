@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-los-tests-de-la-cli-core-y-exporters-borran-sus",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-los-tests-de-la-cli-core-y-exporters-borran-sus",
   "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
   "revision": 2,
@@ -51,6 +51,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T16:05:06.869Z"
+  "lockedTests": {
+    "packages/cli/test/temp-dir.test.ts": "sha256:5221921094fc498d0f873ed0d6b5837827466db4b98aa493fdc1277b08c0b877",
+    "packages/core/test/vitest-temp-dir.test.ts": "sha256:6232f12ee0825b7dac21608a2f5bb4d7740b28e9f0aade02441a8bd5e6c3f782",
+    "packages/exporters/test/temp-dir.test.ts": "sha256:0c26dd32af09558da84f019a4410eb13778c1bcc968f3e8a2b1c87b85cb2b16c"
+  }
 }
