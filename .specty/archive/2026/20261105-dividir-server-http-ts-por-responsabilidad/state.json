@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261105-dividir-server-http-ts-por-responsabilidad",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261105-dividir-server-http-ts-por-responsabilidad",
+  "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
+  "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:631635a7c2b824b51b311deb93e5d2770ad65afccbbded166dc06df50a937014",
+    "at": "2026-11-05T15:57:10.943Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7bb5368f2a3cedb9149dc590b31110749eb9c25f",
+      "attempts": 1,
+      "startedAt": "2026-11-05T15:57:11.396Z",
+      "doneAt": "2026-11-05T15:59:25.374Z",
+      "summary": "Las lecturas y las acciones de la API pasan a server/api.ts, y el contexto de cada petición, send, las cabeceras seguras y las comprobaciones de host y cookie a server/context.ts; http.ts se queda con arrancar, escuchar, enrutar, el inicio de sesión y la UI (de 303 a 139 líneas).",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}
