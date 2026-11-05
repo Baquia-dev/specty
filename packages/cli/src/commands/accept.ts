@@ -142,8 +142,11 @@ async function runFullVerification(
   const { state } = change;
   const { terminal } = session.environment;
   const tree = await codeTree(session);
-  const started = Date.now();
-  const result = await runLive(session, state.id, undefined, full);
+  // Its time counts from its turn: the wait for another session's is not this verification's.
+  let started = Date.now();
+  const result = await runLive(session, state.id, undefined, full, () => {
+    started = Date.now();
+  });
   const coverage = await recordFullVerification(session, change, {
     command: full,
     started,
