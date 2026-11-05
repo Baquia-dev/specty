@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "20261105-la-bandeja-pide-los-terminados-al-servidor-por",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-la-bandeja-pide-los-terminados-al-servidor-por",
+  "baseCommit": "bd48aacf6aa987f9dcce0d5aa2a20cb564068e48",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ae2e6d3382d23661625f9dd968d67151a4e9859af94b184028614036f49f1bf0",
+    "at": "2026-11-05T12:59:41.648Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7a2f3cb4930ac849631feae19c3a6bff899e5cc50f9bede3dfe20f058a0a0fa7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:29ac83c8b3794d9e52f908c314752a240ffeca67c37565fff53ed6efb4ff872f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b1b65bc7fc94eca2527079db91ba180425644834f6345bdf0a72e84b52cfa877",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:789d19cd94ac410d0993c8eacd2e79d9026dc97a57c3de833d0affac12a5831a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:17d3d19c2913864919bdc390dbf2c8407b5052f127155a759efe61a2d0619164",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "016c317204fa1aa1c60970ebfa1a9a38d8e1f4c3",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:07:16.529Z",
+      "doneAt": "2026-11-05T13:08:30.321Z",
+      "summary": "listing.ts en core con matchesQuery (sobre fold), sortChanges (desempate por id) y CHANGE_SORTS/ChangeSort, exportados en index.ts y light.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "4a1c23f3969b3719756efc4397bff4e27ea91134",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:08:30.627Z",
+      "doneAt": "2026-11-05T13:10:45.343Z",
+      "summary": "server/finished.ts sirve GET /api/changes/finished con la búsqueda y el orden de core; records.ts guarda en memoria los archivados mientras su state.json no cambie; http.ts solo engancha la ruta; ARCHITECTURE §15",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "7e124f6f653a720d228c0888a00d3724aa126c71",
+      "attempts": 1,
+      "startedAt": "2026-11-05T13:10:45.674Z",
+      "doneAt": "2026-11-05T13:11:29.989Z",
+      "summary": "inbox-view.ts importa matchesQuery, sortChanges y CHANGE_SORTS de core light y quita sus copias (folded, matchesQuery, sortChanges); InboxSort es ChangeSort",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T13:19:39.903Z",
+  "lockedTests": {
+    "packages/ui/src/inbox/inbox-view.test.ts": "sha256:b0253a88c67d2c6dc48b814e99c6f2691fafa68cb2dcbeae1d644797607888dc",
+    "packages/cli/test/server/finished.test.ts": "sha256:2a3415a346738a8dd1a19c3f9a227c7f5be4f06817789fd740fa87e27bd9e00d",
+    "packages/core/test/listing.test.ts": "sha256:2b55f8f84d6555352108927a53c07def6c5f3b6b3b9dc5e7513d5bcbf7b8143a"
+  }
+}
