@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-servidor-muestra-el-cambio-cuya",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-el-servidor-muestra-el-cambio-cuya",
   "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
   "revision": 1,
@@ -54,6 +54,8 @@
     "AC": 5,
     "T": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T16:30:38.294Z"
+  "lockedTests": {
+    "packages/cli/test/server/unreadable-config.test.ts": "sha256:8f8abd04f4b52db67644f36ff28e121ea5f8099bdcb01241c1559c6ec30c7664",
+    "packages/ui/src/change/unreadable-config.test.ts": "sha256:90e4df7d1e6ff7c25cf347e70d5fc314db11b8be1b23cd614e3d280440d7d34d"
+  }
 }
