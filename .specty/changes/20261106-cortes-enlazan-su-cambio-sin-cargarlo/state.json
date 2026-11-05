@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a071767d9aa1e5a813c3503328680402d6fe7e56",
+      "startedAt": "2026-11-05T21:18:43.460Z",
+      "doneAt": "2026-11-05T21:22:21.340Z",
+      "summary": "GET /api/changes/<id>/slices (server/slices.ts) da el cambio de cada corte de una épica con sliceChanges de flow/epic.ts; readChange lee cada parte de un mapa para no crecer en complejidad; ARCHITECTURE §15 lo cuenta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

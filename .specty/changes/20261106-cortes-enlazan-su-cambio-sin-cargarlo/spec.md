@@ -53,7 +53,7 @@ En la pestaña Spec de una épica (`specty ui`), cada corte enlaza con el cambio
 
 ## Tareas
 
-- [ ] T1: El servidor da el cambio de cada corte de una épica
+- [x] T1: El servidor da el cambio de cada corte de una épica
   - files: packages/cli/src/flow/epic.ts, packages/cli/src/server/slices.ts, packages/cli/src/server/api.ts, packages/cli/test/server/slices.test.ts, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/slices.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint

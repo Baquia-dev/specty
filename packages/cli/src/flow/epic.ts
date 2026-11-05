@@ -92,6 +92,27 @@ async function sliceViews(session: Session, epic: StoredChange, spec: Spec): Pro
   });
 }
 
+/** The change that implements a slice of an epic: the slice, and the change's id and phase. */
+export interface SliceChange {
+  readonly slice: string;
+  readonly id: string;
+  readonly phase: Phase;
+}
+
+/**
+ * The change of each slice of the epic that has one, in the order of its spec, as its card picks
+ * it: the closed one or, without one, the first of the others; a cancelled change does not count.
+ */
+export async function sliceChanges(
+  session: Session,
+  epic: StoredChange,
+  spec: Spec,
+): Promise<SliceChange[]> {
+  return (await sliceViews(session, epic, spec)).flatMap(({ id, child }) =>
+    child === undefined ? [] : [{ slice: id, id: child.id, phase: child.phase }],
+  );
+}
+
 /**
  * The epic's slices whose change is closed, each with that change's id, for the validation of its
  * adjustments: they do not modify or remove them. A cancelled change does not close its slice.
