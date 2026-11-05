@@ -91,3 +91,28 @@ Quien revisa una épica en la pestaña Spec de `specty ui` ve su sección «Cort
 
 - R1: El constructor de los tests de Angular comprueba los tipos de todos los tests a la vez, y los de T2, T3 y T4 se escriben antes que su código — los tests nuevos no usan nada que aún no exista: pasan las entradas nuevas con `setInput`, buscan las entradas del delta por su clave y leen los cortes con `toMatchObject`, así que compilan antes de T1 y fallan solo al ejecutarse.
 - R2: El carril del servidor (P178) puede cambiar cómo llegan los terminados a la Bandeja — el enlace solo lee `ChangesStore.all()`, que seguirá dando los cambios cargados; si deja de darlos completos, el corte se ve sin enlace (A1).
+
+## Cierre
+
+### Resumen
+
+La pestaña Spec de una épica muestra la sección «Cortes», entre Tareas y Riesgos. Cada corte es una fila con su id, su título, los criterios que cubre y «Depende de» con sus ids, y se puede comentar. En `specty ui`, el título de cada corte enlaza al cambio que lo implementa y muestra su fase, si ese cambio está cargado. En la MCP App, Cortes es una tarjeta con su número de cortes, sin enlaces. «Ver solo los cambios» agrupa los cortes añadidos, modificados o eliminados desde la revisión aprobada, con sus criterios y sus dependencias como chips («depende de C1»), y la tarjeta de Cortes lleva «Cambió».
+
+### Desviaciones
+
+- El delta («Ver solo los cambios») y la marca «Cambió» de la tarjeta de Cortes entraron en la revisión 2, a petición de la sesión principal. El motivo: P165 deja ajustar una épica en implementación para dividir un corte, y la persona aprueba ese ajuste revisando el delta. Para eso se añadieron AC6, `data/delta.ts`, `review/delta-review.ts` y sus tests, y el cambio pasó de M a L.
+
+### Decisiones
+
+- El enlace de cada corte sale de `ChangesStore.all()`, que pasa `spec-review.ts`, y lo calcula `sp-review-items` con sus entradas `epic` y `changes`. Así se prueba la elección del cambio en el componente, sin montar la página. En la MCP App no se pasan, y no hay enlaces.
+- Para elegir el cambio de un corte se usa la regla de la tarjeta de la épica (`flow/epic.ts`): el cerrado o, si no hay ninguno, el primero de los demás, y uno cancelado no cuenta.
+- Un corte sin cambio cargado no dice «sin empezar», porque su cambio terminado puede estar en una página que la Bandeja aún no pidió.
+- `itemSection` pasa a `spec-sections.ts`, compartida por la revisión y las tarjetas, que la repetían. La lista de chips de un tipo pasa a `chipList` en `data/delta.ts`, compartida por tareas y cortes.
+- Los cortes no llevan avisos: hoy las reglas de core sobre los cortes son errores, que ya bloquean la aprobación.
+- Los tests se escribieron para que compilaran antes que el código, con `setInput`, `toMatchObject` y búsquedas por clave, porque el constructor de tests de Angular comprueba los tipos de todos a la vez.
+
+### Pendientes
+
+- P187: el tooltip del id de un corte en «Depende de» no muestra su título (`itemsOfReview` en `components/item-refs.ts`).
+- P188: la tarjeta de `specty next` nombra con la clave `slices` la sección de un comentario citado en Cortes (`SECTIONS` en `core/src/cards/next.ts`).
+- P189: un corte enlaza a su cambio solo si la UI lo tiene cargado; un corte cerrado de una épica antigua se ve sin enlace (A1).

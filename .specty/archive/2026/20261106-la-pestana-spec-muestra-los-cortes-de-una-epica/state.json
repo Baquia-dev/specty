@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-la-pestana-spec-muestra-los-cortes-de-una-epica",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-la-pestana-spec-muestra-los-cortes-de-una-epica",
   "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:a5ccc72dbfbcca89e35eda433e690363b4400ccacac751e409b0fc9433bcbca8",
@@ -74,12 +74,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d4d55c13c764f41dc8bdd296550974afd6502466",
+      "attempts": 1,
       "startedAt": "2026-11-05T17:18:05.441Z",
       "doneAt": "2026-11-05T17:18:55.926Z",
-      "summary": "«Ver solo los cambios» agrupa los cortes entre Tareas y Riesgos, con su id, «Comentar», el título en negrita y chips «depende de C1»; ui.md y formats.md documentan la sección Cortes y el ancla slices."
+      "summary": "«Ver solo los cambios» agrupa los cortes entre Tareas y Riesgos, con su id, «Comentar», el título en negrita y chips «depende de C1»; ui.md y formats.md documentan la sección Cortes y el ancla slices.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -92,6 +92,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T17:27:31.801Z",
   "lockedTests": {
     "packages/ui/src/data/delta.test.ts": "sha256:eb2cad5834d4988badd88c0b7cd52457a91401969392ba904a851e475aba1f7e",
     "packages/ui/src/data/review.test.ts": "sha256:cecc588404b5e9dc9e5d2f09ca12ec7d9051670656e09a437cc6874203adf07f",
