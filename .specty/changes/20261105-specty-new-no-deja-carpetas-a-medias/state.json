@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261105-specty-new-no-deja-carpetas-a-medias",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-specty-new-no-deja-carpetas-a-medias",
+  "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:40e2615fa93e3d77f7a3ff7d93a1f04beb555004c95223bcc873fdb6788ec667",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ca5a4a1e428f2c061e06d85411995b3a414c25c7824bf541cee857a2700a8405",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:cf1cfe8ff288c11d81a21bb120047b85e7264cdda570dd6ab70cdfcc7144841a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4dcdb37d061e112098e2623f40a430aa892dbac28062de424a7505dea36f1c5d",
+    "at": "2026-11-05T08:03:35.464Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
