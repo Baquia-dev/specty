@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // What the local server answers, as ServerData reads it: the checks of its data and what each
 // refusal means, in both languages. Pure.
+import type { SessionView } from "@baquia-dev/specty-core/light";
 import type { RunRecord } from "./progress";
 import type { Bilingual, ChangeRecord, Delegation, MemoryRecord } from "./records";
 
@@ -80,6 +81,26 @@ export function isMemoryRecord(value: unknown): value is MemoryRecord {
     isObject(item) &&
     ["id", "kind", "phase", "title", "waitingFor"].every((key) => isText(item[key]));
   return value.entries.every(entry) && value.changes.every(change);
+}
+
+/**
+ * `GET /api/sessions`' answer: each agent session with the fields the sessions page reads, and
+ * its usage, when there is one, with numbers.
+ */
+export function isSessionList(value: unknown): value is readonly SessionView[] {
+  if (!Array.isArray(value)) return false;
+  const usage = (item: unknown) =>
+    item === undefined ||
+    (isObject(item) && typeof item.tokens === "number" && typeof item.cost === "number");
+  return value.every(
+    (item) =>
+      isObject(item) &&
+      ["tool", "conversation", "first", "last"].every((key) => isText(item[key])) &&
+      typeof item.folder === "string" &&
+      typeof item.live === "boolean" &&
+      (item.change === undefined || isText(item.change)) &&
+      usage(item.usage),
+  );
 }
 
 /** `GET /api/delegation`'s answer: on or off, who and when, and the warning in both languages. */

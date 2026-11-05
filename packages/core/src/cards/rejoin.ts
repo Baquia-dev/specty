@@ -2,9 +2,10 @@
 import { AGENT_CAPABILITIES } from "../capabilities";
 import type { Phase } from "../flow/phases";
 import { headerOf, type Output, type OutputBlock, section } from "../output";
+import { awayEpicCard } from "./epic";
 import { carryOnText } from "./new";
 import { type Translate, translator } from "./text";
-import type { CardContext } from "./view";
+import type { CardContext, ChangeView } from "./view";
 
 /** The open change of another folder that the conversation asking `next` is bound to. */
 export interface OwnChangeView {
@@ -14,6 +15,8 @@ export interface OwnChangeView {
   readonly folder: string;
   /** The folder is gone and the change is still on its branch: `specty restore` brings it back. */
   readonly lost?: boolean;
+  /** The change's view, when it is an approved epic: its card can be seen from outside its folder. */
+  readonly epic?: ChangeView;
 }
 
 /** An open change whose folder is gone, read from its branch (`specty restore`). */
@@ -34,9 +37,13 @@ export interface OrphanView {
 
 /**
  * `next` for a conversation outside the folder of its open change: it goes back there, the way
- * `specty new` told it to go in, instead of creating another change.
+ * `specty new` told it to go in, instead of creating another change. An epic that hands its slices
+ * to subagents is the exception while some slice is left for them: its card comes here, since its
+ * subagents can write in their slices' folders only from outside the epic's (ARCHITECTURE §10).
  */
 export function rejoinCard(own: OwnChangeView, byName: boolean, ctx: CardContext): Output {
+  const away = own.epic === undefined ? undefined : awayEpicCard(own.epic, own.folder, ctx);
+  if (away !== undefined) return away;
   const t = translator(ctx.lang);
   const where =
     own.lost === true

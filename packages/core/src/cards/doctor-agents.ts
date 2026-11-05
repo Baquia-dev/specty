@@ -22,6 +22,7 @@ type AgentCode =
   | "codex-guard"
   | "no-codex-guard"
   | "codex-compact"
+  | "codex-startup"
   | "codex-rules"
   | "no-codex-rules"
   | "opencode-guard"
@@ -130,6 +131,11 @@ export const AGENT_WRITERS: {
     t(
       `Codex: falta la tarjeta de Specty tras compactar (SessionStart en ${line.file}); ejecuta \`${command} init --tools codex\`.`,
       `Codex: Specty's card after a compaction is missing (SessionStart in ${line.file}); run \`${command} init --tools codex\`.`,
+    ),
+  "codex-startup": (line, t, command) =>
+    t(
+      `Codex: la tarjeta de Specty no llega al empezar una sesión (el SessionStart de ${line.file} no admite startup); ejecuta \`${command} init --tools codex\`.`,
+      `Codex: Specty's card does not come as a session starts (the SessionStart in ${line.file} does not take startup); run \`${command} init --tools codex\`.`,
     ),
   "codex-rules": (line, t) =>
     t(`Codex: regla de Specty en ${line.file}.`, `Codex: Specty's rule in ${line.file}.`),

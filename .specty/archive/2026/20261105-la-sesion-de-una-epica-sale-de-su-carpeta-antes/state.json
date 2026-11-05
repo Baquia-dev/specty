@@ -1,0 +1,197 @@
+{
+  "schema": 1,
+  "id": "20261105-la-sesion-de-una-epica-sale-de-su-carpeta-antes",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-la-sesion-de-una-epica-sale-de-su-carpeta-antes",
+  "baseCommit": "f374134873dd21f2f9c61c4f60dd97f9b5c0e4f1",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:be3ba1ce1e843fd408a2223c626621fb5f77daef12bf91baaf536d93275fc9a3",
+    "at": "2026-11-04T17:44:42.494Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:213066d7336cef19b5096ebfb56b5e5e4baa946ae9f79501e8b62c5f54195e04",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7a0ee139b309f4a36a0cf19419c176e24d6c58284e2e144a673ad71009587dde",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:3c804a8e992bb3d9d3a9495e604f2c147b20529a88121005c1008e247e029b4e",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:50017ef0b645c99aaa5e1917549ee3a91361d8cdee63e733e770e46a97f0382f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2cc48f6e9386493fc35f1a1aa2a35727cec7e817",
+      "attempts": 2,
+      "startedAt": "2026-11-04T17:47:44.439Z",
+      "doneAt": "2026-11-04T17:49:34.708Z",
+      "summary": "La tarjeta de una épica en su worktree pide ExitWorktree keep antes de lanzar los encargos; awayEpicCard da la tarjeta de la épica a su conversación fuera de su carpeta, y rejoinCard la usa mientras quedan cortes para los subagentes.",
+      "scopeExtra": [
+        "packages/core/src/cards/new.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "0dad9e3eaeb158b45ff0ab219d6ca24c6d3964f8",
+      "attempts": 2,
+      "startedAt": "2026-11-04T17:49:35.330Z",
+      "doneAt": "2026-11-04T17:54:42.084Z",
+      "summary": "specty next fuera de una épica aprobada lee su vista en su carpeta y la tarjeta la reparte desde allí; la vista dice si la épica vive en su worktree. Incluye AC6 de T3: new desde otra worktree pide ExitWorktree keep, porque la verificación de T2 corre su test.",
+      "scopeExtra": [
+        "packages/core/src/cards/new.ts",
+        "packages/cli/src/commands/new.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "cc3e600260e64525de9c2912fdf5d02923151ac6",
+      "attempts": 1,
+      "startedAt": "2026-11-04T17:54:42.715Z",
+      "doneAt": "2026-11-04T17:55:33.668Z",
+      "summary": "Hecha en T2, cuya verificación corría el test de AC6: new desde la worktree de otro cambio pide ExitWorktree keep antes de EnterWorktree con name; desde la carpeta principal, con --subagent o con specty enter, el SIGUIENTE es el de hoy.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "616925177e5d24dd6a6d50b131111ca791fa205f",
+      "attempts": 1,
+      "startedAt": "2026-11-04T17:55:34.481Z",
+      "doneAt": "2026-11-04T17:58:17.708Z",
+      "summary": "El modelo guionizado corre con los permisos de las evals, EnterWorktree y ExitWorktree y el specty de la rama. Claude Code real: tras ExitWorktree keep, el subagente escribe en su corte; sin salir, Claude Code lo aísla en la worktree de la épica.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "57e04b3b90ba9a5c0a4baca6dd315ec568b2710f",
+      "attempts": 1,
+      "startedAt": "2026-11-04T17:58:18.270Z",
+      "doneAt": "2026-11-04T17:58:55.854Z",
+      "summary": "ARCHITECTURE §5, §6, §7 y §10: la tarjeta de una épica en su worktree pide ExitWorktree keep antes de repartir, next fuera de la épica da su tarjeta mientras quedan cortes, y new desde otra worktree pide salir antes.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 5,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-05T02:13:57.514Z",
+  "lockedTests": {
+    "packages/cli/test/session-return.test.ts": "sha256:637563e76786e1173873735e1db34326cc41bbc8ea71d10b38869ba631acc5eb",
+    "packages/core/test/cards/epic.test.ts": "sha256:080ed575e2aae451ec2d8239086ef25e9a4a6b2d91f0185f49e5a2ab1b9708a8",
+    "packages/core/test/cards/new.test.ts": "sha256:c0526e046cb4ac8f0496d2e95e9c87bd5a3a629cc78ddbf5601d79debf144cc8",
+    "packages/core/test/cards/rejoin.test.ts": "sha256:19426f63b5a9513a5786e1009add11b37b4855ed65e95a61af98f65840e42662"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "445c69b3939c77f9aeb254565139e65901f50c59",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md"
+    ],
+    "paths": [
+      ".github/workflows/ci.yml",
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "package.json",
+      "packages/cli/src/agents/codex.ts",
+      "packages/cli/src/agents/run.ts",
+      "packages/cli/src/agents/windsurf.ts",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/finish.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/next.ts",
+      "packages/cli/src/commands/scope.ts",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/flow/ci-github.ts",
+      "packages/cli/src/flow/full-verification.test.ts",
+      "packages/cli/src/flow/full-verification.ts",
+      "packages/cli/src/flow/land.ts",
+      "packages/cli/src/flow/live-run.ts",
+      "packages/cli/src/flow/usage.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/flow/worktree.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/sessions.ts",
+      "packages/cli/src/store/lock.ts",
+      "packages/cli/src/store/turn-queue.ts",
+      "packages/cli/test/accept-turn-time.test.ts",
+      "packages/cli/test/agents.test.ts",
+      "packages/cli/test/close-moved.test.ts",
+      "packages/cli/test/codex-e2e.test.ts",
+      "packages/cli/test/codex.test.ts",
+      "packages/cli/test/fake-model.ts",
+      "packages/cli/test/front-start-codex.test.ts",
+      "packages/cli/test/server/sessions.test.ts",
+      "packages/cli/test/session-return.test.ts",
+      "packages/cli/test/session-start-codex.test.ts",
+      "packages/cli/test/session-start-devin.test.ts",
+      "packages/cli/test/session-start.test.ts",
+      "packages/cli/test/subagents.test.ts",
+      "packages/cli/test/workflows.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/cards/epic.ts",
+      "packages/core/src/cards/lock.ts",
+      "packages/core/src/cards/new.ts",
+      "packages/core/src/cards/rejoin.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/guard/git.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/light.ts",
+      "packages/core/src/memory/sessions.ts",
+      "packages/core/test/cards/doctor-codex-startup.test.ts",
+      "packages/core/test/cards/epic.test.ts",
+      "packages/core/test/cards/lock.test.ts",
+      "packages/core/test/cards/new.test.ts",
+      "packages/core/test/cards/rejoin.test.ts",
+      "packages/exporters/src/import-openspec.ts",
+      "packages/ui/src/app/routes.ts",
+      "packages/ui/src/app/shell.test.ts",
+      "packages/ui/src/app/shell.ts",
+      "packages/ui/src/data/fixtures.ts",
+      "packages/ui/src/data/sample-acceptance.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/memory/memory-lines.ts",
+      "packages/ui/src/sessions/sessions-page.test.ts",
+      "packages/ui/src/sessions/sessions-page.ts",
+      "packages/vscode/src/view.ts"
+    ],
+    "at": "2026-11-05T01:13:47.693Z",
+    "resolved": {
+      "commit": "06763b5",
+      "at": "2026-11-05T01:55:45.863Z"
+    }
+  }
+}

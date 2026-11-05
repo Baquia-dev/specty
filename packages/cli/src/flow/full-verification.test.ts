@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { spawn } from "node:child_process";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { sessionAt } from "../../test/server/support";
-import { AGENT, APP, tempRepo } from "../../test/support";
+import { AGENT, APP, CONFIG, tempRepo } from "../../test/support";
 import { exists } from "../io/files";
 import { oneAtATime } from "./full-verification";
 
@@ -87,5 +87,68 @@ describe("one full verification at a time", () => {
     expect(await exists(join(root, LOCK))).toBe(false);
     expect(Date.now() - started).toBeLessThan(1000);
     expect(errors.join("\n")).not.toContain("otra sesión");
+  });
+});
+
+const QUEUE = `${LOCKS}/full-verification.queue`;
+
+/** Another session that waits in the turn's queue since before anyone else, by process `pid`. */
+async function queuedFirst(root: string, pid: number): Promise<void> {
+  await mkdir(join(root, QUEUE), { recursive: true });
+  const holder = {
+    pid,
+    command: "pnpm check",
+    folder: "/la/primera",
+    at: "2026-11-03T14:04:00.000Z",
+  };
+  await writeFile(join(root, QUEUE, `000000000000001-${pid}.json`), JSON.stringify(holder));
+}
+
+/** When the process ends, in milliseconds since the epoch. */
+const endOf = (process: ReturnType<typeof living>) => process.ended.then(() => Date.now());
+
+describe("the queue of the full verification's turn", () => {
+  it("AC1: keeps waiting past verify.timeoutSec while the holder lives, and runs only once the turn is free", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}  timeoutSec: 1\n` });
+    const { session } = await watched(root);
+    const other = living(2500);
+    const otherEnd = endOf(other);
+    await heldBy(root, other.pid);
+    let ran = 0;
+    await oneAtATime(
+      session,
+      "pnpm check",
+      async () => {
+        ran = Date.now();
+      },
+      { pollMs: 50 },
+    );
+    expect(ran).toBeGreaterThanOrEqual(await otherEnd);
+    expect(await exists(join(root, LOCK))).toBe(false);
+  });
+
+  it("AC2: lets a live session that queued first take the turn first, and says how many wait ahead", async () => {
+    const root = await tempRepo(APP);
+    const { session, errors } = await watched(root);
+    const holder = living(800);
+    const first = living(2500);
+    const firstEnd = endOf(first);
+    await heldBy(root, holder.pid);
+    await queuedFirst(root, first.pid);
+    let ran = 0;
+    await oneAtATime(
+      session,
+      "pnpm check",
+      async () => {
+        ran = Date.now();
+      },
+      { pollMs: 50 },
+    );
+    expect(ran).toBeGreaterThanOrEqual(await firstEnd);
+    const waiting = errors.filter((text) => text.includes("otra sesión está haciendo"));
+    expect(waiting).toHaveLength(1);
+    expect(waiting[0]).toContain("Delante en la cola: 1.");
+    expect(await readdir(join(root, QUEUE))).toEqual([]);
+    expect(await exists(join(root, LOCK))).toBe(false);
   });
 });

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable, type Type } from "@angular/core";
+import type { SessionView } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
 import {
@@ -18,6 +19,7 @@ import {
   isObject,
   isRecords,
   isRun,
+  isSessionList,
   NO_DIFF,
   NO_SESSION,
   READ_ONLY,
@@ -127,6 +129,14 @@ export class ServerData extends SpectyData {
   override memoryAction(id: string, verb: MemoryVerb, reason?: string): Promise<void> {
     const body = reason === undefined ? {} : { reason };
     return this.post(`/api/memory/${encodeURIComponent(id)}/${verb}`, body);
+  }
+
+  override async sessions(): Promise<readonly SessionView[]> {
+    const response = await fetch("/api/sessions");
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isSessionList(body)) throw new ActionError(UNEXPECTED);
+    return body;
   }
 
   override async memory(): Promise<MemoryRecord> {

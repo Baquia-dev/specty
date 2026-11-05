@@ -29,8 +29,8 @@ export function conversationOf(event: Record<string, unknown>): string | undefin
 }
 
 /**
- * The subagent the event comes from (Claude Code's `agent_id`), safe as a file name; undefined
- * for an event of the main conversation.
+ * The subagent the event comes from (the `agent_id` of Claude Code and Codex), safe as a file
+ * name; undefined for an event of the main conversation.
  */
 export function subagentOf(event: Record<string, unknown>): string | undefined {
   return safeName(event.agent_id);

@@ -18,6 +18,11 @@ export interface GitConfig {
   readonly flow?: GitFlow;
   /** A name with `{type}`, `{slug}` and `{id}` for the changes' branches, over `flow`. */
   readonly branchPattern?: string;
+  /**
+   * What runs, with the shell, in the folder that holds the target branch each time a change lands
+   * there, such as rebuilding what is generated from the code. Unset: nothing.
+   */
+  readonly afterLanding?: string;
 }
 
 export const DEFAULT_GIT: GitConfig = { branchPerChange: true, worktrees: true };
@@ -36,6 +41,7 @@ export const GitSchema = z.strictObject({
       if (issue !== undefined) context.addIssue({ code: "custom", message: issue });
     })
     .optional(),
+  afterLanding: z.string().min(1).optional(),
 });
 
 /** The `git` section with its defaults applied; the optional keys only when set. */
@@ -47,5 +53,6 @@ export function resolveGit(git: z.infer<typeof GitSchema> | undefined): GitConfi
     ...(git?.target !== undefined ? { target: git.target } : {}),
     ...(git?.flow !== undefined ? { flow: git.flow } : {}),
     ...(git?.branchPattern !== undefined ? { branchPattern: git.branchPattern } : {}),
+    ...(git?.afterLanding !== undefined ? { afterLanding: git.afterLanding } : {}),
   };
 }

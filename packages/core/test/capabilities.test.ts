@@ -75,7 +75,7 @@ describe("the capability table", () => {
       "| Claude Code | sí | sí | sí | sí | sí | sí | sí | sí | sí | `.claude`, `CLAUDE.md` |",
     );
     expect(es).toContain(
-      "| Codex | sí | sí | sí | indirecto | — | sí | no posible | sí | sí | `.codex` |",
+      "| Codex | sí | sí | sí | indirecto | sí | sí | no posible | sí | sí | `.codex` |",
     );
     expect(es).toContain(
       "| OpenCode | sí | sí | sí | indirecto | — | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
@@ -132,7 +132,7 @@ describe("the capability table", () => {
     for (const tool of ["gemini-cli", "windsurf", "antigravity"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("impossible");
     }
-    for (const tool of ["cursor", "codex", "opencode", "copilot"] as const) {
+    for (const tool of ["cursor", "opencode", "copilot"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("unsupported");
     }
     const es = capabilityTable("es");
@@ -143,6 +143,13 @@ describe("the capability table", () => {
       "- Cortes en subagentes (Devin (Windsurf), Antigravity): sus hooks no documentan las acciones de sus subagentes (consultado el 2026-11-04).",
     );
     expect(capabilityTable("en")).toContain("| Slices in subagents |");
+  });
+
+  it("AC5: says that Codex hands an epic's slices to subagents", () => {
+    expect(AGENT_CAPABILITIES.codex.subagentSlices.state).toBe("yes");
+    expect(capabilityTable("en")).toContain(
+      "| Codex | yes | yes | yes | indirect | yes | yes | not possible | yes | yes | `.codex` |",
+    );
   });
 
   it("AC1: says that Antigravity does not enter a change's folder outside its workspace, here and in ARCHITECTURE", () => {

@@ -7,6 +7,7 @@ export {
   acceptedLine,
   acceptQuestion,
   delegatedFailureCard,
+  noCodeVerificationNote,
   quickClosedLine,
   quickClosing,
   runVerificationQuestion,
@@ -216,10 +217,13 @@ export {
   undoOutsideNext,
 } from "./integration";
 export {
+  type AfterLanding,
+  afterLandingLine,
   backOnTargetLine,
   folderRemovedLine,
   folderStaysLine,
   landedLine,
+  landingNote,
   leaveFolderNext,
   notLandedLine,
   retryLandingNext,
@@ -279,6 +283,7 @@ export {
   sharedTitle,
   workingFolderLine,
 } from "./parallel";
+export { withDevPorts } from "./ports";
 export {
   type Asker,
   checkStatus,

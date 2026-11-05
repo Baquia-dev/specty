@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "id": "20261104-cada-subagente-de-codex-trabaja-en-la-carpeta",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-cada-subagente-de-codex-trabaja-en-la-carpeta",
+  "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d9cea21aa6834d9da81476abc8ed97d7ad1022a486a93a7b25d7ce802defa5a2",
+    "at": "2026-11-04T12:39:42.488Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c781b0cff9655eb75696b2c58d6bd712cd5dfe8531ef62fc86f2431f0ca44d5a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3cf0117ed86a0f2dfbf9984c4ff9273f0e65bcadbfcb6f9618e767d59b55b825",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:afafc2bd790accce9fa5523e97771af52f5220d19fdbb774c834cc90efb63cd6",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c5a106844519089ec83acfabc8a01a56eb96c9cc7e435c7cb382dd266e10fdab",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "b4691dbbbc723151f8f5c50c5789d62652399ad2",
+      "attempts": 1,
+      "startedAt": "2026-11-04T12:51:35.854Z",
+      "doneAt": "2026-11-04T12:53:01.651Z",
+      "summary": "El módulo de Codex compone asSubagentConversation: la conversación de un subagente es session_id--agent_id, entra con specty enter y el guard le lleva comandos y parches a su carpeta. Comprobado con Codex 0.166.0 real (spawn_agent tras tool_search) y con sus eventos grabados.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "487d4e8a468b16516d5f875a8f9b34d153f0620e",
+      "attempts": 1,
+      "startedAt": "2026-11-04T12:53:02.001Z",
+      "doneAt": "2026-11-04T12:56:07.858Z",
+      "summary": "Codex pasa a sí en Cortes en subagentes (AGENT_CAPABILITIES, con su comentario). La tabla de ARCHITECTURE §10 se regeneró y un párrafo explica sus subagentes: spawn_agent, agent_id con el session_id del hilo raíz, specty enter con updatedInput y SubagentStop sin escuchar.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 2,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-04T13:11:08.685Z",
+  "lockedTests": {
+    "packages/cli/test/codex-e2e.test.ts": "sha256:520fda9b59efa63ad3cbdf2c69bf64982e65a01cd142a07e048db91f97a0e48c",
+    "packages/cli/test/fake-responses.ts": "sha256:c5605a193a327a5b6cadf7bb2f1d65e63a0a1c21728cc60e7c19ef133090203d",
+    "packages/core/test/capabilities.test.ts": "sha256:41e36730ba645269271f4335a2db12497784ccf2c07cda57d2c40872e2425b4f",
+    "packages/cli/test/codex-subagents.test.ts": "sha256:2cf2c198996ba7f8d492d69bb946c634e9bb88fb937442f9189df1062610e70f"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "7cb8240350923a2eb916c2aefcb59d512fb9ac1c",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/src/agents/codex.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/next.ts",
+      "packages/cli/src/enforce/actions.ts",
+      "packages/cli/src/flow/land.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/flow/worktree.ts",
+      "packages/cli/test/after-landing.test.ts",
+      "packages/cli/test/codex-e2e.test.ts",
+      "packages/cli/test/codex-subagents.test.ts",
+      "packages/cli/test/fake-model.ts",
+      "packages/cli/test/fake-responses.ts",
+      "packages/cli/test/session-return.test.ts",
+      "packages/cli/test/subagents.test.ts",
+      "packages/core/src/capabilities.ts",
+      "packages/core/src/cards/epic.ts",
+      "packages/core/src/cards/idle.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/land.ts",
+      "packages/core/src/cards/new.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/core/src/cards/rejoin.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/schema/git.ts",
+      "packages/core/test/capabilities.test.ts",
+      "packages/core/test/cards/after-landing.test.ts",
+      "packages/core/test/cards/epic.test.ts",
+      "packages/core/test/cards/new.test.ts",
+      "packages/core/test/cards/rejoin.test.ts",
+      "packages/ui/src/components/item-bubble.ts",
+      "packages/ui/src/components/item-refs.ts",
+      "packages/ui/src/components/item-tooltip.test.ts",
+      "packages/ui/src/components/item-tooltip.ts",
+      "packages/ui/src/components/testing/item-host.ts",
+      "packages/ui/src/data/fixtures.ts",
+      "packages/ui/src/data/mcp-app.test.ts",
+      "packages/ui/src/data/sample-acceptance.ts",
+      "packages/ui/src/data/sample-memory.ts",
+      "packages/ui/src/data/sample-review.ts",
+      "packages/ui/src/data/testing/mcp-host.ts"
+    ],
+    "at": "2026-11-05T02:29:28.265Z",
+    "resolved": {
+      "commit": "e3c707d",
+      "at": "2026-11-05T03:15:32.375Z"
+    }
+  }
+}
