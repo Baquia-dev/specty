@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-cancel-quita-la-carpeta-del-cambio-cuando-nada",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-cancel-quita-la-carpeta-del-cambio-cuando-nada",
   "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
   "revision": 2,
@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "daadc6c26497cd7c4b6db359ce2cc0824416a3e3",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:08:27.875Z",
       "doneAt": "2026-11-05T16:12:38.246Z",
-      "summary": "cancelledFolderStaysLine (es/en) en cards/close.ts y la línea opcional de la carpeta en cancelledCard"
+      "summary": "cancelledFolderStaysLine (es/en) en cards/close.ts y la línea opcional de la carpeta en cancelledCard",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1e513063e390127bff0cd1f2ca83365bb5dc6188",
+      "startedAt": "2026-11-05T16:12:38.600Z",
+      "doneAt": "2026-11-05T16:19:06.669Z",
+      "summary": "removeCancelled en flow/prune.ts (con workingFolders compartido con la limpieza) quita la carpeta del cambio cancelado tras el commit del archivo, salvo sesión de agente, algo sin commit o fallo de git; cancel pasa la línea a su tarjeta; ARCHITECTURE §9 lo cuenta"
     }
   },
   "pending": {

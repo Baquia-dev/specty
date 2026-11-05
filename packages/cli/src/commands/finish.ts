@@ -29,6 +29,7 @@ import { archive, commitArchive, commitClosing } from "../flow/finish";
 import { landingTurn } from "../flow/full-verification";
 import { absorbTarget, type Integration, integrationOf, isIncorporated } from "../flow/integrate";
 import { type Landed, landRetrying, withIntegration } from "../flow/land";
+import { removeCancelled } from "../flow/prune";
 import { measureUsage, withUsage } from "../flow/usage";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
@@ -215,6 +216,9 @@ async function cancelConfirmed(
   );
   // `task done` commits each task's code; the state cannot hold that commit's own hash.
   const withCode = Object.values(state.tasks).some((task) => task.status === "done");
+  // Once the archive is committed, the branch keeps it all: the folder goes if nothing is lost.
+  const folder =
+    state.branch === undefined ? undefined : await removeCancelled(session, state.branch);
   return withArchivedMemory(
     session,
     cancelledCard(
@@ -222,6 +226,7 @@ async function cancelConfirmed(
       cancelledLine(commit, session.lang),
       state.branch === undefined ? undefined : { name: state.branch, withCode },
       session.cards,
+      folder,
     ),
     archived,
   );

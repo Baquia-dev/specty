@@ -59,7 +59,7 @@ Hoy la carpeta de un cambio cancelado se queda hasta que alguien ejecuta `specty
   - files: packages/core/src/cards/close.ts, packages/core/src/cards/human.ts, packages/core/src/cards/index.ts, packages/core/test/cards/close.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/close.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: cancel quita la carpeta del cambio cuando nada se pierde
+- [x] T2: cancel quita la carpeta del cambio cuando nada se pierde
   - files: packages/cli/src/flow/prune.ts, packages/cli/src/commands/finish.ts, packages/cli/test/cancel-folder.test.ts, packages/cli/test/prune.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cancel-folder.test.ts test/prune.test.ts && pnpm typecheck && pnpm lint && pnpm knip
