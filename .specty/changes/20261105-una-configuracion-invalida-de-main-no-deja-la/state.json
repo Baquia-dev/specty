@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261105-una-configuracion-invalida-de-main-no-deja-la",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-una-configuracion-invalida-de-main-no-deja-la",
+  "baseCommit": "8daf2d378b4c44a850f120507c49df3dcc6723ad",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:13d9a8508caa305ac54c2e15434d5f54e23ddd34cbe62fdb7b38458138a3fd58",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fa6447a4c373a6578a61eb68162b2a30e860dea6fa8071552f92f7d2e8f44c80",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:d2d3819aef517f36abdb02c26607511bb2c6f0e3253e9d8431b062a22aa15432",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:95d122f52495159f4f4a5cc51d0692e2b07cc8a733a1d3123257ec9c41245364",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7593e6a3e1fb9f2dd8f865ed88b2b9845d9fd4a2d48906687d0aa1dc637641b5",
+    "at": "2026-11-05T09:16:17.328Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
