@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "id": "20261105-una-configuracion-invalida-de-main-no-deja-la",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-una-configuracion-invalida-de-main-no-deja-la",
+  "baseCommit": "8daf2d378b4c44a850f120507c49df3dcc6723ad",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7593e6a3e1fb9f2dd8f865ed88b2b9845d9fd4a2d48906687d0aa1dc637641b5",
+    "at": "2026-11-05T09:16:17.328Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:13d9a8508caa305ac54c2e15434d5f54e23ddd34cbe62fdb7b38458138a3fd58",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fa6447a4c373a6578a61eb68162b2a30e860dea6fa8071552f92f7d2e8f44c80",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:d2d3819aef517f36abdb02c26607511bb2c6f0e3253e9d8431b062a22aa15432",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:95d122f52495159f4f4a5cc51d0692e2b07cc8a733a1d3123257ec9c41245364",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "9be3e4c3422248495e3fc19fdfb6b54933c22490",
+      "attempts": 1,
+      "startedAt": "2026-11-05T09:25:44.571Z",
+      "doneAt": "2026-11-05T09:28:09.084Z",
+      "summary": "mergeTarget valida .specty/config.yaml tras git merge (flow/merged-config.ts): si no es válida, aborta el merge y la salida da el error y pide corregirla en la rama destino; textos en es/en, con variante del modo delegado.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "70e1b2b711f8308ce986a8463978fc1f424fb57a",
+      "attempts": 1,
+      "startedAt": "2026-11-05T09:28:09.467Z",
+      "doneAt": "2026-11-05T09:28:55.360Z",
+      "summary": "invalidConfigCard tiene la variante del agente: el usuario corrige .specty/config.yaml porque el guard no deja editarla, y se lo pide con el error; program.ts la usa sin terminal interactiva.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "47afb69de4ba240dd2324aea99003bf9fa97b4e8",
+      "attempts": 1,
+      "startedAt": "2026-11-05T09:28:55.733Z",
+      "doneAt": "2026-11-05T09:29:28.371Z",
+      "summary": "ARCHITECTURE §9 (paso 2) y formats.md §6 documentan la validación de la configuración tras incorporar main y quién corrige una configuración inválida.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T09:36:02.050Z",
+  "lockedTests": {
+    "packages/cli/test/invalid-config-merge.test.ts": "sha256:e23c3a3bf4c6d75d91329cba94e0d8969830504423437470aeef981bba2dea40",
+    "packages/cli/test/invalid-config.test.ts": "sha256:8f7d98dd8210aeedf567d419ecc9136cb7e2b6941cb49670d1d90f21842e210a"
+  }
+}

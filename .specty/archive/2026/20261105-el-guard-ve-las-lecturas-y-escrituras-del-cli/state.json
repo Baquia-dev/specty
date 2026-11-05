@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "id": "20261105-el-guard-ve-las-lecturas-y-escrituras-del-cli",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-el-guard-ve-las-lecturas-y-escrituras-del-cli",
+  "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:150fa9b36ef76bee5c6dcbcba93ad5aed66f6a4898c64d30f6c2b4c27b31fbe9",
+    "at": "2026-11-05T08:38:50.200Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5c60e4ebc39c956e043e36dfd48208c635d17dd5db6c5d5ee21e0aa4f69b83bb",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:cb060596bfc5c34ef82590598a26b9d7b99b0cc845ff0518a604b2040b3ada2f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:923bfed23c2d8d545c5fafd79083344905da9d440e0d8061a637300bbd3b6059",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b79df15a52bc1489dccaa5fe22299d029ab20df5ec338a984211d37968802526",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:9fcf2664ad597801769e7c38f29046d599b4fa2b78d22178da73ac48e34bd05b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "cd7affa424a674dcbc23b36194c976c8d9a528d3",
+      "attempts": 1,
+      "startedAt": "2026-11-05T08:55:01.188Z",
+      "doneAt": "2026-11-05T09:00:25.507Z",
+      "summary": "El guard de Antigravity juzga read_file como lectura de Path y write_file y edit_file como escrituras de Path; init añade read_file|write_file|edit_file al matcher de PreToolUse, tras los nombres del IDE y de ACP.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "afcdf46c7e9cfb871543c0d9956129f5ef630b7d",
+      "attempts": 1,
+      "startedAt": "2026-11-05T09:00:26.398Z",
+      "doneAt": "2026-11-05T09:07:17.244Z",
+      "summary": "Línea de doctor antigravity-cli (es/en) en core; outdatedMatcher la da a un matcher con las herramientas ACP y sin las del CLI, y mantiene antigravity-acp y enter-outdated para los anteriores.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "85ed76946e5ee3988901356bec247a90ebc3dd9f",
+      "attempts": 1,
+      "startedAt": "2026-11-05T09:07:17.563Z",
+      "doneAt": "2026-11-05T09:12:30.819Z",
+      "summary": "stop.acts de Antigravity actúa con terminationReason model_stop o NO_TOOL_CALL, y no con fullyIdle false (mientras corren sus subagentes): responde stop sin el check ni gastar la vuelta.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "c597dde4265010bdceb21463f5b7f8c7a7221f13",
+      "attempts": 1,
+      "startedAt": "2026-11-05T09:12:31.174Z",
+      "doneAt": "2026-11-05T09:18:33.483Z",
+      "summary": "ARCHITECTURE: read_file, write_file y edit_file del CLI de Antigravity en §10 y en la tabla de herramientas, el fin de turno con NO_TOOL_CALL y fullyIdle, y la comprobación con agy 1.5.1.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T09:27:59.082Z",
+  "lockedTests": {
+    "packages/cli/test/antigravity-turn.test.ts": "sha256:8b86ac9fb13fbc23da9eacdd4a8b3bc1eb36b80a42b6eed83582c7d2eab197b8",
+    "packages/cli/test/antigravity.test.ts": "sha256:726b2e189c7691cc7339937828fae815454b590902768cc8c5c59818895ae210",
+    "packages/core/test/cards/doctor-antigravity-cli.test.ts": "sha256:8563aba41678a080c1c47bf2fc37af790a909472aec713005f0a1bb53c642828"
+  }
+}
