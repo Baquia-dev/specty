@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-bandeja-pide-los-terminados-al-servidor-por",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-la-bandeja-pide-los-terminados-al-servidor-por",
   "baseCommit": "bd48aacf6aa987f9dcce0d5aa2a20cb564068e48",
   "revision": 1,
@@ -55,6 +55,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T13:06:33.588Z"
+  "lockedTests": {
+    "packages/ui/src/inbox/inbox-view.test.ts": "sha256:b0253a88c67d2c6dc48b814e99c6f2691fafa68cb2dcbeae1d644797607888dc",
+    "packages/cli/test/server/finished.test.ts": "sha256:2a3415a346738a8dd1a19c3f9a227c7f5be4f06817789fd740fa87e27bd9e00d",
+    "packages/core/test/listing.test.ts": "sha256:2b55f8f84d6555352108927a53c07def6c5f3b6b3b9dc5e7513d5bcbf7b8143a"
+  }
 }
