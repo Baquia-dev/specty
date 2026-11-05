@@ -163,3 +163,27 @@ export function decideResultIn(
     ],
   };
 }
+
+/** As `specty close`: only a closing the agent sent; the change is done (archived, in the CLI). */
+export function confirmClosingIn(record: ChangeRecord, now: number): ChangeRecord {
+  const { state } = record;
+  if (state.phase !== "closing") {
+    throw new ActionError({
+      es: "Este cambio no espera que confirmes un cierre.",
+      en: "This change is not waiting for you to confirm a closing.",
+    });
+  }
+  if (state.closingSubmittedAt === undefined) {
+    throw new ActionError({
+      es: "El agente aún no ha enviado el cierre: espera a que lo haga.",
+      en: "The agent has not sent the closing yet: wait for it.",
+    });
+  }
+  const at = new Date(now).toISOString();
+  return {
+    ...record,
+    phaseSince: at,
+    state: { ...state, phase: "done" },
+    audit: [...(record.audit ?? []), { ts: at, actor: "human", event: "change.closed", data: {} }],
+  };
+}

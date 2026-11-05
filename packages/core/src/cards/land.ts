@@ -69,3 +69,36 @@ export function leaveFolderNext(
     `${leave} (in Claude Code, \`ExitWorktree\`) and carry on in ${left.main}; for another change, \`${ctx.command} new "<title>"\`.`,
   );
 }
+
+/** What `git.afterLanding` did once the change landed: its command, the folder, how it ended. */
+export interface AfterLanding {
+  readonly command: string;
+  readonly folder: string;
+  readonly ok: boolean;
+  /** The last line it printed, when it failed. */
+  readonly last?: string;
+}
+
+/** The line of the closing with what `git.afterLanding` did. */
+export function afterLandingLine(after: AfterLanding, lang: Lang): string {
+  const t = translator(lang);
+  const { command, folder } = after;
+  if (after.ok)
+    return t(
+      `Tras incorporarlo, \`${command}\` pasó en ${folder}.`,
+      `After merging it, \`${command}\` passed in ${folder}.`,
+    );
+  const last = after.last === undefined || after.last === "" ? "" : ` (${after.last})`;
+  return t(
+    `Tras incorporarlo, \`${command}\` falló en ${folder}${last}; el cambio ya está incorporado: corrígelo y vuelve a ejecutarlo allí.`,
+    `After merging it, \`${command}\` failed in ${folder}${last}; the change is already merged: fix it and run it there again.`,
+  );
+}
+
+/** While `git.afterLanding` runs, on the error output. */
+export function landingNote(command: string, lang: Lang): string {
+  return translator(lang)(
+    `specty: tras incorporarlo, ejecutando \`${command}\`…`,
+    `specty: after merging it, running \`${command}\`…`,
+  );
+}
