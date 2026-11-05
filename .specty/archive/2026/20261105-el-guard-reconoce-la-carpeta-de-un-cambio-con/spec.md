@@ -60,3 +60,24 @@ Cuando la `.specty/config.yaml` de la carpeta de un cambio no es válida, el gua
 ## Riesgos
 
 - R1: La configuración de repuesto puede diferir de la que tenía la carpeta (otro `governed`, otro alcance implícito de tests) — solo mientras la persona no corrige la suya, y la regla que protege `.specty/config.yaml` no depende de ella.
+
+## Cierre
+
+### Resumen
+
+El guard ya no trata como «otra worktree» la carpeta de un cambio cuya `.specty/config.yaml` no es válida (P154). `openSession` acepta una configuración de repuesto que solo pasa el guard: `enteredFolder` abre la carpeta en la que entró la conversación con `specty enter` usando la configuración de la carpeta en la que trabaja la herramienta, y `guardSession` abre la carpeta de la herramienta con la de la carpeta principal. Así el guard reconoce la carpeta del cambio, la juzga con las reglas de su fase (AC1), sigue bloqueando `.specty/config.yaml` como archivo protegido y los comandos que correrían fuera de ella (AC2), y a un agente que trabaja dentro de esa carpeta (Claude Code tras `EnterWorktree`) ya no le deja pasar todo, incluida la propia configuración (AC3). ARCHITECTURE §10 y formats.md §6 lo documentan.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- La configuración de repuesto solo existe para el guard: los comandos siguen sin abrir una carpeta cuya configuración no es válida, y su tarjeta pide a la persona que la corrija.
+- Para la conversación que entró con `specty enter` se usa la configuración de la herramienta, que el guard ya abrió y es válida; para el agente que trabaja dentro, la de la carpeta principal (la primera worktree de git), porque no hay otra sesión abierta.
+- Sin textos nuevos: el bloqueo de `.specty/config.yaml` es el de cualquier archivo protegido, y su SIGUIENTE (`specty next`) lleva a la tarjeta que dice que la corrige la persona.
+
+### Pendientes
+
+- Con la configuración de la carpeta inválida, el fin de turno (`hook agent-stop`) y la tarjeta «TU CAMBIO» de `next` para una conversación ligada a esa carpeta siguen sin abrirla: no la reconocen hasta que la persona la corrige.
+- Si la carpeta principal también tiene la configuración inválida, el guard sigue dejando pasar todo a un agente que trabaja dentro de la carpeta de un cambio, también `.specty/config.yaml`.
