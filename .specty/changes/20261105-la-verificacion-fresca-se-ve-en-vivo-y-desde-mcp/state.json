@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-verificacion-fresca-se-ve-en-vivo-y-desde-mcp",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-verificacion-fresca-se-ve-en-vivo-y-desde-mcp",
   "baseCommit": "0c7a2a1b0de1c629b4da57cc45be19298848fc2e",
   "revision": 1,
@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fd94ca3a6ecced50a3491222abf8349e0cee8990",
+      "attempts": 1,
       "startedAt": "2026-11-05T09:37:48.041Z",
       "doneAt": "2026-11-05T09:38:54.929Z",
-      "summary": "specty_verify en el servidor MCP: ejecuta specty verify --fresh en la carpeta de la llamada, va tras specty_check y enlaza con la vista del cambio, que ve la verificación fresca en vivo."
+      "summary": "specty_verify en el servidor MCP: ejecuta specty verify --fresh en la carpeta de la llamada, va tras specty_check y enlaza con la vista del cambio, que ve la verificación fresca en vivo.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bbc1397c164c824a375cd6548a537102f78ae723",
+      "startedAt": "2026-11-05T09:38:55.303Z",
+      "doneAt": "2026-11-05T09:39:26.880Z",
+      "summary": "ARCHITECTURE §6 (verify --fresh en vivo en la carpeta de un cambio, specty_verify en la lista de MCP) y §15 (las verificaciones en vivo), y docs/ui.md (la sección Verificación completa también muestra la de accept y la fresca)."
     }
   },
   "pending": {

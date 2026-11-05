@@ -63,7 +63,7 @@ Hoy `specty verify --fresh` corre a ciegas: la UI y la MCP App no ven nada hasta
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp.test.ts test/mcp-app.test.ts test/verify-fresh.test.ts && pnpm typecheck && pnpm lint && pnpm knip && pnpm sources
   - type: feat
-- [ ] T3: La documentación de la verificación fresca en vivo y de specty_verify
+- [x] T3: La documentación de la verificación fresca en vivo y de specty_verify
   - files: docs/ARCHITECTURE.md, docs/ui.md
   - ac: —
   - verify: pnpm lint
