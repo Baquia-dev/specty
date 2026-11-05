@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { MemoryEntry, MemoryStatus } from "../memory/entries";
-import { headerOf, type Output } from "../output";
+import { headerOf, type Output, section } from "../output";
 import { blockedCard } from "./flow";
-import { firstLine } from "./memory";
+import { firstLine, goOn, resolvesLines } from "./memory";
 import { heldBy, type StatusEntry } from "./status";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
 // The entries of Specty's memory a change takes (ADR 0016): what `specty new --resolves` says
-// when it takes nothing.
+// when it takes nothing, and what `specty memory resolve` says, from inside the change.
 
 /** Why `specty new --resolves` creates nothing. */
 export type ResolvesRefusal =
@@ -29,7 +29,54 @@ export type ResolvesRefusal =
  */
 export function resolvesRefusalCard(refusal: ResolvesRefusal, ctx: CardContext): Output {
   const t = translator(ctx.lang);
-  const card = blockedCard(headerOf(), reasonOf(refusal, t), nextOf(refusal, ctx, t));
+  const card = blockedCard(
+    headerOf(),
+    reasonOf(refusal, t, "`--resolves`"),
+    nextOf(refusal, ctx, t),
+  );
+  return refusal.reason === "unknown" || refusal.reason === "not-work"
+    ? { ...card, status: "invalid" }
+    : card;
+}
+
+/** Why `specty memory resolve` takes nothing: as `--resolves`, or no open change in the folder. */
+export type MemoryResolveRefusal = ResolvesRefusal | { readonly reason: "no-change" };
+
+/**
+ * `specty memory resolve`: the entries this folder's open change took, each with its kind and
+ * first line, and what happens to them when the change is archived.
+ */
+export function memoryResolvedCard(entries: readonly MemoryEntry[], ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  return {
+    status: "ok",
+    header: headerOf(t("memoria", "memory")),
+    blocks: section(t("RESUELVE", "RESOLVES"), resolvesLines(entries, ctx)),
+    next: goOn(ctx),
+  };
+}
+
+/**
+ * The card of a `specty memory resolve` that takes nothing: `invalid` when an id is wrong for it,
+ * `blocked` when the folder or the memory's state stops it.
+ */
+export function memoryResolveRefusalCard(refusal: MemoryResolveRefusal, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  const resolve = `\`${ctx.command} memory resolve\``;
+  if (refusal.reason === "no-change") {
+    return blockedCard(
+      headerOf(),
+      t(
+        `No hay un cambio abierto en esta carpeta: ${resolve} toma las entradas para ese cambio.`,
+        `There is no open change in this folder: ${resolve} takes the entries for that change.`,
+      ),
+      t(
+        "entra en la carpeta del cambio cuyo trabajo las resolvió y vuelve a ejecutarlo; si ninguno lo hizo, déjalas abiertas.",
+        "go into the folder of the change whose work resolved them and run it again; if none did, leave them open.",
+      ),
+    );
+  }
+  const card = blockedCard(headerOf(), reasonOf(refusal, t, resolve), resolveNext(refusal, ctx, t));
   return refusal.reason === "unknown" || refusal.reason === "not-work"
     ? { ...card, status: "invalid" }
     : card;
@@ -50,7 +97,8 @@ const STATUS: Readonly<Record<MemoryStatus, readonly [string, string]>> = {
   "drop-proposed": ["propuesta para descartar", "proposed to drop"],
 };
 
-function reasonOf(refusal: ResolvesRefusal, t: Translate): string {
+/** Why an entry cannot be taken; `taking`, the command that takes it, as the text names it. */
+function reasonOf(refusal: ResolvesRefusal, t: Translate, taking: string): string {
   switch (refusal.reason) {
     case "unknown":
       return t(
@@ -72,8 +120,8 @@ function reasonOf(refusal: ResolvesRefusal, t: Translate): string {
           ? NOT_WORK[entry.kind]
           : NOT_WORK.reminder;
       return t(
-        `${entry.id} es ${kind[0]}: \`--resolves\` solo toma pendientes y mejoras.`,
-        `${entry.id} is ${kind[1]}: \`--resolves\` only takes pending items and improvements.`,
+        `${entry.id} es ${kind[0]}: ${taking} solo toma pendientes y mejoras.`,
+        `${entry.id} is ${kind[1]}: ${taking} only takes pending items and improvements.`,
       );
     }
     case "taken":
@@ -124,4 +172,32 @@ function nextOf(refusal: ResolvesRefusal, ctx: CardContext, t: Translate): strin
       );
     }
   }
+}
+
+/** What to do after a `specty memory resolve` that took nothing: run it again without the entry. */
+function resolveNext(refusal: ResolvesRefusal, ctx: CardContext, t: Translate): string {
+  const { command } = ctx;
+  if (refusal.reason === "unknown") {
+    return t(
+      `comprueba el id con \`${command} memory\` y vuelve a ejecutar \`${command} memory resolve\`.`,
+      `check the id with \`${command} memory\` and run \`${command} memory resolve\` again.`,
+    );
+  }
+  const { id, kind } = refusal.entry;
+  if (refusal.reason === "not-work" && kind === "reminder") {
+    return t(
+      `si tu trabajo lo cumplió, márcalo hecho con \`${command} memory done ${id}\`; vuelve a ejecutarlo sin él.`,
+      `if your work fulfilled it, mark it done with \`${command} memory done ${id}\`; run it again without it.`,
+    );
+  }
+  const again = t(
+    `vuelve a ejecutarlo sin ${id}, o sigue con \`${command} next\`.`,
+    `run it again without ${id}, or go on with \`${command} next\`.`,
+  );
+  return refusal.reason === "taken"
+    ? t(
+        `la resolverá ese cambio al cerrarse: ${again}`,
+        `that change will resolve it when it closes: ${again}`,
+      )
+    : again;
 }

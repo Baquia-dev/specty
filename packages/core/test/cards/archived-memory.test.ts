@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { type CardContext, harvestedBlocks, type MemoryEntry } from "../../src";
+import { type CardContext, harvestedBlocks, type MemoryEntry, resolvedBlocks } from "../../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
 const EN: CardContext = { ...ES, lang: "en" };
@@ -20,14 +20,14 @@ const LEFT = [
 ];
 
 describe("the pending items a closing leaves in the memory", () => {
-  it("AC1: names each one with its first line, in order, and says sessions will see them", () => {
+  it("AC6: names each one with its first line, in order, and says the person sees them", () => {
     expect(harvestedBlocks(LEFT, ES)).toEqual([
       {
         title: "PENDIENTES QUE QUEDAN EN LA MEMORIA",
         lines: [
           "P59 · Ordenar por fecha.",
           "P60 · Exportar a CSV.",
-          "Las sesiones los verán al empezar; todos, con `specty memory`.",
+          "La persona los ve en la página Memoria de `specty ui` y con `specty memory`.",
         ],
       },
     ]);
@@ -37,13 +37,56 @@ describe("the pending items a closing leaves in the memory", () => {
         lines: [
           "P59 · Ordenar por fecha.",
           "P60 · Exportar a CSV.",
-          "Sessions will see them when they start; all of them, with `specty memory`.",
+          "The person sees them on the Memory page of `specty ui` and with `specty memory`.",
         ],
       },
     ]);
   });
 
-  it("AC2: adds nothing when the closing left none", () => {
+  it("AC6: adds nothing when the closing left none", () => {
     expect(harvestedBlocks([], ES)).toEqual([]);
+  });
+});
+
+describe("the entries a closing resolved", () => {
+  const done = (id: string, text: string): MemoryEntry => ({
+    ...entry(id, text),
+    status: "done",
+    taken: { change: "20261106-b", at: "2026-11-06T10:00:00.000Z" },
+    closed: { at: "2026-11-06T12:00:00.000Z", by: "person" },
+  });
+  const RESOLVED = [
+    done("P12", "Ordenar por fecha.\nCon la más nueva primero."),
+    done("P13", "Exportar a CSV."),
+  ];
+
+  it("AC2: names each one with its first line, and that they leave the open entries", () => {
+    expect(resolvedBlocks(RESOLVED, ES)).toEqual([
+      {
+        title: "PENDIENTES QUE RESOLVIÓ ESTE CAMBIO",
+        lines: [
+          "P12 · Ordenar por fecha.",
+          "P13 · Exportar a CSV.",
+          "Quedan hechos y salen de la lista de abiertos.",
+        ],
+      },
+    ]);
+  });
+
+  it("AC7: says the same in English", () => {
+    expect(resolvedBlocks(RESOLVED, EN)).toEqual([
+      {
+        title: "PENDING ITEMS THIS CHANGE RESOLVED",
+        lines: [
+          "P12 · Ordenar por fecha.",
+          "P13 · Exportar a CSV.",
+          "They are done and leave the list of open entries.",
+        ],
+      },
+    ]);
+  });
+
+  it("AC2: adds nothing when the change resolved none", () => {
+    expect(resolvedBlocks([], ES)).toEqual([]);
   });
 });
