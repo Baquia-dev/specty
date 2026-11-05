@@ -48,7 +48,7 @@ Cuando la verificación completa se corta por `verify.timeoutSec`, `accept`, la 
   - files: packages/core/src/cards/units.ts, packages/core/src/cards/index.ts, packages/core/test/cards/units.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/units.test.ts && pnpm typecheck
-- [ ] T2: `accept` dice que la verificación completa se cortó por tiempo
+- [x] T2: `accept` dice que la verificación completa se cortó por tiempo
   - files: packages/cli/src/flow/units.ts, packages/cli/test/verify-timeout.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-timeout.test.ts test/accept-units.test.ts && pnpm typecheck

@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d6945c904d93d0e0bf97dada0e5802c74076ba25",
+      "attempts": 1,
       "startedAt": "2026-11-05T07:23:24.651Z",
       "doneAt": "2026-11-05T07:23:56.042Z",
-      "summary": "timedOutLine(seconds, lang) en core cards/units.ts, en español y en inglés, exportada en cards/index.ts"
+      "summary": "timedOutLine(seconds, lang) en core cards/units.ts, en español y en inglés, exportada en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "851f974f0031f6535837d2849b16b548e83ad223",
+      "startedAt": "2026-11-05T07:23:56.412Z",
+      "doneAt": "2026-11-05T07:25:01.684Z",
+      "summary": "runFull pasa la salida de cada comando por outputOf, que añade timedOutLine con verify.timeoutSec cuando exec lo cortó por tiempo, en verify.full y en cada unidad"
     }
   },
   "pending": {

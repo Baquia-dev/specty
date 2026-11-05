@@ -2,11 +2,12 @@
 import {
   hashText,
   isGoverned,
+  timedOutLine,
   type UnitsOutcome,
   type UnitTime,
   type VerifyUnit,
 } from "@baquia-dev/specty-core";
-import { tail } from "../io/exec";
+import { type ExecResult, tail } from "../io/exec";
 import { exists, writeText } from "../io/files";
 import type { Session } from "../session";
 import { oneAtATime, unitsCommand } from "./full-verification";
@@ -89,16 +90,26 @@ export async function runFull(
   const { units } = plan;
   if (units === undefined) {
     const result = await runLive(session, change, undefined, plan.command, { onStart });
-    return { code: result.code, output: tail(result), command: plan.command };
+    return { code: result.code, output: outputOf(session, result), command: plan.command };
   }
   const live: RunCommand = async (command) => {
     const result = await runLive(session, change, undefined, command, { held: true });
-    return { code: result.code, output: tail(result) };
+    return { code: result.code, output: outputOf(session, result) };
   };
   return oneAtATime(session, plan.runs, () => {
     onStart();
     return runUnits(session, change, units, live);
   });
+}
+
+/**
+ * The last lines of what a full verification ran; when its time limit cut it, a last line that
+ * says so, since its output alone looks like a failure.
+ */
+function outputOf(session: Session, result: ExecResult): string[] {
+  const lines = tail(result);
+  if (!result.timedOut) return lines;
+  return [...lines, timedOutLine(session.config.verify.timeoutSec, session.lang)];
 }
 
 /**
