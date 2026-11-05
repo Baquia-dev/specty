@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261106-un-pendiente-ajeno-que-resuelve-el-trabajo-sale",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-un-pendiente-ajeno-que-resuelve-el-trabajo-sale",
+  "baseCommit": "88d9019e8b696fe0180cfa8ff5d79807a856fc6d",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9a37d3f54f6b8138aa81a140629538c0e99af118ddee565e2cf0713aaeda4bf7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:19cc9c3bf39550220e51adfc10adf4930ccbe4f778fbc3c51fafcd43d6b9c8ee",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b1922e1fa5f7541eccf2089bd7bc2a0f9fd9d46e34bcdbdf14ad509536c09a22",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ca2bf166e60811e40a40fb6ceddeac0193201ccf7c48788bb1373f97919b3fde",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:44393421700caf2268514d5625d06f618eb5a38aae75c9285f702e6e9e25111e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:07cb2eaee807f632ef4002ed20a55085e9a277ccabeb067e210a43b68540a429",
+    "at": "2026-11-05T21:14:19.130Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
