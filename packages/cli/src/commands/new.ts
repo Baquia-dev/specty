@@ -24,7 +24,13 @@ import { duplicatesOf } from "../flow/duplicates";
 import { sliceRefusal } from "../flow/epic";
 import { removeFinished } from "../flow/prune";
 import { changeView } from "../flow/views";
-import { addWorktree, parallelBase, prepareWorktree, worktreesHome } from "../flow/worktree";
+import {
+  addWorktree,
+  apartFromMain,
+  parallelBase,
+  prepareWorktree,
+  worktreesHome,
+} from "../flow/worktree";
 import { entersByName } from "../install/agents";
 import { freshProject } from "../install/product";
 import { exists, writeText } from "../io/files";
@@ -218,6 +224,8 @@ async function newInWorktree(
       // Any other agent carries on in a session of its own, which the card says how to open.
       agent: session.tool,
       ...(subagent ? { subagent } : {}),
+      // Claude Code's session does not enter one worktree from another: it leaves this one first.
+      ...((await apartFromMain(git)) ? { fromWorktree: true } : {}),
     },
     cards,
   );

@@ -1,6 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { type CardContext, type NextView, nextCard, renderText } from "../../src";
+import {
+  type CardContext,
+  type ChangeView,
+  type NextView,
+  nextCard,
+  renderText,
+  type SliceView,
+} from "../../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
 const EN: CardContext = { ...ES, lang: "en" };
@@ -118,5 +125,101 @@ describe("the changes no conversation holds", () => {
     expect(text).toContain(
       'If the user asks to carry on with one of them, resume it in its folder instead of creating another change: in Claude Code, `EnterWorktree` with `name: "<id>"`.',
     );
+  });
+});
+
+const EPIC = "20261105-panel";
+const EPIC_FOLDER = `/repo/.worktrees/${EPIC}`;
+
+const slice = (
+  id: string,
+  status: SliceView["status"],
+  extra: Partial<SliceView> = {},
+): SliceView => ({ id, title: `Corte ${id}`, depends: [], status, ...extra });
+
+const DONE = slice("C1", "done", { child: { id: "20261105-inicio", phase: "done" } });
+const OPEN = slice("C2", "open", {
+  child: { id: "20261105-notas", phase: "implementing", folder: "/repo/.worktrees/20261105-notas" },
+});
+
+/** The conversation's epic, approved in its own worktree, with `slices`. */
+const ownEpic = (slices: readonly SliceView[]) => ({
+  id: EPIC,
+  title: "Panel",
+  folder: EPIC_FOLDER,
+  epic: {
+    id: EPIC,
+    kind: "epic",
+    phase: "implementing",
+    title: "Panel",
+    specPath: `.specty/changes/${EPIC}/spec.md`,
+    revision: 1,
+    tasks: [],
+    conventions: [],
+    pendingScope: [],
+    rejected: [],
+    closingSubmitted: false,
+    specChanged: false,
+    slices,
+    inWorktree: true,
+  } satisfies ChangeView,
+});
+
+const AWAY = `Esta conversación lleva la épica ${EPIC} («Panel»), en ${EPIC_FOLDER}, y reparte sus cortes desde fuera de esa carpeta: no vuelvas a entrar en ella para lanzar los encargos.`;
+
+describe("the card of a conversation outside its epic's folder", () => {
+  it("AC3: is the epic's card, with its slices and briefs, and launches them from where it is", () => {
+    const text = card({ own: ownEpic([DONE, slice("C2", "ready")]), byName: true });
+    expect(text).toContain(`TU ÉPICA:\n  ${AWAY}`);
+    expect(text).toContain("CORTES (1 de 2 cerrados):");
+    expect(text).toContain("ENCARGO C2:");
+    expect(text).not.toContain("TU CAMBIO");
+    expect(text).not.toContain("EnterWorktree");
+    expect(text).not.toContain("ExitWorktree");
+    expect(text).toContain(
+      "SIGUIENTE: lanza en paralelo, en un solo mensaje, un subagente por encargo con su texto tal cual; cuando terminen, vuelve a ejecutar `specty next` aquí.",
+    );
+  });
+
+  it("AC3: with only slices in progress, waits for their subagents where it is", () => {
+    const text = card({ own: ownEpic([DONE, OPEN]), byName: true });
+    expect(text).toContain("TU ÉPICA:");
+    expect(text).not.toContain("ENCARGO");
+    expect(text).toContain(
+      "SIGUIENTE: los cortes en curso siguen con sus subagentes: espera sus informes y, cuando terminen, vuelve a ejecutar `specty next` aquí.",
+    );
+  });
+
+  it("AC3: in English", () => {
+    const text = card(
+      { own: ownEpic([slice("C1", "ready")]), byName: true },
+      { ...EN, tool: "claude-code" },
+    );
+    expect(text).toContain(
+      `YOUR EPIC:\n  This conversation carries epic ${EPIC} («Panel»), in ${EPIC_FOLDER}, and hands out its slices from outside that folder: do not go back into it to launch the briefs.`,
+    );
+    expect(text).toContain(
+      "NEXT: launch in parallel, in a single message, one subagent per brief with its text as is; once they finish, run `specty next` again here.",
+    );
+  });
+
+  it("AC4: asks to go back to the epic once no slice is left for the subagents", () => {
+    const back = `SIGUIENTE: vuelve a ${EPIC_FOLDER}:`;
+    for (const slices of [[DONE], [slice("C2", "waiting", { depends: ["C3"] })]]) {
+      const text = card({ own: ownEpic(slices), byName: true });
+      expect(text).toContain("TU CAMBIO:");
+      expect(text).toContain(back);
+      expect(text).not.toContain("TU ÉPICA");
+    }
+  });
+
+  it("AC4: asks to go back to the epic when it does not hand out its slices", () => {
+    const own = ownEpic([slice("C1", "ready")]);
+    for (const ctx of [ES, CURSOR, { ...CLAUDE, subagents: false }]) {
+      const text = card({ own, byName: true }, ctx);
+      expect(text).toContain("TU CAMBIO:");
+      expect(text).toContain(`vuelve a ${EPIC_FOLDER}:`);
+      expect(text).not.toContain("ENCARGO");
+    }
   });
 });
