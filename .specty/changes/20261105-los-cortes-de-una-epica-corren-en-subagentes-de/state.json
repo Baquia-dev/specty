@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0149e37719ac1c526e14e196b35bba9085ef588c",
+      "attempts": 1,
       "startedAt": "2026-11-05T10:06:19.722Z",
       "doneAt": "2026-11-05T10:07:16.779Z",
-      "summary": "Desde Antigravity, el SIGUIENTE de la tarjeta de una épica con encargos pide lanzarlos con invoke_subagent y Workspace: \"inherit\", no branch (launchedWith en cards/epic.ts); las demás herramientas no cambian y cabe en el presupuesto."
+      "summary": "Desde Antigravity, el SIGUIENTE de la tarjeta de una épica con encargos pide lanzarlos con invoke_subagent y Workspace: \"inherit\", no branch (launchedWith en cards/epic.ts); las demás herramientas no cambian y cabe en el presupuesto.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ad7fed820f98e4fea029dbe4ac9dc00994805a20",
+      "startedAt": "2026-11-05T10:07:17.085Z",
+      "doneAt": "2026-11-05T10:09:29.390Z",
+      "summary": "El fin de turno de Antigravity no actúa con lastUserInput vacío (el Stop de un subagente de invoke_subagent): responde stop sin el check ni pending. El E2E con agy 1.5.1 real pasó: el subagente entró en su corte y la principal siguió en el suyo."
     }
   },
   "pending": {

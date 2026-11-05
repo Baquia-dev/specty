@@ -61,7 +61,7 @@ Con Antigravity, la tarjeta de una épica aprobada reparte ya sus cortes entre s
   - files: packages/core/test/cards/epic.test.ts, packages/core/test/cards/budget.test.ts, packages/core/src/cards/epic.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts test/cards/budget.test.ts
-- [ ] T3: El fin de turno salta el `Stop` de un subagente de Antigravity
+- [x] T3: El fin de turno salta el `Stop` de un subagente de Antigravity
   - files: packages/cli/test/antigravity-turn.test.ts, packages/cli/test/antigravity-e2e.test.ts, packages/cli/src/agents/antigravity.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-turn.test.ts test/antigravity-e2e.test.ts test/check-agent-stop.test.ts && pnpm typecheck && pnpm lint
