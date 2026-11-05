@@ -65,7 +65,7 @@ Hoy, para saber qué pendientes dejó un cambio o cuáles resolvió, hay que ir 
 
 ## Tareas
 
-- [ ] T1: La Memoria lee la búsqueda y las cerradas de la URL
+- [x] T1: La Memoria lee la búsqueda y las cerradas de la URL
   - files: packages/ui/src/memory/memory-page.ts, packages/ui/src/memory/memory-url.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-url.test.ts --include src/memory/memory-toolbar.test.ts --include src/memory/memory-page.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck

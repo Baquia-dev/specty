@@ -7,6 +7,8 @@ import {
   computed,
   DestroyRef,
   inject,
+  input,
+  linkedSignal,
   resource,
   signal,
 } from "@angular/core";
@@ -185,6 +187,10 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
   `,
 })
 export class MemoryPage {
+  /** From the route: `/memory?q=P12&closed=1`, as a change's page links one of its entries. */
+  readonly q = input<string | undefined>(undefined);
+  readonly closedParam = input<string | undefined>(undefined, { alias: "closed" });
+
   private readonly data = inject(SpectyData);
   private readonly dialogs = inject(Dialogs);
   private readonly toasts = inject(Toasts);
@@ -222,9 +228,10 @@ export class MemoryPage {
   }
 
   protected readonly searchIcon = LucideSearch;
-  protected readonly query = signal("");
+  /** The search and the closed entries start as the URL says; the toolbar changes them after. */
+  protected readonly query = linkedSignal(() => this.q() ?? "");
   protected readonly kind = signal("all");
-  protected readonly closed = signal(false);
+  protected readonly closed = linkedSignal(() => this.closedParam() === "1");
 
   /** The page's sections without the toolbar's filter: none means the memory is empty. */
   protected readonly everything = computed(() => memorySections(this.record()));
