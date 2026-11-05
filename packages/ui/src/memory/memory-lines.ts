@@ -80,7 +80,7 @@ function heldBy(change: StatusEntry, t: Translate): string {
 }
 
 /** How long ago, from minutes: under a minute, minutes, hours up to two days, then days. */
-function ago(minutes: number, t: Translate): string {
+export function ago(minutes: number, t: Translate): string {
   if (minutes < 1) return t("ahora mismo", "just now");
   const [count, unit] =
     minutes < 60
