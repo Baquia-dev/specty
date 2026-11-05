@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261105-los-cortes-de-una-epica-corren-en-subagentes-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-los-cortes-de-una-epica-corren-en-subagentes-de",
+  "baseCommit": "cf00c4e8324aab6d6871af716f88fad990beb348",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b47f80583ec3e45197ebef4d0ea4a39a3b5acc8df77de1f9acfed975081adfca",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d453bab6a7470a28683bd04bcd97ef69a58687f2ae3e941c26d15dc6b499ab6d",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:5093221d368a8a586cc68b4fcfa3b9144b6e6828a25f2d61e3de286d8465fce0",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a78d11485d5c4e36956b931f7028fd897e58035393e82e09754ef11edaa1458f",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:76158516a3f72dd79847740cfa1ab53ef6aacca0301696a1f7e59ce1e51f6f69",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5644ce877c590a18119322b0236dc938fbd65d6856ebea89ea3cb14f1c145575",
+    "at": "2026-11-05T09:47:42.056Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
