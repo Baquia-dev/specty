@@ -58,3 +58,23 @@ Con `policy.tests: contract`, los tests de todas las tareas se escriben y se apr
   - ac: AC1
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Con `policy.tests: contract`, `propose` avisa (`task-early-typecheck`) de una tarea de código anterior a la última cuya verificación, su `verify` o `verify.default`, ejecuta la comprobación de tipos del proyecto o `verify.full` cuando alguna tarea de código posterior sin hacer lista un test y el cambio tiene fase de tests. El aviso nombra el comando y esas tareas, y sugiere ejecutar en su `verify` solo sus tests. No bloquea, sale en español y en inglés, y formats.md §2 lo describe.
+
+### Desviaciones
+
+- Ninguna en el código. El primer `specty new` falló por el bloqueo de `.git/config` (el caso de C3), así que el cambio lleva el sufijo `-2`.
+
+### Decisiones
+
+- `checkTypecheck` sigue siendo la única regla de los tipos bajo `contract`: ahora reparte en `lastTypecheck` (el aviso de siempre) y `earlyTypechecks` (el nuevo), que comparten `typesCommand`, el comando de tipos o `verify.full` que ejecuta una verificación. `checksTypes` desaparece.
+- El mensaje usa los parámetros `id`, `value` y `ref`, que el test del catálogo ya rellena.
+- El test en inglés usa una spec `standard` mínima escrita en el propio test, porque el carril rápido solo admite una tarea.
+
+### Pendientes
+
+- P145: la worktree y la rama que dejó el primer `specty new` fallido, sin carpeta de cambio, las borra la persona.

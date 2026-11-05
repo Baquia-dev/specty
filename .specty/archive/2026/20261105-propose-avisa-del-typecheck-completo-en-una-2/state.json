@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-propose-avisa-del-typecheck-completo-en-una-2",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-propose-avisa-del-typecheck-completo-en-una-2",
   "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:c9eddacb58201aa2570d7b3a1907adb5f1d5b4e5c32a7840156359f2a9403fbf",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7ee3a4d35a2d6ae23d0bee78b193986134279654",
+      "attempts": 1,
       "startedAt": "2026-11-05T08:10:49.256Z",
       "doneAt": "2026-11-05T08:16:44.862Z",
-      "summary": "formats.md §2 describe el aviso task-early-typecheck: cuándo sale, qué comando y tareas nombra, qué sugiere y cuándo no avisa."
+      "summary": "formats.md §2 describe el aviso task-early-typecheck: cuándo sale, qué comando y tareas nombra, qué sugiere y cuándo no avisa.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,6 +68,7 @@
     "AC": 4,
     "T": 2
   },
+  "closingSubmittedAt": "2026-11-05T08:22:45.606Z",
   "lockedTests": {
     "packages/core/test/validate/quality.test.ts": "sha256:90220761623621043f3cb17867649e1a388389bf42ca4611201701da1029f905"
   }
