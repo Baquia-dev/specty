@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261105-git-recuerda-lecturas-de-refs",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261105-git-recuerda-lecturas-de-refs",
+  "baseCommit": "a0ad1aa4a6e619d229ad7a430d3afdd50e426ba8",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8351e1a1f60fadfc2e790b36bd465095021c8d4ced36214e2a6391040a33f39a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fc62977d67554006cf9beca861c3d9bdbf969635095e22f0abb1a209885fb22e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8b6b3fd198e2194349ee65fad2aa1ff509a8ba8def9b80d049ef25486dc1bbc3",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:43f15d547ba8e0cfed0a205ce33c4134fcfb26bb85e9c3acb562515c15865f13",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8af1fdbfde1f72b30f1023f6ce3754f9f39df1a56ca4dd944d9ed8cc7924236d",
+    "at": "2026-11-05T11:54:12.219Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
