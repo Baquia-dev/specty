@@ -6,6 +6,13 @@
   "branch": "specty/20261106-core-da-el-resumen-de-un-cambio-y-la-ui-lo",
   "baseCommit": "b2dce6ca9d365d5b073def7a6d271e98a05661f1",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:47333703f4c9472b7dcae3a6b19ec118916cddd706347fd0ff8ec51938b41578",
+    "at": "2026-11-05T18:34:06.786Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -41,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "58a189aff3713fcb8383722132338c3613e3633c",
+      "startedAt": "2026-11-05T18:34:07.163Z",
+      "doneAt": "2026-11-05T18:37:43.037Z",
+      "summary": "Core da summarizeChange (id, título, épica, cortes, inicio y fin, tamaño con motivos es/en, tareas y pestaña) e initialTab en src/summary.ts, exportados en el índice, con su test regla por regla."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -51,12 +68,5 @@
     "AC": 2,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:47333703f4c9472b7dcae3a6b19ec118916cddd706347fd0ff8ec51938b41578",
-    "at": "2026-11-05T18:34:06.786Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

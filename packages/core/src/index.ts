@@ -330,6 +330,13 @@ export { type ParseOptions, type ParseResult, parseSpec } from "./spec/parse";
 export { hashUnits, serializeSpec } from "./spec/serialize";
 export { KIND_RULES, SECTION_TITLES } from "./spec/vocabulary";
 export {
+  type ChangeSummary,
+  type ChangeTab,
+  initialTab,
+  type SummarySource,
+  summarizeChange,
+} from "./summary";
+export {
   type ConfigTemplateOptions,
   configTemplate,
   productQuestions,

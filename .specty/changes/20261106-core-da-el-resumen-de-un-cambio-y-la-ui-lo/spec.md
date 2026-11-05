@@ -57,7 +57,7 @@ Hoy las reglas del resumen de un cambio viven solo en la UI, en `data/views.ts`.
 
 ## Tareas
 
-- [ ] T1: Core da el resumen de un cambio
+- [x] T1: Core da el resumen de un cambio
   - files: packages/core/src/summary.ts, packages/core/src/index.ts, packages/core/test/summary.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/summary.test.ts test/light.test.ts test/listing.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm sources
