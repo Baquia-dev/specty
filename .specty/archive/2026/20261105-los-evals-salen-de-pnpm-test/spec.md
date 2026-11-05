@@ -50,3 +50,21 @@ kind: standard
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/workflows.test.ts && pnpm test:evals && pnpm lint && pnpm typecheck
   - type: perf
+
+## Cierre
+
+### Resumen
+
+`pnpm test`, y con él `pnpm check`, ya no ejecuta los tests de `evals` (`--filter !@baquia-dev/specty-evals`); `pnpm test:evals` los ejecuta aparte, y el CI los corre tras `pnpm check`, fijado en `workflows.test.ts`. AGENTS.md y ARCHITECTURE (el CI y §16) lo dicen. AC1 se comprobó en la salida de la verificación completa de `accept`: corrieron los tests de core, exporters, vscode, cli y ui, y no los de evals. AC2, con la verificación de T1, que ejecuta `pnpm test:evals`.
+
+### Desviaciones
+
+- El filtro va sin comillas: en Windows, pnpm ejecuta los scripts con cmd.exe, que no quita las comillas simples, y `!` solo es especial en un shell interactivo.
+
+### Decisiones
+
+- El tipado y knip de `evals` siguen en `pnpm check`: son rápidos y detectan enseguida un import roto del CLI.
+
+### Pendientes
+
+- El paso `pnpm test:evals` del CI no se ha ejecutado aún en GitHub: se verá en el próximo push.
