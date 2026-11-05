@@ -183,6 +183,44 @@ describe("deriveView", () => {
       },
     });
   });
+
+  it("AC3: gives each slice the title its epic's Cortes section names it with", () => {
+    const epicSpec = [
+      "---\nkind: epic\n---\n\n# Panel académico integral\n\n## Objetivo\n\nUnificar seguimiento.\n",
+      "## Cortes\n\n- C1: Asistencia por curso\n  - ac: AC1\n- C2: Justificar faltas\n  - ac: AC2\n",
+    ].join("\n");
+    const sliceOf = (id: string, slice: string) =>
+      record(
+        { id },
+        SPEC.replace("kind: standard", `kind: standard\nepic: 20261015-panel-academico\n${slice}`),
+      );
+    const epicRecord = record({ id: "20261015-panel-academico", kind: "epic" }, epicSpec);
+    expect(deriveView(epicRecord)).toMatchObject({
+      slices: [
+        { id: "C1", title: "Asistencia por curso" },
+        { id: "C2", title: "Justificar faltas" },
+      ],
+    });
+    expect(deriveView(record())).not.toHaveProperty("slices");
+    const [, named, unnamed, bare] = deriveViews([
+      epicRecord,
+      sliceOf("20261018-asistencia-curso", "slice: C1"),
+      sliceOf("20261019-otro-corte", "slice: C9"),
+      sliceOf("20261020-sin-corte", ""),
+    ]);
+    expect(named?.epic).toEqual({
+      id: "20261015-panel-academico",
+      title: "Panel académico integral",
+      slice: "C1",
+      sliceTitle: "Asistencia por curso",
+    });
+    // The epic does not name C9, and a slice without an id has no title to take.
+    expect(unnamed?.epic).not.toHaveProperty("sliceTitle");
+    expect(bare?.epic).not.toHaveProperty("sliceTitle");
+    // Without its epic loaded, a slice has no title either.
+    const [alone] = deriveViews([sliceOf("20261018-asistencia-curso", "slice: C1")]);
+    expect(alone?.epic).not.toHaveProperty("sliceTitle");
+  });
 });
 
 describe("decisions and tabs", () => {

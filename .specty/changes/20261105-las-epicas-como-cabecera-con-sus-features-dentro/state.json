@@ -6,6 +6,13 @@
   "branch": "specty/20261105-las-epicas-como-cabecera-con-sus-features-dentro",
   "baseCommit": "a7a61ce66f0f4169b2b9107552bef3b33ff2b6fa",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cb093a6395c82670a31eb89aea893b112e25e9b8b7765693a0b2eea07571e033",
+    "at": "2026-11-05T12:05:49.785Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -56,12 +63,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:cb093a6395c82670a31eb89aea893b112e25e9b8b7765693a0b2eea07571e033",
-    "at": "2026-11-05T12:05:49.785Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T12:12:14.685Z"
 }

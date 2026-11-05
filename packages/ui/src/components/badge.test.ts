@@ -61,7 +61,7 @@ describe("PhaseBadge and Badge", () => {
     expect(badge?.querySelector("svg")?.getAttribute("class")).toContain("flask-conical");
   });
 
-  it("AC2: shows the icon and bilingual label for every change kind and epic slice", async () => {
+  it("AC4: labels a standalone standard change «Feature», and every other kind as before", async () => {
     const KindBadge = (badgeModule as { KindBadge?: Type<unknown> }).KindBadge;
     expect(KindBadge).toBeDefined();
     if (KindBadge === undefined) return;
@@ -75,13 +75,11 @@ describe("PhaseBadge and Badge", () => {
       kind: "epic",
       label: "Epic",
     });
-    expect(await renderKind(KindBadge, "es", "standard")).toMatchObject({
+    expect(await renderKind(KindBadge, "es", "standard")).toEqual({
       kind: "standard",
-      label: "Individual",
-    });
-    expect(await renderKind(KindBadge, "en", "standard")).toMatchObject({
-      kind: "standard",
-      label: "Standalone",
+      epic: undefined,
+      label: "Feature",
+      hasIcon: true,
     });
     expect(await renderKind(KindBadge, "es", "quick")).toMatchObject({
       kind: "quick",
@@ -95,17 +93,65 @@ describe("PhaseBadge and Badge", () => {
       kind: "spike",
       label: "Spike",
     });
-    const slice = { id: "20261015-panel", title: "Panel académico", slice: "C1" };
-    expect(await renderKind(KindBadge, "es", "standard", slice)).toEqual({
+  });
+
+  it("AC3: labels a slice with its id and title inside its epic's group, and with the epic outside", async () => {
+    const KindBadge = (badgeModule as { KindBadge?: Type<unknown> }).KindBadge;
+    expect(KindBadge).toBeDefined();
+    if (KindBadge === undefined) return;
+    const epic = { id: "20261015-panel", title: "Panel académico" };
+    const named = { ...epic, slice: "C2", sliceTitle: "Pagos" };
+    expect(await renderKind(KindBadge, "es", "standard", named, true)).toEqual({
       kind: "slice",
       epic: "20261015-panel",
-      label: "Corte C1 · Panel académico",
+      label: "Feature · C2 · Pagos",
       hasIcon: true,
     });
-    expect(await renderKind(KindBadge, "en", "standard", slice)).toMatchObject({
+    // The epic does not name it: its id alone.
+    expect(
+      await renderKind(KindBadge, "es", "standard", { ...epic, slice: "C2" }, true),
+    ).toMatchObject({ kind: "slice", label: "Feature · C2" });
+    // Outside the group, as in its page's header, the epic's title instead of its own.
+    expect(await renderKind(KindBadge, "es", "standard", named)).toMatchObject({
       kind: "slice",
       epic: "20261015-panel",
-      label: "Slice C1 · Panel académico",
+      label: "Feature · C2 · Panel académico",
+    });
+    expect(await renderKind(KindBadge, "es", "standard", named, false)).toMatchObject({
+      label: "Feature · C2 · Panel académico",
+    });
+    // Without a slice id: «Feature» inside, with the epic's title outside.
+    expect(await renderKind(KindBadge, "es", "standard", epic, true)).toMatchObject({
+      kind: "slice",
+      label: "Feature",
+    });
+    expect(await renderKind(KindBadge, "es", "standard", epic)).toMatchObject({
+      label: "Feature · Panel académico",
+    });
+  });
+
+  it("AC5: says the Feature labels in English too", async () => {
+    const KindBadge = (badgeModule as { KindBadge?: Type<unknown> }).KindBadge;
+    expect(KindBadge).toBeDefined();
+    if (KindBadge === undefined) return;
+    const epic = { id: "20261015-panel", title: "Panel académico" };
+    const named = { ...epic, slice: "C2", sliceTitle: "Pagos" };
+    expect(await renderKind(KindBadge, "en", "standard")).toMatchObject({
+      kind: "standard",
+      label: "Feature",
+    });
+    expect(await renderKind(KindBadge, "en", "standard", named, true)).toMatchObject({
+      kind: "slice",
+      label: "Feature · C2 · Pagos",
+    });
+    expect(
+      await renderKind(KindBadge, "en", "standard", { ...epic, slice: "C2" }, true),
+    ).toMatchObject({ label: "Feature · C2" });
+    expect(await renderKind(KindBadge, "en", "standard", named)).toMatchObject({
+      label: "Feature · C2 · Panel académico",
+    });
+    expect(await renderKind(KindBadge, "en", "standard", epic, true)).toMatchObject({
+      label: "Feature",
     });
   });
 });
@@ -114,7 +160,8 @@ async function renderKind(
   KindBadge: Type<unknown>,
   lang: "es" | "en",
   kind: ChangeKind,
-  epic?: { id: string; title: string; slice?: string },
+  epic?: { id: string; title: string; slice?: string; sliceTitle?: string },
+  inEpic?: boolean,
 ) {
   window.matchMedia = (() => ({
     matches: false,
@@ -125,6 +172,7 @@ async function renderKind(
   const fixture = TestBed.createComponent(KindBadge);
   fixture.componentRef.setInput("kind", kind);
   if (epic !== undefined) fixture.componentRef.setInput("epic", epic);
+  if (inEpic !== undefined) fixture.componentRef.setInput("inEpic", inEpic);
   await fixture.whenStable();
   const el: HTMLElement = fixture.nativeElement;
   return {
