@@ -55,6 +55,7 @@ Hoy cada sesión empieza con «Pendientes y mejoras abiertas: 72. Las primeras l
 - modificar packages/cli/test/memory-resolves.test.ts — la tarjeta sin cambio activo ya no lista las entradas libres
 - modificar packages/cli/test/memory-settle.test.ts — la tarjeta sin cambio activo ya no lista las entradas libres
 - modificar packages/cli/test/memory-harvest.test.ts — el cierre no guarda «Ninguno nuevo. …», y no mira la tarjeta de `next`
+- modificar packages/cli/test/setup.test.ts — la tarjeta de inicio de Claude Code trae un recordatorio de la memoria, no sus pendientes
 - modificar packages/core/src/agents-md.ts — la regla de respuestas concisas y del reporte final
 - modificar packages/core/test/cards.test.ts — la última regla del bloque, en español y en inglés
 - modificar docs/formats.md — la cosecha del cierre, la tarjeta de inicio y el bloque de AGENTS.md
@@ -83,6 +84,11 @@ Hoy cada sesión empieza con «Pendientes y mejoras abiertas: 72. Las primeras l
   - ac: —
   - verify: pnpm lint
   - type: docs
+- [ ] T5: El test de la tarjeta de inicio de Claude Code comprueba la memoria con un recordatorio
+  - files: packages/cli/test/setup.test.ts
+  - ac: AC1
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/setup.test.ts
+  - type: test
 
 ## Riesgos
 
