@@ -70,7 +70,7 @@ La página de un cambio hoy lo busca solo entre los que cargó la Bandeja, y si 
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/server.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts
-- [ ] T3: La página de un cambio lo pide a la fuente si la Bandeja no lo tiene
+- [x] T3: La página de un cambio lo pide a la fuente si la Bandeja no lo tiene
   - files: packages/ui/src/data/changes-store.ts, packages/ui/src/change/change-page.ts, packages/ui/src/data/changes-store.test.ts, packages/ui/src/data/fixtures.test.ts, packages/ui/src/change/change-page.unloaded.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/changes-store.test.ts --include src/data/fixtures.test.ts --include src/change/change-page.unloaded.test.ts --include src/change/change-page.test.ts && pnpm typecheck

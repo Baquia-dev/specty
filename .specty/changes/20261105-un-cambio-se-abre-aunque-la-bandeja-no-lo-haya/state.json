@@ -61,12 +61,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4cc0943fce95a3cab6ff08bacb45d6425dbd99cc",
+      "attempts": 1,
       "startedAt": "2026-11-05T11:56:30.803Z",
       "doneAt": "2026-11-05T11:57:03.668Z",
-      "summary": "SpectyData.change(id) lo busca por defecto entre changes(); ServerData.change lo pide a GET /api/changes/<id> (404 es nada) con isChangeRecord exportado de server-answers"
+      "summary": "SpectyData.change(id) lo busca por defecto entre changes(); ServerData.change lo pide a GET /api/changes/<id> (404 es nada) con isChangeRecord exportado de server-answers",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/data/mcp-app.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "358b2c1b14985d8d20c07dc329b9ab2d51773f0d",
+      "startedAt": "2026-11-05T11:57:04.069Z",
+      "doneAt": "2026-11-05T11:59:56.692Z",
+      "summary": "ChangesStore.byId devuelve { view, missing }: el cargado o, si la lista no lo tiene, un resource que pide change(id) a la fuente, lo deriva con el título de su épica y se recarga con cada aviso; la página muestra «No existe ese cambio» con missing. McpAppData renombra su campo change a shown (S1)"
     }
   },
   "pending": {
@@ -77,7 +88,8 @@
     "A": 6,
     "AC": 4,
     "T": 4,
-    "R": 2
+    "R": 2,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/server.test.ts": "sha256:32fb8558972bc37119df48a3360f8cd7fd74ef137d8961219bfe6f273c8be742",
