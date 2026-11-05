@@ -82,12 +82,18 @@ async function sliceToClosing(folder: string): Promise<void> {
   expect((await cli(folder, ["propose"])).out).toContain("Cierre válido.");
 }
 
+interface SliceOptions {
+  readonly inMain?: boolean;
+  readonly subagent?: boolean;
+  readonly hooks?: boolean;
+}
+
 /**
  * Delegated mode on, an approved epic that conversation s1 created, and its slice C1 that s1
- * started from the epic's folder, ready to close: `inMain` keeps the epic in the main folder,
+ * started from the epic's folder, just created: `inMain` keeps the epic in the main folder,
  * `subagent` hands the slice to a subagent, and `hooks` installs Specty's worktree hooks.
  */
-async function sliceReady(options: { inMain?: boolean; subagent?: boolean; hooks?: boolean }) {
+async function sliceStarted(options: SliceOptions) {
   const hooks = options.hooks === false ? {} : { ".claude/settings.local.json": WORKTREE_HOOKS };
   const root = await tempRepo({ ...APP, ...hooks });
   const on = await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
@@ -102,9 +108,14 @@ async function sliceReady(options: { inMain?: boolean; subagent?: boolean; hooks
   const slice = ["new", "--worktree", "Saludo personalizado", "--epic", EPIC, "--slice", "C1"];
   const subagent = options.subagent === true ? ["--subagent"] : [];
   expect((await cli(epic, [...slice, ...subagent], { env: claude() })).code).toBe(0);
-  const folder = folderOf(root);
-  await sliceToClosing(folder);
-  return { root, epic, folder };
+  return { root, epic, folder: folderOf(root) };
+}
+
+/** As `sliceStarted`, with the slice ready to close. */
+async function sliceReady(options: SliceOptions) {
+  const started = await sliceStarted(options);
+  await sliceToClosing(started.folder);
+  return started;
 }
 
 /** The SIGUIENTE of `close` today, for an agent that closes from inside `folder`. */
@@ -149,6 +160,20 @@ describe("closing a slice from inside its folder, in the conversation bound to i
       `SIGUIENTE: ${folder} ya no existe: sal de ella (en Claude Code, \`ExitWorktree\` con \`action: "keep"\`) y sigue con la épica ${EPIC} en ${root}: ejecuta \`specty next\`.`,
     );
     expect(await boundFolder(root)).toBe(root);
+  });
+});
+
+describe("cancelling a slice from inside its folder, in the conversation bound to it", () => {
+  it("AC3: asks to leave it and go back to the epic, as closing it does, and binds the conversation there", async () => {
+    const { root, epic, folder } = await sliceStarted({});
+    expect(await boundFolder(root)).toBe(folder);
+    const cancelled = await cli(folder, ["cancel", "--reason", "Ya no"], { env: claude() });
+    expect(cancelled.code).toBe(0);
+    expect(cancelled.out).toContain("Cambio cancelado y archivado");
+    expect(cancelled.out).toContain(
+      `SIGUIENTE: ${folder} ya no existe: sal de ella (en Claude Code, \`ExitWorktree\` con \`action: "keep"\`) y vuelve a la épica ${EPIC}, en ${epic}: en Claude Code, \`EnterWorktree\` con \`name: "${EPIC}"\`, y ejecuta \`specty next\`.`,
+    );
+    expect(await boundFolder(root)).toBe(epic);
   });
 });
 

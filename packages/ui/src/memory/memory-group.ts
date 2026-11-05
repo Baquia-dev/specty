@@ -45,7 +45,7 @@ const ROWS = "flex flex-col gap-0.5 border-l-2 border-border pl-3";
     }
   `,
 })
-export class MemoryGroupHead {
+class MemoryGroupHead {
   /** None for «Sin feature». */
   readonly change = input<MemoryFeature | undefined>(undefined);
   protected readonly t = inject(Preferences).t;
