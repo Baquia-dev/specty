@@ -56,7 +56,7 @@ El registro de las unidades que pasaron (`.git/common/specty/verified/`) crece c
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-tree.test.ts test/git-paths.test.ts test/server/verify-units.test.ts test/server/verify.test.ts
   - type: fix
-- [ ] T2: La salida de prune dice lo que borró del registro de unidades
+- [x] T2: La salida de prune dice lo que borró del registro de unidades
   - files: packages/core/src/cards/parallel.ts, packages/core/test/cards/prune-units.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/prune-units.test.ts test/cards/prune-live.test.ts test/cards/parallel.test.ts && pnpm --filter @baquia-dev/specty-core typecheck

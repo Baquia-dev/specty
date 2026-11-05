@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "74c0fcd182e816948b9328cb0194129b44aa79ac",
+      "attempts": 1,
       "startedAt": "2026-11-05T08:04:21.271Z",
       "doneAt": "2026-11-05T08:04:56.647Z",
-      "summary": "treeWith nombra su índice temporal con randomUUID además del pid, así que dos lecturas del árbol a la vez en el mismo proceso no lo comparten; el servidor de la UI lee el árbol del código y las huellas de las unidades a la vez con Promise.all."
+      "summary": "treeWith nombra su índice temporal con randomUUID además del pid, así que dos lecturas del árbol a la vez en el mismo proceso no lo comparten; el servidor de la UI lee el árbol del código y las huellas de las unidades a la vez con Promise.all.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "beb9ed4fa1488d33ca7c023972c7e13b00e3ec48",
+      "startedAt": "2026-11-05T08:04:57.009Z",
+      "doneAt": "2026-11-05T08:10:36.462Z",
+      "summary": "pruneCard recibe units (removed, days) y dice cuántas unidades borró del registro, en español y en inglés, tras los mensajes; las secciones de los registros de Specty salen de recordSections y counted."
     }
   },
   "pending": {
