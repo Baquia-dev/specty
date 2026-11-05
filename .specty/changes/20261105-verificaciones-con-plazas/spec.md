@@ -61,7 +61,7 @@ Solo la verificación completa espera su turno: las verificaciones de las tareas
 
 ## Tareas
 
-- [ ] T1: verify.slots en la configuración y el aviso de espera de una plaza
+- [x] T1: verify.slots en la configuración y el aviso de espera de una plaza
   - files: packages/core/src/schema/config.ts, packages/core/test/schema/schema.test.ts, packages/core/src/cards/lock.ts, packages/core/src/cards/index.ts, packages/core/test/cards/lock.test.ts
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts test/cards/lock.test.ts && pnpm --filter @baquia-dev/specty-core typecheck

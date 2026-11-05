@@ -6,6 +6,13 @@
   "branch": "specty/20261105-verificaciones-con-plazas",
   "baseCommit": "0da7da13c18aa1b2e2877af07aba3635cc918d00",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:36f1dbb6b3b026f05fcc362a49132968a9cc5d21bedb54d316367b8cc3b30230",
+    "at": "2026-11-05T03:29:35.147Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -34,7 +41,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8088019721391187d5cf30ae56f0a36f705c4090",
+      "startedAt": "2026-11-05T03:29:36.439Z",
+      "doneAt": "2026-11-05T03:32:42.126Z",
+      "summary": "verify.slots (entero ≥ 1, 2 por defecto) en el esquema de la configuración, y verifySlotsWaitNote(running, slots, lang, ahead) en cards/lock.ts, exportada: quién ocupa las plazas y cuántas sesiones esperan delante, en es/en"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -44,12 +61,5 @@
     "AC": 5,
     "T": 4,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:36f1dbb6b3b026f05fcc362a49132968a9cc5d21bedb54d316367b8cc3b30230",
-    "at": "2026-11-05T03:29:35.147Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
