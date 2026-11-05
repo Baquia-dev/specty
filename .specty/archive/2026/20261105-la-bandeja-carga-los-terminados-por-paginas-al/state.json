@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-la-bandeja-carga-los-terminados-por-paginas-al",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-la-bandeja-carga-los-terminados-por-paginas-al",
   "baseCommit": "a3ae2fa34485824f34790bd2759bbf555793fe31",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:3162d7aec035e073afdd023cfe55c0df0fbe91b5342744e3ab665995fa60860f",
@@ -82,12 +82,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4885b210e43c8bf1cdad6a384ee6d6ddc4784559",
+      "attempts": 1,
       "startedAt": "2026-11-05T13:56:42.347Z",
       "doneAt": "2026-11-05T13:59:57.132Z",
-      "summary": "docs/ui.md cuenta la Bandeja por páginas: los abiertos y las páginas de terminados, «Cargar más», j, la búsqueda con espera, los contadores y la recarga."
+      "summary": "docs/ui.md cuenta la Bandeja por páginas: los abiertos y las páginas de terminados, «Cargar más», j, la búsqueda con espera, los contadores y la recarga.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -100,6 +100,7 @@
     "T": 4,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-05T14:08:42.765Z",
   "lockedTests": {
     "packages/ui/src/data/finished-pages.test.ts": "sha256:b78579eb10ecdfcab50bd61f75ed4b98fdfb1cecd315f666d244a71a14a23630",
     "packages/ui/src/data/finished-source.test.ts": "sha256:aae88ec1a161fa7e9002ff00322e0ebd81a2e9c64752f08b82d9ef0d8fe72e13",

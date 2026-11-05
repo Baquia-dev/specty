@@ -93,3 +93,27 @@ Desde C4, el servidor local da los cambios terminados por páginas en `GET /api/
 - R1: Un cambio que se archiva con la Bandeja abierta desplaza las páginas — la recarga pide desde la primera todas las cargadas y la lista quita los repetidos por id (A3, AC4).
 - R2: `inbox/inbox.ts` ya es largo (221 líneas) — la paginación va en `inbox/inbox-more.ts` y `data/finished-pages.ts`; en inbox.ts solo queda el enganche.
 - R3: Los tests de la Bandeja que ya existen esperan con `whenStable` y no saben de la espera de 250 ms — la espera y las peticiones son tareas pendientes (A7), así `whenStable` las espera.
+
+## Cierre
+
+### Resumen
+
+La Bandeja muestra todos los cambios abiertos y los terminados por páginas de 30, y pide la siguiente al acercarse al final de la lista, con «Cargar más» o con `j` desde la última fila cargada. `SpectyData.finished(request)` (`data/source.ts`) da una página con la forma de la respuesta de C4. `ServerData` la pide a `GET /api/changes/finished` y la comprueba con `isFinishedPage`; las demás fuentes la calculan en memoria sobre `changes()`, con `matchesQuery` y `sortChanges`, y derivan las vistas en un chunk perezoso. `FinishedPages` (`data/finished-pages.ts`) guarda las páginas cargadas: la primera de cada consulta, la siguiente desde donde acabó la anterior y, cuando la fuente avisa, todas otra vez desde la primera. Ningún cambio sale dos veces, y una respuesta más vieja que la última petición se descarta. `ChangesStore` deja aparte `open` y `finished`, que lleva la épica de cada corte, y `all` da los dos una vez. En la Bandeja (`inbox/inbox-more.ts`, `inbox/inbox.ts`), los abiertos van antes que los terminados en cada agrupación. La búsqueda pide al servidor 250 ms después de dejar de escribir. Los filtros por fase, «X de N cambios» y el resumen cuentan con los totales de la fuente. `docs/ui.md` cuenta la Bandeja por páginas.
+
+### Desviaciones
+
+- Para A4 de la épica (los abiertos antes que los terminados) se adaptó un test que ya existía: «sorts by title» de `inbox/inbox-toolbar.test.ts` ordenaba por título abiertos y terminados mezclados. Ahora espera los ocho abiertos por título y después los dos terminados. La persona lo confirmó, y solo cambia lo que A4 cambia.
+- `inbox/inbox-view.test.ts` no cambió, aunque la spec lo lista en Archivos y en T3. El test de A4 sobre `inboxSections` está en `inbox/inbox-more.test.ts`. Al compilar toda la suite de la UI, que es la verificación de T3, los tests nuevos tenían errores de tipos mientras faltaba la API, y el build fallaba antes de ejecutar ningún test. Así, `specty propose` no veía nombrado en el rojo un archivo que compilaba.
+
+### Decisiones
+
+- `FinishedPages` es una clase sin inyección propia que crea `ChangesStore` con la fuente, el `DERIVER` y `PendingTasks`. Así no hay un ciclo entre `changes-store.ts` y `finished-pages.ts`, y las páginas se recargan con el mismo aviso que los abiertos.
+- La espera de la búsqueda y cada petición de página son tareas pendientes de Angular: `whenStable` las espera y los tests que ya existían siguen igual.
+- Una consulta nueva no vacía la lista: los terminados cargados se filtran y ordenan con los valores nuevos hasta que llega su primera página. Mientras llega, el estado vacío no aparece.
+- La página siguiente empieza en la suma de los registros recibidos, no en el número de filas sin repetir, y una página sin registros termina la lista.
+- Los terminados toman el título de su épica de la épica abierta o de una página cargada o, si no, de los `epics` de la página. El título del corte sale solo de la épica cargada. La épica de un cambio pedido por su id (`byId`) también da ahora el título del corte.
+- Los bloques de épica de la Bandeja buscan la épica entre los abiertos y las páginas, no entre todo lo que da `changes()`, para que C6 no cambie nada en la Bandeja.
+
+### Pendientes
+
+- Ninguno nuevo. C6 hará que `GET /api/changes` dé solo los abiertos.
