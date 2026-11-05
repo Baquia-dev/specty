@@ -14,6 +14,8 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Plaza de verificación** (`verify.slots`, `inSlots`): una de las verificaciones que corren a la vez en el clon; la de una tarea ocupa una, y la completa, todas.
 - **Unidad de verificación** (`verify.units`, `VerifyUnit`): una parte de la verificación completa, con su comando y los archivos de los que depende; no se repite si ya pasó con la misma huella en el clon.
 - **Test lento** (`checks.testTime`, `test-time`): un test que, según el informe JUnit que dejó la misma ejecución, tardó más de `maxMs`; `specty check` avisa de él y la nota de la verificación de `accept` muestra los cinco primeros.
+- **Verificación fresca** (`specty verify --fresh`): la verificación completa entera, sin el registro de las unidades que ya pasaron, que repite una vez la que falla.
+- **Unidad inestable** (`flaky`): una unidad que en una verificación fresca falla y pasa al repetirla; queda en la memoria como lección de sus `paths`.
 - **Cambio huérfano** (`orphan`): uno que espera al agente sin que ninguna sesión trabaje en él.
 - **Cambio sin carpeta** (`lost`, `specty restore`): uno abierto cuya carpeta se borró o git podó, y que sigue en su rama, desde la que se recupera.
 - **Entrada de la memoria** (`MemoryEntry`): un pendiente, una mejora, un recordatorio o una decisión, con id `Pn` o `Dn`.

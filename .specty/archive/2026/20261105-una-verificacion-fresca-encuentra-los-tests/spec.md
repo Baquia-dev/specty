@@ -80,3 +80,25 @@ Con las unidades de `verify.units`, la verificación completa salta las que ya p
 
 - R1: Una unidad que falla por el trabajo a medias de un cambio deja un pendiente que no es de main — el texto nombra la unidad y el origen es el cambio de la carpeta, así que la persona lo descarta con `specty memory drop` si no aplica.
 - R2: La verificación fresca tarda lo que `verify.full` o más, por los reintentos, y ocupa el turno y todas las plazas — es para cuando se quiere el cuadro completo, no para cada cambio.
+
+## Cierre
+
+### Resumen
+
+`specty verify --fresh` ejecuta la verificación completa entera sin el registro de las unidades que ya pasaron: todas las unidades de `verify.units` en orden, también las que siguen a una que falla, o `verify.full` sin unidades, en el turno de la verificación completa y con todas las plazas del clon. Repite una vez la que falla. Si pasa al repetirla es inestable y queda en la memoria como lección de sus `paths` (como pendiente sin unidades); si falla las dos veces, como pendiente, y el comando sale con 1. Las que pasan se anotan en el registro. La salida da el resultado y el tiempo de cada unidad, el final de la salida del intento que falló y lo que anotó, en español y en inglés. Sin `--fresh`, o sin `verify.full` ni `verify.units`, no ejecuta nada y dice por qué.
+
+### Desviaciones
+
+- Ninguna respecto al plan; la aceptación incorporó main (62d3e468) antes de su verificación completa.
+
+### Decisiones
+
+- Una unidad inestable, que pasó al repetirla, también se anota en el registro, porque pasó con ese código, como cuando `accept` pasa al ejecutarla otra vez.
+- El texto de la lección y del pendiente nombra la unidad y su comando, sin la salida del fallo: una unidad que vuelve a fallar no anota otra entrada igual mientras la primera siga abierta. La salida sale solo en la tarjeta.
+- Cada intento corre con `execute` (por la shell, con `verify.timeoutSec` y a baja prioridad), no con `runLive`: la verificación fresca no se ve en vivo en la UI. El aviso CWE-78 de `commands/verify.ts` es ese `execute` con `shell: true` de los comandos de la configuración, como en el resto de verificaciones.
+- No toma el bloqueo del cambio, porque no cambia su estado, y funciona sin cambio abierto: entonces el registro y las entradas de la memoria no nombran ninguno (`rememberEntries`, que `harvestEntries` llama con el del estado).
+
+### Pendientes
+
+- `specty verify --fresh` podría nombrar los tests que fallaron en el intento de una unidad inestable leyendo los informes JUnit de `checks.testTime` (corte C5), en lugar de mostrar solo el final de su salida.
+- La verificación fresca no se ve en vivo en la UI ni en la MCP App, y el servidor MCP no tiene una herramienta `specty_verify`.

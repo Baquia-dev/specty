@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-una-verificacion-fresca-encuentra-los-tests",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-una-verificacion-fresca-encuentra-los-tests",
   "baseCommit": "c36c6b282f012d07245d8fcfb17780d469dbc75a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:96373cf8bf4eb2e0db84898e37c830a0e56644e9c7f60225d1912f44d7cae881",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6069a4c1c245753e9484ae443a561a1dbc0e5d08",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:38:50.870Z",
       "doneAt": "2026-11-05T06:39:22.965Z",
-      "summary": "ARCHITECTURE §6 y §9 describen specty verify --fresh; formats.md §1 y §6, el change opcional del registro y la verificación fresca"
+      "summary": "ARCHITECTURE §6 y §9 describen specty verify --fresh; formats.md §1 y §6, el change opcional del registro y la verificación fresca",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,6 +87,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T06:53:24.169Z",
   "lockedTests": {
     "packages/cli/test/verify-fresh.test.ts": "sha256:b567d95043f013b9b7876802d0e29686c7576904099de5c2cd7e899025b3f4b9",
     "packages/core/test/cards/fresh.test.ts": "sha256:f83baa1a3da3ec0501f02d529e3c311143da0e07641cdd7f54fa5a473eaa8f3d"
