@@ -32,6 +32,7 @@ Desde 20261105-tests-cli-mas-rapidos, cada comando abre su sesión con un proces
 - AC4: CUANDO una lectura nombra una ruta del índice o lleva un entorno propio ENTONCES se pregunta a git cada vez.
 - AC5: CUANDO se ejecutan los tests de la CLI ENTONCES pasan sin cambios y `test/flow.test.ts` lanza al menos un 15 % menos procesos de git que los 1097 de hoy.
   - test: manual
+- AC6: CUANDO el servidor de `specty ui`, que usa el mismo `Git` durante horas, atiende una petición o mira si hubo cambios ENTONCES no da por buena ninguna lectura recordada de antes, porque otro proceso pudo cambiarla: el `Git` la olvida (`forget`) y vuelve a preguntar.
 
 ## Diseño
 
@@ -47,6 +48,8 @@ Desde 20261105-tests-cli-mas-rapidos, cada comando abre su sesión con un proces
 - modificar packages/cli/src/session.ts — pasar HEAD y la rama de la apertura
 - modificar packages/cli/test/git-memo.test.ts — AC1 a AC4, con tests nuevos
 - modificar docs/ARCHITECTURE.md — las lecturas recordadas y la apertura con HEAD y la rama
+- modificar packages/cli/src/server/http.ts — olvidar lo recordado al empezar cada petición
+- modificar packages/cli/src/server/events.ts — olvidar lo recordado en cada sondeo de cambios
 
 ## Tareas
 
@@ -56,6 +59,16 @@ Desde 20261105-tests-cli-mas-rapidos, cada comando abre su sesión con un proces
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-memo.test.ts test/git-paths.test.ts test/flow.test.ts test/enter.test.ts test/worktree-hooks.test.ts test/memory.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: perf
 - [x] T2: La documentación de las lecturas recordadas
+  - files: docs/ARCHITECTURE.md
+  - ac: —
+  - verify: pnpm lint
+  - type: docs
+- [ ] T3: El servidor de la UI olvida lo recordado en cada petición y cada sondeo
+  - files: packages/cli/src/io/git-memo.ts, packages/cli/src/io/git.ts, packages/cli/src/server/http.ts, packages/cli/src/server/events.ts, packages/cli/test/git-memo.test.ts
+  - ac: AC5, AC6
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-memo.test.ts test/server/trace.test.ts test/server.test.ts test/server/verify-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip
+  - type: fix
+- [ ] T4: La documentación del olvido en el servidor
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

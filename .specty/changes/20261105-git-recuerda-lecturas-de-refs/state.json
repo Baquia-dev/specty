@@ -2,23 +2,24 @@
   "schema": 1,
   "id": "20261105-git-recuerda-lecturas-de-refs",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "testing",
   "branch": "specty/20261105-git-recuerda-lecturas-de-refs",
   "baseCommit": "a0ad1aa4a6e619d229ad7a430d3afdd50e426ba8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:8af1fdbfde1f72b30f1023f6ce3754f9f39df1a56ca4dd944d9ed8cc7924236d",
-    "at": "2026-11-05T11:54:12.219Z",
+    "revision": 2,
+    "hash": "sha256:2514577618a35dc0534ee440bc794d31cd6419d1bfd83862c28c6ca269d29abb",
+    "at": "2026-11-05T12:11:40.603Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
-    "level": "S",
-    "score": 4,
+    "level": "M",
+    "score": 7,
     "adjust": 0,
     "reasons": [
-      "4 archivos"
+      "6 archivos",
+      "4 tareas"
     ]
   },
   "items": {
@@ -51,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a7e5767d697ccdc21807527604c82794abc43f5e",
+      "attempts": 1,
       "startedAt": "2026-11-05T12:01:15.801Z",
       "doneAt": "2026-11-05T12:05:19.668Z",
-      "summary": "ARCHITECTURE explica la apertura con HEAD y la rama, las lecturas de refs recordadas 2 s (recalling, rememberHead) y la nueva medida de flow.test.ts."
+      "summary": "ARCHITECTURE explica la apertura con HEAD y la rama, las lecturas de refs recordadas 2 s (recalling, rememberHead) y la nueva medida de flow.test.ts.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,8 +66,9 @@
   },
   "maxIds": {
     "A": 4,
-    "AC": 5,
-    "T": 2,
+    "AC": 6,
+    "T": 4,
     "R": 1
-  }
+  },
+  "testCycle": "bug"
 }
