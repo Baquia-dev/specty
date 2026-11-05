@@ -172,10 +172,17 @@ describe("specty init", () => {
     expect(settings.hooks.SessionStart).toMatchObject([
       { matcher: "startup|clear|compact|resume", hooks: [{ type: "command" }] },
     ]);
-    const added = await cli(root, ["memory", "add", "Probar el saludo en Windows"], {
+    const added = await cli(
+      root,
+      ["memory", "add", "Probar el saludo en Windows", "--kind", "reminder"],
+      { env: { CLAUDECODE: "1" } },
+    );
+    expect(added.code).toBe(0);
+    // AC1: the start card brings the reminders, not the open pending items.
+    const pending = await cli(root, ["memory", "add", "Ordenar por fecha"], {
       env: { CLAUDECODE: "1" },
     });
-    expect(added.code).toBe(0);
+    expect(pending.code).toBe(0);
     const card = await cli(root, ["guard", "--tool", "claude-code"], {
       stdin: JSON.stringify({
         session_id: "s1",
@@ -185,7 +192,8 @@ describe("specty init", () => {
       }),
     });
     expect(card.code).toBe(0);
-    expect(card.out).toContain("P1 · pendiente · Probar el saludo en Windows");
+    expect(card.out).toContain("RECORDATORIOS:\n  P1 · Probar el saludo en Windows\n");
+    expect(card.out).not.toContain("P2 ·");
     expect(card.out).toBe((await cli(root, ["next"])).out);
   });
 

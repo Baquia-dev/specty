@@ -1,0 +1,146 @@
+{
+  "schema": 1,
+  "id": "20261106-el-agente-solo-ve-y-reporta-los-pendientes-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-el-agente-solo-ve-y-reporta-los-pendientes-de",
+  "baseCommit": "359335f804c6fe7e6dab489c92a0ba63ef54a00e",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:be7d1a2450ba1bb863d8b4b9f2b1bc55566810afdcb0f668c1ab361aafe58d3e",
+    "at": "2026-11-05T20:23:07.607Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d8b0b9300007415f21cd9d8c2e18e047046acafe0b9680e34fab58c684734416",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:43c06be538af26a9d8bbcf2663461f611342c5294bad9bb8785200755133ca13",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:4cb6d0bcc376dc60f9ebab160ff60426ccc303c6b782c3becc431e5432646527",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "75932ab0ce4114a3896289f9da2af8480e98cc77",
+      "attempts": 1,
+      "startedAt": "2026-11-05T20:12:38.023Z",
+      "doneAt": "2026-11-05T20:13:20.470Z",
+      "summary": "harvestable deja fuera una viñeta cuya primera frase, hasta «.» o «:», sin mayúsculas, tildes ni énfasis, dice que no hay ninguno (saysNone con una lista cerrada en español y en inglés)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "9e5109c9f5ba1ac44d29c129f9d3d5a681df49be",
+      "attempts": 1,
+      "startedAt": "2026-11-05T20:13:20.784Z",
+      "doneAt": "2026-11-05T20:14:15.571Z",
+      "summary": "La tarjeta sin cambio activo deja de listar y contar los pendientes y las mejoras abiertas y de remitir a specty memory: «MEMORIA DE SPECTY» solo sale con el frente de la conversación (frontLines, sin el total), y los recordatorios no cambian",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "6d105127fa020ca56949852139ffc131367bbbc4",
+      "attempts": 1,
+      "startedAt": "2026-11-05T20:14:15.891Z",
+      "doneAt": "2026-11-05T20:15:02.964Z",
+      "summary": "La última regla del bloque de AGENTS.md pide primero respuestas directas y concisas en cada mensaje y después un reporte final con solo los pendientes del trabajo de la sesión y, de los demás, los que ese trabajo resolvió, en español y en inglés",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "0e0ecc822d80f64a86574590b9f8b96058174c93",
+      "attempts": 1,
+      "startedAt": "2026-11-05T20:15:03.282Z",
+      "doneAt": "2026-11-05T20:15:40.357Z",
+      "summary": "formats.md (la cosecha del cierre, la tarjeta de inicio con frentes y el bloque de AGENTS.md), ARCHITECTURE §6 (lo que trae la tarjeta al empezar) y el ADR 0016 (quién ve qué pendientes) cuentan el nuevo comportamiento",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "adb8acf1d58286f556b583289d93ac1e0383671e",
+      "attempts": 1,
+      "startedAt": "2026-11-05T20:23:08.164Z",
+      "doneAt": "2026-11-05T20:24:54.062Z",
+      "summary": "El test de la tarjeta de inicio de Claude Code anota un recordatorio y un pendiente: la tarjeta trae el recordatorio en «RECORDATORIOS» y no el pendiente, como pide AC1",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 5,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T20:46:29.076Z",
+  "lockedTests": {
+    "packages/cli/test/front-start-codex.test.ts": "sha256:c14ecad1d7816e293e0ecb6a6861375ef3ce29a2273ebc21a54d44e021887b1d",
+    "packages/cli/test/front-start.test.ts": "sha256:f998a3af988cf7f206fb8e22ffa111348c5b93ad5b5e33b4e880f5831bf00719",
+    "packages/cli/test/memory-harvest.test.ts": "sha256:44d81578e40378f40fb33c9190daba71299f6842abfffdd34a55f69b52d66468",
+    "packages/cli/test/memory-resolves.test.ts": "sha256:65ff2802946ffc6fbf18a9485ed228416997bf777ade8a14d71740f90cb44ecd",
+    "packages/cli/test/memory-settle.test.ts": "sha256:9696ecb8f0d5403feb396deb640fff2d417ab1b7396e221c527351bffb7698a4",
+    "packages/cli/test/memory-start.test.ts": "sha256:ff2266bd37e729e281b6978924fd521a4e60439880d00d3e821e18d493a1687e",
+    "packages/core/test/cards.test.ts": "sha256:b77cd6614c60c9288681bfded536cf6fbe6c96b831b8ef8d27d61e85a0a9446b",
+    "packages/core/test/cards/exclusions.test.ts": "sha256:a0946b7fce63fb6596b2649fee711bb57714a16bd3ea1b397b22ccf482d17c26",
+    "packages/core/test/cards/front-start.test.ts": "sha256:1f723241446f96c69164bfbde9d3c4b998a9fab027c07b6a725e7f2080de0db2",
+    "packages/core/test/cards/memory-start.test.ts": "sha256:cbb65f648801dcd109142c415200ffe45c77e3f2e51375ec78a163fd096ef083",
+    "packages/core/test/memory/harvest.test.ts": "sha256:cb59771b9029429e4ea4006ba5f08f72f2bb17423349c4ae8859b840bcf90528"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "cf30dcb0ab407381abd84a4ed8a76522c2313e83",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/decisions/0016-la-memoria-de-specty.md",
+      "docs/formats.md",
+      "packages/cli/src/commands/finish.ts",
+      "packages/cli/src/flow/land.ts",
+      "packages/cli/src/flow/prune.ts",
+      "packages/cli/test/cancel-folder.test.ts",
+      "packages/cli/test/epic-return.test.ts",
+      "packages/cli/test/front-start-codex.test.ts",
+      "packages/cli/test/front-start.test.ts",
+      "packages/cli/test/memory-harvest.test.ts",
+      "packages/cli/test/memory-resolves.test.ts",
+      "packages/cli/test/memory-settle.test.ts",
+      "packages/cli/test/memory-start.test.ts",
+      "packages/cli/test/setup.test.ts",
+      "packages/core/src/agents-md.ts",
+      "packages/core/src/cards/memory.ts",
+      "packages/core/src/memory/entries.ts",
+      "packages/core/test/cards.test.ts",
+      "packages/core/test/cards/exclusions.test.ts",
+      "packages/core/test/cards/front-start.test.ts",
+      "packages/core/test/cards/memory-start.test.ts",
+      "packages/core/test/memory/harvest.test.ts"
+    ],
+    "at": "2026-11-05T20:35:12.377Z",
+    "resolved": {
+      "commit": "4927063",
+      "at": "2026-11-05T20:40:53.651Z"
+    }
+  }
+}

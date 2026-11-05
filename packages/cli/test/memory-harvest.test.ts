@@ -36,9 +36,8 @@ describe("the follow-ups of a closing", () => {
     const listed = (await cli(root, ["memory"])).out;
     expect(listed).toContain(`P1 · pendiente · Ordenar por fecha. — ${CHANGE}, la persona, `);
     expect(listed).toContain(`P2 · pendiente · Exportar a CSV. — ${CHANGE}, la persona, `);
-    expect((await cli(root, ["next"])).out).toContain(
-      "Las primeras libres:\n  P1 · pendiente · Ordenar por fecha.\n  P2 · pendiente · Exportar a CSV.\n",
-    );
+    // AC1: the card with no active change does not list them.
+    expect((await cli(root, ["next"])).out).not.toContain("Ordenar por fecha.");
   });
 
   it("AC2: are not added again when they cite an entry, say there are none or repeat an open one", async () => {
@@ -49,5 +48,18 @@ describe("the follow-ups of a closing", () => {
     expect(listed).toContain("P1 · pendiente · Uno");
     expect(listed).toContain(`P2 · pendiente · Nuevo. — ${CHANGE}`);
     expect(listed).not.toContain("P3 ·");
+  });
+
+  it("AC3: are not added when they say there are none, also with more after it", async () => {
+    const root = await tempRepo(APP);
+    await closedWith(root, [
+      "Ninguno nuevo. C6 hará que el servidor dé solo los abiertos.",
+      "No hay.",
+      "None.",
+      "Nuevo.",
+    ]);
+    const listed = (await cli(root, ["memory"])).out;
+    expect(listed).toContain(`P1 · pendiente · Nuevo. — ${CHANGE}`);
+    expect(listed).not.toContain("P2 ·");
   });
 });

@@ -19,6 +19,7 @@ import { detectStacks } from "../detect/stack";
 import { isMissing } from "../io/files";
 import type { Session } from "../session";
 import { readRevision, readSpec, type StoredChange } from "../store/changes";
+import { closedSlices } from "./epic";
 
 /** Validates the change's spec against its history: approved and previous revisions. */
 export async function analyzeChange(
@@ -52,6 +53,10 @@ export async function analyzeChange(
       repo: await repoSignals(session, text),
       ...(approved !== undefined ? { approved } : {}),
       ...(previous !== undefined ? { previous } : {}),
+      // Only an approved epic has slices with a change, and only its adjustments check them.
+      ...(state.kind === "epic" && approved !== undefined
+        ? { closedSlices: await closedSlices(session, state.id) }
+        : {}),
       ...(await typecheckOf(session)),
     },
     { language: session.lang },

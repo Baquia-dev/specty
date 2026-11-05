@@ -9,7 +9,6 @@ import {
   type MemoryOperation,
   type MemoryStatus,
 } from "../memory/entries";
-import type { Front } from "../memory/fronts";
 import { headerOf, type Output, type OutputBlock, section } from "../output";
 import type { FrontsView } from "./fronts";
 import { type Translate, translator } from "./text";
@@ -103,15 +102,14 @@ export function memoryDoneCard(entry: MemoryEntry, ctx: CardContext): Output {
   };
 }
 
-/** How many free entries the card with no active change shows. */
+/** How many free entries of the conversation's own front the card with no active change shows. */
 const FREE_SHOWN = 3;
 
 /**
  * The memory in the card with no active change, which is also the one a session gets when it
- * starts: the open pending items and improvements, with the first free ones, and the reminders.
- * With fronts (ADR 0016), the conversation that holds one gets that front's first free ones, and
- * the others do not get those of the fronts with an owner. Nothing when none is open, so the card
- * stays as it was.
+ * starts: the reminders, and the first free entries of the front the conversation holds (ADR
+ * 0016). The other open pending items and improvements are not the session's work, so the card
+ * neither lists nor counts them. Nothing when none of those is open, so the card stays as it was.
  */
 export function memoryStartBlocks(
   entries: readonly MemoryEntry[],
@@ -121,7 +119,7 @@ export function memoryStartBlocks(
   const t = translator(ctx.lang);
   const open = byDate(entries.filter(isOpenEntry));
   return [
-    ...section(t("MEMORIA DE SPECTY", "SPECTY'S MEMORY"), workLines(open, ctx, t, fronts)),
+    ...section(t("MEMORIA DE SPECTY", "SPECTY'S MEMORY"), frontLines(open, ctx, t, fronts)),
     ...section(t("RECORDATORIOS", "REMINDERS"), reminderLines(entries, ctx)),
   ];
 }
@@ -149,72 +147,41 @@ export function reminderDoneLine(ctx: CardContext): string {
   );
 }
 
-/** The open pending items and improvements: how many, the first free ones, and how to take one. */
-function workLines(
+/**
+ * The first free entries of the conversation's own front, in the front's order, and how to take
+ * one, or that it has none free; nothing without a front of its own or an open pending item or
+ * improvement.
+ */
+function frontLines(
   open: readonly MemoryEntry[],
   ctx: CardContext,
   t: Translate,
   fronts?: FrontsView,
 ): string[] {
   const work = open.filter((entry) => entry.kind === "pending" || entry.kind === "improvement");
-  if (work.length === 0) return [];
-  const command = ctx.command;
-  const how = t(
-    `No las empieces si el usuario no lo pide. Para tomar una, crea su cambio con \`${command} new\` y cita su id en la petición; todas, con \`${command} memory\`.`,
-    `Do not start them unless the user asks. To take one, create its change with \`${command} new\` and cite its id in the request; all of them, with \`${command} memory\`.`,
-  );
   const own = fronts?.fronts.find((front) => front.name === fronts.own);
-  if (own !== undefined) return [...ownFrontLines(own, work, t), how];
-  const held = (fronts?.fronts ?? []).filter((front) =>
-    fronts?.owners.some((owner) => owner.front === front.name),
-  );
-  const theirs = new Set(held.flatMap((front) => front.items));
-  const free = work
-    .filter((entry) => entry.status === "open" && !theirs.has(entry.id))
-    .slice(0, FREE_SHOWN);
-  const names = held.map((front) => front.name).join(", ");
-  return [
-    free.length > 0
-      ? t(
-          `Pendientes y mejoras abiertas: ${work.length}. Las primeras libres:`,
-          `Open pending items and improvements: ${work.length}. The first free ones:`,
-        )
-      : t(
-          `Pendientes y mejoras abiertas: ${work.length}; ninguna está libre.`,
-          `Open pending items and improvements: ${work.length}; none is free.`,
-        ),
-    ...free.map((entry) => workLine(entry, t)),
-    ...(held.length === 0
-      ? []
-      : [
-          t(
-            `Las de los frentes con dueño (${names}) no salen aquí: \`${command} front\` dice quién los lleva.`,
-            `Those of the fronts with an owner (${names}) are left out: \`${command} front\` says who holds them.`,
-          ),
-        ]),
-    how,
-  ];
-}
-
-/** The first free entries of the asker's own front, in the front's order, or that it has none. */
-function ownFrontLines(front: Front, work: readonly MemoryEntry[], t: Translate): string[] {
-  const free = front.items
+  if (own === undefined || work.length === 0) return [];
+  const free = own.items
     .flatMap((id) => work.filter((entry) => entry.id === id && entry.status === "open"))
     .slice(0, FREE_SHOWN);
-  const { name } = front;
+  const { name } = own;
   if (free.length === 0)
     return [
       t(
-        `Pendientes y mejoras abiertas: ${work.length}; tu frente, ${name}, no tiene ninguna libre: pregúntale a la persona qué sigue.`,
-        `Open pending items and improvements: ${work.length}; your front, ${name}, has none free: ask the person what comes next.`,
+        `Tu frente, ${name}, no tiene ninguna entrada libre: pregúntale a la persona qué sigue.`,
+        `Your front, ${name}, has no free entry: ask the person what comes next.`,
       ),
     ];
   return [
     t(
-      `Pendientes y mejoras abiertas: ${work.length}. Las primeras libres de tu frente, ${name}, en su orden:`,
-      `Open pending items and improvements: ${work.length}. The first free ones of your front, ${name}, in its order:`,
+      `Las primeras entradas libres de tu frente, ${name}, en su orden:`,
+      `The first free entries of your front, ${name}, in its order:`,
     ),
     ...free.map((entry) => workLine(entry, t)),
+    t(
+      `No las empieces si el usuario no lo pide. Para tomar una, crea su cambio con \`${ctx.command} new\` y cita su id en la petición.`,
+      `Do not start them unless the user asks. To take one, create its change with \`${ctx.command} new\` and cite its id in the request.`,
+    ),
   ];
 }
 
