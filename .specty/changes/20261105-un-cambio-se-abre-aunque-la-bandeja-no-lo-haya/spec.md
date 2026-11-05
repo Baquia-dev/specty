@@ -66,7 +66,7 @@ La página de un cambio hoy lo busca solo entre los que cargó la Bandeja, y si 
   - files: packages/cli/src/server/records.ts, packages/cli/src/server/http.ts, packages/cli/test/server.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts
-- [ ] T2: La fuente de datos da un cambio por su id
+- [x] T2: La fuente de datos da un cambio por su id
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/server.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts

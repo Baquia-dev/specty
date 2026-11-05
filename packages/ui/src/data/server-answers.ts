@@ -157,10 +157,11 @@ function isText(value: unknown): value is string {
 
 /** A light check of the answer: the worker parses each spec, and each state is Specty's own file. */
 export function isRecords(value: unknown): value is readonly ChangeRecord[] {
-  return Array.isArray(value) && value.every(isRecordLike);
+  return Array.isArray(value) && value.every(isChangeRecord);
 }
 
-function isRecordLike(value: unknown): boolean {
+/** The same light check, of one change. */
+export function isChangeRecord(value: unknown): value is ChangeRecord {
   return (
     typeof value === "object" &&
     value !== null &&
