@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-cada-paquete-puede-traer-su-comando-de-tests-y",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-cada-paquete-puede-traer-su-comando-de-tests-y",
   "baseCommit": "f1e2f5e7390264b8e484bee3611f61ba57dc762d",
   "revision": 1,
@@ -47,6 +47,8 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T13:13:56.258Z"
+  "lockedTests": {
+    "packages/core/test/units-proposal.test.ts": "sha256:7fe7d5661de892fa3ff8156ae8bbc56c101ec1972a4d43956ebaa069d237f06d",
+    "packages/cli/test/workspace-units.test.ts": "sha256:27743246667fef5d5c782f727e55580a0c656138a9f8ea1c1f0997827fa397b6"
+  }
 }
