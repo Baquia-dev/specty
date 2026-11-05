@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-cada-paquete-puede-traer-su-comando-de-tests-y",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-cada-paquete-puede-traer-su-comando-de-tests-y",
   "baseCommit": "f1e2f5e7390264b8e484bee3611f61ba57dc762d",
   "revision": 1,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5aa1861ae05b0d49e07488904e87d4e2f0f86af3",
+      "attempts": 1,
       "startedAt": "2026-11-05T13:14:38.766Z",
       "doneAt": "2026-11-05T13:18:53.176Z",
-      "summary": "WorkspacePackage admite su propio comando de tests y UnitsFacts.manager es opcional: la unidad de cada paquete usa su comando o, sin él, el del gestor; sin ninguno no cuenta como paquete con tests"
+      "summary": "WorkspacePackage admite su propio comando de tests y UnitsFacts.manager es opcional: la unidad de cada paquete usa su comando o, sin él, el del gestor; sin ninguno no cuenta como paquete con tests",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b78549bfe5411ebcf1b80ae18909b07a296a7fc6",
+      "startedAt": "2026-11-05T13:18:53.521Z",
+      "doneAt": "2026-11-05T13:20:09.790Z",
+      "summary": "La CLI prueba en orden la lista DETECTORS y propone con el primero que encuentra un workspace; el de pnpm, npm y yarn pasa a detect/units-js.ts, va primero y solo reclama un workspace con dos paquetes con package.json, así que deja pasar uno de melos"
     }
   },
   "pending": {

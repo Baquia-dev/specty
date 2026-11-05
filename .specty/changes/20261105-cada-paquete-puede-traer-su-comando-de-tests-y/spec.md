@@ -49,7 +49,7 @@ Hoy `proposeUnits` arma el comando de los tests de cada paquete con el gestor de
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/units-proposal.test.ts
   - type: feat
-- [ ] T2: La CLI prueba un detector por workspace, en orden
+- [x] T2: La CLI prueba un detector por workspace, en orden
   - files: packages/cli/src/detect/workspace-units.ts, packages/cli/src/detect/units-js.ts, packages/cli/test/workspace-units.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/workspace-units.test.ts test/init-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip
