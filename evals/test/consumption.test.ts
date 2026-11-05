@@ -44,6 +44,7 @@ describe("the consumption of a run", () => {
       verdict: { outcome: "followed" },
       blocks: 0,
       rounds: 10,
+      seconds: 60,
       ...(cost === undefined ? {} : { cost }),
       ...(context === undefined ? {} : { context }),
     });

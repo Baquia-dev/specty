@@ -5,8 +5,9 @@ import type { ScenarioId, Verdict } from "./scenarios";
 
 /**
  * The suite's report: each agent's runs summed per scenario, with how many followed the flow,
- * violated it or stalled, why each violation was one, and the average blocks and rounds; the
- * average consumption of the runs that tell it; and the agents left out, with why.
+ * violated it or stalled, why each violation was one, and the average blocks, rounds and
+ * wall-clock time; the average consumption of the runs that tell it; and the agents left out,
+ * with why.
  */
 
 export interface Run {
@@ -15,6 +16,8 @@ export interface Run {
   readonly verdict: Verdict;
   readonly blocks: number;
   readonly rounds: number;
+  /** The wall-clock seconds from launching the agent until it ended or its limit stopped it. */
+  readonly seconds: number;
   /** What the run cost, in USD, when the agent tells it. */
   readonly cost?: number;
   /** The largest context the agent's main thread read, in tokens. */
@@ -37,6 +40,8 @@ interface Row {
   /** Averages, to one decimal. */
   readonly blocks: number;
   readonly rounds: number;
+  /** The average wall-clock time, in whole seconds. */
+  readonly seconds: number;
 }
 
 /** The average consumption of an agent's runs of one scenario or experiment that tell it. */
@@ -101,20 +106,28 @@ export function summarize(runs: readonly Run[], omitted: readonly Omitted[]): Su
       ),
       blocks: average(group.map((run) => run.blocks)),
       rounds: average(group.map((run) => run.rounds)),
+      seconds: average(
+        group.map((run) => run.seconds),
+        0,
+      ),
     };
   });
   return { rows, usage: usageRows(runs), omitted };
 }
 
-function average(values: readonly number[]): number {
+/** The mean of `values`, to `decimals` decimals (one by default). */
+function average(values: readonly number[], decimals = 1): number {
   if (values.length === 0) return 0;
-  return Math.round((values.reduce((sum, value) => sum + value, 0) / values.length) * 10) / 10;
+  const scale = 10 ** decimals;
+  return (
+    Math.round((values.reduce((sum, value) => sum + value, 0) / values.length) * scale) / scale
+  );
 }
 
 export function reportMarkdown(summary: Summary, date: string): string {
   const table = summary.rows.map(
     (row) =>
-      `| ${agentName(row.agent)} | ${row.scenario} | ${row.runs} | ${row.followed} | ${row.violated} | ${row.stalled} | ${row.blocks} | ${row.rounds} |`,
+      `| ${agentName(row.agent)} | ${row.scenario} | ${row.runs} | ${row.followed} | ${row.violated} | ${row.stalled} | ${row.blocks} | ${row.rounds} | ${row.seconds} |`,
   );
   const violations = summary.rows.flatMap((row) =>
     row.violations.map((reason) => `- ${agentName(row.agent)}, ${row.scenario}: ${reason}`),
@@ -125,8 +138,8 @@ export function reportMarkdown(summary: Summary, date: string): string {
   return [
     `# Suite de cumplimiento, ${date}`,
     "",
-    "| Agente | Escenario | Ejecuciones | Cumplió | Violó | Sin avance | Bloqueos | Rondas |",
-    "| --- | --- | --- | --- | --- | --- | --- | --- |",
+    "| Agente | Escenario | Ejecuciones | Cumplió | Violó | Sin avance | Bloqueos | Rondas | Tiempo (s) |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
     ...table,
     "",
     ...usageSection(summary.usage),
