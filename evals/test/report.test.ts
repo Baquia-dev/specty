@@ -74,6 +74,7 @@ const RUNS: readonly Run[] = [
     verdict: { outcome: "followed" },
     blocks: 1,
     rounds: 6,
+    seconds: 100,
   },
   {
     agent: "claude-code",
@@ -81,6 +82,7 @@ const RUNS: readonly Run[] = [
     verdict: { outcome: "violated", reason: "src/math.ts sin una spec aprobada" },
     blocks: 3,
     rounds: 10,
+    seconds: 200,
   },
   {
     agent: "claude-code",
@@ -88,6 +90,7 @@ const RUNS: readonly Run[] = [
     verdict: { outcome: "stalled" },
     blocks: 0,
     rounds: 2,
+    seconds: 30,
   },
 ];
 
@@ -105,6 +108,7 @@ describe("the report of the suite", () => {
         violations: ["src/math.ts sin una spec aprobada"],
         blocks: 2,
         rounds: 8,
+        seconds: 150,
       },
       {
         agent: "claude-code",
@@ -116,6 +120,7 @@ describe("the report of the suite", () => {
         violations: [],
         blocks: 0,
         rounds: 2,
+        seconds: 30,
       },
     ]);
     const markdown = reportMarkdown(summary, "2026-10-28");
@@ -130,6 +135,47 @@ describe("the report of the suite", () => {
       rows: summary.rows,
       omitted: [{ agent: "codex", reason: "no está instalado" }],
     });
+  });
+
+  it("AC1: gives each experiment's average wall-clock time next to its runs that complied and its rounds, and its cost in «Consumo»", () => {
+    const timed = (
+      scenario: Run["scenario"],
+      verdict: Run["verdict"],
+      rounds: number,
+      seconds: number,
+      cost: number,
+    ): Run => ({
+      agent: "claude-code",
+      scenario,
+      verdict,
+      blocks: 0,
+      rounds,
+      seconds,
+      cost,
+      context: 50_000,
+    });
+    const runs = [
+      timed("epic", { outcome: "followed" }, 80, 900, 2),
+      timed("epic", { outcome: "stalled" }, 60, 1201, 3),
+      timed("epic-subagent", { outcome: "followed" }, 100, 400, 4.5),
+    ];
+    const summary = summarize(runs, []);
+    // The average time, in whole seconds.
+    expect(
+      summary.rows.map((row) => [row.scenario, row.followed, row.rounds, row.seconds]),
+    ).toEqual([
+      ["epic", 1, 70, 1051],
+      ["epic-subagent", 1, 100, 400],
+    ]);
+    const markdown = reportMarkdown(summary, "2026-11-04");
+    expect(markdown).toContain(
+      "| Agente | Escenario | Ejecuciones | Cumplió | Violó | Sin avance | Bloqueos | Rondas | Tiempo (s) |",
+    );
+    expect(markdown).toContain("| Claude Code | epic | 2 | 1 | 0 | 1 | 0 | 70 | 1051 |");
+    expect(markdown).toContain("| Claude Code | epic-subagent | 1 | 1 | 0 | 0 | 0 | 100 | 400 |");
+    // The cost stays in its own section.
+    expect(markdown).toContain("| Claude Code | epic | 2 | 2,50 | 50.000 |");
+    expect(markdown).toContain("| Claude Code | epic-subagent | 1 | 4,50 | 50.000 |");
   });
 
   it("AC5: `pnpm check` runs the suite's tests, and only `pnpm evals` runs its agents", async () => {

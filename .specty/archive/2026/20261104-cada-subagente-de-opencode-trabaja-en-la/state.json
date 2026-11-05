@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "id": "20261104-cada-subagente-de-opencode-trabaja-en-la",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-cada-subagente-de-opencode-trabaja-en-la",
+  "baseCommit": "bcec316de14f01eb11c7f3d5a7ee45271fb168f2",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:18d43c9d01453eddc558721d5d390e6d329e97295cab67f98bb6536dcefddd59",
+    "at": "2026-11-04T12:39:43.264Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:805b6ce6b9105eb8b0e6c1a45afb3f896b4003decfdbd108c9f004c60f7e01da",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:dbab58db4653864cc92db872bb26940df161b9d5de4b70168e9e4d088cce1af2",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e0ad2903788d83a6565d2170cc4736f21076088531133840c6ffc4b5f5b5cdf3",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:8d644a1730fba8737c8894c6a599b214e723c21c39737a1265b43fc335bb9987",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "033a629ddfcbc6ed33c2fe743be864cca45509c5",
+      "attempts": 1,
+      "startedAt": "2026-11-04T12:50:30.510Z",
+      "doneAt": "2026-11-04T12:53:17.306Z",
+      "summary": "OpenCode pasa a sí en Cortes en subagentes: cada subagente de task es una sesión hija con su propio id y el guard ya la ata sin cambios. Tests del plugin (OpenCode 1 y 2) y E2E con OpenCode 1.19.5 real; fakeChat con un guion por subagente; tabla y párrafo de ARCHITECTURE §10 y glosario.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 1,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-05T03:03:29.800Z",
+  "lockedTests": {
+    "packages/cli/test/fake-chat.ts": "sha256:1c1a07c6ddfc5205051f49fe96aeda29583aac3611c59ca7e89f3b89cecf3241",
+    "packages/cli/test/opencode-e2e.test.ts": "sha256:42112123b2d8ff0a8b98d898be0969719a15b74801f1adfcb6fdb346fe4cc00b",
+    "packages/cli/test/opencode.test.ts": "sha256:68107042af433cae9ddbf2ce7a2a6246615ab54c37d6522234f4d602764ac632",
+    "packages/core/test/capabilities.test.ts": "sha256:bc95a9fdfbf9e9e58b7ae4a558a26699da91a5ff17debc3f9c17f7f1d1fc6174"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "8a116e413b312c56767227665382e0e8a0ff1c84",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md",
+      "packages/core/test/capabilities.test.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "packages/cli/src/agents/cursor.ts",
+      "packages/cli/test/cursor-subagents.test.ts",
+      "packages/cli/test/fake-chat.ts",
+      "packages/cli/test/opencode-e2e.test.ts",
+      "packages/cli/test/opencode.test.ts",
+      "packages/core/src/capabilities.ts",
+      "packages/core/test/capabilities.test.ts",
+      "packages/core/test/cards/rejoin.test.ts"
+    ],
+    "at": "2026-11-05T04:31:29.165Z",
+    "resolved": {
+      "commit": "31d8943",
+      "at": "2026-11-05T04:40:24.125Z"
+    }
+  }
+}

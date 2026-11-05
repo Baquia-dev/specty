@@ -215,7 +215,12 @@ describe("the card of a conversation outside its epic's folder", () => {
 
   it("AC4: asks to go back to the epic when it does not hand out its slices", () => {
     const own = ownEpic([slice("C1", "ready")]);
-    for (const ctx of [ES, CURSOR, { ...CLAUDE, subagents: false }]) {
+    // Gemini CLI can never hand out slices: its subagents bring the main session's id.
+    for (const ctx of [
+      ES,
+      { ...ES, tool: "gemini-cli" as const },
+      { ...CLAUDE, subagents: false },
+    ]) {
       const text = card({ own, byName: true }, ctx);
       expect(text).toContain("TU CAMBIO:");
       expect(text).toContain(`vuelve a ${EPIC_FOLDER}:`);
