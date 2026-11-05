@@ -36,13 +36,15 @@ const RUN = `Exec(${COMMAND})`;
 
 /**
  * The events the guard listens to, each with a regular expression on `tool_name`;
- * `PostCompaction`, with none, comes once Devin compacts.
+ * `PostCompaction`, with none, comes once Devin compacts, and `SessionStart`, with none, when a
+ * session starts or resumes.
  */
 const EVENTS: Readonly<Record<string, string | undefined>> = {
   PreToolUse:
     "^(exec|write|edit|notebook_edit|apply_patch|write_to_process|read|notebook_read|grep|glob)$",
   PostToolUse: "^exec$",
   PostCompaction: undefined,
+  SessionStart: undefined,
 };
 
 /**
@@ -50,7 +52,8 @@ const EVENTS: Readonly<Record<string, string | undefined>> = {
  * shares Devin CLI's hooks, shaped as Claude Code's, in the standalone `.devin/hooks.v1.json`, so
  * this module serves both. Before an action it reads exit 2 as Claude Code does; after a command,
  * the warning goes to the context (`additionalContext`). Its `PostCompaction` is not said to add
- * anything, so the card waits for the next command, as Cursor's does. Cascade, its agent until
+ * anything, so the card waits for the next command, as Cursor's does; its `SessionStart` adds the
+ * card as `additionalContext`. Cascade, its agent until
  * 3.9.18, had other hooks, and is left out.
  */
 export const windsurf: AgentAdapter = {
@@ -58,10 +61,18 @@ export const windsurf: AgentAdapter = {
   normalize,
   kind: (event) => {
     if (event.hook_event_name === "PostToolUse") return "after";
+    if (event.hook_event_name === "SessionStart") return "compact";
     return event.hook_event_name === "PostCompaction" ? "compacting" : "before";
   },
   action,
   redirect,
+  // Its `SessionStart` adds the card to the context, as Claude Code's `hookSpecificOutput` does.
+  card: (text) => {
+    const output = {
+      hookSpecificOutput: { hookEventName: "SessionStart", additionalContext: text },
+    };
+    return { code: 0, stdout: JSON.stringify(output), stderr: "" };
+  },
   reply: (verdict, phase, card) => {
     if (phase === "before" && verdict.allow && verdict.input !== undefined) {
       // Devin merges these fields into the tool's arguments before it runs.

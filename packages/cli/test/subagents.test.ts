@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -11,6 +11,7 @@ import {
   CHANGE,
   cli,
   folderOf,
+  NOW,
   person,
   read,
   SPEC_PATH,
@@ -273,6 +274,62 @@ describe.skipIf(CLAUDE === undefined)(
       expect(results[3]?.text).toContain(session);
       expect(await read(slice, `.specty/changes/${SLICE}/spec.md`)).toBe("# Inicio\n");
       expect(await boundFolder(root, `${session}--${agent}`)).toBe(slice);
+      expect(await boundFolder(root, session)).toBe(epic);
+    });
+    it("AC5: a subagent writes in its slice's folder once the session left the epic's with ExitWorktree", async () => {
+      const root = await initialized();
+      const epic = await approvedEpic(root);
+      const started = [
+        "new",
+        "--worktree",
+        "Inicio",
+        "--epic",
+        EPIC,
+        "--slice",
+        "C1",
+        "--subagent",
+      ];
+      expect((await cli(root, started)).code).toBe(0);
+      const slice = folderOf(root, SLICE);
+      // Nobody stepped in the slice's folder for two hours: an orphan, with a brief to resume it.
+      const before = new Date(NOW.getTime() - 120 * 60_000);
+      await utimes(join(slice, `.specty/changes/${SLICE}/state.json`), before, before);
+      const session = randomUUID();
+      const mark = "ENCARGO-C1";
+      const spec = join(slice, `.specty/changes/${SLICE}/spec.md`);
+      const script = [
+        { name: "EnterWorktree", input: { name: EPIC } },
+        step.bash("specty next"),
+        { name: "ExitWorktree", input: { action: "keep" } },
+        step.bash("specty next"),
+        step.delegate(mark, "retoma el corte C1"),
+      ];
+      const model = await claudeWith(root, script, {
+        session,
+        asInEvals: true,
+        worktrees: true,
+        subagents: {
+          [mark]: [
+            step.bash(`specty enter ${SLICE}`),
+            step.read(spec),
+            step.write(spec, "# Inicio\n"),
+            step.bash(`cd '${slice}' && git status --short`),
+          ],
+        },
+      });
+      const results = model.results();
+      expect(results.map((result) => result.isError)).toEqual([false, false, false, false, false]);
+      // In the epic's worktree, the card asks to leave it before launching the brief.
+      expect(results[1]?.text).toContain("ENCARGO C1 (huérfano):");
+      expect(results[1]?.text).toContain('`ExitWorktree` con `action: "keep"`');
+      // Back in the main folder, the session still gets its epic's card, not a way back into it.
+      expect(results[3]?.text).toContain(`TU ÉPICA:\n  Esta conversación lleva la épica ${EPIC}`);
+      expect(results[3]?.text).toContain("ENCARGO C1 (huérfano):");
+      expect(results[3]?.text).not.toContain("EnterWorktree");
+      // Its subagent enters the slice's folder and writes there, with the evals' permissions.
+      const delegated = model.subagentResults(mark);
+      expect(delegated.map((result) => result.isError)).toEqual([false, false, false, false]);
+      expect(await read(slice, `.specty/changes/${SLICE}/spec.md`)).toBe("# Inicio\n");
       expect(await boundFolder(root, session)).toBe(epic);
     });
   },

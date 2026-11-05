@@ -122,6 +122,16 @@ describe("resolveConfig", () => {
     expect(Array.isArray(empty) && empty.map((issue) => issue.path)).toContain("git.branchPattern");
   });
 
+  it("AC9: hands an epic's slices to subagents unless subagents is false, and refuses another value", () => {
+    expect(DEFAULT_CONFIG).toMatchObject({ subagents: true });
+    expect(resolveConfig({ version: 1 })).toMatchObject({ ok: true, config: { subagents: true } });
+    expect(resolveConfig({ version: 1, subagents: false })).toMatchObject({
+      ok: true,
+      config: { subagents: false },
+    });
+    expect(resolveConfig({ version: 1, subagents: "no" })).toMatchObject({ ok: false });
+  });
+
   it("AC1: accepts the contract tests policy", () => {
     const resolved = resolveConfig({ version: 1, policy: { tests: "contract" } });
     expect(resolved.ok && resolved.config.policy.tests).toBe("contract");

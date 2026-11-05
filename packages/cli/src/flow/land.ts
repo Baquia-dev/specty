@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { isAbsolute, relative } from "node:path";
 import {
+  afterLandingLine,
   backOnTargetLine,
   folderRemovedLine,
   folderStaysLine,
   landedLine,
+  landingNote,
   leaveFolderNext,
   notLandedLine,
   type Output,
@@ -12,10 +14,11 @@ import {
   section,
   targetAheadLine,
 } from "@baquia-dev/specty-core";
-import type { ExecResult } from "../io/exec";
+import { type ExecResult, execute, tail } from "../io/exec";
 import { resolved } from "../io/git";
 import type { Session } from "../session";
-import { contains, type Integration, reasonOf } from "./integrate";
+import { findChange } from "./find";
+import { absorbTarget, contains, type Integration, reasonOf } from "./integrate";
 
 export interface Landed {
   /** The main branch now contains the change. */
@@ -31,7 +34,7 @@ export interface Landed {
  * closes works inside it; the main folder goes back to the main branch. Reports failures instead
  * of throwing: the change is already closed.
  */
-export async function landChange(session: Session, plan: Integration): Promise<Landed> {
+async function landChange(session: Session, plan: Integration): Promise<Landed> {
   const { git, lang } = session;
   const tip = await git.output(["rev-parse", "HEAD"]);
   const failure =
@@ -42,11 +45,8 @@ export async function landChange(session: Session, plan: Integration): Promise<L
     return { landed: false, lines: [notLandedLine(plan.target, failure, lang)] };
   }
   const lines = [landedLine(plan.target, lang)];
-  if (plan.inMain) {
-    if (plan.holder === undefined && (await git.run(["switch", "-q", plan.target])).code === 0)
-      lines.push(backOnTargetLine(plan.target, lang));
-    return { landed: true, lines };
-  }
+  if (plan.inMain) return landedInMain(session, plan, lines);
+  lines.push(...(await afterLanding(session, plan.holder)));
   // Its work is in the target now: the folder goes, even from under whoever closed in it. An
   // agent's session (delegated mode) must then leave it; a person reads where to carry on.
   const inside = session.actor === "agent" && (await within(session.environment.cwd, git.root));
@@ -58,6 +58,67 @@ export async function landChange(session: Session, plan: Integration): Promise<L
   );
   const left = { folder: git.root, main: plan.main, removed: removed.code === 0 };
   return { landed: true, lines, ...(inside ? { left } : {}) };
+}
+
+/** The change lived in the main folder: it goes back to the target branch, and what follows runs. */
+async function landedInMain(
+  session: Session,
+  plan: Integration,
+  lines: readonly string[],
+): Promise<Landed> {
+  const back =
+    plan.holder === undefined && (await session.git.run(["switch", "-q", plan.target])).code === 0;
+  const done = back ? [...lines, backOnTargetLine(plan.target, session.lang)] : lines;
+  const folder = plan.holder ?? (back ? plan.main : undefined);
+  return { landed: true, lines: [...done, ...(await afterLanding(session, folder))] };
+}
+
+/**
+ * Runs `git.afterLanding`, when set, in `folder`, the one that holds the target branch now that the
+ * change landed there; nothing without one. Its line says how it ended: the change stays landed.
+ */
+async function afterLanding(session: Session, folder: string | undefined): Promise<string[]> {
+  const command = session.config.git.afterLanding;
+  if (command === undefined || folder === undefined) return [];
+  session.environment.io.err(landingNote(command, session.lang));
+  const result = await execute(command, [], {
+    cwd: folder,
+    shell: true,
+    env: session.environment.env,
+    timeoutMs: session.config.verify.timeoutSec * 1000,
+  });
+  const ok = result.code === 0;
+  const last = ok ? undefined : tail(result, 1)[0];
+  return [
+    afterLandingLine(
+      { command, folder, ok, ...(last !== undefined ? { last } : {}) },
+      session.lang,
+    ),
+  ];
+}
+
+/** How many more times a change lands when main moved while it was landing. */
+const RETRIES = 2;
+
+/**
+ * Lands the change; when main moved meanwhile (the change's branch, with main incorporated, no
+ * longer contains it), does what running `specty close` again would: incorporates main once more,
+ * with its verification, and lands, up to `RETRIES` more times. Those incorporations' lines go
+ * before the last landing's.
+ */
+export async function landRetrying(session: Session, plan: Integration): Promise<Landed> {
+  let landed = await landChange(session, plan);
+  const lines: string[] = [];
+  for (let retry = 0; retry < RETRIES && !landed.landed; retry++) {
+    if (await contains(session.git, "HEAD", plan.target)) break;
+    const change = await findChange(session, plan.id);
+    if (change === undefined) break;
+    const absorbed = await absorbTarget(session, plan, change, "close");
+    if (!absorbed.ok) break;
+    lines.push(...absorbed.lines);
+    landed = await landChange(session, plan);
+  }
+  return { ...landed, lines: [...lines, ...landed.lines] };
 }
 
 /** The closing card plus what the incorporation did; if the main branch did not move, how to retry. */
