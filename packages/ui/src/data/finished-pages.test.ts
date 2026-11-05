@@ -2,10 +2,11 @@
 // The pages of finished changes in the store: apart from the open changes, one page after another,
 // each change once, and read again from the first when the source says something changed.
 import { TestBed } from "@angular/core/testing";
-import { ChangesStore, DERIVER } from "./changes-store";
+import { ChangesStore, DERIVER, type Deriver } from "./changes-store";
 import type { FinishedQuery } from "./finished-pages";
 import { sampleRecords } from "./fixtures";
 import { type ChangeRecord, SpectyData } from "./records";
+import { ServerData } from "./server";
 import type { FinishedPage, FinishedRequest } from "./source";
 import { deriveViews } from "./views";
 
@@ -79,18 +80,64 @@ class Archive extends SpectyData {
   }
 }
 
-function setup(source: SpectyData = new Archive()) {
+const derived: Deriver = (records) => Promise.resolve(deriveViews(records));
+
+function setup(source: SpectyData = new Archive(), derive: Deriver = derived) {
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
     providers: [
       { provide: SpectyData, useValue: source },
-      {
-        provide: DERIVER,
-        useValue: (records: readonly ChangeRecord[]) => Promise.resolve(deriveViews(records)),
-      },
+      { provide: DERIVER, useValue: derive },
     ],
   });
   return TestBed.inject(ChangesStore);
+}
+
+/**
+ * As the local server: `open` in the list, and the page of finished changes that `fetch` answers
+ * to `ServerData`, as JSON.
+ */
+class Paged extends SpectyData {
+  constructor(private readonly open: readonly ChangeRecord[]) {
+    super();
+  }
+
+  changes(): Promise<readonly ChangeRecord[]> {
+    return Promise.resolve(this.open);
+  }
+
+  override finished(request: FinishedRequest): Promise<FinishedPage> {
+    return new ServerData().finished(request);
+  }
+
+  subscribe(): () => void {
+    return () => undefined;
+  }
+}
+
+/** `fetch` answering every request with `body` as JSON. */
+function answering(body: unknown): void {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(() => Promise.resolve(new Response(JSON.stringify(body), { status: 200 }))),
+  );
+}
+
+/** The summary of a finished change `id`, as the server gives it, with `epic` if it has one. */
+function summary(id: string, title: string, epic?: Readonly<Record<string, string>>) {
+  return {
+    id,
+    title,
+    kind: "standard",
+    ...(epic === undefined ? {} : { epic }),
+    phase: "done",
+    phaseSince: "2026-10-16T10:00:00.000Z",
+    createdAt: "2026-10-16T08:00:00.000Z",
+    closedAt: "2026-10-16T10:00:00.000Z",
+    size: { level: "S", reasons: [{ es: "2 archivos", en: "2 files" }] },
+    tasks: { done: 1, total: 1 },
+    tab: "history",
+  };
 }
 
 /** Lets the store load and the source answer. */
@@ -107,7 +154,10 @@ const range = (from: number, to: number) =>
   Array.from({ length: to - from + 1 }, (_, index) => String(from + index).padStart(2, "0"));
 
 describe("the pages of finished changes in the store", () => {
-  afterEach(() => TestBed.resetTestingModule());
+  afterEach(() => {
+    TestBed.resetTestingModule();
+    vi.unstubAllGlobals();
+  });
 
   it("AC1: keeps the open changes apart and takes the finished ones only from the pages", async () => {
     const source = new Archive();
@@ -220,55 +270,34 @@ describe("the pages of finished changes in the store", () => {
     expect([ids.length, new Set(ids).size]).toEqual([71, 71]);
   });
 
-  it("AC1: a finished slice takes the title of its epic from the epic loaded, or else from the page", async () => {
+  it("AC4: a finished slice takes the title of its epic from the epic loaded, or else from the page", async () => {
     const epic = "20261015-panel";
     const gone = "20260901-epica-archivada";
     const [base] = OPEN;
     if (base === undefined) fail();
-    const made = (
-      id: string,
-      spec: string,
-      kind: "epic" | "standard",
-      phase: "implementing" | "done",
-    ) => ({
+    const epicRecord: ChangeRecord = {
       ...base,
-      spec,
-      state: { ...base.state, id, kind, phase, branch: `specty/${id}` },
-    });
-    const epicRecord = made(
-      epic,
-      "---\nkind: epic\n---\n\n# Panel académico\n\n## Objetivo\n\nSeguimiento.\n\n## Cortes\n\n- C1: Asistencia por curso\n  - ac: AC1\n",
-      "epic",
-      "implementing",
-    );
-    const slice = (id: string, of: string, cut: string) =>
-      made(
-        id,
-        `---\nkind: standard\nepic: ${of}\nslice: ${cut}\n---\n\n# Corte ${cut}\n`,
-        "standard",
-        "done",
-      );
-    const page: FinishedPage = {
-      records: [slice("20261016-corte-uno", epic, "C1"), slice("20261002-corte-dos", gone, "C2")],
+      spec: "---\nkind: epic\n---\n\n# Panel académico\n\n## Objetivo\n\nSeguimiento.\n\n## Cortes\n\n- C1: Asistencia por curso\n  - ac: AC1\n",
+      state: { ...base.state, id: epic, kind: "epic", phase: "implementing", branch: "specty/p" },
+    };
+    answering({
+      changes: [
+        summary("20261016-corte-uno", "Corte C1", {
+          id: epic,
+          title: "Un título más viejo",
+          slice: "C1",
+        }),
+        summary("20261002-corte-dos", "Corte C2", {
+          id: gone,
+          title: "Épica archivada",
+          slice: "C2",
+        }),
+      ],
       total: 2,
       counts: { done: 2, cancelled: 0 },
       finished: 2,
-      epics: { [epic]: "Un título más viejo", [gone]: "Épica archivada" },
-    };
-    class Crafted extends SpectyData {
-      changes(): Promise<readonly ChangeRecord[]> {
-        return Promise.resolve([epicRecord]);
-      }
-
-      override finished(): Promise<FinishedPage> {
-        return Promise.resolve(page);
-      }
-
-      subscribe(): () => void {
-        return () => undefined;
-      }
-    }
-    const store = setup(new Crafted());
+    });
+    const store = setup(new Paged([epicRecord]));
     await settle();
     await store.pages.ask(QUERY);
     await settle();
@@ -276,6 +305,35 @@ describe("the pages of finished changes in the store", () => {
       { id: epic, title: "Panel académico", slice: "C1", sliceTitle: "Asistencia por curso" },
       { id: gone, title: "Épica archivada", slice: "C2" },
     ]);
+  });
+
+  it("AC4: keeps each summary of a page as the server gives it, without deriving it", async () => {
+    const summaries = [
+      summary("20261016-boletin-pdf", "Boletín en PDF", {
+        id: "20261001-boletines",
+        title: "Boletines",
+        slice: "C1",
+        sliceTitle: "Un PDF por alumno",
+      }),
+      summary("20261017-avisos", "Avisos de faltas"),
+    ];
+    answering({ changes: summaries, total: 2, counts: { done: 2, cancelled: 0 }, finished: 2 });
+    const asked: string[] = [];
+    const store = setup(new Paged(OPEN), (records) => {
+      asked.push(...records.map((record) => record.state.id));
+      return derived(records);
+    });
+    await settle();
+    await store.pages.ask(QUERY);
+    await settle();
+    expect(store.finished()).toEqual(summaries);
+    expect([store.pages.total(), store.pages.finished(), store.pages.complete()]).toEqual([
+      2,
+      2,
+      true,
+    ]);
+    // Only the open changes the list gives are derived; the pages' summaries, never.
+    expect(new Set(asked)).toEqual(new Set(OPEN.map((record) => record.state.id)));
   });
 });
 

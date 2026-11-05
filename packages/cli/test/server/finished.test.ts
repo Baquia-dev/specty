@@ -17,12 +17,21 @@ interface Finished {
   readonly epic?: string;
   readonly slice?: string;
   readonly size?: "S" | "M" | "L" | "XL";
+  /** The lines of its spec after its title. */
+  readonly body?: readonly string[];
+  /** The tasks it did, as its state says them. */
+  readonly done?: readonly string[];
+  /** When it was created: its audit begins with that `change.created`. */
+  readonly created?: string;
 }
 
 const EPIC = "20261001-panel-academico";
 const LOST_EPIC = "20260901-perdida";
 
-/** The oldest first: an epic, its slice, a slice whose epic is gone and a cancelled change. */
+/**
+ * The oldest first: an epic whose Cortes name C1, its slice with one of its two tasks done, a
+ * slice whose epic is gone and a cancelled change.
+ */
 const SPECIAL: readonly Finished[] = [
   {
     id: EPIC,
@@ -30,6 +39,7 @@ const SPECIAL: readonly Finished[] = [
     phase: "done",
     at: "2026-10-01T08:00:00.000Z",
     kind: "epic",
+    body: ["## Cortes", "", "- C1: Notas por curso", "  - ac: AC1"],
   },
   {
     id: "20261002-notas-del-corte",
@@ -39,6 +49,16 @@ const SPECIAL: readonly Finished[] = [
     epic: EPIC,
     slice: "C1",
     size: "L",
+    body: [
+      "## Tareas",
+      "",
+      "- [x] T1: Las notas de un curso",
+      "  - ac: AC1",
+      "- [ ] T2: El corte las muestra",
+      "  - ac: AC1",
+    ],
+    done: ["T1"],
+    created: "2026-09-30T08:00:00.000Z",
   },
   {
     id: "20261003-huerfano",
@@ -78,17 +98,20 @@ const NEWEST: readonly Finished[] = [
 ];
 const ALL = [...SPECIAL, ...BATCH, ...NEWEST];
 
-/** What `/api/changes/finished` answers, with the fields the tests read. */
+/** What `/api/changes/finished` answers, with the fields the tests read of each summary. */
 interface Page {
-  readonly records: readonly { readonly spec: string; readonly state: { readonly id: string } }[];
+  readonly changes: readonly {
+    readonly id: string;
+    readonly title: string;
+    readonly epic?: Readonly<Record<string, string>>;
+  }[];
   readonly total: number;
   readonly counts: { readonly done: number; readonly cancelled: number };
   readonly finished: number;
-  readonly epics: Readonly<Record<string, string>>;
 }
 
 const short = (id: string) => id.slice(9);
-const idsOf = (page: Page) => page.records.map((record) => short(record.state.id));
+const idsOf = (page: Page) => page.changes.map((change) => short(change.id));
 const lote = (from: number, to: number) =>
   Array.from(
     { length: to - from + 1 },
@@ -114,10 +137,20 @@ function archived(
   const event = change.phase === "done" ? "change.closed" : "change.cancelled";
   // Only the size each change is given: none, and the server works it out from the spec.
   const { size: _unsized, ...rest } = base;
+  const tasks = Object.fromEntries(
+    (change.done ?? []).map((task) => [task, { status: "done", attempts: 1, scopeExtra: [] }]),
+  );
+  const audit = [
+    ...(change.created === undefined
+      ? []
+      : [{ ts: change.created, actor: "agent", event: "change.created", data: {} }]),
+    { ts: change.at, actor: "human", event, data: {} },
+  ];
+  const body = change.body === undefined ? "" : `\n${change.body.join("\n")}\n`;
   return {
-    [`${dir}/spec.md`]: `---\n${front.join("\n")}\n---\n\n# ${change.title}\n`,
-    [`${dir}/state.json`]: `${JSON.stringify({ ...rest, id: change.id, kind, phase: change.phase, ...size })}\n`,
-    [`${dir}/audit.jsonl`]: `${JSON.stringify({ ts: change.at, actor: "human", event, data: {} })}\n`,
+    [`${dir}/spec.md`]: `---\n${front.join("\n")}\n---\n\n# ${change.title}\n${body}`,
+    [`${dir}/state.json`]: `${JSON.stringify({ ...rest, id: change.id, kind, phase: change.phase, tasks, ...size })}\n`,
+    [`${dir}/audit.jsonl`]: audit.map((line) => `${JSON.stringify(line)}\n`).join(""),
   };
 }
 
@@ -163,18 +196,16 @@ describe("the finished changes the server gives by pages", () => {
         ...lote(1, 26),
       ]);
       // The open change is not finished.
-      expect(first.records.map((record) => record.state.id)).not.toContain(CHANGE);
+      expect(first.changes.map((change) => change.id)).not.toContain(CHANGE);
       expect([first.total, first.counts, first.finished]).toEqual([
         37,
         { done: 36, cancelled: 1 },
         37,
       ]);
-      // The title of the epic of each slice in the page; an epic that is gone, by its id.
-      expect(first.epics).toEqual({ [EPIC]: "Panel académico", [LOST_EPIC]: LOST_EPIC });
-      // Each record as `/api/changes/<id>` gives it.
-      for (const record of first.records.slice(0, 5)) {
-        const one = await call(server.port, `/api/changes/${record.state.id}`, { cookie });
-        expect(JSON.parse(one.body)).toEqual(record);
+      // Each change of the page, whole, by its id.
+      for (const change of first.changes.slice(0, 5)) {
+        const one = await call(server.port, `/api/changes/${change.id}`, { cookie });
+        expect([one.status, JSON.parse(one.body).state.id]).toEqual([200, change.id]);
       }
     } finally {
       await server.close();
@@ -265,14 +296,12 @@ describe("the finished changes the server gives by pages", () => {
     const { root, base, server, cookie } = await serving(SPECIAL);
     const chat = "20261004-chat-docentes";
     const byId = `/api/changes/${chat}`;
-    const specOf = async (path: string) => {
-      const records: Page["records"] = path.endsWith("finished")
-        ? (await page(server, cookie)).records
-        : [JSON.parse((await call(server.port, path, { cookie })).body)];
-      return records.find((record) => record.state.id === chat)?.spec ?? "";
-    };
+    // Its title in the page of finished changes, and its spec in its record by its id.
+    const titleInPage = async () =>
+      (await page(server, cookie)).changes.find((change) => change.id === chat)?.title ?? "";
+    const specById = async () => JSON.parse((await call(server.port, byId, { cookie })).body).spec;
     try {
-      expect(await specOf("/api/changes/finished")).toContain("# Chat de docentes");
+      expect(await titleInPage()).toBe("Chat de docentes");
       // Its spec changes on disk, its state does not: what the server read stays.
       await writeFiles(root, {
         [`${ARCHIVE}/${chat}/spec.md`]: "---\nkind: standard\n---\n\n# Chat renombrado\n",
@@ -284,8 +313,8 @@ describe("the finished changes the server gives by pages", () => {
         at: "2026-10-04T10:00:00.000Z",
       };
       await writeFiles(root, archived(base, newcomer));
-      expect(await specOf("/api/changes/finished")).toContain("# Chat de docentes");
-      expect(await specOf(byId)).toContain("# Chat de docentes");
+      expect(await titleInPage()).toBe("Chat de docentes");
+      expect(await specById()).toContain("# Chat de docentes");
       // A change that appears in the archive is read.
       const after = await page(server, cookie);
       expect([after.total, idsOf(after).at(-1)]).toEqual([5, "nuevo"]);
@@ -294,8 +323,147 @@ describe("the finished changes the server gives by pages", () => {
       // Once its state changes, the server reads it again.
       const later = new Date(Date.now() + 60_000);
       await utimes(join(root, `${ARCHIVE}/${chat}/state.json`), later, later);
-      expect(await specOf("/api/changes/finished")).toContain("# Chat renombrado");
-      expect(await specOf(byId)).toContain("# Chat renombrado");
+      expect(await titleInPage()).toBe("Chat renombrado");
+      expect(await specById()).toContain("# Chat renombrado");
+    } finally {
+      await server.close();
+    }
+  });
+});
+
+/** What a change without files weighs, in both languages: the reason every summary here gives. */
+const NO_FILES = [{ es: "0 archivos", en: "0 files" }];
+
+describe("the summary of each finished change in a page", () => {
+  it("AC1: gives each change by its summary, without its spec, state or audit, and no records nor epics", async () => {
+    const { server, cookie } = await serving(SPECIAL);
+    try {
+      const first = await page(server, cookie);
+      expect(Object.keys(first).toSorted()).toEqual(["changes", "counts", "finished", "total"]);
+      expect(first.changes).toEqual([
+        {
+          id: EPIC,
+          title: "Panel académico",
+          kind: "epic",
+          slices: [{ id: "C1", title: "Notas por curso" }],
+          phase: "done",
+          phaseSince: "2026-10-01T08:00:00.000Z",
+          createdAt: "2026-10-01T08:00:00.000Z",
+          closedAt: "2026-10-01T08:00:00.000Z",
+          size: { level: "S", reasons: NO_FILES },
+          tasks: { done: 0, total: 0 },
+          tab: "history",
+        },
+        {
+          id: "20261002-notas-del-corte",
+          title: "Notas del corte",
+          kind: "standard",
+          epic: { id: EPIC, title: "Panel académico", slice: "C1", sliceTitle: "Notas por curso" },
+          phase: "done",
+          phaseSince: "2026-10-01T09:00:00.000Z",
+          createdAt: "2026-09-30T08:00:00.000Z",
+          closedAt: "2026-10-01T09:00:00.000Z",
+          size: { level: "L", reasons: NO_FILES },
+          tasks: { done: 1, total: 2 },
+          tab: "history",
+        },
+        {
+          id: "20261003-huerfano",
+          title: "Corte sin su épica",
+          kind: "standard",
+          epic: { id: LOST_EPIC, title: LOST_EPIC, slice: "C3" },
+          phase: "done",
+          phaseSince: "2026-10-01T10:00:00.000Z",
+          createdAt: "2026-10-01T10:00:00.000Z",
+          closedAt: "2026-10-01T10:00:00.000Z",
+          size: { level: "S", reasons: NO_FILES },
+          tasks: { done: 0, total: 0 },
+          tab: "history",
+        },
+        {
+          id: "20261004-chat-docentes",
+          title: "Chat de docentes",
+          kind: "standard",
+          phase: "cancelled",
+          phaseSince: "2026-10-01T11:00:00.000Z",
+          createdAt: "2026-10-01T11:00:00.000Z",
+          closedAt: "2026-10-01T11:00:00.000Z",
+          size: { level: "M", reasons: NO_FILES },
+          tasks: { done: 0, total: 0 },
+          tab: "history",
+        },
+      ]);
+    } finally {
+      await server.close();
+    }
+  });
+
+  it("AC2: gives a slice the titles of its epic and of its slice, with the epic open or archived, or else the epic's id", async () => {
+    const { root, base, server, cookie } = await serving(SPECIAL);
+    try {
+      // The open change becomes an epic whose Cortes name C1, and two of its slices finish.
+      const epicSpec = [
+        "---",
+        "kind: epic",
+        "---",
+        "",
+        "# Saludo en la portada",
+        "",
+        "## Cortes",
+        "",
+        "- C1: Saludo por nombre",
+        "  - ac: AC1",
+        "",
+      ].join("\n");
+      const slice = (id: string, title: string, cut: string, at: string): Finished => ({
+        id,
+        title,
+        phase: "done",
+        at,
+        epic: CHANGE,
+        slice: cut,
+      });
+      await writeFiles(root, {
+        [`.specty/changes/${CHANGE}/spec.md`]: epicSpec,
+        [`.specty/changes/${CHANGE}/state.json`]: `${JSON.stringify({ ...base, kind: "epic" })}\n`,
+        ...archived(
+          base,
+          slice(
+            "20261008-saludo-por-nombre",
+            "Saludo por nombre",
+            "C1",
+            "2026-10-04T10:00:00.000Z",
+          ),
+        ),
+        ...archived(
+          base,
+          slice("20261009-saludo-de-noche", "Saludo de noche", "C2", "2026-10-04T11:00:00.000Z"),
+        ),
+      });
+      const epics = Object.fromEntries(
+        (await page(server, cookie)).changes.map((change) => [short(change.id), change.epic]),
+      );
+      expect(epics).toEqual({
+        "panel-academico": undefined,
+        // Its epic archived, whose Cortes name its slice.
+        "notas-del-corte": {
+          id: EPIC,
+          title: "Panel académico",
+          slice: "C1",
+          sliceTitle: "Notas por curso",
+        },
+        // Its epic is gone: its id.
+        huerfano: { id: LOST_EPIC, title: LOST_EPIC, slice: "C3" },
+        "chat-docentes": undefined,
+        // Its epic open: its title, and its slice's when its Cortes name it.
+        "saludo-por-nombre": {
+          id: CHANGE,
+          title: "Saludo en la portada",
+          slice: "C1",
+          sliceTitle: "Saludo por nombre",
+        },
+        "saludo-de-noche": { id: CHANGE, title: "Saludo en la portada", slice: "C2" },
+      });
     } finally {
       await server.close();
     }

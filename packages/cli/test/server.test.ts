@@ -194,15 +194,21 @@ describe("the local server", () => {
         ask(server.port, `/api/changes/${encodeURIComponent(id)}`, headers);
       expect((await one(CHANGE)).status).toBe(403);
       const cookie = await enter(server);
-      const list: { state: { id: string } }[] = [
-        ...JSON.parse((await ask(server.port, "/api/changes", { cookie })).body),
-        ...JSON.parse((await ask(server.port, "/api/changes/finished", { cookie })).body).records,
-      ];
-      for (const id of [OTHER, CHANGE]) {
-        const answer = await one(id, { cookie });
-        expect([id, answer.status]).toEqual([id, 200]);
-        expect(JSON.parse(answer.body)).toEqual(list.find((record) => record.state.id === id));
-      }
+      const list: { state: { id: string } }[] = JSON.parse(
+        (await ask(server.port, "/api/changes", { cookie })).body,
+      );
+      const page: { changes: { id: string }[] } = JSON.parse(
+        (await ask(server.port, "/api/changes/finished", { cookie })).body,
+      );
+      // The open one as the list gives it; the archived one, the change its page summarizes.
+      const open = await one(OTHER, { cookie });
+      expect([open.status, JSON.parse(open.body)]).toEqual([
+        200,
+        list.find((record) => record.state.id === OTHER),
+      ]);
+      expect(page.changes.map((change) => change.id)).toEqual([CHANGE]);
+      const archived = await one(CHANGE, { cookie });
+      expect([archived.status, JSON.parse(archived.body).state.id]).toEqual([200, CHANGE]);
       const unknown = await one("20990101-no-existe", { cookie });
       expect([unknown.status, JSON.parse(unknown.body)]).toEqual([404, { error: "not found" }]);
     } finally {
@@ -215,13 +221,13 @@ describe("the local server", () => {
     const server = await startServer({ session: await sessionAt(root), port: 0, ui: undefined });
     try {
       const cookie = await enter(server);
-      const page: { records: { state: { id: string } }[] } = JSON.parse(
+      const page: { changes: { id: string }[] } = JSON.parse(
         (await ask(server.port, "/api/changes/finished", { cookie })).body,
       );
-      const finished = page.records.find((record) => record.state.id === CHANGE);
+      const finished = page.changes.find((change) => change.id === CHANGE);
       expect(finished).toBeDefined();
       const one = await ask(server.port, `/api/changes/${CHANGE}`, { cookie });
-      expect([one.status, JSON.parse(one.body)]).toEqual([200, finished]);
+      expect([one.status, JSON.parse(one.body).state.id]).toEqual([200, CHANGE]);
       const diff = await ask(server.port, `/api/changes/${CHANGE}/diff`, { cookie });
       expect([diff.status, diff.headers["content-type"]]).toEqual([
         200,

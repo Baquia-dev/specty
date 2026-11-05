@@ -108,7 +108,7 @@ describe("the server and a change without its folder", () => {
       ]);
       // The archived change is there: in its page of finished changes and by its id.
       const page = JSON.parse((await call(server.port, "/api/changes/finished", headers)).body);
-      expect(listed(page.records)).toEqual([[ARCHIVED, false]]);
+      expect(page.changes.map((change: { id: string }) => change.id)).toEqual([ARCHIVED]);
       expect((await call(server.port, `/api/changes/${ARCHIVED}`, headers)).status).toBe(200);
     } finally {
       await server.close();

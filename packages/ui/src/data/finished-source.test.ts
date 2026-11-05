@@ -2,9 +2,10 @@
 // The finished changes in pages, as each source gives them: the local server answers
 // `GET /api/changes/finished`; a source that does not page works the page out in memory.
 import { sampleRecords } from "./fixtures";
-import { ActionError, type ChangeRecord, SpectyData } from "./records";
+import { ActionError, type ChangeRecord, type ChangeView, SpectyData } from "./records";
 import { ServerData } from "./server";
-import type { FinishedPage, FinishedRequest } from "./source";
+import type { FinishedRequest } from "./source";
+import { deriveViews } from "./views";
 
 const FIRST: FinishedRequest = {
   offset: 0,
@@ -17,6 +18,46 @@ const FIRST: FinishedRequest = {
 
 const EPIC = "20261015-panel";
 const HOUR = 3_600_000;
+const SLICE = "20261013-archivo-de-avisos";
+const CHAT = "20261014-chat-docentes";
+const ROUNDING = "20261015-redondeo-promedios";
+
+/** A finished slice and a cancelled change, as the local server summarizes them. */
+const SUMMARIES = [
+  {
+    id: SLICE,
+    title: "Archivo de avisos",
+    kind: "standard",
+    epic: { id: EPIC, title: "Panel académico", slice: "C1", sliceTitle: "Asistencia por curso" },
+    phase: "done",
+    phaseSince: "2026-10-13T10:00:00.000Z",
+    createdAt: "2026-10-12T09:00:00.000Z",
+    closedAt: "2026-10-13T10:00:00.000Z",
+    size: { level: "M", reasons: [{ es: "6 archivos", en: "6 files" }] },
+    tasks: { done: 2, total: 2 },
+    tab: "history",
+  },
+  {
+    id: CHAT,
+    title: "Chat de docentes",
+    kind: "standard",
+    phase: "cancelled",
+    phaseSince: "2026-10-14T10:00:00.000Z",
+    createdAt: "2026-10-14T08:00:00.000Z",
+    closedAt: "2026-10-14T10:00:00.000Z",
+    size: { level: "S", reasons: [{ es: "1 archivo", en: "1 file" }] },
+    tasks: { done: 0, total: 1 },
+    tab: "history",
+  },
+];
+
+/** A page with those two summaries, as the local server answers it. */
+const PAGE = {
+  changes: SUMMARIES,
+  total: 2,
+  counts: { done: 1, cancelled: 1 },
+  finished: 2,
+};
 
 /** `fetch` answering every request with `status` and `body` as JSON. */
 function answering(status: number, body: unknown) {
@@ -75,23 +116,35 @@ class Listed extends SpectyData {
   }
 }
 
-const short = (page: FinishedPage) => page.records.map((record) => record.state.id);
+/** A page whose changes are, in this order, those of `ids`, for `toMatchObject`. */
+const listing = (...ids: readonly string[]) => ({ changes: ids.map((id) => ({ id })) });
+
+/** What a list shows of a change: the fields of its summary, taken from its whole view. */
+function summaryOf(view: ChangeView | undefined) {
+  if (view === undefined) throw new Error("no such change");
+  const { id, title, kind, epic, slices, phase, phaseSince, createdAt, closedAt } = view;
+  const { size, tasks, tab } = view;
+  return {
+    id,
+    title,
+    kind,
+    epic,
+    slices,
+    phase,
+    phaseSince,
+    createdAt,
+    closedAt,
+    size,
+    tasks,
+    tab,
+  };
+}
 
 describe("the finished changes in pages", () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it("AC5: asks GET /api/changes/finished for the page, with its search, phase, sort and language", async () => {
-    const records = sampleRecords(Date.now()).filter(
-      (record) => record.state.phase === "done" || record.state.phase === "cancelled",
-    );
-    const page: FinishedPage = {
-      records,
-      total: 2,
-      counts: { done: 1, cancelled: 1 },
-      finished: 2,
-      epics: { [EPIC]: "Panel académico" },
-    };
-    const fetched = answering(200, page);
+    const fetched = answering(200, PAGE);
     const request: FinishedRequest = {
       offset: 30,
       limit: 30,
@@ -100,7 +153,7 @@ describe("the finished changes in pages", () => {
       sort: "title",
       lang: "en",
     };
-    expect(await new ServerData().finished(request)).toEqual(page);
+    expect(await new ServerData().finished(request)).toEqual(PAGE);
     expect(fetched).toHaveBeenCalledTimes(1);
     const asked = new URL(String(fetched.mock.calls[0]?.[0]), "http://localhost");
     expect(asked.pathname).toBe("/api/changes/finished");
@@ -134,58 +187,90 @@ describe("the finished changes in pages", () => {
     const source = new Listed(records);
     const first = await source.finished(FIRST);
     // What waits longest first: the cancelled chat (72 h), the rounding (26 h), the slice (1 h).
-    expect(short(first)).toEqual([
-      "20261014-chat-docentes",
-      "20261015-redondeo-promedios",
-      "20261013-archivo-de-avisos",
-    ]);
-    expect(first.records).toEqual(
-      first.records.map((record) => records.find((given) => given.state.id === record.state.id)),
-    );
-    expect([first.total, first.counts, first.finished]).toEqual([3, { done: 2, cancelled: 1 }, 3]);
-    // The title of the epic of each slice in the page, from the epic it gives.
-    expect(first.epics).toEqual({ [EPIC]: "Panel académico" });
-
+    expect(first).toMatchObject({
+      ...listing(CHAT, ROUNDING, SLICE),
+      total: 3,
+      counts: { done: 2, cancelled: 1 },
+      finished: 3,
+    });
     const second = await source.finished({ ...FIRST, offset: 1, limit: 1 });
-    expect([short(second), second.total, second.epics]).toEqual([
-      ["20261015-redondeo-promedios"],
-      3,
-      {},
-    ]);
-    expect((await source.finished({ ...FIRST, limit: 0 })).records).toEqual([]);
+    expect(second).toMatchObject({ ...listing(ROUNDING), total: 3 });
+    expect(await source.finished({ ...FIRST, limit: 0 })).toMatchObject(listing());
   });
 
   it("AC6: finds, filters, counts and sorts the finished changes in memory, as the server does", async () => {
     const source = new Listed(withSlice());
     const found = await source.finished({ ...FIRST, query: "CHAT" });
-    expect([short(found), found.total, found.counts, found.finished]).toEqual([
-      ["20261014-chat-docentes"],
-      1,
-      { done: 0, cancelled: 1 },
-      3,
-    ]);
+    expect(found).toMatchObject({
+      ...listing(CHAT),
+      total: 1,
+      counts: { done: 0, cancelled: 1 },
+      finished: 3,
+    });
     // The search looks at the epic's title too, without accents.
-    expect(short(await source.finished({ ...FIRST, query: "panel academico" }))).toEqual([
-      "20261013-archivo-de-avisos",
-    ]);
+    expect(await source.finished({ ...FIRST, query: "panel academico" })).toMatchObject(
+      listing(SLICE),
+    );
     const done = await source.finished({ ...FIRST, phase: "done" });
-    expect([short(done), done.total, done.counts]).toEqual([
-      ["20261015-redondeo-promedios", "20261013-archivo-de-avisos"],
-      2,
-      { done: 2, cancelled: 1 },
-    ]);
+    expect(done).toMatchObject({
+      ...listing(ROUNDING, SLICE),
+      total: 2,
+      counts: { done: 2, cancelled: 1 },
+    });
     // An open phase finds no finished change; the counts stay those of the search.
     const open = await source.finished({ ...FIRST, phase: "review" });
-    expect([short(open), open.total, open.counts]).toEqual([[], 0, { done: 2, cancelled: 1 }]);
-    expect(short(await source.finished({ ...FIRST, sort: "recent" }))).toEqual([
-      "20261013-archivo-de-avisos",
-      "20261015-redondeo-promedios",
-      "20261014-chat-docentes",
-    ]);
-    expect(short(await source.finished({ ...FIRST, sort: "title" }))).toEqual([
-      "20261013-archivo-de-avisos",
-      "20261014-chat-docentes",
-      "20261015-redondeo-promedios",
-    ]);
+    expect(open).toMatchObject({ ...listing(), total: 0, counts: { done: 2, cancelled: 1 } });
+    expect(await source.finished({ ...FIRST, sort: "recent" })).toMatchObject(
+      listing(SLICE, ROUNDING, CHAT),
+    );
+    expect(await source.finished({ ...FIRST, sort: "title" })).toMatchObject(
+      listing(SLICE, CHAT, ROUNDING),
+    );
+  });
+
+  it("AC3: a source that gives every change gives each finished one by the summary the UI derives, without the epics", async () => {
+    const records = withSlice();
+    const views = deriveViews(records);
+    const summary = (id: string) => summaryOf(views.find((view) => view.id === id));
+    expect(await new Listed(records).finished(FIRST)).toEqual({
+      changes: [summary(CHAT), summary(ROUNDING), summary(SLICE)],
+      total: 3,
+      counts: { done: 2, cancelled: 1 },
+      finished: 3,
+    });
+    // The slice carries the titles of its epic and of its slice, from the epic it gives.
+    expect(summary(SLICE).epic).toEqual({
+      id: EPIC,
+      title: "Panel académico",
+      slice: "C1",
+      sliceTitle: "Asistencia por curso",
+    });
+  });
+
+  it("AC4: takes the summaries of a page as the server gives them, and explains a page of records or a summary it cannot read", async () => {
+    answering(200, PAGE);
+    expect(await new ServerData().finished(FIRST)).toEqual(PAGE);
+    const unexpected = "El servidor devolvió datos inesperados.";
+    // A page as the server gave them before: whole records and the titles of their epics.
+    answering(200, {
+      records: sampleRecords(Date.now()),
+      total: 2,
+      counts: { done: 1, cancelled: 1 },
+      finished: 2,
+      epics: { [EPIC]: "Panel académico" },
+    });
+    expect(await failure()).toBe(unexpected);
+    const [slice, chat] = SUMMARIES;
+    if (slice === undefined || chat === undefined) throw new Error("no summaries");
+    const { title: _untitled, ...untitled } = chat;
+    for (const odd of [
+      untitled,
+      { ...slice, epic: { id: EPIC, slice: "C1" } },
+      { ...chat, tasks: { done: "0", total: 1 } },
+      { ...chat, size: { level: "S" } },
+    ]) {
+      answering(200, { ...PAGE, changes: [slice, odd] });
+      expect(await failure()).toBe(unexpected);
+    }
   });
 });

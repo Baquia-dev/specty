@@ -6,6 +6,13 @@
   "branch": "specty/20261106-las-paginas-de-terminados-dan-solo-el-resumen",
   "baseCommit": "01598fbba743bc0a0f39a0b88a99b3e9cf6b2223",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5e42ec1644d5415e5df3a0b476d7decf4770d07231e35a385fff4740c3f6c970",
+    "at": "2026-11-05T18:53:27.110Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5e42ec1644d5415e5df3a0b476d7decf4770d07231e35a385fff4740c3f6c970",
-    "at": "2026-11-05T18:53:27.110Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T19:01:01.999Z"
 }
