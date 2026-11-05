@@ -73,7 +73,7 @@ Hoy, para saber qué pendientes dejó un cambio o cuáles resolvió, hay que ir 
   - files: packages/ui/src/change/change-memory.ts, packages/ui/src/change/change-page.ts, packages/ui/src/memory/memory-lines.ts, packages/ui/src/memory/memory-page.ts, packages/ui/src/change/change-memory.test.ts
   - ac: AC1, AC2, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/change-memory.test.ts --include src/change/change-page.test.ts --include src/memory/memory-page.test.ts --include src/memory/memory-actions.test.ts --include src/memory/memory-lines.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck
-- [ ] T3: El prototipo muestra las entradas del cambio terminado de muestra
+- [x] T3: El prototipo muestra las entradas del cambio terminado de muestra
   - files: packages/ui/src/data/sample-memory.ts, packages/ui/src/data/sample-memory.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/sample-memory.test.ts --include src/change/change-page.unloaded.test.ts --include src/history/history-tab.test.ts --include src/history/history-export.test.ts --include src/memory/memory-toolbar.test.ts --include src/memory/memory-actions.test.ts && pnpm typecheck

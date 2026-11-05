@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "72047ed80ef3117998d922af1e16fe32a555305f",
+      "attempts": 1,
       "startedAt": "2026-11-05T21:38:26.086Z",
       "doneAt": "2026-11-05T21:40:45.914Z",
-      "summary": "sp-change-memory pinta en la cabecera «En la memoria»: las entradas que salieron del cambio o que tomó, con su estado y su id enlazado a la Memoria buscada. ENTRY_KINDS y firstLine pasan a memory-lines.ts."
+      "summary": "sp-change-memory pinta en la cabecera «En la memoria»: las entradas que salieron del cambio o que tomó, con su estado y su id enlazado a la Memoria buscada. ENTRY_KINDS y firstLine pasan a memory-lines.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2fb96fb568fb0e35775f35aff28e25f517f3a5ba",
+      "startedAt": "2026-11-05T21:40:46.208Z",
+      "doneAt": "2026-11-05T21:42:10.776Z",
+      "summary": "El prototipo da un pendiente abierto que salió de 20261015-redondeo-promedios y una mejora que ese cambio tomó y quedó hecha, con su origen en origins."
     }
   },
   "pending": {
