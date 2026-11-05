@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-lista-de-cambios-del-servidor-solo-da-los",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-lista-de-cambios-del-servidor-solo-da-los",
   "baseCommit": "77ec35b2a1dc3c1654f7e75785c75d3b006542cd",
   "revision": 2,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5e50d17287f5469e28b578059c1520f9c56ada33",
+      "attempts": 1,
       "startedAt": "2026-11-05T14:39:33.499Z",
       "doneAt": "2026-11-05T14:40:30.416Z",
-      "summary": "«Exportar» pide el cambio con SpectyData.change(id) en lugar de buscarlo en changes(); comentarios de las fuentes de prueba y docs/ui.md al día"
+      "summary": "«Exportar» pide el cambio con SpectyData.change(id) en lugar de buscarlo en changes(); comentarios de las fuentes de prueba y docs/ui.md al día",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0961057b91f5e8acf7de241ec1cb5fab2cc27985",
+      "startedAt": "2026-11-05T14:40:30.821Z",
+      "doneAt": "2026-11-05T14:42:50.194Z",
+      "summary": "GET /api/changes sirve openRecords (abiertos y sin carpeta); changeRecords sigue con todos para /api/changes/<id>, diff, traza y specty_view; finished.test.ts compara por id; ARCHITECTURE §15 al día"
     }
   },
   "pending": {

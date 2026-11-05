@@ -60,7 +60,7 @@ Hoy `GET /api/changes` da los cambios abiertos, los que perdieron su carpeta y t
   - files: packages/ui/src/history/history-export.ts, packages/ui/src/history/history-export.test.ts, packages/ui/src/inbox/inbox-more.test.ts, packages/ui/src/data/finished-pages.test.ts, docs/ui.md
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/history-export.test.ts && pnpm lint
-- [ ] T2: `GET /api/changes` da solo los abiertos y los que perdieron su carpeta
+- [x] T2: `GET /api/changes` da solo los abiertos y los que perdieron su carpeta
   - files: packages/cli/src/server/records.ts, packages/cli/src/server/http.ts, packages/cli/src/mcp/app.ts, packages/cli/test/server.test.ts, packages/cli/test/server-restore.test.ts, packages/cli/test/server/finished.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts test/server-restore.test.ts test/server/finished.test.ts test/server/diff.test.ts test/server/records.test.ts test/mcp-app-change.test.ts && pnpm typecheck && pnpm lint

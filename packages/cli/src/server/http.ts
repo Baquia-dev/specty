@@ -20,7 +20,7 @@ import {
 import { changeDiff, type DiffAnswer } from "./diff";
 import { type ChangeEvents, changeEvents } from "./events";
 import { finishedPage } from "./finished";
-import { changeRecord, changeRecords } from "./records";
+import { changeRecord, openRecords } from "./records";
 import { changeRuns, type Runs } from "./runs";
 import { sessionsView } from "./sessions";
 import { changeTrace, traceReply } from "./trace";
@@ -196,7 +196,7 @@ type View = (session: Session, params: URLSearchParams) => Promise<unknown>;
 
 /** The reads that need nothing else: each path and its view. */
 const VIEWS: ReadonlyMap<string, View> = new Map<string, View>([
-  ["/api/changes", changeRecords],
+  ["/api/changes", openRecords],
   ["/api/changes/finished", finishedPage],
   ["/api/delegation", delegationView],
   ["/api/memory", memoryView],
@@ -212,7 +212,7 @@ async function memoryView(session: Session) {
   return { entries, changes: await openChanges(session) };
 }
 
-/** A change by its id, open or archived, as `/api/changes` gives it; 404 when there is none. */
+/** A change by its id, open or archived, as `changeRecords` gives it; 404 when there is none. */
 async function readRecord(response: ServerResponse, context: Context, id: string) {
   const record = await changeRecord(context.session, decodeURIComponent(id));
   return record === undefined
