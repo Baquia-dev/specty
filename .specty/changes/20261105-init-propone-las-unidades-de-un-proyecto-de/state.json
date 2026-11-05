@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-init-propone-las-unidades-de-un-proyecto-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-init-propone-las-unidades-de-un-proyecto-de",
   "baseCommit": "e0230281b45808ed67da361b02c917cb2dbbbf59",
   "revision": 1,
@@ -54,6 +54,7 @@
     "T": 1,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T13:53:08.427Z"
+  "lockedTests": {
+    "packages/cli/test/units-gradle.test.ts": "sha256:e3c9f33497b0380661252d327fb1662df0128e70020f195ddd5b4ac5f1f4edf8"
+  }
 }
