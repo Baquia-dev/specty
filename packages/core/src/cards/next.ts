@@ -166,6 +166,7 @@ const SECTIONS: Readonly<Record<string, readonly [string, string]>> = {
   design: ["Diseño", "Design"],
   files: ["Archivos", "Files"],
   tasks: ["Tareas", "Tasks"],
+  slices: ["Cortes", "Slices"],
   risks: ["Riesgos", "Risks"],
 };
 

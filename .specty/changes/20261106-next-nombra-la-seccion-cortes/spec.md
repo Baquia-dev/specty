@@ -15,7 +15,7 @@ La tarjeta de `specty next` nombra «Cortes» («Slices» en inglés) la secció
 
 ## Tareas
 
-- [ ] T1: La tarjeta de next nombra la sección Cortes de un comentario citado
+- [x] T1: La tarjeta de next nombra la sección Cortes de un comentario citado
   - files: packages/core/src/cards/next.ts, packages/core/test/cards.test.ts
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts && pnpm typecheck && pnpm lint
   - type: fix
