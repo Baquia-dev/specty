@@ -59,3 +59,22 @@ Desde C1, `proposedUnits` prueba en orden una lista de detectores de workspace, 
 ## Riesgos
 
 - R1: C2 añade `smol-toml`, exporta `expand` y cambia la línea de `DETECTORS` en paralelo — las dos primeras son las mismas líneas y git las une solas; la de `DETECTORS` se resuelve al incorporar main con todos los detectores tras el de JavaScript, y el lector de TOML de los dos detectores puede quedar en uno después.
+
+## Cierre
+
+### Resumen
+
+`specty init` propone las unidades de `verify.units` de un workspace de uv con al menos dos miembros con tests. El detector nuevo, `uvWorkspace` en `detect/units-uv.ts`, lee con `smol-toml` el `[tool.uv.workspace]` del `pyproject.toml` de la raíz, expande `members` y `exclude` con `expand`, ahora exportado, y lee el `pyproject.toml` de cada miembro. Devuelve un paquete por miembro con `project.name`, con tests si tiene carpeta `tests`, con `uv run --package <nombre> pytest <carpeta>` como comando y con los miembros que nombran sus listas de dependencias, comparados como PEP 503. Los archivos compartidos son los que existen de `pyproject.toml`, `uv.lock`, `.python-version`, `pytest.ini` y `conftest.py`. No encuentra workspace sin esa tabla, con un proyecto en la raíz o con menos de dos miembros. Va en `DETECTORS` tras los de JavaScript, Cargo y Go.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `smol-toml` en las `devDependencies` de la CLI y la exportación de `expand` se escribieron con las mismas líneas que C2, para que git las uniera solas al incorporar main; solo chocó la línea de `DETECTORS`, que quedó con los cuatro detectores en el orden de la épica.
+- Los requisitos cuentan por nombre normalizado aunque `tool.uv.sources` no los marque con `workspace = true`: una carpeta de más en una unidad solo la repite de más, y una de menos dejaría sin ejecutar tests afectados.
+
+### Pendientes
+
+- P172: unificar el lector de TOML y `strings()` que repiten `units-cargo.ts` y `units-uv.ts`.

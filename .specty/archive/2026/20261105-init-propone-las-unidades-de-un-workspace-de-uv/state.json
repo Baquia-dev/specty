@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-init-propone-las-unidades-de-un-workspace-de-uv",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-init-propone-las-unidades-de-un-workspace-de-uv",
   "baseCommit": "d6543b9f4616101e9cf4c130031457af62cd967d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:9bf7860cfd014caf418b318675971e2d030bf3513c4224713b78cfe067bcae91",
@@ -51,12 +51,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5c03e20c71cb2b0dd419a9e64c321462a81b06e3",
+      "attempts": 1,
       "startedAt": "2026-11-05T13:47:35.902Z",
       "doneAt": "2026-11-05T13:48:52.266Z",
-      "summary": "Detector uvWorkspace (detect/units-uv.ts) tras el de Go: lee [tool.uv.workspace] con smol-toml, expande members/exclude con expand exportado y propone uv run --package <nombre> pytest <carpeta> por miembro con tests, con sus dependencias entre miembros."
+      "summary": "Detector uvWorkspace (detect/units-uv.ts) tras el de Go: lee [tool.uv.workspace] con smol-toml, expande members/exclude con expand exportado y propone uv run --package <nombre> pytest <carpeta> por miembro con tests, con sus dependencias entre miembros.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,7 +69,32 @@
     "T": 1,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-05T13:53:21.265Z",
   "lockedTests": {
     "packages/cli/test/units-uv.test.ts": "sha256:687eae4ac3409703a32252763054b7a03362876e38abb062d37c282292bacfed"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "e0230281b45808ed67da361b02c917cb2dbbbf59",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/cli/src/detect/workspace-units.ts"
+    ],
+    "paths": [
+      "packages/cli/package.json",
+      "packages/cli/src/detect/project.ts",
+      "packages/cli/src/detect/units-cargo.ts",
+      "packages/cli/src/detect/units-uv.ts",
+      "packages/cli/src/detect/workspace-units.ts",
+      "packages/cli/test/init-units-cargo.test.ts",
+      "packages/cli/test/units-cargo.test.ts",
+      "packages/cli/test/units-uv.test.ts",
+      "pnpm-lock.yaml"
+    ],
+    "at": "2026-11-05T13:49:11.129Z",
+    "resolved": {
+      "commit": "2b600df",
+      "at": "2026-11-05T13:52:32.384Z"
+    }
   }
 }
