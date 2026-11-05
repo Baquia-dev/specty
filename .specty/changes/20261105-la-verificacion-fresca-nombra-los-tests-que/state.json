@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-verificacion-fresca-nombra-los-tests-que",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-verificacion-fresca-nombra-los-tests-que",
   "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8c79b73dcc518fe2188ca9c0fd9185081ca6b2dd",
+      "attempts": 1,
       "startedAt": "2026-11-05T08:44:31.708Z",
       "doneAt": "2026-11-05T08:50:14.921Z",
-      "summary": "verify --fresh lee, tras cada intento que falla, los tests que fallaron en los informes JUnit nuevos de checks.testTime.reports (failedTestsSince en check/test-time.ts, con la lectura y el anclaje de slowTestsSince) y los pasa a la tarjeta"
+      "summary": "verify --fresh lee, tras cada intento que falla, los tests que fallaron en los informes JUnit nuevos de checks.testTime.reports (failedTestsSince en check/test-time.ts, con la lectura y el anclaje de slowTestsSince) y los pasa a la tarjeta",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "88efeb188690868ce0c5ab282c648d69b2fa3e71",
+      "startedAt": "2026-11-05T08:50:15.263Z",
+      "doneAt": "2026-11-05T08:54:55.505Z",
+      "summary": "ARCHITECTURE §6 y formats.md §6 describen los tests que fallaron en la salida de specty verify --fresh, leídos de los informes JUnit de checks.testTime"
     }
   },
   "pending": {

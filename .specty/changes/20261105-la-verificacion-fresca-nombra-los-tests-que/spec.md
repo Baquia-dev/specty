@@ -65,7 +65,7 @@ Cuando una unidad falla en `specty verify --fresh`, la tarjeta solo muestra las 
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-fresh.test.ts test/check-test-time.test.ts test/accept-test-time.test.ts && pnpm typecheck && pnpm lint && pnpm knip && pnpm sources
   - type: feat
-- [ ] T3: La documentación de los tests que fallaron en la verificación fresca
+- [x] T3: La documentación de los tests que fallaron en la verificación fresca
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm lint
