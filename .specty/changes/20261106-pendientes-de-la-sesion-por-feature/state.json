@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "20261106-pendientes-de-la-sesion-por-feature",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261106-pendientes-de-la-sesion-por-feature",
+  "baseCommit": "9f64115f29ac1a85511d34e984eddd53ac37ff90",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d71e3a07b75fa65ee65d2b66bb30759531b01d326d6685ef81699fcd16548d5a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f5d971a276d39c5d26367f9c048e57ee060eea727bb3dc0d41ad57366a287452",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:45b692e47be2229f8fbfe11fef0eef8346192cb296bbbcb30f576154a465b555",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:76c68c7b28b7a52a5b36654bb7ae330c43616ed59d943d4e242f08c3838dd238",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:2f1391a4f2b4993879ffdc20b9ef6adabb85b363b9fa10a4481bf699fa62be4c",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:196a4fa7820d572a3df8680f35ac3f35542d0a97b1efa444567ea03364c1cad8",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:e52a6250b03336534726603cb7d422480050bc0d2e6ef1a73df193cc35c75b73",
+      "decision": "confirmed"
+    },
+    "A8": {
+      "hash": "sha256:470ac384a521cc41dde42e2831424decddbea20bb687b8d629c44a86ed5d0d89",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:112619d6f5ec0bb5b8f2276bbb0d2490586ee8e07da5d0b0db6da29c7408a7ce",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 9,
+    "AC": 10,
+    "C": 5,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4a51b6ad9a1e47ee684dd414e5623bef8cc00f23ea8b3bc1071d4c39ea86a88b",
+    "at": "2026-11-05T19:56:57.454Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
