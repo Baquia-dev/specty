@@ -26,6 +26,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { changeTrailers, commitWithReceipt } from "../flow/commits";
+import { oneAtATime } from "../flow/full-verification";
 import { blocked } from "../flow/integrate";
 import { execute, tail } from "../io/exec";
 import { readText } from "../io/files";
@@ -126,12 +127,15 @@ async function failedVerification(session: Session): Promise<MergeProblem | unde
   const command = config.verify.full ?? config.verify.default;
   if (command === undefined) return undefined;
   session.environment.io.err(verifyingNote(command, lang));
-  const result = await execute(command, [], {
-    cwd: session.root,
-    shell: true,
-    env: session.environment.env,
-    timeoutMs: config.verify.timeoutSec * 1000,
-  });
+  // A full verification like any other: on its turn, with every place of the clone.
+  const result = await oneAtATime(session, command, () =>
+    execute(command, [], {
+      cwd: session.root,
+      shell: true,
+      env: session.environment.env,
+      timeoutMs: config.verify.timeoutSec * 1000,
+    }),
+  );
   if (result.code === 0) return undefined;
   return {
     reason: commandFailsLine(command, lang),
