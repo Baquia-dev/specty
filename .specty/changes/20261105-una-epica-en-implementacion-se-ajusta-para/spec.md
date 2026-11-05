@@ -73,7 +73,7 @@ Un corte que al redactarse sale demasiado grande no tiene salida hoy: `propose` 
   - files: packages/core/src/validate/quality.ts, packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/validate/split-slice.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/split-slice.test.ts test/validate/quality.test.ts test/validate/split-closing.test.ts
-- [ ] T4: `specty adjust` en una épica en implementación, de punta a punta
+- [x] T4: `specty adjust` en una épica en implementación, de punta a punta
   - files: packages/cli/src/commands/adjust.ts, packages/cli/test/epic-adjust.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-adjust.test.ts test/epic.test.ts test/commands.test.ts && pnpm typecheck && pnpm lint

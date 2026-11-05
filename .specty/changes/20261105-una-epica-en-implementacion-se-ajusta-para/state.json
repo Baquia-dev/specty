@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a46fdae9d31b894e5b8a1b2ccfcc9c0216baa4ce",
+      "attempts": 1,
       "startedAt": "2026-11-05T16:30:23.810Z",
       "doneAt": "2026-11-05T16:33:14.865Z",
-      "summary": "checkSplit da slice-split-required (detail, epic) en lugar de split-required cuando el frontmatter nombra una épica; mensajes es/en: estrechar el corte y llevar el resto a cortes nuevos de su épica con adjust"
+      "summary": "checkSplit da slice-split-required (detail, epic) en lugar de split-required cuando el frontmatter nombra una épica; mensajes es/en: estrechar el corte y llevar el resto a cortes nuevos de su épica con adjust",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f13d682ef1886d49504145764cd3aeae36cab5dc",
+      "startedAt": "2026-11-05T16:33:15.207Z",
+      "doneAt": "2026-11-05T16:34:10.568Z",
+      "summary": "adjust pasa epic al rechazo not-in-acceptance; el ajuste de una épica en implementing funciona de punta a punta (AC1-AC5 en test/epic-adjust.test.ts)"
     }
   },
   "pending": {
