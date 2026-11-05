@@ -115,3 +115,37 @@ En el sandbox de terminal de Antigravity CLI (`agy` 1.5.1, `--sandbox`), nada pu
 - R1: Otra versión de `agy` mueve sus ajustes o cambia la forma de la regla. Mitigación: `doctor` solo mira ese archivo y la regla es una entrada más que la persona puede quitar; si se puede, la persona lo comprueba con `agy` real antes de aceptar.
 - R2: Un test que construya su entorno sin `testEnv()` tocaría la carpeta real. Mitigación: los que ejecutan `init` pasan por `cli()` o llaman a `installHooks` con `testEnv()` (`codex.test.ts`, `opencode-install.test.ts`), y la variable de `testEnv()` cubre a todos. AC8 lo comprueba.
 - R3: Escribir en la carpeta del usuario falla por permisos. Mitigación: la escritura va por `install/files.ts`, como la de cualquier archivo de `init`, que da el error; la persona puede añadir la regla a mano, como dice el aviso de archivo inválido.
+
+## Cierre
+
+### Resumen
+
+`specty init --tools antigravity` añade ahora `command(specty)` a `permissions.allow` de los ajustes del CLI de Antigravity (`~/.gemini/antigravity-cli/settings.json`, o `$SPECTY_ANTIGRAVITY_CLI_DIR`), solo cuando existe esa carpeta. Es la excepción D4 a ADR 0013. Crea el archivo, `permissions` o la lista si faltan, añade la regla tras las de la persona y no la repite. Si ya está `command(specty)` o `unsandboxed(specty)`, deja el archivo igual. Unos ajustes que no puede editar no se tocan: avisa con la regla que añadir. `init` avisa siempre, además, de la regla que la persona debe poner en la app, cuyos permisos no están en ningún archivo legible.
+
+`doctor` confirma la regla o pide `specty init --tools antigravity` (y sale con 1) cuando existe la carpeta del CLI. `uninstall` la deja y dice dónde está y cómo quitarla. El adaptador recibe `env` en `install` y en `doctor`, y gana `stays` para lo que queda en la carpeta del usuario. Los textos están en español y en inglés en core. `testEnv()` apunta la variable a una carpeta temporal que nunca existe, así que ningún test toca la carpeta real.
+
+ADR 0013 recoge la excepción. ARCHITECTURE recoge:
+- los hechos del sandbox del CLI (P167);
+- el límite de `BypassSandbox`: Specty no se lo pide al modelo;
+- que los `permissionOverrides` se quedan;
+- lo comprobado en el editor para los subagentes (P158, P168);
+- el límite de `agy -p` en el fin de turno (P152).
+
+La verificación completa pasó tras incorporar main (merge 209717f), y los tests ejecutan el 98 % de las líneas añadidas.
+
+### Desviaciones
+
+- Se quitó del plan el texto que pedía al modelo `BypassSandbox: true`, con su supuesto, antes de aprobar la spec. En la app, el modelo lo rechazó como un intento de eludir el sandbox. Queda como límite documentado.
+
+### Decisiones
+
+- Para aislar los tests, la carpeta del CLI se toma de una variable propia de Specty, `SPECTY_ANTIGRAVITY_CLI_DIR`. Se descartaron dos alternativas:
+  - un `HOME` temporal en `testEnv`, porque lo heredan Go, Cargo, rustup y el E2E de `agy`;
+  - `ANTIGRAVITY_GEMINI_DIR`, porque su efecto no se pudo comprobar.
+- `uninstall` deja la regla, porque la comparten todos los proyectos de la persona.
+- La ruta de los ajustes queda interna a `install/antigravity-cli.ts`: `doctor` y `uninstall` la leen con `cliRule`.
+
+### Pendientes
+
+- P174: comprobar con Antigravity real (la persona) que la regla que escribe `init` deja correr los comandos de Specty en `agy --sandbox` y en la app con el sandbox encendido.
+- P175: si `ANTIGRAVITY_GEMINI_DIR` de `agy` sustituye a `~/.gemini`, valorar honrarla en la ruta de los ajustes del CLI.
