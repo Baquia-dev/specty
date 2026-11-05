@@ -72,7 +72,7 @@ Hoy `accept` ejecuta la verificación completa aunque el cambio solo toque docum
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/no-code.test.ts test/reuse.test.ts test/integrate.test.ts test/close-moved.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: perf
-- [ ] T4: La documentación de cuándo no corre la verificación completa
+- [x] T4: La documentación de cuándo no corre la verificación completa
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm lint

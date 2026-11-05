@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-la-verificacion-completa-no-corre-sin-codigo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-verificacion-completa-no-corre-sin-codigo",
   "baseCommit": "445c69b3939c77f9aeb254565139e65901f50c59",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "403549ac00d5abce19faeff5cbe9856563374b6e",
+      "attempts": 1,
       "startedAt": "2026-11-05T01:14:35.747Z",
       "doneAt": "2026-11-05T01:19:21.061Z",
-      "summary": "touchesCode en verified.ts dice si el árbol de trabajo tiene código distinto de la rama destino; la incorporación (mergeVerification) y accept no ejecutan la verificación completa sin código y lo dicen; AC1-AC3 en no-code.test.ts"
+      "summary": "touchesCode en verified.ts dice si el árbol de trabajo tiene código distinto de la rama destino; la incorporación (mergeVerification) y accept no ejecutan la verificación completa sin código y lo dicen; AC1-AC3 en no-code.test.ts",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "03f408387de8f9bfea32b2e6cb96943bb5a2dcfb",
+      "startedAt": "2026-11-05T01:19:21.847Z",
+      "doneAt": "2026-11-05T01:21:00.992Z",
+      "summary": "ARCHITECTURE §6 dice qué cuenta el tree (solo los archivos de código) y cuándo accept y la incorporación no verifican un cambio sin código; formats.md, el tree de task.verified y change.verified"
     }
   },
   "pending": {
