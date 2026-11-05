@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261105-la-medicion-de-una-epica-con-subagentes-tras",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261105-la-medicion-de-una-epica-con-subagentes-tras",
   "baseCommit": "98ffc3ae219a8ae85c9393303734d11f62146501",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c58c7a13f5d86908d0354f14b887db7e999abb40a824b8a33b04682ccceee73f",
+    "at": "2026-11-05T06:09:13.282Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6876803610292af332f37adfa8d8b94ccb7574ad",
+      "startedAt": "2026-11-05T06:09:13.745Z",
+      "doneAt": "2026-11-05T06:09:38.525Z",
+      "summary": "ARCHITECTURE §16 da la medición del 2026-11-05 de epic y epic-subagent tras el arreglo de P101 (2 de 2 en los dos; reparto 27 % más rápido y 25 % más caro) y su conclusión."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c58c7a13f5d86908d0354f14b887db7e999abb40a824b8a33b04682ccceee73f",
-    "at": "2026-11-05T06:09:13.282Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

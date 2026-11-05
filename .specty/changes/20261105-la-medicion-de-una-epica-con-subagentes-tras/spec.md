@@ -14,7 +14,7 @@ ARCHITECTURE §16 termina diciendo que el reparto de una épica entre subagentes
 
 ## Tareas
 
-- [ ] T1: §16 da la medición de la épica con subagentes tras el arreglo de P101
+- [x] T1: §16 da la medición de la épica con subagentes tras el arreglo de P101
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts

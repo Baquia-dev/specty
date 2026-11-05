@@ -808,7 +808,20 @@ El reparto no llegó a trabajar en paralelo. La sesión principal entra en la é
 - En la primera ejecución, un subagente cerró su corte escribiendo con `printf` en Bash. Los otros dos se rindieron, y la sesión principal rehízo sus cortes en orden: casi el doble de tiempo y el doble de coste.
 - En la segunda, los tres se rindieron, y la sesión principal tampoco pudo entrar en sus carpetas, así que no avanzó.
 
-Estas cifras no dicen cuánto ahorraría el reparto: dicen que hoy no funciona con Claude Code cuando la sesión principal está en la worktree de la épica. Queda en la memoria como P101: salir de la worktree antes de lanzar los encargos, y repetir después `epic-subagent`. Hasta entonces, solo el flujo en orden se ha medido funcionando.
+Estas cifras no decían cuánto ahorraría el reparto, sino que no funcionaba con Claude Code cuando la sesión principal estaba en la worktree de la épica. Desde P101, la tarjeta le pide salir de ella (`ExitWorktree` con `action: "keep"`) antes de lanzar los encargos (§10).
+
+El 2026-11-05, con Claude Code 2.1.318 y Opus 5.5 y ese arreglo, dos ejecuciones de cada uno (4,68 USD en total). El informe da las medias, que ahora no mezclan resultados, porque las cuatro cumplieron:
+
+| Experimento | Cumplió | Tiempo (s, media) | Rondas (media) | Bloqueos (media) | Coste (USD, media) | Contexto máximo del hilo principal (media) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Épica en orden | 2 de 2 | 185 | 62 | 0,5 | 1,04 | 57.432 |
+| Épica con un subagente por corte | 2 de 2 | 135 | 70 | 3 | 1,30 | 40.271 |
+
+Con el arreglo, el reparto cumple el flujo y termina un 27 % antes, por un 25 % más de coste. Cada subagente arranca un contexto nuevo (unas 8 rondas más en total), y el hilo principal lee un 30 % menos. El guard bloqueó más acciones en el reparto, y ninguna violó el flujo.
+
+Con tres cortes de una línea, la ganancia es pequeña. En orden, la sesión hace cada corte tras el anterior; con el reparto, la épica tarda lo que su corte más lento, así que se espera que la ganancia crezca con cortes más largos. Por eso repartir sigue siendo lo que hace una épica por defecto, y `subagents: false` queda para quien prefiera gastar menos.
+
+Mientras corrían, otras sesiones verificaban en la misma máquina, con una carga de unos 15, así que los tiempos son orientativos.
 
 **El agente real con un modelo guionizado** (`agent-e2e.test.ts`, con `fake-model.ts`). Es la parte de la suite que no necesita un modelo de verdad. Claude Code corre en modo headless (`claude -p`) en un repositorio preparado con `specty init`. Habla con un servidor local que imita la API de Messages: responde por SSE una secuencia fija de llamadas a herramientas, y sabe por dónde va contando los `tool_result` que trae la conversación. La prueba lee esos `tool_result` y comprueba lo que Claude Code le devolvió al modelo:
 
