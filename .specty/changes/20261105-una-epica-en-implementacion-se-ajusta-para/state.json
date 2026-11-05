@@ -6,6 +6,13 @@
   "branch": "specty/20261105-una-epica-en-implementacion-se-ajusta-para",
   "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fe3580922017d948c61436fc071369b2015e91fa2aad0e53747273f5fcd3d18f",
+    "at": "2026-11-05T16:01:04.149Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -45,12 +52,6 @@
     "T": 5,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:fe3580922017d948c61436fc071369b2015e91fa2aad0e53747273f5fcd3d18f",
-    "at": "2026-11-05T16:01:04.149Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T16:18:16.040Z"
 }
