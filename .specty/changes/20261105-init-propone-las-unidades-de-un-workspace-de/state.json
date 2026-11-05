@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-init-propone-las-unidades-de-un-workspace-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-init-propone-las-unidades-de-un-workspace-de",
   "baseCommit": "6c68190ea4eb28fdfeadfcaba7f8797b3aac1be8",
   "revision": 2,
@@ -59,6 +59,8 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T13:33:48.469Z"
+  "lockedTests": {
+    "packages/cli/test/init-units-cargo.test.ts": "sha256:a1e7dc8f92b6f5078dab96d8b1d72be774753c9a343983d2cb4565ee7e5fe8b6",
+    "packages/cli/test/units-cargo.test.ts": "sha256:515040b7f737269e9d2aba0a4949e70a823c1b63260cf3177c4372de0ae2d566"
+  }
 }
