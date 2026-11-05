@@ -84,3 +84,27 @@ La página de un cambio hoy lo busca solo entre los que cargó la Bandeja, y si 
 
 - R1: C1 y C2 se hacen a la vez y tocan la Bandeja (`inbox/`, `data/views.ts`, `data/progress.ts`, `components/badge.ts`, `docs/ui.md`). Mitigación: este corte no toca esos archivos, y `propose` avisa si comparte alguno.
 - R2: `GET /api/changes/<id>` lee todos los cambios para dar uno. Mitigación: hoy no se llama nunca (A1), y C4 guarda en memoria los archivados ya leídos antes de que la Bandeja deje de cargarlos.
+
+## Cierre
+
+### Resumen
+
+La página de un cambio ya no depende de que la Bandeja lo haya cargado. El servidor da el registro de un cambio por su id con `GET /api/changes/<id>`, abierto, sin carpeta o archivado, igual que en `/api/changes` (`changeRecord` en `server/records.ts`), o 404 si no existe. En la UI, `SpectyData.change(id)` lo busca por defecto entre `changes()`, y `ServerData.change` lo pide a esa ruta. `ChangesStore.byId` devuelve `{ view, missing }`: el cambio cargado o, si la lista no lo tiene, el que pide a la fuente y deriva aparte, con el título de su épica si está cargada y vuelto a pedir con cada aviso de la fuente. La página dice «No existe ese cambio» solo cuando la fuente tampoco lo tiene o falla. Hoy la Bandeja sigue cargando todos los cambios, así que la búsqueda por id solo se usará cuando C4 pagine los terminados. ARCHITECTURE §15 cuenta la ruta y la lectura por id.
+
+### Desviaciones
+
+- T3 necesitó la solicitud de alcance S1 para `packages/ui/src/data/mcp-app.ts`: `McpAppData` tenía un campo privado `change` (el id que pidió el host) que chocaba con el nuevo método `SpectyData.change`, y se renombró a `shown` sin cambiar su comportamiento.
+- En modo delegado, el clasificador de Claude Code bloqueó que el subagente ejecutara `specty approve` (de la spec, de los tests y de S1) y `specty accept`: los ejecutó el agente principal, con la autorización de la persona en el chat.
+- La ruta `/api/changes/<id>` no la sirve `readChange`, como decía el Diseño, sino `readApi`, que llama a una función nueva, `readRecord`: dentro de `readChange` su complejidad pasaba de 10.
+- En la página, la señal de «no existe» se llama `notFound` y no `missing`, porque `missing` ya era el icono del estado vacío.
+- Los tests de T2 cubren también que una fuente cualquiera encuentra el cambio entre los que da (el `change` por defecto de A3).
+
+### Decisiones
+
+- `SpectyData.change(id)` es un método con una implementación por defecto y no uno abstracto: los datos de ejemplo, el MCP App y las fuentes de los tests lo heredan sin tocarse.
+- `byId` se llama en un contexto de inyección, como `resource`, y vive lo que vive quien lo llama: así su `resource` y su suscripción a la fuente se liberan con la página, en lugar de quedarse en el almacén, que vive en la raíz.
+- Si la fuente falla al buscar el cambio, la página dice que no existe (A5), en lugar de quedarse en el esqueleto de carga.
+
+### Pendientes
+
+- P163: `packages/cli/src/server/http.ts` queda en 302 líneas de código (el aviso salta en 300). C4 debe servir `/api/changes/finished` desde un módulo propio de `server/`.

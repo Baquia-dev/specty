@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-un-cambio-se-abre-aunque-la-bandeja-no-lo-haya",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-un-cambio-se-abre-aunque-la-bandeja-no-lo-haya",
   "baseCommit": "4682745ea93f383506c210b4e0a5a9dc170f4011",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:09b5d56b36a7b4d0a89eabb793c53e418e71491598913e06105029dd7c3e60dd",
@@ -81,12 +81,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "81844c8df77641db8dd0a4ff081d1578c8e289a1",
+      "attempts": 1,
       "startedAt": "2026-11-05T11:59:57.019Z",
       "doneAt": "2026-11-05T12:00:18.862Z",
-      "summary": "ARCHITECTURE §15: la ruta GET /api/changes/<id> y cómo la página de un cambio no cargado lo pide por su id (SpectyData.change, ChangesStore.byId)"
+      "summary": "ARCHITECTURE §15: la ruta GET /api/changes/<id> y cómo la página de un cambio no cargado lo pide por su id (SpectyData.change, ChangesStore.byId)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -100,6 +100,7 @@
     "R": 2,
     "S": 1
   },
+  "closingSubmittedAt": "2026-11-05T12:06:02.925Z",
   "lockedTests": {
     "packages/cli/test/server.test.ts": "sha256:32fb8558972bc37119df48a3360f8cd7fd74ef137d8961219bfe6f273c8be742",
     "packages/ui/src/data/fixtures.test.ts": "sha256:b426ccc6d7a3b2427463b2b5efd92a950e0b945cf7a4393427f18f06a6171f0f",
