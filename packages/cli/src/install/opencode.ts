@@ -108,8 +108,9 @@ function opencodePlugin(specty: string, stop: number | undefined): string {
  * command it asks the guard what changed, and adds its warning to the result the model reads.
  * After a compaction it brings back the card of `specty next`: OpenCode 1 gets it in the session,
  * asking for no reply, and OpenCode 2 in the next model call. With `STOP` on, at the end of each
- * turn it runs `specty hook agent-stop opencode` and sends its report back to the session. It
- * never throws outside a blocked tool; if Specty cannot run, everything goes through.
+ * turn it runs `specty hook agent-stop opencode` and sends its report back to the session; in
+ * OpenCode 1, not to a subagent's child session (one with `parentID`). It never throws outside
+ * a blocked tool; if Specty cannot run, everything goes through.
  */
 const PLUGIN = `// Specty's guard for OpenCode. \`specty init\` writes this file and rewrites it, and
 // \`specty check --install\` turns on the check at the end of each turn (STOP).
@@ -217,11 +218,13 @@ async function card(directory, session) {
 }
 
 // At the end of a turn, with STOP on: the report that sends the agent back to work while
-// \`specty check --changed\` fails. A turn it already sent back may end, so it never loops.
-async function endOfTurn(directory, session) {
+// \`specty check --changed\` fails. A turn it already sent back may end, so it never loops. A
+// subagent's session (\`child\` says which) is not checked, as Specty does not check Claude
+// Code's SubagentStop: the report reaches the main session at the end of its own turn.
+async function endOfTurn(directory, session, child) {
   try {
     if (STOP === null || typeof directory !== "string" || typeof session !== "string") return undefined;
-    if (!usesSpecty(directory)) return undefined;
+    if (!usesSpecty(directory) || (await child?.(session))) return undefined;
     const active = SENT_BACK.delete(session);
     const event = { hook_event_name: "Stop", cwd: directory, session_id: session, stop_hook_active: active };
     const { stdout } = await run(SPECTY + " hook agent-stop opencode", directory, event, STOP);
@@ -231,6 +234,17 @@ async function endOfTurn(directory, session) {
     return reply.reason;
   } catch {
     return undefined;
+  }
+}
+
+// Whether OpenCode 1's session \`id\` is a subagent's: \`task\` opens it with the session that
+// launched it in \`parentID\`. When OpenCode does not give the session, it counts as a main one.
+async function isChild(sessions, id) {
+  try {
+    const parent = (await sessions?.get?.({ path: { id } }))?.data?.parentID;
+    return typeof parent === "string" && parent !== "";
+  } catch {
+    return false;
   }
 }
 
@@ -293,7 +307,7 @@ export default {
         output.output = output.output + "\\n\\n" + text;
       },
       // The card goes into the session once it compacted, asking for no reply; at the end of a
-      // turn, the report sends the agent back to work.
+      // turn, the report sends the agent back to work, except a subagent's.
       event: async ({ event }) => {
         try {
           const id = event?.properties?.sessionID;
@@ -302,7 +316,7 @@ export default {
             const body = { noReply: true, parts: [{ type: "text", text }] };
             if (text !== undefined) await session?.prompt({ path: { id }, body });
           } else if (event?.type === "session.idle") {
-            const text = await endOfTurn(directory, id);
+            const text = await endOfTurn(directory, id, (child) => isChild(session, child));
             const body = { parts: [{ type: "text", text }] };
             if (text !== undefined) await session?.prompt({ path: { id }, body });
           }

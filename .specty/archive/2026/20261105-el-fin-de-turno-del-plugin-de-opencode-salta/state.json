@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261105-el-fin-de-turno-del-plugin-de-opencode-salta",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261105-el-fin-de-turno-del-plugin-de-opencode-salta",
+  "baseCommit": "5b6bc9668f16d343478ee1c07ef91711815bc550",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e5943401f2d54f72b83aa5ace5630b2fe32c48b53c3e1f84322cdff47caf46c8",
+    "at": "2026-11-05T06:31:17.391Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2f11be8cda43cdc8078ca01d8b2d101b31263366",
+      "attempts": 1,
+      "startedAt": "2026-11-05T06:36:54.176Z",
+      "doneAt": "2026-11-05T06:39:20.057Z",
+      "summary": "En OpenCode 1, el plugin pide la sesión de cada session.idle con client.session.get y salta el fin de turno de una sesión hija (con parentID); si no la obtiene, la comprueba como hoy. OpenCode 2 sigue igual (P93). Docs en ARCHITECTURE §10 y formats.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/cli/test/opencode.test.ts": "sha256:d0c720acfdbfe6281e08e737e85ba93dc3fdc714ba937cc26c24f4ebd442f277"
+  }
+}

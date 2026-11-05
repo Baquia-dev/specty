@@ -301,6 +301,63 @@ describe("Specty's plugin and OpenCode's sessions", () => {
   });
 });
 
+type SessionRequest = { readonly path: { readonly id: string } };
+
+/** OpenCode 1's client whose `session.get` answers with `get`, keeping what it was asked. */
+function withSessions(get: (request: SessionRequest) => Promise<unknown>) {
+  const opencode = client();
+  const asked: SessionRequest[] = [];
+  const session = {
+    ...opencode.session,
+    get: (request: SessionRequest) => {
+      asked.push(request);
+      return get(request);
+    },
+  };
+  return { sent: opencode.sent, asked, session };
+}
+
+/** OpenCode 1's `session.idle` for session `id`. */
+const idle = (id: string) => ({ event: { type: "session.idle", properties: { sessionID: id } } });
+
+describe("the end of turn of OpenCode 1's sessions, with subagents", () => {
+  it("checks no end of turn of a subagent's child session, only the main session's", async () => {
+    const root = await failing();
+    // As OpenCode 1.19.5 answers: the child session `task` opened carries its parent's id.
+    const opencode = withSessions(async ({ path: { id } }) => ({
+      data: id === "ses_child" ? { id, parentID: "ses_main" } : { id },
+    }));
+    const hooks = await (await loadPlugin(600)).server({ directory: root, client: opencode });
+    await hooks.event?.(idle("ses_child"));
+    expect(opencode.asked).toEqual([{ path: { id: "ses_child" } }]);
+    expect(opencode.sent).toEqual([]);
+    // The report reaches the main session at the end of its own turn.
+    await hooks.event?.(idle("ses_main"));
+    expect(opencode.sent).toHaveLength(1);
+    expect(opencode.sent[0]).toMatchObject({ path: { id: "ses_main" } });
+    expect(JSON.stringify(opencode.sent[0])).toContain(
+      "`specty check --changed` falla; corrígelo antes de terminar el turno:",
+    );
+  });
+
+  it("checks the end of turn as before when OpenCode 1 does not give the session", async () => {
+    const root = await failing();
+    const answers = [
+      async () => {
+        throw new Error("offline");
+      },
+      async () => ({ error: { name: "NotFoundError", data: { message: "no session" } } }),
+    ];
+    for (const get of answers) {
+      const opencode = withSessions(get);
+      const hooks = await (await loadPlugin(600)).server({ directory: root, client: opencode });
+      await expect(hooks.event?.(idle("s"))).resolves.toBeUndefined();
+      expect(opencode.sent).toHaveLength(1);
+      expect(opencode.sent[0]).toMatchObject({ path: { id: "s" } });
+    }
+  });
+});
+
 /** A repository with a change in its own folder, which OpenCode's session `s1` entered. */
 async function entered(): Promise<{ readonly root: string; readonly folder: string }> {
   const root = await tempRepo(APP);
