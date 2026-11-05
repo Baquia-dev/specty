@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-al-cerrar-un-corte-vuelve-a-su-epica",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-al-cerrar-un-corte-vuelve-a-su-epica",
   "baseCommit": "5b6bc9668f16d343478ee1c07ef91711815bc550",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:d837133e95695d7b3d00d657abf4b18fb545eee7176c59557a3e71a10354cd09",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f19bd59b303e7fc2947901ed18c4b36cb1f6c7ad",
+      "attempts": 1,
       "startedAt": "2026-11-05T06:47:27.417Z",
       "doneAt": "2026-11-05T06:52:35.029Z",
-      "summary": "ARCHITECTURE §6 (paso 5 del cierre) y §10 (una sesión, una worktree) cuentan que close de un corte vuelve a ligar la conversación a su épica abierta y que su SIGUIENTE la nombra, por herramienta."
+      "summary": "ARCHITECTURE §6 (paso 5 del cierre) y §10 (una sesión, una worktree) cuentan que close de un corte vuelve a ligar la conversación a su épica abierta y que su SIGUIENTE la nombra, por herramienta.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -79,6 +79,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T06:58:39.682Z",
   "lockedTests": {
     "packages/core/test/cards/incorporation.test.ts": "sha256:6227366e89308c072166708bee95e5298e020d66bcedabc9f8b86417a20ce2cb",
     "packages/cli/test/epic-return.test.ts": "sha256:a8d7f8d4452c4cd0e8f2ffcb6382488969926a9b4f9f91e1cf6875cfa109a259"

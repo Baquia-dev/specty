@@ -65,3 +65,24 @@ En una épica en orden, la sesión hace ella misma los cortes (por ejemplo, Clau
 
 - R1: Otra sesión trabaja la verificación por unidades y toca la incorporación (`flow/integrate.ts`, `commands/integrate.ts`). Mitigación: este cambio no toca esos archivos, y `propose` avisa si comparte alguno.
 - R2: La conversación queda ligada a la épica aunque el agente no vuelva a ella. Mitigación: es la ligadura que ya tenía antes de empezar el corte, y queda libre cuando la épica se cierra.
+
+## Cierre
+
+### Resumen
+
+`close` de un corte, cuando la conversación que cierra está ligada a la carpeta del corte y su épica sigue abierta, vuelve a ligar la conversación a la carpeta de la épica (`returnToEpic` en `flow/epic.ts`, llamado desde `landChange` antes de borrar la carpeta) y su SIGUIENTE nombra la épica: en Claude Code, `ExitWorktree` con `action: "keep"` y `EnterWorktree` con `name` (o cambiar allí la carpeta sin los hooks de worktree); `specty enter <épica>` en las herramientas que entran así; `specty next` con la épica en la carpeta principal. Sin épica, el texto de hoy. Resuelve P106.
+
+### Desviaciones
+
+- El test de la CLI cubre también AC3 (épica en la carpeta principal) y AC4 (Claude Code sin los hooks), además de AC1, AC2 y AC5 de T2.
+- `returnToEpic` calcula la carpeta principal él mismo (primera worktree de git), con la firma `(session, id, folder)` de la spec, en lugar de recibirla de `landChange`.
+- Las herramientas que entran con `specty enter` y tienen la épica en la carpeta principal reciben el texto general de esa variante (`specty next` en la principal), porque `specty enter` solo entra en carpetas preparadas por `new`.
+
+### Decisiones
+
+- Los tipos del `left` de `leaveFolderNext` quedan locales a `cards/land.ts`; la CLI los toma con `Parameters<typeof leaveFolderNext>[0]`, sin ampliar la API pública de core.
+- AC5 «épica ya no abierta» se prueba con la épica cancelada mientras el corte sigue abierto.
+
+### Pendientes
+
+- P136: probar en una sesión real de Claude Code que `ExitWorktree` con `action: "keep"` funciona con la carpeta del corte ya borrada y que `EnterWorktree` con `name` entra en la épica (supuestos A2 y A4).
