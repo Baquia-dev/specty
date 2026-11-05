@@ -57,3 +57,24 @@ Desde C1, `specty init` prueba en orden una lista de detectores de workspace: ho
 ## Riesgos
 
 - R1: En Windows, `cmd` agrupa con paréntesis sin abrir una subshell, así que el `cd` de una unidad pasaría a la siguiente al unirlas con `&&` — la propuesta es una sugerencia que la persona revisa antes de añadirla, y las unidades que Specty ejecuta una a una no se ven afectadas.
+
+## Cierre
+
+### Resumen
+
+`specty init` propone las unidades de `verify.units` de un workspace de pub o de melos con al menos dos paquetes con tests. El detector nuevo es `dartWorkspace`, en `detect/units-dart.ts`. Lee la lista `workspace` del `pubspec.yaml` de la raíz y la lista `packages` de `melos.yaml`, expande sus globs con `expand` y quita las carpetas de `ignore`, la raíz y las que salen del repositorio. Después lee el `pubspec.yaml` de cada carpeta y devuelve un paquete por cada uno que tiene `name`. Cada paquete lleva `tests` según su carpeta `test`, el comando `(cd <carpeta> && flutter test)` o `(cd <carpeta> && dart test)` y los paquetes del workspace que nombran sus `dependencies` y `dev_dependencies`. Como archivos compartidos van los que existen de `pubspec.yaml`, `pubspec.lock` y `melos.yaml`. `safeYaml` de `detect/project.ts` pasa a exportarse y `dartWorkspace` va el último de `DETECTORS`.
+
+### Desviaciones
+
+- El primer `specty task done T1` se paró con ENOSPC: el disco se llenó y no pudo escribir el lock de `verify.slots`. No se tocó ni `state.json` ni ningún commit. Con espacio libre, el segundo intento pasó la verificación y creó el commit de T1.
+- El cambio estaba en modo delegado, pero el clasificador de permisos bloqueó el `specty approve` del agente por ser autoaprobación. Las dos aprobaciones las dio la persona y el agente las esperó con `specty wait`.
+
+### Decisiones
+
+- Un paquete que aparece en las dos listas, la de `workspace` y la de `packages`, se cuenta una vez. Las carpetas se ordenan para que la propuesta salga siempre en el mismo orden.
+- Para leer cada `pubspec.yaml` se usa un solo lector, `yamlAt`, que devuelve `undefined` cuando el archivo falta, no se puede leer o no es un mapa. Así, un `pubspec.yaml` roto cuenta como ausente, que es lo que pide A5.
+- Las dependencias se filtran por los nombres del workspace después de leer todos los paquetes, porque A3 no mira la fuente de la dependencia (`path`, versión o `workspace`).
+
+### Pendientes
+
+- Ninguno

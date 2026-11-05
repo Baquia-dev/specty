@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-init-propone-las-unidades-de-un-workspace-de-2",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-init-propone-las-unidades-de-un-workspace-de-2",
   "baseCommit": "e32b8471a8fcbd51783303ebf5f3275ca0c3e864",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:e1b9ef6f5dbb795dfc564dffdfca7bb88d4014807e7c68f0e40134c98fda2a95",
@@ -50,12 +50,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "624b69d2a7465339951ef07f5286974a12291214",
+      "attempts": 1,
       "startedAt": "2026-11-05T14:17:33.940Z",
       "doneAt": "2026-11-05T14:33:15.495Z",
-      "summary": "Detector dartWorkspace (detect/units-dart.ts) para workspaces de pub y melos: una unidad por paquete con test/ con (cd <carpeta> && dart|flutter test) y sus dependencias; safeYaml exportado y DETECTORS acaba en dartWorkspace."
+      "summary": "Detector dartWorkspace (detect/units-dart.ts) para workspaces de pub y melos: una unidad por paquete con test/ con (cd <carpeta> && dart|flutter test) y sus dependencias; safeYaml exportado y DETECTORS acaba en dartWorkspace.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,6 +68,7 @@
     "T": 1,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-05T14:38:46.565Z",
   "lockedTests": {
     "packages/cli/test/units-dart.test.ts": "sha256:067fb069006757c2480dcf1434c113264b696fb4697c243aaa93c386be125a66"
   }
