@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261105-los-tests-que-esperan-a-un-proceso-tienen",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261105-los-tests-que-esperan-a-un-proceso-tienen",
+  "baseCommit": "7cb8240350923a2eb916c2aefcb59d512fb9ac1c",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f0658e528b5ccc85eedb96f799c9813094659a5b204ec2acbfd89a427d0ea9c1",
+    "at": "2026-11-05T02:46:03.788Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
