@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-un-cambio-se-abre-aunque-la-bandeja-no-lo-haya",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-un-cambio-se-abre-aunque-la-bandeja-no-lo-haya",
   "baseCommit": "4682745ea93f383506c210b4e0a5a9dc170f4011",
   "revision": 2,
@@ -60,6 +60,11 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T11:50:09.571Z"
+  "lockedTests": {
+    "packages/cli/test/server.test.ts": "sha256:32fb8558972bc37119df48a3360f8cd7fd74ef137d8961219bfe6f273c8be742",
+    "packages/ui/src/data/fixtures.test.ts": "sha256:b426ccc6d7a3b2427463b2b5efd92a950e0b945cf7a4393427f18f06a6171f0f",
+    "packages/ui/src/data/server.test.ts": "sha256:db60000d685828efa07355b687372243f0e87be7ff631a4ff49696ad2fdd4c2c",
+    "packages/ui/src/change/change-page.unloaded.test.ts": "sha256:b97323fc92bb13b6181a7cd9bcc83262469a7dfd737a7d633e6b07c9a2cff6e1",
+    "packages/ui/src/data/changes-store.test.ts": "sha256:251e09088ec3a9c835eaa34be16b3e1134d585bf05e2a67999b6bff158b6ef31"
+  }
 }
