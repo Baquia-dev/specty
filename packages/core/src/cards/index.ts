@@ -177,6 +177,9 @@ export {
   noFlowWarning,
 } from "./init-questions";
 export {
+  antigravityAppRuleWarning,
+  antigravityCliInvalidWarning,
+  antigravityCliRuleLine,
   antigravityTrustWarning,
   changeInProgressWarning,
   claudePermissionsLine,
@@ -393,6 +396,7 @@ export {
 export { effortLabel, effortLine, runNext, translator, verifyingNote } from "./text";
 export { invalidPortCard, uiOpenedCard, uiStoppedCard } from "./ui";
 export {
+  antigravityRuleStaysLine,
   claudePointerStaysLine,
   geminiPointerStaysLine,
   globalGuardStaysLine,

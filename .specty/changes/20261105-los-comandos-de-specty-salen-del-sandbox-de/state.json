@@ -65,7 +65,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "63e008159c87cd2d3d18d0e5b16d2b6c49d082ff",
+      "startedAt": "2026-11-05T13:53:26.592Z",
+      "doneAt": "2026-11-05T13:54:13.652Z",
+      "summary": "Textos en español e inglés de la regla command(specty) del CLI de Antigravity: línea de init, aviso de ajustes que no se pueden editar, aviso de la app, líneas de doctor (antigravity-cli-rule y no-antigravity-cli-rule) y la línea de uninstall; exportados en cards/index.ts."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

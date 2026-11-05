@@ -89,7 +89,7 @@ En el sandbox de terminal de Antigravity CLI (`agy` 1.5.1, `--sandbox`), nada pu
 
 ## Tareas
 
-- [ ] T1: Los textos de la regla del CLI y del aviso de la app de Antigravity, en español y en inglés
+- [x] T1: Los textos de la regla del CLI y del aviso de la app de Antigravity, en español y en inglés
   - files: packages/core/test/cards/antigravity-cli-rule.test.ts, packages/core/src/cards/install.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/src/cards/uninstall.ts, packages/core/src/cards/index.ts
   - ac: AC1, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/antigravity-cli-rule.test.ts && pnpm lint
