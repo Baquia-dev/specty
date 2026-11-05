@@ -98,3 +98,23 @@ Hoy un pendiente que el trabajo de una sesión resuelve sin haberlo tomado con `
 
 - R1: Un agente marca como resuelto un pendiente que su trabajo no resolvió del todo — la entrada solo queda hecha al cerrarse el cambio, la salida del cierre la nombra para que la persona lo vea, y cancelar la devuelve.
 - R2: Mover `claimEntries` y `takeEntries` a otro archivo rompe `new --resolves` — los tests de `new --resolves` (`memory-resolves`, `memory-settle`) van en la verificación de T3.
+
+## Cierre
+
+### Resumen
+
+`specty memory resolve <ids...>` toma pendientes y mejoras para el cambio abierto de la carpeta donde se ejecuta, en cualquier fase hasta archivarse. Toma con las reglas y negativas de `new --resolves`: una entrada que no existe, ya hecha, descartada o propuesta para descartar, un recordatorio, una decisión, una lección o una entrada que tomó otro cambio abierto no se toman, y entonces no toma ninguna. Sin un cambio abierto en la carpeta, se niega. Una entrada que el mismo cambio ya tomó sigue igual, sin commit. Al cerrarse el cambio, la salida del cierre nombra en «PENDIENTES QUE RESOLVIÓ ESTE CAMBIO» las entradas que tomó y que quedaron hechas, con `--resolves` o con `memory resolve`; al cancelarse, vuelven a estar libres. El bloque de los pendientes que deja el cierre ya no dice que las sesiones los verán al empezar, sino que la persona los ve en la página Memoria de `specty ui` y con `specty memory`. La última regla del bloque de AGENTS.md pide marcar con `specty memory resolve <id>` los pendientes ajenos que el trabajo resolvió. Todos los textos nuevos están en español y en inglés, y formats.md, ARCHITECTURE.md y el ADR 0016 lo cuentan.
+
+### Desviaciones
+
+- T3: al registrar `memory resolve`, `memoryCommand` pasó de 50 líneas y `specty check` lo rechazó. Los subcomandos que cambian el estado de una entrada (`done`, `drop`, `keep` y `resolve`) se registran ahora en `statusCommands`, en el mismo archivo.
+
+### Decisiones
+
+- `claimEntries` y `takeEntries` pasaron de `commands/memory.ts` a `commands/memory-resolve.ts`, junto a `resolveEntries`. Así `memory.ts` bajó de 324 a unas 280 líneas y no hay importaciones en ciclo. `takeEntries` recibe el destino de la memoria, que `new.ts` calcula con `targetOf`.
+- Las comprobaciones de `claimEntries` (`claimOf`) se separaron de su tarjeta. `memory resolve` las usa sin contar como «otro cambio» el suyo, y muestra su propia negativa: nombra el comando y propone repetirlo sin el id, o marcar hecho un recordatorio con `memory done`.
+- `memory resolve` no anota nada en la auditoría ni en el estado del cambio (A3). La memoria guarda el cambio en `taken`, y «RESUELVE» del borrador sigue mostrando solo las entradas de `--resolves`.
+
+### Pendientes
+
+- El guard no frena `specty memory resolve <id>` sobre una entrada del frente de otra conversación, como sí frena `specty new --resolves <id>`. Hoy `enforce/fronts.ts` (`takenDenial`) rechaza `new --resolves` cuando la entrada está en un frente cuyo dueño vivo es otra conversación, y los ids los lee `resolvedIds` en `packages/core/src/guard/specty-calls.ts`, solo para `new`. Una conversación puede así tomar con `memory resolve` una entrada del frente de otra. Falta que `resolvedIds` lea también los ids de `specty memory resolve` y que la negativa (`frontResolvesDenial`) proponga el siguiente paso propio de ese comando.

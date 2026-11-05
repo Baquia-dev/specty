@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-un-pendiente-ajeno-que-resuelve-el-trabajo-sale",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-un-pendiente-ajeno-que-resuelve-el-trabajo-sale",
   "baseCommit": "88d9019e8b696fe0180cfa8ff5d79807a856fc6d",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:07cb2eaee807f632ef4002ed20a55085e9a277ccabeb067e210a43b68540a429",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f5b01882343e3a237c9909469534ee044181e439",
+      "attempts": 1,
       "startedAt": "2026-11-05T21:22:39.030Z",
       "doneAt": "2026-11-05T21:23:40.893Z",
-      "summary": "La regla del reporte final pide marcar con memory resolve los pendientes ajenos resueltos; formats.md, ARCHITECTURE.md y el ADR 0016 cuentan memory resolve y la salida del cierre"
+      "summary": "La regla del reporte final pide marcar con memory resolve los pendientes ajenos resueltos; formats.md, ARCHITECTURE.md y el ADR 0016 cuentan memory resolve y la salida del cierre",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T21:28:58.496Z",
   "lockedTests": {
     "packages/cli/test/close-harvest.test.ts": "sha256:d40f69b1f1429d77fde60f4a44d91a1b2144ffbcb4419a976b0c9b777e827e25",
     "packages/core/test/cards.test.ts": "sha256:b4d65e1aa8c18596281b1d8319f4c758c2a6cbb7f2aab4108f9a19351bc70fb6",
