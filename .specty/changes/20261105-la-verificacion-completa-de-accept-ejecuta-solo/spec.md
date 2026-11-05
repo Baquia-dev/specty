@@ -75,7 +75,7 @@ Hoy la verificación completa de `accept` es un solo comando (`verify.full`), qu
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/units.test.ts test/cards/audit.test.ts && pnpm --filter @baquia-dev/specty-core typecheck
   - type: feat
-- [ ] T3: accept ejecuta solo las unidades que no pasaron ya
+- [x] T3: accept ejecuta solo las unidades que no pasaron ya
   - files: packages/cli/src/flow/units.ts, packages/cli/src/flow/verified.ts, packages/cli/src/flow/live-run.ts, packages/cli/src/commands/accept.ts, packages/cli/test/accept-units.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-units.test.ts test/reuse.test.ts test/accept-turn-time.test.ts test/accept-live.test.ts test/accept-coverage.test.ts test/live-run.test.ts test/unverified.test.ts && pnpm typecheck && pnpm lint && pnpm knip && pnpm sources

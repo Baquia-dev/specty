@@ -65,12 +65,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "350caf4eb6806f988a658d8ab9fcb4691e9fa21c",
+      "attempts": 1,
       "startedAt": "2026-11-05T05:34:16.710Z",
       "doneAt": "2026-11-05T05:34:38.274Z",
-      "summary": "Las notas de las unidades en cards/units.ts: unitsLines (reutilizadas, ejecutadas con su tiempo, la que falló y las que no corrieron) y unitsReusedNote, en español y en inglés; duration de cards/audit.ts exportada"
+      "summary": "Las notas de las unidades en cards/units.ts: unitsLines (reutilizadas, ejecutadas con su tiempo, la que falló y las que no corrieron) y unitsReusedNote, en español y en inglés; duration de cards/audit.ts exportada",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2188ae437e9c4327d87729d9a96a3ba15c76c05c",
+      "startedAt": "2026-11-05T05:34:38.592Z",
+      "doneAt": "2026-11-05T05:35:48.339Z",
+      "summary": "accept ejecuta solo las unidades sin huella en el registro del clon (flow/units.ts), en orden y en un turno, parando en la primera que falla; anota las que pasan y units en change.verified"
     }
   },
   "pending": {
