@@ -76,3 +76,24 @@ El registro de las unidades que pasaron (`.git/common/specty/verified/`) crece c
 
 - R1: Borrar una entrada que aún servía hace correr su unidad una vez más — es el coste esperado; con 30 días, solo se borran huellas de código que casi seguro ya no existe.
 - R2: Leer el árbol y las huellas a la vez en el servidor lanza dos `git add -A` simultáneos sobre índices distintos — git escribe los objetos de forma segura entre procesos, y cada índice tiene su propio bloqueo.
+
+## Cierre
+
+### Resumen
+
+`specty prune` borra del registro de las unidades que pasaron (`.git/common/specty/verified/`) los archivos anotados hace más de 30 días y los que no tienen un `at` legible, deja los recientes y los temporales de una escritura en curso, y la salida dice cuántas borró en la sección «UNIDADES BORRADAS DEL REGISTRO» («UNITS REMOVED FROM THE RECORD»). Cada lectura del árbol (`treeWith`) usa un índice temporal con el pid y un `randomUUID` en el nombre, así que dos lecturas a la vez en el mismo proceso dan cada una el árbol de su contenido, y el servidor de la UI ya lee el árbol del código y las huellas a la vez.
+
+### Desviaciones
+
+- `pruneCard` pasaba de 50 líneas con la sección nueva: las secciones de los registros propios de Specty (actividad, mensajes y unidades) salen de `recordSections`, y las de un solo recuento, de `counted`.
+- La aceptación incorporó main (a9cf90f1) antes de su verificación completa, que pasó.
+
+### Decisiones
+
+- La edad de una entrada se lee de su campo `at`, con la hora de Specty (`environment.now`), y no de la fecha del archivo: los tests la controlan y es lo que Specty anota. Una entrada sin `at` legible cuenta como vieja, porque Specty siempre lo escribe y borrarla solo hace correr la unidad otra vez.
+- El plazo es la constante `RECORD_DAYS` de `flow/units.ts`, sin configuración; la tarjeta recibe los días para no repetir el número en core.
+- La limpieza del registro vive en `flow/units.ts`, junto a la escritura y la lectura del registro, y no en `flow/prune.ts`.
+
+### Pendientes
+
+- Ninguno.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-el-registro-de-unidades-se-limpia-y-sus",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-el-registro-de-unidades-se-limpia-y-sus",
   "baseCommit": "813c1bc8267fc3238a63fc936e153ddf22313d64",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:dca3d353849d1b7a8448df87413c986aa01521676186970a09253b294b2a10ac",
@@ -71,12 +71,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d525460c561bf583a1ab01c5055ee65dfe8aebc9",
+      "attempts": 1,
       "startedAt": "2026-11-05T08:17:16.498Z",
       "doneAt": "2026-11-05T08:22:20.076Z",
-      "summary": "formats.md §1 y ARCHITECTURE §9 dicen que specty prune borra del registro de unidades lo anotado hace más de 30 días, y que cada lectura del árbol usa su propio índice temporal, así que el servidor lee el árbol y las huellas a la vez."
+      "summary": "formats.md §1 y ARCHITECTURE §9 dicen que specty prune borra del registro de unidades lo anotado hace más de 30 días, y que cada lectura del árbol usa su propio índice temporal, así que el servidor lee el árbol y las huellas a la vez.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -89,6 +89,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T08:33:47.843Z",
   "lockedTests": {
     "packages/cli/test/git-tree.test.ts": "sha256:e54cadd40302c65acf1359ecc35abb6f55844a8f3223d0dd07697d9b2d8653a4",
     "packages/cli/test/prune-units.test.ts": "sha256:931b07b2c1d2e7ec41e054cb77868678a27901ed6c86fa8bc7a6109e5c3f21e0",
