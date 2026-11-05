@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261106-el-servidor-muestra-el-cambio-cuya",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-el-servidor-muestra-el-cambio-cuya",
+  "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:77193c46a4e91380b7026d6e678e6f9b1dc0eb859cc6270c9fe77581bc21d8ca",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3534fa2db030c2952b34d69c771d3bb985b8944f9dc6b1e7c3db2c4cf843622c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:44b1495a85648bf72d30075444ec2cf0bf4b963fe7ed93a543d5548cf0d8d047",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:44091df7687941538e01222c5b36b9afa0222dd875a62ef93a68b0b25ec393be",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:93ad70e81eb38519b4df1197726bf9c2d01f2e396d2fc73fbb78274cbb5dd704",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:21016d79ccbf2dd84a6788c3b3119045ae8f01d4e06ddc1631fb1a5431acdef5",
+    "at": "2026-11-05T16:22:08.580Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
