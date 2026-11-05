@@ -42,7 +42,7 @@ Cada comando de Specty pregunta a git dónde está cada uno de sus archivos con 
 
 ## Tareas
 
-- [ ] T1: Cada Git pregunta a git una vez por la carpeta specty/ y otra por la común
+- [x] T1: Cada Git pregunta a git una vez por la carpeta specty/ y otra por la común
   - files: packages/cli/src/io/git.ts, packages/cli/test/git-paths.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-paths.test.ts test/lock.test.ts test/delegate.test.ts && pnpm --filter @baquia-dev/specty typecheck

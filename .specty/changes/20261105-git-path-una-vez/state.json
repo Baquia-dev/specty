@@ -6,6 +6,13 @@
   "branch": "specty/20261105-git-path-una-vez",
   "baseCommit": "1cadd35299cf53814dcbec4059cac168b812fe41",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6bdc60f70cf26d07f988d2b2e59490b492eeda0a736a384b99b1e7b2e04a3929",
+    "at": "2026-11-05T02:53:43.730Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -32,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "13ceb443b5a35c11d4ca7266b00435196b82b55c",
+      "startedAt": "2026-11-05T02:53:44.194Z",
+      "doneAt": "2026-11-05T02:55:34.058Z",
+      "summary": "gitPath sale de gitPaths, que recuerda cada respuesta de git (sin las que fallan) y arma las rutas bajo specty/ y common/ con la respuesta para ese tramo: una pregunta por carpeta; AC1 (GIT_TRACE) y AC2 (iguales a git en el checkout y en una worktree) en git-paths.test.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -41,12 +58,5 @@
     "A": 4,
     "AC": 3,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6bdc60f70cf26d07f988d2b2e59490b492eeda0a736a384b99b1e7b2e04a3929",
-    "at": "2026-11-05T02:53:43.730Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
