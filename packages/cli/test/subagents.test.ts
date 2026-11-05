@@ -80,6 +80,9 @@ const write = (cwd: string, path: string, who?: Who) =>
 const enterByName = (cwd: string, name: string, who?: Who) =>
   claude(cwd, { tool_name: "EnterWorktree", tool_input: { name } }, who);
 
+const enterByPath = (cwd: string, path: string, who?: Who) =>
+  claude(cwd, { tool_name: "EnterWorktree", tool_input: { path } }, who);
+
 /** What Claude Code tells the commands that the conversation of `session` runs. */
 const claudeEnv = (session = "s1") => ({ CLAUDECODE: "1", CLAUDE_CODE_SESSION_ID: session });
 
@@ -206,6 +209,58 @@ describe("`specty new --subagent`", () => {
     expect(created.code).toBe(0);
     expect(created.out).toContain(`entra con \`specty enter ${SLICE}\` y sigue su salida`);
     expect(await boundFolder(root, "s1")).toBe(epic);
+  });
+});
+
+describe("what the guard asks of a subagent of Claude Code", () => {
+  it("AC1: blocks its `EnterWorktree` by name, binds nobody and says to use `specty enter`", async () => {
+    const { root, first } = await twoChanges();
+    expect((await enterByName(root, CHANGE)).code).toBe(0);
+    // The subagent starts where the main conversation works.
+    const denied = await enterByName(first, OTHER, SUBAGENT);
+    expect(denied.code).toBe(2);
+    expect(denied.err).toContain("Un subagente no entra con `EnterWorktree`");
+    expect(denied.err).toContain(`SIGUIENTE: entra con \`specty enter ${OTHER}\``);
+    await expect(read(root, BINDING("s1--a1"))).rejects.toThrow();
+    expect(await boundFolder(root, "s1")).toBe(first);
+  });
+
+  it("AC2: blocks its `EnterWorktree` by path, and names the change whose folder it is", async () => {
+    const { root, second } = await twoChanges();
+    const absolute = await enterByPath(root, second, SUBAGENT);
+    expect(absolute.code).toBe(2);
+    expect(absolute.err).toContain(`SIGUIENTE: entra con \`specty enter ${OTHER}\``);
+    const relative = await enterByPath(root, `.worktrees/${CHANGE}`, SUBAGENT);
+    expect(relative.code).toBe(2);
+    expect(relative.err).toContain(`SIGUIENTE: entra con \`specty enter ${CHANGE}\``);
+    await expect(read(root, BINDING("s1--a1"))).rejects.toThrow();
+  });
+
+  it("AC2: leaves the id to fill in for a path that is no change's folder", async () => {
+    const { root } = await twoChanges();
+    const denied = await enterByPath(root, root, SUBAGENT);
+    expect(denied.code).toBe(2);
+    expect(denied.err).toContain("SIGUIENTE: entra con `specty enter <id>`");
+    await expect(read(root, BINDING("s1--a1"))).rejects.toThrow();
+  });
+
+  it("AC3: blocks its `specty new` without `--subagent`, and lets it through with it", async () => {
+    const root = await tempRepo(APP);
+    const denied = await bash(root, 'specty new "Saludo personalizado"', SUBAGENT);
+    expect(denied.code).toBe(2);
+    expect(denied.err).toContain("sin `--subagent`, `new` ataría esa sesión al cambio nuevo.");
+    expect(denied.err).toContain("SIGUIENTE: vuelve a ejecutarlo con `--subagent`");
+    const mixed = 'specty new "Uno" --subagent && specty new "Otro"';
+    expect((await bash(root, mixed, SUBAGENT)).code).toBe(2);
+    const created = 'specty new "Saludo personalizado" --subagent';
+    expect((await bash(root, created, SUBAGENT)).code).toBe(0);
+  });
+
+  it("AC4: judges its session as before: it runs `specty new` and enters with `EnterWorktree`", async () => {
+    const { root, first } = await twoChanges();
+    expect((await bash(root, 'specty new "Tercer cambio"')).code).toBe(0);
+    expect((await enterByName(root, CHANGE)).code).toBe(0);
+    expect(await boundFolder(root, "s1")).toBe(first);
   });
 });
 
