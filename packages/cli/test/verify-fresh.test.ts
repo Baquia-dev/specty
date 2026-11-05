@@ -45,6 +45,106 @@ const recorded = async (root: string) =>
 /** The open entries of the memory, as `specty memory` lists them. */
 const memory = async (root: string) => (await cli(root, ["memory"])).out;
 
+/**
+ * A unit's tests as a script: `node scripts/report.cjs <unit> <mode>` marks the unit and, like a
+ * test tool, writes `packages/<unit>/coverage/junit.xml`, with `test/<unit>.test.ts` relative to
+ * its package. `fails`: a test fails, always. `flaky`: a test fails the first time, then passes.
+ * `silent`: fails without a report. `green`: fails though its report has no failed test.
+ */
+const REPORTER = `const fs = require("node:fs");
+const [unit, mode] = process.argv.slice(2);
+fs.appendFileSync(process.env.MARKS, unit);
+const once = process.env.MARKS + "." + unit;
+const first = !fs.existsSync(once);
+fs.writeFileSync(once, "");
+const failing = mode === "fails" || (mode === "flaky" && first);
+const name = mode === "flaky" ? unit + " &gt; a veces" : unit + " &gt; rompe";
+const testcase = (title, failed) =>
+  '<testcase classname="test/' + unit + '.test.ts" name="' + title + '" time="0.01">' +
+  (failed ? '<failure message="expected 1 to be 2">AssertionError</failure>' : "") +
+  "</testcase>";
+if (mode !== "silent") {
+  fs.mkdirSync("packages/" + unit + "/coverage", { recursive: true });
+  fs.writeFileSync(
+    "packages/" + unit + "/coverage/junit.xml",
+    '<testsuites><testsuite name="test/' + unit + '.test.ts">' +
+      testcase(unit + " &gt; suma", false) + testcase(name, failing) +
+      "</testsuite></testsuites>",
+  );
+}
+const said = { fails: "rompe", flaky: "falla una vez", silent: "sin informe", green: "umbral" };
+console.log(said[mode] + " " + unit);
+process.exit(failing || mode === "silent" || mode === "green" ? 1 : 0);
+`;
+
+/** A unit of `verify.units` in YAML whose tests are REPORTER's, in `mode`. */
+const reported = (name: string, mode: "fails" | "flaky" | "silent" | "green") =>
+  `    - name: ${name}\n      command: "node scripts/report.cjs ${name} ${mode}"\n      paths: ["packages/${name}/**"]\n`;
+
+/** `checks.testTime`, with the reports REPORTER writes. */
+const TEST_TIME = `checks:\n  testTime:\n    reports: ["packages/*/coverage/junit.xml"]\n    maxMs: 60000\n`;
+
+/** A repository with `config`, REPORTER, the test file of each of `units` and `files`. */
+const withReports = (
+  config: string,
+  units: readonly string[],
+  files: Readonly<Record<string, string>> = {},
+) =>
+  tempRepo({
+    ...APP,
+    ".specty/config.yaml": config,
+    "scripts/report.cjs": REPORTER,
+    ...Object.fromEntries(
+      units.map((name) => [`packages/${name}/test/${name}.test.ts`, "export {};\n"]),
+    ),
+    ...files,
+  });
+
+describe("specty verify --fresh with JUnit reports", () => {
+  it("AC1: names the tests that failed in each attempt, with their file, before the output; for a flaky unit, those of the attempt that failed", async () => {
+    const root = await withReports(
+      `${withUnits(`${reported("b", "fails")}${reported("c", "flaky")}`)}${TEST_TIME}`,
+      ["b", "c"],
+    );
+    const run = await verify(root);
+    expect(run.code).toBe(1);
+    expect(await marks(root)).toBe("bbcc");
+    expect(run.out).toContain(
+      "TESTS QUE FALLARON EN b:\n  packages/b/test/b.test.ts «b > rompe»\nSALIDA DEL FALLO DE b:\n  rompe b",
+    );
+    expect(run.out).toContain(
+      "TESTS QUE FALLARON EN c:\n  packages/c/test/c.test.ts «c > a veces»\nSALIDA DEL FALLO DE c:\n  falla una vez c",
+    );
+    expect(run.out).not.toContain("> suma»");
+  });
+
+  it("AC2: without a report of the attempt, or with reports that name no failed test, shows only the output", async () => {
+    const stale =
+      '<testsuites><testsuite name="test/d.test.ts"><testcase classname="test/d.test.ts" name="d &gt; antes" time="0.01"><failure/></testcase></testsuite></testsuites>';
+    const root = await withReports(
+      `${withUnits(`${reported("d", "silent")}${reported("e", "green")}`)}${TEST_TIME}`,
+      ["d", "e"],
+      { "packages/d/coverage/junit.xml": stale },
+    );
+    const run = await verify(root);
+    expect(run.code).toBe(1);
+    expect(run.out).not.toContain("TESTS QUE FALLARON");
+    expect(run.out).toContain("SALIDA DEL FALLO DE d:\n  sin informe d");
+    expect(run.out).toContain("SALIDA DEL FALLO DE e:\n  umbral e");
+  });
+
+  it("AC2: without checks.testTime, reads no report and shows only the output", async () => {
+    const root = await withReports(withUnits(reported("b", "fails")), ["b"]);
+    const run = await verify(root);
+    expect(run.code).toBe(1);
+    expect(await readFile(join(root, "packages/b/coverage/junit.xml"), "utf8")).toContain(
+      "b &gt; rompe",
+    );
+    expect(run.out).not.toContain("TESTS QUE FALLARON");
+    expect(run.out).toContain("SALIDA DEL FALLO DE b:\n  rompe b");
+  });
+});
+
 describe("specty verify --fresh", () => {
   it("AC1: runs every unit in order without the record, also after one that fails, and records those that pass", async () => {
     const root = await repo(

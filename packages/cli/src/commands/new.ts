@@ -6,6 +6,7 @@ import {
   type CommitType,
   changeCreatedLead,
   duplicateCard,
+  gitFailedCard,
   type MemoryEntry,
   makeChangeId,
   newRefusalCard,
@@ -34,6 +35,7 @@ import {
 import { entersByName } from "../install/agents";
 import { freshProject } from "../install/product";
 import { exists, writeText } from "../io/files";
+import { GitError, gitFailure } from "../io/git";
 import type { Session } from "../session";
 import { initialState, type StoredChange } from "../store/changes";
 import { writePointer } from "../store/local";
@@ -196,7 +198,8 @@ async function newInWorktree(
   const branch = await branchFor(session, options, id);
   const folder = join(home, id);
   const { hooks, workspace } = await addWorktree(git, { folder, branch, base: base.commit });
-  await markBranch(git, branch, id);
+  const unmarked = await markOrUndo(session, { folder, branch, id });
+  if (unmarked !== undefined) return unmarked;
   await createChange(session, options, {
     id,
     title,
@@ -207,8 +210,7 @@ async function newInWorktree(
   const prepared = await prepareWorktree(session, folder);
   // The conversation that creates it works there, even before it enters it; a subagent's command
   // names the session that launched it, which stays where it was.
-  const subagent = options.subagent === true;
-  if (!subagent) await bindNew(session, folder, options.epic);
+  if (options.subagent !== true) await bindNew(session, folder, options.epic);
   const card = worktreeCreatedCard(
     {
       id,
@@ -223,7 +225,7 @@ async function newInWorktree(
       byName: await entersByName(session.root),
       // Any other agent carries on in a session of its own, which the card says how to open.
       agent: session.tool,
-      ...(subagent ? { subagent } : {}),
+      ...(options.subagent === true ? { subagent: true } : {}),
       // Claude Code's session does not enter one worktree from another: it leaves this one first.
       ...((await apartFromMain(git)) ? { fromWorktree: true } : {}),
     },
@@ -231,6 +233,29 @@ async function newInWorktree(
   );
   // Its development servers get ports of their own (`dev.ports`), apart from other folders'.
   return withDevPorts(card, await portsOf(session, folder), session.lang);
+}
+
+/**
+ * Ties the new worktree's branch to its change; `markBranch` already tries again while another
+ * process holds git's configuration. If git still cannot, the folder and the branch `new` has just
+ * made go again, so no folder is left without its change and running `new` again gives the same
+ * id; the card says what failed and what was undone. Any other error goes on up.
+ */
+async function markOrUndo(
+  session: Session,
+  made: { readonly folder: string; readonly branch: string; readonly id: string },
+): Promise<Output | undefined> {
+  const { git } = session;
+  try {
+    await markBranch(git, made.branch, made.id);
+    return undefined;
+  } catch (error) {
+    if (!(error instanceof GitError)) throw error;
+    // `--force`: the folder holds the agent's hook files, copied there unversioned.
+    await git.run(["worktree", "remove", "--force", made.folder]);
+    await git.run(["branch", "-D", made.branch]);
+    return gitFailedCard(gitFailure(error), session.cards, made);
+  }
 }
 
 /**

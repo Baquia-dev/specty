@@ -1,0 +1,99 @@
+---
+kind: standard
+epic: 20261105-pendientes-de-las-unidades
+slice: C1
+---
+
+# El registro de unidades se limpia y sus lecturas del árbol no se pisan
+
+## Objetivo
+
+El registro de las unidades que pasaron (`.git/common/specty/verified/`) crece con cada huella nueva y nada lo borra. Además, dos lecturas del árbol a la vez en el mismo proceso pueden usar el mismo índice temporal y pisarse, y por eso el servidor de la UI las hace una tras otra. Con este cambio, `specty prune` borra del registro lo anotado hace más de 30 días y dice cuántas borró, y cada lectura del árbol usa su propio índice. Es el corte C1 de la épica `20261105-pendientes-de-las-unidades` (AC1, AC2 y AC13 de la épica).
+
+## Fuera de alcance
+
+- Hacer configurable el plazo de 30 días, o limpiar el registro fuera de `specty prune`.
+- Cambiar qué decide cada unidad, cómo se calcula su huella o cuándo se anota en el registro.
+- Las demás lecturas que hoy van una tras otra por otros motivos, como el turno de la verificación completa.
+
+## Supuestos
+
+- A1: `specty prune` borra del registro los archivos `.json` cuyo campo `at` es de hace más de 30 días respecto a la hora de Specty (`environment.now`), sin configuración. Una unidad que vuelve a pasar se anota de nuevo, así que borrar una entrada solo hace que esa unidad corra una vez más. La limpieza ocurre solo cuando alguien ejecuta `prune`.
+  - impacto: alto
+- A2: Un archivo del registro sin un `at` que se pueda leer cuenta como viejo y también se borra: Specty siempre lo escribe, así que es basura, y borrarlo solo hace correr la unidad otra vez. Los temporales de la escritura atómica (`.tmp`) no se tocan.
+- A3: El índice temporal de `treeWith` (`io/git.ts`) lleva un nombre único por llamada, con `randomUUID` además del pid, y se borra al terminar como hoy. Con eso, el servidor de la UI lee el árbol del código y las huellas de las unidades a la vez, sin el orden que hoy los separa.
+- A4: La salida de `prune` lo dice en su propia sección, tras los mensajes borrados y antes de lo que queda, con cuántas unidades borró y el plazo; sin ninguna, la sección no sale, y «No había nada que limpiar» solo sale si tampoco se borró nada del registro.
+
+## Criterios de aceptación
+
+- AC1: CUANDO se ejecuta `specty prune` y el registro de unidades tiene archivos anotados hace más de 30 días ENTONCES los borra, deja los recientes y la salida dice cuántos borró.
+- AC2: CUANDO dos lecturas del árbol corren a la vez en el mismo proceso ENTONCES cada una da el árbol de su contenido y no queda ningún índice temporal.
+- AC3: CUANDO `specty prune` dice lo que borró del registro de unidades ENTONCES lo dice en español y en inglés.
+
+## Diseño
+
+- Core: `pruneCard` (`cards/parallel.ts`) recibe `units?: { removed, days }` y añade la sección «UNIDADES BORRADAS DEL REGISTRO» / «UNITS REMOVED FROM THE RECORD». Para que la función no pase de los límites, las secciones con un solo recuento salen de un ayudante, y «nada que limpiar» compara todos los recuentos con cero.
+- CLI: `flow/units.ts` da `pruneRecord(session)`, que lee cada archivo del registro y borra los viejos (`RECORD_DAYS = 30`), y `commands/prune.ts` la llama y pasa el recuento a la tarjeta. `io/git.ts` nombra el índice de `treeWith` con `randomUUID`, y `server/runs.ts` lee `codeTree` y `fullPlan` con `Promise.all`.
+- Docs: formats.md §1 (`verified/` se limpia con `prune`) y ARCHITECTURE §9 (la limpieza de `prune` y las lecturas del árbol a la vez).
+
+## Archivos
+
+- modificar packages/cli/src/io/git.ts — un índice temporal con nombre único por cada lectura del árbol
+- modificar packages/cli/src/server/runs.ts — leer el árbol del código y las huellas a la vez
+- crear packages/cli/test/git-tree.test.ts — dos lecturas del árbol a la vez
+- modificar packages/core/src/cards/parallel.ts — la sección del registro de unidades en la salida de `prune`
+- crear packages/core/test/cards/prune-units.test.ts — los textos de esa sección, en español y en inglés
+- modificar packages/cli/src/flow/units.ts — borrar del registro lo anotado hace más de 30 días
+- modificar packages/cli/src/commands/prune.ts — limpiar el registro y decirlo
+- crear packages/cli/test/prune-units.test.ts — `specty prune` y el registro de unidades, de punta a punta
+- modificar docs/formats.md — el registro de unidades se limpia con `prune`
+- modificar docs/ARCHITECTURE.md — la limpieza de `prune` y las lecturas del árbol a la vez
+
+## Tareas
+
+- [x] T1: Cada lectura del árbol usa su propio índice temporal
+  - files: packages/cli/src/io/git.ts, packages/cli/src/server/runs.ts, packages/cli/test/git-tree.test.ts
+  - ac: AC2
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/git-tree.test.ts test/git-paths.test.ts test/server/verify-units.test.ts test/server/verify.test.ts
+  - type: fix
+- [x] T2: La salida de prune dice lo que borró del registro de unidades
+  - files: packages/core/src/cards/parallel.ts, packages/core/test/cards/prune-units.test.ts
+  - ac: AC3
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/prune-units.test.ts test/cards/prune-live.test.ts test/cards/parallel.test.ts && pnpm --filter @baquia-dev/specty-core typecheck
+  - type: feat
+- [x] T3: specty prune borra del registro lo anotado hace más de 30 días
+  - files: packages/cli/src/flow/units.ts, packages/cli/src/commands/prune.ts, packages/cli/test/prune-units.test.ts
+  - ac: AC1
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-units.test.ts test/prune-live.test.ts test/prune.test.ts test/accept-units.test.ts && pnpm typecheck
+  - type: feat
+- [x] T4: La documentación de la limpieza del registro y de las lecturas del árbol
+  - files: docs/formats.md, docs/ARCHITECTURE.md
+  - ac: —
+  - verify: pnpm lint
+  - type: docs
+
+## Riesgos
+
+- R1: Borrar una entrada que aún servía hace correr su unidad una vez más — es el coste esperado; con 30 días, solo se borran huellas de código que casi seguro ya no existe.
+- R2: Leer el árbol y las huellas a la vez en el servidor lanza dos `git add -A` simultáneos sobre índices distintos — git escribe los objetos de forma segura entre procesos, y cada índice tiene su propio bloqueo.
+
+## Cierre
+
+### Resumen
+
+`specty prune` borra del registro de las unidades que pasaron (`.git/common/specty/verified/`) los archivos anotados hace más de 30 días y los que no tienen un `at` legible, deja los recientes y los temporales de una escritura en curso, y la salida dice cuántas borró en la sección «UNIDADES BORRADAS DEL REGISTRO» («UNITS REMOVED FROM THE RECORD»). Cada lectura del árbol (`treeWith`) usa un índice temporal con el pid y un `randomUUID` en el nombre, así que dos lecturas a la vez en el mismo proceso dan cada una el árbol de su contenido, y el servidor de la UI ya lee el árbol del código y las huellas a la vez.
+
+### Desviaciones
+
+- `pruneCard` pasaba de 50 líneas con la sección nueva: las secciones de los registros propios de Specty (actividad, mensajes y unidades) salen de `recordSections`, y las de un solo recuento, de `counted`.
+- La aceptación incorporó main (a9cf90f1) antes de su verificación completa, que pasó.
+
+### Decisiones
+
+- La edad de una entrada se lee de su campo `at`, con la hora de Specty (`environment.now`), y no de la fecha del archivo: los tests la controlan y es lo que Specty anota. Una entrada sin `at` legible cuenta como vieja, porque Specty siempre lo escribe y borrarla solo hace correr la unidad otra vez.
+- El plazo es la constante `RECORD_DAYS` de `flow/units.ts`, sin configuración; la tarjeta recibe los días para no repetir el número en core.
+- La limpieza del registro vive en `flow/units.ts`, junto a la escritura y la lectura del registro, y no en `flow/prune.ts`.
+
+### Pendientes
+
+- Ninguno.

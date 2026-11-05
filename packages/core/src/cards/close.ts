@@ -21,6 +21,14 @@ export function closeCommitSubject(title: string, lang: Lang): string {
   return `docs(spec): ${translator(lang)("cerrar", "close")} ${title}`;
 }
 
+/**
+ * The subject of the commit of a closing still in the change's folder, made before the main
+ * branch comes in, so that a file that main changed too does not stop the merge.
+ */
+export function closingCommitSubject(title: string, lang: Lang): string {
+  return `docs(spec): ${translator(lang)("cierre de", "closing of")} ${title}`;
+}
+
 /** The subject of the commit that archives a cancelled change. */
 export function cancelCommitSubject(id: string, lang: Lang): string {
   return `docs(spec): ${translator(lang)("cancelar", "cancel")} ${id}`;

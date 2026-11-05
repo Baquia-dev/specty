@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import type { Git } from "../io/git";
+import { type Git, GitError } from "../io/git";
 import type { Session } from "../session";
 import { listOpenChanges, loadChange, type StoredChange } from "../store/changes";
 
@@ -43,12 +43,31 @@ export async function freeBranch(git: Git, name: string, attempt = 1): Promise<s
 }
 
 /**
+ * The waits, in milliseconds, between tries of `markBranch`: another process of the clone holds
+ * git's configuration (`.git/config.lock`) only while it writes, so a moment later it is free.
+ */
+const LOCK_WAITS: readonly number[] = [50, 100, 200, 400, 800];
+
+/**
  * Ties `branch` to the change `id` in git's common configuration (`branch.<branch>.specty`), so
  * Specty knows the change of a branch whatever its name. git drops it with the branch and moves
- * it when the branch is renamed.
+ * it when the branch is renamed. A failed write is tried again after each of `waits`, whatever
+ * git says (its message may come translated); after the last, it throws git's error.
  */
-export async function markBranch(git: Git, branch: string, id: string): Promise<void> {
-  await git.output(["config", `branch.${branch}.specty`, id]);
+export async function markBranch(
+  git: Pick<Git, "run">,
+  branch: string,
+  id: string,
+  waits: readonly number[] = LOCK_WAITS,
+): Promise<void> {
+  const args = ["config", `branch.${branch}.specty`, id];
+  let result = await git.run(args);
+  for (const wait of waits) {
+    if (result.code === 0) return;
+    await new Promise((done) => setTimeout(done, wait));
+    result = await git.run(args);
+  }
+  if (result.code !== 0) throw new GitError(args, result);
 }
 
 /** The branches `markBranch` tied to a change; git exits with 1 when there is none. */

@@ -6,6 +6,11 @@ const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, impli
 const EN: CardContext = { ...ES, lang: "en" };
 
 const DETAIL = "git commit: error: gpg failed to sign the data";
+const LOCKED = "git config: error: could not lock config file .git/config: File exists";
+const UNDONE = {
+  folder: "/repo/.worktrees/20261105-otro-cambio",
+  branch: "specty/20261105-otro-cambio",
+};
 
 describe("the card of a git failure", () => {
   it("AC1: says which git command failed and why, and asks to fix it and run the command again", () => {
@@ -27,5 +32,27 @@ describe("the card of a git failure", () => {
     expect(text).toContain(
       "NEXT: fix what made git fail (a hook, signing, a locked file…) and run the command again.",
     );
+  });
+
+  it("AC4: says in Spanish what Specty undid, the folder and the branch, and to run it again", () => {
+    const card = gitFailedCard(LOCKED, ES, UNDONE);
+    expect(card.status).toBe("invalid");
+    const text = renderText(card, "es");
+    expect(text).toContain(
+      "Git falló y Specty no terminó el comando: git config: error: could not lock config file .git/config: File exists.",
+    );
+    expect(text).toContain(
+      "Specty deshizo lo que había creado: la carpeta /repo/.worktrees/20261105-otro-cambio y la rama specty/20261105-otro-cambio.",
+    );
+    expect(text).toContain("SIGUIENTE: corrige lo que hizo fallar a git");
+    expect(renderText(gitFailedCard(DETAIL, ES), "es")).not.toContain("deshizo");
+  });
+
+  it("AC4: says it in English in an English session", () => {
+    const text = renderText(gitFailedCard(LOCKED, EN, UNDONE), "en");
+    expect(text).toContain(
+      "Specty undid what it had created: the folder /repo/.worktrees/20261105-otro-cambio and the branch specty/20261105-otro-cambio.",
+    );
+    expect(text).toContain("NEXT: fix what made git fail");
   });
 });

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import type { FailedTest } from "../checks/junit";
 import type { Lang } from "../i18n";
 import type { MemoryEntry } from "../memory/entries";
 import { headerOf, type Output, type OutputBlock, section } from "../output";
@@ -28,6 +29,8 @@ export interface FreshUnit extends FreshTarget {
    * is flaky, the second when it failed twice.
    */
   readonly output: readonly string[];
+  /** The tests that failed in that attempt, as its JUnit reports name them; none without them. */
+  readonly failedTests?: readonly FailedTest[];
 }
 
 /** What a fresh verification did. */
@@ -44,6 +47,9 @@ export type FreshRefusal = { readonly reason: "no-flag" } | { readonly reason: "
 
 /** How a fresh verification names a unit: its name, or `verify.full`. */
 const labelOf = (target: FreshTarget): string => target.name ?? "verify.full";
+
+/** The tests that failed a unit's section names; the rest, it counts. */
+const SHOWN_TESTS = 10;
 
 /** The line before each attempt: what runs, or what runs once more after it failed. */
 export function freshProgressLine(target: FreshTarget, again: boolean, lang: Lang): string {
@@ -125,12 +131,7 @@ export function freshCard(outcome: FreshOutcome, ctx: CardContext): Output {
         t("VERIFICACIÓN FRESCA, SIN EL REGISTRO", "FRESH VERIFICATION, WITHOUT THE RECORD"),
         [...units.map((unit) => unitLine(unit, ctx.lang)), ...record],
       ),
-      ...units.flatMap((unit) =>
-        section(
-          t(`SALIDA DEL FALLO DE ${labelOf(unit)}`, `OUTPUT OF THE FAILURE OF ${labelOf(unit)}`),
-          unit.result === "passed" ? [] : unit.output,
-        ),
-      ),
+      ...units.flatMap((unit) => failureBlocks(unit, ctx.lang)),
       ...memoryBlock(outcome, ctx.lang),
     ],
     next:
@@ -141,6 +142,41 @@ export function freshCard(outcome: FreshOutcome, ctx: CardContext): Output {
             `fix the failure of ${failed.join(", ")} (its output is above) and run \`${ctx.command} verify --fresh\` again.`,
           ),
   };
+}
+
+/**
+ * What a unit that did not pass at the first attempt shows: the tests that failed in the attempt
+ * whose output it shows, if its reports named any, and that output. A unit that passed, nothing.
+ */
+function failureBlocks(unit: FreshUnit, lang: Lang): OutputBlock[] {
+  if (unit.result === "passed") return [];
+  const t = translator(lang);
+  const label = labelOf(unit);
+  return [
+    ...section(
+      t(`TESTS QUE FALLARON EN ${label}`, `TESTS THAT FAILED IN ${label}`),
+      failedTestLines(unit.failedTests ?? [], lang),
+    ),
+    ...section(t(`SALIDA DEL FALLO DE ${label}`, `OUTPUT OF THE FAILURE OF ${label}`), unit.output),
+  ];
+}
+
+/** `test/b.test.ts «b > suma»` for each of the first tests, and how many more there are. */
+function failedTestLines(tests: readonly FailedTest[], lang: Lang): string[] {
+  const t = translator(lang);
+  const more = tests.length - SHOWN_TESTS;
+  return [
+    ...tests
+      .slice(0, SHOWN_TESTS)
+      .map((test) => `${test.path === undefined ? "" : `${test.path} `}«${test.name}»`),
+    ...(more <= 0
+      ? []
+      : [
+          more === 1
+            ? t("Otro test que falló.", "1 more failed test.")
+            : t(`Otros ${more} tests que fallaron.`, `${more} more failed tests.`),
+        ]),
+  ];
 }
 
 /** `b · inestable: falló y pasó al repetirla · 3 s + 2 s`. */
