@@ -134,12 +134,13 @@ export class ChangesStore {
   }
 
   /**
-   * The change `id`: among the loaded changes or, when they leave it out (a finished change the
-   * Inbox has not loaded), asked to the source by its id, and again whenever the source says
-   * something changed. Called in an injection context, as `resource`: it lasts as long as its caller.
+   * The change `id`: among the changes the source lists, whole, or, when they leave it out (a
+   * finished change, even one a page of the Inbox brought), asked to the source by its id, and
+   * again whenever the source says something changed. Called in an injection context, as
+   * `resource`: it lasts as long as its caller.
    */
   byId(id: Signal<string>): FoundChange {
-    const loaded = computed(() => this.all().find((view) => view.id === id()));
+    const loaded = computed(() => this.listed().find((view) => view.id === id()));
     const asked = resource({
       params: () => (this.views.hasValue() && loaded() === undefined ? id() : undefined),
       loader: async ({ params }) => {

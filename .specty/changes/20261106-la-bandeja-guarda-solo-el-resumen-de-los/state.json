@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "348ac039253033d7f1a1c8f9e5f56f5f42814782",
+      "startedAt": "2026-11-05T18:00:11.420Z",
+      "doneAt": "2026-11-05T18:00:39.115Z",
+      "summary": "byId busca el cambio solo entre los que da la fuente, enteros (listed): un terminado de una página de la Bandeja se pide por su id, como uno no cargado."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -66,7 +66,7 @@ Hoy la Bandeja guarda cada cambio terminado de sus páginas entero: su spec revi
 
 ## Tareas
 
-- [ ] T1: La página de un terminado pide su registro por id
+- [x] T1: La página de un terminado pide su registro por id
   - files: packages/ui/src/data/changes-store.ts, packages/ui/src/change/change-page.finished.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/change-page.finished.test.ts --include src/change/change-page.unloaded.test.ts --include src/data/changes-store.test.ts
