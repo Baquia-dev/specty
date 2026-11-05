@@ -21,7 +21,7 @@ const FORMATS: readonly ExportChoice[] = ["markdown", "json", "openspec", "speck
 /**
  * «Exportar» of the History tab (docs/ui.md, Historial): the change's audit report in Markdown or
  * JSON, as `specty audit` writes it, or its spec in OpenSpec, Spec Kit or Kiro, as `specty
- * export` does, downloaded from the change as the source has it now.
+ * export` does, downloaded from the change as the source gives it now by its id.
  */
 @Component({
   selector: "sp-history-export",
@@ -46,7 +46,8 @@ export class HistoryExport {
     if (choice === undefined) return;
     const t = this.t();
     try {
-      const record = (await this.data.changes()).find((item) => item.state.id === this.change());
+      // By its id: the local server lists only the open changes, and gives a finished one so.
+      const record = await this.data.change(this.change());
       if (record === undefined) {
         this.toasts.show(
           t(

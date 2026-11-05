@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5e50d17287f5469e28b578059c1520f9c56ada33",
+      "startedAt": "2026-11-05T14:39:33.499Z",
+      "doneAt": "2026-11-05T14:40:30.416Z",
+      "summary": "«Exportar» pide el cambio con SpectyData.change(id) en lugar de buscarlo en changes(); comentarios de las fuentes de prueba y docs/ui.md al día"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

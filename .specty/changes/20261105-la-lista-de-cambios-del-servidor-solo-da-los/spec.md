@@ -56,7 +56,7 @@ Hoy `GET /api/changes` da los cambios abiertos, los que perdieron su carpeta y t
 
 ## Tareas
 
-- [ ] T1: «Exportar» del Historial pide el cambio por su id
+- [x] T1: «Exportar» del Historial pide el cambio por su id
   - files: packages/ui/src/history/history-export.ts, packages/ui/src/history/history-export.test.ts, packages/ui/src/inbox/inbox-more.test.ts, packages/ui/src/data/finished-pages.test.ts, docs/ui.md
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/history-export.test.ts && pnpm lint
