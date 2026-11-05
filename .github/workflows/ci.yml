@@ -40,6 +40,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
+      # `pnpm check` leaves out the evals' tests, which judge recorded runs and rarely change.
+      - run: pnpm test:evals
 
   # Specty checks itself with the pull request's own `specty check --changed`: only what the PR
   # adds or makes grow fails, so functions that were already long do not block it.
