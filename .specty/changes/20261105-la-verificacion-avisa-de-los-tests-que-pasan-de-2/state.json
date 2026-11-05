@@ -6,6 +6,13 @@
   "branch": "specty/20261105-la-verificacion-avisa-de-los-tests-que-pasan-de-2",
   "baseCommit": "b4686dfe63d4d149247ca21552eac202ab157426",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b6bb776b022172837f7c2a846ec5fe55bc6cb4d4c03a37f7f20143c5ff2c85f1",
+    "at": "2026-11-05T04:39:39.639Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -49,12 +56,6 @@
     "T": 5,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:b6bb776b022172837f7c2a846ec5fe55bc6cb4d4c03a37f7f20143c5ff2c85f1",
-    "at": "2026-11-05T04:39:39.639Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "ui"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-05T04:46:00.516Z"
 }
