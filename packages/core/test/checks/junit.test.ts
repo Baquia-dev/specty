@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { parseJunit, resolveConfig, slowTests } from "../../src";
+import { parseJunit, parseJunitFailures, resolveConfig, slowTests } from "../../src";
 
 /** What Vitest's `junit` reporter writes: the classname is the file, relative to its root. */
 const VITEST = `<?xml version="1.0" encoding="UTF-8" ?>
@@ -86,6 +86,57 @@ describe("the JUnit reports Specty reads", () => {
       { path: "test/sum.test.ts", name: 'sum > adds "many" numbers', ms: 2600 },
     ]);
     expect(slowTests(tests, 5000)).toEqual([]);
+  });
+});
+
+describe("the tests that failed in a JUnit report", () => {
+  it("AC4: each test whose testcase holds a failure or an error, with its file, also without a time", () => {
+    const report = [
+      "<testsuites>",
+      '  <testsuite name="test/sum.test.ts" failures="1">',
+      '    <testcase classname="test/sum.test.ts" name="sum &gt; adds" time="0.002">',
+      "    </testcase>",
+      '    <testcase classname="test/sum.test.ts" name="sum &gt; breaks" time="0.01">',
+      '      <failure message="expected 1 to be 2 // Object.is equality" type="AssertionError">',
+      "AssertionError: expected 1 to be 2 // Object.is equality",
+      "      </failure>",
+      "    </testcase>",
+      "  </testsuite>",
+      '  <testsuite name="pytest" file="tests/test_api.py">',
+      '    <testcase classname="tests.test_api" name="test_login"><error message="boom"/></testcase>',
+      '    <testcase classname="tests.test_api" name="test_later" time="0"><skipped/></testcase>',
+      "  </testsuite>",
+      '  <testcase classname="x" name="inside" file="/repo/packages/web/test/a.test.ts"><failure/></testcase>',
+      "</testsuites>",
+    ].join("\n");
+    expect(parseJunitFailures(report, "/repo")).toEqual([
+      { path: "test/sum.test.ts", name: "sum > breaks" },
+      { path: "tests/test_api.py", name: "test_login" },
+      { path: "packages/web/test/a.test.ts", name: "inside" },
+    ]);
+    expect(parseJunit(report, "/repo").map(({ name }) => name)).toEqual([
+      "sum > adds",
+      "sum > breaks",
+      "test_later",
+    ]);
+  });
+
+  it("AC4: leaves out the tests that passed or were skipped, and what a comment or CDATA holds", () => {
+    const report = [
+      '<testsuite name="s">',
+      '  <!-- <testcase classname="a.test.ts" name="commented"><failure/></testcase> -->',
+      '  <testcase classname="a.test.ts" name="printed" time="0.1">',
+      '    <system-out><![CDATA[<failure message="not a failure"/>]]></system-out>',
+      "    <system-err>a warning</system-err>",
+      "  </testcase>",
+      '  <testcase classname="a.test.ts" name="passed" time="0.1"/>',
+      '  <testcase classname="a.test.ts" name="skipped" time="0"><skipped message="later"/></testcase>',
+      '  <testcase classname="a.test.ts" name="rerun" time="0.1"><flakyFailure message="passed when run again"/></testcase>',
+      '  <testcase name="without a file"><failure message="broken"/></testcase>',
+      "</testsuite>",
+    ].join("\n");
+    expect(parseJunitFailures(report, "/repo")).toEqual([{ name: "without a file" }]);
+    expect(parseJunitFailures("not a report", "/repo")).toEqual([]);
   });
 });
 

@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "20261105-la-verificacion-fresca-nombra-los-tests-que",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-la-verificacion-fresca-nombra-los-tests-que",
+  "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:79100b4e68b8486ad12ea34684b551fdb39f6ebaf910e8f5dcc69b8681e77a21",
+    "at": "2026-11-05T08:33:57.333Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4d62dc0f6371eeed809b232715adbaabcd77e3c11a94ff979a7bc93c4cfbc3f0",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:30fa65180b4373daf44a5c3447116406c8564bbbaf654796f7837c5acae29f5d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8ef62145178496215e07f27f9078c34e53e721f4cc136bf7c355393eb2467f9f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a0424f47b4d1f42893eb6b6e1aa9271d1a60209dc5ab4386cd777611856acccc",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:167ac3c122b9c7e550f5cbe24328e42553f24a2343c98ca5c66c5ae93629cbd9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "76764d21b1a1b232f8d442f1a04c860d256249d9",
+      "attempts": 1,
+      "startedAt": "2026-11-05T08:39:47.711Z",
+      "doneAt": "2026-11-05T08:44:31.312Z",
+      "summary": "core lee los tests que fallaron de un informe JUnit (parseJunitFailures y FailedTest en checks/junit.ts, con la misma lectura de cada testcase que parseJunit) y la tarjeta de la verificación fresca los nombra, hasta diez y cuántos más, antes de la salida del fallo (FreshUnit.failedTests)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "8c79b73dcc518fe2188ca9c0fd9185081ca6b2dd",
+      "attempts": 1,
+      "startedAt": "2026-11-05T08:44:31.708Z",
+      "doneAt": "2026-11-05T08:50:14.921Z",
+      "summary": "verify --fresh lee, tras cada intento que falla, los tests que fallaron en los informes JUnit nuevos de checks.testTime.reports (failedTestsSince en check/test-time.ts, con la lectura y el anclaje de slowTestsSince) y los pasa a la tarjeta",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "88efeb188690868ce0c5ab282c648d69b2fa3e71",
+      "attempts": 1,
+      "startedAt": "2026-11-05T08:50:15.263Z",
+      "doneAt": "2026-11-05T08:54:55.505Z",
+      "summary": "ARCHITECTURE §6 y formats.md §6 describen los tests que fallaron en la salida de specty verify --fresh, leídos de los informes JUnit de checks.testTime",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T09:12:30.694Z",
+  "lockedTests": {
+    "packages/cli/test/verify-fresh.test.ts": "sha256:4ede472a8c8a96f8c7f188ce89ab982e872b54e9c58e6cfdd15b5dbe0e95e15c",
+    "packages/core/test/cards/fresh.test.ts": "sha256:3a4385e12550009f2119171689101944bd6b19a3f927eb0114b18f71025aa45a",
+    "packages/core/test/checks/junit.test.ts": "sha256:53058cffa9fb9bb07b295246ea68673ffc4815bb07176f1216692ff12b4a1701"
+  }
+}

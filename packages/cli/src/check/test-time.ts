@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { dirname, join } from "node:path";
 import {
+  type FailedTest,
   type Finding,
   parseJunit,
+  parseJunitFailures,
   slowTestMessage,
   slowTests,
   type TestTime,
@@ -45,20 +47,57 @@ export async function slowTestsSince(
   session: Session,
   started: number,
 ): Promise<readonly TestTime[] | undefined> {
+  const maxMs = session.config.checks.testTime?.maxMs;
+  const reports = await reportsSince(session, started);
+  if (maxMs === undefined || reports === undefined) return undefined;
+  const read = await Promise.all(
+    reports.map(({ path, text }) =>
+      Promise.all(
+        slowTests(parseJunit(text, session.root), maxMs).map((test) =>
+          anchored(session.root, path, test),
+        ),
+      ),
+    ),
+  );
+  return slowTests(read.flat(), maxMs);
+}
+
+/**
+ * The tests that failed in the reports of `checks.testTime.reports` written since `started`, in
+ * the order of the reports: what the fresh verification names of an attempt that failed. None
+ * without `checks.testTime` or without a fresh report.
+ */
+export async function failedTestsSince(
+  session: Session,
+  started: number,
+): Promise<readonly FailedTest[]> {
+  const reports = (await reportsSince(session, started)) ?? [];
+  const read = await Promise.all(
+    reports.map(({ path, text }) =>
+      Promise.all(
+        parseJunitFailures(text, session.root).map((test) => anchored(session.root, path, test)),
+      ),
+    ),
+  );
+  return read.flat();
+}
+
+/**
+ * Each report of `checks.testTime.reports` written since `started`, with its text. Undefined
+ * without `checks.testTime` or without a fresh report.
+ */
+async function reportsSince(
+  session: Session,
+  started: number,
+): Promise<readonly { readonly path: string; readonly text: string }[] | undefined> {
   const config = session.config.checks.testTime;
   if (config === undefined) return undefined;
   const { root } = session;
-  const reports = await freshReports(root, config.reports, started);
-  if (reports.length === 0) return undefined;
-  const read = await Promise.all(
-    reports.map(async (report) => {
-      const tests = parseJunit((await readText(join(root, report))) ?? "", root);
-      return Promise.all(
-        slowTests(tests, config.maxMs).map((test) => anchored(root, report, test)),
-      );
-    }),
+  const paths = await freshReports(root, config.reports, started);
+  if (paths.length === 0) return undefined;
+  return Promise.all(
+    paths.map(async (path) => ({ path, text: (await readText(join(root, path))) ?? "" })),
   );
-  return slowTests(read.flat(), config.maxMs);
 }
 
 /**
@@ -66,7 +105,7 @@ export async function slowTestsSince(
  * one becomes the deepest file that exists, from the report's folder up to the root. Otherwise it
  * stays as the report names it.
  */
-async function anchored(root: string, report: string, test: TestTime): Promise<TestTime> {
+async function anchored<T extends FailedTest>(root: string, report: string, test: T): Promise<T> {
   if (test.path === undefined || test.path.startsWith("/")) return test;
   const path = await deepest(root, folderChain(dirname(report)), test.path);
   return path === undefined ? test : { ...test, path };

@@ -56,6 +56,8 @@ export type DoctorLine =
   | { readonly code: "antigravity-hooks"; readonly file: string; readonly events: string }
   /** Antigravity's guard from before its tools in ACP editors: it does not see them. */
   | { readonly code: "antigravity-acp"; readonly file: string }
+  /** Antigravity's guard from before the tools of its CLI (`agy`): it does not see them. */
+  | { readonly code: "antigravity-cli"; readonly file: string }
   /** Devin's guard in `file`, its standalone hooks. */
   | { readonly code: "windsurf-guard" | "no-windsurf-guard"; readonly file: string }
   /** Devin's guard is there, without the hooks of these events. */
