@@ -52,24 +52,62 @@ async function landChange(session: Session, plan: Integration): Promise<Landed> 
   const lines = [landedLine(plan.target, lang)];
   if (plan.inMain) return landedInMain(session, plan, lines);
   lines.push(...(await afterLanding(session, plan.holder)));
-  // Its work is in the target now: the folder goes, even from under whoever closed in it. An
-  // agent's session (delegated mode) must then leave it; a person reads where to carry on.
+  // Its work is in the target now: the folder goes, even from under whoever closed in it.
+  const folder = await leaveChangeFolder(session, plan);
+  lines.push(folder.line);
+  return { landed: true, lines, ...(folder.left === undefined ? {} : { left: folder.left }) };
+}
+
+/** The change's own folder once its command is done with it: the card's line, and how the agent leaves. */
+export interface FolderLeft {
+  readonly line: string;
+  readonly left?: Landed["left"];
+}
+
+/**
+ * Removes the change's own folder from the main one, without `--force` (its branch stays), also
+ * from under whoever works inside it, unless `stays` says why it must stay. An agent's session
+ * (delegated mode) inside it must then leave it, back to its epic after a slice its conversation
+ * carried; a person reads where to carry on.
+ */
+export async function leaveChangeFolder(
+  session: Session,
+  change: ChangeFolder,
+  stays?: string,
+): Promise<FolderLeft> {
+  const { git } = session;
   const inside = session.actor === "agent" && (await within(session.environment.cwd, git.root));
   // The slice's spec is read before its folder goes: the conversation goes back to its epic.
-  const epic = inside ? await returnToEpic(session, plan.id, git.root) : undefined;
-  const removed = await git.run(["-C", plan.main, "worktree", "remove", git.root]);
-  lines.push(
-    removed.code === 0
-      ? folderRemovedLine(git.root, plan.branch, plan.main, lang)
-      : folderStaysLine(git.root, reasonOf(removed), lang),
-  );
+  const epic = inside ? await returnToEpic(session, change.id, git.root) : undefined;
+  const { line, removed } =
+    stays === undefined ? await removeFolder(session, change) : { line: stays, removed: false };
+  if (!inside) return { line };
   const left = {
     folder: git.root,
-    main: plan.main,
-    removed: removed.code === 0,
-    ...(epic === undefined ? {} : { epic: { ...epic, byName: await entersByName(plan.main) } }),
+    main: change.main,
+    removed,
+    ...(epic === undefined ? {} : { epic: { ...epic, byName: await entersByName(change.main) } }),
   };
-  return { landed: true, lines, ...(inside ? { left } : {}) };
+  return { line, left };
+}
+
+/** The change whose own folder is `session`'s, its branch, and the main folder. */
+interface ChangeFolder {
+  readonly id: string;
+  readonly branch: string;
+  readonly main: string;
+}
+
+/** `git worktree remove` of the change's folder, and the card's line: removed, or git's reason. */
+async function removeFolder(
+  session: Session,
+  change: ChangeFolder,
+): Promise<{ readonly line: string; readonly removed: boolean }> {
+  const { git, lang } = session;
+  const removed = await git.run(["-C", change.main, "worktree", "remove", git.root]);
+  return removed.code === 0
+    ? { line: folderRemovedLine(git.root, change.branch, change.main, lang), removed: true }
+    : { line: folderStaysLine(git.root, reasonOf(removed), lang), removed: false };
 }
 
 /** The change lived in the main folder: it goes back to the target branch, and what follows runs. */

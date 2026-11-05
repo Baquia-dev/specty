@@ -77,17 +77,6 @@ describe("the folder of a cancelled change", () => {
     expect(await exists(folder)).toBe(true);
   });
 
-  it("AC3: stays when the agent cancels from inside it, in delegated mode", async () => {
-    const { root, folder } = await inWorktree();
-    await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
-    const cancelled = await cli(folder, ["cancel", "--reason", "Ya no"]);
-    expect(cancelled.code).toBe(0);
-    expect(cancelled.out).toContain(
-      `La carpeta ${folder} queda: una sesión de agente trabaja en ella.`,
-    );
-    expect(await exists(folder)).toBe(true);
-  });
-
   it("AC4: stays when git cannot remove it, and prune removes it later", async () => {
     const { root, folder } = await inWorktree();
     git(root, "worktree", "lock", folder);
@@ -110,5 +99,50 @@ describe("the folder of a cancelled change", () => {
     expect(cancelled.out).toContain("Cambio cancelado y archivado");
     expect(cancelled.out).not.toContain("La carpeta");
     expect(await exists(join(root, "src/app.ts"))).toBe(true);
+  });
+});
+
+/** What Claude Code tells the commands of conversation s1. */
+const CLAUDE = { CLAUDECODE: "1", CLAUDE_CODE_SESSION_ID: "s1" };
+
+/** The agent, in delegated mode, cancels the change from inside its folder. */
+async function agentCancels(root: string, folder: string) {
+  await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+  return cli(folder, ["cancel", "--reason", "Ya no"], { env: CLAUDE });
+}
+
+describe("the folder the agent cancels from inside, in delegated mode", () => {
+  it("AC1: goes, also with its own session bound to it, and SIGUIENTE asks to leave it as close does", async () => {
+    const { root, folder } = await inWorktree();
+    // The guard's record of the agent's own session, which entered the folder.
+    await writeFiles(root, {
+      ".git/common/specty/sessions/s1.json": JSON.stringify({ folder, at: NOW.toISOString() }),
+    });
+    const cancelled = await agentCancels(root, folder);
+    expect(cancelled.code).toBe(0);
+    expect(cancelled.out).toContain(
+      `La carpeta ${folder} se eliminó y la rama ${BRANCH} queda; sigue en ${root}.`,
+    );
+    expect(cancelled.out).toContain(
+      `SIGUIENTE: ${folder} ya no existe: sal de ella (en Claude Code, \`ExitWorktree\`) y sigue en ${root}; para otro cambio, \`specty new "<título>"\`.`,
+    );
+    expect(await exists(folder)).toBe(false);
+    expect(git(root, "ls-tree", "-r", "--name-only", BRANCH)).toContain(
+      `${ARCHIVE}/${CHANGE}/state.json`,
+    );
+  });
+
+  it("AC2: stays with something uncommitted, and SIGUIENTE still asks to leave it", async () => {
+    const { root, folder } = await inWorktree();
+    await writeFiles(folder, { "notas.txt": "a medias\n" });
+    const cancelled = await agentCancels(root, folder);
+    expect(cancelled.code).toBe(0);
+    expect(cancelled.out).toContain(
+      `La carpeta ${folder} queda: tiene cambios sin commit, que se perderían.`,
+    );
+    expect(cancelled.out).toContain(
+      `SIGUIENTE: sal de ${folder} (en Claude Code, \`ExitWorktree\`) y sigue en ${root}; para otro cambio, \`specty new "<título>"\`.`,
+    );
+    expect(await exists(join(folder, "notas.txt"))).toBe(true);
   });
 });
