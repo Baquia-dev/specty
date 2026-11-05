@@ -272,7 +272,8 @@ function strings(value: unknown): string[] {
     : [];
 }
 
-function safeYaml(text: string | undefined): unknown {
+/** A YAML file's content; undefined when it is missing or cannot be read. */
+export function safeYaml(text: string | undefined): unknown {
   if (text === undefined) return undefined;
   try {
     return parseYaml(text);

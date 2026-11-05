@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "id": "20261105-init-propone-las-unidades-de-un-workspace-de-2",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-init-propone-las-unidades-de-un-workspace-de-2",
+  "baseCommit": "e32b8471a8fcbd51783303ebf5f3275ca0c3e864",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e1b9ef6f5dbb795dfc564dffdfca7bb88d4014807e7c68f0e40134c98fda2a95",
+    "at": "2026-11-05T14:12:09.618Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:47d794acac73728f4c5fa473b44b97c94f9588fad0cb829d487a03a8a27d7891",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0efea70c36719d5d6e19cf80c753ccb13fb3852939badb1a480a254144b83a5c",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:c1045865a8515192163478e5033ec7c46dbaa467955652786c56e3e48b881f6a",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:45e1729389479656eb0bca27e5b949d2cd828b280588deab6c612129b475160d",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:ceebf46e7ee5677653c267124c1996a458db1e0a718561f2c47b1a20ec8ae1e4",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:21bacedd93b92830f0ad689ef605565acce56054c2ac64d96faac42169966adc",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "624b69d2a7465339951ef07f5286974a12291214",
+      "attempts": 1,
+      "startedAt": "2026-11-05T14:17:33.940Z",
+      "doneAt": "2026-11-05T14:33:15.495Z",
+      "summary": "Detector dartWorkspace (detect/units-dart.ts) para workspaces de pub y melos: una unidad por paquete con test/ con (cd <carpeta> && dart|flutter test) y sus dependencias; safeYaml exportado y DETECTORS acaba en dartWorkspace.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 6,
+    "T": 1,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T14:38:46.565Z",
+  "lockedTests": {
+    "packages/cli/test/units-dart.test.ts": "sha256:067fb069006757c2480dcf1434c113264b696fb4697c243aaa93c386be125a66"
+  }
+}

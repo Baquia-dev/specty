@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "id": "20261105-los-tests-de-la-cli-core-y-exporters-borran-sus",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-los-tests-de-la-cli-core-y-exporters-borran-sus",
+  "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:88d72c062ac0be7153695fbb012cbc8f5c16015d0a6064901ca94fb12fb7fe22",
+    "at": "2026-11-05T15:59:41.697Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:382ff0539327cd4429f18ea52a87ec9bede42bae0eb67f676aac8c30a1bdae88",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:204682271dee174b23754f73418ba855126b284aa1aad2726ec413509908453a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:11ea92123a10b42e0ac8cf97e97121c90a60c0546befd2539dba6747984b622c",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c2e62d48355a9daf63442ce3e34730b774921fb268c0408b40bd30f95f47aef4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "b752a0bd869502428736004e7a2338cca5d575c7",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:05:34.363Z",
+      "doneAt": "2026-11-05T16:06:21.756Z",
+      "summary": "packages/core/vitest-temp-dir.ts: globalSetup que borra las carpetas specty-tests-<pid>- de procesos muertos, crea la de la ejecución, le apunta TMPDIR/TMP/TEMP y la borra en el teardown; core lo usa y ARCHITECTURE lo cuenta en Pruebas",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "3dc5fe9edf1ed6b97288ec09237c7769d6598476",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:06:22.085Z",
+      "doneAt": "2026-11-05T16:06:55.159Z",
+      "summary": "exporters nombra ../core/vitest-temp-dir.ts en su globalSetup",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f45e77c80bfc5412b542690ea5ff6ee698d3d3c2",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:06:55.497Z",
+      "doneAt": "2026-11-05T16:07:32.119Z",
+      "summary": "la CLI nombra ../core/vitest-temp-dir.ts en su globalSetup, antes de test/global-setup.ts",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T16:19:03.737Z",
+  "lockedTests": {
+    "packages/cli/test/temp-dir.test.ts": "sha256:5221921094fc498d0f873ed0d6b5837827466db4b98aa493fdc1277b08c0b877",
+    "packages/core/test/vitest-temp-dir.test.ts": "sha256:6232f12ee0825b7dac21608a2f5bb4d7740b28e9f0aade02441a8bd5e6c3f782",
+    "packages/exporters/test/temp-dir.test.ts": "sha256:0c26dd32af09558da84f019a4410eb13778c1bcc968f3e8a2b1c87b85cb2b16c"
+  }
+}

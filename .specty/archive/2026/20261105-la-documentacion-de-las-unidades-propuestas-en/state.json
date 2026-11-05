@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261105-la-documentacion-de-las-unidades-propuestas-en",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-la-documentacion-de-las-unidades-propuestas-en",
+  "baseCommit": "1b32aba58736b6cca431e5e4a0577649ff352138",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:78aca7423f1019487c9d1248df3eaa76f23721b78d78a605a402289adb8cd1e6",
+    "at": "2026-11-05T14:42:11.761Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d1a5fdd65e100115f0faebd5c55e1936ab403572ad2276efd7e1da8ffc44215e",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f813f4dd1ceca91f76efadc7114b9fcbb686832e418603b7cd3dd4ad6370ca13",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "cbf3fbe26488ec8b1c2085867d3e40c2966bf568",
+      "attempts": 1,
+      "startedAt": "2026-11-05T14:42:12.321Z",
+      "doneAt": "2026-11-05T14:48:04.789Z",
+      "summary": "formats.md §6 lista los seis workspaces que reciben la propuesta de unidades, en el orden en que se prueban, con lo que cuenta como paquete con tests, su comando, de qué depende y los archivos de la raíz que comparten; ARCHITECTURE §9 nombra cada detector, DETECTORS y cuándo no hay propuesta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 7,
+    "T": 1
+  },
+  "closingSubmittedAt": "2026-11-05T14:52:04.018Z"
+}

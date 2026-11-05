@@ -47,6 +47,7 @@ export { type CiCommit, type CiFacts, type CiLevel, ciReport } from "./ci";
 export {
   alreadyClosedLine,
   cancelCommitSubject,
+  cancelledFolderStaysLine,
   cancelledLine,
   cancelQuestion,
   cancelReasonQuestion,

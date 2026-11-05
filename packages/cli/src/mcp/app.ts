@@ -54,7 +54,7 @@ const WATCHED: readonly string[] = ["spec.md", "state.json", "audit.jsonl", "com
 type ViewRun = Omit<LiveRun, "pid">;
 
 /**
- * What `specty_view` gives: the record of a change, as `/api/changes` would, its verification
+ * What `specty_view` gives: the record of a change, as `/api/changes/<id>` would, its verification
  * going on and its fingerprint; or only that nothing changed, if the view already has what
  * `since` names.
  */

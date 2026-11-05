@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "id": "20261105-cancel-quita-la-carpeta-del-cambio-cuando-nada",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261105-cancel-quita-la-carpeta-del-cambio-cuando-nada",
+  "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:529fdf39a08bee5bb955dce6d6586f0d6d54e07bd23dbb76895ae24ab22d4628",
+    "at": "2026-11-05T16:03:07.220Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d037a22a2371cdeab2f68fecdd6701d8a2d151b5d55080b8ace0087d4dd58735",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:61634e0c943ed45d4f921493c8cc96af8256160ec968400026863cac8d22db0a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:6714901ab0415e5c7f74f3a91ca0c0c9c3f446e587732a83f45e24e7f27f2ed0",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0804e619bde89659806045bdc2b5eddca1a064aec4ef9fc805e1b0c06c7c550d",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:eb129641c378bec7b09a76a747f469f2732053799989336fb17a1dd839ea36ab",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "daadc6c26497cd7c4b6db359ce2cc0824416a3e3",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:08:27.875Z",
+      "doneAt": "2026-11-05T16:12:38.246Z",
+      "summary": "cancelledFolderStaysLine (es/en) en cards/close.ts y la línea opcional de la carpeta en cancelledCard",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "1e513063e390127bff0cd1f2ca83365bb5dc6188",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:12:38.600Z",
+      "doneAt": "2026-11-05T16:19:06.669Z",
+      "summary": "removeCancelled en flow/prune.ts (con workingFolders compartido con la limpieza) quita la carpeta del cambio cancelado tras el commit del archivo, salvo sesión de agente, algo sin commit o fallo de git; cancel pasa la línea a su tarjeta; ARCHITECTURE §9 lo cuenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T16:25:12.950Z",
+  "lockedTests": {
+    "packages/cli/test/prune.test.ts": "sha256:55beee201e608657df1a676ba92a84b2cd2014a541d7dc6d1c0dcdb5e52e665a",
+    "packages/core/test/cards/close.test.ts": "sha256:23bf33e6e1025923abcaf1c1d3052440b4893df7b8baac806abe08b6e44661a4",
+    "packages/cli/test/cancel-folder.test.ts": "sha256:e992f25e15cd78b437e166b2318ec9df5870946c54348f6bff46a3f225f2a817"
+  }
+}

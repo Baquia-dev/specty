@@ -171,12 +171,10 @@ describe("the finished changes the server gives by pages", () => {
       ]);
       // The title of the epic of each slice in the page; an epic that is gone, by its id.
       expect(first.epics).toEqual({ [EPIC]: "Panel académico", [LOST_EPIC]: LOST_EPIC });
-      // Each record as `/api/changes` gives it.
-      const all: Page["records"] = JSON.parse(
-        (await call(server.port, "/api/changes", { cookie })).body,
-      );
+      // Each record as `/api/changes/<id>` gives it.
       for (const record of first.records.slice(0, 5)) {
-        expect(record).toEqual(all.find((other) => other.state.id === record.state.id));
+        const one = await call(server.port, `/api/changes/${record.state.id}`, { cookie });
+        expect(JSON.parse(one.body)).toEqual(record);
       }
     } finally {
       await server.close();
@@ -266,10 +264,11 @@ describe("the finished changes the server gives by pages", () => {
   it("AC3: keeps the archived changes it read, until their state changes, and reads the new ones", async () => {
     const { root, base, server, cookie } = await serving(SPECIAL);
     const chat = "20261004-chat-docentes";
+    const byId = `/api/changes/${chat}`;
     const specOf = async (path: string) => {
       const records: Page["records"] = path.endsWith("finished")
         ? (await page(server, cookie)).records
-        : JSON.parse((await call(server.port, path, { cookie })).body);
+        : [JSON.parse((await call(server.port, path, { cookie })).body)];
       return records.find((record) => record.state.id === chat)?.spec ?? "";
     };
     try {
@@ -286,19 +285,17 @@ describe("the finished changes the server gives by pages", () => {
       };
       await writeFiles(root, archived(base, newcomer));
       expect(await specOf("/api/changes/finished")).toContain("# Chat de docentes");
-      expect(await specOf("/api/changes")).toContain("# Chat de docentes");
+      expect(await specOf(byId)).toContain("# Chat de docentes");
       // A change that appears in the archive is read.
       const after = await page(server, cookie);
       expect([after.total, idsOf(after).at(-1)]).toEqual([5, "nuevo"]);
-      const listed: Page["records"] = JSON.parse(
-        (await call(server.port, "/api/changes", { cookie })).body,
-      );
-      expect(listed.map((record) => record.state.id)).toContain(newcomer.id);
+      const found = await call(server.port, `/api/changes/${newcomer.id}`, { cookie });
+      expect([found.status, JSON.parse(found.body).state.id]).toEqual([200, newcomer.id]);
       // Once its state changes, the server reads it again.
       const later = new Date(Date.now() + 60_000);
       await utimes(join(root, `${ARCHIVE}/${chat}/state.json`), later, later);
       expect(await specOf("/api/changes/finished")).toContain("# Chat renombrado");
-      expect(await specOf("/api/changes")).toContain("# Chat renombrado");
+      expect(await specOf(byId)).toContain("# Chat renombrado");
     } finally {
       await server.close();
     }

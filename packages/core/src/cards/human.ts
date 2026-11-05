@@ -158,13 +158,15 @@ export function closedCard(
 
 /**
  * A cancelled change: its branch is never merged, because it may hold half-done code. The card
- * says what the branch keeps and only offers another change.
+ * says what the branch keeps, then `folder`, when given: whether its folder went or why it stays.
+ * It only offers another change.
  */
 export function cancelledCard(
   header: string,
   lead: string,
   branch: { readonly name: string; readonly withCode: boolean } | undefined,
   ctx: CardContext,
+  folder?: string,
 ): Output {
   const t = translator(ctx.lang);
   const kept =
@@ -183,7 +185,7 @@ export function cancelledCard(
         ];
   return {
     ...closedCard(header, lead, undefined, ctx),
-    blocks: section(undefined, [lead, ...kept]),
+    blocks: section(undefined, [lead, ...kept, ...(folder === undefined ? [] : [folder])]),
   };
 }
 

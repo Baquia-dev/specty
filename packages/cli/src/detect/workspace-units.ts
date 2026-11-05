@@ -2,6 +2,7 @@
 import { type Lang, proposeUnits, type UnitsFacts, unitsYaml } from "@baquia-dev/specty-core";
 import type { Detection } from "./project";
 import { cargoWorkspace } from "./units-cargo";
+import { dartWorkspace } from "./units-dart";
 import { goWorkspace } from "./units-go";
 import { gradleWorkspace } from "./units-gradle";
 import { jsWorkspace } from "./units-js";
@@ -16,13 +17,17 @@ export type UnitsDetector = (
   detection: Detection,
 ) => Promise<WorkspaceFacts | undefined>;
 
-/** The detectors `init` tries, in order: pnpm, npm and yarn first, then Cargo, `go.work`, uv and Gradle. */
+/**
+ * The detectors `init` tries, in order: pnpm, npm and yarn first, then Cargo, `go.work`, uv,
+ * Gradle and pub or melos.
+ */
 export const DETECTORS: readonly UnitsDetector[] = [
   jsWorkspace,
   cargoWorkspace,
   goWorkspace,
   uvWorkspace,
   gradleWorkspace,
+  dartWorkspace,
 ];
 
 /**

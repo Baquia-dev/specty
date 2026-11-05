@@ -64,7 +64,8 @@ export const EVENT_RULES: Readonly<Record<FlowEventType, EventRule>> = {
   taskDone: { actors: ANYONE, from: ["implementing"], grantsPermission: false },
   scopeRequest: { actors: ANYONE, from: ["implementing"], grantsPermission: false },
   decideScope: { actors: HUMAN, from: ["implementing"], grantsPermission: true },
-  adjust: { actors: ANYONE, from: ["acceptance"], grantsPermission: false },
+  // An epic also while its slices are implemented, to split one that came out too large.
+  adjust: { actors: ANYONE, from: ["implementing", "acceptance"], grantsPermission: false },
   accept: { actors: HUMAN, from: ["acceptance"], grantsPermission: true },
   confirmClose: { actors: HUMAN, from: ["closing"], grantsPermission: true },
   childrenDone: { actors: ["specty"], from: ["implementing"], grantsPermission: false },
@@ -105,7 +106,7 @@ export function transition({ phase, kind, actor, event }: TransitionInput): Tran
   if (!rule.from.includes(phase)) return reject("phase-not-allowed");
   if (isSpecEvent(event)) return specOutcome(event, phase, kind);
   if (isTaskEvent(event)) return taskOutcome(event, kind);
-  return endOutcome(event, kind);
+  return endOutcome(event, phase, kind);
 }
 
 type EventOf<T extends FlowEventType> = Extract<FlowEvent, { readonly type: T }>;
@@ -174,11 +175,12 @@ function taskOutcome(event: TaskEvent, kind: ChangeKind): TransitionResult {
 /** Past the tasks: adjusting, accepting, closing, an epic's slices done, or cancelling. */
 function endOutcome(
   event: EventOf<"adjust" | "accept" | "confirmClose" | "childrenDone" | "cancel">,
+  phase: Phase,
   kind: ChangeKind,
 ): TransitionResult {
   switch (event.type) {
     case "adjust":
-      return to("adjusting");
+      return adjustOutcome(phase, kind);
     case "accept":
       return to(kind === "quick" ? "done" : "closing");
     case "confirmClose":
@@ -188,6 +190,14 @@ function endOutcome(
     case "cancel":
       return to("cancelled");
   }
+}
+
+/**
+ * Only an epic is adjusted before its result, to split a slice: while it is implemented, any
+ * other change changes its plan with `scope add`.
+ */
+function adjustOutcome(phase: Phase, kind: ChangeKind): TransitionResult {
+  return phase === "implementing" && kind !== "epic" ? reject("kind-not-allowed") : to("adjusting");
 }
 
 function to(phase: Phase): TransitionResult {
