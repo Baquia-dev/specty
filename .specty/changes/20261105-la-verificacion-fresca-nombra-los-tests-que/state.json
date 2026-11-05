@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261105-la-verificacion-fresca-nombra-los-tests-que",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261105-la-verificacion-fresca-nombra-los-tests-que",
+  "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4d62dc0f6371eeed809b232715adbaabcd77e3c11a94ff979a7bc93c4cfbc3f0",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:30fa65180b4373daf44a5c3447116406c8564bbbaf654796f7837c5acae29f5d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8ef62145178496215e07f27f9078c34e53e721f4cc136bf7c355393eb2467f9f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a0424f47b4d1f42893eb6b6e1aa9271d1a60209dc5ab4386cd777611856acccc",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:167ac3c122b9c7e550f5cbe24328e42553f24a2343c98ca5c66c5ae93629cbd9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:79100b4e68b8486ad12ea34684b551fdb39f6ebaf910e8f5dcc69b8681e77a21",
+    "at": "2026-11-05T08:33:57.333Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
