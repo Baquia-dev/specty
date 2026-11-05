@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261105-cancel-quita-la-carpeta-del-cambio-cuando-nada",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261105-cancel-quita-la-carpeta-del-cambio-cuando-nada",
   "baseCommit": "c62daa42ce69d2e1146a246f3ab60c3c3a1bef7a",
   "revision": 2,
@@ -55,6 +55,9 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-05T16:07:45.338Z"
+  "lockedTests": {
+    "packages/cli/test/prune.test.ts": "sha256:55beee201e608657df1a676ba92a84b2cd2014a541d7dc6d1c0dcdb5e52e665a",
+    "packages/core/test/cards/close.test.ts": "sha256:23bf33e6e1025923abcaf1c1d3052440b4893df7b8baac806abe08b6e44661a4",
+    "packages/cli/test/cancel-folder.test.ts": "sha256:e992f25e15cd78b437e166b2318ec9df5870946c54348f6bff46a3f225f2a817"
+  }
 }
