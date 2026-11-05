@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261105-la-verificacion-fresca-nombra-los-tests-que",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261105-la-verificacion-fresca-nombra-los-tests-que",
   "baseCommit": "5dbf1d130e51e51fcf04396a14cf37aaef648e07",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:79100b4e68b8486ad12ea34684b551fdb39f6ebaf910e8f5dcc69b8681e77a21",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "88efeb188690868ce0c5ab282c648d69b2fa3e71",
+      "attempts": 1,
       "startedAt": "2026-11-05T08:50:15.263Z",
       "doneAt": "2026-11-05T08:54:55.505Z",
-      "summary": "ARCHITECTURE §6 y formats.md §6 describen los tests que fallaron en la salida de specty verify --fresh, leídos de los informes JUnit de checks.testTime"
+      "summary": "ARCHITECTURE §6 y formats.md §6 describen los tests que fallaron en la salida de specty verify --fresh, leídos de los informes JUnit de checks.testTime",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,6 +83,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-05T09:12:30.694Z",
   "lockedTests": {
     "packages/cli/test/verify-fresh.test.ts": "sha256:4ede472a8c8a96f8c7f188ce89ab982e872b54e9c58e6cfdd15b5dbe0e95e15c",
     "packages/core/test/cards/fresh.test.ts": "sha256:3a4385e12550009f2119171689101944bd6b19a3f927eb0114b18f71025aa45a",

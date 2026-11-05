@@ -75,3 +75,23 @@ Cuando una unidad falla en `specty verify --fresh`, la tarjeta solo muestra las 
 
 - R1: Un informe que dejó otra ejecución durante el intento (otra sesión que corre los mismos tests a la vez) nombraría tests que no son de la unidad — la verificación fresca corre en el turno de la verificación completa y con todas las plazas, así que otra verificación del clon no corre a la vez.
 - R2: Un fallo que rompe cientos de tests alargaría la tarjeta — salen diez como mucho, con cuántos más hay.
+
+## Cierre
+
+### Resumen
+
+Cuando una unidad falla en `specty verify --fresh` y el proyecto tiene `checks.testTime`, la tarjeta nombra, con su archivo, los tests que fallaron en el intento cuya salida muestra: el primero de una unidad inestable y el segundo de una que falló dos veces. Salen en `TESTS QUE FALLARON EN b`, antes de la salida del fallo, hasta diez y con cuántos más hay, en español y en inglés. Core lee los tests que fallaron de un informe JUnit con `parseJunitFailures`: un `<testcase>` con un `<failure>` o un `<error>` dentro, aunque no tenga `time`. La CLI lee los informes nuevos de `checks.testTime.reports` tras cada intento que falla y antes del siguiente (`failedTestsSince`). Sin `checks.testTime`, sin informes nuevos o sin tests que fallaron en ellos, la tarjeta queda como antes. ARCHITECTURE §6 y formats.md §6 lo describen.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `parseJunit` y `parseJunitFailures` comparten la lectura de cada `<testcase>`. Un test falló si lo que hay entre su etiqueta de apertura y la de cierre tiene un `<failure>` o un `<error>`, fuera de comentarios y de CDATA. `<skipped>`, `<system-err>` y el `<flakyFailure>` de Surefire no cuentan, y un `<testcase>` sin etiqueta de cierre no cuenta como fallado.
+- `failedTestsSince` y `slowTestsSince` comparten en `check/test-time.ts` la lectura de los informes nuevos y el anclaje de las rutas relativas, que ahora vale para cualquier test con archivo.
+- La salida del fallo sigue saliendo después de los tests, porque trae el mensaje del error, y la línea `SIGUIENTE` no cambia.
+
+### Pendientes
+
+- Ninguno.
