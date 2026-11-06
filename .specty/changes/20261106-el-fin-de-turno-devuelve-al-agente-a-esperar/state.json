@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-fin-de-turno-devuelve-al-agente-a-esperar",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-el-fin-de-turno-devuelve-al-agente-a-esperar",
   "baseCommit": "ddaa47217dcb6b75a40be45d70016d60cc09f4db",
   "revision": 1,
@@ -59,6 +59,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T12:52:55.824Z"
+  "lockedTests": {
+    "packages/core/test/cards/hooks.test.ts": "sha256:fbedffb13a68e724b20502d9a9247d836a53c407441b025e01cf9d21c38c3c6d",
+    "packages/cli/test/agent-stop-wait.test.ts": "sha256:3c2944cef45487ea87c0e11099a85d558b8859a1bb94c678e70537e13c852594"
+  }
 }
