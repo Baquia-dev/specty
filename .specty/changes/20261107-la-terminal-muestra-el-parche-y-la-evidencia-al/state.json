@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-terminal-muestra-el-parche-y-la-evidencia-al",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-terminal-muestra-el-parche-y-la-evidencia-al",
   "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "856e0be4647d6d1a3a45f77cb6240fbf912f6fda",
+      "attempts": 1,
       "startedAt": "2026-11-06T17:23:29.313Z",
       "doneAt": "2026-11-06T17:29:27.746Z",
-      "summary": "approve --scope y reject --scope muestran antes de preguntar la nota de scopeRequestNote: rutas y motivo y, de un desbloqueo, su parche y su evidencia."
+      "summary": "approve --scope y reject --scope muestran antes de preguntar la nota de scopeRequestNote: rutas y motivo y, de un desbloqueo, su parche y su evidencia.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "91701e995b394191276704e8583ab2627d298ff8",
+      "startedAt": "2026-11-06T17:29:28.061Z",
+      "doneAt": "2026-11-06T17:30:14.905Z",
+      "summary": "ARCHITECTURE.md cuenta qué muestra la nota de la terminal antes de decidir un desbloqueo: parche, evidencia numerada, cortes y caracteres de control."
     }
   },
   "pending": {

@@ -59,7 +59,7 @@ Hoy, al decidir en la terminal una solicitud de alcance con `approve --scope` o 
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/test-locks.test.ts test/unlock-again.test.ts test/retro-into.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T3: La arquitectura cuenta qué ve la persona antes de decidir un desbloqueo
+- [x] T3: La arquitectura cuenta qué ve la persona antes de decidir un desbloqueo
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm sources
