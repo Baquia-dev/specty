@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-los-cambios-huerfanos-traen-un-encargo-para",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-los-cambios-huerfanos-traen-un-encargo-para",
   "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
-  "revision": 1,
+  "revision": 3,
   "approved": {
     "revision": 1,
     "hash": "sha256:116d004ac818842b8ca1b0cd7e50ae13f44994fd894657d1ce86f7b4c5132176",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "18deec6260635fa13210e6ed4aac4baf6e2480c9",
+      "attempts": 1,
       "startedAt": "2026-11-06T21:33:42.327Z",
       "doneAt": "2026-11-06T21:43:16.051Z",
-      "summary": "ARCHITECTURE §7 («Fuera de la carpeta de su cambio» y «Tarjeta sin cambio activo»), formats.md (subagents) y dominio.md («Encargo») cuentan el «ENCARGO PARA RETOMAR» de los huérfanos."
+      "summary": "ARCHITECTURE §7 («Fuera de la carpeta de su cambio» y «Tarjeta sin cambio activo»), formats.md (subagents) y dominio.md («Encargo») cuentan el «ENCARGO PARA RETOMAR» de los huérfanos.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,8 +69,40 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-06T22:03:13.621Z",
   "lockedTests": {
     "packages/core/test/cards/rejoin.test.ts": "sha256:1ea1ec61612e23eb295d6a424f2122d728f6db24e7928216db3bdda126fc9699",
     "packages/core/test/cards/orphans-subagents.test.ts": "sha256:6fc1dcde056a26ed528b655a033486868361e231ddd1cde47f538c701be7a197"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "53eef2c1668b92bbf9d89a26fd7a562eef5cbf60",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "packages/cli/src/enforce/agent-stop.ts",
+      "packages/cli/src/enforce/sessions.ts",
+      "packages/cli/test/fresh-session.test.ts",
+      "packages/cli/test/front-start-codex.test.ts",
+      "packages/cli/test/front-start.test.ts",
+      "packages/cli/test/session-start-codex.test.ts",
+      "packages/cli/test/session-start.test.ts",
+      "packages/cli/test/setup.test.ts",
+      "packages/core/src/cards/idle.ts",
+      "packages/core/src/cards/rejoin.ts",
+      "packages/core/src/cards/subagents.ts",
+      "packages/core/test/cards/orphans-subagents.test.ts",
+      "packages/core/test/cards/rejoin.test.ts"
+    ],
+    "at": "2026-11-06T22:03:32.310Z",
+    "resolved": {
+      "commit": "be7da6f",
+      "at": "2026-11-06T22:08:21.849Z"
+    }
   }
 }
