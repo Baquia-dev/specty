@@ -73,7 +73,7 @@ Hoy, al aceptar o confirmar el cierre desde la UI, el diálogo se queda abierto 
   - files: packages/ui/src/data/in-flight.ts, packages/ui/src/acceptance/result-dialogs.ts, packages/ui/src/acceptance/acceptance-actions.ts, packages/ui/src/acceptance/acceptance-actions.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/acceptance-actions.test.ts --include src/acceptance/epic-adjust.test.ts --include src/acceptance/acceptance-tab.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck
-- [ ] T2: Confirmar el cierre cierra el diálogo y la cabecera lo muestra en curso
+- [x] T2: Confirmar el cierre cierra el diálogo y la cabecera lo muestra en curso
   - files: packages/ui/src/acceptance/closing-actions.ts, packages/ui/src/acceptance/closing-actions.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/closing-actions.test.ts --include src/change/change-page.closing.test.ts --include src/change/change-page.epic.test.ts && pnpm typecheck

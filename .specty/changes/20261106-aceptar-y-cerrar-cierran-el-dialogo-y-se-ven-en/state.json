@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "33f36d12813c93f1f601a13c7775536264ca6f68",
+      "attempts": 1,
       "startedAt": "2026-11-06T07:50:29.772Z",
       "doneAt": "2026-11-06T07:56:07.179Z",
-      "summary": "Nuevo servicio raíz InFlight (data/in-flight.ts). «Aceptar» cierra el diálogo y lanza la aceptación con InFlight.run; la cabecera y la barra cargan «Aceptar resultado», desactivan «Pedir ajustes…» y la cabecera dice «Aceptando…» ([data-in-flight])."
+      "summary": "Nuevo servicio raíz InFlight (data/in-flight.ts). «Aceptar» cierra el diálogo y lanza la aceptación con InFlight.run; la cabecera y la barra cargan «Aceptar resultado», desactivan «Pedir ajustes…» y la cabecera dice «Aceptando…» ([data-in-flight]).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "090d84074b114bb4c561cd0518678e6df9a32b8e",
+      "startedAt": "2026-11-06T07:56:07.492Z",
+      "doneAt": "2026-11-06T08:00:34.411Z",
+      "summary": "«Confirmar y archivar» cierra el diálogo y lanza el cierre con InFlight.run; el botón de la cabecera y el de la barra cargan, y la cabecera dice «Cerrando…» bajo él ([data-in-flight]); ClosingActions pasa a columna."
     }
   },
   "pending": {
