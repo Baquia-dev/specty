@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-limpieza-no-deja-huerfanos-y-rescata-lo-que",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-la-limpieza-no-deja-huerfanos-y-rescata-lo-que",
   "baseCommit": "f5ec51b661b7488ba529dca5e6648e0857548033",
   "revision": 1,
@@ -64,6 +64,10 @@
     "T": 5,
     "R": 5
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T09:47:49.881Z"
+  "lockedTests": {
+    "packages/cli/test/prune-commands.test.ts": "sha256:276b8cefc93a7f09bd176e264790f68c462c40dd65bf621c72b2468d02d2bd51",
+    "packages/cli/test/prune-orphans.test.ts": "sha256:53d44b0a9b31c458242bf39f74d99ae580ecd36bb6a0185d4a2e264e6b6132e2",
+    "packages/cli/test/prune-rescue.test.ts": "sha256:26bc701540b2293e036cca80144c78a11bfb7f088eccf93ac02ec42b08d43685",
+    "packages/core/test/cards/prune-orphans.test.ts": "sha256:785b02b50ea45b3260abb11d9bcd700ae72a92dcba08f1ca96b46c88629e366d"
+  }
 }
