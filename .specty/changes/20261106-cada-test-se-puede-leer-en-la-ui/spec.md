@@ -68,7 +68,7 @@ Hoy la UI solo da la ruta de cada test, en «Tests por aprobar» y en «Tests bl
   - files: packages/cli/src/server/test-code.ts, packages/cli/src/server/api.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/cli/test/server/test-code.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/test-code.test.ts test/server/trace.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts --include src/data/server-trace.test.ts
-- [ ] T2: Cada test por aprobar tiene «Ver código»
+- [x] T2: Cada test por aprobar tiene «Ver código»
   - files: packages/ui/src/progress/test-code.ts, packages/ui/src/progress/tests-sent.ts, packages/ui/src/progress/progress-tab.ts, packages/ui/src/progress/tests-sent.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/tests-sent.test.ts --include src/progress/progress-tab.test.ts

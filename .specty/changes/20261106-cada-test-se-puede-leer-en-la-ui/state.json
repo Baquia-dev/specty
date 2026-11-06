@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b64631bf404d864dca1353a6270339af8705150d",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:34:44.044Z",
       "doneAt": "2026-11-06T13:39:51.344Z",
-      "summary": "GET /api/changes/<id>/test (server/test-code.ts) da un test del cambio desde su rama o, cerrado, desde la principal; 404 para lo demás. SpectyData.testCode y ServerData.testCode lo piden."
+      "summary": "GET /api/changes/<id>/test (server/test-code.ts) da un test del cambio desde su rama o, cerrado, desde la principal; 404 para lo demás. SpectyData.testCode y ServerData.testCode lo piden.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "70b0d41d8a235126e930bcbe99e7be00dee0dc83",
+      "startedAt": "2026-11-06T13:39:51.661Z",
+      "doneAt": "2026-11-06T13:41:01.093Z",
+      "summary": "sp-test-code (progress/test-code.ts): «Ver código» pide el test a la fuente al abrirse y lo pinta numerado con los colores de HIGHLIGHT, o dice por qué no puede. Cada test por aprobar lo lleva; progress-tab pasa el cambio."
     }
   },
   "pending": {
