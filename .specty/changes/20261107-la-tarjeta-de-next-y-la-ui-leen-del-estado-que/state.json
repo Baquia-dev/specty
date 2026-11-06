@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-tarjeta-de-next-y-la-ui-leen-del-estado-que",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-tarjeta-de-next-y-la-ui-leen-del-estado-que",
   "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
   "revision": 2,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "30821226c8ad9a3b7faad1326bc08ebb85db3792",
+      "attempts": 1,
       "startedAt": "2026-11-06T16:59:27.058Z",
       "doneAt": "2026-11-06T17:05:10.429Z",
-      "summary": "decisionOf y changesRequestedOf leen el estado (changeWaitsFor y changesRequestedAt), no la auditoría; el prototipo pone changesRequestedAt al pedir cambios y lo quita al aprobar"
+      "summary": "decisionOf y changesRequestedOf leen el estado (changeWaitsFor y changesRequestedAt), no la auditoría; el prototipo pone changesRequestedAt al pedir cambios y lo quita al aprobar",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "afc1f4447e03fc045925b28aad012f1939a685d3",
+      "startedAt": "2026-11-06T17:05:10.841Z",
+      "doneAt": "2026-11-06T17:10:24.898Z",
+      "summary": "formats §5, ARCHITECTURE §4 y ui.md cuentan que next y la UI leen changesRequestedAt / changeWaitsFor y no la auditoría"
     }
   },
   "pending": {

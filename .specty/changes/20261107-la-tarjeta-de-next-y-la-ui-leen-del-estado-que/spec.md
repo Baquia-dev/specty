@@ -76,7 +76,7 @@ Desde P225, `changesRequestedAt` en `state.json` dice que la persona devolvió l
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts --include src/data/fixtures.test.ts && pnpm typecheck && pnpm lint
   - type: fix
-- [ ] T4: La documentación cuenta que `next` y la UI leen el estado
+- [x] T4: La documentación cuenta que `next` y la UI leen el estado
   - files: docs/formats.md, docs/ARCHITECTURE.md, docs/ui.md
   - ac: AC1, AC4
   - verify: pnpm lint && pnpm sources
