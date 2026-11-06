@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4a679bd0f7afbc32de76177c3349dba4fde3e33e",
+      "startedAt": "2026-11-06T20:06:55.928Z",
+      "doneAt": "2026-11-06T20:07:41.035Z",
+      "summary": "directionPieces corta un texto en sus caracteres de dirección (spansOf lo usa) y el markdown los marca en su HTML: en el texto y el código con el tono y el título de DIRECTION_MARK, dentro de una etiqueta como su código sin marca"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

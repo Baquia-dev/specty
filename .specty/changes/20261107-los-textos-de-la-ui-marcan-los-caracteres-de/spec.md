@@ -65,7 +65,7 @@ Desde el cambio anterior, la UI muestra con su código, en el tono de atención,
 
 ## Tareas
 
-- [ ] T1: El markdown marca los caracteres de dirección del texto
+- [x] T1: El markdown marca los caracteres de dirección del texto
   - files: packages/ui/src/highlight/highlight.ts, packages/ui/src/review/markdown.ts, packages/ui/src/review/markdown.test.ts
   - ac: AC1, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/markdown.test.ts --include src/highlight/highlight.test.ts --include src/components/diff-file.test.ts && pnpm lint
