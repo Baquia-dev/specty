@@ -17,6 +17,7 @@ import { ADAPTERS } from "../agents";
 import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
 import { waitingMessages } from "../commands/message";
 import { next } from "../commands/next";
+import { isWaitingForHuman } from "../commands/wait";
 import { isFinished, resolveActive } from "../flow/active";
 import { gitCommonFolder } from "../flow/worktree";
 import { isRecord, parseJson, remove } from "../io/files";
@@ -354,6 +355,7 @@ async function guardChange(session: Session, active: StoredChange): Promise<Guar
     phase: state.phase,
     closingSubmitted: state.closingSubmittedAt !== undefined,
     specPath: session.paths.relative(active.files.spec),
+    waiting: isWaitingForHuman(active),
     ...(taskEntry !== undefined
       ? {
           task: {

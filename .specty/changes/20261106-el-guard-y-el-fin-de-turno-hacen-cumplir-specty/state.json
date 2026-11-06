@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-guard-y-el-fin-de-turno-hacen-cumplir-specty",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-el-guard-y-el-fin-de-turno-hacen-cumplir-specty",
   "baseCommit": "ddaa47217dcb6b75a40be45d70016d60cc09f4db",
   "revision": 1,
@@ -70,12 +70,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "63662ca0f87da2b0cb18b88d6be76b029619f661",
+      "attempts": 1,
       "startedAt": "2026-11-06T12:54:33.966Z",
       "doneAt": "2026-11-06T13:00:33.239Z",
-      "summary": "La acción de shell lleva background, que Claude Code saca de run_in_background; los hechos del shell pasan a shellFacts en place.ts, con sleeps y background; el guard pone su herramienta en el contexto y rechaza specty wait en primer plano"
+      "summary": "La acción de shell lleva background, que Claude Code saca de run_in_background; los hechos del shell pasan a shellFacts en place.ts, con sleeps y background; el guard pone su herramienta en el contexto y rechaza specty wait en primer plano",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3645ede4da92d70991ac1688684eb0e70e15f0da",
+      "startedAt": "2026-11-06T13:00:33.568Z",
+      "doneAt": "2026-11-06T13:01:48.351Z",
+      "summary": "commands/wait.ts exporta isWaitingForHuman y el guard marca waiting en su cambio, así frena sleep mientras el cambio espera a la persona; ARCHITECTURE cuenta la regla wait del guard"
     }
   },
   "pending": {

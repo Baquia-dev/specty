@@ -84,7 +84,7 @@ Hoy el guard deja que el agente de Claude Code ejecute `specty wait` en primer p
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait-guard.test.ts -t AC1
   - type: feat
-- [ ] T4: El guard sabe si el cambio de la carpeta espera a la persona y frena `sleep`
+- [x] T4: El guard sabe si el cambio de la carpeta espera a la persona y frena `sleep`
   - files: packages/cli/src/commands/wait.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/wait-guard.test.ts, docs/ARCHITECTURE.md
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait-guard.test.ts && pnpm typecheck && pnpm lint
