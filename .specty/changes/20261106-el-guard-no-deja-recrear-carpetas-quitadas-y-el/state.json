@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-guard-no-deja-recrear-carpetas-quitadas-y-el",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-el-guard-no-deja-recrear-carpetas-quitadas-y-el",
   "baseCommit": "723a599e2ab1ed33d68368a923a91151b72ffeb6",
   "revision": 2,
@@ -56,6 +56,9 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T08:47:40.845Z"
+  "lockedTests": {
+    "packages/cli/test/ghost-folders.test.ts": "sha256:8e67ac9f4ce5e85863c8038cc92e39d62b97fd1ae9b20ea6c8fe467a8c890fad",
+    "packages/cli/test/session-end-binding.test.ts": "sha256:bb90b41024a4ea1c752b99d15f3bb68e669a8917aff346763e93cb6bdd719b68",
+    "packages/core/test/guard/ghosts.test.ts": "sha256:c46c175980331e20c46d523ed91a8d089f91e9e6283547a52912b71b0b1c2442"
+  }
 }
