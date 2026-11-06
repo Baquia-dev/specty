@@ -34,6 +34,19 @@ export function cancelCommitSubject(id: string, lang: Lang): string {
   return `docs(spec): ${translator(lang)("cancelar", "cancel")} ${id}`;
 }
 
+/** The subject of the commit that keeps on its branch what a cancelled change's folder had uncommitted. */
+export function cancelWorkCommitSubject(id: string, lang: Lang): string {
+  return `wip: ${translator(lang)(`lo que ${id} tenía sin commit al cancelarse`, `what ${id} had uncommitted when cancelled`)}`;
+}
+
+/** The card's line with the commit that kept what the cancelled change's folder had uncommitted. */
+export function cancelledWorkSavedLine(commit: string, branch: string, ctx: CardContext): string {
+  return translator(ctx.lang)(
+    `Lo que la carpeta tenía sin commit quedó en el commit ${commit} de la rama ${branch}.`,
+    `What the folder had uncommitted went into commit ${commit} of branch ${branch}.`,
+  );
+}
+
 /** What the agent did to incorporate the main branch, shown before the person confirms. */
 export function resolvedIntegrationNote(
   integration: {

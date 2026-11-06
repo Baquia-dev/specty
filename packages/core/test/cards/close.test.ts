@@ -7,8 +7,10 @@ import {
   cancelledCard,
   cancelledFolderStaysLine,
   cancelledLine,
+  cancelledWorkSavedLine,
   cancelQuestion,
   cancelReasonQuestion,
+  cancelWorkCommitSubject,
   closeCommitSubject,
   closedLine,
   confirmCloseQuestion,
@@ -75,11 +77,34 @@ describe("cancelling a change", () => {
   it("AC6: the card says what became of the folder after the branch, when it has one", () => {
     const branch = { name: "specty/x", withCode: false };
     const kept = "Branch specty/x keeps the spec and its record; it is not merged.";
-    expect(cancelledCard("SPECTY · x", "Cancelled.", branch, EN, "Folder line.").blocks).toEqual(
+    expect(cancelledCard("SPECTY · x", "Cancelled.", branch, EN, ["Folder line."]).blocks).toEqual(
       section(undefined, ["Cancelled.", kept, "Folder line."]),
     );
     expect(cancelledCard("SPECTY · x", "Cancelled.", branch, EN).blocks).toEqual(
       section(undefined, ["Cancelled.", kept]),
     );
+  });
+
+  it("AC5: names the commit with what the folder had uncommitted, in Spanish and in English", () => {
+    expect(cancelWorkCommitSubject("20261020-saludo", "es")).toBe(
+      "wip: lo que 20261020-saludo tenía sin commit al cancelarse",
+    );
+    expect(cancelWorkCommitSubject("20261020-saludo", "en")).toBe(
+      "wip: what 20261020-saludo had uncommitted when cancelled",
+    );
+    expect(cancelledWorkSavedLine("a1b2c3d", "specty/x", ES)).toBe(
+      "Lo que la carpeta tenía sin commit quedó en el commit a1b2c3d de la rama specty/x.",
+    );
+    expect(cancelledWorkSavedLine("a1b2c3d", "specty/x", EN)).toBe(
+      "What the folder had uncommitted went into commit a1b2c3d of branch specty/x.",
+    );
+  });
+
+  it("AC1: the card says the saved commit before what became of the folder", () => {
+    const branch = { name: "specty/x", withCode: false };
+    const kept = "Branch specty/x keeps the spec and its record; it is not merged.";
+    expect(
+      cancelledCard("SPECTY · x", "Cancelled.", branch, EN, ["Saved line.", "Folder line."]).blocks,
+    ).toEqual(section(undefined, ["Cancelled.", kept, "Saved line.", "Folder line."]));
   });
 });

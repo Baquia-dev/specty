@@ -10,11 +10,20 @@ export interface SpectyCalls {
   readonly fronts: readonly { readonly action: "take" | "free"; readonly name: string }[];
   /** The entries of Specty's memory each `specty new --resolves <id>…` takes, in order. */
   readonly resolves: readonly string[];
+  /** The entries of Specty's memory each `specty memory resolve <id>…` takes, in order. */
+  readonly memoryResolves: readonly string[];
   /** Each `specty new`, in order, and whether it carries `--subagent`, which binds nobody to it. */
   readonly news: readonly { readonly subagent: boolean }[];
 }
 
-const NONE: SpectyCalls = { specty: [], enters: [], fronts: [], resolves: [], news: [] };
+const NONE: SpectyCalls = {
+  specty: [],
+  enters: [],
+  fronts: [],
+  resolves: [],
+  memoryResolves: [],
+  news: [],
+};
 
 /** What a segment that runs Specty with `args` asks of it; nothing when it does not run Specty. */
 export function spectyCalls(args: readonly string[] | undefined): SpectyCalls {
@@ -25,6 +34,7 @@ export function spectyCalls(args: readonly string[] | undefined): SpectyCalls {
     enters: entered(args),
     fronts: frontRequests(args),
     resolves: resolvedIds(args),
+    memoryResolves: memoryResolvedIds(args),
     news: created(args),
   };
 }
@@ -52,6 +62,16 @@ function frontRequests(args: readonly string[]): SpectyCalls["fronts"] {
   const words = args.slice(args.indexOf("front") + 1).filter((arg) => !arg.startsWith("-"));
   const [action, name] = words;
   return (action === "take" || action === "free") && name !== undefined ? [{ action, name }] : [];
+}
+
+/**
+ * The ids `specty memory resolve` names: the words after `resolve` that are not options, when
+ * `resolve` is the first word after `memory` that is not one.
+ */
+function memoryResolvedIds(args: readonly string[]): string[] {
+  if (subcommand(args) !== "memory") return [];
+  const words = args.slice(args.indexOf("memory") + 1).filter((arg) => !arg.startsWith("-"));
+  return words[0] === "resolve" ? words.slice(1) : [];
 }
 
 /**
