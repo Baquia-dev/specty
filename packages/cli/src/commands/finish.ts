@@ -217,7 +217,7 @@ async function cancelConfirmed(
   );
   // `task done` commits each task's code; the state cannot hold that commit's own hash.
   const withCode = Object.values(state.tasks).some((task) => task.status === "done");
-  // Once the archive is committed, the branch keeps it all: the folder goes if nothing is lost.
+  // Once the archive is committed, the branch keeps it all, also what the folder had uncommitted.
   const folder =
     state.branch === undefined
       ? undefined
@@ -227,7 +227,9 @@ async function cancelConfirmed(
     cancelledLine(commit, session.lang),
     state.branch === undefined ? undefined : { name: state.branch, withCode },
     session.cards,
-    folder?.line,
+    folder === undefined
+      ? []
+      : [...(folder.saved === undefined ? [] : [folder.saved]), folder.line],
   );
   // The agent that cancelled from inside leaves the folder, as after `close`.
   const left = folder?.left;

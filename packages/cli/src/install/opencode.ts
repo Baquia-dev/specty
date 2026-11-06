@@ -108,8 +108,9 @@ function opencodePlugin(specty: string, stop: number | undefined): string {
  * command it asks the guard what changed, and adds its warning to the result the model reads.
  * After a compaction it brings back the card of `specty next`: OpenCode 1 gets it in the session,
  * asking for no reply, and OpenCode 2 in the next model call. With `STOP` on, at the end of each
- * turn it runs `specty hook agent-stop opencode` and sends its report back to the session; in
- * OpenCode 1, not to a subagent's child session (one with `parentID`). It never throws outside
+ * turn (`session.idle`; in OpenCode 2.2, `session.execution.succeeded`) it runs `specty hook
+ * agent-stop opencode` and sends its report back to the session; in OpenCode 1, not to a
+ * subagent's child session (one with `parentID`). It never throws outside
  * a blocked tool; if Specty cannot run, everything goes through.
  */
 const PLUGIN = `// Specty's guard for OpenCode. \`specty init\` writes this file and rewrites it, and
@@ -123,6 +124,8 @@ const GUARD = __GUARD__;
 // Seconds \`specty check --changed\` may take at the end of a turn; null while it is off.
 const STOP = __STOP__;
 const SHELL = new Set(["shell", "bash"]);
+// The events that end a turn in OpenCode 2: the beta's, and 2.2's, which has no \`session.idle\`.
+const TURN_ENDS = new Set(["session.idle", "session.execution.succeeded"]);
 // Sessions sent back to work at the end of their last turn: their next end of turn may end.
 const SENT_BACK = new Set();
 
@@ -285,8 +288,9 @@ export default {
     void (async () => {
       try {
         for await (const event of ctx.event.subscribe({ signal: controller.signal })) {
-          if (event?.type !== "session.idle") continue;
-          const session = event.properties?.sessionID;
+          if (!TURN_ENDS.has(event?.type)) continue;
+          // The beta gives the session in \`properties\`, and OpenCode 2.2 in \`data\`.
+          const session = (event.data ?? event.properties)?.sessionID;
           const reason = await endOfTurn(directory, session);
           if (reason !== undefined) await ctx.session?.prompt?.({ sessionID: session, text: reason });
         }

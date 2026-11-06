@@ -78,11 +78,14 @@ export const opencode: AgentAdapter = {
     ]);
     if (!guard) return lines;
     const compact = plugin?.includes("session.compacted") === true;
+    // One from before OpenCode 2.2's end of turn only listens to `session.idle`, which 2.2 dropped.
+    const turnEnd = plugin?.includes("session.execution.succeeded") === true;
     return {
       ...lines,
       problems: [
         ...lines.problems,
         ...(compact ? [] : [{ code: "opencode-compact" } as const]),
+        ...(turnEnd ? [] : [{ code: "opencode-turn-end" } as const]),
         ...beforeEnter(plugin ?? ""),
       ],
     };
@@ -152,24 +155,39 @@ function movedPaths(
 
 /**
  * The plugin sends the tool and its arguments as `tool_name` and `tool_input`, with the names of
- * OpenCode 2 and those of OpenCode 1 (`bash`, `filePath`, `multiedit`, `apply_patch`).
+ * OpenCode 2 and those of OpenCode 1 (`bash`, `filePath`, `multiedit`, `apply_patch`). Each call
+ * that `execute` (Code Mode, OpenCode 2.2) makes comes on its own, as `opencode_<tool>`.
  */
 function action(event: Readonly<Record<string, unknown>>): RawAction {
   const input = isRecord(event.tool_input) ? event.tool_input : {};
-  switch (event.tool_name) {
-    case "shell":
-    case "bash":
-      return shellAction(input.command);
-    case "edit":
-    case "write":
-    case "multiedit":
-      return { kind: "write", paths: [input.path, input.filePath].flatMap(sentPaths) };
-    case "patch":
-    case "apply_patch":
-      return typeof input.patchText === "string"
-        ? { kind: "files", ...patchPaths(input.patchText) }
-        : { kind: "other" };
-    default:
-      return { kind: "other" };
-  }
+  return ACTIONS.get(String(event.tool_name))?.(input) ?? { kind: "other" };
 }
+
+type Input = Readonly<Record<string, unknown>>;
+
+const shell = (input: Input): RawAction => shellAction(input.command);
+const write = (input: Input): RawAction => ({
+  kind: "write",
+  paths: [input.path, input.filePath].flatMap(sentPaths),
+});
+const patch = (input: Input): RawAction =>
+  typeof input.patchText === "string"
+    ? { kind: "files", ...patchPaths(input.patchText) }
+    : { kind: "other" };
+// It moves the session to another folder: an entry into it, as `EnterWorktree`.
+const sessionMove = (input: Input): RawAction =>
+  typeof input.directory === "string" && input.directory !== ""
+    ? { kind: "enter", request: { path: input.directory } }
+    : { kind: "other" };
+
+/** What each tool the guard judges does; the others are `other`. */
+const ACTIONS: ReadonlyMap<string, (input: Input) => RawAction> = new Map([
+  ["shell", shell],
+  ["bash", shell],
+  ["edit", write],
+  ["write", write],
+  ["multiedit", write],
+  ["patch", patch],
+  ["apply_patch", patch],
+  ["opencode_session_move", sessionMove],
+]);

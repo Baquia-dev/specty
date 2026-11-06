@@ -85,27 +85,39 @@ export function frontFreedCard(
 }
 
 /**
- * Why the guard does not let an agent's conversation create the change of entry `id`, of the front
- * `owner` holds from another conversation, and what to do instead.
+ * Why the guard does not let an agent's conversation take entry `id`, of the front `owner` holds
+ * from another conversation, and what to do instead: with `specty new --resolves` (`via: "new"`),
+ * creating its change, or with `specty memory resolve` (`via: "memory"`).
  */
 export function frontResolvesDenial(
   owner: FrontOwner,
   id: string,
   lang: Lang,
   command: string,
+  via: "new" | "memory" = "new",
 ): { readonly reason: string; readonly next: string } {
   const t = translator(lang);
   const held = heldBy({ holder: owner }, t) ?? "";
   const { front } = owner;
+  const free = t(
+    `pídele a la persona que libere el frente ${front} en su terminal con \`${command} front free ${front}\`.`,
+    `ask the person to free front ${front} in their terminal with \`${command} front free ${front}\`.`,
+  );
   return {
     reason: t(
       `${id} es del frente ${front}, que ya tiene dueño: ${held}, en otra conversación.`,
       `${id} belongs to front ${front}, which already has an owner: ${held}, in another conversation.`,
     ),
-    next: t(
-      `toma una entrada libre de tu frente o sin frente (\`${command} front\` los lista), o pídele a la persona que libere el frente ${front} en su terminal con \`${command} front free ${front}\`.`,
-      `take a free entry of your front or of none (\`${command} front\` lists them), or ask the person to free front ${front} in their terminal with \`${command} front free ${front}\`.`,
-    ),
+    next:
+      via === "memory"
+        ? t(
+            `vuelve a ejecutar \`${command} memory resolve\` sin ${id}: la resolverá la conversación de ese frente; o ${free}`,
+            `run \`${command} memory resolve\` again without ${id}: the conversation of that front will resolve it; or ${free}`,
+          )
+        : t(
+            `toma una entrada libre de tu frente o sin frente (\`${command} front\` los lista), o ${free}`,
+            `take a free entry of your front or of none (\`${command} front\` lists them), or ${free}`,
+          ),
   };
 }
 

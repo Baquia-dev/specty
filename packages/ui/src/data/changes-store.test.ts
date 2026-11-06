@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // One change by its id in the store: among the loaded ones or, when the Inbox has not loaded it,
 // asked to the source by its id.
-import { signal } from "@angular/core";
+import { type Signal, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import type { ChangeState } from "@baquia-dev/specty-core";
 import { ChangesStore, DERIVER } from "./changes-store";
@@ -39,16 +39,29 @@ const RECORDS = [
 class Paged extends SpectyData {
   readonly asked: string[] = [];
   failing = false;
+  /** Reading the list fails, as when the server answers 500. */
+  listFailing = false;
+  /** A change the source does not have a moment, as one whose folder is being archived. */
+  hidden: string | undefined;
+  /** What every title ends with, as after a decision that changed them. */
+  mark = "";
+  /** While set, every read waits for it, as a server that takes its time. */
+  private gate: Promise<void> | undefined;
   private readonly listeners = new Set<() => void>();
 
-  changes(): Promise<readonly ChangeRecord[]> {
-    return Promise.resolve(RECORDS.slice(0, 1));
+  async changes(): Promise<readonly ChangeRecord[]> {
+    await this.gate;
+    if (this.listFailing) throw new Error("El servidor no responde (simulado).");
+    return RECORDS.slice(0, 1).map((record) => marked(record, this.mark));
   }
 
-  override change(id: string): Promise<ChangeRecord | undefined> {
+  override async change(id: string): Promise<ChangeRecord | undefined> {
     this.asked.push(id);
-    if (this.failing) return Promise.reject(new Error("El servidor no responde (simulado)."));
-    return Promise.resolve(RECORDS.find((record) => record.state.id === id));
+    await this.gate;
+    if (this.failing) throw new Error("El servidor no responde (simulado).");
+    if (id === this.hidden) return undefined;
+    const record = RECORDS.find((one) => one.state.id === id);
+    return record === undefined ? undefined : marked(record, this.mark);
   }
 
   subscribe(listener: () => void): () => void {
@@ -60,6 +73,28 @@ class Paged extends SpectyData {
   tell(): void {
     for (const listener of this.listeners) listener();
   }
+
+  /** Says something changed, as after a decision: it ends once every listener has read again. */
+  told(): Promise<unknown> {
+    return Promise.all([...this.listeners].map((listener) => listener()));
+  }
+
+  /** Holds every read until the function it gives back is called. */
+  hold(): () => void {
+    let release: () => void = () => undefined;
+    this.gate = new Promise((done) => {
+      release = done;
+    });
+    return () => {
+      this.gate = undefined;
+      release();
+    };
+  }
+}
+
+/** `record` with `mark` after the title of its spec. */
+function marked(record: ChangeRecord, mark: string): ChangeRecord {
+  return { ...record, spec: record.spec.replace(/^(# .*)$/m, `$1${mark}`) };
 }
 
 function setup() {
@@ -75,8 +110,9 @@ function setup() {
     ],
   });
   const store = TestBed.inject(ChangesStore);
-  const find = (id: string) => TestBed.runInInjectionContext(() => store.byId(signal(id)));
-  return { source, find };
+  const find = (id: string | Signal<string>) =>
+    TestBed.runInInjectionContext(() => store.byId(typeof id === "string" ? signal(id) : id));
+  return { source, store, find };
 }
 
 /** Lets the store load its list and the source answer. */
@@ -129,5 +165,72 @@ describe("a change by its id in the store", () => {
     const found = find(SLICE);
     await settle();
     expect([found.view(), found.missing()]).toEqual([undefined, true]);
+  });
+});
+
+describe("what the store keeps when a read fails", () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  it("AC1: keeps the changes it listed, and each of them, when reading the list again fails", async () => {
+    const { source, store, find } = setup();
+    const found = find(EPIC);
+    await settle();
+    source.listFailing = true;
+    source.tell();
+    await settle();
+    expect(store.views.error()).toBeDefined();
+    expect(store.listed().map((view) => view.id)).toEqual([EPIC]);
+    expect([found.view()?.title, found.missing()]).toEqual(["La Bandeja por páginas", false]);
+  });
+
+  it("AC1: keeps a change it found when the source fails or misses it, but not for another id", async () => {
+    const { source, find } = setup();
+    const id = signal(SLICE);
+    const found = find(id);
+    await settle();
+    expect(found.view()?.title).toBe("Un cambio sin cargar");
+    source.failing = true;
+    source.tell();
+    await settle();
+    expect([found.view()?.title, found.missing()]).toEqual(["Un cambio sin cargar", false]);
+    // Gone a moment, as while its folder is archived: what was read stays.
+    source.failing = false;
+    source.hidden = SLICE;
+    source.tell();
+    await settle();
+    expect([found.view()?.title, found.missing()]).toEqual(["Un cambio sin cargar", false]);
+    // An id never found still does not exist, even right after another one was shown.
+    id.set(UNKNOWN);
+    await settle();
+    expect([found.view(), found.missing()]).toEqual([undefined, true]);
+  });
+});
+
+describe("what the store hears after a decision", () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  it("AC1: ends only once the list and the change asked by its id show what was read again", async () => {
+    const { source, store, find } = setup();
+    const listed = find(EPIC);
+    const asked = find(SLICE);
+    await settle();
+    const release = source.hold();
+    source.mark = " (otra vez)";
+    let shown: readonly (string | undefined)[] = [];
+    const heard = source.told().then(() => {
+      shown = [store.listed()[0]?.title, listed.view()?.title, asked.view()?.title];
+    });
+    await settle();
+    // The reads are under way: the decision is not over, and the page still shows what it had.
+    expect(shown).toEqual([]);
+    expect(listed.view()?.title).toBe("La Bandeja por páginas");
+    release();
+    await settle();
+    await heard;
+    expect(shown).toEqual([
+      "La Bandeja por páginas (otra vez)",
+      "La Bandeja por páginas (otra vez)",
+      "Un cambio sin cargar (otra vez)",
+    ]);
   });
 });

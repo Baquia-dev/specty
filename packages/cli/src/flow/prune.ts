@@ -2,6 +2,8 @@
 import { realpath } from "node:fs/promises";
 import {
   cancelledFolderStaysLine,
+  cancelledWorkSavedLine,
+  cancelWorkCommitSubject,
   type Lang,
   notInTargetBranchLine,
   notInTargetFolderLine,
@@ -17,6 +19,7 @@ import { dropMessages, messageChanges } from "../store/messages";
 import { isFinished } from "./active";
 import { markedBranches } from "./branches";
 import { locateChanges } from "./changes";
+import { commitWithReceipt, decisionTrailers } from "./commits";
 import { integrationOf, isIncorporated, reasonOf } from "./integrate";
 import { type FolderLeft, leaveChangeFolder, within } from "./land";
 import { targetBranch } from "./worktree";
@@ -27,7 +30,10 @@ export interface Cleanup {
   readonly kept: readonly string[];
 }
 
-/** A session's record stops counting a day after it was made: nothing deletes it at the end. */
+/**
+ * A session's record stops counting a day after it was made, or once its tool said the
+ * conversation ended (`ended`): nothing deletes it at the end.
+ */
 const SESSION_DAY = 24 * 60 * 60 * 1000;
 
 /**
@@ -58,35 +64,69 @@ export async function removeFinished(session: Session): Promise<Cleanup> {
   return { removed, kept };
 }
 
-/** The folders agent sessions work in, as the guard recorded them in the last day, resolved. */
+/**
+ * The folders agent sessions work in, as the guard recorded them in the last day, resolved; not
+ * those of conversations their tool said ended.
+ */
 async function workingFolders(session: Session): Promise<string[]> {
   const now = session.environment.now().getTime();
   return Promise.all(
     (await readBindings(session.git))
-      .filter(({ at }) => now - Date.parse(at) < SESSION_DAY)
+      .filter(({ at, ended }) => ended === undefined && now - Date.parse(at) < SESSION_DAY)
       .map(({ folder }) => resolved(folder)),
   );
 }
 
+/** What became of the cancelled change's folder, and the line of the commit that kept its work. */
+export interface CancelledFolder extends FolderLeft {
+  readonly saved?: string;
+}
+
 /**
  * The folder of the change `session` has just cancelled goes at once, as the clean-up would take
- * it later, when nothing is lost: nothing uncommitted in it, and no agent session works in it. As
+ * it later. What it had uncommitted first goes into a commit of its branch, so that nothing is
+ * lost; it stays only if an agent session works in it, or if git could not make that commit. As
  * with `close`, it goes from under whoever cancels from inside it: a person, or the agent in
  * delegated mode, which must then leave it. Never the main folder, and the branch stays. Returns
- * the card's line (removed, or why it stays) and how the agent inside leaves; nothing when the
- * change lives in the main folder.
+ * the card's lines (the commit, if any; removed, or why it stays) and how the agent inside leaves;
+ * nothing when the change lives in the main folder.
  */
 export async function removeCancelled(
   session: Session,
   change: { readonly id: string; readonly branch: string },
-): Promise<FolderLeft | undefined> {
+): Promise<CancelledFolder | undefined> {
   const main = (await session.git.worktrees())[0]?.folder ?? session.root;
   const folder = session.git.root;
   if ((await resolved(folder)) === (await resolved(main))) return undefined;
+  const commit = await commitUncommitted(session, change.id);
   const reason = await cancelledKeptBecause(session, folder);
   const stays =
     reason === undefined ? undefined : cancelledFolderStaysLine(folder, reason, session.cards);
-  return leaveChangeFolder(session, { ...change, main }, stays);
+  const left = await leaveChangeFolder(session, { ...change, main }, stays);
+  return commit === undefined
+    ? left
+    : { ...left, saved: cancelledWorkSavedLine(commit, change.branch, session.cards) };
+}
+
+/**
+ * Commits on the cancelled change's branch what its folder has uncommitted (tracked files that
+ * differ, and untracked ones git does not ignore), with Specty's receipt. Returns the short hash,
+ * or nothing when there was nothing to commit or git refused: then the index is left as it was.
+ */
+async function commitUncommitted(session: Session, id: string): Promise<string | undefined> {
+  const status = await session.git.run(["status", "--porcelain"]);
+  if (status.code !== 0 || status.stdout.trim().length === 0) return undefined;
+  try {
+    return await commitWithReceipt(session, {
+      subject: cancelWorkCommitSubject(id, session.lang),
+      trailers: decisionTrailers(session, id),
+      stage: [["."]],
+      receipt: { change: id, kind: "close" },
+    });
+  } catch {
+    await session.git.run(["reset", "-q"]);
+    return undefined;
+  }
 }
 
 /**

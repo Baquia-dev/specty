@@ -17,14 +17,34 @@ const UNKNOWN = "20990101-no-existe";
 @Injectable()
 class Unloaded extends FixtureData {
   readonly asked: string[] = [];
+  /** A change the source does not have a moment, as one being archived: not listed nor found. */
+  hidden: string | undefined;
+  private readonly heard = new Set<() => void>();
 
   override async changes(): Promise<readonly ChangeRecord[]> {
-    return (await super.changes()).filter((record) => record.state.id !== DONE);
+    return (await super.changes()).filter(
+      (record) => record.state.id !== DONE && record.state.id !== this.hidden,
+    );
   }
 
   override async change(id: string): Promise<ChangeRecord | undefined> {
     this.asked.push(id);
-    return (await super.changes()).find((record) => record.state.id === id);
+    const records = await super.changes();
+    return id === this.hidden ? undefined : records.find((record) => record.state.id === id);
+  }
+
+  override subscribe(listener: () => void): () => void {
+    this.heard.add(listener);
+    const stop = super.subscribe(listener);
+    return () => {
+      this.heard.delete(listener);
+      stop();
+    };
+  }
+
+  /** Says something changed, as the local server's events do. */
+  tell(): void {
+    for (const listener of this.heard) listener();
   }
 }
 
@@ -48,14 +68,17 @@ async function open(id: string) {
   });
   const fixture = TestBed.createComponent(Shell);
   const element: HTMLElement = fixture.nativeElement;
+  const settle = async () => {
+    for (let round = 0; round < 40; round++) {
+      await fixture.whenStable();
+      await new Promise((resolve) => setTimeout(resolve));
+    }
+  };
   await TestBed.inject(Router).navigateByUrl(`/changes/${id}`);
-  for (let round = 0; round < 40; round++) {
-    await fixture.whenStable();
-    await new Promise((resolve) => setTimeout(resolve));
-  }
+  await settle();
   const source = TestBed.inject(SpectyData);
   if (!(source instanceof Unloaded)) throw new Error("the page does not run on the test's source");
-  return { element, source };
+  return { element, source, settle };
 }
 
 const text = (element: Element | null | undefined) =>
@@ -85,5 +108,24 @@ describe("ChangePage of a change the Inbox has not loaded", () => {
     const { element, source } = await open("20261021-login-google");
     expect(text(element.querySelector("sp-change-page [data-hero] h1"))).toBe("Login con Google");
     expect(source.asked).toEqual([]);
+  });
+
+  it("AC1: keeps showing a change it showed when reading it again fails, not «No existe ese cambio»", async () => {
+    const { element, source, settle } = await open(DONE);
+    source.toggleOutage();
+    await settle();
+    const page = element.querySelector("sp-change-page");
+    expect(text(page?.querySelector("[data-hero] h1"))).toBe("Corregir el redondeo de promedios");
+    expect(text(page)).not.toContain("No existe ese cambio");
+  });
+
+  it("AC1: keeps showing a change that leaves the list and the source a moment, as one archived", async () => {
+    const { element, source, settle } = await open("20261021-login-google");
+    source.hidden = "20261021-login-google";
+    source.tell();
+    await settle();
+    const page = element.querySelector("sp-change-page");
+    expect(text(page?.querySelector("[data-hero] h1"))).toBe("Login con Google");
+    expect(text(page)).not.toContain("No existe ese cambio");
   });
 });

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { ghostFolderDenial } from "../cards/ghost-folder";
 import type { Phase } from "../flow/phases";
 import type { Lang } from "../i18n";
 import type { ResolvedConfig } from "../schema/config";
@@ -11,7 +12,13 @@ import { commitNext, type GuardIntegration, integrationDenial } from "./integrat
 import { type BoundSession, sessionDenial } from "./session";
 import { protectedDenial, specDenial } from "./spec";
 import { lockedDenial, testingDenial } from "./testing";
-import { type Elsewhere, elsewhereDenial, type ForeignPath, foreignDenial } from "./worktrees";
+import {
+  type Elsewhere,
+  elsewhereDenial,
+  type ForeignPath,
+  foreignDenial,
+  type GhostPath,
+} from "./worktrees";
 
 export { HUMAN_COMMANDS } from "./human";
 
@@ -58,6 +65,8 @@ export interface ShellFacts {
   readonly deletes: readonly string[];
   /** What the command would change inside another worktree of the repository. */
   readonly foreign?: readonly ForeignPath[];
+  /** What the command would write or delete in a ghost folder, which git no longer knows. */
+  readonly ghosts?: readonly GhostPath[];
   /** The command would run outside the change's folder the conversation entered. */
   readonly elsewhere?: Elsewhere;
 }
@@ -68,6 +77,8 @@ export type GuardAction =
       readonly paths: readonly string[];
       /** Paths inside another worktree of the repository, kept apart from `paths`. */
       readonly foreign?: readonly ForeignPath[];
+      /** Paths inside a ghost folder, kept apart from `paths` too. */
+      readonly ghosts?: readonly GhostPath[];
     }
   /**
    * What a tool reads or searches. Reading is free; only a conversation that entered a change's
@@ -80,7 +91,7 @@ export type GuardAction =
     }
   | { readonly kind: "shell"; readonly facts: ShellFacts }
   /** An edit that writes and deletes files at once, such as a patch (Codex, OpenCode). */
-  | ({ readonly kind: "files" } & Pick<ShellFacts, "writes" | "deletes" | "foreign">)
+  | ({ readonly kind: "files" } & Pick<ShellFacts, "writes" | "deletes" | "foreign" | "ghosts">)
   /**
    * The session moves into the worktree `target`, bound or not to another one. `epic` is the epic
    * of the open change in `target`, when that change is one of its slices.
@@ -107,6 +118,7 @@ export type GuardRule =
   | "no-task"
   | "scope"
   | "worktree"
+  | "ghost"
   | "integration"
   | "session"
   | "locked";
@@ -135,10 +147,30 @@ export function decideGuard(action: GuardAction, ctx: GuardContext): GuardDecisi
     const denial = sessionDenial(action.bound, action.target, ctx.lang, ctx.command, action.epic);
     return denial === undefined ? ALLOW : deny("session", denial.reason, denial.next);
   }
+  return decideEdit(action, ctx);
+}
+
+/** A file tool's write or deletion: each path, after those inside a ghost folder or another worktree. */
+function decideEdit(
+  action: Extract<GuardAction, { readonly kind: "write" | "delete" }>,
+  ctx: GuardContext,
+): GuardDecision {
   return (
+    denyGhost(action.ghosts, ctx) ??
     denyForeign(action.foreign, ctx) ??
     firstDenial(action.paths.map((path) => decidePath(path, action.kind, ctx)))
   );
+}
+
+/** A folder git no longer knows as a worktree: writing there would bring it back without git. */
+function denyGhost(
+  ghosts: readonly GhostPath[] | undefined,
+  ctx: GuardContext,
+): GuardDecision | undefined {
+  const [first] = ghosts ?? [];
+  if (first === undefined) return undefined;
+  const denial = ghostFolderDenial(first, ctx.lang, ctx.command);
+  return deny("ghost", denial.reason, denial.next);
 }
 
 /** Another worktree's files belong to another change, whatever this folder's phase. */
@@ -216,12 +248,16 @@ function memoryDenial(refs: readonly string[], ctx: GuardContext): GuardDecision
   );
 }
 
-/** Each path a command or an edit writes or deletes, after those inside other worktrees. */
+/**
+ * Each path a command or an edit writes or deletes, after those inside a ghost folder and those
+ * inside other worktrees.
+ */
 function decideFiles(
-  files: Pick<ShellFacts, "writes" | "deletes" | "foreign">,
+  files: Pick<ShellFacts, "writes" | "deletes" | "foreign" | "ghosts">,
   ctx: GuardContext,
 ): GuardDecision {
   return (
+    denyGhost(files.ghosts, ctx) ??
     denyForeign(files.foreign, ctx) ??
     firstDenial([
       ...files.writes.map((path) => decidePath(path, "write", ctx)),

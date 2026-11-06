@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "20261106-cada-decision-carga-hasta-que-la-pagina-la",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-cada-decision-carga-hasta-que-la-pagina-la",
+  "baseCommit": "c17e17acd35abbcb1e8dc872b26eda2af73c5f33",
+  "revision": 4,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:941921cd495e08dbf1ad7bb9a1f7ef9a5aecc60a195473ca8d2994d45478e367",
+    "at": "2026-11-06T09:01:37.094Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2ff45c5c3bf38cbb42092f759e89d43b81b2ba9cba9e4418c5567e9131ecc57b",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c69f9d72c5b5fc48e8edcc9e8b94ff3390da700713405210d81a4a164019c3d2",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f0869b71395adc3d5b815616d788968a1f25020ce14d287d2dd51c4d748db186",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "cc4059c9b7774a9871b4fbf083eb258715b27af8",
+      "attempts": 1,
+      "startedAt": "2026-11-06T09:04:54.463Z",
+      "doneAt": "2026-11-06T09:05:56.807Z",
+      "summary": "ServerData.post, tras un 200, llama a cada oyente de subscribe y espera sus promesas con Promise.allSettled, como mucho 10 s (REREAD_MS); subscribe acepta un oyente que devuelve una promesa; ARCHITECTURE §15 lo cuenta.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "60655ea3b565e46677e19df21a4c7e1e9787e33d",
+      "attempts": 1,
+      "startedAt": "2026-11-06T09:05:57.148Z",
+      "doneAt": "2026-11-06T09:11:08.986Z",
+      "summary": "Los oyentes de ChangesStore y de byId devuelven una promesa (reread) que espera con un effect sobre isLoading a que la lista, las páginas de terminados y el cambio pedido por su id se vuelvan a leer; una lectura en marcha se espera y se repite; la espera también acaba al destruirse el inyector.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 1,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T09:16:27.478Z",
+  "lockedTests": {
+    "packages/ui/src/data/changes-store.test.ts": "sha256:a9ba19c8a7fe41730f02c397fb0435e334bf2181f3fe75622a064a16b2f111e0",
+    "packages/ui/src/data/server-actions.test.ts": "sha256:6bad8eb5acf5d846c203cc178f5bd13d5d0a83642f54d66a029f923ce6216473"
+  }
+}
