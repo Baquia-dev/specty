@@ -68,7 +68,7 @@ Resuelve P224. Mientras el cambio espera a la persona, el guard solo frena `slee
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/wait.test.ts test/guard/decide.test.ts
   - type: fix
-- [ ] T3: El guard no frena a quien espera un comando de Specty en marcha
+- [x] T3: El guard no frena a quien espera un comando de Specty en marcha
   - files: packages/cli/src/enforce/guard.ts, packages/cli/test/wait-guard.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait-guard.test.ts && pnpm typecheck && pnpm lint
