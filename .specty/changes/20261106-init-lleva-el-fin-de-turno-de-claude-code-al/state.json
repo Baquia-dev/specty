@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261106-init-lleva-el-fin-de-turno-de-claude-code-al",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-init-lleva-el-fin-de-turno-de-claude-code-al",
   "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d6b1ec07ac88fec1819075a91d27e3f6e8bfef4c27833450b930faf2f89ce87b",
+    "at": "2026-11-06T15:34:02.598Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d6b1ec07ac88fec1819075a91d27e3f6e8bfef4c27833450b930faf2f89ce87b",
-    "at": "2026-11-06T15:34:02.598Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/init-agent-stop-move.test.ts": "sha256:0f0463156945bf8e986d6d10c3bbe283c2906abafc7f9eb92a6d65b787ef190b"
+  }
 }
