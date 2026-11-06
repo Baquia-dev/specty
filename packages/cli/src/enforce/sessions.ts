@@ -9,6 +9,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { isFinished, resolveActive } from "../flow/active";
 import { lostChanges } from "../flow/lost";
+import { ghostFolders } from "../flow/worktree";
 import { exists } from "../io/files";
 import { type Git, resolved } from "../io/git";
 import { type Environment, type Opened, openSession, type Session } from "../session";
@@ -105,7 +106,8 @@ export async function enteredSession(
  * The session of the change's folder the event's conversation entered with `specty enter`, and
  * that folder, whatever folder its tool works in; otherwise, `session` as it was. Claude Code
  * moves its whole session there itself, and goes on where it is after `ExitWorktree`; its
- * subagents enter with `specty enter`.
+ * subagents enter with `specty enter`. A folder that is gone, or that came back as a ghost folder
+ * git no longer knows, binds nobody: the guard takes no conversation there.
  */
 async function enteredFolder(
   tool: GuardTool,
@@ -115,7 +117,11 @@ async function enteredFolder(
   if (entersOnItsOwn(tool, event)) return { session };
   const binding = await bindingOf(session, event);
   const bound =
-    binding !== undefined && (await exists(binding.folder)) ? binding.folder : undefined;
+    binding !== undefined &&
+    (await exists(binding.folder)) &&
+    (await ghostFolders(session.git))(binding.folder) === undefined
+      ? binding.folder
+      : undefined;
   if (bound === undefined) return { session };
   if (bound === session.root) return { session, bound };
   // A folder whose configuration broke is still the conversation's: judged with its tool's (P154).

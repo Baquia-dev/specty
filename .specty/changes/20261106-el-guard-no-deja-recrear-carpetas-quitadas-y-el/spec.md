@@ -68,7 +68,7 @@ Hoy, una herramienta que escribe en la carpeta de un cambio ya quitada la vuelve
   - ac: AC1, AC11
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/ghosts.test.ts test/guard/decide.test.ts test/guard/worktrees.test.ts && pnpm lint
   - type: feat
-- [ ] T2: El guard aparta las rutas de las carpetas fantasma y no ata a ellas
+- [x] T2: El guard aparta las rutas de las carpetas fantasma y no ata a ellas
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/enforce/place.ts, packages/cli/src/enforce/sessions.ts, packages/cli/test/ghost-folders.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/ghost-folders.test.ts test/worktrees.test.ts test/worktrees-inside.test.ts test/enter.test.ts test/codex.test.ts test/lost-folder.test.ts && pnpm lint
