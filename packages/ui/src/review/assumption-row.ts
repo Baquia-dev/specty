@@ -24,6 +24,7 @@ import {
   LucideCircleX,
   LucideMessageSquarePlus,
 } from "../components/icons";
+import { ShownText } from "../components/shown-text";
 import { Toasts } from "../components/toast";
 import {
   type AssumptionView,
@@ -85,7 +86,7 @@ const DECISIONS = {
 /** An assumption as a document row: confirm or reject it in review. */
 @Component({
   selector: "sp-assumption-row",
-  imports: [LucideDynamicIcon, Button, IconButton, WordDiff, BeforeLine],
+  imports: [LucideDynamicIcon, Button, IconButton, WordDiff, BeforeLine, ShownText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     role: "listitem",
@@ -104,7 +105,7 @@ const DECISIONS = {
       @if (diff(); as parts) {
         <sp-word-diff class="block" [parts]="parts" />
       } @else {
-        <p class="m-0" [class.text-text-muted]="assumption().decision === 'rejected'">{{ assumption().text }}</p>
+        <p class="m-0" [class.text-text-muted]="assumption().decision === 'rejected'"><sp-text [text]="assumption().text" /></p>
       }
       @if (before(); as parts) {
         <sp-before-line [parts]="parts" />

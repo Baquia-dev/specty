@@ -34,6 +34,7 @@ import {
   type ResolvedTarget,
   splitItemRefs,
 } from "./item-refs";
+import { ShownText } from "./shown-text";
 import { TOOLTIP_POSITIONS } from "./tooltip";
 
 const GRACE_MS = 100;
@@ -288,9 +289,10 @@ export class ItemTooltips {
 
 @Component({
   selector: "sp-item-text",
+  imports: [ShownText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [ItemTooltips],
-  template: `@for (part of parts(); track $index) {@if (part.id) {<span class="cursor-help rounded-xs px-0.5" [attr.data-item-ref]="part.id">{{ part.text }}</span>} @else {<span>{{ part.text }}</span>}}`,
+  template: `@for (part of parts(); track $index) {@if (part.id) {<span class="cursor-help rounded-xs px-0.5" [attr.data-item-ref]="part.id">{{ part.text }}</span>} @else {<span><sp-text [text]="part.text" /></span>}}`,
 })
 export class ItemText {
   readonly text = input.required<string>();

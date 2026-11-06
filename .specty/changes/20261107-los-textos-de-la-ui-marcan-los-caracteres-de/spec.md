@@ -70,7 +70,7 @@ Desde el cambio anterior, la UI muestra con su código, en el tono de atención,
   - ac: AC1, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/markdown.test.ts --include src/highlight/highlight.test.ts --include src/components/diff-file.test.ts && pnpm lint
   - type: feat
-- [ ] T2: Las secciones de la spec, los supuestos y los textos con ids los marcan con `sp-text`
+- [x] T2: Las secciones de la spec, los supuestos y los textos con ids los marcan con `sp-text`
   - files: packages/ui/src/components/shown-text.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/review/assumption-row.ts, packages/ui/src/components/item-tooltip.ts, packages/ui/src/review/spec-direction.test.ts
   - ac: AC2, AC3, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-direction.test.ts --include src/review/spec-sections.test.ts --include src/review/delta-review.test.ts --include src/review/comments.test.ts --include src/components/item-tooltip.test.ts && pnpm lint && pnpm knip
