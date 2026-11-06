@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4aa4860772db4bc4a1850112ea5d7aa86e83c6ed",
+      "startedAt": "2026-11-06T10:36:48.768Z",
+      "doneAt": "2026-11-06T10:37:54.104Z",
+      "summary": "Los textos de doctor sobre los huérfanos y las refs de rescate (cards/doctor-cleanup.ts, con los códigos nuevos de DoctorLine) y la sección «LIMPIEZA» de statusCard, en español y en inglés"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

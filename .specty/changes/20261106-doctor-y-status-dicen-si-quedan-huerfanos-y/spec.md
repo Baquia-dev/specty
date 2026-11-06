@@ -60,7 +60,7 @@ La limpieza de C2 quita los huérfanos al terminar `new`, `close`, `cancel` y `p
 
 ## Tareas
 
-- [ ] T1: Los textos de los huérfanos y las refs de rescate, en español y en inglés
+- [x] T1: Los textos de los huérfanos y las refs de rescate, en español y en inglés
   - files: packages/core/src/cards/doctor-cleanup.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/status.ts, packages/core/test/cards/doctor-cleanup.test.ts
   - ac: AC9, AC10, AC11
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-cleanup.test.ts test/cards/doctor.test.ts test/cards/status-fronts.test.ts test/cards/status-holder.test.ts test/cards/status-away.test.ts test/cards/status-turn.test.ts test/cards.test.ts && pnpm typecheck && pnpm lint
