@@ -73,7 +73,7 @@ Hoy, una herramienta que escribe en la carpeta de un cambio ya quitada la vuelve
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/ghost-folders.test.ts test/worktrees.test.ts test/worktrees-inside.test.ts test/enter.test.ts test/codex.test.ts test/lost-folder.test.ts && pnpm lint
   - type: feat
-- [ ] T3: El fin de una conversación marca su ligadura y la limpieza no la cuenta
+- [x] T3: El fin de una conversación marca su ligadura y la limpieza no la cuenta
   - files: packages/cli/src/store/local.ts, packages/cli/src/enforce/sessions.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/flow/prune.ts, packages/cli/test/session-end-binding.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-end-binding.test.ts test/session-end.test.ts test/session-resume.test.ts test/prune.test.ts test/cancel-folder.test.ts test/sessions.test.ts && pnpm typecheck && pnpm lint

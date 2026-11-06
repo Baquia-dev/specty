@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c7189f2e44b68acd88df017f9869bbbf80b6cf2f",
+      "attempts": 1,
       "startedAt": "2026-11-06T08:51:50.359Z",
       "doneAt": "2026-11-06T08:56:59.386Z",
-      "summary": "ghostFolders y sortGhosts en flow/worktree.ts; inRepo aparta las rutas fantasma antes de placePaths y placeFiles/escrituras las dan como ghosts con main y lost (lostChanges solo si hay alguna); redirection no mueve una ruta fantasma; enteredFolder no ata a una carpeta fantasma"
+      "summary": "ghostFolders y sortGhosts en flow/worktree.ts; inRepo aparta las rutas fantasma antes de placePaths y placeFiles/escrituras las dan como ghosts con main y lost (lostChanges solo si hay alguna); redirection no mueve una ruta fantasma; enteredFolder no ata a una carpeta fantasma",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c2ddc8071894dcafd8ffc9d73fd44fc9bc9c428c",
+      "startedAt": "2026-11-06T08:56:59.702Z",
+      "doneAt": "2026-11-06T08:58:38.729Z",
+      "summary": "SessionBinding.ended y markEnded en store/local.ts; endBinding y resumeBinding en enforce/sessions.ts, que el guard llama en el fin de la conversación y en su SessionStart; workingFolders salta las ligaduras terminadas"
     }
   },
   "pending": {

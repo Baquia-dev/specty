@@ -30,7 +30,10 @@ export interface Cleanup {
   readonly kept: readonly string[];
 }
 
-/** A session's record stops counting a day after it was made: nothing deletes it at the end. */
+/**
+ * A session's record stops counting a day after it was made, or once its tool said the
+ * conversation ended (`ended`): nothing deletes it at the end.
+ */
 const SESSION_DAY = 24 * 60 * 60 * 1000;
 
 /**
@@ -61,12 +64,15 @@ export async function removeFinished(session: Session): Promise<Cleanup> {
   return { removed, kept };
 }
 
-/** The folders agent sessions work in, as the guard recorded them in the last day, resolved. */
+/**
+ * The folders agent sessions work in, as the guard recorded them in the last day, resolved; not
+ * those of conversations their tool said ended.
+ */
 async function workingFolders(session: Session): Promise<string[]> {
   const now = session.environment.now().getTime();
   return Promise.all(
     (await readBindings(session.git))
-      .filter(({ at }) => now - Date.parse(at) < SESSION_DAY)
+      .filter(({ at, ended }) => ended === undefined && now - Date.parse(at) < SESSION_DAY)
       .map(({ folder }) => resolved(folder)),
   );
 }

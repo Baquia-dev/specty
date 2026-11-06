@@ -15,7 +15,7 @@ import { type Git, resolved } from "../io/git";
 import { type Environment, type Opened, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
 import { loadConfig } from "../store/config";
-import { readBinding, type SessionBinding, writeBinding } from "../store/local";
+import { markEnded, readBinding, type SessionBinding, writeBinding } from "../store/local";
 import { repoPaths } from "../store/paths";
 import { conversationOf, type GuardTool, subagentOf } from "./actions";
 import { namedWorktree } from "./worktree-hooks";
@@ -222,6 +222,25 @@ export async function bindNew(
     binding === undefined ? undefined : await boundTo(session.environment, binding.folder);
   if (bound?.change !== undefined && bound.folder !== folder && bound.change !== epic) return;
   await writeBinding(session.git, id, { folder, at: session.environment.now().toISOString() });
+}
+
+/**
+ * The end of the event's conversation, as its tool says (Claude Code's `SessionEnd`, `/clear`
+ * included): its binding stays, to take it back to its folder if it resumes, marked so that the
+ * clean-up no longer keeps that folder for it.
+ */
+export async function endBinding(session: Session, event: Record<string, unknown>): Promise<void> {
+  const id = conversationOf(event);
+  if (id !== undefined) await markEnded(session.git, id, session.environment.now().toISOString());
+}
+
+/** The start of the event's conversation (its `SessionStart`, as when it resumes): it counts again. */
+export async function resumeBinding(
+  session: Session,
+  event: Record<string, unknown>,
+): Promise<void> {
+  const id = conversationOf(event);
+  if (id !== undefined) await markEnded(session.git, id);
 }
 
 /** Once the conversation may enter `target`, that worktree is the one it works in. */
