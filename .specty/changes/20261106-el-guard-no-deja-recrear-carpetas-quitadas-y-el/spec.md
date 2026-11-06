@@ -78,7 +78,7 @@ Hoy, una herramienta que escribe en la carpeta de un cambio ya quitada la vuelve
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-end-binding.test.ts test/session-end.test.ts test/session-resume.test.ts test/prune.test.ts test/cancel-folder.test.ts test/sessions.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T4: La documentación cuenta las carpetas fantasma y las conversaciones terminadas
+- [x] T4: La documentación cuenta las carpetas fantasma y las conversaciones terminadas
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC3
   - verify: pnpm typecheck && pnpm lint && pnpm sources && pnpm knip
