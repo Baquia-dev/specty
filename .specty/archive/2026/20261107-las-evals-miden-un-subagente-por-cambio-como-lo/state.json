@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-las-evals-miden-un-subagente-por-cambio-como-lo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-las-evals-miden-un-subagente-por-cambio-como-lo",
   "baseCommit": "41695f12cb51d5920f2e84f8d76c388386a21e34",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:63dab9b054a4c94de36c4452f85cd2986c0a23547124647e55d82faafb385215",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "67e667a8bc71b1025c54a8617ee253b63628d397",
+      "attempts": 1,
       "startedAt": "2026-11-06T23:11:46.357Z",
       "doneAt": "2026-11-06T23:17:16.328Z",
-      "summary": "ARCHITECTURE §16 cuenta los experimentos de cambios con la tarjeta, el experimento question y una ejecución real de cada uno (2026-11-07)"
+      "summary": "ARCHITECTURE §16 cuenta los experimentos de cambios con la tarjeta, el experimento question y una ejecución real de cada uno (2026-11-07)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,6 +82,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T23:18:10.161Z",
   "lockedTests": {
     "evals/test/experiments.test.ts": "sha256:3116b501307894e2132d9c3a9c28c15f1167d2e02ea88db681fe5ab3a02ede1f",
     "evals/test/changes-card.test.ts": "sha256:bff5caa54470edb76f62c0efabdbc204a9083d7b1c86e7e0c797f9d3d8d2fa6a",

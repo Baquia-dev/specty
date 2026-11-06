@@ -78,3 +78,25 @@ Desde hoy, sin cambio activo, la tarjeta de `specty next` pide un subagente por 
 
 - R1: La sesión principal puede preguntar ella misma antes de lanzar el subagente, y el experimento no probaría el camino de vuelta. Mitigación: el dato que falta solo se echa en falta al escribir la spec, y esa ejecución queda sin avance, no como cumplida.
 - R2: Los mensajes de un subagente en segundo plano podrían no llegar al `stream-json`. Mitigación: las épicas con subagentes ya los contaron (§16); si faltan, la ejecución queda sin avance y se anota.
+
+## Cierre
+
+### Resumen
+
+Los experimentos `changes` y `changes-subagent` ya miden lo que hace Specty hoy: los dos crean cada cambio en su carpeta, sin preparación (`git.setup: false`), y dan el mismo encargo. `changes` lleva `subagents: false` y `changes-subagent` la configuración por defecto, sin una definición de subagente propia: la tarjeta sin cambio activo decide. El experimento nuevo `question` pide una función que necesita un dato que el repositorio no tiene, y se juzga por el repositorio y por la transcripción: la suite le pasa el `stream-json`, del que `answerOf` saca la respuesta final y `subagentCommandsOf` los `Bash` de los subagentes. Una ejecución real de cada uno con Claude Code 2.1.318, el 2026-11-07, cumplió las tres (1,96 USD en total): el reparto terminó un 30 % antes y con un 28 % menos de contexto en el hilo principal, por un 35 % más de coste, y en `question` el subagente volvió con la pregunta, que la sesión le hizo al usuario. ARCHITECTURE §16 lo cuenta. `pnpm test:evals` pasa (27 tests).
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Carpetas por cambio en los dos experimentos de cambios (A1): con `git.worktrees: false`, el segundo `new` se rechaza mientras el primero sigue abierto y `specty enter` no tiene carpeta, como mostró el test de AC2 en rojo.
+- La transcripción va como segundo argumento opcional del juicio de un experimento (A2); los escenarios siguen juzgándose solo por el repositorio.
+- `question` en modo delegado (A3), para que suponer el dato deje código visible en lugar de una espera que no acaba.
+
+### Pendientes
+
+- La espera con `specty wait` a una persona real no la miden las evals (P264): haría falta lanzar el agente sin bloquear y una persona simulada que decida mientras corre.
+- Con `git.worktrees: false`, la tarjeta sin cambio activo sigue pidiendo subagentes en paralelo, que no caben (P263).
+- Los subagentes de una misma petición reciben el aviso de duplicado de `new` y lo resuelven con `--distinct-from` sin preguntar (P265).
