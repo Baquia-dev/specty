@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-el-fin-de-turno-devuelve-al-agente-a-esperar",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-el-fin-de-turno-devuelve-al-agente-a-esperar",
   "baseCommit": "ddaa47217dcb6b75a40be45d70016d60cc09f4db",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c8f0e0496b96bffdbb53eedfdadc5a9d2895e86f755b223a88ffe8ce443cb9f2",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d2e76e34eef9af4818d0bf118ec7dc19952b7ab4",
+      "attempts": 1,
       "startedAt": "2026-11-06T12:55:16.526Z",
       "doneAt": "2026-11-06T12:55:43.780Z",
-      "summary": "El párrafo «Fin de turno» de docs/ARCHITECTURE.md cuenta la regla de wait: cuándo actúa, qué devuelve, una vez por turno, nunca con subagentes y sin margen para la marca de un wait recién lanzado"
+      "summary": "El párrafo «Fin de turno» de docs/ARCHITECTURE.md cuenta la regla de wait: cuándo actúa, qué devuelve, una vez por turno, nunca con subagentes y sin margen para la marca de un wait recién lanzado",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,6 +87,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T13:00:49.169Z",
   "lockedTests": {
     "packages/core/test/cards/hooks.test.ts": "sha256:fbedffb13a68e724b20502d9a9247d836a53c407441b025e01cf9d21c38c3c6d",
     "packages/cli/test/agent-stop-wait.test.ts": "sha256:3c2944cef45487ea87c0e11099a85d558b8859a1bb94c678e70537e13c852594"

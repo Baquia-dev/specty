@@ -80,3 +80,24 @@ Hoy un agente puede terminar su turno mientras el cambio espera la decisión de 
 
 - R1: Un agente que termina el turno justo tras lanzar `wait` en segundo plano, antes de su marca, recibe el turno una vez sin necesitarlo: cuesta una llamada al modelo, nunca un bucle, y la línea le dice que puede terminar si su `wait` sigue en marcha (supuesto A6).
 - R2: Mientras la regla actúa, ese fin de turno no da el informe de `check --changed`. Mientras el cambio espera a la persona el código está bloqueado o pendiente de su decisión, y el turno siguiente vuelve a comprobarlo.
+
+## Cierre
+
+### Resumen
+
+`specty hook agent-stop <agente>` comprueba la regla de `wait` antes de `check --changed`. Si el cambio de la carpeta de la conversación espera a la persona (`isWaitingForHuman`, ahora exportada de `commands/wait.ts`) y `readWait` no da un `specty wait` vivo de ese cambio, devuelve el turno con `noWaitLine` (core `cards/hooks.ts`, en español y en inglés) y la tarjeta de `next` renderizada con la herramienta del hook, que pide `specty wait` en su forma o, en modo delegado, que el agente decida él. Actúa una vez por turno con el `acts` y la cuenta por conversación que ya existían, y nunca con el evento de un subagente. El párrafo «Fin de turno» de `docs/ARCHITECTURE.md` lo cuenta.
+
+### Desviaciones (respecto al plan)
+
+- Ninguna.
+
+### Decisiones
+
+- La regla y `check --changed` comparten el cambio activo, que se resuelve una vez, y la misma cuenta por conversación: si la regla actúa, ese fin de turno no ejecuta `check --changed`.
+- La marca se lee con `new Date()`, el reloj real de la marca y de su archivo, y no con la hora de la sesión.
+- La tarjeta de `next` y la línea usan la herramienta del argumento del hook, porque el entorno de los hooks puede no marcarla.
+- El riesgo de terminar el turno justo tras lanzar `wait` en segundo plano, antes de su marca, queda sin margen de espera: la línea dice que, si el `wait` sigue en marcha, termine el turno, y el test de AC1 y AC3 comprueba que el fin siguiente lo deja terminar.
+
+### Pendientes
+
+- Comprobar con Claude Code real que un `specty wait` en segundo plano deja terminar el turno y que, sin él, el fin de turno lo devuelve una vez con la tarjeta de `next`.
