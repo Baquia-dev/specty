@@ -104,3 +104,26 @@ En modo delegado, un cambio normal se acepta y se cierra en dos pasos. Entre el 
 - R2: Un cierre escrito antes de aceptar puede no recoger lo que trae la incorporación de main. Mitigación: el agente puede reenviarlo con `propose` hasta el `accept`, y la incorporación aparece en las líneas del aterrizaje, como hoy.
 - R3: Abrir la spec en aceptación delegada podría dejar al agente tocar otras secciones. Mitigación: es la misma regla `closing-only` que hoy rige en `closing`, y `propose` rechaza cualquier cambio fuera del cierre; los tests cubren la aceptación con y sin modo delegado, y para `quick` y épica.
 - R4: Mover `closeOnTurn` y `closeQuick` a `flow/` podría cambiar sin querer lo que hacen `close` y el `accept` rápido. Mitigación: se mueven sin cambiar su cuerpo, y la verificación de T3 ejecuta también los tests del `accept` rápido, `close-turn` y `close-harvest`.
+
+## Cierre
+
+### Resumen
+
+En modo delegado, el agente escribe en aceptación el cierre de un cambio `standard` o `spike` y lo envía con `specty propose`. `propose` lo valida como un cierre y deja el cambio en aceptación, con `closingSubmittedAt` anotado. Después, su `accept` incorpora main si avanzó, verifica una vez y anota `change.accepted`. En el mismo turno de aterrizaje sigue por `closeOnTurn`: archiva con `change.closed`, cosecha la memoria del cierre y aterriza, sin `specty close`. La tarjeta de la aceptación delegada muestra «CÓMO CERRAR» y pide el cierre antes de `accept`. El guard deja escribir la spec, que es `closing-only`, como en `closing`. Sin modo delegado, o cuando acepta la persona, todo sigue como antes. El cierre en el turno de aterrizaje vive ahora en `flow/closing-turn.ts` (`closingTurn`, `closeQuick`, `closeOnTurn` y `closeAccepted`). ARCHITECTURE §4, §6 y §9 y formats.md §1 y §3 lo cuentan.
+
+### Desviaciones
+
+- El corte salía XL (16 archivos de código, con un máximo de 15), así que se estrechó antes de aprobarlo. `adjust` no cambia: la propuesta del ajuste ya no conserva el cierre enviado. La vista no lee en aceptación las observaciones de la revisión. El texto del cierre al aceptar reutiliza `quickClosedLine` sin renombrarlo. Y la tarjeta de la propuesta toma el SIGUIENTE de la de aceptación, en vez de un campo nuevo en `cards/flow.ts`.
+- Dos tests que ya existían esperaban el flujo anterior, que AC1 y AC2 cambian a propósito. `delegate.test.ts` esperaba el SIGUIENTE anterior de la aceptación delegada de un cambio `standard`, y se cambió solo esa línea. En `friction.test.ts`, el agente simulado del recorrido delegado ahora escribe el cierre también al proponer en aceptación, y el recorrido usa un comando menos (8 en vez de 9, porque ya no hay `close`). Los dos eran tests implícitos dentro del alcance; el segundo apareció en la verificación del `accept` y se corrigió dentro de la incorporación de main.
+- Al recibir el texto de la aceptación, `closeOnTurn` pasaba de 50 líneas. La tarjeta del cambio cerrado pasó a `closedOutput`, que comparten el cierre normal y el rápido.
+
+### Decisiones
+
+- `closingInAcceptance(kind, delegated)`, en `core/flow/phases.ts`, decide en un solo sitio a qué cambios se aplica. `accept` solo mira `closingSubmittedAt` con el agente como actor, porque en aceptación solo lo anota ese `propose`.
+- La máquina admite `propose` desde `acceptance` y deja el cambio en `acceptance`. El modo delegado lo exigen `propose` y el guard, como en el resto del modo delegado.
+- «CÓMO CERRAR» y los hallazgos pasaron a `cards/acceptance.ts`, que ya compartía líneas con las tarjetas de tareas. Así `work.ts` las importa sin crear un ciclo.
+
+### Pendientes
+
+- En aceptación delegada, `accept` no hace commit del cierre enviado antes de incorporar main, como sí hace `close` con `commitClosing`. Si main cambió el glosario que edita el cierre, la incorporación se niega por archivos sin commit.
+- Mostrar en la aceptación delegada las observaciones de la revisión que el cierre no cita. Hoy solo salen en `closing`; al archivar, pasan a la memoria.

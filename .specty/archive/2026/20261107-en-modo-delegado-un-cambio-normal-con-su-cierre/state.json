@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-en-modo-delegado-un-cambio-normal-con-su-cierre",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-en-modo-delegado-un-cambio-normal-con-su-cierre",
   "baseCommit": "ccf8184df3194fbfcfc345b8592244abcd277006",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:7f1a00216e0ca755cc56233c85e6293c7c4dc1ef02200b191b8e3d637dbb151c",
@@ -99,12 +99,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b090929edbce2fa2d7fd26f4bf6a4206542dcaa9",
+      "attempts": 1,
       "startedAt": "2026-11-06T19:45:56.705Z",
       "doneAt": "2026-11-06T19:46:56.135Z",
-      "summary": "ARCHITECTURE §4 (cierre antes de aceptar en modo delegado, fila y diagrama), §6 (delegate) y §9 (el accept que cierra en un turno, en flow/closing-turn.ts), y formats.md §1 y §3 (closingSubmittedAt en aceptación)"
+      "summary": "ARCHITECTURE §4 (cierre antes de aceptar en modo delegado, fila y diagrama), §6 (delegate) y §9 (el accept que cierra en un turno, en flow/closing-turn.ts), y formats.md §1 y §3 (closingSubmittedAt en aceptación)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -117,10 +117,67 @@
     "T": 4,
     "R": 4
   },
+  "closingSubmittedAt": "2026-11-06T20:02:20.125Z",
   "lockedTests": {
     "packages/cli/test/accept-quick-turn.test.ts": "sha256:445195b5307c21619cee88c1f0fb09c2ac1edcf0799ab7a3b0ad08de1c47c8d7",
     "packages/core/test/flow/machine.test.ts": "sha256:a4220a6dc28b2555b109edf18afd061690053d05cfde33fd6c0fb63ecab0f787",
     "packages/cli/test/closing-ahead.test.ts": "sha256:f556116b0e87c7817c7c7572f5cc8ee3677a27349515c084e5fb86ae67d11ae4",
     "packages/core/test/closing-ahead.test.ts": "sha256:ab23d94f59dedff2a9f402c6994c7c6a55c19f412009aaced51dcc08ddf50e1a"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "4cb3c564510dd4310d15d040f936f5fc27d53379",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/finish.ts",
+      "packages/cli/src/commands/propose.ts",
+      "packages/cli/src/flow/closing-turn.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/merged-run.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/src/server/watched-runs.ts",
+      "packages/cli/test/accept-quick-turn.test.ts",
+      "packages/cli/test/closing-ahead.test.ts",
+      "packages/cli/test/delegate.test.ts",
+      "packages/cli/test/server/verify-merge.test.ts",
+      "packages/core/src/cards/acceptance.ts",
+      "packages/core/src/cards/server.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/flow/machine.ts",
+      "packages/core/src/flow/phases.ts",
+      "packages/core/src/guard/decide.ts",
+      "packages/core/src/guard/spec.ts",
+      "packages/core/src/index.ts",
+      "packages/core/test/cards/server.test.ts",
+      "packages/core/test/closing-ahead.test.ts",
+      "packages/core/test/flow/machine.test.ts",
+      "packages/ui/src/change/change-page.unattended.test.ts",
+      "packages/ui/src/change/resume-hints.test.ts",
+      "packages/ui/src/change/resume-hints.ts",
+      "packages/ui/src/components/diff-file.test.ts",
+      "packages/ui/src/components/diff-file.ts",
+      "packages/ui/src/data/agent-name.test.ts",
+      "packages/ui/src/data/agent-name.ts",
+      "packages/ui/src/highlight/highlight.test.ts",
+      "packages/ui/src/highlight/highlight.ts",
+      "packages/ui/src/history/history-tab.ts",
+      "packages/ui/src/history/history-who.test.ts",
+      "packages/ui/src/history/trace-view.test.ts",
+      "packages/ui/src/history/trace-view.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "packages/ui/src/inbox/lane-holds.ts",
+      "packages/ui/src/progress/code-lines.ts",
+      "packages/ui/src/progress/unlock-detail.test.ts"
+    ],
+    "at": "2026-11-06T19:51:51.094Z",
+    "resolved": {
+      "commit": "904119b",
+      "at": "2026-11-06T20:00:29.314Z"
+    }
   }
 }
