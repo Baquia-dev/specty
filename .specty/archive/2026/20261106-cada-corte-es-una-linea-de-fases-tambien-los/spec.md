@@ -101,3 +101,27 @@ En la Bandeja, la tarjeta de una épica dibuja, bajo su fila, una línea por cad
 
 - R1: `j`/`k` pasan a recorrer filas y líneas de dos componentes distintos, y un fallo dejaría a la persona sin poder llegar a un corte. Mitigación: el recorrido sale de los mismos bloques que dibuja la Bandeja y de las líneas que da cada tarjeta, y AC9 lo prueba en la Bandeja entera.
 - R2: Las líneas de una tarjeta tienen que alinear sus tramos con las cabeceras. Mitigación: todas comparten las columnas de la tarjeta con `grid-cols-subgrid`, y su botón va en la última columna.
+
+## Cierre
+
+### Resumen
+
+En la Bandeja, la tarjeta de una épica dibuja bajo su fila las cabeceras «Spec», «Tests», «Impl.» y «Acept.» y una línea `sp-inbox-lane` por cada corte de su sección Cortes, en el orden de la spec, tenga o no cambio y sin plegar ninguna: su id, su título enlazado a su cambio, una pista de cuatro tramos con el color de su fase (los cuatro en verde si terminó), o «Listo para empezar», «Espera a C2 y C3», «Puede arrancar en cuanto apruebes» o «Tras C1», y el botón de la decisión que espera, con el texto del de su fila, sobre el tramo marcado. `epic-lanes.ts` (puro) da el cambio y el estado de cada línea; la elección del cambio de cada corte pasó a `data/slice-changes.ts`, que comparten la pestaña Spec y la Bandeja. La tarjeta pide `sliceChanges` en borrador, revisión, implementación o ajustes, y otra vez con cada aviso de la fuente; en aceptación, cierre o terminada, todas sus líneas salen terminadas sin pedir nada. `j`/`k` recorren la fila de la épica y después sus líneas con cambio, e `InboxRow` ya no recibe `inEpic`. `docs/ui.md` («Una línea por corte») y `docs/ARCHITECTURE.md` §15 lo cuentan.
+
+### Desviaciones
+
+- La tarjeta pide `sliceChanges` con una promesa dentro de un `effect` y no con `resource`, como decía el diseño: un `resource` cuenta como tarea pendiente y la Bandeja no se estabilizaba mientras la fuente no respondía (el test de AC11 que espera sin respuesta se quedaba colgado). Un aviso que llega mientras otra petición sigue en marcha solo guarda la última respuesta.
+- El test aprobado de la tarjeta (`inbox/inbox-epic.test.ts`) hacía de `20261015-redondeo-promedios` el cambio de C1, pero su spec de ejemplo es `kind: quick` y el fixture solo añadía la épica y el corte tras `kind: standard`. La persona lo desbloqueó con S1, con el parche que añade la épica y el corte tras la línea `kind` de cualquier tipo.
+- T2 quitó una aserción de `data/finished-summaries.test.ts`, prevista en Archivos: comprobaba la insignia «Feature · C1 · Asistencia por curso» de la fila de un corte bajo la cabecera de su épica, una fila que ya no existe porque ese corte es ahora una línea de la tarjeta.
+- El resumen de core no cambia, y el diseño de la épica preveía añadirle `depends`: los cortes y sus dependencias salen de `review.slices` de la épica entera (A9), así el corte cabe en un solo módulo (la primera propuesta, con core, salió XL).
+
+### Decisiones
+
+- Si la fuente falla, un corte sin cambio cargado sale sin estado, igual que mientras no responde (A3), para no decir «Listo para empezar» de uno que quizá terminó.
+- Cuando la fuente responde, la tarjeta solo usa su respuesta (A2), como la pestaña Spec; de un cambio que da y está cargado toma la decisión y la pestaña.
+- Un cambio cargado de la épica, no cancelado, cuyo corte la sección Cortes no nombra, sale como una línea más al final (A1), para que nada que espere a la persona quede oculto; uno cancelado, no.
+- «Espera a» y «Tras» unen los cortes con `Intl.ListFormat` del idioma («C1, C2 y C3», «C2 and C3»).
+
+### Pendientes
+
+- Ninguno: el agente y los avisos de cada línea son del corte C3, y el avance y el recuento de la cabecera, del C4.
