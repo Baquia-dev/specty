@@ -21,3 +21,9 @@ En modo delegado, el agente escribe en aceptación el cierre de un cambio `stand
   - files: packages/cli/src/flow/views.ts, packages/cli/test/review-remarks.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/review-remarks.test.ts test/closing-ahead.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+La vista lee en la aceptación delegada (closingInAcceptance) las observaciones de la revisión que el cierre no cita, y la tarjeta las muestra como en closing; ARCHITECTURE §4 y §7 y formats.md §6 lo cuentan
