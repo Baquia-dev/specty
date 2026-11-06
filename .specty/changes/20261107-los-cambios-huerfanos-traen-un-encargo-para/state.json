@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-cambios-huerfanos-traen-un-encargo-para",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-los-cambios-huerfanos-traen-un-encargo-para",
   "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
   "revision": 1,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "32ce387be42cf983ab9cdef2cfcf1a445a077554",
+      "attempts": 1,
       "startedAt": "2026-11-06T21:32:46.817Z",
       "doneAt": "2026-11-06T21:33:41.986Z",
-      "summary": "Con subagentes, el bloque de huérfanos (rejoin.ts) pide un subagente con el «ENCARGO PARA RETOMAR» (specty enter <id>, cd, next, pregunta); sin ellos, el texto de hoy. La pregunta del encargo pasa a subagents.ts (questionStep), también para idle.ts."
+      "summary": "Con subagentes, el bloque de huérfanos (rejoin.ts) pide un subagente con el «ENCARGO PARA RETOMAR» (specty enter <id>, cd, next, pregunta); sin ellos, el texto de hoy. La pregunta del encargo pasa a subagents.ts (questionStep), también para idle.ts.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "18deec6260635fa13210e6ed4aac4baf6e2480c9",
+      "startedAt": "2026-11-06T21:33:42.327Z",
+      "doneAt": "2026-11-06T21:43:16.051Z",
+      "summary": "ARCHITECTURE §7 («Fuera de la carpeta de su cambio» y «Tarjeta sin cambio activo»), formats.md (subagents) y dominio.md («Encargo») cuentan el «ENCARGO PARA RETOMAR» de los huérfanos."
     }
   },
   "pending": {

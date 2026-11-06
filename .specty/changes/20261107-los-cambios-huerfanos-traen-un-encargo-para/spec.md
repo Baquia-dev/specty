@@ -58,7 +58,7 @@ Sin cambio activo, el bloque «CAMBIOS SIN CONVERSACIÓN» de `specty next` pide
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/orphans-subagents.test.ts test/cards/rejoin.test.ts test/cards/idle-subagents.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T2: La documentación cuenta el encargo para retomar un huérfano
+- [x] T2: La documentación cuenta el encargo para retomar un huérfano
   - files: docs/ARCHITECTURE.md, docs/formats.md, docs/dominio.md
   - ac: AC1, AC3
   - verify: grep -q 'ENCARGO PARA RETOMAR' docs/ARCHITECTURE.md && grep -q 'huérfanos de la tarjeta sin cambio activo' docs/formats.md && pnpm lint
