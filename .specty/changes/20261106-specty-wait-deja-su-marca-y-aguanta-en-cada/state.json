@@ -6,6 +6,13 @@
   "branch": "specty/20261106-specty-wait-deja-su-marca-y-aguanta-en-cada",
   "baseCommit": "94877ac9e202cac41073cc8413224ae8fbeb3456",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:279c05767596278f73688fa968c64cd4859c1e8944ddd92b3d36494886d58022",
+    "at": "2026-11-06T12:20:52.960Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:279c05767596278f73688fa968c64cd4859c1e8944ddd92b3d36494886d58022",
-    "at": "2026-11-06T12:20:52.960Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T12:23:13.497Z"
 }

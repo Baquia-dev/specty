@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { type CardContext, renderText, waitTimeoutCard } from "../../src";
+import { type CardContext, renderText, waitHeartbeat, waitTimeoutCard } from "../../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
 const EN: CardContext = { ...ES, lang: "en" };
@@ -30,5 +30,32 @@ describe("wait timeout card", () => {
     expect(waitTimeoutCard("20261031-saludo", 3600, { ...ES, tool: "gemini-cli" }).next).toBe(
       "recuérdale a la persona la decisión pendiente y vuelve a ejecutar ya `specty wait` para esperar su decisión. Ejecútalo en primer plano y vuelve a ejecutarlo cada vez que se agote o se corte.",
     );
+  });
+});
+
+describe("wait heartbeat", () => {
+  it("AC4, AC5: in Gemini CLI, the line says the change and the minutes it has waited, in both languages", () => {
+    expect(waitHeartbeat("20261031-saludo", 125, 3600, { ...ES, tool: "gemini-cli" })).toBe(
+      "specty: sigue esperando la decisión de la persona en 20261031-saludo (2 de 60 min)…",
+    );
+    expect(waitHeartbeat("20261031-saludo", 125, 3600, { ...EN, tool: "gemini-cli" })).toBe(
+      "specty: still waiting for the person's decision on 20261031-saludo (2 of 60 min)…",
+    );
+  });
+
+  it("AC4: the other tools, and an unknown one, get no heartbeat line", () => {
+    const others = [
+      "claude-code",
+      "cursor",
+      "opencode",
+      "antigravity",
+      "codex",
+      "windsurf",
+      "copilot",
+    ] as const;
+    for (const tool of others) {
+      expect(waitHeartbeat("20261031-saludo", 125, 3600, { ...ES, tool })).toBeUndefined();
+    }
+    expect(waitHeartbeat("20261031-saludo", 125, 3600, ES)).toBeUndefined();
   });
 });
