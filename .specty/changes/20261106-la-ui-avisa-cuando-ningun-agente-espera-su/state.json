@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "id": "20261106-la-ui-avisa-cuando-ningun-agente-espera-su",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-la-ui-avisa-cuando-ningun-agente-espera-su",
+  "baseCommit": "0185f80fb3f07c73eb81623f7615345dda2f31e4",
+  "revision": 3,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:721682c526ae9ee1c8b41d3ae60205878996dad338f65d8904d007d6b04abecd",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:41195562028a6618e90ab0adb2b1d3adee8b31c0929a2946de5fe57cc9adff5f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:328bf3c152a3f39e4320e603d0c03553d8c01026d7fd4574ade2930b6a4c0c42",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:df46a8eba9f1fd208d1f3515427d7c5a59966c4ed3f237b11fcf7f22fbbae662",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:066c66cb37003f8c5e0f471edeb8bfffcab3a14728c3b13b11b43f8bce12a020",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:e8b569e855eb2efa4299480eed463f3a439fdf0667b16714e21a0dbbc8534641",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 7,
+    "T": 5,
+    "R": 3
+  },
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:eb34e2e05faf1af8adeba35a8d7f1d4b6b677d87a33320edf1ca93b9e06ced6e",
+    "at": "2026-11-06T14:24:11.513Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
