@@ -6,6 +6,13 @@
   "branch": "specty/20261106-doctor-avisa-si-falta-el-fin-de-turno-de-un",
   "baseCommit": "798f2e7348400e1b9900903d7b61240592143fac",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5ea83e2ed66a3c2d6ae3c09ce729de1f2227a6b4be0104838a1e1f0da78ea071",
+    "at": "2026-11-06T13:55:04.335Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5ea83e2ed66a3c2d6ae3c09ce729de1f2227a6b4be0104838a1e1f0da78ea071",
-    "at": "2026-11-06T13:55:04.335Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T13:55:40.876Z"
 }
