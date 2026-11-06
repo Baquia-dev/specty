@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-prototipo-trae-el-codigo-de-los-tests-y-un",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-prototipo-trae-el-codigo-de-los-tests-y-un",
   "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
   "revision": 2,
@@ -50,6 +50,12 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T17:30:34.014Z"
+  "lockedTests": {
+    "packages/ui/src/change/change-page.test.ts": "sha256:87cd4a1d18aa5714e9ddb6865b2082440c0d027f0b109edf6316f698672ad0a5",
+    "packages/ui/src/data/fixtures.test.ts": "sha256:ab03053d2b99acf629f2ed2c98ee93dc53848ec642e328ba2a7dac327f29fca5",
+    "packages/ui/src/data/sample-specs.test.ts": "sha256:301531cb1e2d58aa986c4dc28ccaa3d54922c0a699744f6c86740ab94de5da6e",
+    "packages/ui/src/progress/progress-tab.test.ts": "sha256:3aa2db1106782b9776b79a725aa4ebda57eea4c34bd86191f6b63459a6fd8343",
+    "packages/ui/src/data/sample-test-code.test.ts": "sha256:47668370df75e1c4dcc35a03bd3c06c496f805df4717dfb4c24964bf03060da5",
+    "packages/ui/src/data/sample-unlocks.test.ts": "sha256:4952fae560bdfe5d92bccaaa70f61922a4a4f2ecd6717e5f99d85ae61258999f"
+  }
 }
