@@ -39,7 +39,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Los tipos de lo que juzga el guard pasan a guard/action.ts
+- [x] T1: Los tipos de lo que juzga el guard pasan a guard/action.ts
   - files: packages/core/src/guard/action.ts, packages/core/src/guard/decide.ts, packages/core/src/guard/after.ts, packages/core/src/index.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard && pnpm typecheck && pnpm lint && pnpm knip

@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261106-los-tipos-de-lo-que-juzga-el-guard-tienen-su",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-los-tipos-de-lo-que-juzga-el-guard-tienen-su",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5d6b0bfe92b5636877e9f31ad02a965e0064ae79ebd7883e9b876d32334eb76a",
+    "at": "2026-11-06T10:29:46.036Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5ffcb82545423f8d9817eae3d16da94893038cdf",
+      "startedAt": "2026-11-06T10:29:46.400Z",
+      "doneAt": "2026-11-06T10:31:22.735Z",
+      "summary": "Los tipos de lo que juzga el guard (GuardChange, GuardContext, ShellFacts, GuardAction, GuardRule, GuardDecision) pasan a guard/action.ts; decide.ts queda con decideGuard y sus reglas (243 líneas de código); index.ts y after.ts los importan de allí"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 2,
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5d6b0bfe92b5636877e9f31ad02a965e0064ae79ebd7883e9b876d32334eb76a",
-    "at": "2026-11-06T10:29:46.036Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
