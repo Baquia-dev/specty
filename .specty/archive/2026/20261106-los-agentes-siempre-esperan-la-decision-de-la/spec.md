@@ -80,3 +80,34 @@ Hoy cada agente decide cómo esperar la decisión de la persona. Unos ejecutan `
 - R2: El freno de `sleep` puede frenar un uso legítimo mientras el cambio espera a la persona. En esa espera el código está bloqueado y no hay nada que esperar con `sleep`, y la negativa dice qué usar.
 - R3: Instalar el fin de turno sin `check --install` cambia lo que `init` escribe en proyectos que ya usan Specty. `doctor` lo dice, y el `check --changed` del fin de turno sigue apagado para quien no lo activó.
 - R4: Un límite de una herramienta mal medido deja que su terminal corte `wait`. La red de fin de turno lo devuelve a esperar igual y, cuando la conversación se cierra, avisa la UI (el cambio que sigue a esta épica).
+
+## Cierre
+
+### Resumen
+
+`specty wait` es ahora la regla para todos los agentes, en seis cortes cerrados en main:
+
+- C1 (94877ac): todas las salidas que dejan el cambio esperando a la persona, y la regla de AGENTS.md, piden `specty wait` con la misma frase (`waitStep` en `cards/wait.ts`) y la forma de cada herramienta. La tarjeta de tiempo agotado pide repetirlo ya.
+- C3 (ddaa472): `wait` deja su marca en `.git/common/specty/waits/<id>.json` (`readWait` en `store/waits.ts`), espera una hora por defecto y en Gemini CLI escribe un latido.
+- C2 (d732c63): el guard rechaza en Claude Code un `wait` sin `run_in_background: true` y, mientras el cambio espera a la persona, cualquier `sleep`.
+- C4 (23afc82): el fin de turno devuelve al agente una vez si el cambio espera a la persona y no hay un `wait` vivo.
+- C5 (798f2e7): `init` instala ese fin de turno en todos los agentes con `--no-check`, y `check --install` vuelve a encender el `check --changed`.
+- C6 (8020b7e): `doctor` avisa cuando falta.
+
+### Desviaciones
+
+- C1 salió XL al redactarse y se dividió en C1 (los textos) y C3 (la marca y el latido), en la revisión 2 de la épica.
+- C2 salió XL y se dividió en C2 (el guard), C4 (el fin de turno), C5 (la instalación) y C6 (`doctor`), en la revisión 3. AC7 se partió en AC7 y AC10.
+- La medida de las herramientas cambió A1: todas aguantan una hora en segundo plano o consultándolo, así que no hicieron falta esperas cortas en bucle. Solo Gemini CLI necesita el latido, porque corta un comando que pasa 300 s sin escribir.
+- AC4 rechaza en vez de reescribir: en Claude Code, `updatedInput` solo vale con «allow», que se salta los permisos de la persona.
+- El aviso de la UI cuando nadie retoma una decisión se quedó en su propio cambio, `20261106-la-ui-avisa-cuando-ningun-agente-espera-su`, que va después de esta épica, en lugar de ser un corte.
+
+### Decisiones
+
+- La persona eligió una épica y, para las herramientas sin segundo plano, esperas cortas en bucle aunque gasten llamadas al modelo.
+- La marca de `wait` es un archivo por cambio, con la hora renovada en cada vuelta, como la cola del turno de verificación.
+- El fin de turno instalado por `init` lleva `--no-check`, para no encender el `check --changed` a quien no lo pidió y no romper las instalaciones anteriores.
+
+### Pendientes
+
+- Ninguno nuevo.

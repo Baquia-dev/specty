@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-los-agentes-siempre-esperan-la-decision-de-la",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261106-los-agentes-siempre-esperan-la-decision-de-la",
   "baseCommit": "36170f0d131f950b7eac367a27c7b3253d3de393",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:faf5cb541b6a716531d4412cfd6f9e521ce97e6fa715b4d830ed7a9aff627337",
@@ -57,5 +57,6 @@
     "AC": 10,
     "C": 6,
     "R": 4
-  }
+  },
+  "closingSubmittedAt": "2026-11-06T14:11:37.229Z"
 }
