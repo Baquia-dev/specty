@@ -66,6 +66,8 @@ const OPENERS: ReadonlySet<string> = new Set([
   "!",
   "{",
 ]);
+/** The words that close a compound command: a simple command of only these runs nothing. */
+const CLOSERS: ReadonlySet<string> = new Set(["}", "fi", "done", "esac"]);
 const RUNNERS: ReadonlySet<string> = new Set(["node", "bun", "deno"]);
 const BYPASS_ENV: Readonly<Record<string, string>> = { HUSKY: "0", LEFTHOOK: "0" };
 const SENSITIVE_SPECTY = /common\/specty\/delegated\.json|\.git\/common\/specty/;
@@ -131,7 +133,7 @@ export function analyzeShell(command: string): ShellAnalysis {
       writes: writes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
       deletes: deletes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
       unresolved: unresolved.map((item) => item.raw),
-      runsIn: isCd(tokens) ? [] : [directory],
+      runsIn: isCd(tokens) || closesOnly(tokens) ? [] : [directory],
     });
     directory = changeDirectory(directory, tokens);
   }
@@ -149,6 +151,12 @@ function locate(directory: Directory, raw: string): { raw: string; path: string 
 
 function isCd(tokens: readonly Token[]): boolean {
   return commandWords(tokens)[0] === "cd";
+}
+
+/** Whether a simple command only closes blocks (`}`, `fi`, `done`, `esac`), redirections apart. */
+function closesOnly(tokens: readonly Token[]): boolean {
+  const { words } = splitRedirections(tokens);
+  return words.length > 0 && words.every((word) => CLOSERS.has(word));
 }
 
 /** The directory after this segment: it only changes on `cd`. */

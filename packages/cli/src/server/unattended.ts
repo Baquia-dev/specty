@@ -7,7 +7,10 @@ import { readWait, type WaitSeen } from "../store/waits";
 
 const MINUTE_MS = 60_000;
 
-/** The decisions of the person that hand the turn to the agent (`audit.jsonl`, formats.md §4). */
+/**
+ * The decisions of the person that hand the turn to the agent (`audit.jsonl`, formats.md §4).
+ * Rejecting assumptions when approving also does, as its `assumption.decided` (`sendsBack`).
+ */
 const DECISIONS: ReadonlySet<string> = new Set([
   "spec.approved",
   "tests.approved",
@@ -82,11 +85,32 @@ function unansweredDecision(
   audit: readonly Readonly<Record<string, unknown>>[],
 ): { readonly event: string; readonly ts: string } | undefined {
   const at = audit.findLastIndex(
-    (line) => line.actor === "human" && typeof line.event === "string" && DECISIONS.has(line.event),
+    (line) =>
+      line.actor === "human" &&
+      typeof line.event === "string" &&
+      (DECISIONS.has(line.event) || sendsBack(line)),
   );
   if (at < 0 || audit.slice(at + 1).some((line) => line.actor === "agent")) return undefined;
   const { event, ts } = audit[at] ?? {};
   return typeof event === "string" && typeof ts === "string" ? { event, ts } : undefined;
+}
+
+/**
+ * Rejecting assumptions when approving: `approve` notes them in `rejected` as it writes
+ * `changesRequestedAt`, the moment core's `changeWaitsFor` gives the review to the agent. An
+ * assumption decided alone from the UI names its `item` and leaves the turn where it was. The
+ * line, and not that time in the state, says whether it was the person and which agent lines
+ * come after it.
+ */
+function sendsBack(line: Readonly<Record<string, unknown>>): boolean {
+  const { event, data } = line;
+  return (
+    event === "assumption.decided" &&
+    typeof data === "object" &&
+    data !== null &&
+    "rejected" in data &&
+    Array.isArray(data.rejected)
+  );
 }
 
 /** Whether nobody picks up the decision of `change`, and what happened (formats.md §1, `waits/`). */
