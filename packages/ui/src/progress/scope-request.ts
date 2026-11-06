@@ -12,6 +12,7 @@ import type { TaskScopeRequest } from "../data/progress";
 import { SpectyData } from "../data/records";
 import { reportFailure } from "../review/spec-sections";
 import { Preferences } from "../theme/preferences";
+import { UnlockDetail } from "./unlock-detail";
 
 interface RejectData {
   readonly change: string;
@@ -64,11 +65,11 @@ class RejectScope {
 /**
  * A scope request inside the task that asked for it: the paths, the agent's reason, what deciding
  * means, and the decision. The task waits at the top of the tab until it is decided. A request to
- * unlock an approved test says so and marks it.
+ * unlock an approved test says so, marks it, and shows its patch and its evidence.
  */
 @Component({
   selector: "sp-scope-request",
-  imports: [LucideDynamicIcon, Button],
+  imports: [LucideDynamicIcon, Button, UnlockDetail],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "block" },
   template: `
@@ -85,6 +86,9 @@ class RejectScope {
           }
         }: «{{ request().reason }}»
       </span>
+      @if (request().patch !== undefined || request().evidence !== undefined) {
+        <sp-unlock-detail [patch]="request().patch" [evidence]="request().evidence ?? []" />
+      }
       <span class="text-[13px] text-text-muted" data-means>{{ means() }}</span>
       <div class="flex flex-wrap gap-2">
         <sp-button size="sm" variant="primary" [disabledReason]="decisions.blocked()" (pressed)="approve()">{{ t()('Aprobar', 'Approve') }}</sp-button>

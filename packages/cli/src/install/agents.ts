@@ -2,7 +2,7 @@
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { parse } from "jsonc-parser";
-import { NO_CHECK } from "../agents/adapter";
+import { NO_CHECK, withTurnEnds } from "../agents/adapter";
 import type { GuardTool } from "../enforce/actions";
 import { isRecord, readText } from "../io/files";
 import type { Git } from "../io/git";
@@ -173,9 +173,9 @@ export function withoutTurnEnd(value: Entry, tool: GuardTool): Entry {
 
 /**
  * `value`, a hooks file of Claude Code's form where `init` now puts the guard, with the end of
- * turn of `tool` that `from`, the file it took the guard out of, had: it calls Specty with
- * `command`, as the guard now does, and keeps its time limit. If `value` already has one, that
- * one stays instead. Either way, the one left runs the check (no `--no-check`) when either did.
+ * turn of `tool` that `from`, the file it took the guard out of, had; if `value` already has one,
+ * that one stays instead. Either way, the one left calls Specty with `command`, as the guard now
+ * does, keeps its time limit and runs the check (no `--no-check`) when either did.
  */
 export function withTurnEndFrom(
   value: Entry,
@@ -186,22 +186,12 @@ export function withTurnEndFrom(
   const moved = stopOf(from).filter((entry) => isTurnEnd(entry, tool));
   if (moved.length === 0) return value;
   const current = stopOf(value);
-  const mark = ` hook agent-stop ${tool}`;
-  const unchecked = `${mark} ${NO_CHECK}`;
+  const unchecked = ` hook agent-stop ${tool} ${NO_CHECK}`;
   const checks = [...moved, ...current].some(
     (entry) => isTurnEnd(entry, tool) && !JSON.stringify(entry).includes(unchecked),
   );
-  const ours = (text: string) =>
-    text.includes(mark) ? command + text.slice(text.indexOf(mark)) : text;
-  const stop = current.some((entry) => isTurnEnd(entry, tool))
-    ? current
-    : [...current, ...moved.map((entry) => withCommands(entry, ours))];
-  const checked = (text: string) =>
-    checks && text.endsWith(unchecked) ? text.slice(0, -` ${NO_CHECK}`.length) : text;
-  return withStop(
-    value,
-    stop.map((entry) => withCommands(entry, checked)),
-  );
+  const stop = current.some((entry) => isTurnEnd(entry, tool)) ? current : [...current, ...moved];
+  return withTurnEnds(withStop(value, stop), tool, command, checks);
 }
 
 /** Whether `entry`, of a `Stop` list, is the end of turn of `tool` (`hook agent-stop <tool>`). */
@@ -219,18 +209,6 @@ function stopOf(value: unknown): readonly unknown[] {
 function withStop(value: Entry, stop: readonly unknown[]): Entry {
   const { Stop: _, ...others } = isRecord(value.hooks) ? value.hooks : {};
   return { ...value, hooks: stop.length > 0 ? { ...others, Stop: stop } : others };
-}
-
-/** `entry` with each `command` in it, at any depth, through `change`. */
-function withCommands(entry: unknown, change: (command: string) => string): unknown {
-  if (Array.isArray(entry)) return entry.map((item: unknown) => withCommands(item, change));
-  if (!isRecord(entry)) return entry;
-  return Object.fromEntries(
-    Object.entries(entry).map(([key, item]) => [
-      key,
-      key === "command" && typeof item === "string" ? change(item) : withCommands(item, change),
-    ]),
-  );
 }
 
 /** Specty's hooks at the end of an agent's turn: its own, and the memory's net (ADR 0016). */
