@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-la-tarjeta-de-next-y-la-ui-leen-del-estado-que",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-la-tarjeta-de-next-y-la-ui-leen-del-estado-que",
   "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c9a426e9343c7d0b5b00de3ee872a7e9ab7c5fe0348fbb6645b0255c6ef42a80",
+    "at": "2026-11-06T16:36:10.258Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -49,12 +56,11 @@
     "T": 4,
     "R": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:c9a426e9343c7d0b5b00de3ee872a7e9ab7c5fe0348fbb6645b0255c6ef42a80",
-    "at": "2026-11-06T16:36:10.258Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/core/test/cards.test.ts": "sha256:3c906608772b822e69281aecdb510c99f0879d12dc37779de01263b5c6d5cf0c",
+    "packages/core/test/cards/delegated.test.ts": "sha256:63896555fab3514bcc851160bf1d31070c7af877af8a641a865980c4e2a3ee51",
+    "packages/ui/src/data/fixtures.test.ts": "sha256:41fb154cd53e20aa9692c9f944d308bb1e6d36e396585e5efb06e911edf1ce89",
+    "packages/ui/src/data/views.test.ts": "sha256:e0f89297f4a7b65a2d08046ccb74f0d28d2dbc2398336ed6e17f570bc9410395",
+    "packages/cli/test/changes-requested-card.test.ts": "sha256:b57765658eaf41ab7afd7db6d1240bb820d72138aad4967e496a78d5bbcdf42d"
+  }
 }

@@ -128,11 +128,17 @@ describe("agent cards in delegated mode", () => {
     ]);
   });
 
-  it("still sends rejected assumptions back to the agent's spec", () => {
-    const rejected = view("review", {
-      rejected: [{ id: "A1", text: "Supuesto", comment: "No" }],
-    });
-    expect(next(rejected, delegated(ES))).toBe(next(rejected, ES));
+  it("AC3: sends rejected assumptions back to the agent's spec only with the review sent back", () => {
+    const assumptions = [{ id: "A1", text: "Supuesto", comment: "No" }];
+    const sentBack = view("review", { rejected: assumptions, requested: [] });
+    expect(next(sentBack, delegated(ES))).toBe(next(sentBack, ES));
+    const loose = nextCard(
+      { change: view("review", { rejected: assumptions }), dirty: [] },
+      delegated(ES),
+    );
+    expect(loose.blocks.flatMap((block) => block.lines)).toEqual([
+      "Modo delegado: la revisión te toca a ti. No modifiques código.",
+    ]);
   });
 });
 
