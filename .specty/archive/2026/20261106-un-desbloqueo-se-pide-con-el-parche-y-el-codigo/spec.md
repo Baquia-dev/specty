@@ -102,3 +102,28 @@ Hoy, para desbloquear un test aprobado, al agente le basta con `scope add <test>
 - R1: `--recount` acepta un parche cuyas cuentas no cuadran, y otro lector de diffs podría pintarlo mal — la UI del corte C3 lo lee con su propio visor; si hace falta, Specty puede guardar el parche normalizado en un cambio aparte.
 - R2: `test-locks.test.ts` pide desbloqueos sin parche y dejaría de pasar — se cambia en este corte, y es el único test de `packages/cli/test` que pide uno (búsqueda de `scope add` sobre un test de `lockedTests`).
 - R3: Leer la entrada estándar con `--patch -` espera si nadie la cierra — los agentes corren sin terminal y la cierran; sin `--patch -`, no se lee.
+
+## Cierre
+
+### Resumen
+
+Para desbloquear un test aprobado, `scope add` exige ahora `--patch` (el cambio exacto al test, como diff unificado, de un archivo o de la entrada estándar con `-`) y de 1 a 5 `--evidence <ruta>:<desde>-<hasta>`. `flow/unlock-proposal.ts` comprueba que el parche no pasa de 500 líneas, que solo toca tests que se piden, que cada uno sigue con su hash de `lockedTests` y que se aplica con `git apply --check --recount`. Cada evidencia tiene que ser de un archivo que git sigue, de 40 líneas como máximo y con líneas que existen. La solicitud y su `scope.requested` guardan el parche y las líneas tal como estaban, y al aprobarla el `scope.decided` los lleva junto a `unlock` y `task`. Los rechazos y el comando completo están en `cards/unlock.ts`, en español y en inglés, y el guard da ese comando al impedir cambiar un test aprobado. `--patch` y `--evidence` sin desbloqueo se rechazan. formats.md, ARCHITECTURE.md, el ADR 0014 y dominio.md («Desbloqueo») lo cuentan.
+
+### Desviaciones
+
+- El primer `task done` de T2 falló por `function-lines`: `agentCommands` y `taskCommands` pasaban de 50 líneas. `agentCommands` recibe ahora el entorno (`env` y `stdin`) en lugar de un parámetro más, y `taskCommands` se partió en `taskDoneCommand` y `scopeAddCommand`.
+- Para no pasar de la complejidad 10, la decisión de desbloqueo de `scopeAdd` va en `unlockOf` (`commands/scope.ts`), y lo que guarda el `scope.decided` de un desbloqueo aprobado, en `unlockDecided` (`commands/scope-decision.ts`). El diseño no los preveía.
+- Antes de enviar los tests, el código se probó en una copia de la carpeta del cambio, fuera del repositorio, porque un test aprobado mal escrito solo lo desbloquea la persona. En el cambio no quedó nada de esa copia.
+- El gate 2 lo aprobó la persona: el `specty approve` del agente en modo delegado lo rechazó el clasificador de permisos de Claude Code (dos veces, como «Self-Approval»).
+
+### Decisiones
+
+- El parche se comprueba con `git apply --recount`, que no se fía de las cuentas de cada bloque `@@` (un agente las escribe a mano) y sí de cada línea de contexto y quitada. El corte C4 tiene que aplicarlo igual, como dicen formats.md y ARCHITECTURE.md.
+- Los archivos que toca el parche salen de `git apply --numstat`, y basta con que todos sean tests pedidos: no hace falta que toque todos, porque uno que no toca queda como está.
+- La evidencia solo sale de archivos que git sigue (`git ls-files --error-unmatch`): uno nuevo sin añadir al índice se rechaza igual que uno ignorado, para no copiar secretos al estado.
+- El `scope.decided` de un desbloqueo aprobado lleva ya el parche y la evidencia, para que C3 y C4 los lean de la auditoría sin tocar `scope-decision.ts` a la vez.
+- Las negativas van en `cards/unlock.ts` y no en `cards/task.ts`, y `unlockHow` da a la vez el comando y la explicación de las opciones a la tarjeta y al guard (`guard/testing.ts`).
+
+### Pendientes
+
+- P210: al decidir un desbloqueo en la terminal con `approve --scope`, la nota solo muestra las rutas y el motivo; falta enseñar el parche y la evidencia.

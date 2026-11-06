@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-un-desbloqueo-se-pide-con-el-parche-y-el-codigo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-un-desbloqueo-se-pide-con-el-parche-y-el-codigo",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:242f23b34a0cc745322244c2f6c45d1af47eca89710e812ce4d25f5662edb2ce",
@@ -87,12 +87,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6946deba9b76b9fb9c02f061e19b8d0b6b424ce5",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:42:23.350Z",
       "doneAt": "2026-11-06T13:43:16.741Z",
-      "summary": "formats.md, ARCHITECTURE.md, el ADR 0014 y dominio.md cuentan el desbloqueo con --patch y --evidence: qué comprueba Specty, qué guarda la solicitud y qué lleva el scope.decided"
+      "summary": "formats.md, ARCHITECTURE.md, el ADR 0014 y dominio.md cuentan el desbloqueo con --patch y --evidence: qué comprueba Specty, qué guarda la solicitud y qué lleva el scope.decided",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -105,6 +105,7 @@
     "T": 4,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-06T14:19:59.601Z",
   "lockedTests": {
     "packages/cli/test/test-locks.test.ts": "sha256:95771e895bf1e7fcb48b628f62cbf0ee35220ce4e397bd4357c9d8124b0e7478",
     "packages/cli/test/unlock-request.test.ts": "sha256:8cf02f491a2d7b5e081be8943ca12a95a38e494f4d6f4d989f9723bfad617986",
