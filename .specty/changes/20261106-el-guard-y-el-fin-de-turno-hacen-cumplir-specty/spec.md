@@ -79,7 +79,7 @@ Hoy el guard deja que el agente de Claude Code ejecute `specty wait` en primer p
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts
   - type: feat
-- [ ] T3: El guard de Claude Code lee `run_in_background` y rechaza `specty wait` sin él
+- [x] T3: El guard de Claude Code lee `run_in_background` y rechaza `specty wait` sin él
   - files: packages/cli/src/enforce/actions.ts, packages/cli/src/agents/claude-code.ts, packages/cli/src/enforce/place.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/wait-guard.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait-guard.test.ts -t AC1

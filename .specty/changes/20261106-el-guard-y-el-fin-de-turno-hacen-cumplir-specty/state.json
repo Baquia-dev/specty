@@ -61,12 +61,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "db07b5920b44726023dd1732c74f75b91344799e",
+      "attempts": 1,
       "startedAt": "2026-11-06T12:54:14.336Z",
       "doneAt": "2026-11-06T12:54:33.495Z",
-      "summary": "humanDenial arma su siguiente paso con waitStep y la herramienta del contexto (HumanContext.tool), así pide specty wait con la frase común en la forma de cada herramienta"
+      "summary": "humanDenial arma su siguiente paso con waitStep y la herramienta del contexto (HumanContext.tool), así pide specty wait con la frase común en la forma de cada herramienta",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "63662ca0f87da2b0cb18b88d6be76b029619f661",
+      "startedAt": "2026-11-06T12:54:33.966Z",
+      "doneAt": "2026-11-06T13:00:33.239Z",
+      "summary": "La acción de shell lleva background, que Claude Code saca de run_in_background; los hechos del shell pasan a shellFacts en place.ts, con sleeps y background; el guard pone su herramienta en el contexto y rechaza specty wait en primer plano"
     }
   },
   "pending": {
