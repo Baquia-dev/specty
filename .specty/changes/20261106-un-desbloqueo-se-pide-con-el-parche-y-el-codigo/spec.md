@@ -76,7 +76,7 @@ Hoy, para desbloquear un test aprobado, al agente le basta con `scope add <test>
 
 ## Tareas
 
-- [ ] T1: La solicitud de desbloqueo admite parche y evidencia, y los textos dicen cómo pedirlo y por qué se rechaza
+- [x] T1: La solicitud de desbloqueo admite parche y evidencia, y los textos dicen cómo pedirlo y por qué se rechaza
   - files: packages/core/src/schema/state.ts, packages/core/src/index.ts, packages/core/src/cards/unlock.ts, packages/core/src/cards/index.ts, packages/core/src/guard/testing.ts, packages/core/test/cards/unlock.test.ts
   - ac: AC1, AC2, AC3, AC4, AC6, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/unlock.test.ts test/guard/decide.test.ts test/cards/task.test.ts test/schema/schema.test.ts

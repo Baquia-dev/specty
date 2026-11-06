@@ -261,6 +261,8 @@ export {
   PhaseSchema,
   parseChangeState,
   type StateResult,
+  UNLOCK_LIMITS,
+  type UnlockEvidence,
 } from "./schema/state";
 export type { VerifyUnit } from "./schema/verify";
 export { type AssertionLoss, removedAssertions } from "./scope/assertions";

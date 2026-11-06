@@ -57,7 +57,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8f0c6d85abf17c4ab0a011bea136c6a5c8994a85",
+      "startedAt": "2026-11-06T13:34:50.088Z",
+      "doneAt": "2026-11-06T13:39:33.158Z",
+      "summary": "La solicitud de state.json admite patch y evidence (UNLOCK_LIMITS en core), cards/unlock.ts da el comando completo de un desbloqueo y cada rechazo en español y en inglés, y el guard ante un test bloqueado da ese comando con la explicación de --patch y --evidence"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
