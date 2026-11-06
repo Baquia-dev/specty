@@ -54,7 +54,7 @@ Hoy el guard rechaza `specty new --resolves <id>` cuando la entrada está en un 
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts
   - type: feat
-- [ ] T2: La negativa del frente para `memory resolve`, en español y en inglés
+- [x] T2: La negativa del frente para `memory resolve`, en español y en inglés
   - files: packages/core/src/cards/front-owners.ts, packages/core/test/cards/front-brakes.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/front-brakes.test.ts
