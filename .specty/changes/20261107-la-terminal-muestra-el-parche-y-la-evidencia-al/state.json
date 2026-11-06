@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-terminal-muestra-el-parche-y-la-evidencia-al",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-la-terminal-muestra-el-parche-y-la-evidencia-al",
   "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
   "revision": 1,
@@ -46,6 +46,8 @@
     "AC": 4,
     "T": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T17:17:21.400Z"
+  "lockedTests": {
+    "packages/cli/test/test-locks.test.ts": "sha256:f2622a34122562bdfc157d07aba85a76e5abb16f9d7ebe11146dee969842c6ef",
+    "packages/core/test/cards/approve.test.ts": "sha256:5c214ea725b5fdefcb6d30189eaccb4470db3512e4a099c4cc8aa9b9370c6382"
+  }
 }
