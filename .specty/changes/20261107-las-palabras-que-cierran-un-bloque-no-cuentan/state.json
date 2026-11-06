@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-las-palabras-que-cierran-un-bloque-no-cuentan",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-las-palabras-que-cierran-un-bloque-no-cuentan",
   "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2e125d37c0befc13be6bca5540c9e2aaed35ba8f80fcbb00b15ca48a067b811d",
+    "at": "2026-11-06T16:31:20.483Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2e125d37c0befc13be6bca5540c9e2aaed35ba8f80fcbb00b15ca48a067b811d",
-    "at": "2026-11-06T16:31:20.483Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/core/test/guard/control-words.test.ts": "sha256:47d2f91fd525346190ac31e3b3d8873e66533d092270197e3d6ea18797e2c78f"
+  }
 }
