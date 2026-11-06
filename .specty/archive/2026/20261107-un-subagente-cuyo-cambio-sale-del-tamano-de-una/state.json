@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-un-subagente-cuyo-cambio-sale-del-tamano-de-una",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-un-subagente-cuyo-cambio-sale-del-tamano-de-una",
   "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2a3a6efd00c07d1c93a63b7d1f0e259e4ab090bb17f84dabccc7d0aabb8918b9",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6e841b8702791f3cdbf27f7eceda1ae2b47b6051",
+      "attempts": 1,
       "startedAt": "2026-11-06T21:33:24.742Z",
       "doneAt": "2026-11-06T21:33:36.922Z",
-      "summary": "ARCHITECTURE §7: el encargo pide 7 pasos, con el del tamaño, y la sesión principal convierte en la épica el cambio del subagente que volvió por demasiado grande"
+      "summary": "ARCHITECTURE §7: el encargo pide 7 pasos, con el del tamaño, y la sesión principal convierte en la épica el cambio del subagente que volvió por demasiado grande",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,6 +65,7 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-06T21:33:47.491Z",
   "lockedTests": {
     "packages/core/test/cards/idle-subagents.test.ts": "sha256:a968f5a916cdabce11ad234ea87d076bd56eacb4727316f707c0363b19ad29b4",
     "packages/core/test/cards/idle-epic-size.test.ts": "sha256:7c874aa1ec9d4e59bd66b3af45b9edf8fd1477f6c8c56b9fac01467095eaa790"

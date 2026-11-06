@@ -57,3 +57,22 @@ Un subagente que lleva un cambio pedido por el usuario y cuya spec sale demasiad
 ## Riesgos
 
 - R1: El subagente podría seguir el mensaje de `propose`, que pide dividir el cambio en una épica, en lugar del encargo. Mitigación: el paso del encargo nombra ese mensaje y dice qué hacer en su lugar.
+
+## Cierre
+
+### Resumen
+
+Sin cambio activo, con una herramienta que reparte en subagentes, el encargo de cada cambio trae un paso más (el 6 de 7): si `propose` dice que el cambio es demasiado grande y pide dividirlo en una épica, el subagente no lo convierte, se detiene y lo dice. El `SIGUIENTE:` de la sesión principal pide que, cuando terminen los subagentes, entre en el cambio del que volvió así (`specty enter <id>`) y lo convierta allí en la épica; si no, que vuelva a ejecutar `specty next`. En español y en inglés; ARCHITECTURE §7 lo cuenta. Resuelve P255.
+
+### Desviaciones
+
+- Ninguna. `packages/core/test/cards/idle-subagents.test.ts`, que ya existía, comprueba el texto entero del encargo y del `SIGUIENTE:`, así que sus textos esperados cambiaron en la fase de tests, como preveía el Diseño.
+
+### Decisiones
+
+- Solo texto, sin guardar en el estado que un subagente creó el cambio (A1): el tamaño solo para a `propose` en el borrador, y el encargo es la instrucción del subagente durante todo su trabajo.
+- La épica se hace en el mismo cambio del subagente, no en uno nuevo (A2), y la sesión entra en él cuando terminan todos, para no aislar en Claude Code a los que siguen trabajando.
+
+### Pendientes
+
+- Ninguno
