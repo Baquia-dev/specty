@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-cambios-huerfanos-traen-un-encargo-para",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-los-cambios-huerfanos-traen-un-encargo-para",
   "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
   "revision": 1,
@@ -50,6 +50,8 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T21:32:33.007Z"
+  "lockedTests": {
+    "packages/core/test/cards/rejoin.test.ts": "sha256:1ea1ec61612e23eb295d6a424f2122d728f6db24e7928216db3bdda126fc9699",
+    "packages/core/test/cards/orphans-subagents.test.ts": "sha256:6fc1dcde056a26ed528b655a033486868361e231ddd1cde47f538c701be7a197"
+  }
 }
