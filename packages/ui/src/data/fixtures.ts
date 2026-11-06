@@ -35,6 +35,7 @@ import {
   runTarget,
   verifiedIn,
 } from "./sample-run";
+import { sampleTestCode } from "./sample-test-code";
 import { sampleTrace, sampleTraceFiles } from "./sample-trace";
 import type { MemoryVerb } from "./source";
 import type { TraceRecord } from "./trace";
@@ -139,6 +140,11 @@ export class FixtureData extends SpectyData {
 
   override trace(change: string, path: string): Promise<TraceRecord> {
     return sampleTrace(this.records, change, path);
+  }
+
+  /** The code of the sample's tests: those sent, those locked and those unlocked. */
+  override testCode(change: string, path: string): Promise<string> {
+    return sampleTestCode(this.records, change, path);
   }
 
   /** The prototype takes every decision. */
