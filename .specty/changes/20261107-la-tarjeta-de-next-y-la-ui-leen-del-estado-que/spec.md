@@ -61,7 +61,7 @@ Desde P225, `changesRequestedAt` en `state.json` dice que la persona devolvió l
 
 ## Tareas
 
-- [ ] T1: La tarjeta de la revisión decide por los cambios pedidos, en core
+- [x] T1: La tarjeta de la revisión decide por los cambios pedidos, en core
   - files: packages/core/src/cards/next.ts, packages/core/src/cards/view.ts, packages/core/test/cards.test.ts, packages/core/test/cards/delegated.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts test/cards/delegated.test.ts && pnpm lint
