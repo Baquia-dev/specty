@@ -22,3 +22,9 @@ Cuando Claude Code reparte en subagentes y `subagents` no es `false`, el cierre 
   - files: packages/cli/src/flow/usage.ts, packages/core/src/cards/index.ts, packages/cli/test/fresh-session.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/fresh-session.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: fix
+
+## Cierre
+
+### Resumen
+
+El aviso de sesión nueva del cierre y de la aceptación quick se calla cuando Claude Code reparte en subagentes y subagents no es false (toSubagents, exportada desde las tarjetas de core); con subagents: false sigue como hoy. Docs: ARCHITECTURE §13 y §16, formats §6.
