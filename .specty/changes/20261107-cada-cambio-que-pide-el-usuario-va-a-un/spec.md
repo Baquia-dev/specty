@@ -62,7 +62,7 @@ Hoy solo los cortes de una épica van a subagentes. Una feature suelta se hace e
 
 ## Tareas
 
-- [ ] T1: Las piezas de los encargos salen de la tarjeta de la épica a su propio módulo
+- [x] T1: Las piezas de los encargos salen de la tarjeta de la épica a su propio módulo
   - files: packages/core/src/cards/subagents.ts, packages/core/src/cards/epic.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts test/cards/rejoin.test.ts && pnpm lint
