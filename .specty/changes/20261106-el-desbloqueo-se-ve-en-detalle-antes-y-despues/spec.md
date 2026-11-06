@@ -75,7 +75,7 @@ Desde el corte C2, una solicitud para desbloquear un test aprobado lleva el camb
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/tests-sent.test.ts
   - type: refactor
-- [ ] T3: La solicitud pendiente muestra el parche y la evidencia
+- [x] T3: La solicitud pendiente muestra el parche y la evidencia
   - files: packages/ui/src/data/patch.ts, packages/ui/src/progress/unlock-detail.ts, packages/ui/src/progress/scope-request.ts, packages/ui/src/progress/scope-request.test.ts
   - ac: AC1, AC2, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/scope-request.test.ts --include src/progress/tests-sent.test.ts

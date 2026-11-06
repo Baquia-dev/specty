@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "010eade6a3bb16ecece121431ed830b570757202",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:17:41.176Z",
       "doneAt": "2026-11-06T15:18:06.306Z",
-      "summary": "Las líneas numeradas y resaltadas de «Ver código» pasan a sp-code-lines (progress/code-lines.ts), con path, text y start, que numera desde la primera línea; sp-test-code lo usa con data-test-code y su DOM sigue igual."
+      "summary": "Las líneas numeradas y resaltadas de «Ver código» pasan a sp-code-lines (progress/code-lines.ts), con path, text y start, que numera desde la primera línea; sp-test-code lo usa con data-test-code y su DOM sigue igual.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "acb110f6cdd6c4daaa8a33d3c391933eb7cf985f",
+      "startedAt": "2026-11-06T15:18:06.632Z",
+      "doneAt": "2026-11-06T15:18:40.353Z",
+      "summary": "sp-unlock-detail muestra el parche con el visor de diffs y cada evidencia con su ruta y sus líneas numeradas; patchFiles (data/patch.ts) lee el parche como git apply --recount. La solicitud pendiente lo pone bajo el motivo."
     }
   },
   "pending": {
