@@ -8,6 +8,7 @@ import {
   type GuardAction,
   isGoverned,
   type ShellAnalysis,
+  type ShellFacts,
 } from "@baquia-dev/specty-core";
 import type { Redirect } from "../agents/adapter";
 import { within } from "../flow/land";
@@ -36,21 +37,32 @@ export async function resolveAction(
   place: Place,
   raw: Exclude<RawAction, { readonly kind: "enter" }>,
 ): Promise<GuardAction> {
-  const { session, cwd, bound } = place;
+  const { session, cwd } = place;
   if (raw.kind === "other") return raw;
   if (raw.kind === "files") return { kind: "files", ...(await placeFiles(place, raw)) };
   if (raw.kind === "remove-worktree") {
     const folders = await openFoldersRemoved(session, cwd, [{ path: raw.path }]);
     return { kind: "remove-worktree", folders };
   }
-  if (raw.kind !== "shell") {
-    const { inside, foreign, ghosts } = await inRepo(place, raw.paths);
-    // Reading is free, also inside a ghost folder.
-    return raw.kind === "read"
-      ? { kind: "read", paths: inside, foreign }
-      : { kind: raw.kind, paths: inside, foreign, ghosts: await ghostsOf(session, ghosts) };
-  }
-  // Paths the analysis cannot place (shell variables, `cd` to an unknown place) are not judged.
+  if (raw.kind === "shell") return { kind: "shell", facts: await shellFacts(place, raw) };
+  const { inside, foreign, ghosts } = await inRepo(place, raw.paths);
+  // Reading is free, also inside a ghost folder.
+  return raw.kind === "read"
+    ? { kind: "read", paths: inside, foreign }
+    : { kind: raw.kind, paths: inside, foreign, ghosts: await ghostsOf(session, ghosts) };
+}
+
+/**
+ * What a shell command would do, as the guard judges it: its analysis, the governed files its
+ * commits would take, the open changes' folders it would remove, whether it runs outside the
+ * conversation's folder and, for a tool that says so, whether it runs in the background. Paths
+ * the analysis cannot place (shell variables, `cd` to an unknown place) are not judged.
+ */
+async function shellFacts(
+  place: Place,
+  raw: Extract<RawAction, { readonly kind: "shell" }>,
+): Promise<ShellFacts> {
+  const { session, cwd, bound } = place;
   const analysis = analyzeShell(raw.command);
   const committedGoverned = (await commitsHere(session, cwd, analysis.commits))
     ? pathsOf([
@@ -60,19 +72,18 @@ export async function resolveAction(
     : [];
   const removedFolders = await openFoldersRemoved(session, cwd, analysis.worktreeRemovals);
   return {
-    kind: "shell",
-    facts: {
-      ...(removedFolders.length > 0 ? { removedFolders } : {}),
-      specty: analysis.specty,
-      unscopedNpx: analysis.unscopedNpx,
-      bypass: analysis.bypass,
-      refs: analysis.refs,
-      committedGoverned,
-      ...(await placeFiles(place, analysis)),
-      ...(bound !== undefined && (await runsOutside(analysis, cwd, bound))
-        ? { elsewhere: { folder: bound, command: raw.command } }
-        : {}),
-    },
+    ...(removedFolders.length > 0 ? { removedFolders } : {}),
+    specty: analysis.specty,
+    unscopedNpx: analysis.unscopedNpx,
+    bypass: analysis.bypass,
+    refs: analysis.refs,
+    committedGoverned,
+    sleeps: analysis.sleeps,
+    ...(raw.background === undefined ? {} : { background: raw.background }),
+    ...(await placeFiles(place, analysis)),
+    ...(bound !== undefined && (await runsOutside(analysis, cwd, bound))
+      ? { elsewhere: { folder: bound, command: raw.command } }
+      : {}),
   };
 }
 

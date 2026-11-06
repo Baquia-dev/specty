@@ -44,7 +44,10 @@ function parseWaitLimits(options: WaitOptions): WaitLimits {
   };
 }
 
-/** Checks whether the active change is waiting for a person's decision or action. */
+/**
+ * Checks whether the active change is waiting for a person's decision or action: the end of the
+ * agent's turn and the guard's brake on `sleep` read it too.
+ */
 export function isWaitingForHuman(change: StoredChange): boolean {
   const { state } = change;
   if (state.pending.scopeRequests.length > 0) return true;

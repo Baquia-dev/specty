@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { openFolderDenial } from "../cards/change-folder";
 import { ghostFolderDenial } from "../cards/ghost-folder";
+import { foregroundWaitDenial, sleepDenial } from "../cards/wait";
 import { isGoverned } from "../scope/governed";
 import { classifyPath, scopeRulesFrom } from "../scope/scope";
 import type {
@@ -113,26 +114,10 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
     const denial = elsewhereDenial(facts.elsewhere, ctx.lang);
     return deny("worktree", denial.reason, denial.next);
   }
-  if (facts.unscopedNpx) {
-    return deny(
-      "package",
-      t(
-        "`npx specty` instala otro paquete de npm, no Specty.",
-        "`npx specty` installs an unrelated npm package, not Specty.",
-      ),
-      t("usa `npx -y @baquia-dev/specty <comando>`.", "use `npx -y @baquia-dev/specty <command>`."),
-    );
-  }
-  if (facts.bypass) {
-    return deny(
-      "bypass",
-      t(
-        "No se permite saltarse los hooks (`--no-verify`, `core.hooksPath`, `HUSKY=0`…).",
-        "Skipping hooks is not allowed (`--no-verify`, `core.hooksPath`, `HUSKY=0`…).",
-      ),
-      t(`sigue el flujo: \`${ctx.command} next\`.`, `follow the flow: \`${ctx.command} next\`.`),
-    );
-  }
+  const tooling = toolingDenial(facts, ctx);
+  if (tooling !== undefined) return tooling;
+  const waiting = waitDenial(facts, ctx);
+  if (waiting !== undefined) return waiting;
   const memory = memoryDenial(facts.refs ?? [], ctx);
   if (memory !== undefined) return memory;
   if (facts.committedGoverned.length > 0) {
@@ -146,6 +131,45 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
     );
   }
   return decideFiles(facts, ctx);
+}
+
+/** A command that runs the unrelated `specty` package of npm, or that skips the hooks. */
+function toolingDenial(facts: ShellFacts, ctx: GuardContext): GuardDecision | undefined {
+  const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
+  if (facts.unscopedNpx) {
+    return deny(
+      "package",
+      t(
+        "`npx specty` instala otro paquete de npm, no Specty.",
+        "`npx specty` installs an unrelated npm package, not Specty.",
+      ),
+      t("usa `npx -y @baquia-dev/specty <comando>`.", "use `npx -y @baquia-dev/specty <command>`."),
+    );
+  }
+  if (!facts.bypass) return undefined;
+  return deny(
+    "bypass",
+    t(
+      "No se permite saltarse los hooks (`--no-verify`, `core.hooksPath`, `HUSKY=0`…).",
+      "Skipping hooks is not allowed (`--no-verify`, `core.hooksPath`, `HUSKY=0`…).",
+    ),
+    t(`sigue el flujo: \`${ctx.command} next\`.`, `follow the flow: \`${ctx.command} next\`.`),
+  );
+}
+
+/**
+ * The ways of waiting for the person that do not hold: `specty wait` in the foreground of a tool
+ * that can run it in the background, and `sleep` while the change waits for the person.
+ */
+function waitDenial(facts: ShellFacts, ctx: GuardContext): GuardDecision | undefined {
+  if (facts.background === false && facts.specty.includes("wait")) {
+    const denial = foregroundWaitDenial(ctx);
+    return deny("wait", denial.reason, denial.next);
+  }
+  const { change } = ctx;
+  if (facts.sleeps !== true || change?.waiting !== true) return undefined;
+  const denial = sleepDenial(change.id, ctx);
+  return deny("wait", denial.reason, denial.next);
 }
 
 /**

@@ -59,11 +59,14 @@ const WAIT_HABITS: Readonly<Record<AgentTool, WaitHabit>> = {
   copilot: FOREGROUND,
 };
 
+/** What the sentence of `specty wait` reads of an output's context: the guard's has no more. */
+type WaitContext = Pick<CardContext, "lang" | "command" | "tool">;
+
 /**
  * `specty wait` as the outputs that wait for the person ask for it: the same sentence in all of
  * them, in the agent's tool's way, with no final period so that each output closes it.
  */
-export function waitStep(ctx: CardContext): string {
+export function waitStep(ctx: WaitContext): string {
   return waitWith(
     ctx,
     (wait) => `ejecuta ${wait}`,
@@ -73,7 +76,7 @@ export function waitStep(ctx: CardContext): string {
 
 /** `waitStep`, with the verb that starts it in each language. */
 function waitWith(
-  ctx: CardContext,
+  ctx: WaitContext,
   es: (wait: string) => string,
   en: (wait: string) => string,
 ): string {
@@ -126,4 +129,54 @@ export function waitHeartbeat(
     `sigue esperando la decisión de la persona en ${id} (${waited} de ${limit} min)…`,
     `still waiting for the person's decision on ${id} (${waited} of ${limit} min)…`,
   )}`;
+}
+
+/** Why the guard stops something, and the next step it gives instead. */
+interface WaitDenial {
+  readonly reason: string;
+  readonly next: string;
+}
+
+/**
+ * The guard's denial of `specty wait` in the foreground, for a tool that can run it in the
+ * background (Claude Code): launching it again there, in the tool's way.
+ */
+export function foregroundWaitDenial(ctx: WaitContext): WaitDenial {
+  const wait = `\`${ctx.command} wait\``;
+  return {
+    reason: translator(ctx.lang)(
+      `${wait} espera la decisión de la persona, que puede tardar más que el límite de un comando en primer plano.`,
+      `${wait} waits for the person's decision, which can take longer than the limit of a command in the foreground.`,
+    ),
+    next: `${waitWith(
+      ctx,
+      (command) => `lanza de nuevo ${command}`,
+      (command) => `launch ${command} again`,
+    )}.`,
+  };
+}
+
+/**
+ * The guard's denial of a command that waits with `sleep` while change `id` waits for the
+ * person: `specty wait` in the tool's way, or `specty next` in delegated mode, which tells
+ * whether the agent decides.
+ */
+export function sleepDenial(
+  id: string,
+  ctx: WaitContext & { readonly delegated?: boolean },
+): WaitDenial {
+  const t = translator(ctx.lang);
+  return {
+    reason: t(
+      `El cambio ${id} espera la decisión de la persona: no se espera con \`sleep\`.`,
+      `Change ${id} is waiting for the person's decision: do not wait with \`sleep\`.`,
+    ),
+    next:
+      ctx.delegated === true
+        ? t(
+            `ejecuta \`${ctx.command} next\`, que te dice si decides tú o esperas a la persona.`,
+            `run \`${ctx.command} next\`, which tells you whether you decide or wait for the person.`,
+          )
+        : `${waitStep(ctx)}.`,
+  };
 }

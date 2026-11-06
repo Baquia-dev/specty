@@ -167,7 +167,8 @@ function action(event: Readonly<Record<string, unknown>>): RawAction {
     case "NotebookEdit":
       return { kind: "write", paths: sentPaths(input.notebook_path) };
     case "Bash":
-      return shellAction(input.command);
+      // `specty wait` waits for the person in the background, where Bash tells when it ends.
+      return shellAction(input.command, input.run_in_background === true);
     case "EnterWorktree":
       return {
         kind: "enter",
