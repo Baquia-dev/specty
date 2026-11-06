@@ -73,7 +73,7 @@ Hoy el fin de turno (`specty hook agent-stop <agente>`), que con C4 devuelve al 
 
 ## Tareas
 
-- [ ] T1: El fin de turno con `--no-check` solo aplica la regla de `wait`
+- [x] T1: El fin de turno con `--no-check` solo aplica la regla de `wait`
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/enforce/agent-stop.ts, packages/cli/src/enforce/entry.ts, packages/cli/src/enforce/commands.ts, packages/cli/test/agent-stop-wait.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agent-stop-wait.test.ts

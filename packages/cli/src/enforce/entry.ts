@@ -28,10 +28,13 @@ export async function guardCommand(
   return reply.code;
 }
 
-/** The hooks of an agent's end of turn, with the event on stdin: what they print, if anything. */
+/**
+ * The hooks of an agent's end of turn, with the event on stdin and the arguments after the agent:
+ * what they print, if anything.
+ */
 const STOPS: ReadonlyMap<
   string,
-  (session: Session, tool: string, input: string) => Promise<string>
+  (session: Session, tool: string, input: string, flags: readonly string[]) => Promise<string>
 > = new Map([
   ["agent-stop", agentStop],
   ["memory-stop", memoryStop],
@@ -39,8 +42,8 @@ const STOPS: ReadonlyMap<
 
 /**
  * `specty hook <name> [args…]`, from git's hooks and from the agents' end of turn (`agent-stop
- * <agent>` and `memory-stop <agent>`, with the event on stdin). Outside a Specty repository, git
- * and the agent go on.
+ * <agent> [--no-check]` and `memory-stop <agent>`, with the event on stdin). Outside a Specty
+ * repository, git and the agent go on.
  */
 export async function hookCommand(
   environment: CliEnvironment,
@@ -57,7 +60,8 @@ export async function hookCommand(
   if (name === "pre-commit") return preCommit(opened.session);
   const stop = STOPS.get(name);
   if (stop !== undefined) {
-    const reply = await stop(opened.session, args[0] ?? "", await environment.stdin());
+    const [tool = "", ...flags] = args;
+    const reply = await stop(opened.session, tool, await environment.stdin(), flags);
     if (reply.length > 0) environment.io.out(reply);
     return 0;
   }

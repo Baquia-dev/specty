@@ -171,6 +171,13 @@ interface Installed {
   readonly written: readonly string[];
 }
 
+/**
+ * The mark of the end of turn `init` installs (`specty hook agent-stop <agent> --no-check`): it
+ * keeps to the rule of `wait`, and `specty check --changed` runs only once `check --install`
+ * takes the mark away (ADR 0012).
+ */
+export const NO_CHECK = "--no-check";
+
 /** `specty hook agent-stop <agent>`: when it runs, what it answers, and how it is installed. */
 export interface AgentStop {
   /** Whether this end of turn is one to check. */
