@@ -83,7 +83,7 @@ Hoy el fin de turno (`specty hook agent-stop <agente>`), que con C4 devuelve al 
   - ac: AC1, AC3, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-agent-stop.test.ts test/memory-stop-install.test.ts test/codex.test.ts test/gemini-cli.test.ts test/antigravity.test.ts
   - type: feat
-- [ ] T3: `init` deja puesto el fin de turno del plugin de OpenCode y `check --install` enciende su check
+- [x] T3: `init` deja puesto el fin de turno del plugin de OpenCode y `check --install` enciende su check
   - files: packages/cli/src/agents/opencode.ts, packages/cli/src/install/opencode.ts, packages/cli/test/check-agent-stop.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/opencode.test.ts && pnpm typecheck && pnpm lint

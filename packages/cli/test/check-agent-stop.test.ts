@@ -186,8 +186,11 @@ describe("specty hook agent-stop", () => {
   });
 
   it("AC5: the plugin init writes sends back a session whose change waits for the person, and not one whose check fails", async () => {
-    const root = await failing();
-    await writeFiles(root, { "opencode.json": "{}\n" });
+    const root = await tempRepo({
+      ...APP,
+      ".specty/config.yaml": `${CONFIG()}${CHECKS}`,
+      "opencode.json": "{}\n",
+    });
     await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
     const module: { default: OpencodePlugin } = await import(
       pathToFileURL(join(root, PLUGIN)).href
@@ -196,8 +199,16 @@ describe("specty hook agent-stop", () => {
     const client = { session: { prompt: async (request: unknown) => void sent.push(request) } };
     const hooks = await module.default.server({ directory: root, client });
     const idle = { event: { type: "session.idle", properties: { sessionID: "s" } } };
+    // `check --changed` fails: the end of turn `check --install` writes would send it back.
+    await writeFiles(root, {
+      "src/app.ts": `export const greet = () => 'hola';\n// ${TODO}: later\n`,
+    });
+    const checked = await stop(root, "opencode", { hook_event_name: "Stop" });
+    expect(JSON.parse(checked.out).reason).toContain("`specty check --changed` falla");
     await hooks.event?.(idle);
     expect(sent).toEqual([]);
+    // Without that failure, so that `new` starts the change.
+    await writeFiles(root, APP);
     await cli(root, ["new", "Saludo personalizado"]);
     await writeFiles(root, { [SPEC_PATH]: SPEC });
     await cli(root, ["propose"]);

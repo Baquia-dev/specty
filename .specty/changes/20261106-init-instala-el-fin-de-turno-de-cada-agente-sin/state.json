@@ -60,12 +60,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8357d7b07c2c02fd74caa1901794eb209b4ee9fe",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:26:49.732Z",
       "doneAt": "2026-11-06T13:28:48.757Z",
-      "summary": "init escribe el fin de turno con --no-check junto al guard de cada agente con hooks JSON y con verify.timeoutSec (installAgentStops); check --install le quita la marca en la misma entrada, y init conserva un fin de turno que ya hace el check"
+      "summary": "init escribe el fin de turno con --no-check junto al guard de cada agente con hooks JSON y con verify.timeoutSec (installAgentStops); check --install le quita la marca en la misma entrada, y init conserva un fin de turno que ya hace el check",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/check-agent-stop.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "678f8a7d8909fa187845c49d88d29e5c4daf33f9",
+      "startedAt": "2026-11-06T13:28:49.059Z",
+      "doneAt": "2026-11-06T13:34:45.864Z",
+      "summary": "El plugin de OpenCode lleva CHECK: init pone STOP con el tiempo límite (planOpencodeTurn) y llama al hook con --no-check, check --install enciende CHECK (planOpencodeStop), y un plugin anterior con STOP y sin CHECK conserva su check"
     }
   },
   "pending": {
@@ -76,12 +87,13 @@
     "A": 6,
     "AC": 6,
     "T": 4,
-    "R": 2
+    "R": 2,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/agent-stop-wait.test.ts": "sha256:db5a1fccc669c5698dc90a3f4db3eaa83b8febb4e6e2f352374a7134c5b147dd",
     "packages/cli/test/antigravity.test.ts": "sha256:ae306788dddc5697b34e5a978f03b8300e0b647683dbbd617750d6f303be095e",
-    "packages/cli/test/check-agent-stop.test.ts": "sha256:9d4d78264e25997a1e1ac221c41686dd8494b406e20cdb3cca2fda82cb23ed3b",
+    "packages/cli/test/check-agent-stop.test.ts": "sha256:34d9e2a0ec68e1a57503de2d067616a8b62d8d8ca308dc6c498414d5ce5663fa",
     "packages/cli/test/codex.test.ts": "sha256:250d493af163a0161970e8d3a1b21ed756116cb25a4f6ad3b3fba4c21a1745b9",
     "packages/cli/test/gemini-cli.test.ts": "sha256:bcfd50048dbdac77930b30044059aadab9ebef80ac9e0a4d3380e579a0efa2b5",
     "packages/cli/test/memory-stop-install.test.ts": "sha256:24576cd8fe28aa1f59c91e8bd888f7c379199334352c174a7c1b0bd909aa39a2",
