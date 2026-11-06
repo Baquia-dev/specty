@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-el-guard-y-el-fin-de-turno-hacen-cumplir-specty",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-el-guard-y-el-fin-de-turno-hacen-cumplir-specty",
   "baseCommit": "ddaa47217dcb6b75a40be45d70016d60cc09f4db",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:446e7f8ce61c3593e622fb12ae90c1517db64932aa127af2c0478934d827becc",
@@ -79,12 +79,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3645ede4da92d70991ac1688684eb0e70e15f0da",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:00:33.568Z",
       "doneAt": "2026-11-06T13:01:48.351Z",
-      "summary": "commands/wait.ts exporta isWaitingForHuman y el guard marca waiting en su cambio, así frena sleep mientras el cambio espera a la persona; ARCHITECTURE cuenta la regla wait del guard"
+      "summary": "commands/wait.ts exporta isWaitingForHuman y el guard marca waiting en su cambio, así frena sleep mientras el cambio espera a la persona; ARCHITECTURE cuenta la regla wait del guard",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -97,9 +97,44 @@
     "T": 4,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-06T13:07:53.006Z",
   "lockedTests": {
     "packages/core/test/guard/decide.test.ts": "sha256:866c42dd87f08cdc53c09503a2002138c0c3364096773c3d3cc98642f2bc3761",
     "packages/cli/test/wait-guard.test.ts": "sha256:797a35e1d7ff7509346f1154859a37e4b00296775814660a02571249f407fc45",
     "packages/core/test/guard/wait.test.ts": "sha256:c8240fa8a8bb2f8b6a24b4f4a77023504513bac52a506833cac8c205fe304983"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "23afc82bb2278d4b7687512b7b3a56bc10852115",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/cli/src/commands/wait.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/agents/claude-code.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/enforce/actions.ts",
+      "packages/cli/src/enforce/agent-stop.ts",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/enforce/place.ts",
+      "packages/cli/test/agent-stop-wait.test.ts",
+      "packages/cli/test/wait-guard.test.ts",
+      "packages/core/src/cards/hooks.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/wait.ts",
+      "packages/core/src/guard/action.ts",
+      "packages/core/src/guard/decide.ts",
+      "packages/core/src/guard/human.ts",
+      "packages/core/src/guard/shell.ts",
+      "packages/core/test/cards/hooks.test.ts",
+      "packages/core/test/guard/decide.test.ts",
+      "packages/core/test/guard/wait.test.ts"
+    ],
+    "at": "2026-11-06T13:02:11.694Z",
+    "resolved": {
+      "commit": "3375185",
+      "at": "2026-11-06T13:07:06.755Z"
+    }
   }
 }

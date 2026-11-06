@@ -95,3 +95,29 @@ Hoy el guard deja que el agente de Claude Code ejecute `specty wait` en primer p
 - R1: El freno de `sleep` puede frenar un uso legítimo mientras el cambio espera a la persona. En esa espera el código está bloqueado y no hay nada que esperar con `sleep`, y la negativa dice qué usar.
 - R2: Un agente puede esquivar el freno con `sleep` dentro de otro intérprete. Es de mejor esfuerzo como las demás reglas del shell, y el fin de turno de C4 lo devuelve a esperar con `specty wait`.
 - R3: El corte C4 también toca `core/src/cards/wait.ts` y puede exportar `isWaitingForHuman` en paralelo. Este cambio solo añade funciones en ese archivo y cambia el tipo del contexto de `waitStep`, y exportar la función es el mismo cambio en las dos ramas.
+
+## Cierre
+
+### Resumen
+
+El guard tiene una regla nueva, `wait`, para las dos formas de esperar a la persona que no aguantan. En Claude Code rechaza un comando con `specty wait` sin `run_in_background: true` y pide lanzarlo de nuevo en segundo plano. En cualquier herramienta, mientras el cambio de la carpeta espera a la persona (`isWaitingForHuman`, la misma regla que `wait`), rechaza los comandos de shell que ejecutan `sleep` y pide `specty wait` con la frase común, o `specty next` en modo delegado. `analyzeShell` da `sleeps`, también tras `do`, `then`, `{`, asignaciones y envoltorios. La negativa de los comandos de la persona también pide `specty wait` con `waitStep`, en la forma de la herramienta del guard. Los textos nuevos están en español y en inglés, en `cards/wait.ts`.
+
+### Desviaciones (respecto al plan)
+
+- En T1, la regla `wait` subía la complejidad de `decideShell` a 11. Las reglas de `npx specty` y de saltarse los hooks pasaron a `toolingDenial`, y la regla `wait` va tras ellas, antes de la de la rama de la memoria, en vez de justo tras la de correr fuera de la carpeta: `npx specty wait` recibe primero la negativa del paquete.
+- En T3, `resolveAction` llegaba a complejidad 11: los hechos de un comando de shell pasaron a `shellFacts`, en el mismo `enforce/place.ts`.
+- Al incorporar main, el corte C4 ya había exportado `isWaitingForHuman`: el conflicto de su comentario se resolvió nombrando a los dos que la leen, el fin de turno y el guard.
+
+### Decisiones
+
+- El guard rechaza y no reescribe `specty wait` en Claude Code, porque `updatedInput` solo vale con `permissionDecision: "allow"`, que se salta la pregunta de permisos de la persona, o con `"ask"`, que se la hace cada vez.
+- El freno de `wait` en primer plano rige aunque nada espere a la persona, y solo en Claude Code, la única herramienta cuyo módulo dice si un comando va en segundo plano (`background` en la acción de shell).
+- En modo delegado, el freno de `sleep` pide `specty next`, que dice si decide el agente o espera a la persona.
+- Los textos del guard usan la herramienta del guard (`--tool`), no la que detecta el entorno; `waitStep` acepta solo el idioma, el comando y la herramienta.
+- Solo la regla de `sleep` salta las palabras que abren un comando compuesto (`do`, `then`, `{`…); las demás reglas siguen leyendo el programa como antes.
+
+### Pendientes
+
+- `packages/cli/src/enforce/guard.ts` tiene 311 líneas de código (aviso a partir de 300): proponer a la persona pasar el contexto del guard (`guardContext`, `guardChange`, `taskFiles`, `plannedFiles`, `lockedOf`, `integrationOf`) a `enforce/guard-context.ts`.
+- El análisis del shell no lee el programa tras `do`, `then` o `{` en las demás reglas: `if true; then specty approve; fi` no cuenta como un comando de la persona para el guard (la terminal de la persona lo sigue frenando). Valorar llevar ese salto a todo `analyzeSegment`.
+- Comprobar con Claude Code real que, tras la negativa, el modelo vuelve a lanzar `specty wait` con `run_in_background: true`.
