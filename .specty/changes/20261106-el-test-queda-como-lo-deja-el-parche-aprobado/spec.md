@@ -85,7 +85,7 @@ Desde el corte C2, un desbloqueo de un test aprobado lleva el parche exacto que 
   - ac: AC1, AC3, AC6, AC8, AC9
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/unlock-check.test.ts test/cards/unlock.test.ts
   - type: feat
-- [ ] T2: `task done` exige que cada test desbloqueado quede como lo deja su parche aprobado
+- [x] T2: `task done` exige que cada test desbloqueado quede como lo deja su parche aprobado
   - files: packages/cli/src/flow/unlock-check.ts, packages/cli/src/commands/task.ts, packages/cli/test/unlock-done.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/unlock-done.test.ts test/test-locks.test.ts

@@ -64,12 +64,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f4ec40c3cbccae2aa5d2fbacbe1ff47ac47174fa",
+      "attempts": 1,
       "startedAt": "2026-11-06T14:58:29.720Z",
       "doneAt": "2026-11-06T14:58:39.742Z",
-      "summary": "Tarjeta cards/unlock-check.ts: el test que no quedó como su parche (diferencia, borrado, falta o sin versión bloqueada) y el desbloqueo que Specty rechaza al aprobarlo, en español y en inglés; unlock.ts exporta unlockProblem."
+      "summary": "Tarjeta cards/unlock-check.ts: el test que no quedó como su parche (diferencia, borrado, falta o sin versión bloqueada) y el desbloqueo que Specty rechaza al aprobarlo, en español y en inglés; unlock.ts exporta unlockProblem.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bd87a77833359e008a3c2e790a28bbb26cebaeef",
+      "startedAt": "2026-11-06T14:58:40.056Z",
+      "doneAt": "2026-11-06T14:59:03.139Z",
+      "summary": "flow/unlock-check.ts aplica el parche del último desbloqueo aprobado de cada test a su versión del último commit, en un índice temporal, y compara con el disco; task done lo pide tras el alcance y antes de verificar."
     }
   },
   "pending": {
