@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-en-modo-delegado-un-cambio-rapido-se-acepta-y",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-en-modo-delegado-un-cambio-rapido-se-acepta-y",
   "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a9669b464bd29cf287b35ceb484095a5772ad24a8522568c296b9f56a94c322e",
+    "at": "2026-11-06T18:50:56.761Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -51,12 +58,7 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a9669b464bd29cf287b35ceb484095a5772ad24a8522568c296b9f56a94c322e",
-    "at": "2026-11-06T18:50:56.761Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/accept-quick-turn.test.ts": "sha256:ac74a356038d16f9f529cdafb0affb930b94d1b1e241513794dcf9875cf2c938"
+  }
 }
