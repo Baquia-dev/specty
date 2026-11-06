@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-un-desbloqueo-se-pide-con-el-parche-y-el-codigo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-un-desbloqueo-se-pide-con-el-parche-y-el-codigo",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
   "revision": 2,
@@ -78,12 +78,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e435933f203d4c91026c7293e799361ba866dd5c",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:41:14.636Z",
       "doneAt": "2026-11-06T13:42:23.001Z",
-      "summary": "Al aprobar un desbloqueo, el scope.decided lleva el patch y la evidence de la solicitud junto a unlock y task (unlockDecided en scope-decision.ts); al rechazarlo, no"
+      "summary": "Al aprobar un desbloqueo, el scope.decided lleva el patch y la evidence de la solicitud junto a unlock y task (unlockDecided en scope-decision.ts); al rechazarlo, no",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6946deba9b76b9fb9c02f061e19b8d0b6b424ce5",
+      "startedAt": "2026-11-06T13:42:23.350Z",
+      "doneAt": "2026-11-06T13:43:16.741Z",
+      "summary": "formats.md, ARCHITECTURE.md, el ADR 0014 y dominio.md cuentan el desbloqueo con --patch y --evidence: qué comprueba Specty, qué guarda la solicitud y qué lleva el scope.decided"
     }
   },
   "pending": {

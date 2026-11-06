@@ -29,6 +29,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Bitácora** (`specty note`): las notas de un cambio en su audit (`change.noted`); la tarjeta de `next` muestra las tres últimas.
 - **Mensaje** (`MessageView`, `specty message`): lo que una sesión o la persona deja para la sesión de un cambio abierto; le llega una vez, tras su siguiente comando.
 - **Test aprobado** (`lockedTests`): un test que aprobó la persona, o el rojo de un bug; solo cambia con un desbloqueo.
+- **Desbloqueo** (`scope add --patch --evidence`): la solicitud de cambiar un test aprobado para una tarea, con el parche exacto y las líneas que lo justifican; lo decide solo la persona.
 - **Ciclo de tests** (`TestCycle`): con `contract`, el de una feature (gate 2) o el de un bug (su rojo se bloquea solo).
 - **Modo delegado** (`Delegation`): el agente aprueba, acepta y cierra por la persona.
 - **Retro-spec**: la spec que documenta después cambios hechos sin spec.

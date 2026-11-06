@@ -14,7 +14,7 @@ De FDD faltaba el vocabulario del dominio: sin él, el agente inventa nombres di
 ## Decisión
 
 - **Los tests son el contrato de los criterios.** Con `policy.tests: contract`, un cambio con features pasa por una fase de tests tras aprobar la spec. El agente escribe los tests de los criterios, Specty comprueba que fallan y la persona los aprueba antes del código: es el segundo punto de revisión, tras la spec.
-- **Los tests aprobados quedan bloqueados.** Specty guarda su hash al aprobarlos. El guard rechaza cambiarlos, y `specty check --spec` lo comprueba también en la CI. Desbloquear uno es una solicitud que decide la persona.
+- **Los tests aprobados quedan bloqueados.** Specty guarda su hash al aprobarlos. El guard rechaza cambiarlos, y `specty check --spec` lo comprueba también en la CI. Desbloquear uno es una solicitud que decide la persona, y lleva el cambio exacto que se hará al test (un parche que Specty comprueba sobre su versión bloqueada) y las líneas de código, de otro test o de la spec que lo justifican: la persona decide con ellos, no con un motivo suelto (2026-11-06).
 - **Cada criterio enlaza con sus tests.**
   - El nombre del test lleva el id del criterio.
   - `criteria-tested` avisa del criterio de una tarea `feat` o `fix` que ningún test nombra.

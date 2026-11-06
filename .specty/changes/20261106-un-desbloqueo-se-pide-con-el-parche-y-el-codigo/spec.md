@@ -91,7 +91,7 @@ Hoy, para desbloquear un test aprobado, al agente le basta con `scope add <test>
   - ac: AC2, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/test-locks.test.ts test/unlock-request.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T4: La documentación cuenta el desbloqueo con parche y evidencia
+- [x] T4: La documentación cuenta el desbloqueo con parche y evidencia
   - files: docs/formats.md, docs/ARCHITECTURE.md, docs/decisions/0014-los-tests-como-contrato.md, docs/dominio.md
   - ac: AC1, AC3, AC4, AC5, AC7
   - verify: pnpm sources
