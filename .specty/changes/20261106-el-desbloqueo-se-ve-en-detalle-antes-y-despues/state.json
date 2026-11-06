@@ -69,12 +69,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "acb110f6cdd6c4daaa8a33d3c391933eb7cf985f",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:18:06.632Z",
       "doneAt": "2026-11-06T15:18:40.353Z",
-      "summary": "sp-unlock-detail muestra el parche con el visor de diffs y cada evidencia con su ruta y sus líneas numeradas; patchFiles (data/patch.ts) lee el parche como git apply --recount. La solicitud pendiente lo pone bajo el motivo."
+      "summary": "sp-unlock-detail muestra el parche con el visor de diffs y cada evidencia con su ruta y sus líneas numeradas; patchFiles (data/patch.ts) lee el parche como git apply --recount. La solicitud pendiente lo pone bajo el motivo.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "23e300796453e96485a32ba10229a5856c8b4b67",
+      "startedAt": "2026-11-06T15:18:40.726Z",
+      "doneAt": "2026-11-06T15:19:18.827Z",
+      "summary": "Cada test de «Tests bloqueados», en Progreso y en Aceptación, tiene «Ver el desbloqueo S1» por cada desbloqueo con motivo, parche o evidencia, que despliega el motivo del agente y sp-unlock-detail, y lo vuelve a plegar."
     }
   },
   "pending": {

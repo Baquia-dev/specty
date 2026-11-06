@@ -80,7 +80,7 @@ Desde el corte C2, una solicitud para desbloquear un test aprobado lleva el camb
   - ac: AC1, AC2, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/scope-request.test.ts --include src/progress/tests-sent.test.ts
   - type: feat
-- [ ] T4: Cada test bloqueado da el detalle de sus desbloqueos, en Progreso y en Aceptación
+- [x] T4: Cada test bloqueado da el detalle de sus desbloqueos, en Progreso y en Aceptación
   - files: packages/ui/src/progress/locked-tests.ts, packages/ui/src/progress/locked-tests.test.ts
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/locked-tests.test.ts --include src/progress/progress-tab.test.ts --include src/acceptance/acceptance-tab.test.ts && pnpm typecheck
