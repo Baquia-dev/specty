@@ -19,3 +19,9 @@ Cuando la persona rechaza un supuesto suelto desde la UI, la respuesta del servi
   - files: packages/core/src/cards/review-ui.ts, packages/core/test/cards/review-texts.test.ts
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/review-texts.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+assumptionDecidedLine con rejected dice, en los dos idiomas, que la revisión sigue con la persona, que puede aprobarla (el rechazo se la devuelve al agente) o pedir los cambios, como changeWaitsFor; el caso que ya había en review-texts.test.ts deja de comprobar el texto viejo
