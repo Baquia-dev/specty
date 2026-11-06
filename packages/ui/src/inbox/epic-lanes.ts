@@ -125,6 +125,46 @@ export function epicLanes(
   return [...named, ...strays(epic.id, loaded, slices)];
 }
 
+/** How the slices of an epic in implementation go, by the lines of its card: what its head says. */
+export interface EpicTally {
+  readonly total: number;
+  readonly done: number;
+  /** With an open change that waits for a decision of the person. */
+  readonly waiting: number;
+  /** With an open change that does not. */
+  readonly running: number;
+  /** Without a change, and nothing to wait for. */
+  readonly ready: number;
+  /** Without a change, waiting for another slice. */
+  readonly blocked: number;
+  /** The slices ready to start, in order, when none has an open change; none otherwise. */
+  readonly idle: readonly string[];
+}
+
+/**
+ * The tally of `epic`'s lines, only while it is in implementation: in any other phase its head
+ * shows its phase. A line without state counts only in the total.
+ */
+export function epicTally(epic: ListedChange, lanes: readonly EpicLane[]): EpicTally | undefined {
+  if (epic.phase !== "implementing") return undefined;
+  const count = (test: (state: LaneState) => boolean) =>
+    lanes.filter((lane) => test(lane.state)).length;
+  const ready = lanes.filter(
+    ({ state }) => state.kind === "planned" && state.waitsFor.length === 0,
+  );
+  const open = count((state) => state.kind === "open");
+  const waiting = count((state) => state.kind === "open" && state.decision !== undefined);
+  return {
+    total: lanes.length,
+    done: count((state) => state.kind === "done"),
+    waiting,
+    running: open - waiting,
+    ready: ready.length,
+    blocked: count((state) => state.kind === "planned" && state.waitsFor.length > 0),
+    idle: open === 0 ? ready.map((lane) => lane.slice) : [],
+  };
+}
+
 /** The four stretches of a line's track: passed, its phase's, empty or finished. */
 export function laneCells(state: LaneState): readonly LaneCell[] {
   if (state.kind === "done") return LANE_STEPS.map((): LaneCell => "done");

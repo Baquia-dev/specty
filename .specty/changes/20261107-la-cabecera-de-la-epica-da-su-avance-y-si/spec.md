@@ -53,7 +53,7 @@ En la Bandeja, la cabecera de la tarjeta de una épica en implementación dice c
 
 ## Tareas
 
-- [ ] T1: El recuento de una épica en implementación sale de sus líneas
+- [x] T1: El recuento de una épica en implementación sale de sus líneas
   - files: packages/ui/src/inbox/epic-lanes.ts, packages/ui/src/inbox/epic-lanes.test.ts
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/epic-lanes.test.ts
