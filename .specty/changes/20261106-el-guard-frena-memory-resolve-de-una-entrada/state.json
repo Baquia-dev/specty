@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "20261106-el-guard-frena-memory-resolve-de-una-entrada",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-el-guard-frena-memory-resolve-de-una-entrada",
+  "baseCommit": "f92005015cb9041aed1f70734b853552986457e4",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:62551a03e9f7a9fd609fc9d16a7c5191e81e3f142b5a50deab49bbe2dab60efe",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:dc4ab2954a9392be36fcd42c5a753fbbce0d7389a5db13ec21510c2f7e967b2f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:3f4ebde73145c815aeb4fa374dee0db396c51d19e64de8d3a24741e6bfe90ba5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d124df0a241cb3e65b5452ab8a94f641cf1eae8638caed1c1782d181195ebf9c",
+    "at": "2026-11-06T07:48:01.868Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
