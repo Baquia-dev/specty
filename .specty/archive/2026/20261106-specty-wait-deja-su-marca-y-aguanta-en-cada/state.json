@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-specty-wait-deja-su-marca-y-aguanta-en-cada",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-specty-wait-deja-su-marca-y-aguanta-en-cada",
   "baseCommit": "94877ac9e202cac41073cc8413224ae8fbeb3456",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:279c05767596278f73688fa968c64cd4859c1e8944ddd92b3d36494886d58022",
@@ -75,14 +75,14 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/store/waits.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "ee9d1c675c568b052dfda14dfe81ef1496a4cec2",
+      "attempts": 2,
       "startedAt": "2026-11-06T12:26:08.751Z",
       "doneAt": "2026-11-06T12:27:38.625Z",
-      "summary": "formats.md §1 describe waits/<id>.json junto a messages/, y ARCHITECTURE §6 cuenta la marca de wait, su hora por defecto y el latido de Gemini CLI; WaitReason deja de exportarse por knip."
+      "summary": "formats.md §1 describe waits/<id>.json junto a messages/, y ARCHITECTURE §6 cuenta la marca de wait, su hora por defecto y el latido de Gemini CLI; WaitReason deja de exportarse por knip.",
+      "scopeExtra": [
+        "packages/cli/src/store/waits.ts"
+      ]
     }
   },
   "pending": {
@@ -95,6 +95,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T12:32:41.558Z",
   "lockedTests": {
     "packages/cli/test/wait.test.ts": "sha256:93e4be7a5e4085aa3b8036d739f99a02441b32881c3d865068db502c2c41d552",
     "packages/core/test/cards/wait.test.ts": "sha256:acd019108016b13a431a165982a1325b5d3f55e05c1691c7ba29de278e6bf5ea",

@@ -85,3 +85,27 @@ Hoy nadie sabe si un agente sigue esperando con `specty wait`, y Gemini CLI cort
 
 - R1: Una marca con un `pid` que el sistema reutilizó tras morir su proceso parecería viva. La hora del archivo sin renovar la da por cortada a los 30 s como mucho (o a los tres intervalos).
 - R2: Si Gemini CLI solo contara la salida normal para su límite de 300 s, el latido por la salida de errores no lo evitaría. La red de fin de turno de C2 lo devuelve a esperar igual, y la línea es fácil de mover a la salida normal.
+
+## Cierre
+
+### Resumen
+
+`specty wait` deja la marca del cambio en `.git/common/specty/waits/<id>.json` mientras espera a la persona, con su proceso, su herramienta, cuándo empezó, su intervalo y su tiempo máximo. La renueva en cada vuelta y la termina como `decided` o `timeout`. `readWait` (`store/waits.ts`) la da viva o terminada, y cortada (`stopped`) si su proceso murió o lleva más de max(30 s, 3 × intervalo) sin renovarse; la usarán C2 y la UI. Sin `--timeout`, `wait` espera una hora (commander ya no le da valor por defecto), y en Gemini CLI escribe por la salida de errores una línea de latido, en español y en inglés, sin que pasen más de 60 s entre dos.
+
+### Desviaciones (respecto al plan)
+
+- El latido de `commands/wait.ts` se hizo en T2 y no en T3, porque la verificación de T2 ejecuta todo `test/wait.test.ts`, que ya incluía sus tests. T3 solo quitó el valor por defecto de commander y nombró la hora (`TIMEOUT_SEC`).
+- T4 pidió `packages/cli/src/store/waits.ts` con `scope add` para dejar de exportar `WaitReason`, que knip daba por tipo sin uso; el tipo sigue visible en `WaitSeen`.
+- `docs/dominio.md` gana el término «Marca de espera».
+
+### Decisiones
+
+- La marca guarda también `timeoutSec`, además de los campos del supuesto A6 de la épica, para que se vea cuánto va a esperar y para probar la hora por defecto.
+- Las horas de la marca son las del reloj real, como la de su archivo, y `readWait` recibe la hora con la que juzgar.
+- `end` no termina una marca que ya escribió otro `wait` del mismo cambio, y un `wait` que falla no la termina: la lectura la da por cortada.
+- El latido va por la salida de errores, como la nota de `new`, y solo en Gemini CLI, según la tabla de `cards/wait.ts` (`beats`).
+
+### Pendientes
+
+- Comprobar en Gemini CLI real que el latido por la salida de errores evita que corte `specty wait` a los 300 s sin salida (no estaba instalado en esta máquina); si solo cuenta la salida normal, pasar la línea a ella.
+- El cambio `20261106-la-ui-avisa-cuando-ningun-agente-espera-su` debe ajustar su spec: su T1 ya está hecha aquí (`store/waits.ts`, con `readWait` que da `WaitSeen` y `ended: { at, reason }`), y su parte de `docs/formats.md` sobre `waits/<id>.json` también.
