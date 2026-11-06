@@ -99,9 +99,10 @@ describe("who did each thing, in the History tab", () => {
 
   it("AC3: says GitHub Copilot by its name, and a tool it does not know by its id", async () => {
     const [, agent] = EVENTS;
+    // In the order of the audit, oldest first: the tab shows the newest first.
     const { rows, text } = await render("es", [
-      { ...agent, at: "2026-10-28T10:00:00Z", tool: "copilot" },
       { ...agent, at: "2026-10-28T09:00:00Z", tool: "zed" },
+      { ...agent, at: "2026-10-28T10:00:00Z", tool: "copilot" },
     ]);
     expect(text(rows[0])).toContain("Agente · GitHub Copilot · Opus 5.5");
     // AC4: a tool Specty does not know goes as it comes.

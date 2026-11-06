@@ -58,7 +58,7 @@ En `specty ui`, la fila de la Bandeja y la página de un cambio dicen qué agent
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/resume-hints.test.ts --include src/change/change-page.unattended.test.ts --include src/inbox/inbox-row.test.ts
   - type: fix
-- [ ] T3: La pestaña Historial nombra a los agentes con la misma función
+- [x] T3: La pestaña Historial nombra a los agentes con la misma función
   - files: packages/ui/src/history/history-tab.ts, packages/ui/src/history/history-who.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/history-who.test.ts --include src/history/history-tab.test.ts && pnpm typecheck && pnpm lint && pnpm knip

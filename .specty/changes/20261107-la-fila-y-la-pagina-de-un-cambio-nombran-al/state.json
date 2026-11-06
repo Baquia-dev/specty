@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-fila-y-la-pagina-de-un-cambio-nombran-al",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-fila-y-la-pagina-de-un-cambio-nombran-al",
   "baseCommit": "f73f56c2e001f58edd04adbfdf15af98bc92986c",
   "revision": 1,
@@ -47,12 +47,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "04877801b315ae2cc1dc775acc81e0cda5d4118d",
+      "attempts": 1,
       "startedAt": "2026-11-06T19:26:40.316Z",
       "doneAt": "2026-11-06T19:27:39.152Z",
-      "summary": "La fila (inbox-row.ts) y Cómo retomarlo (resume-hints.ts: conversación fuera de su carpeta, specty wait agotado o cortado y última conversación) nombran al agente con agentName"
+      "summary": "La fila (inbox-row.ts) y Cómo retomarlo (resume-hints.ts: conversación fuera de su carpeta, specty wait agotado o cortado y última conversación) nombran al agente con agentName",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/history/history-who.test.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "248272984ed0f1baff080adc9a9afe2123be0c7e",
+      "startedAt": "2026-11-06T19:27:39.481Z",
+      "doneAt": "2026-11-06T19:36:33.026Z",
+      "summary": "La pestaña Historial deja su lista TOOLS (sin GitHub Copilot) y nombra al agente con agentName; aplicado tal cual el parche de S1 (orden de los eventos del test de AC3)"
     }
   },
   "pending": {
@@ -62,12 +73,13 @@
   "maxIds": {
     "A": 3,
     "AC": 4,
-    "T": 3
+    "T": 3,
+    "S": 1
   },
   "lockedTests": {
     "packages/ui/src/change/change-page.unattended.test.ts": "sha256:715a3b44740f9dbae41bee58214c9769a8487c7093f97381ada6a95b3dffa6dc",
     "packages/ui/src/change/resume-hints.test.ts": "sha256:0ad3db3208b8e468956a3ced8b63ff76d7638f43d8295a788c9783d86f9492cb",
-    "packages/ui/src/history/history-who.test.ts": "sha256:302a1d27b272ae24a61d78eb66f9eceea98b55acdc279c3e6fe68970b7a7655b",
+    "packages/ui/src/history/history-who.test.ts": "sha256:7fa6edbb57bb0d691588ff3fd4ae83d2806d2b020722b08b06b4241b5d609a3d",
     "packages/ui/src/data/agent-name.test.ts": "sha256:7abc136aec0d2e563b9031f032db247c9d3220d53293ccc16d9036385dcfb78f"
   }
 }
