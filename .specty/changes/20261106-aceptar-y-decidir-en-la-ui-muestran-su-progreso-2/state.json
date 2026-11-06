@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "id": "20261106-aceptar-y-decidir-en-la-ui-muestran-su-progreso-2",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261106-aceptar-y-decidir-en-la-ui-muestran-su-progreso-2",
+  "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3666e217b9ba24c4f2da8ec33d1bd3c204ec9e7dcd4225dee3bd7b3cc150694b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1f5c76dd2ea1b87f429f7e8e2a011fab3d4a1b8730c615b7448f3475720343ee",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:09a8ef95331e3524c12ab9eac6977e9041017d9acd6c9c9b3ed09f874704b527",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b77060bb8e47f0be18ae070fc7289d710309de00e7fc62a9793b8b4ec08a6146",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:66c125366e8d0fd39b37a666478e07e2fbc9a0e6aca327feec51f8779bf23154",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:7e67e48b5e25a0b5b19f6e0c05d6c150cac56475980cc385e0818eaed339a5fe",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 8,
+    "C": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b27a7839d55d6df174a6a3bf0007f0cb49a1f504b96769e20d5dceb4630b66de",
+    "at": "2026-11-06T04:43:27.578Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
