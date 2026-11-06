@@ -48,8 +48,8 @@ async function reviewer(): Promise<string> {
   return `node "${script}"`;
 }
 
-/** SPEC's change, its spec reviewed, its result reviewed twice and accepted: in its closing. */
-async function reviewedChange(): Promise<string> {
+/** SPEC's change, its spec reviewed and its result reviewed twice: in its acceptance. */
+async function reviewedInAcceptance(): Promise<string> {
   const review = `review:\n  command: ${JSON.stringify(await reviewer())}\n`;
   const root = await tempRepo({
     "src/app.ts": "export const greet = () => 'hola';\n",
@@ -68,6 +68,12 @@ async function reviewedChange(): Promise<string> {
   expect((await cli(root, ["task", "done", "T2", "--summary", "Dos"])).code).toBe(0);
   expect((await cli(root, ["review"])).code).toBe(0);
   expect((await cli(root, ["review"])).code).toBe(0);
+  return root;
+}
+
+/** SPEC's change, its spec reviewed, its result reviewed twice and accepted: in its closing. */
+async function reviewedChange(): Promise<string> {
+  const root = await reviewedInAcceptance();
   expect((await cli(root, ["accept"], { terminal: person() })).code).toBe(0);
   return root;
 }
@@ -124,5 +130,38 @@ describe("the remarks of the last review of the result", () => {
       "una observación de la primera revisión",
     ])
       expect(listed).not.toContain(text);
+  });
+});
+
+describe("the remarks while the closing is written in acceptance, in delegated mode", () => {
+  it("show in the acceptance card until the closing cites them, and the accept that closes leaves the rest in the memory", async () => {
+    const root = await reviewedInAcceptance();
+    const on = await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    expect(on.code).toBe(0);
+    const spec = await read(root, SPEC_PATH);
+    expect((await cli(root, ["next"])).out).toContain(
+      [
+        "OBSERVACIONES DE LA REVISIÓN:",
+        "  diff-2.md#1 · **Alta** · src/app.ts: el saludo no escapa el nombre.",
+        "  diff-2.md#3 · Media — src/app.ts: sin nombre no saluda a «mundo».",
+        "  Cita en el cierre",
+      ].join("\n"),
+    );
+    await writeFiles(root, { [SPEC_PATH]: `${spec}${closing(["diff-2.md#1"])}` });
+    const cited = (await cli(root, ["next"])).out;
+    expect(cited).toContain("OBSERVACIONES DE LA REVISIÓN:\n  diff-2.md#3 · Media");
+    expect(cited).not.toContain("diff-2.md#1 ·");
+    expect((await cli(root, ["propose"])).out).toContain("Cierre válido.");
+    expect((await cli(root, ["accept"])).code).toBe(0);
+    const listed = (await cli(root, ["memory"])).out;
+    expect(listed).toContain(
+      `P1 · pendiente · Observación de la revisión independiente que el cierre no citó (\`${ARCHIVE}/${CHANGE}/reviews/diff-2.md#3\`): Media — src/app.ts: sin nombre no saluda a «mundo».`,
+    );
+    expect(listed).not.toContain("el saludo no escapa el nombre");
+  });
+
+  it("stay out of the acceptance card without delegated mode", async () => {
+    const root = await reviewedInAcceptance();
+    expect((await cli(root, ["next"])).out).not.toContain("OBSERVACIONES DE LA REVISIÓN");
   });
 });

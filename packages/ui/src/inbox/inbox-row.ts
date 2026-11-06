@@ -14,6 +14,7 @@ import type { Lang } from "@baquia-dev/specty-core/light";
 import { KindBadge, PhaseBadge } from "../components/badge";
 import { Button } from "../components/button";
 import { ItemTooltips } from "../components/item-tooltip";
+import { ShownText } from "../components/shown-text";
 import { agentName } from "../data/agent-name";
 import { formatDuration } from "../data/progress";
 import { type Bilingual, type DecisionKind, isWhole, type ListedChange } from "../data/records";
@@ -113,7 +114,7 @@ const ROW =
  */
 @Component({
   selector: "sp-inbox-row",
-  imports: [RouterLink, PhaseBadge, KindBadge, Button],
+  imports: [RouterLink, PhaseBadge, KindBadge, Button, ShownText],
   hostDirectives: [ItemTooltips],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -146,7 +147,7 @@ const ROW =
     </div>
     <div class="flex min-w-0 flex-col gap-0.5">
       <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change().id]" [queryParams]="{ tab: change().tab }" (focus)="picked.emit()">{{ change().title }}</a>
+        <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change().id]" [queryParams]="{ tab: change().tab }" (focus)="picked.emit()"><sp-text [text]="change().title" /></a>
         <sp-kind-badge [kind]="change().kind" [epic]="change().epic" />
       </div>
       @if (tally()) {
@@ -179,7 +180,7 @@ const ROW =
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-shared>
           {{ t()('Comparte', 'Shares') }}
           @for (file of shared; track file.path; let last = $last) {
-            <code class="font-mono text-xs">{{ file.path }}</code>@if (!last) {,&ngsp;}
+            <code class="font-mono text-xs"><sp-text [text]="file.path" /></code>@if (!last) {,&ngsp;}
           }
           {{ t()('con', 'with') }} {{ sharers() }}
         </span>
@@ -191,8 +192,8 @@ const ROW =
         <span class="text-[13px] text-text-muted" data-note>
           <span [attr.data-item-ref]="request.task">{{ request.task }}</span> {{ t()('pide', 'asks for') }}
           @for (path of request.paths; track path) {
-            <code class="font-mono text-xs text-text">{{ path }}</code>
-          }: «{{ request.reason }}»
+            <code class="font-mono text-xs text-text"><sp-text [text]="path" /></code>
+          }: «<sp-text [text]="request.reason" />»
         </span>
       }
       @if (progress(); as share) {

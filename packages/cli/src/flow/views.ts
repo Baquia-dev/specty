@@ -4,6 +4,7 @@ import {
   type ChangeState,
   type ChangeView,
   changeWaitsFor,
+  closingInAcceptance,
   dirname,
   entriesForPaths,
   isIntegrating,
@@ -95,8 +96,9 @@ function rejectedAssumptions(spec: Spec, state: ChangeState): ChangeView["reject
 
 /**
  * What the change's phase brings: the comments to answer in review, the adjustment asked for,
- * the draft's request and what it carries over, and, in acceptance, a review recommended first
- * and each criterion with its tests (an epic's criteria are its slices').
+ * the draft's request and what it carries over, in acceptance, a review recommended first and
+ * each criterion with its tests (an epic's criteria are its slices'), and, while the closing is
+ * written (in delegated mode, also in acceptance), the review's remarks it does not cite yet.
  */
 async function phaseFacts(
   session: Session,
@@ -117,8 +119,14 @@ async function phaseFacts(
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
     ...(state.phase === "draft" ? await draftFacts(session, spec, audit) : {}),
     ...(state.phase === "acceptance" ? await acceptanceFacts(session, change, spec, read) : {}),
-    ...(state.phase === "closing" ? await closingRemarks(change.files, spec) : {}),
+    ...(writesClosing(session, state) ? await closingRemarks(change.files, spec) : {}),
   };
+}
+
+/** The agent writes the change's closing: in `closing` or, in delegated mode, in acceptance. */
+function writesClosing(session: Session, state: ChangeState): boolean {
+  if (state.phase === "closing") return true;
+  return state.phase === "acceptance" && closingInAcceptance(state.kind, session.delegated);
 }
 
 /** The incorporation of the target branch the agent is resolving, if any. */

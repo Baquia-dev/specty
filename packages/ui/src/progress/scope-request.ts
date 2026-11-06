@@ -6,6 +6,7 @@ import { Button } from "../components/button";
 import { DialogFrame, Dialogs } from "../components/dialog";
 import { Field } from "../components/field";
 import { LucideFilePlus, LucideLockOpen } from "../components/icons";
+import { ShownText } from "../components/shown-text";
 import { Toasts } from "../components/toast";
 import { Decisions } from "../data/decisions";
 import type { TaskScopeRequest } from "../data/progress";
@@ -69,7 +70,7 @@ class RejectScope {
  */
 @Component({
   selector: "sp-scope-request",
-  imports: [LucideDynamicIcon, Button, UnlockDetail],
+  imports: [LucideDynamicIcon, Button, UnlockDetail, ShownText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "block" },
   template: `
@@ -80,11 +81,11 @@ class RejectScope {
       <span class="text-sm">
         {{ task() }} {{ t()('pide', 'asks for') }}
         @for (path of request().paths; track path) {
-          <code class="font-mono text-[13px]">{{ path }}</code>
+          <code class="font-mono text-[13px]"><sp-text [text]="path" /></code>
           @if (unlocks().includes(path)) {
             <span class="text-xs text-text-muted" data-unlock>({{ t()('test aprobado', 'approved test') }})</span>
           }
-        }: «{{ request().reason }}»
+        }: «<sp-text [text]="request().reason" />»
       </span>
       @if (request().patch !== undefined || request().evidence !== undefined) {
         <sp-unlock-detail [patch]="request().patch" [evidence]="request().evidence ?? []" />

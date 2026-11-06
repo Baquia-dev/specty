@@ -4,6 +4,7 @@ import { AcceptanceActions } from "../acceptance/acceptance-actions";
 import { ClosingActions } from "../acceptance/closing-actions";
 import { adjustsWhileImplemented, EpicActions } from "../acceptance/epic-actions";
 import { PhaseBadge } from "../components/badge";
+import { ShownText } from "../components/shown-text";
 import type { ChangeView, ReviewSection } from "../data/records";
 import { revisionName, revisionState } from "../data/revision";
 import { TestsActions } from "../progress/tests-actions";
@@ -32,6 +33,7 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
     AcceptanceActions,
     ClosingActions,
     EpicActions,
+    ShownText,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -51,7 +53,7 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
         so a long title is cut instead of pushing the actions to a second line.
       -->
       <div class="flex min-w-0 flex-1 items-center gap-3" data-heading>
-        <p class="m-0 min-w-0 truncate text-[15px] font-semibold tracking-tight">{{ change().title }}</p>
+        <p class="m-0 min-w-0 truncate text-[15px] font-semibold tracking-tight"><sp-text [text]="change().title" /></p>
         <!-- «Revisión 3 · por aprobar»; on a phone, only the number, so the title keeps its room. -->
         <span class="shrink-0 text-xs whitespace-nowrap text-text-muted" data-revision>{{ revision().number }}@if (revision().state; as state) {<span class="hidden sm:inline"> · {{ state }}</span>}</span>
         @if (readingLabel(); as section) {
