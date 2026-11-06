@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-en-modo-delegado-un-cambio-normal-con-su-cierre",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-en-modo-delegado-un-cambio-normal-con-su-cierre",
   "baseCommit": "ccf8184df3194fbfcfc345b8592244abcd277006",
   "revision": 1,
@@ -90,12 +90,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "734ced85b4f080703b568bfc6019b9aa195234ac",
+      "attempts": 1,
       "startedAt": "2026-11-06T19:41:58.890Z",
       "doneAt": "2026-11-06T19:45:56.368Z",
-      "summary": "flow/closing-turn.ts reúne el cerrar en el turno de aterrizaje: closingTurn (ahora también con el cierre enviado), closeQuick y closeOnTurn (movidos, con la tarjeta compartida) y closeAccepted; en modo delegado, accept con el cierre enviado anota change.accepted y cierra en el mismo turno"
+      "summary": "flow/closing-turn.ts reúne el cerrar en el turno de aterrizaje: closingTurn (ahora también con el cierre enviado), closeQuick y closeOnTurn (movidos, con la tarjeta compartida) y closeAccepted; en modo delegado, accept con el cierre enviado anota change.accepted y cierra en el mismo turno",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b090929edbce2fa2d7fd26f4bf6a4206542dcaa9",
+      "startedAt": "2026-11-06T19:45:56.705Z",
+      "doneAt": "2026-11-06T19:46:56.135Z",
+      "summary": "ARCHITECTURE §4 (cierre antes de aceptar en modo delegado, fila y diagrama), §6 (delegate) y §9 (el accept que cierra en un turno, en flow/closing-turn.ts), y formats.md §1 y §3 (closingSubmittedAt en aceptación)"
     }
   },
   "pending": {

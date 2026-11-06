@@ -92,7 +92,7 @@ En modo delegado, un cambio normal se acepta y se cierra en dos pasos. Entre el 
   - files: packages/cli/src/flow/closing-turn.ts, packages/cli/src/commands/accept.ts, packages/cli/src/commands/finish.ts, packages/cli/test/accept-quick-turn.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-quick-turn.test.ts test/close-turn.test.ts test/close-harvest.test.ts test/closing-ahead.test.ts && pnpm typecheck && pnpm lint && pnpm knip
-- [ ] T4: ARCHITECTURE y formats.md cuentan el cierre enviado en aceptación delegada y el `accept` que cierra en un turno
+- [x] T4: ARCHITECTURE y formats.md cuentan el cierre enviado en aceptación delegada y el `accept` que cierra en un turno
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: grep -q 'en modo delegado, solo la sección Cierre' docs/ARCHITECTURE.md && grep -q 'en aceptación, en modo delegado' docs/formats.md
