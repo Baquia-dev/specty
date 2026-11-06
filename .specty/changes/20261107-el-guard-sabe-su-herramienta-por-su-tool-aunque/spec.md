@@ -51,7 +51,7 @@ Las tarjetas que da el guard (la del `SessionStart` al empezar, la de tras compa
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-start.test.ts test/front-start-codex.test.ts test/agent-stop-wait.test.ts test/session-start.test.ts test/session-start-codex.test.ts && pnpm typecheck && pnpm lint
   - type: fix
-- [ ] T2: La arquitectura cuenta que el guard toma la herramienta de su --tool
+- [x] T2: La arquitectura cuenta que el guard toma la herramienta de su --tool
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC3
   - verify: grep -q 'la herramienta de su `--tool`' docs/ARCHITECTURE.md
