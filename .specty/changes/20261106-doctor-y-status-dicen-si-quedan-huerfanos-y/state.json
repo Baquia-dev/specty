@@ -6,6 +6,13 @@
   "branch": "specty/20261106-doctor-y-status-dicen-si-quedan-huerfanos-y",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e26cb9c26a9fb4d5f1b7b299b746d11bd0b08de5eec2d00221eafb494cbc01aa",
+    "at": "2026-11-06T10:34:19.423Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e26cb9c26a9fb4d5f1b7b299b746d11bd0b08de5eec2d00221eafb494cbc01aa",
-    "at": "2026-11-06T10:34:19.423Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T10:36:39.566Z"
 }
