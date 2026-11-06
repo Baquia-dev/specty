@@ -58,7 +58,7 @@ Hoy, al confirmar un supuesto en la UI, el botón deja de cargar en cuanto el se
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server-actions.test.ts --include src/data/server.test.ts --include src/review/spec-sections.test.ts && pnpm lint
   - type: fix
-- [ ] T2: El store avisa cuando la lista y el cambio de la página ya se volvieron a leer
+- [x] T2: El store avisa cuando la lista y el cambio de la página ya se volvieron a leer
   - files: packages/ui/src/data/changes-store.ts, packages/ui/src/data/changes-store.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/changes-store.test.ts --include src/data/server-actions.test.ts --include src/change/change-page.unloaded.test.ts --include src/inbox/inbox.test.ts && pnpm typecheck && pnpm lint
