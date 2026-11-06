@@ -6,6 +6,13 @@
   "branch": "specty/20261107-las-evals-miden-un-subagente-por-cambio-como-lo",
   "baseCommit": "41695f12cb51d5920f2e84f8d76c388386a21e34",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:63dab9b054a4c94de36c4452f85cd2986c0a23547124647e55d82faafb385215",
+    "at": "2026-11-06T23:02:31.308Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -47,12 +54,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:63dab9b054a4c94de36c4452f85cd2986c0a23547124647e55d82faafb385215",
-    "at": "2026-11-06T23:02:31.308Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T23:05:01.104Z"
 }
