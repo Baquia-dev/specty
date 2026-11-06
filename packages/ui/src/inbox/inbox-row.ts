@@ -15,6 +15,7 @@ import { KindBadge, PhaseBadge } from "../components/badge";
 import { Button } from "../components/button";
 import { ItemTooltips } from "../components/item-tooltip";
 import { ShownText } from "../components/shown-text";
+import { agentName } from "../data/agent-name";
 import { formatDuration } from "../data/progress";
 import { type Bilingual, type DecisionKind, isWhole, type ListedChange } from "../data/records";
 import { Preferences } from "../theme/preferences";
@@ -165,7 +166,7 @@ const ROW =
       } @else if (change().unattended) {
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-unattended>{{ t()('Nadie retoma tu decisión', 'Nobody picks up your decision') }}</span>
       } @else if (change().away; as away) {
-        <span class="text-[13px]" style="color: var(--color-phase-review)" data-unheld>{{ t()('Su conversación (' + away.tool + ') salió de su carpeta', 'Its conversation (' + away.tool + ') left its folder') }}</span>
+        <span class="text-[13px]" style="color: var(--color-phase-review)" data-unheld>{{ t()('Su conversación (' + agentName(away.tool) + ') salió de su carpeta', 'Its conversation (' + agentName(away.tool) + ') left its folder') }}</span>
       } @else if (change().orphan) {
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-unheld>{{ t()('Ninguna conversación lo lleva', 'No conversation holds it') }}</span>
       }
@@ -232,6 +233,7 @@ export class InboxRow {
   protected readonly t = this.preferences.t;
   protected readonly row = ROW;
   protected readonly decisions = DECISIONS;
+  protected readonly agentName = agentName;
 
   constructor() {
     // Its items' texts come with the whole change: a summary has none to show.

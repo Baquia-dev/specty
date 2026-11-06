@@ -8,17 +8,24 @@ import { accept } from "../src/commands/accept";
 import { openSession, type Session, type Terminal } from "../src/session";
 import {
   APP,
+  ARCHIVE,
+  CHANGE,
   CONFIG,
   cli,
   DIST,
   git,
+  inWorktree,
   NOW,
   person,
   quickInWorktree,
   read,
+  SPEC_PATH,
+  stateIn,
   tempRepo,
   testEnv,
+  toAcceptance,
   tryGit,
+  writeFiles,
 } from "./support";
 
 const LOCK = ".git/common/specty/locks/full-verification.json";
@@ -68,16 +75,21 @@ const land = () => {
 land();
 `;
 
+/** `VERIFY` as a full verification command; with `other`, another session arrives while it runs. */
+async function fullVerification(other: boolean): Promise<string> {
+  const scripts = await realpath(await mkdtemp(join(tmpdir(), "specty-turno-")));
+  await writeFile(join(scripts, "verify.cjs"), VERIFY);
+  await writeFile(join(scripts, "other.cjs"), OTHER);
+  const lands = other ? ` "${join(scripts, "other.cjs")}"` : "";
+  return `node "${join(scripts, "verify.cjs")}" "$(git rev-parse --git-common-dir)"${lands}`;
+}
+
 /**
  * A quick change in acceptance, in its worktree, with delegated mode on and `VERIFY` as its full
  * verification; with `other`, another session arrives while it runs.
  */
 async function quickChange(other = false) {
-  const scripts = await realpath(await mkdtemp(join(tmpdir(), "specty-turno-")));
-  await writeFile(join(scripts, "verify.cjs"), VERIFY);
-  await writeFile(join(scripts, "other.cjs"), OTHER);
-  const lands = other ? ` "${join(scripts, "other.cjs")}"` : "";
-  const full = `node "${join(scripts, "verify.cjs")}" "$(git rev-parse --git-common-dir)"${lands}`;
+  const full = await fullVerification(other);
   const root = await tempRepo({
     ...APP,
     "src/button.ts": "Sing in\n",
@@ -180,5 +192,78 @@ describe("accepting a quick change lands it on one turn in delegated mode", () =
     expect(terminal.turns.length).toBeGreaterThan(0);
     expect(terminal.turns).not.toContain(true);
     expect(git(root, "rev-parse", "main")).toBe(git(root, "rev-parse", branch));
+  });
+});
+
+const CLOSING =
+  "\n## Cierre\n\n### Resumen\n\nSaludo listo.\n\n### Pendientes\n\n- Exportar a CSV.\n";
+
+/**
+ * SPEC's change in acceptance, in its worktree, with delegated mode on and `full` as its full
+ * verification (`VERIFY` unless given; with `other`, another session arrives while it runs).
+ */
+async function normalChange({ other = false, full }: { other?: boolean; full?: string } = {}) {
+  const command = full ?? (await fullVerification(other));
+  const { root, folder } = await inWorktree({
+    ...APP,
+    ".specty/config.yaml": `${CONFIG()}  full: ${JSON.stringify(command)}\n`,
+  });
+  await toAcceptance(folder);
+  const on = await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+  expect(on.code).toBe(0);
+  return { root, folder, branch: `specty/${CHANGE}` };
+}
+
+/** The agent writes the closing in acceptance and sends it. */
+async function sendClosing(folder: string): Promise<void> {
+  await writeFiles(folder, { [SPEC_PATH]: `${await read(folder, SPEC_PATH)}${CLOSING}` });
+  expect((await cli(folder, ["propose"])).out).toContain("Cierre válido.");
+}
+
+describe("accepting a change with its closing sent closes it on one turn in delegated mode", () => {
+  it("AC2: verifies once on its turn, accepts, archives and lands, and another session lands only after it", async () => {
+    const { root, folder, branch } = await normalChange({ other: true });
+    await sendClosing(folder);
+    const accepted = await cli(folder, ["accept"]);
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toContain("Cambio aceptado, cerrado y archivado");
+    expect(accepted.out).toContain("Incorporado a main.");
+    expect(accepted.out).toContain("PENDIENTES QUE QUEDAN EN LA MEMORIA:\n  P1 · Exportar a CSV.");
+    await otherLanded(root);
+    // One verification, with the turn, and the closing merged nothing.
+    expect(await read(root, ".git/runs")).toBe("x");
+    expect(accepted.out).not.toMatch(MERGED);
+    // The other session landed after the change, on top of it, and not in between.
+    expect(tryGit(root, "cat-file", "-e", `${branch}:src/other.ts`).status).not.toBe(0);
+    expect(git(root, "rev-parse", "main~1")).toBe(git(root, "rev-parse", branch));
+    const audit = await read(root, `${ARCHIVE}/${CHANGE}/audit.jsonl`);
+    expect(audit).toContain("change.accepted");
+    expect(audit).toContain("change.closed");
+  });
+
+  it("AC3: without the closing sent, accepts as before and leaves the change in closing", async () => {
+    const { root, folder, branch } = await normalChange();
+    const accepted = await cli(folder, ["accept"]);
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toContain("Resultado aceptado; el agente redactará el cierre.");
+    expect((await stateIn(folder)).phase).toBe("closing");
+    expect(existsSync(join(root, ARCHIVE, CHANGE))).toBe(false);
+    expect(git(root, "rev-parse", "main")).not.toBe(git(root, "rev-parse", branch));
+  });
+
+  it("AC4: a failing verification leaves it in acceptance with its closing sent, nothing archived nor landed", async () => {
+    const { root, folder } = await normalChange({ full: "false" });
+    await sendClosing(folder);
+    const main = git(root, "rev-parse", "main");
+    const accepted = await cli(folder, ["accept"]);
+    expect(accepted.out).toContain("en modo delegado no se acepta");
+    expect(await stateIn(folder)).toMatchObject({
+      phase: "acceptance",
+      closingSubmittedAt: expect.any(String),
+    });
+    expect(await read(folder, SPEC_PATH)).toContain("## Cierre");
+    expect(existsSync(join(folder, ARCHIVE, CHANGE))).toBe(false);
+    expect(existsSync(join(root, ARCHIVE, CHANGE))).toBe(false);
+    expect(git(root, "rev-parse", "main")).toBe(main);
   });
 });

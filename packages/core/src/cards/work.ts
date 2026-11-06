@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { headerOf, type Output, section } from "../output";
-import { acceptanceCard, doneLine } from "./acceptance";
+import { acceptanceCard, closingGuide, doneLine, findingLines } from "./acceptance";
 import { epicCard } from "./epic";
-import { glossaryClosingLines, termsSection } from "./glossary";
+import { termsSection } from "./glossary";
 import { pathEntriesBlock } from "./memory-paths";
-import { reviewRemarkLines } from "./review-remarks";
 import { effortLabel, progressOf, translator } from "./text";
 import type { CardContext, ChangeView, TaskView } from "./view";
 import { waitStep } from "./wait";
@@ -100,11 +99,6 @@ function verificationLines(task: TaskView, ctx: CardContext): string[] {
       `SUGGESTED EFFORT: ${effortLabel(task.effort, ctx)}`,
     ),
   ];
-}
-
-/** What the done tasks learned (`task done --finding`), one line each. */
-function findingLines(tasks: readonly TaskView[]): string[] {
-  return tasks.flatMap((task) => (task.findings ?? []).map((text) => `${task.id}: ${text}`));
 }
 
 /** Test first for new behaviour, and an existing failing test is a finding, not something to bend. */
@@ -233,39 +227,10 @@ function closingSubmittedCard(change: ChangeView, ctx: CardContext): Output {
 export function closingCard(change: ChangeView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   if (change.closingSubmitted) return closingSubmittedCard(change, ctx);
-  const headings =
-    change.kind === "spike"
-      ? t("### Hallazgos y ### Decisión", "### Findings and ### Decision")
-      : t(
-          "### Resumen, ### Desviaciones (respecto al plan), ### Decisiones y ### Pendientes",
-          "### Summary, ### Deviations (from the plan), ### Decisions and ### Follow-ups",
-        );
-  const findings = findingLines(change.tasks);
-  const carry = t(
-    "Lleva a ### Pendientes los que sigan abiertos: un cambio que siga a este con `--follows` los verá.",
-    "Carry the open ones to ### Follow-ups: a change that follows this one with `--follows` will see them.",
-  );
   return {
     status: "ok",
     header: headerOf(change.id, "closing"),
-    blocks: [
-      ...section(t("CÓMO CERRAR", "HOW TO CLOSE"), [
-        t(
-          `Añade al final de ${change.specPath} la sección «## Cierre» con ${headings}.`,
-          `Add a "## Closing" section at the end of ${change.specPath} with ${headings}.`,
-        ),
-        t("No cambies nada más de la spec.", "Do not change anything else in the spec."),
-        ...glossaryClosingLines(change.glossary, ctx.lang),
-      ]),
-      ...section(
-        t("HALLAZGOS DE LAS TAREAS", "FINDINGS OF THE TASKS"),
-        findings.length === 0 ? [] : [...findings, carry],
-      ),
-      ...section(
-        t("OBSERVACIONES DE LA REVISIÓN", "REVIEW REMARKS"),
-        reviewRemarkLines(change.reviewRemarks ?? [], ctx.lang),
-      ),
-    ],
+    blocks: closingGuide(change, ctx),
     next: t(
       `escribe el cierre y ejecuta \`${ctx.command} propose\`.`,
       `write the closing and run \`${ctx.command} propose\`.`,

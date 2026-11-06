@@ -299,8 +299,9 @@ describe("delegated acceptance", () => {
     await cli(root, ["task", "done", "T1", "--summary", "Uno"]);
     await writeFiles(root, { "src/app.ts": "2\n" });
     await cli(root, ["task", "done", "T2", "--summary", "Dos"]);
+    // A standard change asks for its closing first, which `accept` would then close too.
     expect((await cli(root, ["next"])).out).toContain(
-      "SIGUIENTE: modo delegado: acepta tú el resultado con `specty accept`",
+      "SIGUIENTE: modo delegado: escribe tú el cierre antes de aceptar",
     );
 
     const failed = await cli(root, ["accept"]);

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-import { type Phase, phasePermissions } from "../flow/phases";
+import { closingInAcceptance, type Phase, phasePermissions } from "../flow/phases";
 import { matchesAny } from "../glob";
 import type { Lang } from "../i18n";
+import type { ChangeKind } from "../spec/model";
 
 /** Files only Specty writes; editing them by hand would bypass the flow. */
 const PROTECTED: readonly string[] = [
@@ -62,16 +63,20 @@ export function protectedDenial(path: string, lang: Lang, command: string): Deni
 }
 
 /**
- * Why the change's `spec.md` may not be written or deleted in its phase (ARCHITECTURE §4).
- * Undefined when it may.
+ * Why the change's `spec.md` may not be written or deleted in its phase (ARCHITECTURE §4), with
+ * delegated mode on or off (`delegated`). Undefined when it may.
  */
 export function specDenial(
-  change: { readonly phase: Phase; readonly closingSubmitted: boolean },
+  change: { readonly phase: Phase; readonly kind: ChangeKind; readonly closingSubmitted: boolean },
   mode: "write" | "delete",
-  lang: Lang,
-  command: string,
+  {
+    lang,
+    command,
+    delegated,
+  }: { readonly lang: Lang; readonly command: string; readonly delegated: boolean },
 ): Denial | undefined {
-  const access = phasePermissions(change.phase, change.closingSubmitted).spec;
+  const ahead = closingInAcceptance(change.kind, delegated);
+  const access = phasePermissions(change.phase, change.closingSubmitted, false, ahead).spec;
   if (mode === "write" && access !== "locked") return undefined;
   const t = (es: string, en: string) => (lang === "es" ? es : en);
   if (change.phase === "implementing") {

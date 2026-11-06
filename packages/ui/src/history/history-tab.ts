@@ -10,22 +10,12 @@ import { ItemText, ItemTooltips } from "../components/item-tooltip";
 import { Segmented, type SegmentedOption } from "../components/segmented";
 import { Select, type SelectOption } from "../components/select";
 import { TabEnd } from "../components/tabs";
+import { agentName } from "../data/agent-name";
 import type { HistoryEntry } from "../data/history";
 import type { HistoryType } from "../data/history-text";
 import { Preferences } from "../theme/preferences";
 import { HistoryExport } from "./history-export";
 import { TraceView } from "./trace-view";
-
-/** The agent tools by their id, as the agent declares them (context, not proof). */
-const TOOLS: Readonly<Record<string, string>> = {
-  "claude-code": "Claude Code",
-  codex: "Codex",
-  cursor: "Cursor",
-  opencode: "OpenCode",
-  "gemini-cli": "Gemini CLI",
-  windsurf: "Devin (Windsurf)",
-  antigravity: "Antigravity",
-};
 
 const TYPES: readonly HistoryType[] = [
   "spec",
@@ -261,7 +251,8 @@ function actorLabel(
       const { tool, model, effort } = event;
       return [
         t("Agente", "Agent"),
-        tool === undefined ? undefined : (TOOLS[tool] ?? tool),
+        // The tool as the agent declares it (context, not proof), by its agent's name.
+        tool === undefined ? undefined : agentName(tool),
         model === undefined ? undefined : modelName(model),
         effort === undefined ? undefined : effortName(effort, lang),
       ]

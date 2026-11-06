@@ -9,9 +9,7 @@ import {
   cancelQuestion,
   cancelReasonQuestion,
   checkStatus,
-  closeCommitSubject,
   closedCard,
-  closedLine,
   confirmCloseQuestion,
   headerOf,
   landQuestion,
@@ -25,13 +23,12 @@ import {
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
 import { withArchivedMemory } from "../flow/archive-memory";
-import { verifyHints, withVerifyHints } from "../flow/detected";
-import { archive, commitArchive, commitClosing } from "../flow/finish";
+import { closeOnTurn } from "../flow/closing-turn";
+import { archive, commitArchive } from "../flow/finish";
 import { landingTurn } from "../flow/full-verification";
-import { absorbTarget, type Integration, integrationOf, isIncorporated } from "../flow/integrate";
+import { absorbTarget, integrationOf, isIncorporated } from "../flow/integrate";
 import { type Landed, landRetrying, withIntegration } from "../flow/land";
 import { type CancelledFolder, removeCancelled, withCleanupFrom } from "../flow/prune";
-import { measureUsage, withUsage } from "../flow/usage";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { writePointer } from "../store/local";
@@ -78,60 +75,6 @@ function noteClosing(session: Session, state: ChangeState, spec: Spec): void {
 async function closeConfirmed(session: Session, change: StoredChange, spec: Spec): Promise<Output> {
   const plan = await integrationOf(session, change.state);
   return landingTurn(session, plan, () => closeOnTurn(session, change, spec, plan));
-}
-
-async function closeOnTurn(
-  session: Session,
-  change: StoredChange,
-  spec: Spec,
-  plan: Integration | undefined,
-): Promise<Output> {
-  const { state } = change;
-  // The main branch comes into the change before anything is archived: a refusal leaves it in its
-  // phase. If main changed the closing's uncommitted files, the closing gets its commit first.
-  const closing = (target: string) => commitClosing(session, change, spec.title, target);
-  const absorbed =
-    plan === undefined ? undefined : await absorbTarget(session, plan, change, "close", closing);
-  if (absorbed?.ok === false) return absorbed.output;
-  const moved = transition({
-    phase: "closing",
-    kind: state.kind,
-    actor: "human",
-    event: { type: "confirmClose", closingSubmitted: true },
-  });
-  if (!moved.ok)
-    return blockedCard(headerOf(state.id, state.phase), moved.code, checkStatus(session.cards));
-  // Measured before archiving, so that the consumption goes with the change.
-  const usage = await measureUsage(session, change);
-  const archived = await archive(
-    session,
-    change,
-    { ...state, phase: moved.phase },
-    "change.closed",
-    {},
-  );
-  const commit = await commitArchive(
-    session,
-    change,
-    archived,
-    closeCommitSubject(spec.title, session.lang),
-  );
-  // Read while the folder exists: landing removes a worktree of its own.
-  const hints = await verifyHints(session, plan?.main ?? session.root);
-  const landed = plan === undefined ? undefined : await landRetrying(session, plan);
-  const card = withIntegration(
-    session,
-    closedCard(
-      headerOf(state.id, "done"),
-      closedLine(commit, session.lang),
-      landed?.landed === true ? undefined : state.branch,
-      session.cards,
-    ),
-    absorbed?.lines ?? [],
-    landed,
-  );
-  const cleaned = await withCleanupFrom(session, plan?.main, card);
-  return withVerifyHints(withUsage(withArchivedMemory(session, cleaned, archived), usage), hints);
 }
 
 /** A closed change that did not reach the main branch (its landing failed): retries only that. */

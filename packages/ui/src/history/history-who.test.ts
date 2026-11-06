@@ -55,7 +55,7 @@ class Host {
   readonly history = input<readonly HistoryEntry[]>(EVENTS);
 }
 
-async function render(lang: "es" | "en" = "es") {
+async function render(lang: "es" | "en" = "es", history?: readonly HistoryEntry[]) {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
@@ -64,6 +64,7 @@ async function render(lang: "es" | "en" = "es") {
   localStorage.setItem("specty.lang", lang);
   TestBed.resetTestingModule();
   const fixture = TestBed.createComponent(Host);
+  if (history !== undefined) fixture.componentRef.setInput("history", history);
   for (let round = 0; round < 10; round++) {
     await fixture.whenStable();
     await new Promise((resolve) => setTimeout(resolve));
@@ -94,6 +95,18 @@ describe("who did each thing, in the History tab", () => {
     expect(english.text(english.rows[2])).toContain(
       "Agent · Claude Code · Opus 5.5 · extra-high effort",
     );
+  });
+
+  it("AC3: says GitHub Copilot by its name, and a tool it does not know by its id", async () => {
+    const [, agent] = EVENTS;
+    // In the order of the audit, oldest first: the tab shows the newest first.
+    const { rows, text } = await render("es", [
+      { ...agent, at: "2026-10-28T09:00:00Z", tool: "zed" },
+      { ...agent, at: "2026-10-28T10:00:00Z", tool: "copilot" },
+    ]);
+    expect(text(rows[0])).toContain("Agente · GitHub Copilot · Opus 5.5");
+    // AC4: a tool Specty does not know goes as it comes.
+    expect(text(rows[1])).toContain("Agente · zed · Opus 5.5");
   });
 
   it("AC3: shows the newest day first, and in each day the newest event first", async () => {
