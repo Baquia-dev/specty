@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d318a7935d2932233c911d29faad8803dcd625da",
+      "attempts": 1,
       "startedAt": "2026-11-06T10:03:51.853Z",
       "doneAt": "2026-11-06T10:05:52.505Z",
-      "summary": "La regla change-folder niega quitar la carpeta de un cambio abierto (ShellFacts.removedFolders y la acción remove-worktree), tras la de la persona; OpenFolder exportado y texto en cards/change-folder.ts; decideRead y decideEnter salen de decideGuard"
+      "summary": "La regla change-folder niega quitar la carpeta de un cambio abierto (ShellFacts.removedFolders y la acción remove-worktree), tras la de la persona; OpenFolder exportado y texto en cards/change-folder.ts; decideRead y decideEnter salen de decideGuard",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cd227eaafb28427d0756835b9c9b5becda76d9c7",
+      "startedAt": "2026-11-06T10:05:52.964Z",
+      "doneAt": "2026-11-06T10:08:22.976Z",
+      "summary": "enforce/removals.ts busca, entre las worktrees de git que nombra cada git worktree remove (por ruta real o por final de ruta), las de un cambio abierto; place.ts las da al guard como removedFolders y sitúa la acción remove-worktree"
     }
   },
   "pending": {

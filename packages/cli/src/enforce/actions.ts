@@ -79,6 +79,8 @@ export type RawAction =
     }
   | { readonly kind: "shell"; readonly command: string }
   | { readonly kind: "enter"; readonly request: EnterRequest }
+  /** A tool of the agent's own removes the worktree at `path` (OpenCode's `worktree_remove`). */
+  | { readonly kind: "remove-worktree"; readonly path: string }
   | { readonly kind: "other" };
 
 /** A path the tool sent, as a list: empty when it sent none. */

@@ -16,6 +16,7 @@ import { type GhostPlace, ghostFolders, placePaths, sortGhosts } from "../flow/w
 import { pathsOf } from "../io/git";
 import type { Session } from "../session";
 import type { RawAction } from "./actions";
+import { openFoldersRemoved } from "./removals";
 
 /**
  * Where an agent's action happens, as the guard places it: its session, the folder its tool works
@@ -38,6 +39,10 @@ export async function resolveAction(
   const { session, cwd, bound } = place;
   if (raw.kind === "other") return raw;
   if (raw.kind === "files") return { kind: "files", ...(await placeFiles(place, raw)) };
+  if (raw.kind === "remove-worktree") {
+    const folders = await openFoldersRemoved(session, cwd, [{ path: raw.path }]);
+    return { kind: "remove-worktree", folders };
+  }
   if (raw.kind !== "shell") {
     const { inside, foreign, ghosts } = await inRepo(place, raw.paths);
     // Reading is free, also inside a ghost folder.
@@ -53,9 +58,11 @@ export async function resolveAction(
         ...(await session.git.changedSince(await session.git.head())),
       ]).filter((path) => !path.startsWith(".specty/") && isGoverned(path, session.config))
     : [];
+  const removedFolders = await openFoldersRemoved(session, cwd, analysis.worktreeRemovals);
   return {
     kind: "shell",
     facts: {
+      ...(removedFolders.length > 0 ? { removedFolders } : {}),
       specty: analysis.specty,
       unscopedNpx: analysis.unscopedNpx,
       bypass: analysis.bypass,
