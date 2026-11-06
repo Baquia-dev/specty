@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "id": "20261106-tras-pedir-cambios-la-revision-espera-al-agente",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-tras-pedir-cambios-la-revision-espera-al-agente",
+  "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
+  "revision": 3,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:be9ae8d96cbeaa46abcf643c8b217b00152aa7ffd22d900640fb23ae9bd4ff11",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:60f6465d994a14327cfb632bcd5e314bc771437b06465adde93426836ddd9033",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:02acc764390d69487b07cf9ea90b16120e143061d692329969b377b8d9a0922a",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:afa559ef2673b0c8d695fdaeb0612c5c0a150cdf5afbf6da63d5d1233997cf33",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d3b738bf9e8b3519a2fee6d87184f841ee7af3f7e85315cbff8b07569d95cad2",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:718698422d19348fd63588a85d4649629c7e438a4b7d2086b6371990a9cdf494",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:748e778b51453a671ad13dad0b46c65ed68cd875e9142bed6b031b30a5be8b50",
+    "at": "2026-11-06T15:39:18.098Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
