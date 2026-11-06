@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261106-el-e2e-de-opencode-funciona-con-opencode-2-2-5",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-el-e2e-de-opencode-funciona-con-opencode-2-2-5",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:49c8cfb527af644151519eb4b595292e503c5dffc0405a76c28b726165430873",
+    "at": "2026-11-06T08:19:44.239Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -51,12 +58,7 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:49c8cfb527af644151519eb4b595292e503c5dffc0405a76c28b726165430873",
-    "at": "2026-11-06T08:19:44.239Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/opencode.test.ts": "sha256:4e5bf76322e72738af9ba1ffe42054424020f208713e5006997741676d65c2f0"
+  }
 }
