@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261106-cada-test-se-puede-leer-en-la-ui",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-cada-test-se-puede-leer-en-la-ui",
+  "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:53eefe5ee3246840e43cc83d261380e08e9b70c8a76cccf4673e464d3099af57",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:28bc6f18fa045a06af96201c910c5ebedb600337d1d37c877e5e8ace3dec905d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:0f42f24bfccf57be37e7fcb686088c571e42b677cc5cb8cf0d56bf474098798b",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:9bf148858d50e86cda40b81750fc4585e211ef747c7b6ce567d646550a9fba83",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:3b7518aa5b6a4b142508bfd167af5c1b70cc3257908d92ed59e5f362ecbb2fa2",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:921447ede8118b0a5c7997cfabf36f807767f7a0988b9b9b5cfe6ca7f07270be",
+    "at": "2026-11-06T11:14:42.788Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
