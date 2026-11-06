@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261106-el-guard-juzga-session-move-de-opencode-como",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-el-guard-juzga-session-move-de-opencode-como",
+  "baseCommit": "288e88cbf522a73c14ab890101f8b1cb626ee433",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:48a4c9586d13becd568d8a0c6536be9ca574cae4c2c0d741a37635e4e85113a7",
+    "at": "2026-11-06T09:19:59.266Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:eae69a13df3548f88d898969b7bd961e94a7b47d78249ab1864a7822979bc910",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:cfe479d5575156b117e882c795b7e97049df66a6b1534fb632e490caff82fb50",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "40151b2680bcc9137fa9d1ae9bf60373d1ed6954",
+      "attempts": 1,
+      "startedAt": "2026-11-06T09:20:53.731Z",
+      "doneAt": "2026-11-06T09:30:13.136Z",
+      "summary": "El guard juzga opencode_session_move de Code Mode como una entrada (regla de EnterWorktree); las herramientas de OpenCode van en una tabla y ARCHITECTURE lo cuenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 1
+  },
+  "closingSubmittedAt": "2026-11-06T09:34:56.655Z",
+  "lockedTests": {
+    "packages/cli/test/opencode-session-move.test.ts": "sha256:7dac590924f6607a839792a39fc5adc4f2545bf362865ec874bec98e1fbff097"
+  }
+}
