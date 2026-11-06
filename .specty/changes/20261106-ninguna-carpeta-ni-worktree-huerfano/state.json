@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "20261106-ninguna-carpeta-ni-worktree-huerfano",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261106-ninguna-carpeta-ni-worktree-huerfano",
+  "baseCommit": "723a599e2ab1ed33d68368a923a91151b72ffeb6",
+  "revision": 2,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:87f1b89941edc14bbdd71c33a29fc7c7b08acc655bba1cf5517d55513252b9b9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d28b856d86e7556beb95f1528904f0939a55253fdcb091cf646fcd454f6b7beb",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:43ac60002e04a41f3336e09f8355e374ec00d6b9ec86ba4da6ca6b78c5eb0cfc",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:5ea5aeedf1cd5f61df69716cf2ab293a37684538f9ce6031728d39f161f01422",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:e1306e5978f587b9df6056d520c5895a20cbdb40663a2db55e6da545fd922d0f",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:03c5ee0e8f9717af31ca588c9a351b36da5f44dce519797b526f7a9989300f5b",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:24e117c0b914647a58f7a558c7132507c5e6ff76e9bb167eab7b16eaf01e7472",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 11,
+    "C": 3,
+    "R": 4
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:54f3a8f77cd6c78e0c7aac0309bd253985a205df7580405ab79e144e2e982efa",
+    "at": "2026-11-06T08:24:37.884Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
