@@ -72,7 +72,7 @@ En la tarjeta de una épica de la Bandeja, la línea de cada corte con un cambio
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts, packages/core/src/light.ts, packages/core/test/light.test.ts
   - ac: AC5, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/light.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts
-- [ ] T3: Cada línea sabe quién lleva su cambio y qué avisa
+- [x] T3: Cada línea sabe quién lleva su cambio y qué avisa
   - files: packages/ui/src/inbox/lane-holds.ts, packages/ui/src/inbox/lane-holds.test.ts, packages/ui/src/inbox/epic-lanes.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/lane-holds.test.ts --include src/inbox/epic-lanes.test.ts

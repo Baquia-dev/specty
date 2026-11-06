@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2e057e1862aff66d081827161aff11f3108a8f1e",
+      "attempts": 1,
       "startedAt": "2026-11-06T17:55:14.191Z",
       "doneAt": "2026-11-06T18:07:20.239Z",
-      "summary": "ChangeRecord y ChangeView de la UI llevan holder y holdsOf lo copia; la entrada ligera de core exporta AGENT_NAMES"
+      "summary": "ChangeRecord y ChangeView de la UI llevan holder y holdsOf lo copia; la entrada ligera de core exporta AGENT_NAMES",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "044cd4360f326e82975c12f2e8bc1581e40843ce",
+      "startedAt": "2026-11-06T18:07:20.626Z",
+      "doneAt": "2026-11-06T18:13:12.451Z",
+      "summary": "lane-holds.ts (puro) da, del cambio abierto de una línea, el agente con su nombre de AGENT_NAMES, si es huérfano, quién salió de su carpeta y con quién comparte archivos; epicLanes lo pone como holds cuando hay algo que decir"
     }
   },
   "pending": {
