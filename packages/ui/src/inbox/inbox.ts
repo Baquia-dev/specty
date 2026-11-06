@@ -90,8 +90,8 @@ const TICK_MS = 30_000;
             <div role="list" [class]="list + ' mt-2'">
               @for (block of section.blocks; track block.key) {
                 @if (block.kind === 'epic') {
-                  <sp-inbox-epic [epic]="block.epic" [slices]="block.slices" [selected]="selected()" (picked)="selectedId.set($event)">
-                    <sp-inbox-row data-epic-head [change]="block.epic" [current]="isSelected(block.epic)" [now]="now()" (picked)="selectedId.set(block.epic.id)" />
+                  <sp-inbox-epic #card [epic]="block.epic" [slices]="block.slices" [selected]="selected()" (picked)="selectedId.set($event)">
+                    <sp-inbox-row data-epic-head [change]="block.epic" [tally]="card.tally()" [current]="isSelected(block.epic)" [now]="now()" (picked)="selectedId.set(block.epic.id)" />
                   </sp-inbox-epic>
                 } @else {
                   <sp-inbox-row [change]="block.change" [current]="isSelected(block.change)" [now]="now()" (picked)="selectedId.set(block.change.id)" />

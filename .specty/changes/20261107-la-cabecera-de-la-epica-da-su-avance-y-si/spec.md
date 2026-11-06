@@ -57,7 +57,7 @@ En la Bandeja, la cabecera de la tarjeta de una épica en implementación dice c
   - files: packages/ui/src/inbox/epic-lanes.ts, packages/ui/src/inbox/epic-lanes.test.ts
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/epic-lanes.test.ts
-- [ ] T2: La cabecera de la épica en implementación muestra su avance, su recuento y si ningún corte está en marcha
+- [x] T2: La cabecera de la épica en implementación muestra su avance, su recuento y si ningún corte está en marcha
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-epic.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox-epic-head.test.ts, packages/ui/src/inbox/inbox.test.ts
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-epic-head.test.ts --include src/inbox/inbox-epic.test.ts --include src/inbox/inbox.test.ts --include src/inbox/inbox-row.test.ts && pnpm typecheck && pnpm lint && pnpm knip

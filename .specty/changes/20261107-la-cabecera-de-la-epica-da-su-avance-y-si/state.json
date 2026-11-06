@@ -50,12 +50,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "35a6b106e5bbe1ddc26011899f09f7601b9adec0",
+      "attempts": 1,
       "startedAt": "2026-11-06T17:42:17.608Z",
       "doneAt": "2026-11-06T17:49:01.979Z",
-      "summary": "epic-lanes.ts da epicTally: el recuento de las líneas de una épica en implementación (terminados, te esperan, en marcha, listos, esperan a otro corte) y los cortes listos cuando ninguno tiene un cambio abierto"
+      "summary": "epic-lanes.ts da epicTally: el recuento de las líneas de una épica en implementación (terminados, te esperan, en marcha, listos, esperan a otro corte) y los cortes listos cuando ninguno tiene un cambio abierto",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "447821ae02d61d766e3464762862dd5894004183",
+      "startedAt": "2026-11-06T17:49:02.414Z",
+      "doneAt": "2026-11-06T17:55:34.998Z",
+      "summary": "La fila de la épica en implementación recibe el recuento de su tarjeta: «1/5 cortes» con anillo en lugar de la fase, la línea del recuento sin tamaño ni carpeta, sin avisos de quién la lleva, y «Ningún corte en marcha» cuando toca"
     }
   },
   "pending": {
