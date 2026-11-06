@@ -22,15 +22,13 @@ const bash = (cwd: string, session: string, command: string) =>
     }),
   });
 
-/** Claude Code's `SessionStart` when the conversation `session` starts in `cwd`. */
-const started = (cwd: string, session: string) =>
+/**
+ * Claude Code's `SessionStart` when the conversation `session` starts in `cwd`, or comes back from
+ * `source`, with no mark of Claude Code in the hook's environment.
+ */
+const started = (cwd: string, session: string, source = "startup") =>
   cli(cwd, ["guard", "--tool", "claude-code"], {
-    stdin: JSON.stringify({
-      session_id: session,
-      cwd,
-      hook_event_name: "SessionStart",
-      source: "startup",
-    }),
+    stdin: JSON.stringify({ session_id: session, cwd, hook_event_name: "SessionStart", source }),
   });
 
 /** A repository whose memory has P1 to P5 and no fronts. */
@@ -64,6 +62,17 @@ const sectionOf = (text: string, title: string): string[] => {
 
 const memoryOf = (text: string) => sectionOf(text, "MEMORIA DE SPECTY");
 
+describe("the card of Claude Code's guard with no mark of Claude Code in its environment", () => {
+  it("AC1: is the card of `next` in Claude Code, with its brief, at the start and after a compaction", async () => {
+    const root = await tempRepo(APP);
+    const next = (await cli(root, ["next"], inConversation("s4"))).out;
+    expect(next).toContain("ENCARGO:");
+    expect((await cli(root, ["next"])).out).not.toBe(next);
+    expect((await started(root, "s4")).out).toBe(next);
+    expect((await started(root, "s4", "compact")).out).toBe(next);
+  });
+});
+
 describe("the card with no active change and the fronts", () => {
   it("AC1: shows the conversation that holds a front only that front's free entries, in order", async () => {
     const root = await withEntries();
@@ -77,9 +86,9 @@ describe("the card with no active change and the fronts", () => {
     ]);
     for (const outside of ["P1", "P3", "P5"]) expect(next.out).not.toContain(`${outside} ·`);
     expect(next.out).not.toContain("`specty memory`");
-    // The guard knows the conversation by its event, as when the session starts: the same entries.
-    // The rest of its card follows the tool its environment tells, none here (ARCHITECTURE §7).
-    expect(memoryOf((await started(root, "s1")).out)).toEqual(memoryOf(next.out));
+    // The guard knows the conversation by its event, as when the session starts, and its tool by
+    // its `--tool`, though the hook's environment does not say it (ARCHITECTURE §7).
+    expect((await started(root, "s1")).out).toBe(next.out);
   });
 
   it("AC1: gives the other conversations no entry, also when it cannot tell who asks", async () => {
@@ -90,10 +99,8 @@ describe("the card with no active change and the fronts", () => {
     expect(memoryOf(other.out)).toEqual([]);
     for (const id of ["P1", "P2", "P3", "P4", "P5"]) expect(other.out).not.toContain(`${id} ·`);
     expect(other.out).not.toContain("`specty front`");
-    // With no tool, the card is the one without subagents, the same for the guard and for `next`.
-    const unknown = await cli(root, ["next"]);
-    expect(memoryOf(unknown.out)).toEqual([]);
-    expect((await started(root, "s2")).out).toBe(unknown.out);
+    expect(memoryOf((await cli(root, ["next"])).out)).toEqual([]);
+    expect((await started(root, "s2")).out).toBe(other.out);
     expect((await cli(root, ["next"], CLAUDE)).out).toBe(other.out);
   });
 

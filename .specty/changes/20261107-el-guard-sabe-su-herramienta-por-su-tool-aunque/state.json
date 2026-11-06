@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-el-guard-sabe-su-herramienta-por-su-tool-aunque",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-guard-sabe-su-herramienta-por-su-tool-aunque",
   "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:46d5c753c1c1a1c734c2923d0b4f320f4bc92bfe9b3a86b3fe4b99f43e55ab14",
+    "at": "2026-11-06T21:28:11.288Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -39,12 +46,8 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:46d5c753c1c1a1c734c2923d0b4f320f4bc92bfe9b3a86b3fe4b99f43e55ab14",
-    "at": "2026-11-06T21:28:11.288Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/front-start-codex.test.ts": "sha256:d451fd11aaec9f7e59efc162f2f365fc7a131d050fef992254445a64c8c27f2c",
+    "packages/cli/test/front-start.test.ts": "sha256:da7115e7d0b9c7a141b302747430de20358d6b21376b05eec5f848d80bd299d1"
+  }
 }
