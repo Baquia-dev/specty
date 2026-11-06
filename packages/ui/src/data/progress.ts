@@ -62,6 +62,11 @@ export interface RunRecord {
   readonly startedAt: string;
   /** Every line so far, oldest first. */
   readonly output: readonly string[];
+  /**
+   * The full verification stopped without a result: its incorporation of main moved nothing, and
+   * its output says why. The server keeps it until the change's next run.
+   */
+  readonly stopped?: boolean;
 }
 
 /** A scope request still waiting for the person. */

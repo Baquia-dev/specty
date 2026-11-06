@@ -29,7 +29,8 @@ export type FullState = "not-run" | "running" | "passed" | "failed";
 export function fullStateOf(change: ChangeView, run: RunRecord | undefined): FullState | undefined {
   const full = change.progress.full;
   if (full === undefined) return undefined;
-  if (run !== undefined && run.task === undefined) return "running";
+  // One that stopped without a result leaves the last one standing.
+  if (run !== undefined && run.task === undefined && run.stopped !== true) return "running";
   if (full.last === undefined) return "not-run";
   return full.last.passed ? "passed" : "failed";
 }

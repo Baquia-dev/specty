@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "20261107-el-cierre-no-aconseja-una-sesion-nueva-cuando",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261107-el-cierre-no-aconseja-una-sesion-nueva-cuando",
+  "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:249f7dc4a8355c320ff7e9d05b9adc75362565080b4dec50bcc74328e8bfcad1",
+    "at": "2026-11-06T21:24:54.661Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6d35a0e3338f34dabb36cbd5f3a5fefc1a763620",
+      "attempts": 1,
+      "startedAt": "2026-11-06T21:25:35.119Z",
+      "doneAt": "2026-11-06T21:26:40.143Z",
+      "summary": "El aviso de sesión nueva del cierre y de la aceptación quick se calla cuando Claude Code reparte en subagentes y subagents no es false (toSubagents, exportada desde las tarjetas de core); con subagents: false sigue como hoy. Docs: ARCHITECTURE §13 y §16, formats §6.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/cli/test/fresh-session.test.ts": "sha256:17ba7b6abd60bdfa0584f4ef5218101e4fa49623ed40600dc3f3e05efe5f6602"
+  }
+}

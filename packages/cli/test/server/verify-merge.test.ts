@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { existsSync } from "node:fs";
+import { rm } from "node:fs/promises";
 import { join } from "node:path";
 import { renderText } from "@baquia-dev/specty-core";
 import { describe, expect, it } from "vitest";
@@ -220,5 +221,63 @@ describe("«Verificar» of the UI when main moved on", () => {
     }
     expect(tryGit(folder, "merge-base", "--is-ancestor", "main", "HEAD").status).toBe(0);
     expect(await counted(root)).toBe(1);
+  });
+});
+
+describe("«Verificar» of the UI when the incorporation stops without moving anything", () => {
+  it("AC1: keeps its run, stopped and saying why, until the person presses it again, whose run does not carry it", async () => {
+    const { root, folder } = await inWorktree(COUNTING);
+    await toAcceptance(folder);
+    await mainMoves(root);
+    // Uncommitted here, a file main added: the merge would overwrite it, so it does not start.
+    await writeFiles(folder, { "src/other.ts": "export const other = 2;\n" });
+    const head = git(folder, "rev-parse", "HEAD");
+    const server = await serverOf(root);
+    try {
+      await server.runs.start(CHANGE);
+      await until(() => server.heard.at(-1)?.stopped === true);
+      // Nothing after it: its end is the stopped run.
+      await wait(600);
+      const kept = server.runs.current(CHANGE);
+      expect(kept).toMatchObject({ command: COUNTED, stopped: true });
+      expect(kept?.output.join("\n")).toContain(
+        "main también cambió archivos que aquí tienen cambios sin commit: el merge los pisaría, así que no empezó.",
+      );
+      expect(server.heard.at(-1)).toEqual(kept);
+      expect(git(folder, "rev-parse", "HEAD")).toBe(head);
+      expect(merging(folder)).toBe(false);
+      expect(await counted(root)).toBe(0);
+      await rm(join(folder, "src/other.ts"));
+      const from = server.heard.length;
+      await server.runs.start(CHANGE);
+      expect(server.heard[from]).toMatchObject({ command: COUNTED });
+      expect(server.heard[from]?.stopped).toBeUndefined();
+      expect(server.runs.current(CHANGE)?.stopped).toBeUndefined();
+      await server.ended();
+      expect(server.heard.slice(from).some((run) => run?.stopped === true)).toBe(false);
+      expect(server.runs.current(CHANGE)).toBeUndefined();
+    } finally {
+      server.runs.close();
+    }
+    expect(await counted(root)).toBe(1);
+  });
+
+  it("AC2: a run that leaves the merge to the agent ends as before, without staying", async () => {
+    const { root, folder } = await inWorktree(COUNTING);
+    await toAcceptance(folder);
+    await writeFiles(root, { "src/app.ts": "main\n" });
+    git(root, "commit", "-q", "-am", "main cambia el saludo");
+    const server = await serverOf(root);
+    try {
+      await server.runs.start(CHANGE);
+      await server.ended();
+      await wait(600);
+      expect(server.heard.at(-1)).toBeUndefined();
+      expect(server.heard.some((run) => run?.stopped === true)).toBe(false);
+      expect(server.runs.current(CHANGE)).toBeUndefined();
+    } finally {
+      server.runs.close();
+    }
+    expect(merging(folder)).toBe(true);
   });
 });

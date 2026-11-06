@@ -13,7 +13,13 @@ import {
 import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { SectionDivider } from "../components/document";
-import { LucideCheck, LucideCircleDashed, LucidePlay, LucideX } from "../components/icons";
+import {
+  LucideCheck,
+  LucideCircleDashed,
+  LucidePlay,
+  LucideTriangleAlert,
+  LucideX,
+} from "../components/icons";
 import { Toasts } from "../components/toast";
 import { Decisions } from "../data/decisions";
 import {
@@ -66,10 +72,19 @@ const TICK_MS = 30_000;
             @if (change().phase === 'acceptance') {
               <sp-button size="sm" [disabledReason]="decisions.blocked()" (pressed)="run()" data-run>
                 <svg [lucideIcon]="runIcon" size="12" aria-hidden="true"></svg>
-                {{ full().last ? t()('Ejecutar de nuevo', 'Run again') : t()('Ejecutar', 'Run') }}
+                {{ full().last || stopped() ? t()('Ejecutar de nuevo', 'Run again') : t()('Ejecutar', 'Run') }}
               </sp-button>
             }
           </div>
+          @if (stopped()) {
+            <div class="flex flex-col gap-1.5" data-stopped>
+              <span class="inline-flex items-center gap-1.5 text-sm" role="status" data-stopped-note>
+                <svg class="shrink-0" [lucideIcon]="stopIcon" size="14" style="color: var(--color-phase-review)" aria-hidden="true"></svg>{{ stoppedNote() }}
+              </span>
+              <!-- Inside <pre> every space of the template shows: the lines go on one template line. -->
+              <pre class="m-0 rounded-lg border border-border bg-text/5 px-3 py-2.5 font-mono text-xs leading-relaxed whitespace-pre-wrap" data-stopped-output>@for (line of stoppedLines(); track $index) {<span class="block">@for (part of line; track $index) {<span [class]="tones[part.tone]" [attr.data-tone]="part.tone">{{ part.text }}</span>}</span>}</pre>
+            </div>
+          }
           @if (coverage(); as coverage) {
             <div class="flex flex-col gap-1 text-sm" data-coverage>
               <span data-coverage-summary>{{ coverageSummary() }}</span>
@@ -109,12 +124,34 @@ export class FullVerification {
   protected readonly failIcon = LucideX;
   protected readonly notRunIcon = LucideCircleDashed;
   protected readonly runIcon = LucidePlay;
+  protected readonly stopIcon = LucideTriangleAlert;
   private readonly now = signal(Date.now());
   /** The run streaming in this change; a task's belongs to Progress. */
   private readonly streaming = signal<RunRecord | undefined>(undefined);
   protected readonly live = computed(() => {
     const run = this.streaming();
-    return run?.task === undefined ? run : undefined;
+    return run?.task === undefined && run?.stopped !== true ? run : undefined;
+  });
+  /**
+   * The last run that stopped without a result, in acceptance, while no result after its start
+   * says how it stands: why it stopped stays in view.
+   */
+  protected readonly stopped = computed(() => {
+    const run = this.streaming();
+    if (run === undefined || run.task !== undefined || run.stopped !== true) return undefined;
+    if (this.change().phase !== "acceptance") return undefined;
+    const last = this.full().last;
+    return last !== undefined && Date.parse(last.at) >= Date.parse(run.startedAt) ? undefined : run;
+  });
+  protected readonly stoppedLines = computed(() =>
+    (this.stopped()?.output ?? []).map((line) => outputSegments(line)),
+  );
+  /** «Se paró sin resultado · hace 2 min». */
+  protected readonly stoppedNote = computed(() => {
+    const run = this.stopped();
+    if (run === undefined) return "";
+    const when = relativeTime(run.startedAt, this.now(), this.preferences.lang());
+    return this.t()(`Se paró sin resultado · ${when}`, `Stopped without a result · ${when}`);
   });
 
   /** A failure's last lines start open; a new result sets it again, the person's choice stays. */

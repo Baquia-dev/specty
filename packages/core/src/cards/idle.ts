@@ -103,14 +103,22 @@ function changeBrief(ctx: CardContext): OutputBlock[] {
         `\`${command} enter <id>\`, con el id que te dé \`new\`.`,
         `\`${command} enter <id>\`, with the id \`new\` gives you.`,
       ),
-      ...inItsFolder(t("<carpeta del cambio>", "<change folder>"), ctx, [questionStep(ctx)]),
+      ...inItsFolder(t("<carpeta del cambio>", "<change folder>"), ctx, [
+        questionStep(ctx),
+        // An epic's card asks to launch subagents, which this brief forbids: the session makes it.
+        t(
+          "Si `propose` dice que el cambio es demasiado grande y pide dividirlo en una épica, no lo conviertas tú: detente y responde con eso, que la épica la hace la sesión principal en tu cambio.",
+          "If `propose` says the change is too large and asks to split it into an epic, do not turn it into one yourself: stop and answer with that, since the main session makes the epic in your change.",
+        ),
+      ]),
     ]),
   ]);
 }
 
 /**
  * One subagent per change the user asked for, in parallel, while the session stays where it is:
- * it creates an epic itself, and passes on to each subagent the user's answers.
+ * it creates an epic itself, also from the change of a subagent that came out too large once they
+ * finish, and passes on to each subagent the user's answers.
  */
 function subagentsNext(ctx: CardContext): string {
   const t = translator(ctx.lang);
@@ -123,8 +131,8 @@ function subagentsNext(ctx: CardContext): string {
         )
       : "";
   return t(
-    `lanza un subagente por cada cambio que pidió el usuario, con el encargo tal cual${how}, y pon en él su título y su petición literal en lugar de \`<título>\` y \`<petición literal del usuario>\`${typed} ${quickHint(ctx)}; si son varios, lánzalos en paralelo, en un solo mensaje. No entres en sus carpetas, y una épica créala tú aquí, sin subagente. Si uno vuelve con una pregunta, házsela al usuario y pásale la respuesta (en Claude Code, con \`SendMessage\`); cuando terminen, vuelve a ejecutar \`${ctx.command} next\` aquí.`,
-    `launch one subagent per change the user asked for, with the brief as is${how}, putting in it its title and literal request in place of \`<title>\` and \`<the user's literal request>\`${typed} ${quickHint(ctx)}; if there are several, launch them in parallel, in a single message. Do not enter their folders, and create an epic yourself here, without a subagent. If one comes back with a question, ask the user and pass it the answer (in Claude Code, with \`SendMessage\`); once they finish, run \`${ctx.command} next\` again here.`,
+    `lanza un subagente por cada cambio que pidió el usuario, con el encargo tal cual${how}, y pon en él su título y su petición literal en lugar de \`<título>\` y \`<petición literal del usuario>\`${typed} ${quickHint(ctx)}; si son varios, lánzalos en paralelo, en un solo mensaje. No entres en sus carpetas, y una épica créala tú aquí, sin subagente. Si uno vuelve con una pregunta, házsela al usuario y pásale la respuesta (en Claude Code, con \`SendMessage\`). Cuando terminen, si uno volvió porque su cambio es demasiado grande, entra tú en él (\`${ctx.command} enter <id>\`) y conviértelo allí en la épica; si no, vuelve a ejecutar \`${ctx.command} next\` aquí.`,
+    `launch one subagent per change the user asked for, with the brief as is${how}, putting in it its title and literal request in place of \`<title>\` and \`<the user's literal request>\`${typed} ${quickHint(ctx)}; if there are several, launch them in parallel, in a single message. Do not enter their folders, and create an epic yourself here, without a subagent. If one comes back with a question, ask the user and pass it the answer (in Claude Code, with \`SendMessage\`). Once they finish, if one came back because its change is too large, enter it yourself (\`${ctx.command} enter <id>\`) and turn it into the epic there; otherwise, run \`${ctx.command} next\` again here.`,
   );
 }
 
