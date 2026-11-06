@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-cada-linea-dice-quien-lleva-su-corte-y-sus",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-cada-linea-dice-quien-lleva-su-corte-y-sus",
   "baseCommit": "8c4af062c7aa39651c4c843dc1b5aca2932d3eb3",
   "revision": 1,
@@ -75,12 +75,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7fa525138948d4ad78132b0e15a485379f852109",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:13:12.794Z",
       "doneAt": "2026-11-06T18:18:43.025Z",
-      "summary": "sp-inbox-lane pone bajo el título los avisos de su fila (conversación fuera, huérfano, archivos compartidos) y a la derecha, sin decisión, el agente o «Sin conversación» en el color de los avisos"
+      "summary": "sp-inbox-lane pone bajo el título los avisos de su fila (conversación fuera, huérfano, archivos compartidos) y a la derecha, sin decisión, el agente o «Sin conversación» en el color de los avisos",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "792b3a76880e556641d134c64b018d59081a1a9b",
+      "startedAt": "2026-11-06T18:18:43.364Z",
+      "doneAt": "2026-11-06T18:19:01.420Z",
+      "summary": "ARCHITECTURE §15 cuenta holder en los registros de los cambios abiertos, y ui.md lo que la línea de un corte dice de quién lo lleva y sus avisos"
     }
   },
   "pending": {

@@ -80,7 +80,7 @@ En la tarjeta de una épica de la Bandeja, la línea de cada corte con un cambio
   - files: packages/ui/src/inbox/inbox-lane.ts, packages/ui/src/inbox/inbox-lane.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-lane.test.ts --include src/inbox/inbox-epic.test.ts && pnpm typecheck && pnpm lint && pnpm knip
-- [ ] T5: ARCHITECTURE y ui.md cuentan quién lleva cada línea
+- [x] T5: ARCHITECTURE y ui.md cuentan quién lleva cada línea
   - files: docs/ARCHITECTURE.md, docs/ui.md
   - ac: —
   - verify: grep -q "holder" docs/ARCHITECTURE.md && grep -q "Sin conversación" docs/ui.md
