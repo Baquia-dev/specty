@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "id": "20261106-un-desbloqueo-se-pide-con-el-parche-y-el-codigo",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-un-desbloqueo-se-pide-con-el-parche-y-el-codigo",
+  "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e9228526909fa9bb098a128ad2d039f5d1de4a6f3d73202ce78520fc8f06409c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f62b8cbd2dbf8469f159aadf255b3227b9a2a8c8bfc991ef7e739fd3fa77ab7d",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:41e8daae41df63705f647b338ac89aa9e2f0f9d1b5f1bff01395dc19336cd843",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:05cb1cc1deccc05f378acd3d394ee4ec5e108228f2d2887f47aa043a8f38d49d",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:010db391d996812a95ef9539229c2f348b4b58b493414add5cb5ffd0f2c5f81e",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:121914aacc585d61d7015e95fa92d563871494820b18b9e60ab24f81a3a70915",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:56fced9110f7c6827bb5185399cabfb452fc1bade4741c8449d01f73cdc9a79d",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:17645230e3e6bcfafdf64d9cae7ac1695be671c02def1bf314b181282c659bb5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 8,
+    "AC": 8,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:242f23b34a0cc745322244c2f6c45d1af47eca89710e812ce4d25f5662edb2ce",
+    "at": "2026-11-06T10:48:41.226Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
