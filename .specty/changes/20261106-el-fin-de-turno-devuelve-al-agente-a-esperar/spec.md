@@ -65,7 +65,7 @@ Hoy un agente puede terminar su turno mientras el cambio espera la decisión de 
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/hooks.test.ts
   - type: feat
-- [ ] T2: El fin de turno devuelve al agente a esperar con `specty wait`
+- [x] T2: El fin de turno devuelve al agente a esperar con `specty wait`
   - files: packages/cli/src/commands/wait.ts, packages/cli/src/enforce/agent-stop.ts, packages/cli/test/agent-stop-wait.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agent-stop-wait.test.ts && pnpm typecheck && pnpm lint
