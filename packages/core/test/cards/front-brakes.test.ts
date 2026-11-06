@@ -26,6 +26,19 @@ describe("the brakes of the fronts", () => {
     });
   });
 
+  it("AC4: for `memory resolve`, proposes running it again without the entry, in Spanish and in English", () => {
+    expect(frontResolvesDenial(OWNER, "P12", "es", "specty", "memory")).toEqual({
+      reason:
+        "P12 es del frente B, que ya tiene dueño: lo lleva claude-code, hace 3 min, en otra conversación.",
+      next: "vuelve a ejecutar `specty memory resolve` sin P12: la resolverá la conversación de ese frente; o pídele a la persona que libere el frente B en su terminal con `specty front free B`.",
+    });
+    expect(frontResolvesDenial(OWNER, "P12", "en", "specty", "memory")).toEqual({
+      reason:
+        "P12 belongs to front B, which already has an owner: held by claude-code, 3 min ago, in another conversation.",
+      next: "run `specty memory resolve` again without P12: the conversation of that front will resolve it; or ask the person to free front B in their terminal with `specty front free B`.",
+    });
+  });
+
   it("AC3: lists each front of another session with the spec's files that fall in it", () => {
     const touched = [
       { owner: OWNER, paths: ["src/a.ts", "src/b.ts"] },

@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261106-el-e2e-de-opencode-funciona-con-opencode-2-2-5",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-el-e2e-de-opencode-funciona-con-opencode-2-2-5",
+  "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:49c8cfb527af644151519eb4b595292e503c5dffc0405a76c28b726165430873",
+    "at": "2026-11-06T08:19:44.239Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3d6e4033b62623f11b433ef29cae1cfdeb348c9674b8d245b81d1043d1a244a6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c507a34f3291a1de38498d69ca565815944297651da5741b24c3b0dd5f6754df",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:fada32dbec22eb744ae13a555f0b547861d05162082abe19e0040302f5fb2714",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:28fe48516197f485a47969c97c3317b330c654df28c9189331f26127899913df",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:0695199f42a6046cdbfbe80b8fb40c64a16586b995c093671293495ed2c00390",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:e2ef0429cb0a1d1b5a7a27b9a66738b5872f65bd079312a24018e09d92fdf396",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "de8347a9432552c8c2e8bc729e880328dafb55c8",
+      "attempts": 1,
+      "startedAt": "2026-11-06T08:20:32.022Z",
+      "doneAt": "2026-11-06T08:22:04.325Z",
+      "summary": "El plugin de OpenCode toma como fin de turno session.idle (beta) o session.execution.succeeded (OpenCode 2.2), con la sesión en data o en properties; test AC1 del fin de turno de 2.2, una vez seguida",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "83549183ba4d2445c4a01c92373c4d1dc891b76d",
+      "attempts": 1,
+      "startedAt": "2026-11-06T08:22:04.625Z",
+      "doneAt": "2026-11-06T08:26:09.336Z",
+      "summary": "El E2E maneja OpenCode 2.2.5: run --standalone, sus herramientas (shell, write/read con path, subagent), serve por /api con contraseña y wait, y la tarjeta en las partes de sistema tras compactar; se salta antes de 2.2. El modelo simulado responde a la compactación con su plantilla",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "a848db4cb121920563df98fae243d958667a992e",
+      "attempts": 1,
+      "startedAt": "2026-11-06T08:26:09.658Z",
+      "doneAt": "2026-11-06T08:27:32.154Z",
+      "summary": "ARCHITECTURE cuenta OpenCode 2.2.5: dónde se comprobó el plugin, el fin de turno con session.execution.succeeded, los subagentes con subagent y cómo maneja el E2E a OpenCode desde 2.2",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 3,
+    "T": 3,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-06T08:33:37.068Z",
+  "lockedTests": {
+    "packages/cli/test/opencode.test.ts": "sha256:4e5bf76322e72738af9ba1ffe42054424020f208713e5006997741676d65c2f0"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "id": "20261106-cancelar-quita-la-carpeta-del-cambio-aunque",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-cancelar-quita-la-carpeta-del-cambio-aunque",
+  "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:524c6b9cfa0ecbd8def95fe20200c00eaef8eec058881a70be0c999ecac30058",
+    "at": "2026-11-06T04:07:44.743Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c12ee7a410c89c104450c2ee7ab70736698231be7f7ba74fae9e1a8f5af8cba2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ad7801fdcf722b519eda1f6caf5135f299255fd71935e79450d7589f7a519396",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:9e392115e5e6940bd2fe9a8010d5e9f7a67d6440e818f31a29bdc31d69aae069",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:97ec3ae5a85f9d6d6dd5b4f6036b1a44e4e22d0b18ea21d3d61c0e6329c05ff8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "b5d6aa56d14d0242825f949ac347089262b0dd1e",
+      "attempts": 1,
+      "startedAt": "2026-11-06T04:10:18.871Z",
+      "doneAt": "2026-11-06T04:10:46.635Z",
+      "summary": "Textos cancelWorkCommitSubject y cancelledWorkSavedLine en core (es/en), exportados; cancelledCard recibe una lista de líneas sobre la carpeta.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "070fcd00acbac67888fba4d24839de7502a1d22d",
+      "attempts": 1,
+      "startedAt": "2026-11-06T04:10:46.942Z",
+      "doneAt": "2026-11-06T04:12:14.762Z",
+      "summary": "removeCancelled guarda lo sin commit en un commit de la rama (commitUncommitted, recibo close, git reset si falla) antes de decidir si la carpeta queda; la tarjeta de cancel nombra ese commit.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "880c9555c6daaa0ad14e1c3ded01185a2a18373e",
+      "attempts": 1,
+      "startedAt": "2026-11-06T04:12:15.070Z",
+      "doneAt": "2026-11-06T04:12:38.742Z",
+      "summary": "ARCHITECTURE §9 (Limpieza): cancel guarda lo sin commit en un commit de la rama antes de quitar la carpeta, también si una sesión trabaja en ella; si git no puede, la carpeta queda.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-06T07:45:31.712Z",
+  "lockedTests": {
+    "packages/cli/test/cancel-folder.test.ts": "sha256:ca5e51853181dab16eff91e4c2b45a51f664292311f02e5f5461e11d4bf5e2b0",
+    "packages/core/test/cards/close.test.ts": "sha256:6b0a05bdf4721b6cadaa37d3b6159e3e70c567fcb33db9ef38fb7f6d193363ac"
+  }
+}
