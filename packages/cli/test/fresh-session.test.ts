@@ -7,6 +7,7 @@ import {
   APP,
   BUTTON_TEST,
   CHANGE,
+  CONFIG,
   cli,
   folderOf,
   person,
@@ -53,6 +54,9 @@ async function claudeFolder(context?: number): Promise<string> {
   return folder;
 }
 
+/** The changes stay in the session itself: the next one gets its context (ARCHITECTURE §13). */
+const IN_SESSION = `${CONFIG()}subagents: false\n`;
+
 /**
  * A quick change made by `agent`'s session, accepted by the person with `env`: what the
  * acceptance says. Its ccusage fails, so that its consumption does not get in the way.
@@ -60,9 +64,11 @@ async function claudeFolder(context?: number): Promise<string> {
 async function acceptedQuick(
   agent: Record<string, string>,
   env: Record<string, string>,
+  config = IN_SESSION,
 ): Promise<string> {
   const root = await tempRepo({
     ...APP,
+    ".specty/config.yaml": config,
     "src/button.ts": "Sing in\n",
     ".gitignore": "node_modules\n",
   });
@@ -125,6 +131,13 @@ describe("the advice of a fresh session at the closing", () => {
     // No agent named its session: nothing to read.
     const big = await claudeFolder(620_002);
     expect(await acceptedQuick({}, { CLAUDE_CONFIG_DIR: big })).not.toContain("sesión nueva");
+  });
+
+  it("does not come when Claude Code hands the next change to a clean subagent", async () => {
+    // The session the audit names is the main one, which only coordinates: its context is big.
+    const folder = await claudeFolder(620_002);
+    const out = await acceptedQuick(claudeCode(folder), { CLAUDE_CONFIG_DIR: folder }, CONFIG());
+    expect(out).not.toContain("sesión nueva");
   });
 });
 

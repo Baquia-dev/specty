@@ -12,6 +12,7 @@ import {
   type Output,
   section,
   type TokenPrices,
+  toSubagents,
   type UsageEntry,
   usageLine,
 } from "@baquia-dev/specty-core";
@@ -65,8 +66,13 @@ export async function measureUsage(
   ];
 }
 
-/** The context of the last Claude Code session the audit names: the one the next change gets. */
+/**
+ * The context of the last Claude Code session the audit names: the one the next change gets.
+ * None when Claude Code hands that change to a clean subagent (`toSubagents`): the session the
+ * audit names is then the main one, which only coordinates (ARCHITECTURE §13).
+ */
 async function agentContext(session: Session, audit: Audit): Promise<number | undefined> {
+  if (toSubagents({ ...session.cards, tool: "claude-code" })) return undefined;
   const last = audit.findLast(
     (line) => line.tool === "claude-code" && typeof line.session === "string",
   );

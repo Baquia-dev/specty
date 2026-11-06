@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261107-verificar-que-se-para-sin-mover-nada-deja-en-la",
+  "kind": "standard",
+  "phase": "cancelled",
+  "branch": "specty/20261107-verificar-que-se-para-sin-mover-nada-deja-en-la",
+  "baseCommit": "c048388f6b5fdfe616152e21b457c94e934fef0a",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:562fcc980e9bc11e812d39db45fb4083dc68721059f7e37e70d5891bb3f6bee0",
+    "at": "2026-11-06T20:48:44.424Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:22c4aea8eee8ae4f6b647d5b79fe7736bd8376655dc1e8a3f7ee11ae59524567",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f05c6afc08b1f7e33a8f76cf0f7191a57a24f69d1b86e2bbad4a0b2c5df6bd71",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:237898fef782241d9a3607de44c52c6b59abdebbdec380b6749aa68244f4867f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1ae70770f417ce2a943e557b10497a4c4dd03efd397b4f106bf3a7226c6cea28",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:dc6ef64817c06092a0ef1250d78e81b7dbda7140b4259cbd24ccbf507a30b76d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2f95b5aec94551cdb047f9ca7e64fa62b7166541",
+      "attempts": 1,
+      "startedAt": "2026-11-06T21:00:11.106Z",
+      "doneAt": "2026-11-06T21:08:19.374Z",
+      "summary": "La salida en vivo pasa a server/run-output.ts; como la verificación de T1 corre el test de AC1, incluye además la ejecución parada (stops, mergedEnd, Incorporated) y que forget borre lo que vio.",
+      "scopeExtra": [
+        "packages/cli/src/server/merged-run.ts",
+        "packages/cli/src/server/watched-runs.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "73607fd3a7bbf63be4264c5c8d2f3f572e94a45b",
+      "attempts": 1,
+      "startedAt": "2026-11-06T21:08:19.703Z",
+      "doneAt": "2026-11-06T21:09:08.982Z",
+      "summary": "Sin código nuevo: la ejecución parada que conserva el servidor entró en T1, porque su verificación ya corría el test de AC1; aquí pasa su propia verificación.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "active",
+      "baseCommit": "162f3c4020d586b5c2f0aab472eec6193136b037",
+      "attempts": 1,
+      "startedAt": "2026-11-06T21:09:09.318Z",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 4,
+    "R": 2,
+    "S": 1
+  },
+  "lockedTests": {
+    "packages/cli/test/server/verify-merge.test.ts": "sha256:b1c043ca9dac46f44e43d3d2a49ebc98985ebfe7efa9f883b7e185eca5f052c3",
+    "packages/ui/src/acceptance/full-verification.test.ts": "sha256:d3e0c056672633328b77d77d5203436dbd304a1c30f2b9c933c6ba394634516b"
+  }
+}
