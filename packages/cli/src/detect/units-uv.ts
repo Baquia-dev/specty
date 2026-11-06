@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import type { WorkspacePackage } from "@baquia-dev/specty-core";
-import { parse } from "smol-toml";
-import { exists, isDirectory, isRecord, readText } from "../io/files";
+import { exists, isDirectory, isRecord } from "../io/files";
 import { expand } from "./project";
 import { rootPackagePaths } from "./root-package";
+import { readToml, strings, type Table, table } from "./toml";
 import type { WorkspaceFacts } from "./workspace-units";
-
-type Table = Readonly<Record<string, unknown>>;
 
 /** The root files every member's tests read, when they exist. */
 const SHARED = ["pyproject.toml", "uv.lock", ".python-version", "pytest.ini", "conftest.py"];
@@ -20,7 +18,7 @@ const SHARED = ["pyproject.toml", "uv.lock", ".python-version", "pytest.ini", "c
  * that table, and with fewer than two members, the root included.
  */
 export async function uvWorkspace(root: string): Promise<WorkspaceFacts | undefined> {
-  const manifest = toml(await readText(join(root, "pyproject.toml")));
+  const manifest = await readToml(join(root, "pyproject.toml"));
   const workspace = table(table(manifest?.tool)?.uv)?.workspace;
   if (manifest === undefined || !isRecord(workspace)) return undefined;
   const read = await Promise.all(
@@ -67,7 +65,7 @@ async function memberDirs(root: string, workspace: Table): Promise<readonly stri
  * root's pytest runs only on its `tests` folder: on `.` it would collect every member's tests.
  */
 async function memberOf(root: string, dir: string): Promise<WorkspacePackage | undefined> {
-  const manifest = toml(await readText(join(root, dir, "pyproject.toml")));
+  const manifest = await readToml(join(root, dir, "pyproject.toml"));
   const project = table(manifest?.project);
   if (project === undefined || typeof project.name !== "string") return undefined;
   const lists = [
@@ -92,24 +90,4 @@ async function memberOf(root: string, dir: string): Promise<WorkspacePackage | u
 /** A Python package name as PEP 503 compares it: lowercase, each run of `-`, `_` and `.` as `-`. */
 function normalized(name: string): string {
   return name.replace(/[-_.]+/g, "-").toLowerCase();
-}
-
-function table(value: unknown): Table | undefined {
-  return isRecord(value) ? value : undefined;
-}
-
-function strings(value: unknown): readonly string[] {
-  return Array.isArray(value)
-    ? value.filter((item): item is string => typeof item === "string")
-    : [];
-}
-
-/** A TOML file's tables; undefined when it is missing or cannot be read. */
-function toml(text: string | undefined): Table | undefined {
-  if (text === undefined) return undefined;
-  try {
-    return parse(text);
-  } catch {
-    return undefined;
-  }
 }

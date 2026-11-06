@@ -63,7 +63,7 @@ Hoy `specty init` no propone unidades de verificación en un workspace de Cargo 
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-uv.test.ts test/workspace-units.test.ts && pnpm lint
   - type: feat
-- [ ] T4: Un solo lector de TOML para los detectores de Cargo y uv
+- [x] T4: Un solo lector de TOML para los detectores de Cargo y uv
   - files: packages/cli/src/detect/toml.ts, packages/cli/src/detect/units-cargo.ts, packages/cli/src/detect/units-uv.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-cargo.test.ts test/units-uv.test.ts test/init-units-cargo.test.ts test/workspace-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip

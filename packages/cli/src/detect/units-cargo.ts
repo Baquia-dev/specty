@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join, posix } from "node:path";
 import type { WorkspacePackage } from "@baquia-dev/specty-core";
-import { parse } from "smol-toml";
-import { exists, isRecord, readText } from "../io/files";
+import { exists, isRecord } from "../io/files";
 import { expand } from "./project";
 import { rootPackagePaths } from "./root-package";
+import { readToml, strings, type Table } from "./toml";
 import type { WorkspaceFacts } from "./workspace-units";
-
-type Table = Readonly<Record<string, unknown>>;
 
 /** The root files every member's tests read, when they exist. */
 const SHARED = [
@@ -35,7 +33,7 @@ interface Member {
  * Undefined without a `[workspace]`.
  */
 export async function cargoWorkspace(root: string): Promise<WorkspaceFacts | undefined> {
-  const manifest = toml(await readText(join(root, "Cargo.toml")));
+  const manifest = await readToml(join(root, "Cargo.toml"));
   const workspace = manifest?.workspace;
   if (manifest === undefined || !isRecord(workspace)) return undefined;
   const read = await Promise.all(
@@ -80,7 +78,7 @@ async function memberDirs(root: string, workspace: Table): Promise<readonly stri
 
 /** The member in `dir`: undefined without a `Cargo.toml` it can read with a package name. */
 async function memberOf(root: string, dir: string): Promise<Member | undefined> {
-  return memberIn(toml(await readText(join(root, dir, "Cargo.toml"))), dir);
+  return memberIn(await readToml(join(root, dir, "Cargo.toml")), dir);
 }
 
 /** The member in `dir` whose `Cargo.toml` is `manifest`: undefined without a package name. */
@@ -124,20 +122,4 @@ function folderOf(dir: string, key: string, spec: unknown, inherited: Table): st
 /** A repository-relative folder without `./`, `..` steps or a trailing slash. */
 function clean(path: string): string {
   return posix.normalize(path).replace(/\/+$/, "");
-}
-
-function strings(value: unknown): readonly string[] {
-  return Array.isArray(value)
-    ? value.filter((item): item is string => typeof item === "string")
-    : [];
-}
-
-/** A TOML file's tables; undefined when it is missing or cannot be read. */
-function toml(text: string | undefined): Table | undefined {
-  if (text === undefined) return undefined;
-  try {
-    return parse(text);
-  } catch {
-    return undefined;
-  }
 }
