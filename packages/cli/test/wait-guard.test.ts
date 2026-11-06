@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
+import { spawnSync } from "node:child_process";
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, CHANGE, cli, person, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import { APP, CHANGE, cli, git, person, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
 
 /** Claude Code's hook before its `Bash` tool runs `command` in `cwd`, with the rest of its input. */
 const bash = (cwd: string, command: string, input: Readonly<Record<string, unknown>> = {}) =>
@@ -33,6 +36,23 @@ async function implementing(): Promise<string> {
 const BACKGROUND =
   "Ejecútalo en segundo plano (`run_in_background: true`), que te avisa al terminar, y vuelve a ejecutarlo cada vez que se agote o se corte.";
 const SLEEP = `specty: El cambio ${CHANGE} espera la decisión de la persona: no se espera con \`sleep\`.`;
+/** The denial of a command that waits with `program`. */
+const waitingWith = (program: string) =>
+  `specty: El cambio ${CHANGE} espera la decisión de la persona: no se espera con \`${program}\`.`;
+
+/** The change's lock, as a Specty process with `pid` holds it while it runs, such as an `accept`. */
+async function lockedBy(root: string, pid: number): Promise<void> {
+  const path = join(
+    root,
+    git(root, "rev-parse", "--git-path", `common/specty/locks/${CHANGE}.json`),
+  );
+  await mkdir(dirname(path), { recursive: true });
+  const holder = { pid, command: "accept", folder: root, at: "2026-11-06T22:10:00.000Z" };
+  await writeFile(path, JSON.stringify(holder));
+}
+
+/** The id of a process that already ended. */
+const deadPid = () => spawnSync(process.execPath, ["-e", ""]).pid;
 
 describe("Claude Code's guard and the ways of waiting for the person", () => {
   it("AC1: rejects `specty wait` in the foreground and asks for `run_in_background: true`", async () => {
@@ -110,5 +130,37 @@ describe("Claude Code's guard and the ways of waiting for the person", () => {
     expect(denied.err).toContain(
       "SIGUIENTE: ejecuta `specty next`, que te dice si decides tú o esperas a la persona.",
     );
+  });
+  it("AC1: rejects `caffeinate`, the shell's `wait` and the other waits, naming the program", async () => {
+    const root = await inReview();
+    for (const [command, program] of [
+      ["caffeinate -w 4242", "caffeinate"],
+      ["caffeinate -t 600", "caffeinate"],
+      ["wait 4242", "wait"],
+      ["tail -f /dev/null", "tail"],
+      ["if true; then caffeinate -i sleep 60; fi", "sleep"],
+    ] as const) {
+      const denied = await bash(root, command);
+      expect(denied.code, command).toBe(2);
+      expect(denied.err, command).toContain(waitingWith(program));
+      expect(denied.err, command).toContain(
+        `SIGUIENTE: ejecuta \`specty wait\` para esperar su decisión. ${BACKGROUND}`,
+      );
+    }
+    for (const command of ["caffeinate -i git status", "git status & git log -1 & wait"]) {
+      expect((await bash(root, command)).code, command).toBe(0);
+    }
+  });
+
+  it("AC3: lets the waits through while a live Specty process holds the change's lock, and not once it ended", async () => {
+    const root = await inReview();
+    await lockedBy(root, process.pid);
+    for (const command of ["sleep 30", "caffeinate -w 4242", "wait 4242"]) {
+      expect((await bash(root, command)).code, command).toBe(0);
+    }
+    await lockedBy(root, deadPid());
+    const denied = await bash(root, "caffeinate -w 4242");
+    expect(denied.code).toBe(2);
+    expect(denied.err).toContain(waitingWith("caffeinate"));
   });
 });
