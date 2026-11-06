@@ -76,6 +76,43 @@ describe("the brake of `specty new --resolves` on another session's front", () =
   });
 });
 
+describe("the brake of `specty memory resolve` on another session's front", () => {
+  it("AC1: the guard refuses another conversation to take an entry of a front s1 holds", async () => {
+    const root = await withFronts();
+    const refused = await bash(root, "s2", "specty memory resolve P4 p2");
+    expect(refused.code).toBe(2);
+    expect(refused.err).toContain(
+      "P2 es del frente B, que ya tiene dueño: lo lleva claude-code, ahora mismo, en otra conversación.",
+    );
+    expect(refused.err).toContain("vuelve a ejecutar `specty memory resolve` sin P2");
+    expect(refused.err).toContain("`specty front free B`");
+  });
+
+  it("AC2: lets through an entry of no front, of a front without a live owner, or of its own", async () => {
+    const root = await withFronts();
+    expect((await bash(root, "s2", "specty memory resolve P4")).code).toBe(0);
+    expect((await bash(root, "s2", "specty memory resolve P3")).code).toBe(0);
+    expect((await bash(root, "s1", "specty memory resolve P1")).code).toBe(0);
+    // Conversation s1 took B 61 minutes ago and has not stepped since.
+    const at = new Date(NOW.getTime() - 61 * 60_000).toISOString();
+    await writeFiles(root, {
+      ".git/common/specty/fronts/B.json": JSON.stringify({
+        front: "B",
+        tool: "claude-code",
+        conversation: "s1",
+        at,
+      }),
+      ".git/common/specty/activity/claude-code-s1.json": JSON.stringify({
+        tool: "claude-code",
+        folder: root,
+        first: at,
+        last: at,
+      }),
+    });
+    expect((await bash(root, "s2", "specty memory resolve P1")).code).toBe(0);
+  });
+});
+
 describe("the warning of `specty propose` on another session's front", () => {
   /** The draft of SPEC's change, which lists `src/app.ts` and `src/app.test.ts`, in `root`. */
   async function drafted(root: string): Promise<void> {
