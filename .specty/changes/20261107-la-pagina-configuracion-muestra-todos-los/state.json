@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261107-la-pagina-configuracion-muestra-todos-los",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-la-pagina-configuracion-muestra-todos-los",
+  "baseCommit": "53eef2c1668b92bbf9d89a26fd7a562eef5cbf60",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6a92273b708c02a261d9a3f51a82ec1ad74c0789af83f9a3840f83fe2498de04",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d5e5fe3a1aa2ff95cfc0e98b5bc95498e2a8d421f5428a3ae5010d97709d63ba",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:92e8bb987ce9dcb6efedacde9fbb3ad1b8092ab2fd31c6b78ab4af0cd0253743",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:0243b0560300b33bfb49ed71b90d688792774970629e07e87739bd64bb533973",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:925086906f2367c36c673cc20c8a2fe145aa76a23ea5bdba9711a3ac1cd3f533",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:145196f7dfbef93aaf4f0c9a7ce179e6399103c57acb4eae9486105061eb813d",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:14bd64cb912ae7ebf91575844c22abb457eca6356fcd5c78b1d9f38a4ed12c5a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:39acc6b969167077702bd8e5b44356225764418e29d9717181bd195c01c66d01",
+    "at": "2026-11-06T23:14:45.457Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
