@@ -52,7 +52,7 @@ Hoy `specty cancel` deja la carpeta del cambio si tiene algo sin commit, para no
 
 ## Tareas
 
-- [ ] T1: Los textos del commit de lo sin commit, en español y en inglés
+- [x] T1: Los textos del commit de lo sin commit, en español y en inglés
   - files: packages/core/src/cards/close.ts, packages/core/src/cards/human.ts, packages/core/src/cards/index.ts, packages/core/test/cards/close.test.ts
   - ac: AC1, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/close.test.ts
