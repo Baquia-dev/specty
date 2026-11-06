@@ -6,6 +6,13 @@
   "branch": "specty/20261106-el-guard-juzga-session-move-de-opencode-como",
   "baseCommit": "288e88cbf522a73c14ab890101f8b1cb626ee433",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:48a4c9586d13becd568d8a0c6536be9ca574cae4c2c0d741a37635e4e85113a7",
+    "at": "2026-11-06T09:19:59.266Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -34,12 +41,6 @@
     "AC": 2,
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:48a4c9586d13becd568d8a0c6536be9ca574cae4c2c0d741a37635e4e85113a7",
-    "at": "2026-11-06T09:19:59.266Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T09:20:52.998Z"
 }
