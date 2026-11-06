@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "id": "20261106-los-agentes-siempre-esperan-la-decision-de-la",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261106-los-agentes-siempre-esperan-la-decision-de-la",
+  "baseCommit": "36170f0d131f950b7eac367a27c7b3253d3de393",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7928a52f8af6f2345e4a47317d7ceaede74e113c218a3d5038836b9437db510b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:32d3ca0570efb20ce7b827b6ea59e1d6b669c5b170ce2355be29c1dbbfc3e368",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:1ca0312656cabfc1479f67ee1d3e592862b25409f3585055aef690fbd09a8575",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:78114771f539d1349b9fd142252377be407454c952171e67489c8caa9d3d531c",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:93596d017142b9143bcf29e714021d2883fda26a1863996697778eeeaf2388d7",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:7f0621e4246b546af85903a43546820b50422d23f716ea50ad22081fc92f5222",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 9,
+    "C": 2,
+    "R": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7e6d19f7f008d39a13bfea63ce294f3583463142d9b932423ffab8cb68070209",
+    "at": "2026-11-06T11:17:39.801Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
