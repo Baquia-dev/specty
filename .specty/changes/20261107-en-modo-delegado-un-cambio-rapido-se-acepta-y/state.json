@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": "20261107-en-modo-delegado-un-cambio-rapido-se-acepta-y",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-en-modo-delegado-un-cambio-rapido-se-acepta-y",
+  "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4168612d7ec7cf9804fde2514eeeb86fe7f888274ff9ea5f628c9fbbb3231fd3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3032a51b59512a71f3eca4625fc9cea37b1770e0cb319b59b96022d6148ed5e5",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:d41ce879423bddc0e9c633c1f56af3af122dcb57dedbdc76e2c84b9a84d416fb",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d7d829c61ffb35ddd97282fc430619b5f48010b9a103eca2b7c3ebb88e2fc9cf",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:1352f3e5c0d3b63652bef72a53bfdf6f802652dbb28238f6f298aaf3f28c079d",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:5cd0c3a83b84c51f286eb0e2d53f634ad99931c99e71cc4f0e8c3d1c06a9d944",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a9669b464bd29cf287b35ceb484095a5772ad24a8522568c296b9f56a94c322e",
+    "at": "2026-11-06T18:50:56.761Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
