@@ -63,12 +63,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c96accdb742563861188a1b63562c5a7d99d3279",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:47:24.325Z",
       "doneAt": "2026-11-06T15:48:48.791Z",
-      "summary": "loadedSliceChanges pasa a data/slice-changes.ts y la usa la sección Cortes; epic-lanes.ts da por corte, en el orden de la spec, su cambio y su estado (sin estado, planeado, abierto con su decisión o terminado), los cortes sin nombrar al final y los tramos de su pista"
+      "summary": "loadedSliceChanges pasa a data/slice-changes.ts y la usa la sección Cortes; epic-lanes.ts da por corte, en el orden de la spec, su cambio y su estado (sin estado, planeado, abierto con su decisión o terminado), los cortes sin nombrar al final y los tramos de su pista",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f809dd98c6a24a2d4a2382e31ec4138447449a0a",
+      "startedAt": "2026-11-06T15:48:49.092Z",
+      "doneAt": "2026-11-06T15:50:20.215Z",
+      "summary": "sp-inbox-lane dibuja la línea de un corte (id, título con su enlace, pista de cuatro tramos con el color de su fase o lo que espera, y el botón de su decisión con los textos de la fila); InboxRow comparte DECISIONS y deja de recibir inEpic"
     }
   },
   "pending": {

@@ -93,7 +93,7 @@ const TICK_MS = 30_000;
                   <sp-inbox-epic [epicId]="block.epic.id">
                     <sp-inbox-row data-epic-head [change]="block.epic" [current]="isSelected(block.epic)" [now]="now()" (picked)="selectedId.set(block.epic.id)" />
                     @for (change of block.slices; track change.id) {
-                      <sp-inbox-row [change]="change" [inEpic]="true" [current]="isSelected(change)" [now]="now()" (picked)="selectedId.set(change.id)" />
+                      <sp-inbox-row [change]="change" [current]="isSelected(change)" [now]="now()" (picked)="selectedId.set(change.id)" />
                     }
                   </sp-inbox-epic>
                 } @else {

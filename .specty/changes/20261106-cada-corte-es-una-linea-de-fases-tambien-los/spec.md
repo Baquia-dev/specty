@@ -83,7 +83,7 @@ En la Bandeja, la tarjeta de una épica dibuja, bajo su fila, una línea por cad
   - files: packages/ui/src/data/slice-changes.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/inbox/epic-lanes.ts, packages/ui/src/inbox/epic-lanes.test.ts, packages/ui/src/inbox/inbox-view.ts
   - ac: AC2, AC3, AC4, AC11
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/epic-lanes.test.ts --include src/review/spec-sections.test.ts --include src/inbox/inbox-view.test.ts
-- [ ] T2: La línea de un corte dibuja su pista, lo que espera o el botón de su decisión
+- [x] T2: La línea de un corte dibuja su pista, lo que espera o el botón de su decisión
   - files: packages/ui/src/inbox/inbox-lane.ts, packages/ui/src/inbox/inbox-lane.test.ts, packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/data/finished-summaries.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-lane.test.ts --include src/inbox/inbox-row.test.ts --include src/data/finished-summaries.test.ts
