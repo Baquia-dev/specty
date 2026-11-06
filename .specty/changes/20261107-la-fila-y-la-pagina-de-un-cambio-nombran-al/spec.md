@@ -53,7 +53,7 @@ En `specty ui`, la fila de la Bandeja y la página de un cambio dicen qué agent
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/agent-name.test.ts --include src/inbox/lane-holds.test.ts --include src/inbox/inbox-lane.test.ts
   - type: fix
-- [ ] T2: La fila y la página de un cambio nombran al agente por su nombre
+- [x] T2: La fila y la página de un cambio nombran al agente por su nombre
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/change/resume-hints.ts, packages/ui/src/change/resume-hints.test.ts, packages/ui/src/change/change-page.unattended.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/resume-hints.test.ts --include src/change/change-page.unattended.test.ts --include src/inbox/inbox-row.test.ts
