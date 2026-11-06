@@ -23,3 +23,9 @@ El turno de la verificación completa contaba como tomado para todo el proceso q
   - files: packages/cli/src/store/lock.ts, packages/cli/src/flow/full-verification.ts, packages/cli/src/server/runs.ts, packages/cli/src/flow/full-verification.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/flow/full-verification.test.ts test/server/runs-turn.test.ts test/server/verify-merge.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+El turno de la verificación completa es de quien lo toma y de lo que corre dentro (AsyncLocalStorage, onFullVerificationTurn): otra acción del mismo proceso hace cola y dice quién lo tiene; ARCHITECTURE §9 y formats §1 lo cuentan.
