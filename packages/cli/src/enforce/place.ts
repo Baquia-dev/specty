@@ -1,16 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import { realpath } from "node:fs/promises";
-import { isAbsolute, join, relative, resolve } from "node:path";
+import { basename, isAbsolute, join, relative, resolve } from "node:path";
 import {
   analyzeShell,
   type ForeignPath,
+  type GhostPath,
   type GuardAction,
   isGoverned,
   type ShellAnalysis,
 } from "@baquia-dev/specty-core";
 import type { Redirect } from "../agents/adapter";
 import { within } from "../flow/land";
-import { placePaths } from "../flow/worktree";
+import { lostChanges } from "../flow/lost";
+import { type GhostPlace, ghostFolders, placePaths, sortGhosts } from "../flow/worktree";
 import { pathsOf } from "../io/git";
 import type { Session } from "../session";
 import type { RawAction } from "./actions";
@@ -37,8 +39,11 @@ export async function resolveAction(
   if (raw.kind === "other") return raw;
   if (raw.kind === "files") return { kind: "files", ...(await placeFiles(place, raw)) };
   if (raw.kind !== "shell") {
-    const { inside, foreign } = await inRepo(place, raw.paths);
-    return { kind: raw.kind, paths: inside, foreign };
+    const { inside, foreign, ghosts } = await inRepo(place, raw.paths);
+    // Reading is free, also inside a ghost folder.
+    return raw.kind === "read"
+      ? { kind: "read", paths: inside, foreign }
+      : { kind: raw.kind, paths: inside, foreign, ghosts: await ghostsOf(session, ghosts) };
   }
   // Paths the analysis cannot place (shell variables, `cd` to an unknown place) are not judged.
   const analysis = analyzeShell(raw.command);
@@ -67,15 +72,16 @@ export async function resolveAction(
 /**
  * Where the actions of a conversation go (`AgentAdapter.redirect`): the change's folder it
  * entered, where a path of another worktree becomes the same path; otherwise its tool's folder,
- * and nothing moves.
+ * and nothing moves. A path of a ghost folder stays as it is, for the guard to deny it.
  */
 export async function redirection({ session, cwd, bound }: Place): Promise<Redirect> {
   if (bound === undefined) return { folder: cwd, path: (path) => path };
   const worktrees = (await session.git.worktrees()).map(({ folder }) => folder);
+  const ghostOf = await ghostFolders(session.git);
   return {
     folder: bound,
     path: (path) => {
-      if (contains(bound, path)) return path;
+      if (contains(bound, path) || ghostOf(path) !== undefined) return path;
       // A worktree nested in another owns its files.
       const owner = worktrees
         .filter((folder) => contains(folder, path))
@@ -112,19 +118,25 @@ function contains(folder: string, path: string): boolean {
 }
 
 /**
- * Turns tool paths into repository-relative ones, and keeps apart those inside another worktree:
- * they belong to another change, and a conversation that entered a change's folder is given the
- * same path there. Paths outside every worktree and paths git ignores (`node_modules/`, caches,
- * builds) are not governed code, so they are dropped.
+ * Turns tool paths into repository-relative ones, and keeps apart those inside a ghost folder,
+ * which git no longer knows (`ghostFolders`), and those inside another worktree: they belong to
+ * another change, and a conversation that entered a change's folder is given the same path there.
+ * Paths outside every worktree and paths git ignores (`node_modules/`, caches, builds) are not
+ * governed code, so they are dropped.
  */
 async function inRepo(
   { session, cwd, bound }: Place,
   paths: readonly string[],
-): Promise<{ readonly inside: string[]; readonly foreign: readonly ForeignPath[] }> {
-  const placed = await placePaths(
+): Promise<{
+  readonly inside: string[];
+  readonly foreign: readonly ForeignPath[];
+  readonly ghosts: readonly GhostPlace[];
+}> {
+  const { ghosts, others } = await sortGhosts(
     session.git,
     paths.map((path) => resolve(cwd, path)),
   );
+  const placed = await placePaths(session.git, others);
   // The root itself (`rm -rf .`) is never ignored, and git rejects an empty pathspec.
   const ignored = new Set(await session.git.ignored(placed.inside.filter((path) => path !== "")));
   const foreign =
@@ -134,7 +146,22 @@ async function inRepo(
           ...path,
           instead: join(bound, relative(path.worktree, path.path)),
         }));
-  return { inside: placed.inside.filter((path) => !ignored.has(path)), foreign };
+  return { inside: placed.inside.filter((path) => !ignored.has(path)), foreign, ghosts };
+}
+
+/**
+ * The paths of ghost folders as the guard judges them: with the main folder, where the agent
+ * carries on, and the open change whose lost folder each is, by its name. Only with some does the
+ * guard look for the changes without a folder.
+ */
+async function ghostsOf(session: Session, ghosts: readonly GhostPlace[]): Promise<GhostPath[]> {
+  if (ghosts.length === 0) return [];
+  const main = (await session.git.worktrees())[0]?.folder ?? session.root;
+  const lost = new Set((await lostChanges(session)).map(({ id }) => id));
+  return ghosts.map((ghost) => {
+    const id = basename(ghost.folder);
+    return { ...ghost, main, ...(lost.has(id) ? { lost: id } : {}) };
+  });
 }
 
 /**
@@ -167,7 +194,10 @@ async function commitsHere(
   return placed.inside.length > 0 || placed.foreign.length > 0;
 }
 
-/** What a command or a patch writes and deletes here, and apart, what it would change elsewhere. */
+/**
+ * What a command or a patch writes and deletes here, and apart, what it would change elsewhere:
+ * in another worktree, or in a ghost folder.
+ */
 async function placeFiles(
   place: Place,
   files: { readonly writes: readonly string[]; readonly deletes: readonly string[] },
@@ -178,5 +208,6 @@ async function placeFiles(
     writes: writes.inside,
     deletes: deletes.inside,
     foreign: [...writes.foreign, ...deletes.foreign],
+    ghosts: await ghostsOf(place.session, [...writes.ghosts, ...deletes.ghosts]),
   };
 }

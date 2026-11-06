@@ -161,6 +161,51 @@ export async function placePaths(git: Git, paths: readonly string[]): Promise<Pl
   };
 }
 
+/** A path inside a ghost folder, and that folder. */
+export interface GhostPlace {
+  readonly path: string;
+  readonly folder: string;
+}
+
+/**
+ * Tells the ghost folder an absolute path falls in: an entry of `.worktrees/`, or of the folder
+ * beside the main one from before ADR 0018, that is no worktree git knows, whether it exists or
+ * not, such as a change's folder removed when it closed. Writing there would bring it back without
+ * git. A worktree git still lists without its folder is no ghost: it is another change's. The
+ * homes themselves and any other path give undefined.
+ */
+export async function ghostFolders(git: Git): Promise<(path: string) => string | undefined> {
+  const listed = (await git.worktrees()).map(({ folder }) => folder);
+  const known = new Set([...listed, ...(await Promise.all(listed.map(resolved)))]);
+  const homes = [await worktreesHome(git), await formerWorktreesHome(git)];
+  return (path) => {
+    for (const home of homes) {
+      const inner = relative(home, path);
+      if (inner === "" || inner.startsWith("..") || isAbsolute(inner)) continue;
+      const folder = join(home, inner.split(sep)[0] ?? inner);
+      return known.has(folder) ? undefined : folder;
+    }
+    return undefined;
+  };
+}
+
+/** Keeps apart the absolute paths inside a ghost folder (`ghostFolders`) from the others. */
+export async function sortGhosts(
+  git: Git,
+  paths: readonly string[],
+): Promise<{ readonly ghosts: readonly GhostPlace[]; readonly others: readonly string[] }> {
+  if (paths.length === 0) return { ghosts: [], others: [] };
+  const ghostOf = await ghostFolders(git);
+  const ghosts: GhostPlace[] = [];
+  const others: string[] = [];
+  for (const path of paths) {
+    const folder = ghostOf(path);
+    if (folder === undefined) others.push(path);
+    else ghosts.push({ path, folder });
+  }
+  return { ghosts, others };
+}
+
 /** The worktree whose folder contains `path` most closely; the first one wins ties. */
 function closest(owners: readonly Worktree[], path: string): Worktree | undefined {
   return owners

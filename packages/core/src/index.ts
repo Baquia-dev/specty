@@ -161,6 +161,7 @@ export { analyzeShell, type ShellAnalysis } from "./guard/shell";
 export { managedBySpecty } from "./guard/spec";
 export {
   type ForeignPath,
+  type GhostPath,
   nativeEnterDenial,
   subagentEnterDenial,
   subagentNewDenial,

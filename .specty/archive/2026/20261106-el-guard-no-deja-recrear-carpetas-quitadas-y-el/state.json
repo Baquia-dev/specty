@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "id": "20261106-el-guard-no-deja-recrear-carpetas-quitadas-y-el",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-el-guard-no-deja-recrear-carpetas-quitadas-y-el",
+  "baseCommit": "723a599e2ab1ed33d68368a923a91151b72ffeb6",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:84adfc38dc3671772b3140311d8c4c524009cbf9a92edabf43081ab8d6728aae",
+    "at": "2026-11-06T08:35:47.707Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a6c4c2f8d6216dee636b6e40ce8b2fc89e5119324cbdea8044db63642b17cd98",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:afebf9c964bcd50f4bb8f6c581e0d57a11348db1be30b7fd8bec25bb4b1a1deb",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:39cce9a04723e395a71fd02e42c3a87f941ae3e2b87c3ba1c82c493cc81636ba",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:bd121ed8dcda09ccb62170e436143c219771feed2ecf7a4718409cf13736d2b9",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d5c97dc4a710289b0c778727ba5dfebb04dc277659394fcd681a29dcb2052a98",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "d8c048510cdded50f1f87c886fb23e90b81b1ecb",
+      "attempts": 1,
+      "startedAt": "2026-11-06T08:48:00.594Z",
+      "doneAt": "2026-11-06T08:51:49.958Z",
+      "summary": "GhostPath en guard/worktrees.ts, la regla ghost en decide.ts (antes que la de otra worktree, en write/delete, files y shell) y su texto en cards/ghost-folder.ts, en español y en inglés",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c7189f2e44b68acd88df017f9869bbbf80b6cf2f",
+      "attempts": 1,
+      "startedAt": "2026-11-06T08:51:50.359Z",
+      "doneAt": "2026-11-06T08:56:59.386Z",
+      "summary": "ghostFolders y sortGhosts en flow/worktree.ts; inRepo aparta las rutas fantasma antes de placePaths y placeFiles/escrituras las dan como ghosts con main y lost (lostChanges solo si hay alguna); redirection no mueve una ruta fantasma; enteredFolder no ata a una carpeta fantasma",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "c2ddc8071894dcafd8ffc9d73fd44fc9bc9c428c",
+      "attempts": 1,
+      "startedAt": "2026-11-06T08:56:59.702Z",
+      "doneAt": "2026-11-06T08:58:38.729Z",
+      "summary": "SessionBinding.ended y markEnded en store/local.ts; endBinding y resumeBinding en enforce/sessions.ts, que el guard llama en el fin de la conversación y en su SessionStart; workingFolders salta las ligaduras terminadas",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "b7a3f8ca55228b61b994f80ca2812944ef3362b6",
+      "attempts": 1,
+      "startedAt": "2026-11-06T08:58:39.042Z",
+      "doneAt": "2026-11-06T08:59:34.326Z",
+      "summary": "formats.md §1: ended en sessions/; ARCHITECTURE §9: la limpieza deja de contar una conversación terminada; §10: Carpetas fantasma (regla ghost, restore, ligadura y redirección)",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 11,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T09:05:30.939Z",
+  "lockedTests": {
+    "packages/cli/test/ghost-folders.test.ts": "sha256:8e67ac9f4ce5e85863c8038cc92e39d62b97fd1ae9b20ea6c8fe467a8c890fad",
+    "packages/cli/test/session-end-binding.test.ts": "sha256:bb90b41024a4ea1c752b99d15f3bb68e669a8917aff346763e93cb6bdd719b68",
+    "packages/core/test/guard/ghosts.test.ts": "sha256:c46c175980331e20c46d523ed91a8d089f91e9e6283547a52912b71b0b1c2442"
+  }
+}
