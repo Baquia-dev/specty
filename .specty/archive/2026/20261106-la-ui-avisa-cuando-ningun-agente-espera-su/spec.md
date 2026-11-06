@@ -89,3 +89,26 @@ Hoy, si la persona aprueba, decide el alcance, pide cambios, acepta, ajusta o ci
 - R1: Leer la marca, la actividad y el registro de cada cambio abierto hace más lenta `/api/changes`. Solo se lee para los cambios que esperan al agente con una decisión de la persona como última línea del agente o la persona, y la actividad se lee una vez para todos.
 - R2: El aviso sale sin motivo durante el minuto que tarda en anotarse el paso de un agente que trabaja sin `wait` (A3). El texto dice qué pasó, y desaparece solo.
 - R3: Una marca cortada porque el proceso murió, con un `pid` que se reutilizó, parecería viva. `readWait` la da por cortada (`stopped`) en cuanto su archivo lleva más de 30 s sin renovarse.
+
+## Cierre
+
+### Resumen
+
+El registro de cada cambio abierto que espera al agente lleva `unattended` cuando nadie retoma la última decisión de la persona: ninguna línea del agente después en la auditoría, ningún `specty wait` vivo ni uno que terminara `decided` después de ella, y ningún paso de una conversación en su carpeta después de ella (`server/unattended.ts`, que `holdsById` de `server/records.ts` añade junto a `orphan` y `away`). Da la hora de la decisión y, si el último `wait` agotó su tiempo o se cortó, su herramienta, cómo terminó y hace cuántos minutos; sin él, la última conversación que dio un paso en su carpeta. La UI lo lee (`data/records.ts`, `data/views.ts`). «Cómo retomarlo» dice qué pasó y qué hacer antes de las órdenes, con prioridad sobre las marcas de huérfano y fuera de su carpeta (`change/resume-hints.ts`). La página saca un aviso flotante cuando la marca aparece con ella abierta (`change/change-page.ts`), y la Bandeja dice «Nadie retoma tu decisión» en la fila (`inbox/inbox-row.ts`). Los textos van en español y en inglés. `docs/ARCHITECTURE.md` §15 lo cuenta. La marca de `wait` la dio la épica `20261106-los-agentes-siempre-esperan-la-decision-de-la`, y este cambio solo la lee.
+
+### Desviaciones (respecto al plan)
+
+- Pedir cambios deja el cambio en `review`, que el flujo da como esperando a la persona, y el test de AC1 lo esperaba como turno del agente. `unattendedById` cuenta también ese caso (`agentsTurn`), y para lo demás usa el `waitingFor` de `openChanges`, que sigue la misma regla que `isWaitingForHuman`, en vez de llamarla.
+- `data/views.ts` entró con la solicitud S1, porque `deriveViews` es quien pasa `orphan` y `away` del registro a la vista.
+- El cambio de ejemplo de `data/fixtures.ts` es un comando «Simular: nadie retoma tu decisión», que pone o quita `unattended` en el primer cambio en implementación, para no cambiar los datos de ejemplo que leen otros tests.
+
+### Decisiones
+
+- La marca de la Bandeja va en su propio elemento (`data-unattended`), en el lugar de la de huérfano o fuera de su carpeta, que no sale con ella.
+- El aviso flotante sale solo cuando `unattended` pasa de no estar a estar en el mismo cambio: ni al abrir la página con la marca puesta ni al pasar a otro cambio que la tiene.
+- Un paso de una conversación en la misma hora que la decisión cuenta como después de ella, para no avisar sin motivo.
+
+### Pendientes
+
+- P225: `specty wait`, el fin de turno y `status` no tratan «pedir cambios» como turno del agente.
+- P226: `change-page.ts` y `packages/ui/src/data/records.ts` pasan del aviso de 300 líneas de código.
