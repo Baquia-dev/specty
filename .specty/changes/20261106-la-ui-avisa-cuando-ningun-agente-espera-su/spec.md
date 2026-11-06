@@ -68,7 +68,7 @@ Hoy, si la persona aprueba, decide el alcance, pide cambios, acepta, ajusta o ci
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-unattended.test.ts test/server-actions.test.ts
   - type: feat
-- [ ] T2: La página del cambio avisa y dice cómo seguir
+- [x] T2: La página del cambio avisa y dice cómo seguir
   - files: packages/ui/src/data/records.ts, packages/ui/src/change/resume-hints.ts, packages/ui/src/change/resume-hints.test.ts, packages/ui/src/change/change-page.ts, packages/ui/src/change/change-page.unattended.test.ts
   - ac: AC3, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/resume-hints.test.ts --include src/change/change-page.unattended.test.ts --include src/change/change-page.test.ts

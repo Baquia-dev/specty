@@ -52,12 +52,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "364f09c0e0ea7af63c574f304513c1df8b67fc3c",
+      "attempts": 1,
       "startedAt": "2026-11-06T14:41:48.402Z",
       "doneAt": "2026-11-06T14:49:29.877Z",
-      "summary": "server/unattended.ts dice si nadie retoma la última decisión de la persona (sin línea del agente, wait vivo o decided, ni paso en su carpeta) y qué pasó; records.ts lo añade junto a orphan y away. Pedir cambios cuenta como turno del agente."
+      "summary": "server/unattended.ts dice si nadie retoma la última decisión de la persona (sin línea del agente, wait vivo o decided, ni paso en su carpeta) y qué pasó; records.ts lo añade junto a orphan y away. Pedir cambios cuenta como turno del agente.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/data/views.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "95166b2efb59fa0e2865a5f3b0ca01459436d36d",
+      "startedAt": "2026-11-06T14:49:30.504Z",
+      "doneAt": "2026-11-06T14:55:36.591Z",
+      "summary": "La UI lee unattended (records.ts, views.ts); «Cómo retomarlo» dice qué pasó y qué hacer antes de las órdenes, con prioridad sobre away y huérfano, y la página saca un toast cuando aparece con ella abierta."
     }
   },
   "pending": {
@@ -68,7 +79,8 @@
     "A": 7,
     "AC": 7,
     "T": 5,
-    "R": 3
+    "R": 3,
+    "S": 1
   },
   "lockedTests": {
     "packages/ui/src/change/resume-hints.test.ts": "sha256:16145e1b715e6383667be86134e3a9c731dd02ba66103a0bee74dfed255d2ec9",
