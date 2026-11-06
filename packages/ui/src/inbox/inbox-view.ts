@@ -44,12 +44,12 @@ export type InboxBlock<T extends ListedChange = ListedChange> =
       readonly slices: readonly T[];
     };
 
-/** A section of the Inbox: its blocks, which it counts, and the changes j/k walk through. */
+/** A section of the Inbox: its blocks, which it counts, and every change in them. */
 export interface InboxSection<T extends ListedChange = ListedChange> {
   readonly key: string;
   readonly label: Bilingual;
   readonly blocks: readonly InboxBlock<T>[];
-  /** In the order shown: each row, or the epic and then its slices. */
+  /** In the order chosen: each row, or the epic and then its slices loaded. */
   readonly order: readonly T[];
 }
 

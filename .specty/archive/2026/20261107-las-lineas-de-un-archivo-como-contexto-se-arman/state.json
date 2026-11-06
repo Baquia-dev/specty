@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261107-las-lineas-de-un-archivo-como-contexto-se-arman",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261107-las-lineas-de-un-archivo-como-contexto-se-arman",
+  "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e218c19f7b2a6ad83e74418ea63409a59a5f27ae2247083c5153ce7cffe40ea1",
+    "at": "2026-11-06T17:02:41.179Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "13fa4daed40240cceb8ed6d0ec7faf5d5c5e0cc4",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:02:41.790Z",
+      "doneAt": "2026-11-06T17:05:15.488Z",
+      "summary": "contextFile(path, lines, start = 1) en data/diff.ts arma el archivo de líneas de contexto; lo usan trace-view.ts (en vez de diffOf) y code-lines.ts (en vez de asFile, partiendo el texto igual que antes); test directo en diff.test.ts.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

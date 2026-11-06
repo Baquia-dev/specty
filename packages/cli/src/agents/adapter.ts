@@ -194,8 +194,9 @@ export interface AgentStop {
   /**
    * Writes the hook into the plan of `init` or of `check --install`, next to Specty's guard and
    * with its command: `init`'s with `--no-check`, and `check --install`'s without it, which also
-   * takes the mark away from the one `init` wrote. Nothing when the guard is not there, or the
-   * hook already is as it asks; one that runs the check keeps it.
+   * takes the mark away from the one `init` wrote. One already there takes the guard's command, as
+   * when `init` changes it, and keeps its time limit; one that runs the check keeps it. Nothing
+   * when the guard is not there, or the hook already is as it asks.
    */
   readonly plan: (context: StopPlan) => Promise<void>;
 }
@@ -213,8 +214,8 @@ interface StopPlan {
 /**
  * The end of turn of an agent whose hooks live in JSON files: in each of `files` that has
  * Specty's guard, `hook` adds `specty hook agent-stop <agent>` with the guard's own command, and
- * with `--no-check` unless the plan checks. With the check, an end of turn with the mark loses it
- * where it is, with its time limit.
+ * with `--no-check` unless the plan checks. One already there takes the guard's command where it
+ * is, with its time limit, and, with the check, loses the mark.
  */
 export function jsonStop(
   files: readonly string[],
@@ -222,18 +223,20 @@ export function jsonStop(
 ): AgentStop["plan"] {
   return async ({ root, files: planned, timeout, tool, check }) => {
     const ours = `hook agent-stop ${tool}`;
-    const unchecked = ` ${ours} ${NO_CHECK}`;
     for (const path of files) {
       const file = join(root, path);
       const text = await planned.read(file);
       if (text === undefined) continue;
+      const prefix = guardPrefix(text, tool);
       if (text.includes(ours)) {
-        if (check && text.includes(unchecked)) {
-          await rewriteJson(file, (value) => withCheck(value, unchecked), false, planned);
-        }
+        await rewriteJson(
+          file,
+          (value) => withTurnEnds(value, tool, prefix, check),
+          false,
+          planned,
+        );
         continue;
       }
-      const prefix = guardPrefix(text, tool);
       if (prefix === undefined) continue;
       const command = `${prefix} ${ours}${check ? "" : ` ${NO_CHECK}`}`;
       await rewriteJson(file, hook(command, timeout), false, planned);
@@ -242,23 +245,39 @@ export function jsonStop(
 }
 
 /**
- * `value` with each `command` that ends in `unchecked` (`hook agent-stop <agent> --no-check`)
- * without its mark, where it was.
+ * `value`, a hooks file or a part of one, with each end of turn of `tool` in it (`hook agent-stop
+ * <tool>`, at any depth): it calls Specty with `command`, as the guard does, when there is one,
+ * and loses `--no-check` when `check` is on. Its other arguments, its time limit and the other
+ * hooks stay as they were.
  */
-function withCheck(
+export function withTurnEnds(
   value: Readonly<Record<string, unknown>>,
-  unchecked: string,
+  tool: GuardTool,
+  command: string | undefined,
+  check: boolean,
 ): Record<string, unknown> {
-  const checked = (item: unknown): unknown => {
-    if (Array.isArray(item)) return item.map(checked);
-    return isRecord(item) ? withCheck(item, unchecked) : item;
+  const mark = ` hook agent-stop ${tool}`;
+  const unchecked = `${mark} ${NO_CHECK}`;
+  return withCommands(value, (text) => {
+    if (!text.includes(mark)) return text;
+    const called = command === undefined ? text : command + text.slice(text.indexOf(mark));
+    return check && called.endsWith(unchecked) ? called.slice(0, -` ${NO_CHECK}`.length) : called;
+  });
+}
+
+/** `value` with each `command` in it, at any depth, through `change`. */
+function withCommands(
+  value: Readonly<Record<string, unknown>>,
+  change: (command: string) => string,
+): Record<string, unknown> {
+  const changed = (item: unknown): unknown => {
+    if (Array.isArray(item)) return item.map(changed);
+    return isRecord(item) ? withCommands(item, change) : item;
   };
   return Object.fromEntries(
     Object.entries(value).map(([key, item]) => [
       key,
-      key === "command" && typeof item === "string" && item.endsWith(unchecked)
-        ? item.slice(0, -` ${NO_CHECK}`.length)
-        : checked(item),
+      key === "command" && typeof item === "string" ? change(item) : changed(item),
     ]),
   );
 }
