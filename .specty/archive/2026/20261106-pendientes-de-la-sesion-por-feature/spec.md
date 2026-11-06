@@ -84,3 +84,34 @@ Hoy cada sesión empieza con «Pendientes y mejoras abiertas: 72. Las primeras l
 - R1: Al no ver los pendientes abiertos, un agente puede volver a anotar uno que ya existe. Mitigación: el freno de parecidos de C3.
 - R2: El freno de parecidos da falsos positivos (P2/P9 son distintos y se parecen). Mitigación: `--distinct-from` lo resuelve en un paso, y la persona no tiene freno.
 - R3: Leer el título de cada cambio de origen hace más lento `GET /api/memory`. Mitigación: el servidor ya guarda en memoria los archivados que leyó.
+
+## Cierre
+
+### Resumen
+
+Cinco cortes, todos cerrados:
+- C1: la tarjeta de inicio de sesión y `next` sin cambio ya no listan ni cuentan los pendientes ajenos (solo el frente propio y los recordatorios); la regla de AGENTS.md pide respuestas directas y concisas y un reporte final con solo los pendientes propios; el cierre ya no guarda viñetas como «Ninguno nuevo.» (resuelve P74).
+- C2: `specty memory resolve <ids>` toma para el cambio abierto de la carpeta un pendiente ajeno que su trabajo resolvió; queda hecho al cerrarse el cambio, y la salida del cierre lo nombra.
+- C3: el `memory add` de un agente no escribe un pendiente o una mejora parecidos a uno abierto sin `--distinct-from`.
+- C4: la página Memoria agrupa los pendientes bajo su épica y su feature, con «Sin feature» al final; `GET /api/memory` da `origins`.
+- C5: la página de un cambio lista, en «En la memoria», las entradas que salieron de él o que tomó, con enlace a la Memoria.
+
+Las dos pantallas se comprobaron en el navegador con `specty ui` después de cerrar C5.
+
+### Desviaciones
+
+- El clasificador de Claude Code bloqueó la autoaprobación en modo delegado; desde que la persona lo autorizó en el chat («aprueba, acepta y cierra tú»), el agente principal ejecutó approve, accept y close, y cada subagente paraba antes.
+- C1 necesitó un ajuste (revisión 2) por un test fuera de su alcance (`setup.test.ts`); C4 falló una aceptación por una exportación sin uso (knip); C1 y C3 tuvieron fallos de verificación por la carga de la máquina, no por tests en rojo.
+- El subagente de C3 se cortó por un error de red y el agente principal escribió su cierre.
+- El cierre de C1 se cosechó con el CLI de main anterior a C1 y guardó «Ninguno nuevo.» como P192; se propuso descartarla.
+
+### Decisiones
+
+- Los recordatorios y el frente propio siguen en la tarjeta de inicio: son trabajo programado o asignado a la sesión.
+- Un pendiente resuelto se marca hecho al cerrar el cambio, no se borra, para que quede su historia.
+- El freno de parecidos reusa `similarTexts` de `new` y solo aplica a los agentes.
+
+### Pendientes
+
+- P194, ya en la memoria: el guard no frena `memory resolve` sobre una entrada del frente de otra conversación.
+- `specty ui` sirve la UI de `packages/ui/dist`, que el `git.afterLanding` de este repositorio no reconstruye: tras cerrar C4 y C5, la UI servida seguía siendo la del día anterior hasta ejecutar `pnpm --filter @baquia-dev/specty-ui build`. La persona puede añadir ese build a `afterLanding` en `.specty/config.yaml`.

@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261106-pendientes-de-la-sesion-por-feature",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261106-pendientes-de-la-sesion-por-feature",
   "baseCommit": "9f64115f29ac1a85511d34e984eddd53ac37ff90",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4a51b6ad9a1e47ee684dd414e5623bef8cc00f23ea8b3bc1071d4c39ea86a88b",
+    "at": "2026-11-05T19:56:57.454Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -63,11 +70,5 @@
     "C": 5,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4a51b6ad9a1e47ee684dd414e5623bef8cc00f23ea8b3bc1071d4c39ea86a88b",
-    "at": "2026-11-05T19:56:57.454Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-06T03:54:26.640Z"
 }
