@@ -47,7 +47,7 @@ Cuando el agente acepta un cambio `quick` en modo delegado, hoy la verificación
 
 ## Tareas
 
-- [ ] T1: En modo delegado, el `accept` de un cambio rápido tiene el turno de aterrizaje de principio a fin
+- [x] T1: En modo delegado, el `accept` de un cambio rápido tiene el turno de aterrizaje de principio a fin
   - files: packages/cli/src/commands/accept.ts, packages/cli/test/accept-quick-turn.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-quick-turn.test.ts test/accept-turn-time.test.ts test/close-turn.test.ts test/integrate.test.ts && pnpm typecheck && pnpm lint

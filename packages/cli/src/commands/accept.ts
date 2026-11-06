@@ -69,8 +69,36 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
   if (pending.kind === "wait") return pending.output;
   const { change } = pending;
   const plan = await integrationOf(session, change.state);
+  return closingTurn(session, change, plan, () => acceptMerged(session, change, plan, verify));
+}
+
+/**
+ * In delegated mode, accepting a change that closes on it, a quick one, runs on the landing turn
+ * from before main comes in until the change lands (`landingTurn`): no other session lands
+ * between its verification and its landing, so it verifies once and the closing has nothing left
+ * to merge. The person's acceptance, at the terminal or on the UI, takes the turn only to verify
+ * and to land, never while they answer.
+ */
+function closingTurn(
+  session: Session,
+  change: StoredChange,
+  plan: Integration | undefined,
+  run: () => Promise<Output>,
+): Promise<Output> {
+  const closes = session.actor === "agent" && change.state.kind === "quick";
+  return closes ? landingTurn(session, plan, run) : run();
+}
+
+/** Accepting with main merged in first, if it moved: the verification, the question and the rest. */
+async function acceptMerged(
+  session: Session,
+  change: StoredChange,
+  plan: Integration | undefined,
+  verify: boolean | undefined,
+): Promise<Output> {
   const merged = await mergeFirst(session, plan, change);
   if (!merged.ok) return merged.output;
+  const { cards } = session;
   const { terminal } = session.environment;
   const view = await changeView(session, change);
   // An epic has no code of its own: each of its slices was verified when it closed.
@@ -269,7 +297,8 @@ async function acceptedRisks(
 
 /**
  * Quick lane: accepting closes the change, with the task summary as its closing. As when closing,
- * it lands on the full verification's turn, so that no other session lands in between.
+ * it lands on the full verification's turn, so that no other session lands in between; in
+ * delegated mode, this process holds it already (`closingTurn`), and it does not wait.
  */
 async function closeQuick(
   session: Session,

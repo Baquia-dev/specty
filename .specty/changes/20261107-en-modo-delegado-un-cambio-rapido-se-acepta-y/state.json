@@ -47,7 +47,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "825b153a705a6bd8458d9b3809c5b7df3cd4b36a",
+      "startedAt": "2026-11-06T18:57:38.162Z",
+      "doneAt": "2026-11-06T18:58:55.193Z",
+      "summary": "En modo delegado, el accept de un cambio rápido corre en el turno de aterrizaje desde antes de incorporar main hasta aterrizar (closingTurn); con la persona, como antes"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
