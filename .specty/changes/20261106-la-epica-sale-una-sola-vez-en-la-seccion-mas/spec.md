@@ -62,7 +62,7 @@ En la Bandeja, una épica cargada y todos sus cortes cargados forman un solo blo
   - ac: AC1, AC10
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-view.test.ts
   - type: feat
-- [ ] T2: La Bandeja dibuja cada épica una vez, con su fila a la cabeza y sus cortes debajo
+- [x] T2: La Bandeja dibuja cada épica una vez, con su fila a la cabeza y sus cortes debajo
   - files: packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox-epic.ts, packages/ui/src/inbox/inbox.test.ts, packages/ui/src/inbox/inbox-more.test.ts, docs/ui.md
   - ac: AC1, AC10
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox.test.ts --include src/inbox/inbox-more.test.ts --include src/inbox/inbox-view.test.ts && pnpm typecheck
