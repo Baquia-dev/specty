@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-specty-wait-deja-su-marca-y-aguanta-en-cada",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-specty-wait-deja-su-marca-y-aguanta-en-cada",
   "baseCommit": "94877ac9e202cac41073cc8413224ae8fbeb3456",
   "revision": 1,
@@ -56,6 +56,9 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T12:23:13.497Z"
+  "lockedTests": {
+    "packages/cli/test/wait.test.ts": "sha256:93e4be7a5e4085aa3b8036d739f99a02441b32881c3d865068db502c2c41d552",
+    "packages/core/test/cards/wait.test.ts": "sha256:acd019108016b13a431a165982a1325b5d3f55e05c1691c7ba29de278e6bf5ea",
+    "packages/cli/test/waits.test.ts": "sha256:f4ecd43447aaf5a2cd0db4ca0e618f400b0959fd7209e9c49378c400c064b488"
+  }
 }
