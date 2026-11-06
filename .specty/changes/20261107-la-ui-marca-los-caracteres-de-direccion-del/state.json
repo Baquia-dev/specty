@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261107-la-ui-marca-los-caracteres-de-direccion-del",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-la-ui-marca-los-caracteres-de-direccion-del",
+  "baseCommit": "7364903203145fdcd85c7f2a4455e068e59045f7",
+  "revision": 3,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:83192a20be97a0455edb07144ca9bee5fbbe78e802f1de40a8db1aff25b9e7a9",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a696d038e94b5fa7566cfcf47453f9903d3ed63fdb6863718e054fd0fde6799f",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:7ff3f4b79d244e63e7b226bfd1e313562aa3bde524e84c8cdfeb6c1d58217714",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:43eedcc167363495b43bb38383e7fcd9b02a3a870e12a9d88d95303314bfca8c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:7db43ada1ae0f589dbae0116547fe4a65976804bf095876b7a89149ee21a0308",
+    "at": "2026-11-06T18:48:12.429Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
