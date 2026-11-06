@@ -68,3 +68,23 @@ Hoy, al confirmar un supuesto en la UI, el botón deja de cargar en cuanto el se
 
 - R1: Esperar las relecturas en `post` alarga cada acción lo que tarda leer `/api/changes` — el tope de 10 s y que el botón ya cargaba durante la petición; a cambio desaparece el momento con el estado viejo.
 - R2: Una página que se cierra mientras su relectura sigue dejaría la acción esperando — la espera se cumple también cuando se destruye el inyector de quien la pidió.
+
+## Cierre
+
+### Resumen
+
+Cada decisión de la persona en la UI termina, y su botón deja de cargar, cuando la página ya muestra el nuevo estado. `ServerData.post`, tras un 200, llama a cada oyente de `subscribe` y espera sus promesas con `Promise.allSettled`, como mucho 10 s (`REREAD_MS`), en lugar de esperar al evento `changes`. Los oyentes de `ChangesStore` y de `byId` devuelven la promesa de su relectura (`reread`): esperan con un `effect` sobre `isLoading` a que la lista, las páginas de terminados y el cambio pedido por su id se vuelvan a leer, repiten una lectura que ya estaba en marcha y dejan de esperar si se destruye el inyector de quien lo pidió. ARCHITECTURE §15 lo cuenta.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- Un oyente que falla no hace fallar la acción, que el servidor ya hizo: por eso `Promise.allSettled`.
+- Las demás lecturas que escuchan a la fuente (memoria, sesiones, modo delegado, cortes de una épica) se vuelven a leer, pero la acción no las espera.
+- `packages/ui/src/data/server.ts` quedó en 304 líneas de código, sobre el aviso de 300; la división que propone P203 (las lecturas del diff y de la trazabilidad a su propio archivo) va aparte.
+
+### Pendientes
+
+- Ninguno

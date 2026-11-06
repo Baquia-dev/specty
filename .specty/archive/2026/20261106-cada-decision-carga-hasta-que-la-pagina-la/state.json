@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-cada-decision-carga-hasta-que-la-pagina-la",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-cada-decision-carga-hasta-que-la-pagina-la",
   "baseCommit": "c17e17acd35abbcb1e8dc872b26eda2af73c5f33",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:941921cd495e08dbf1ad7bb9a1f7ef9a5aecc60a195473ca8d2994d45478e367",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "60655ea3b565e46677e19df21a4c7e1e9787e33d",
+      "attempts": 1,
       "startedAt": "2026-11-06T09:05:57.148Z",
       "doneAt": "2026-11-06T09:11:08.986Z",
-      "summary": "Los oyentes de ChangesStore y de byId devuelven una promesa (reread) que espera con un effect sobre isLoading a que la lista, las páginas de terminados y el cambio pedido por su id se vuelvan a leer; una lectura en marcha se espera y se repite; la espera también acaba al destruirse el inyector."
+      "summary": "Los oyentes de ChangesStore y de byId devuelven una promesa (reread) que espera con un effect sobre isLoading a que la lista, las páginas de terminados y el cambio pedido por su id se vuelvan a leer; una lectura en marcha se espera y se repite; la espera también acaba al destruirse el inyector.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,6 +65,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T09:16:27.478Z",
   "lockedTests": {
     "packages/ui/src/data/changes-store.test.ts": "sha256:a9ba19c8a7fe41730f02c397fb0435e334bf2181f3fe75622a064a16b2f111e0",
     "packages/ui/src/data/server-actions.test.ts": "sha256:6bad8eb5acf5d846c203cc178f5bd13d5d0a83642f54d66a029f923ce6216473"
