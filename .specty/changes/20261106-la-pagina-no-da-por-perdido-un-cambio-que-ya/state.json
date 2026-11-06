@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261106-la-pagina-no-da-por-perdido-un-cambio-que-ya",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-la-pagina-no-da-por-perdido-un-cambio-que-ya",
+  "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bc15509083026cbbd90bf8aa91a5666fb6347443d2ea081e677bc58d3f2fac97",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fe9711bd196bea65dd5c0244d1cf7526e2fd9066d5bd805bcd4ff7dc4df4ea8b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b0836be0c1421039b687ea1aa84d3d37a74afece0c9f13ea8f93095533b33090",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:e11c0da5b3b5c841da7889b060e831c99e464f162c4e4ecc5ba75b44c2a53f3d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e7f295fe8a6091e54ff269bada991ee05b0af1969d382d76227cfbc83f8d5d28",
+    "at": "2026-11-06T07:46:16.491Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "testCycle": "bug"
+}
