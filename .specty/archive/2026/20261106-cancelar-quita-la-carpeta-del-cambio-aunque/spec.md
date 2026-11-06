@@ -73,3 +73,23 @@ Hoy `specty cancel` deja la carpeta del cambio si tiene algo sin commit, para no
 - R1: Un archivo sin seguimiento que no debería versionarse (un `.env` que git no ignora) entra en el commit de la rama — solo vive en la rama local, Specty no hace push, y la persona lo ve en la tarjeta; es lo mismo que guardaría `git add -A`.
 - R2: Otro test cancela con algo sin commit y espera que la carpeta se quede — se buscaron con grep los textos de «sin commit» en los tests: solo los de `cancel-folder.test.ts`; los demás tests que cancelan van en la verificación de T2.
 - R3: El test de AC4 hace ilegible un archivo con `chmod 000`, que no frena a root — el test se salta si el proceso corre como root.
+
+## Cierre
+
+### Resumen
+
+Al cancelar, `specty cancel` guarda ahora lo que la carpeta del cambio tiene sin commit (archivos con seguimiento modificados y sin seguimiento que git no ignora) en un commit propio de la rama del cambio, «wip: lo que `<id>` tenía sin commit al cancelarse», tras el de archivarlo, y después quita la carpeta: no se pierde nada y no queda abandonada. Si una sesión de agente trabaja en ella, el commit se hace igual y la carpeta queda hasta que `prune` la quite. Si git no puede hacer el commit, el índice vuelve a como estaba y la carpeta queda con lo que tiene, como antes. La tarjeta nombra ese commit antes de la línea de la carpeta. Lo hace `commitUncommitted` dentro de `removeCancelled` (`flow/prune.ts`), con los textos `cancelWorkCommitSubject` y `cancelledWorkSavedLine` de `cards/close.ts`. Los tests de AC1–AC4 están en `packages/cli/test/cancel-folder.test.ts` y los de AC1 y AC5 en `packages/core/test/cards/close.test.ts`. La verificación completa falló solo en los e2e de OpenCode (P197), que fallan también en main desde que Homebrew actualizó OpenCode a 2.2.5, y la persona aceptó de todos modos.
+
+### Desviaciones
+
+- En `cancel-folder.test.ts` se quitaron los dos tests del cambio anterior que esperaban que la carpeta quedara con algo sin commit: era justo el comportamiento que este cambio sustituye, y lo cubren los de AC1, AC2 y AC4.
+- El test de AC4 se salta como root con `ctx.skip()` dentro de un `it` normal en lugar de `it.skipIf`, porque la fase de tests no reconoce `it.skipIf(...)("AC4: …")` como el test de un criterio.
+
+### Decisiones
+
+- Lo sin commit va a un commit de la rama y no se descarta con `--force`: la rama ya guarda el registro del cambio cancelado, y así quitar la carpeta no pierde nada.
+- El commit se hace también cuando la carpeta queda porque una sesión trabaja en ella, para que `prune` pueda quitarla después sin `--force`.
+
+### Pendientes
+
+- Ninguno.
