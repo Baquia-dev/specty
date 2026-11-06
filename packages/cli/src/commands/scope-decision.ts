@@ -17,10 +17,14 @@ import {
   scopeDecidedLine,
   scopeDecisionQuestion,
   transition,
+  type UnlockPatchRefusal,
   unlockRefusedCard,
+  unlockStaleCard,
+  unlockStaleReason,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { confirmRetroInto, stagedPrint } from "../flow/retro-into";
+import { checkUnlockPatch } from "../flow/unlock-proposal";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { canDecide } from "./human";
@@ -64,10 +68,8 @@ export async function decideScope(
   if (unlocks.length > 0 && session.actor === "agent") {
     return unlockRefusedCard(header, request.id, cards);
   }
-  // A request of `retro --into` documents the staged code it was asked for, not what is there now.
-  if (request.retro !== undefined && request.retro !== (await stagedPrint(session))) {
-    return rejectStaleRetro(session, active, request, header);
-  }
+  const stale = await staleRequest(session, state, request, decision === "approve" ? unlocks : []);
+  if (stale !== undefined) return rejectStale(session, active, request, { header, stale });
   terminal.note(
     `${request.id} · ${request.task}`,
     `${request.paths.join("\n")}\n— ${request.reason}`,
@@ -144,22 +146,44 @@ function unlockDecided(request: ScopeRequest, unlocks: readonly string[]): Recor
   };
 }
 
-/** Specty rejects a request of `retro --into` whose staged code changed since it was asked. */
-async function rejectStaleRetro(
+/**
+ * Why Specty rejects `request` before the person decides it: the staged code of a `retro --into`
+ * changed since it was asked, or the patch of an unlock being approved no longer holds for the
+ * `unlocks` tests as they were locked (ADR 0014). A request of an older CLI has no patch to check.
+ */
+async function staleRequest(
+  session: Session,
+  state: StoredChange["state"],
+  request: ScopeRequest,
+  unlocks: readonly string[],
+): Promise<"retro" | UnlockPatchRefusal | undefined> {
+  // A request of `retro --into` documents the staged code it was asked for, not what is there now.
+  if (request.retro !== undefined && request.retro !== (await stagedPrint(session))) return "retro";
+  if (request.patch === undefined || unlocks.length === 0) return undefined;
+  return checkUnlockPatch(session, state, unlocks, request.patch);
+}
+
+/** Specty rejects a request that no longer holds, with why, and the person is told. */
+async function rejectStale(
   session: Session,
   active: StoredChange,
   request: ScopeRequest,
-  header: string,
+  taken: { readonly header: string; readonly stale: "retro" | UnlockPatchRefusal },
 ): Promise<Output> {
   const { state } = active;
+  const { header, stale } = taken;
   const remaining = state.pending.scopeRequests.filter((entry) => entry !== request);
+  const reason =
+    stale === "retro" ? retroIntoStaleReason(session.lang) : unlockStaleReason(stale, session.lang);
   await commitState(
     session,
     active,
     { ...state, pending: { ...state.pending, scopeRequests: remaining } },
     "scope.decided",
-    { id: request.id, decision: "rejected", reason: retroIntoStaleReason(session.lang) },
+    { id: request.id, decision: "rejected", reason },
     "specty",
   );
-  return retroIntoStaleCard(header, request.id, state.id, session.actor === "agent", session.cards);
+  return stale === "retro"
+    ? retroIntoStaleCard(header, request.id, state.id, session.actor === "agent", session.cards)
+    : unlockStaleCard(header, request.id, stale, session.cards);
 }

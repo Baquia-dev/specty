@@ -101,7 +101,7 @@ export function unlockRefusalCard(
   }
   return invalidCard(
     header,
-    whyNot(refusal, ctx.lang),
+    unlockProblem(refusal, ctx.lang),
     t(
       `corrígelo y vuelve a pedirlo con \`${how.command}\`.`,
       `fix it and ask again with \`${how.command}\`.`,
@@ -129,11 +129,15 @@ function missingLine(missing: readonly ("patch" | "evidence")[], lang: Lang): st
       );
 }
 
-type PatchRefusal = Extract<UnlockRefusal, { readonly reason: `patch-${string}` }>;
+/** Why a patch does not do, as `scope add` checks it and the approval checks it again. */
+export type UnlockPatchRefusal = Extract<UnlockRefusal, { readonly reason: `patch-${string}` }>;
 type EvidenceRefusal = Extract<UnlockRefusal, { readonly reason: `evidence-${string}` }>;
 
-/** Why a patch or a piece of evidence does not do. */
-function whyNot(refusal: PatchRefusal | EvidenceRefusal, lang: Lang): readonly string[] {
+/** Why a patch or a piece of evidence does not do: what `scope add` says, and the approval. */
+export function unlockProblem(
+  refusal: UnlockPatchRefusal | EvidenceRefusal,
+  lang: Lang,
+): readonly string[] {
   switch (refusal.reason) {
     case "patch-changed":
       return changedLines(refusal.paths, lang);
@@ -164,7 +168,7 @@ function changedLines(paths: readonly string[], lang: Lang): readonly string[] {
 
 /** Why a patch does not do. */
 function patchLine(
-  refusal: Exclude<PatchRefusal, { readonly reason: "patch-changed" }>,
+  refusal: Exclude<UnlockPatchRefusal, { readonly reason: "patch-changed" }>,
   lang: Lang,
 ): string {
   const t = translator(lang);

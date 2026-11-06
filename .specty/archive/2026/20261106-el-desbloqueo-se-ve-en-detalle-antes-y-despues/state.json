@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "id": "20261106-el-desbloqueo-se-ve-en-detalle-antes-y-despues",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-el-desbloqueo-se-ve-en-detalle-antes-y-despues",
+  "baseCommit": "72be6161cea686781eb41c05136ed361093aeae0",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:67f25a727de8c0e97571d40ebe77140f285bed726c0cb56a1d48857802dada3c",
+    "at": "2026-11-06T15:07:40.718Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bbb2fa89fc5d7e0b5887b1918dd36894a07f3ba65ebea3b455daa862e0e8e4ea",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:919291dd0db32584c68d174dc9d19fd7e6952fafa45fe5b9002faa7d6f571aaf",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f0b2665c8740dbfa56e66a5bd7cbb2ff7caf58232af1ca4f969ea97baa5fb928",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c0617060dd1d93ed0abab5631a3a1e7559517a45951e1fd3909950f69bcf3b29",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:e74e0c474fc926c12b7bdbeae012de397d16cb3cb81a185be0e6e37579d5cdaa",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:789a47d104d65bc00dc5f23cb3dd1158b58100ee22e5f06d2495bd6eb9a6bb83",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "8a3b2ba2cfaa12b6daa2929f48e87866585bed9e",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:16:56.708Z",
+      "doneAt": "2026-11-06T15:17:40.853Z",
+      "summary": "TaskScopeRequest lleva el patch y la evidence de la solicitud de state.json (requestOf en data/progress.ts); cada desbloqueo de lockedOf (data/locks.ts) lleva el motivo de su scope.requested, y el parche y la evidencia de su scope.decided, sin las piezas mal formadas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "010eade6a3bb16ecece121431ed830b570757202",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:17:41.176Z",
+      "doneAt": "2026-11-06T15:18:06.306Z",
+      "summary": "Las líneas numeradas y resaltadas de «Ver código» pasan a sp-code-lines (progress/code-lines.ts), con path, text y start, que numera desde la primera línea; sp-test-code lo usa con data-test-code y su DOM sigue igual.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "acb110f6cdd6c4daaa8a33d3c391933eb7cf985f",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:18:06.632Z",
+      "doneAt": "2026-11-06T15:18:40.353Z",
+      "summary": "sp-unlock-detail muestra el parche con el visor de diffs y cada evidencia con su ruta y sus líneas numeradas; patchFiles (data/patch.ts) lee el parche como git apply --recount. La solicitud pendiente lo pone bajo el motivo.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "23e300796453e96485a32ba10229a5856c8b4b67",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:18:40.726Z",
+      "doneAt": "2026-11-06T15:19:18.827Z",
+      "summary": "Cada test de «Tests bloqueados», en Progreso y en Aceptación, tiene «Ver el desbloqueo S1» por cada desbloqueo con motivo, parche o evidencia, que despliega el motivo del agente y sp-unlock-detail, y lo vuelve a plegar.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "627d66a0185016a14b305d6ba411472efa1cfd4d",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:19:19.230Z",
+      "doneAt": "2026-11-06T15:19:43.287Z",
+      "summary": "ui.md cuenta el parche y la evidencia en la solicitud pendiente («Te espera»), «Ver el desbloqueo S1» en «Tests bloqueados» y que sp-code-lines pinta «Ver código» y la evidencia.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 5,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T15:29:46.975Z",
+  "lockedTests": {
+    "packages/ui/src/data/locks.test.ts": "sha256:038fd3a362364a7967229fd067978e07fefa2eb0d50b9fd57ee00af1c89a1b92",
+    "packages/ui/src/data/progress.test.ts": "sha256:04508e6b8fd82a9be86b257a462561fc2d8da382911811e03e56f9024925f272",
+    "packages/ui/src/progress/locked-tests.test.ts": "sha256:255a16a115536eb3975ed01e0fb7109f1f3c325d53a9882fe8696571e63efb23",
+    "packages/ui/src/progress/scope-request.test.ts": "sha256:d2ee3dd2ef660017497c8c083ddace9ad993ac3bbdee81fd502e0321633a20e6"
+  }
+}
