@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "20261106-la-limpieza-no-deja-huerfanos-y-rescata-lo-que",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-la-limpieza-no-deja-huerfanos-y-rescata-lo-que",
+  "baseCommit": "f5ec51b661b7488ba529dca5e6648e0857548033",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:76dcd974373ec33f3c7cb24e0a59a49d522461a9f3a57772579a53b1c894befe",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a62bd0e3a44ba4049dc6df846fab97da7f2091689a50203d2f4732847bde37f4",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:421c3da24310b4992db54b83060fb56f3012b1a927644d04909a7e9c6ed99b9e",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:5b6466a827290776ac1355e746e9aa3bb34fdde80ec0b76d1b93b4f5c4afd60d",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:51037130c8c2b832ea274883ba9ec7d08025572c01e128df81e8183900965873",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:109ec8912f25e00445cc9399f4ecce8ac1ff0431af610d97d2fbceffdf66f561",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:24e117c0b914647a58f7a558c7132507c5e6ff76e9bb167eab7b16eaf01e7472",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 11,
+    "T": 5,
+    "R": 5
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9d35156c80b4ad043da924c0769c392e33ef74fbd9fb89de2081b44566e0b1fb",
+    "at": "2026-11-06T09:41:15.315Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
