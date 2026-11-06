@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import { translator } from "./text";
+import type { CardContext } from "./view";
 
 export interface BlockedCommitView {
   readonly paths: readonly string[];
@@ -62,6 +63,25 @@ export function checkChangedFailedLine(lang: Lang): string {
   return translator(lang)(
     "`specty check --changed` falla; corrígelo antes de terminar el turno:",
     "`specty check --changed` fails; fix it before ending the turn:",
+  );
+}
+
+/**
+ * The agent's end-of-turn line before the card of `next`, when change `id` waits for the person
+ * and no `specty wait` waits for it; delegated, the decision is the agent's and nothing waits.
+ */
+export function noWaitLine(id: string, ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  if (ctx.delegated === true) {
+    return t(
+      `${id} espera una decisión que la persona te delegó: tómala antes de terminar el turno, como dice la tarjeta.`,
+      `${id} waits for a decision the person delegated to you: take it before ending the turn, as the card says.`,
+    );
+  }
+  const wait = `\`${ctx.command} wait\``;
+  return t(
+    `${id} espera la decisión de la persona y ningún ${wait} la espera: no termines el turno sin esperarla, como dice la tarjeta. Si ya lo lanzaste en segundo plano y sigue en marcha, termina el turno.`,
+    `${id} waits for the person's decision and no ${wait} is waiting for it: do not end the turn without waiting, as the card says. If you already started it in the background and it is still running, end the turn.`,
   );
 }
 

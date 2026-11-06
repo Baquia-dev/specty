@@ -128,6 +128,7 @@ export {
   blockedCommitMessage,
   checkChangedFailedLine,
   checkStagedFailedLine,
+  noWaitLine,
   type WorktreeHookRefusal,
   worktreeHookRefusal,
 } from "./hooks";

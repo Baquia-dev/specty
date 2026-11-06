@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d58306c4bbd679c20e9cf79ba87f3bd95b11888f",
+      "startedAt": "2026-11-06T12:53:14.134Z",
+      "doneAt": "2026-11-06T12:53:37.298Z",
+      "summary": "noWaitLine(id, ctx) en cards/hooks.ts: la línea del fin de turno cuando el cambio espera a la persona y ningún specty wait la espera, en español y en inglés, y la de modo delegado; exportada en cards/index.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -60,7 +60,7 @@ Hoy un agente puede terminar su turno mientras el cambio espera la decisión de 
 
 ## Tareas
 
-- [ ] T1: La línea del fin de turno cuando nadie espera la decisión, en español y en inglés
+- [x] T1: La línea del fin de turno cuando nadie espera la decisión, en español y en inglés
   - files: packages/core/src/cards/hooks.ts, packages/core/src/cards/index.ts, packages/core/test/cards/hooks.test.ts
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/hooks.test.ts
