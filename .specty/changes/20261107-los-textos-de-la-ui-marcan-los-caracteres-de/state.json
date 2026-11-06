@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-textos-de-la-ui-marcan-los-caracteres-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-los-textos-de-la-ui-marcan-los-caracteres-de",
   "baseCommit": "83686f522106f89c261fe441063c60f9c2cf4510",
   "revision": 2,
@@ -72,12 +72,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ec1bf80bf17f6a7a747f907f2a0e3ed621264889",
+      "attempts": 1,
       "startedAt": "2026-11-06T20:10:16.990Z",
       "doneAt": "2026-11-06T20:11:02.605Z",
-      "summary": "La Bandeja marca con sp-text el título de un cambio, sus rutas compartidas y la ruta y el motivo de sus solicitudes de alcance, y la cabecera del cambio y su barra compacta, su título"
+      "summary": "La Bandeja marca con sp-text el título de un cambio, sus rutas compartidas y la ruta y el motivo de sus solicitudes de alcance, y la cabecera del cambio y su barra compacta, su título",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "283542041cf0b7e48e650c4d2aa19f0a6d9cec8d",
+      "startedAt": "2026-11-06T20:11:02.929Z",
+      "doneAt": "2026-11-06T20:11:34.717Z",
+      "summary": "ui.md cuenta que el markdown de la spec y sp-text muestran los caracteres de dirección con la misma marca que el código, y qué textos los usan"
     }
   },
   "pending": {

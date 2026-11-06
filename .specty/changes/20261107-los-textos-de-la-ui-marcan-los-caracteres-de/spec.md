@@ -85,7 +85,7 @@ Desde el cambio anterior, la UI muestra con su código, en el tono de atención,
   - ac: AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/change-direction.test.ts --include src/inbox/inbox-row.test.ts --include src/change/change-page.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T5: ui.md cuenta qué textos marcan esos caracteres
+- [x] T5: ui.md cuenta qué textos marcan esos caracteres
   - files: docs/ui.md
   - ac: —
   - verify: grep -q "sp-text" docs/ui.md
