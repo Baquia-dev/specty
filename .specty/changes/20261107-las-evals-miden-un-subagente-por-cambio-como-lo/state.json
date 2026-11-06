@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-evals-miden-un-subagente-por-cambio-como-lo",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-las-evals-miden-un-subagente-por-cambio-como-lo",
   "baseCommit": "41695f12cb51d5920f2e84f8d76c388386a21e34",
   "revision": 2,
@@ -54,6 +54,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T23:05:01.104Z"
+  "lockedTests": {
+    "evals/test/experiments.test.ts": "sha256:3116b501307894e2132d9c3a9c28c15f1167d2e02ea88db681fe5ab3a02ede1f",
+    "evals/test/changes-card.test.ts": "sha256:bff5caa54470edb76f62c0efabdbc204a9083d7b1c86e7e0c797f9d3d8d2fa6a",
+    "evals/test/question.test.ts": "sha256:0e85059a1e22d7ed916dd07c44b36c07f4767a54584fcde283789bed828b6cef"
+  }
 }
