@@ -6,6 +6,13 @@
   "branch": "specty/20261107-los-cambios-huerfanos-traen-un-encargo-para",
   "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:116d004ac818842b8ca1b0cd7e50ae13f44994fd894657d1ce86f7b4c5132176",
+    "at": "2026-11-06T21:26:13.065Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -43,12 +50,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:116d004ac818842b8ca1b0cd7e50ae13f44994fd894657d1ce86f7b4c5132176",
-    "at": "2026-11-06T21:26:13.065Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T21:32:33.007Z"
 }
