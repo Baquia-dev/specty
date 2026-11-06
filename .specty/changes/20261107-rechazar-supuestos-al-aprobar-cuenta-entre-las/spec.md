@@ -17,7 +17,7 @@ Rechazar supuestos al aprobar, en la terminal o en la UI, devuelve la revisión 
 
 ## Tareas
 
-- [ ] T1: Rechazar supuestos al aprobar cuenta entre las decisiones que nadie retoma
+- [x] T1: Rechazar supuestos al aprobar cuenta entre las decisiones que nadie retoma
   - files: packages/cli/src/server/unattended.ts, packages/cli/test/server-unattended.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-unattended.test.ts && pnpm typecheck && pnpm lint
   - type: fix

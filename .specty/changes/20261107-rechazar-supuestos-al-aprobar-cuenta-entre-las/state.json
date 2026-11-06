@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-rechazar-supuestos-al-aprobar-cuenta-entre-las",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-rechazar-supuestos-al-aprobar-cuenta-entre-las",
   "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
   "revision": 1,
@@ -22,7 +22,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "300d3ec3aff170d0dfe8c1eb9ac24ad501a8e375",
+      "startedAt": "2026-11-06T16:37:55.036Z",
+      "doneAt": "2026-11-06T16:44:02.841Z",
+      "summary": "unattended.ts cuenta como decisión de la persona el assumption.decided con rejected que approve escribe junto a changesRequestedAt; un supuesto decidido suelto desde la UI sigue sin contar; ARCHITECTURE §15 y formats §4 lo cuentan"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
