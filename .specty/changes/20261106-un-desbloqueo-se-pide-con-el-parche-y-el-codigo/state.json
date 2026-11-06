@@ -69,12 +69,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e2c692bb0997afd95857a3f58a392aeb08c25ed1",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:39:33.522Z",
       "doneAt": "2026-11-06T13:41:14.315Z",
-      "summary": "scope add registra --patch (archivo o -) y --evidence; flow/unlock-proposal.ts comprueba el parche con git apply sobre la versión bloqueada y lee cada evidencia de un archivo que git sigue; la solicitud guarda patch y evidence"
+      "summary": "scope add registra --patch (archivo o -) y --evidence; flow/unlock-proposal.ts comprueba el parche con git apply sobre la versión bloqueada y lee cada evidencia de un archivo que git sigue; la solicitud guarda patch y evidence",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e435933f203d4c91026c7293e799361ba866dd5c",
+      "startedAt": "2026-11-06T13:41:14.636Z",
+      "doneAt": "2026-11-06T13:42:23.001Z",
+      "summary": "Al aprobar un desbloqueo, el scope.decided lleva el patch y la evidence de la solicitud junto a unlock y task (unlockDecided en scope-decision.ts); al rechazarlo, no"
     }
   },
   "pending": {

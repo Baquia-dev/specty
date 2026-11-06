@@ -86,7 +86,7 @@ Hoy, para desbloquear un test aprobado, al agente le basta con `scope add <test>
   - ac: AC1, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/unlock-request.test.ts test/retro-into.test.ts test/commands-named.test.ts
   - type: feat
-- [ ] T3: Aprobar un desbloqueo deja el parche y la evidencia en la auditoría
+- [x] T3: Aprobar un desbloqueo deja el parche y la evidencia en la auditoría
   - files: packages/cli/src/commands/scope-decision.ts, packages/cli/test/test-locks.test.ts
   - ac: AC2, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/test-locks.test.ts test/unlock-request.test.ts && pnpm typecheck && pnpm lint

@@ -117,9 +117,7 @@ async function recordScopeDecision(
       decision: decision === "approve" ? "approved" : "rejected",
       ...(why !== undefined && why.trim().length > 0 ? { reason: why.trim() } : {}),
       // The acceptance shows each test a person unlocked, with its request and its task.
-      ...(decision === "approve" && unlocks.length > 0
-        ? { unlock: unlocks, task: request.task }
-        : {}),
+      ...(decision === "approve" && unlocks.length > 0 ? unlockDecided(request, unlocks) : {}),
     },
     "human",
   );
@@ -131,6 +129,19 @@ async function recordScopeDecision(
     session,
     decisionCard(header, [scopeDecidedLine(decision, request, session.lang)], cards),
   );
+}
+
+/**
+ * What `scope.decided` keeps of an approved unlock: the tests, their task, and the patch and the
+ * evidence it was asked with, which a request of an older CLI does not have (ADR 0014).
+ */
+function unlockDecided(request: ScopeRequest, unlocks: readonly string[]): Record<string, unknown> {
+  return {
+    unlock: unlocks,
+    task: request.task,
+    ...(request.patch === undefined ? {} : { patch: request.patch }),
+    ...(request.evidence === undefined ? {} : { evidence: request.evidence }),
+  };
 }
 
 /** Specty rejects a request of `retro --into` whose staged code changed since it was asked. */
