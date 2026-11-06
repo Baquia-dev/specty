@@ -6,6 +6,13 @@
   "branch": "specty/20261106-el-test-queda-como-lo-deja-el-parche-aprobado",
   "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:726ad38556c7822125fff64c44d24e84cefecad5d510a7cbd078751824fdc6d2",
+    "at": "2026-11-06T14:47:42.677Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -65,12 +72,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:726ad38556c7822125fff64c44d24e84cefecad5d510a7cbd078751824fdc6d2",
-    "at": "2026-11-06T14:47:42.677Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T14:58:13.157Z"
 }
