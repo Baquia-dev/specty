@@ -88,7 +88,7 @@ Hoy el fin de turno (`specty hook agent-stop <agente>`), que con C4 devuelve al 
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/opencode.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T4: La documentación cuenta que `init` instala el fin de turno y `check --install` enciende su check
+- [x] T4: La documentación cuenta que `init` instala el fin de turno y `check --install` enciende su check
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC3, AC5, AC6
   - verify: pnpm typecheck && pnpm lint && pnpm sources && pnpm knip

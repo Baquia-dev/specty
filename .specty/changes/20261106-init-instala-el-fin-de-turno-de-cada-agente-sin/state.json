@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-init-instala-el-fin-de-turno-de-cada-agente-sin",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-init-instala-el-fin-de-turno-de-cada-agente-sin",
   "baseCommit": "23afc82bb2278d4b7687512b7b3a56bc10852115",
   "revision": 1,
@@ -69,14 +69,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/check-agent-stop.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "678f8a7d8909fa187845c49d88d29e5c4daf33f9",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:28:49.059Z",
       "doneAt": "2026-11-06T13:34:45.864Z",
-      "summary": "El plugin de OpenCode lleva CHECK: init pone STOP con el tiempo límite (planOpencodeTurn) y llama al hook con --no-check, check --install enciende CHECK (planOpencodeStop), y un plugin anterior con STOP y sin CHECK conserva su check"
+      "summary": "El plugin de OpenCode lleva CHECK: init pone STOP con el tiempo límite (planOpencodeTurn) y llama al hook con --no-check, check --install enciende CHECK (planOpencodeStop), y un plugin anterior con STOP y sin CHECK conserva su check",
+      "scopeExtra": [
+        "packages/cli/test/check-agent-stop.test.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cf3ce98f18a3a04cc14fb922404951c792e9b2a7",
+      "startedAt": "2026-11-06T13:34:46.189Z",
+      "doneAt": "2026-11-06T13:35:19.578Z",
+      "summary": "formats.md y ARCHITECTURE.md cuentan que init instala el fin de turno con --no-check, que check --install le quita la marca (CHECK en OpenCode) y que uninstall quita también el de init"
     }
   },
   "pending": {
