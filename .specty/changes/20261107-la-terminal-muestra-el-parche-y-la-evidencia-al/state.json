@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fc6af5165c986b81bb1cb196a94e17e3389fa0da",
+      "attempts": 1,
       "startedAt": "2026-11-06T17:17:49.689Z",
       "doneAt": "2026-11-06T17:23:28.910Z",
-      "summary": "scopeRequestNote (cards/approve.ts) arma la nota de una solicitud: rutas, motivo y, de un desbloqueo, el parche y cada evidencia numerada, recortados y con los caracteres de control a la vista; cappedLines pasa a cards/text.ts."
+      "summary": "scopeRequestNote (cards/approve.ts) arma la nota de una solicitud: rutas, motivo y, de un desbloqueo, el parche y cada evidencia numerada, recortados y con los caracteres de control a la vista; cappedLines pasa a cards/text.ts.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "856e0be4647d6d1a3a45f77cb6240fbf912f6fda",
+      "startedAt": "2026-11-06T17:23:29.313Z",
+      "doneAt": "2026-11-06T17:29:27.746Z",
+      "summary": "approve --scope y reject --scope muestran antes de preguntar la nota de scopeRequestNote: rutas y motivo y, de un desbloqueo, su parche y su evidencia."
     }
   },
   "pending": {

@@ -54,7 +54,7 @@ Hoy, al decidir en la terminal una solicitud de alcance con `approve --scope` o 
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/approve.test.ts test/cards/unlock-check.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T2: `approve --scope` y `reject --scope` muestran esa nota antes de preguntar
+- [x] T2: `approve --scope` y `reject --scope` muestran esa nota antes de preguntar
   - files: packages/cli/src/commands/scope-decision.ts, packages/cli/test/test-locks.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/test-locks.test.ts test/unlock-again.test.ts test/retro-into.test.ts && pnpm typecheck && pnpm lint && pnpm knip
