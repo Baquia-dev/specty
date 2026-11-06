@@ -43,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "645be2e9a19d384f984e3046027f7951ac2f6144",
+      "startedAt": "2026-11-06T15:06:22.328Z",
+      "doneAt": "2026-11-06T15:07:32.350Z",
+      "summary": "inboxSections reúne cada épica cargada con todos sus cortes en un bloque que va a una sola sección y pasa el filtro si pasa cualquiera de sus miembros; InboxSection lleva blocks y order (j/k)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

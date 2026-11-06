@@ -57,7 +57,7 @@ En la Bandeja, una épica cargada y todos sus cortes cargados forman un solo blo
 
 ## Tareas
 
-- [ ] T1: Las secciones de la Bandeja reúnen cada épica con todos sus cortes en un solo bloque
+- [x] T1: Las secciones de la Bandeja reúnen cada épica con todos sus cortes en un solo bloque
   - files: packages/ui/src/inbox/inbox-view.ts, packages/ui/src/inbox/inbox-view.test.ts
   - ac: AC1, AC10
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-view.test.ts
