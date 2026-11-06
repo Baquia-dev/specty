@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "id": "20261107-en-modo-delegado-un-cambio-normal-con-su-cierre",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-en-modo-delegado-un-cambio-normal-con-su-cierre",
+  "baseCommit": "ccf8184df3194fbfcfc345b8592244abcd277006",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:174aab52ef68cfa448b9ad8e81878f1d546b12dcf86cdf204146f3a70e08bb1d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2e21fa34db71f0e17dba00038119744dfcd9d374096f213b38a4e344d50f2d33",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e4bbfb167b2e659d4bb9c11aa8c93eae48e530eb04b687e87d4c4836664ca965",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:390583a0b01cdb3081d59c95674a35f232270d401a2c7081f50fcc6296b4c50a",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:88ddef97508f46af4cf7cf5601e4b17e4260ae7f260889d72f185a8441175665",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:ef7badfc8ae910925d1094f9805cb5b52700506614c27a5d20494fff7e9b26ba",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:bfb9d60a91e32c57a102a4e5bda559030db90ddf52c223650bfb3f41764cf4c9",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:61364d383f1f633270a6af63dabb69c9e538ad406a90bfeaed95f271cfa4cb2e",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:dfd4e1944c188fce1be807432ec39a8f4b5ec6959b86387d7f24a627474d8354",
+      "decision": "implicit"
+    },
+    "A10": {
+      "hash": "sha256:ec5f92d3b7b64ac4ddf67e81b53bf2fb37987024bf38fbca9e715cca4dda3a9c",
+      "decision": "implicit"
+    },
+    "A11": {
+      "hash": "sha256:15d55af9ab8a4483cdab9651c948f98c86f6db780607a8c35aa03d8cb9c35f1f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 11,
+    "AC": 7,
+    "T": 4,
+    "R": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7f1a00216e0ca755cc56233c85e6293c7c4dc1ef02200b191b8e3d637dbb151c",
+    "at": "2026-11-06T19:28:46.805Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
