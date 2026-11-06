@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-analisis-del-shell-lee-el-programa-tras-las",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-el-analisis-del-shell-lee-el-programa-tras-las",
   "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3091d620aed08c652ead186e927444b2bceff0ae",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:34:28.445Z",
       "doneAt": "2026-11-06T15:35:36.076Z",
-      "summary": "analyzeSegment, isCd y changeDirectory buscan el programa tras las palabras de control (opened) y tras asignaciones y envoltorios (locateProgram); sleeps lee ese mismo programa; tests en control-words.test.ts con falsos positivos; ARCHITECTURE §análisis del shell"
+      "summary": "analyzeSegment, isCd y changeDirectory buscan el programa tras las palabras de control (opened) y tras asignaciones y envoltorios (locateProgram); sleeps lee ese mismo programa; tests en control-words.test.ts con falsos positivos; ARCHITECTURE §análisis del shell",
+      "scopeExtra": []
     }
   },
   "pending": {
