@@ -61,14 +61,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/components/shown-text.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "1659adb4087191a13aa41b89f1a28e20b931f064",
+      "attempts": 1,
       "startedAt": "2026-11-06T20:08:25.585Z",
       "doneAt": "2026-11-06T20:10:16.654Z",
-      "summary": "Progreso marca los caracteres de dirección en el motivo y las rutas de una solicitud de alcance y en el título, el resumen y las rutas de una tarea, con sp-text; sp-text escribe su texto en un ng-container en lugar de con tres llaves, que el aviso CWE-79 confundía con HTML sin escapar"
+      "summary": "Progreso marca los caracteres de dirección en el motivo y las rutas de una solicitud de alcance y en el título, el resumen y las rutas de una tarea, con sp-text; sp-text escribe su texto en un ng-container en lugar de con tres llaves, que el aviso CWE-79 confundía con HTML sin escapar",
+      "scopeExtra": [
+        "packages/ui/src/components/shown-text.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ec1bf80bf17f6a7a747f907f2a0e3ed621264889",
+      "startedAt": "2026-11-06T20:10:16.990Z",
+      "doneAt": "2026-11-06T20:11:02.605Z",
+      "summary": "La Bandeja marca con sp-text el título de un cambio, sus rutas compartidas y la ruta y el motivo de sus solicitudes de alcance, y la cabecera del cambio y su barra compacta, su título"
     }
   },
   "pending": {

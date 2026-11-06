@@ -80,7 +80,7 @@ Desde el cambio anterior, la UI muestra con su código, en el tono de atención,
   - ac: AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/progress-direction.test.ts --include src/progress/scope-request.test.ts --include src/progress/progress-tab.test.ts && pnpm lint
   - type: feat
-- [ ] T4: La Bandeja y la cabecera del cambio los marcan en el título y en las solicitudes
+- [x] T4: La Bandeja y la cabecera del cambio los marcan en el título y en las solicitudes
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/change/change-page.ts, packages/ui/src/change/change-bar.ts, packages/ui/src/change/change-direction.test.ts
   - ac: AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/change-direction.test.ts --include src/inbox/inbox-row.test.ts --include src/change/change-page.test.ts && pnpm typecheck && pnpm lint && pnpm knip
