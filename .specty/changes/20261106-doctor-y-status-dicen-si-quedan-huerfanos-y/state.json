@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-doctor-y-status-dicen-si-quedan-huerfanos-y",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-doctor-y-status-dicen-si-quedan-huerfanos-y",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a795c53409112005d00bc0166ff17a0df1db6afa",
+      "attempts": 1,
       "startedAt": "2026-11-06T10:37:54.522Z",
       "doneAt": "2026-11-06T10:45:13.662Z",
-      "summary": "doctor avisa de cada tipo de huérfano y de las refs de rescate, y status da el total en «LIMPIEZA»: countOrphans y finishedFolders/workingFolders en flow/orphans.ts (removeFinished los usa), staleRecords sin los bloqueados (Worktree.locked) y rescueRefs en flow/rescue.ts"
+      "summary": "doctor avisa de cada tipo de huérfano y de las refs de rescate, y status da el total en «LIMPIEZA»: countOrphans y finishedFolders/workingFolders en flow/orphans.ts (removeFinished los usa), staleRecords sin los bloqueados (Worktree.locked) y rescueRefs en flow/rescue.ts",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "93a93e9fada53b3b61a474c29cba3044ef251430",
+      "startedAt": "2026-11-06T10:45:13.980Z",
+      "doneAt": "2026-11-06T10:46:08.544Z",
+      "summary": "ARCHITECTURE cuenta los avisos de doctor (huérfanos por tipo y refs de rescate), la sección «LIMPIEZA» de status y que workingFolders vive en flow/orphans.ts"
     }
   },
   "pending": {

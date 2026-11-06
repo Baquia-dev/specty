@@ -70,7 +70,7 @@ La limpieza de C2 quita los huérfanos al terminar `new`, `close`, `cancel` y `p
   - ac: AC9, AC10
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-orphans.test.ts test/prune-orphans.test.ts test/prune-rescue.test.ts test/prune.test.ts test/prune-commands.test.ts test/lost-status.test.ts test/lost-folder.test.ts test/status-json.test.ts test/status-away.test.ts test/front-status.test.ts test/memory-status.test.ts test/doctor-worktrees.test.ts test/doctor-enter.test.ts test/cancel-folder.test.ts test/session-end-binding.test.ts test/restore.test.ts test/ghost-folders.test.ts test/git-memo.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T3: La documentación cuenta los avisos de `doctor` y `status`
+- [x] T3: La documentación cuenta los avisos de `doctor` y `status`
   - files: docs/ARCHITECTURE.md
   - ac: AC9, AC10
   - verify: pnpm typecheck && pnpm lint && pnpm sources && pnpm knip
