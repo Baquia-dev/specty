@@ -4,6 +4,7 @@
 import { InjectionToken } from "@angular/core";
 import type { HighlighterCore, ThemedToken } from "shiki/core";
 import type { DiffFile, DiffLine } from "../data/diff";
+import type { Bilingual } from "../data/records";
 import { languageOf } from "./languages";
 
 /** A piece of a line: its text, whether it is a word that changed, and its highlighting. */
@@ -13,6 +14,11 @@ export interface LineSpan {
   /** A design token, as `var(--color-code-keyword)`; none for plain text. */
   readonly color?: string;
   readonly italic?: boolean;
+  /**
+   * A character that changes the direction of the text, shown as its code, `\u` and its four
+   * hexadecimal digits, so that the browser cannot reorder what the person reads.
+   */
+  readonly direction?: boolean;
 }
 
 /** A highlighted piece of code, in the order of its line. */
@@ -29,8 +35,9 @@ export type FileColors = ReadonlyMap<DiffLine, readonly CodeToken[]>;
 export type Highlight = (file: DiffFile) => Promise<FileColors | undefined>;
 
 /**
- * A line in pieces: wherever its color or its changed words begin or end. Tokens that do not
- * spell the line exactly are left out: the line shows plain.
+ * A line in pieces: wherever its color or its changed words begin or end, and around each
+ * character of text direction, which shows as its code. Tokens that do not spell the line
+ * exactly are left out: the line shows plain.
  */
 export function spansOf(line: DiffLine, tokens?: readonly CodeToken[]): readonly LineSpan[] {
   const ranges = line.changed ?? [];
@@ -42,8 +49,49 @@ export function spansOf(line: DiffLine, tokens?: readonly CodeToken[]): readonly
     spans.push(...pieceSpans(line, ranges, piece, at));
     at += piece.text.length;
   }
-  return spans.length > 0 ? spans : [{ text: line.text, changed: false }];
+  return (spans.length > 0 ? spans : [{ text: line.text, changed: false }]).flatMap(directionSpans);
 }
+
+/**
+ * Whether a character changes the direction of the text, as the terminal reads it (`visible` in
+ * the core's `cards/approve.ts`): the embeddings and overrides (U+202A–U+202E) and the isolates
+ * (U+2066–U+2069) that «Trojan Source» (CVE-2021-42574) hides code with.
+ */
+function changesDirection(char: string): boolean {
+  const code = char.codePointAt(0) ?? 0;
+  return (code >= 0x202a && code <= 0x202e) || (code >= 0x2066 && code <= 0x2069);
+}
+
+/**
+ * A piece cut around each character of text direction: that character shows as its code, as the
+ * terminal shows it, with no color or italics, and is still part of the word that changed.
+ */
+function directionSpans(span: LineSpan): readonly LineSpan[] {
+  if (!Array.from(span.text).some(changesDirection)) return [span];
+  const spans: LineSpan[] = [];
+  let plain = "";
+  for (const char of span.text) {
+    if (!changesDirection(char)) {
+      plain += char;
+      continue;
+    }
+    if (plain !== "") spans.push({ ...span, text: plain });
+    plain = "";
+    const code = (char.codePointAt(0) ?? 0).toString(16).padStart(4, "0");
+    spans.push({ text: `\\u${code}`, changed: span.changed, direction: true });
+  }
+  if (plain !== "") spans.push({ ...span, text: plain });
+  return spans;
+}
+
+/** How a character of text direction shows: in the attention tone, with what it is as its title. */
+export const DIRECTION_MARK = {
+  look: "rounded-[2px] bg-phase-review-bg text-phase-review",
+  note: {
+    es: "Carácter de dirección del texto: se muestra su código porque podría reordenar lo que lees",
+    en: "Text direction character: its code is shown because it could reorder what you read",
+  },
+} as const satisfies { readonly look: string; readonly note: Bilingual };
 
 /** A piece of the line that starts at `at`, cut wherever a changed range begins or ends. */
 function pieceSpans(

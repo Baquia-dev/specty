@@ -8,7 +8,8 @@ import {
   resource,
 } from "@angular/core";
 import { contextFile } from "../data/diff";
-import { HIGHLIGHT, spansOf } from "../highlight/highlight";
+import { DIRECTION_MARK, HIGHLIGHT, spansOf } from "../highlight/highlight";
+import { Preferences } from "../theme/preferences";
 
 /** The lines of a text: none when it is empty, and no empty one for the newline that ends it. */
 function linesOf(text: string): readonly string[] {
@@ -30,7 +31,7 @@ function linesOf(text: string): readonly string[] {
       @for (line of lines(); track line.number) {
         <li class="flex gap-3 px-3" data-line>
           <span class="w-8 shrink-0 select-none text-right text-text-muted" aria-hidden="true" data-number>{{ line.number }}</span>
-          <code class="whitespace-pre text-text" data-code>@for (span of line.spans; track $index) {<span [class.italic]="span.italic === true" [style.color]="span.color ?? null">{{ span.text }}</span>}</code>
+          <code class="whitespace-pre text-text" data-code>@for (span of line.spans; track $index) {<span [class]="span.direction ? directionMark.look : ''" [class.italic]="span.italic === true" [style.color]="span.color ?? null" [attr.data-direction]="span.direction ? '' : null" [attr.title]="span.direction ? directionMark.note[lang()] : null">{{ span.text }}</span>}</code>
         </li>
       }
     </ol>
@@ -43,6 +44,9 @@ export class CodeLines {
   readonly start = input(1);
 
   private readonly highlight = inject(HIGHLIGHT);
+  protected readonly lang = inject(Preferences).lang;
+  /** A character of text direction shows in the attention tone, with its title. */
+  protected readonly directionMark = DIRECTION_MARK;
 
   /** The lines as context lines of one section, numbered from `start`: what the colors read. */
   private readonly file = computed(() =>

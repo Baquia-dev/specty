@@ -9,14 +9,17 @@ import {
   type UnitsOutcome,
   unitsLines,
 } from "@baquia-dev/specty-core";
+import { pendingIntegration } from "../commands/integrate";
 import { locateChanges } from "../flow/changes";
 import { fullCommand, oneAtATime } from "../flow/full-verification";
+import { contains, type Integration, integrationOf } from "../flow/integrate";
 import { fullPlan, runUnits } from "../flow/units";
 import { codeTree, recordFullVerification } from "../flow/verified";
 import { lowerPriority } from "../io/exec";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
-import { clearRun, readRuns } from "../store/runs";
+import { mergedVerification } from "./merged-run";
+import { taskRuns } from "./watched-runs";
 
 /**
  * A verification going on: its command, when it started and its output so far. One with a task is
@@ -35,7 +38,10 @@ export interface Runs {
   current(id: string): Run | undefined;
   /** Starts the full verification of change `id` in its folder; the answer says whether it did. */
   start(id: string): Promise<Output>;
-  /** Ends the runs still going, without recording them: the server is closing. */
+  /**
+   * Ends the runs still going, without recording them: the server is closing. The verification
+   * of an incorporation runs in `runLive`, which ends by its time limit.
+   */
   close(): void;
 }
 
@@ -43,48 +49,43 @@ export interface Runs {
 const KEPT = 1000;
 /** At most this often, in milliseconds, the listener hears a run that moves. */
 const EVERY = 250;
-/** How often, in milliseconds, the server looks at the tasks' verifications in other processes. */
-const TASKS_EVERY = 500;
 
 /**
  * The full verifications the person starts from the UI, one per change: `verify.full`, or the
  * units of `verify.units` that have not passed, run with the shell in the change's folder, `heard` gets the run as it goes and `undefined` once it ends
- * and its turn is free, and the result goes to the change's audit as `change.verified`.
+ * and its turn is free, and the result goes to the change's audit as `change.verified`. When the
+ * main branch moved on since the change's, it comes in first (`runMerged`), in `queued`: the
+ * server's queue of the person's actions.
  */
 export function changeRuns(
   session: Session,
   heard: (id: string, run: Run | undefined) => void,
+  queued: (task: () => Promise<void>) => Promise<void> = (task) => task(),
 ): Runs {
   const going: Going = new Map();
   let closing = false;
   const tasks = taskRuns(session, (id, run) => {
-    if (!going.has(id)) heard(id, run);
+    const mine = going.get(id);
+    if (mine === undefined) heard(id, run);
+    // An incorporation verifies in `runLive`: its run shows that one's lines after its own.
+    else if (run !== undefined && run.task === undefined) mine.follow?.(run);
   });
   // The turn is this process's: the server queues its own full verifications, one after another.
   let turns: Promise<void> = Promise.resolve();
   const inTurn = (run: () => Promise<void>) => {
     turns = turns.then(run).catch(() => undefined);
   };
-  const target: RunTarget = { going, heard, closing: () => closing, inTurn };
+  const target: RunTarget = {
+    going,
+    heard,
+    closing: () => closing,
+    inTurn,
+    queued,
+    forget: (id) => tasks.forget(id),
+  };
   return {
     current: (id) => going.get(id)?.run ?? tasks.current(id),
-    async start(id) {
-      const { cards } = session;
-      const found = (await locateChanges(session)).find(({ change }) => change.state.id === id);
-      if (found === undefined)
-        return runRefusalCard({ reason: "no-change", id }, headerOf(), cards);
-      const { change, session: there } = found;
-      const header = headerOf(id, change.state.phase);
-      const command = fullCommand(there.config);
-      if (change.state.phase !== "acceptance")
-        return runRefusalCard({ reason: "not-in-acceptance" }, header, cards);
-      if (command === undefined) return runRefusalCard({ reason: "no-full-verify" }, header, cards);
-      if (going.has(id)) return runRefusalCard({ reason: "running" }, header, cards);
-      // Its tasks' runs are over: only the full one ends it, once its result is in the audit.
-      tasks.forget(id);
-      runFull(target, { id, there, change, command });
-      return runStartedCard(header, command, cards);
-    },
+    start: (id) => started(session, target, id),
     close() {
       closing = true;
       tasks.close();
@@ -93,8 +94,41 @@ export function changeRuns(
   };
 }
 
-/** The full verifications going on, by change, each with how to stop it. */
-type Going = Map<string, { run: Run; stop: () => void }>;
+/**
+ * Starts the full verification of change `id`, unless it cannot run: as it is or, when the main
+ * branch moved on since the change's, with main merged in first (`runMerged`).
+ */
+async function started(session: Session, target: RunTarget, id: string): Promise<Output> {
+  const { cards } = session;
+  const found = (await locateChanges(session)).find(({ change }) => change.state.id === id);
+  if (found === undefined) return runRefusalCard({ reason: "no-change", id }, headerOf(), cards);
+  const { change, session: there } = found;
+  const header = headerOf(id, change.state.phase);
+  const command = fullCommand(there.config);
+  if (change.state.phase !== "acceptance")
+    return runRefusalCard({ reason: "not-in-acceptance" }, header, cards);
+  if (command === undefined) return runRefusalCard({ reason: "no-full-verify" }, header, cards);
+  if (target.going.has(id)) return runRefusalCard({ reason: "running" }, header, cards);
+  const plan = await behind(there, change);
+  // An agent that still resolves an earlier incorporation has its merge in that folder.
+  const pending = plan && (await pendingIntegration(there, change, "accept"));
+  if (pending?.kind === "wait") return pending.output;
+  // Its tasks' runs are over: only the full one ends it, once its result is in the audit.
+  target.forget(id);
+  const job = { id, there, change, command };
+  if (plan === undefined) {
+    runFull(target, job);
+    return runStartedCard(header, command, cards);
+  }
+  runMerged(target, job, plan);
+  return runStartedCard(header, command, cards, plan.target);
+}
+
+/**
+ * The full verifications going on, by change, each with how to stop it and, for an
+ * incorporation's, how it shows the verification that `runLive` keeps.
+ */
+type Going = Map<string, { run: Run; stop: () => void; follow?: (run: Run) => void }>;
 
 /** Where a full verification reports: the runs going on, the listener, and whether the server closes. */
 interface RunTarget {
@@ -103,6 +137,10 @@ interface RunTarget {
   readonly closing: () => boolean;
   /** Runs `run` after the server's full verifications before it. */
   readonly inTurn: (run: () => Promise<void>) => void;
+  /** Runs `task` in the server's queue of the person's actions. */
+  readonly queued: (task: () => Promise<void>) => Promise<void>;
+  /** Forgets what the watcher of other processes' runs saw of a change. */
+  readonly forget: (id: string) => void;
 }
 
 /** A full verification to run: change `id`'s, in its folder, with its command. */
@@ -139,6 +177,45 @@ function runFull(target: RunTarget, job: FullRun): void {
       if (!target.closing() && !target.going.has(id)) target.heard(id, undefined);
     }
   });
+}
+
+/** Where the change goes, when that branch moved on since the change's: it comes in first. */
+async function behind(there: Session, change: StoredChange): Promise<Integration | undefined> {
+  const plan = await integrationOf(there, change.state);
+  return plan === undefined || (await contains(there.git, "HEAD", plan.target)) ? undefined : plan;
+}
+
+/**
+ * Main moved on since the change's branch: shows the run at once and, on this server's turn and
+ * in the queue of the person's actions, since it changes the change, merges main and verifies
+ * the merged code (`mergedVerification`). Its notes go to its output, then the lines of the
+ * verification that `runLive` keeps, and last what the incorporation said; its end is heard
+ * once its result is recorded. Nothing stops it: `runLive` ends by `verify.timeoutSec`.
+ */
+function runMerged(target: RunTarget, job: FullRun, plan: Integration): void {
+  const { id, there, command } = job;
+  const startedAt = there.environment.now().toISOString();
+  const first = { command, startedAt, output: [] };
+  const live = liveRun(target, id, first, () => undefined, true);
+  target.heard(id, live.current());
+  const io = { ...there.environment.io, err: (text: string) => live.add(text.split("\n")) };
+  const merging = { ...there, environment: { ...there.environment, io } };
+  target.inTurn(() =>
+    target.queued(async () => {
+      try {
+        if (!target.closing()) live.add(await mergedVerification(merging, id, plan));
+      } finally {
+        const pending = live.settle();
+        target.going.delete(id);
+        // The watcher saw the verification's file: its end is this run's, heard here.
+        target.forget(id);
+        if (!target.closing()) {
+          if (pending) target.heard(id, live.current());
+          target.heard(id, undefined);
+        }
+      }
+    }),
+  );
 }
 
 /** What the full verification's command, or one of its units, did. */
@@ -244,19 +321,53 @@ interface LiveRun {
   settle(): boolean;
 }
 
-function liveRun(target: RunTarget, id: string, first: Run, stop: () => void): LiveRun {
+/** Part of a run's output: its own lines or, with `from`, those of a run `runLive` keeps. */
+interface Part {
+  readonly from?: string;
+  readonly lines: readonly string[];
+}
+
+/**
+ * With `follows`, the run also shows, after its own lines, those of each verification that
+ * `runLive` keeps for the change (`follow`), one part per run: an incorporation's units, in turn.
+ */
+function liveRun(
+  target: RunTarget,
+  id: string,
+  first: Run,
+  stop: () => void,
+  follows = false,
+): LiveRun {
   let current = first;
-  target.going.set(id, { run: current, stop });
+  let parts: readonly Part[] = [{ lines: first.output }];
   let tell: NodeJS.Timeout | undefined;
+  const keep = () => target.going.set(id, { run: current, stop, ...(follows ? { follow } : {}) });
+  const show = (next: readonly Part[]) => {
+    parts = next;
+    current = { ...current, output: parts.flatMap(({ lines }) => lines).slice(-KEPT) };
+    keep();
+    tell ??= setTimeout(() => {
+      tell = undefined;
+      target.heard(id, current);
+    }, EVERY);
+  };
+  const follow = (run: Run) => {
+    const from = `${run.startedAt} ${run.command}`;
+    const part = { from, lines: run.output };
+    const known = parts.some((each) => each.from === from);
+    show(known ? parts.map((each) => (each.from === from ? part : each)) : [...parts, part]);
+  };
+  keep();
   return {
     add(lines) {
       if (lines.length === 0) return;
-      current = { ...current, output: [...current.output, ...lines].slice(-KEPT) };
-      target.going.set(id, { run: current, stop });
-      tell ??= setTimeout(() => {
-        tell = undefined;
-        target.heard(id, current);
-      }, EVERY);
+      const last = parts.at(-1);
+      const own = last !== undefined && last.from === undefined;
+      show(
+        own
+          ? [...parts.slice(0, -1), { lines: [...last.lines, ...lines].slice(-KEPT) }]
+          : [...parts, { lines }],
+      );
     },
     current: () => current,
     settle() {
@@ -291,66 +402,4 @@ async function ended(
     ...(end.tree === undefined ? {} : { tree: end.tree }),
     ...(end.units === undefined ? {} : { units: end.units }),
   }).catch(() => undefined);
-}
-
-/**
- * The tasks' verifications that `specty task done` keeps live in other processes, and the full
- * one of `specty accept` (`store/runs.ts`), looked at every half second: `heard` gets each one that moves, and
- * `undefined` once its file is gone. A file whose process no longer exists is removed unseen.
- * `forget` drops what it saw of a change, so that it does not end that change's run again.
- */
-function taskRuns(
-  session: Session,
-  heard: (id: string, run: Run | undefined) => void,
-): { current(id: string): Run | undefined; forget(id: string): void; close(): void } {
-  let runs = new Map<string, Run>();
-  const said = new Map<string, string>();
-  const look = async () => {
-    const now = new Map<string, Run>();
-    for (const [id, live] of await readRuns(session.git)) {
-      if (!alive(live.pid)) {
-        await clearRun(session.git, id);
-        continue;
-      }
-      // Without a task it is the full one, which `specty accept` runs.
-      const { pid: _pid, ...run } = live;
-      now.set(id, run);
-    }
-    runs = now;
-    for (const [id, run] of now) {
-      const text = JSON.stringify(run);
-      if (said.get(id) !== text) heard(id, run);
-      said.set(id, text);
-    }
-    for (const id of [...said.keys()].filter((known) => !now.has(known))) {
-      said.delete(id);
-      heard(id, undefined);
-    }
-  };
-  let looking = false;
-  const timer = setInterval(() => {
-    if (looking) return;
-    looking = true;
-    look()
-      .catch(() => undefined)
-      .finally(() => {
-        looking = false;
-      });
-  }, TASKS_EVERY);
-  timer.unref();
-  return {
-    current: (id) => runs.get(id),
-    forget: (id) => said.delete(id),
-    close: () => clearInterval(timer),
-  };
-}
-
-/** Whether process `pid` still exists: one that only refuses signals from us does. */
-function alive(pid: number): boolean {
-  try {
-    process.kill(pid, 0);
-    return true;
-  } catch (error) {
-    return error instanceof Error && "code" in error && error.code === "EPERM";
-  }
 }
