@@ -52,9 +52,10 @@ const ANYONE: readonly Actor[] = ["agent", "human"];
 const HUMAN: readonly Actor[] = ["human"];
 
 export const EVENT_RULES: Readonly<Record<FlowEventType, EventRule>> = {
+  // In acceptance, the closing sent ahead of the acceptance, in delegated mode (ARCHITECTURE §4).
   propose: {
     actors: ANYONE,
-    from: ["draft", "review", "testing", "adjusting", "closing"],
+    from: ["draft", "review", "testing", "acceptance", "adjusting", "closing"],
     grantsPermission: false,
   },
   requestChanges: { actors: HUMAN, from: ["review"], grantsPermission: false },
@@ -121,6 +122,9 @@ const SPEC_EVENTS: ReadonlySet<FlowEventType> = new Set<SpecEvent["type"]>([
   "confirmRed",
 ]);
 
+/** The phases whose proposal is sent where it is: the closing, the tests, the closing ahead. */
+const SENT_IN_PLACE: ReadonlySet<Phase> = new Set<Phase>(["closing", "testing", "acceptance"]);
+
 function isSpecEvent(event: FlowEvent): event is SpecEvent {
   return SPEC_EVENTS.has(event.type);
 }
@@ -142,8 +146,9 @@ function specOutcome(event: SpecEvent, phase: Phase, kind: ChangeKind): Transiti
   switch (event.type) {
     case "propose":
       if (event.validationErrors > 0) return reject("validation-errors");
-      // The closing and the tests are sent, and wait in their own phase for the person.
-      return to(phase === "closing" || phase === "testing" ? phase : "review");
+      // The closing and the tests are sent, and wait in their own phase; so does the closing
+      // sent in acceptance, which the acceptance itself closes.
+      return to(SENT_IN_PLACE.has(phase) ? phase : "review");
     case "requestChanges":
       return to("review");
     case "approve":

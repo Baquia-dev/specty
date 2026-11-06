@@ -80,7 +80,7 @@ En modo delegado, un cambio normal se acepta y se cierra en dos pasos. Entre el 
 
 ## Tareas
 
-- [ ] T1: En aceptación delegada, el guard deja escribir el cierre y la tarjeta lo pide antes de `accept`
+- [x] T1: En aceptación delegada, el guard deja escribir el cierre y la tarjeta lo pide antes de `accept`
   - files: packages/core/src/flow/phases.ts, packages/core/src/flow/machine.ts, packages/core/src/guard/spec.ts, packages/core/src/guard/decide.ts, packages/core/src/index.ts, packages/core/src/cards/acceptance.ts, packages/core/src/cards/work.ts, packages/core/test/flow/machine.test.ts, packages/core/test/closing-ahead.test.ts
   - ac: AC1, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/closing-ahead.test.ts test/flow/machine.test.ts test/cards/delegated.test.ts test/guard/decide.test.ts && pnpm lint

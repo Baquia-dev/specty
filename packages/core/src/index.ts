@@ -122,6 +122,7 @@ export {
 } from "./flow/machine";
 export {
   type CodeAccess,
+  closingInAcceptance,
   PHASES,
   type Phase,
   type PhasePermissions,
