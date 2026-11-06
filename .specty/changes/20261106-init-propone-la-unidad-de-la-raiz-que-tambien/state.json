@@ -41,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a6990a2202cdf9142d89beaa52b4c5c9ff8c4609",
+      "startedAt": "2026-11-06T02:53:34.915Z",
+      "doneAt": "2026-11-06T02:54:20.979Z",
+      "summary": "WorkspacePackage gana paths opcionales: proposeUnits los usa en lugar de <carpeta>/** para el paquete y para los que dependen de él, sin rutas repetidas, y la unidad del paquete en la raíz se llama como el paquete"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

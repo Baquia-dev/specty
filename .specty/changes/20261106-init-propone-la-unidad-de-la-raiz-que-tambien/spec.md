@@ -48,7 +48,7 @@ Hoy `specty init` no propone unidades de verificación en un workspace de Cargo 
 
 ## Tareas
 
-- [ ] T1: Un paquete del workspace con sus propios paths
+- [x] T1: Un paquete del workspace con sus propios paths
   - files: packages/core/src/units-proposal.ts, packages/core/test/units-proposal.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/units-proposal.test.ts && pnpm lint
