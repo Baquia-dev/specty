@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-doctor-y-status-dicen-si-quedan-huerfanos-y",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-doctor-y-status-dicen-si-quedan-huerfanos-y",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
   "revision": 1,
@@ -55,6 +55,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T10:36:39.566Z"
+  "lockedTests": {
+    "packages/cli/test/doctor-orphans.test.ts": "sha256:9af2bfaa223085c10207e95804504b5e5a419a04aa4a04c95ac6a997d77f7b63",
+    "packages/core/test/cards/doctor-cleanup.test.ts": "sha256:33255e93e3693d80f672b14fc8ccbeb498d1d36e907f03fa30b31b1a0b729f06"
+  }
 }
