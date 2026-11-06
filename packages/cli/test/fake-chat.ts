@@ -53,9 +53,11 @@ export async function fakeChat(
         response.writeHead(404, { "content-type": "application/json" }).end("{}");
         return;
       }
-      // Requests without tools (titles, summaries) get the closing text and leave the script.
-      const tools = Array.isArray(body.tools) && body.tools.length > 0;
+      // Requests without tools (titles, summaries) get the closing text and leave the script; a
+      // summary asked with a template, which OpenCode 2.2 sends with tools, gets the template.
       const messages = messagesOf(body);
+      const summary = summaryOf(messages);
+      const tools = summary === undefined && Array.isArray(body.tools) && body.tools.length > 0;
       const task = messages.find((message) => message.role === "user")?.text ?? "";
       const mark = marks.find((candidate) => task.includes(candidate));
       if (tools) {
@@ -65,7 +67,7 @@ export async function fakeChat(
       const steps = mark === undefined ? script : (subagents[mark] ?? []);
       const done = messages.filter((message) => message.role === "tool").length;
       // The count of requests numbers the calls: each conversation's get ids of their own.
-      answer(response, tools ? steps[done] : undefined, requests.length);
+      answer(response, tools ? steps[done] : undefined, requests.length, summary);
     });
   });
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
@@ -82,7 +84,12 @@ export async function fakeChat(
 }
 
 /** The next tool call of the script, or a closing text once it ran out, as a stream. */
-function answer(response: ServerResponse, step: ToolCall | undefined, index: number): void {
+function answer(
+  response: ServerResponse,
+  step: ToolCall | undefined,
+  index: number,
+  closing = "Fin.",
+): void {
   response.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-cache" });
   const chunk = (delta: Body, finish: string | null) => {
     const choices = [{ index: 0, delta, finish_reason: finish }];
@@ -90,7 +97,7 @@ function answer(response: ServerResponse, step: ToolCall | undefined, index: num
     response.write(`data: ${JSON.stringify(data)}\n\n`);
   };
   if (step === undefined) {
-    chunk({ role: "assistant", content: "Fin." }, null);
+    chunk({ role: "assistant", content: closing }, null);
     chunk({}, "stop");
   } else {
     const call = { name: step.name, arguments: JSON.stringify(step.arguments) };
@@ -105,6 +112,16 @@ function answer(response: ServerResponse, step: ToolCall | undefined, index: num
   }
   response.write("data: [DONE]\n\n");
   response.end();
+}
+
+/**
+ * The summary that the last message asks for with a template, as OpenCode 2.2 compacts: the
+ * template's first heading, which OpenCode checks the summary has. Undefined for other requests.
+ */
+function summaryOf(messages: readonly Message[]): string | undefined {
+  const asked = messages.at(-1);
+  const heading = asked?.role === "user" ? /<template>\s*(#+ .+)/.exec(asked.text)?.[1] : undefined;
+  return heading === undefined ? undefined : `${heading}\n- Seguir el guion.`;
 }
 
 function messagesOf(body: Body): Message[] {

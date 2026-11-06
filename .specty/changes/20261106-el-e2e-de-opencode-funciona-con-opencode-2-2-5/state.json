@@ -50,12 +50,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "de8347a9432552c8c2e8bc729e880328dafb55c8",
+      "attempts": 1,
       "startedAt": "2026-11-06T08:20:32.022Z",
       "doneAt": "2026-11-06T08:22:04.325Z",
-      "summary": "El plugin de OpenCode toma como fin de turno session.idle (beta) o session.execution.succeeded (OpenCode 2.2), con la sesión en data o en properties; test AC1 del fin de turno de 2.2, una vez seguida"
+      "summary": "El plugin de OpenCode toma como fin de turno session.idle (beta) o session.execution.succeeded (OpenCode 2.2), con la sesión en data o en properties; test AC1 del fin de turno de 2.2, una vez seguida",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "83549183ba4d2445c4a01c92373c4d1dc891b76d",
+      "startedAt": "2026-11-06T08:22:04.625Z",
+      "doneAt": "2026-11-06T08:26:09.336Z",
+      "summary": "El E2E maneja OpenCode 2.2.5: run --standalone, sus herramientas (shell, write/read con path, subagent), serve por /api con contraseña y wait, y la tarjeta en las partes de sistema tras compactar; se salta antes de 2.2. El modelo simulado responde a la compactación con su plantilla"
     }
   },
   "pending": {

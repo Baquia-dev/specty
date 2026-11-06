@@ -60,7 +60,7 @@ Con OpenCode 2.2.5 (Homebrew, instalado el 2026-11-06) fallan los 7 tests de `op
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/opencode-install.test.ts && pnpm typecheck
   - type: fix
-- [ ] T2: El E2E de OpenCode maneja OpenCode 2.2.5
+- [x] T2: El E2E de OpenCode maneja OpenCode 2.2.5
   - files: packages/cli/test/opencode-e2e.test.ts, packages/cli/test/fake-chat.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-e2e.test.ts && pnpm typecheck && pnpm lint && pnpm knip
