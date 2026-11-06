@@ -77,3 +77,26 @@ Hoy, al aceptar o cerrar desde la UI, el diálogo se queda abierto sin decir nad
 
 - R1: Esperar las relecturas en `post` alarga cada acción lo que tarda leer `/api/changes` — el tope de 10 s (A4) y que el botón ya cargaba durante la petición; a cambio desaparece el instante con el estado viejo.
 - R2: Conservar lo último leído puede dejar en pantalla un cambio viejo si el servidor se cae — los avisos de error de la fuente siguen saliendo, y el siguiente evento `changes` lo corrige.
+
+## Cierre
+
+### Resumen
+
+Aceptar y decidir en la UI muestran su progreso hasta que se ve el resultado, en cuatro cortes cerrados en main. C1: el servidor ya no responde 500 cuando la carpeta de un cambio desaparece a mitad de una lectura, y la página y la Bandeja conservan lo último que leyeron, así que «No existe ese cambio» queda para un id que nunca se encontró. C2: cada decisión de la persona termina, y su botón deja de cargar, cuando la lista y el cambio de la página ya se volvieron a leer (como mucho 10 s). C3: «Aceptar» y «Confirmar y archivar» cierran su diálogo al momento, y la cabecera y la barra compacta muestran la acción en curso («Aceptando…», «Cerrando…») hasta que el servidor responde, con un aviso del resultado. C4: el servidor emite eventos `action` con lo que dice el comando mientras sigue, y la cabecera muestra esa línea (por ejemplo, qué sesión tiene el turno de la verificación completa).
+
+### Desviaciones
+
+- El primer intento se creó como cambio `standard` y se pasó a épica solo en el frontmatter; al aprobarlo saltó a aceptación sin cortes y la persona lo canceló. Esta épica es el segundo intento, creada con `--kind epic`.
+- En C1, el 500 venía de `loadChange`/`loadState` y no de `readRecord` en `openOnes`: el arreglo va en `store/changes.ts`, y la Bandeja también cambió para mostrar la lista bajo el aviso de error.
+- C1 y C3 esperaron en aceptación al arreglo del E2E de OpenCode en main (`20261106-el-e2e-de-opencode-funciona-con-opencode-2-2-5`), y su primera incorporación de main se abortó para rehacerla con él.
+- Los subagentes de los cortes no pudieron ejecutar `approve`, `accept` ni `close` (el clasificador del modo automático lo negó); la persona aprobó las dos primeras specs y autorizó en el chat que la sesión principal ejecutara esos comandos.
+
+### Decisiones
+
+- Aceptar y cerrar cierran el diálogo y siguen en la cabecera, en lugar de dejar el diálogo cargando: así la UI no parece bloqueada mientras el comando espera su turno o ejecuta `git.afterLanding`.
+- Las decisiones cargan hasta que la página las muestra, sin actualización optimista: lo que se ve siempre es lo que tiene el servidor.
+- La línea del servidor llega en el idioma de Specty; las acciones en curso viven en la pestaña que las lanzó y no sobreviven a recargarla.
+
+### Pendientes
+
+- Probar de punta a punta en la UI real (`specty ui` reiniciado con el dist nuevo): aceptar un cambio rápido mientras otra sesión tiene el turno de la verificación completa, y confirmar un supuesto, para ver «Aceptando…», la línea del servidor y que el botón carga hasta el nuevo estado.
