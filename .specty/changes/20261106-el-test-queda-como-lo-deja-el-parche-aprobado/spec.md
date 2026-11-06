@@ -80,7 +80,7 @@ Desde el corte C2, un desbloqueo de un test aprobado lleva el parche exacto que 
 
 ## Tareas
 
-- [ ] T1: Los textos de un test que no quedó como su parche y del desbloqueo que se rechaza al aprobarlo
+- [x] T1: Los textos de un test que no quedó como su parche y del desbloqueo que se rechaza al aprobarlo
   - files: packages/core/src/cards/unlock-check.ts, packages/core/src/cards/unlock.ts, packages/core/src/cards/index.ts, packages/core/test/cards/unlock-check.test.ts
   - ac: AC1, AC3, AC6, AC8, AC9
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/unlock-check.test.ts test/cards/unlock.test.ts
