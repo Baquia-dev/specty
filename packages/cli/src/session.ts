@@ -177,7 +177,7 @@ export function sessionFrom(
       implicitTests: config.scope.implicitTests,
       ...(delegated ? { delegated: true } : {}),
       ...(branchUsesType(config.git) ? { branchTypes: true } : {}),
-      // `subagents: false` keeps an epic's slices out of subagents (formats.md §6).
+      // `subagents: false` keeps slices and the user's changes out of subagents (formats.md §6).
       ...(config.subagents ? {} : { subagents: false }),
     },
   };

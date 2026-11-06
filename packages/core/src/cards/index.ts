@@ -389,6 +389,7 @@ export {
   uiApprovalRefusalCard,
 } from "./server";
 export { type StatusEntry, statusCard } from "./status";
+export { toSubagents } from "./subagents";
 export {
   type AutoApproved,
   autoApprovedLead,

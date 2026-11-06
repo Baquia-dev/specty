@@ -77,8 +77,9 @@ describe("the card with no active change and the fronts", () => {
     ]);
     for (const outside of ["P1", "P3", "P5"]) expect(next.out).not.toContain(`${outside} ·`);
     expect(next.out).not.toContain("`specty memory`");
-    // The guard knows the conversation by its event, as when the session starts.
-    expect((await started(root, "s1")).out).toBe(next.out);
+    // The guard knows the conversation by its event, as when the session starts: the same entries.
+    // The rest of its card follows the tool its environment tells, none here (ARCHITECTURE §7).
+    expect(memoryOf((await started(root, "s1")).out)).toEqual(memoryOf(next.out));
   });
 
   it("AC1: gives the other conversations no entry, also when it cannot tell who asks", async () => {
@@ -89,8 +90,10 @@ describe("the card with no active change and the fronts", () => {
     expect(memoryOf(other.out)).toEqual([]);
     for (const id of ["P1", "P2", "P3", "P4", "P5"]) expect(other.out).not.toContain(`${id} ·`);
     expect(other.out).not.toContain("`specty front`");
-    expect((await started(root, "s2")).out).toBe(other.out);
-    expect((await cli(root, ["next"])).out).toBe(other.out);
+    // With no tool, the card is the one without subagents, the same for the guard and for `next`.
+    const unknown = await cli(root, ["next"]);
+    expect(memoryOf(unknown.out)).toEqual([]);
+    expect((await started(root, "s2")).out).toBe(unknown.out);
     expect((await cli(root, ["next"], CLAUDE)).out).toBe(other.out);
   });
 

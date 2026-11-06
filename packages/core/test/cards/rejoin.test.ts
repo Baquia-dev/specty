@@ -90,7 +90,12 @@ describe("the changes no conversation holds", () => {
     expect(text).toContain(
       'Si el usuario pide seguir uno de ellos, retómalo en su carpeta en lugar de crear otro cambio: en Claude Code, `EnterWorktree` con `name: "<id>"`.',
     );
-    expect(text).toMatch(/SIGUIENTE: ejecuta `specty new "<título>"/);
+    // Claude Code hands each change to a subagent, whose brief starts with `specty new`.
+    expect(text).toContain('1. `specty new "<título>" --request "<petición literal del usuario>"');
+    expect(text).toMatch(/SIGUIENTE: lanza un subagente por cada cambio que pidió el usuario/);
+    expect(card({ orphans: [ORPHAN], byName: true }, ES)).toMatch(
+      /SIGUIENTE: ejecuta `specty new "<título>"/,
+    );
   });
 
   it("AC3: go after the card's text", () => {

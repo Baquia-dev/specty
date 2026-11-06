@@ -62,8 +62,9 @@ export interface ResolvedConfig {
   /** The project's development servers: their ports in each folder. */
   readonly dev: DevConfig;
   /**
-   * An approved epic hands its ready slices to subagents when the agent's tool can (ARCHITECTURE
-   * §10); `false` keeps them in the session, one after another.
+   * An approved epic hands its ready slices to subagents, and with no change active the session
+   * hands each change the user asks for to one, when the agent's tool can (ARCHITECTURE §7, §10);
+   * `false` keeps them all in the session, one after another.
    */
   readonly subagents: boolean;
   /**
