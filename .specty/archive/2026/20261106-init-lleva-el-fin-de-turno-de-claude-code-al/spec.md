@@ -21,3 +21,9 @@ Resuelve P221. En Claude Code, `init` pone el guard en `.claude/settings.local.j
   - files: packages/cli/src/install/agents.ts, packages/cli/src/agents/claude-code.ts, packages/cli/test/init-agent-stop-move.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-agent-stop-move.test.ts test/init-agent-stop.test.ts test/init-agents.test.ts test/check-agent-stop.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+install de Claude Code quita el agent-stop del archivo de ajustes anterior (withoutTurnEnd) y lo lleva al nuevo con el comando del guard, su límite de tiempo y su check (withTurnEndFrom); si el nuevo ya tenía uno, queda ese, con el check si alguno lo corría

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-init-lleva-el-fin-de-turno-de-claude-code-al",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-init-lleva-el-fin-de-turno-de-claude-code-al",
   "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "863808fd820ee9563b6cdde79c320be20dcefede",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:35:22.274Z",
       "doneAt": "2026-11-06T15:41:42.503Z",
-      "summary": "install de Claude Code quita el agent-stop del archivo de ajustes anterior (withoutTurnEnd) y lo lleva al nuevo con el comando del guard, su límite de tiempo y su check (withTurnEndFrom); si el nuevo ya tenía uno, queda ese, con el check si alguno lo corría"
+      "summary": "install de Claude Code quita el agent-stop del archivo de ajustes anterior (withoutTurnEnd) y lo lleva al nuevo con el comando del guard, su límite de tiempo y su check (withTurnEndFrom); si el nuevo ya tenía uno, queda ese, con el check si alguno lo corría",
+      "scopeExtra": []
     }
   },
   "pending": {
