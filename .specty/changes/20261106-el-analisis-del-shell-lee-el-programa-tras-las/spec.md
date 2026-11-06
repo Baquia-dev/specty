@@ -16,7 +16,7 @@ Resuelve P219. Hoy `analyzeShell` (`packages/core/src/guard/shell.ts`) solo salt
 
 ## Tareas
 
-- [ ] T1: El análisis del shell lee el programa tras las palabras de control en todas sus reglas
+- [x] T1: El análisis del shell lee el programa tras las palabras de control en todas sus reglas
   - files: packages/core/src/guard/shell.ts, packages/core/test/guard/control-words.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/control-words.test.ts test/guard/shell.test.ts test/guard/wait.test.ts test/guard/decide.test.ts && pnpm typecheck && pnpm lint
   - type: fix

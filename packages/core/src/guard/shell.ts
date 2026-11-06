@@ -49,7 +49,10 @@ export interface ShellAnalysis extends SpectyCalls {
 type Directory = string | undefined;
 
 const WRAPPERS: ReadonlySet<string> = new Set(["sudo", "env", "command", "exec", "time", "nohup"]);
-/** The words that open a compound command or one of its branches, before the command it runs. */
+/**
+ * The words that open a compound command or one of its branches, before the command it runs:
+ * every rule reads the program past them, and `cd` too.
+ */
 const OPENERS: ReadonlySet<string> = new Set([
   "if",
   "then",
@@ -137,12 +140,12 @@ function locate(directory: Directory, raw: string): { raw: string; path: string 
 }
 
 function isCd(tokens: readonly Token[]): boolean {
-  return tokens.find((token) => !token.operator)?.text === "cd";
+  return commandWords(tokens)[0] === "cd";
 }
 
 /** The directory after this segment: it only changes on `cd`. */
 function changeDirectory(directory: Directory, tokens: readonly Token[]): Directory {
-  const words = tokens.filter((token) => !token.operator).map((token) => token.text);
+  const words = commandWords(tokens);
   if (words[0] !== "cd") return directory;
   const target = words.slice(1).find((word) => !word.startsWith("-") || word === "-");
   return target === undefined ? undefined : enter(directory, target);
@@ -178,16 +181,11 @@ function placeRemoval(
 
 function analyzeSegment(tokens: readonly Token[]): Segment {
   const { words, redirected } = splitRedirections(tokens);
-  const assignments = words.filter(
-    (word, index) => isAssignment(word) && words.slice(0, index).every(isAssignment),
-  );
+  const { assignments, program, args } = locateProgram(opened(words));
   const bypassByEnv = assignments.some((assignment) => {
     const [name, value] = assignment.split("=", 2);
     return name !== undefined && lookup(BYPASS_ENV, name) === value;
   });
-  const start = skipWrappers(words, assignments.length);
-  const program = basename(words[start] ?? "");
-  const args = words.slice(start + 1);
   const git =
     program === "git" ? analyzeGit(args) : { commits: [], removes: [], bypass: false, refs: [] };
   const files = program === "" ? { writes: [], deletes: [] } : fileEffects(program, args);
@@ -205,18 +203,38 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
     refs: git.refs,
     writes: [...redirected, ...files.writes],
     deletes: files.deletes,
-    sleeps: sleepsIn(words),
+    sleeps: program === "sleep",
   };
 }
 
-/** Whether a simple command's program, past the words that open a compound command, is `sleep`. */
-function sleepsIn(words: readonly string[]): boolean {
-  const opened = words.findIndex((word) => !OPENERS.has(word));
-  if (opened === -1) return false;
-  const rest = words.slice(opened);
-  const assigned = rest.findIndex((word) => !isAssignment(word));
-  const start = skipWrappers(rest, assigned === -1 ? rest.length : assigned);
-  return basename(rest[start] ?? "") === "sleep";
+/** A simple command's words, redirection targets included, past the words in `OPENERS`. */
+function commandWords(tokens: readonly Token[]): readonly string[] {
+  return opened(tokens.filter((token) => !token.operator).map((token) => token.text));
+}
+
+/**
+ * A simple command's words past the ones that open a compound command or one of its branches
+ * (`then`, `do`, `{`…): only at its start, so `echo then x` keeps them all.
+ */
+function opened(words: readonly string[]): readonly string[] {
+  const first = words.findIndex((word) => !OPENERS.has(word));
+  return first === -1 ? [] : words.slice(first);
+}
+
+/** The program a simple command runs, past its assignments and wrappers, and its arguments. */
+function locateProgram(words: readonly string[]): {
+  readonly assignments: readonly string[];
+  readonly program: string;
+  readonly args: readonly string[];
+} {
+  const assigned = words.findIndex((word) => !isAssignment(word));
+  const assignments = assigned === -1 ? words : words.slice(0, assigned);
+  const start = skipWrappers(words, assignments.length);
+  return {
+    assignments,
+    program: basename(words[start] ?? ""),
+    args: words.slice(start + 1),
+  };
 }
 
 function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
