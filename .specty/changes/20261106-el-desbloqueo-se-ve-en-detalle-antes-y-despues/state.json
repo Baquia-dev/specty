@@ -6,6 +6,13 @@
   "branch": "specty/20261106-el-desbloqueo-se-ve-en-detalle-antes-y-despues",
   "baseCommit": "72be6161cea686781eb41c05136ed361093aeae0",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:67f25a727de8c0e97571d40ebe77140f285bed726c0cb56a1d48857802dada3c",
+    "at": "2026-11-06T15:07:40.718Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -52,12 +59,6 @@
     "T": 5,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:67f25a727de8c0e97571d40ebe77140f285bed726c0cb56a1d48857802dada3c",
-    "at": "2026-11-06T15:07:40.718Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T15:16:28.893Z"
 }
