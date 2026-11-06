@@ -43,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3d410aaccc0066bd7eb4b53b748427cbabfa8a0e",
+      "startedAt": "2026-11-06T23:05:13.160Z",
+      "doneAt": "2026-11-06T23:06:31.742Z",
+      "summary": "Los experimentos de tres cambios usan carpetas por cambio sin preparación, sin definición de subagente propia y con el mismo encargo; changes apaga los subagentes"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

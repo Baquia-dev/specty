@@ -58,7 +58,7 @@ Desde hoy, sin cambio activo, la tarjeta de `specty next` pide un subagente por 
 
 ## Tareas
 
-- [ ] T1: Los tres cambios siguen la tarjeta, en carpetas por cambio
+- [x] T1: Los tres cambios siguen la tarjeta, en carpetas por cambio
   - files: evals/src/experiments.ts, evals/test/changes-card.test.ts, evals/test/experiments.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/changes-card.test.ts && pnpm lint
