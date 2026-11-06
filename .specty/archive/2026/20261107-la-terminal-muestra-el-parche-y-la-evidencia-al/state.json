@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261107-la-terminal-muestra-el-parche-y-la-evidencia-al",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-la-terminal-muestra-el-parche-y-la-evidencia-al",
+  "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cb545a22e28ca7a645449395b221b4de1c7a1cb2c4de376b59478784ce62552b",
+    "at": "2026-11-06T17:08:01.668Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b4c208f75fd490a0b4509f7a9c35a11fa63d243c15af5c61401f1a22c6737ff6",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:92e60ae8d136e2aa28ee0e9577651b160cc0a53f1cef4174ec56e31fcab1f3a5",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:d502021e83002076ca84ec0e7db9ac0d24ccbf1458aa69ab874ebe951e078384",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "fc6af5165c986b81bb1cb196a94e17e3389fa0da",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:17:49.689Z",
+      "doneAt": "2026-11-06T17:23:28.910Z",
+      "summary": "scopeRequestNote (cards/approve.ts) arma la nota de una solicitud: rutas, motivo y, de un desbloqueo, el parche y cada evidencia numerada, recortados y con los caracteres de control a la vista; cappedLines pasa a cards/text.ts.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "856e0be4647d6d1a3a45f77cb6240fbf912f6fda",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:23:29.313Z",
+      "doneAt": "2026-11-06T17:29:27.746Z",
+      "summary": "approve --scope y reject --scope muestran antes de preguntar la nota de scopeRequestNote: rutas y motivo y, de un desbloqueo, su parche y su evidencia.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "91701e995b394191276704e8583ab2627d298ff8",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:29:28.061Z",
+      "doneAt": "2026-11-06T17:30:14.905Z",
+      "summary": "ARCHITECTURE.md cuenta qué muestra la nota de la terminal antes de decidir un desbloqueo: parche, evidencia numerada, cortes y caracteres de control.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-11-06T17:42:04.396Z",
+  "lockedTests": {
+    "packages/cli/test/test-locks.test.ts": "sha256:f2622a34122562bdfc157d07aba85a76e5abb16f9d7ebe11146dee969842c6ef",
+    "packages/core/test/cards/approve.test.ts": "sha256:5c214ea725b5fdefcb6d30189eaccb4470db3512e4a099c4cc8aa9b9370c6382"
+  }
+}

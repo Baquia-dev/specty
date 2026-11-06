@@ -16,6 +16,7 @@ import {
   retroIntoStaleReason,
   scopeDecidedLine,
   scopeDecisionQuestion,
+  scopeRequestNote,
   transition,
   type UnlockPatchRefusal,
   unlockRefusedCard,
@@ -70,10 +71,7 @@ export async function decideScope(
   }
   const stale = await staleRequest(session, state, request, decision === "approve" ? unlocks : []);
   if (stale !== undefined) return rejectStale(session, active, request, { header, stale });
-  terminal.note(
-    `${request.id} · ${request.task}`,
-    `${request.paths.join("\n")}\n— ${request.reason}`,
-  );
+  terminal.note(`${request.id} · ${request.task}`, scopeRequestNote(request, cards));
   const why =
     decision === "reject"
       ? (reason ?? (await terminal.ask(rejectionQuestion("scope", session.lang))))
