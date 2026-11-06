@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6eaf78b88b9a30e7169d2435fec485207f82647e",
+      "startedAt": "2026-11-06T17:31:06.964Z",
+      "doneAt": "2026-11-06T17:36:11.140Z",
+      "summary": "sample-test-code.ts guarda el código de los dos tests enviados de «Avisos de nuevas calificaciones» y sampleTestCode lo da por cambio y ruta, o lo rechaza como el servidor; FixtureData.testCode lo usa, así «Ver código» funciona en el prototipo."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

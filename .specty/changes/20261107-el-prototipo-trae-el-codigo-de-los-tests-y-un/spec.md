@@ -53,7 +53,7 @@ En el prototipo de la UI (`FixtureData`), «Ver código» dice hoy que la fuente
 
 ## Tareas
 
-- [ ] T1: El prototipo da el código de los tests de sus cambios de muestra
+- [x] T1: El prototipo da el código de los tests de sus cambios de muestra
   - files: packages/ui/src/data/sample-test-code.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-test-code.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/sample-test-code.test.ts
