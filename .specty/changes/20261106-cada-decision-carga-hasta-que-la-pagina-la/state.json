@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261106-cada-decision-carga-hasta-que-la-pagina-la",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-cada-decision-carga-hasta-que-la-pagina-la",
   "baseCommit": "c17e17acd35abbcb1e8dc872b26eda2af73c5f33",
   "revision": 3,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:941921cd495e08dbf1ad7bb9a1f7ef9a5aecc60a195473ca8d2994d45478e367",
+    "at": "2026-11-06T09:01:37.094Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -39,12 +46,8 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 3,
-    "hash": "sha256:941921cd495e08dbf1ad7bb9a1f7ef9a5aecc60a195473ca8d2994d45478e367",
-    "at": "2026-11-06T09:01:37.094Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/ui/src/data/changes-store.test.ts": "sha256:a9ba19c8a7fe41730f02c397fb0435e334bf2181f3fe75622a064a16b2f111e0",
+    "packages/ui/src/data/server-actions.test.ts": "sha256:6bad8eb5acf5d846c203cc178f5bd13d5d0a83642f54d66a029f923ce6216473"
+  }
 }
