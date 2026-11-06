@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-specty-integrate-anota-su-verificacion-y-accept",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-specty-integrate-anota-su-verificacion-y-accept",
   "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
   "revision": 1,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "87cbd0cc37128532d7654309da226347f79a9f44",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:50:10.750Z",
       "doneAt": "2026-11-06T18:51:45.842Z",
-      "summary": "integrate anota con recordFullVerification y codeTree la verificación completa que pasa sobre el merge resuelto, con su tiempo desde el turno; accept la reutiliza"
+      "summary": "integrate anota con recordFullVerification y codeTree la verificación completa que pasa sobre el merge resuelto, con su tiempo desde el turno; accept la reutiliza",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2d2b442170d750aa8902f40bc91b6de87959d956",
+      "startedAt": "2026-11-06T18:51:46.184Z",
+      "doneAt": "2026-11-06T18:52:13.827Z",
+      "summary": "formats.md §4 (change.verified) y ARCHITECTURE §6 y §9 cuentan que specty integrate anota su verificación y accept no la repite"
     }
   },
   "pending": {

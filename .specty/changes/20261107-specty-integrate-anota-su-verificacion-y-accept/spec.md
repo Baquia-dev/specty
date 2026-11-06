@@ -49,7 +49,7 @@ Cuando el agente termina con `specty integrate` la incorporación de main que de
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate.test.ts test/integrate-units.test.ts && pnpm typecheck && pnpm lint
   - type: fix
-- [ ] T2: formats.md y ARCHITECTURE cuentan que `integrate` anota su verificación
+- [x] T2: formats.md y ARCHITECTURE cuentan que `integrate` anota su verificación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: grep -q 'terminar esa incorporación con `specty integrate`' docs/formats.md && grep -q 'deja su verificación anotada como `change.verified`' docs/ARCHITECTURE.md
