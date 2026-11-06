@@ -21,3 +21,9 @@ Rechazar supuestos al aprobar, en la terminal o en la UI, devuelve la revisión 
   - files: packages/cli/src/server/unattended.ts, packages/cli/test/server-unattended.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-unattended.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+unattended.ts cuenta como decisión de la persona el assumption.decided con rejected que approve escribe junto a changesRequestedAt; un supuesto decidido suelto desde la UI sigue sin contar; ARCHITECTURE §15 y formats §4 lo cuentan
