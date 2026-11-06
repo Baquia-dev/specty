@@ -40,7 +40,8 @@ Hoy cada agente decide cómo esperar la decisión de la persona. Unos ejecutan `
 - AC4: CUANDO el agente de Claude Code ejecuta `specty wait` en primer plano ENTONCES el guard no lo deja correr así: lo pasa a segundo plano o lo rechaza y le pide ejecutarlo en segundo plano (`run_in_background: true`).
 - AC5: CUANDO el cambio de la carpeta espera a la persona y el agente ejecuta un comando de shell con `sleep` ENTONCES el guard lo rechaza y le pide `specty wait`.
 - AC6: CUANDO el agente termina su turno, el cambio de su carpeta espera a la persona y ningún `specty wait` de ese cambio está vivo ENTONCES su fin de turno lo devuelve a trabajar una vez con la regla. CUANDO hay un `wait` vivo, como el de Claude Code en segundo plano ENTONCES el turno termina.
-- AC7: CUANDO la persona ejecuta `init` ENTONCES cada agente con fin de turno lo tiene instalado, sin `check --install`, y `check --changed` al final del turno solo corre donde `check --install` lo activó. CUANDO falta en una instalación anterior ENTONCES `doctor` lo dice y cómo arreglarlo.
+- AC7: CUANDO la persona ejecuta `init` ENTONCES cada agente con fin de turno lo tiene instalado, sin `check --install`, y `check --changed` al final del turno solo corre donde `check --install` lo activó, también en las instalaciones que ya existían.
+- AC10: CUANDO falta el fin de turno de un agente en una instalación anterior ENTONCES `doctor` lo dice y cómo arreglarlo.
 - AC8: CUANDO `specty wait` espera a la persona ENTONCES deja una marca viva del cambio, que termina como `decided` o `timeout`, y que cuenta como cortada si su proceso muere o deja de renovarla.
 - AC9: CUANDO salen los textos nuevos ENTONCES salen en español y en inglés.
 
@@ -48,18 +49,30 @@ Hoy cada agente decide cómo esperar la decisión de la persona. Unos ejecutan `
 
 - **C1, la regla en los textos** (core `cards/` y `agents-md.ts`): un solo texto en core para «ejecuta `specty wait`», con la forma de cada herramienta según `ctx.tool` (una tabla en `cards/wait.ts`), que usan todas las tarjetas que hoy lo piden a mano (`next`, `flow`, `acceptance`, `work`, `integration`, `testing`, `epic`). La tarjeta de tiempo agotado pide repetirlo ya y recordar a la persona la decisión.
 - **C3, la marca y el aguante de `wait`** (CLI `store/waits.ts`, `commands/wait.ts`, `commands/agent-commands.ts`; core `cards/wait.ts` para la línea de latido): la marca de A6 y, en Gemini CLI, una línea de latido al menos cada 60 s. `--timeout` deja de tener un valor por defecto en commander para que `wait` tome el suyo.
-- **C2, el guard y el fin de turno** (CLI `enforce/`, `agents/`, `install/`, `check/install-agents.ts`, core `guard/`): El guard de Claude Code no deja correr `specty wait` en primer plano: lo reescribe con `run_in_background: true` si la respuesta de la herramienta lo permite sin saltarse los permisos de la persona, y si no lo rechaza pidiendo ese parámetro. Una regla del guard rechaza `sleep` mientras el cambio espera a la persona. `hook agent-stop` comprueba la regla de `wait` antes del `check --changed`, que solo corre si `check --install` lo activó. `init`, `doctor` y `uninstall` instalan, comprueban y quitan el hook de cada agente.
+- **C2, el guard** (CLI `enforce/`, `agents/`, `install/`, `check/install-agents.ts`, core `guard/`): El guard de Claude Code no deja correr `specty wait` en primer plano: lo reescribe con `run_in_background: true` si la respuesta de la herramienta lo permite sin saltarse los permisos de la persona, y si no lo rechaza pidiendo ese parámetro. Una regla del guard rechaza `sleep` mientras el cambio espera a la persona.
+- **C4, el fin de turno** (CLI `enforce/agent-stop.ts`): `hook agent-stop` comprueba la regla de `wait` con `readWait` antes del `check --changed`, y dice lo mismo que `next` (en modo delegado, decidir él).
+- **C5, la instalación** (CLI `agents/`, `install/`, `check/install-agents.ts`): `init` escribe `hook agent-stop <agente> --no-check` con el `stop.plan` de cada agente, y `check --install` quita la marca. Las instalaciones que ya existen siguen con su check. En OpenCode, `STOP` queda siempre puesto y `CHECK` lo enciende `check --install`.
+- **C6, `doctor`**: avisa si falta el hook en los archivos de un agente instalado.
 
 ## Cortes
 
 - C1: `specty wait` es la regla en todos los textos
   - ac: AC1, AC2, AC3, AC9
-- C2: El guard y el fin de turno hacen cumplir `specty wait` en cada agente
-  - ac: AC4, AC5, AC6, AC7, AC9
+- C2: El guard no deja esperar en primer plano ni con `sleep`
+  - ac: AC4, AC5, AC9
   - depends: C1, C3
 - C3: `specty wait` deja su marca y aguanta en cada herramienta
   - ac: AC2, AC8, AC9
   - depends: C1
+- C4: El fin de turno devuelve al agente a esperar con `specty wait`
+  - ac: AC6, AC9
+  - depends: C1, C3
+- C5: `init` instala el fin de turno de cada agente sin `check --install`
+  - ac: AC7, AC9
+  - depends: C4
+- C6: `doctor` avisa si falta el fin de turno de un agente
+  - ac: AC10, AC9
+  - depends: C5
 
 ## Riesgos
 
