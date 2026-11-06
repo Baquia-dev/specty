@@ -122,8 +122,9 @@ describe("ChangePage of a change nobody picks up after the person's decision", (
     expect(
       (panel?.compareDocumentPosition(tabs as Node) ?? 0) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
+    // AC2: the agent of the wait goes by its name.
     expect(text(panel?.querySelector("[data-why]"))).toBe(
-      "El specty wait del agente (claude-code) agotó su tiempo hace 12 min.",
+      "El specty wait del agente (Claude Code) agotó su tiempo hace 12 min.",
     );
   });
 
