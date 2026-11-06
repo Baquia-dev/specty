@@ -63,7 +63,7 @@ Desde hoy, sin cambio activo, la tarjeta de `specty next` pide un subagente por 
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/changes-card.test.ts && pnpm lint
   - type: fix
-- [ ] T2: Una pregunta que vuelve a la sesión principal
+- [x] T2: Una pregunta que vuelve a la sesión principal
   - files: evals/src/experiments.ts, evals/src/agents.ts, evals/run/compliance.eval.ts, evals/test/question.test.ts, evals/test/experiments.test.ts
   - ac: AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/question.test.ts test/experiments.test.ts test/changes-card.test.ts test/consumption.test.ts && pnpm typecheck && pnpm lint

@@ -96,6 +96,44 @@ export function consumptionOf(id: AgentId, transcript: string): Consumption | un
   return cost === undefined ? undefined : { cost, context };
 }
 
+/**
+ * The final answer of a run of Claude Code: the text of its `stream-json`'s result. Other agents,
+ * or a run without its result, tell nothing.
+ */
+export function answerOf(id: AgentId, transcript: string): string | undefined {
+  if (id !== "claude-code") return undefined;
+  return transcript
+    .split("\n")
+    .map(parsed)
+    .filter(isObject)
+    .flatMap((value) =>
+      value.type === "result" && typeof value.result === "string" ? [value.result] : [],
+    )
+    .at(-1);
+}
+
+/**
+ * The shell commands of Claude Code's subagents: the `Bash` calls of the answers that carry a
+ * `parent_tool_use_id`, without its main thread's. Other agents tell none.
+ */
+export function subagentCommandsOf(id: AgentId, transcript: string): string[] {
+  if (id !== "claude-code") return [];
+  return transcript.split("\n").flatMap((line) => {
+    const value = parsed(line);
+    if (!isObject(value) || value.type !== "assistant" || value.parent_tool_use_id == null) {
+      return [];
+    }
+    return contentOf(line).flatMap((item) =>
+      item.type === "tool_use" &&
+      item.name === "Bash" &&
+      isObject(item.input) &&
+      typeof item.input.command === "string"
+        ? [item.input.command]
+        : [],
+    );
+  });
+}
+
 /** The tokens an answer read: its input, cache writes and cache reads. */
 function promptOf(message: unknown): number {
   const usage = isObject(message) ? message.usage : undefined;
@@ -117,6 +155,8 @@ interface Item {
   readonly type?: unknown;
   readonly is_error?: unknown;
   readonly content?: unknown;
+  readonly name?: unknown;
+  readonly input?: unknown;
 }
 
 /** The content items of one line's message, or none for a line that is not one. */

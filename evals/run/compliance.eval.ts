@@ -84,7 +84,7 @@ async function runOnce(
   ) {
     return { agent: agent.id, reason: "sin sesión iniciada" };
   }
-  const verdict = await scenario.judge(root);
+  const verdict = await scenario.judge(root, transcript);
   const consumption = consumptionOf(agent.id, transcript);
   return { agent: agent.id, scenario: scenario.id, verdict, ...counts, seconds, ...consumption };
 }

@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3d410aaccc0066bd7eb4b53b748427cbabfa8a0e",
+      "attempts": 1,
       "startedAt": "2026-11-06T23:05:13.160Z",
       "doneAt": "2026-11-06T23:06:31.742Z",
-      "summary": "Los experimentos de tres cambios usan carpetas por cambio sin preparación, sin definición de subagente propia y con el mismo encargo; changes apaga los subagentes"
+      "summary": "Los experimentos de tres cambios usan carpetas por cambio sin preparación, sin definición de subagente propia y con el mismo encargo; changes apaga los subagentes",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4bdde5923c7a4e4fe2b573ce3ab1ad24ec86f392",
+      "startedAt": "2026-11-06T23:06:32.081Z",
+      "doneAt": "2026-11-06T23:11:46.000Z",
+      "summary": "Experimento question: el subagente vuelve con una pregunta; el juicio lee la respuesta final y los Bash de los subagentes del stream-json, que la suite le pasa"
     }
   },
   "pending": {
