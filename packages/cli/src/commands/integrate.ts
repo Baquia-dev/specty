@@ -31,6 +31,7 @@ import { changeTrailers, commitWithReceipt } from "../flow/commits";
 import { fullCommand } from "../flow/full-verification";
 import { blocked } from "../flow/integrate";
 import { fullPlan, runFull } from "../flow/units";
+import { codeTree, type FullRun, recordFullVerification } from "../flow/verified";
 import { readText } from "../io/files";
 import { pathsOf } from "../io/git";
 import type { Session } from "../session";
@@ -127,7 +128,8 @@ async function outsideChanges(
 
 /**
  * The full verification of the merged code, live: with `verify.units`, only the units that have
- * not passed, none when every one did, and what each did goes to the error output.
+ * not passed, none when every one did, and what each did goes to the error output. One that runs
+ * and passes goes to the audit with the code it ran on, so that `accept` does not run it again.
  */
 async function failedVerification(
   session: Session,
@@ -143,14 +145,30 @@ async function failedVerification(
     return undefined;
   }
   err(verifyingNote(plan.runs, lang));
-  // A full verification like any other: on its turn, with every place of the clone.
-  const ran = await runFull(session, change.state.id, plan, () => undefined);
+  let started = Date.now();
+  // A full verification like any other: on its turn, with every place of the clone; its time
+  // counts from that turn.
+  const ran = await runFull(session, change.state.id, plan, () => {
+    started = Date.now();
+  });
   if (ran.units !== undefined) err(unitsLines(ran.units, lang).join("\n"));
-  if (ran.code === 0) return undefined;
+  if (ran.code === 0) {
+    await recordPassed(session, change, { ...ran, command, started, ms: Date.now() - started });
+    return undefined;
+  }
   return {
     reason: commandFailsLine(ran.command, lang),
     details: { title: incorporationTitle("verification", lang), lines: ran.output.slice(-15) },
   };
+}
+
+/**
+ * A full verification that passed on the merged code, as `change.verified` with the code it ran
+ * on: the working tree with the merge resolved, which is what its commit takes.
+ */
+async function recordPassed(session: Session, change: StoredChange, run: FullRun): Promise<void> {
+  const tree = await codeTree(session);
+  await recordFullVerification(session, change, tree === undefined ? run : { ...run, tree });
 }
 
 /** The merge resolved: its commit, recorded in the change's state. */
