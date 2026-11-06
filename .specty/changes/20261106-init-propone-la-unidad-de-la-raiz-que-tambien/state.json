@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a6990a2202cdf9142d89beaa52b4c5c9ff8c4609",
+      "attempts": 1,
       "startedAt": "2026-11-06T02:53:34.915Z",
       "doneAt": "2026-11-06T02:54:20.979Z",
-      "summary": "WorkspacePackage gana paths opcionales: proposeUnits los usa en lugar de <carpeta>/** para el paquete y para los que dependen de él, sin rutas repetidas, y la unidad del paquete en la raíz se llama como el paquete"
+      "summary": "WorkspacePackage gana paths opcionales: proposeUnits los usa en lugar de <carpeta>/** para el paquete y para los que dependen de él, sin rutas repetidas, y la unidad del paquete en la raíz se llama como el paquete",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e021fdbd3750c0254778e43895ea488d46b45a52",
+      "startedAt": "2026-11-06T02:54:21.263Z",
+      "doneAt": "2026-11-06T02:56:15.182Z",
+      "summary": "La raíz de Cargo con [package] y [workspace] es un miembro más en '.', con cargo test -p y por paths las entradas de la raíz fuera de los miembros y de las ocultas (rootPackagePaths en detect/root-package.ts); un miembro que la usa lleva esos paths"
     }
   },
   "pending": {
