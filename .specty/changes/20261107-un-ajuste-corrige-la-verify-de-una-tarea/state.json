@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-un-ajuste-corrige-la-verify-de-una-tarea",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-un-ajuste-corrige-la-verify-de-una-tarea",
   "baseCommit": "efe8573c8c939f04712e3ff9ccede27b7c150138",
   "revision": 1,
@@ -59,6 +59,12 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T23:24:00.924Z"
+  "lockedTests": {
+    "packages/cli/test/commands.test.ts": "sha256:127e77f415da09ac57964f41435d113a008899102e4e770908f795ea30e7c77b",
+    "packages/cli/test/epic-adjust.test.ts": "sha256:5491a05b6334091669b5e2fef37c2ca60847683215e4bcd9af0db10790db1e8b",
+    "packages/cli/test/server/epic-adjust.test.ts": "sha256:6504829d8133a0be44fceaae966adaf22c364c5c2c8101747a71edb0a1578dd3",
+    "packages/core/test/cards/adjust.test.ts": "sha256:8efd38e8e24c2fff835ddfe626cba9c8f5232291357c11502081cf448043b42e",
+    "packages/core/test/flow/machine.test.ts": "sha256:b37216f057d9fc1ba0f7a5e557c1951cce779c151a44bc41d52f47d1aa334ca1",
+    "packages/core/test/validate/phase.test.ts": "sha256:2e66eb5785e11498246038941032d55bb37b1722c0266a517bc85e512dbe99d5"
+  }
 }
