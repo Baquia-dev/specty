@@ -133,20 +133,13 @@ describe("specty init in a Gradle project", () => {
     ]);
   });
 
-  it("AC4: proposes nothing with fewer than two subprojects with tests or with tests in the root project", async () => {
+  it("AC4: proposes nothing with fewer than two subprojects with tests", async () => {
     const single = await unitsFor({
       "settings.gradle.kts": 'include(":core", ":app")\n',
       "core/src/test/kotlin/CoreTest.kt": TEST,
       "app/build.gradle.kts": 'dependencies {\n    implementation(project(":core"))\n}\n',
     });
     expect(single).toBeUndefined();
-    const withRoot = await unitsFor({
-      "settings.gradle.kts": 'include(":core", ":app")\n',
-      "src/test/kotlin/RootTest.kt": TEST,
-      "core/src/test/kotlin/CoreTest.kt": TEST,
-      "app/src/test/kotlin/AppTest.kt": TEST,
-    });
-    expect(withRoot).toBeUndefined();
     const root = await tempRepo({
       "settings.gradle.kts": 'include(":core")\n',
       "core/src/test/kotlin/CoreTest.kt": TEST,
@@ -158,5 +151,45 @@ describe("specty init in a Gradle project", () => {
     const at = DETECTORS.indexOf(gradleWorkspace);
     expect(at).toBeGreaterThan(DETECTORS.indexOf(cargoWorkspace));
     expect(at).toBeGreaterThan(DETECTORS.indexOf(goWorkspace));
+  });
+});
+
+/** A Gradle build whose root project has tests, with core and app, which depends on the root. */
+const ROOTED = {
+  "settings.gradle.kts": 'rootProject.name = "demo"\ninclude(":core", ":app")\n',
+  "build.gradle.kts": "plugins {\n    java\n}\n",
+  "src/main/kotlin/Root.kt": "class Root\n",
+  "src/test/kotlin/RootTest.kt": TEST,
+  "gradle/libs.versions.toml": "[versions]\n",
+  "README.md": "# demo\n",
+  ".github/workflows/ci.yml": "on: push\n",
+  "core/src/test/kotlin/CoreTest.kt": TEST,
+  "app/src/test/kotlin/AppTest.kt": TEST,
+  "app/build.gradle.kts": 'dependencies {\n    implementation(project(":"))\n}\n',
+};
+
+describe("specty init in a Gradle project whose root project has tests", () => {
+  it("AC2: proposes the root's unit with its :test task, named as the root project, also in the subprojects that depend on it", async () => {
+    const units = unitsOf(await unitsFor(ROOTED));
+    const own = ["README.md", "build.gradle.kts", "gradle/**", "settings.gradle.kts", "src/**"];
+    const shared = ["settings.gradle.kts", "build.gradle.kts", "gradle/**"];
+    expect(units).toEqual([
+      { name: "demo", command: "gradle :test", paths: own },
+      { name: "core", command: "gradle :core:test", paths: ["core/**", ...shared] },
+      { name: "app", command: "gradle :app:test", paths: ["app/**", ...own] },
+    ]);
+  });
+
+  it("AC2: names the root's unit `root` when the settings do not name the root project", async () => {
+    const units = unitsOf(
+      await unitsFor({
+        ...ROOTED,
+        "settings.gradle.kts": 'include(":core", ":app")\n',
+      }),
+    );
+    expect(units).toContainEqual(
+      expect.objectContaining({ name: "root", command: "gradle :test" }),
+    );
+    expect(units).toContainEqual(expect.objectContaining({ name: "core" }));
   });
 });
