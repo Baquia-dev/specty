@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-doctor-avisa-si-falta-el-fin-de-turno-de-un",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-doctor-avisa-si-falta-el-fin-de-turno-de-un",
   "baseCommit": "798f2e7348400e1b9900903d7b61240592143fac",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "225fb02fe1dab0eabc5c9e1f09a1272fc2148e8a",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:56:20.999Z",
       "doneAt": "2026-11-06T13:58:49.558Z",
-      "summary": "`stopLines` (antes `memoryStopLines`, en `install/agents.ts`) da la línea de cada fin de turno de Specty que falta junto al guard; los `doctor` de Claude Code y Codex piden `memory-stop` y `agent-stop`, y los de Cursor, Gemini CLI, Devin y Antigravity, `agent-stop`."
+      "summary": "`stopLines` (antes `memoryStopLines`, en `install/agents.ts`) da la línea de cada fin de turno de Specty que falta junto al guard; los `doctor` de Claude Code y Codex piden `memory-stop` y `agent-stop`, y los de Cursor, Gemini CLI, Devin y Antigravity, `agent-stop`.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7a9ae2fd83f7227cfa26807bb1fc3fdb5a64fd61",
+      "startedAt": "2026-11-06T13:58:49.888Z",
+      "doneAt": "2026-11-06T13:59:54.382Z",
+      "summary": "`install/opencode.ts` exporta `stopOf`, y el `doctor` de OpenCode da `agent-stop` cuando el plugin tiene el guard y `STOP` apagado. `docs/ARCHITECTURE.md` («Fin de turno») cuenta el aviso."
     }
   },
   "pending": {

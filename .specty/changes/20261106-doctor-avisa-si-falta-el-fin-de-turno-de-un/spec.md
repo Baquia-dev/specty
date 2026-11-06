@@ -76,7 +76,7 @@ Desde C5, `specty init` instala el fin de turno de cada agente (`hook agent-stop
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-agent-stop.test.ts test/memory-stop-install.test.ts
   - type: feat
-- [ ] T3: `doctor` avisa si el plugin de OpenCode tiene el fin de turno apagado, y la documentación lo cuenta
+- [x] T3: `doctor` avisa si el plugin de OpenCode tiene el fin de turno apagado, y la documentación lo cuenta
   - files: packages/cli/src/install/opencode.ts, packages/cli/src/agents/opencode.ts, packages/cli/test/doctor-opencode-stop.test.ts, docs/ARCHITECTURE.md
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-opencode-stop.test.ts && pnpm typecheck && pnpm lint

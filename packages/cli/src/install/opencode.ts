@@ -103,8 +103,11 @@ async function turnOn(
     await files.write(path, opencodePlugin(command, timeout, check || checks));
 }
 
-/** The seconds a plugin (its text) gives its end of turn; undefined while off. */
-function stopOf(text: string | undefined): number | undefined {
+/**
+ * The seconds a plugin (its text) gives its end of turn; undefined while off, as in a plugin from
+ * before `init` turned it on, which `doctor` tells.
+ */
+export function stopOf(text: string | undefined): number | undefined {
   const found = text?.match(/^const STOP = (\d+);$/m)?.[1];
   return found === undefined ? undefined : Number(found);
 }
