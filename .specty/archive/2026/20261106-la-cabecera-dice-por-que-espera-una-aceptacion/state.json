@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-la-cabecera-dice-por-que-espera-una-aceptacion",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-la-cabecera-dice-por-que-espera-una-aceptacion",
   "baseCommit": "288e88cbf522a73c14ab890101f8b1cb626ee433",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:a2a6eec96fcdf0ebb9a601d4f02f2a13447438d8170aae38598f52d14e55ed36",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "065da1993f23e663790d8005bee9b0e42e716e63",
+      "attempts": 1,
       "startedAt": "2026-11-06T09:48:52.816Z",
       "doneAt": "2026-11-06T09:49:18.557Z",
-      "summary": "ui.md cuenta que la cabecera muestra la línea del servidor de una aceptación o un cierre en curso; ARCHITECTURE.md, los eventos action del servidor y watchActions de ServerData con InFlight"
+      "summary": "ui.md cuenta que la cabecera muestra la línea del servidor de una aceptación o un cierre en curso; ARCHITECTURE.md, los eventos action del servidor y watchActions de ServerData con InFlight",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T09:54:43.159Z",
   "lockedTests": {
     "packages/ui/src/acceptance/acceptance-actions.test.ts": "sha256:2f7bc3220da2639423d4471d7d23c3fc28c09d1f20f4e22391f68d0bf334e3b8",
     "packages/ui/src/acceptance/closing-actions.test.ts": "sha256:326d24cad4b4c3697a0de659047f32554ddea67c701121d79382021993764e48",

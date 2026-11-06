@@ -91,3 +91,22 @@ Hoy, mientras una aceptación o un cierre lanzados desde la UI esperan, la cabec
 
 - R1: Una línea larga (la espera nombra el comando y la carpeta de la otra sesión) ocupa varias líneas bajo los botones. Mitigación: va en texto pequeño y atenuado, y es justo lo que la persona necesita saber.
 - R2: Si el flujo de eventos se corta, la cabecera se queda con «Aceptando…» o con la última línea hasta que la acción termina. Mitigación: es lo mismo que hoy; el aviso final sigue llegando con la respuesta.
+
+## Cierre
+
+### Resumen
+
+Mientras una aceptación o un cierre lanzados desde la UI siguen, la cabecera dice por qué esperan. El servidor emite eventos `action` para cada acción de un cambio: `{ change, action }` al empezar, `{ change, action, note }` con cada línea que el comando dice por su salida de errores (la espera del turno de la verificación completa de otra sesión, la verificación tras incorporar main, `git.afterLanding`) y `{ change, action, done: true }` al terminar, antes de responder. En la UI, `watchActions` y `actionEvent` leen esos eventos, `InFlight` guarda la última línea de su acción en curso, sin el prefijo `specty:`, y la cabecera la muestra bajo los botones en lugar de «Aceptando…» o «Cerrando…»; la barra compacta no la muestra. `docs/ui.md` y `docs/ARCHITECTURE.md` lo cuentan.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- Para no hacer crecer más `server.ts`, un `follow()` privado agrupa los oyentes de `subscribe`, `watchRun` y `watchActions`; aun así el archivo queda en 315 líneas de código, sobre el aviso de 300, y su división sigue en P203.
+- La línea llega en el idioma de Specty, como la salida de una verificación; solo «Aceptando…» y «Cerrando…» van en los dos idiomas.
+
+### Pendientes
+
+- Ninguno
