@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-cabecera-de-la-epica-da-su-avance-y-si",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-cabecera-de-la-epica-da-su-avance-y-si",
   "baseCommit": "8c4af062c7aa39651c4c843dc1b5aca2932d3eb3",
   "revision": 1,
@@ -59,12 +59,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "447821ae02d61d766e3464762862dd5894004183",
+      "attempts": 1,
       "startedAt": "2026-11-06T17:49:02.414Z",
       "doneAt": "2026-11-06T17:55:34.998Z",
-      "summary": "La fila de la épica en implementación recibe el recuento de su tarjeta: «1/5 cortes» con anillo en lugar de la fase, la línea del recuento sin tamaño ni carpeta, sin avisos de quién la lleva, y «Ningún corte en marcha» cuando toca"
+      "summary": "La fila de la épica en implementación recibe el recuento de su tarjeta: «1/5 cortes» con anillo en lugar de la fase, la línea del recuento sin tamaño ni carpeta, sin avisos de quién la lleva, y «Ningún corte en marcha» cuando toca",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6913176bfd69a2af58e1f93a64bda5edf5c7d1bd",
+      "startedAt": "2026-11-06T17:55:35.332Z",
+      "doneAt": "2026-11-06T18:01:44.757Z",
+      "summary": "docs/ui.md cuenta la cabecera de la tarjeta de la épica: su avance con anillo, el recuento y «Ningún corte en marcha» en implementación"
     }
   },
   "pending": {

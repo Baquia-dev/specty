@@ -61,7 +61,7 @@ En la Bandeja, la cabecera de la tarjeta de una épica en implementación dice c
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-epic.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox-epic-head.test.ts, packages/ui/src/inbox/inbox.test.ts
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-epic-head.test.ts --include src/inbox/inbox-epic.test.ts --include src/inbox/inbox.test.ts --include src/inbox/inbox-row.test.ts && pnpm typecheck && pnpm lint && pnpm knip
-- [ ] T3: ui.md cuenta la cabecera de la tarjeta de la épica
+- [x] T3: ui.md cuenta la cabecera de la tarjeta de la épica
   - files: docs/ui.md
   - ac: —
   - verify: grep -q "Ningún corte en marcha" docs/ui.md
