@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-el-guard-no-deja-recrear-carpetas-quitadas-y-el",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-el-guard-no-deja-recrear-carpetas-quitadas-y-el",
   "baseCommit": "723a599e2ab1ed33d68368a923a91151b72ffeb6",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:84adfc38dc3671772b3140311d8c4c524009cbf9a92edabf43081ab8d6728aae",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b7a3f8ca55228b61b994f80ca2812944ef3362b6",
+      "attempts": 1,
       "startedAt": "2026-11-06T08:58:39.042Z",
       "doneAt": "2026-11-06T08:59:34.326Z",
-      "summary": "formats.md §1: ended en sessions/; ARCHITECTURE §9: la limpieza deja de contar una conversación terminada; §10: Carpetas fantasma (regla ghost, restore, ligadura y redirección)"
+      "summary": "formats.md §1: ended en sessions/; ARCHITECTURE §9: la limpieza deja de contar una conversación terminada; §10: Carpetas fantasma (regla ghost, restore, ligadura y redirección)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T09:05:30.939Z",
   "lockedTests": {
     "packages/cli/test/ghost-folders.test.ts": "sha256:8e67ac9f4ce5e85863c8038cc92e39d62b97fd1ae9b20ea6c8fe467a8c890fad",
     "packages/cli/test/session-end-binding.test.ts": "sha256:bb90b41024a4ea1c752b99d15f3bb68e669a8917aff346763e93cb6bdd719b68",

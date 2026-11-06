@@ -88,3 +88,25 @@ Hoy, una herramienta que escribe en la carpeta de un cambio ya quitada la vuelve
 
 - R1: Una ruta de la carpeta hermana o de `.worktrees/` nombrada por un enlace simbólico (`/var` y `/private/var` en macOS) no se reconoce como fantasma — se compara como `placePaths`, con las rutas que da git y las resueltas, y una que no encaja se juzga como hoy.
 - R2: Buscar los cambios sin carpeta en cada acción haría lento el guard — `lostChanges` solo corre cuando la acción toca una carpeta fantasma.
+
+## Cierre
+
+### Resumen
+
+El guard ya no deja que un agente recree la carpeta de un cambio quitada (P198, corte C1 de la épica). Una carpeta fantasma es una entrada de `.worktrees/` o de la carpeta hermana `<repo>.worktrees/` que git no tiene como worktree, exista o no: `ghostFolders` (`flow/worktree.ts`) la reconoce, `inRepo` (`enforce/place.ts`) aparta sus rutas antes de repartir las demás entre las worktrees, y core las niega con su propia regla, `ghost`, antes que la de otra worktree (`decide.ts`, con `GhostPath` en `guard/worktrees.ts`). La negativa (`cards/ghost-folder.ts`, en español y en inglés) dice que esa carpeta ya no es la de ningún cambio y pide salir de ella y seguir en la carpeta principal, o `specty restore <id>` si se llama como un cambio abierto que perdió la suya; el guard solo busca esos cambios cuando hay alguna ruta fantasma. Leer allí sigue siendo libre. El guard tampoco ata una conversación a una carpeta fantasma ni le redirige allí sus rutas. Además, el fin de una conversación (`SessionEnd` de Claude Code, también con `/clear`) marca su ligadura con `ended` en lugar de borrarla: la limpieza ya no retiene su carpeta (`workingFolders` en `flow/prune.ts`), y su `SessionStart` al reanudarse le quita la marca, así que `next` la sigue devolviendo a su carpeta. Los tests de AC1 y AC2 están en `packages/cli/test/ghost-folders.test.ts`, los de AC3 en `packages/cli/test/session-end-binding.test.ts` y los de AC1 y AC11 de core en `packages/core/test/guard/ghosts.test.ts`. La verificación completa pasó entera.
+
+### Desviaciones
+
+- `decideGuard` pasó de la complejidad máxima con la regla nueva: la decisión de una escritura o un borrado de la herramienta de archivos pasó a `decideEdit`, en el mismo archivo.
+- El glosario (`docs/dominio.md`) gana el término «Carpeta fantasma», como pide el cierre.
+
+### Decisiones
+
+- La carpeta fantasma se reconoce solo por la ruta, sin mirar si existe: la escritura que la crearía es justo la que hay que negar.
+- Una worktree que git aún lista sin su carpeta no es fantasma: sigue siendo de otro cambio, como hasta ahora (AC2), y la poda de esos registros es de C2.
+- El texto de la negativa vive en `cards/`, como pide la épica, aunque las demás negativas del guard sobre worktrees siguen en `guard/worktrees.ts`.
+- Cualquier `SessionStart` de la conversación le quita la marca `ended`, no solo `resume`: si llega, la conversación sigue viva.
+
+### Pendientes
+
+- `packages/cli/src/enforce/guard.ts` pasa el aviso de tamaño (308 líneas de código); la propuesta de división está anotada en la memoria como P202.
