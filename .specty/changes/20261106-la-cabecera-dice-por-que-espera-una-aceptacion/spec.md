@@ -73,7 +73,7 @@ Hoy, mientras una aceptación o un cierre lanzados desde la UI esperan, la cabec
   - files: packages/cli/src/server/actions.ts, packages/cli/src/server/api.ts, packages/cli/test/server/action-notes.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/action-notes.test.ts test/server/actions.test.ts test/server-actions.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
-- [ ] T2: La página guarda la última línea del servidor de cada acción en curso
+- [x] T2: La página guarda la última línea del servidor de cada acción en curso
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/server.ts, packages/ui/src/data/in-flight.ts, packages/ui/src/data/in-flight.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/in-flight.test.ts --include src/data/server-runs.test.ts --include src/data/server-actions.test.ts --include src/data/server.test.ts && pnpm lint && pnpm knip

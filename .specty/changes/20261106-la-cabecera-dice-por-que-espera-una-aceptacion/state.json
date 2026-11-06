@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9f9593126d47c4a07d7ba52ac370995e92daaf16",
+      "attempts": 1,
       "startedAt": "2026-11-06T09:45:42.240Z",
       "doneAt": "2026-11-06T09:46:23.231Z",
-      "summary": "runAction pasa a said lo que el comando dice por io.err, y act emite los eventos action de cada acción de un cambio: al empezar, con cada línea (note) y con done al terminar"
+      "summary": "runAction pasa a said lo que el comando dice por io.err, y act emite los eventos action de cada acción de un cambio: al empezar, con cada línea (note) y con done al terminar",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1aeb00dd70e6ad2cfd725631cc620a27000a4e0f",
+      "startedAt": "2026-11-06T09:46:23.543Z",
+      "doneAt": "2026-11-06T09:48:04.860Z",
+      "summary": "SpectyData.watchActions (por defecto, nada) y ActionNote; ServerData la sigue sobre los eventos action con actionEvent, que quita el prefijo specty: y pone la mayúscula; follow() comparte los oyentes del flujo; InFlight guarda la última línea de su acción mientras sigue"
     }
   },
   "pending": {
