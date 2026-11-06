@@ -101,6 +101,14 @@ describe("deriveView", () => {
     expect(deriveViews([record()])[0]?.shared).toBeUndefined();
   });
 
+  it("AC8: carries who holds it, as the server gives it, next to its other marks", () => {
+    const holder = { tool: "codex", ago: 7 };
+    expect(deriveView({ ...record(), holder }).holder).toEqual(holder);
+    const orphan = deriveView({ ...record(), holder, orphan: true });
+    expect([orphan.holder, orphan.orphan]).toEqual([holder, true]);
+    expect(deriveView(record())).not.toHaveProperty("holder");
+  });
+
   it("carries the approved revision: which one, when and by whom", () => {
     const at = "2026-10-21T15:02:11.000Z";
     const approved = { revision: 1, hash: HASH, at, by: "Ana Gómez", channel: "ui" } as const;

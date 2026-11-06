@@ -6,6 +6,13 @@
   "branch": "specty/20261107-cada-linea-dice-quien-lleva-su-corte-y-sus",
   "baseCommit": "8c4af062c7aa39651c4c843dc1b5aca2932d3eb3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:651ea17f6734fc1790ce0e025b3a3d5d597c2ca60788318e5e07135c35d6adb3",
+    "at": "2026-11-06T17:37:10.893Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -49,12 +56,6 @@
     "T": 5,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:651ea17f6734fc1790ce0e025b3a3d5d597c2ca60788318e5e07135c35d6adb3",
-    "at": "2026-11-06T17:37:10.893Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T17:49:12.935Z"
 }
