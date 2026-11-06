@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { AsyncLocalStorage } from "node:async_hooks";
 import { link, mkdir, unlink, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { isRecord, parseJson, readText } from "../io/files";
@@ -33,6 +34,14 @@ const FULL_VERIFICATION = "common/specty/locks/full-verification.json";
 const held = new Set<string>();
 
 /**
+ * The turns of the full verification held by the code that runs now: the one that took it and
+ * what runs inside it (`onFullVerificationTurn`), as the verification of a closing's
+ * incorporation. Another part of the same process, as the UI's server accepting a change while it
+ * verifies another one, waits for the turn as another session would.
+ */
+const turns = new AsyncLocalStorage<ReadonlySet<string>>();
+
+/**
  * Takes the lock of change `id` for `holder`, unless a live process holds it. A lock whose
  * process no longer exists, or that cannot be read, does not count.
  */
@@ -42,20 +51,32 @@ export async function lockChange(git: Git, id: string, holder: LockHolder): Prom
 
 /**
  * Takes the turn of the full verification for `holder`: one at a time in the whole clone, with
- * the same rules as a change's lock (formats.md §1).
+ * the same rules as a change's lock (formats.md §1), except that this process holding it does not
+ * give it again: only what runs inside its holder has it (`holdsFullVerification`).
  */
 export async function lockFullVerification(git: Git, holder: LockHolder): Promise<Lock> {
-  return lockAt(git, FULL_VERIFICATION, holder);
+  return lockAt(git, FULL_VERIFICATION, holder, false);
 }
 
-/** Whether this process already holds the turn of the full verification, as a closing does. */
+/** Whether the code that runs now holds the turn of the full verification, as a closing does. */
 export async function holdsFullVerification(git: Git): Promise<boolean> {
-  return held.has(await git.gitPath(FULL_VERIFICATION));
+  const path = await git.gitPath(FULL_VERIFICATION);
+  return held.has(path) && turns.getStore()?.has(path) === true;
 }
 
-async function lockAt(git: Git, lock: string, holder: LockHolder): Promise<Lock> {
+/**
+ * Runs `run` with the turn of the full verification that it took (`lockFullVerification`): what
+ * runs inside holds it too, and nothing else of this process does.
+ */
+export async function onFullVerificationTurn<T>(git: Git, run: () => Promise<T>): Promise<T> {
+  const path = await git.gitPath(FULL_VERIFICATION);
+  return turns.run(new Set([...(turns.getStore() ?? []), path]), run);
+}
+
+/** Takes the lock at `lock`; `again`, when this process holding it already gives it. */
+async function lockAt(git: Git, lock: string, holder: LockHolder, again = true): Promise<Lock> {
   const path = await git.gitPath(lock);
-  if (held.has(path)) return { kind: "taken", release: async () => undefined };
+  if (again && held.has(path)) return { kind: "taken", release: async () => undefined };
   await mkdir(dirname(path), { recursive: true });
   if (!(await create(path, holder))) {
     const current = await readHolder(path);

@@ -70,7 +70,7 @@ export function changeRuns(
     // An incorporation verifies in `runLive`: its run shows that one's lines after its own.
     else if (run !== undefined && run.task === undefined) mine.follow?.(run);
   });
-  // The turn is this process's: the server queues its own full verifications, one after another.
+  // The server queues its own full verifications, one after another, in order of arrival.
   let turns: Promise<void> = Promise.resolve();
   const inTurn = (run: () => Promise<void>) => {
     turns = turns.then(run).catch(() => undefined);

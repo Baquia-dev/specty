@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-otra-accion-del-mismo-proceso-espera-el-turno",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-otra-accion-del-mismo-proceso-espera-el-turno",
   "baseCommit": "bb32977a94e76f405187f4486874e76c19d8c9f9",
   "revision": 2,
@@ -22,7 +22,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "55a2c68dc0151d51f5ba3db977563ef227e3842f",
+      "startedAt": "2026-11-06T20:23:11.621Z",
+      "doneAt": "2026-11-06T20:28:13.943Z",
+      "summary": "El turno de la verificación completa es de quien lo toma y de lo que corre dentro (AsyncLocalStorage, onFullVerificationTurn): otra acción del mismo proceso hace cola y dice quién lo tiene; ARCHITECTURE §9 y formats §1 lo cuentan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
