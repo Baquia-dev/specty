@@ -48,7 +48,8 @@ interface Pending {
 }
 
 /**
- * The open changes that wait for the agent and that nobody picks up after the person's last
+ * The open changes that wait for the agent (`waitingFor`, by core's `changeWaitsFor`, also in
+ * review once the person asked for changes) and that nobody picks up after the person's last
  * decision, by id: no line of the agent after it in the audit, no live `specty wait`, none that
  * ended picking it up, and no step of a conversation in the change's folder after it. The agents'
  * steps are read once, and only when some change is left with a decision nobody answered.
@@ -62,7 +63,7 @@ export async function unattendedById(
     const record = records.find((one) => one.state.id === entry.id);
     if (record?.folder === undefined) return [];
     const decision = unansweredDecision(record.audit ?? []);
-    if (decision === undefined || !agentsTurn(entry, decision.event)) return [];
+    if (decision === undefined || entry.waitingFor !== "agent") return [];
     return [{ id: entry.id, since: decision.ts, folder: record.folder }];
   });
   if (pending.length === 0) return new Map();
@@ -86,17 +87,6 @@ function unansweredDecision(
   if (at < 0 || audit.slice(at + 1).some((line) => line.actor === "agent")) return undefined;
   const { event, ts } = audit[at] ?? {};
   return typeof event === "string" && typeof ts === "string" ? { event, ts } : undefined;
-}
-
-/**
- * Whether the turn is the agent's after the person's `event`: as the change's phase says, or in
- * review once the person asked for changes, which leaves the phase as it was.
- */
-function agentsTurn(entry: StatusEntry, event: string): boolean {
-  return (
-    entry.waitingFor === "agent" ||
-    (entry.phase === "review" && event === "review.changes_requested")
-  );
 }
 
 /** Whether nobody picks up the decision of `change`, and what happened (formats.md §1, `waits/`). */

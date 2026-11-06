@@ -74,10 +74,12 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     .filter(([, item]) => item.decision === "rejected")
     .map(([id]) => id);
   if (rejected.length > 0) {
+    // Sent back: the turn is the agent's until its next proposal (`changeWaitsFor`).
+    const changesRequestedAt = session.environment.now().toISOString();
     await commitState(
       session,
       active,
-      { ...state, items },
+      { ...state, items, changesRequestedAt },
       "assumption.decided",
       { rejected },
       "human",
@@ -227,8 +229,10 @@ async function approvalState(
   },
 ): Promise<ChangeState> {
   const { items, phase, tests } = approval;
+  // Approved, nothing is left to send back.
+  const { changesRequestedAt: _requested, ...rest } = state;
   return {
-    ...state,
+    ...rest,
     phase,
     items: Object.fromEntries(
       Object.entries(items).map(([id, item]) => [
