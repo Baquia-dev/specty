@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261107-la-fila-y-la-pagina-de-un-cambio-nombran-al",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-la-fila-y-la-pagina-de-un-cambio-nombran-al",
+  "baseCommit": "f73f56c2e001f58edd04adbfdf15af98bc92986c",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:283687d12372a766f4cfdc69370b709bb00999ea988684d588451d2898c6715d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:35147df680272607d5b76f10e3b2cf31aa4d6008a924698ffec4e4166d452851",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:c3d52487a9b6eae1890c9d6f432d2f151a52857002edbcbf943168ad147510ec",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ef84513e727417326b79cd8b190b1ac82bbaba86750829b1180ac0c9884d4742",
+    "at": "2026-11-06T19:12:08.910Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
