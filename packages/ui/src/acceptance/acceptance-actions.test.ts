@@ -2,11 +2,13 @@
 import { Component, computed, Injectable, inject, input } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { Toasts } from "../components/toast";
+import type { ResultDecision } from "../data/acceptance";
 import { ChangesStore, DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
 import { ActionError, type Bilingual, type ChangeRecord, SpectyData } from "../data/records";
 import { STEP_MS } from "../data/sample-run";
 import { deriveViews } from "../data/views";
+import { Preferences } from "../theme/preferences";
 import { AcceptanceActions } from "./acceptance-actions";
 import { ResultDialogs } from "./result-dialogs";
 
@@ -14,11 +16,22 @@ const ASISTENCIA = "20261018-asistencia-curso";
 
 @Component({
   imports: [AcceptanceActions],
-  template: `@if (change(); as change) { <sp-acceptance-actions [change]="change" [compact]="compact()" /> }`,
+  template: `
+    @if (shown() && change(); as change) {
+      <sp-acceptance-actions [change]="change" [compact]="compact()" />
+      @if (bar()) {
+        <sp-acceptance-actions [change]="change" [compact]="true" />
+      }
+    }
+  `,
 })
 class Host {
   readonly id = input(ASISTENCIA);
   readonly compact = input(false);
+  /** The sticky bar too, under the header: both follow the same decision. */
+  readonly bar = input(false);
+  /** Off while the person is on another page. */
+  readonly shown = input(true);
   /** As a project with no `verify.full` would see it. */
   readonly unconfigured = input(false);
   private readonly store = inject(ChangesStore);
@@ -29,7 +42,7 @@ class Host {
   });
 }
 
-/** A source that cannot decide: the dialog stays and a notice says why. */
+/** A source that cannot decide: a notice says why. */
 @Injectable()
 class Refusing extends FixtureData {
   override decideResult(): Promise<void> {
@@ -44,6 +57,26 @@ class Refusing extends FixtureData {
 class ReadOnly extends FixtureData {
   override readOnly(): Promise<Bilingual | undefined> {
     return Promise.resolve({ es: "Solo lectura.", en: "Read only." });
+  }
+}
+
+/**
+ * A server that leaves accepting pending, as one waiting for the full verification of another
+ * session, until the test makes it answer.
+ */
+@Injectable()
+class Waiting extends FixtureData {
+  private answer: (() => void) | undefined;
+
+  override decideResult(change: string, decision: ResultDecision): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.answer = resolve;
+    }).then(() => super.decideResult(change, decision));
+  }
+
+  /** The server answers: the decision is taken now. */
+  answers(): void {
+    this.answer?.();
   }
 }
 
@@ -195,15 +228,104 @@ describe("Acceptance actions", () => {
     expect([field?.selectionStart, field?.selectionEnd]).toEqual([5, 5]);
   });
 
-  it("keeps the dialog and explains it when the source cannot decide (AC6)", async () => {
+  it("AC1: says why it could not accept, with the dialog closed and the buttons back", async () => {
     const { buttons, dialog, dialogButton, settle, view, toasts } = await render(Refusing);
     buttons()[1]?.click();
     await settle();
     dialogButton("Aceptar")?.click();
     await settle();
     expect(toasts()).toContain("El servidor no responde.");
-    expect(dialog()).not.toBeNull();
+    expect(dialog()).toBeNull();
     expect(view()?.phase).toBe("acceptance");
+    expect(buttons().map((button) => button.disabled)).toEqual([false, false]);
+    expect(buttons()[1]?.hasAttribute("aria-busy")).toBe(false);
+  });
+});
+
+describe("Accepting while the server has not answered", () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  /** The waiting server, to make it answer. */
+  function server(): Waiting {
+    const source = TestBed.inject(SpectyData);
+    if (!(source instanceof Waiting)) throw new Error("no waiting source");
+    return source;
+  }
+
+  /** Why a button is disabled, as a screen reader hears it and the tooltip shows it. */
+  const reason = (button: HTMLButtonElement | undefined) =>
+    text(document.getElementById(button?.getAttribute("aria-describedby") ?? ""));
+
+  /** Opens «Aceptar resultado» in the header and confirms. */
+  async function accept(page: Awaited<ReturnType<typeof render>>): Promise<void> {
+    page.buttons()[1]?.click();
+    await page.settle();
+    page.dialogButton("Aceptar")?.click();
+    await page.settle();
+  }
+
+  it("AC1: closes the dialog at once, and the header and the bar wait until the server answers", async () => {
+    const page = await render(Waiting);
+    page.fixture.componentRef.setInput("bar", true);
+    await page.settle();
+    await accept(page);
+    expect(page.dialog()).toBeNull();
+    const [adjust, accepting, barAdjust, barAccepting] = page.buttons();
+    for (const button of [accepting, barAccepting]) {
+      expect(button?.getAttribute("aria-busy")).toBe("true");
+      expect(button?.disabled).toBe(true);
+      expect(button?.querySelector(".animate-spin")).not.toBeNull();
+    }
+    for (const button of [adjust, barAdjust]) {
+      expect(button?.disabled).toBe(true);
+      expect(reason(button)).toBe("Aceptando…");
+    }
+    expect(page.toasts()).toEqual([]);
+    expect(page.view()?.phase).toBe("acceptance");
+
+    server().answers();
+    await page.settle();
+    expect(page.view()?.phase).toBe("closing");
+    expect(page.toasts()).toContain("Aceptaste el resultado: el agente redactará el cierre.");
+    expect(page.buttons().map((button) => button.disabled)).toEqual([false, false, false, false]);
+    expect(page.buttons().some((button) => button.hasAttribute("aria-busy"))).toBe(false);
+  });
+
+  it("AC3: says «Aceptando…» under the header buttons instead of the full verification, not in the bar", async () => {
+    const page = await render(Waiting);
+    page.fixture.componentRef.setInput("bar", true);
+    await page.settle();
+    const groups = () => [...page.element.querySelectorAll("sp-acceptance-actions")];
+    expect(groups()[0]?.querySelector("[data-full-hint]")).not.toBeNull();
+    expect(groups()[0]?.querySelector("[data-in-flight]")).toBeNull();
+    await accept(page);
+    expect(text(groups()[0]?.querySelector("[data-in-flight]"))).toBe("Aceptando…");
+    expect(groups()[0]?.querySelector("[data-full-hint]")).toBeNull();
+    expect(groups()[1]?.querySelector("[data-in-flight]")).toBeNull();
+
+    TestBed.inject(Preferences).lang.set("en");
+    await page.settle();
+    expect(text(groups()[0]?.querySelector("[data-in-flight]"))).toBe("Accepting…");
+
+    server().answers();
+    await page.settle();
+    expect(groups()[0]?.querySelector("[data-in-flight]")).toBeNull();
+  });
+
+  it("AC4: still shows it accepting after leaving the page and coming back", async () => {
+    const page = await render(Waiting);
+    await accept(page);
+    page.fixture.componentRef.setInput("shown", false);
+    await page.settle();
+    expect(page.buttons()).toEqual([]);
+    page.fixture.componentRef.setInput("shown", true);
+    await page.settle();
+    expect(page.buttons()[1]?.getAttribute("aria-busy")).toBe("true");
+    expect(text(page.element.querySelector("[data-in-flight]"))).toBe("Aceptando…");
+
+    server().answers();
+    await page.settle();
+    expect(page.element.querySelector("[data-in-flight]")).toBeNull();
   });
 });
 

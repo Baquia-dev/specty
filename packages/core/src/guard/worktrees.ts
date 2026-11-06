@@ -14,6 +14,22 @@ export interface ForeignPath {
   readonly instead?: string;
 }
 
+/**
+ * A path inside a ghost folder: an entry of `.worktrees/`, or of the folder beside the main one
+ * from before ADR 0018, that is no worktree git knows, such as a change's folder removed when it
+ * closed. Writing there would bring it back without git.
+ */
+export interface GhostPath {
+  /** Absolute path, as the action would change it. */
+  readonly path: string;
+  /** The ghost folder that holds it. */
+  readonly folder: string;
+  /** The repository's main folder, where the agent carries on. */
+  readonly main: string;
+  /** The open change whose lost folder it is, by its name: `specty restore` brings it back. */
+  readonly lost?: string;
+}
+
 /** A command that would run outside the change's folder the conversation entered. */
 export interface Elsewhere {
   readonly folder: string;

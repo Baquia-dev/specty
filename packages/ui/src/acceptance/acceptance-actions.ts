@@ -12,6 +12,7 @@ import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { LucideTriangleAlert } from "../components/icons";
 import { Decisions } from "../data/decisions";
+import { InFlight } from "../data/in-flight";
 import type { RunRecord } from "../data/progress";
 import type { ChangeView } from "../data/records";
 import { SpectyData } from "../data/records";
@@ -34,14 +35,16 @@ import { type FullState, fullLine, fullStateOf, ResultDialogs } from "./result-d
   },
   template: `
     <div class="flex flex-wrap gap-2">
-      <sp-button [size]="compact() ? 'sm' : 'md'" [disabledReason]="decisions.blocked()" (pressed)="dialogs.adjust(change())">{{ t()('Pedir ajustes…', 'Ask for adjustments…') }}</sp-button>
-      <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" [disabledReason]="decisions.blocked()" (pressed)="dialogs.accept(change(), full)">{{ t()('Aceptar resultado', 'Accept result') }}</sp-button>
+      <sp-button [size]="compact() ? 'sm' : 'md'" [disabledReason]="decisions.blocked() || accepting()" (pressed)="dialogs.adjust(change())">{{ t()('Pedir ajustes…', 'Ask for adjustments…') }}</sp-button>
+      <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" [disabledReason]="decisions.blocked()" [loading]="accepting() !== ''" (pressed)="dialogs.accept(change(), full)">{{ t()('Aceptar resultado', 'Accept result') }}</sp-button>
     </div>
     @if (!compact()) {
       @if (decisions.blocked(); as reason) {
         <p class="m-0 flex items-center gap-1.5 text-xs" style="color: var(--color-phase-review)" data-blocked>
           <svg [lucideIcon]="warningIcon" size="13" aria-hidden="true"></svg>{{ reason }}
         </p>
+      } @else if (accepting(); as accepting) {
+        <p class="m-0 text-xs text-text-muted" data-in-flight>{{ accepting }}</p>
       } @else if (full(); as state) {
         <p class="m-0 text-xs" [style.color]="said(state).tone" data-full-hint>{{ said(state).text }}</p>
       }
@@ -58,7 +61,14 @@ export class AcceptanceActions {
   protected readonly warningIcon = LucideTriangleAlert;
   private readonly source = inject(SpectyData);
   private readonly preferences = inject(Preferences);
+  private readonly inFlight = inject(InFlight);
   protected readonly t = this.preferences.t;
+  /** «Aceptando…» while an acceptance this tab sent waits for the server; empty otherwise. */
+  protected readonly accepting = computed(() =>
+    this.inFlight.of(this.change().id)?.kind === "accept"
+      ? this.t()("Aceptando…", "Accepting…")
+      : "",
+  );
   /** The run streaming in this change: one with no task is the full verification. */
   private readonly streaming = signal<RunRecord | undefined>(undefined);
   protected readonly full = computed(() => fullStateOf(this.change(), this.streaming()));

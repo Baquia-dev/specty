@@ -28,6 +28,7 @@ type AgentCode =
   | "opencode-guard"
   | "opencode-after-command"
   | "opencode-compact"
+  | "opencode-turn-end"
   | "no-opencode-guard"
   | "antigravity-guard"
   | "no-antigravity-guard"
@@ -233,6 +234,11 @@ export const AGENT_WRITERS: {
     t(
       `OpenCode: al plugin del guard le falta la tarjeta de Specty tras compactar; ejecuta \`${command} init --tools opencode\`.`,
       `OpenCode: the guard plugin lacks Specty's card after a compaction; run \`${command} init --tools opencode\`.`,
+    ),
+  "opencode-turn-end": (_, t, command) =>
+    t(
+      `OpenCode: el plugin del guard es de antes del fin de turno de OpenCode 2.2 (\`session.execution.succeeded\`), así que con OpenCode 2.2 su fin de turno no se dispara nunca; ejecuta \`${command} init --tools opencode\`.`,
+      `OpenCode: the guard plugin predates OpenCode 2.2's end of turn (\`session.execution.succeeded\`), so with OpenCode 2.2 its end of turn never fires; run \`${command} init --tools opencode\`.`,
     ),
   "no-opencode-guard": (line, t, command) =>
     t(

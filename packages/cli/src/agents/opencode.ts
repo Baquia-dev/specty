@@ -78,11 +78,14 @@ export const opencode: AgentAdapter = {
     ]);
     if (!guard) return lines;
     const compact = plugin?.includes("session.compacted") === true;
+    // One from before OpenCode 2.2's end of turn only listens to `session.idle`, which 2.2 dropped.
+    const turnEnd = plugin?.includes("session.execution.succeeded") === true;
     return {
       ...lines,
       problems: [
         ...lines.problems,
         ...(compact ? [] : [{ code: "opencode-compact" } as const]),
+        ...(turnEnd ? [] : [{ code: "opencode-turn-end" } as const]),
         ...beforeEnter(plugin ?? ""),
       ],
     };
