@@ -6,6 +6,13 @@
   "branch": "specty/20261106-el-guard-no-deja-recrear-carpetas-quitadas-y-el",
   "baseCommit": "723a599e2ab1ed33d68368a923a91151b72ffeb6",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:84adfc38dc3671772b3140311d8c4c524009cbf9a92edabf43081ab8d6728aae",
+    "at": "2026-11-06T08:35:47.707Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:84adfc38dc3671772b3140311d8c4c524009cbf9a92edabf43081ab8d6728aae",
-    "at": "2026-11-06T08:35:47.707Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T08:47:40.845Z"
 }
