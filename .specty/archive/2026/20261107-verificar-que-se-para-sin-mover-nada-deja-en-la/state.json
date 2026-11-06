@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-verificar-que-se-para-sin-mover-nada-deja-en-la",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "cancelled",
   "branch": "specty/20261107-verificar-que-se-para-sin-mover-nada-deja-en-la",
   "baseCommit": "c048388f6b5fdfe616152e21b457c94e934fef0a",
   "revision": 1,
@@ -60,12 +60,19 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "73607fd3a7bbf63be4264c5c8d2f3f572e94a45b",
+      "attempts": 1,
       "startedAt": "2026-11-06T21:08:19.703Z",
       "doneAt": "2026-11-06T21:09:08.982Z",
-      "summary": "Sin código nuevo: la ejecución parada que conserva el servidor entró en T1, porque su verificación ya corría el test de AC1; aquí pasa su propia verificación."
+      "summary": "Sin código nuevo: la ejecución parada que conserva el servidor entró en T1, porque su verificación ya corría el test de AC1; aquí pasa su propia verificación.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "active",
+      "baseCommit": "162f3c4020d586b5c2f0aab472eec6193136b037",
+      "attempts": 1,
+      "startedAt": "2026-11-06T21:09:09.318Z",
+      "scopeExtra": []
     }
   },
   "pending": {
