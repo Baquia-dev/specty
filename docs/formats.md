@@ -22,7 +22,7 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 ├─ receipts.json               # recibos de commit
 ├─ active                      # cambio activo cuando no hay rama por cambio
 ├─ shell/<tool_use_id>.json    # foto del árbol antes de cada comando de Bash del agente
-├─ index-<pid>-<uuid>          # índice temporal con el que `treeWith` lee el árbol de trabajo (ARCHITECTURE §9); se borra al terminar, y `specty prune` borra los de más de una hora, que dejó un proceso que murió
+├─ index-<pid>-<uuid>          # índice temporal con el que `treeWith` lee el árbol de trabajo, y con el que el rescate guarda una carpeta (ARCHITECTURE §9); se borra al terminar, y `specty prune` borra los de más de una hora, que dejó un proceso que murió
 ├─ pending/<conversación>.card # tarjeta que una compactación dejó para el siguiente comando (Cursor); se entrega una vez y caduca en un día
 ├─ pending/<conversación>.warning # aviso tras un comando que la herramienta no deja dar en el momento (Antigravity); va en la siguiente llamada al modelo, una vez, y caduca en un día
 ├─ pending/<conversación>.stop # turno que el fin de turno devolvió al trabajo, para una herramienta que no lo marca (Antigravity): su siguiente fin de turno termina; caduca en un día
@@ -51,6 +51,8 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 specty-memory                  # rama propia de la memoria duradera (ADR 0016; `memory.branch`), compartida por todas las worktrees
 ├─ README.md                   # índice de las entradas abiertas por tipo, en el idioma del proyecto; Specty lo rehace en cada commit
 └─ entries/<id>.md             # una entrada: su estado en el frontmatter y, debajo, el texto
+
+refs/specty/rescue/<nombre>/<AAAAMMDDHHMMSS>  # ref de rescate, compartida por todas las worktrees: lo que la carpeta `<nombre>` (la de un cambio terminado o una carpeta fantasma) tenía que git no ignora y ningún commit guardaba cuando la limpieza la quitó (ARCHITECTURE §9), a esa hora en UTC (con `-2`, `-3`… si la hora se repite); un commit encima del de su rama si era una worktree, o sin padre si era una carpeta fantasma, con el asunto «wip: lo que <nombre> tenía sin commit al quitar su carpeta»; `<nombre>` lleva `-` en lugar de lo que no cabe en una ref. Se ve con `git show <ref>`, se recupera con `git worktree add <carpeta> <ref>` y queda hasta que la persona la borra (`git update-ref -d <ref>`)
 ```
 
 **La memoria de Specty** ([ADR 0016](decisions/0016-la-memoria-de-specty.md)) vive en su propia rama, sin historia común con el código. Nadie la saca a una carpeta: Specty la escribe con la fontanería de git (`hash-object`, `mktree`, `commit-tree` y `update-ref` con el valor anterior), sin pasar por los hooks, y la lee sin tocar ninguna worktree, así que cada carpeta del clon ve una entrada en cuanto se anota. Si otra sesión escribió antes, `update-ref` falla y Specty relee la rama y lo intenta de nuevo, hasta 10 veces. Cada operación es un commit hijo de la punta anterior, con los trailers de §7. Una entrada:

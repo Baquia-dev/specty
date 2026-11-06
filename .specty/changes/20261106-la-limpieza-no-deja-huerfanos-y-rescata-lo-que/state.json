@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-limpieza-no-deja-huerfanos-y-rescata-lo-que",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-la-limpieza-no-deja-huerfanos-y-rescata-lo-que",
   "baseCommit": "f5ec51b661b7488ba529dca5e6648e0857548033",
   "revision": 1,
@@ -83,12 +83,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "303daf4dd42f41ae707496ac4c75e0b0f288adba",
+      "attempts": 2,
       "startedAt": "2026-11-06T09:59:24.734Z",
       "doneAt": "2026-11-06T10:15:09.546Z",
-      "summary": "new limpia con cleanUp y su tarjeta añade fantasmas y refs de rescate; close y cancel limpian al terminar desde la carpeta principal (withCleanupFrom); prune.test y worktrees.test adaptan su preparación a esa limpieza"
+      "summary": "new limpia con cleanUp y su tarjeta añade fantasmas y refs de rescate; close y cancel limpian al terminar desde la carpeta principal (withCleanupFrom); prune.test y worktrees.test adaptan su preparación a esa limpieza",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3810dc6ffdba1cd397d52b339be4bc5e8e8177bb",
+      "startedAt": "2026-11-06T10:15:09.852Z",
+      "doneAt": "2026-11-06T10:16:39.772Z",
+      "summary": "ARCHITECTURE §9 y §10 cuentan la limpieza nueva y las refs de rescate, formats.md §1 las refs de rescate y el índice temporal del rescate, y el glosario gana «Ref de rescate»"
     }
   },
   "pending": {

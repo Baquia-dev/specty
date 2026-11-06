@@ -92,7 +92,7 @@ Hoy la limpieza no poda los registros de git de worktrees cuya carpeta ya no exi
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-commands.test.ts test/prune.test.ts test/cancel-folder.test.ts test/ghost-folders.test.ts test/session-return.test.ts test/sessions.test.ts test/worktrees.test.ts test/close-turn.test.ts test/epic-closed-slices.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T5: La documentación cuenta la limpieza nueva y las refs de rescate
+- [x] T5: La documentación cuenta la limpieza nueva y las refs de rescate
   - files: docs/ARCHITECTURE.md, docs/formats.md, docs/dominio.md
   - ac: AC4, AC5, AC6, AC7
   - verify: pnpm typecheck && pnpm lint && pnpm sources && pnpm knip
