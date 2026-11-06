@@ -65,7 +65,8 @@ class ConfirmClosing {
 /**
  * The decision on the closing the agent sent: confirm and archive. In the page header and,
  * compact, in the sticky bar, as the decision on the result is in acceptance. While a closing this
- * tab sent waits for the server, the button loads and, beside the title, a line says so.
+ * tab sent waits for the server, the button loads and, in the header, a line under it says so:
+ * why the server makes it wait, once it said so, or «Cerrando…».
  */
 @Component({
   selector: "sp-closing-actions",
@@ -80,7 +81,7 @@ class ConfirmClosing {
   template: `
     <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" [disabledReason]="decisions.blocked()" [loading]="closing()" (pressed)="open()">{{ t()('Confirmar y archivar', 'Confirm and archive') }}</sp-button>
     @if (!compact() && closing()) {
-      <p class="m-0 text-xs text-text-muted" data-in-flight>{{ t()('Cerrando…', 'Closing…') }}</p>
+      <p class="m-0 text-xs text-text-muted" data-in-flight>{{ running()?.note ?? t()('Cerrando…', 'Closing…') }}</p>
     }
   `,
 })
@@ -93,8 +94,12 @@ export class ClosingActions {
   private readonly dialogs = inject(Dialogs);
   private readonly inFlight = inject(InFlight);
   protected readonly t = inject(Preferences).t;
-  /** A closing this tab sent that the server has not answered. */
-  protected readonly closing = computed(() => this.inFlight.of(this.change().id)?.kind === "close");
+  /** The closing this tab sent that the server has not answered, with what it said of it. */
+  protected readonly running = computed(() => {
+    const action = this.inFlight.of(this.change().id);
+    return action?.kind === "close" ? action : undefined;
+  });
+  protected readonly closing = computed(() => this.running() !== undefined);
 
   protected open(): void {
     const data: ClosingData = { change: this.change() };

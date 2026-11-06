@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1aeb00dd70e6ad2cfd725631cc620a27000a4e0f",
+      "attempts": 1,
       "startedAt": "2026-11-06T09:46:23.543Z",
       "doneAt": "2026-11-06T09:48:04.860Z",
-      "summary": "SpectyData.watchActions (por defecto, nada) y ActionNote; ServerData la sigue sobre los eventos action con actionEvent, que quita el prefijo specty: y pone la mayúscula; follow() comparte los oyentes del flujo; InFlight guarda la última línea de su acción mientras sigue"
+      "summary": "SpectyData.watchActions (por defecto, nada) y ActionNote; ServerData la sigue sobre los eventos action con actionEvent, que quita el prefijo specty: y pone la mayúscula; follow() comparte los oyentes del flujo; InFlight guarda la última línea de su acción mientras sigue",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b9452b2b94fed54453fa1360c537fa0d7ea2327a",
+      "startedAt": "2026-11-06T09:48:05.215Z",
+      "doneAt": "2026-11-06T09:48:52.466Z",
+      "summary": "AcceptanceActions y ClosingActions leen la acción en curso de InFlight: bajo los botones de la cabecera, la línea del servidor o, sin ella, «Aceptando…» o «Cerrando…»; el motivo de «Pedir ajustes…» sigue siendo «Aceptando…»"
     }
   },
   "pending": {

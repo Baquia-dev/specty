@@ -77,7 +77,7 @@ Hoy, mientras una aceptación o un cierre lanzados desde la UI esperan, la cabec
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/server.ts, packages/ui/src/data/in-flight.ts, packages/ui/src/data/in-flight.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/in-flight.test.ts --include src/data/server-runs.test.ts --include src/data/server-actions.test.ts --include src/data/server.test.ts && pnpm lint && pnpm knip
-- [ ] T3: La cabecera muestra la línea del servidor bajo los botones
+- [x] T3: La cabecera muestra la línea del servidor bajo los botones
   - files: packages/ui/src/acceptance/acceptance-actions.ts, packages/ui/src/acceptance/acceptance-actions.test.ts, packages/ui/src/acceptance/closing-actions.ts, packages/ui/src/acceptance/closing-actions.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/acceptance-actions.test.ts --include src/acceptance/closing-actions.test.ts --include src/acceptance/acceptance-tab.test.ts --include src/acceptance/epic-adjust.test.ts --include src/change/change-page.closing.test.ts && pnpm typecheck && pnpm lint
