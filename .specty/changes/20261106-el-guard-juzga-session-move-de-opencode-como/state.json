@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-guard-juzga-session-move-de-opencode-como",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-el-guard-juzga-session-move-de-opencode-como",
   "baseCommit": "288e88cbf522a73c14ab890101f8b1cb626ee433",
   "revision": 1,
@@ -41,6 +41,7 @@
     "AC": 2,
     "T": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T09:20:52.998Z"
+  "lockedTests": {
+    "packages/cli/test/opencode-session-move.test.ts": "sha256:7dac590924f6607a839792a39fc5adc4f2545bf362865ec874bec98e1fbff097"
+  }
 }
