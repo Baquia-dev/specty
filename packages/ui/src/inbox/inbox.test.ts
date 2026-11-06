@@ -293,7 +293,9 @@ describe("Inbox", () => {
     const group = element.querySelector<HTMLElement>('[data-epic-group="20261015-panel"]');
     const head = group?.querySelector<HTMLElement>("sp-inbox-row[data-epic-head]");
     expect(head?.dataset.id).toBe("20261015-panel");
-    expect(head?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("implementing");
+    // In implementation, its head shows how its slices go in place of its phase.
+    expect(head?.querySelector("sp-phase-badge")).toBeNull();
+    expect(head?.querySelector("[data-epic-progress]")).not.toBeNull();
     expect(head?.querySelector("a")?.getAttribute("href")).toBe(
       "/changes/20261015-panel?tab=progress",
     );

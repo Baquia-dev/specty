@@ -9,7 +9,14 @@ import type {
   ListedChange,
 } from "../data/records";
 import { deriveView, deriveViews } from "../data/views";
-import { asksForSlices, epicLanes, LANE_STEPS, laneCells, type SliceAnswer } from "./epic-lanes";
+import {
+  asksForSlices,
+  epicLanes,
+  epicTally,
+  LANE_STEPS,
+  laneCells,
+  type SliceAnswer,
+} from "./epic-lanes";
 
 const NOW = Date.parse("2026-11-06T12:00:00.000Z");
 const EPIC_ID = "20261015-panel";
@@ -228,6 +235,72 @@ describe("the lines of an epic's card", () => {
       "unknown",
       "unknown",
     ]);
+  });
+});
+
+describe("the tally of an epic's slices", () => {
+  it("AC6: counts, in implementation, the slices finished, waiting for the person, in progress, ready and waiting for another", () => {
+    const epic = epicIn("implementing");
+    expect(epicTally(epic, epicLanes(epic, LOADED, UNTOLD))).toEqual({
+      total: 5,
+      done: 1,
+      waiting: 1,
+      running: 1,
+      ready: 1,
+      blocked: 1,
+      idle: [],
+    });
+    // A slice the source has not told about yet counts only in the total.
+    expect(epicTally(epic, epicLanes(epic, [LOADED[1] ?? fail()], WAITING))).toEqual({
+      total: 5,
+      done: 1,
+      waiting: 0,
+      running: 0,
+      ready: 0,
+      blocked: 0,
+      idle: [],
+    });
+  });
+
+  it("AC6: gives no tally in any other phase: the head shows the phase", () => {
+    for (const phase of [
+      "draft",
+      "review",
+      "testing",
+      "adjusting",
+      "acceptance",
+      "closing",
+      "done",
+      "cancelled",
+    ] as const) {
+      const epic = epicIn(phase);
+      expect([phase, epicTally(epic, epicLanes(epic, LOADED, UNTOLD))]).toEqual([phase, undefined]);
+    }
+  });
+
+  it("AC7: names the slices ready to start when none has an open change, in the spec's order", () => {
+    const epic = epicIn("implementing");
+    const onlyC1 = epicTally(epic, epicLanes(epic, [LOADED[1] ?? fail()], UNTOLD));
+    expect(onlyC1).toEqual({
+      total: 5,
+      done: 1,
+      waiting: 0,
+      running: 0,
+      ready: 3,
+      blocked: 1,
+      idle: ["C2", "C3", "C5"],
+    });
+    const none = epicTally(epic, epicLanes(epic, [], UNTOLD));
+    expect(none?.idle).toEqual(["C1", "C3"]);
+    expect([none?.ready, none?.blocked]).toEqual([2, 3]);
+  });
+
+  it("AC7: names none while a slice has an open change, or while the source has not answered", () => {
+    const epic = epicIn("implementing");
+    // C2 waits for the person: its change is open, though nobody works on it.
+    const waiting = [LOADED[1] ?? fail(), LOADED[3] ?? fail()];
+    expect(epicTally(epic, epicLanes(epic, waiting, UNTOLD))?.idle).toEqual([]);
+    expect(epicTally(epic, epicLanes(epic, [], WAITING))?.idle).toEqual([]);
   });
 });
 

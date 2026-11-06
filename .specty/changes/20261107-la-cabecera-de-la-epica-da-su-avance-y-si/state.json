@@ -6,6 +6,13 @@
   "branch": "specty/20261107-la-cabecera-de-la-epica-da-su-avance-y-si",
   "baseCommit": "8c4af062c7aa39651c4c843dc1b5aca2932d3eb3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:055c40fc1c188bb122c72a24d5f4ef7a476f910a257e6df7e872e63535a0e412",
+    "at": "2026-11-06T17:38:09.083Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -51,12 +58,6 @@
     "T": 3,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:055c40fc1c188bb122c72a24d5f4ef7a476f910a257e6df7e872e63535a0e412",
-    "at": "2026-11-06T17:38:09.083Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T17:42:10.711Z"
 }
