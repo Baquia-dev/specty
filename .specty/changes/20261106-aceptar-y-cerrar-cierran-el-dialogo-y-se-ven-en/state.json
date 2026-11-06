@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-aceptar-y-cerrar-cierran-el-dialogo-y-se-ven-en",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-aceptar-y-cerrar-cierran-el-dialogo-y-se-ven-en",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
   "revision": 1,
@@ -54,6 +54,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T07:49:37.727Z"
+  "lockedTests": {
+    "packages/ui/src/acceptance/acceptance-actions.test.ts": "sha256:f57a0ebfebbd30d11d926b779a4838a9136038f264601748af109b6f0127475a",
+    "packages/ui/src/acceptance/closing-actions.test.ts": "sha256:00ef881fb863625a9cb6afbcf5f891fbc1a182d2ce4f0f5add0f77acea262a9c"
+  }
 }
