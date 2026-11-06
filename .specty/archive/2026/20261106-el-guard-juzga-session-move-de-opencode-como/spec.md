@@ -42,3 +42,22 @@ OpenCode 2.2.5 trae `execute` (Code Mode): ejecuta JavaScript que llama a ocho h
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-session-move.test.ts test/opencode.test.ts test/enter.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
+
+## Cierre
+
+### Resumen
+
+El guard juzga ahora `session_move` de Code Mode (OpenCode 2.2) como una entrada en la carpeta a la que muda la sesión, con la misma regla que `EnterWorktree` de Claude Code (P200): una conversación que trabaja en un cambio abierto no puede mudarse a otra carpeta, puede hacerlo a la suya, y una conversación libre que se muda queda ligada a esa carpeta. Antes de diseñarlo se comprobó con OpenCode 2.2.5 aislado (proveedor simulado y `--standalone`) que cada llamada del JavaScript de `execute` pasa por el plugin por separado, como `opencode_<herramienta>` y con su entrada, y que un bloqueo del guard la detiene y le da el motivo al modelo; las herramientas de archivos y de shell no están en Code Mode. En `agents/opencode.ts`, `action` lee `opencode_session_move` como `enter`, y las herramientas que juzga pasaron a una tabla. ARCHITECTURE lo cuenta en la fila de OpenCode. Los criterios tienen sus tests en `packages/cli/test/opencode-session-move.test.ts`; la verificación completa pasó en la aceptación.
+
+### Desviaciones
+
+- `action` pasó de un `switch` a una tabla de herramientas (`ACTIONS`): con el caso nuevo superaba la complejidad máxima (13 de 10).
+
+### Decisiones
+
+- `worktree_create` y `worktree_remove` de Code Mode pasan sin juzgarse, como `git worktree add` y `git worktree remove` desde el shell: tratarlos distinto dejaría abierto el otro camino.
+- `session_move` se juzga aunque traiga el `sessionID` de otra sesión: el guard solo conoce la conversación del evento, y bloquear de más es más seguro que mudar sin regla.
+
+### Pendientes
+
+- Proteger la carpeta de un cambio abierto de que la quiten fuera de `specty close` y `specty cancel`: `git worktree remove` desde el shell y `opencode_worktree_remove` de Code Mode (OpenCode 2.2) la quitan hoy sin que el guard lo juzgue, y con `--force` (o `force: true`) se pierde lo que tenía sin commit.
