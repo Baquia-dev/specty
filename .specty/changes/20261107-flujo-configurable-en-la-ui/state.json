@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "20261107-flujo-configurable-en-la-ui",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261107-flujo-configurable-en-la-ui",
+  "baseCommit": "101bef5b635c071e131ed1d20def1e680b80c254",
+  "revision": 2,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d1e93d4305e08893f3b3ec0bed0d0b2e1f97dd1023c850360f8b5232d924dc72",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f6da0f7e2f3d8b7bdecc8426e90f5295a13ce817263e08f264293834706f8954",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:d771feaaa038662f2673e23498e5fb7683cd9811a018cf39276032c3819e4635",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:2c02829605d8bcf6f52550634675ebdee480a61a9bf4826ef2fffd4841c10488",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:08054c55a9d8743daf7fc993fce0f91cf0289882b8882a082f8685e22468e505",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:a330c278b9a7bd6acd161a0339ef99a03bdced375c6cabcca83f4a0be5fd28cf",
+      "decision": "confirmed"
+    },
+    "A7": {
+      "hash": "sha256:411c4f45f5804f44880361fbf22a6f9261f997e383a988c29c26abd463fc3296",
+      "decision": "confirmed"
+    },
+    "A8": {
+      "hash": "sha256:386c6cd2680abeb037d7134318e96bc8c510242b1086881da16eaa2184ce0a32",
+      "decision": "confirmed"
+    },
+    "A9": {
+      "hash": "sha256:5c83da3de3bbaeca4c7f96a8863ce59fc3228099d32c27d469c43cb64a9e74b0",
+      "decision": "confirmed"
+    },
+    "A10": {
+      "hash": "sha256:fe2d4154786f963c7bcf473bc57c2150391c157184ce6291dba28a69bfa93f34",
+      "decision": "confirmed"
+    },
+    "A11": {
+      "hash": "sha256:f524007963eba0826252c7f692a0bf59bf0f211b576cba31f6d59dc53b29e11b",
+      "decision": "confirmed"
+    },
+    "A12": {
+      "hash": "sha256:96ddafb1de6204aaa67e60428f466df84a723711f9df18024bae1f470faa9871",
+      "decision": "confirmed"
+    },
+    "A13": {
+      "hash": "sha256:c09b54a1c071df2ac85a2e01062e9f93cc58f0193957918dffab1e6a5a87bff1",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 13,
+    "AC": 26,
+    "C": 9,
+    "R": 5
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:88c01fc3dd0c495efb857f3958785ea7105e1d37e3de90eec8bfa30aa84c44d8",
+    "at": "2026-11-06T22:02:17.647Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
