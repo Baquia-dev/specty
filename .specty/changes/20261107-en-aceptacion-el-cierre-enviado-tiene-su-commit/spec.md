@@ -17,7 +17,7 @@ En aceptación delegada, el agente envía el cierre antes de `accept`, y ese cie
 
 ## Tareas
 
-- [ ] T1: En aceptación, el cierre enviado tiene su commit antes de incorporar main
+- [x] T1: En aceptación, el cierre enviado tiene su commit antes de incorporar main
   - files: packages/cli/src/flow/closing-turn.ts, packages/cli/src/commands/accept.ts, packages/cli/test/close-shared-file.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/close-shared-file.test.ts test/accept-quick-turn.test.ts test/closing-ahead.test.ts && pnpm typecheck && pnpm lint
   - type: fix

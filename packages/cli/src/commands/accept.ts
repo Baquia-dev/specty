@@ -27,7 +27,13 @@ import {
 import { slowTestsSince } from "../check/test-time";
 import { commitState } from "../flow/active";
 import { harvestEntries } from "../flow/archive-memory";
-import { closeAccepted, closeQuick, closingSent, closingTurn } from "../flow/closing-turn";
+import {
+  closeAccepted,
+  closeQuick,
+  closingFirst,
+  closingSent,
+  closingTurn,
+} from "../flow/closing-turn";
 import { fullCommand } from "../flow/full-verification";
 import { type Absorbed, type Integration, integrationOf, mergeTarget } from "../flow/integrate";
 import { type FullPlan, fullPlan, runFull } from "../flow/units";
@@ -85,7 +91,8 @@ async function acceptMerged(
 /**
  * The main branch comes into the change first, so that the full verification runs once, on the
  * merged code, and `close` has nothing left to merge unless main moves again. Main's folder is
- * not checked here: nothing lands yet.
+ * not checked here: nothing lands yet. A closing sent already gets its commit first, if main
+ * changed its files (`closingFirst`).
  */
 async function mergeFirst(
   session: Session,
@@ -94,7 +101,7 @@ async function mergeFirst(
 ): Promise<Absorbed> {
   return plan === undefined
     ? { ok: true, lines: [] }
-    : mergeTarget(session, plan, change, "accept");
+    : mergeTarget(session, plan, change, "accept", closingFirst(session, change));
 }
 
 /**

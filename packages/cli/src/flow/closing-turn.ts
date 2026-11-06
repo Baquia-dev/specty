@@ -56,6 +56,22 @@ export function closingSent(session: Session, change: StoredChange): boolean {
 }
 
 /**
+ * Before main comes into a change in acceptance whose closing was sent: the closing, uncommitted,
+ * gets its commit first if main changed one of its files, as when closing (`commitClosing`), so
+ * that the merge is not refused for them. Without the closing sent, nothing runs before the merge.
+ */
+export function closingFirst(
+  session: Session,
+  change: StoredChange,
+): ((target: string) => Promise<void>) | undefined {
+  if (change.state.closingSubmittedAt === undefined) return undefined;
+  return async (target) => {
+    const { spec } = parseSpec(await readSpec(change.files), { language: session.lang });
+    await commitClosing(session, change, spec.title, target);
+  };
+}
+
+/**
  * The change the agent accepted with its closing sent, now in `closing`: it closes as `close`
  * would, on the turn that `closingTurn` holds already, so it does not wait. `accepted` are the
  * acceptance's lines, which go before the landing's.
