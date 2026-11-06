@@ -20,3 +20,9 @@ En el análisis del shell del guard, un comando simple formado solo por las pala
   - files: packages/core/src/guard/shell.ts, packages/core/test/guard/control-words.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/control-words.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+analyzeShell deja fuera de runsIn un comando simple de solo palabras que cierran un bloque (}, fi, done, esac), con o sin redirecciones (closesOnly); lo de después del cierre sigue contando y las redirecciones del cierre siguen escribiendo; documentado en ARCHITECTURE

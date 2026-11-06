@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-palabras-que-cierran-un-bloque-no-cuentan",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-las-palabras-que-cierran-un-bloque-no-cuentan",
   "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4cd68249ecc3fa83ae75b7b3ce39247cbe306d14",
+      "attempts": 1,
       "startedAt": "2026-11-06T16:32:11.607Z",
       "doneAt": "2026-11-06T16:37:50.572Z",
-      "summary": "analyzeShell deja fuera de runsIn un comando simple de solo palabras que cierran un bloque (}, fi, done, esac), con o sin redirecciones (closesOnly); lo de después del cierre sigue contando y las redirecciones del cierre siguen escribiendo; documentado en ARCHITECTURE"
+      "summary": "analyzeShell deja fuera de runsIn un comando simple de solo palabras que cierran un bloque (}, fi, done, esac), con o sin redirecciones (closesOnly); lo de después del cierre sigue contando y las redirecciones del cierre siguen escribiendo; documentado en ARCHITECTURE",
+      "scopeExtra": []
     }
   },
   "pending": {
