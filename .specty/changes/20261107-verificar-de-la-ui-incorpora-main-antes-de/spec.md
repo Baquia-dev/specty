@@ -63,7 +63,7 @@ Hoy «Verificar» en la UI verifica la rama del cambio sin main, y después «Ac
 
 ## Tareas
 
-- [ ] T1: La respuesta de «Verificar» dice cuándo se incorpora main antes
+- [x] T1: La respuesta de «Verificar» dice cuándo se incorpora main antes
   - files: packages/core/src/cards/server.ts, packages/core/test/cards/server.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/server.test.ts && pnpm lint

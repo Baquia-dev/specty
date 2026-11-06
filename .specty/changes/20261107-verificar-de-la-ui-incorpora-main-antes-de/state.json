@@ -49,7 +49,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3eb7f893be0de94e4c16ede5c831a711be7d3b1b",
+      "startedAt": "2026-11-06T18:57:51.827Z",
+      "doneAt": "2026-11-06T18:58:09.174Z",
+      "summary": "runStartedCard recibe la rama destino y dice, en español y en inglés, que se incorpora antes de verificar"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
