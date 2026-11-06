@@ -160,6 +160,29 @@ describe("progressOf", () => {
     ]);
   });
 
+  it("AC1, AC4: an unlock request carries its patch and its evidence, and one without them stays as it was", () => {
+    const test = "test/boletin_test.dart";
+    const patch = `--- a/${test}\n+++ b/${test}\n@@ -1 +1 @@\n-expect('Boletín');\n+expect('Boletín PDF');\n`;
+    const evidence = [
+      { path: "lib/boletin.dart", from: 3, to: 4, text: "final t = 'Boletín PDF';\nreturn t;" },
+    ];
+    const state: ChangeState = {
+      ...STATE,
+      lockedTests: { [test]: `sha256:${"c".repeat(64)}` },
+      pending: {
+        scopeRequests: [
+          { id: "S2", task: "T2", paths: [test], reason: "El título cambió.", patch, evidence },
+          { id: "S3", task: "T2", paths: [test], reason: "Sin parche, de un CLI anterior." },
+        ],
+        adjustment: null,
+      },
+    };
+    expect(progressOf(SPEC, state, []).tasks[1]?.scopeRequests).toEqual([
+      { id: "S2", paths: [test], reason: "El título cambió.", unlocks: [test], patch, evidence },
+      { id: "S3", paths: [test], reason: "Sin parche, de un CLI anterior.", unlocks: [test] },
+    ]);
+  });
+
   it("marks a task ticked in the spec as done even without state", () => {
     const state: ChangeState = { ...STATE, tasks: {} };
     expect(progressOf(SPEC, state, []).tasks.map((task) => task.status)).toEqual([

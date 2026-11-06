@@ -115,7 +115,8 @@ async function unlockOf(
 
 /**
  * What the task asks for: the paths outside its scope and, though inside it, the approved tests
- * still locked for it (`locked`), whose unlock is a request too.
+ * (`locked`), whose unlock is a request too; also one already unlocked for it, whose new patch
+ * replaces the earlier one (ADR 0014).
  */
 function askedFor(
   paths: readonly string[],
@@ -127,9 +128,7 @@ function askedFor(
   const outside = paths.filter(
     (path) => classifyPath(path, { taskFiles, extras, rules }) === "out-of-scope",
   );
-  const locked = paths.filter(
-    (path) => Object.hasOwn(state.lockedTests ?? {}, path) && !extras.includes(path),
-  );
+  const locked = paths.filter((path) => Object.hasOwn(state.lockedTests ?? {}, path));
   return { missing: [...new Set([...outside, ...locked])], locked };
 }
 
