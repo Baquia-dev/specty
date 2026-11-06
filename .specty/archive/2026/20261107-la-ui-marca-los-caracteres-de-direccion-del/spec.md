@@ -6,7 +6,7 @@ kind: standard
 
 ## Objetivo
 
-Hoy la UI pinta el parche y la evidencia de un desbloqueo, y cualquier otra línea de código, sin marcar los caracteres de dirección del texto (U+202A–U+202E, U+2066–U+2069): el navegador los aplica y puede reordenar lo que la persona lee, el ataque «Trojan Source» (CVE-2021-42574). Con este cambio, cada uno se ve con su código (`‮`), como ya lo muestra la terminal, en el tono de atención y con un título que dice qué es, en el visor de diffs, en «Ver código», en la evidencia de un desbloqueo y en la trazabilidad del Historial. Resuelve P234.
+Hoy la UI pinta el parche y la evidencia de un desbloqueo, y cualquier otra línea de código, sin marcar los caracteres de dirección del texto (U+202A–U+202E, U+2066–U+2069): el navegador los aplica y puede reordenar lo que la persona lee, el ataque «Trojan Source» (CVE-2021-42574). Con este cambio, cada uno se ve con su código (`\u202E`), como ya lo muestra la terminal, en el tono de atención y con un título que dice qué es, en el visor de diffs, en «Ver código», en la evidencia de un desbloqueo y en la trazabilidad del Historial. Resuelve P234.
 
 ## Fuera de alcance
 
@@ -28,7 +28,7 @@ Hoy la UI pinta el parche y la evidencia de un desbloqueo, y cualquier otra lín
 
 ## Criterios de aceptación
 
-- AC1: CUANDO una línea del visor de diffs, como la del parche de un desbloqueo, trae un carácter de dirección del texto (U+202A–U+202E, U+2066–U+2069) ENTONCES se ve su código (`‮`) en el tono de atención, en lugar de que el navegador lo aplique, y el resto de la línea conserva sus colores y sus palabras cambiadas, en vista unificada y lado a lado.
+- AC1: CUANDO una línea del visor de diffs, como la del parche de un desbloqueo, trae un carácter de dirección del texto (U+202A–U+202E, U+2066–U+2069) ENTONCES se ve su código (`\u202E`) en el tono de atención, en lugar de que el navegador lo aplique, y el resto de la línea conserva sus colores y sus palabras cambiadas, en vista unificada y lado a lado.
 - AC2: CUANDO lo trae una línea de la evidencia de un desbloqueo, de «Ver código» o de la trazabilidad del Historial ENTONCES se ve igual: su código en el tono de atención, con los colores del resto de la línea.
 - AC3: CUANDO la persona pasa el puntero por un carácter marcado ENTONCES su título dice qué es y por qué se ve su código, en español y en inglés.
 - AC4: CUANDO una línea no trae ninguno, aunque tenga texto de derecha a izquierda o una marca de dirección (U+200F) ENTONCES se ve como hoy.
