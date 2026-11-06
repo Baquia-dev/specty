@@ -6,6 +6,13 @@
   "branch": "specty/20261106-el-guard-no-deja-quitar-la-carpeta-de-un-cambio",
   "baseCommit": "98153584ec94f57f6b6990a486a76b18bead7ff8",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:2826003fe86eea8566832094a0c5587c97e390f9b6d9c11acc26826b46682630",
+    "at": "2026-11-06T09:58:13.344Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:2826003fe86eea8566832094a0c5587c97e390f9b6d9c11acc26826b46682630",
-    "at": "2026-11-06T09:58:13.344Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T10:02:03.388Z"
 }
