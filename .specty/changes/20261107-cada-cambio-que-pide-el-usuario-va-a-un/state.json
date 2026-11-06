@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-cada-cambio-que-pide-el-usuario-va-a-un",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-cada-cambio-que-pide-el-usuario-va-a-un",
   "baseCommit": "4cb3c564510dd4310d15d040f936f5fc27d53379",
   "revision": 2,
@@ -59,6 +59,7 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T20:13:18.712Z"
+  "lockedTests": {
+    "packages/core/test/cards/idle-subagents.test.ts": "sha256:aefde6a3ee7343769e663394be892de90d121d457f5573aef3dfe513648243cf"
+  }
 }
