@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-doctor-avisa-del-plugin-de-opencode-sin-el-fin",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-doctor-avisa-del-plugin-de-opencode-sin-el-fin",
   "baseCommit": "bb6b8c18c0ff709f2414c7b4de05ba47d4343812",
   "revision": 1,
@@ -42,6 +42,8 @@
     "AC": 2,
     "T": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T09:04:33.377Z"
+  "lockedTests": {
+    "packages/cli/test/opencode-install.test.ts": "sha256:70040a2cdb28142fb3e28e032c04fe347cffb7de38e9319c1909437be617dd72",
+    "packages/core/test/cards/doctor-opencode-turn-end.test.ts": "sha256:0784669c96c9b091680ab22bd112cb3d658d6381fee167e948aad6bcf0112b33"
+  }
 }
