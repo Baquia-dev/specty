@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-el-freno-del-guard-cubre-las-esperas-y-no-a",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-el-freno-del-guard-cubre-las-esperas-y-no-a",
   "baseCommit": "0ee3cb079729fe1571746a0e0f095ddf996a4993",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:04983e3fe1d9916d3c6b21eda355ced072eb4e704f5cc70e02753b8579c24656",
@@ -71,12 +71,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "22a25010bf6a37b5ba2a1969acff2b82083a50f0",
+      "attempts": 1,
       "startedAt": "2026-11-06T16:10:17.234Z",
       "doneAt": "2026-11-06T16:10:43.228Z",
-      "summary": "ARCHITECTURE §4, §6 y §10: el freno cubre las esperas evidentes (waits.ts), la marca & del tokenizador y que no frena mientras un proceso vivo de Specty tiene el candado del cambio"
+      "summary": "ARCHITECTURE §4, §6 y §10: el freno cubre las esperas evidentes (waits.ts), la marca & del tokenizador y que no frena mientras un proceso vivo de Specty tiene el candado del cambio",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -89,6 +89,7 @@
     "T": 4,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-06T16:16:32.177Z",
   "lockedTests": {
     "packages/cli/test/wait-guard.test.ts": "sha256:cc135093d562e14fe5ff0f9328f5033e2eb8315443d35b15e713ce2b5a6b2ccb",
     "packages/core/test/guard/wait.test.ts": "sha256:6f664489df53312aa3b039fba122b3231571db0ecd54841df89a780d5f9577ac",

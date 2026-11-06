@@ -84,3 +84,26 @@ Resuelve P224. Mientras el cambio espera a la persona, el guard solo frena `slee
 - R1: La marca `&` cambia lo que da `tokenize`, y un consumidor que no la espere tomaría `"&"` por un comando. Mitigación: `analyzeShell` es su único consumidor, el tipo `Piece` obliga a tratarla, y los tests del tokenizador y del análisis del shell se ejecutan en T1.
 - R3: Entre T1 y T2, `enforce/place.ts` y `guard/decide.ts` aún leen `sleeps`, así que los tipos no cuadran hasta T2. Mitigación: T1 y T2 solo ejecutan sus tests, y T3, la última tarea de código, comprueba los tipos de todo el repositorio.
 - R2: `shell.ts` ya pasa del aviso de 300 líneas de código. Mitigación: la detección va en `waits.ts` y `shell.ts` solo crece en el paso del `&`; dividirlo sigue en P228.
+
+## Cierre
+
+### Resumen
+
+Mientras el cambio espera a la persona, el guard frena ahora los comandos cuyo único fin es esperar, no solo `sleep`, y la negativa nombra el programa («no se espera con `caffeinate`»). Deja pasar las esperas mientras un proceso vivo de Specty tiene el candado del cambio, como un `accept` o un `close` en marcha. Las piezas:
+- Core: `guard/waits.ts` (`waitingProgram`) dice qué comandos solo esperan: `sleep`, `pwait`, `pidwait`, `caffeinate` sin programa o con uno que espera, el `wait` del shell sin trabajos lanzados antes por el mismo comando, y `tail` que sigue solo `/dev/null`. El tokenizador marca con `"&"` el comando que va en segundo plano. `ShellAnalysis.waits` y `ShellFacts.waits` sustituyen a `sleeps`, y `waitCommandDenial` a `sleepDenial`.
+- CLI: `guardChange` deja `waiting` en falso mientras `liveHolder` da un proceso vivo, y `place.ts` pasa `waits`.
+- Documentación: ARCHITECTURE §4, §6 y §10.
+
+### Desviaciones (respecto al plan)
+
+- `ampersandOrPipe` de `tokens.ts` pasó la complejidad máxima con el nuevo caso del `&`, así que se partió en `ampersand` y `pipe`, cada uno con lo suyo. Antes de aprobarla, la spec partió en dos la tarea de core por el aviso de tamaño y quitó `pnpm typecheck` del `verify` de la primera.
+
+### Decisiones
+
+- El `wait` del shell no cuenta cuando el mismo comando lanzó antes trabajos en segundo plano, porque entonces recoge ese trabajo, que ya se juzga por sí mismo. Sin ellos cuenta, porque en un shell que dura entre comandos esperaría trabajos de antes.
+- El candado vivo deja pasar las esperas tanto si el comando es del agente como de la persona en su terminal: en los dos casos se espera a un comando que termina solo.
+- `caffeinate` no pasa a ser un envoltorio para las demás reglas: solo se mira su programa para saber si espera.
+
+### Pendientes
+
+- Ninguno nuevo. `shell.ts` sube a 309 líneas de código, ya anotado en P228, y `enforce/guard.ts` a 312, ya anotado en P202 y P218.
