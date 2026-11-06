@@ -1,0 +1,109 @@
+---
+kind: standard
+---
+
+# El freno del guard cubre las esperas y no a quien espera un comando de Specty
+
+## Objetivo
+
+Resuelve P224. Mientras el cambio espera a la persona, el guard solo frena `sleep`, y un subagente esperó con `caffeinate -w <pid>` sin que nada lo parara. Con este cambio, el freno cubre los comandos cuyo único fin es esperar: `sleep`, `caffeinate` sin un programa que ejecutar, el `wait` del shell, `pwait`, `pidwait` y `tail` que sigue solo `/dev/null`. La negativa nombra el programa con que se espera. Además, el freno ya no para a quien espera un comando de Specty en marcha, como un `accept` o un `close` que tienen el candado del cambio, porque ese comando termina solo.
+
+## Fuera de alcance
+
+- El fin de turno del agente (`enforce/agent-stop.ts`) y `specty wait`, que siguen leyendo `isWaitingForHuman` como hoy.
+- Las esperas dentro de un script (`bash -c`, `python3 -c`, `node -e`) o tras `timeout`, que el análisis del shell no lee.
+- Que `caffeinate` cuente como envoltorio para las demás reglas del guard, como `nohup`: solo se mira su programa para saber si espera.
+- Dividir `packages/core/src/guard/shell.ts` (P228), que decide la persona: la detección de las esperas va en su propio módulo.
+- La regla de AGENTS.md (`packages/core/src/agents-md.ts`), que sigue nombrando `sleep` como ejemplo.
+
+## Supuestos
+
+- A1: Solo cuenta como espera un comando que no hace otra cosa, sin falsos positivos: `sleep`, `pwait` y `pidwait` siempre; `caffeinate` sin programa (`-w <pid>`, `-t <segundos>` o sin opciones), y con un programa, solo si ese programa espera (`caffeinate -i sleep 60`); y `tail` que sigue (`-f`, `-F` o `--follow`) y cuyos únicos operandos son `/dev/null`. `caffeinate -i pnpm test` o `tail -f build.log` no esperan, porque hacen trabajo. La lista vive en un módulo propio, `packages/core/src/guard/waits.ts`, porque saber si un comando espera es una responsabilidad aparte del análisis de los segmentos.
+  - impacto: medio
+- A2: El `wait` del shell solo espera a los hijos del mismo shell. Si el mismo comando lanzó antes trabajos en segundo plano con `&` (`pnpm test & pnpm lint & wait`), recoge ese trabajo y no cuenta como espera, porque los trabajos lanzados ya se juzgan por sí mismos (`sleep 60 & wait` se frena por el `sleep`). Sin trabajos lanzados en el comando cuenta, porque en un shell que dura entre comandos esperaría trabajos de antes. Para saberlo, el tokenizador (`guard/tokens.ts`) marca el `&` que manda un comando al fondo, como ya marca dónde abre y cierra un subshell; `&&`, `2>&1` y `&>` no son esa marca.
+  - impacto: medio
+- A3: Mientras un proceso vivo de Specty tiene el candado del cambio (`liveHolder` de `store/lock.ts`), quien espera espera a ese comando, sea del agente o de la persona en su terminal, y no a la decisión de la persona. El guard calcula entonces `GuardChange.waiting` como `isWaitingForHuman` y sin un `liveHolder` vivo, así que deja pasar cualquier espera. Un candado cuyo proceso ya no existe no cuenta, como en `specty wait`. Solo se lee el candado cuando el cambio espera a la persona, para no hacer más lento cada comando.
+  - impacto: alto
+- A4: `ShellAnalysis.sleeps` y `ShellFacts.sleeps` pasan a `waits`, la lista de los programas que esperan en el comando (`["caffeinate"]`), y `sleepDenial` de `cards/wait.ts` pasa a `waitCommandDenial`, que recibe el programa que nombra la negativa. Solo los usan el guard y sus tests.
+  - impacto: bajo
+
+## Criterios de aceptación
+
+- AC1: CUANDO el cambio espera a la persona y un comando de shell espera con `sleep`, `caffeinate -w <pid>`, `caffeinate -t <segundos>`, `caffeinate -i sleep 60`, el `wait` del shell, `pwait`, `pidwait` o `tail -f /dev/null`, también tras palabras de control, asignaciones y envoltorios, ENTONCES el guard lo rechaza con la regla `wait`, nombra el programa con que espera («no se espera con \`caffeinate\`») y pide `specty wait` con la frase común de su herramienta, o `specty next` en modo delegado, en español y en inglés.
+- AC2: CUANDO un comando nombra esos programas sin esperar con ellos (`caffeinate -i pnpm test`, `pnpm test & pnpm lint & wait`, `tail -f build.log`, `tail /dev/null`, `echo wait`, `grep -r caffeinate src`, `specty wait`) ENTONCES el análisis del shell no lo cuenta como una espera y el guard no lo frena por esperar.
+- AC3: CUANDO el cambio espera a la persona pero un proceso vivo de Specty tiene su candado (un `accept` o un `close` en marcha) ENTONCES el guard deja pasar `sleep`, `caffeinate -w <pid>` y las demás esperas. CUANDO el proceso que dejó el candado ya no existe ENTONCES el guard las frena como en AC1.
+
+## Diseño
+
+- Core, `guard/waits.ts`: `waitingProgram(program, args, launched)` da el programa que espera en un comando simple, o nada. `caffeinate` lee sus opciones como getopt (`-t` y `-w` llevan valor, también juntas: `-it 60`, `-t60`) y, si queda un programa, se pregunta por él.
+- Core, `guard/tokens.ts`: `Piece` gana `"&"`, que sigue al comando que se lanza en segundo plano. `analyzeShell` lo anota y se lo pasa a `waitingProgram`; `|&` sigue siendo una tubería.
+- Core, `guard/shell.ts`: `waits` sustituye a `sleeps` en `ShellAnalysis`, en su vacío y en `merge`. `analyzeSegment` lo calcula con el programa de `locateProgram`.
+- Core, `guard/decide.ts` y `cards/wait.ts`: `waitDenial` frena con el primer programa de `facts.waits` y `waitCommandDenial(id, program, ctx)` lo nombra, con la misma frase siguiente (`waitStep` o `specty next` en modo delegado).
+- CLI: `enforce/place.ts` pasa `waits` a los hechos del shell, y `guardChange` de `enforce/guard.ts` deja `waiting` en falso mientras `liveHolder` da un proceso vivo.
+
+## Archivos
+
+- crear packages/core/src/guard/waits.ts — qué comandos solo esperan
+- modificar packages/core/src/guard/tokens.ts — la marca `&` del comando que va en segundo plano
+- modificar packages/core/src/guard/shell.ts — `waits` en lugar de `sleeps`, con los trabajos lanzados en segundo plano
+- modificar packages/core/src/guard/action.ts — `ShellFacts.waits` y qué significa `GuardChange.waiting`
+- modificar packages/core/src/guard/decide.ts — el freno lee `waits` y nombra el programa
+- modificar packages/core/src/cards/wait.ts — `waitCommandDenial`, la negativa que nombra el programa que espera
+- modificar packages/cli/src/enforce/place.ts — pasa `waits` a los hechos del shell
+- modificar packages/cli/src/enforce/guard.ts — `waiting` no cuenta mientras un proceso vivo de Specty tiene el candado
+- crear packages/core/test/guard/waits.test.ts — qué comandos esperan y cuáles no, y la marca `&` del tokenizador
+- modificar packages/core/test/guard/wait.test.ts — el freno con `waits` y la negativa que nombra el programa
+- modificar packages/cli/test/wait-guard.test.ts — el guard de Claude Code con las esperas y con el candado de un proceso vivo
+- modificar docs/ARCHITECTURE.md — las esperas que frena el guard y el candado de un comando en marcha
+
+## Tareas
+
+- [x] T1: El análisis del shell cuenta las esperas evidentes
+  - files: packages/core/src/guard/waits.ts, packages/core/src/guard/tokens.ts, packages/core/src/guard/shell.ts, packages/core/test/guard/waits.test.ts
+  - ac: AC1, AC2
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/waits.test.ts test/guard/shell.test.ts test/guard/control-words.test.ts
+  - type: fix
+- [x] T2: El guard frena las esperas y nombra el programa con que se espera
+  - files: packages/core/src/guard/action.ts, packages/core/src/guard/decide.ts, packages/core/src/cards/wait.ts, packages/cli/src/enforce/place.ts, packages/core/test/guard/wait.test.ts
+  - ac: AC1
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/wait.test.ts test/guard/decide.test.ts
+  - type: fix
+- [x] T3: El guard no frena a quien espera un comando de Specty en marcha
+  - files: packages/cli/src/enforce/guard.ts, packages/cli/test/wait-guard.test.ts
+  - ac: AC1, AC3
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait-guard.test.ts && pnpm typecheck && pnpm lint
+  - type: fix
+- [x] T4: La documentación cuenta las esperas que frena el guard
+  - files: docs/ARCHITECTURE.md
+  - ac: AC1, AC3
+  - verify: pnpm lint
+  - type: docs
+
+## Riesgos
+
+- R1: La marca `&` cambia lo que da `tokenize`, y un consumidor que no la espere tomaría `"&"` por un comando. Mitigación: `analyzeShell` es su único consumidor, el tipo `Piece` obliga a tratarla, y los tests del tokenizador y del análisis del shell se ejecutan en T1.
+- R3: Entre T1 y T2, `enforce/place.ts` y `guard/decide.ts` aún leen `sleeps`, así que los tipos no cuadran hasta T2. Mitigación: T1 y T2 solo ejecutan sus tests, y T3, la última tarea de código, comprueba los tipos de todo el repositorio.
+- R2: `shell.ts` ya pasa del aviso de 300 líneas de código. Mitigación: la detección va en `waits.ts` y `shell.ts` solo crece en el paso del `&`; dividirlo sigue en P228.
+
+## Cierre
+
+### Resumen
+
+Mientras el cambio espera a la persona, el guard frena ahora los comandos cuyo único fin es esperar, no solo `sleep`, y la negativa nombra el programa («no se espera con `caffeinate`»). Deja pasar las esperas mientras un proceso vivo de Specty tiene el candado del cambio, como un `accept` o un `close` en marcha. Las piezas:
+- Core: `guard/waits.ts` (`waitingProgram`) dice qué comandos solo esperan: `sleep`, `pwait`, `pidwait`, `caffeinate` sin programa o con uno que espera, el `wait` del shell sin trabajos lanzados antes por el mismo comando, y `tail` que sigue solo `/dev/null`. El tokenizador marca con `"&"` el comando que va en segundo plano. `ShellAnalysis.waits` y `ShellFacts.waits` sustituyen a `sleeps`, y `waitCommandDenial` a `sleepDenial`.
+- CLI: `guardChange` deja `waiting` en falso mientras `liveHolder` da un proceso vivo, y `place.ts` pasa `waits`.
+- Documentación: ARCHITECTURE §4, §6 y §10.
+
+### Desviaciones (respecto al plan)
+
+- `ampersandOrPipe` de `tokens.ts` pasó la complejidad máxima con el nuevo caso del `&`, así que se partió en `ampersand` y `pipe`, cada uno con lo suyo. Antes de aprobarla, la spec partió en dos la tarea de core por el aviso de tamaño y quitó `pnpm typecheck` del `verify` de la primera.
+
+### Decisiones
+
+- El `wait` del shell no cuenta cuando el mismo comando lanzó antes trabajos en segundo plano, porque entonces recoge ese trabajo, que ya se juzga por sí mismo. Sin ellos cuenta, porque en un shell que dura entre comandos esperaría trabajos de antes.
+- El candado vivo deja pasar las esperas tanto si el comando es del agente como de la persona en su terminal: en los dos casos se espera a un comando que termina solo.
+- `caffeinate` no pasa a ser un envoltorio para las demás reglas: solo se mira su programa para saber si espera.
+
+### Pendientes
+
+- Ninguno nuevo. `shell.ts` sube a 309 líneas de código, ya anotado en P228, y `enforce/guard.ts` a 312, ya anotado en P202 y P218.

@@ -179,10 +179,12 @@ export async function requestChanges(session: Session, change: StoredChange): Pr
     event: { type: "requestChanges" },
   });
   if (!moved.ok) return blockedCard(header, moved.code, reloadNext("ui", session.cards));
+  // The turn is the agent's until its next proposal (`changeWaitsFor`).
+  const changesRequestedAt = session.environment.now().toISOString();
   await commitState(
     session,
     change,
-    { ...state, phase: moved.phase },
+    { ...state, phase: moved.phase, changesRequestedAt },
     "review.changes_requested",
     { revision: state.revision, comments: open },
     "human",
