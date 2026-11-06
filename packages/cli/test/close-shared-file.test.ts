@@ -10,7 +10,9 @@ import {
   inWorktree,
   person,
   read,
+  SPEC_PATH,
   stateIn,
+  toAcceptance,
   toClosing,
   tryGit,
   writeFiles,
@@ -82,6 +84,61 @@ describe("closing when the closing and main changed the same file", () => {
     expect(closed.out).toContain("Incorporado a main.");
     expect(git(root, "rev-parse", "main")).toBe(git(root, "rev-parse", BRANCH));
     expect(await read(root, GLOSSARY)).toBe(resolved);
+    expect(await exists(folder)).toBe(false);
+  });
+});
+
+const CLOSING = "\n## Cierre\n\n### Resumen\n\nSaludo listo.\n";
+
+/**
+ * SPEC's change in acceptance with delegated mode on, whose agent wrote `closing` to the glossary
+ * and sent its closing, uncommitted, while main commits `main` to the glossary meanwhile.
+ */
+async function sentWhileMainChangesTheGlossary(closing: string, main: string) {
+  const { root, folder } = await inWorktree({ ...APP, [GLOSSARY]: TERMS });
+  await toAcceptance(folder);
+  const on = await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+  expect(on.code).toBe(0);
+  const spec = `${await read(folder, SPEC_PATH)}${CLOSING}`;
+  await writeFiles(folder, { [SPEC_PATH]: spec, [GLOSSARY]: closing });
+  expect((await cli(folder, ["propose"])).out).toContain("Cierre válido.");
+  await writeFiles(root, { [GLOSSARY]: main });
+  git(root, "commit", "-q", "-am", "main cambia el glosario");
+  return { root, folder };
+}
+
+/** The first parent of the last merge in BRANCH, the one that brought main in: its subject. */
+const beforeMerge = (root: string) =>
+  git(root, "log", "-1", "--format=%s", `${git(root, "rev-list", "--merges", "-1", BRANCH)}^1`);
+
+describe("accepting with the closing sent when main changed the glossary it edits", () => {
+  const main = TERMS.replace("# Dominio", "# Dominio de la app");
+
+  it("the agent's accept commits the closing first, incorporates main, closes and lands with both changes", async () => {
+    const { root, folder } = await sentWhileMainChangesTheGlossary(`${TERMS}${NAME}`, main);
+    const accepted = await cli(folder, ["accept"]);
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toContain("Cambio aceptado, cerrado y archivado");
+    expect(accepted.out).toContain("Incorporado a main.");
+    expect(git(root, "rev-parse", "main")).toBe(git(root, "rev-parse", BRANCH));
+    expect(beforeMerge(root)).toBe("docs(spec): cierre de Saludo personalizado");
+    expect(await read(root, GLOSSARY)).toBe(`${main}${NAME}`);
+    expect(await exists(folder)).toBe(false);
+  });
+
+  it("the person's accept commits it first too, leaves the change in closing, and `close` closes it", async () => {
+    const { root, folder } = await sentWhileMainChangesTheGlossary(`${TERMS}${NAME}`, main);
+    const accepted = await cli(folder, ["accept"], { terminal: person() });
+    expect(accepted.code).toBe(0);
+    expect(await stateIn(folder)).toMatchObject({
+      phase: "closing",
+      closingSubmittedAt: expect.any(String),
+    });
+    expect(beforeMerge(root)).toBe("docs(spec): cierre de Saludo personalizado");
+    const closed = await cli(folder, ["close"], { terminal: person() });
+    expect(closed.code).toBe(0);
+    expect(closed.out).toContain("Incorporado a main.");
+    expect(await read(root, GLOSSARY)).toBe(`${main}${NAME}`);
     expect(await exists(folder)).toBe(false);
   });
 });
