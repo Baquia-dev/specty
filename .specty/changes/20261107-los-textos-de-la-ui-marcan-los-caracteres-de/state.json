@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-textos-de-la-ui-marcan-los-caracteres-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-los-textos-de-la-ui-marcan-los-caracteres-de",
   "baseCommit": "83686f522106f89c261fe441063c60f9c2cf4510",
   "revision": 2,
@@ -51,6 +51,10 @@
     "T": 5,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T20:06:40.794Z"
+  "lockedTests": {
+    "packages/ui/src/review/markdown.test.ts": "sha256:8c224c17401cb8e4143fdc9b54a05a772bffa981d5c487be12255986043df80d",
+    "packages/ui/src/change/change-direction.test.ts": "sha256:c1da9623209cbfc856beec4526c6c0c6f8baf6f8355a97bab736d6c977526bb4",
+    "packages/ui/src/progress/progress-direction.test.ts": "sha256:f4f6f97e68f6d53487cc033d0d30ce8dfd43751891dd158630aa0a6248db41b6",
+    "packages/ui/src/review/spec-direction.test.ts": "sha256:c25e532c1bce72ea8033aafbb515498826e1b353c879ac9497c0c09798aecc27"
+  }
 }
