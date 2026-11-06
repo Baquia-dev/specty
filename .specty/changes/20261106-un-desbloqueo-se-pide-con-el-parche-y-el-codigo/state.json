@@ -60,12 +60,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8f0c6d85abf17c4ab0a011bea136c6a5c8994a85",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:34:50.088Z",
       "doneAt": "2026-11-06T13:39:33.158Z",
-      "summary": "La solicitud de state.json admite patch y evidence (UNLOCK_LIMITS en core), cards/unlock.ts da el comando completo de un desbloqueo y cada rechazo en español y en inglés, y el guard ante un test bloqueado da ese comando con la explicación de --patch y --evidence"
+      "summary": "La solicitud de state.json admite patch y evidence (UNLOCK_LIMITS en core), cards/unlock.ts da el comando completo de un desbloqueo y cada rechazo en español y en inglés, y el guard ante un test bloqueado da ese comando con la explicación de --patch y --evidence",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e2c692bb0997afd95857a3f58a392aeb08c25ed1",
+      "startedAt": "2026-11-06T13:39:33.522Z",
+      "doneAt": "2026-11-06T13:41:14.315Z",
+      "summary": "scope add registra --patch (archivo o -) y --evidence; flow/unlock-proposal.ts comprueba el parche con git apply sobre la versión bloqueada y lee cada evidencia de un archivo que git sigue; la solicitud guarda patch y evidence"
     }
   },
   "pending": {

@@ -81,7 +81,7 @@ Hoy, para desbloquear un test aprobado, al agente le basta con `scope add <test>
   - ac: AC1, AC2, AC3, AC4, AC6, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/unlock.test.ts test/guard/decide.test.ts test/cards/task.test.ts test/schema/schema.test.ts
   - type: feat
-- [ ] T2: `scope add` exige y comprueba el parche y la evidencia de un desbloqueo
+- [x] T2: `scope add` exige y comprueba el parche y la evidencia de un desbloqueo
   - files: packages/cli/src/flow/unlock-proposal.ts, packages/cli/src/commands/scope.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/src/program.ts, packages/cli/test/unlock-request.test.ts
   - ac: AC1, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/unlock-request.test.ts test/retro-into.test.ts test/commands-named.test.ts

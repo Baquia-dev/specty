@@ -11,6 +11,7 @@ import {
 import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
 import { withChangeLock } from "../flow/active";
+import type { CliEnvironment } from "../program";
 import { bareCards, type Session } from "../session";
 import { adjust } from "./adjust";
 import { enter } from "./enter";
@@ -38,12 +39,13 @@ const locked = (run: Run, command: string) => (handler: (session: Session) => Pr
 
 /**
  * Registers the agent's commands (ARCHITECTURE §6): the flow it follows and the work of its
- * tasks. `refuse` shows what is refused before any session opens, such as an unknown kind.
+ * tasks, with the variables and the standard input of `environment`. `refuse` shows what is
+ * refused before any session opens, such as an unknown kind.
  */
 export function agentCommands(
   program: Command,
   run: Run,
-  env: NodeJS.ProcessEnv,
+  environment: Pick<CliEnvironment, "env" | "stdin">,
   refuse: (output: Output) => void,
 ): void {
   program.command("next").description("what to do now").action(locked(run, "next")(next));
@@ -52,7 +54,7 @@ export function agentCommands(
   messageCommand(program, run);
   enterCommand(program, run);
   restoreCommand(program, run);
-  newCommand(program, run, env, refuse);
+  newCommand(program, run, environment.env, refuse);
   importCommand(program, run);
   program
     .command("propose")
@@ -62,7 +64,7 @@ export function agentCommands(
     .command("review")
     .description("an independent review of the spec, by the command the person set up")
     .action(locked(run, "review")(review));
-  taskCommands(program, run);
+  taskCommands(program, run, environment.stdin);
   program
     .command("integrate")
     .description("finish the merge of the main branch a closing left here")
@@ -222,8 +224,14 @@ function originOptions(
   };
 }
 
-/** The work of a task: completing it, and widening its scope. */
-function taskCommands(program: Command, run: Run): void {
+/** The work of a task: completing it, and widening its scope; `stdin` gives `--patch -`. */
+function taskCommands(program: Command, run: Run, stdin: () => Promise<string>): void {
+  taskDoneCommand(program, run);
+  scopeAddCommand(program, run, stdin);
+}
+
+/** `specty task done`, with its summary and its findings. */
+function taskDoneCommand(program: Command, run: Run): void {
   program
     .command("task")
     .description("task commands")
@@ -242,6 +250,10 @@ function taskCommands(program: Command, run: Run): void {
         "task done",
       )((session) => taskDone(session, id, options.summary, options.finding))(),
     );
+}
+
+/** `specty scope add`, with the patch and the evidence of an unlock of approved tests. */
+function scopeAddCommand(program: Command, run: Run, stdin: () => Promise<string>): void {
   program
     .command("scope")
     .description("scope commands")
@@ -249,10 +261,29 @@ function taskCommands(program: Command, run: Run): void {
     .argument("<paths...>")
     .option("--task <id>")
     .option("--reason <text>", "why the task needs the paths", "")
-    .action((paths: string[], options: { task?: string; reason: string }) =>
-      locked(
-        run,
-        "scope add",
-      )((session) => scopeAdd(session, paths, options.reason, options.task))(),
+    .option("--patch <file>", "unlocking approved tests: the change to them, as a diff; - is stdin")
+    .option(
+      "--evidence <path:from-to>",
+      "unlocking approved tests: lines that justify it; repeatable",
+      (value: string, previous: string[]) => [...previous, value],
+      [],
+    )
+    .action(
+      (
+        paths: string[],
+        options: { task?: string; reason: string; patch?: string; evidence: string[] },
+      ) =>
+        locked(
+          run,
+          "scope add",
+        )((session) =>
+          scopeAdd(session, paths, {
+            reason: options.reason,
+            task: options.task,
+            patch: options.patch,
+            evidence: options.evidence,
+            stdin,
+          }),
+        )(),
     );
 }
