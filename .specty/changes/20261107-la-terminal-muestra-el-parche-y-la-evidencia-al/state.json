@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261107-la-terminal-muestra-el-parche-y-la-evidencia-al",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-la-terminal-muestra-el-parche-y-la-evidencia-al",
+  "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b4c208f75fd490a0b4509f7a9c35a11fa63d243c15af5c61401f1a22c6737ff6",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:92e60ae8d136e2aa28ee0e9577651b160cc0a53f1cef4174ec56e31fcab1f3a5",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:d502021e83002076ca84ec0e7db9ac0d24ccbf1458aa69ab874ebe951e078384",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cb545a22e28ca7a645449395b221b4de1c7a1cb2c4de376b59478784ce62552b",
+    "at": "2026-11-06T17:08:01.668Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
