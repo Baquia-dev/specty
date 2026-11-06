@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-el-cierre-no-aconseja-una-sesion-nueva-cuando",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-cierre-no-aconseja-una-sesion-nueva-cuando",
   "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:249f7dc4a8355c320ff7e9d05b9adc75362565080b4dec50bcc74328e8bfcad1",
+    "at": "2026-11-06T21:24:54.661Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -24,12 +31,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:249f7dc4a8355c320ff7e9d05b9adc75362565080b4dec50bcc74328e8bfcad1",
-    "at": "2026-11-06T21:24:54.661Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/fresh-session.test.ts": "sha256:17ba7b6abd60bdfa0584f4ef5218101e4fa49623ed40600dc3f3e05efe5f6602"
+  }
 }
