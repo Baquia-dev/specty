@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "20261106-epica-en-la-bandeja-con-lineas-por-corte",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261106-epica-en-la-bandeja-con-lineas-por-corte",
+  "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8e3603c2988c01dd140f419859d24beeffd0a3ad56f681c880583fb7e0c20aaf",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a03bbf4e60fa9c5115b2543eab46744964b3f8ffdcda09e3b6bdb0dcdef84f46",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:57250ac283b894d4700cd216f8bd84f62d3b1c44fd87cb9dc1b78999059d36cc",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ffc01d2f84b7e75980461b6d5cf2a353ccb8aa56bc14a9a85f2ae4fe985ad1e5",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:2bb3bd27397d4408af71783878f486d81f75c726e46ebc91b4bfe17afbf50cdd",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:feb8ed918a76d35436168608e03a58b258f495f6813ec372104a250becd38594",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:6c83f36855d95495aade4833afca750b072cae67db0a63665eb3b92192097473",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 11,
+    "C": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1baab9f3f1d1d71803968584c3170f239b71981374ec9225d6ad7604f5648bdf",
+    "at": "2026-11-06T14:54:08.384Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
