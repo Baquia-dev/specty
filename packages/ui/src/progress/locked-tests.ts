@@ -6,15 +6,17 @@ import { LucideLock, LucideLockOpen } from "../components/icons";
 import { ItemText } from "../components/item-tooltip";
 import type { LockedTestView } from "../data/locks";
 import { Preferences } from "../theme/preferences";
+import { TestCode } from "./test-code";
 
 /**
  * The approved tests a change locked (ADR 0014): the agent cannot change them unless the person
  * unlocks one for a task. Each says whether it is unlocked for the task in progress and which
- * requests unlocked it so far. In Progress and in Acceptance, where the person reviews them.
+ * requests unlocked it so far, and has «Ver código». In Progress and in Acceptance, where the
+ * person reviews them.
  */
 @Component({
   selector: "sp-locked-tests",
-  imports: [LucideDynamicIcon, SectionDivider, ItemText],
+  imports: [LucideDynamicIcon, SectionDivider, ItemText, TestCode],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section aria-labelledby="locked-tests" data-locked-tests>
@@ -23,10 +25,11 @@ import { Preferences } from "../theme/preferences";
         @for (test of tests(); track test.path) {
           <li [class]="row" data-locked [attr.data-open]="test.unlockedFor ? '' : null">
             <svg class="mt-0.5" [lucideIcon]="test.unlockedFor ? openIcon : lockIcon" size="14" [style.color]="test.unlockedFor ? 'var(--color-phase-review)' : 'var(--color-text-muted)'" aria-hidden="true"></svg>
-            <p class="m-0 flex min-w-0 flex-col gap-0.5">
+            <div class="flex min-w-0 flex-col gap-0.5">
               <code class="font-mono text-xs break-all">{{ test.path }}</code>
               <span class="text-[13px] text-text-muted" data-state><sp-item-text [text]="stateOf(test)" /></span>
-            </p>
+              <sp-test-code class="mt-0.5" [change]="change()" [path]="test.path" />
+            </div>
           </li>
         }
       </ul>
@@ -34,6 +37,8 @@ import { Preferences } from "../theme/preferences";
   `,
 })
 export class LockedTests {
+  /** The change's id: «Ver código» asks the source for its tests. */
+  readonly change = input.required<string>();
   readonly tests = input.required<readonly LockedTestView[]>();
 
   private readonly preferences = inject(Preferences);

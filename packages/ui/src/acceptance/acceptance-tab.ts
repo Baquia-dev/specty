@@ -93,7 +93,7 @@ const VIEW_KEY = "specty.acceptance.view";
       }
       <!-- The approved tests it locked, and which of them a person unlocked for a task. -->
       @if (change().lockedTests; as locked) {
-        <sp-locked-tests [tests]="locked" />
+        <sp-locked-tests [change]="change().id" [tests]="locked" />
       }
       @if (change().resultReview; as review) {
         <sp-independent-review [review]="review" />

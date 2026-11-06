@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { Injectable } from "@angular/core";
+import { Injectable, type Type } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { provideRouter, Router, withComponentInputBinding } from "@angular/router";
 import { APP_ROUTES } from "../app/routes";
@@ -27,18 +27,48 @@ class Unheld extends FixtureData {
   }
 }
 
-async function open(url: string) {
+const LOGIN = "20261021-login-google";
+const LOGIN_FOLDER = `/repo/.worktrees/${LOGIN}`;
+
+/** What the server says when nobody picks up the person's last decision (`unattended`). */
+interface Unattended {
+  readonly since: string;
+  readonly wait?: {
+    readonly tool?: string;
+    readonly ended: "timeout" | "stopped";
+    readonly ago: number;
+  };
+  readonly holder?: { readonly tool: string; readonly ago: number };
+}
+
+/** What LOGIN carries in each test, besides its folder. */
+let marks: {
+  readonly away?: { readonly tool: string; readonly ago: number };
+  readonly unattended?: Unattended;
+} = {};
+
+/** The sample data, with LOGIN in its folder and carrying `marks`. */
+@Injectable()
+class Unpicked extends FixtureData {
+  override async changes(): Promise<readonly ChangeRecord[]> {
+    return (await super.changes()).map((record) =>
+      record.state.id === LOGIN ? { ...record, folder: LOGIN_FOLDER, ...marks } : record,
+    );
+  }
+}
+
+async function open(url: string, source: Type<FixtureData> = Unheld, lang: "es" | "en" = "es") {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
   })) as unknown as typeof window.matchMedia;
   localStorage.clear();
-  localStorage.setItem("specty.lang", "es");
+  localStorage.setItem("specty.lang", lang);
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
     providers: [
       provideRouter(APP_ROUTES, withComponentInputBinding()),
-      { provide: SpectyData, useClass: Unheld },
+      { provide: SpectyData, useClass: source },
       {
         provide: DERIVER,
         useValue: (records: readonly ChangeRecord[]) => Promise.resolve(deriveViews(records)),
@@ -149,5 +179,76 @@ describe("a change no conversation holds, in the UI", () => {
     copy()?.click();
     await settle();
     expect(toasts()).toContain("No se pudo copiar la orden: cópiala a mano.");
+  });
+});
+
+describe("a change nobody picks up after the person's decision, in its page", () => {
+  afterEach(() => {
+    TestBed.resetTestingModule();
+    marks = {};
+  });
+
+  const since = new Date().toISOString();
+  const TIMEOUT: Unattended = { since, wait: { tool: "claude-code", ended: "timeout", ago: 12 } };
+  const STOPPED: Unattended = { since, wait: { tool: "codex", ended: "stopped", ago: 3 } };
+  const HELD: Unattended = { since, holder: { tool: "claude-code", ago: 7 } };
+
+  /** What «Cómo retomarlo» says on LOGIN's page with `unattended`: what happened and what to do. */
+  async function said(unattended: Unattended, lang: "es" | "en" = "es") {
+    marks = { ...marks, unattended };
+    const { element } = await open(`/changes/${LOGIN}`, Unpicked, lang);
+    const panel = element.querySelector("sp-change-page sp-resume-hints");
+    return {
+      panel,
+      why: text(panel?.querySelector("[data-why]")),
+      todo: text(panel?.querySelector("[data-todo]")),
+    };
+  }
+
+  it("AC3: says the agent's specty wait ran out of time, and what to do before the orders to open another", async () => {
+    const { panel, why, todo } = await said(TIMEOUT);
+    expect(why).toBe("El specty wait del agente (claude-code) agotó su tiempo hace 12 min.");
+    expect(todo).toBe(
+      "Si la conversación del agente sigue abierta, escríbele «sigue» para que ejecute specty next y siga desde tu decisión; si se cerró, abre otra en su carpeta con una de estas órdenes.",
+    );
+    const line = panel?.querySelector("[data-todo]");
+    const order = panel?.querySelector("[data-agent]");
+    expect(order).not.toBeNull();
+    expect(
+      (line?.compareDocumentPosition(order as Node) ?? 0) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(text(order?.querySelector("code"))).toBe(`cd "${LOGIN_FOLDER}" && claude`);
+  });
+
+  it("AC3: says the agent's specty wait was cut off, ahead of its conversation having left its folder", async () => {
+    marks = { away: { tool: "codex", ago: 4 } };
+    const { why } = await said(STOPPED);
+    expect(why).toBe("El specty wait del agente (codex) se cortó hace 3 min.");
+  });
+
+  it("AC3: says no agent waited, with the last conversation that stepped in its folder or with none", async () => {
+    expect((await said(HELD)).why).toBe(
+      "Ningún agente esperaba tu decisión; la última conversación en su carpeta (claude-code) dio un paso hace 7 min.",
+    );
+    expect((await said({ since })).why).toBe(
+      "Ningún agente esperaba tu decisión, y ninguna conversación trabaja en su carpeta.",
+    );
+  });
+
+  it("AC6: says what happened and what to do in English", async () => {
+    const timedOut = await said(TIMEOUT, "en");
+    expect(timedOut.why).toBe("The agent's specty wait (claude-code) ran out of time 12 min ago.");
+    expect(timedOut.todo).toBe(
+      "If the agent's conversation is still open, write “go on” in it so it runs specty next and goes on from your decision; if it closed, open another one in its folder with one of these orders.",
+    );
+    expect((await said(STOPPED, "en")).why).toBe(
+      "The agent's specty wait (codex) was cut off 3 min ago.",
+    );
+    expect((await said(HELD, "en")).why).toBe(
+      "No agent was waiting for your decision; the last conversation in its folder (claude-code) took a step 7 min ago.",
+    );
+    expect((await said({ since }, "en")).why).toBe(
+      "No agent was waiting for your decision, and no conversation works in its folder.",
+    );
   });
 });
