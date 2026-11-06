@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "id": "20261107-verificar-de-la-ui-incorpora-main-antes-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-verificar-de-la-ui-incorpora-main-antes-de",
+  "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ee1fdf839c5e641bd6302d37f5c4f94e8fcaa78641bd520b347b27cfd1d0a2d1",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:52eae76884bd718d6c16b9cd682aae7926843e450821c1c33f896fa028e86fd0",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:ebaf77b77940febcbb78b1c2993c0025880e3a28f0296cb1803ce42b5193e6e8",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:4fa8084fd8fdce06b0a8254b7c6af270efa67aaf7bed86cb38231fe88d5f1bff",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:957c3202d0b8adb47e196bd932a17e007fa23eba7db57d1fccbb2fcc4e77737c",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:c2d4c066acea09b7736583b72cd96a77f4211921cbb053946f97b972e7a0b90c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:5bfab8fc25e2a1e984ded05e1f97c4764c935de1d730989e9bfb4f6825dacf39",
+    "at": "2026-11-06T18:55:49.629Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
