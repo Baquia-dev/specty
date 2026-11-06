@@ -83,7 +83,7 @@ Hoy ninguna pantalla de `specty ui` enseña `.specty/config.yaml`: para saber c�
   - files: packages/cli/src/server/api.ts, packages/cli/test/server/config.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/config.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
-- [ ] T3: La página «Configuración», con su enlace, buscador y filtros
+- [x] T3: La página «Configuración», con su enlace, buscador y filtros
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/settings/settings-view.ts, packages/ui/src/settings/settings-page.ts, packages/ui/src/settings/settings-page.test.ts, packages/ui/src/app/routes.ts, packages/ui/src/app/shell.ts, packages/ui/src/app/shell.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts --include src/app/shell.test.ts && pnpm typecheck && pnpm lint && pnpm knip

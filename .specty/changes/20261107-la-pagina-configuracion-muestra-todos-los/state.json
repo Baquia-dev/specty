@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-pagina-configuracion-muestra-todos-los",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-pagina-configuracion-muestra-todos-los",
   "baseCommit": "53eef2c1668b92bbf9d89a26fd7a562eef5cbf60",
   "revision": 1,
@@ -64,12 +64,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "71ed074a72bf521022563d6ec2db4d5026391e64",
+      "attempts": 1,
       "startedAt": "2026-11-06T23:24:13.141Z",
       "doneAt": "2026-11-06T23:24:56.049Z",
-      "summary": "GET /api/config en server/api.ts (configView): el archivo leído de nuevo en cada petición, lo que usa Specty si es válido, los valores por defecto con el glosario del idioma del archivo y los errores del validador por clave; un YAML roto da su error en la raíz. Documentado en ARCHITECTURE §15"
+      "summary": "GET /api/config en server/api.ts (configView): el archivo leído de nuevo en cada petición, lo que usa Specty si es válido, los valores por defecto con el glosario del idioma del archivo y los errores del validador por clave; un YAML roto da su error en la raíz. Documentado en ARCHITECTURE §15",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cf555b8d380585f0b2300e4abb0e128cc5ed1743",
+      "startedAt": "2026-11-06T23:24:56.358Z",
+      "doneAt": "2026-11-06T23:33:53.505Z",
+      "summary": "Página «Configuración» (/settings, enlace tras «Sesiones»): cada ajuste por sección con su valor, su valor por defecto si difiere, marcas, errores, buscador y filtros; config() en la fuente de datos y en ServerData; docs/ui.md"
     }
   },
   "pending": {
