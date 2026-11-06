@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261106-cada-decision-carga-hasta-que-la-pagina-la",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-cada-decision-carga-hasta-que-la-pagina-la",
+  "baseCommit": "c17e17acd35abbcb1e8dc872b26eda2af73c5f33",
+  "revision": 3,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2ff45c5c3bf38cbb42092f759e89d43b81b2ba9cba9e4418c5567e9131ecc57b",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c69f9d72c5b5fc48e8edcc9e8b94ff3390da700713405210d81a4a164019c3d2",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f0869b71395adc3d5b815616d788968a1f25020ce14d287d2dd51c4d748db186",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 1,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:941921cd495e08dbf1ad7bb9a1f7ef9a5aecc60a195473ca8d2994d45478e367",
+    "at": "2026-11-06T09:01:37.094Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
