@@ -78,7 +78,7 @@ Cuando la persona pide cambios en la revisión, o rechaza supuestos al aprobar, 
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/changes-requested-turn.test.ts test/server-unattended.test.ts test/wait.test.ts test/wait-guard.test.ts test/agent-stop-wait.test.ts test/status-json.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: fix
-- [ ] T4: La documentación cuenta quién espera tras pedir cambios
+- [x] T4: La documentación cuenta quién espera tras pedir cambios
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm lint && pnpm sources

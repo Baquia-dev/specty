@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-tras-pedir-cambios-la-revision-espera-al-agente",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-tras-pedir-cambios-la-revision-espera-al-agente",
   "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
   "revision": 3,
@@ -70,12 +70,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b5f33020cdf97a8395df119e51e5fdc06d59f1b1",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:48:21.250Z",
       "doneAt": "2026-11-06T15:49:12.451Z",
-      "summary": "isWaitingForHuman y status usan changeWaitsFor; unattended lee su waitingFor sin el caso especial"
+      "summary": "isWaitingForHuman y status usan changeWaitsFor; unattended lee su waitingFor sin el caso especial",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "efeeb15aab82da9533d02e7e6170bbaecf1425c0",
+      "startedAt": "2026-11-06T15:49:12.763Z",
+      "doneAt": "2026-11-06T15:50:20.772Z",
+      "summary": "formats.md documenta changesRequestedAt; ARCHITECTURE §4 y §15, la regla común changeWaitsFor"
     }
   },
   "pending": {
