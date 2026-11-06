@@ -201,10 +201,24 @@ describe("decideGuard on shell commands", () => {
           `\`specty ${name}\` lo ejecuta el usuario en su terminal, no el agente.`,
         );
         expect(denied.next).toBe(
-          "pídele al usuario que lo ejecute y ejecuta `specty wait` para esperar su decisión.",
+          "pídele al usuario que lo ejecute y ejecuta `specty wait` para esperar su decisión. Ejecútalo en primer plano y vuelve a ejecutarlo cada vez que se agote o se corte.",
         );
       }
     }
+  });
+
+  it("AC3, AC4: the denial of the person's commands asks for `specty wait` in the agent's tool's way", () => {
+    const denied = (context: GuardContext) => decideGuard(shell({ specty: ["approve"] }), context);
+    expect(denied({ ...ctx(IMPLEMENTING), tool: "claude-code" })).toMatchObject({
+      allow: false,
+      rule: "human",
+      next: "pídele al usuario que lo ejecute y ejecuta `specty wait` para esperar su decisión. Ejecútalo en segundo plano (`run_in_background: true`), que te avisa al terminar, y vuelve a ejecutarlo cada vez que se agote o se corte.",
+    });
+    expect(denied({ ...ctx(IMPLEMENTING), tool: "codex", lang: "en" })).toMatchObject({
+      allow: false,
+      rule: "human",
+      next: "ask the user to run it and run `specty wait` to wait for their decision. If it is still running, poll its output until it ends, and run it again each time it times out or is cut off.",
+    });
   });
 
   it("never lets the agent turn delegated mode on or off, nor take Specty out", () => {

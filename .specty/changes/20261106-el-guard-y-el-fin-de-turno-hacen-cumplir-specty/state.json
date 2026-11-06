@@ -6,6 +6,13 @@
   "branch": "specty/20261106-el-guard-y-el-fin-de-turno-hacen-cumplir-specty",
   "baseCommit": "ddaa47217dcb6b75a40be45d70016d60cc09f4db",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:446e7f8ce61c3593e622fb12ae90c1517db64932aa127af2c0478934d827becc",
+    "at": "2026-11-06T12:48:58.301Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -53,12 +60,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:446e7f8ce61c3593e622fb12ae90c1517db64932aa127af2c0478934d827becc",
-    "at": "2026-11-06T12:48:58.301Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T12:51:00.668Z"
 }
