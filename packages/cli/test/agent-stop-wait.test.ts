@@ -8,12 +8,14 @@ import {
   CHANGE,
   CONFIG,
   cli,
+  DIST,
   folderOf,
   git,
   person,
   SPEC,
   SPEC_PATH,
   tempRepo,
+  testEnv,
   writeFiles,
 } from "./support";
 
@@ -224,5 +226,79 @@ describe("the end of the turn while the change waits for the person", () => {
     );
     expect(reason).toContain("NEXT: ask the user to review the spec and approve it");
     expect(reason).toContain("Run it in the background (`run_in_background: true`)");
+  });
+});
+
+/** A repository with no change whose `specty check --changed` fails. */
+async function failing(): Promise<string> {
+  const root = await tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}${CHECKS}` });
+  await writeFiles(root, {
+    "src/app.ts": `export const greet = () => 'hola';\n// ${TODO}: later\n`,
+  });
+  return root;
+}
+
+/** The end of the turn of `tool` as `init` installs it, with `--no-check`. */
+const unchecked = (root: string, tool: string, input: Record<string, unknown>) =>
+  cli(root, ["hook", "agent-stop", tool, "--no-check"], { stdin: JSON.stringify(input) });
+
+/** The same, through the hooks' own entry of the built CLI, as the agent runs it. */
+function bundled(root: string, args: readonly string[], input: Record<string, unknown>) {
+  return spawnSync(process.execPath, [DIST, "hook", "agent-stop", ...args], {
+    cwd: root,
+    env: testEnv(),
+    input: JSON.stringify(input),
+    encoding: "utf8",
+  });
+}
+
+describe("the end of the turn init installs, without the check", () => {
+  it("AC2: with --no-check, sends the agent back to `specty wait` while the change waits for the person", async () => {
+    const root = await proposed();
+    await writeFiles(root, {
+      "src/app.ts": `export const greet = () => 'hola';\n// ${TODO}: later\n`,
+    });
+    const run = await unchecked(root, "claude-code", {
+      hook_event_name: "Stop",
+      stop_hook_active: false,
+    });
+    expect(run.code).toBe(0);
+    const reason = JSON.parse(run.out).reason;
+    expect(reason).toContain(LINE);
+    expect(reason).not.toContain(FAILED);
+    // Already sent back once: the turn ends.
+    const again = await unchecked(root, "claude-code", {
+      hook_event_name: "Stop",
+      stop_hook_active: true,
+    });
+    expect(again).toMatchObject({ code: 0, out: "" });
+  });
+
+  it("AC2: with --no-check, never runs `check --changed`, though it fails", async () => {
+    const root = await failing();
+    // Without the mark, as `check --install` leaves it, the check sends the turn back.
+    expect(await claude(root)).toContain(FAILED);
+    for (const tool of ["claude-code", "codex", "gemini-cli", "windsurf"]) {
+      const run = await unchecked(root, tool, { hook_event_name: "Stop", stop_hook_active: false });
+      expect(run, tool).toMatchObject({ code: 0, out: "" });
+    }
+    const cursor = await unchecked(root, "cursor", { status: "completed", loop_count: 0 });
+    expect(cursor).toMatchObject({ code: 0, out: "" });
+    // Antigravity wants an answer every time: the one that lets its turn end.
+    const turn = { conversationId: "c1", terminationReason: "model_stop", fullyIdle: true };
+    expect(JSON.parse((await unchecked(root, "antigravity", turn)).out)).toEqual({
+      decision: "stop",
+    });
+  });
+
+  it("AC2: the hooks' own entry of the built CLI reads the mark too", async () => {
+    const root = await failing();
+    const event = { hook_event_name: "Stop", stop_hook_active: false };
+    const checked = bundled(root, ["claude-code"], event);
+    expect(checked.status).toBe(0);
+    expect(JSON.parse(checked.stdout).reason).toContain(FAILED);
+    const run = bundled(root, ["claude-code", "--no-check"], event);
+    expect(run.status).toBe(0);
+    expect(run.stdout).toBe("");
   });
 });

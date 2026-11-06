@@ -44,7 +44,8 @@ describe("Specty's memory net at the end of the turn", () => {
       },
     ]);
     const codex = JSON.parse(await read(root, CODEX)).hooks.Stop;
-    expect(codex).toHaveLength(2);
+    // The person's, the memory's net and the end of turn `init` writes too.
+    expect(codex).toHaveLength(3);
     expect(codex[0]).toEqual(mine);
     expect(await nets(root, CODEX, "codex")).toHaveLength(1);
   });

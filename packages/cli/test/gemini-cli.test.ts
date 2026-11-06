@@ -217,6 +217,17 @@ describe("installing the guard in Gemini CLI", () => {
       ],
       AfterTool: [ours("run_shell_command")],
       BeforeAgent: [{ hooks: ours("").hooks }],
+      AfterAgent: [
+        {
+          hooks: [
+            {
+              type: "command",
+              command: expect.stringContaining("hook agent-stop gemini-cli --no-check"),
+              timeout: 600_000,
+            },
+          ],
+        },
+      ],
     });
     expect(await read(root, ".git/info/exclude")).toContain(`/${SETTINGS}`);
     expect(git(root, "status", "--porcelain")).toBe("");

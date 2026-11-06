@@ -6,6 +6,13 @@
   "branch": "specty/20261106-init-instala-el-fin-de-turno-de-cada-agente-sin",
   "baseCommit": "23afc82bb2278d4b7687512b7b3a56bc10852115",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3188fefac20922ec862fb66ee89ca1fb2375916adb20e1432b2c1126a350a672",
+    "at": "2026-11-06T13:20:03.106Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -52,12 +59,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:3188fefac20922ec862fb66ee89ca1fb2375916adb20e1432b2c1126a350a672",
-    "at": "2026-11-06T13:20:03.106Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T13:24:49.836Z"
 }

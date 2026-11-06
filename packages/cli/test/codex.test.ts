@@ -186,9 +186,16 @@ describe("installing the guard in Codex", () => {
       "confía en el proyecto cuando Codex lo pregunte y revisa el hook con `/hooks`",
     );
     const hooks = await hooksOf(root);
-    // The person's Stop stays first; Specty's memory net comes after it.
+    // The person's Stop stays first; Specty's memory net and its end of turn come after it.
     const net = { type: "command", command: expect.stringContaining("hook memory-stop codex") };
-    expect(hooks).toMatchObject({ description: "mine", hooks: { Stop: [stop, { hooks: [net] }] } });
+    const turn = {
+      type: "command",
+      command: expect.stringContaining("hook agent-stop codex --no-check"),
+    };
+    expect(hooks).toMatchObject({
+      description: "mine",
+      hooks: { Stop: [stop, { hooks: [net] }, { hooks: [turn] }] },
+    });
     const guard = { type: "command", command: expect.stringContaining("guard --tool codex") };
     expect(hooks.hooks.PreToolUse).toMatchObject([
       { matcher: "^(Bash|apply_patch)$", hooks: [guard] },

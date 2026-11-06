@@ -2,6 +2,7 @@
 import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
   APP,
@@ -26,6 +27,13 @@ async function failing(config = CONFIG()): Promise<string> {
     "src/app.ts": `export const greet = () => 'hola';\n// ${TODO}: later\n`,
   });
   return root;
+}
+
+const PLUGIN = ".opencode/plugins/specty.js";
+
+/** What the tests use of Specty's plugin for OpenCode 1. */
+interface OpencodePlugin {
+  server(input: unknown): Promise<{ event?: (input: unknown) => Promise<void> }>;
 }
 
 const stop = (root: string, tool: string, input: unknown) =>
@@ -139,24 +147,63 @@ describe("specty hook agent-stop", () => {
     expect(again.out).not.toContain("agent-stop");
   });
 
-  it("turns on OpenCode's end of turn in its plugin, and init keeps it (AC2)", async () => {
+  it("AC5: init turns on OpenCode's end of turn without its check, check --install turns on the check, and init keeps it", async () => {
     const root = await tempRepo({
       ...APP,
       ".specty/config.yaml": `${CONFIG()}checks:\n  levels: { secrets: off }\n  preCommit: true\n`,
       "opencode.json": "{}\n",
     });
     await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
-    const plugin = () => read(root, ".opencode/plugins/specty.js");
-    expect(await plugin()).toContain("const STOP = null;");
+    const plugin = () => read(root, PLUGIN);
+    expect(await plugin()).toContain("const STOP = 600;");
+    expect(await plugin()).toContain("const CHECK = false;");
     const plan = await cli(root, ["check", "--install", "--dry-run"]);
-    expect(plan.out).toContain(".opencode/plugins/specty.js (modificar)");
+    expect(plan.out).toContain(`${PLUGIN} (modificar)`);
     expect((await cli(root, ["check", "--install"], { terminal: person() })).code).toBe(0);
     expect(await plugin()).toContain("const STOP = 600;");
+    expect(await plugin()).toContain("const CHECK = true;");
     await cli(root, ["init", "--tools", "opencode"]);
-    expect(await plugin()).toContain("const STOP = 600;");
-    expect((await cli(root, ["check", "--install", "--dry-run"])).out).not.toContain(
-      ".opencode/plugins/specty.js",
+    expect(await plugin()).toContain("const CHECK = true;");
+    expect((await cli(root, ["check", "--install", "--dry-run"])).out).not.toContain(PLUGIN);
+  });
+
+  it("AC5: init keeps the check of a plugin from before CHECK whose STOP was on", async () => {
+    const root = await tempRepo({
+      ...APP,
+      ".specty/config.yaml": `${CONFIG()}${CHECKS}`,
+      "opencode.json": "{}\n",
+    });
+    await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
+    // As `check --install` left it before CHECK: its time limit, and no CHECK.
+    const older = (await read(root, PLUGIN))
+      .replace(/^const STOP = .*;$/m, "const STOP = 900;")
+      .replace(/^const CHECK = .*;\n/m, "");
+    await writeFiles(root, { [PLUGIN]: older });
+    await cli(root, ["init", "--tools", "opencode"]);
+    const plugin = await read(root, PLUGIN);
+    expect(plugin).toContain("const STOP = 900;");
+    expect(plugin).toContain("const CHECK = true;");
+  });
+
+  it("AC5: the plugin init writes sends back a session whose change waits for the person, and not one whose check fails", async () => {
+    const root = await failing();
+    await writeFiles(root, { "opencode.json": "{}\n" });
+    await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
+    const module: { default: OpencodePlugin } = await import(
+      pathToFileURL(join(root, PLUGIN)).href
     );
+    const sent: unknown[] = [];
+    const client = { session: { prompt: async (request: unknown) => void sent.push(request) } };
+    const hooks = await module.default.server({ directory: root, client });
+    const idle = { event: { type: "session.idle", properties: { sessionID: "s" } } };
+    await hooks.event?.(idle);
+    expect(sent).toEqual([]);
+    await cli(root, ["new", "Saludo personalizado"]);
+    await writeFiles(root, { [SPEC_PATH]: SPEC });
+    await cli(root, ["propose"]);
+    await hooks.event?.(idle);
+    expect(sent).toHaveLength(1);
+    expect(JSON.stringify(sent[0])).toContain("espera la decisión de la persona");
   });
 
   it("adds the plan's checks while a change is approved, and speaks English", async () => {
