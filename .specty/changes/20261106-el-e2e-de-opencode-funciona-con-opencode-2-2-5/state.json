@@ -47,7 +47,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "de8347a9432552c8c2e8bc729e880328dafb55c8",
+      "startedAt": "2026-11-06T08:20:32.022Z",
+      "doneAt": "2026-11-06T08:22:04.325Z",
+      "summary": "El plugin de OpenCode toma como fin de turno session.idle (beta) o session.execution.succeeded (OpenCode 2.2), con la sesión en data o en properties; test AC1 del fin de turno de 2.2, una vez seguida"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

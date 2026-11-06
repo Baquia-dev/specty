@@ -55,7 +55,7 @@ Con OpenCode 2.2.5 (Homebrew, instalado el 2026-11-06) fallan los 7 tests de `op
 
 ## Tareas
 
-- [ ] T1: El fin de turno del plugin en OpenCode 2.2
+- [x] T1: El fin de turno del plugin en OpenCode 2.2
   - files: packages/cli/src/install/opencode.ts, packages/cli/test/opencode.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/opencode-install.test.ts && pnpm typecheck
