@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-specty-wait-es-la-regla-en-todos-los-textos-y",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-specty-wait-es-la-regla-en-todos-los-textos-y",
   "baseCommit": "36170f0d131f950b7eac367a27c7b3253d3de393",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:942b1a914ffb2068e9b4b388baa9a8574c6e8dfd6aecca729c84d62bf876296f",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "48f0ce3fb92ca86b20b469f1059eb1b3d54ac4b5",
+      "attempts": 1,
       "startedAt": "2026-11-06T12:03:57.049Z",
       "doneAt": "2026-11-06T12:04:39.042Z",
-      "summary": "La regla de AGENTS.md pide esperar siempre con specty wait (en Claude Code, en segundo plano), repetirlo si se agota o se corta y no esperar terminando el turno, con sleep ni con status; formats.md y ARCHITECTURE.md cuentan la frase común"
+      "summary": "La regla de AGENTS.md pide esperar siempre con specty wait (en Claude Code, en segundo plano), repetirlo si se agota o se corta y no esperar terminando el turno, con sleep ni con status; formats.md y ARCHITECTURE.md cuentan la frase común",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,6 +82,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T12:10:35.185Z",
   "lockedTests": {
     "packages/core/test/agents-md.test.ts": "sha256:31d75fdbb4d189c80f0f2dde05ea7ff6c34ae673f47d41f4b69a20a9132a9481",
     "packages/core/test/cards/delegated.test.ts": "sha256:7322750b97490eed703a85740c40f07ace9ae29b5af1899221c26e0b8853e728",

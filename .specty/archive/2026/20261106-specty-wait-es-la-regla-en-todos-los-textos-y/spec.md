@@ -89,3 +89,25 @@ Hoy cada salida que deja el cambio esperando a la persona pide «ejecuta `specty
 
 - R1: Una frase mal medida de una herramienta hace que su agente espere mal. Cada fila de la tabla cita la versión medida, y la frase siempre pide volver a ejecutarlo cada vez que se agote o se corte.
 - R2: T2 toca trece archivos. Es el mismo cambio en cada tarjeta, y su test recorre todas las salidas con cada herramienta.
+
+## Cierre
+
+### Resumen
+
+Todas las salidas que dejan el cambio esperando a la persona piden ahora `specty wait` con la misma frase, `waitStep` de `packages/core/src/cards/wait.ts`: «ejecuta `specty wait` para esperar su decisión.» y otra frase que dice cómo ejecutarlo en la herramienta del agente, según la tabla medida el 2026-11-06, y que pide volver a ejecutarlo cada vez que se agote o se corte. La usan `flow.ts` (spec propuesta, cierre propuesto y solicitudes de alcance), `next.ts`, `acceptance.ts`, `work.ts`, `integration.ts`, `testing.ts`, el encargo de `epic.ts` y, como novedad, las dos salidas de `review.ts`. La tarjeta de tiempo agotado pide recordar a la persona la decisión pendiente y volver a ejecutar `specty wait` ya. La regla de AGENTS.md (`agents-md.ts`) dice que se espera siempre con `specty wait` (en Claude Code, en segundo plano), que se repite si se agota o se corta y que no se espera terminando el turno, con `sleep` ni consultando `specty status`, sin añadir líneas al bloque. AC1 tiene sus tests en `packages/core/test/cards/delegated.test.ts` y `packages/core/test/cards/epic.test.ts`, AC2 en `packages/core/test/cards/wait.test.ts`, AC3 en `packages/core/test/agents-md.test.ts`, y AC4 en los mismos, con los dos idiomas. `docs/formats.md` y `docs/ARCHITECTURE.md` §6 cuentan la frase. La verificación completa pasó en la aceptación.
+
+### Desviaciones
+
+- Ninguna. Las aserciones que citaban la frase entera con `toBe` cambiaron a la nueva (`delegated`, `review`, `incorporation` y `epic`), y las que la citan con `toContain`, como `packages/core/test/cards/testing.test.ts` y `packages/cli/test/resolve.test.ts`, siguen valiendo sin tocarlas, como preveía la spec.
+
+### Decisiones
+
+- La frase son dos oraciones: la primera es la de antes, intacta, y la segunda dice cómo. Así el agente lee primero qué hacer y después cómo hacerlo en su herramienta.
+- `waitStep` no lleva punto final, para que cada tarjeta la cierre. La tarjeta de tiempo agotado usa la misma construcción empezando por «vuelve a ejecutar ya».
+- `wait.ts` escribe su `Output` bloqueado él mismo en lugar de importar `blockedCard`, porque `flow.ts` importa ahora `waitStep` y los dos archivos formarían un ciclo.
+- Gemini CLI y GitHub Copilot esperan en primer plano, como una herramienta desconocida. El latido de Gemini CLI llega con el corte C3.
+- `waitStep` no entra en la API pública de core: solo la usan las tarjetas.
+
+### Pendientes
+
+- Ninguno de este corte. La marca, el latido y el tiempo por defecto de `wait` son el corte C3. La negativa del guard (`guard/human.ts`) y hacer cumplir la regla son el corte C2.
