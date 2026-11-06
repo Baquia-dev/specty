@@ -72,12 +72,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c61cad49d1a9e2256644ec8342a23878169fa5dd",
+      "attempts": 1,
       "startedAt": "2026-11-06T19:35:41.549Z",
       "doneAt": "2026-11-06T19:37:41.150Z",
-      "summary": "En aceptación delegada de un cambio con cierre propio, la spec es closing-only (closingInAcceptance), el guard la deja escribir, propose desde acceptance no cambia de fase y la tarjeta añade «CÓMO CERRAR» (ahora en acceptance.ts) y pide el cierre antes de accept"
+      "summary": "En aceptación delegada de un cambio con cierre propio, la spec es closing-only (closingInAcceptance), el guard la deja escribir, propose desde acceptance no cambia de fase y la tarjeta añade «CÓMO CERRAR» (ahora en acceptance.ts) y pide el cierre antes de accept",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "afba5248e91d5cca8585765dd7414f3252c0cbf0",
+      "startedAt": "2026-11-06T19:37:41.497Z",
+      "doneAt": "2026-11-06T19:41:58.566Z",
+      "summary": "propose en aceptación delegada valida y envía el cierre (closingSubmittedAt) sin cambiar de fase, con el SIGUIENTE de la tarjeta de aceptación; fuera de un cierre ya no conserva closingSubmittedAt, así que un ajuste lo descarta. delegate.test.ts espera el SIGUIENTE nuevo"
     }
   },
   "pending": {
