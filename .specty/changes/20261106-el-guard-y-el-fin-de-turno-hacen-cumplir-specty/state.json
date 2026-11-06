@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "id": "20261106-el-guard-y-el-fin-de-turno-hacen-cumplir-specty",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-el-guard-y-el-fin-de-turno-hacen-cumplir-specty",
+  "baseCommit": "ddaa47217dcb6b75a40be45d70016d60cc09f4db",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4d43acd0b159a764e59e1b3fb47ead215b1466e1e01e323a5f278ce07bac2e98",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:31cba17fb4e40b8386840381c906ca917bee27b0bd657e43ebd4a03da542c107",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:15a7b65f3a50a6306eefbb3ba6c43aeaad3086bc4387f3ca4147fb90c41f0f52",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:b20163c78ddb38057185ca87720ea5be14067481be3bbb654ea76481cf99fc36",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:70a59082e4291de24bb5c3394f0d1752e7de47e0304a30b1bd371656369880f3",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:ef521a801e84d69e5fd9d63f62b465b4d03cc5888a5c5c2c0e26fb5253d6a9e0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:446e7f8ce61c3593e622fb12ae90c1517db64932aa127af2c0478934d827becc",
+    "at": "2026-11-06T12:48:58.301Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
