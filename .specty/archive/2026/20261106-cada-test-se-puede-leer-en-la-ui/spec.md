@@ -87,3 +87,26 @@ Hoy la UI solo da la ruta de cada test, en «Tests por aprobar» y en «Tests bl
 - R1: `data/server.ts` ya pasa de 300 líneas de código y crece unas diez, así que `task done` avisará de ello. Mitigación: solo crece el método de la lectura y su texto del 404. Si el aviso pide dividirlo, se propone aparte, por responsabilidad.
 - R2: Los tests de las secciones dejan de usar un componente anfitrión con plantilla, porque esa plantilla no compilaría con la entrada `change` antes del código. Mitigación: con `setInput` comprueban lo mismo que hoy, y además el código.
 - R3: `test-code.ts` arma, para el resaltador, un archivo de líneas de contexto como el `diffOf` de `history/trace-view.ts`. Mitigación: es una función corta; unirlas en `data/diff.ts` queda como pendiente, para no pasar de L.
+
+## Cierre
+
+### Resumen
+
+Cada test de «Tests por aprobar» y de «Tests bloqueados», en Progreso y en Aceptación, tiene «Ver código». El botón despliega el test en la misma fila, entero, con cada línea numerada y con los colores del resaltador del visor de diffs, y «Ocultar código» lo vuelve a plegar. Lo pinta `sp-test-code` (`progress/test-code.ts`), que pide el código a la fuente cada vez que se abre (`SpectyData.testCode`). El servidor local lo da en `GET /api/changes/<id>/test?path=<ruta>` (`server/test-code.ts`). Solo da los tests del cambio: los del último `tests.proposed`, los de `lockedTests` y los `unlock` de cada `scope.decided`. Los lee de la punta de la rama del cambio o, si ya no existe porque el cambio se cerró, de la rama principal. Cualquier otra ruta, o una que no puede leer, responde 404, y la fila dice entonces que no puede mostrar ese código, en español o en inglés. `docs/ARCHITECTURE.md` §15 y `docs/ui.md` lo cuentan. Lo comprueban los tests del servidor (un test enviado, uno bloqueado y uno de un cambio cerrado, el 404 y el 403), los de las dos secciones, los 748 de la UI y `pnpm typecheck`.
+
+### Desviaciones
+
+- La primera spec salió XL y `propose` la rechazó. Para no tener que ajustar la épica, el corte se estrechó antes de aprobarse: quedaron fuera el código en el prototipo y un modo de archivo entero en `DiffFileView`. Las cuatro tareas salieron como las planeó la revisión 1.
+
+### Decisiones
+
+- El código no se pinta con `DiffFileView`, como decía el diseño de la épica: su cabecera habría dicho «Modificado +0 −0» y llevaría una línea `@@` y dos columnas de números. Se pinta como las líneas de la trazabilidad del Historial, con un solo número y los colores de `HIGHLIGHT`.
+- Un archivo que pasa de `MAX_OUTPUT` (512 KB) responde 404, como uno que no se puede leer, y no 413 como la trazabilidad: la épica pide 404 para todo lo que no se puede mostrar.
+- El texto del 404 vive en `data/server.ts`, junto a la lectura, como los de la trazabilidad.
+- Los tests de las dos secciones crean el componente con `TestBed.createComponent` y `setInput`, y leen el código con `ServerData` y un `fetch` falso, para que compilaran antes que el código.
+
+### Pendientes
+
+- P213: el prototipo (`FixtureData`) no da el código de los tests, así que «Ver código» dice que la fuente no lo da.
+- P214: unir en `data/diff.ts` el archivo de líneas de contexto que arman `diffOf` (`history/trace-view.ts`) y `asFile` (`progress/test-code.ts`).
+- `data/server.ts` quedó en 327 líneas de código; su división ya está pendiente en P203.

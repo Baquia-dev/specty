@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-cada-test-se-puede-leer-en-la-ui",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-cada-test-se-puede-leer-en-la-ui",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:921447ede8118b0a5c7997cfabf36f807767f7a0988b9b9b5cfe6ca7f07270be",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0d5fe704d1ce2e94f15b055983c3d9011e315980",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:42:39.175Z",
       "doneAt": "2026-11-06T13:43:21.580Z",
-      "summary": "ARCHITECTURE §15 describe GET /api/changes/<id>/test y ui.md «Ver código» en tests por aprobar y bloqueados."
+      "summary": "ARCHITECTURE §15 describe GET /api/changes/<id>/test y ui.md «Ver código» en tests por aprobar y bloqueados.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,9 +93,67 @@
     "T": 4,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-06T14:10:33.769Z",
   "lockedTests": {
     "packages/ui/src/progress/locked-tests.test.ts": "sha256:151580e8760491f4bf968e13389a690f0e2cf6b37e33533f3384c533698e2254",
     "packages/ui/src/progress/tests-sent.test.ts": "sha256:2537fa90f0fe79a7574926abcbda072498f730ebb656af5d3c52ed2901933c81",
     "packages/cli/test/server/test-code.test.ts": "sha256:807076586e8ebe7c0a9a32ce91a07c41601fec2bba12aa52dc4201a40ea180a0"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "b5ad80b2796a175e2c0ad187415e989468f61809",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/decisions/0014-los-tests-como-contrato.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/agents/antigravity.ts",
+      "packages/cli/src/agents/claude-code.ts",
+      "packages/cli/src/agents/codex.ts",
+      "packages/cli/src/agents/cursor.ts",
+      "packages/cli/src/agents/gemini-cli.ts",
+      "packages/cli/src/agents/opencode.ts",
+      "packages/cli/src/agents/windsurf.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/scope-decision.ts",
+      "packages/cli/src/commands/scope.ts",
+      "packages/cli/src/flow/unlock-proposal.ts",
+      "packages/cli/src/install/agents.ts",
+      "packages/cli/src/install/opencode.ts",
+      "packages/cli/src/program.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/test-code.ts",
+      "packages/cli/test/doctor-agent-stop.test.ts",
+      "packages/cli/test/doctor-opencode-stop.test.ts",
+      "packages/cli/test/server/test-code.test.ts",
+      "packages/cli/test/test-locks.test.ts",
+      "packages/cli/test/unlock-request.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/unlock.ts",
+      "packages/core/src/guard/testing.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/state.ts",
+      "packages/core/test/cards/doctor-agent-stop.test.ts",
+      "packages/core/test/cards/unlock.test.ts",
+      "packages/ui/src/acceptance/acceptance-tab.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/progress/locked-tests.test.ts",
+      "packages/ui/src/progress/locked-tests.ts",
+      "packages/ui/src/progress/progress-tab.ts",
+      "packages/ui/src/progress/test-code.ts",
+      "packages/ui/src/progress/tests-sent.test.ts",
+      "packages/ui/src/progress/tests-sent.ts"
+    ],
+    "at": "2026-11-06T14:37:35.780Z",
+    "resolved": {
+      "commit": "6bd0d8a",
+      "at": "2026-11-06T14:55:23.163Z"
+    }
   }
 }
