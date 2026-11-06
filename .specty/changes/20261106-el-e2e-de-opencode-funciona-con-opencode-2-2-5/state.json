@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-e2e-de-opencode-funciona-con-opencode-2-2-5",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-el-e2e-de-opencode-funciona-con-opencode-2-2-5",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
   "revision": 2,
@@ -59,12 +59,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "83549183ba4d2445c4a01c92373c4d1dc891b76d",
+      "attempts": 1,
       "startedAt": "2026-11-06T08:22:04.625Z",
       "doneAt": "2026-11-06T08:26:09.336Z",
-      "summary": "El E2E maneja OpenCode 2.2.5: run --standalone, sus herramientas (shell, write/read con path, subagent), serve por /api con contraseña y wait, y la tarjeta en las partes de sistema tras compactar; se salta antes de 2.2. El modelo simulado responde a la compactación con su plantilla"
+      "summary": "El E2E maneja OpenCode 2.2.5: run --standalone, sus herramientas (shell, write/read con path, subagent), serve por /api con contraseña y wait, y la tarjeta en las partes de sistema tras compactar; se salta antes de 2.2. El modelo simulado responde a la compactación con su plantilla",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a848db4cb121920563df98fae243d958667a992e",
+      "startedAt": "2026-11-06T08:26:09.658Z",
+      "doneAt": "2026-11-06T08:27:32.154Z",
+      "summary": "ARCHITECTURE cuenta OpenCode 2.2.5: dónde se comprobó el plugin, el fin de turno con session.execution.succeeded, los subagentes con subagent y cómo maneja el E2E a OpenCode desde 2.2"
     }
   },
   "pending": {

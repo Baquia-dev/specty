@@ -65,7 +65,7 @@ Con OpenCode 2.2.5 (Homebrew, instalado el 2026-11-06) fallan los 7 tests de `op
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-e2e.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: test
-- [ ] T3: ARCHITECTURE cuenta OpenCode 2.2.5
+- [x] T3: ARCHITECTURE cuenta OpenCode 2.2.5
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core test
