@@ -1,144 +1,95 @@
 // SPDX-License-Identifier: Apache-2.0
-import type { Phase } from "../flow/phases";
-import type { Lang } from "../i18n";
-import type { ResolvedConfig } from "../schema/config";
+import { openFolderDenial } from "../cards/change-folder";
+import { ghostFolderDenial } from "../cards/ghost-folder";
 import { isGoverned } from "../scope/governed";
 import { classifyPath, scopeRulesFrom } from "../scope/scope";
-import type { ChangeKind } from "../spec/model";
+import type {
+  GuardAction,
+  GuardChange,
+  GuardContext,
+  GuardDecision,
+  GuardRule,
+  ShellFacts,
+} from "./action";
 import { EVERY_BRANCH } from "./git-refs";
 import { humanDenial } from "./human";
-import { commitNext, type GuardIntegration, integrationDenial } from "./integration";
-import { type BoundSession, sessionDenial } from "./session";
+import { commitNext, integrationDenial } from "./integration";
+import { sessionDenial } from "./session";
 import { protectedDenial, specDenial } from "./spec";
 import { lockedDenial, testingDenial } from "./testing";
-import { type Elsewhere, elsewhereDenial, type ForeignPath, foreignDenial } from "./worktrees";
+import {
+  elsewhereDenial,
+  type ForeignPath,
+  foreignDenial,
+  type GhostPath,
+  type OpenFolder,
+} from "./worktrees";
 
 export { HUMAN_COMMANDS } from "./human";
-
-export interface GuardChange {
-  readonly id: string;
-  readonly kind: ChangeKind;
-  readonly phase: Phase;
-  readonly closingSubmitted: boolean;
-  /** Repository-relative path of the change's `spec.md`. */
-  readonly specPath: string;
-  readonly task?: {
-    readonly id: string;
-    readonly files: readonly string[];
-    readonly extras: readonly string[];
-  };
-  /** In the testing phase, the files of the approved spec: only their tests may be written. */
-  readonly files?: readonly string[];
-  /** The tests the person approved: nobody writes or deletes them (ADR 0014). */
-  readonly locked?: readonly string[];
-  /** A pending incorporation of the main branch: it alone decides about code, in any phase. */
-  readonly integration?: GuardIntegration;
-}
-
-export interface GuardContext {
-  readonly config: ResolvedConfig;
-  readonly lang: Lang;
-  readonly change?: GuardChange;
-  /** How messages tell the agent to call Specty, for example `specty`. */
-  readonly command: string;
-  /** The person delegated their decisions to the agent (ADR 0010): their commands are open. */
-  readonly delegated?: boolean;
-}
-
-/** Facts about a shell command, with paths already relative to the repository root. */
-export interface ShellFacts {
-  readonly specty: readonly string[];
-  readonly unscopedNpx: boolean;
-  readonly bypass: boolean;
-  /** The branches its git commands write, delete, push or check out; `*` for all or unknown. */
-  readonly refs?: readonly string[];
-  /** Governed files that a `git commit` in the command would include. */
-  readonly committedGoverned: readonly string[];
-  readonly writes: readonly string[];
-  readonly deletes: readonly string[];
-  /** What the command would change inside another worktree of the repository. */
-  readonly foreign?: readonly ForeignPath[];
-  /** The command would run outside the change's folder the conversation entered. */
-  readonly elsewhere?: Elsewhere;
-}
-
-export type GuardAction =
-  | {
-      readonly kind: "write" | "delete";
-      readonly paths: readonly string[];
-      /** Paths inside another worktree of the repository, kept apart from `paths`. */
-      readonly foreign?: readonly ForeignPath[];
-    }
-  /**
-   * What a tool reads or searches. Reading is free; only a conversation that entered a change's
-   * folder reads that folder's files (`ForeignPath.instead`).
-   */
-  | {
-      readonly kind: "read";
-      readonly paths: readonly string[];
-      readonly foreign?: readonly ForeignPath[];
-    }
-  | { readonly kind: "shell"; readonly facts: ShellFacts }
-  /** An edit that writes and deletes files at once, such as a patch (Codex, OpenCode). */
-  | ({ readonly kind: "files" } & Pick<ShellFacts, "writes" | "deletes" | "foreign">)
-  /**
-   * The session moves into the worktree `target`, bound or not to another one. `epic` is the epic
-   * of the open change in `target`, when that change is one of its slices.
-   */
-  | {
-      readonly kind: "enter";
-      readonly target: string;
-      readonly bound?: BoundSession;
-      readonly epic?: string;
-    }
-  | { readonly kind: "other" };
-
-/** The rule behind a denial, so a caller can pick the next step (`scope add` only for `scope`). */
-export type GuardRule =
-  | "human"
-  | "package"
-  | "bypass"
-  | "memory"
-  | "commit"
-  | "protected"
-  | "spec"
-  | "no-change"
-  | "phase"
-  | "no-task"
-  | "scope"
-  | "worktree"
-  | "integration"
-  | "session"
-  | "locked";
-
-export type GuardDecision =
-  | { readonly allow: true }
-  | {
-      readonly allow: false;
-      readonly rule: GuardRule;
-      readonly reason: string;
-      readonly next: string;
-    };
 
 const ALLOW: GuardDecision = { allow: true };
 
 /** Decides whether an agent action respects the flow. Paths are repository-relative. */
 export function decideGuard(action: GuardAction, ctx: GuardContext): GuardDecision {
   if (action.kind === "other") return ALLOW;
-  if (action.kind === "read") {
-    const elsewhere = (action.foreign ?? []).filter((path) => path.instead !== undefined);
-    return denyForeign(elsewhere, ctx) ?? ALLOW;
-  }
+  if (action.kind === "read") return decideRead(action, ctx);
   if (action.kind === "shell") return decideShell(action.facts, ctx);
   if (action.kind === "files") return decideFiles(action, ctx);
-  if (action.kind === "enter") {
-    const denial = sessionDenial(action.bound, action.target, ctx.lang, ctx.command, action.epic);
-    return denial === undefined ? ALLOW : deny("session", denial.reason, denial.next);
-  }
+  if (action.kind === "remove-worktree") return denyOpenFolder(action.folders, ctx) ?? ALLOW;
+  if (action.kind === "enter") return decideEnter(action, ctx);
+  return decideEdit(action, ctx);
+}
+
+/** Reading is free; only a conversation that entered a change's folder reads that folder's files. */
+function decideRead(
+  action: Extract<GuardAction, { readonly kind: "read" }>,
+  ctx: GuardContext,
+): GuardDecision {
+  const elsewhere = (action.foreign ?? []).filter((path) => path.instead !== undefined);
+  return denyForeign(elsewhere, ctx) ?? ALLOW;
+}
+
+/** A session moves into a worktree unless it is bound to another one whose change is open. */
+function decideEnter(
+  action: Extract<GuardAction, { readonly kind: "enter" }>,
+  ctx: GuardContext,
+): GuardDecision {
+  const denial = sessionDenial(action.bound, action.target, ctx.lang, ctx.command, action.epic);
+  return denial === undefined ? ALLOW : deny("session", denial.reason, denial.next);
+}
+
+/** A file tool's write or deletion: each path, after those inside a ghost folder or another worktree. */
+function decideEdit(
+  action: Extract<GuardAction, { readonly kind: "write" | "delete" }>,
+  ctx: GuardContext,
+): GuardDecision {
   return (
+    denyGhost(action.ghosts, ctx) ??
     denyForeign(action.foreign, ctx) ??
     firstDenial(action.paths.map((path) => decidePath(path, action.kind, ctx)))
   );
+}
+
+/** A folder git no longer knows as a worktree: writing there would bring it back without git. */
+function denyGhost(
+  ghosts: readonly GhostPath[] | undefined,
+  ctx: GuardContext,
+): GuardDecision | undefined {
+  const [first] = ghosts ?? [];
+  if (first === undefined) return undefined;
+  const denial = ghostFolderDenial(first, ctx.lang, ctx.command);
+  return deny("ghost", denial.reason, denial.next);
+}
+
+/** An open change's folder stays, whatever the phase and in delegated mode too. */
+function denyOpenFolder(
+  folders: readonly OpenFolder[] | undefined,
+  ctx: GuardContext,
+): GuardDecision | undefined {
+  const [first] = folders ?? [];
+  if (first === undefined) return undefined;
+  const denial = openFolderDenial(first, ctx.lang, ctx.command);
+  return deny("change-folder", denial.reason, denial.next);
 }
 
 /** Another worktree's files belong to another change, whatever this folder's phase. */
@@ -154,6 +105,9 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
   const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
   const human = humanDenial(facts.specty, ctx);
   if (human !== undefined) return deny("human", human.reason, human.next);
+  // Before where it runs: run anywhere else, it would be denied all the same.
+  const removal = denyOpenFolder(facts.removedFolders, ctx);
+  if (removal !== undefined) return removal;
   // Where it runs comes first: there, the rest is judged by that folder's change.
   if (facts.elsewhere !== undefined) {
     const denial = elsewhereDenial(facts.elsewhere, ctx.lang);
@@ -216,12 +170,16 @@ function memoryDenial(refs: readonly string[], ctx: GuardContext): GuardDecision
   );
 }
 
-/** Each path a command or an edit writes or deletes, after those inside other worktrees. */
+/**
+ * Each path a command or an edit writes or deletes, after those inside a ghost folder and those
+ * inside other worktrees.
+ */
 function decideFiles(
-  files: Pick<ShellFacts, "writes" | "deletes" | "foreign">,
+  files: Pick<ShellFacts, "writes" | "deletes" | "foreign" | "ghosts">,
   ctx: GuardContext,
 ): GuardDecision {
   return (
+    denyGhost(files.ghosts, ctx) ??
     denyForeign(files.foreign, ctx) ??
     firstDenial([
       ...files.writes.map((path) => decidePath(path, "write", ctx)),

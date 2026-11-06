@@ -64,6 +64,18 @@ export interface FinishedPage {
   readonly finished: number;
 }
 
+/**
+ * A line the local server says of one of the person's actions on a change while it goes on (its
+ * `action` events): why it waits, say.
+ */
+export interface ActionNote {
+  readonly change: string;
+  /** The action, as the server's route names it: `accept`, `close`… */
+  readonly action: string;
+  /** What its command said, as the page shows it; none as the action starts and as it ends. */
+  readonly note?: string;
+}
+
 /** What the person decides on an entry of Specty's memory (ADR 0016). */
 export type MemoryVerb = "drop" | "keep" | "done";
 
@@ -74,8 +86,12 @@ export type MemoryVerb = "drop" | "keep" | "done";
  */
 export abstract class SpectyData {
   abstract changes(): Promise<readonly ChangeRecord[]>;
-  /** Calls `listener` whenever the data may have changed; returns how to stop. */
-  abstract subscribe(listener: () => void): () => void;
+  /**
+   * Calls `listener` whenever the data may have changed; returns how to stop. The listener may give
+   * back a promise that ends once it has read again: a source that waits for the screens to show
+   * an action's result (`ServerData`) waits for it; the others ignore it.
+   */
+  abstract subscribe(listener: () => unknown): () => void;
 
   /**
    * The change `id`, open or finished, even if `changes` leaves it out; none when there is no
@@ -151,6 +167,14 @@ export abstract class SpectyData {
    */
   watchRun(_change: string, listener: (run: RunRecord | undefined) => void): () => void {
     listener(undefined);
+    return () => undefined;
+  }
+
+  /**
+   * Follows what the server says of the person's actions on the changes as they go on; returns
+   * how to stop. A source whose actions say nothing as they go never calls `listener`.
+   */
+  watchActions(_listener: (told: ActionNote) => void): () => void {
     return () => undefined;
   }
 

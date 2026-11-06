@@ -117,6 +117,8 @@ export async function clearDelegation(git: Git): Promise<void> {
 export interface SessionBinding {
   readonly folder: string;
   readonly at: string;
+  /** When its tool said the conversation ended: the clean-up no longer counts it. */
+  readonly ended?: string;
 }
 
 /** Also under `common/`: a session can enter a worktree from any of them. */
@@ -126,8 +128,9 @@ const binding = (session: string) => `${SESSIONS}/${session}.json`;
 export async function readBinding(git: Git, session: string): Promise<SessionBinding | undefined> {
   const value = parseJson(await readText(await git.gitPath(binding(session))));
   if (!isRecord(value)) return undefined;
-  const { folder, at } = value;
-  return typeof folder === "string" && typeof at === "string" ? { folder, at } : undefined;
+  const { folder, at, ended } = value;
+  if (typeof folder !== "string" || typeof at !== "string") return undefined;
+  return typeof ended === "string" ? { folder, at, ended } : { folder, at };
 }
 
 /**
@@ -156,6 +159,18 @@ export async function writeBinding(
   bound: SessionBinding,
 ): Promise<void> {
   await writeText(await git.gitPath(binding(session)), `${JSON.stringify(bound, null, 2)}\n`);
+}
+
+/**
+ * Marks the binding of the conversation `session` as ended at `at`, or without `at` as alive
+ * again. The binding stays, to take the conversation back to its folder if it resumes; nothing
+ * changes when it has none, or when it already says so.
+ */
+export async function markEnded(git: Git, session: string, at?: string): Promise<void> {
+  const bound = await readBinding(git, session);
+  if (bound === undefined || bound.ended === at) return;
+  const alive = { folder: bound.folder, at: bound.at };
+  await writeBinding(git, session, at === undefined ? alive : { ...alive, ended: at });
 }
 
 async function readReceipts(git: Git): Promise<Receipt[]> {

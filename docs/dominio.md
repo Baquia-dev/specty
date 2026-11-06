@@ -19,6 +19,8 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Unidad inestable** (`flaky`): una unidad que en una verificación fresca falla y pasa al repetirla; queda en la memoria como lección de sus `paths`.
 - **Cambio huérfano** (`orphan`): uno que espera al agente sin que ninguna sesión trabaje en él.
 - **Cambio sin carpeta** (`lost`, `specty restore`): uno abierto cuya carpeta se borró o git podó, y que sigue en su rama, desde la que se recupera.
+- **Carpeta fantasma** (`ghostFolders`, regla `ghost` del guard): una entrada de `.worktrees/` o de la carpeta hermana `<repo>.worktrees/` que no es una worktree registrada en git, exista o no; el guard no deja escribir ni borrar en ella, y la limpieza la barre.
+- **Ref de rescate** (`refs/specty/rescue/`, `rescueFolder`): un commit fuera de toda rama con lo que una carpeta tenía sin commit cuando la limpieza la quitó; se ve con `git show <ref>` y se recupera con `git worktree add <carpeta> <ref>`.
 - **Entrada de la memoria** (`MemoryEntry`): un pendiente, una mejora, un recordatorio o una decisión, con id `Pn` o `Dn`.
 - **Memoria de Specty** (`specty memory`): las entradas de la rama `specty-memory`, que todas las sesiones y carpetas ven.
 - **Lección** (`lesson`): una entrada de la memoria con lo que un agente aprendió de unas rutas del código, que siempre las lleva.

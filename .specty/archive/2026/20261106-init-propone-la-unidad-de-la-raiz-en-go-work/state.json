@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "id": "20261106-init-propone-la-unidad-de-la-raiz-en-go-work",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-init-propone-la-unidad-de-la-raiz-en-go-work",
+  "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bcbb806eda14f9f4bc61855c6ef77cbed2a82ae5bd5ab332a7f7816995e193e6",
+    "at": "2026-11-06T03:56:19.482Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8f70bd02e707193d6f2dbae2b3d21f6bdae609e81ab23fc49692f743e9237247",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e44ad9e1f15fc663f3a0eb213a0077175a5d12fdf3051e02fc73c7cbf8af9474",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3dd135aa96f093803cc862e49d4bf65aceed834c9737ad8806d2aa0d1bee5654",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:7664dce5ab6880d87112a03d826607ff6e6b564ff4b3a6f758fab23255a94c67",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "acf1f8956db43e3a239ba6ce920c15e220236086",
+      "attempts": 2,
+      "startedAt": "2026-11-06T03:58:10.685Z",
+      "doneAt": "2026-11-06T03:59:07.524Z",
+      "summary": "go.work con use . lee el módulo de la raíz como uno más, con go test ./... (salta las carpetas con go.mod propio) y los paths de rootPackagePaths",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "d78c665f94778b51d3af92bec0a54fe1ad2a9b36",
+      "attempts": 1,
+      "startedAt": "2026-11-06T03:59:07.824Z",
+      "doneAt": "2026-11-06T03:59:48.830Z",
+      "summary": "Un proyecto raíz de Gradle con src/test es uno más en '.', con <runner> :test, llamado como rootProject.name (o root) y con los paths de rootPackagePaths; project(\":\") en un subproyecto apunta a él",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "1057238444a00f71878374abed439f0be2139b89",
+      "attempts": 1,
+      "startedAt": "2026-11-06T03:59:49.136Z",
+      "doneAt": "2026-11-06T04:01:03.863Z",
+      "summary": "Un workspace de pub o melos con test en la raíz lee el paquete de la raíz como uno más, con dart/flutter test sin cd y los paths de rootPackagePaths (sin name, sin propuesta); formats.md cuenta la raíz como paquete en go.work, Gradle y pub o melos",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-06T08:43:13.804Z",
+  "lockedTests": {
+    "packages/cli/test/units-dart.test.ts": "sha256:ec21a217d77949d4118f711f3d9599c346de1a3de28bbdd99f8072b5376cdbf3",
+    "packages/cli/test/units-go.test.ts": "sha256:a48d963586194bf073d0099d900f9550c562a13192f1b5cf7f8846ff2e8f29fc",
+    "packages/cli/test/units-gradle.test.ts": "sha256:31c6f8d4a5dd179f57612109b927ed87572a8592ddf614bfb8981ff25e7cbc53"
+  }
+}

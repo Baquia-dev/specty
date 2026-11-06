@@ -2,6 +2,7 @@
 import { join, posix } from "node:path";
 import type { WorkspacePackage } from "@baquia-dev/specty-core";
 import { exists, readText } from "../io/files";
+import { rootPackagePaths } from "./root-package";
 import type { WorkspaceFacts } from "./workspace-units";
 
 /** The root files every module's tests read. */
@@ -9,8 +10,10 @@ const SHARED = ["go.work", "go.work.sum"];
 
 /**
  * A `go.work` workspace: the modules of its `use` directives with a `go.mod`, each tested with
- * `go test ./<folder>/...`, and the root files they share. Undefined without `go.work`, with fewer
- * than two modules, or when it uses the root, whose module holds every folder.
+ * `go test ./<folder>/...`, and the root files they share. The root's module (`use .`) is tested
+ * with `go test ./...`, which skips the folders with a `go.mod` of their own, and reads the root
+ * outside the other modules' folders (`rootPackagePaths`). Undefined without `go.work` and with
+ * fewer than two modules.
  */
 export async function goWorkspace(root: string): Promise<WorkspaceFacts | undefined> {
   const work = await readText(join(root, "go.work"));
@@ -19,9 +22,14 @@ export async function goWorkspace(root: string): Promise<WorkspaceFacts | undefi
     const dir = path === undefined ? undefined : folderOf(path);
     return dir === undefined ? [] : [dir];
   });
-  if (dirs.includes(".")) return undefined;
   const read = await Promise.all([...new Set(dirs)].map((dir) => moduleOf(root, dir)));
-  const modules = read.flatMap((module) => (module === undefined ? [] : [module]));
+  const listed = read.flatMap((module) => (module === undefined ? [] : [module]));
+  const others = listed.filter((module) => module.dir !== ".").map((module) => module.dir);
+  const modules = await Promise.all(
+    listed.map(async (module) =>
+      module.dir === "." ? { ...module, paths: await rootPackagePaths(root, others) } : module,
+    ),
+  );
   if (modules.length < 2) return undefined;
   const names = new Set(modules.map((module) => module.name));
   const packages = modules.map((module) => ({
@@ -39,7 +47,8 @@ async function moduleOf(root: string, dir: string): Promise<WorkspacePackage | u
   const name = directives(text, "module")[0]?.[0];
   if (name === undefined) return undefined;
   const uses = directives(text, "require").flatMap(([path]) => (path === undefined ? [] : [path]));
-  return { dir, name, tests: true, command: `go test ./${dir}/...`, uses };
+  const command = dir === "." ? "go test ./..." : `go test ./${dir}/...`;
+  return { dir, name, tests: true, command, uses };
 }
 
 /** A `use` path as a repository-relative folder; undefined when it leaves the repository. */

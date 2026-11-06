@@ -185,3 +185,61 @@ describe("delegated mode through ServerData", () => {
     ]);
   });
 });
+
+/** jsdom has no EventSource, and these tests send no event: one that stays quiet. */
+class Quiet {
+  addEventListener(): void {}
+  close(): void {}
+}
+
+describe("what a decision on the local server waits for", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  it("AC1: ends only once every listener has read again", async () => {
+    serverAnswering({ "/api/session": SESSION, [at("assumptions/A1")]: [200, { status: "ok" }] });
+    vi.stubGlobal("EventSource", Quiet);
+    const data = new ServerData();
+    let read: () => void = () => undefined;
+    const list = vi.fn(
+      () =>
+        new Promise<void>((done) => {
+          read = done;
+        }),
+    );
+    // A listener that gives back no promise, as one that only starts reading again.
+    const memory = vi.fn(() => true);
+    data.subscribe(list);
+    data.subscribe(memory);
+    let ended = false;
+    const decided = data.decideAssumption(CHANGE, "A1", "confirmed").then(() => {
+      ended = true;
+    });
+    await vi.waitFor(() => expect(list).toHaveBeenCalledTimes(1));
+    await new Promise((resolve) => setTimeout(resolve));
+    expect([ended, memory.mock.calls.length]).toEqual([false, 1]);
+    read();
+    await decided;
+    expect(ended).toBe(true);
+  });
+
+  it("AC1: ends after 10 s when a listener does not finish reading again", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    serverAnswering({ "/api/session": SESSION, [at("assumptions/A1")]: [200, { status: "ok" }] });
+    vi.stubGlobal("EventSource", Quiet);
+    const data = new ServerData();
+    const stuck = vi.fn(() => new Promise<void>(() => undefined));
+    data.subscribe(stuck);
+    let ended = false;
+    void data.decideAssumption(CHANGE, "A1", "confirmed").then(() => {
+      ended = true;
+    });
+    await vi.waitUntil(() => stuck.mock.calls.length > 0, { interval: 1 });
+    await vi.advanceTimersByTimeAsync(9_900);
+    expect(ended).toBe(false);
+    await vi.advanceTimersByTimeAsync(200);
+    expect(ended).toBe(true);
+  });
+});

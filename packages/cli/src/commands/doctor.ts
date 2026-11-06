@@ -13,6 +13,8 @@ import { ADAPTERS } from "../agents";
 import { toolExclusions } from "../detect/formatters";
 import { gentleAiGuidance } from "../detect/gentle-ai";
 import { detectProject } from "../detect/project";
+import { countOrphans } from "../flow/orphans";
+import { rescueRefs } from "../flow/rescue";
 import { gitHooksInstalled } from "../install/git-hooks";
 import { mcpDoctor } from "../install/mcp";
 import { usageDoctor } from "../install/usage";
@@ -53,7 +55,11 @@ export async function doctor(session: Session): Promise<Output> {
   );
   const version = process.versions.node;
   check(supportsNode(version), { code: "node", version }, { code: "old-node", version });
-  const warnings = [...tools.warnings, ...(await doctorWarnings(session, agents))];
+  const warnings = [
+    ...tools.warnings,
+    ...(await doctorWarnings(session, agents)),
+    ...(await cleanupWarnings(session)),
+  ];
   return doctorCard({ ok, warnings, problems }, session.cards);
 }
 
@@ -125,6 +131,26 @@ async function doctorWarnings(session: Session, agents: string | undefined): Pro
     ...(delegation === undefined
       ? []
       : [{ code: "delegated", since: delegation.at.slice(0, 10), by: delegation.by } as const]),
+  ];
+}
+
+/**
+ * The orphans of each kind that `specty prune` would remove, and the rescue refs the clean-up
+ * left (ARCHITECTURE §9): warnings, only of the kinds there are.
+ */
+async function cleanupWarnings(session: Session): Promise<DoctorLine[]> {
+  const { records, finished, ghosts, empty } = await countOrphans(session);
+  const counted = [
+    { code: "stale-records", count: records },
+    { code: "finished-folders", count: finished },
+    { code: "ghost-folders", count: ghosts },
+    { code: "empty-change-folders", count: empty },
+  ] as const;
+  const refs = await rescueRefs(session.git);
+  const [latest] = refs;
+  return [
+    ...counted.filter(({ count }) => count > 0),
+    ...(latest === undefined ? [] : [{ code: "rescue-refs", count: refs.length, latest } as const]),
   ];
 }
 

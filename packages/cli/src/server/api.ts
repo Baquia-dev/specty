@@ -193,7 +193,32 @@ export async function act(
     body,
   );
   if (parsed === undefined) return bad();
-  return done(await context.serial(() => runAction(context.session, parsed.id, parsed.action)));
+  const { id, action } = parsed;
+  return done(
+    await followed(context, id, action.kind, (said) =>
+      context.serial(() => runAction(context.session, id, action, said)),
+    ),
+  );
+}
+
+/**
+ * Runs the person's action on change `change` while its `action` events tell how it goes: one as
+ * it starts, even if it waits for the queue; one with each line its command says on its error
+ * output (`note`); and one with `done` as it ends, well or not, before the answer.
+ */
+async function followed(
+  context: Context,
+  change: string,
+  action: string,
+  run: (said: (note: string) => void) => Promise<Output>,
+): Promise<Output> {
+  const tell = (more: object) => context.events.send("action", { change, action, ...more });
+  tell({});
+  try {
+    return await run((note) => tell({ note }));
+  } finally {
+    tell({ done: true });
+  }
 }
 
 /**

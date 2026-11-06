@@ -30,7 +30,7 @@ import { archive, commitArchive, commitClosing } from "../flow/finish";
 import { landingTurn } from "../flow/full-verification";
 import { absorbTarget, type Integration, integrationOf, isIncorporated } from "../flow/integrate";
 import { type Landed, landRetrying, withIntegration } from "../flow/land";
-import { removeCancelled } from "../flow/prune";
+import { type CancelledFolder, removeCancelled, withCleanupFrom } from "../flow/prune";
 import { measureUsage, withUsage } from "../flow/usage";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
@@ -130,7 +130,8 @@ async function closeOnTurn(
     absorbed?.lines ?? [],
     landed,
   );
-  return withVerifyHints(withUsage(withArchivedMemory(session, card, archived), usage), hints);
+  const cleaned = await withCleanupFrom(session, plan?.main, card);
+  return withVerifyHints(withUsage(withArchivedMemory(session, cleaned, archived), usage), hints);
 }
 
 /** A closed change that did not reach the main branch (its landing failed): retries only that. */
@@ -148,7 +149,8 @@ async function landClosed(session: Session, change: StoredChange): Promise<Outpu
   return landingTurn(session, plan, async () => {
     const absorbed = await absorbTarget(session, plan, change, "close");
     if (!absorbed.ok) return absorbed.output;
-    return landedAgain(session, state, absorbed.lines, await landRetrying(session, plan));
+    const landed = await landRetrying(session, plan);
+    return withCleanupFrom(session, plan.main, landedAgain(session, state, absorbed.lines, landed));
   });
 }
 
@@ -217,19 +219,19 @@ async function cancelConfirmed(
   );
   // `task done` commits each task's code; the state cannot hold that commit's own hash.
   const withCode = Object.values(state.tasks).some((task) => task.status === "done");
-  // Once the archive is committed, the branch keeps it all, also what the folder had uncommitted.
-  const folder =
-    state.branch === undefined
-      ? undefined
-      : await removeCancelled(session, { id: state.id, branch: state.branch });
-  const card = cancelledCard(
-    headerOf(state.id, "cancelled"),
-    cancelledLine(commit, session.lang),
-    state.branch === undefined ? undefined : { name: state.branch, withCode },
-    session.cards,
-    folder === undefined
-      ? []
-      : [...(folder.saved === undefined ? [] : [folder.saved]), folder.line],
+  // Asked before the folder goes: the clean-up after it runs from the main folder.
+  const main = (await session.git.worktrees())[0]?.folder;
+  const folder = await leaveCancelled(session, state);
+  const card = await withCleanupFrom(
+    session,
+    main,
+    cancelledCard(
+      headerOf(state.id, "cancelled"),
+      cancelledLine(commit, session.lang),
+      state.branch === undefined ? undefined : { name: state.branch, withCode },
+      session.cards,
+      folderLines(folder),
+    ),
   );
   // The agent that cancelled from inside leaves the folder, as after `close`.
   const left = folder?.left;
@@ -238,4 +240,25 @@ async function cancelConfirmed(
     left === undefined ? card : { ...card, next: leaveFolderNext(left, session.cards) },
     archived,
   );
+}
+
+/**
+ * Once the archive is committed, the branch keeps it all, also what the folder had uncommitted:
+ * the cancelled change's own folder goes (`removeCancelled`). Nothing for a change with no branch.
+ */
+async function leaveCancelled(
+  session: Session,
+  state: ChangeState,
+): Promise<CancelledFolder | undefined> {
+  if (state.branch === undefined) return undefined;
+  return removeCancelled(session, { id: state.id, branch: state.branch });
+}
+
+/**
+ * The card's lines of the cancelled change's folder: the commit of what it had uncommitted, if
+ * any, and what became of it.
+ */
+function folderLines(folder: CancelledFolder | undefined): readonly string[] {
+  if (folder === undefined) return [];
+  return folder.saved === undefined ? [folder.line] : [folder.saved, folder.line];
 }

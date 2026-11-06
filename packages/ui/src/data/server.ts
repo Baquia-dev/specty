@@ -14,6 +14,7 @@ import {
   SpectyData,
 } from "./records";
 import {
+  actionEvent,
   answered,
   isChangeRecord,
   isDelegation,
@@ -32,7 +33,7 @@ import {
   tooLarge,
   UNEXPECTED,
 } from "./server-answers";
-import type { FinishedPage, FinishedRequest, MemoryVerb } from "./source";
+import type { ActionNote, FinishedPage, FinishedRequest, MemoryVerb } from "./source";
 import { isStrings, isTrace, type TraceRecord } from "./trace";
 
 /** The mark `specty ui` puts in the page it serves (ARCHITECTURE §15). */
@@ -54,6 +55,10 @@ interface ServerSession {
 }
 
 type RunListener = (change: string, run: RunRecord | undefined) => void;
+type ActionListener = (told: ActionNote) => void;
+
+/** How long an action waits for the screens to read again before it ends anyway. */
+const REREAD_MS = 10_000;
 
 /**
  * The local server's data (`specty ui`): the changes of every worktree through `fetch`, read
@@ -63,10 +68,11 @@ type RunListener = (change: string, run: RunRecord | undefined) => void;
 @Injectable()
 export class ServerData extends SpectyData {
   private session: Promise<ServerSession> | undefined;
-  /** One event stream for every subscriber: the Inbox, delegated mode and the runs alike. */
+  /** One event stream for every subscriber: the Inbox, delegated mode, the runs and the actions. */
   private events: EventSource | undefined;
-  private readonly listeners = new Set<() => void>();
+  private readonly listeners = new Set<() => unknown>();
   private readonly runListeners = new Set<RunListener>();
+  private readonly actionListeners = new Set<ActionListener>();
 
   override async changes(): Promise<readonly ChangeRecord[]> {
     const response = await fetch("/api/changes");
@@ -106,13 +112,8 @@ export class ServerData extends SpectyData {
     return page;
   }
 
-  override subscribe(listener: () => void): () => void {
-    this.listeners.add(listener);
-    this.listen();
-    return () => {
-      this.listeners.delete(listener);
-      this.closeIfIdle();
-    };
+  override subscribe(listener: () => unknown): () => void {
+    return this.follow(this.listeners, listener);
   }
 
   /**
@@ -126,15 +127,16 @@ export class ServerData extends SpectyData {
       heard = true;
       listener(run);
     };
-    this.runListeners.add(told);
-    this.listen();
+    const stop = this.follow(this.runListeners, told);
     void readRun(change).then((run) => {
       if (!heard && this.runListeners.has(told)) listener(run);
     });
-    return () => {
-      this.runListeners.delete(told);
-      this.closeIfIdle();
-    };
+    return stop;
+  }
+
+  /** Every `action` event: what the server says of the person's actions as they go on. */
+  override watchActions(listener: ActionListener): () => void {
+    return this.follow(this.actionListeners, listener);
   }
 
   /** Read only when the agent started the server; without a session, why it has none. */
@@ -293,18 +295,34 @@ export class ServerData extends SpectyData {
     if (this.events !== undefined) return;
     this.events = new EventSource("/api/events");
     this.events.addEventListener("changes", () => {
-      for (const heard of this.listeners) heard();
+      for (const heard of this.listeners) void heard();
     });
     this.events.addEventListener("run", (event: MessageEvent) => {
       const told = runEvent(event.data);
       if (told === undefined) return;
       for (const heard of this.runListeners) heard(told.change, told.run);
     });
+    this.events.addEventListener("action", (event: MessageEvent) => {
+      const told = actionEvent(event.data);
+      if (told === undefined) return;
+      for (const heard of this.actionListeners) heard(told);
+    });
+  }
+
+  /** Adds `listener` to `set` with the event stream open; its stop closes the stream if idle. */
+  private follow<T>(set: Set<T>, listener: T): () => void {
+    set.add(listener);
+    this.listen();
+    return () => {
+      set.delete(listener);
+      this.closeIfIdle();
+    };
   }
 
   /** Closes the event stream once nobody listens to it. */
   private closeIfIdle(): void {
-    if (this.listeners.size > 0 || this.runListeners.size > 0) return;
+    const listening = this.listeners.size + this.runListeners.size + this.actionListeners.size;
+    if (listening > 0) return;
     this.events?.close();
     this.events = undefined;
   }
@@ -314,7 +332,10 @@ export class ServerData extends SpectyData {
     return this.post(`/api/changes/${encodeURIComponent(change)}/${verb}`, body);
   }
 
-  /** A decision of the person: done (200) or refused with its reason. */
+  /**
+   * A decision of the person: refused with its reason, or done (200) once the screens show it,
+   * read again as on a `changes` event.
+   */
   private async post(path: string, body: object): Promise<void> {
     const { actions, csrf } = await this.serverSession();
     if (!actions || csrf === undefined) throw new ActionError(READ_ONLY);
@@ -324,6 +345,21 @@ export class ServerData extends SpectyData {
       body: JSON.stringify(body),
     });
     if (!response.ok) throw new ActionError(await refusal(response));
+    await this.reread();
+  }
+
+  /**
+   * Has every listener read again and waits for them, `REREAD_MS` at most: past that, the next
+   * `changes` event brings the rest. One that fails does not undo what the server already did.
+   */
+  private async reread(): Promise<void> {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const late = new Promise<void>((done) => {
+      timer = setTimeout(done, REREAD_MS);
+    });
+    const heard = Promise.allSettled([...this.listeners].map(async (listener) => listener()));
+    await Promise.race([heard, late]);
+    clearTimeout(timer);
   }
 
   /** The server's session, asked once; a failed ask is asked again next time. */

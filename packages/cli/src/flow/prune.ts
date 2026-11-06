@@ -1,28 +1,38 @@
 // SPDX-License-Identifier: Apache-2.0
-import { realpath } from "node:fs/promises";
+import { readdir, realpath, rm, rmdir } from "node:fs/promises";
+import { join } from "node:path";
 import {
   cancelledFolderStaysLine,
   cancelledWorkSavedLine,
   cancelWorkCommitSubject,
+  cleanupBlocks,
   type Lang,
   notInTargetBranchLine,
-  notInTargetFolderLine,
-  workingFolderLine,
+  type Output,
+  type RescuedFolder,
+  type UnsavedFolder,
 } from "@baquia-dev/specty-core";
 import { exists } from "../io/files";
-import { resolved } from "../io/git";
-import type { Session } from "../session";
+import { createGit, type Git, resolved } from "../io/git";
+import { type Session, sessionFrom } from "../session";
 import { removeActivity } from "../store/activity";
-import type { StoredChange } from "../store/changes";
-import { readBindings } from "../store/local";
 import { dropMessages, messageChanges } from "../store/messages";
+import { repoPaths } from "../store/paths";
 import { isFinished } from "./active";
 import { markedBranches } from "./branches";
 import { locateChanges } from "./changes";
 import { commitWithReceipt, decisionTrailers } from "./commits";
-import { integrationOf, isIncorporated, reasonOf } from "./integrate";
+import { reasonOf } from "./integrate";
 import { type FolderLeft, leaveChangeFolder, within } from "./land";
-import { targetBranch } from "./worktree";
+import {
+  emptyChangeFolders,
+  finishedFolders,
+  staleRecords,
+  sweepableGhosts,
+  workingFolders,
+} from "./orphans";
+import { type Rescue, rescueFolder } from "./rescue";
+import { formerWorktreesHome, targetBranch } from "./worktree";
 
 export interface Cleanup {
   readonly removed: readonly string[];
@@ -30,45 +40,215 @@ export interface Cleanup {
   readonly kept: readonly string[];
 }
 
-/** A session's record stops counting a day after it was made: nothing deletes it at the end. */
-const SESSION_DAY = 24 * 60 * 60 * 1000;
+/** What a clean-up of folders did: also what it saved in rescue refs, and what it could not. */
+interface FolderCleanup extends Cleanup {
+  readonly rescued: readonly RescuedFolder[];
+  readonly unsaved: readonly UnsavedFolder[];
+}
+
+/** A `FolderCleanup` that fills as it goes. */
+interface Tally {
+  readonly removed: string[];
+  readonly kept: string[];
+  readonly rescued: RescuedFolder[];
+  readonly unsaved: UnsavedFolder[];
+}
+
+const tally = (): Tally => ({ removed: [], kept: [], rescued: [], unsaved: [] });
+
+/** No rescue: a folder with nothing to save. */
+const NOTHING: Rescue = { kind: "nothing" };
+
+/** What the clean-up did (`cleanUp`), for the card of the command that ran it. */
+export interface Swept extends FolderCleanup {
+  /** The ghost folders it removed; `removed` are the folders of finished changes. */
+  readonly ghosts: readonly string[];
+  /** How many records of worktrees whose folder no longer existed git forgot. */
+  readonly records: number;
+  /** The folders of `.specty/changes/` with no file that it removed. */
+  readonly empty: readonly string[];
+}
+
+/**
+ * The clean-up of `prune`, which `new`, `close` and `cancel` also run (ARCHITECTURE §9): git
+ * forgets the records of worktrees whose folder no longer exists, but locked ones; the folders of
+ * finished changes and the ghost folders go, once what they have went to a rescue ref; the sibling
+ * folder from before ADR 0018 goes if it is left empty, and so do the folders of `.specty/changes/`
+ * with no file.
+ */
+export async function cleanUp(session: Session): Promise<Swept> {
+  const records = await forgetMissing(session.git);
+  const finished = await removeFinished(session);
+  const ghosts = await sweepGhosts(session);
+  // `rmdir` takes only an empty folder.
+  await rmdir(await formerWorktreesHome(session.git)).catch(() => undefined);
+  const empty = await removeEmptyTrees(await emptyChangeFolders(session.git));
+  return {
+    removed: finished.removed,
+    kept: [...finished.kept, ...ghosts.kept],
+    rescued: [...finished.rescued, ...ghosts.rescued],
+    unsaved: [...finished.unsaved, ...ghosts.unsaved],
+    ghosts: ghosts.removed,
+    records,
+    empty,
+  };
+}
+
+/**
+ * `card` with what the clean-up at the end of its command did (`cleanupBlocks`): `new` says the
+ * folders of finished changes itself, so it passes `finished: false`.
+ */
+export function withCleanup(card: Output, swept: Swept, lang: Lang, finished = true): Output {
+  const { ghosts, rescued, unsaved } = swept;
+  const blocks = cleanupBlocks(
+    { ...(finished ? { finished: swept.removed } : {}), ghosts, rescued, unsaved },
+    lang,
+  );
+  return blocks.length === 0 ? card : { ...card, blocks: [...card.blocks, ...blocks] };
+}
+
+/**
+ * `card` of `close` or `cancel` once the clean-up ran, with what it did. It runs from the main
+ * folder `main`, as their change's own folder may be gone by then and git cannot run in it; from
+ * `session`'s without one.
+ */
+export async function withCleanupFrom(
+  session: Session,
+  main: string | undefined,
+  card: Output,
+): Promise<Output> {
+  return withCleanup(card, await cleanUp(await mainSession(session, main)), session.lang);
+}
+
+/** The session of the main folder `main`, with `session`'s configuration; `session` if it is that one. */
+async function mainSession(session: Session, main: string | undefined): Promise<Session> {
+  if (main === undefined || (await resolved(main)) === (await resolved(session.root)))
+    return session;
+  const git = createGit(main, session.environment.env);
+  const { environment, config, delegated } = session;
+  return sessionFrom(environment, main, repoPaths(main), git, config, delegated);
+}
+
+/** `git worktree prune`, which spares the locked worktrees: how many records git forgot. */
+async function forgetMissing(git: Git): Promise<number> {
+  const before = await staleRecords(git);
+  if (before === 0) return 0;
+  await git.run(["worktree", "prune"]);
+  return before - (await staleRecords(git));
+}
+
+/**
+ * Sweeps the ghost folders (`sweepableGhosts`), but the one this process runs in: what git does
+ * not ignore of each goes to a rescue ref with no parent, and then the folder goes whole.
+ */
+async function sweepGhosts(session: Session): Promise<Tally> {
+  const done = tally();
+  for (const folder of await sweepableGhosts(session)) {
+    if (await within(session.environment.cwd, folder)) continue;
+    await rescueThenRemove(session, { folder, save: true, parent: undefined }, done, () =>
+      removeTree(folder),
+    );
+  }
+  return done;
+}
+
+/** Removes `folder` with all it holds; why it could not, or undefined. */
+async function removeTree(folder: string): Promise<string | undefined> {
+  try {
+    await rm(folder, { recursive: true, force: true });
+    return undefined;
+  } catch (error) {
+    return error instanceof Error ? error.message : String(error);
+  }
+}
+
+/** Removes each of `folders`, which held no file, and gives those that went. */
+async function removeEmptyTrees(folders: readonly string[]): Promise<string[]> {
+  const gone = await Promise.all(folders.map(rmdirTree));
+  return folders.filter((_, index) => gone[index] === true);
+}
+
+/**
+ * Removes `folder` and the folders inside it from the bottom up with `rmdir`, which takes only an
+ * empty one: a file that arrived meanwhile keeps it. Whether it went.
+ */
+async function rmdirTree(folder: string): Promise<boolean> {
+  try {
+    for (const entry of await readdir(folder, { withFileTypes: true })) {
+      if (!entry.isDirectory() || !(await rmdirTree(join(folder, entry.name)))) return false;
+    }
+    await rmdir(folder);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Removes the worktrees of finished changes that no longer need one: closed and already in their
- * target branch (or not meant to be incorporated), or cancelled. Never the folder this process
- * runs in, nor one an agent session works in (as the guard recorded it), nor the main folder.
- * The branches stay.
+ * target branch (or not meant to be incorporated), or cancelled, also with something uncommitted,
+ * which first goes to a rescue ref. Never the folder this process runs in, nor one an agent
+ * session works in (as the guard recorded it), nor the main folder. The branches stay.
  */
-export async function removeFinished(session: Session): Promise<Cleanup> {
-  const { lang } = session;
+async function removeFinished(session: Session): Promise<FolderCleanup> {
   const main = (await session.git.worktrees())[0]?.folder ?? session.root;
-  const working = await workingFolders(session);
-  const removed: string[] = [];
-  const kept: string[] = [];
-  for (const { change, session: there } of await locateChanges(session)) {
-    const { state } = change;
-    if (!isFinished(state) || there.root === main) continue;
-    if (await within(session.environment.cwd, there.root)) continue;
-    const reason = await keptBecause(there, state, working, lang);
-    if (reason !== undefined) {
-      kept.push(reason);
-      continue;
-    }
-    const result = await session.git.run(["-C", main, "worktree", "remove", there.root]);
-    if (result.code === 0) removed.push(there.root);
-    else kept.push(`${there.root}: ${reasonOf(result)}`);
+  const done = tally();
+  for (const { there, kept } of await finishedFolders(session)) {
+    if (kept === undefined) await removeWorktree(session, main, there, done);
+    else done.kept.push(kept);
   }
-  return { removed, kept };
+  return done;
 }
 
-/** The folders agent sessions work in, as the guard recorded them in the last day, resolved. */
-async function workingFolders(session: Session): Promise<string[]> {
-  const now = session.environment.now().getTime();
-  return Promise.all(
-    (await readBindings(session.git))
-      .filter(({ at }) => now - Date.parse(at) < SESSION_DAY)
-      .map(({ folder }) => resolved(folder)),
-  );
+/**
+ * Removes the finished change's worktree `there` from the main folder. What it has uncommitted
+ * (tracked files that differ, or untracked ones git does not ignore) first goes to a rescue ref on
+ * top of its HEAD, and then `--force` takes it with what git ignores; with nothing uncommitted,
+ * `git worktree remove` goes without it, as a locked worktree still stays.
+ */
+async function removeWorktree(
+  session: Session,
+  main: string,
+  there: Session,
+  done: Tally,
+): Promise<void> {
+  const status = await there.git.run(["status", "--porcelain"]);
+  const dirty = status.code === 0 && status.stdout.trim().length > 0;
+  const parent = dirty ? await there.git.head() : undefined;
+  const folder = there.root;
+  await rescueThenRemove(session, { folder, save: dirty, parent }, done, async (force) => {
+    const args = ["-C", main, "worktree", "remove", ...(force ? ["--force"] : []), folder];
+    const result = await session.git.run(args);
+    return result.code === 0 ? undefined : reasonOf(result);
+  });
+}
+
+/**
+ * Saves what `folder` has in a rescue ref, when `save`, on top of `parent` if there is one, and
+ * then removes the folder with `remove` (with `--force` once something was saved), which gives why
+ * it could not. A folder that could not be saved stays with what it has. If the folder stays after
+ * all, its new ref goes again: each clean-up would leave one more.
+ */
+async function rescueThenRemove(
+  session: Session,
+  target: { readonly folder: string; readonly save: boolean; readonly parent: string | undefined },
+  done: Tally,
+  remove: (force: boolean) => Promise<string | undefined>,
+): Promise<void> {
+  const { folder } = target;
+  const saved = target.save ? await rescueFolder(session, folder, target.parent) : NOTHING;
+  if (saved.kind === "failed") {
+    done.unsaved.push({ folder, reason: saved.reason });
+    return;
+  }
+  const failure = await remove(saved.kind === "saved");
+  if (failure !== undefined) {
+    if (saved.kind === "saved") await session.git.run(["update-ref", "-d", saved.ref]);
+    done.kept.push(`${folder}: ${failure}`);
+    return;
+  }
+  done.removed.push(folder);
+  if (saved.kind === "saved") done.rescued.push({ folder, ref: saved.ref, bytes: saved.bytes });
 }
 
 /** What became of the cancelled change's folder, and the line of the commit that kept its work. */
@@ -137,22 +317,6 @@ async function cancelledKeptBecause(
   if (!inside && (await workingFolders(session)).includes(await resolved(folder))) return "working";
   const status = await session.git.run(["status", "--porcelain"]);
   return status.code !== 0 || status.stdout.trim().length > 0 ? "uncommitted" : undefined;
-}
-
-/** Why a finished change's folder stays: an agent session works in it, or it is not in its target. */
-async function keptBecause(
-  there: Session,
-  state: StoredChange["state"],
-  working: readonly string[],
-  lang: Lang,
-): Promise<string | undefined> {
-  // Such as the session that closed its change from inside, in delegated mode.
-  if (working.includes(await resolved(there.root))) return workingFolderLine(there.root, lang);
-  const plan = state.phase === "done" ? await integrationOf(there, state) : undefined;
-  if (plan !== undefined && !(await isIncorporated(there, plan))) {
-    return notInTargetFolderLine(there.root, state.id, plan.target, lang);
-  }
-  return undefined;
 }
 
 /**

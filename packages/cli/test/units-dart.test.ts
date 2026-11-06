@@ -144,7 +144,7 @@ describe("specty init in a Dart workspace", () => {
     ]);
   });
 
-  it("AC6: proposes nothing with fewer than two packages with tests, with tests in the root or without a workspace", async () => {
+  it("AC6: proposes nothing with fewer than two packages with tests or without a workspace", async () => {
     const single = await tempRepo({
       "pubspec.yaml": workspace(["packages/core"]),
       "packages/core/pubspec.yaml": pubspec("core"),
@@ -158,15 +158,6 @@ describe("specty init in a Dart workspace", () => {
       "packages/docs/pubspec.yaml": pubspec("docs"),
     });
     expect(untested).toBeUndefined();
-    const withRoot = await unitsFor({
-      "pubspec.yaml": workspace(["packages/*"]),
-      "test/workspace_test.dart": TEST,
-      "packages/core/pubspec.yaml": pubspec("core"),
-      "packages/core/test/core_test.dart": TEST,
-      "packages/api/pubspec.yaml": pubspec("api", ["core: any"]),
-      "packages/api/test/api_test.dart": TEST,
-    });
-    expect(withRoot).toBeUndefined();
     const plain = await unitsFor({
       "pubspec.yaml": pubspec("demo"),
       "test/demo_test.dart": TEST,
@@ -176,5 +167,41 @@ describe("specty init in a Dart workspace", () => {
 
   it("AC6: the Dart detector goes after the other workspaces' detectors", () => {
     expect(DETECTORS.at(-1)).toBe(dartWorkspace);
+  });
+});
+
+describe("specty init in a Dart workspace whose root has tests", () => {
+  it("AC3: proposes the root's unit with dart test in the root, named as its package, with the root outside the packages' folders", async () => {
+    const units = unitsOf(
+      await unitsFor({
+        "pubspec.yaml": workspace(["packages/*"]),
+        "lib/demo.dart": "void main() {}\n",
+        "test/workspace_test.dart": TEST,
+        "README.md": "# demo\n",
+        ".github/workflows/ci.yml": "on: push\n",
+        "packages/core/pubspec.yaml": pubspec("core"),
+        "packages/core/test/core_test.dart": TEST,
+        "packages/api/pubspec.yaml": pubspec("api", ["core: any"]),
+        "packages/api/test/api_test.dart": TEST,
+      }),
+    );
+    expect(units).toEqual([
+      { name: "static", command: "dart analyze", paths: ["**"] },
+      {
+        name: "demo_workspace",
+        command: "dart test",
+        paths: ["README.md", "lib/**", "pubspec.yaml", "test/**"],
+      },
+      {
+        name: "core",
+        command: "(cd packages/core && dart test)",
+        paths: ["packages/core/**", "pubspec.yaml"],
+      },
+      {
+        name: "api",
+        command: "(cd packages/api && dart test)",
+        paths: ["packages/api/**", "packages/core/**", "pubspec.yaml"],
+      },
+    ]);
   });
 });

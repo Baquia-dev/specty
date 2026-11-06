@@ -183,10 +183,18 @@ function screen(choice?: string): Terminal {
   };
 }
 
-/** `session` with the person deciding on the UI's screen. */
-function onScreen(session: Session, choice?: string): Session {
+/**
+ * `session` with the person deciding on the UI's screen. What its commands say on their error
+ * output still goes to the server's console and, with `said`, also there.
+ */
+function onScreen(session: Session, choice?: string, said?: (text: string) => void): Session {
+  const { io } = session.environment;
+  const err = (text: string) => {
+    io.err(text);
+    said?.(text);
+  };
   return sessionFrom(
-    { ...session.environment, terminal: screen(choice) },
+    { ...session.environment, terminal: screen(choice), io: { ...io, err } },
     session.root,
     session.paths,
     session.git,
@@ -248,10 +256,16 @@ export function setDelegation(session: Session, on: boolean): Promise<Output> {
 /**
  * Runs an action of the person in the folder of change `id`, with the same command as at the
  * terminal and the change locked by the UI's process (ARCHITECTURE §9); the answer is that
- * command's output.
+ * command's output. `said` hears each line the command says on its error output as it goes: why
+ * it waits, say.
  */
-export async function runAction(session: Session, id: string, action: Action): Promise<Output> {
-  const ui = onScreen(session);
+export async function runAction(
+  session: Session,
+  id: string,
+  action: Action,
+  said?: (text: string) => void,
+): Promise<Output> {
+  const ui = onScreen(session, undefined, said);
   const scope = action.kind === "scope" ? { scope: action.request } : {};
   const chosen = await personSession(ui, COMMAND[action.kind], { id, ...scope });
   if (chosen.kind === "output") return chosen.output;

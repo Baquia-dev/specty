@@ -28,7 +28,14 @@ import { enterCommand } from "./enter-command";
 import { endConversation, judgeFronts } from "./fronts";
 import { leavePending, type PendingKind, takePending } from "./pending";
 import { redirection, resolveAction } from "./place";
-import { bindSession, enterAction, enteredSession, guardSession } from "./sessions";
+import {
+  bindSession,
+  endBinding,
+  enterAction,
+  enteredSession,
+  guardSession,
+  resumeBinding,
+} from "./sessions";
 import {
   DELEGATION_KEY,
   pruneSnapshots,
@@ -147,8 +154,10 @@ async function redirected(call: Call, given: Record<string, unknown>): Promise<C
 async function answer(kind: EventKind, call: Call): Promise<GuardReply> {
   const { agent, session, event } = call;
   switch (kind) {
-    // After a compaction the agent adds this to the context, so the task card comes back.
+    // After a compaction the agent adds this to the context, so the task card comes back. A
+    // conversation that starts again, as when it resumes, counts again for the clean-up.
     case "compact":
+      await resumeBinding(session, event);
       return agent.card === undefined
         ? agent.reply(ALLOW, "after")
         : agent.card(renderText(await next(session), session.lang));
@@ -169,6 +178,7 @@ async function answer(kind: EventKind, call: Call): Promise<GuardReply> {
       return await modelCall(kind, call);
     case "ended":
       await endConversation(session, agent.tool, event);
+      await endBinding(session, event);
       return agent.reply(ALLOW, "after");
     default:
       return await beforeAction(call);

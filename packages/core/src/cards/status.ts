@@ -55,14 +55,16 @@ interface StatusOutput extends Output {
 
 /**
  * Open changes of every worktree; a person's decision can be taken from any folder. «FRENTES»
- * lists the memory's fronts with who holds each, and «TE TOCA» its open reminders; each is left
- * out when there are none (ADR 0016).
+ * lists the memory's fronts with who holds each, «TE TOCA» its open reminders (ADR 0016), and
+ * «LIMPIEZA» how many `orphans` the clean-up of `prune` removes; each is left out when there are
+ * none.
  */
 export function statusCard(
   entries: readonly StatusEntry[],
   ctx: CardContext,
   memory: readonly MemoryEntry[] = [],
   view: FrontsView = { fronts: [], owners: [] },
+  orphans = 0,
 ): StatusOutput {
   const t = translator(ctx.lang);
   const lines = entries.map((entry) => statusLine(entry, t, ctx.command));
@@ -94,12 +96,24 @@ export function statusCard(
             ]
           : [],
       ),
+      ...section(
+        t("LIMPIEZA", "CLEAN-UP"),
+        orphans > 0 ? [orphansLine(orphans, ctx.command, t)] : [],
+      ),
     ],
     next: statusNext(entries, ctx),
     changes: entries,
     fronts,
     delegated: ctx.delegated === true,
   };
+}
+
+/** How many orphans the clean-up of `prune` removes (ARCHITECTURE §9); `doctor` says each kind. */
+function orphansLine(count: number, command: string, t: Translate): string {
+  return t(
+    `Huérfanos que quita \`${command} prune\`: ${count} (registros de worktrees sin carpeta y carpetas que sobran); \`${command} doctor\` los cuenta por tipo.`,
+    `Orphans \`${command} prune\` removes: ${count} (records of worktrees with no folder and leftover folders); \`${command} doctor\` counts them by kind.`,
+  );
 }
 
 /** Each front with the ids of its open entries, in the front's order, and its live owner. */

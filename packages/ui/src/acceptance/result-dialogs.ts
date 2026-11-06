@@ -16,6 +16,7 @@ import { Button } from "../components/button";
 import { DialogFrame, Dialogs } from "../components/dialog";
 import { Field } from "../components/field";
 import { Toasts } from "../components/toast";
+import { InFlight } from "../data/in-flight";
 import type { RunRecord } from "../data/progress";
 import type { Bilingual, ChangeView } from "../data/records";
 import { SpectyData } from "../data/records";
@@ -269,6 +270,7 @@ class AcceptResult {
   private readonly data = inject<ResultData>(DIALOG_DATA);
   private readonly ref = inject(DialogRef);
   private readonly source = inject(SpectyData);
+  private readonly inFlight = inject(InFlight);
   private readonly toasts = inject(Toasts);
   private readonly preferences = inject(Preferences);
   private readonly failed = reportFailure(this.toasts, this.preferences);
@@ -292,9 +294,14 @@ class AcceptResult {
         ),
   );
 
+  /**
+   * Accepting can wait minutes for the full verification: the dialog closes at once, and the
+   * header follows it until the server answers.
+   */
   protected accept(): void {
-    this.source.decideResult(this.change.id, { kind: "accept" }).then(() => {
-      this.ref.close();
+    this.ref.close();
+    const accepting = this.source.decideResult(this.change.id, { kind: "accept" });
+    this.inFlight.run(this.change.id, "accept", accepting).then(() => {
       this.toasts.show(
         this.quick
           ? this.t()(
