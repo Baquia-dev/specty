@@ -6,6 +6,13 @@
   "branch": "specty/20261106-un-desbloqueo-se-pide-con-el-parche-y-el-codigo",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:242f23b34a0cc745322244c2f6c45d1af47eca89710e812ce4d25f5662edb2ce",
+    "at": "2026-11-06T10:48:41.226Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -61,12 +68,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:242f23b34a0cc745322244c2f6c45d1af47eca89710e812ce4d25f5662edb2ce",
-    "at": "2026-11-06T10:48:41.226Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T11:06:46.310Z"
 }
