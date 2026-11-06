@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-en-aceptacion-el-cierre-enviado-tiene-su-commit",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-en-aceptacion-el-cierre-enviado-tiene-su-commit",
   "baseCommit": "bb32977a94e76f405187f4486874e76c19d8c9f9",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6636abc93b0632eb21016938e03c40ff6667bffe",
+      "attempts": 1,
       "startedAt": "2026-11-06T20:16:46.145Z",
       "doneAt": "2026-11-06T20:22:53.738Z",
-      "summary": "accept pasa a mergeTarget closingFirst, que con el cierre enviado reutiliza commitClosing antes de incorporar main; tests del accept del agente y de la persona con el glosario cambiado en main; ARCHITECTURE §9"
+      "summary": "accept pasa a mergeTarget closingFirst, que con el cierre enviado reutiliza commitClosing antes de incorporar main; tests del accept del agente y de la persona con el glosario cambiado en main; ARCHITECTURE §9",
+      "scopeExtra": []
     }
   },
   "pending": {
