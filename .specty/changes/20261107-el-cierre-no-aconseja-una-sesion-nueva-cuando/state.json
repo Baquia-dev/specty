@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-cierre-no-aconseja-una-sesion-nueva-cuando",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-cierre-no-aconseja-una-sesion-nueva-cuando",
   "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
   "revision": 1,
@@ -23,7 +23,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6d35a0e3338f34dabb36cbd5f3a5fefc1a763620",
+      "startedAt": "2026-11-06T21:25:35.119Z",
+      "doneAt": "2026-11-06T21:26:40.143Z",
+      "summary": "El aviso de sesión nueva del cierre y de la aceptación quick se calla cuando Claude Code reparte en subagentes y subagents no es false (toSubagents, exportada desde las tarjetas de core); con subagents: false sigue como hoy. Docs: ARCHITECTURE §13 y §16, formats §6."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

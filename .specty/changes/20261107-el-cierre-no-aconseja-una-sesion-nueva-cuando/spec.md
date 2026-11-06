@@ -18,7 +18,7 @@ Cuando Claude Code reparte en subagentes y `subagents` no es `false`, el cierre 
 
 ## Tareas
 
-- [ ] T1: Callar el aviso de sesión nueva cuando los cambios van a subagentes
+- [x] T1: Callar el aviso de sesión nueva cuando los cambios van a subagentes
   - files: packages/cli/src/flow/usage.ts, packages/core/src/cards/index.ts, packages/cli/test/fresh-session.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/fresh-session.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: fix
