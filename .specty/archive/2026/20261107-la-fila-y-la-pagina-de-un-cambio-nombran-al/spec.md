@@ -63,3 +63,28 @@ En `specty ui`, la fila de la Bandeja y la página de un cambio dicen qué agent
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/history-who.test.ts --include src/history/history-tab.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: fix
+
+## Cierre
+
+### Resumen
+
+`specty ui` nombra a cada agente con su nombre de `AGENT_NAMES` en todas sus vistas, a través de una sola función pura, `agentName` (`ui/src/data/agent-name.ts`), que deja con su id una herramienta que no conoce:
+- la fila de la Bandeja dice «Su conversación (Codex) salió de su carpeta»;
+- «Cómo retomarlo», en la página de un cambio, nombra así a la conversación que salió de su carpeta, al agente del `specty wait` agotado o cortado y a la última conversación en su carpeta;
+- la pestaña Historial dice «Agente · GitHub Copilot».
+
+La línea de un corte (`inbox/lane-holds.ts`) y la Historia dejan sus listas propias. A la de la Historia le faltaba Copilot.
+
+### Desviaciones
+
+- El test de AC3 en `history/history-who.test.ts` pasaba los dos eventos del más reciente al más antiguo, pero la pestaña recibe la auditoría del más antiguo al más reciente y la invierte, así que no podía pasar con ningún código. La persona lo desbloqueó con S1, con un parche que solo invierte el orden de los dos eventos, y se aplicó tal cual.
+- Se cambiaron aserciones de tests que ya existían, previstas en Archivos: las de `change/resume-hints.test.ts` y `change/change-page.unattended.test.ts` esperaban el id de la herramienta («codex», «claude-code») y ahora esperan su nombre.
+
+### Decisiones
+
+- También se nombran con su nombre el agente del `specty wait` y el de la última conversación en la carpeta (A2), no solo el de la conversación que salió, porque son el mismo id de herramienta.
+- La función vive en `ui/src/data/`, junto a los demás datos compartidos por las vistas, y no en `inbox/`, porque la usan la Bandeja, la página de un cambio y la Historia.
+
+### Pendientes
+
+- Ninguno nuevo: `inbox/inbox-row.ts` pasa a 322 líneas de código con este cambio, y su división ya es P238.
