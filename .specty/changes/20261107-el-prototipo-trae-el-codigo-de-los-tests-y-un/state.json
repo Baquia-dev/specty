@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-prototipo-trae-el-codigo-de-los-tests-y-un",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-prototipo-trae-el-codigo-de-los-tests-y-un",
   "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
   "revision": 2,
@@ -51,12 +51,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a9987af6a679db9fb775c7a1be8c1da501079d02",
+      "attempts": 1,
       "startedAt": "2026-11-06T17:36:11.515Z",
       "doneAt": "2026-11-06T17:42:05.477Z",
-      "summary": "Los boletines esperan S2, el desbloqueo de su test aprobado con parche y evidencia, y el login trae S1 ya aprobado para T1. decideScopeIn anota id y, si aprueba un desbloqueo, unlock, task, patch y evidence, como specty."
+      "summary": "Los boletines esperan S2, el desbloqueo de su test aprobado con parche y evidencia, y el login trae S1 ya aprobado para T1. decideScopeIn anota id y, si aprueba un desbloqueo, unlock, task, patch y evidence, como specty.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e271e65a8e3fde5b0b7b6a9994ad7be92ee92862",
+      "startedAt": "2026-11-06T17:42:05.892Z",
+      "doneAt": "2026-11-06T17:48:49.061Z",
+      "summary": "ui.md cuenta que el prototipo da el código de los tests de muestra y trae un desbloqueo pendiente (S2 de los boletines) y otro aprobado (S1 del login)."
     }
   },
   "pending": {

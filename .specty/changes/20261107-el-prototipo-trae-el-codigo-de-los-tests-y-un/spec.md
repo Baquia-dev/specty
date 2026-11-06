@@ -63,7 +63,7 @@ En el prototipo de la UI (`FixtureData`), «Ver código» dice hoy que la fuente
   - ac: AC1, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data --include src/progress --include src/change/change-page.test.ts && pnpm typecheck
   - type: feat
-- [ ] T3: ui.md cuenta lo que trae el prototipo
+- [x] T3: ui.md cuenta lo que trae el prototipo
   - files: docs/ui.md
   - ac: —
   - verify: grep -q "sample-test-code" docs/ui.md
