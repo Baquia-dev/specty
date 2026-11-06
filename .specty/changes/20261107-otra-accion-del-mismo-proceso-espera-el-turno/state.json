@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-otra-accion-del-mismo-proceso-espera-el-turno",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-otra-accion-del-mismo-proceso-espera-el-turno",
   "baseCommit": "bb32977a94e76f405187f4486874e76c19d8c9f9",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:404f916fdb646c988324e2da3aed694e423ad29071397aa9e98918265ba10bee",
+    "at": "2026-11-06T20:18:04.953Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:404f916fdb646c988324e2da3aed694e423ad29071397aa9e98918265ba10bee",
-    "at": "2026-11-06T20:18:04.953Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/src/flow/full-verification.test.ts": "sha256:5377c58954a2a40edd302c024a7058a17fbccec102550390913bc88beb52c22e"
+  }
 }
