@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261106-doctor-avisa-del-plugin-de-opencode-sin-el-fin",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-doctor-avisa-del-plugin-de-opencode-sin-el-fin",
+  "baseCommit": "bb6b8c18c0ff709f2414c7b4de05ba47d4343812",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b7d4a2296612afc65adf3f8a4e6ec601beffcc3ea2e7a4add0e39486e5b90829",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:8264a6ff2c4e530c3c642bba17e31a53f8d6ceabc7e974ebe8e7ca66fe9ed572",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bfb6cc2aa279ed1c5506cc1a3c78e9ce427cb743fceba5f5a8032ce41558bbad",
+    "at": "2026-11-06T09:02:05.679Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
