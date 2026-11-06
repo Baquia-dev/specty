@@ -6,6 +6,13 @@
   "branch": "specty/20261106-el-fin-de-turno-devuelve-al-agente-a-esperar",
   "baseCommit": "ddaa47217dcb6b75a40be45d70016d60cc09f4db",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c8f0e0496b96bffdbb53eedfdadc5a9d2895e86f755b223a88ffe8ce443cb9f2",
+    "at": "2026-11-06T12:50:24.193Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c8f0e0496b96bffdbb53eedfdadc5a9d2895e86f755b223a88ffe8ce443cb9f2",
-    "at": "2026-11-06T12:50:24.193Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T12:52:55.824Z"
 }
