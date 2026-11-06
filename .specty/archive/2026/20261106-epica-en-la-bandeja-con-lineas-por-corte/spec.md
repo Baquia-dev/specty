@@ -82,3 +82,33 @@ En la Bandeja de `specty ui`, una épica sale una sola vez, en la sección más 
 - R1: La tarjeta pide el cambio de cada corte por cada épica en curso, y otra vez con cada aviso de la fuente. Mitigación: solo lo pide una épica en borrador, revisión, implementación o ajustes, que suelen ser pocas; el servidor ya sirve esa petición a la pestaña Spec, y las épicas en aceptación o terminadas no piden nada (A5).
 - R2: `j`/`k` pasan a recorrer dos tipos de elementos (filas, y cabeceras y líneas de épica), y un fallo dejaría a la persona sin poder llegar a un corte. Mitigación: AC9 lo prueba en la Bandeja entera, también al cargar una página nueva tras la última fila.
 - R3: Con muchos cortes, la tarjeta crece una línea por corte, sin plegar. Mitigación: las líneas son compactas (una por corte, con sus avisos debajo solo si los hay), y es lo que la persona eligió frente a plegar los terminados.
+
+## Cierre
+
+### Resumen
+
+En la Bandeja, una épica sale una sola vez, como un bloque con todos sus cortes cargados, en la sección del más urgente de ellos, en la de su fase o en la suya según la agrupación; un filtro la muestra entera si deja pasar a cualquiera de sus miembros (C1). Cada corte de su sección Cortes es una línea, en el orden de la spec, con su id, su título enlazado y una pista de cuatro tramos (Spec, Tests, Impl., Acept.), sin plegar los terminados; un corte sin cambio dice «Listo para empezar», «Espera a C1», «Puede arrancar en cuanto apruebes» o «Tras C1», y uno que espera una decisión lleva su botón. La elección del cambio de cada corte es una función compartida con la pestaña Spec (`data/slice-changes.ts`), y `j`/`k` recorren la cabecera y las líneas con cambio (C2). El servidor da `holder` en cada cambio abierto, y la línea dice qué agente lleva su corte (por su nombre de `AGENT_NAMES`, ahora en la entrada ligera) o «Sin conversación», con los avisos de huérfano, conversación fuera de su carpeta y «Comparte `ruta` con C5» (C3). Con la épica en implementación, su cabecera muestra «1/5 cortes» con un anillo y la línea del recuento («1 de 5 terminados · 1 te espera · …») sin tamaño ni carpeta, ya no dice «Ninguna conversación lo lleva» por la épica y, si ningún corte está en marcha y alguno está listo, avisa «Ningún corte en marcha: nadie empezó …» (C4).
+
+### Desviaciones
+
+- El primer borrador se creó como `standard` y salió XL; la persona lo canceló y la petición se rehízo como esta épica.
+- El resumen de core no ganó `depends`, como preveía el Diseño: los cortes y sus dependencias salen de `review.slices` de la épica entera, así C2 cupo en un solo paquete (con core salía XL).
+- La tarjeta pide `sliceChanges` con una promesa en un `effect` y no con `resource`: un `resource` dejaba la Bandeja sin estabilizarse mientras la fuente no respondía (C2).
+- La cabecera de la épica sigue siendo su fila (`sp-inbox-row`) con una entrada nueva, `tally`, y el anillo es un SVG nuevo, porque el repo no tenía uno reutilizable (C4).
+- La persona desbloqueó en C2 un test aprobado de `inbox/inbox-epic.test.ts` (S1) cuyo fixture no podía pasar con ningún código. Se adaptaron tests existentes previstos en Archivos: una aserción de `data/finished-summaries.test.ts` (C2) y el test de AC1 de `inbox/inbox.test.ts` (C4). `packages/core/test/light.test.ts` no cambió en C3: lo cubre `lane-holds.test.ts`.
+- C3 y C4 corrieron en paralelo; `docs/ui.md` chocó al aceptar C3 y se resolvió con los dos cambios. El subagente de C3 se paró una vez esperando un monitor y se reanudó con su contexto.
+- En C2, el test intermitente `src/app/embedded.test.ts` (P78/P79) hizo fallar el primer `close`; pasó al repetirlo.
+
+### Decisiones
+
+- La forma es «carriles por fase» (la opción C de la maqueta) para los ocho estados de una épica, sin plegar los terminados: la eligió la persona, pensando en cortes verticales que corren en paralelo, cada uno con su agente.
+- Toda épica cargada es un bloque, aunque no tenga cortes cargados, y su urgencia cuenta a todos sus miembros, no solo a los que deja pasar un filtro, para que no cambie de sección al buscar (C1).
+- Si la fuente falla o no responde, un corte sin cambio cargado sale sin estado, para no decir «Listo para empezar» de uno que quizá terminó (C2).
+- A la derecha de una línea va una sola cosa: el botón de la decisión si la espera; si no, el agente o «Sin conversación» (C3).
+- Un subagente por corte; C3 y C4, que solo dependían de C2, en paralelo. En modo delegado, con la autorización de la persona en el chat («aprueba, acepta y cierra tu»), los subagentes aprobaron, aceptaron y cerraron sus cortes, y el agente principal acepta y cierra la épica.
+
+### Pendientes
+
+- P238: `packages/ui/src/inbox/inbox-row.ts` pasó a 320 líneas de código (aviso desde 300); propuesta: llevar el avance con su anillo y el recuento a `inbox/epic-progress.ts`.
+- P239: mirar a ojo en `specty ui`, en claro y en oscuro, el anillo, el recuento y las líneas de la tarjeta: solo los comprueban los tests.
+- P240: que la fila y la página de un cambio nombren también con su nombre («Codex») la herramienta de una conversación que salió de su carpeta, como ya hace la línea.

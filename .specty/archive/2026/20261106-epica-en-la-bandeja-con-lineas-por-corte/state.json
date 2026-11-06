@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261106-epica-en-la-bandeja-con-lineas-por-corte",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261106-epica-en-la-bandeja-con-lineas-por-corte",
   "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1baab9f3f1d1d71803968584c3170f239b71981374ec9225d6ad7604f5648bdf",
+    "at": "2026-11-06T14:54:08.384Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -55,11 +62,5 @@
     "C": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1baab9f3f1d1d71803968584c3170f239b71981374ec9225d6ad7604f5648bdf",
-    "at": "2026-11-06T14:54:08.384Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-06T18:37:03.474Z"
 }
