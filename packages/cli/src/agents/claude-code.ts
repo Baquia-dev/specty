@@ -20,6 +20,8 @@ import {
   stopLines,
   withHooks,
   withMemoryStop,
+  withoutTurnEnd,
+  withTurnEndFrom,
 } from "../install/agents";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
@@ -96,15 +98,29 @@ export const claudeCode: AgentAdapter = {
     const local = !invocation.portable;
     const target = local ? CLAUDE_LOCAL_SETTINGS : CLAUDE_SETTINGS;
     const other = local ? CLAUDE_SETTINGS : CLAUDE_LOCAL_SETTINGS;
+    // Its end of turn goes with the guard too, with its check if it had it: never two of them.
+    const before: unknown = parse((await files.read(join(root, other))) ?? "null");
     const without: JsonUpdate = (value) =>
-      withMemoryStop(withHooks(value, EVENTS, "claude-code", undefined), "claude-code", undefined);
+      withoutTurnEnd(
+        withMemoryStop(
+          withHooks(value, EVENTS, "claude-code", undefined),
+          "claude-code",
+          undefined,
+        ),
+        "claude-code",
+      );
     await rewriteJson(join(root, other), without, false, files);
     const command = `${invocation.command} guard --tool claude-code`;
     // The memory's net at the end of the turn goes with the guard (ADR 0016).
     const net = `${invocation.command} hook memory-stop claude-code`;
     const update: JsonUpdate = (value) =>
       withPermissions(
-        withMemoryStop(withHooks(value, EVENTS, "claude-code", command), "claude-code", net),
+        withTurnEndFrom(
+          withMemoryStop(withHooks(value, EVENTS, "claude-code", command), "claude-code", net),
+          before,
+          "claude-code",
+          invocation.command,
+        ),
       );
     await rewriteJson(join(root, target), update, true, files);
     if (local) await excludeLocally(git, target, files);
