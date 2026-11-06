@@ -11,7 +11,16 @@ import {
 } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
-import type { Bilingual, ChangeRecord, CommentAnchor, Delegation, MemoryRecord } from "./records";
+import type {
+  Bilingual,
+  ChangeRecord,
+  ChangeSummary,
+  ChangeView,
+  CommentAnchor,
+  Delegation,
+  MemoryRecord,
+  SliceChangeRecord,
+} from "./records";
 import type { TraceRecord } from "./trace";
 
 /** An action the source could not do, explained in both languages. */
@@ -45,15 +54,14 @@ export interface FinishedRequest {
 
 /** The answer to a `FinishedRequest`, as the local server gives it (ARCHITECTURE §15). */
 export interface FinishedPage {
-  readonly records: readonly ChangeRecord[];
+  /** The page's changes, each by its summary: its page asks the source for the rest by its id. */
+  readonly changes: readonly ChangeSummary[];
   /** How many match the search and the phase. */
   readonly total: number;
   /** How many done and cancelled ones match the search, whatever the phase. */
   readonly counts: { readonly done: number; readonly cancelled: number };
   /** How many finished changes there are, with no search nor phase. */
   readonly finished: number;
-  /** The title of the epic of each slice in the page, by the epic's id. */
-  readonly epics: Readonly<Record<string, string>>;
 }
 
 /** What the person decides on an entry of Specty's memory (ADR 0016). */
@@ -78,19 +86,14 @@ export abstract class SpectyData {
   }
 
   /**
-   * A page of the finished (done or cancelled) changes, found, filtered and sorted as the local
-   * server does. A source that gives every change works it out among them, with the views derived
-   * in a chunk loaded on first use, so the main thread never loads core's parser for it.
+   * A page of the finished (done or cancelled) changes, each by its summary, found, filtered and
+   * sorted as the local server does. A source that gives every change works it out among them,
+   * with the views derived in a chunk loaded on first use, so the main thread never loads core's
+   * parser for it.
    */
   async finished(request: FinishedRequest): Promise<FinishedPage> {
-    const records = await this.changes();
-    const views = (await import("./views")).deriveViews(records);
-    const finished = views.flatMap((view, index) => {
-      const record = records[index];
-      return record !== undefined && (view.phase === "done" || view.phase === "cancelled")
-        ? [{ ...view, record }]
-        : [];
-    });
+    const views = (await import("./views")).deriveViews(await this.changes());
+    const finished = views.filter((view) => view.phase === "done" || view.phase === "cancelled");
     const found = finished.filter((view) => matchesQuery(view, request.query));
     const shown = found.filter((view) => request.phase === "all" || view.phase === request.phase);
     const page = sortChanges(shown, request.sort, request.lang).slice(
@@ -99,13 +102,10 @@ export abstract class SpectyData {
     );
     const count = (phase: Phase) => found.filter((view) => view.phase === phase).length;
     return {
-      records: page.map((view) => view.record),
+      changes: page.map(summaryOf),
       total: shown.length,
       counts: { done: count("done"), cancelled: count("cancelled") },
       finished: finished.length,
-      epics: Object.fromEntries(
-        page.flatMap(({ epic }) => (epic === undefined ? [] : [[epic.id, epic.title]])),
-      ),
     };
   }
 
@@ -199,6 +199,14 @@ export abstract class SpectyData {
     return Promise.reject(new ActionError(NO_TRACE));
   }
 
+  /**
+   * The change of each slice of the epic `epic` that has one, found among every change, archived
+   * ones too; nothing when the source cannot tell, and the slices link to the changes loaded.
+   */
+  sliceChanges(_epic: string): Promise<readonly SliceChangeRecord[] | undefined> {
+    return Promise.resolve(undefined);
+  }
+
   /** Delegated mode as the source knows it; nothing when it cannot tell. */
   delegation(): Promise<Delegation | undefined> {
     return Promise.resolve(undefined);
@@ -223,4 +231,23 @@ export abstract class SpectyData {
   setDelegation(_on: boolean): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));
   }
+}
+
+/** What a list shows of a change: its summary, and nothing else of its view. */
+function summaryOf(view: ChangeView): ChangeSummary {
+  const { id, title, kind, epic, slices, phase, phaseSince, createdAt, closedAt, size } = view;
+  return {
+    id,
+    title,
+    kind,
+    ...(epic === undefined ? {} : { epic }),
+    ...(slices === undefined ? {} : { slices }),
+    phase,
+    phaseSince,
+    createdAt,
+    ...(closedAt === undefined ? {} : { closedAt }),
+    ...(size === undefined ? {} : { size }),
+    tasks: view.tasks,
+    tab: view.tab,
+  };
 }

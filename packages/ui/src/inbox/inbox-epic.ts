@@ -2,7 +2,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { KindBadge, PhaseBadge } from "../components/badge";
-import type { ChangeView } from "../data/records";
+import type { ListedChange } from "../data/records";
 
 /**
  * The group of an epic in a section of the Inbox: the epic heads it and its slices (features) go
@@ -39,7 +39,7 @@ export class InboxEpic {
   readonly epicId = input.required<string>();
   readonly title = input.required<string>();
   /** The epic as loaded, wherever it is: the phase and the tab of the header without a row. */
-  readonly epic = input<ChangeView | undefined>(undefined);
+  readonly epic = input<ListedChange | undefined>(undefined);
   /** The epic's own row heads the group, projected: no header of its own. */
   readonly headed = input(false);
 

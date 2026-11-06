@@ -20,6 +20,7 @@ import { LucideDynamicIcon } from "@lucide/angular";
 import { AcceptanceActions } from "../acceptance/acceptance-actions";
 import { AcceptanceTab } from "../acceptance/acceptance-tab";
 import { ClosingActions } from "../acceptance/closing-actions";
+import { adjustsWhileImplemented, EpicActions } from "../acceptance/epic-actions";
 import { KindBadge, PhaseBadge } from "../components/badge";
 import { PAGE } from "../components/document";
 import { EmptyState } from "../components/empty-state";
@@ -46,6 +47,7 @@ import { SpecReview } from "../review/spec-review";
 import { Preferences } from "../theme/preferences";
 import { ChangeBar } from "./change-bar";
 import { ChangeFacts } from "./change-facts";
+import { ChangeMemory } from "./change-memory";
 import { LostFolder } from "./lost-folder";
 import { ResumeHints } from "./resume-hints";
 
@@ -91,10 +93,12 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     ReviewActions,
     ChangeBar,
     ChangeFacts,
+    ChangeMemory,
     ProgressTab,
     AcceptanceTab,
     AcceptanceActions,
     ClosingActions,
+    EpicActions,
     TestsActions,
     HistoryTab,
     LostFolder,
@@ -133,11 +137,12 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
             </div>
             <!--
               Beside the title: the decision waiting (on the spec in review, on the tests once the
-              agent sent them, on the result in acceptance, on the closing once the agent sent it)
-              and, as a suggestion rather than a fact of the change, the effort for the agent.
-              Under the title, at its edge.
+              agent sent them, on the result in acceptance, on the closing once the agent sent it),
+              asking for an adjustment of an epic while its slices are implemented and, as a
+              suggestion rather than a fact of the change, the effort for the agent. Under the
+              title, at its edge.
             -->
-            @if (change.phase === 'review' || change.phase === 'acceptance' || change.decision === 'closing' || change.decision === 'tests' || (showEffort && change.effort)) {
+            @if (change.phase === 'review' || change.phase === 'acceptance' || change.decision === 'closing' || change.decision === 'tests' || adjustable(change) || (showEffort && change.effort)) {
               <div class="mt-1 flex flex-col items-end gap-3 max-lg:items-start">
                 @if (change.phase === 'review') {
                   <sp-review-actions class="max-lg:items-start" [change]="change" />
@@ -147,6 +152,8 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
                   <sp-acceptance-actions class="flex-wrap" [change]="change" />
                 } @else if (change.decision === 'closing') {
                   <sp-closing-actions [change]="change" />
+                } @else if (adjustable(change)) {
+                  <sp-epic-actions [change]="change" />
                 }
                 @if (showEffort && change.effort; as effort) {
                   <p class="m-0 flex max-w-80 items-start gap-2 text-[13px] text-text-muted" data-effort>
@@ -164,6 +171,18 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               {{ problem }}
             </p>
           }
+          @if (change.configIssues; as issues) {
+            <div class="mt-2 flex items-start gap-2 text-sm" role="note" data-config-issues>
+              <svg class="mt-0.5 shrink-0" [lucideIcon]="warning" size="14" aria-hidden="true" style="color: var(--color-phase-review)"></svg>
+              <div class="flex min-w-0 flex-col gap-1">
+                <span data-config-hint>{{ t()('No se pudo leer la configuración de su carpeta (.specty/config.yaml). Si la escribió un Specty más nuevo que el de este servidor, reinicia specty ui; si no, corrígela.', 'Its folder’s configuration (.specty/config.yaml) could not be read. If a newer Specty than this server’s wrote it, restart specty ui; otherwise, fix it.') }}</span>
+                @for (issue of issues; track issue) {
+                  <code class="font-mono text-xs break-all" data-config-issue>{{ issue }}</code>
+                }
+              </div>
+            </div>
+          }
+          <sp-change-memory [change]="change.id" />
         </header>
 
         <div [class]="page + ' mt-2'">
@@ -222,6 +241,7 @@ export class ChangePage {
   protected readonly waiting = WAITING;
   protected readonly suggestion = LucideLightbulb;
   protected readonly showEffort = inject(SHOW_EFFORT_HINT);
+  protected readonly adjustable = adjustsWhileImplemented;
   private readonly found = this.store.byId(this.id);
   protected readonly change = this.found.view;
   /** Neither the Inbox nor the source have it: the page says it does not exist. */

@@ -21,6 +21,7 @@ import { Collapsible } from "../components/collapsible";
 import { LIST } from "../components/document";
 import { LucideMessageSquare, LucideTriangleAlert } from "../components/icons";
 import { ItemTooltips } from "../components/item-tooltip";
+import { ChangesStore } from "../data/changes-store";
 import { Decisions } from "../data/decisions";
 import type { ChangeView, CommentAnchor, ReviewSection } from "../data/records";
 import { Preferences } from "../theme/preferences";
@@ -30,7 +31,7 @@ import { ReviewDelta } from "./delta-review";
 import { IndependentReview } from "./independent-review";
 import { Markdown } from "./markdown";
 import { SECTION_META, sectionNumber, sectionProgress } from "./section-meta";
-import { ReviewItems } from "./spec-sections";
+import { itemSection, ReviewItems } from "./spec-sections";
 import { UserRequest } from "./user-request";
 
 /** How long the section picked in the index stays highlighted. */
@@ -148,7 +149,7 @@ const SECTION =
                 @case ('design') {
                   <sp-collapsible [label]="t()('Ver el diseño', 'Show the design')"><sp-markdown [text]="review().design" /></sp-collapsible>
                 }
-                @default { <sp-review-items [review]="review()" [section]="itemSection(entry.key)" [editable]="editable()" (comment)="anchor.set($event)" /> }
+                @default { <sp-review-items [review]="review()" [section]="itemSection(entry.key)" [editable]="editable()" [epic]="change().id" [changes]="loaded()" (comment)="anchor.set($event)" /> }
               }
             </div>
           </section>
@@ -178,6 +179,9 @@ export class SpecReview {
   protected readonly section = SECTION;
   protected readonly number = sectionNumber;
   protected readonly list = LIST;
+  protected readonly itemSection = itemSection;
+  /** The changes loaded: each slice of an epic links to the one that implements it. */
+  protected readonly loaded = inject(ChangesStore).all;
   protected readonly warningIcon = LucideTriangleAlert;
   protected readonly commentIcon = LucideMessageSquare;
   protected readonly anchor = signal<CommentAnchor | undefined>(undefined);
@@ -251,10 +255,6 @@ export class SpecReview {
 
   protected label(key: ReviewSection): string {
     return SECTION_LABELS[key][this.lang()];
-  }
-
-  protected itemSection(key: ReviewSection): "criteria" | "files" | "tasks" | "risks" {
-    return key === "files" || key === "tasks" || key === "risks" ? key : "criteria";
   }
 
   protected progress(key: ReviewSection): string {

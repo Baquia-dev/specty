@@ -4,6 +4,7 @@
 import type {
   ChangeKind,
   ChangeState,
+  ChangeTab,
   EffortLevel,
   Lang,
   MemoryEntry,
@@ -43,6 +44,8 @@ export interface ChangeRecord {
   readonly orphan?: boolean;
   /** It waits for the agent and its conversation stepped last in another folder, minutes ago. */
   readonly away?: { readonly tool: string; readonly ago: number };
+  /** Its folder's `.specty/config.yaml` could not be read: each issue, as the server says it. */
+  readonly configIssues?: readonly string[];
   /** The independent reviews that answered, with their text, oldest first (ADR 0011). */
   readonly reviews?: readonly ReviewRecord[];
   /** In acceptance, each criterion with the tests that carry its id, from the server (ADR 0014). */
@@ -118,12 +121,26 @@ export interface CommentRecord {
 export type Bilingual = Readonly<Record<Lang, string>>;
 
 /**
- * `GET /api/memory` (ADR 0016): every entry of Specty's memory, done and dropped too, and the open
- * changes of every worktree as `specty status` sees them, with who holds each one.
+ * `GET /api/memory` (ADR 0016): every entry of Specty's memory, done and dropped too, the open
+ * changes of every worktree as `specty status` sees them, with who holds each one, and what each
+ * change the entries came from is.
  */
 export interface MemoryRecord {
   readonly entries: readonly MemoryEntry[];
   readonly changes: readonly StatusEntry[];
+  /** Each change the entries came from (`origin.change`), by its id; a source may not give it. */
+  readonly origins?: Readonly<Record<string, MemoryOrigin>>;
+}
+
+/**
+ * A change an entry of the memory came from: its title, kind and phase and, for a slice, its epic
+ * with its title; of a change the server does not find, only its id, as its title.
+ */
+export interface MemoryOrigin {
+  readonly title: string;
+  readonly kind?: ChangeKind;
+  readonly phase?: Phase;
+  readonly epic?: { readonly id: string; readonly title: string; readonly slice?: string };
 }
 
 /**
@@ -145,6 +162,7 @@ export type ReviewSection =
   | "criteria"
   | "files"
   | "tasks"
+  | "slices"
   | "risks"
   | "design";
 
@@ -181,6 +199,14 @@ export interface TaskItemView {
   readonly warnings: readonly Bilingual[];
 }
 
+/** A slice of an epic: the criteria it covers and the slices that must close before it. */
+export interface SliceItemView {
+  readonly id: string;
+  readonly title: string;
+  readonly ac: readonly string[];
+  readonly depends: readonly string[];
+}
+
 export interface CommentView extends CommentRecord {
   readonly section: ReviewSection;
   readonly resolved: boolean;
@@ -201,10 +227,13 @@ export interface DiffPart {
   readonly change?: "added" | "removed";
 }
 
-/** A criterion or a file of a task, as a chip, with what happened to it since the approval. */
+/**
+ * A criterion or a file of a task, or a criterion or a slice it depends on of a slice, as a chip,
+ * with what happened to it since the approval.
+ */
 export interface DeltaChipView {
   readonly label: string;
-  readonly kind: "criterion" | "file";
+  readonly kind: "criterion" | "file" | "slice";
   readonly change?: "added" | "removed";
   /** A file the approved revision did not list: "possible new scope". */
   readonly newScope: boolean;
@@ -214,14 +243,22 @@ export interface DeltaChipView {
 export interface DeltaEntryView {
   /** An item id (`AC3`), a file path, or the section key of a text (`goal`). */
   readonly key: string;
-  readonly kind: "title" | "section" | "assumption" | "criterion" | "task" | "risk" | "file";
+  readonly kind:
+    | "title"
+    | "section"
+    | "assumption"
+    | "criterion"
+    | "task"
+    | "slice"
+    | "risk"
+    | "file";
   readonly change: "added" | "removed" | "modified";
   readonly section: ReviewSection | "title";
   /** The text now, with the added words marked if modified; the text it had, if removed. */
   readonly text: readonly DiffPart[];
   /** Only when words were removed: the approved text, with the removed words marked. */
   readonly before?: readonly DiffPart[];
-  /** A task's criteria and files. */
+  /** A task's criteria and files; a slice's criteria and the slices it depends on. */
   readonly chips?: readonly DeltaChipView[];
   /** What changed without text of its own: an assumption's impact, a task's verification… */
   readonly details: readonly Bilingual[];
@@ -245,6 +282,8 @@ export interface ReviewView {
   readonly criteria: readonly CriterionView[];
   readonly files: readonly { readonly module: string; readonly files: readonly FileView[] }[];
   readonly tasks: readonly TaskItemView[];
+  /** An epic's slices, from its Cortes section; none in any other spec. */
+  readonly slices: readonly SliceItemView[];
   readonly risks: readonly { readonly id: string; readonly text: string }[];
   /** Unresolved first, then oldest first. */
   readonly comments: readonly CommentView[];
@@ -258,7 +297,8 @@ export interface ReviewView {
 /** What a change waits for from the person, if anything. */
 export type DecisionKind = "review" | "tests" | "scope" | "acceptance" | "closing";
 
-export type ChangeTab = "spec" | "progress" | "acceptance" | "history";
+/** The tab a change opens on: core's, by which the summary of a change gives it. */
+export type { ChangeTab };
 
 interface ScopeRequestView {
   readonly id: string;
@@ -303,6 +343,8 @@ export interface ChangeView {
   readonly orphan?: boolean;
   /** Its conversation left its folder: which agent, and how many minutes ago. */
   readonly away?: { readonly tool: string; readonly ago: number };
+  /** Its folder's configuration could not be read: each issue; none when it was. */
+  readonly configIssues?: readonly string[];
   /** Governed files that other open changes also list. */
   readonly shared?: readonly SharedFile[];
   readonly phaseSince: string;
@@ -344,6 +386,44 @@ export interface ChangeView {
   readonly lockedTests?: readonly LockedTestView[];
   /** What happened, from `audit.jsonl`, oldest first. */
   readonly history: readonly HistoryEntry[];
+}
+
+/**
+ * What the lists show of a change, and all the Inbox keeps of a finished one: its page asks the
+ * source for the rest by its id (`ChangesStore.byId`).
+ */
+export type ChangeSummary = Pick<
+  ChangeView,
+  | "id"
+  | "title"
+  | "kind"
+  | "epic"
+  | "slices"
+  | "phase"
+  | "phaseSince"
+  | "createdAt"
+  | "closedAt"
+  | "size"
+  | "tasks"
+  | "tab"
+>;
+
+/**
+ * The change that implements a slice of an epic, as the local server picks it among every change,
+ * archived ones too (`GET /api/changes/<id>/slices`).
+ */
+export interface SliceChangeRecord {
+  readonly slice: string;
+  readonly id: string;
+  readonly phase: Phase;
+}
+
+/** A change as a list shows it: its summary and, when it is loaded whole, everything else. */
+export type ListedChange = ChangeSummary & Partial<ChangeView>;
+
+/** Whether a listed change is loaded whole: only a whole view carries its review. */
+export function isWhole(change: ListedChange): change is ChangeView {
+  return change.review !== undefined;
 }
 
 /** Messages to and from the derivation worker. */

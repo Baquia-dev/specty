@@ -1,0 +1,150 @@
+{
+  "schema": 1,
+  "id": "20261106-un-pendiente-parecido-a-uno-abierto-no-entra",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-un-pendiente-parecido-a-uno-abierto-no-entra",
+  "baseCommit": "7fe3f0eb898f56a60cbd47a71b709c1dd85319c9",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:d8f753c1ff65e6c0a60bd544c25ddfece4a84db986bf0a776db0b57a3ba4bae4",
+    "at": "2026-11-05T21:40:10.806Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:76c3882dca0077b803287417f51d9ddcde5a28d9bd43916876986ee7a6856453",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:185c59bba1da27831f0c948a025bb29f58fc99f9067d2399377201a5d5ef57d6",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:40a540b2b8b6f998bf9854feb77ccb9478d407e5293b17bd9a8338e599c7c60b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:36bd489394bc756b58ad371a9d9e8b68e3144f3b7d2a40bf9340835a1b77753a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:43f228ba216d9d609f0906ab99ae8e0953a1db6972a5f9cba0e3eadf66b18f3e",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:5ea5ce9b76b8746e397bff0b99cd6076ff30db2b5336dc6515de25f80bc90792",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "72680827344b50b043571f1ec743d6c7c86f7469",
+      "attempts": 1,
+      "startedAt": "2026-11-05T21:43:24.306Z",
+      "doneAt": "2026-11-05T21:47:13.849Z",
+      "summary": "similarEntries en core/memory/similar.ts: los pendientes y las mejoras abiertos (isOpenEntry) cuyo texto completo se parece al nuevo con similarTexts, por fecha, sin los de distinctFrom (leídos con parseEntryId) y ninguno para otro tipo; exportada en index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "f1786cc230c6432320423da62a7ce05e747b79a6",
+      "attempts": 1,
+      "startedAt": "2026-11-05T21:47:14.214Z",
+      "doneAt": "2026-11-05T21:50:47.242Z",
+      "summary": "memorySimilarCard (cards/memory-similar.ts): bloqueada, nombra cada parecido con workLine, que ahora exporta cards/memory.ts, y pide no añadir ni mencionar la misma o repetir memory add con --distinct-from y esos ids; en español y en inglés",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "09f93a79d76e69bcbe05d48e91916054e39dbebd",
+      "attempts": 1,
+      "startedAt": "2026-11-05T21:50:47.551Z",
+      "doneAt": "2026-11-05T21:51:33.020Z",
+      "summary": "memory add registra --distinct-from <ids...> y, si la sesión no es de la persona, pide similarEntries dentro de editMemory: con parecidos devuelve memorySimilarCard sin escribir; las demás negativas siguen antes",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "7227c10968b55db78362a36bf35230afc76da69e",
+      "attempts": 1,
+      "startedAt": "2026-11-05T21:51:33.322Z",
+      "doneAt": "2026-11-05T21:52:16.154Z",
+      "summary": "formats.md, ARCHITECTURE.md y el ADR 0016 cuentan memory add --distinct-from y el freno de parecidos: quién lo tiene, qué compara, qué dice su salida y que la cosecha del cierre sigue con el texto exacto",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T03:42:33.027Z",
+  "lockedTests": {
+    "packages/cli/test/memory-similar.test.ts": "sha256:46bac86e3506bf30c44a723a240bc29d2363d574f1dad7793534742f37ca972f",
+    "packages/core/test/cards/memory-similar.test.ts": "sha256:1a8a331bb7687d450367bef0794ad77273efbf6d4732f263fbb57e2683e34524",
+    "packages/core/test/memory/similar.test.ts": "sha256:2ba3e63ad6a007cbf7c975198cbc781d79924f0070d4231fdc69ffdbcee485b8"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "204622d8f501dccfd49f2b4604df95472a5210a9",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/decisions/0016-la-memoria-de-specty.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/memory.ts",
+      "packages/cli/src/flow/epic.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/slices.ts",
+      "packages/cli/test/memory-similar.test.ts",
+      "packages/cli/test/server/slices.test.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/memory-similar.ts",
+      "packages/core/src/cards/memory.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/memory/similar.ts",
+      "packages/core/test/cards/memory-similar.test.ts",
+      "packages/core/test/memory/similar.test.ts",
+      "packages/ui/src/change/change-memory.test.ts",
+      "packages/ui/src/change/change-memory.ts",
+      "packages/ui/src/change/change-page.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/sample-memory.test.ts",
+      "packages/ui/src/data/sample-memory.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/memory/memory-lines.ts",
+      "packages/ui/src/memory/memory-page.ts",
+      "packages/ui/src/memory/memory-url.test.ts",
+      "packages/ui/src/review/spec-sections.test.ts",
+      "packages/ui/src/review/spec-sections.ts"
+    ],
+    "at": "2026-11-05T22:14:01.379Z",
+    "resolved": {
+      "commit": "7a64a7d",
+      "at": "2026-11-06T02:38:21.258Z"
+    }
+  }
+}

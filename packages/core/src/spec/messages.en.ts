@@ -78,6 +78,8 @@ export const MESSAGES_EN: MessageCatalog = {
     `The slice is too large (${v(p, "detail")}) and a slice cannot be an epic: narrow it to what fits in one change and take the rest to new slices of epic ${v(p, "epic")}, which is adjusted in its folder while it is implemented (\`adjust\`, the new slices in "Slices" with their \`depends\`, and \`propose\`); the person approves it again.`,
   "done-task-changed": (p) =>
     `${v(p, "id")} is already done and cannot be modified or removed; add a new task.`,
+  "closed-slice-changed": (p) =>
+    `Slice ${v(p, "id")} was already closed by change ${v(p, "change")}, and an adjustment of the epic cannot modify or remove it; take what is missing to a new slice, with its \`ac\` and its \`depends\`.`,
   "closing-outside": (p) =>
     `While closing, only the Closing section can change; ${v(p, "target")} changed.`,
   "closing-premature": () =>

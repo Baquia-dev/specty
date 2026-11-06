@@ -1,7 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
-import { ChangeDetectionStrategy, Component, inject, input, output } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  resource,
+} from "@angular/core";
+import { RouterLink } from "@angular/router";
 import { LucideDynamicIcon } from "@lucide/angular";
-import { Badge } from "../components/badge";
+import { Badge, PhaseBadge } from "../components/badge";
 import { IconButton } from "../components/button";
 import { LIST, REVEAL, ROW } from "../components/document";
 import {
@@ -19,10 +29,13 @@ import { ItemTooltips } from "../components/item-tooltip";
 import type { Toasts } from "../components/toast";
 import {
   ActionError,
+  type ChangeSummary,
   type CommentAnchor,
   type DiffPart,
   type FileView,
+  type ReviewSection,
   type ReviewView,
+  SpectyData,
   type TaskItemView,
 } from "../data/records";
 import { Preferences } from "../theme/preferences";
@@ -77,10 +90,33 @@ const STATUS = {
   done: { icon: LucideCircleCheck, es: "Hecha", en: "Done" },
 } as const;
 
-/** Criteria, files by module, tasks and risks as document rows: each item can be commented on. */
+/** The sections `sp-review-items` shows as rows. */
+export type ItemSection = "criteria" | "files" | "tasks" | "slices" | "risks";
+
+/** The rows of a section: its own for the item sections, the criteria for any other. */
+export function itemSection(key: ReviewSection): ItemSection {
+  switch (key) {
+    case "files":
+    case "tasks":
+    case "slices":
+    case "risks":
+      return key;
+    default:
+      return "criteria";
+  }
+}
+
+/** What a slice's row shows of the change that implements it: its page and its phase. */
+type SliceLink = Pick<ChangeSummary, "id" | "phase">;
+
+/**
+ * Criteria, files by module, tasks, slices and risks as document rows: each item can be commented
+ * on. With `epic`, each slice links to the change that implements it: the one the source gives
+ * or, while it does not, the one among `changes`.
+ */
 @Component({
   selector: "sp-review-items",
-  imports: [LucideDynamicIcon, Badge, IconButton],
+  imports: [LucideDynamicIcon, RouterLink, Badge, PhaseBadge, IconButton],
   hostDirectives: [ItemTooltips],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -163,6 +199,43 @@ const STATUS = {
           }
         </ol>
       }
+      @case ('slices') {
+        <ol [class]="list">
+          @for (slice of review().slices; track slice.id) {
+            <li [class]="row" [attr.data-item]="slice.id">
+              <span class="pt-0.5 font-mono text-xs text-text-muted">{{ slice.id }}</span>
+              <div class="flex min-w-0 flex-col gap-1.5">
+                @if (sliceChanges().get(slice.id); as change) {
+                  <a class="self-start font-medium text-text underline underline-offset-2" [routerLink]="['/changes', change.id]">{{ slice.title }}</a>
+                } @else {
+                  <p class="m-0 font-medium">{{ slice.title }}</p>
+                }
+                <div class="flex flex-wrap items-center gap-1">
+                  @for (criterion of slice.ac; track criterion) {
+                    <sp-badge>{{ criterion }}</sp-badge>
+                  }
+                  @if (slice.depends.length > 0) {
+                    <span class="ml-2 flex flex-wrap items-center gap-1 text-xs text-text-muted" data-depends>
+                      {{ t()('Depende de', 'Depends on') }}&ngsp;
+                      @for (other of slice.depends; track other) {
+                        <sp-badge>{{ other }}</sp-badge>
+                      }
+                    </span>
+                  }
+                </div>
+              </div>
+              <div class="flex items-start gap-1">
+                @if (sliceChanges().get(slice.id); as change) {
+                  <sp-phase-badge [phase]="change.phase" />
+                }
+                @if (editable()) {
+                  <sp-icon-button [class]="reveal" size="sm" [label]="commentLabel(slice.id)" [icon]="commentIcon" (pressed)="comment.emit({ item: slice.id })" />
+                }
+              </div>
+            </li>
+          }
+        </ol>
+      }
       @case ('risks') {
         <ul [class]="list">
           @for (risk of review().risks; track risk.id) {
@@ -181,9 +254,16 @@ const STATUS = {
 })
 export class ReviewItems {
   readonly review = input.required<ReviewView>();
-  readonly section = input.required<"criteria" | "files" | "tasks" | "risks">();
+  readonly section = input.required<ItemSection>();
   /** In review, where the person may decide: each item can be commented on. */
   readonly editable = input(false);
+  /** The change under review, whose slices link to their changes; none in the chat's cards. */
+  readonly epic = input<string | undefined>(undefined);
+  /**
+   * The changes loaded, among which each slice of `epic` finds the one that implements it while
+   * the source does not say it.
+   */
+  readonly changes = input<readonly ChangeSummary[]>([]);
   readonly comment = output<CommentAnchor>();
 
   private readonly preferences = inject(Preferences);
@@ -198,8 +278,54 @@ export class ReviewItems {
   protected readonly list = LIST;
   protected readonly reveal = REVEAL;
 
+  /** The source, to ask for the change of each slice; none where the cards render the sections. */
+  private readonly data = inject(SpectyData, { optional: true });
+  /**
+   * The change of each slice of `epic`, as the source picks it among every change, archived ones
+   * too: asked only in an epic's Cortes section, and again whenever the source says something
+   * changed; nothing when the source cannot tell.
+   */
+  private readonly given = resource({
+    params: () => (this.section() === "slices" ? this.epic() : undefined),
+    loader: ({ params }) => this.data?.sliceChanges(params) ?? Promise.resolve(undefined),
+  });
+
+  /**
+   * The change of each slice of `epic`: what the source gives once it answers or else, while it
+   * does not or when it fails, the one among the changes loaded (`loadedSliceChanges`).
+   */
+  protected readonly sliceChanges = computed((): ReadonlyMap<string, SliceLink> => {
+    const given = this.given.hasValue() ? this.given.value() : undefined;
+    if (given === undefined) return this.loadedSliceChanges();
+    return new Map(given.map((change) => [change.slice, change]));
+  });
+
+  /**
+   * The change of each slice of `epic` among the changes loaded: a closed one or, without one, the
+   * first of the others; a cancelled change frees its slice, as in the epic's card (`flow/epic.ts`).
+   */
+  private readonly loadedSliceChanges = computed((): ReadonlyMap<string, SliceLink> => {
+    const epic = this.epic();
+    const found = new Map<string, ChangeSummary>();
+    if (epic === undefined) return found;
+    for (const change of this.changes()) {
+      const slice = change.epic?.id === epic ? change.epic.slice : undefined;
+      if (slice === undefined || change.phase === "cancelled") continue;
+      const kept = found.get(slice);
+      if (kept === undefined || (change.phase === "done" && kept.phase !== "done")) {
+        found.set(slice, change);
+      }
+    }
+    return found;
+  });
+
   constructor() {
     inject(ItemTooltips).setSource(() => this.review());
+    effect((onCleanup) => {
+      const data = this.data;
+      if (data === null || this.section() !== "slices" || this.epic() === undefined) return;
+      onCleanup(data.subscribe(() => this.given.reload()));
+    });
   }
 
   protected actionLabel(file: FileView): string {

@@ -20,7 +20,7 @@ import { EmptyState } from "../components/empty-state";
 import { LucideInbox, LucideSearchX, LucideTriangleAlert } from "../components/icons";
 import { Skeleton } from "../components/skeleton";
 import { ChangesStore } from "../data/changes-store";
-import { ActionError, type ChangeView } from "../data/records";
+import { ActionError, type ListedChange } from "../data/records";
 import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences } from "../theme/preferences";
 import { InboxEpic } from "./inbox-epic";
@@ -235,7 +235,7 @@ export class Inbox {
     });
   }
 
-  protected isSelected(change: ChangeView): boolean {
+  protected isSelected(change: ListedChange): boolean {
     return this.selected() === change.id;
   }
 

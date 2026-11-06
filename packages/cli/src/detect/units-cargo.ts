@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join, posix } from "node:path";
 import type { WorkspacePackage } from "@baquia-dev/specty-core";
-import { parse } from "smol-toml";
-import { exists, isRecord, readText } from "../io/files";
+import { exists, isRecord } from "../io/files";
 import { expand } from "./project";
+import { rootPackagePaths } from "./root-package";
+import { readToml, strings, type Table } from "./toml";
 import type { WorkspaceFacts } from "./workspace-units";
-
-type Table = Readonly<Record<string, unknown>>;
 
 /** The root files every member's tests read, when they exist. */
 const SHARED = [
@@ -29,17 +28,28 @@ interface Member {
 
 /**
  * A Cargo workspace: the members of the root `Cargo.toml`'s `[workspace]`, each tested with
- * `cargo test -p <name>`, and the root files they share. Undefined without a `[workspace]`, and
- * when the root is a package too, whose folder would be the whole repository.
+ * `cargo test -p <name>`, and the root files they share. A root that is a package too is one more
+ * member, in `.`, that reads the root outside the members' folders (`rootPackagePaths`).
+ * Undefined without a `[workspace]`.
  */
 export async function cargoWorkspace(root: string): Promise<WorkspaceFacts | undefined> {
-  const manifest = toml(await readText(join(root, "Cargo.toml")));
+  const manifest = await readToml(join(root, "Cargo.toml"));
   const workspace = manifest?.workspace;
-  if (manifest === undefined || !isRecord(workspace) || "package" in manifest) return undefined;
+  if (manifest === undefined || !isRecord(workspace)) return undefined;
   const read = await Promise.all(
     (await memberDirs(root, workspace)).map((dir) => memberOf(root, dir)),
   );
-  const members = read.flatMap((member) => (member === undefined ? [] : [member]));
+  const others = read.flatMap((member) => (member === undefined ? [] : [member]));
+  const self = memberIn(manifest, ".");
+  const members = self === undefined ? others : [self, ...others];
+  // A folder the members' globs take in without a package is not a member: the root may read it.
+  const own =
+    self === undefined
+      ? undefined
+      : await rootPackagePaths(
+          root,
+          others.map((member) => member.dir),
+        );
   const inherited = isRecord(workspace.dependencies) ? workspace.dependencies : {};
   const names = new Map(members.map((member) => [member.dir, member.name]));
   const packages: WorkspacePackage[] = members.map((member) => ({
@@ -48,22 +58,31 @@ export async function cargoWorkspace(root: string): Promise<WorkspaceFacts | und
     tests: true,
     command: `cargo test -p ${member.name}`,
     uses: usesOf(member, inherited, names),
+    ...(member === self && own !== undefined ? { paths: own } : {}),
   }));
   const found = await Promise.all(SHARED.map((file) => exists(join(root, file))));
   return { packages, shared: SHARED.filter((_, at) => found[at] === true) };
 }
 
-/** The folders of `members`, with their globs expanded, minus those under an `exclude`, sorted. */
+/**
+ * The folders of `members`, with their globs expanded, minus those under an `exclude` and the
+ * root, which is a member only as a package of its own manifest, sorted.
+ */
 async function memberDirs(root: string, workspace: Table): Promise<readonly string[]> {
   const excluded = strings(workspace.exclude).map(clean);
   const expanded = await Promise.all(strings(workspace.members).map((at) => expand(root, at)));
   const outside = (dir: string) => !excluded.some((ex) => dir === ex || dir.startsWith(`${ex}/`));
-  return [...new Set(expanded.flat())].filter(outside).toSorted();
+  const members = [...new Set(expanded.flat().map(clean))];
+  return members.filter((dir) => dir !== "." && outside(dir)).toSorted();
 }
 
 /** The member in `dir`: undefined without a `Cargo.toml` it can read with a package name. */
 async function memberOf(root: string, dir: string): Promise<Member | undefined> {
-  const manifest = toml(await readText(join(root, dir, "Cargo.toml")));
+  return memberIn(await readToml(join(root, dir, "Cargo.toml")), dir);
+}
+
+/** The member in `dir` whose `Cargo.toml` is `manifest`: undefined without a package name. */
+function memberIn(manifest: Table | undefined, dir: string): Member | undefined {
   const pkg = manifest?.package;
   if (manifest === undefined || !isRecord(pkg) || typeof pkg.name !== "string") return undefined;
   const targets = isRecord(manifest.target) ? Object.values(manifest.target).filter(isRecord) : [];
@@ -103,20 +122,4 @@ function folderOf(dir: string, key: string, spec: unknown, inherited: Table): st
 /** A repository-relative folder without `./`, `..` steps or a trailing slash. */
 function clean(path: string): string {
   return posix.normalize(path).replace(/\/+$/, "");
-}
-
-function strings(value: unknown): readonly string[] {
-  return Array.isArray(value)
-    ? value.filter((item): item is string => typeof item === "string")
-    : [];
-}
-
-/** A TOML file's tables; undefined when it is missing or cannot be read. */
-function toml(text: string | undefined): Table | undefined {
-  if (text === undefined) return undefined;
-  try {
-    return parse(text);
-  } catch {
-    return undefined;
-  }
 }

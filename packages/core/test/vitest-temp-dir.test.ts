@@ -9,7 +9,8 @@ import setup from "../vitest-temp-dir";
 
 const RUN = /^specty-tests-\d+-/;
 const KEYS = ["TMPDIR", "TMP", "TEMP"] as const;
-const saved = KEYS.map((key) => [key, process.env[key]] as const);
+const CACHE = "SPECTY_TESTS_CACHE";
+const saved = [...KEYS, CACHE].map((key) => [key, process.env[key]] as const);
 
 afterEach(() => {
   for (const [key, value] of saved) {
@@ -90,6 +91,33 @@ describe("vitest-temp-dir", () => {
     expect(`${run.stdout}${run.stderr}`).toContain(`folder: ${join(system, "specty-tests-")}`);
     expect(runs(system)).toEqual([]);
   }, 60_000);
+
+  it("leaves a shared folder for caches, outside the run's, which outlives it", () => {
+    const system = systemFolder();
+    Reflect.deleteProperty(process.env, CACHE);
+    const teardown = setup();
+    const cache = join(system, "specty-tests-cache");
+    expect(process.env[CACHE]).toBe(cache);
+    mkdirSync(join(cache, "opencode"), { recursive: true });
+    writeFileSync(join(cache, "opencode", "provider.js"), "x\n");
+    teardown();
+    expect(process.env[CACHE]).toBeUndefined();
+    const next = setup();
+    expect(existsSync(join(cache, "opencode", "provider.js"))).toBe(true);
+    next();
+    expect(existsSync(join(cache, "opencode", "provider.js"))).toBe(true);
+  });
+
+  it("keeps the cache folder already set, as a run its tests start inherits it", () => {
+    const system = systemFolder();
+    const mine = join(system, "mine");
+    process.env[CACHE] = mine;
+    const teardown = setup();
+    expect(process.env[CACHE]).toBe(mine);
+    teardown();
+    expect(process.env[CACHE]).toBe(mine);
+    expect(existsSync(mine)).toBe(false);
+  });
 
   it("AC2: removes the folders of runs whose process ended and leaves the rest", () => {
     const system = systemFolder();

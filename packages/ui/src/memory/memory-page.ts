@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
+import { NgTemplateOutlet } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
   inject,
+  input,
+  linkedSignal,
   resource,
   signal,
 } from "@angular/core";
@@ -26,19 +29,9 @@ import { ActionError, type Bilingual, SpectyData } from "../data/records";
 import { reportFailure } from "../review/spec-sections";
 import { Preferences } from "../theme/preferences";
 import { DropEntry } from "./drop-entry";
-import { changeLine, entryLine } from "./memory-lines";
+import { MemoryGroupView } from "./memory-group";
+import { changeLine, ENTRY_KINDS, entryLine, firstLine } from "./memory-lines";
 import { type MemoryItem, memorySections } from "./memory-view";
-
-/** Each kind of entry: its name and the phase color it borrows. */
-const KINDS: Readonly<
-  Record<MemoryEntry["kind"], { readonly label: Bilingual; readonly tone: string }>
-> = {
-  pending: { label: { es: "pendiente", en: "pending" }, tone: "draft" },
-  improvement: { label: { es: "mejora", en: "improvement" }, tone: "implementing" },
-  reminder: { label: { es: "recordatorio", en: "reminder" }, tone: "acceptance" },
-  decision: { label: { es: "decisión", en: "decision" }, tone: "review" },
-  lesson: { label: { es: "lección", en: "lesson" }, tone: "testing" },
-};
 
 /** The toolbar's choices of kind: every entry, or one kind. */
 const KIND_FILTERS = ["all", "pending", "improvement", "reminder", "decision", "lesson"] as const;
@@ -61,6 +54,7 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
 @Component({
   selector: "sp-memory-page",
   imports: [
+    NgTemplateOutlet,
     RouterLink,
     LucideDynamicIcon,
     PhaseBadge,
@@ -69,6 +63,7 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
     Skeleton,
     Segmented,
     Button,
+    MemoryGroupView,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -114,60 +109,77 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
         @for (section of sections(); track section.key) {
           <section [attr.aria-labelledby]="'memory-' + section.key" [attr.data-section]="section.key">
             <sp-section-divider [heading]="t()(section.label.es, section.label.en)" [headingId]="'memory-' + section.key" [meta]="section.items.length" [level]="2" />
-            <div role="list" [class]="list + ' mt-2'">
-              @for (item of section.items; track keyOf(item)) {
-                @if (entryOf(item); as entry) {
-                  <div role="listitem" [class]="row" [attr.data-entry]="entry.id">
-                    <span class="pt-0.5 font-mono text-xs text-text-muted tabular-nums">{{ entry.id }}</span>
-                    <div class="flex min-w-0 flex-col gap-0.5">
-                      <span class="text-sm break-words">
-                        <span class="mr-1.5 inline-flex h-5 items-center rounded-full px-2 text-[11px] font-medium" [style.color]="'var(--color-phase-' + kinds[entry.kind].tone + ')'" [style.background]="'var(--color-phase-' + kinds[entry.kind].tone + '-bg)'">{{ t()(kinds[entry.kind].label.es, kinds[entry.kind].label.en) }}</span>{{ firstLine(entry.text) }}
-                      </span>
-                      <span class="text-xs text-text-muted">{{ entryLine(item, entry) }}</span>
-                    </div>
-                    <div class="flex items-center gap-1.5">
-                      @if (decisions.allowed()) {
-                        @switch (item.kind) {
-                          @case ('proposal') {
-                            <sp-button size="sm" variant="primary" (pressed)="drop(entry)">{{ t()('Descartar', 'Drop') }}</sp-button>
-                            <sp-button size="sm" (pressed)="keep(entry)">{{ t()('Mantener', 'Keep') }}</sp-button>
-                          }
-                          @case ('reminder') {
-                            <sp-button size="sm" (pressed)="done(entry)">{{ t()('Marcar hecho', 'Mark done') }}</sp-button>
-                          }
-                          @case ('closed') {}
-                          @default {
-                            <span [class]="reveal"><sp-button size="sm" (pressed)="drop(entry)">{{ t()('Descartar', 'Drop') }}</sp-button></span>
-                          }
-                        }
-                      }
-                    </div>
-                  </div>
-                } @else if (changeOf(item); as change) {
-                  <div role="listitem" [class]="row" [attr.data-change]="change.id">
-                    <span></span>
-                    <div class="flex min-w-0 flex-col gap-0.5">
-                      <span class="flex flex-wrap items-center gap-2">
-                        <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change.id]">{{ change.title }}</a>
-                        <sp-phase-badge [phase]="change.phase" />
-                        @if (change.orphan) {
-                          <span class="inline-flex h-5 items-center rounded-full px-2 text-[11px] font-medium" style="color: var(--color-phase-review); background: var(--color-phase-review-bg)">{{ t()('huérfano', 'orphaned') }}</span>
-                        }
-                      </span>
-                      <span class="text-xs break-all text-text-muted">{{ changeLine(change) }}</span>
-                    </div>
-                    <span></span>
-                  </div>
+            @if (section.groups; as groups) {
+              <div [class]="list + ' mt-2'">
+                @for (group of groups; track group.change?.id ?? 'none') {
+                  <sp-memory-group [group]="group" [row]="entryRow" />
                 }
-              }
-            </div>
+              </div>
+            } @else {
+              <div role="list" [class]="list + ' mt-2'">
+                @for (item of section.items; track keyOf(item)) {
+                  @if (entryOf(item)) {
+                    <ng-container *ngTemplateOutlet="entryRow; context: { $implicit: item }" />
+                  } @else if (changeOf(item); as change) {
+                    <div role="listitem" [class]="row" [attr.data-change]="change.id">
+                      <span></span>
+                      <div class="flex min-w-0 flex-col gap-0.5">
+                        <span class="flex flex-wrap items-center gap-2">
+                          <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change.id]">{{ change.title }}</a>
+                          <sp-phase-badge [phase]="change.phase" />
+                          @if (change.orphan) {
+                            <span class="inline-flex h-5 items-center rounded-full px-2 text-[11px] font-medium" style="color: var(--color-phase-review); background: var(--color-phase-review-bg)">{{ t()('huérfano', 'orphaned') }}</span>
+                          }
+                        </span>
+                        <span class="text-xs break-all text-text-muted">{{ changeLine(change) }}</span>
+                      </div>
+                      <span></span>
+                    </div>
+                  }
+                }
+              </div>
+            }
           </section>
         }
       }
     </div>
+    <ng-template #entryRow let-item>
+      @if (entryOf(item); as entry) {
+        <div role="listitem" [class]="row" [attr.data-entry]="entry.id">
+          <span class="pt-0.5 font-mono text-xs text-text-muted tabular-nums">{{ entry.id }}</span>
+          <div class="flex min-w-0 flex-col gap-0.5">
+            <span class="text-sm break-words">
+              <span class="mr-1.5 inline-flex h-5 items-center rounded-full px-2 text-[11px] font-medium" [style.color]="'var(--color-phase-' + kinds[entry.kind].tone + ')'" [style.background]="'var(--color-phase-' + kinds[entry.kind].tone + '-bg)'">{{ t()(kinds[entry.kind].label.es, kinds[entry.kind].label.en) }}</span>{{ firstLine(entry.text) }}
+            </span>
+            <span class="text-xs text-text-muted">{{ entryLine(item, entry) }}</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            @if (decisions.allowed()) {
+              @switch (item.kind) {
+                @case ('proposal') {
+                  <sp-button size="sm" variant="primary" (pressed)="drop(entry)">{{ t()('Descartar', 'Drop') }}</sp-button>
+                  <sp-button size="sm" (pressed)="keep(entry)">{{ t()('Mantener', 'Keep') }}</sp-button>
+                }
+                @case ('reminder') {
+                  <sp-button size="sm" (pressed)="done(entry)">{{ t()('Marcar hecho', 'Mark done') }}</sp-button>
+                }
+                @case ('closed') {}
+                @default {
+                  <span [class]="reveal"><sp-button size="sm" (pressed)="drop(entry)">{{ t()('Descartar', 'Drop') }}</sp-button></span>
+                }
+              }
+            }
+          </div>
+        </div>
+      }
+    </ng-template>
   `,
 })
 export class MemoryPage {
+  /** From the route: `/memory?q=P12&closed=1`, as a change's page links one of its entries. */
+  readonly q = input<string | undefined>(undefined);
+  readonly closedParam = input<string | undefined>(undefined, { alias: "closed" });
+
   private readonly data = inject(SpectyData);
   private readonly dialogs = inject(Dialogs);
   private readonly toasts = inject(Toasts);
@@ -181,7 +193,8 @@ export class MemoryPage {
   protected readonly list = LIST;
   protected readonly row = ROW;
   protected readonly reveal = REVEAL;
-  protected readonly kinds = KINDS;
+  protected readonly kinds = ENTRY_KINDS;
+  protected readonly firstLine = firstLine;
 
   /** «Descartar»: the dialog with the reason, which brings the one of a proposal. */
   protected drop(entry: MemoryEntry): void {
@@ -205,9 +218,10 @@ export class MemoryPage {
   }
 
   protected readonly searchIcon = LucideSearch;
-  protected readonly query = signal("");
+  /** The search and the closed entries start as the URL says; the toolbar changes them after. */
+  protected readonly query = linkedSignal(() => this.q() ?? "");
   protected readonly kind = signal("all");
-  protected readonly closed = signal(false);
+  protected readonly closed = linkedSignal(() => this.closedParam() === "1");
 
   /** The page's sections without the toolbar's filter: none means the memory is empty. */
   protected readonly everything = computed(() => memorySections(this.record()));
@@ -260,10 +274,6 @@ export class MemoryPage {
 
   protected changeOf(item: MemoryItem): StatusEntry | undefined {
     return "change" in item ? item.change : undefined;
-  }
-
-  protected firstLine(text: string): string {
-    return text.trim().split("\n")[0] ?? "";
   }
 
   /** Under an entry: who proposed to drop it and why, or who took it, its quote and its origin. */

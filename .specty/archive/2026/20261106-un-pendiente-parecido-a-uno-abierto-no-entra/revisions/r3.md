@@ -1,0 +1,112 @@
+---
+kind: standard
+epic: 20261106-pendientes-de-la-sesion-por-feature
+slice: C3
+---
+
+# Un pendiente parecido a uno abierto no entra dos veces
+
+## Objetivo
+
+Desde C1 un agente ya no ve los pendientes abiertos al empezar, así que puede volver a anotar con otras palabras uno que ya existe, como pasó con P78/P79 y P98/P99/P100/P108. Con este cambio, el `memory add` de un agente no escribe un pendiente ni una mejora cuyo texto se parece al de uno abierto: responde con los parecidos y le pide repetirlo con `--distinct-from <ids>` si es distinto, y no mencionarlo al usuario si es el mismo. Es el corte C3 de la épica `20261106-pendientes-de-la-sesion-por-feature` (AC6 y AC10 de la épica).
+
+## Fuera de alcance
+
+- Comparar por parecido los pendientes que cosecha el cierre (`harvestable`): siguen comparando el texto exacto.
+- Cambiar la red del fin de turno (`enforce/memory-stop.ts`): devuelve el turno para que el agente anote con `memory add`, que ya tiene el freno.
+- Un freno para la persona, o para los recordatorios, las decisiones y las lecciones.
+- Guardar en la entrada los ids de `--distinct-from`: las entradas no tienen campos nuevos.
+- Limpiar los parecidos que ya están abiertos: descartar es solo de la persona (ADR 0016).
+- La UI: son los cortes C4 y C5.
+
+## Supuestos
+
+- A1: Dos entradas se parecen con la regla que usa `new` para los cambios, `similarTexts` de `core/src/flow/duplicates.ts`, sobre el texto completo de cada una: comparten la mitad de las palabras significativas del texto más corto, y al menos dos. Medida sobre los 72 pendientes y mejoras abiertos de este repositorio, encuentra P78/P79, P98/P99/P100/P108 y P2/P9.
+  - impacto: alto
+- A2: Un pendiente o una mejora nuevos se comparan con los pendientes y las mejoras abiertos según `isOpenEntry`, de los dos tipos: libres, tomados o propuestos para descartar. Un pendiente frena a una mejora parecida y al revés. Los recordatorios, las decisiones y las lecciones no frenan a nadie ni tienen freno.
+  - impacto: alto
+- A3: La persona es la sesión con `actor` `human`, la de su terminal interactiva, como en `memory drop`. La UI no anota entradas, así que no hay otro camino de la persona. Un agente en modo delegado también tiene el freno.
+  - impacto: medio
+- A4: `--distinct-from <ids...>` lee los ids como `memory resolve` (`p78` y `P078` son P78). Los parecidos que nombra no frenan, y uno que no es parecido no hace nada. Si faltan ids parecidos, la salida nombra solo los que faltan. En la persona o en otro tipo de entrada no hace nada.
+  - impacto: bajo
+- A5: La comparación va dentro de la edición de la memoria, sobre las entradas que lee justo antes de escribir. Así, si dos sesiones anotan a la vez textos parecidos, la que reintenta tras el conflicto ya ve la otra y se frena.
+  - impacto: bajo
+- A6: La salida del freno es «bloqueada» (código 2), como la de `new` ante un posible duplicado. Su primera línea dice que no se anotó porque puede repetir una entrada abierta. Debajo nombra cada parecido como «id · tipo · primera línea», por fecha. SIGUIENTE dice: si es la misma, no la añadas ni se la menciones al usuario y sigue con `next`; si es distinta, vuelve a ejecutar `memory add` con `--distinct-from` y esos ids.
+  - impacto: bajo
+
+## Criterios de aceptación
+
+- AC1: CUANDO un agente añade con `memory add` un pendiente o una mejora cuyo texto se parece al de un pendiente o una mejora abiertos, libres, tomados o propuestos para descartar ENTONCES no escribe nada en la memoria, y la salida nombra cada parecido con su id, su tipo y su primera línea; dice que, si es la misma, no la añada ni se la mencione al usuario, y que, si es distinta, repita el comando con `--distinct-from` y esos ids.
+- AC2: CUANDO el agente lo repite con `--distinct-from` y todos los ids parecidos ENTONCES se escribe; CUANDO faltan algunos ENTONCES no se escribe y la salida nombra solo los que faltan.
+- AC3: CUANDO el texto nuevo solo se parece a entradas hechas o descartadas, a recordatorios, a decisiones o a lecciones, o no se parece a ninguna ENTONCES se escribe.
+- AC4: CUANDO la persona añade una entrada desde su terminal, o la entrada nueva es un recordatorio, una decisión o una lección ENTONCES se escribe aunque se parezca a un pendiente abierto.
+- AC5: CUANDO salen los textos nuevos ENTONCES salen en español y en inglés.
+
+## Diseño
+
+- Core, `memory/similar.ts`, nuevo porque `memory/entries.ts` ya tiene 371 líneas: `similarEntries(entries, { kind, text, distinctFrom })` da, por fecha (`byDate`), los pendientes y las mejoras abiertos (`isOpenEntry`) cuyo texto se parece al nuevo con `similarTexts`. Quita los de `distinctFrom`, que lee con `parseEntryId`, y no da ninguno si el tipo nuevo no es un pendiente ni una mejora. Se exporta en `core/src/index.ts`.
+- Core, `cards/memory-similar.ts`, nuevo porque `cards/memory.ts` ya tiene 309 líneas: `memorySimilarCard(found, ctx)`, la tarjeta de A6. Nombra cada entrada con `workLine` de `cards/memory.ts`, que se exporta, y se exporta en `cards/index.ts`.
+- CLI, `commands/memory.ts`: `memory add` registra `--distinct-from <ids...>`. Dentro de `editMemory`, si la sesión no es de la persona, pide `similarEntries` con las entradas que lee; con parecidos, devuelve `memorySimilarCard` sin escribir. Las demás negativas de `memory add` van antes, como hoy.
+
+## Archivos
+
+- crear packages/core/src/memory/similar.ts — los pendientes y las mejoras abiertos que se parecen a uno nuevo
+- modificar packages/core/src/index.ts — exporta `similarEntries`
+- crear packages/core/test/memory/similar.test.ts — qué entradas se parecen a una nueva y cuáles no
+- crear packages/core/src/cards/memory-similar.ts — la tarjeta del freno de parecidos de `memory add`
+- modificar packages/core/src/cards/memory.ts — exporta `workLine`, con la que la tarjeta nombra cada parecido
+- modificar packages/core/src/cards/index.ts — exporta `memorySimilarCard`
+- crear packages/core/test/cards/memory-similar.test.ts — la tarjeta del freno, en español y en inglés
+- modificar packages/cli/src/commands/memory.ts — `memory add --distinct-from` y el freno de parecidos para un agente
+- crear packages/cli/test/memory-similar.test.ts — el freno de `memory add` de punta a punta: quién lo tiene, qué frena y `--distinct-from`
+- modificar docs/formats.md — `memory add --distinct-from` y el freno de parecidos
+- modificar docs/ARCHITECTURE.md — `--distinct-from` en la lista de opciones de `memory add`
+- modificar docs/decisions/0016-la-memoria-de-specty.md — un pendiente parecido a uno abierto no entra dos veces
+
+## Tareas
+
+- [x] T1: Las entradas abiertas que se parecen a una nueva
+  - files: packages/core/src/memory/similar.ts, packages/core/src/index.ts, packages/core/test/memory/similar.test.ts
+  - ac: AC1, AC2, AC3, AC4
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/similar.test.ts test/flow/duplicates.test.ts test/memory/claims.test.ts
+  - type: feat
+- [x] T2: La tarjeta del freno de parecidos, en español y en inglés
+  - files: packages/core/src/cards/memory-similar.ts, packages/core/src/cards/memory.ts, packages/core/src/cards/index.ts, packages/core/test/cards/memory-similar.test.ts
+  - ac: AC1, AC2, AC5
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/memory-similar.test.ts test/cards/memory-resolve.test.ts test/memory/claims.test.ts
+  - type: feat
+- [x] T3: El `memory add` de un agente no escribe un pendiente parecido a uno abierto
+  - files: packages/cli/src/commands/memory.ts, packages/cli/test/memory-similar.test.ts
+  - ac: AC1, AC2, AC3, AC4
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-similar.test.ts test/memory.test.ts test/memory-kind.test.ts test/memory-resolve.test.ts test/commands-named.test.ts && pnpm typecheck && pnpm lint
+  - type: feat
+- [x] T4: La documentación cuenta el freno de parecidos
+  - files: docs/formats.md, docs/ARCHITECTURE.md, docs/decisions/0016-la-memoria-de-specty.md
+  - ac: AC1, AC2, AC4
+  - verify: pnpm typecheck && pnpm lint && pnpm sources && pnpm knip
+  - type: docs
+
+## Riesgos
+
+- R1: El freno da falsos positivos, como P2/P9, que son distintos y se parecen — `--distinct-from` lo resuelve en un paso, y la persona no tiene freno.
+- R2: Un test que añade desde un agente dos pendientes parecidos deja de pasar — se buscaron con grep los `memory add` de los tests de `packages/cli/test` y de `evals`: todos usan palabras sueltas («Uno», «Dos») o textos distintos, o son de la persona, de recordatorios, de decisiones o de lecciones. Los tests de `memory` van en la verificación de T3.
+
+## Cierre
+
+### Resumen
+
+El `memory add` de un agente ya no escribe un pendiente ni una mejora cuyo texto se parece al de uno abierto (libre, tomado o propuesto para descartar). Responde bloqueado con los parecidos y pide repetirlo con `--distinct-from <ids>` si es distinto; si es el mismo, que no lo añada ni se lo mencione al usuario. La regla de parecido es la de `new` para los cambios (`similarTexts`), en `core/memory/similar.ts` (`similarEntries`), y la tarjeta está en `cards/memory-similar.ts`. La persona no tiene freno, y los recordatorios, las decisiones y las lecciones tampoco. formats.md, ARCHITECTURE.md y el ADR 0016 lo cuentan.
+
+### Desviaciones
+
+- La primera aceptación falló porque la unidad core agotó el tiempo al arrancar los workers de Vitest («Timeout starting forks runner», 21 min) con la máquina cargada y un corte de red. No era un test en rojo: `specty integrate` repitió la verificación con la carga baja y pasaron todas las unidades.
+- El subagente del corte se cortó por un error de red antes del cierre, y el agente principal escribió este cierre.
+
+### Decisiones
+
+- Reusar `similarTexts` de `flow/duplicates.ts` en lugar de otra métrica: medida sobre las entradas abiertas de este repositorio, encuentra los repetidos reales (P78/P79, P98/P99/P100/P108) y sus falsos positivos más claros eran lecciones de plantilla, que quedan fuera del freno.
+- La comparación va dentro de la edición de la memoria, para que dos sesiones que anotan a la vez textos parecidos no los escriban los dos.
+
+### Pendientes
+
+- Ninguno nuevo.

@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "id": "20261106-la-pestana-spec-muestra-los-cortes-de-una-epica",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-la-pestana-spec-muestra-los-cortes-de-una-epica",
+  "baseCommit": "779cda4f80d6503b44158828905f0c429e6f2373",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a5ccc72dbfbcca89e35eda433e690363b4400ccacac751e409b0fc9433bcbca8",
+    "at": "2026-11-05T16:38:02.858Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d911b110575940a54fdd5b55c0b77161f9fa7d3fab8ecca8a6920a88b180cf9f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:635c50f30307007e2feff9e71dc7ef59758e94fc3897b819a350886392e370d4",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:cb8a2b36d4cafe48d777bd85aac3503670a04bd5b8ea64137fb026c6f8ffc385",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:606f7006ccd648f58f540fbd4b2b854781bddac837b255a599362e634fc5e442",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:a3e179beeb896814e292e5ca0454262927f552275451af2daf4327776506e4d6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7c9a082905dbe0e043034e8b6db5bc4a80a93ea3",
+      "attempts": 1,
+      "startedAt": "2026-11-05T17:00:58.835Z",
+      "doneAt": "2026-11-05T17:08:21.985Z",
+      "summary": "La revisión deriva los cortes de una épica (id, título, ac y depends) y pone Cortes en el índice entre Tareas y Riesgos; el prefijo C lleva a la sección slices; título «Cortes»/«Slices» y su pista en las dos lenguas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "503d9ee3eeaa4091d024c3942e55c2ede6b75045",
+      "attempts": 1,
+      "startedAt": "2026-11-05T17:08:22.288Z",
+      "doneAt": "2026-11-05T17:12:25.383Z",
+      "summary": "El delta deja de descartar los cortes: los lleva a la sección slices con su título como texto y sus ac y depends como chips marcados; la lista de chips de un tipo pasa a chipList, compartida por tareas y cortes.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "2cb111b3550e17ae6115234bfd4d0799de97e5ab",
+      "attempts": 1,
+      "startedAt": "2026-11-05T17:12:25.718Z",
+      "doneAt": "2026-11-05T17:18:05.125Z",
+      "summary": "Los cortes se ven como filas (id, título, criterios, «Depende de», Comentar); en la revisión cada uno enlaza a su cambio con su fase, y en las tarjetas salen sin enlaces. itemSection queda compartida.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "d4d55c13c764f41dc8bdd296550974afd6502466",
+      "attempts": 1,
+      "startedAt": "2026-11-05T17:18:05.441Z",
+      "doneAt": "2026-11-05T17:18:55.926Z",
+      "summary": "«Ver solo los cambios» agrupa los cortes entre Tareas y Riesgos, con su id, «Comentar», el título en negrita y chips «depende de C1»; ui.md y formats.md documentan la sección Cortes y el ancla slices.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T17:27:31.801Z",
+  "lockedTests": {
+    "packages/ui/src/data/delta.test.ts": "sha256:eb2cad5834d4988badd88c0b7cd52457a91401969392ba904a851e475aba1f7e",
+    "packages/ui/src/data/review.test.ts": "sha256:cecc588404b5e9dc9e5d2f09ca12ec7d9051670656e09a437cc6874203adf07f",
+    "packages/ui/src/review/delta-review.test.ts": "sha256:d41876883fa8b5b743110349f238804c89c5f5eb323396e1f5ec96986bbe3627",
+    "packages/ui/src/review/spec-cards.test.ts": "sha256:d47c1aea0599a185d74af5a904e3959504a66500b237a84df763df7f17b41511",
+    "packages/ui/src/review/spec-sections.test.ts": "sha256:e879f941dfa3304bf840bd63e098c264083c436b55b1deb6e406d8c22c969a4c"
+  }
+}

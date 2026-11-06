@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "id": "20261106-prune-borra-los-restos-de-los-procesos-que",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-prune-borra-los-restos-de-los-procesos-que",
+  "baseCommit": "b17c91d05fd636c040d175009fbd7f6401903279",
+  "revision": 4,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:de0d74360b71fd30015c5a7a72ec3b566b121acf484a5c9918c6e63e095bbc00",
+    "at": "2026-11-05T16:37:30.599Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c17a438151fc267a5deed28553477788aea6cc5a70fe90b1a88a9c3ef7941a9a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ae38b827bca0f226ce452a8e019a394b2c69f6ecaa5ca22df76e385661f878d6",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:754e46150632069ce7e59f01329ba8ab10fa413d56940f220eaef555ea5ecc54",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0d3c1702d24afe65801668dcb3902f5c6ceee7327d40525dc56b1e4b0deed454",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7e1f0a11d4ce4f4848ef66235b3b12fb240ee2be",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:43:54.736Z",
+      "doneAt": "2026-11-05T16:49:20.609Z",
+      "summary": "pruneCard recibe leftovers { writes, runs, indexes } y añade la sección «RESTOS DE PROCESOS QUE MURIERON» / «LEFTOVERS OF PROCESSES THAT DIED» tras el registro de unidades, con una línea por tipo que no es cero; cuentan para «No había nada que limpiar.»",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "4461a5c23063940a554e22df61faf9c8a6fd5ff9",
+      "attempts": 1,
+      "startedAt": "2026-11-05T16:49:21.126Z",
+      "doneAt": "2026-11-05T16:55:03.933Z",
+      "summary": "removeLeftovers (store/leftovers.ts) borra las escrituras a medias y verificaciones en vivo de procesos muertos en .git/common/specty/ (salvo backups/) y los índices index-* de más de una hora de cada worktree; prune pasa los números a la tarjeta y los docs lo cuentan.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T17:13:19.448Z",
+  "lockedTests": {
+    "packages/cli/test/prune-units.test.ts": "sha256:2059b988e038c0f1ce4873440d914e80b7d81a9410e2642c6d01e5021e3ce00a",
+    "packages/cli/test/prune-leftovers.test.ts": "sha256:66bb5c4c8ab80a3e456d6c1c3ba1936a12296c326d6e688f0c34a1eabf1993db",
+    "packages/core/test/cards/prune-leftovers.test.ts": "sha256:98ddb90ca8cc649a8c6344f9487fe6be70a833bbd3524bc78640271de0ffa0d6"
+  }
+}

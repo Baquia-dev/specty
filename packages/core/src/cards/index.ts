@@ -32,7 +32,7 @@ export {
   specApprovedLine,
   specChangedCard,
 } from "./approve";
-export { firedRemindersBlocks, harvestedBlocks } from "./archived-memory";
+export { firedRemindersBlocks, harvestedBlocks, resolvedBlocks } from "./archived-memory";
 export {
   type AuditEvent,
   type AuditRefusal,
@@ -276,7 +276,13 @@ export {
   memoryListCard,
   memoryReadme,
 } from "./memory";
-export { type ResolvesRefusal, resolvesRefusalCard } from "./memory-claims";
+export {
+  type MemoryResolveRefusal,
+  memoryResolvedCard,
+  memoryResolveRefusalCard,
+  type ResolvesRefusal,
+  resolvesRefusalCard,
+} from "./memory-claims";
 export {
   type MemoryDropRefusal,
   memoryDropCard,
@@ -284,6 +290,7 @@ export {
   memoryKeptCard,
 } from "./memory-drop";
 export { type MemoryRefusal, memoryRefusalCard } from "./memory-refusals";
+export { memorySimilarCard } from "./memory-similar";
 export { memoryStopReason } from "./memory-turn";
 export {
   type MessageRefusal,

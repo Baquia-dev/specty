@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261106-core-da-el-resumen-de-un-cambio-y-la-ui-lo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-core-da-el-resumen-de-un-cambio-y-la-ui-lo",
+  "baseCommit": "b2dce6ca9d365d5b073def7a6d271e98a05661f1",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:47333703f4c9472b7dcae3a6b19ec118916cddd706347fd0ff8ec51938b41578",
+    "at": "2026-11-05T18:34:06.786Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d2353d70846ce5a4d63ccff2d2ba67fd1ad195f48168865a5d06f7b8a434be72",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:d7a732597d5ab012113acc54043fa9985331aa0fb87a95a20e6027aab22e065d",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:bf2e377c1e2f1dcc115614b28968046df744653eb46fb0f317a905006a4ca8bd",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e1c3a0ab61ca198db8ae755737bd6eb58e0200c6abb7a8647eea0c4f4b6757be",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:ea45bffc7b1a8e6e667f0faee7f0e32331596fbabb5048f5c4f1e77260001cc0",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:0fb5dce03853ece9c08bb2859e7c6d8b475e02e4a9b860eac0edc4663f9d4a43",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "58a189aff3713fcb8383722132338c3613e3633c",
+      "attempts": 1,
+      "startedAt": "2026-11-05T18:34:07.163Z",
+      "doneAt": "2026-11-05T18:37:43.037Z",
+      "summary": "Core da summarizeChange (id, título, épica, cortes, inicio y fin, tamaño con motivos es/en, tareas y pestaña) e initialTab en src/summary.ts, exportados en el índice, con su test regla por regla.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2fcedb62d7fc9ba5db55ee29bfe73b2261c22c53",
+      "attempts": 1,
+      "startedAt": "2026-11-05T18:37:43.316Z",
+      "doneAt": "2026-11-05T18:40:03.312Z",
+      "summary": "deriveView toma de summarizeChange de core el id, título, épica (con su id de título), cortes, fase, horas, tamaño, tareas y pestaña; se van TABS, timestampsOf, epicIn y slicesIn. initialTab y ChangeTab se reexportan desde core.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-05T18:46:15.305Z"
+}

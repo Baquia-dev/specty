@@ -9,6 +9,10 @@ import { join } from "node:path";
  * the teardown removes, whether the tests pass or fail. A run that died without its teardown left
  * its folder behind: the next one removes it once that process no longer exists.
  *
+ * What must outlive the run, such as the packages an E2E's agent downloads, goes in
+ * `SPECTY_TESTS_CACHE`: `specty-tests-cache` in the system's temporary folder, which no run creates
+ * nor removes, or the folder already set, as a run that a test starts inherits it.
+ *
  * It lives next to `vitest.config.ts`, outside `src/` and `test/`: it is Node code for Vitest, not
  * part of the pure core nor a test. Every unit of `verify.units` that runs tests watches
  * `packages/core/**`, so a change here repeats them all.
@@ -16,15 +20,17 @@ import { join } from "node:path";
 
 /** Where `os.tmpdir()` looks: `TMPDIR` on POSIX, `TEMP` and `TMP` on Windows. */
 const KEYS = ["TMPDIR", "TMP", "TEMP"] as const;
+const CACHE = "SPECTY_TESTS_CACHE";
 const RUN = /^specty-tests-(\d+)-/;
 
 export default function setup(): () => void {
   const system = tmpdir();
   removeAbandoned(system);
   const folder = mkdtempSync(join(system, `specty-tests-${process.pid}-`));
-  const before = KEYS.map((key) => [key, process.env[key]] as const);
+  const before = [...KEYS, CACHE].map((key) => [key, process.env[key]] as const);
   // Vitest starts its workers with the environment as the global setup leaves it.
   for (const key of KEYS) process.env[key] = folder;
+  process.env[CACHE] ??= join(system, "specty-tests-cache");
   return () => {
     for (const [key, value] of before) {
       if (value === undefined) Reflect.deleteProperty(process.env, key);

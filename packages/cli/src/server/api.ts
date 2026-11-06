@@ -17,8 +17,10 @@ import {
 import { type Context, hasSession, isLocal, JSON_TYPE, same, send, TEXT } from "./context";
 import { changeDiff, type DiffAnswer } from "./diff";
 import { finishedPage } from "./finished";
+import { memoryOrigins } from "./origins";
 import { changeRecord, openRecords } from "./records";
 import { sessionsView } from "./sessions";
+import { epicSliceChanges } from "./slices";
 import { changeTrace, traceReply } from "./trace";
 
 /** A read of the API: from this origin and with the session. */
@@ -63,12 +65,17 @@ const VIEWS: ReadonlyMap<string, View> = new Map<string, View>([
 ]);
 
 /**
- * `GET /api/memory` (ADR 0016): every entry of Specty's memory, and the open changes of every
- * worktree as `specty status` sees them, with who holds each one and whether it is an orphan.
+ * `GET /api/memory` (ADR 0016): every entry of Specty's memory, the open changes of every worktree
+ * as `specty status` sees them, with who holds each one and whether it is an orphan, and what each
+ * change the entries came from is: its title, kind, phase and epic (`memoryOrigins`).
  */
 async function memoryView(session: Session) {
   const { entries } = await readMemory(session.git, session.config.memory.branch);
-  return { entries, changes: await openChanges(session) };
+  return {
+    entries,
+    changes: await openChanges(session),
+    origins: await memoryOrigins(session, entries),
+  };
 }
 
 /** A change by its id, open or archived, as `changeRecords` gives it; 404 when there is none. */
@@ -79,23 +86,58 @@ async function readRecord(response: ServerResponse, context: Context, id: string
     : send(response, 200, JSON_TYPE, JSON.stringify(record));
 }
 
-/** A change's verification going on, its traceability, or its diff, whole or of one task. */
+/** A read of one part of the change `id`, with the URL for its parameters. */
+type ChangePart = (
+  response: ServerResponse,
+  context: Context,
+  id: string,
+  url: URL,
+) => Promise<void>;
+
+/**
+ * The parts of a change that can be read: its diff, whole or of one task; its verification going
+ * on; its traceability; and, if it is an epic, the change of each of its slices.
+ */
+const PARTS: ReadonlyMap<string, ChangePart> = new Map<string, ChangePart>([
+  [
+    "diff",
+    async (response, context, id, url) => {
+      const task = url.searchParams.get("task") ?? undefined;
+      sendDiff(response, await changeDiff(context.session, id, task));
+    },
+  ],
+  [
+    "run",
+    async (response, context, id) => {
+      const run = context.runs.current(id) ?? null;
+      send(response, 200, JSON_TYPE, JSON.stringify(run));
+    },
+  ],
+  [
+    "trace",
+    async (response, context, id, url) => {
+      const path = url.searchParams.get("path") ?? undefined;
+      const reply = traceReply(await changeTrace(context.session, id, path));
+      send(response, reply.status, JSON_TYPE, reply.body);
+    },
+  ],
+  [
+    "slices",
+    async (response, context, id) => {
+      const slices = await epicSliceChanges(context.session, id);
+      if (slices === undefined) send(response, 404, JSON_TYPE, '{"error":"not found"}');
+      else send(response, 200, JSON_TYPE, JSON.stringify(slices));
+    },
+  ],
+]);
+
+/** A part of a change, by its name in the URL; 404 for any other path. */
 async function readChange(response: ServerResponse, context: Context, url: URL) {
-  const [, id, part] = /^\/api\/changes\/([^/]+)\/(diff|run|trace)$/.exec(url.pathname) ?? [];
-  if (id !== undefined && part === "trace") {
-    const path = url.searchParams.get("path") ?? undefined;
-    const reply = traceReply(await changeTrace(context.session, decodeURIComponent(id), path));
-    return send(response, reply.status, JSON_TYPE, reply.body);
-  }
-  if (id !== undefined && part === "run") {
-    const run = context.runs.current(decodeURIComponent(id)) ?? null;
-    return send(response, 200, JSON_TYPE, JSON.stringify(run));
-  }
-  if (id !== undefined) {
-    const task = url.searchParams.get("task") ?? undefined;
-    return sendDiff(response, await changeDiff(context.session, decodeURIComponent(id), task));
-  }
-  return send(response, 404, JSON_TYPE, '{"error":"not found"}');
+  const [, id, name] = /^\/api\/changes\/([^/]+)\/([^/]+)$/.exec(url.pathname) ?? [];
+  const part = name === undefined ? undefined : PARTS.get(name);
+  if (id === undefined || part === undefined)
+    return send(response, 404, JSON_TYPE, '{"error":"not found"}');
+  return part(response, context, decodeURIComponent(id), url);
 }
 
 /** A diff as text; without one, why: 404 no commits, 413 too large (with its range), 500 git. */

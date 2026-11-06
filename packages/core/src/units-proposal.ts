@@ -13,6 +13,11 @@ export interface WorkspacePackage {
   readonly command?: string;
   /** The names of the workspace's packages it depends on. */
   readonly uses: readonly string[];
+  /**
+   * What it reads, as globs, when its folder is not only its own, such as a workspace root that
+   * is a package too (`dir` `.`); without them, its whole folder.
+   */
+  readonly paths?: readonly string[];
 }
 
 /** What `init` knows of a workspace to propose its units. */
@@ -37,7 +42,8 @@ const TESTS: Readonly<Record<NonNullable<UnitsFacts["manager"]>, (name: string) 
 /**
  * The units of `verify.units` for a workspace: one with the static checks, if any, then one per
  * package with tests, from the ones that use fewer packages to the ones that use more. Each runs
- * its package's own command or, without one, the manager's. Undefined with fewer than two packages
+ * its package's own command or, without one, the manager's, and reads what its package and the
+ * ones it uses read, then the shared files, each path once. Undefined with fewer than two packages
  * with tests and a command, where units save nothing.
  */
 export function proposeUnits(facts: UnitsFacts): readonly VerifyUnit[] | undefined {
@@ -49,12 +55,12 @@ export function proposeUnits(facts: UnitsFacts): readonly VerifyUnit[] | undefin
   const byName = new Map(facts.packages.map((pkg) => [pkg.name, pkg]));
   const names = unitNames(tested.map(({ pkg }) => pkg));
   const packages = tested
-    .map((entry) => ({ ...entry, uses: usedFolders(entry.pkg, byName) }))
+    .map((entry) => ({ ...entry, uses: usedPackages(entry.pkg, byName) }))
     .toSorted((a, b) => a.uses.length - b.uses.length || a.pkg.dir.localeCompare(b.pkg.dir))
     .map(({ pkg, command, uses }) => ({
       name: names.get(pkg.dir) ?? pkg.dir,
       command,
-      paths: [`${pkg.dir}/**`, ...uses.map((dir) => `${dir}/**`), ...facts.shared],
+      paths: [...new Set([...[pkg, ...uses].flatMap(readsOf), ...facts.shared])],
     }));
   if (facts.checks.length === 0) return packages;
   const name = facts.lang === "es" ? "estático" : "static";
@@ -67,29 +73,38 @@ function testCommand(pkg: WorkspacePackage, manager: UnitsFacts["manager"]): str
   return pkg.command ?? (manager === undefined ? undefined : TESTS[manager](pkg.name));
 }
 
-/** The folders of the workspace's packages `pkg` depends on, directly or not, sorted. */
-function usedFolders(
+/** The workspace's packages `pkg` depends on, directly or not, by folder. */
+function usedPackages(
   pkg: WorkspacePackage,
   byName: ReadonlyMap<string, WorkspacePackage>,
-): readonly string[] {
-  const seen = new Set<string>();
+): readonly WorkspacePackage[] {
+  const seen = new Map<string, WorkspacePackage>();
   const pending = [...pkg.uses];
   for (let name = pending.pop(); name !== undefined; name = pending.pop()) {
     const used = byName.get(name);
     if (used === undefined || used.dir === pkg.dir || seen.has(used.dir)) continue;
-    seen.add(used.dir);
+    seen.set(used.dir, used);
     pending.push(...used.uses);
   }
-  return [...seen].toSorted();
+  return [...seen.values()].toSorted((a, b) => (a.dir < b.dir ? -1 : a.dir > b.dir ? 1 : 0));
 }
 
-/** Each package's unit name: the last part of its folder, or the whole folder if two share it. */
+/** What a package reads: its own paths, or its whole folder. */
+function readsOf(pkg: WorkspacePackage): readonly string[] {
+  return pkg.paths ?? [`${pkg.dir}/**`];
+}
+
+/**
+ * Each package's unit name: the last part of its folder, or the whole folder if two share it; the
+ * package's name for the one in the root, whose folder has none.
+ */
 function unitNames(packages: readonly WorkspacePackage[]): ReadonlyMap<string, string> {
-  const last = (dir: string) => dir.slice(dir.lastIndexOf("/") + 1);
+  const last = (pkg: WorkspacePackage) =>
+    pkg.dir === "." ? pkg.name : pkg.dir.slice(pkg.dir.lastIndexOf("/") + 1);
   const count = new Map<string, number>();
-  for (const pkg of packages) count.set(last(pkg.dir), (count.get(last(pkg.dir)) ?? 0) + 1);
+  for (const pkg of packages) count.set(last(pkg), (count.get(last(pkg)) ?? 0) + 1);
   return new Map(
-    packages.map((pkg) => [pkg.dir, count.get(last(pkg.dir)) === 1 ? last(pkg.dir) : pkg.dir]),
+    packages.map((pkg) => [pkg.dir, count.get(last(pkg)) === 1 ? last(pkg) : pkg.dir]),
   );
 }
 

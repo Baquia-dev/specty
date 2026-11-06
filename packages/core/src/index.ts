@@ -215,6 +215,7 @@ export {
 } from "./memory/fronts";
 export { entriesForPaths } from "./memory/paths";
 export type { SessionView } from "./memory/sessions";
+export { similarEntries } from "./memory/similar";
 export { isDay, localDay, sessionEntries } from "./memory/triggers";
 export { pendingInMessage } from "./memory/turn-end";
 export {
@@ -329,6 +330,13 @@ export * from "./spec/model";
 export { type ParseOptions, type ParseResult, parseSpec } from "./spec/parse";
 export { hashUnits, serializeSpec } from "./spec/serialize";
 export { KIND_RULES, SECTION_TITLES } from "./spec/vocabulary";
+export {
+  type ChangeSummary,
+  type ChangeTab,
+  initialTab,
+  type SummarySource,
+  summarizeChange,
+} from "./summary";
 export {
   type ConfigTemplateOptions,
   configTemplate,

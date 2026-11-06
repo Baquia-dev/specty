@@ -76,7 +76,9 @@ function flowLines(t: Translate, command: string): string[] {
 
 /**
  * The rules no tool can verify, after the one about `task done`'s gate: it already runs `specty
- * check` and the task's verification, so running them first would only run the tests twice.
+ * check` and the task's verification, so running them first would only run the tests twice. The
+ * last one asks for direct, concise answers and a final report with only the pending items of the
+ * session's work: the others are not its own (ADR 0016).
  */
 function ruleLines(t: Translate, command: string): string[] {
   return [
@@ -98,8 +100,8 @@ function ruleLines(t: Translate, command: string): string[] {
       "- Edit with targeted changes; do not rewrite whole files for small changes.",
     ),
     t(
-      `- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente; anota cada pendiente con \`${command} memory add "<texto>"\` para que no se quede solo en el chat.`,
-      `- Brief final report: what changed, what was verified and what is pending; note each pending item with \`${command} memory add "<text>"\` so it does not stay only in the chat.`,
+      `- Responde al usuario de forma directa y concisa en cada mensaje: primero el resultado o la pregunta; no repitas la salida de Specty, no narres cada paso ni enumeres opciones que no vas a seguir. En el reporte final, breve, di qué cambió, qué se verificó y qué queda pendiente de tu trabajo; de los demás pendientes, nombra solo los que tu trabajo resolvió, y márcalos con \`${command} memory resolve <id>\`. Anota cada pendiente con \`${command} memory add "<texto>"\` para que no se quede solo en el chat.`,
+      `- Answer the user directly and concisely in every message: the result or the question first; do not repeat Specty's output, narrate each step or list options you will not follow. In the brief final report, say what changed, what was verified and what is pending from your work; of the other pending items, name only those your work resolved, and mark them with \`${command} memory resolve <id>\`. Note each pending item with \`${command} memory add "<text>"\` so it does not stay only in the chat.`,
     ),
   ];
 }

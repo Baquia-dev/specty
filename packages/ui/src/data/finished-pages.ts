@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { computed, type PendingTasks, type Signal, signal } from "@angular/core";
-import type { Deriver } from "./changes-store";
-import type { ChangeView } from "./records";
+import type { ChangeSummary } from "./records";
 import type { FinishedPage, FinishedRequest, SpectyData } from "./source";
 
 /** How many finished changes each page brings, as the local server gives them by default. */
@@ -10,19 +9,20 @@ const PAGE = 30;
 /** What the finished changes are asked with: the Inbox's search, phase and sort, in its language. */
 export type FinishedQuery = Omit<FinishedRequest, "offset" | "limit">;
 
-/** What a page says besides its records. */
-type Told = Omit<FinishedPage, "records">;
+/** What a page says besides its changes. */
+type Told = Omit<FinishedPage, "changes">;
 
 /**
  * The pages of finished changes loaded so far, for one query: the first when it is asked, the
- * next ones on demand, each change once, and all of them again, from the first, on `reload`. A
- * new query leaves the pages before once its first page arrives, and an answer to a request older
- * than the last one is left out. Each request is a pending task, so the app is stable once it ends.
+ * next ones on demand, each change once, by the summary the source gives (its page asks for the
+ * rest by its id), and all of them again, from the first, on `reload`. A new query leaves the
+ * pages before once its first page arrives, and an answer to a request older than the last one is
+ * left out. Each request is a pending task, so the app is stable once it ends.
  */
 export class FinishedPages {
-  private readonly loaded = signal<readonly ChangeView[]>([]);
+  private readonly loaded = signal<readonly ChangeSummary[]>([]);
   private readonly told = signal<Told | undefined>(undefined);
-  /** Where the next page starts: every record received, not only those not seen before. */
+  /** Where the next page starts: every change received, not only those not seen before. */
   private readonly next = signal(0);
   private readonly busy = signal(false);
   private readonly failure = signal<unknown>(undefined);
@@ -30,16 +30,14 @@ export class FinishedPages {
   /** The number of the last request: the only one whose answer counts. */
   private asked = 0;
 
-  /** The finished changes loaded, in the order of the pages, each once. */
-  readonly views: Signal<readonly ChangeView[]> = this.loaded.asReadonly();
+  /** The finished changes loaded, by their summary, in the order of the pages, each once. */
+  readonly views: Signal<readonly ChangeSummary[]> = this.loaded.asReadonly();
   /** How many finished changes match the query. */
   readonly total = computed(() => this.told()?.total ?? 0);
   /** How many done and cancelled ones match the search, whatever the phase. */
   readonly counts = computed(() => this.told()?.counts ?? { done: 0, cancelled: 0 });
   /** How many finished changes there are, with no search nor phase. */
   readonly finished = computed(() => this.told()?.finished ?? 0);
-  /** The title of the epic of each slice loaded, by the epic's id. */
-  readonly epics = computed(() => this.told()?.epics ?? {});
   readonly loading = this.busy.asReadonly();
   /** Why the last request failed; nothing once one succeeds. */
   readonly error = this.failure.asReadonly();
@@ -50,7 +48,6 @@ export class FinishedPages {
 
   constructor(
     private readonly source: SpectyData,
-    private readonly derive: Deriver,
     private readonly tasks: Pick<PendingTasks, "add">,
   ) {}
 
@@ -86,16 +83,13 @@ export class FinishedPages {
     const done = this.tasks.add();
     this.busy.set(true);
     try {
-      const { records, ...told } = await this.source.finished({ ...query, offset, limit });
-      const views = await this.derive(records);
+      const { changes, ...told } = await this.source.finished({ ...query, offset, limit });
       if (asked !== this.asked) return;
       const before = how === "append" ? this.loaded() : [];
-      this.loaded.set(unique([...before, ...views]));
-      this.told.set(
-        how === "append" ? { ...told, epics: { ...this.told()?.epics, ...told.epics } } : told,
-      );
+      this.loaded.set(unique([...before, ...changes]));
+      this.told.set(told);
       // A page with nothing in it ends the list, even if the total said there were more.
-      this.next.set(records.length === 0 ? told.total : offset + records.length);
+      this.next.set(changes.length === 0 ? told.total : offset + changes.length);
       this.failure.set(undefined);
     } catch (error) {
       if (asked === this.asked) this.failure.set(error);
@@ -111,11 +105,11 @@ function sameQuery(a: FinishedQuery, b: FinishedQuery): boolean {
 }
 
 /** Each change once, where it first appears. */
-function unique(views: readonly ChangeView[]): readonly ChangeView[] {
+function unique(summaries: readonly ChangeSummary[]): readonly ChangeSummary[] {
   const seen = new Set<string>();
-  return views.filter((view) => {
-    if (seen.has(view.id)) return false;
-    seen.add(view.id);
+  return summaries.filter((summary) => {
+    if (seen.has(summary.id)) return false;
+    seen.add(summary.id);
     return true;
   });
 }

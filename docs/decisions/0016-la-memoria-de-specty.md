@@ -29,6 +29,14 @@ Quién decide:
 - Ningún modelo decide solo si dos trabajos son el mismo.
 - Descartar una entrada de la memoria es solo de la persona y nunca se delega, como desbloquear un test (decisión de la persona del 2026-10-30): si lo pide un agente, la entrada queda propuesta para descartar.
 
+Quién ve qué pendientes (épica `20261106-pendientes-de-la-sesion-por-feature`, 2026-11-06):
+
+- Un agente solo ve los pendientes y las mejoras de su trabajo. La tarjeta de inicio y la de `next` sin cambio activo no listan ni cuentan los abiertos, ni remiten a `specty memory`. Solo la conversación que lleva un frente recibe sus primeras entradas libres, porque ese es su trabajo. Los recordatorios salen en todas, porque alguien los programó para las sesiones.
+- El reporte final de un agente solo nombra los pendientes de su trabajo y, de los demás, los que ese trabajo resolvió (la última regla del bloque de AGENTS.md).
+- Un pendiente parecido a uno abierto no entra dos veces: como un agente ya no ve los abiertos, su `memory add` de un pendiente o una mejora cuyo texto se parece al de uno abierto, con la regla con la que `new` compara los títulos de los cambios, no escribe nada. Nombra los parecidos y le pide no añadirlo ni mencionarlo al usuario si es el mismo, o repetirlo con `--distinct-from <ids>` si es distinto. Specty no decide si son el mismo: lo decide el agente con los dos textos delante, y la persona, que no tiene el freno, siempre puede anotarlo.
+- Un pendiente ajeno que el trabajo resolvió se marca con `specty memory resolve <id>` desde la carpeta del cambio: lo toma para ese cambio, con las reglas de `new --resolves`, y sale de las abiertas al cerrarse, cuando la salida del cierre lo nombra. Hecho no es borrado: la rama de la memoria guarda su historia, y si el cambio se cancela vuelve a estar libre. Solo se toma dentro de un cambio abierto, para que cerrar siga siendo la decisión de la persona.
+- La persona los ve todos, en `specty memory`, en «TE TOCA» de `specty status` y en la página Memoria de la UI.
+
 ## Consecuencias
 
 - El estado común vive fuera de las ramas del código. Lo en vivo es local a cada clon; lo duradero viaja con la rama `specty-memory` si la persona la sube.

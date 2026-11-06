@@ -22,11 +22,14 @@ import {
 } from "../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
-/** The last rule of AGENTS.md's flow block: the final report, and the memory for what is left. */
+/**
+ * The last rule of AGENTS.md's flow block: direct and concise answers, the final report with only
+ * the session's pending items, and the memory for what is left.
+ */
 const FINAL_REPORT_ES =
-  '- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente; anota cada pendiente con `specty memory add "<texto>"` para que no se quede solo en el chat.';
+  '- Responde al usuario de forma directa y concisa en cada mensaje: primero el resultado o la pregunta; no repitas la salida de Specty, no narres cada paso ni enumeres opciones que no vas a seguir. En el reporte final, breve, di qué cambió, qué se verificó y qué queda pendiente de tu trabajo; de los demás pendientes, nombra solo los que tu trabajo resolvió, y márcalos con `specty memory resolve <id>`. Anota cada pendiente con `specty memory add "<texto>"` para que no se quede solo en el chat.';
 const FINAL_REPORT_EN =
-  '- Brief final report: what changed, what was verified and what is pending; note each pending item with `specty memory add "<text>"` so it does not stay only in the chat.';
+  '- Answer the user directly and concisely in every message: the result or the question first; do not repeat Specty\'s output, narrate each step or list options you will not follow. In the brief final report, say what changed, what was verified and what is pending from your work; of the other pending items, name only those your work resolved, and mark them with `specty memory resolve <id>`. Note each pending item with `specty memory add "<text>"` so it does not stay only in the chat.';
 const task = (id: string, status: TaskView["status"]): TaskView => ({
   id,
   title: `Tarea ${id}`,
@@ -129,6 +132,21 @@ describe("next cards", () => {
       "en",
     );
     expect(english).toContain('c2 · Design "Container": Usa CaChip.');
+    const onSlices: ChangeView["requested"] = [
+      { id: "c4", anchor: { section: "slices", quote: "La bandeja" }, body: "Divídelo." },
+    ];
+    expect(text({ ...view("review"), requested: onSlices })).toContain(
+      "c4 · Cortes «La bandeja»: Divídelo.",
+    );
+    expect(
+      renderText(
+        nextCard(
+          { change: { ...view("review"), requested: onSlices }, dirty: [] },
+          { ...ES, lang: "en" },
+        ),
+        "en",
+      ),
+    ).toContain('c4 · Slices "La bandeja": Divídelo.');
     expect(text({ ...view("review"), requested: [] })).toContain(
       "Esperando la revisión del usuario",
     );
@@ -309,6 +327,40 @@ describe("AGENTS.md blocks", () => {
         lang === "es" ? FINAL_REPORT_ES : FINAL_REPORT_EN,
       );
     }
+  });
+
+  it("AC2: asks first for direct, concise answers, then a final report with only the session's pending items", () => {
+    const rule = flowBlock("es", "specty").split("\n").at(-1) ?? "";
+    expect(rule).toBe(FINAL_REPORT_ES);
+    expect(
+      rule.startsWith("- Responde al usuario de forma directa y concisa en cada mensaje:"),
+    ).toBe(true);
+    expect(rule.indexOf("concisa")).toBeLessThan(rule.indexOf("reporte final"));
+    expect(rule).toContain("no repitas la salida de Specty");
+    expect(rule).toContain("qué queda pendiente de tu trabajo");
+    expect(rule).toContain("de los demás pendientes, nombra solo los que tu trabajo resolvió");
+  });
+
+  it("AC5: asks to mark with memory resolve the other pending items the work resolved", () => {
+    const es = flowBlock("es", "specty").split("\n").at(-1) ?? "";
+    expect(es).toContain(
+      "nombra solo los que tu trabajo resolvió, y márcalos con `specty memory resolve <id>`.",
+    );
+    const en = flowBlock("en", "specty").split("\n").at(-1) ?? "";
+    expect(en).toContain(
+      "name only those your work resolved, and mark them with `specty memory resolve <id>`.",
+    );
+    expect(flowBlock("es", "specty").split("\n").length).toBeLessThanOrEqual(15);
+  });
+
+  it("AC4: asks for the same in English", () => {
+    const rule = flowBlock("en", "specty").split("\n").at(-1) ?? "";
+    expect(rule).toBe(FINAL_REPORT_EN);
+    expect(rule.startsWith("- Answer the user directly and concisely in every message:")).toBe(
+      true,
+    );
+    expect(rule.indexOf("concisely")).toBeLessThan(rule.indexOf("final report"));
+    expect(rule).toContain("of the other pending items, name only those your work resolved");
   });
 
   it("asks people not to write in Conventions what specty check verifies (AC5)", () => {

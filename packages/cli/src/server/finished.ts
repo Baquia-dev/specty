@@ -2,34 +2,34 @@
 import {
   CHANGE_SORTS,
   type ChangeSort,
-  computeSize,
-  DEFAULT_CONFIG,
+  type ChangeSummary,
   LANGS,
   type Lang,
   matchesQuery,
   PHASES,
   type Phase,
   parseSpec,
-  type SizeLevel,
   sortChanges,
+  summarizeChange,
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
 import { locateChanges } from "../flow/changes";
 import { readText } from "../io/files";
 import type { Session } from "../session";
-import { archivedRecords, type ChangeRecord, withTaskCommits } from "./records";
+import { archivedRecords, type ChangeRecord } from "./records";
 
-/** `GET /api/changes/finished` (ARCHITECTURE §15): a page of the finished changes. */
+/**
+ * `GET /api/changes/finished` (ARCHITECTURE §15): a page of the finished changes, each by its
+ * summary; the UI asks for the record of one by its id.
+ */
 interface FinishedPage {
-  readonly records: readonly ChangeRecord[];
+  readonly changes: readonly Listed[];
   /** How many match the search and the phase. */
   readonly total: number;
   /** How many done and cancelled ones match the search, whatever the phase. */
   readonly counts: { readonly done: number; readonly cancelled: number };
   /** How many finished changes there are, with no search nor phase. */
   readonly finished: number;
-  /** The title of the epic of each slice in the page, by the epic's id. */
-  readonly epics: Readonly<Record<string, string>>;
 }
 
 /** What the page asks for, each value understood or its default. */
@@ -42,31 +42,33 @@ interface PageQuery {
   readonly lang: Lang;
 }
 
-/** What a finished change is searched and sorted by, as the Inbox derives it (`data/views.ts`). */
-interface Summary {
-  readonly id: string;
-  readonly title: string;
-  readonly epicOwn: boolean;
-  readonly phase: Phase;
-  readonly phaseSince: string;
-  readonly size: { readonly level: SizeLevel };
-  readonly epic?: { readonly id: string; readonly slice?: string };
+/**
+ * A finished change as the page lists it, as the UI's `ChangeSummary`: core's summary, with the
+ * title of its epic and the one its epic gives its slice.
+ */
+interface Listed extends Omit<ChangeSummary, "epic"> {
+  readonly epic?: {
+    readonly id: string;
+    readonly title: string;
+    readonly slice?: string;
+    readonly sliceTitle?: string;
+  };
 }
 
-/** A finished change as the page lists it: its summary, its epic's title and its record. */
-interface Listed extends Omit<Summary, "epic"> {
-  readonly record: ChangeRecord;
-  readonly epic?: { readonly id: string; readonly title: string; readonly slice?: string };
+/** An epic as its slices read it: its title and its slices, by their id and title. */
+interface Epic {
+  readonly title: string;
+  readonly slices: readonly { readonly id: string; readonly title: string }[];
 }
 
 const PAGE = 30;
 
 /** The summary of each archived record, kept while the record is (`archivedRecords` keeps it). */
-const SUMMARIES = new WeakMap<ChangeRecord, Summary>();
+const SUMMARIES = new WeakMap<ChangeRecord, ChangeSummary>();
 
 /**
- * The finished changes that `params` ask for: those archived and not open in any worktree, found
- * and sorted with the Inbox's own functions, with the commits of the page's tasks.
+ * The finished changes that `params` ask for: those archived and not open in any worktree, each
+ * by its summary, found and sorted with the Inbox's own functions.
  */
 export async function finishedPage(
   session: Session,
@@ -74,35 +76,29 @@ export async function finishedPage(
 ): Promise<FinishedPage> {
   const query = pageQuery(params, session.lang);
   const open = await openSide(session);
-  const archived = (await archivedRecords(session)).filter(
-    (record) => !open.ids.has(record.state.id),
-  );
-  const summaries = archived.map((record) => ({ record, summary: summaryOf(record, session) }));
-  const titles = new Map([
+  const summaries = (await archivedRecords(session))
+    .filter((record) => !open.ids.has(record.state.id))
+    .map(summaryOf);
+  const epics = new Map([
     ...open.epics,
-    ...summaries.flatMap(({ summary }) =>
-      summary.epicOwn ? [[summary.id, summary.title] as const] : [],
+    ...summaries.flatMap((summary) =>
+      summary.kind === "epic"
+        ? [[summary.id, { title: summary.title, slices: summary.slices ?? [] }] as const]
+        : [],
     ),
   ]);
-  const listed = summaries.map(({ record, summary }) => listedOf(record, summary, titles));
+  const listed = summaries.map((summary) => listedOf(summary, epics));
   const found = listed.filter((item) => matchesQuery(item, query.query));
   const shown = found.filter((item) => query.phase === "all" || item.phase === query.phase);
-  const page = sortChanges(shown, query.sort, query.lang).slice(
-    query.offset,
-    query.offset + query.limit,
-  );
   const count = (phase: Phase) => found.filter((item) => item.phase === phase).length;
   return {
-    records: await withTaskCommits(
-      session,
-      page.map((item) => item.record),
+    changes: sortChanges(shown, query.sort, query.lang).slice(
+      query.offset,
+      query.offset + query.limit,
     ),
     total: shown.length,
     counts: { done: count("done"), cancelled: count("cancelled") },
     finished: listed.length,
-    epics: Object.fromEntries(
-      page.flatMap(({ epic }) => (epic === undefined ? [] : [[epic.id, epic.title]])),
-    ),
   };
 }
 
@@ -125,50 +121,56 @@ function pageQuery(params: URLSearchParams, lang: Lang): PageQuery {
   };
 }
 
-/** The ids of the open changes of every worktree, and the title of each open epic. */
+/** The ids of the open changes of every worktree, and each open epic, read from its spec. */
 async function openSide(session: Session) {
   const ids = new Set<string>();
-  const epics = new Map<string, string>();
+  const epics = new Map<string, Epic>();
   for (const { change } of await locateChanges(session)) {
     if (isFinished(change.state)) continue;
     ids.add(change.state.id);
     if (change.state.kind !== "epic") continue;
-    const spec = await readText(change.files.spec);
-    const title = spec === undefined ? "" : parseSpec(spec, { language: session.lang }).spec.title;
-    epics.set(change.state.id, title || change.state.id);
+    const text = await readText(change.files.spec);
+    const spec = text === undefined ? undefined : parseSpec(text).spec;
+    epics.set(change.state.id, {
+      title: spec?.title || change.state.id,
+      slices: (spec?.sections.slices?.items ?? []).map(({ id, title }) => ({ id, title })),
+    });
   }
   return { ids, epics };
 }
 
-/** What `record` is searched and sorted by: read once, then kept with the record. */
-function summaryOf(record: ChangeRecord, session: Session): Summary {
+/**
+ * What the UI would derive of `record` for its list, with core's own function and its spec read
+ * as the UI reads it: read once, then kept with the record. The memory's origins read it too.
+ */
+export function summaryOf(record: ChangeRecord): ChangeSummary {
   const known = SUMMARIES.get(record);
   if (known !== undefined) return known;
-  const { state } = record;
-  const spec = parseSpec(record.spec, { language: session.lang }).spec;
-  const { epic, slice } = spec.frontmatter;
-  const summary: Summary = {
-    id: state.id,
-    title: spec.title || state.id,
-    epicOwn: state.kind === "epic",
-    phase: state.phase,
+  const summary = summarizeChange({
+    spec: parseSpec(record.spec).spec,
+    state: record.state,
     phaseSince: record.phaseSince,
-    size: { level: state.size?.level ?? computeSize(spec, DEFAULT_CONFIG).level },
-    ...(epic === undefined
-      ? {}
-      : { epic: { id: epic, ...(slice === undefined ? {} : { slice }) } }),
-  };
+    audit: record.audit ?? [],
+  });
   SUMMARIES.set(record, summary);
   return summary;
 }
 
-/** The summary with the title of its epic: open or archived, or its id when it is neither. */
-function listedOf(
-  record: ChangeRecord,
-  summary: Summary,
-  titles: ReadonlyMap<string, string>,
-): Listed {
+/**
+ * The summary with the title of its epic, open or archived, or its id when it is neither, and the
+ * title its epic gives its slice, as `deriveViews` gives them in the UI.
+ */
+function listedOf(summary: ChangeSummary, epics: ReadonlyMap<string, Epic>): Listed {
   const { epic, ...rest } = summary;
-  if (epic === undefined) return { ...rest, record };
-  return { ...rest, record, epic: { ...epic, title: titles.get(epic.id) ?? epic.id } };
+  if (epic === undefined) return rest;
+  const known = epics.get(epic.id);
+  const sliceTitle = known?.slices.find((slice) => slice.id === epic.slice)?.title;
+  return {
+    ...rest,
+    epic: {
+      ...epic,
+      title: known?.title ?? epic.id,
+      ...(sliceTitle === undefined ? {} : { sliceTitle }),
+    },
+  };
 }

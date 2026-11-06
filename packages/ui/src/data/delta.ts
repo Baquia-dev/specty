@@ -7,6 +7,7 @@ import {
   hashUnits,
   type Impact,
   type Lang,
+  type Slice,
   type Spec,
   specDelta,
   type Task,
@@ -19,6 +20,7 @@ const SECTION_BY_KIND: Readonly<Partial<Record<DeltaEntry["kind"], ReviewSection
   assumption: "assumptions",
   criterion: "criteria",
   task: "tasks",
+  slice: "slices",
   risk: "risks",
   file: "files",
 };
@@ -88,6 +90,7 @@ const TEXT_OF: Readonly<
   criterion: (spec, id) => spec.sections.criteria?.items.find((item) => item.id === id)?.text,
   risk: (spec, id) => spec.sections.risks?.items.find((item) => item.id === id)?.text,
   task: (spec, id) => taskOf(spec, id)?.title,
+  slice: (spec, id) => sliceOf(spec, id)?.title,
   section: (spec, id) => SECTION_TEXT[id]?.(spec),
 };
 
@@ -102,6 +105,37 @@ function taskOf(spec: Spec, id: string): Task | undefined {
   return spec.sections.tasks?.items.find((task) => task.id === id);
 }
 
+function sliceOf(spec: Spec, id: string): Slice | undefined {
+  return spec.sections.slices?.items.find((slice) => slice.id === id);
+}
+
+/**
+ * The chips of one kind: those of the unit now and, in a modified one, those added since the
+ * approval marked, and the removed ones after them.
+ */
+function chipList(
+  kind: DeltaChipView["kind"],
+  current: readonly string[],
+  approved: readonly string[] | undefined,
+  isNewScope: (label: string) => boolean = () => false,
+): DeltaChipView[] {
+  return [
+    ...current.map(
+      (label): DeltaChipView => ({
+        label,
+        kind,
+        ...(approved !== undefined && !approved.includes(label)
+          ? { change: "added" as const }
+          : {}),
+        newScope: isNewScope(label),
+      }),
+    ),
+    ...(approved ?? [])
+      .filter((label) => !current.includes(label))
+      .map((label): DeltaChipView => ({ label, kind, change: "removed", newScope: false })),
+  ];
+}
+
 /** Criteria and files of a task: those added or removed since the approval are marked. */
 function chipsOf(
   now: Task | undefined,
@@ -111,28 +145,39 @@ function chipsOf(
 ): readonly DeltaChipView[] {
   const criteria = (task: Task | undefined) => (Array.isArray(task?.ac) ? task.ac : []);
   const isNewScope = (path: string) => scope.some((note) => note.es.includes(path));
-  const list = (
-    kind: DeltaChipView["kind"],
-    current: readonly string[],
-    approved: readonly string[],
-  ) => [
-    ...current.map(
-      (label): DeltaChipView => ({
-        label,
-        kind,
-        ...(modified && !approved.includes(label) ? { change: "added" as const } : {}),
-        newScope: kind === "file" && isNewScope(label),
-      }),
-    ),
-    ...(modified ? approved.filter((label) => !current.includes(label)) : []).map(
-      (label): DeltaChipView => ({ label, kind, change: "removed", newScope: false }),
-    ),
-  ];
   const shown = now ?? old;
   return [
-    ...list("criterion", criteria(shown), modified ? criteria(old) : criteria(shown)),
-    ...list("file", shown?.files ?? [], modified ? (old?.files ?? []) : (shown?.files ?? [])),
+    ...chipList("criterion", criteria(shown), modified ? criteria(old) : undefined),
+    ...chipList("file", shown?.files ?? [], modified ? (old?.files ?? []) : undefined, isNewScope),
   ];
+}
+
+/** Criteria and dependencies of a slice: those added or removed since the approval are marked. */
+function sliceChipsOf(
+  now: Slice | undefined,
+  old: Slice | undefined,
+  modified: boolean,
+): readonly DeltaChipView[] {
+  const shown = now ?? old;
+  return [
+    ...chipList("criterion", shown?.ac ?? [], modified ? (old?.ac ?? []) : undefined),
+    ...chipList("slice", shown?.depends ?? [], modified ? (old?.depends ?? []) : undefined),
+  ];
+}
+
+/** The chips of a task or a slice; other units have none. */
+function unitChips(
+  spec: Spec,
+  approved: Spec,
+  entry: DeltaEntry,
+  scope: readonly Bilingual[],
+): readonly DeltaChipView[] | undefined {
+  const modified = entry.change === "modified";
+  if (entry.kind === "task")
+    return chipsOf(taskOf(spec, entry.key), taskOf(approved, entry.key), modified, scope);
+  if (entry.kind === "slice")
+    return sliceChipsOf(sliceOf(spec, entry.key), sliceOf(approved, entry.key), modified);
+  return undefined;
 }
 
 /** What changed without text of its own: an assumption's impact, a task's verification, type or notes. */
@@ -176,7 +221,7 @@ export function deriveDelta(spec: Spec, approved: Spec, approvedRevision: number
   const scope = newScope(spec, approved);
   const entries = specDelta(approved, spec).entries.flatMap((entry): DeltaEntryView[] => {
     const section = sectionOf(entry);
-    if (section === undefined || entry.kind === "frontmatter" || entry.kind === "slice") return [];
+    if (section === undefined || entry.kind === "frontmatter") return [];
     const old = textOf(approved, entry);
     const now = textOf(spec, entry);
     const notes = scope.get(entry.key) ?? [];
@@ -184,15 +229,7 @@ export function deriveDelta(spec: Spec, approved: Spec, approvedRevision: number
       entry.change === "modified"
         ? textAndBefore(old, now)
         : { text: [{ text: entry.change === "added" ? now : old }] };
-    const chips =
-      entry.kind === "task"
-        ? chipsOf(
-            taskOf(spec, entry.key),
-            taskOf(approved, entry.key),
-            entry.change === "modified",
-            notes,
-          )
-        : undefined;
+    const chips = unitChips(spec, approved, entry, notes);
     return [
       {
         key: entry.key.replace(/^(file|section):/, ""),

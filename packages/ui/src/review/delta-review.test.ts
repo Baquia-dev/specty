@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
+import type { ChangeState } from "@baquia-dev/specty-core";
 import { sampleRecords } from "../data/fixtures";
 import { type ChangeRecord, type CommentAnchor, SpectyData } from "../data/records";
 import { deriveViews } from "../data/views";
@@ -248,4 +249,159 @@ describe("ReviewDelta", () => {
     expect(text(item("T4")?.querySelector("[data-new-scope]"))).toContain("Possible new scope:");
     expect(text(item("AC2")?.querySelector("ins"))).toContain("[added:");
   });
+
+  it("AC6: groups the slices that changed between the tasks and the risks, with their chips", async () => {
+    const { element, item, anchors } = await renderEpic();
+    const groups = [...element.querySelectorAll<HTMLElement>("[data-delta-section]")];
+    expect(groups.map((group) => group.dataset.deltaSection)).toEqual([
+      "criteria",
+      "slices",
+      "risks",
+    ]);
+    expect(text(groups[1]?.querySelector("h3"))).toBe("Cortes");
+    const chips = (key: string) =>
+      [...(item(key)?.querySelectorAll<HTMLElement>("[data-chips] > span") ?? [])].map(
+        (chip) => `${text(chip)} (${chip.dataset.chip})`,
+      );
+    // C2: renamed, it covers AC1 too and no longer goes after C1.
+    expect(text(item("C2")?.querySelector(".font-mono"))).toBe("C2");
+    expect(item("C2")?.querySelector("sp-change-mark")?.getAttribute("data-change")).toBe(
+      "modified",
+    );
+    expect(text(item("C2")?.querySelector("ins"))).toContain("desde la app");
+    expect(item("C2")?.querySelector("sp-word-diff")?.className).toContain("font-medium");
+    expect(chips("C2")).toEqual([
+      "añadido: AC1 (added)",
+      "AC2 (same)",
+      "quitado: depende de C1 (removed)",
+    ]);
+    // C3 left the epic; C4 came in after C1 and C2.
+    expect(item("C3")?.querySelector("sp-change-mark")?.getAttribute("data-change")).toBe(
+      "removed",
+    );
+    expect(text(item("C3")?.querySelector("[data-removed]"))).toContain("Avisos a las familias");
+    expect(chips("C4")).toEqual([
+      "AC1 (same)",
+      "AC3 (same)",
+      "depende de C1 (same)",
+      "depende de C2 (same)",
+    ]);
+    // A slice still in the spec can be commented on; a removed one cannot.
+    expect(item("C3")?.querySelector("sp-icon-button")).toBeNull();
+    item("C4")?.querySelector<HTMLButtonElement>("sp-icon-button button")?.click();
+    item("C2")?.querySelector<HTMLButtonElement>("sp-icon-button button")?.click();
+    expect(anchors).toEqual([{ item: "C4" }, { item: "C2" }]);
+  });
+
+  it("AC5: says «depends on» and «Slices» in English", async () => {
+    const { element, item } = await renderEpic("en");
+    expect(text(element.querySelector("[data-delta-section=slices] h3"))).toBe("Slices");
+    expect(
+      [...(item("C4")?.querySelectorAll("[data-chips] > span") ?? [])].map((chip) => text(chip)),
+    ).toEqual(["AC1", "AC3", "depends on C1", "depends on C2"]);
+  });
 });
+
+/** An epic as approved in revision 1: three slices, and a risk. */
+const APPROVED_EPIC = `---
+kind: epic
+---
+
+# Panel académico
+
+## Objetivo
+
+El docente sigue la asistencia y las faltas de sus cursos en un panel.
+
+## Criterios de aceptación
+
+- AC1: CUANDO el docente abre el panel ENTONCES ve la asistencia de cada curso.
+- AC2: CUANDO la familia justifica una falta ENTONCES el docente la ve justificada.
+
+## Cortes
+
+- C1: Asistencia por curso
+  - ac: AC1
+- C2: Justificar faltas
+  - ac: AC2
+  - depends: C1
+- C3: Avisos a las familias
+  - ac: AC1
+
+## Riesgos
+
+- R1: Los datos llegan tarde.
+`;
+
+/** Revision 2: a new criterion, C2 renamed and reshaped, C3 split into C4, a risk replaced. */
+const ADJUSTED_EPIC = APPROVED_EPIC.replace(
+  "ENTONCES el docente la ve justificada.\n",
+  "ENTONCES el docente la ve justificada.\n- AC3: CUANDO llega un aviso ENTONCES la familia lo lee en su correo.\n",
+)
+  .replace(
+    "- C2: Justificar faltas\n  - ac: AC2\n  - depends: C1\n",
+    "- C2: Justificar faltas desde la app\n  - ac: AC1, AC2\n",
+  )
+  .replace(
+    "- C3: Avisos a las familias\n  - ac: AC1\n",
+    "- C4: Avisos por correo\n  - ac: AC1, AC3\n  - depends: C1, C2\n",
+  )
+  .replace("- R1: Los datos llegan tarde.", "- R2: El correo llega a spam.");
+
+const EPIC = deriveViews([
+  {
+    spec: ADJUSTED_EPIC,
+    approvedSpec: APPROVED_EPIC,
+    state: epicState(),
+    phaseSince: "2026-11-01T10:00:00.000Z",
+  },
+])[0];
+
+/** The epic in review, revision 2, with revision 1 approved. */
+function epicState(): ChangeState {
+  const base = sampleRecords(Date.now()).find((record) => record.state.id === REVISED)?.state;
+  if (base === undefined) return fail();
+  return {
+    ...base,
+    id: "20261101-panel-academico",
+    kind: "epic",
+    phase: "review",
+    revision: 2,
+    approved: {
+      revision: 1,
+      hash: `sha256:${"b".repeat(64)}`,
+      at: "2026-11-01T10:00:00.000Z",
+      by: "Ana Gómez",
+      channel: "ui",
+    },
+    items: {},
+    tasks: {},
+  };
+}
+
+@Component({
+  imports: [ReviewDelta],
+  template: `
+    @if (change.review.delta; as delta) {
+      <sp-review-delta [change]="change" [delta]="delta" [editable]="true" (comment)="anchors.push($event)" />
+    }
+  `,
+})
+class EpicHost {
+  readonly change = EPIC ?? fail();
+  readonly anchors: CommentAnchor[] = [];
+}
+
+/** The delta of the adjusted epic, editable, in `lang`. */
+async function renderEpic(lang: "es" | "en" = "es") {
+  localStorage.setItem("specty.lang", lang);
+  TestBed.resetTestingModule();
+  TestBed.configureTestingModule({
+    providers: [{ provide: SpectyData, useValue: new Recording() }],
+  });
+  const fixture = TestBed.createComponent(EpicHost);
+  await fixture.whenStable();
+  const element: HTMLElement = fixture.nativeElement;
+  const item = (key: string) => element.querySelector<HTMLElement>(`[data-item="${key}"]`);
+  return { element, item, anchors: fixture.componentInstance.anchors };
+}

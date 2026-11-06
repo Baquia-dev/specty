@@ -3,14 +3,12 @@
 // worker, or on demand where there are no workers: it carries core's parser, zod and yaml.
 import {
   type ChangeState,
-  computeSize,
-  DEFAULT_CONFIG,
-  formatSizeReason,
-  type Phase,
+  type ChangeSummary as CoreChangeSummary,
   parseChangeState,
   parseSpec,
   recommendEffort,
   type Spec,
+  summarizeChange,
 } from "@baquia-dev/specty-core";
 import { requestOf } from "./asked";
 import { closingOf } from "./closing";
@@ -19,34 +17,14 @@ import { findingsOf } from "./findings";
 import { historyOf } from "./history";
 import { lockedOf } from "./locks";
 import { type AuditRecord, progressOf } from "./progress";
-import type {
-  ChangeRecord,
-  ChangeTab,
-  ChangeView,
-  DecisionKind,
-  ReviewRecord,
-  ReviewView,
-} from "./records";
+import type { ChangeRecord, ChangeView, DecisionKind, ReviewRecord, ReviewView } from "./records";
 import { deriveReview } from "./review";
 import { sharedFiles } from "./shared";
 import { testsOf } from "./tests";
 import { warningsOf } from "./warnings";
 
-const TABS: Readonly<Record<Phase, ChangeTab>> = {
-  draft: "spec",
-  review: "spec",
-  testing: "progress",
-  implementing: "progress",
-  adjusting: "progress",
-  acceptance: "acceptance",
-  closing: "acceptance",
-  done: "history",
-  cancelled: "history",
-};
-
-export function initialTab(phase: Phase): ChangeTab {
-  return TABS[phase];
-}
+/** The tab a change opens on, by phase: core's rule, the same the local server summarizes with. */
+export { initialTab } from "@baquia-dev/specty-core";
 
 /** What the person has to decide now, if anything (docs/ui.md, Bandeja). */
 export function decisionOf(state: ChangeState): DecisionKind | undefined {
@@ -86,23 +64,13 @@ function highImpactPending(spec: Spec, state: ChangeState): number {
 
 export function deriveView(record: ChangeRecord): ChangeView {
   const { state, spec, problems } = parseRecord(record);
-  const size = computeSize(spec, DEFAULT_CONFIG);
-  const level = state.size?.level ?? size.level;
-  const tasks = spec.sections.tasks?.items ?? [];
   const audit = record.audit ?? [];
+  const summary = summarizeChange({ spec, state, phaseSince: record.phaseSince, audit });
   const requested = changesRequestedOf(state, audit);
   const decision = requested === undefined ? decisionOf(state) : undefined;
   return {
-    ...identityOf(record, state, spec, audit),
-    ...slicesIn(spec),
-    size: {
-      level,
-      reasons: size.reasons.map((reason) => ({
-        es: formatSizeReason(reason, "es"),
-        en: formatSizeReason(reason, "en"),
-      })),
-    },
-    effort: recommendEffort(level),
+    ...identityOf(record, state, spec, summary),
+    effort: recommendEffort(summary.size.level),
     ...(decision === undefined ? {} : { decision }),
     ...(requested === undefined ? {} : { changesRequested: requested }),
     highImpactPending: state.phase === "review" ? highImpactPending(spec, state) : 0,
@@ -112,11 +80,6 @@ export function deriveView(record: ChangeRecord): ChangeView {
       paths,
       reason,
     })),
-    tasks: {
-      done: tasks.filter((task) => state.tasks[task.id]?.status === "done").length,
-      total: tasks.length,
-    },
-    tab: initialTab(state.phase),
     problems,
     review: {
       ...deriveReview(spec, state, record.comments ?? []),
@@ -146,17 +109,22 @@ function parseRecord(record: ChangeRecord): {
   return { state, spec: parsed.spec, problems };
 }
 
+/**
+ * Who the change is and where it stands: core's summary, with its epic's id as the epic's title
+ * until `deriveViews` finds the epic, and what the record says of its revision and its folder.
+ */
 function identityOf(
   record: ChangeRecord,
   state: ChangeState,
   spec: Spec,
-  audit: readonly AuditRecord[],
+  summary: CoreChangeSummary,
 ): Pick<
   ChangeView,
   | "id"
   | "title"
   | "kind"
   | "epic"
+  | "slices"
   | "phase"
   | "revision"
   | "approved"
@@ -165,17 +133,19 @@ function identityOf(
   | "lost"
   | "orphan"
   | "away"
+  | "configIssues"
   | "phaseSince"
   | "createdAt"
   | "closedAt"
   | "goal"
+  | "size"
+  | "tasks"
+  | "tab"
 > {
+  const { epic, ...listed } = summary;
   return {
-    id: state.id,
-    title: spec.title || state.id,
-    kind: state.kind,
-    ...epicIn(spec),
-    phase: state.phase,
+    ...listed,
+    ...(epic === undefined ? {} : { epic: { ...epic, title: epic.id } }),
     revision: state.revision,
     ...approvedIn(state),
     ...(state.branch === undefined ? {} : { branch: state.branch }),
@@ -183,48 +153,9 @@ function identityOf(
     ...(record.lost === true ? { lost: true } : {}),
     ...(record.orphan === true ? { orphan: true } : {}),
     ...(record.away === undefined ? {} : { away: record.away }),
-    phaseSince: record.phaseSince,
-    ...timestampsOf(record, state, audit),
+    ...(record.configIssues === undefined ? {} : { configIssues: record.configIssues }),
     goal: spec.sections.goal ?? spec.sections.reason ?? "",
   };
-}
-
-const FINISH_EVENTS = [
-  "change.closed",
-  "change.cancelled",
-  "retro.confirmed",
-  "change.accepted",
-] as const;
-
-function timestampsOf(
-  record: ChangeRecord,
-  state: ChangeState,
-  audit: readonly AuditRecord[],
-): Pick<ChangeView, "createdAt"> & Partial<Pick<ChangeView, "closedAt">> {
-  const createdAt =
-    audit.find((entry) => entry.event === "change.created")?.ts ??
-    audit[0]?.ts ??
-    record.phaseSince;
-  if (state.phase !== "done" && state.phase !== "cancelled") {
-    return { createdAt };
-  }
-  const closedAt =
-    audit.findLast((entry) => FINISH_EVENTS.includes(entry.event as (typeof FINISH_EVENTS)[number]))
-      ?.ts ?? record.phaseSince;
-  return { createdAt, closedAt };
-}
-
-function epicIn(spec: Spec): Pick<ChangeView, "epic"> {
-  const { epic, slice } = spec.frontmatter;
-  if (epic === undefined) return {};
-  return { epic: { id: epic, title: epic, ...(slice === undefined ? {} : { slice }) } };
-}
-
-/** An epic's slices, by id and title; nothing without a Cortes section or with none in it. */
-function slicesIn(spec: Spec): Pick<ChangeView, "slices"> {
-  const slices = spec.sections.slices?.items ?? [];
-  if (slices.length === 0) return {};
-  return { slices: slices.map(({ id, title }) => ({ id, title })) };
 }
 
 function approvedIn(state: ChangeState): Pick<ChangeView, "approved"> {

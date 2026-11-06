@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  claimable,
-  freeWork,
   isDay,
   isOpenEntry,
   MEMORY_KINDS,
@@ -12,11 +10,11 @@ import {
   memoryDoneCard,
   memoryListCard,
   memoryRefusalCard,
+  memorySimilarCard,
   nextEntryId,
   type Output,
   parseEntryId,
-  resolvesRefusalCard,
-  takenEntry,
+  similarEntries,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
@@ -25,7 +23,7 @@ import { locateChanges } from "../flow/changes";
 import type { Session } from "../session";
 import { editMemory, type MemoryTarget, readMemory } from "../store/memory";
 import { dropEntry, keepEntry, type MemoryWriter } from "./memory-drop";
-import { openChanges } from "./status";
+import { resolveEntries } from "./memory-resolve";
 
 type Run = (handler: (session: Session) => Promise<Output | ReportOutput>) => () => Promise<void>;
 
@@ -36,6 +34,8 @@ interface AddOptions {
   readonly path?: readonly string[];
   readonly due?: string;
   readonly onClose?: string;
+  /** Open entries the agent said this one does not repeat, though it looks like them. */
+  readonly distinctFrom?: readonly string[];
 }
 
 /** What gives a reminder its trigger in `memory add`. */
@@ -46,8 +46,8 @@ interface Trigger {
 }
 
 /**
- * Registers `specty memory` (ADR 0016): the agent and the person list the memory's entries and
- * add to it from any folder of the clone.
+ * Registers `specty memory` (ADR 0016): the agent and the person list the memory's entries, add
+ * to it and change an entry's status from any folder of the clone.
  */
 export function memoryCommand(program: Command, run: Run): void {
   const memory = program
@@ -66,9 +66,18 @@ export function memoryCommand(program: Command, run: Run): void {
     .option("--path <globs...>", "the paths of the code it is about; a lesson needs them")
     .option("--due <day>", "a reminder: the day (YYYY-MM-DD) it waits for before showing")
     .option("--on-close <id>", "a reminder: the open change it waits for, until it is archived")
+    .option("--distinct-from <ids...>", "open entries it looks like and does not repeat")
     .action((text: string, options: AddOptions) =>
       run((session) => addEntry(session, text, options))(),
     );
+  statusCommands(memory, run);
+}
+
+/**
+ * The subcommands of `specty memory` that change an entry's status: a reminder done, an entry
+ * dropped or kept, and entries taken by this folder's open change.
+ */
+function statusCommands(memory: Command, run: Run): void {
   memory
     .command("done")
     .description("mark a reminder done")
@@ -90,6 +99,15 @@ export function memoryCommand(program: Command, run: Run): void {
     .argument("<id>")
     .action((id: string) =>
       run(async (session) => keepEntry(session, id, await writerOf(session)))(),
+    );
+  memory
+    .command("resolve")
+    .description(
+      "take pending items or improvements this folder's open change resolved: done when it closes",
+    )
+    .argument("<ids...>")
+    .action((ids: string[]) =>
+      run(async (session) => resolveEntries(session, ids, await writerOf(session)))(),
     );
 }
 
@@ -141,7 +159,14 @@ async function addEntry(session: Session, text: string, options: AddOptions): Pr
   if (refusal !== undefined) return memoryRefusalCard(refusal, session.cards);
   const change = await openChange(session);
   const target = targetOf(session, change);
-  return editMemory(session.git, target, ({ ids }) => {
+  return editMemory(session.git, target, ({ ids, entries }) => {
+    // An agent's pending item like an open one does not get in twice (ADR 0016); the person's does.
+    const distinctFrom = options.distinctFrom ?? [];
+    const alike =
+      session.actor === "human"
+        ? []
+        : similarEntries(entries, { kind, text: written, distinctFrom });
+    if (alike.length > 0) return { result: memorySimilarCard(alike, session.cards) };
     const entry: MemoryEntry = {
       id: nextEntryId(kind, ids),
       kind,
@@ -241,61 +266,6 @@ function openReminder(
   if (entry.kind !== "reminder") return { refusal: { reason: "not-reminder", entry } };
   if (!isOpenEntry(entry)) return { refusal: { reason: "already-done", id } };
   return { reminder: entry };
-}
-
-/**
- * What `specty new --resolves` takes: the entries `ids` names, or the card of why it takes none.
- * The open changes are read only when some entry is taken, to say which one took it.
- */
-export async function claimEntries(
-  session: Session,
-  ids: readonly string[],
-): Promise<{ readonly entries: readonly MemoryEntry[] } | { readonly refusal: Output }> {
-  const { entries } = await readMemory(session.git, session.config.memory.branch);
-  const open = entries.some((entry) => entry.status === "taken") ? await openChanges(session) : [];
-  const claim = claimable(ids, entries, new Set(open.map((change) => change.id)));
-  if ("entries" in claim) return claim;
-  const { problem } = claim;
-  if (problem.reason !== "taken") return { refusal: resolvesRefusalCard(problem, session.cards) };
-  const by = open.find((change) => change.id === problem.change);
-  // `claimable` only names a change among the open ones.
-  if (by === undefined) throw new Error(`${problem.change}: not an open change`);
-  // The first free one, even if `new` asked for it too: without the taken one, it can go on.
-  const [free] = freeWork(entries);
-  return {
-    refusal: resolvesRefusalCard(
-      { reason: "taken", entry: problem.entry, by, ...(free !== undefined ? { free } : {}) },
-      session.cards,
-    ),
-  };
-}
-
-/**
- * Marks each of `claimed` taken by `change`, one commit each. One that changed since it was
- * checked, because another session took it first, stays as that session left it.
- */
-export async function takeEntries(
-  session: Session,
-  change: string,
-  claimed: readonly MemoryEntry[],
-): Promise<void> {
-  const target = targetOf(session, change);
-  const at = session.environment.now().toISOString();
-  for (const checked of claimed) {
-    await editMemory(session.git, target, ({ entries }) => {
-      const now = entries.find((entry) => entry.id === checked.id);
-      if (
-        now === undefined ||
-        now.status !== checked.status ||
-        now.taken?.change !== checked.taken?.change
-      )
-        return { result: undefined };
-      return {
-        write: { entry: takenEntry(now, change, at), operation: "take" },
-        result: undefined,
-      };
-    });
-  }
 }
 
 /** The open change of this folder, if any. */

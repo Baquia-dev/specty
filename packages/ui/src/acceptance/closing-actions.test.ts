@@ -17,7 +17,7 @@ const REMINDERS = "20261017-recordatorios-correo";
 class Host {
   readonly compact = input(false);
   private readonly store = inject(ChangesStore);
-  readonly change = computed(() => this.store.all().find((item) => item.id === REMINDERS));
+  readonly change = computed(() => this.store.listed().find((item) => item.id === REMINDERS));
 }
 
 /** A source that cannot confirm: the dialog stays and a notice says why. */
@@ -69,7 +69,7 @@ async function render(source: typeof FixtureData = FixtureData, compact = false)
     [...(dialog()?.querySelectorAll<HTMLButtonElement>("sp-button button") ?? [])].find(
       (item) => text(item) === label,
     );
-  const view = () => store.all().find((item) => item.id === REMINDERS);
+  const view = () => store.listed().find((item) => item.id === REMINDERS);
   const toasts = () =>
     TestBed.inject(Toasts)
       .items()

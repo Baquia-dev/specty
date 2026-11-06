@@ -3,7 +3,14 @@
 // refusal means, in both languages. Pure.
 import type { SessionView } from "@baquia-dev/specty-core/light";
 import type { RunRecord } from "./progress";
-import type { Bilingual, ChangeRecord, Delegation, MemoryRecord } from "./records";
+import type {
+  Bilingual,
+  ChangeRecord,
+  ChangeSummary,
+  Delegation,
+  MemoryRecord,
+  SliceChangeRecord,
+} from "./records";
 import type { FinishedPage } from "./source";
 
 export const NO_SESSION: Bilingual = {
@@ -69,7 +76,7 @@ function outputText(body: unknown): string | undefined {
 
 /**
  * `GET /api/memory`'s answer: the entries of Specty's memory and the open changes, each with the
- * fields the memory page reads.
+ * fields the memory page reads, and the changes the entries came from, each with its title.
  */
 export function isMemoryRecord(value: unknown): value is MemoryRecord {
   if (!isObject(value) || !Array.isArray(value.entries) || !Array.isArray(value.changes))
@@ -81,7 +88,12 @@ export function isMemoryRecord(value: unknown): value is MemoryRecord {
   const change = (item: unknown) =>
     isObject(item) &&
     ["id", "kind", "phase", "title", "waitingFor"].every((key) => isText(item[key]));
-  return value.entries.every(entry) && value.changes.every(change);
+  // Each change of origin has its title at least: one the server does not find, its id.
+  const origin = (item: unknown) => isObject(item) && isText(item.title);
+  const origins =
+    value.origins === undefined ||
+    (isObject(value.origins) && Object.values(value.origins).every(origin));
+  return value.entries.every(entry) && value.changes.every(change) && origins;
 }
 
 /**
@@ -161,18 +173,60 @@ export function isRecords(value: unknown): value is readonly ChangeRecord[] {
   return Array.isArray(value) && value.every(isChangeRecord);
 }
 
-/** `GET /api/changes/finished`'s answer: its records, with the same light check, and its numbers. */
-export function isFinishedPage(value: unknown): value is FinishedPage {
-  if (!isObject(value) || !isRecords(value.records) || !isObject(value.counts)) return false;
-  const { counts, epics } = value;
+/** `GET /api/changes/<id>/slices`'s answer: each slice with the id and the phase of its change. */
+export function isSliceChanges(value: unknown): value is readonly SliceChangeRecord[] {
   return (
+    Array.isArray(value) &&
+    value.every(
+      (item: unknown) =>
+        isObject(item) && ["slice", "id", "phase"].every((key) => isText(item[key])),
+    )
+  );
+}
+
+/** `GET /api/changes/finished`'s answer: each change's summary, lightly checked, and its numbers. */
+export function isFinishedPage(value: unknown): value is FinishedPage {
+  if (!isObject(value) || !Array.isArray(value.changes) || !isObject(value.counts)) return false;
+  const { counts } = value;
+  return (
+    value.changes.every(isChangeSummary) &&
     typeof value.total === "number" &&
     typeof value.finished === "number" &&
     typeof counts.done === "number" &&
-    typeof counts.cancelled === "number" &&
-    isObject(epics) &&
-    Object.values(epics).every(isText)
+    typeof counts.cancelled === "number"
   );
+}
+
+/** The texts every summary carries. */
+const SUMMARY_TEXTS = ["id", "title", "kind", "phase", "phaseSince", "createdAt", "tab"];
+
+/**
+ * A light check of a change's summary, as the server gives it: the texts and numbers its row
+ * reads, its epic with its id and title, and its size with its level and its reasons.
+ */
+function isChangeSummary(value: unknown): value is ChangeSummary {
+  return (
+    isObject(value) &&
+    SUMMARY_TEXTS.every((key) => isText(value[key])) &&
+    isTaskCount(value.tasks) &&
+    (value.epic === undefined || isEpicNamed(value.epic)) &&
+    (value.size === undefined || isSized(value.size))
+  );
+}
+
+/** A summary's tasks: how many are done, of how many. */
+function isTaskCount(value: unknown): boolean {
+  return isObject(value) && typeof value.done === "number" && typeof value.total === "number";
+}
+
+/** A summary's epic: its id and its title. */
+function isEpicNamed(value: unknown): boolean {
+  return isObject(value) && isText(value.id) && isText(value.title);
+}
+
+/** A summary's size: its level and its reasons. */
+function isSized(value: unknown): boolean {
+  return isObject(value) && isText(value.level) && Array.isArray(value.reasons);
 }
 
 /** The same light check, of one change. */

@@ -29,7 +29,7 @@ class Host {
   readonly view = input<ChangeView | undefined>(undefined);
   private readonly store = inject(ChangesStore);
   readonly change = computed(
-    () => this.view() ?? this.store.all().find((item) => item.id === this.id()),
+    () => this.view() ?? this.store.listed().find((item) => item.id === this.id()),
   );
 }
 
@@ -199,7 +199,7 @@ describe("Full verification", () => {
     const { section, remount, store } = await render("20261019-boletines-pdf");
     expect(text(section()?.querySelector("[data-verdict]"))).toBe("Sin ejecutar");
     expect(section()?.querySelector("[data-run]")).toBeNull();
-    const view = store.all().find((item) => item.id === ASISTENCIA);
+    const view = store.listed().find((item) => item.id === ASISTENCIA);
     if (view === undefined) throw new Error("no view");
     await remount({ ...view, progress: { tasks: view.progress.tasks } });
     expect(section()).toBeNull();
@@ -219,7 +219,7 @@ describe("Full verification", () => {
     /** The section with a last full verification of its own: passed or not, with or without coverage. */
     async function withLast(passed: boolean, coverage?: typeof COVERAGE) {
       const rendered = await render();
-      const view = rendered.store.all().find((item) => item.id === ASISTENCIA);
+      const view = rendered.store.listed().find((item) => item.id === ASISTENCIA);
       if (view === undefined) throw new Error("no view");
       const last = {
         at: new Date().toISOString(),
@@ -263,7 +263,7 @@ describe("Full verification", () => {
       await settle();
       expect(text(part("[data-coverage-gaps]"))).toContain("Not run:");
       expect(text(part("[data-coverage-more]"))).toBe("and 2 more stretches");
-      const view = store.all().find((item) => item.id === ASISTENCIA);
+      const view = store.listed().find((item) => item.id === ASISTENCIA);
       if (view === undefined) throw new Error("no view");
       const last = {
         at: new Date().toISOString(),

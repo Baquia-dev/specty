@@ -29,7 +29,7 @@ import { SECTION_LABELS } from "./comments";
 import { IndependentReview } from "./independent-review";
 import { Markdown } from "./markdown";
 import { SECTION_META, sectionNumber, sectionProgress } from "./section-meta";
-import { ReviewItems } from "./spec-sections";
+import { itemSection, ReviewItems } from "./spec-sections";
 import { UserRequest } from "./user-request";
 
 /** A card in the chat: a surface of its own, apart from the others by the gap between them. */
@@ -41,6 +41,7 @@ const COUNTS: Partial<Record<ReviewSection, (review: ReviewView) => number>> = {
   criteria: (review) => review.criteria.length,
   risks: (review) => review.risks.length,
   tasks: (review) => review.tasks.length,
+  slices: (review) => review.slices.length,
   files: (review) => review.files.reduce((total, group) => total + group.files.length, 0),
 };
 
@@ -196,6 +197,7 @@ export class SpecCards {
   protected readonly warningIcon = LucideTriangleAlert;
   protected readonly commentIcon = LucideMessageSquare;
   protected readonly changedIcon = LucidePencilLine;
+  protected readonly itemSection = itemSection;
 
   protected readonly review = computed(() => this.change().review);
   /** The open cards: only the Goal for each change; another read of the same one keeps them. */
@@ -233,10 +235,6 @@ export class SpecCards {
       if (!next.delete(key)) next.add(key);
       return next;
     });
-  }
-
-  protected itemSection(key: ReviewSection): "criteria" | "files" | "tasks" | "risks" {
-    return key === "files" || key === "tasks" || key === "risks" ? key : "criteria";
   }
 
   private summary(key: ReviewSection, review: ReviewView): string {

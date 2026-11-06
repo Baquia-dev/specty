@@ -32,6 +32,7 @@ export const SECTION_LABELS: Readonly<Record<ReviewSection, Bilingual>> = {
   criteria: { es: "Criterios", en: "Criteria" },
   files: { es: "Archivos", en: "Files" },
   tasks: { es: "Tareas", en: "Tasks" },
+  slices: { es: "Cortes", en: "Slices" },
   risks: { es: "Riesgos", en: "Risks" },
   design: { es: "Diseño", en: "Design" },
 };
