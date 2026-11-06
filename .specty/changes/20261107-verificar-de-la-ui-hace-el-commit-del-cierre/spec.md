@@ -16,7 +16,7 @@ En aceptación delegada, con el cierre ya enviado y sin commit, «Verificar» de
 
 ## Tareas
 
-- [ ] T1: «Verificar» de la UI hace el commit del cierre enviado antes de incorporar main
+- [x] T1: «Verificar» de la UI hace el commit del cierre enviado antes de incorporar main
   - files: packages/cli/src/server/merged-run.ts, packages/cli/test/server/verify-merge.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/verify-merge.test.ts && pnpm typecheck && pnpm lint
   - type: fix

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { busyChangeCard, type Output, renderText } from "@baquia-dev/specty-core";
 import { pendingIntegration } from "../commands/integrate";
+import { closingFirst } from "../flow/closing-turn";
 import { type Integration, mergeTarget } from "../flow/integrate";
 import type { Session } from "../session";
 import { loadChange } from "../store/changes";
@@ -36,7 +37,9 @@ export async function mergedVerification(
     return stoppedBy(there, busyChangeCard(id, { ...lock.holder, folder }, there.cards));
   }
   try {
-    const absorbed = await mergeTarget(there, plan, pending.change, "accept");
+    // A closing sent already gets its commit first, if main changed its files, as in `accept`.
+    const closing = closingFirst(there, pending.change);
+    const absorbed = await mergeTarget(there, plan, pending.change, "accept", closing);
     if (absorbed.ok) return { lines: absorbed.lines, stopped: false };
     // With conflicts or in red, the merge waits for the agent: the change moved on.
     const after = await loadChange(there.paths, id);
