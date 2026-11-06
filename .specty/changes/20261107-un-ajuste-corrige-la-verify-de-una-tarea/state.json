@@ -6,6 +6,13 @@
   "branch": "specty/20261107-un-ajuste-corrige-la-verify-de-una-tarea",
   "baseCommit": "efe8573c8c939f04712e3ff9ccede27b7c150138",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d51a3a8c2ef98fd5b190c06be3d1dd6dfa9df663c222f39c2f105e82d748ec35",
+    "at": "2026-11-06T23:17:38.804Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d51a3a8c2ef98fd5b190c06be3d1dd6dfa9df663c222f39c2f105e82d748ec35",
-    "at": "2026-11-06T23:17:38.804Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T23:24:00.924Z"
 }
