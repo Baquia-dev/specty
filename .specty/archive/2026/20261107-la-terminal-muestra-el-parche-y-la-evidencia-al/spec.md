@@ -64,3 +64,24 @@ Hoy, al decidir en la terminal una solicitud de alcance con `approve --scope` o 
   - ac: AC1, AC2
   - verify: pnpm sources
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Al decidir en la terminal una solicitud de alcance con `approve --scope` o `reject --scope`, la nota previa sale ahora de `scopeRequestNote` (`cards/approve.ts`). Muestra las rutas y el motivo, como antes, y en un desbloqueo añade el parche bajo «El cambio al test» y cada evidencia bajo «El código que lo sustenta», con `<ruta>:<desde>-<hasta>` y cada línea numerada como en el archivo. Corta el parche en 40 líneas y cada evidencia en 10, dice cuántas omite y, si omite algo, que la solicitud entera se ve en la UI. Muestra con su código (`\u001b`) los caracteres de control y de dirección del texto, y quita el retorno de carro de un fin de línea CRLF. Una solicitud sin parche enseña lo mismo que antes. El corte «… y N líneas más» pasa a `cappedLines` (`cards/text.ts`), que usa también la diferencia de `task done` en `unlock-check.ts`. ARCHITECTURE.md lo cuenta.
+
+### Desviaciones
+
+- Ninguna respecto al plan. `propose` avisó de que el `pnpm typecheck` de la verificación de T1 compilaría también los tests de T2 antes de su código, pero esos tests solo usan `cli()`, ya existente: se dejó y T1 pasó.
+- Antes de enviar los tests, el código se probó en una copia de la carpeta del cambio, fuera del repositorio, porque solo la persona puede desbloquear un test aprobado mal escrito. En el cambio no quedó nada de esa copia.
+
+### Decisiones
+
+- Los títulos son los mismos que usa la UI del corte C3 («El cambio al test», «El código que lo sustenta»), y la evidencia se identifica igual, con `<ruta>:<desde>-<hasta>`.
+- Los números de línea de cada evidencia se alinean al ancho del último número que se muestra en ella, no al de toda la nota.
+- El filtro de caracteres se aplica a todas las líneas de la nota, rutas y motivo incluidos, porque cualquiera de ellos lo escribe el agente. Deja el tabulador y cambia por `\uXXXX` los controles C0 y C1, los de incrustación y anulación de la dirección del texto (U+202A–U+202E) y los de aislamiento (U+2066–U+2069).
+
+### Pendientes
+
+- La UI (corte C3) muestra el parche y la evidencia sin marcar los caracteres de dirección del texto (U+202A–U+202E, U+2066–U+2069), que en el navegador pueden reordenar lo que se lee; la terminal ya los muestra con su código.

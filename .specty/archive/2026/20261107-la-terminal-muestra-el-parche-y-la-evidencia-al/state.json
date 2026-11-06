@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-la-terminal-muestra-el-parche-y-la-evidencia-al",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-la-terminal-muestra-el-parche-y-la-evidencia-al",
   "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:cb545a22e28ca7a645449395b221b4de1c7a1cb2c4de376b59478784ce62552b",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "91701e995b394191276704e8583ab2627d298ff8",
+      "attempts": 1,
       "startedAt": "2026-11-06T17:29:28.061Z",
       "doneAt": "2026-11-06T17:30:14.905Z",
-      "summary": "ARCHITECTURE.md cuenta qué muestra la nota de la terminal antes de decidir un desbloqueo: parche, evidencia numerada, cortes y caracteres de control."
+      "summary": "ARCHITECTURE.md cuenta qué muestra la nota de la terminal antes de decidir un desbloqueo: parche, evidencia numerada, cortes y caracteres de control.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,6 +74,7 @@
     "AC": 4,
     "T": 3
   },
+  "closingSubmittedAt": "2026-11-06T17:42:04.396Z",
   "lockedTests": {
     "packages/cli/test/test-locks.test.ts": "sha256:f2622a34122562bdfc157d07aba85a76e5abb16f9d7ebe11146dee969842c6ef",
     "packages/core/test/cards/approve.test.ts": "sha256:5c214ea725b5fdefcb6d30189eaccb4470db3512e4a099c4cc8aa9b9370c6382"
