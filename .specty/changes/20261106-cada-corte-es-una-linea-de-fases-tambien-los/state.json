@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "id": "20261106-cada-corte-es-una-linea-de-fases-tambien-los",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-cada-corte-es-una-linea-de-fases-tambien-los",
+  "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9b7b7d68cf4d1d1cbb71504ec4248b024d6b9e0684a9ebcf2a0550c6ce771784",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:ed0e83475431cacaee1e5ce661b1903b8351cf3af410ea07c7c60f3fda5c2f0f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9c3cc188f3337d8b310bb84b6fb7d01d071b9b088fc63542fdb25a0a316baa9c",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:3bc385804bd2e906bd50df3b55fc9ab97099fa229f1d0c2a9833666b34d30cb8",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:749bd2e920bb1f8651e29efd7e88ed8f87d6b468cc99584331fef608f63a408d",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:42ebea9daea199b23098aa1a769cca55c03577e2c0001984115947d0f9a3f725",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:397cf818bf4ee14e72de58bf341a664251d22c25271a8462c94818adaf28e00f",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:a9f0c38bbc33a8159af3723954dbbcfd7f21bfeae70723c87c5ad3ef3fe99e0c",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:8ed92e3d671c2c85fd1a3aca4a5133f5e108c0c794b62b6580453d4fc42b7958",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 9,
+    "AC": 11,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0445fbe6f8fadb90d86f98d9e972e56a41c580fca6215356b9108cbb97ab84c7",
+    "at": "2026-11-06T15:35:26.132Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
