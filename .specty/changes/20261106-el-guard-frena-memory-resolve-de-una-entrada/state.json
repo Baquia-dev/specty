@@ -37,7 +37,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cf5f36b2363a92950195603c244c6c3fd7abaa60",
+      "startedAt": "2026-11-06T07:48:51.882Z",
+      "doneAt": "2026-11-06T07:49:19.550Z",
+      "summary": "SpectyCalls.memoryResolves: los ids de specty memory resolve (memoryResolvedIds), juntados entre segmentos en shell.ts."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

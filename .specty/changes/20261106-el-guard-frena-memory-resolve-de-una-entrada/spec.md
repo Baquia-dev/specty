@@ -49,7 +49,7 @@ Hoy el guard rechaza `specty new --resolves <id>` cuando la entrada está en un 
 
 ## Tareas
 
-- [ ] T1: El análisis del shell da los ids de `memory resolve`
+- [x] T1: El análisis del shell da los ids de `memory resolve`
   - files: packages/core/src/guard/specty-calls.ts, packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts

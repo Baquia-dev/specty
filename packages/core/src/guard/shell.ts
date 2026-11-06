@@ -56,6 +56,7 @@ const EMPTY: ShellAnalysis = {
   enters: [],
   fronts: [],
   resolves: [],
+  memoryResolves: [],
   news: [],
   runsIn: [],
 };
@@ -179,6 +180,7 @@ function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
     enters: [...a.enters, ...b.enters],
     fronts: [...a.fronts, ...b.fronts],
     resolves: [...a.resolves, ...b.resolves],
+    memoryResolves: [...a.memoryResolves, ...b.memoryResolves],
     news: [...a.news, ...b.news],
     runsIn: [...a.runsIn, ...b.runsIn],
   };
