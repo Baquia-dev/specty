@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261106-tras-pedir-cambios-la-revision-espera-al-agente",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-tras-pedir-cambios-la-revision-espera-al-agente",
   "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
   "revision": 3,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:748e778b51453a671ad13dad0b46c65ed68cd875e9142bed6b031b30a5be8b50",
+    "at": "2026-11-06T15:39:18.098Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -53,12 +60,9 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 3,
-    "hash": "sha256:748e778b51453a671ad13dad0b46c65ed68cd875e9142bed6b031b30a5be8b50",
-    "at": "2026-11-06T15:39:18.098Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/changes-requested-state.test.ts": "sha256:42be1eccb8e3040832f24155b9b5243ec4803ca4a642f41eb508de0b6c97fc9b",
+    "packages/cli/test/changes-requested-turn.test.ts": "sha256:4fd68a8ccbe037aa94720529500eb577d1f6cc3de6729127d48fc638a404a258",
+    "packages/core/test/flow/waiting.test.ts": "sha256:c343788d0a5d9982964b4ec1e9cb7a2e1b54d62aa04ce1a84d581e9d1007531e"
+  }
 }
