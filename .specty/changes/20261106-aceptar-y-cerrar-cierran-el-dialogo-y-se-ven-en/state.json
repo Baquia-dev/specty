@@ -6,6 +6,13 @@
   "branch": "specty/20261106-aceptar-y-cerrar-cierran-el-dialogo-y-se-ven-en",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f25a269a1d5ca6a7d91d19fb3a6320f3506981b3f873c53a63252b318347c781",
+    "at": "2026-11-06T07:46:18.109Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -47,12 +54,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f25a269a1d5ca6a7d91d19fb3a6320f3506981b3f873c53a63252b318347c781",
-    "at": "2026-11-06T07:46:18.109Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T07:49:37.727Z"
 }
