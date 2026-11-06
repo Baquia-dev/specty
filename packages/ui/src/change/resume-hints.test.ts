@@ -118,11 +118,26 @@ describe("a change no conversation holds, in the UI", () => {
     expect(text(rowOf(element, ORPHAN)?.querySelector("[data-unheld]"))).toBe(
       "Ninguna conversación lo lleva",
     );
+    // AC1: the agent goes by its name, not by its tool's id.
     expect(text(rowOf(element, AWAY)?.querySelector("[data-unheld]"))).toBe(
-      "Su conversación (codex) salió de su carpeta",
+      "Su conversación (Codex) salió de su carpeta",
     );
     const marked = [...element.querySelectorAll("sp-inbox-row [data-unheld]")];
     expect(marked).toHaveLength(2);
+  });
+
+  it("AC1: its Inbox row names the agent whose conversation left its folder, in English too", async () => {
+    const { element } = await open("/", Unheld, "en");
+    expect(text(rowOf(element, AWAY)?.querySelector("[data-unheld]"))).toBe(
+      "Its conversation (Codex) left its folder",
+    );
+  });
+
+  it("AC2: its page names the agent whose conversation left its folder, in English too", async () => {
+    const { element } = await open(`/changes/${AWAY}`, Unheld, "en");
+    expect(text(element.querySelector("sp-resume-hints [data-why]"))).toBe(
+      "Its conversation (Codex) left its folder 4 min ago.",
+    );
   });
 
   it("AC3: its page says, above the tabs, how to resume it with each agent", async () => {
@@ -134,8 +149,9 @@ describe("a change no conversation holds, in the UI", () => {
     expect(
       (panel?.compareDocumentPosition(tabs as Node) ?? 0) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
+    // AC2: the agent goes by its name, not by its tool's id.
     expect(text(panel?.querySelector("[data-why]"))).toBe(
-      "Su conversación (codex) salió de su carpeta hace 4 min.",
+      "Su conversación (Codex) salió de su carpeta hace 4 min.",
     );
     const hints = [...(panel?.querySelectorAll("[data-agent]") ?? [])].map(
       (hint) => `${text(hint.querySelector("[data-name]"))}: ${text(hint.querySelector("code"))}`,
@@ -207,7 +223,8 @@ describe("a change nobody picks up after the person's decision, in its page", ()
 
   it("AC3: says the agent's specty wait ran out of time, and what to do before the orders to open another", async () => {
     const { panel, why, todo } = await said(TIMEOUT);
-    expect(why).toBe("El specty wait del agente (claude-code) agotó su tiempo hace 12 min.");
+    // AC2: the agent of the wait goes by its name.
+    expect(why).toBe("El specty wait del agente (Claude Code) agotó su tiempo hace 12 min.");
     expect(todo).toBe(
       "Si la conversación del agente sigue abierta, escríbele «sigue» para que ejecute specty next y siga desde tu decisión; si se cerró, abre otra en su carpeta con una de estas órdenes.",
     );
@@ -223,12 +240,14 @@ describe("a change nobody picks up after the person's decision, in its page", ()
   it("AC3: says the agent's specty wait was cut off, ahead of its conversation having left its folder", async () => {
     marks = { away: { tool: "codex", ago: 4 } };
     const { why } = await said(STOPPED);
-    expect(why).toBe("El specty wait del agente (codex) se cortó hace 3 min.");
+    // AC2: the agent of the wait goes by its name.
+    expect(why).toBe("El specty wait del agente (Codex) se cortó hace 3 min.");
   });
 
   it("AC3: says no agent waited, with the last conversation that stepped in its folder or with none", async () => {
+    // AC2: the agent of the last conversation goes by its name.
     expect((await said(HELD)).why).toBe(
-      "Ningún agente esperaba tu decisión; la última conversación en su carpeta (claude-code) dio un paso hace 7 min.",
+      "Ningún agente esperaba tu decisión; la última conversación en su carpeta (Claude Code) dio un paso hace 7 min.",
     );
     expect((await said({ since })).why).toBe(
       "Ningún agente esperaba tu decisión, y ninguna conversación trabaja en su carpeta.",
@@ -237,15 +256,16 @@ describe("a change nobody picks up after the person's decision, in its page", ()
 
   it("AC6: says what happened and what to do in English", async () => {
     const timedOut = await said(TIMEOUT, "en");
-    expect(timedOut.why).toBe("The agent's specty wait (claude-code) ran out of time 12 min ago.");
+    // AC2: in English too, each agent goes by its name.
+    expect(timedOut.why).toBe("The agent's specty wait (Claude Code) ran out of time 12 min ago.");
     expect(timedOut.todo).toBe(
       "If the agent's conversation is still open, write “go on” in it so it runs specty next and goes on from your decision; if it closed, open another one in its folder with one of these orders.",
     );
     expect((await said(STOPPED, "en")).why).toBe(
-      "The agent's specty wait (codex) was cut off 3 min ago.",
+      "The agent's specty wait (Codex) was cut off 3 min ago.",
     );
     expect((await said(HELD, "en")).why).toBe(
-      "No agent was waiting for your decision; the last conversation in its folder (claude-code) took a step 7 min ago.",
+      "No agent was waiting for your decision; the last conversation in its folder (Claude Code) took a step 7 min ago.",
     );
     expect((await said({ since }, "en")).why).toBe(
       "No agent was waiting for your decision, and no conversation works in its folder.",

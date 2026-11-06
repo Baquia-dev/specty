@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "id": "20261107-la-ui-marca-los-caracteres-de-direccion-del",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-la-ui-marca-los-caracteres-de-direccion-del",
+  "baseCommit": "7364903203145fdcd85c7f2a4455e068e59045f7",
+  "revision": 4,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:7db43ada1ae0f589dbae0116547fe4a65976804bf095876b7a89149ee21a0308",
+    "at": "2026-11-06T18:48:12.429Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:83192a20be97a0455edb07144ca9bee5fbbe78e802f1de40a8db1aff25b9e7a9",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a696d038e94b5fa7566cfcf47453f9903d3ed63fdb6863718e054fd0fde6799f",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:7ff3f4b79d244e63e7b226bfd1e313562aa3bde524e84c8cdfeb6c1d58217714",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:43eedcc167363495b43bb38383e7fcd9b02a3a870e12a9d88d95303314bfca8c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6ce3f507a9d239c1d8fec29b56da52f07d3883a1",
+      "attempts": 1,
+      "startedAt": "2026-11-06T18:57:33.683Z",
+      "doneAt": "2026-11-06T18:58:09.094Z",
+      "summary": "spansOf corta cada pieza alrededor de cada carácter de dirección del texto (U+202A–U+202E, U+2066–U+2069) y lo da como su código (\\\\u202e), sin color ni cursiva, con direction y conservando changed; LineSpan gana direction.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "7c32e62f41e07119f0877ffb6b41f023227d53c9",
+      "attempts": 1,
+      "startedAt": "2026-11-06T18:58:09.505Z",
+      "doneAt": "2026-11-06T18:58:51.327Z",
+      "summary": "DIRECTION_MARK (highlight.ts) da el tono de atención (phase-review sobre phase-review-bg) y el título en español y en inglés; el visor de diffs lo pone, con data-direction, en la pieza marcada de las dos vistas, en lugar del tono de la palabra cambiada.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "a22c171eb2cb133197e86720a8da9a19b43bb0b4",
+      "attempts": 1,
+      "startedAt": "2026-11-06T18:58:51.704Z",
+      "doneAt": "2026-11-06T18:59:39.691Z",
+      "summary": "«Ver código» y la evidencia (code-lines.ts, que lee el idioma de Preferences) y la trazabilidad (trace-view.ts) pintan la pieza marcada con el tono y el título de DIRECTION_MARK y data-direction.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "229068435a02817a0a2a385e8c670751f65b3fa0",
+      "attempts": 1,
+      "startedAt": "2026-11-06T18:59:40.034Z",
+      "doneAt": "2026-11-06T19:04:18.164Z",
+      "summary": "ui.md (Visor de diffs) cuenta cómo se ve un carácter de dirección del texto y que spansOf lo marca para el visor, «Ver código», la evidencia y la trazabilidad.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T19:10:10.424Z",
+  "lockedTests": {
+    "packages/ui/src/components/diff-file.test.ts": "sha256:302851228f9685e518ae0262cff85eb8f4702ab7ca1efbd212772975f7660d74",
+    "packages/ui/src/highlight/highlight.test.ts": "sha256:838a61a7ed579e987dbf5d0e80f6d161c9a00168638cca8a3dd4e2fb543a2845",
+    "packages/ui/src/history/trace-view.test.ts": "sha256:84d0ac1303d9ba93778b26289f84de0dc47e5a9397c0e400e7bae20f73497579",
+    "packages/ui/src/progress/unlock-detail.test.ts": "sha256:43c628c475cfb5d9f8bfdd396e3a242e8561f879fc8697be29f2c01b0f2ef210"
+  }
+}

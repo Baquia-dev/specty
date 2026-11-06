@@ -16,7 +16,7 @@ import { Skeleton } from "../components/skeleton";
 import { contextFile } from "../data/diff";
 import { ActionError, SpectyData } from "../data/records";
 import type { TraceBlock } from "../data/trace";
-import { HIGHLIGHT, type LineSpan, spansOf } from "../highlight/highlight";
+import { DIRECTION_MARK, HIGHLIGHT, type LineSpan, spansOf } from "../highlight/highlight";
 import { Preferences } from "../theme/preferences";
 import { TraceDiff } from "./trace-diff";
 
@@ -86,7 +86,7 @@ interface ShownBlock {
                 @for (line of shown.lines; track line.number) {
                   <li class="flex gap-3 px-3" data-line>
                     <span class="w-10 shrink-0 select-none text-right text-text-muted">{{ line.number }}</span>
-                    <code class="whitespace-pre text-text">@for (span of line.spans; track $index) {<span [class.italic]="span.italic === true" [style.color]="span.color ?? null">{{ span.text }}</span>}</code>
+                    <code class="whitespace-pre text-text">@for (span of line.spans; track $index) {<span [class]="span.direction ? directionMark.look : ''" [class.italic]="span.italic === true" [style.color]="span.color ?? null" [attr.data-direction]="span.direction ? '' : null" [attr.title]="span.direction ? directionMark.note[lang()] : null">{{ span.text }}</span>}</code>
                   </li>
                 }
               </ol>
@@ -111,6 +111,9 @@ export class TraceView {
   private readonly preferences = inject(Preferences);
   private readonly highlight = inject(HIGHLIGHT);
   protected readonly t = this.preferences.t;
+  protected readonly lang = this.preferences.lang;
+  /** A character of text direction shows in the attention tone, with its title. */
+  protected readonly directionMark = DIRECTION_MARK;
 
   constructor() {
     inject(ItemTooltips).setSource(() => this.change());

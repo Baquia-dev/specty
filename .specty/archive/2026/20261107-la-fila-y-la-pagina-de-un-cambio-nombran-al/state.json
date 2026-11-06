@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "id": "20261107-la-fila-y-la-pagina-de-un-cambio-nombran-al",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-la-fila-y-la-pagina-de-un-cambio-nombran-al",
+  "baseCommit": "f73f56c2e001f58edd04adbfdf15af98bc92986c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ef84513e727417326b79cd8b190b1ac82bbaba86750829b1180ac0c9884d4742",
+    "at": "2026-11-06T19:12:08.910Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:283687d12372a766f4cfdc69370b709bb00999ea988684d588451d2898c6715d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:35147df680272607d5b76f10e3b2cf31aa4d6008a924698ffec4e4166d452851",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:c3d52487a9b6eae1890c9d6f432d2f151a52857002edbcbf943168ad147510ec",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e175649639855407cf1869780565c6a78b31fc91",
+      "attempts": 1,
+      "startedAt": "2026-11-06T19:26:03.665Z",
+      "doneAt": "2026-11-06T19:26:39.985Z",
+      "summary": "agentName (data/agent-name.ts) da el nombre de AGENT_NAMES o el id; lane-holds.ts la usa en lugar de su nameOf privado",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "04877801b315ae2cc1dc775acc81e0cda5d4118d",
+      "attempts": 1,
+      "startedAt": "2026-11-06T19:26:40.316Z",
+      "doneAt": "2026-11-06T19:27:39.152Z",
+      "summary": "La fila (inbox-row.ts) y Cómo retomarlo (resume-hints.ts: conversación fuera de su carpeta, specty wait agotado o cortado y última conversación) nombran al agente con agentName",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "248272984ed0f1baff080adc9a9afe2123be0c7e",
+      "attempts": 2,
+      "startedAt": "2026-11-06T19:27:39.481Z",
+      "doneAt": "2026-11-06T19:36:33.026Z",
+      "summary": "La pestaña Historial deja su lista TOOLS (sin GitHub Copilot) y nombra al agente con agentName; aplicado tal cual el parche de S1 (orden de los eventos del test de AC3)",
+      "scopeExtra": [
+        "packages/ui/src/history/history-who.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-06T19:38:12.255Z",
+  "lockedTests": {
+    "packages/ui/src/change/change-page.unattended.test.ts": "sha256:715a3b44740f9dbae41bee58214c9769a8487c7093f97381ada6a95b3dffa6dc",
+    "packages/ui/src/change/resume-hints.test.ts": "sha256:0ad3db3208b8e468956a3ced8b63ff76d7638f43d8295a788c9783d86f9492cb",
+    "packages/ui/src/history/history-who.test.ts": "sha256:7fa6edbb57bb0d691588ff3fd4ae83d2806d2b020722b08b06b4241b5d609a3d",
+    "packages/ui/src/data/agent-name.test.ts": "sha256:7abc136aec0d2e563b9031f032db247c9d3220d53293ccc16d9036385dcfb78f"
+  }
+}

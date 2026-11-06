@@ -366,7 +366,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `retro.confirmed` | en una retro aparte, el modo (`agent` o `minimal`); con `retro --into`, en el cambio activo, la solicitud (`request`) y sus rutas (`paths`) |
 | `change.usage` | lo que consumió el cambio, medido con ccusage al cerrarlo, o al aceptar uno quick, justo antes de archivarlo (actor `specty`): `calls`, las llamadas al modelo de las sesiones que nombran sus líneas (`session`) desde `change.created`; `input`, `output`, `cacheWrite` y `cacheRead`, sus tokens de cada tipo, y `cost`, en USD, si cada modelo de esas llamadas tiene precios, ninguno negativo, que expliquen al céntimo el coste de nueve de cada diez de sus sesiones en el informe de ccusage, y de al menos cuatro. Sin ccusage, sin una respuesta válida o sin sesiones, no hay evento |
 | `change.closed` / `change.cancelled` | motivo, al cancelar |
-| `integration.started` | incorporar la rama principal al aceptar o al cerrar dejó el merge para el agente: rama destino, su commit, motivo (`conflicts` o `verify`) y archivos en conflicto |
+| `integration.started` | incorporar la rama principal al aceptar, al cerrar o al verificar desde la UI dejó el merge para el agente: rama destino, su commit, motivo (`conflicts` o `verify`) y archivos en conflicto |
 | `integration.resolved` | `specty integrate` hizo el commit de merge: commit |
 | `integration.abandoned` | el merge ya no estaba en curso y la incorporación pendiente se descartó: rama destino |
 

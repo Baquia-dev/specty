@@ -102,3 +102,79 @@ describe("Diff file colors", () => {
     );
   });
 });
+
+const [RLO, LRI, PDI] = [0x202e, 0x2066, 0x2069].map((code) => String.fromCodePoint(code));
+
+/** Whether a text has a character of text direction that the browser would apply. */
+const appliesDirection = (text: string) =>
+  Array.from(text).some((char) => {
+    const code = char.codePointAt(0) ?? 0;
+    return (code >= 0x202a && code <= 0x202e) || (code >= 0x2066 && code <= 0x2069);
+  });
+
+/** A check that reads otherwise than it runs («Trojan Source», CVE-2021-42574). */
+const [trojan] = parseDiff(
+  [
+    "diff --git a/src/access.ts b/src/access.ts",
+    "--- a/src/access.ts",
+    "+++ b/src/access.ts",
+    "@@ -1,3 +1,3 @@",
+    " export function canEdit(level: string): boolean {",
+    '-  return level === "admin";',
+    `+  return level !== "user${RLO} ${LRI}// admin${PDI} ${LRI}";`,
+    " }",
+  ].join("\n"),
+);
+if (trojan === undefined) throw new Error("No trojan file");
+const TROJAN: DiffFile = trojan;
+
+@Component({
+  imports: [DiffFileView],
+  template: `<sp-diff-file [file]="file" [mode]="mode()" />`,
+})
+class TrojanHost {
+  readonly file = TROJAN;
+  readonly mode = signal<DiffMode>("unified");
+}
+
+describe("Diff file, the characters of text direction", () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  it("AC1, AC3: shows each one as its code in the attention tone, with its title, in both modes and keeping the colors", async () => {
+    localStorage.setItem("specty.lang", "es");
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [{ provide: HIGHLIGHT, useValue: highlightFile }],
+    });
+    const fixture = TestBed.createComponent(TrojanHost);
+    const element: HTMLElement = fixture.nativeElement;
+    for (const mode of ["unified", "split"] as const) {
+      fixture.componentInstance.mode.set(mode);
+      await fixture.whenStable();
+      const marked = [...element.querySelectorAll<HTMLElement>("[data-code] [data-direction]")];
+      expect(marked.map((span) => span.textContent)).toEqual([
+        "\\u202e",
+        "\\u2066",
+        "\\u2069",
+        "\\u2066",
+      ]);
+      for (const span of marked) {
+        expect(span.className).toContain("text-phase-review");
+        expect(span.className).toContain("bg-phase-review-bg");
+        expect(span.style.color).toBe("");
+        expect(span.title).toBe(
+          "Carácter de dirección del texto: se muestra su código porque podría reordenar lo que lees",
+        );
+      }
+      // The browser applies none, and the code around them keeps its colors.
+      expect(appliesDirection(element.textContent ?? "")).toBe(false);
+      const pieces = [...element.querySelectorAll<HTMLElement>("[data-code] > span:not(.sr-only)")];
+      const first = pieces.findIndex((span) => span.hasAttribute("data-direction"));
+      const last = pieces.findLastIndex((span) => span.hasAttribute("data-direction"));
+      expect(pieces[first - 1]?.style.color).toBe("var(--color-code-string)");
+      expect(pieces[last + 1]?.style.color).toBe("var(--color-code-string)");
+      const keywords = pieces.filter((span) => span.textContent?.trim() === "return");
+      expect(keywords.map((span) => span.style.color)).toContain("var(--color-code-keyword)");
+    }
+  });
+});
