@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // One change by its id in the store: among the loaded ones or, when the Inbox has not loaded it,
 // asked to the source by its id.
-import { signal } from "@angular/core";
+import { type Signal, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import type { ChangeState } from "@baquia-dev/specty-core";
 import { ChangesStore, DERIVER } from "./changes-store";
@@ -39,15 +39,21 @@ const RECORDS = [
 class Paged extends SpectyData {
   readonly asked: string[] = [];
   failing = false;
+  /** Reading the list fails, as when the server answers 500. */
+  listFailing = false;
+  /** A change the source does not have a moment, as one whose folder is being archived. */
+  hidden: string | undefined;
   private readonly listeners = new Set<() => void>();
 
   changes(): Promise<readonly ChangeRecord[]> {
+    if (this.listFailing) return Promise.reject(new Error("El servidor no responde (simulado)."));
     return Promise.resolve(RECORDS.slice(0, 1));
   }
 
   override change(id: string): Promise<ChangeRecord | undefined> {
     this.asked.push(id);
     if (this.failing) return Promise.reject(new Error("El servidor no responde (simulado)."));
+    if (id === this.hidden) return Promise.resolve(undefined);
     return Promise.resolve(RECORDS.find((record) => record.state.id === id));
   }
 
@@ -75,8 +81,9 @@ function setup() {
     ],
   });
   const store = TestBed.inject(ChangesStore);
-  const find = (id: string) => TestBed.runInInjectionContext(() => store.byId(signal(id)));
-  return { source, find };
+  const find = (id: string | Signal<string>) =>
+    TestBed.runInInjectionContext(() => store.byId(typeof id === "string" ? signal(id) : id));
+  return { source, store, find };
 }
 
 /** Lets the store load its list and the source answer. */
@@ -127,6 +134,44 @@ describe("a change by its id in the store", () => {
     const { source, find } = setup();
     source.failing = true;
     const found = find(SLICE);
+    await settle();
+    expect([found.view(), found.missing()]).toEqual([undefined, true]);
+  });
+});
+
+describe("what the store keeps when a read fails", () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  it("AC1: keeps the changes it listed, and each of them, when reading the list again fails", async () => {
+    const { source, store, find } = setup();
+    const found = find(EPIC);
+    await settle();
+    source.listFailing = true;
+    source.tell();
+    await settle();
+    expect(store.views.error()).toBeDefined();
+    expect(store.listed().map((view) => view.id)).toEqual([EPIC]);
+    expect([found.view()?.title, found.missing()]).toEqual(["La Bandeja por páginas", false]);
+  });
+
+  it("AC1: keeps a change it found when the source fails or misses it, but not for another id", async () => {
+    const { source, find } = setup();
+    const id = signal(SLICE);
+    const found = find(id);
+    await settle();
+    expect(found.view()?.title).toBe("Un cambio sin cargar");
+    source.failing = true;
+    source.tell();
+    await settle();
+    expect([found.view()?.title, found.missing()]).toEqual(["Un cambio sin cargar", false]);
+    // Gone a moment, as while its folder is archived: what was read stays.
+    source.failing = false;
+    source.hidden = SLICE;
+    source.tell();
+    await settle();
+    expect([found.view()?.title, found.missing()]).toEqual(["Un cambio sin cargar", false]);
+    // An id never found still does not exist, even right after another one was shown.
+    id.set(UNKNOWN);
     await settle();
     expect([found.view(), found.missing()]).toEqual([undefined, true]);
   });

@@ -259,6 +259,18 @@ describe("Inbox", () => {
     expect(element.querySelector("sp-inbox [role=alert]")).toBeNull();
   });
 
+  it("AC1: keeps listing the changes it showed when reading them again fails, under the alert", async () => {
+    const { element, fixtures, settle, rows } = await open();
+    const shown = rows().map((item) => item.dataset.id);
+    expect(shown.length).toBeGreaterThan(0);
+    fixtures.toggleOutage();
+    await settle();
+    expect(text(element.querySelector("sp-inbox [role=alert]"))).toContain(
+      "No se pudieron leer los cambios",
+    );
+    expect(rows().map((item) => item.dataset.id)).toEqual(shown);
+  });
+
   it("AC4: says «Feature» for a standalone standard change, in the Inbox and in its page", async () => {
     const { element, row, router, settle } = await open();
     const badge = row("20261020-evolucion-trimestre")?.querySelector("sp-kind-badge");
