@@ -1,9 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { IncomingMessage, ServerResponse } from "node:http";
-import type { Output } from "@baquia-dev/specty-core";
+import {
+  type ConfigIssue,
+  DEFAULT_CONFIG,
+  defaultGlossary,
+  LANGS,
+  type Output,
+  type ResolvedConfig,
+  resolveConfig,
+} from "@baquia-dev/specty-core";
+import { parse } from "yaml";
 import { restore } from "../commands/restore";
 import { openChanges } from "../commands/status";
-import { isRecord, parseJson } from "../io/files";
+import { isRecord, parseJson, readText } from "../io/files";
 import type { Session } from "../session";
 import { readMemory } from "../store/memory";
 import {
@@ -60,6 +69,7 @@ type View = (session: Session, params: URLSearchParams) => Promise<unknown>;
 const VIEWS: ReadonlyMap<string, View> = new Map<string, View>([
   ["/api/changes", openRecords],
   ["/api/changes/finished", finishedPage],
+  ["/api/config", configView],
   ["/api/delegation", delegationView],
   ["/api/memory", memoryView],
   ["/api/sessions", sessionsView],
@@ -77,6 +87,38 @@ async function memoryView(session: Session) {
     changes: await openChanges(session),
     origins: await memoryOrigins(session, entries),
   };
+}
+
+/**
+ * `GET /api/config`: `.specty/config.yaml` as YAML reads it (`input`, none when it is not YAML),
+ * what Specty uses with every default when it is valid (`config`), the defaults, with the glossary
+ * of the file's language, and the validator's issues, each at its key. It reads the file again on
+ * each request: the person may have changed it since the server started.
+ */
+async function configView(session: Session) {
+  const text = (await readText(session.paths.config)) ?? "";
+  let input: unknown;
+  try {
+    input = parse(text);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return { defaults: DEFAULT_CONFIG, issues: [{ path: "", message }] };
+  }
+  const result = resolveConfig(input);
+  const issues: readonly ConfigIssue[] = result.ok ? [] : result.issues;
+  return {
+    input,
+    ...(result.ok ? { config: result.config } : {}),
+    defaults: defaultsIn(input),
+    issues,
+  };
+}
+
+/** The defaults of a configuration: those of `DEFAULT_CONFIG`, with the glossary of its language. */
+function defaultsIn(input: unknown): ResolvedConfig {
+  const language = isRecord(input) ? input.language : undefined;
+  const lang = LANGS.find((known) => known === language) ?? DEFAULT_CONFIG.language;
+  return { ...DEFAULT_CONFIG, glossary: defaultGlossary(lang) };
 }
 
 /** A change by its id, open or archived, as `changeRecords` gives it; 404 when there is none. */

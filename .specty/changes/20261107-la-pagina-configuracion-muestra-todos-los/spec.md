@@ -79,7 +79,7 @@ Hoy ninguna pantalla de `specty ui` ense√±a `.specty/config.yaml`: para saber c√
   - files: packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/src/light.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts test/light.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: `GET /api/config` da el archivo, lo que usa Specty, los valores por defecto y los errores
+- [x] T2: `GET /api/config` da el archivo, lo que usa Specty, los valores por defecto y los errores
   - files: packages/cli/src/server/api.ts, packages/cli/test/server/config.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/config.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint

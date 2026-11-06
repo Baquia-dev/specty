@@ -55,12 +55,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cd727ff7dc54db00b0e499f0985801696ce53171",
+      "attempts": 1,
       "startedAt": "2026-11-06T23:23:40.415Z",
       "doneAt": "2026-11-06T23:24:12.820Z",
-      "summary": "Catálogo de ajustes (settings/catalog.ts: 14 secciones y 54 ajustes con tipo, opciones, unidad y marcas) y sus textos en español e inglés (cards/settings.ts), exportados desde la entrada ligera"
+      "summary": "Catálogo de ajustes (settings/catalog.ts: 14 secciones y 54 ajustes con tipo, opciones, unidad y marcas) y sus textos en español e inglés (cards/settings.ts), exportados desde la entrada ligera",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "71ed074a72bf521022563d6ec2db4d5026391e64",
+      "startedAt": "2026-11-06T23:24:13.141Z",
+      "doneAt": "2026-11-06T23:24:56.049Z",
+      "summary": "GET /api/config en server/api.ts (configView): el archivo leído de nuevo en cada petición, lo que usa Specty si es válido, los valores por defecto con el glosario del idioma del archivo y los errores del validador por clave; un YAML roto da su error en la raíz. Documentado en ARCHITECTURE §15"
     }
   },
   "pending": {
