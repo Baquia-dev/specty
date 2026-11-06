@@ -25,6 +25,12 @@ interface WaitLimits {
   readonly intervalMs: number;
 }
 
+/**
+ * How long `wait` waits without `--timeout`: every tool measured on 2026-11-06 holds an hour, in
+ * the background or polling its output (`cards/wait.ts`).
+ */
+const TIMEOUT_SEC = 3600;
+
 /** Gemini CLI cuts a command that writes nothing for 300 s: a heartbeat line at most a minute apart. */
 const BEAT_MS = 60_000;
 
@@ -33,7 +39,7 @@ function parseWaitLimits(options: WaitOptions): WaitLimits {
   const timeout = Number(options.timeout);
   const interval = Number(options.interval);
   return {
-    timeoutSec: Number.isFinite(timeout) && timeout > 0 ? timeout : 3600,
+    timeoutSec: Number.isFinite(timeout) && timeout > 0 ? timeout : TIMEOUT_SEC,
     intervalMs: Number.isFinite(interval) && interval > 0 ? interval : 500,
   };
 }

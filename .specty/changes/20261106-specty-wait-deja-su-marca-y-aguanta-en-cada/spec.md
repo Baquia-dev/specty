@@ -70,7 +70,7 @@ Hoy nadie sabe si un agente sigue esperando con `specty wait`, y Gemini CLI cort
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/waits.test.ts test/wait.test.ts
   - type: feat
-- [ ] T3: Sin `--timeout`, `wait` espera una hora y en Gemini CLI escribe su latido
+- [x] T3: Sin `--timeout`, `wait` espera una hora y en Gemini CLI escribe su latido
   - files: packages/cli/src/commands/wait.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/wait.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait.test.ts && pnpm typecheck && pnpm lint

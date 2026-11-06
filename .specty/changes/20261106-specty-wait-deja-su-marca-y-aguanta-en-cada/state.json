@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6242185c6c5ad1f7a9846270940b93e2136dd596",
+      "attempts": 1,
       "startedAt": "2026-11-06T12:23:49.987Z",
       "doneAt": "2026-11-06T12:25:23.455Z",
-      "summary": "store/waits.ts escribe, renueva, termina y lee la marca (viva, decided, timeout o stopped); wait la deja con su herramienta y tiempo máximo y la termina con su razón. El latido de Gemini CLI ya va en wait.ts, porque la verificación de T2 lo prueba."
+      "summary": "store/waits.ts escribe, renueva, termina y lee la marca (viva, decided, timeout o stopped); wait la deja con su herramienta y tiempo máximo y la termina con su razón. El latido de Gemini CLI ya va en wait.ts, porque la verificación de T2 lo prueba.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6d1bae8b29c9d9b26f7f4324e6edc97ad71e8125",
+      "startedAt": "2026-11-06T12:25:23.731Z",
+      "doneAt": "2026-11-06T12:26:08.473Z",
+      "summary": "--timeout ya no tiene valor por defecto en commander: wait espera una hora (TIMEOUT_SEC, con su motivo) sin él."
     }
   },
   "pending": {
