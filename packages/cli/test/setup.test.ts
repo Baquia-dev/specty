@@ -194,7 +194,7 @@ describe("specty init", () => {
     expect(card.code).toBe(0);
     expect(card.out).toContain("RECORDATORIOS:\n  P1 · Probar el saludo en Windows\n");
     expect(card.out).not.toContain("P2 ·");
-    expect(card.out).toBe((await cli(root, ["next"])).out);
+    expect(card.out).toBe((await cli(root, ["next"], { env: { CLAUDECODE: "1" } })).out);
   });
 
   it("AC4: doctor misses the card at session start in a hook from before, until init", async () => {

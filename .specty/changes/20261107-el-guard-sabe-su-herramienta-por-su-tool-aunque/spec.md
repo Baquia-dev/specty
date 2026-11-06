@@ -46,7 +46,7 @@ Las tarjetas que da el guard (la del `SessionStart` al empezar, la de tras compa
 
 ## Tareas
 
-- [ ] T1: El guard y el fin de turno responden con la herramienta de su --tool
+- [x] T1: El guard y el fin de turno responden con la herramienta de su --tool
   - files: packages/cli/src/enforce/sessions.ts, packages/cli/src/enforce/agent-stop.ts, packages/cli/test/front-start.test.ts, packages/cli/test/front-start-codex.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-start.test.ts test/front-start-codex.test.ts test/agent-stop-wait.test.ts test/session-start.test.ts test/session-start-codex.test.ts && pnpm typecheck && pnpm lint

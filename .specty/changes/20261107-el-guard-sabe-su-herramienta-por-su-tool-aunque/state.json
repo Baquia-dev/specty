@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dedc1e71ef50f61a8ad44d5ea998b23b8eb8dce0",
+      "startedAt": "2026-11-06T21:32:47.936Z",
+      "doneAt": "2026-11-06T21:43:39.871Z",
+      "summary": "enteredSession pone la herramienta del --tool en la sesión del guard y del fin de turno (session.tool y cards.tool); agent-stop deja su copia. Los tests que comparaban la tarjeta del guard con next sin herramienta la comparan ahora con next como esa herramienta."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
