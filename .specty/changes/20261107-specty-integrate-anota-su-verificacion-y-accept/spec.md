@@ -44,7 +44,7 @@ Cuando el agente termina con `specty integrate` la incorporación de main que de
 
 ## Tareas
 
-- [ ] T1: `specty integrate` anota su verificación en verde y `accept` no la repite
+- [x] T1: `specty integrate` anota su verificación en verde y `accept` no la repite
   - files: packages/cli/src/commands/integrate.ts, packages/cli/test/integrate.test.ts, packages/cli/test/integrate-units.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate.test.ts test/integrate-units.test.ts && pnpm typecheck && pnpm lint

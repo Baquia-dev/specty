@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "87cbd0cc37128532d7654309da226347f79a9f44",
+      "startedAt": "2026-11-06T18:50:10.750Z",
+      "doneAt": "2026-11-06T18:51:45.842Z",
+      "summary": "integrate anota con recordFullVerification y codeTree la verificación completa que pasa sobre el merge resuelto, con su tiempo desde el turno; accept la reutiliza"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
