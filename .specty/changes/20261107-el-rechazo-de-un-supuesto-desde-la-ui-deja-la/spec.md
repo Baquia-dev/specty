@@ -15,7 +15,7 @@ Cuando la persona rechaza un supuesto suelto desde la UI, la respuesta del servi
 
 ## Tareas
 
-- [ ] T1: La línea de un supuesto rechazado desde la UI deja la revisión con la persona
+- [x] T1: La línea de un supuesto rechazado desde la UI deja la revisión con la persona
   - files: packages/core/src/cards/review-ui.ts, packages/core/test/cards/review-texts.test.ts
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/review-texts.test.ts && pnpm typecheck && pnpm lint
   - type: fix

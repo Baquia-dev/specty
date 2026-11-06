@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-rechazo-de-un-supuesto-desde-la-ui-deja-la",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-rechazo-de-un-supuesto-desde-la-ui-deja-la",
   "baseCommit": "fc68f756b2f6ed7805ea8310f3093b51ec428cc9",
   "revision": 1,
@@ -22,7 +22,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8c1da1d69c32f38a34cf0cc9bb1adf96df2e3bea",
+      "startedAt": "2026-11-06T17:49:01.368Z",
+      "doneAt": "2026-11-06T17:55:25.383Z",
+      "summary": "assumptionDecidedLine con rejected dice, en los dos idiomas, que la revisión sigue con la persona, que puede aprobarla (el rechazo se la devuelve al agente) o pedir los cambios, como changeWaitsFor; el caso que ya había en review-texts.test.ts deja de comprobar el texto viejo"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
