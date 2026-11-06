@@ -21,3 +21,9 @@ En Progreso, aprobar una solicitud de alcance avisa «Aprobaste S1: T3 vuelve a 
   - files: packages/ui/src/progress/scope-request.ts, packages/ui/src/progress/progress-tab.ts, packages/ui/src/progress/progress-tab.test.ts, docs/ui.md
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/progress-tab.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+scope-request recibe las solicitudes pendientes de su tarea (pending) y el aviso de aprobar nombra las que siguen esperando con Intl.ListFormat, o dice que la tarea vuelve a su lugar si no queda ninguna; progress-tab le pasa task.scopeRequests; docs/ui.md lo cuenta
