@@ -58,7 +58,7 @@ Hoy la UI pinta el parche y la evidencia de un desbloqueo, y cualquier otra lín
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/highlight/highlight.test.ts && pnpm lint
   - type: feat
-- [ ] T2: El visor de diffs los pinta en el tono de atención, con su título
+- [x] T2: El visor de diffs los pinta en el tono de atención, con su título
   - files: packages/ui/src/highlight/highlight.ts, packages/ui/src/components/diff-file.ts, packages/ui/src/components/diff-file.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/diff-file.test.ts --include src/components/diff-file-marks.test.ts --include src/components/diff-viewer.test.ts && pnpm lint && pnpm knip

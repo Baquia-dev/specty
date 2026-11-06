@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6ce3f507a9d239c1d8fec29b56da52f07d3883a1",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:57:33.683Z",
       "doneAt": "2026-11-06T18:58:09.094Z",
-      "summary": "spansOf corta cada pieza alrededor de cada carácter de dirección del texto (U+202A–U+202E, U+2066–U+2069) y lo da como su código (\\\\u202e), sin color ni cursiva, con direction y conservando changed; LineSpan gana direction."
+      "summary": "spansOf corta cada pieza alrededor de cada carácter de dirección del texto (U+202A–U+202E, U+2066–U+2069) y lo da como su código (\\\\u202e), sin color ni cursiva, con direction y conservando changed; LineSpan gana direction.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7c32e62f41e07119f0877ffb6b41f023227d53c9",
+      "startedAt": "2026-11-06T18:58:09.505Z",
+      "doneAt": "2026-11-06T18:58:51.327Z",
+      "summary": "DIRECTION_MARK (highlight.ts) da el tono de atención (phase-review sobre phase-review-bg) y el título en español y en inglés; el visor de diffs lo pone, con data-direction, en la pieza marcada de las dos vistas, en lugar del tono de la palabra cambiada."
     }
   },
   "pending": {

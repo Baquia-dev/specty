@@ -4,6 +4,7 @@
 import { InjectionToken } from "@angular/core";
 import type { HighlighterCore, ThemedToken } from "shiki/core";
 import type { DiffFile, DiffLine } from "../data/diff";
+import type { Bilingual } from "../data/records";
 import { languageOf } from "./languages";
 
 /** A piece of a line: its text, whether it is a word that changed, and its highlighting. */
@@ -82,6 +83,15 @@ function directionSpans(span: LineSpan): readonly LineSpan[] {
   if (plain !== "") spans.push({ ...span, text: plain });
   return spans;
 }
+
+/** How a character of text direction shows: in the attention tone, with what it is as its title. */
+export const DIRECTION_MARK = {
+  look: "rounded-[2px] bg-phase-review-bg text-phase-review",
+  note: {
+    es: "Carácter de dirección del texto: se muestra su código porque podría reordenar lo que lees",
+    en: "Text direction character: its code is shown because it could reorder what you read",
+  },
+} as const satisfies { readonly look: string; readonly note: Bilingual };
 
 /** A piece of the line that starts at `at`, cut wherever a changed range begins or ends. */
 function pieceSpans(
