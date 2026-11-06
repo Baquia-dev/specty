@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261106-la-cache-del-e2e-de-opencode-sobrevive-a-cada",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261106-la-cache-del-e2e-de-opencode-sobrevive-a-cada",
+  "baseCommit": "204622d8f501dccfd49f2b4604df95472a5210a9",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2780192d334d728a64f41b0b8ae1863e5df2b6558f657ede2272baa51ea25f6d",
+    "at": "2026-11-06T02:39:13.723Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
