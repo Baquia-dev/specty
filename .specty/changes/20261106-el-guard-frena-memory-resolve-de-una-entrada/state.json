@@ -49,12 +49,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b24120e56144161e86ef5cbc8ca2a3f6d4af62b6",
+      "attempts": 1,
       "startedAt": "2026-11-06T07:49:19.916Z",
       "doneAt": "2026-11-06T07:49:36.800Z",
-      "summary": "frontResolvesDenial recibe via (new|memory); para memory resolve propone repetirlo sin la entrada o que la persona libere el frente (es/en)."
+      "summary": "frontResolvesDenial recibe via (new|memory); para memory resolve propone repetirlo sin la entrada o que la persona libere el frente (es/en).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "38260bfae64370bc1e989ab0bd8102fc4dbadb36",
+      "startedAt": "2026-11-06T07:49:37.163Z",
+      "doneAt": "2026-11-06T07:50:25.849Z",
+      "summary": "judgeFronts mira también memoryResolves; takenDenial recibe cada id con el comando que lo pide y pasa via a la negativa."
     }
   },
   "pending": {

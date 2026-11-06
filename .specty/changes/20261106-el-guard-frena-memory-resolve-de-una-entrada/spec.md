@@ -59,7 +59,7 @@ Hoy el guard rechaza `specty new --resolves <id>` cuando la entrada está en un 
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/front-brakes.test.ts
   - type: feat
-- [ ] T3: El guard frena `memory resolve` de una entrada del frente de otra conversación
+- [x] T3: El guard frena `memory resolve` de una entrada del frente de otra conversación
   - files: packages/cli/src/enforce/fronts.ts, packages/cli/test/front-brakes.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-brakes.test.ts test/front-owners.test.ts test/front-guard.test.ts test/memory-resolve.test.ts && pnpm typecheck && pnpm lint
