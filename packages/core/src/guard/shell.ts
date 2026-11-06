@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { lookup } from "../lookup";
 import { basename } from "../paths";
-import { analyzeGit, type GitCommit } from "./git";
+import { analyzeGit, type GitCommit, type GitRemoval } from "./git";
 import { type SpectyCalls, spectyCalls, subcommand } from "./specty-calls";
 import { type Token, tokenize } from "./tokens";
 
@@ -16,6 +16,13 @@ export interface ShellAnalysis extends SpectyCalls {
    * somewhere unknown.
    */
   readonly commits: readonly { readonly all: boolean; readonly directory?: string }[];
+  /**
+   * The worktrees its `git worktree remove` commands remove: by `name`, as typed, which git also
+   * takes as the end of a worktree's path, and by `path`, placed like `directory` in `commits`,
+   * when the analysis can name where it runs. One with shell variables, `~` or backquotes is
+   * left out.
+   */
+  readonly worktreeRemovals: readonly { readonly name: string; readonly path?: string }[];
   /** Skips or disables hooks: `--no-verify`, `core.hooksPath`, `HUSKY=0`… */
   readonly bypass: boolean;
   /** The branches its git commands write, delete, push or check out; `*` for all or unknown. */
@@ -48,6 +55,7 @@ const EMPTY: ShellAnalysis = {
   specty: [],
   unscopedNpx: false,
   commits: [],
+  worktreeRemovals: [],
   bypass: false,
   refs: [],
   writes: [],
@@ -61,9 +69,10 @@ const EMPTY: ShellAnalysis = {
   runsIn: [],
 };
 
-/** What one simple command does, before placing its paths and commits. */
-type Segment = Omit<ShellAnalysis, "unresolved" | "commits" | "runsIn"> & {
+/** What one simple command does, before placing its paths, commits and removed worktrees. */
+type Segment = Omit<ShellAnalysis, "unresolved" | "commits" | "worktreeRemovals" | "runsIn"> & {
   readonly commits: readonly GitCommit[];
+  readonly removes: readonly GitRemoval[];
 };
 
 /** Paths are relative to where the command starts, following its `cd`s, or absolute. */
@@ -89,6 +98,7 @@ export function analyzeShell(command: string): ShellAnalysis {
     result = merge(result, {
       ...segment,
       commits: segment.commits.map((commit) => placeCommit(directory, commit)),
+      worktreeRemovals: segment.removes.flatMap((removal) => placeRemoval(directory, removal)),
       writes: writes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
       deletes: deletes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
       unresolved: unresolved.map((item) => item.raw),
@@ -137,6 +147,17 @@ function placeCommit(directory: Directory, commit: GitCommit): ShellAnalysis["co
     : { all: commit.all, directory: where };
 }
 
+/** A removed worktree, named from its segment's directory moved by its `-C` options. */
+function placeRemoval(
+  directory: Directory,
+  { worktree, moves }: GitRemoval,
+): ShellAnalysis["worktreeRemovals"] {
+  if (UNRESOLVABLE.test(worktree)) return [];
+  const where = moves.reduce<Directory>((from, move) => enter(from, move), directory);
+  const { path } = locate(where, worktree);
+  return [path === undefined ? { name: worktree } : { name: worktree, path }];
+}
+
 function analyzeSegment(tokens: readonly Token[]): Segment {
   const { words, redirected } = splitRedirections(tokens);
   const assignments = words.filter(
@@ -149,7 +170,8 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
   const start = skipWrappers(words, assignments.length);
   const program = basename(words[start] ?? "");
   const args = words.slice(start + 1);
-  const git = program === "git" ? analyzeGit(args) : { commits: [], bypass: false, refs: [] };
+  const git =
+    program === "git" ? analyzeGit(args) : { commits: [], removes: [], bypass: false, refs: [] };
   const files = program === "" ? { writes: [], deletes: [] } : fileEffects(program, args);
   const specty = spectyArgs(program, args);
   const bypassBySpecty =
@@ -160,6 +182,7 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
     ...spectyCalls(specty),
     unscopedNpx: isUnscopedNpx(program, args),
     commits: git.commits,
+    removes: git.removes,
     bypass: bypassByEnv || git.bypass || bypassBySpecty,
     refs: git.refs,
     writes: [...redirected, ...files.writes],
@@ -172,6 +195,7 @@ function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
     specty: [...a.specty, ...b.specty],
     unscopedNpx: a.unscopedNpx || b.unscopedNpx,
     commits: [...a.commits, ...b.commits],
+    worktreeRemovals: [...a.worktreeRemovals, ...b.worktreeRemovals],
     bypass: a.bypass || b.bypass,
     refs: [...a.refs, ...b.refs],
     writes: [...a.writes, ...b.writes],

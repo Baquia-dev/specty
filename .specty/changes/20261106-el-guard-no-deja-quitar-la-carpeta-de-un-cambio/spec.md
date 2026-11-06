@@ -61,7 +61,7 @@ Hoy la carpeta de un cambio abierto se puede quitar sin pasar por `specty close`
 
 ## Tareas
 
-- [ ] T1: El análisis del shell sabe qué worktrees quita `git worktree remove`
+- [x] T1: El análisis del shell sabe qué worktrees quita `git worktree remove`
   - files: packages/core/src/guard/git.ts, packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts && pnpm lint
