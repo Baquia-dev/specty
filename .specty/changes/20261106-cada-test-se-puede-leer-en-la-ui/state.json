@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-cada-test-se-puede-leer-en-la-ui",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-cada-test-se-puede-leer-en-la-ui",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
   "revision": 1,
@@ -56,6 +56,9 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T11:17:44.177Z"
+  "lockedTests": {
+    "packages/ui/src/progress/locked-tests.test.ts": "sha256:151580e8760491f4bf968e13389a690f0e2cf6b37e33533f3384c533698e2254",
+    "packages/ui/src/progress/tests-sent.test.ts": "sha256:2537fa90f0fe79a7574926abcbda072498f730ebb656af5d3c52ed2901933c81",
+    "packages/cli/test/server/test-code.test.ts": "sha256:807076586e8ebe7c0a9a32ce91a07c41601fec2bba12aa52dc4201a40ea180a0"
+  }
 }
