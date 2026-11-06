@@ -88,7 +88,7 @@ En modo delegado, un cambio normal se acepta y se cierra en dos pasos. Entre el 
   - files: packages/cli/src/commands/propose.ts, packages/cli/test/closing-ahead.test.ts
   - ac: AC1, AC5, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/closing-ahead.test.ts && pnpm lint
-- [ ] T3: En modo delegado, `accept` con el cierre enviado acepta, archiva y aterriza en un solo turno
+- [x] T3: En modo delegado, `accept` con el cierre enviado acepta, archiva y aterriza en un solo turno
   - files: packages/cli/src/flow/closing-turn.ts, packages/cli/src/commands/accept.ts, packages/cli/src/commands/finish.ts, packages/cli/test/accept-quick-turn.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-quick-turn.test.ts test/close-turn.test.ts test/close-harvest.test.ts test/closing-ahead.test.ts && pnpm typecheck && pnpm lint && pnpm knip

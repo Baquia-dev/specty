@@ -81,12 +81,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "afba5248e91d5cca8585765dd7414f3252c0cbf0",
+      "attempts": 1,
       "startedAt": "2026-11-06T19:37:41.497Z",
       "doneAt": "2026-11-06T19:41:58.566Z",
-      "summary": "propose en aceptación delegada valida y envía el cierre (closingSubmittedAt) sin cambiar de fase, con el SIGUIENTE de la tarjeta de aceptación; fuera de un cierre ya no conserva closingSubmittedAt, así que un ajuste lo descarta. delegate.test.ts espera el SIGUIENTE nuevo"
+      "summary": "propose en aceptación delegada valida y envía el cierre (closingSubmittedAt) sin cambiar de fase, con el SIGUIENTE de la tarjeta de aceptación; fuera de un cierre ya no conserva closingSubmittedAt, así que un ajuste lo descarta. delegate.test.ts espera el SIGUIENTE nuevo",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "734ced85b4f080703b568bfc6019b9aa195234ac",
+      "startedAt": "2026-11-06T19:41:58.890Z",
+      "doneAt": "2026-11-06T19:45:56.368Z",
+      "summary": "flow/closing-turn.ts reúne el cerrar en el turno de aterrizaje: closingTurn (ahora también con el cierre enviado), closeQuick y closeOnTurn (movidos, con la tarjeta compartida) y closeAccepted; en modo delegado, accept con el cierre enviado anota change.accepted y cierra en el mismo turno"
     }
   },
   "pending": {
