@@ -44,6 +44,7 @@ export type DiagnosticCode =
   | "split-required"
   | "slice-split-required"
   | "done-task-changed"
+  | "pending-tasks-only"
   | "closed-slice-changed"
   | "closing-outside"
   | "closing-premature"

@@ -68,7 +68,7 @@ Una `verify` de tarea mal escrita (por ejemplo, `vitest run` en la UI de Angular
 
 ## Tareas
 
-- [ ] T1: La máquina admite `adjust` en `implementing` y `propose` lo limita a las tareas pendientes
+- [x] T1: La máquina admite `adjust` en `implementing` y `propose` lo limita a las tareas pendientes
   - files: packages/core/src/flow/machine.ts, packages/core/src/validate/phase.ts, packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/flow/machine.test.ts, packages/core/test/validate/phase.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow/machine.test.ts test/validate/phase.test.ts test/spec/messages.test.ts

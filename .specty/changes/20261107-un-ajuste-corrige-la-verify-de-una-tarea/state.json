@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1113b508c59935ecf18f417e356830a34cc6d035",
+      "startedAt": "2026-11-06T23:24:13.311Z",
+      "doneAt": "2026-11-06T23:25:25.263Z",
+      "summary": "adjust lleva implementing a adjusting salvo en una retro; checkAdjusting reconoce el ajuste pedido al implementar (quedan tareas aprobadas sin hacer) y da pending-tasks-only por tarea añadida o borrada y criterio cambiado; possible-new-scope mira las tareas sin hacer"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
