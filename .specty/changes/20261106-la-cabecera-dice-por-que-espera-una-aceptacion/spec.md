@@ -69,7 +69,7 @@ Hoy, mientras una aceptación o un cierre lanzados desde la UI esperan, la cabec
 
 ## Tareas
 
-- [ ] T1: El servidor manda lo que dicen la aceptación y el cierre mientras siguen
+- [x] T1: El servidor manda lo que dicen la aceptación y el cierre mientras siguen
   - files: packages/cli/src/server/actions.ts, packages/cli/src/server/api.ts, packages/cli/test/server/action-notes.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/action-notes.test.ts test/server/actions.test.ts test/server-actions.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
