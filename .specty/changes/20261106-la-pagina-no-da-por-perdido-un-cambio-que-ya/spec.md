@@ -56,7 +56,7 @@ Hoy, mientras un cambio se archiva o su worktree se borra, la página de ese cam
 
 ## Tareas
 
-- [ ] T1: El servidor da la lista sin el cambio cuya carpeta desaparece a mitad de la lectura
+- [x] T1: El servidor da la lista sin el cambio cuya carpeta desaparece a mitad de la lectura
   - files: packages/cli/src/store/changes.ts, packages/cli/src/server/records.ts, packages/cli/test/server/vanishing.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/vanishing.test.ts test/server/records.test.ts test/server/finished.test.ts test/server/lifecycle.test.ts

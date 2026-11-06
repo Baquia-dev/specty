@@ -317,11 +317,13 @@ async function readRecord(
   const comments = parseJson(await readText(join(files.dir, "comments.json")));
   const approvedSpec = await readRevision(files, state.approved?.revision);
   const reviews = await reviewsOf(audit, files.dir);
+  const phaseSince = enteredAt(audit, ENTERS[state.phase]) ?? (await modified(files.state));
+  // Its folder went while it was read (archived, or its worktree removed): it is not there.
+  if (phaseSince === undefined) return undefined;
   return {
     spec,
     state,
-    phaseSince:
-      enteredAt(audit, ENTERS[state.phase]) ?? (await stat(files.state)).mtime.toISOString(),
+    phaseSince,
     folder,
     ...(Array.isArray(comments) ? { comments } : {}),
     ...(approvedSpec !== undefined ? { approvedSpec } : {}),
@@ -329,6 +331,14 @@ async function readRecord(
     ...(verifyFull !== undefined ? { verifyFull } : {}),
     ...(reviews.length > 0 ? { reviews } : {}),
   };
+}
+
+/** When `path` last changed, as an ISO time; none when it is gone. */
+async function modified(path: string): Promise<string | undefined> {
+  return stat(path).then(
+    (info) => info.mtime.toISOString(),
+    () => undefined,
+  );
 }
 
 /**

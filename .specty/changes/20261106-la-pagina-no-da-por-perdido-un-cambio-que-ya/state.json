@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7602117943e6f5756af99c416b0cd8d04c1ee440",
+      "startedAt": "2026-11-06T07:49:09.954Z",
+      "doneAt": "2026-11-06T07:49:52.391Z",
+      "summary": "loadChange da por no encontrado un cambio cuyo state.json desaparece entre encontrarlo y leerlo, y readRecord deja fuera el cambio cuya carpeta se va antes de fechar su fase (stat sin lanzar): GET /api/changes responde 200 sin él en lugar de 500."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
