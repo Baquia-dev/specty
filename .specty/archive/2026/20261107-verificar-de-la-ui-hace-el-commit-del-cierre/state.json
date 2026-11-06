@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-verificar-de-la-ui-hace-el-commit-del-cierre",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-verificar-de-la-ui-hace-el-commit-del-cierre",
   "baseCommit": "dc5b53242d3e8ef03684a4240f1ec1e080be6de3",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "35a13077c072db00740f6e3fce3a611567e636f7",
+      "attempts": 1,
       "startedAt": "2026-11-06T21:56:27.536Z",
       "doneAt": "2026-11-06T22:03:39.878Z",
-      "summary": "La incorporación de «Verificar» (server/merged-run.ts) pasa closingFirst del cambio a mergeTarget, como accept desde P246: con el cierre enviado y el glosario cambiado en main, el cierre entra en su commit, main se incorpora y la verificación corre; ARCHITECTURE §15 lo cuenta."
+      "summary": "La incorporación de «Verificar» (server/merged-run.ts) pasa closingFirst del cambio a mergeTarget, como accept desde P246: con el cierre enviado y el glosario cambiado en main, el cierre entra en su commit, main se incorpora y la verificación corre; ARCHITECTURE §15 lo cuenta.",
+      "scopeExtra": []
     }
   },
   "pending": {

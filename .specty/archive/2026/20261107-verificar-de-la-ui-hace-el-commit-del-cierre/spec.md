@@ -20,3 +20,9 @@ En aceptación delegada, con el cierre ya enviado y sin commit, «Verificar» de
   - files: packages/cli/src/server/merged-run.ts, packages/cli/test/server/verify-merge.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/verify-merge.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+La incorporación de «Verificar» (server/merged-run.ts) pasa closingFirst del cambio a mergeTarget, como accept desde P246: con el cierre enviado y el glosario cambiado en main, el cierre entra en su commit, main se incorpora y la verificación corre; ARCHITECTURE §15 lo cuenta.
