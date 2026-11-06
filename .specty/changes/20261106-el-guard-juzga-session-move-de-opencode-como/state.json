@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-guard-juzga-session-move-de-opencode-como",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-el-guard-juzga-session-move-de-opencode-como",
   "baseCommit": "288e88cbf522a73c14ab890101f8b1cb626ee433",
   "revision": 1,
@@ -31,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "40151b2680bcc9137fa9d1ae9bf60373d1ed6954",
+      "startedAt": "2026-11-06T09:20:53.731Z",
+      "doneAt": "2026-11-06T09:30:13.136Z",
+      "summary": "El guard juzga opencode_session_move de Code Mode como una entrada (regla de EnterWorktree); las herramientas de OpenCode van en una tabla y ARCHITECTURE lo cuenta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

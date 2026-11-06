@@ -37,7 +37,7 @@ OpenCode 2.2.5 trae `execute` (Code Mode): ejecuta JavaScript que llama a ocho h
 
 ## Tareas
 
-- [ ] T1: session_move de OpenCode se juzga como una entrada
+- [x] T1: session_move de OpenCode se juzga como una entrada
   - files: packages/cli/src/agents/opencode.ts, packages/cli/test/opencode-session-move.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-session-move.test.ts test/opencode.test.ts test/enter.test.ts && pnpm typecheck && pnpm lint && pnpm knip
