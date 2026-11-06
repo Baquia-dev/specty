@@ -48,7 +48,7 @@ Un subagente que lleva un cambio pedido por el usuario y cuya spec sale demasiad
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/idle-epic-size.test.ts test/cards/idle-subagents.test.ts test/cards/epic.test.ts test/cards/rejoin.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T2: La arquitectura cuenta el paso del tamaño del encargo
+- [x] T2: La arquitectura cuenta el paso del tamaño del encargo
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: grep -q 'en 7 pasos' docs/ARCHITECTURE.md && grep -q 'la convierte allí en la épica' docs/ARCHITECTURE.md && pnpm lint
