@@ -62,7 +62,7 @@ Hoy `specty cancel` deja la carpeta del cambio si tiene algo sin commit, para no
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cancel-folder.test.ts test/epic-return.test.ts test/delegate.test.ts test/commands.test.ts test/prune.test.ts test/sessions.test.ts test/session-return.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T3: La documentación cuenta que cancelar guarda lo sin commit
+- [x] T3: La documentación cuenta que cancelar guarda lo sin commit
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC3
   - verify: pnpm typecheck && pnpm lint && pnpm sources && pnpm knip
