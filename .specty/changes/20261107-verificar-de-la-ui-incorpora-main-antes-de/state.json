@@ -6,6 +6,13 @@
   "branch": "specty/20261107-verificar-de-la-ui-incorpora-main-antes-de",
   "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:5bfab8fc25e2a1e984ded05e1f97c4764c935de1d730989e9bfb4f6825dacf39",
+    "at": "2026-11-06T18:55:49.629Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -53,12 +60,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:5bfab8fc25e2a1e984ded05e1f97c4764c935de1d730989e9bfb4f6825dacf39",
-    "at": "2026-11-06T18:55:49.629Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T18:57:45.679Z"
 }
