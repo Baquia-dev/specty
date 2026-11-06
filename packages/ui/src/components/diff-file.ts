@@ -25,7 +25,13 @@ import {
   splitRows,
 } from "../data/diff";
 import type { Bilingual } from "../data/records";
-import { type FileColors, HIGHLIGHT, type LineSpan, spansOf } from "../highlight/highlight";
+import {
+  DIRECTION_MARK,
+  type FileColors,
+  HIGHLIGHT,
+  type LineSpan,
+  spansOf,
+} from "../highlight/highlight";
 import { Preferences } from "../theme/preferences";
 import { LucideChevronDown } from "./icons";
 
@@ -192,7 +198,7 @@ let nextId = 0;
     }
     <ng-template #cells let-line let-last="last" let-echo="echo">
       <span [class]="'select-none ' + lookOf(line).bg + ' ' + lookOf(line).tone" aria-hidden="true">{{ lookOf(line).sign }}</span>
-      <span [class]="code + ' ' + lookOf(line).bg + (last ? ' pr-3' : ' border-r border-border pr-2')" [attr.aria-hidden]="echo ? 'true' : null" data-code>@if (spoken(line); as said) {<span class="sr-only">{{ said }}</span>}@for (span of line?.spans ?? []; track $index) {<span [class]="span.changed ? lookOf(line).word : ''" [class.italic]="span.italic === true" [style.color]="span.color ?? null" [attr.data-changed]="span.changed ? '' : null">{{ span.text }}</span>}</span>
+      <span [class]="code + ' ' + lookOf(line).bg + (last ? ' pr-3' : ' border-r border-border pr-2')" [attr.aria-hidden]="echo ? 'true' : null" data-code>@if (spoken(line); as said) {<span class="sr-only">{{ said }}</span>}@for (span of line?.spans ?? []; track $index) {<span [class]="span.direction ? directionMark.look : span.changed ? lookOf(line).word : ''" [class.italic]="span.italic === true" [style.color]="span.color ?? null" [attr.data-changed]="span.changed ? '' : null" [attr.data-direction]="span.direction ? '' : null" [attr.title]="span.direction ? directionMark.note[lang()] : null">{{ span.text }}</span>}</span>
     </ng-template>
   `,
 })
@@ -212,6 +218,8 @@ export class DiffFileView {
   private readonly host: ElementRef<HTMLElement> = inject(ElementRef);
   protected readonly t = this.preferences.t;
   protected readonly lang = this.preferences.lang;
+  /** A character of text direction shows in the attention tone, with its title. */
+  protected readonly directionMark = DIRECTION_MARK;
   protected readonly bodyId = `sp-diff-file-${nextId++}`;
   protected readonly chevron = LucideChevronDown;
   protected readonly parts = pathParts;

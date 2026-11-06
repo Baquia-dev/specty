@@ -253,3 +253,41 @@ describe("the traceability view", () => {
     expect(element.querySelectorAll("sp-history-tab [data-event]").length).toBeGreaterThan(0);
   });
 });
+
+const RLO = String.fromCodePoint(0x202e);
+
+/** A source whose first file hides a comment behind a character of text direction. */
+class Trojan extends Source {
+  override trace(_change: string, _path: string): Promise<TraceRecord> {
+    return Promise.resolve({
+      ...FIRST,
+      lines: ["import 'attendance_record.dart';", "", `class CoursePanel {} // ${RLO}nimda`],
+    });
+  }
+}
+
+describe("the traceability view, with characters of text direction", () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  it("AC2, AC3: shows each one as its code in the attention tone, with its title, and the rest keeps its colors", async () => {
+    const { element } = await render(new Trojan());
+    const lines = [...element.querySelectorAll("[data-line]")];
+    expect(lines).toHaveLength(3);
+    const pieces = [...(lines[2]?.querySelectorAll<HTMLElement>("code > span") ?? [])];
+    const marked = pieces.filter((span) => span.hasAttribute("data-direction"));
+    expect(marked.map((span) => span.textContent)).toEqual(["\\u202e"]);
+    expect(marked[0]?.className).toContain("text-phase-review");
+    expect(marked[0]?.className).toContain("bg-phase-review-bg");
+    expect(marked[0]?.style.color).toBe("");
+    expect(marked[0]?.title).toBe(
+      "Carácter de dirección del texto: se muestra su código porque podría reordenar lo que lees",
+    );
+    const at = pieces.findIndex((span) => span.hasAttribute("data-direction"));
+    expect([pieces[at - 1]?.style.color, pieces[at + 1]?.style.color]).toEqual([
+      "var(--color-code-comment)",
+      "var(--color-code-comment)",
+    ]);
+    expect(text(lines[2])).toContain("class CoursePanel {} // \\u202enimda");
+    expect(lines[2]?.textContent).not.toContain(RLO);
+  });
+});
