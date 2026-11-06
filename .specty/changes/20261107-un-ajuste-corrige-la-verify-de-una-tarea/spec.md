@@ -72,7 +72,7 @@ Una `verify` de tarea mal escrita (por ejemplo, `vitest run` en la UI de Angular
   - files: packages/core/src/flow/machine.ts, packages/core/src/validate/phase.ts, packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/flow/machine.test.ts, packages/core/test/validate/phase.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow/machine.test.ts test/validate/phase.test.ts test/spec/messages.test.ts
-- [ ] T2: Las tarjetas dicen cuándo se ajusta y cómo corregir las tareas pendientes y su `verify`
+- [x] T2: Las tarjetas dicen cuándo se ajusta y cómo corregir las tareas pendientes y su `verify`
   - files: packages/core/src/cards/adjust.ts, packages/core/src/cards/work.ts, packages/core/src/cards/flow.ts, packages/core/test/cards/adjust.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/adjust.test.ts test/cards/adjusting.test.ts

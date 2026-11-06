@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1113b508c59935ecf18f417e356830a34cc6d035",
+      "attempts": 1,
       "startedAt": "2026-11-06T23:24:13.311Z",
       "doneAt": "2026-11-06T23:25:25.263Z",
-      "summary": "adjust lleva implementing a adjusting salvo en una retro; checkAdjusting reconoce el ajuste pedido al implementar (quedan tareas aprobadas sin hacer) y da pending-tasks-only por tarea añadida o borrada y criterio cambiado; possible-new-scope mira las tareas sin hacer"
+      "summary": "adjust lleva implementing a adjusting salvo en una retro; checkAdjusting reconoce el ajuste pedido al implementar (quedan tareas aprobadas sin hacer) y da pending-tasks-only por tarea añadida o borrada y criterio cambiado; possible-new-scope mira las tareas sin hacer",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c2cf2c00e89827b1f17c5dbf1ac07e2967095291",
+      "startedAt": "2026-11-06T23:25:25.735Z",
+      "doneAt": "2026-11-06T23:25:49.173Z",
+      "summary": "La negativa de adjust nombra implementing y la aceptación; en adjusting con una tarea activa la tarjeta da «CÓMO CORREGIRLAS»; la verificación fallida de task done sugiere corregir con adjust una verify que no carga sus tests"
     }
   },
   "pending": {

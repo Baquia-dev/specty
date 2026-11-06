@@ -133,7 +133,9 @@ export function adjustingCard(change: ChangeView, ctx: CardContext): Output {
       ),
       ...(change.kind === "epic"
         ? section(t("CÓMO AJUSTAR LA ÉPICA", "HOW TO ADJUST THE EPIC"), epicAdjustingLines(ctx))
-        : classifyingBlocks(ctx)),
+        : change.tasks.some((task) => task.status === "active")
+          ? correctingBlocks(ctx)
+          : classifyingBlocks(ctx)),
     ],
     next: t(
       `edita ${change.specPath} y ejecuta \`${ctx.command} propose\`.`,
@@ -182,6 +184,28 @@ function classifyingBlocks(ctx: CardContext) {
     t(
       "No modifiques ni borres tareas completadas; usa ids nuevos.",
       "Do not modify or remove done tasks; use new ids.",
+    ),
+  ]);
+}
+
+/**
+ * While its tasks are implemented, one of them active, a change is adjusted only to correct the
+ * pending ones: what it adds or changes in its criteria waits for the acceptance.
+ */
+function correctingBlocks(ctx: CardContext) {
+  const t = translator(ctx.lang);
+  return section(t("CÓMO CORREGIRLAS", "HOW TO CORRECT THEM"), [
+    t(
+      "Mientras se implementa, el ajuste solo corrige las tareas pendientes: su `verify` (por ejemplo, una que no carga ni ejecuta sus tests), sus `files` o su texto.",
+      "While the change is implemented, the adjustment only corrects the pending tasks: their `verify` (for instance, one that does not load or run their tests), their `files` or their text.",
+    ),
+    t(
+      "No añadas ni borres tareas ni cambies los criterios: eso se pide con el resultado en aceptación.",
+      "Do not add or remove tasks or change the criteria: that is asked for with the result in acceptance.",
+    ),
+    t(
+      "No modifiques las tareas completadas. Al aprobarse el ajuste, la tarea activa sigue donde estaba, con su trabajo.",
+      "Do not modify done tasks. Once the adjustment is approved, the active task goes on where it was, with its work.",
     ),
   ]);
 }

@@ -220,9 +220,10 @@ export function verifyFailedCard(
       ]),
       ...section(t("SALIDA", "OUTPUT"), tail),
     ],
+    // A `verify` that loads no test fails whatever the code: only an adjustment corrects it.
     next: t(
-      `corrige el problema y vuelve a ejecutar \`${ctx.command} task done ${task} --summary "<qué hiciste>"\`.`,
-      `fix the problem and run \`${ctx.command} task done ${task} --summary "<what you did>"\` again.`,
+      `corrige el problema y vuelve a ejecutar \`${ctx.command} task done ${task} --summary "<qué hiciste>"\`; si lo que está mal es la propia \`verify\` de la tarea (no carga ni ejecuta sus tests), corrígela antes con \`${ctx.command} adjust "<qué corregir y por qué>"\`.`,
+      `fix the problem and run \`${ctx.command} task done ${task} --summary "<what you did>"\` again; if what is wrong is the task's own \`verify\` (it does not load or run its tests), correct it first with \`${ctx.command} adjust "<what to correct and why>"\`.`,
     ),
   };
 }
