@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-guard-frena-memory-resolve-de-una-entrada",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-el-guard-frena-memory-resolve-de-una-entrada",
   "baseCommit": "f92005015cb9041aed1f70734b853552986457e4",
   "revision": 1,
@@ -58,12 +58,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "38260bfae64370bc1e989ab0bd8102fc4dbadb36",
+      "attempts": 1,
       "startedAt": "2026-11-06T07:49:37.163Z",
       "doneAt": "2026-11-06T07:50:25.849Z",
-      "summary": "judgeFronts mira también memoryResolves; takenDenial recibe cada id con el comando que lo pide y pasa via a la negativa."
+      "summary": "judgeFronts mira también memoryResolves; takenDenial recibe cada id con el comando que lo pide y pasa via a la negativa.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a76583c8e06a11dba526f0cb9871902a444efccd",
+      "startedAt": "2026-11-06T07:50:26.180Z",
+      "doneAt": "2026-11-06T07:51:10.267Z",
+      "summary": "formats.md (Frenos de los frentes) y ARCHITECTURE: el guard frena también memory resolve, con sus ids y su siguiente paso."
     }
   },
   "pending": {

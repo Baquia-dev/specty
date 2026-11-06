@@ -64,7 +64,7 @@ Hoy el guard rechaza `specty new --resolves <id>` cuando la entrada está en un 
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-brakes.test.ts test/front-owners.test.ts test/front-guard.test.ts test/memory-resolve.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T4: La documentación cuenta el freno de `memory resolve`
+- [x] T4: La documentación cuenta el freno de `memory resolve`
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm sources && pnpm knip
