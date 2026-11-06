@@ -28,15 +28,7 @@ import { askWithFilters, InboxMore, pastTheEnd, withFinishedCounts } from "./inb
 import { InboxRow } from "./inbox-row";
 import { InboxState } from "./inbox-state";
 import { InboxToolbar, InboxViewOptions } from "./inbox-toolbar";
-import {
-  type InboxBlock,
-  type InboxSection,
-  inboxSections,
-  phaseCounts,
-  sectionBlocks,
-  stateOf,
-  visibleChanges,
-} from "./inbox-view";
+import { inboxSections, phaseCounts, stateOf, visibleChanges } from "./inbox-view";
 
 const TICK_MS = 30_000;
 
@@ -94,14 +86,12 @@ const TICK_MS = 30_000;
         <div [class]="page + ' flex flex-col gap-8 pt-5'">
         @for (section of sections(); track section.key) {
           <section [attr.aria-labelledby]="'inbox-' + section.key" [attr.data-section]="section.key">
-            <sp-section-divider [heading]="t()(section.label.es, section.label.en)" [headingId]="'inbox-' + section.key" [meta]="section.changes.length" [level]="2" />
+            <sp-section-divider [heading]="t()(section.label.es, section.label.en)" [headingId]="'inbox-' + section.key" [meta]="section.blocks.length" [level]="2" />
             <div role="list" [class]="list + ' mt-2'">
-              @for (block of blocksOf(section); track block.key) {
+              @for (block of section.blocks; track block.key) {
                 @if (block.kind === 'epic') {
-                  <sp-inbox-epic [epicId]="block.epicId" [title]="block.title" [epic]="block.epic" [headed]="block.head !== undefined">
-                    @if (block.head; as head) {
-                      <sp-inbox-row data-epic-head [change]="head" [current]="isSelected(head)" [now]="now()" (picked)="selectedId.set(head.id)" />
-                    }
+                  <sp-inbox-epic [epicId]="block.epic.id">
+                    <sp-inbox-row data-epic-head [change]="block.epic" [current]="isSelected(block.epic)" [now]="now()" (picked)="selectedId.set(block.epic.id)" />
                     @for (change of block.slices; track change.id) {
                       <sp-inbox-row [change]="change" [inEpic]="true" [current]="isSelected(change)" [now]="now()" (picked)="selectedId.set(change.id)" />
                     }
@@ -163,8 +153,8 @@ export class Inbox {
       this.store.pages.counts(),
     ),
   );
-  /** The rows j/k walk through, in the order they are shown. */
-  private readonly order = computed(() => this.sections().flatMap((section) => section.changes));
+  /** The rows j/k walk through, in the order they are shown: each epic, then its slices. */
+  private readonly order = computed(() => this.sections().flatMap((section) => section.order));
   /** How many changes the filters let through, loaded or not, and how many there are. */
   protected readonly shown = computed(
     () => visibleChanges(this.store.open(), this.state.filters()).length + this.store.pages.total(),
@@ -241,10 +231,6 @@ export class Inbox {
 
   protected isSelected(change: ListedChange): boolean {
     return this.selected() === change.id;
-  }
-
-  protected blocksOf(section: InboxSection): readonly InboxBlock[] {
-    return sectionBlocks(section, this.listed());
   }
 
   protected retry(): void {

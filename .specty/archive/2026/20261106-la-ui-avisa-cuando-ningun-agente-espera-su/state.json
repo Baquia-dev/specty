@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "id": "20261106-la-ui-avisa-cuando-ningun-agente-espera-su",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-la-ui-avisa-cuando-ningun-agente-espera-su",
+  "baseCommit": "0185f80fb3f07c73eb81623f7615345dda2f31e4",
+  "revision": 4,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:eb34e2e05faf1af8adeba35a8d7f1d4b6b677d87a33320edf1ca93b9e06ced6e",
+    "at": "2026-11-06T14:24:11.513Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:721682c526ae9ee1c8b41d3ae60205878996dad338f65d8904d007d6b04abecd",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:41195562028a6618e90ab0adb2b1d3adee8b31c0929a2946de5fe57cc9adff5f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:328bf3c152a3f39e4320e603d0c03553d8c01026d7fd4574ade2930b6a4c0c42",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:df46a8eba9f1fd208d1f3515427d7c5a59966c4ed3f237b11fcf7f22fbbae662",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:066c66cb37003f8c5e0f471edeb8bfffcab3a14728c3b13b11b43f8bce12a020",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:e8b569e855eb2efa4299480eed463f3a439fdf0667b16714e21a0dbbc8534641",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "364f09c0e0ea7af63c574f304513c1df8b67fc3c",
+      "attempts": 1,
+      "startedAt": "2026-11-06T14:41:48.402Z",
+      "doneAt": "2026-11-06T14:49:29.877Z",
+      "summary": "server/unattended.ts dice si nadie retoma la última decisión de la persona (sin línea del agente, wait vivo o decided, ni paso en su carpeta) y qué pasó; records.ts lo añade junto a orphan y away. Pedir cambios cuenta como turno del agente.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "95166b2efb59fa0e2865a5f3b0ca01459436d36d",
+      "attempts": 1,
+      "startedAt": "2026-11-06T14:49:30.504Z",
+      "doneAt": "2026-11-06T14:55:36.591Z",
+      "summary": "La UI lee unattended (records.ts, views.ts); «Cómo retomarlo» dice qué pasó y qué hacer antes de las órdenes, con prioridad sobre away y huérfano, y la página saca un toast cuando aparece con ella abierta.",
+      "scopeExtra": [
+        "packages/ui/src/data/views.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "7bd187ed23ffbddb212871b0966fe48b0727485a",
+      "attempts": 1,
+      "startedAt": "2026-11-06T14:55:36.962Z",
+      "doneAt": "2026-11-06T14:56:52.377Z",
+      "summary": "La fila de la Bandeja muestra «Nadie retoma tu decisión» en lugar de las marcas de huérfano y fuera de su carpeta; FixtureData tiene un «Simular: nadie retoma tu decisión» que lo pone en el primer cambio en implementación.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "837d141c21b7a20d6df7c0c7ebe6d503c4b1494b",
+      "attempts": 1,
+      "startedAt": "2026-11-06T14:56:52.698Z",
+      "doneAt": "2026-11-06T14:58:12.351Z",
+      "summary": "ARCHITECTURE §15 cuenta unattended: cuándo nadie retoma la decisión de la persona, qué dice el registro, la marca de la Bandeja, «Cómo retomarlo» y el aviso flotante.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 7,
+    "T": 5,
+    "R": 3,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-06T15:03:58.479Z",
+  "lockedTests": {
+    "packages/ui/src/change/resume-hints.test.ts": "sha256:16145e1b715e6383667be86134e3a9c731dd02ba66103a0bee74dfed255d2ec9",
+    "packages/ui/src/inbox/inbox-row.test.ts": "sha256:bc457e6375cc2879bb86278d7cec30e25207068e6e1158f3b23088340ba4132a",
+    "packages/cli/test/server-unattended.test.ts": "sha256:077d1e94d285c07cc1b57d7e36f999c4b407cafd7a51baac01d72fdbd177797e",
+    "packages/ui/src/change/change-page.unattended.test.ts": "sha256:73490987741cd5b67164685468147bf4cb822413cc56b7ab23f58bc0f258d44b"
+  }
+}

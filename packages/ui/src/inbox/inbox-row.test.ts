@@ -185,4 +185,32 @@ describe("InboxRow", () => {
     expect(text(element.querySelector("[data-started]"))).toBe("Started Nov 3, 2:05 PM");
     expect(text(element.querySelector("[data-took]"))).toBe("Took 2 h 10 min");
   });
+
+  /** Nobody picks up the person's decision: the agent's `specty wait` ran out of time. */
+  const unpicked = {
+    unattended: {
+      since: new Date().toISOString(),
+      wait: { tool: "claude-code", ended: "timeout" as const, ago: 12 },
+    },
+  };
+
+  it("AC5: a change nobody picks up says so, instead of the orphan and away marks", async () => {
+    const { element, fixture, host } = await render();
+    expect(element.querySelector("[data-unattended]")).toBeNull();
+    host.change.set({ ...viewOf(LOGIN), orphan: true, ...unpicked });
+    await fixture.whenStable();
+    expect(text(element.querySelector("[data-unattended]"))).toBe("Nadie retoma tu decisión");
+    expect(element.querySelector("[data-unheld]")).toBeNull();
+    host.change.set({ ...viewOf(LOGIN), away: { tool: "codex", ago: 4 }, ...unpicked });
+    await fixture.whenStable();
+    expect(text(element.querySelector("[data-unattended]"))).toBe("Nadie retoma tu decisión");
+    expect(element.querySelector("[data-unheld]")).toBeNull();
+  });
+
+  it("AC5, AC6: the mark reads in English too", async () => {
+    const { element, fixture, host } = await render("en");
+    host.change.set({ ...viewOf(LOGIN), ...unpicked });
+    await fixture.whenStable();
+    expect(text(element.querySelector("[data-unattended]"))).toBe("Nobody picks up your decision");
+  });
 });
