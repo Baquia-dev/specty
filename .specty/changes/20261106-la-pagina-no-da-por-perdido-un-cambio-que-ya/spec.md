@@ -61,7 +61,7 @@ Hoy, mientras un cambio se archiva o su worktree se borra, la página de ese cam
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/vanishing.test.ts test/server/records.test.ts test/server/finished.test.ts test/server/lifecycle.test.ts
   - type: fix
-- [ ] T2: La página y la Bandeja conservan lo último que leyeron
+- [x] T2: La página y la Bandeja conservan lo último que leyeron
   - files: packages/ui/src/data/changes-store.ts, packages/ui/src/data/changes-store.test.ts, packages/ui/src/change/change-page.unloaded.test.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/changes-store.test.ts --include src/change/change-page.unloaded.test.ts --include src/inbox/inbox.test.ts --include src/data/fixtures.test.ts && pnpm typecheck && pnpm lint

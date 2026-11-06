@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-pagina-no-da-por-perdido-un-cambio-que-ya",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-la-pagina-no-da-por-perdido-un-cambio-que-ya",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
   "revision": 1,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7602117943e6f5756af99c416b0cd8d04c1ee440",
+      "attempts": 1,
       "startedAt": "2026-11-06T07:49:09.954Z",
       "doneAt": "2026-11-06T07:49:52.391Z",
-      "summary": "loadChange da por no encontrado un cambio cuyo state.json desaparece entre encontrarlo y leerlo, y readRecord deja fuera el cambio cuya carpeta se va antes de fechar su fase (stat sin lanzar): GET /api/changes responde 200 sin él en lugar de 500."
+      "summary": "loadChange da por no encontrado un cambio cuyo state.json desaparece entre encontrarlo y leerlo, y readRecord deja fuera el cambio cuya carpeta se va antes de fechar su fase (stat sin lanzar): GET /api/changes responde 200 sin él en lugar de 500.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "50c3a739622f97b243ea572600a4d865b22eeed6",
+      "startedAt": "2026-11-06T07:49:52.711Z",
+      "doneAt": "2026-11-06T07:51:30.567Z",
+      "summary": "ChangesStore guarda lo último derivado en un linkedSignal (listed lo da y ready dice si se leyó alguna vez) y byId conserva la última vista del mismo id, con missing solo para un id nunca encontrado; la Bandeja muestra el aviso de error sobre la lista en lugar de sustituirla."
     }
   },
   "pending": {
