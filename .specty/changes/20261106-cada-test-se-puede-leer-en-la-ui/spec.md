@@ -72,7 +72,7 @@ Hoy la UI solo da la ruta de cada test, en «Tests por aprobar» y en «Tests bl
   - files: packages/ui/src/progress/test-code.ts, packages/ui/src/progress/tests-sent.ts, packages/ui/src/progress/progress-tab.ts, packages/ui/src/progress/tests-sent.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/tests-sent.test.ts --include src/progress/progress-tab.test.ts
-- [ ] T3: Cada test bloqueado tiene «Ver código», en Progreso y en Aceptación
+- [x] T3: Cada test bloqueado tiene «Ver código», en Progreso y en Aceptación
   - files: packages/ui/src/progress/locked-tests.ts, packages/ui/src/progress/progress-tab.ts, packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/progress/locked-tests.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/locked-tests.test.ts --include src/progress/progress-tab.test.ts --include src/acceptance/acceptance-tab.test.ts && pnpm typecheck

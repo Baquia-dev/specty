@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "70b0d41d8a235126e930bcbe99e7be00dee0dc83",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:39:51.661Z",
       "doneAt": "2026-11-06T13:41:01.093Z",
-      "summary": "sp-test-code (progress/test-code.ts): «Ver código» pide el test a la fuente al abrirse y lo pinta numerado con los colores de HIGHLIGHT, o dice por qué no puede. Cada test por aprobar lo lleva; progress-tab pasa el cambio."
+      "summary": "sp-test-code (progress/test-code.ts): «Ver código» pide el test a la fuente al abrirse y lo pinta numerado con los colores de HIGHLIGHT, o dice por qué no puede. Cada test por aprobar lo lleva; progress-tab pasa el cambio.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d049d9a001fdbce474fd4df4d1a2a357fc52bee3",
+      "startedAt": "2026-11-06T13:41:01.434Z",
+      "doneAt": "2026-11-06T13:42:38.854Z",
+      "summary": "sp-locked-tests gana la entrada change y «Ver código» bajo el estado de cada test bloqueado; progress-tab y acceptance-tab le pasan el cambio."
     }
   },
   "pending": {

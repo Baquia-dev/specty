@@ -81,7 +81,7 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
         <sp-tests-sent [change]="change().id" [tests]="tests" [now]="now()" />
       }
       @if (change().lockedTests; as locked) {
-        <sp-locked-tests [tests]="locked" />
+        <sp-locked-tests [change]="change().id" [tests]="locked" />
       }
       @if (waiting().length > 0) {
         <section aria-labelledby="progress-waiting" data-waiting>
