@@ -75,7 +75,7 @@ Hoy nadie sabe si un agente sigue esperando con `specty wait`, y Gemini CLI cort
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T4: La documentación cuenta la marca de `wait` y su latido
+- [x] T4: La documentación cuenta la marca de `wait` y su latido
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm typecheck && pnpm lint && pnpm sources && pnpm knip

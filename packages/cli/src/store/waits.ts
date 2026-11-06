@@ -27,7 +27,7 @@ export interface WaitHolder {
 }
 
 /** Why a `wait` ended: the person decided, its time ran out, or it was cut off. */
-export type WaitReason = "decided" | "timeout" | "stopped";
+type WaitReason = "decided" | "timeout" | "stopped";
 
 /** The last mark of a change: alive without `ended`, or when and why its `wait` ended. */
 export interface WaitSeen extends WaitHolder {
