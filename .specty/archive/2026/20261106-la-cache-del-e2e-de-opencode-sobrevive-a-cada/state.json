@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-cache-del-e2e-de-opencode-sobrevive-a-cada",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-la-cache-del-e2e-de-opencode-sobrevive-a-cada",
   "baseCommit": "204622d8f501dccfd49f2b4604df95472a5210a9",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e15879680a46284d20381c0d19e0d90f5a5da469",
+      "attempts": 1,
       "startedAt": "2026-11-06T02:39:14.075Z",
       "doneAt": "2026-11-06T02:40:57.021Z",
-      "summary": "vitest-temp-dir.ts deja SPECTY_TESTS_CACHE (specty-tests-cache en la carpeta temporal del sistema, sin crearla ni borrarla, o la que ya venga puesta) y lo restaura al terminar; el E2E de OpenCode guarda allí su caché; tests del ayudante y ARCHITECTURE"
+      "summary": "vitest-temp-dir.ts deja SPECTY_TESTS_CACHE (specty-tests-cache en la carpeta temporal del sistema, sin crearla ni borrarla, o la que ya venga puesta) y lo restaura al terminar; el E2E de OpenCode guarda allí su caché; tests del ayudante y ARCHITECTURE",
+      "scopeExtra": []
     }
   },
   "pending": {

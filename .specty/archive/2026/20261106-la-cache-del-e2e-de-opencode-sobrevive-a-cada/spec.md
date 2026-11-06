@@ -20,3 +20,9 @@ Desde la épica de los temporales, `tmpdir()` dentro de los tests es la carpeta 
 - [x] T1: Una carpeta compartida para las cachés de los tests
   - files: packages/core/vitest-temp-dir.ts, packages/core/test/vitest-temp-dir.test.ts, packages/cli/test/opencode-e2e.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/vitest-temp-dir.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/opencode-e2e.test.ts && pnpm typecheck && pnpm lint && pnpm knip
+
+## Cierre
+
+### Resumen
+
+vitest-temp-dir.ts deja SPECTY_TESTS_CACHE (specty-tests-cache en la carpeta temporal del sistema, sin crearla ni borrarla, o la que ya venga puesta) y lo restaura al terminar; el E2E de OpenCode guarda allí su caché; tests del ayudante y ARCHITECTURE
