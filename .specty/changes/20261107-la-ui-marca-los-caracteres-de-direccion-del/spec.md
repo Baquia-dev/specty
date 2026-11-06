@@ -53,7 +53,7 @@ Hoy la UI pinta el parche y la evidencia de un desbloqueo, y cualquier otra lín
 
 ## Tareas
 
-- [ ] T1: `spansOf` da cada carácter de dirección del texto como su código, marcado
+- [x] T1: `spansOf` da cada carácter de dirección del texto como su código, marcado
   - files: packages/ui/src/highlight/highlight.ts, packages/ui/src/highlight/highlight.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/highlight/highlight.test.ts && pnpm lint

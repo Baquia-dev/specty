@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6ce3f507a9d239c1d8fec29b56da52f07d3883a1",
+      "startedAt": "2026-11-06T18:57:33.683Z",
+      "doneAt": "2026-11-06T18:58:09.094Z",
+      "summary": "spansOf corta cada pieza alrededor de cada carácter de dirección del texto (U+202A–U+202E, U+2066–U+2069) y lo da como su código (\\\\u202e), sin color ni cursiva, con direction y conservando changed; LineSpan gana direction."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
