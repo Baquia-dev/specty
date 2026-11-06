@@ -61,7 +61,7 @@ Cuando «Verificar» de la UI incorpora main antes de verificar y la incorporaci
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/runs.test.ts test/server/runs-turn.test.ts test/server/live.test.ts test/server/verify-merge.test.ts && pnpm lint
   - type: refactor
-- [ ] T2: El servidor conserva la incorporación de «Verificar» que se para sin mover nada
+- [x] T2: El servidor conserva la incorporación de «Verificar» que se para sin mover nada
   - files: packages/cli/src/server/runs.ts, packages/cli/src/server/merged-run.ts, packages/cli/test/server/verify-merge.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/verify-merge.test.ts test/server/runs.test.ts && pnpm lint

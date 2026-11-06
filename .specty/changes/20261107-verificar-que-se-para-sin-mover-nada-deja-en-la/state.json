@@ -48,15 +48,24 @@
   "tasks": {
     "T1": {
       "status": "done",
+      "baseCommit": "2f95b5aec94551cdb047f9ca7e64fa62b7166541",
+      "attempts": 1,
+      "startedAt": "2026-11-06T21:00:11.106Z",
+      "doneAt": "2026-11-06T21:08:19.374Z",
+      "summary": "La salida en vivo pasa a server/run-output.ts; como la verificación de T1 corre el test de AC1, incluye además la ejecución parada (stops, mergedEnd, Incorporated) y que forget borre lo que vio.",
       "scopeExtra": [
         "packages/cli/src/server/merged-run.ts",
         "packages/cli/src/server/watched-runs.ts"
-      ],
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
       "attempts": 1,
-      "baseCommit": "2f95b5aec94551cdb047f9ca7e64fa62b7166541",
-      "startedAt": "2026-11-06T21:00:11.106Z",
-      "doneAt": "2026-11-06T21:08:19.374Z",
-      "summary": "La salida en vivo pasa a server/run-output.ts; como la verificación de T1 corre el test de AC1, incluye además la ejecución parada (stops, mergedEnd, Incorporated) y que forget borre lo que vio."
+      "baseCommit": "73607fd3a7bbf63be4264c5c8d2f3f572e94a45b",
+      "startedAt": "2026-11-06T21:08:19.703Z",
+      "doneAt": "2026-11-06T21:09:08.982Z",
+      "summary": "Sin código nuevo: la ejecución parada que conserva el servidor entró en T1, porque su verificación ya corría el test de AC1; aquí pasa su propia verificación."
     }
   },
   "pending": {
