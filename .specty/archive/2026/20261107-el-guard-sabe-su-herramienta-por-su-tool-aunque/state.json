@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-el-guard-sabe-su-herramienta-por-su-tool-aunque",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-el-guard-sabe-su-herramienta-por-su-tool-aunque",
   "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:46d5c753c1c1a1c734c2923d0b4f320f4bc92bfe9b3a86b3fe4b99f43e55ab14",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3a0132564484ae95e456e5fe6533eb8c2372d801",
+      "attempts": 1,
       "startedAt": "2026-11-06T21:43:40.226Z",
       "doneAt": "2026-11-06T21:49:25.568Z",
-      "summary": "ARCHITECTURE §10 (paso 1 del guard) y §7 (tarjeta al empezar o tras compactar) cuentan que el guard responde con la herramienta de su --tool aunque el entorno del hook no la diga."
+      "summary": "ARCHITECTURE §10 (paso 1 del guard) y §7 (tarjeta al empezar o tras compactar) cuentan que el guard responde con la herramienta de su --tool aunque el entorno del hook no la diga.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,6 +65,7 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-06T21:50:13.362Z",
   "lockedTests": {
     "packages/cli/test/front-start-codex.test.ts": "sha256:d451fd11aaec9f7e59efc162f2f365fc7a131d050fef992254445a64c8c27f2c",
     "packages/cli/test/front-start.test.ts": "sha256:da7115e7d0b9c7a141b302747430de20358d6b21376b05eec5f848d80bd299d1"

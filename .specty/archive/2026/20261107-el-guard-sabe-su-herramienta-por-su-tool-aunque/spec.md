@@ -60,3 +60,27 @@ Las tarjetas que da el guard (la del `SessionStart` al empezar, la de tras compa
 ## Riesgos
 
 - R1: Otros tests del guard sin entorno de agente esperaban las tarjetas de una herramienta desconocida y cambian de texto. Mitigación: se ejecuta la suite entera de la CLI antes de proponer los tests y antes de aceptar, y cada test que cambie se ajusta de forma mínima, manteniendo su intención.
+
+## Cierre
+
+### Resumen
+
+La sesión con la que responden el guard y el fin de turno lleva ahora la herramienta del `--tool` del hook, diga lo que diga su entorno (P256):
+- `packages/cli/src/enforce/sessions.ts`: `enteredSession` pone esa herramienta en `session.tool` y `session.cards.tool`, además de la conversación del evento, también en la sesión de la carpeta del cambio en la que entró la conversación. Así, la tarjeta del `SessionStart` (al empezar, al reanudar, tras compactar o limpiar), las de cada turno y los mensajes salen como los de `next` en esa herramienta, con el encargo de subagentes en Claude Code y Codex.
+- `packages/cli/src/enforce/agent-stop.ts`: `waitReport` ya no hace su propia copia de la sesión con la herramienta del hook, porque la recibe de `enteredSession`.
+- `front-start.test.ts` y `front-start-codex.test.ts` vuelven a comparar la tarjeta entera del guard con la de `next` en la misma herramienta, y tienen tests nuevos para AC1 (también tras compactar), AC2 y AC3 (el hook de Codex con la marca de Gemini CLI en su entorno).
+- ARCHITECTURE §10 (paso 1 del guard) y §7 (la tarjeta al empezar o tras compactar) lo cuentan.
+
+### Desviaciones (respecto al plan)
+
+- Cuatro tests que ya existían comparaban la tarjeta del guard (`--tool claude-code` o `codex`) con la de `next` ejecutado sin herramienta en su entorno, y fallaban con el arreglo previsto (R1): `session-start.test.ts`, `session-start-codex.test.ts`, `fresh-session.test.ts` (AC3) y `setup.test.ts` (AC4). Solo cambia el entorno del `next` con el que comparan (`CLAUDECODE=1`, o `CODEX_THREAD_ID` con el id del hilo del evento); siguen comprobando que la tarjeta del guard es la de `next`. No estaban en «Archivos»: el alcance los admitió como tests junto a los archivos de la tarea.
+
+### Decisiones
+
+- El `--tool` manda sobre el entorno, no solo cuando el entorno calla (A1): es lo que ya hacían el fin de turno y los avisos del guard (`guardContext`), el hook está en la configuración de esa herramienta, y la que ejecuta los hooks de otra ya respondió antes (`borrowed`).
+- La herramienta va en `session.tool` y no solo en `cards.tool` (A2): el guard no escribe auditoría con ella, y así la sesión no dice dos herramientas distintas.
+- Qué variables llegan al entorno de los hooks reales no se midió (A3): con el arreglo, las tarjetas del guard ya no dependen de ellas.
+
+### Pendientes
+
+- Ninguno: la comprobación de las variables de los hooks reales que pedía P256 ya no hace falta para las tarjetas del guard, que toman la herramienta de su `--tool`.
