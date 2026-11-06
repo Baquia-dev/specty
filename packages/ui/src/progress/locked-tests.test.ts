@@ -38,7 +38,7 @@ function serving(codes: Readonly<Record<string, string>>) {
   return fetched;
 }
 
-async function render(lang = "es") {
+async function render(lang = "es", tests: unknown = LOCKED) {
   localStorage.setItem("specty.lang", lang);
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
@@ -48,7 +48,7 @@ async function render(lang = "es") {
     ],
   });
   const fixture = TestBed.createComponent(LockedTests);
-  fixture.componentRef.setInput("tests", LOCKED);
+  fixture.componentRef.setInput("tests", tests);
   fixture.componentRef.setInput("change", ID);
   const settle = async () => {
     for (let round = 0; round < 10; round++) {
@@ -163,5 +163,124 @@ describe("LockedTests", () => {
     expect(
       document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim(),
     ).toBe("Tarea T2");
+  });
+});
+
+const PATCH = [
+  "diff --git a/test/sesion_test.dart b/test/sesion_test.dart",
+  "--- a/test/sesion_test.dart",
+  "+++ b/test/sesion_test.dart",
+  "@@ -2,1 +2,1 @@",
+  "-  expect(aviso, 'Sesión caducada');",
+  "+  expect(aviso, 'Tu sesión caducó');",
+  "",
+].join("\n");
+
+/** A test unlocked three times: by an older CLI (its reason only), with the detail, and with nothing. */
+const DETAILED = [
+  {
+    path: "test/sesion_test.dart",
+    unlockedFor: "T2",
+    unlocks: [
+      { request: "S1", task: "T1", reason: "Un motivo de un CLI anterior." },
+      {
+        request: "S3",
+        task: "T2",
+        reason: "El aviso cambió de texto.",
+        patch: PATCH,
+        evidence: [
+          {
+            path: "lib/auth/session.dart",
+            from: 7,
+            to: 8,
+            text: "  // AC2\n  aviso = 'Tu sesión caducó';",
+          },
+        ],
+      },
+      { request: "S4", task: "T2" },
+    ],
+  },
+];
+
+const unlockToggles = (element: HTMLElement) => [
+  ...element.querySelectorAll<HTMLButtonElement>("[data-unlock-toggle]"),
+];
+
+describe("LockedTests, the detail of each unlock", () => {
+  afterEach(() => {
+    TestBed.resetTestingModule();
+    vi.unstubAllGlobals();
+  });
+
+  it("AC3: «Ver el desbloqueo» unfolds the agent's reason, the approved patch and the evidence, and folds them again", async () => {
+    serving({});
+    const { element, settle } = await render("es", DETAILED);
+    const toggles = unlockToggles(element);
+    expect(toggles.map((toggle) => text(toggle))).toEqual([
+      "Ver el desbloqueo S1",
+      "Ver el desbloqueo S3",
+    ]);
+    expect(toggles.map((toggle) => toggle.getAttribute("aria-expanded"))).toEqual([
+      "false",
+      "false",
+    ]);
+    expect(element.querySelector("[data-unlock-of]")).toBeNull();
+    toggles[1]?.click();
+    await settle();
+    const opened = element.querySelector('[data-unlock-of="S3"]');
+    expect(text(opened?.querySelector("[data-unlock-reason]"))).toBe(
+      "Motivo del agente: «El aviso cambió de texto.»",
+    );
+    const lines = [...(opened?.querySelectorAll("[data-unlock-patch] [data-line]") ?? [])];
+    expect(lines.map((line) => line.getAttribute("data-line"))).toEqual(["removed", "added"]);
+    expect(text(opened?.querySelector("[data-evidence-where]"))).toBe("lib/auth/session.dart:7-8");
+    expect(
+      [...(opened?.querySelectorAll("[data-evidence] [data-number]") ?? [])].map((n) => text(n)),
+    ).toEqual(["7", "8"]);
+    expect(text(unlockToggles(element)[1])).toBe("Ocultar el desbloqueo S3");
+    expect(unlockToggles(element)[1]?.getAttribute("aria-expanded")).toBe("true");
+    // The other unlock stays folded.
+    expect(element.querySelector('[data-unlock-of="S1"]')).toBeNull();
+    unlockToggles(element)[1]?.click();
+    await settle();
+    expect(element.querySelector("[data-unlock-of]")).toBeNull();
+    expect(text(unlockToggles(element)[1])).toBe("Ver el desbloqueo S3");
+  });
+
+  it("AC4: an unlock without a patch or evidence gives only its reason, and one without a reason has no button", async () => {
+    serving({});
+    const { element, settle } = await render("es", DETAILED);
+    expect(unlockToggles(element).map((toggle) => text(toggle))).not.toContain(
+      "Ver el desbloqueo S4",
+    );
+    unlockToggles(element)[0]?.click();
+    await settle();
+    const opened = element.querySelector('[data-unlock-of="S1"]');
+    expect(text(opened?.querySelector("[data-unlock-reason]"))).toBe(
+      "Motivo del agente: «Un motivo de un CLI anterior.»",
+    );
+    expect(opened?.querySelector("[data-unlock-detail]")).toBeNull();
+    // The tests without any unlock detail have no button at all.
+    const plain = await render("es");
+    expect(unlockToggles(plain.element)).toEqual([]);
+  });
+
+  it("AC5: says the detail in English", async () => {
+    serving({});
+    const { element, settle } = await render("en", DETAILED);
+    expect(unlockToggles(element).map((toggle) => text(toggle))).toEqual([
+      "Show unlock S1",
+      "Show unlock S3",
+    ]);
+    unlockToggles(element)[1]?.click();
+    await settle();
+    expect(text(unlockToggles(element)[1])).toBe("Hide unlock S3");
+    expect(text(element.querySelector("[data-unlock-reason]"))).toBe(
+      "The agent's reason: «El aviso cambió de texto.»",
+    );
+    expect([...element.querySelectorAll("[data-unlock-heading]")].map(text)).toEqual([
+      "The change to the test",
+      "The code that supports it",
+    ]);
   });
 });
