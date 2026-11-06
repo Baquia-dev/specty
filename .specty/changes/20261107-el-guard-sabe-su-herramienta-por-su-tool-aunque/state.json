@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261107-el-guard-sabe-su-herramienta-por-su-tool-aunque",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-guard-sabe-su-herramienta-por-su-tool-aunque",
+  "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
+  "revision": 2,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cfb22b17bdf64e8073fe8e7c26b21e7e5be08f2938587c34ba51b53c32fb6ef2",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:fb8233092afe6045784169b919a8634c45092dba4f1429e0e8e5daabe8e791d6",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9edfc15a0e72b45e9d81b598140b0550ddc55cd690324a5abfeb96bdaad3015b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:46d5c753c1c1a1c734c2923d0b4f320f4bc92bfe9b3a86b3fe4b99f43e55ab14",
+    "at": "2026-11-06T21:28:11.288Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
