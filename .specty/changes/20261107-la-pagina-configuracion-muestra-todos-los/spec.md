@@ -75,7 +75,7 @@ Hoy ninguna pantalla de `specty ui` enseña `.specty/config.yaml`: para saber c�
 
 ## Tareas
 
-- [ ] T1: El catálogo de ajustes y sus textos, en la entrada ligera del core
+- [x] T1: El catálogo de ajustes y sus textos, en la entrada ligera del core
   - files: packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/src/light.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts test/light.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
