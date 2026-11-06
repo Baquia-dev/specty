@@ -34,6 +34,11 @@ export interface ShellAnalysis extends SpectyCalls {
   /** Written or removed paths it cannot place: shell variables, `~`, or after `cd` to an unknown directory. */
   readonly unresolved: readonly string[];
   /**
+   * One of its simple commands runs `sleep`, also after the words that open a compound command or
+   * one of its branches (`do`, `then`, `{`…), assignments and wrappers.
+   */
+  readonly sleeps: boolean;
+  /**
    * Where each simple command but `cd` runs: relative to where the command starts (`""` is
    * there), absolute, or undefined after a `cd` somewhere the analysis cannot name.
    */
@@ -44,6 +49,18 @@ export interface ShellAnalysis extends SpectyCalls {
 type Directory = string | undefined;
 
 const WRAPPERS: ReadonlySet<string> = new Set(["sudo", "env", "command", "exec", "time", "nohup"]);
+/** The words that open a compound command or one of its branches, before the command it runs. */
+const OPENERS: ReadonlySet<string> = new Set([
+  "if",
+  "then",
+  "elif",
+  "else",
+  "while",
+  "until",
+  "do",
+  "!",
+  "{",
+]);
 const RUNNERS: ReadonlySet<string> = new Set(["node", "bun", "deno"]);
 const BYPASS_ENV: Readonly<Record<string, string>> = { HUSKY: "0", LEFTHOOK: "0" };
 const SENSITIVE_SPECTY = /common\/specty\/delegated\.json|\.git\/common\/specty/;
@@ -61,6 +78,7 @@ const EMPTY: ShellAnalysis = {
   writes: [],
   deletes: [],
   unresolved: [],
+  sleeps: false,
   enters: [],
   fronts: [],
   resolves: [],
@@ -187,7 +205,18 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
     refs: git.refs,
     writes: [...redirected, ...files.writes],
     deletes: files.deletes,
+    sleeps: sleepsIn(words),
   };
+}
+
+/** Whether a simple command's program, past the words that open a compound command, is `sleep`. */
+function sleepsIn(words: readonly string[]): boolean {
+  const opened = words.findIndex((word) => !OPENERS.has(word));
+  if (opened === -1) return false;
+  const rest = words.slice(opened);
+  const assigned = rest.findIndex((word) => !isAssignment(word));
+  const start = skipWrappers(rest, assigned === -1 ? rest.length : assigned);
+  return basename(rest[start] ?? "") === "sleep";
 }
 
 function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
@@ -201,6 +230,7 @@ function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
     writes: [...a.writes, ...b.writes],
     deletes: [...a.deletes, ...b.deletes],
     unresolved: [...a.unresolved, ...b.unresolved],
+    sleeps: a.sleeps || b.sleeps,
     enters: [...a.enters, ...b.enters],
     fronts: [...a.fronts, ...b.fronts],
     resolves: [...a.resolves, ...b.resolves],

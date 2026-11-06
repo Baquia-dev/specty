@@ -69,7 +69,7 @@ Hoy el guard deja que el agente de Claude Code ejecute `specty wait` en primer p
 
 ## Tareas
 
-- [ ] T1: El guard de core rechaza `specty wait` en primer plano y `sleep` mientras el cambio espera a la persona
+- [x] T1: El guard de core rechaza `specty wait` en primer plano y `sleep` mientras el cambio espera a la persona
   - files: packages/core/src/guard/action.ts, packages/core/src/guard/shell.ts, packages/core/src/guard/decide.ts, packages/core/src/cards/wait.ts, packages/core/test/guard/wait.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/wait.test.ts
