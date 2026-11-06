@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-test-queda-como-lo-deja-el-parche-aprobado",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-el-test-queda-como-lo-deja-el-parche-aprobado",
   "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
   "revision": 1,
@@ -72,6 +72,9 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T14:58:13.157Z"
+  "lockedTests": {
+    "packages/cli/test/unlock-again.test.ts": "sha256:2dee9b46298c1d320441f12f59fda455ce7c53c162d00e5723fafe71c944a72a",
+    "packages/cli/test/unlock-done.test.ts": "sha256:0406c4f3210dd5e78a9b0b8feae0dda0cc71332cab6342a6a1aa94d84dfc2534",
+    "packages/core/test/cards/unlock-check.test.ts": "sha256:03582abf6e5243353ba619a022b99b1c69f34b362a0d41984c2649555aa336c0"
+  }
 }
