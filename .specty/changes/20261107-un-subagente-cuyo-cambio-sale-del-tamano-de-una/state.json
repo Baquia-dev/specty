@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-un-subagente-cuyo-cambio-sale-del-tamano-de-una",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-un-subagente-cuyo-cambio-sale-del-tamano-de-una",
   "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
   "revision": 1,
@@ -46,6 +46,8 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T21:32:34.395Z"
+  "lockedTests": {
+    "packages/core/test/cards/idle-subagents.test.ts": "sha256:a968f5a916cdabce11ad234ea87d076bd56eacb4727316f707c0363b19ad29b4",
+    "packages/core/test/cards/idle-epic-size.test.ts": "sha256:7c874aa1ec9d4e59bd66b3af45b9edf8fd1477f6c8c56b9fac01467095eaa790"
+  }
 }
