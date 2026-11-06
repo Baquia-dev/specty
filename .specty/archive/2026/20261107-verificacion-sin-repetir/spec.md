@@ -77,3 +77,35 @@ La verificación completa tarda minutos, y en cuatro flujos se ejecuta dos veces
 - R2: Que «Verificar» haga un merge sorprende a quien esperaba una acción sin efectos. Mitigación: es lo mismo que hace «Aceptar» y `accept` en la terminal antes de verificar, y la UI ya muestra la incorporación pendiente; `docs/ui.md` lo cuenta.
 - R3: Un cierre escrito antes de aceptar puede no recoger lo que trae la incorporación de main. Mitigación: el agente puede reenviarlo con `propose` hasta el `accept`, y la incorporación aparece en las líneas del aterrizaje, como hoy.
 - R4: Abrir la sección Cierre en aceptación delegada podría dejar al agente tocar otras secciones. Mitigación: es la misma regla `closing-only` que hoy se aplica en `closing`, con sus tests; C4 añade el caso de aceptación con y sin delegación.
+
+## Cierre
+
+### Resumen
+
+La verificación completa ya no se repite en los cuatro flujos medidos en las auditorías. Los cuatro cortes están cerrados en main.
+- C1 (`20261107-specty-integrate-anota-su-verificacion-y-accept`, f73f56c): cuando su verificación pasa, `specty integrate` la anota como `change.verified` con su `tree`, así que el `accept` siguiente sobre el mismo código no la repite, también sin `verify.units`.
+- C2 (`20261107-en-modo-delegado-un-cambio-rapido-se-acepta-y`, ccf8184): en modo delegado, el `accept` de un cambio `quick` tiene el turno de aterrizaje desde antes de incorporar main hasta aterrizar (`closingTurn`), así que ninguna otra sesión aterriza en medio ni obliga a verificar dos veces.
+- C3 (`20261107-verificar-de-la-ui-incorpora-main-antes-de`, 83686f5): si main avanzó, «Verificar» de la UI lo incorpora antes de verificar, con el mismo paso que `accept`. En verde hace el commit del merge y anota `change.verified`, y «Aceptar» ya no la repite.
+- C4 (`20261107-en-modo-delegado-un-cambio-normal-con-su-cierre`, 8b0b1b6): en modo delegado, el agente envía el cierre de un cambio normal en aceptación con `propose`, con la spec en `closing-only`, y su `accept` verifica una vez, acepta, archiva y aterriza en un solo turno, sin `close`. Con la persona, aceptar y cerrar siguen siendo dos pasos.
+
+### Desviaciones
+
+- C3 ejecuta la incorporación de «Verificar» en la cola de acciones del servidor y con el cambio bloqueado, no fuera de la cola como la verificación de antes. Así un «Aceptar» del mismo servidor no fusiona a la vez.
+- C4 se estrechó antes de aprobarlo para no salir XL: `adjust`, la vista de las observaciones de la revisión en aceptación y `cards/flow.ts` no cambian (P247).
+- C4 llevó `closeOnTurn` y `closeQuick` a `flow/closing-turn.ts`, junto al aceptar-que-cierra, en vez de exportarlos desde `commands/finish.ts`.
+- C4 adaptó dos tests que esperaban el flujo anterior a propósito. `delegate.test.ts` esperaba el SIGUIENTE de la aceptación delegada. En `friction.test.ts`, el recorrido delegado pasa de 9 comandos a 8, porque ya no hay `close`.
+
+### Decisiones
+
+- El turno único y el aceptar-que-cierra solo se aplican en modo delegado (el agente como actor): con la persona, una pregunta sin responder bloquearía a las demás sesiones.
+- Volver a verificar cuando main trae código nuevo entre el `accept` y el `close` de la persona sigue igual, porque es otro código. Las unidades ya reutilizan lo que pueden.
+- `closingInAcceptance(kind, delegated)`, en `core/flow/phases.ts`, decide en un solo sitio a qué cambios se aplica el cierre en aceptación (C4).
+- `integrate` anota el comando completo configurado, que es el que compara `passedOnThisCode`, y no anota una verificación que falla (C1).
+
+### Pendientes
+
+- `packages/cli/src/server/runs.ts` tiene 306 líneas de código (aviso a partir de 300): falta sacar la salida en vivo a su propio módulo (P243).
+- En un mismo servidor, un «Aceptar» puede verificar a la vez que un «Verificar» sin merge de otro cambio (P244).
+- Si la incorporación de «Verificar» se para sin mover nada, el motivo solo sale un instante en la salida en vivo (P245).
+- El `accept` que cierra en modo delegado no hace el commit del cierre enviado antes de incorporar main, como hace `close` con `commitClosing` (P246).
+- La aceptación delegada no muestra las observaciones de la revisión (P247).

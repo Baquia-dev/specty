@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-verificacion-sin-repetir",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261107-verificacion-sin-repetir",
   "baseCommit": "25a6ccd6a24750c59639929aca63d27a68422000",
-  "revision": 2,
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c6d4aff2fee489a005215c9e763635019267bd00e8810f1bfca02d829f8b5268",
+    "at": "2026-11-06T18:37:11.377Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -59,11 +66,5 @@
     "C": 4,
     "R": 4
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:c6d4aff2fee489a005215c9e763635019267bd00e8810f1bfca02d829f8b5268",
-    "at": "2026-11-06T18:37:11.377Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-06T20:04:05.422Z"
 }
