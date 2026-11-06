@@ -3,6 +3,7 @@ import { join } from "node:path";
 import type { WorkspacePackage } from "@baquia-dev/specty-core";
 import { exists, isDirectory, isRecord, readText } from "../io/files";
 import { expand, safeYaml } from "./project";
+import { rootPackagePaths } from "./root-package";
 import type { WorkspaceFacts } from "./workspace-units";
 
 type Mapping = Readonly<Record<string, unknown>>;
@@ -14,8 +15,10 @@ const SHARED = ["pubspec.yaml", "pubspec.lock", "melos.yaml"];
  * A pub or melos workspace: the folders of the root `pubspec.yaml`'s `workspace` and of
  * `melos.yaml`'s `packages`, minus its `ignore`, with a named `pubspec.yaml`, each tested in its
  * folder with `flutter test` or `dart test` when it has a `test` folder, and the root files they
- * share. Undefined without either list, with fewer than two packages, and when the root has tests
- * too, whose folder would be the whole repository.
+ * share. A root with tests is one more package, tested with `flutter test` or `dart test` in the
+ * root, which runs only its own `test` folder, and reading the root outside the packages' folders
+ * (`rootPackagePaths`). Undefined without either list, with fewer than two packages, and when the
+ * root has tests but no `name`, whose tests no unit would run.
  */
 export async function dartWorkspace(root: string): Promise<WorkspaceFacts | undefined> {
   const [pubspec, melos] = await Promise.all([
@@ -23,10 +26,26 @@ export async function dartWorkspace(root: string): Promise<WorkspaceFacts | unde
     yamlAt(root, "melos.yaml"),
   ]);
   const listed = [...strings(pubspec?.workspace), ...strings(melos?.packages)];
-  if (listed.length === 0 || (await isDirectory(join(root, "test")))) return undefined;
+  if (listed.length === 0) return undefined;
   const dirs = await packageDirs(root, listed, strings(melos?.ignore));
   const read = await Promise.all(dirs.map((dir) => packageOf(root, dir)));
-  const found = read.flatMap((pkg) => (pkg === undefined ? [] : [pkg]));
+  const members = read.flatMap((pkg) => (pkg === undefined ? [] : [pkg]));
+  const tested = await isDirectory(join(root, "test"));
+  const self = tested ? await packageOf(root, ".") : undefined;
+  if (tested && self === undefined) return undefined;
+  const found =
+    self === undefined
+      ? members
+      : [
+          {
+            ...self,
+            paths: await rootPackagePaths(
+              root,
+              members.map(({ dir }) => dir),
+            ),
+          },
+          ...members,
+        ];
   if (found.length < 2) return undefined;
   const names = new Set(found.map((pkg) => pkg.name));
   const packages = found.map((pkg) => ({
@@ -70,7 +89,7 @@ async function packageOf(root: string, dir: string): Promise<WorkspacePackage | 
     name: pubspec.name,
     tests: await isDirectory(join(root, dir, "test")),
     // A subshell, so the `cd` does not reach the next unit when they run joined with `&&`.
-    command: `(cd ${dir} && ${tool} test)`,
+    command: dir === "." ? `${tool} test` : `(cd ${dir} && ${tool} test)`,
     uses: [...Object.keys(dependencies), ...Object.keys(mapping(pubspec.dev_dependencies))],
   };
 }

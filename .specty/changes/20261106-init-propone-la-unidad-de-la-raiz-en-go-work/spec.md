@@ -55,7 +55,7 @@ Desde 6bfc989, `specty init` propone una unidad para la raíz de un workspace de
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-gradle.test.ts && pnpm lint
   - type: feat
-- [ ] T3: El paquete de la raíz de pub o melos con tests recibe su unidad
+- [x] T3: El paquete de la raíz de pub o melos con tests recibe su unidad
   - files: packages/cli/src/detect/units-dart.ts, packages/cli/test/units-dart.test.ts, docs/formats.md
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-dart.test.ts test/units-go.test.ts test/units-gradle.test.ts test/workspace-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-init-propone-la-unidad-de-la-raiz-en-go-work",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-init-propone-la-unidad-de-la-raiz-en-go-work",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
   "revision": 1,
@@ -51,12 +51,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d78c665f94778b51d3af92bec0a54fe1ad2a9b36",
+      "attempts": 1,
       "startedAt": "2026-11-06T03:59:07.824Z",
       "doneAt": "2026-11-06T03:59:48.830Z",
-      "summary": "Un proyecto raíz de Gradle con src/test es uno más en '.', con <runner> :test, llamado como rootProject.name (o root) y con los paths de rootPackagePaths; project(\":\") en un subproyecto apunta a él"
+      "summary": "Un proyecto raíz de Gradle con src/test es uno más en '.', con <runner> :test, llamado como rootProject.name (o root) y con los paths de rootPackagePaths; project(\":\") en un subproyecto apunta a él",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1057238444a00f71878374abed439f0be2139b89",
+      "startedAt": "2026-11-06T03:59:49.136Z",
+      "doneAt": "2026-11-06T04:01:03.863Z",
+      "summary": "Un workspace de pub o melos con test en la raíz lee el paquete de la raíz como uno más, con dart/flutter test sin cd y los paths de rootPackagePaths (sin name, sin propuesta); formats.md cuenta la raíz como paquete en go.work, Gradle y pub o melos"
     }
   },
   "pending": {
