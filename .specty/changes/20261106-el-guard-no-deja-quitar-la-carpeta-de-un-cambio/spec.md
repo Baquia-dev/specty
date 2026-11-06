@@ -66,7 +66,7 @@ Hoy la carpeta de un cambio abierto se puede quitar sin pasar por `specty close`
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts && pnpm lint
   - type: feat
-- [ ] T2: El guard niega quitar la carpeta de un cambio abierto
+- [x] T2: El guard niega quitar la carpeta de un cambio abierto
   - files: packages/core/src/guard/decide.ts, packages/core/src/guard/worktrees.ts, packages/core/src/cards/change-folder.ts, packages/core/src/index.ts, packages/core/test/guard/change-folder.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/change-folder.test.ts test/guard/decide.test.ts test/guard/ghosts.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

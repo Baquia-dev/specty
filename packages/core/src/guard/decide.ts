@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { openFolderDenial } from "../cards/change-folder";
 import { ghostFolderDenial } from "../cards/ghost-folder";
 import type { Phase } from "../flow/phases";
 import type { Lang } from "../i18n";
@@ -18,6 +19,7 @@ import {
   type ForeignPath,
   foreignDenial,
   type GhostPath,
+  type OpenFolder,
 } from "./worktrees";
 
 export { HUMAN_COMMANDS } from "./human";
@@ -69,6 +71,8 @@ export interface ShellFacts {
   readonly ghosts?: readonly GhostPath[];
   /** The command would run outside the change's folder the conversation entered. */
   readonly elsewhere?: Elsewhere;
+  /** The folders of open changes its `git worktree remove` commands would remove. */
+  readonly removedFolders?: readonly OpenFolder[];
 }
 
 export type GuardAction =
@@ -102,6 +106,11 @@ export type GuardAction =
       readonly bound?: BoundSession;
       readonly epic?: string;
     }
+  /**
+   * A tool of the agent's own removes a worktree (OpenCode's `worktree_remove`): `folders` are
+   * the open changes' folders among what it removes.
+   */
+  | { readonly kind: "remove-worktree"; readonly folders: readonly OpenFolder[] }
   | { readonly kind: "other" };
 
 /** The rule behind a denial, so a caller can pick the next step (`scope add` only for `scope`). */
@@ -119,6 +128,7 @@ export type GuardRule =
   | "scope"
   | "worktree"
   | "ghost"
+  | "change-folder"
   | "integration"
   | "session"
   | "locked";
@@ -137,17 +147,30 @@ const ALLOW: GuardDecision = { allow: true };
 /** Decides whether an agent action respects the flow. Paths are repository-relative. */
 export function decideGuard(action: GuardAction, ctx: GuardContext): GuardDecision {
   if (action.kind === "other") return ALLOW;
-  if (action.kind === "read") {
-    const elsewhere = (action.foreign ?? []).filter((path) => path.instead !== undefined);
-    return denyForeign(elsewhere, ctx) ?? ALLOW;
-  }
+  if (action.kind === "read") return decideRead(action, ctx);
   if (action.kind === "shell") return decideShell(action.facts, ctx);
   if (action.kind === "files") return decideFiles(action, ctx);
-  if (action.kind === "enter") {
-    const denial = sessionDenial(action.bound, action.target, ctx.lang, ctx.command, action.epic);
-    return denial === undefined ? ALLOW : deny("session", denial.reason, denial.next);
-  }
+  if (action.kind === "remove-worktree") return denyOpenFolder(action.folders, ctx) ?? ALLOW;
+  if (action.kind === "enter") return decideEnter(action, ctx);
   return decideEdit(action, ctx);
+}
+
+/** Reading is free; only a conversation that entered a change's folder reads that folder's files. */
+function decideRead(
+  action: Extract<GuardAction, { readonly kind: "read" }>,
+  ctx: GuardContext,
+): GuardDecision {
+  const elsewhere = (action.foreign ?? []).filter((path) => path.instead !== undefined);
+  return denyForeign(elsewhere, ctx) ?? ALLOW;
+}
+
+/** A session moves into a worktree unless it is bound to another one whose change is open. */
+function decideEnter(
+  action: Extract<GuardAction, { readonly kind: "enter" }>,
+  ctx: GuardContext,
+): GuardDecision {
+  const denial = sessionDenial(action.bound, action.target, ctx.lang, ctx.command, action.epic);
+  return denial === undefined ? ALLOW : deny("session", denial.reason, denial.next);
 }
 
 /** A file tool's write or deletion: each path, after those inside a ghost folder or another worktree. */
@@ -173,6 +196,17 @@ function denyGhost(
   return deny("ghost", denial.reason, denial.next);
 }
 
+/** An open change's folder stays, whatever the phase and in delegated mode too. */
+function denyOpenFolder(
+  folders: readonly OpenFolder[] | undefined,
+  ctx: GuardContext,
+): GuardDecision | undefined {
+  const [first] = folders ?? [];
+  if (first === undefined) return undefined;
+  const denial = openFolderDenial(first, ctx.lang, ctx.command);
+  return deny("change-folder", denial.reason, denial.next);
+}
+
 /** Another worktree's files belong to another change, whatever this folder's phase. */
 function denyForeign(
   foreign: readonly ForeignPath[] | undefined,
@@ -186,6 +220,9 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
   const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
   const human = humanDenial(facts.specty, ctx);
   if (human !== undefined) return deny("human", human.reason, human.next);
+  // Before where it runs: run anywhere else, it would be denied all the same.
+  const removal = denyOpenFolder(facts.removedFolders, ctx);
+  if (removal !== undefined) return removal;
   // Where it runs comes first: there, the rest is judged by that folder's change.
   if (facts.elsewhere !== undefined) {
     const denial = elsewhereDenial(facts.elsewhere, ctx.lang);

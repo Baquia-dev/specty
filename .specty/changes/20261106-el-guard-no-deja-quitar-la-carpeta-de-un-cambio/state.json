@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ace816dda1ae3d2d653a318c21c5c4fc2a4eb83d",
+      "attempts": 1,
       "startedAt": "2026-11-06T10:02:19.088Z",
       "doneAt": "2026-11-06T10:03:51.523Z",
-      "summary": "analyzeGit lee el argumento de cada git worktree remove con sus -C (removes), y analyzeShell lo sitúa como los commits en worktreeRemovals: nombre tal cual y ruta si sabe dónde corre; sin variables ni ~"
+      "summary": "analyzeGit lee el argumento de cada git worktree remove con sus -C (removes), y analyzeShell lo sitúa como los commits en worktreeRemovals: nombre tal cual y ruta si sabe dónde corre; sin variables ni ~",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d318a7935d2932233c911d29faad8803dcd625da",
+      "startedAt": "2026-11-06T10:03:51.853Z",
+      "doneAt": "2026-11-06T10:05:52.505Z",
+      "summary": "La regla change-folder niega quitar la carpeta de un cambio abierto (ShellFacts.removedFolders y la acción remove-worktree), tras la de la persona; OpenFolder exportado y texto en cards/change-folder.ts; decideRead y decideEnter salen de decideGuard"
     }
   },
   "pending": {
