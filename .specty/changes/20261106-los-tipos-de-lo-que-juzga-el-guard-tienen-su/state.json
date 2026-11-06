@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": "20261106-los-tipos-de-lo-que-juzga-el-guard-tienen-su",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261106-los-tipos-de-lo-que-juzga-el-guard-tienen-su",
+  "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9b319da6c75733428ef5d3e8972ce5fd148a8491dbd007e3f490c9987778db96",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5d6b0bfe92b5636877e9f31ad02a965e0064ae79ebd7883e9b876d32334eb76a",
+    "at": "2026-11-06T10:29:46.036Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
