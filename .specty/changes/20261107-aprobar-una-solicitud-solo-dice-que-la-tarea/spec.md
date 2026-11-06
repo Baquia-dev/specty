@@ -17,7 +17,7 @@ En Progreso, aprobar una solicitud de alcance avisa «Aprobaste S1: T3 vuelve a 
 
 ## Tareas
 
-- [ ] T1: El aviso de aprobar una solicitud nombra las que su tarea aún espera
+- [x] T1: El aviso de aprobar una solicitud nombra las que su tarea aún espera
   - files: packages/ui/src/progress/scope-request.ts, packages/ui/src/progress/progress-tab.ts, packages/ui/src/progress/progress-tab.test.ts, docs/ui.md
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/progress-tab.test.ts && pnpm typecheck && pnpm lint
   - type: fix

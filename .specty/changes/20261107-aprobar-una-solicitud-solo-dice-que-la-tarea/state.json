@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-aprobar-una-solicitud-solo-dice-que-la-tarea",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-aprobar-una-solicitud-solo-dice-que-la-tarea",
   "baseCommit": "7364903203145fdcd85c7f2a4455e068e59045f7",
   "revision": 2,
@@ -22,7 +22,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3d417905cfb0d157ef75e84c2bc902800e6dd2c7",
+      "startedAt": "2026-11-06T18:39:31.066Z",
+      "doneAt": "2026-11-06T18:40:32.647Z",
+      "summary": "scope-request recibe las solicitudes pendientes de su tarea (pending) y el aviso de aprobar nombra las que siguen esperando con Intl.ListFormat, o dice que la tarea vuelve a su lugar si no queda ninguna; progress-tab le pasa task.scopeRequests; docs/ui.md lo cuenta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

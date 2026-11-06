@@ -101,6 +101,8 @@ export class ScopeRequest {
   readonly change = input.required<string>();
   readonly task = input.required<string>();
   readonly request = input.required<TaskScopeRequest>();
+  /** Every request of its task still waiting, this one included, as the tab lists them. */
+  readonly pending = input<readonly TaskScopeRequest[]>([]);
 
   private readonly source = inject(SpectyData);
   private readonly dialogs = inject(Dialogs);
@@ -135,21 +137,33 @@ export class ScopeRequest {
     return `${approving} ${rejecting}`;
   });
 
+  /** Its notice is worded before deciding: once decided, the tab drops this request. */
   protected approve(): void {
     const { id } = this.request();
+    const approved = this.approved(id);
     this.source
       .decideScope(this.change(), id, "approved")
-      .then(
-        () =>
-          this.toasts.show(
-            this.t()(
-              `Aprobaste ${id}: ${this.task()} vuelve a su lugar.`,
-              `You approved ${id}: ${this.task()} goes back to its place.`,
-            ),
-            "success",
-          ),
-        this.failed,
+      .then(() => this.toasts.show(approved, "success"), this.failed);
+  }
+
+  /** The task goes back to its place only when no other request of it is left waiting. */
+  private approved(id: string): string {
+    const task = this.task();
+    const others = this.pending()
+      .map((request) => request.id)
+      .filter((other) => other !== id);
+    if (others.length === 0) {
+      return this.t()(
+        `Aprobaste ${id}: ${task} vuelve a su lugar.`,
+        `You approved ${id}: ${task} goes back to its place.`,
       );
+    }
+    const list = (lang: string) =>
+      new Intl.ListFormat(lang, { type: "conjunction" }).format(others);
+    return this.t()(
+      `Aprobaste ${id}: ${task} sigue esperando ${list("es")}.`,
+      `You approved ${id}: ${task} still waits for ${list("en")}.`,
+    );
   }
 
   protected reject(): void {
