@@ -43,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0867e7ccba6f750cb0ee0575710f2aa78f91a549",
+      "startedAt": "2026-11-06T12:01:23.373Z",
+      "doneAt": "2026-11-06T12:02:28.041Z",
+      "summary": "cards/wait.ts reúne la tabla de cómo espera cada herramienta, la frase común waitStep y la tarjeta de tiempo agotado, que pide recordar la decisión y volver a ejecutar wait ya; ya no importa blockedCard de flow.ts para evitar un ciclo"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -69,7 +69,7 @@ Hoy cada salida que deja el cambio esperando a la persona pide «ejecuta `specty
 
 ## Tareas
 
-- [ ] T1: La tarjeta de tiempo agotado pide volver a ejecutar `specty wait` ya, con la frase de cada herramienta
+- [x] T1: La tarjeta de tiempo agotado pide volver a ejecutar `specty wait` ya, con la frase de cada herramienta
   - files: packages/core/src/cards/wait.ts, packages/core/test/cards/wait.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/wait.test.ts
