@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "id": "20261107-en-aceptacion-delegada-la-tarjeta-muestra-las",
+  "kind": "quick",
+  "phase": "testing",
+  "branch": "specty/20261107-en-aceptacion-delegada-la-tarjeta-muestra-las",
+  "baseCommit": "bb32977a94e76f405187f4486874e76c19d8c9f9",
+  "revision": 2,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:5e9c0fea50227c0faf56da337a7f47c376ca6d45cde2ede6b6f18095802da630",
+    "at": "2026-11-06T20:15:15.678Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
