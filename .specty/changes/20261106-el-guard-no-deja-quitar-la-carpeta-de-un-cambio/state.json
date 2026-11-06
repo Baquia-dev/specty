@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-guard-no-deja-quitar-la-carpeta-de-un-cambio",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-el-guard-no-deja-quitar-la-carpeta-de-un-cambio",
   "baseCommit": "98153584ec94f57f6b6990a486a76b18bead7ff8",
   "revision": 2,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cd227eaafb28427d0756835b9c9b5becda76d9c7",
+      "attempts": 1,
       "startedAt": "2026-11-06T10:05:52.964Z",
       "doneAt": "2026-11-06T10:08:22.976Z",
-      "summary": "enforce/removals.ts busca, entre las worktrees de git que nombra cada git worktree remove (por ruta real o por final de ruta), las de un cambio abierto; place.ts las da al guard como removedFolders y sitúa la acción remove-worktree"
+      "summary": "enforce/removals.ts busca, entre las worktrees de git que nombra cada git worktree remove (por ruta real o por final de ruta), las de un cambio abierto; place.ts las da al guard como removedFolders y sitúa la acción remove-worktree",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9be9222e205ce922774fe9e8a47b4ffe04b25b22",
+      "startedAt": "2026-11-06T10:08:23.340Z",
+      "doneAt": "2026-11-06T10:09:52.182Z",
+      "summary": "OpenCode: opencode_worktree_remove con directory se lee como la acción remove-worktree, que el guard juzga como git worktree remove; ARCHITECTURE cuenta las carpetas de cambios abiertos y la fila de OpenCode"
     }
   },
   "pending": {

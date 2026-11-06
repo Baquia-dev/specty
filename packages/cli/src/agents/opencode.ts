@@ -179,6 +179,11 @@ const sessionMove = (input: Input): RawAction =>
   typeof input.directory === "string" && input.directory !== ""
     ? { kind: "enter", request: { path: input.directory } }
     : { kind: "other" };
+// It removes the worktree of `directory`, as `git worktree remove`, with `force` too.
+const worktreeRemove = (input: Input): RawAction =>
+  typeof input.directory === "string" && input.directory !== ""
+    ? { kind: "remove-worktree", path: input.directory }
+    : { kind: "other" };
 
 /** What each tool the guard judges does; the others are `other`. */
 const ACTIONS: ReadonlyMap<string, (input: Input) => RawAction> = new Map([
@@ -190,4 +195,5 @@ const ACTIONS: ReadonlyMap<string, (input: Input) => RawAction> = new Map([
   ["patch", patch],
   ["apply_patch", patch],
   ["opencode_session_move", sessionMove],
+  ["opencode_worktree_remove", worktreeRemove],
 ]);

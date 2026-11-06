@@ -76,7 +76,7 @@ Hoy la carpeta de un cambio abierto se puede quitar sin pasar por `specty close`
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/remove-change-folder.test.ts test/ghost-folders.test.ts && pnpm lint
   - type: feat
-- [ ] T4: El guard juzga worktree_remove de OpenCode
+- [x] T4: El guard juzga worktree_remove de OpenCode
   - files: packages/cli/src/agents/opencode.ts, packages/cli/test/opencode-worktree-remove.test.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-worktree-remove.test.ts test/opencode-session-move.test.ts test/opencode.test.ts && pnpm typecheck && pnpm lint && pnpm knip
