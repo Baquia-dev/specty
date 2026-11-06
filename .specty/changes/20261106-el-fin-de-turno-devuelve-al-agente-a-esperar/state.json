@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-fin-de-turno-devuelve-al-agente-a-esperar",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-el-fin-de-turno-devuelve-al-agente-a-esperar",
   "baseCommit": "ddaa47217dcb6b75a40be45d70016d60cc09f4db",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6320dd18f540f1101c669b4813430f48cb2ac49a",
+      "attempts": 1,
       "startedAt": "2026-11-06T12:53:37.624Z",
       "doneAt": "2026-11-06T12:55:16.177Z",
-      "summary": "hook agent-stop prueba antes de check --changed la regla de wait: si el cambio espera a la persona (isWaitingForHuman, exportada) y readWait no da un wait vivo, devuelve noWaitLine y la tarjeta de next, una vez por turno y nunca con subagentes"
+      "summary": "hook agent-stop prueba antes de check --changed la regla de wait: si el cambio espera a la persona (isWaitingForHuman, exportada) y readWait no da un wait vivo, devuelve noWaitLine y la tarjeta de next, una vez por turno y nunca con subagentes",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d2e76e34eef9af4818d0bf118ec7dc19952b7ab4",
+      "startedAt": "2026-11-06T12:55:16.526Z",
+      "doneAt": "2026-11-06T12:55:43.780Z",
+      "summary": "El párrafo «Fin de turno» de docs/ARCHITECTURE.md cuenta la regla de wait: cuándo actúa, qué devuelve, una vez por turno, nunca con subagentes y sin margen para la marca de un wait recién lanzado"
     }
   },
   "pending": {

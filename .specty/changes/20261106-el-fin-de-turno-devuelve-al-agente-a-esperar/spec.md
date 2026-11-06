@@ -70,7 +70,7 @@ Hoy un agente puede terminar su turno mientras el cambio espera la decisión de 
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agent-stop-wait.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T3: La documentación cuenta la regla de `wait` en el fin de turno
+- [x] T3: La documentación cuenta la regla de `wait` en el fin de turno
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm typecheck && pnpm lint && pnpm sources && pnpm knip
