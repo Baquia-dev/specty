@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261107-la-tarjeta-de-next-y-la-ui-leen-del-estado-que",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-la-tarjeta-de-next-y-la-ui-leen-del-estado-que",
+  "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "3 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c12bf4227f7da197de5574bfb4aea822d5f20362d26891f473f40389f6bac28d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c78c7fc647ce8afd52a4c1079ef37142d1af927d5ebdf0bffa522b1819dbc816",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:58f4ab3c14c4ed4c512dc0090d18a0f945468ef8dc1f1f17f84f499fcf4e7a0e",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:57201dfde7a54503625388f70ceba2579da9b9a6ac77bf268e6b12b1d1cf092c",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:6bb823377f1d7028076b6bafaff9a5a9c41f5e4113bc802950301b03590d2296",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c9a426e9343c7d0b5b00de3ee872a7e9ab7c5fe0348fbb6645b0255c6ef42a80",
+    "at": "2026-11-06T16:36:10.258Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
