@@ -111,3 +111,22 @@ export async function installHooks(options: {
   if (!invocation.portable) warnings.push(notOnPathWarning(COMMAND, lang));
   return { done, warnings, written };
 }
+
+/**
+ * The end of turn of each agent of `tools` that has one, next to the guard `installHooks` wrote
+ * and with its command (ADR 0012): it sends the agent back to `specty wait` while the change
+ * waits for the person, with `--no-check`, since only `check --install` turns on `specty check
+ * --changed` in it. One that is already there stays as it is, with its check if it had it.
+ */
+export async function installAgentStops(options: {
+  readonly root: string;
+  readonly files: InstallFiles;
+  readonly tools: readonly AgentTool[];
+  /** `verify.timeoutSec`: the time the check gets once `check --install` turns it on. */
+  readonly timeout: number;
+}): Promise<void> {
+  const { root, files, tools, timeout } = options;
+  for (const { tool, stop } of Object.values(ADAPTERS)) {
+    if (tools.includes(tool)) await stop?.plan({ root, files, timeout, tool, check: false });
+  }
+}

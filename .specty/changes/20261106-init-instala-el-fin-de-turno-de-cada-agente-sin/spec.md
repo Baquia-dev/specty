@@ -78,7 +78,7 @@ Hoy el fin de turno (`specty hook agent-stop <agente>`), que con C4 devuelve al 
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agent-stop-wait.test.ts
   - type: feat
-- [ ] T2: `init` escribe el fin de turno con `--no-check` y `check --install` le quita la marca
+- [x] T2: `init` escribe el fin de turno con `--no-check` y `check --install` le quita la marca
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/check/install-agents.ts, packages/cli/src/install/hooks.ts, packages/cli/src/install/install.ts, packages/cli/test/init-agent-stop.test.ts, packages/cli/test/memory-stop-install.test.ts, packages/cli/test/codex.test.ts, packages/cli/test/gemini-cli.test.ts, packages/cli/test/antigravity.test.ts
   - ac: AC1, AC3, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-agent-stop.test.ts test/memory-stop-install.test.ts test/codex.test.ts test/gemini-cli.test.ts test/antigravity.test.ts

@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ea35ec6aee573350686f1f7969a1042f74562c30",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:25:54.767Z",
       "doneAt": "2026-11-06T13:26:49.437Z",
-      "summary": "hook agent-stop acepta --no-check (NO_CHECK en agents/adapter.ts): solo aplica la regla de wait y no ejecuta check --changed; entry.ts pasa los argumentos tras el agente y el comando oculto hook admite la marca (allowUnknownOption)"
+      "summary": "hook agent-stop acepta --no-check (NO_CHECK en agents/adapter.ts): solo aplica la regla de wait y no ejecuta check --changed; entry.ts pasa los argumentos tras el agente y el comando oculto hook admite la marca (allowUnknownOption)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8357d7b07c2c02fd74caa1901794eb209b4ee9fe",
+      "startedAt": "2026-11-06T13:26:49.732Z",
+      "doneAt": "2026-11-06T13:28:48.757Z",
+      "summary": "init escribe el fin de turno con --no-check junto al guard de cada agente con hooks JSON y con verify.timeoutSec (installAgentStops); check --install le quita la marca en la misma entrada, y init conserva un fin de turno que ya hace el check"
     }
   },
   "pending": {

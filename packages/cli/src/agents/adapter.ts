@@ -192,8 +192,10 @@ export interface AgentStop {
    */
   readonly counts?: true;
   /**
-   * Writes the hook into the plan of `check --install`, next to Specty's guard and with its
-   * command; nothing when the guard is not there, or the hook already is.
+   * Writes the hook into the plan of `init` or of `check --install`, next to Specty's guard and
+   * with its command: `init`'s with `--no-check`, and `check --install`'s without it, which also
+   * takes the mark away from the one `init` wrote. Nothing when the guard is not there, or the
+   * hook already is as it asks; one that runs the check keeps it.
    */
   readonly plan: (context: StopPlan) => Promise<void>;
 }
@@ -204,26 +206,61 @@ interface StopPlan {
   readonly files: InstallFiles;
   readonly timeout: number;
   readonly tool: GuardTool;
+  /** Whether it runs `specty check --changed` too: only `check --install` turns it on. */
+  readonly check: boolean;
 }
 
 /**
  * The end of turn of an agent whose hooks live in JSON files: in each of `files` that has
- * Specty's guard, `hook` adds `specty hook agent-stop <agent>` with the guard's own command.
+ * Specty's guard, `hook` adds `specty hook agent-stop <agent>` with the guard's own command, and
+ * with `--no-check` unless the plan checks. With the check, an end of turn with the mark loses it
+ * where it is, with its time limit.
  */
 export function jsonStop(
   files: readonly string[],
   hook: (command: string, timeout: number) => JsonUpdate,
 ): AgentStop["plan"] {
-  return async ({ root, files: planned, timeout, tool }) => {
+  return async ({ root, files: planned, timeout, tool, check }) => {
+    const ours = `hook agent-stop ${tool}`;
+    const unchecked = ` ${ours} ${NO_CHECK}`;
     for (const path of files) {
       const file = join(root, path);
       const text = await planned.read(file);
-      if (text === undefined || text.includes(`hook agent-stop ${tool}`)) continue;
+      if (text === undefined) continue;
+      if (text.includes(ours)) {
+        if (check && text.includes(unchecked)) {
+          await rewriteJson(file, (value) => withCheck(value, unchecked), false, planned);
+        }
+        continue;
+      }
       const prefix = guardPrefix(text, tool);
       if (prefix === undefined) continue;
-      await rewriteJson(file, hook(`${prefix} hook agent-stop ${tool}`, timeout), false, planned);
+      const command = `${prefix} ${ours}${check ? "" : ` ${NO_CHECK}`}`;
+      await rewriteJson(file, hook(command, timeout), false, planned);
     }
   };
+}
+
+/**
+ * `value` with each `command` that ends in `unchecked` (`hook agent-stop <agent> --no-check`)
+ * without its mark, where it was.
+ */
+function withCheck(
+  value: Readonly<Record<string, unknown>>,
+  unchecked: string,
+): Record<string, unknown> {
+  const checked = (item: unknown): unknown => {
+    if (Array.isArray(item)) return item.map(checked);
+    return isRecord(item) ? withCheck(item, unchecked) : item;
+  };
+  return Object.fromEntries(
+    Object.entries(value).map(([key, item]) => [
+      key,
+      key === "command" && typeof item === "string" && item.endsWith(unchecked)
+        ? item.slice(0, -` ${NO_CHECK}`.length)
+        : checked(item),
+    ]),
+  );
 }
 
 /** How the guard calls Specty in a hooks file (`specty`, `node "<path>"`…), if it is there. */
