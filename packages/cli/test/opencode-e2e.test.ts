@@ -32,8 +32,11 @@ function findOpencode(): string | undefined {
 }
 
 const OPENCODE = findOpencode();
-/** Where OpenCode keeps the packages it installs: shared, so the tests download them once. */
-const CACHE = join(tmpdir(), "specty-e2e-opencode-cache");
+/**
+ * Where OpenCode keeps the packages it installs: shared by the runs (`SPECTY_TESTS_CACHE`, from
+ * `packages/core/vitest-temp-dir.ts`), so the tests download them once.
+ */
+const CACHE = join(process.env.SPECTY_TESTS_CACHE ?? tmpdir(), "specty-e2e-opencode-cache");
 const LONG = { timeout: 240_000 };
 // Put together from parts, so that this file does not trip `specty check`.
 const TODO = "TODO";

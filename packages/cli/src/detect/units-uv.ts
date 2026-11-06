@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import type { WorkspacePackage } from "@baquia-dev/specty-core";
-import { parse } from "smol-toml";
-import { exists, isDirectory, isRecord, readText } from "../io/files";
+import { exists, isDirectory, isRecord } from "../io/files";
 import { expand } from "./project";
+import { rootPackagePaths } from "./root-package";
+import { readToml, strings, type Table, table } from "./toml";
 import type { WorkspaceFacts } from "./workspace-units";
-
-type Table = Readonly<Record<string, unknown>>;
 
 /** The root files every member's tests read, when they exist. */
 const SHARED = ["pyproject.toml", "uv.lock", ".python-version", "pytest.ini", "conftest.py"];
@@ -14,17 +13,32 @@ const SHARED = ["pyproject.toml", "uv.lock", ".python-version", "pytest.ini", "c
 /**
  * A uv workspace: the members of the root `pyproject.toml`'s `[tool.uv.workspace]` with a named
  * `pyproject.toml`, each tested with `uv run --package <name> pytest <folder>` when it has a
- * `tests` folder, and the root files they share. Undefined without that table, with fewer than two
- * members, and when the root is a project too, whose folder would be the whole repository.
+ * `tests` folder, and the root files they share. A root that is a project too is one more member,
+ * in `.`, that reads the root outside the members' folders (`rootPackagePaths`). Undefined without
+ * that table, and with fewer than two members, the root included.
  */
 export async function uvWorkspace(root: string): Promise<WorkspaceFacts | undefined> {
-  const manifest = toml(await readText(join(root, "pyproject.toml")));
+  const manifest = await readToml(join(root, "pyproject.toml"));
   const workspace = table(table(manifest?.tool)?.uv)?.workspace;
-  if (manifest === undefined || !isRecord(workspace) || "project" in manifest) return undefined;
+  if (manifest === undefined || !isRecord(workspace)) return undefined;
   const read = await Promise.all(
     (await memberDirs(root, workspace)).map((dir) => memberOf(root, dir)),
   );
-  const members = read.flatMap((member) => (member === undefined ? [] : [member]));
+  const others = read.flatMap((member) => (member === undefined ? [] : [member]));
+  const self = await memberOf(root, ".");
+  const members =
+    self === undefined
+      ? others
+      : [
+          {
+            ...self,
+            paths: await rootPackagePaths(
+              root,
+              others.map(({ dir }) => dir),
+            ),
+          },
+          ...others,
+        ];
   if (members.length < 2) return undefined;
   const names = new Set(members.map((member) => member.name));
   const packages = members.map((member) => ({
@@ -40,16 +54,18 @@ async function memberDirs(root: string, workspace: Table): Promise<readonly stri
   const globs = (key: string) =>
     Promise.all(strings(workspace[key]).map((pattern) => expand(root, pattern)));
   const [members, excluded] = await Promise.all([globs("members"), globs("exclude")]);
-  const outside = new Set(excluded.flat());
+  // The root is a member only as the project of its own `pyproject.toml`.
+  const outside = new Set([...excluded.flat(), "."]);
   return [...new Set(members.flat())].filter((dir) => !outside.has(dir)).toSorted();
 }
 
 /**
  * The member in `dir`, as its `pyproject.toml` says: its normalized name, whether it has a `tests`
- * folder and the normalized names of its requirements; undefined without a `project.name`.
+ * folder and the normalized names of its requirements; undefined without a `project.name`. The
+ * root's pytest runs only on its `tests` folder: on `.` it would collect every member's tests.
  */
 async function memberOf(root: string, dir: string): Promise<WorkspacePackage | undefined> {
-  const manifest = toml(await readText(join(root, dir, "pyproject.toml")));
+  const manifest = await readToml(join(root, dir, "pyproject.toml"));
   const project = table(manifest?.project);
   if (project === undefined || typeof project.name !== "string") return undefined;
   const lists = [
@@ -66,7 +82,7 @@ async function memberOf(root: string, dir: string): Promise<WorkspacePackage | u
     dir,
     name: normalized(project.name),
     tests: await isDirectory(join(root, dir, "tests")),
-    command: `uv run --package ${project.name} pytest ${dir}`,
+    command: `uv run --package ${project.name} pytest ${dir === "." ? "tests" : dir}`,
     uses: [...new Set(uses)],
   };
 }
@@ -74,24 +90,4 @@ async function memberOf(root: string, dir: string): Promise<WorkspacePackage | u
 /** A Python package name as PEP 503 compares it: lowercase, each run of `-`, `_` and `.` as `-`. */
 function normalized(name: string): string {
   return name.replace(/[-_.]+/g, "-").toLowerCase();
-}
-
-function table(value: unknown): Table | undefined {
-  return isRecord(value) ? value : undefined;
-}
-
-function strings(value: unknown): readonly string[] {
-  return Array.isArray(value)
-    ? value.filter((item): item is string => typeof item === "string")
-    : [];
-}
-
-/** A TOML file's tables; undefined when it is missing or cannot be read. */
-function toml(text: string | undefined): Table | undefined {
-  if (text === undefined) return undefined;
-  try {
-    return parse(text);
-  } catch {
-    return undefined;
-  }
 }

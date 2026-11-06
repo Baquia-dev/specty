@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "id": "20261106-init-propone-la-unidad-de-la-raiz-que-tambien",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-init-propone-la-unidad-de-la-raiz-que-tambien",
+  "baseCommit": "db367341b166a577054bc4e764b86f2b224074b1",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:622ad824871cf4057b740023f2b210da982c4bfaa23aa6e6adc75e69a2f85ba7",
+    "at": "2026-11-06T02:51:09.993Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:632983a603d34b54109380c8592ef46db53dd75ea7b4aee3db4b8c5fec082a01",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1ba6bd198e71e4136b7cf04997284d53cadc85bbf4581bf9f48a527421d93907",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9d35558d27028e8d23764a3c1e39e91ab04337964af2cc0b5ccb8cd5ec299d89",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:b4207fff50da67f1cbd22d9cc11c29b4b95bd158df9a00dafaca10059a780fb2",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "a6990a2202cdf9142d89beaa52b4c5c9ff8c4609",
+      "attempts": 1,
+      "startedAt": "2026-11-06T02:53:34.915Z",
+      "doneAt": "2026-11-06T02:54:20.979Z",
+      "summary": "WorkspacePackage gana paths opcionales: proposeUnits los usa en lugar de <carpeta>/** para el paquete y para los que dependen de él, sin rutas repetidas, y la unidad del paquete en la raíz se llama como el paquete",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "e021fdbd3750c0254778e43895ea488d46b45a52",
+      "attempts": 1,
+      "startedAt": "2026-11-06T02:54:21.263Z",
+      "doneAt": "2026-11-06T02:56:15.182Z",
+      "summary": "La raíz de Cargo con [package] y [workspace] es un miembro más en '.', con cargo test -p y por paths las entradas de la raíz fuera de los miembros y de las ocultas (rootPackagePaths en detect/root-package.ts); un miembro que la usa lleva esos paths",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f0f23d261ac136a1df0d0be0f36956b92a6fd097",
+      "attempts": 1,
+      "startedAt": "2026-11-06T02:56:15.469Z",
+      "doneAt": "2026-11-06T02:57:25.140Z",
+      "summary": "La raíz de uv con [project] es un miembro más en '.', con uv run --package <nombre> pytest tests y los paths de rootPackagePaths, y cuenta para los dos que hacen falta; formats.md cuenta la propuesta para la raíz de Cargo y de uv",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "8af1c65b61459a3b0f3deea7ef56b76613739737",
+      "attempts": 1,
+      "startedAt": "2026-11-06T02:57:25.424Z",
+      "doneAt": "2026-11-06T02:58:52.348Z",
+      "summary": "detect/toml.ts reúne readToml, table y strings, que usan units-cargo.ts y units-uv.ts en lugar de sus copias (P172)",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 4,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-06T03:03:39.441Z",
+  "lockedTests": {
+    "packages/cli/test/units-cargo.test.ts": "sha256:9dea60b5095153f32c17daf862a434986da8ebda8d730e8809a120a2f800cd5c",
+    "packages/cli/test/units-uv.test.ts": "sha256:88064118d499b98bbbe99acc1dc5b4cac86ca2ca8ae5fb8b13d4c9613e54d1a2",
+    "packages/core/test/units-proposal.test.ts": "sha256:f6b758eacfcdc2de1e7cc37d2c4470887d1aa0d9a282733926e7d7451cd36fbc"
+  }
+}

@@ -139,7 +139,7 @@ describe("specty init in a uv workspace", () => {
     ]);
   });
 
-  it("AC1: proposes nothing with fewer than two members with tests, with a project in the root or without a uv workspace", async () => {
+  it("AC1: proposes nothing with fewer than two members with tests or without a uv workspace", async () => {
     const single = await unitsFor({
       "pyproject.toml": root(["packages/*"]),
       "packages/core/pyproject.toml": pyproject("core"),
@@ -147,19 +147,48 @@ describe("specty init in a uv workspace", () => {
       "packages/docs/pyproject.toml": pyproject("docs"),
     });
     expect(single).toBeUndefined();
-    const withRoot = await unitsFor({
-      "pyproject.toml": `${pyproject("demo", ["core", "api"])}\n${root(["packages/*"])}`,
-      "tests/test_demo.py": "def test_demo():\n    assert True\n",
-      "packages/core/pyproject.toml": pyproject("core"),
-      "packages/core/tests/test_core.py": "def test_core():\n    assert True\n",
-      "packages/api/pyproject.toml": pyproject("api", ["core"]),
-      "packages/api/tests/test_api.py": "def test_api():\n    assert True\n",
-    });
-    expect(withRoot).toBeUndefined();
     const plain = await unitsFor({
       "pyproject.toml": pyproject("demo"),
       "tests/test_demo.py": "def test_demo():\n    assert True\n",
     });
     expect(plain).toBeUndefined();
+  });
+});
+
+describe("specty init in a uv workspace whose root is a project too", () => {
+  it("AC3: proposes the root's unit with pytest on its tests and the root outside the members' folders, also with a single member with tests", async () => {
+    const units = await unitsFor({
+      "pyproject.toml": `${pyproject("Demo", ["core"])}\n${root(["packages/*"])}`,
+      "uv.lock": "version = 1\n",
+      "README.md": "# demo\n",
+      "src/demo/__init__.py": "",
+      "tests/test_demo.py": "def test_demo():\n    assert True\n",
+      ".github/workflows/ci.yml": "on: push\n",
+      "packages/core/pyproject.toml": pyproject("core"),
+      "packages/core/tests/test_core.py": "def test_core():\n    assert True\n",
+      "packages/docs/pyproject.toml": pyproject("docs"),
+    });
+    expect(unitsOf(units)).toEqual([
+      {
+        name: "core",
+        command: "uv run --package core pytest packages/core",
+        paths: ["packages/core/**", "pyproject.toml", "uv.lock"],
+      },
+      {
+        name: "demo",
+        command: "uv run --package Demo pytest tests",
+        paths: ["README.md", "pyproject.toml", "src/**", "tests/**", "uv.lock", "packages/core/**"],
+      },
+    ]);
+  });
+
+  it("AC3: a root without a tests folder gets no unit, and a single member is then not enough", async () => {
+    const units = await unitsFor({
+      "pyproject.toml": `${pyproject("demo", ["core"])}\n${root(["packages/*"])}`,
+      "src/demo/__init__.py": "",
+      "packages/core/pyproject.toml": pyproject("core"),
+      "packages/core/tests/test_core.py": "def test_core():\n    assert True\n",
+    });
+    expect(units).toBeUndefined();
   });
 });

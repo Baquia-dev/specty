@@ -122,3 +122,64 @@ describe("the units proposed for a workspace", () => {
     expect(parse(`verify:\n${lines.join("\n")}\n`)).toEqual({ verify: { units } });
   });
 });
+
+/** A Cargo workspace whose root is a package too, on core, and a tool member on the root. */
+const ROOTED: UnitsFacts = {
+  packages: [
+    {
+      dir: ".",
+      name: "demo",
+      tests: true,
+      command: "cargo test -p demo",
+      uses: ["demo-core"],
+      paths: ["Cargo.toml", "build.rs", "src/**", "tests/**"],
+    },
+    {
+      dir: "crates/core",
+      name: "demo-core",
+      tests: true,
+      command: "cargo test -p demo-core",
+      uses: [],
+    },
+    {
+      dir: "tools/gen",
+      name: "demo-gen",
+      tests: true,
+      command: "cargo test -p demo-gen",
+      uses: ["demo"],
+    },
+  ],
+  shared: ["Cargo.toml", "Cargo.lock"],
+  checks: [],
+  lang: "en",
+};
+
+describe("the units proposed for a package with its own paths", () => {
+  it("AC1: uses its paths instead of its folder, also in the units of the packages that use it, with no path twice", () => {
+    expect(proposeUnits(ROOTED)).toEqual([
+      {
+        name: "core",
+        command: "cargo test -p demo-core",
+        paths: ["crates/core/**", "Cargo.toml", "Cargo.lock"],
+      },
+      {
+        name: "demo",
+        command: "cargo test -p demo",
+        paths: ["Cargo.toml", "build.rs", "src/**", "tests/**", "crates/core/**", "Cargo.lock"],
+      },
+      {
+        name: "gen",
+        command: "cargo test -p demo-gen",
+        paths: [
+          "tools/gen/**",
+          "Cargo.toml",
+          "build.rs",
+          "src/**",
+          "tests/**",
+          "crates/core/**",
+          "Cargo.lock",
+        ],
+      },
+    ]);
+  });
+});
