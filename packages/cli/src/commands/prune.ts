@@ -22,6 +22,8 @@ export async function prune(session: Session): Promise<Output> {
   return pruneCard(
     {
       folders: folders.removed,
+      rescued: folders.rescued,
+      unsaved: folders.unsaved,
       branches: branches.removed,
       kept: [...folders.kept, ...branches.kept],
       activity: live.activity,

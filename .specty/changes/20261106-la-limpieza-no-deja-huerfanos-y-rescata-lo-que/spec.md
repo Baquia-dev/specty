@@ -77,7 +77,7 @@ Hoy la limpieza no poda los registros de git de worktrees cuya carpeta ya no exi
   - ac: AC4, AC5, AC6, AC7, AC8, AC11
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/prune-orphans.test.ts test/cards/parallel.test.ts test/cards/prune-leftovers.test.ts test/cards/prune-live.test.ts test/cards/prune-units.test.ts test/cards/close.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T2: La limpieza guarda en una ref de rescate lo sin commit de la carpeta de un cambio terminado
+- [x] T2: La limpieza guarda en una ref de rescate lo sin commit de la carpeta de un cambio terminado
   - files: packages/cli/src/flow/rescue.ts, packages/cli/src/flow/prune.ts, packages/cli/src/commands/prune.ts, packages/cli/test/prune-rescue.test.ts
   - ac: AC5, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-rescue.test.ts test/prune.test.ts test/cancel-folder.test.ts test/session-end-binding.test.ts test/prune-leftovers.test.ts && pnpm typecheck && pnpm lint && pnpm knip

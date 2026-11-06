@@ -7,6 +7,8 @@ import {
   type Lang,
   notInTargetBranchLine,
   notInTargetFolderLine,
+  type RescuedFolder,
+  type UnsavedFolder,
   workingFolderLine,
 } from "@baquia-dev/specty-core";
 import { exists } from "../io/files";
@@ -22,6 +24,7 @@ import { locateChanges } from "./changes";
 import { commitWithReceipt, decisionTrailers } from "./commits";
 import { integrationOf, isIncorporated, reasonOf } from "./integrate";
 import { type FolderLeft, leaveChangeFolder, within } from "./land";
+import { type Rescue, rescueFolder } from "./rescue";
 import { targetBranch } from "./worktree";
 
 export interface Cleanup {
@@ -29,6 +32,25 @@ export interface Cleanup {
   /** What stays, each with why. */
   readonly kept: readonly string[];
 }
+
+/** What a clean-up of folders did: also what it saved in rescue refs, and what it could not. */
+export interface FolderCleanup extends Cleanup {
+  readonly rescued: readonly RescuedFolder[];
+  readonly unsaved: readonly UnsavedFolder[];
+}
+
+/** A `FolderCleanup` that fills as it goes. */
+interface Tally {
+  readonly removed: string[];
+  readonly kept: string[];
+  readonly rescued: RescuedFolder[];
+  readonly unsaved: UnsavedFolder[];
+}
+
+const tally = (): Tally => ({ removed: [], kept: [], rescued: [], unsaved: [] });
+
+/** No rescue: a folder with nothing to save. */
+const NOTHING: Rescue = { kind: "nothing" };
 
 /**
  * A session's record stops counting a day after it was made, or once its tool said the
@@ -38,30 +60,75 @@ const SESSION_DAY = 24 * 60 * 60 * 1000;
 
 /**
  * Removes the worktrees of finished changes that no longer need one: closed and already in their
- * target branch (or not meant to be incorporated), or cancelled. Never the folder this process
- * runs in, nor one an agent session works in (as the guard recorded it), nor the main folder.
- * The branches stay.
+ * target branch (or not meant to be incorporated), or cancelled, also with something uncommitted,
+ * which first goes to a rescue ref. Never the folder this process runs in, nor one an agent
+ * session works in (as the guard recorded it), nor the main folder. The branches stay.
  */
-export async function removeFinished(session: Session): Promise<Cleanup> {
+export async function removeFinished(session: Session): Promise<FolderCleanup> {
   const { lang } = session;
   const main = (await session.git.worktrees())[0]?.folder ?? session.root;
   const working = await workingFolders(session);
-  const removed: string[] = [];
-  const kept: string[] = [];
+  const done = tally();
   for (const { change, session: there } of await locateChanges(session)) {
     const { state } = change;
     if (!isFinished(state) || there.root === main) continue;
     if (await within(session.environment.cwd, there.root)) continue;
     const reason = await keptBecause(there, state, working, lang);
-    if (reason !== undefined) {
-      kept.push(reason);
-      continue;
-    }
-    const result = await session.git.run(["-C", main, "worktree", "remove", there.root]);
-    if (result.code === 0) removed.push(there.root);
-    else kept.push(`${there.root}: ${reasonOf(result)}`);
+    if (reason === undefined) await removeWorktree(session, main, there, done);
+    else done.kept.push(reason);
   }
-  return { removed, kept };
+  return done;
+}
+
+/**
+ * Removes the finished change's worktree `there` from the main folder. What it has uncommitted
+ * (tracked files that differ, or untracked ones git does not ignore) first goes to a rescue ref on
+ * top of its HEAD, and then `--force` takes it with what git ignores; with nothing uncommitted,
+ * `git worktree remove` goes without it, as a locked worktree still stays.
+ */
+async function removeWorktree(
+  session: Session,
+  main: string,
+  there: Session,
+  done: Tally,
+): Promise<void> {
+  const status = await there.git.run(["status", "--porcelain"]);
+  const dirty = status.code === 0 && status.stdout.trim().length > 0;
+  const parent = dirty ? await there.git.head() : undefined;
+  const folder = there.root;
+  await rescueThenRemove(session, { folder, save: dirty, parent }, done, async (force) => {
+    const args = ["-C", main, "worktree", "remove", ...(force ? ["--force"] : []), folder];
+    const result = await session.git.run(args);
+    return result.code === 0 ? undefined : reasonOf(result);
+  });
+}
+
+/**
+ * Saves what `folder` has in a rescue ref, when `save`, on top of `parent` if there is one, and
+ * then removes the folder with `remove` (with `--force` once something was saved), which gives why
+ * it could not. A folder that could not be saved stays with what it has. If the folder stays after
+ * all, its new ref goes again: each clean-up would leave one more.
+ */
+async function rescueThenRemove(
+  session: Session,
+  target: { readonly folder: string; readonly save: boolean; readonly parent: string | undefined },
+  done: Tally,
+  remove: (force: boolean) => Promise<string | undefined>,
+): Promise<void> {
+  const { folder } = target;
+  const saved = target.save ? await rescueFolder(session, folder, target.parent) : NOTHING;
+  if (saved.kind === "failed") {
+    done.unsaved.push({ folder, reason: saved.reason });
+    return;
+  }
+  const failure = await remove(saved.kind === "saved");
+  if (failure !== undefined) {
+    if (saved.kind === "saved") await session.git.run(["update-ref", "-d", saved.ref]);
+    done.kept.push(`${folder}: ${failure}`);
+    return;
+  }
+  done.removed.push(folder);
+  if (saved.kind === "saved") done.rescued.push({ folder, ref: saved.ref, bytes: saved.bytes });
 }
 
 /**
