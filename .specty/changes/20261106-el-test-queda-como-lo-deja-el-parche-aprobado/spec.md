@@ -90,7 +90,7 @@ Desde el corte C2, un desbloqueo de un test aprobado lleva el parche exacto que 
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/unlock-done.test.ts test/test-locks.test.ts
   - type: feat
-- [ ] T3: Al aprobar un desbloqueo se vuelve a comprobar su parche, y un test desbloqueado se puede volver a pedir
+- [x] T3: Al aprobar un desbloqueo se vuelve a comprobar su parche, y un test desbloqueado se puede volver a pedir
   - files: packages/cli/src/flow/unlock-proposal.ts, packages/cli/src/commands/scope-decision.ts, packages/cli/src/commands/scope.ts, packages/cli/test/unlock-again.test.ts
   - ac: AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/unlock-again.test.ts test/unlock-request.test.ts test/test-locks.test.ts && pnpm typecheck && pnpm lint
