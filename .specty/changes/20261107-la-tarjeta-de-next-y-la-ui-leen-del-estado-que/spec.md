@@ -66,7 +66,7 @@ Desde P225, `changesRequestedAt` en `state.json` dice que la persona devolvió l
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts test/cards/delegated.test.ts && pnpm lint
   - type: fix
-- [ ] T2: `next` da los cambios pedidos solo con la revisión devuelta
+- [x] T2: `next` da los cambios pedidos solo con la revisión devuelta
   - files: packages/cli/src/flow/views.ts, packages/cli/test/changes-requested-card.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/changes-requested-card.test.ts test/changes-requested-turn.test.ts test/comments.test.ts && pnpm lint

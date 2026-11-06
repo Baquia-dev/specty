@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b3c4af76c449ee6f167218dcbf78a60abfac14bc",
+      "attempts": 1,
       "startedAt": "2026-11-06T16:54:15.233Z",
       "doneAt": "2026-11-06T16:58:35.284Z",
-      "summary": "reviewCard da los cambios pedidos solo si el ChangeView trae requested (la revisión devuelta); sin nada que listar dice que el usuario devolvió la revisión"
+      "summary": "reviewCard da los cambios pedidos solo si el ChangeView trae requested (la revisión devuelta); sin nada que listar dice que el usuario devolvió la revisión",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "36c219d918b5d7d7af0faae5388e87ef1e398284",
+      "startedAt": "2026-11-06T16:58:35.603Z",
+      "doneAt": "2026-11-06T16:59:26.694Z",
+      "summary": "phaseFacts pone requested solo en review con changeWaitsFor = agent (changesRequestedAt), y requested lee los comentarios sin la auditoría"
     }
   },
   "pending": {
