@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "id": "20261106-init-instala-el-fin-de-turno-de-cada-agente-sin",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-init-instala-el-fin-de-turno-de-cada-agente-sin",
+  "baseCommit": "23afc82bb2278d4b7687512b7b3a56bc10852115",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3188fefac20922ec862fb66ee89ca1fb2375916adb20e1432b2c1126a350a672",
+    "at": "2026-11-06T13:20:03.106Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "16 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c75f5c916a56001d20d4f9479ab36b23185123784bcd08ba095155acdab02e59",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2c3827e643c1371291f8a82bebf38a0402e79630e58e26a26e33639cf7bb6d54",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:b455c8126ce7997549af6d1d9374b47582be01a3c37cda7ffa2066771dbf3fb3",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:2462c354f6a41274e1faed715d0e52db08c7f34bb4bcbc7c9c80e9a7c972befe",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:7bf8badce210d7a5ff05121b550f8138a00f8aea344ccd67138280c3388f3350",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:a149d1d49ba0dca9ab5b821be9a62185cef8fa6e6be64566c0f2436a2d79af08",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ea35ec6aee573350686f1f7969a1042f74562c30",
+      "attempts": 1,
+      "startedAt": "2026-11-06T13:25:54.767Z",
+      "doneAt": "2026-11-06T13:26:49.437Z",
+      "summary": "hook agent-stop acepta --no-check (NO_CHECK en agents/adapter.ts): solo aplica la regla de wait y no ejecuta check --changed; entry.ts pasa los argumentos tras el agente y el comando oculto hook admite la marca (allowUnknownOption)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "8357d7b07c2c02fd74caa1901794eb209b4ee9fe",
+      "attempts": 1,
+      "startedAt": "2026-11-06T13:26:49.732Z",
+      "doneAt": "2026-11-06T13:28:48.757Z",
+      "summary": "init escribe el fin de turno con --no-check junto al guard de cada agente con hooks JSON y con verify.timeoutSec (installAgentStops); check --install le quita la marca en la misma entrada, y init conserva un fin de turno que ya hace el check",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "678f8a7d8909fa187845c49d88d29e5c4daf33f9",
+      "attempts": 1,
+      "startedAt": "2026-11-06T13:28:49.059Z",
+      "doneAt": "2026-11-06T13:34:45.864Z",
+      "summary": "El plugin de OpenCode lleva CHECK: init pone STOP con el tiempo límite (planOpencodeTurn) y llama al hook con --no-check, check --install enciende CHECK (planOpencodeStop), y un plugin anterior con STOP y sin CHECK conserva su check",
+      "scopeExtra": [
+        "packages/cli/test/check-agent-stop.test.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "cf3ce98f18a3a04cc14fb922404951c792e9b2a7",
+      "attempts": 1,
+      "startedAt": "2026-11-06T13:34:46.189Z",
+      "doneAt": "2026-11-06T13:35:19.578Z",
+      "summary": "formats.md y ARCHITECTURE.md cuentan que init instala el fin de turno con --no-check, que check --install le quita la marca (CHECK en OpenCode) y que uninstall quita también el de init",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 6,
+    "T": 4,
+    "R": 2,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-06T13:40:32.971Z",
+  "lockedTests": {
+    "packages/cli/test/agent-stop-wait.test.ts": "sha256:db5a1fccc669c5698dc90a3f4db3eaa83b8febb4e6e2f352374a7134c5b147dd",
+    "packages/cli/test/antigravity.test.ts": "sha256:ae306788dddc5697b34e5a978f03b8300e0b647683dbbd617750d6f303be095e",
+    "packages/cli/test/check-agent-stop.test.ts": "sha256:34d9e2a0ec68e1a57503de2d067616a8b62d8d8ca308dc6c498414d5ce5663fa",
+    "packages/cli/test/codex.test.ts": "sha256:250d493af163a0161970e8d3a1b21ed756116cb25a4f6ad3b3fba4c21a1745b9",
+    "packages/cli/test/gemini-cli.test.ts": "sha256:bcfd50048dbdac77930b30044059aadab9ebef80ac9e0a4d3380e579a0efa2b5",
+    "packages/cli/test/memory-stop-install.test.ts": "sha256:24576cd8fe28aa1f59c91e8bd888f7c379199334352c174a7c1b0bd909aa39a2",
+    "packages/cli/test/init-agent-stop.test.ts": "sha256:a4f9c4b05dfc0c8a8579bfaba9381970bd3320ef7ac0c37983d26c3eec650290"
+  }
+}

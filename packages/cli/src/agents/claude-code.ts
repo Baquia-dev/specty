@@ -15,9 +15,9 @@ import {
   CLAUDE_WORKTREE_EVENTS,
   excludeLocally,
   isOurs,
-  memoryStopLines,
   missingEvents,
   removeFromJson,
+  stopLines,
   withHooks,
   withMemoryStop,
 } from "../install/agents";
@@ -149,7 +149,7 @@ export const claudeCode: AgentAdapter = {
     // An install from before the card at a session's start lacks `resume` too: one `init` fixes both.
     if (missesSource(settings, "startup")) problems.push({ code: "claude-startup" });
     else if (missesSource(settings, "resume")) problems.push({ code: "claude-resume" });
-    problems.push(...memoryStopLines(settings, "claude-code"));
+    problems.push(...stopLines(settings, "claude-code", ["memory-stop", "agent-stop"]));
     if (missingPermissions(settings).length > 0) {
       problems.push({ code: "no-claude-permissions" });
     }
@@ -167,7 +167,8 @@ function action(event: Readonly<Record<string, unknown>>): RawAction {
     case "NotebookEdit":
       return { kind: "write", paths: sentPaths(input.notebook_path) };
     case "Bash":
-      return shellAction(input.command);
+      // `specty wait` waits for the person in the background, where Bash tells when it ends.
+      return shellAction(input.command, input.run_in_background === true);
     case "EnterWorktree":
       return {
         kind: "enter",

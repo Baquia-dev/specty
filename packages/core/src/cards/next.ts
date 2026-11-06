@@ -22,6 +22,7 @@ import {
 import { testingCard } from "./testing";
 import { draftingGuide, quoted, translator } from "./text";
 import type { CardContext, CarriedView, ChangeView, CommentView } from "./view";
+import { waitStep } from "./wait";
 import { adjustingCard, closingCard, implementingCard } from "./work";
 
 export { taskCard } from "./work";
@@ -214,8 +215,8 @@ function reviewCard(change: ChangeView, ctx: CardContext): Output {
       ),
     ]),
     next: t(
-      `pide al usuario que revise la spec y la apruebe con \`${ctx.command} approve\` en su terminal o en la UI, y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
-      `ask the user to review the spec and approve it with \`${ctx.command} approve\` in their terminal or UI, and run \`${ctx.command} wait\` to wait for their decision.`,
+      `pide al usuario que revise la spec y la apruebe con \`${ctx.command} approve\` en su terminal o en la UI, y ${waitStep(ctx)}.`,
+      `ask the user to review the spec and approve it with \`${ctx.command} approve\` in their terminal or UI, and ${waitStep(ctx)}.`,
     ),
   };
 }

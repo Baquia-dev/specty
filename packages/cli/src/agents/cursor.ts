@@ -18,6 +18,7 @@ import {
   isOurs,
   missingEvents,
   removeFromJson,
+  stopLines,
   withHooks,
 } from "../install/agents";
 import { type InstallFiles, rewriteJson } from "../install/files";
@@ -113,7 +114,8 @@ export const cursor: AgentAdapter = {
     await removeFromJson(root, CURSOR_SANDBOX, sandbox, files);
   },
   doctor: async (root, git) => {
-    const guard = guardLines(await readText(join(root, CURSOR_HOOKS)));
+    const hooks = await readText(join(root, CURSOR_HOOKS));
+    const guard = guardLines(hooks);
     const listed = readwritePaths(await readText(join(root, CURSOR_SANDBOX)));
     const sandbox = doctorLines([
       [
@@ -122,7 +124,14 @@ export const cursor: AgentAdapter = {
         { code: "no-cursor-sandbox", file: CURSOR_SANDBOX },
       ],
     ]);
-    return { ok: [...guard.ok, ...sandbox.ok], problems: [...guard.problems, ...sandbox.problems] };
+    return {
+      ok: [...guard.ok, ...sandbox.ok],
+      problems: [
+        ...guard.problems,
+        ...stopLines([hooks], "cursor", ["agent-stop"]),
+        ...sandbox.problems,
+      ],
+    };
   },
 };
 

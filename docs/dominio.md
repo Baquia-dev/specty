@@ -11,6 +11,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Incorporación** (`IntegrationState`): traer la rama destino al cambio al cerrarlo.
 - **Recibo** (`Receipt`): lo que deja Specty para que el pre-commit acepte su commit.
 - **Bloqueo** (`LockHolder`): qué comando está cambiando un cambio; uno a la vez.
+- **Marca de espera** (`.git/common/specty/waits/<id>.json`, `readWait`): el `specty wait` que espera la decisión de la persona en un cambio; viva mientras su proceso la renueva, y al terminar dice por qué: `decided`, `timeout` o, si se cortó, `stopped`.
 - **Plaza de verificación** (`verify.slots`, `inSlots`): una de las verificaciones que corren a la vez en el clon; la de una tarea ocupa una, y la completa, todas.
 - **Unidad de verificación** (`verify.units`, `VerifyUnit`): una parte de la verificación completa, con su comando y los archivos de los que depende; no se repite si ya pasó con la misma huella en el clon.
 - **Registro de unidades** (`.git/common/specty/verified/`, `fullPlan`): las unidades que pasaron, una por huella, en cualquier cambio y worktree del clon; la verificación completa de `accept`, la incorporación, `specty integrate` y la UI no repiten las que están en él; `specty prune` borra las anotadas hace más de 30 días (`pruneRecord`).

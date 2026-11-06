@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "id": "20261106-specty-wait-deja-su-marca-y-aguanta-en-cada",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-specty-wait-deja-su-marca-y-aguanta-en-cada",
+  "baseCommit": "94877ac9e202cac41073cc8413224ae8fbeb3456",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:279c05767596278f73688fa968c64cd4859c1e8944ddd92b3d36494886d58022",
+    "at": "2026-11-06T12:20:52.960Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a7f7fa82e193abc3769995be5c00e8435bf7cf355af9e566cf1903e52b7c2220",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8265e951e301ecc9ac06d65ef555803acba4a979ff50a169dea73d5eb47647db",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f3d770378ab84283c39cdf3804a0e42fe7141480751d9f7c8fe6c2c6c1d9fbc5",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e88c9af89fe0b77b4c4e4d9e2812507b0326541df9a16447f0f31f596dcc26bd",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:9cade388cb051a0b2038a3d35d71f2faf6c3ad1ce6cf5f13477ce9f3dad7742a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c77af8fee60660532b3f5449bae6506be72495bb",
+      "attempts": 1,
+      "startedAt": "2026-11-06T12:23:28.695Z",
+      "doneAt": "2026-11-06T12:23:49.669Z",
+      "summary": "Core: la tabla de cómo espera cada herramienta marca qué herramienta necesita latido (Gemini CLI) y waitHeartbeat da la línea en español e inglés, exportada en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "6242185c6c5ad1f7a9846270940b93e2136dd596",
+      "attempts": 1,
+      "startedAt": "2026-11-06T12:23:49.987Z",
+      "doneAt": "2026-11-06T12:25:23.455Z",
+      "summary": "store/waits.ts escribe, renueva, termina y lee la marca (viva, decided, timeout o stopped); wait la deja con su herramienta y tiempo máximo y la termina con su razón. El latido de Gemini CLI ya va en wait.ts, porque la verificación de T2 lo prueba.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "6d1bae8b29c9d9b26f7f4324e6edc97ad71e8125",
+      "attempts": 1,
+      "startedAt": "2026-11-06T12:25:23.731Z",
+      "doneAt": "2026-11-06T12:26:08.473Z",
+      "summary": "--timeout ya no tiene valor por defecto en commander: wait espera una hora (TIMEOUT_SEC, con su motivo) sin él.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "ee9d1c675c568b052dfda14dfe81ef1496a4cec2",
+      "attempts": 2,
+      "startedAt": "2026-11-06T12:26:08.751Z",
+      "doneAt": "2026-11-06T12:27:38.625Z",
+      "summary": "formats.md §1 describe waits/<id>.json junto a messages/, y ARCHITECTURE §6 cuenta la marca de wait, su hora por defecto y el latido de Gemini CLI; WaitReason deja de exportarse por knip.",
+      "scopeExtra": [
+        "packages/cli/src/store/waits.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T12:32:41.558Z",
+  "lockedTests": {
+    "packages/cli/test/wait.test.ts": "sha256:93e4be7a5e4085aa3b8036d739f99a02441b32881c3d865068db502c2c41d552",
+    "packages/core/test/cards/wait.test.ts": "sha256:acd019108016b13a431a165982a1325b5d3f55e05c1691c7ba29de278e6bf5ea",
+    "packages/cli/test/waits.test.ts": "sha256:f4ecd43447aaf5a2cd0db4ca0e618f400b0959fd7209e9c49378c400c064b488"
+  }
+}

@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
+import type { AgentTool } from "../agents";
+import { waitStep } from "../cards/wait";
 import type { Lang } from "../i18n";
 
 /**
@@ -25,6 +27,8 @@ export interface HumanContext {
   readonly command: string;
   /** The person delegated their decisions to the agent. */
   readonly delegated?: boolean;
+  /** The agent's tool, for the way it runs `specty wait`. */
+  readonly tool?: AgentTool;
 }
 
 /**
@@ -45,9 +49,6 @@ export function humanDenial(
       `\`${ctx.command} ${human}\` lo ejecuta el usuario en su terminal, no el agente.`,
       `\`${ctx.command} ${human}\` is run by the user in their terminal, not by the agent.`,
     ),
-    next: t(
-      `pídele al usuario que lo ejecute y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
-      `ask the user to run it and run \`${ctx.command} wait\` to wait for their decision.`,
-    ),
+    next: `${t("pídele al usuario que lo ejecute y", "ask the user to run it and")} ${waitStep(ctx)}.`,
   };
 }

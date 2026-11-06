@@ -113,15 +113,23 @@ const ORPHAN = slice("C3", "open", {
   child: { id: NOTES, phase: "implementing", folder: NOTES_FOLDER, orphan: true },
 });
 
+/** How a brief asks to wait for the person: as Claude Code runs `specty wait`, or Antigravity. */
+const WAIT_STEP = {
+  claude:
+    "ejecuta `specty wait` para esperar su decisión. Ejecútalo en segundo plano (`run_in_background: true`), que te avisa al terminar, y vuelve a ejecutarlo cada vez que se agote o se corte.",
+  antigravity:
+    "ejecuta `specty wait` para esperar su decisión. Ejecútalo y deja que pase a segundo plano, que te avisa al terminar, y vuelve a ejecutarlo cada vez que se agote o se corte.",
+};
+
 /** The brief of a ready slice, as the card shows it in Spanish. */
-const readyBrief = (id: string) =>
+const readyBrief = (id: string, wait = WAIT_STEP.claude) =>
   [
     `ENCARGO ${id}:`,
     `  Haz el corte ${id} con sus tareas en orden y sin lanzar otros subagentes:`,
     `  1. \`specty new "Corte ${id}" --epic ${EPIC} --slice ${id} --subagent\``,
     "  2. `specty enter <id>`, con el id que te dé `new`.",
     "  3. Tu `cd` no dura entre comandos: empieza cada uno con `cd '<carpeta del cambio>' &&` y usa rutas absolutas de esa carpeta.",
-    "  4. Sigue `specty next` hasta cerrarlo; cuando espere a la persona, ejecuta `specty wait`.",
+    `  4. Sigue \`specty next\` hasta cerrarlo; cuando espere a la persona, ${wait}`,
     "  5. Responde en tres líneas: el cambio, su fase y lo que falta.",
   ].join("\n");
 
@@ -166,7 +174,7 @@ describe("the card of an epic whose tool hands its slices to subagents", () => {
         `  1. \`specty new "Corte C2" --epic ${EPIC} --slice C2 --subagent\``,
         "  2. `specty enter <id>`, with the id `new` gives you.",
         "  3. Your `cd` does not last between commands: start each one with `cd '<change folder>' &&` and use absolute paths in that folder.",
-        "  4. Follow `specty next` until it is closed; when it waits for the person, run `specty wait`.",
+        "  4. Follow `specty next` until it is closed; when it waits for the person, run `specty wait` to wait for their decision. Run it in the background (`run_in_background: true`), which tells you when it ends, and run it again each time it times out or is cut off.",
         "  5. Answer in three lines: the change, its phase and what is left.",
       ].join("\n"),
     );
@@ -200,7 +208,7 @@ describe("the card of an epic whose tool hands its slices to subagents", () => {
         "  Retoma el corte C3 con sus tareas en orden y sin lanzar otros subagentes:",
         `  1. \`specty enter ${NOTES}\``,
         `  2. Tu \`cd\` no dura entre comandos: empieza cada uno con \`cd '${NOTES_FOLDER}' &&\` y usa rutas absolutas de esa carpeta.`,
-        "  3. Sigue `specty next` hasta cerrarlo; cuando espere a la persona, ejecuta `specty wait`.",
+        `  3. Sigue \`specty next\` hasta cerrarlo; cuando espere a la persona, ${WAIT_STEP.claude}`,
         "  4. Responde en tres líneas: el cambio, su fase y lo que falta.",
       ].join("\n"),
     );
@@ -284,7 +292,7 @@ describe("the card of an epic from Antigravity", () => {
   it("AC2: brings a brief per ready or orphaned slice, and asks to launch each with invoke_subagent and Workspace inherit", () => {
     const change = epic("implementing", [DONE, slice("C2", "ready"), ORPHAN]);
     const text = card(change, ANTIGRAVITY);
-    expect(text).toContain(readyBrief("C2"));
+    expect(text).toContain(readyBrief("C2", WAIT_STEP.antigravity));
     expect(text).toContain("ENCARGO C3 (huérfano):");
     expect(text.endsWith(AGY_LAUNCH)).toBe(true);
     expect(card(epic("implementing", [slice("C1", "ready")]), ANTIGRAVITY_EN)).toContain(
@@ -306,6 +314,19 @@ describe("the card of an epic from Antigravity", () => {
     const waiting = epic("implementing", [DONE, OPEN]);
     expect(card(waiting, ANTIGRAVITY)).toBe(card(waiting, CLAUDE));
     expect(card(waiting, { ...ANTIGRAVITY, subagents: false })).toBe(card(waiting));
+  });
+});
+
+describe("the brief of a slice", () => {
+  it("AC1, AC4: waits for the person with the sentence every other output uses, in its tool's way", () => {
+    const ready = epic("implementing", [slice("C2", "ready")]);
+    expect(card(ready, CLAUDE)).toContain(`cuando espere a la persona, ${WAIT_STEP.claude}`);
+    expect(card(ready, ANTIGRAVITY)).toContain(
+      `cuando espere a la persona, ${WAIT_STEP.antigravity}`,
+    );
+    expect(card(ready, { ...EN, tool: "codex" })).toContain(
+      "when it waits for the person, run `specty wait` to wait for their decision. If it is still running, poll its output until it ends, and run it again each time it times out or is cut off.",
+    );
   });
 });
 

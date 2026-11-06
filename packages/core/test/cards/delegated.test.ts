@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  type AgentTool,
   type CardContext,
   type ChangeView,
   decisionCard,
@@ -11,9 +12,13 @@ import {
   type ProposedView,
   proposedCard,
   recommendEffort,
+  reviewedCard,
+  runAgainNext,
   type SizeResult,
   scopeRequestedCard,
   statusCard,
+  testsSubmittedCard,
+  unlockRefusedCard,
 } from "../../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
@@ -102,10 +107,10 @@ describe("agent cards in delegated mode", () => {
       expect(entry.next).not.toContain("modo delegado");
     }
     expect(plain[0]?.next).toBe(
-      "dile al usuario que la spec está lista en .specty/changes/20261021-x/spec.md, con su tamaño y el esfuerzo recomendado, que la apruebe con `specty approve` en su terminal o en la UI, y ejecuta `specty wait` para esperar su decisión.",
+      "dile al usuario que la spec está lista en .specty/changes/20261021-x/spec.md, con su tamaño y el esfuerzo recomendado, que la apruebe con `specty approve` en su terminal o en la UI, y ejecuta `specty wait` para esperar su decisión. Ejecútalo en primer plano y vuelve a ejecutarlo cada vez que se agote o se corte.",
     );
     expect(plain[3]?.next).toBe(
-      "pide al usuario que revise la spec y la apruebe con `specty approve` en su terminal o en la UI, y ejecuta `specty wait` para esperar su decisión.",
+      "pide al usuario que revise la spec y la apruebe con `specty approve` en su terminal o en la UI, y ejecuta `specty wait` para esperar su decisión. Ejecútalo en primer plano y vuelve a ejecutarlo cada vez que se agote o se corte.",
     );
   });
 
@@ -128,6 +133,101 @@ describe("agent cards in delegated mode", () => {
       rejected: [{ id: "A1", text: "Supuesto", comment: "No" }],
     });
     expect(next(rejected, delegated(ES))).toBe(next(rejected, ES));
+  });
+});
+
+/** How each tool's agent runs `specty wait`, as every output that waits for the person says it. */
+const HOW: Readonly<Record<AgentTool | "none", { readonly es: string; readonly en: string }>> = {
+  "claude-code": {
+    es: "Ejecútalo en segundo plano (`run_in_background: true`), que te avisa al terminar,",
+    en: "Run it in the background (`run_in_background: true`), which tells you when it ends,",
+  },
+  cursor: {
+    es: "Ejecútalo en segundo plano (`block_until_ms: 0`), que te avisa al terminar,",
+    en: "Run it in the background (`block_until_ms: 0`), which tells you when it ends,",
+  },
+  opencode: {
+    es: "Ejecútalo en segundo plano (`background: true`) o, en OpenCode 1, con `timeout: 3660000`,",
+    en: "Run it in the background (`background: true`) or, in OpenCode 1, with `timeout: 3660000`,",
+  },
+  antigravity: {
+    es: "Ejecútalo y deja que pase a segundo plano, que te avisa al terminar,",
+    en: "Run it and let it go to the background, which tells you when it ends,",
+  },
+  codex: {
+    es: "Si sigue en marcha, consulta su salida hasta que termine,",
+    en: "If it is still running, poll its output until it ends,",
+  },
+  windsurf: {
+    es: "Si pasa a segundo plano, consulta su salida con `get_output` hasta que termine,",
+    en: "If it goes to the background, poll its output with `get_output` until it ends,",
+  },
+  "gemini-cli": { es: "Ejecútalo en primer plano", en: "Run it in the foreground" },
+  copilot: { es: "Ejecútalo en primer plano", en: "Run it in the foreground" },
+  none: { es: "Ejecútalo en primer plano", en: "Run it in the foreground" },
+};
+
+/** Every tool, and none at all. */
+const TOOLS = [
+  "claude-code",
+  "cursor",
+  "opencode",
+  "antigravity",
+  "codex",
+  "windsurf",
+  "gemini-cli",
+  "copilot",
+  "none",
+] as const satisfies readonly (AgentTool | "none")[];
+
+/** The sentence that asks for `specty wait`, the same in every output that waits for the person. */
+const waitSentence = (tool: AgentTool | "none", lang: "es" | "en"): string =>
+  lang === "es"
+    ? `ejecuta \`specty wait\` para esperar su decisión. ${HOW[tool].es} y vuelve a ejecutarlo cada vez que se agote o se corte.`
+    : `run \`specty wait\` to wait for their decision. ${HOW[tool].en} and run it again each time it times out or is cut off.`;
+
+/** Every `SIGUIENTE:` that leaves the change waiting for the person, beyond `decisions`. */
+const waiting = (ctx: CardContext): readonly string[] => [
+  ...decisions(ctx).map((entry) => entry.next),
+  scopeRequestedCard("H", "S1", ["src/a.test.ts"], ctx, true).next,
+  testsSubmittedCard("20261021-x", { commit: "abc1234", files: ["src/a.test.ts"] }, ctx).next,
+  unlockRefusedCard("H", "S1", ctx).next,
+  runAgainNext("close", ctx),
+  runAgainNext("accept", ctx),
+  reviewedCard(
+    { header: "H", target: "spec", command: "claude -p", path: "spec-r1.md", text: "- Nada." },
+    ctx,
+  ).next,
+  reviewedCard(
+    { header: "H", target: "diff", command: "claude -p", path: "diff-1.md", text: "- Nada." },
+    ctx,
+  ).next,
+];
+
+describe("the outputs that wait for the person", () => {
+  it("AC1, AC4: ask for `specty wait` with the same sentence, in each tool's way", () => {
+    for (const tool of TOOLS) {
+      for (const base of [ES, EN]) {
+        const ctx: CardContext = tool === "none" ? base : { ...base, tool };
+        const sentence = waitSentence(tool, base.lang);
+        for (const next of waiting(ctx)) expect(next).toContain(sentence);
+      }
+    }
+  });
+
+  it("AC1: say how in Claude Code and, with no known tool, in the foreground", () => {
+    expect(runAgainNext("close", { ...ES, tool: "claude-code" })).toBe(
+      "pide al usuario que vuelva a ejecutar `specty close` y ejecuta `specty wait` para esperar su decisión. Ejecútalo en segundo plano (`run_in_background: true`), que te avisa al terminar, y vuelve a ejecutarlo cada vez que se agote o se corte.",
+    );
+    expect(runAgainNext("accept", EN)).toBe(
+      "ask the user to run `specty accept` again and run `specty wait` to wait for their decision. Run it in the foreground and run it again each time it times out or is cut off.",
+    );
+  });
+
+  it("AC1: keep it out of delegated mode, where the agent decides", () => {
+    for (const entry of decisions(delegated({ ...ES, tool: "claude-code" }))) {
+      expect(entry.next).not.toContain("specty wait");
+    }
   });
 });
 

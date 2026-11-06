@@ -338,6 +338,13 @@ describe("installing the guard in Antigravity", () => {
       ],
       PostToolUse: [{ matcher: "run_command", hooks: [handler("PostToolUse")] }],
       PreInvocation: [handler("PreInvocation")],
+      Stop: [
+        {
+          type: "command",
+          command: expect.stringContaining("hook agent-stop antigravity --no-check"),
+          timeout: 600,
+        },
+      ],
     });
     expect(await read(root, ".git/info/exclude")).toContain(`/${HOOKS}`);
     expect(git(root, "status", "--porcelain")).toBe("");

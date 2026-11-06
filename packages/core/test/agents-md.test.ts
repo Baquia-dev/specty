@@ -102,6 +102,19 @@ describe("rules for epics and vertical slices", () => {
     expect(en).toContain("deciding scope");
   });
 
+  it("AC3, AC4: asks to always wait for the person with specty wait, and never by ending the turn, with sleep or polling status", () => {
+    const es = flowBlock("es", "specty").split("\n");
+    expect(es).toContain(
+      "- Aprobar, decidir el alcance, aceptar y cerrar lo decide solo el usuario en su terminal o UI (no alteres .git ni eludas permisos); pídeselo y espera su decisión siempre con `specty wait` (en Claude Code, en segundo plano) y vuelve a ejecutarlo cada vez que se agote o se corte; no esperes terminando el turno, con `sleep` ni consultando `specty status`. Solo si `SIGUIENTE:` te lo pide (modo delegado), los ejecutas tú.",
+    );
+    expect(es.length).toBeLessThanOrEqual(15);
+    const en = flowBlock("en", "specty").split("\n");
+    expect(en).toContain(
+      "- Approving, deciding scope, accepting and closing are the user's alone in their terminal or UI (do not alter .git or bypass permissions); ask them and always wait for their decision with `specty wait` (in Claude Code, in the background), running it again each time it times out or is cut off; do not wait by ending your turn, with `sleep` or by polling `specty status`. Only when `NEXT:` tells you to (delegated mode) do you run them yourself.",
+    );
+    expect(en.length).toBeLessThanOrEqual(15);
+  });
+
   it("AC1: flowBlock explicitly requires entering worktree with specty enter and forbids asking for another session", () => {
     const es = flowBlock("es", "specty");
     expect(es).toContain("Entra con `specty enter <id>`");

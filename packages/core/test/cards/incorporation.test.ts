@@ -150,7 +150,7 @@ describe("`specty integrate`", () => {
       "Incorporación de main resuelta (merge a1b2c3d).",
     );
     expect(runAgainNext("close", ES)).toBe(
-      "pide al usuario que vuelva a ejecutar `specty close` y ejecuta `specty wait` para esperar su decisión.",
+      "pide al usuario que vuelva a ejecutar `specty close` y ejecuta `specty wait` para esperar su decisión. Ejecútalo en primer plano y vuelve a ejecutarlo cada vez que se agote o se corte.",
     );
     expect(runAgainNext("accept", { ...EN, delegated: true })).toBe(
       "delegated mode: run `specty accept` again yourself and follow its output.",

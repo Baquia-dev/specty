@@ -2,6 +2,7 @@
 import type { AgentTool } from "../agents";
 import { headerOf, type Output, section } from "../output";
 import { AGENT_WRITERS } from "./doctor-agents";
+import { CLEANUP_WRITERS } from "./doctor-cleanup";
 import { exclusionLine } from "./exclusions";
 import { MCP_WRITERS } from "./mcp";
 import { type Translate, translator } from "./text";
@@ -31,8 +32,11 @@ export type DoctorLine =
    * a session's start and not when it resumes.
    */
   | { readonly code: "claude-startup" | "claude-resume" }
-  /** The agent's guard is there, and its end of turn lacks the memory's safety net (ADR 0016). */
-  | { readonly code: "memory-stop"; readonly tool: AgentTool }
+  /**
+   * The agent's guard is there, and its end of turn lacks the memory's safety net (ADR 0016), or
+   * Specty's own (`hook agent-stop`), which sends it back to `specty wait`.
+   */
+  | { readonly code: "memory-stop" | "agent-stop"; readonly tool: AgentTool }
   | { readonly code: "cursor-guard" | "no-cursor-guard" }
   /** Cursor's guard is there, without `preCompact`, which leaves the card for the next command. */
   | { readonly code: "cursor-compact" }
@@ -101,6 +105,17 @@ export type DoctorLine =
   /** Closing would not find ccusage to measure each change; `command` installs it. */
   | { readonly code: "no-ccusage"; readonly command: string }
   | { readonly code: "delegated"; readonly since: string; readonly by: string }
+  /** Orphans of each kind the clean-up of `prune` removes, and how many (`cards/doctor-cleanup.ts`). */
+  | {
+      readonly code:
+        | "stale-records"
+        | "finished-folders"
+        | "ghost-folders"
+        | "empty-change-folders";
+      readonly count: number;
+    }
+  /** The rescue refs the clean-up left: how many, and the latest. */
+  | { readonly code: "rescue-refs"; readonly count: number; readonly latest: string }
   /** Specty's MCP server in an agent's project configuration (`cards/mcp.ts`). */
   | {
       readonly code: "mcp-registered" | "mcp-missing" | "mcp-other";
@@ -206,6 +221,7 @@ const WRITERS: {
     ),
   ...AGENT_WRITERS,
   ...MCP_WRITERS,
+  ...CLEANUP_WRITERS,
 };
 
 export function doctorLine(line: DoctorLine, ctx: CardContext): string {

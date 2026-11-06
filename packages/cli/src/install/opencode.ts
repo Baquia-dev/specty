@@ -20,7 +20,7 @@ export function opencodePluginFile(env: NodeJS.ProcessEnv): string {
 /**
  * Specty's plugin in the project's `.opencode/plugins/`, which OpenCode 1 and 2 load like the
  * global one. A plugin with a machine path stays out of git, and `new` copies it to each worktree.
- * The check at the end of each turn that `check --install` turned on stays on.
+ * Its end of turn stays as it was, and the check in it that `check --install` turned on too.
  */
 export async function installOpencode(
   root: string,
@@ -29,8 +29,8 @@ export async function installOpencode(
   files: InstallFiles = installFiles(),
 ): Promise<AgentInstall> {
   const path = join(root, OPENCODE_PLUGIN);
-  const stop = stopOf(await files.read(path));
-  await files.write(path, opencodePlugin(invocation.command, stop));
+  const text = await files.read(path);
+  await files.write(path, opencodePlugin(invocation.command, stopOf(text), checkOf(text)));
   if (!invocation.portable) await excludeLocally(git, OPENCODE_PLUGIN, files);
   return { file: OPENCODE_PLUGIN, local: !invocation.portable };
 }
@@ -61,25 +61,64 @@ function withoutRule(value: Record<string, unknown>, pattern: string): Record<st
 }
 
 /**
- * `check --install`: turns on the check at the end of each turn in the plugin `init` wrote, with
- * the command it already has and `timeout` seconds; nothing without the plugin, or once it is on.
+ * `init`: turns on the end of each turn in the plugin it wrote (`STOP`), with `timeout` seconds,
+ * which sends the agent back to `specty wait` while the change waits for the person; nothing
+ * without the plugin, or once it is on.
  */
-export async function planOpencodeStop(
+export function planOpencodeTurn(
   root: string,
   files: InstallFiles,
   timeout: number,
 ): Promise<void> {
-  const path = join(root, OPENCODE_PLUGIN);
-  const text = await files.read(path);
-  if (text === undefined || stopOf(text) !== undefined) return;
-  const command = commandOf(text);
-  if (command !== undefined) await files.write(path, opencodePlugin(command, timeout));
+  return turnOn(root, files, timeout, false);
 }
 
-/** The seconds a plugin (its text) gives the check at the end of a turn; undefined while off. */
-function stopOf(text: string | undefined): number | undefined {
+/**
+ * `check --install`: turns on the end of each turn in the plugin `init` wrote and, in it, `specty
+ * check --changed` (`CHECK`), with `timeout` seconds; nothing without the plugin, or once both are
+ * on.
+ */
+export function planOpencodeStop(
+  root: string,
+  files: InstallFiles,
+  timeout: number,
+): Promise<void> {
+  return turnOn(root, files, timeout, true);
+}
+
+/** Writes the plugin again with its command, its end of turn on and, with `check`, its check. */
+async function turnOn(
+  root: string,
+  files: InstallFiles,
+  timeout: number,
+  check: boolean,
+): Promise<void> {
+  const path = join(root, OPENCODE_PLUGIN);
+  const text = await files.read(path);
+  if (text === undefined) return;
+  const checks = checkOf(text);
+  if (stopOf(text) !== undefined && (checks || !check)) return;
+  const command = commandOf(text);
+  if (command !== undefined)
+    await files.write(path, opencodePlugin(command, timeout, check || checks));
+}
+
+/**
+ * The seconds a plugin (its text) gives its end of turn; undefined while off, as in a plugin from
+ * before `init` turned it on, which `doctor` tells.
+ */
+export function stopOf(text: string | undefined): number | undefined {
   const found = text?.match(/^const STOP = (\d+);$/m)?.[1];
   return found === undefined ? undefined : Number(found);
+}
+
+/**
+ * Whether a plugin (its text) runs `specty check --changed` at the end of a turn: one from before
+ * `CHECK` did whenever its `STOP` was on, since only `check --install` turned it on.
+ */
+function checkOf(text: string | undefined): boolean {
+  const found = text?.match(/^const CHECK = (true|false);$/m)?.[1];
+  return found === undefined ? stopOf(text) !== undefined : found === "true";
 }
 
 /** How a plugin (its text) calls Specty: `SPECTY`, or an older plugin's `GUARD` without its tool. */
@@ -95,10 +134,11 @@ function commandOf(text: string): string | undefined {
   );
 }
 
-function opencodePlugin(specty: string, stop: number | undefined): string {
+function opencodePlugin(specty: string, stop: number | undefined, check: boolean): string {
   return PLUGIN.replace("__SPECTY__", () => JSON.stringify(specty))
     .replace("__GUARD__", () => JSON.stringify(`${specty} guard --tool opencode`))
-    .replace("__STOP__", () => (stop === undefined ? "null" : String(stop)));
+    .replace("__STOP__", () => (stop === undefined ? "null" : String(stop)))
+    .replace("__CHECK__", () => String(check));
 }
 
 /**
@@ -109,20 +149,22 @@ function opencodePlugin(specty: string, stop: number | undefined): string {
  * After a compaction it brings back the card of `specty next`: OpenCode 1 gets it in the session,
  * asking for no reply, and OpenCode 2 in the next model call. With `STOP` on, at the end of each
  * turn (`session.idle`; in OpenCode 2.2, `session.execution.succeeded`) it runs `specty hook
- * agent-stop opencode` and sends its report back to the session; in OpenCode 1, not to a
- * subagent's child session (one with `parentID`). It never throws outside
- * a blocked tool; if Specty cannot run, everything goes through.
+ * agent-stop opencode`, with `--no-check` while `CHECK` is off, and sends its report back to the
+ * session; in OpenCode 1, not to a subagent's child session (one with `parentID`). It never
+ * throws outside a blocked tool; if Specty cannot run, everything goes through.
  */
-const PLUGIN = `// Specty's guard for OpenCode. \`specty init\` writes this file and rewrites it, and
-// \`specty check --install\` turns on the check at the end of each turn (STOP).
+const PLUGIN = `// Specty's guard for OpenCode. \`specty init\` writes this file and rewrites it, with the end of
+// each turn on (STOP), and \`specty check --install\` turns on the check in it (CHECK).
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 
 const SPECTY = __SPECTY__;
 const GUARD = __GUARD__;
-// Seconds \`specty check --changed\` may take at the end of a turn; null while it is off.
+// Seconds the end of a turn may take; null while it is off.
 const STOP = __STOP__;
+// Whether the end of a turn runs \`specty check --changed\` too, besides the rule of \`specty wait\`.
+const CHECK = __CHECK__;
 const SHELL = new Set(["shell", "bash"]);
 // The events that end a turn in OpenCode 2: the beta's, and 2.2's, which has no \`session.idle\`.
 const TURN_ENDS = new Set(["session.idle", "session.execution.succeeded"]);
@@ -220,7 +262,8 @@ async function card(directory, session) {
   }
 }
 
-// At the end of a turn, with STOP on: the report that sends the agent back to work while
+// At the end of a turn, with STOP on: the report that sends the agent back to work while the
+// change waits for the person with no \`specty wait\` or, with CHECK on, while
 // \`specty check --changed\` fails. A turn it already sent back may end, so it never loops. A
 // subagent's session (\`child\` says which) is not checked, as Specty does not check Claude
 // Code's SubagentStop: the report reaches the main session at the end of its own turn.
@@ -230,7 +273,8 @@ async function endOfTurn(directory, session, child) {
     if (!usesSpecty(directory) || (await child?.(session))) return undefined;
     const active = SENT_BACK.delete(session);
     const event = { hook_event_name: "Stop", cwd: directory, session_id: session, stop_hook_active: active };
-    const { stdout } = await run(SPECTY + " hook agent-stop opencode", directory, event, STOP);
+    const hook = SPECTY + " hook agent-stop opencode" + (CHECK ? "" : " --no-check");
+    const { stdout } = await run(hook, directory, event, STOP);
     const reply = JSON.parse(stdout.trim() || "null");
     if (reply?.decision !== "block" || typeof reply.reason !== "string") return undefined;
     SENT_BACK.add(session);

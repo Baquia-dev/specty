@@ -5,6 +5,7 @@ import { isTestFile } from "../scope/tests";
 import { termsSection } from "./glossary";
 import { translator } from "./text";
 import type { CardContext, ChangeView, CriterionView } from "./view";
+import { waitStep } from "./wait";
 
 // The testing phase (ADR 0014): the tests of the criteria come before the code.
 
@@ -92,8 +93,8 @@ export function testsSubmittedCard(
           `delegated mode: approve the tests yourself with \`${ctx.command} approve\` and follow its output.`,
         )
       : t(
-          `pide al usuario que revise los tests y los apruebe con \`${ctx.command} approve\` en su terminal o en la UI, y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
-          `ask the user to review the tests and approve them with \`${ctx.command} approve\` in their terminal or UI, and run \`${ctx.command} wait\` to wait for their decision.`,
+          `pide al usuario que revise los tests y los apruebe con \`${ctx.command} approve\` en su terminal o en la UI, y ${waitStep(ctx)}.`,
+          `ask the user to review the tests and approve them with \`${ctx.command} approve\` in their terminal or UI, and ${waitStep(ctx)}.`,
         ),
   };
 }
@@ -217,8 +218,8 @@ export function unlockRefusedCard(header: string, request: string, ctx: CardCont
       ),
     ]),
     next: t(
-      `pide al usuario que lo decida con ${decide} o ${reject} en su terminal o en la UI, y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
-      `ask the user to decide it with ${decide} or ${reject} in their terminal or UI, and run \`${ctx.command} wait\` to wait for their decision.`,
+      `pide al usuario que lo decida con ${decide} o ${reject} en su terminal o en la UI, y ${waitStep(ctx)}.`,
+      `ask the user to decide it with ${decide} or ${reject} in their terminal or UI, and ${waitStep(ctx)}.`,
     ),
   };
 }
