@@ -112,7 +112,7 @@ describe("FixtureData actions", () => {
     expect(third).toMatchObject({ status: "active", attempts: 1 });
     expect(third?.verification?.passed).toBe(false);
     expect(third?.verification?.output.at(-1)).toBe("00:07 +6 -1: Some tests failed.");
-    expect(third?.scopeRequests.map((request) => request.id)).toEqual(["S1"]);
+    expect(third?.scopeRequests.map((request) => request.id)).toEqual(["S1", "S2"]);
   });
 
   it("decides scope requests: an approval widens the task, a rejection keeps the reason (AC3, AC4)", async () => {
@@ -126,8 +126,9 @@ describe("FixtureData actions", () => {
     await fixtures.decideScope(PDF, "S1", "rejected", "Usa el maquetador del boletín.");
     await settle();
     let view = store.listed().find((change) => change.id === PDF);
-    expect(view?.decision).toBeUndefined();
-    expect(view?.progress.tasks[2]?.scopeRequests).toEqual([]);
+    // S2, the unlock of its approved test, still waits.
+    expect(view?.decision).toBe("scope");
+    expect(view?.progress.tasks[2]?.scopeRequests.map((request) => request.id)).toEqual(["S2"]);
     // Already decided: the source explains it instead of deciding twice.
     await expect(fixtures.decideScope(PDF, "S1", "approved")).rejects.toMatchObject({
       text: { es: "La solicitud S1 ya no está pendiente." },
@@ -139,7 +140,7 @@ describe("FixtureData actions", () => {
     fresh.fixtures.approveScope();
     await fresh.settle();
     view = fresh.store.listed().find((change) => change.id === PDF);
-    expect(view?.decision).toBeUndefined();
+    expect(view?.decision).toBe("scope");
     const records = await fresh.fixtures.changes();
     const record = records.find((item) => item.state.id === PDF);
     const asked = scope()?.task ?? "";
@@ -147,7 +148,7 @@ describe("FixtureData actions", () => {
     expect(record?.audit?.at(-1)).toMatchObject({
       actor: "human",
       event: "scope.decided",
-      data: { request: "S1", decision: "approved" },
+      data: { id: "S1", decision: "approved" },
     });
   });
 
@@ -173,6 +174,23 @@ describe("FixtureData actions", () => {
     await expect(fixtures.requestChanges(REVIEW)).rejects.toMatchObject({
       text: { es: "No hay comentarios sin resolver ni supuestos rechazados que pedir." },
     });
+  });
+
+  it("AC5: asking for changes notes it in the state, as the server does, and approving clears it", async () => {
+    const { fixtures, store, settle } = setup();
+    await settle();
+    const stateOf = async () =>
+      (await fixtures.changes()).find((record) => record.state.id === REVIEW)?.state;
+    expect((await stateOf())?.changesRequestedAt).toBeUndefined();
+    await fixtures.requestChanges(REVIEW);
+    await settle();
+    expect((await stateOf())?.changesRequestedAt).toEqual(expect.any(String));
+    expect(store.listed().find((change) => change.id === REVIEW)?.decision).toBeUndefined();
+    await fixtures.approve(REVIEW, 2);
+    await settle();
+    const approved = await stateOf();
+    expect(approved?.phase).toBe("implementing");
+    expect(approved).not.toHaveProperty("changesRequestedAt");
   });
 
   it("AC3: brings a change in testing with its red tests, and approving them locks them", async () => {
@@ -272,8 +290,10 @@ describe("ChangesStore", () => {
     await settle();
     fixtures.approveSpec();
     fixtures.approveScope();
+    fixtures.approveScope();
     await settle();
-    // The first review is approved; the revised one and the tests sent still wait.
+    // The first review and both requests of the PDF export are approved; the revised review and
+    // the tests sent still wait.
     expect(store.decisions().map((view) => view.decision)).toEqual([
       "acceptance",
       "closing",

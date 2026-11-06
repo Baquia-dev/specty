@@ -2,9 +2,9 @@
 // What is checked of an approved unlock (ADR 0014): `specty task done` takes each unlocked test
 // only as its approved patch leaves it, and Specty rejects an unlock whose patch no longer holds
 // when the person approves it.
-import { counted, type Lang } from "../i18n";
+import type { Lang } from "../i18n";
 import { type Output, section } from "../output";
-import { translator } from "./text";
+import { cappedLines, translator } from "./text";
 import { type UnlockPatchRefusal, unlockHow, unlockProblem } from "./unlock";
 import type { CardContext } from "./view";
 
@@ -50,7 +50,7 @@ export function unlockMismatchCard(
             `DIFERENCIA CON EL PARCHE DE ${mismatch.request} (${mismatch.path})`,
             `DIFFERENCE FROM THE PATCH OF ${mismatch.request} (${mismatch.path})`,
           ),
-          capped(mismatch.diff, ctx.lang),
+          cappedLines(mismatch.diff, MISMATCH_DIFF_LINES, ctx.lang),
         )
       : [],
   );
@@ -103,20 +103,6 @@ function mismatchLine(mismatch: UnlockMismatch, lang: Lang): string {
             `Specty cannot check \`${path}\`: the patch approved in ${request} does not apply to its locked version, and \`git apply\` says "${mismatch.detail}".`,
           );
   }
-}
-
-/** A difference cut at MISMATCH_DIFF_LINES, saying how many lines it leaves out. */
-function capped(diff: readonly string[], lang: Lang): readonly string[] {
-  const left = diff.length - MISMATCH_DIFF_LINES;
-  if (left <= 0) return diff;
-  const t = translator(lang);
-  return [
-    ...diff.slice(0, MISMATCH_DIFF_LINES),
-    t(
-      `… y ${counted(left, "línea más", "líneas más")}`,
-      `… and ${counted(left, "more line", "more lines")}`,
-    ),
-  ];
 }
 
 /** Leave each test as its patch, or ask for another unlock; without a locked version, stop. */
