@@ -91,7 +91,7 @@ En la Bandeja, la tarjeta de una épica dibuja, bajo su fila, una línea por cad
   - files: packages/ui/src/inbox/inbox-epic.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox-epic.test.ts, packages/ui/src/inbox/inbox.test.ts
   - ac: AC2, AC3, AC4, AC9, AC11
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-epic.test.ts --include src/inbox/inbox.test.ts --include src/inbox/inbox-more.test.ts --include src/inbox/inbox-view.test.ts --include src/inbox/inbox-row.test.ts && pnpm typecheck && pnpm lint && pnpm knip
-- [ ] T4: ui.md y ARCHITECTURE cuentan las líneas de la tarjeta de la épica
+- [x] T4: ui.md y ARCHITECTURE cuentan las líneas de la tarjeta de la épica
   - files: docs/ui.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: grep -q "sp-inbox-lane" docs/ui.md && grep -q "tarjeta de una épica" docs/ARCHITECTURE.md

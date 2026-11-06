@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-cada-corte-es-una-linea-de-fases-tambien-los",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-cada-corte-es-una-linea-de-fases-tambien-los",
   "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
   "revision": 1,
@@ -81,14 +81,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/inbox/inbox-epic.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "c215c35fe76b6f93add1cd6c9bdb72317c8bed9a",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:50:20.569Z",
       "doneAt": "2026-11-06T16:26:15.003Z",
-      "summary": "La tarjeta de la épica dibuja las cabeceras de los tramos y una línea por corte, pide sliceChanges sin resource y con cada aviso, y j/k recorren su fila y sus líneas con cambio; el test de la tarjeta se corrigió con S1"
+      "summary": "La tarjeta de la épica dibuja las cabeceras de los tramos y una línea por corte, pide sliceChanges sin resource y con cada aviso, y j/k recorren su fila y sus líneas con cambio; el test de la tarjeta se corrigió con S1",
+      "scopeExtra": [
+        "packages/ui/src/inbox/inbox-epic.test.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "db8ef5bd26a7b368b5d961843b97e5fea986869d",
+      "startedAt": "2026-11-06T16:26:15.319Z",
+      "doneAt": "2026-11-06T16:32:08.380Z",
+      "summary": "ui.md describe la tarjeta de la épica con una línea por corte y ARCHITECTURE §15, que también la tarjeta pide los cambios de los cortes"
     }
   },
   "pending": {
