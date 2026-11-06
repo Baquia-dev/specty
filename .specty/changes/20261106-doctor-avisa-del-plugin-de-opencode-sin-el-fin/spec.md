@@ -39,7 +39,7 @@ Desde 1917f17, el plugin de Specty para OpenCode toma como fin de turno `session
 
 ## Tareas
 
-- [ ] T1: El texto del aviso del fin de turno de OpenCode 2.2
+- [x] T1: El texto del aviso del fin de turno de OpenCode 2.2
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/test/cards/doctor-opencode-turn-end.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-opencode-turn-end.test.ts && pnpm lint

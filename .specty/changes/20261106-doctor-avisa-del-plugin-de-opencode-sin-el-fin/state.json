@@ -32,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "91ba8f136bf3182be99398872b421293a63285db",
+      "startedAt": "2026-11-06T09:04:34.179Z",
+      "doneAt": "2026-11-06T09:04:58.298Z",
+      "summary": "Código opencode-turn-end en DoctorLine y su texto en español e inglés en cards/doctor-agents.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -50,6 +50,8 @@ export type DoctorLine =
     }
   /** OpenCode's plugin is there, without the card after a compaction. */
   | { readonly code: "opencode-compact" }
+  /** OpenCode's plugin is there, from before OpenCode 2.2's end of turn. */
+  | { readonly code: "opencode-turn-end" }
   /** Antigravity's guard in `file`, its hook named `specty`. */
   | { readonly code: "antigravity-guard" | "no-antigravity-guard"; readonly file: string }
   /** Antigravity's guard is there, without the hooks of these events. */
