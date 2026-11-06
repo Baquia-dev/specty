@@ -48,7 +48,7 @@ En `specty ui`, la fila de la Bandeja y la página de un cambio dicen qué agent
 
 ## Tareas
 
-- [ ] T1: Una sola función nombra a los agentes, y la línea de un corte la usa
+- [x] T1: Una sola función nombra a los agentes, y la línea de un corte la usa
   - files: packages/ui/src/data/agent-name.ts, packages/ui/src/data/agent-name.test.ts, packages/ui/src/inbox/lane-holds.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/agent-name.test.ts --include src/inbox/lane-holds.test.ts --include src/inbox/inbox-lane.test.ts

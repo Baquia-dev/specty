@@ -2,7 +2,7 @@
 // Who holds the change of a line of an epic's card in the Inbox, and what it warns of: the marks
 // the server gives each open change (`holder`, `orphan`, `away`) and the files it shares with
 // other open changes, naming a slice of the same epic by its id. Pure.
-import { AGENT_NAMES } from "@baquia-dev/specty-core/light";
+import { agentName } from "../data/agent-name";
 import type { ListedChange } from "../data/records";
 
 /** Who holds a line's open change, and what it warns of. */
@@ -20,9 +20,6 @@ export interface LaneHolds {
   readonly shared?: { readonly paths: readonly string[]; readonly with: readonly string[] };
 }
 
-/** The agents' names, by their tool. */
-const NAMES: Readonly<Record<string, string>> = AGENT_NAMES;
-
 /**
  * Who holds the open change `id` among `loaded`, the epic's changes the Inbox has, and what it
  * warns of; nothing for a line without a change, one not loaded, or one finished or cancelled.
@@ -38,9 +35,9 @@ export function laneHolds(
   const orphan = change.orphan === true;
   const shared = sharedWith(change, loaded);
   return {
-    ...(orphan || change.holder === undefined ? {} : { agent: nameOf(change.holder.tool) }),
+    ...(orphan || change.holder === undefined ? {} : { agent: agentName(change.holder.tool) }),
     orphan,
-    ...(change.away === undefined ? {} : { away: nameOf(change.away.tool) }),
+    ...(change.away === undefined ? {} : { away: agentName(change.away.tool) }),
     ...(shared === undefined ? {} : { shared }),
   };
 }
@@ -53,11 +50,6 @@ export function saysSomething(holds: LaneHolds): boolean {
     holds.away !== undefined ||
     holds.shared !== undefined
   );
-}
-
-/** An agent's name; a tool the list does not know goes by its id. */
-function nameOf(tool: string): string {
-  return (Object.hasOwn(NAMES, tool) ? NAMES[tool] : undefined) ?? tool;
 }
 
 /**

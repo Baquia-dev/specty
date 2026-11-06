@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e175649639855407cf1869780565c6a78b31fc91",
+      "startedAt": "2026-11-06T19:26:03.665Z",
+      "doneAt": "2026-11-06T19:26:39.985Z",
+      "summary": "agentName (data/agent-name.ts) da el nombre de AGENT_NAMES o el id; lane-holds.ts la usa en lugar de su nameOf privado"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
