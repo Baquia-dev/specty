@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "32ce387be42cf983ab9cdef2cfcf1a445a077554",
+      "startedAt": "2026-11-06T21:32:46.817Z",
+      "doneAt": "2026-11-06T21:33:41.986Z",
+      "summary": "Con subagentes, el bloque de huérfanos (rejoin.ts) pide un subagente con el «ENCARGO PARA RETOMAR» (specty enter <id>, cd, next, pregunta); sin ellos, el texto de hoy. La pregunta del encargo pasa a subagents.ts (questionStep), también para idle.ts."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

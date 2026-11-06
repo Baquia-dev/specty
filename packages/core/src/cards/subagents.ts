@@ -7,7 +7,7 @@ import { waitStep } from "./wait";
 /**
  * The pieces of the briefs a card hands to subagents, each one the text a subagent gets as is to
  * carry a change in its folder: an epic's slices (`epic.ts`) and, with no change active, each
- * change the user asks for (`idle.ts`).
+ * change the user asks for (`idle.ts`) and the orphan the user asks to resume (`rejoin.ts`).
  */
 
 /** The tool hands work to subagents (ARCHITECTURE §10), and `subagents` lets it. */
@@ -58,6 +58,14 @@ export function inItsFolder(
       "Answer in three lines: the change, its phase and what is left.",
     ),
   ];
+}
+
+/** A brief's step for a change whose spec may be still to write: a question goes back to the session. */
+export function questionStep(ctx: CardContext): string {
+  return translator(ctx.lang)(
+    "Si para la spec te falta una respuesta del usuario, no la supongas: detente y responde con la pregunta.",
+    "If the spec needs an answer from the user, do not assume it: stop and answer with the question.",
+  );
 }
 
 export const numbered = (steps: readonly string[]): string[] =>

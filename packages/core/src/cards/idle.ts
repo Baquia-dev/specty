@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { headerOf, type Output, type OutputBlock, section } from "../output";
 import { COMMIT_TYPES } from "../spec/model";
-import { inItsFolder, launchedWith, numbered, toSubagents } from "./subagents";
+import { inItsFolder, launchedWith, numbered, questionStep, toSubagents } from "./subagents";
 import { translator } from "./text";
 import type { CardContext } from "./view";
 
@@ -103,12 +103,7 @@ function changeBrief(ctx: CardContext): OutputBlock[] {
         `\`${command} enter <id>\`, con el id que te dé \`new\`.`,
         `\`${command} enter <id>\`, with the id \`new\` gives you.`,
       ),
-      ...inItsFolder(t("<carpeta del cambio>", "<change folder>"), ctx, [
-        t(
-          "Si para la spec te falta una respuesta del usuario, no la supongas: detente y responde con la pregunta.",
-          "If the spec needs an answer from the user, do not assume it: stop and answer with the question.",
-        ),
-      ]),
+      ...inItsFolder(t("<carpeta del cambio>", "<change folder>"), ctx, [questionStep(ctx)]),
     ]),
   ]);
 }

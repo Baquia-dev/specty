@@ -4,6 +4,7 @@ import type { Phase } from "../flow/phases";
 import { headerOf, type Output, type OutputBlock, section } from "../output";
 import { awayEpicCard } from "./epic";
 import { carryOnText } from "./new";
+import { inItsFolder, launchedWith, numbered, questionStep, toSubagents } from "./subagents";
 import { type Translate, translator } from "./text";
 import type { CardContext, ChangeView } from "./view";
 
@@ -96,7 +97,11 @@ export function lostBlock(lost: readonly LostView[], ctx: CardContext): OutputBl
   ]);
 }
 
-/** The open changes no conversation holds, each with its folder, and how to resume one of them. */
+/**
+ * The open changes no conversation holds, each with its folder, and how to resume one of them:
+ * with subagents, one of them resumes it with its brief, since entering its folder would isolate
+ * the subagents already at work (in Claude Code); without them, the session goes in.
+ */
 export function orphansBlock(
   orphans: readonly OrphanView[],
   byName: boolean,
@@ -104,16 +109,43 @@ export function orphansBlock(
 ): OutputBlock[] {
   if (orphans.length === 0) return [];
   const t = translator(ctx.lang);
-  const how = resumeHow(byName, ctx, t);
-  return section(t("CAMBIOS SIN CONVERSACIÓN", "CHANGES NO CONVERSATION HOLDS"), [
-    ...orphans.map(
-      (orphan) =>
-        `${orphan.id} · ${orphan.phase} — ${orphan.title} · ${t("en", "in")} ${orphan.folder}`,
-    ),
+  const subagents = toSubagents(ctx);
+  const resume = subagents
+    ? t(
+        `Si el usuario pide seguir uno de ellos, no crees otro cambio ni entres en su carpeta: lanza un subagente con el encargo para retomarlo tal cual${launchedWith(ctx, "change")}, con su id en lugar de \`<id>\`.`,
+        `If the user asks to carry on with one of them, do not create another change nor enter its folder: launch a subagent with the brief to resume it as is${launchedWith(ctx, "change")}, with its id in place of \`<id>\`.`,
+      )
+    : t(
+        `Si el usuario pide seguir uno de ellos, retómalo en su carpeta en lugar de crear otro cambio: ${resumeHow(byName, ctx, t)}.`,
+        `If the user asks to carry on with one of them, resume it in its folder instead of creating another change: ${resumeHow(byName, ctx, t)}.`,
+      );
+  return [
+    ...section(t("CAMBIOS SIN CONVERSACIÓN", "CHANGES NO CONVERSATION HOLDS"), [
+      ...orphans.map(
+        (orphan) =>
+          `${orphan.id} · ${orphan.phase} — ${orphan.title} · ${t("en", "in")} ${orphan.folder}`,
+      ),
+      resume,
+    ]),
+    ...(subagents ? resumeBrief(ctx) : []),
+  ];
+}
+
+/**
+ * The brief a subagent gets as is to resume an orphan, the session putting its id in `<id>`: the
+ * one of an epic's orphaned slice (`epic.ts`), with the question of a spec still to write.
+ */
+function resumeBrief(ctx: CardContext): OutputBlock[] {
+  const t = translator(ctx.lang);
+  return section(t("ENCARGO PARA RETOMAR", "BRIEF TO RESUME"), [
     t(
-      `Si el usuario pide seguir uno de ellos, retómalo en su carpeta en lugar de crear otro cambio: ${how}.`,
-      `If the user asks to carry on with one of them, resume it in its folder instead of creating another change: ${how}.`,
+      "Retoma el cambio <id> hasta su cierre, sin lanzar otros subagentes:",
+      "Resume change <id> until it is closed, without launching other subagents:",
     ),
+    ...numbered([
+      `\`${ctx.command} enter <id>\``,
+      ...inItsFolder(t("<carpeta del cambio>", "<change folder>"), ctx, [questionStep(ctx)]),
+    ]),
   ]);
 }
 

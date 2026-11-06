@@ -53,7 +53,7 @@ Sin cambio activo, el bloque «CAMBIOS SIN CONVERSACIÓN» de `specty next` pide
 
 ## Tareas
 
-- [ ] T1: Con subagentes, el bloque de huérfanos trae un encargo para retomarlos
+- [x] T1: Con subagentes, el bloque de huérfanos trae un encargo para retomarlos
   - files: packages/core/src/cards/rejoin.ts, packages/core/src/cards/subagents.ts, packages/core/src/cards/idle.ts, packages/core/test/cards/orphans-subagents.test.ts, packages/core/test/cards/rejoin.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/orphans-subagents.test.ts test/cards/rejoin.test.ts test/cards/idle-subagents.test.ts && pnpm typecheck && pnpm lint
