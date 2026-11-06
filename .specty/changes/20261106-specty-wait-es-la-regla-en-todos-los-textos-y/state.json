@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261106-specty-wait-es-la-regla-en-todos-los-textos-y",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-specty-wait-es-la-regla-en-todos-los-textos-y",
+  "baseCommit": "36170f0d131f950b7eac367a27c7b3253d3de393",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "16 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:943f514b8f9b03bb732f3f585ff286d8fd18762753c55aabc3e540aa835abb5e",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0f00c5788b215d55d0ea61f972e61f6c0b44b7a7124077b1c7bdb4183cb51929",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:885baa5bc799f6f945e1ee879aa3ab20c0ae438d69106f4ae2b4ca9c58aa238f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c2e1bb96c20bdc879a080322afcfe3fedb052b2e33338446c642b0741246c71e",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:7aa750f378340f572de5857f0f9e44f2619419b612e1e211e6e6f997f1348680",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:942b1a914ffb2068e9b4b388baa9a8574c6e8dfd6aecca729c84d62bf876296f",
+    "at": "2026-11-06T11:57:05.647Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
