@@ -85,3 +85,27 @@ Desde P225, `changesRequestedAt` en `state.json` dice que la persona devolvió l
 ## Riesgos
 
 - R1: P232 toca `server/unattended.ts` y P229 el guard a la vez. Mitigación: este cambio no toca esos archivos; si chocan los documentos al incorporar main, se resuelve con `specty integrate`.
+
+## Cierre
+
+### Resumen
+
+La tarjeta de `specty next` y la UI dicen ya lo mismo que `wait`, `status` y el fin de turno sobre quién tiene la revisión, porque leen el estado y no la auditoría:
+- Core: `reviewCard` da los cambios pedidos solo si el `ChangeView` trae `requested`, que ahora solo existe con la revisión devuelta. Si no queda nada que listar, dice «El usuario te devolvió la revisión N.» y sigue pidiendo `propose`. Un supuesto rechazado suelto deja la tarjeta de espera, o la del modo delegado.
+- CLI: `phaseFacts` (`flow/views.ts`) pone `requested` solo en `review` con `changeWaitsFor(state) === "agent"`, y lee los comentarios sin mirar la auditoría.
+- UI: `decisionOf` da «review» solo si `changeWaitsFor` da la persona, y `changesRequestedOf` saca la revisión y la hora de `changesRequestedAt`. El prototipo pone el campo al pedir cambios y lo quita al aprobar.
+- Documentación: formats.md §5, ARCHITECTURE §4 y ui.md («Cambios pedidos»).
+
+### Desviaciones (respecto al plan)
+
+- Ninguna. Antes de aprobarla, la spec partió en dos la tarea de la tarjeta (core y CLI) por el aviso de tamaño.
+
+### Decisiones
+
+- `requested` presente es la señal de la revisión devuelta, en lugar de un campo nuevo en `ChangeView`: la CLI lo calcula con `changeWaitsFor` y core decide por él.
+- `assumptionDecidedLine` sigue diciendo «el agente debe corregir la spec» al rechazar un supuesto suelto: es la respuesta del servidor, que la UI no muestra.
+- `views.ts` de la UI importa `changeWaitsFor` del índice de core y no de `light.ts`, porque solo lo carga el worker de derivación.
+
+### Pendientes
+
+- Ninguno.

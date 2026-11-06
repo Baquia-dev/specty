@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-la-tarjeta-de-next-y-la-ui-leen-del-estado-que",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-la-tarjeta-de-next-y-la-ui-leen-del-estado-que",
   "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:c9a426e9343c7d0b5b00de3ee872a7e9ab7c5fe0348fbb6645b0255c6ef42a80",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "afc1f4447e03fc045925b28aad012f1939a685d3",
+      "attempts": 1,
       "startedAt": "2026-11-06T17:05:10.841Z",
       "doneAt": "2026-11-06T17:10:24.898Z",
-      "summary": "formats §5, ARCHITECTURE §4 y ui.md cuentan que next y la UI leen changesRequestedAt / changeWaitsFor y no la auditoría"
+      "summary": "formats §5, ARCHITECTURE §4 y ui.md cuentan que next y la UI leen changesRequestedAt / changeWaitsFor y no la auditoría",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-06T17:24:00.048Z",
   "lockedTests": {
     "packages/core/test/cards.test.ts": "sha256:3c906608772b822e69281aecdb510c99f0879d12dc37779de01263b5c6d5cf0c",
     "packages/core/test/cards/delegated.test.ts": "sha256:63896555fab3514bcc851160bf1d31070c7af877af8a641a865980c4e2a3ee51",
