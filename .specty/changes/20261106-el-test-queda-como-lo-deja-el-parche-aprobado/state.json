@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "id": "20261106-el-test-queda-como-lo-deja-el-parche-aprobado",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-el-test-queda-como-lo-deja-el-parche-aprobado",
+  "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:925b643cf0688a5e80967236f0893b176001dabccafda90fe98b9a1a561bf120",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4b6164ca3f8c704b1341171214d8fd29f7b0c14a42252870751a439273e4020a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:4541719d5360bf08e63f3f068510c6e551829a65bf2e7e7b6d7aaefaabba7731",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:97e962b9f28ca293fedcf3ee5287aa74964771e98e3e4eb31dd85c967fe7a28c",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:23b3b7d31220be040346c2ecdc1e90095700750073f538d66b90665666fb46e0",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:6a92dd192883157b4a11a13049fc77ff57c9092c571ecd6194b099e58c7de5a7",
+      "decision": "confirmed"
+    },
+    "A7": {
+      "hash": "sha256:8c178119104c24e3ba7d9caac3d857989c8e07a94e43931b995e25ff9c669630",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:b42ccc4e35f58dd34159de1cc2ed1409d1921418a192cecdcc2a6dee4775b87b",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:cf9595b9854a6aff5d8b7599c112ceca3cbf37880a989139233a5396f84368ca",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 9,
+    "AC": 9,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:726ad38556c7822125fff64c44d24e84cefecad5d510a7cbd078751824fdc6d2",
+    "at": "2026-11-06T14:47:42.677Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
