@@ -139,7 +139,8 @@ export function isRun(value: unknown): value is RunRecord {
     typeof value.startedAt === "string" &&
     Array.isArray(value.output) &&
     value.output.every(isText) &&
-    (value.task === undefined || typeof value.task === "string")
+    (value.task === undefined || typeof value.task === "string") &&
+    (value.stopped === undefined || typeof value.stopped === "boolean")
   );
 }
 
