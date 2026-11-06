@@ -70,3 +70,27 @@ Hoy quedan carpetas y worktrees huérfanos por cuatro vías (P198): una herramie
 - R2: Una carpeta fantasma grande (con dependencias que git no ignora) hace lento el rescate o la ref pesada — git solo guarda lo que no ignora; la salida dice el tamaño si pasa de un umbral, a decidir en C2.
 - R3: Podar los registros de git rompe la detección de los cambios abiertos sin carpeta o `specty restore` — un cambio sin carpeta se detecta por su rama, no por el registro, y `restore` ya quita esos registros; C2 lo comprueba con un test.
 - R4: Marcar `ended` en `/clear` hace que la limpieza quite una carpeta a la que la conversación nueva querría volver — tras `/clear` la conversación es otra y no estaba ligada; la de antes, si se reanuda, recupera su ligadura.
+
+## Cierre
+
+### Resumen
+
+Ya no quedan carpetas ni worktrees huérfanos (P198), en tres cortes cerrados en main. C1 (`20261106-el-guard-no-deja-recrear-carpetas-quitadas-y-el`, f5ec51b): el guard niega, con la regla `ghost`, escribir o borrar en una carpeta de `.worktrees/` o de `<repo>.worktrees/` que git no tiene registrada, y pide salir de ella o `specty restore <id>` si es la de un cambio abierto sin carpeta; el fin de una conversación marca `ended` en su ligadura, que la limpieza deja de contar, y un `SessionStart` de esa conversación la recupera. C2 (`20261106-la-limpieza-no-deja-huerfanos-y-rescata-lo-que`, c9302e1): `specty prune`, y `new`, `close` y `cancel` al terminar, podan los registros de worktrees sin carpeta salvo los bloqueados, quitan las carpetas de cambios terminados aunque tengan algo sin commit, barren las carpetas fantasma y borran las carpetas vacías de `.specty/changes/`, guardando antes lo que no está en un commit en `refs/specty/rescue/<nombre>/<hora>` (`flow/orphans.ts`, `flow/rescue.ts`). C3 (`20261106-doctor-y-status-dicen-si-quedan-huerfanos-y`, ad50ca0): `specty doctor` avisa de cada tipo de huérfano con cuántos hay y remite a `specty prune`, y cuenta las refs de rescate con cómo ver y recuperar la más reciente; `specty status` lo resume en «LIMPIEZA». Los tres pasaron la verificación completa. En este repositorio, `doctor` y `status` ya no encuentran ningún huérfano ni ref de rescate.
+
+### Desviaciones
+
+- Las refs de rescate se ven con `git show <ref>` y no con el `git log -p` de A6, que enseñaría también la historia de la rama (C2, y C3 lo sigue).
+- Cualquier `SessionStart` de la conversación le quita la marca `ended`, no solo `resume` (C1).
+- C2 adaptó la preparación de dos tests que ya existían (`prune.test.ts` y `worktrees.test.ts`) a la limpieza nueva, sin cambiar lo que comprueban.
+- Una carpeta de `.worktrees/` con un repositorio propio no se barre, porque no es de Specty (C2); el umbral del peso de R2 es de 10 MB.
+
+### Decisiones
+
+- La carpeta fantasma se reconoce solo por la ruta, sin mirar si existe: la escritura que la crearía es justo la que hay que negar (C1).
+- Los huérfanos y las refs de rescate son avisos de `doctor`, no fallos: no lo ponen en rojo (C3).
+- La ligadura de una conversación terminada no se borra, se marca: sirve para devolverla a su carpeta si se reanuda (A3).
+
+### Pendientes
+
+- `packages/cli/src/enforce/guard.ts` pasa el aviso de tamaño (308 líneas de código): falta dividirlo (P202).
+- `packages/cli/src/io/git.ts` pasa el aviso de tamaño (302 líneas de código): falta proponer cómo dividirlo (P209).

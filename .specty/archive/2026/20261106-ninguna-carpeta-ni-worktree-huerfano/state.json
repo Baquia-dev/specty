@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261106-ninguna-carpeta-ni-worktree-huerfano",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261106-ninguna-carpeta-ni-worktree-huerfano",
   "baseCommit": "723a599e2ab1ed33d68368a923a91151b72ffeb6",
-  "revision": 2,
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:54f3a8f77cd6c78e0c7aac0309bd253985a205df7580405ab79e144e2e982efa",
+    "at": "2026-11-06T08:24:37.884Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -55,11 +62,5 @@
     "C": 3,
     "R": 4
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:54f3a8f77cd6c78e0c7aac0309bd253985a205df7580405ab79e144e2e982efa",
-    "at": "2026-11-06T08:24:37.884Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-06T11:00:48.395Z"
 }
