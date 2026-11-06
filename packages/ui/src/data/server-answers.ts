@@ -11,7 +11,7 @@ import type {
   MemoryRecord,
   SliceChangeRecord,
 } from "./records";
-import type { FinishedPage } from "./source";
+import type { ActionNote, FinishedPage } from "./source";
 
 export const NO_SESSION: Bilingual = {
   es: "Esta pestaña no tiene sesión: abre el enlace que imprime `specty ui`.",
@@ -147,17 +147,34 @@ export function isRun(value: unknown): value is RunRecord {
 export function runEvent(
   data: unknown,
 ): { readonly change: string; readonly run: RunRecord | undefined } | undefined {
-  if (typeof data !== "string") return undefined;
-  const told: unknown = (() => {
-    try {
-      return JSON.parse(data);
-    } catch {
-      return undefined;
-    }
-  })();
+  const told = eventData(data);
   if (!isObject(told) || typeof told.change !== "string") return undefined;
   if (told.run === null) return { change: told.change, run: undefined };
   return isRun(told.run) ? { change: told.change, run: told.run } : undefined;
+}
+
+/**
+ * An `action` event: the change, the action and the line its command said, without the `specty:`
+ * that marks it in the terminal and with a capital; the start and the end bring none. Unreadable,
+ * undefined.
+ */
+export function actionEvent(data: unknown): ActionNote | undefined {
+  const told = eventData(data);
+  if (!isObject(told) || typeof told.change !== "string" || typeof told.action !== "string")
+    return undefined;
+  const said = typeof told.note === "string" ? told.note.replace(/^specty:\s*/, "").trim() : "";
+  const note = `${said.charAt(0).toUpperCase()}${said.slice(1)}`;
+  return { change: told.change, action: told.action, ...(note === "" ? {} : { note }) };
+}
+
+/** The JSON of an event's data; anything else, undefined. */
+function eventData(data: unknown): unknown {
+  if (typeof data !== "string") return undefined;
+  try {
+    return JSON.parse(data);
+  } catch {
+    return undefined;
+  }
 }
 
 export function isObject(value: unknown): value is Readonly<Record<string, unknown>> {

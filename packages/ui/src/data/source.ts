@@ -64,6 +64,18 @@ export interface FinishedPage {
   readonly finished: number;
 }
 
+/**
+ * A line the local server says of one of the person's actions on a change while it goes on (its
+ * `action` events): why it waits, say.
+ */
+export interface ActionNote {
+  readonly change: string;
+  /** The action, as the server's route names it: `accept`, `close`… */
+  readonly action: string;
+  /** What its command said, as the page shows it; none as the action starts and as it ends. */
+  readonly note?: string;
+}
+
 /** What the person decides on an entry of Specty's memory (ADR 0016). */
 export type MemoryVerb = "drop" | "keep" | "done";
 
@@ -155,6 +167,14 @@ export abstract class SpectyData {
    */
   watchRun(_change: string, listener: (run: RunRecord | undefined) => void): () => void {
     listener(undefined);
+    return () => undefined;
+  }
+
+  /**
+   * Follows what the server says of the person's actions on the changes as they go on; returns
+   * how to stop. A source whose actions say nothing as they go never calls `listener`.
+   */
+  watchActions(_listener: (told: ActionNote) => void): () => void {
     return () => undefined;
   }
 
