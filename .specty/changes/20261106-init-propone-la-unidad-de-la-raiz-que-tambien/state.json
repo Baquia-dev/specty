@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-init-propone-la-unidad-de-la-raiz-que-tambien",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-init-propone-la-unidad-de-la-raiz-que-tambien",
   "baseCommit": "db367341b166a577054bc4e764b86f2b224074b1",
   "revision": 2,
@@ -52,6 +52,9 @@
     "T": 4,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T02:53:34.171Z"
+  "lockedTests": {
+    "packages/cli/test/units-cargo.test.ts": "sha256:9dea60b5095153f32c17daf862a434986da8ebda8d730e8809a120a2f800cd5c",
+    "packages/cli/test/units-uv.test.ts": "sha256:88064118d499b98bbbe99acc1dc5b4cac86ca2ca8ae5fb8b13d4c9613e54d1a2",
+    "packages/core/test/units-proposal.test.ts": "sha256:f6b758eacfcdc2de1e7cc37d2c4470887d1aa0d9a282733926e7d7451cd36fbc"
+  }
 }
