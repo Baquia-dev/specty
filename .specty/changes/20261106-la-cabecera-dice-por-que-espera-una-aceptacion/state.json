@@ -6,6 +6,13 @@
   "branch": "specty/20261106-la-cabecera-dice-por-que-espera-una-aceptacion",
   "baseCommit": "288e88cbf522a73c14ab890101f8b1cb626ee433",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a2a6eec96fcdf0ebb9a601d4f02f2a13447438d8170aae38598f52d14e55ed36",
+    "at": "2026-11-06T09:41:53.706Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:a2a6eec96fcdf0ebb9a601d4f02f2a13447438d8170aae38598f52d14e55ed36",
-    "at": "2026-11-06T09:41:53.706Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T09:45:13.647Z"
 }
