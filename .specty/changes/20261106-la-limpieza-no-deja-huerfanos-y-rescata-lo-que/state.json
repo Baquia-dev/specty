@@ -6,6 +6,13 @@
   "branch": "specty/20261106-la-limpieza-no-deja-huerfanos-y-rescata-lo-que",
   "baseCommit": "f5ec51b661b7488ba529dca5e6648e0857548033",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9d35156c80b4ad043da924c0769c392e33ef74fbd9fb89de2081b44566e0b1fb",
+    "at": "2026-11-06T09:41:15.315Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -57,12 +64,6 @@
     "T": 5,
     "R": 5
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9d35156c80b4ad043da924c0769c392e33ef74fbd9fb89de2081b44566e0b1fb",
-    "at": "2026-11-06T09:41:15.315Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T09:47:49.881Z"
 }
