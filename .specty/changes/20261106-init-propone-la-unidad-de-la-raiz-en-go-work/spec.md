@@ -50,7 +50,7 @@ Desde 6bfc989, `specty init` propone una unidad para la raíz de un workspace de
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-go.test.ts && pnpm lint
   - type: feat
-- [ ] T2: El proyecto raíz de Gradle con tests recibe su unidad
+- [x] T2: El proyecto raíz de Gradle con tests recibe su unidad
   - files: packages/cli/src/detect/units-gradle.ts, packages/cli/test/units-gradle.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-gradle.test.ts && pnpm lint

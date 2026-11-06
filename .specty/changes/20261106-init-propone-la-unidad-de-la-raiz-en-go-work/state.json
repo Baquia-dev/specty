@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "acf1f8956db43e3a239ba6ce920c15e220236086",
+      "attempts": 2,
       "startedAt": "2026-11-06T03:58:10.685Z",
       "doneAt": "2026-11-06T03:59:07.524Z",
-      "summary": "go.work con use . lee el módulo de la raíz como uno más, con go test ./... (salta las carpetas con go.mod propio) y los paths de rootPackagePaths"
+      "summary": "go.work con use . lee el módulo de la raíz como uno más, con go test ./... (salta las carpetas con go.mod propio) y los paths de rootPackagePaths",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d78c665f94778b51d3af92bec0a54fe1ad2a9b36",
+      "startedAt": "2026-11-06T03:59:07.824Z",
+      "doneAt": "2026-11-06T03:59:48.830Z",
+      "summary": "Un proyecto raíz de Gradle con src/test es uno más en '.', con <runner> :test, llamado como rootProject.name (o root) y con los paths de rootPackagePaths; project(\":\") en un subproyecto apunta a él"
     }
   },
   "pending": {
