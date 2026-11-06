@@ -58,7 +58,7 @@ Hoy `specty init` no propone unidades de verificación en un workspace de Cargo 
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-cargo.test.ts test/init-units-cargo.test.ts && pnpm lint
   - type: feat
-- [ ] T3: La raíz de uv que también es un proyecto recibe su unidad
+- [x] T3: La raíz de uv que también es un proyecto recibe su unidad
   - files: packages/cli/src/detect/units-uv.ts, packages/cli/test/units-uv.test.ts, docs/formats.md
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-uv.test.ts test/workspace-units.test.ts && pnpm lint
