@@ -79,7 +79,7 @@ En la Bandeja, la tarjeta de una épica dibuja, bajo su fila, una línea por cad
 
 ## Tareas
 
-- [ ] T1: Las líneas de una épica dan el cambio y el estado de cada corte
+- [x] T1: Las líneas de una épica dan el cambio y el estado de cada corte
   - files: packages/ui/src/data/slice-changes.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/inbox/epic-lanes.ts, packages/ui/src/inbox/epic-lanes.test.ts, packages/ui/src/inbox/inbox-view.ts
   - ac: AC2, AC3, AC4, AC11
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/epic-lanes.test.ts --include src/review/spec-sections.test.ts --include src/inbox/inbox-view.test.ts

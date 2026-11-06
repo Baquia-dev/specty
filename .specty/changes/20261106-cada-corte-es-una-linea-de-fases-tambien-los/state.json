@@ -60,7 +60,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c96accdb742563861188a1b63562c5a7d99d3279",
+      "startedAt": "2026-11-06T15:47:24.325Z",
+      "doneAt": "2026-11-06T15:48:48.791Z",
+      "summary": "loadedSliceChanges pasa a data/slice-changes.ts y la usa la sección Cortes; epic-lanes.ts da por corte, en el orden de la spec, su cambio y su estado (sin estado, planeado, abierto con su decisión o terminado), los cortes sin nombrar al final y los tramos de su pista"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
