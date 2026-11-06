@@ -49,3 +49,21 @@ Desde 1917f17, el plugin de Specty para OpenCode toma como fin de turno `session
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-install.test.ts test/opencode.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
+
+## Cierre
+
+### Resumen
+
+`specty doctor` avisa ahora, con el código `opencode-turn-end`, cuando el plugin de Specty para OpenCode tiene el guard pero no escucha `session.execution.succeeded`, el fin de turno de OpenCode 2.2: es un plugin de antes de 1917f17, cuyo fin de turno no se dispara nunca con OpenCode 2.2 (P201). Sale con 1 y pide `specty init --tools opencode`, como el aviso de la tarjeta tras compactar. El texto va en español e inglés (`cards/doctor-agents.ts`) y lo mira el `doctor` de `agents/opencode.ts`; ARCHITECTURE lo cuenta en el fin de turno de OpenCode. AC1 tiene su test en `packages/cli/test/opencode-install.test.ts` y AC2 en `packages/core/test/cards/doctor-opencode-turn-end.test.ts`; la verificación completa pasó en la aceptación, con main incorporado.
+
+### Desviaciones
+
+- Ninguna respecto al plan aprobado.
+
+### Decisiones
+
+- El aviso mira el texto del plugin, como el de la compactación, y no la versión de OpenCode instalada: un plugin viejo falla con OpenCode 2.2 aunque hoy se use otra versión.
+
+### Pendientes
+
+- Ninguno.

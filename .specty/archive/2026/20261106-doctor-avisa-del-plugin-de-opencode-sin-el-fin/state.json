@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-doctor-avisa-del-plugin-de-opencode-sin-el-fin",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-doctor-avisa-del-plugin-de-opencode-sin-el-fin",
   "baseCommit": "bb6b8c18c0ff709f2414c7b4de05ba47d4343812",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:bfb6cc2aa279ed1c5506cc1a3c78e9ce427cb743fceba5f5a8032ce41558bbad",
@@ -44,12 +44,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f1043356808a15d0740bb4434af9b1bf52a12c15",
+      "attempts": 1,
       "startedAt": "2026-11-06T09:04:58.605Z",
       "doneAt": "2026-11-06T09:05:57.263Z",
-      "summary": "El doctor de OpenCode avisa (opencode-turn-end) cuando el plugin con guard no escucha session.execution.succeeded, como opencode-compact; ARCHITECTURE lo cuenta"
+      "summary": "El doctor de OpenCode avisa (opencode-turn-end) cuando el plugin con guard no escucha session.execution.succeeded, como opencode-compact; ARCHITECTURE lo cuenta",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -61,6 +61,7 @@
     "AC": 2,
     "T": 2
   },
+  "closingSubmittedAt": "2026-11-06T09:11:02.573Z",
   "lockedTests": {
     "packages/cli/test/opencode-install.test.ts": "sha256:70040a2cdb28142fb3e28e032c04fe347cffb7de38e9319c1909437be617dd72",
     "packages/core/test/cards/doctor-opencode-turn-end.test.ts": "sha256:0784669c96c9b091680ab22bd112cb3d658d6381fee167e948aad6bcf0112b33"
