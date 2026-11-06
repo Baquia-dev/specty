@@ -88,3 +88,27 @@ Cuando la persona pide cambios en la revisión, o rechaza supuestos al aprobar, 
 
 - R1: Otro código copia `{ ...state }` al cambiar de fase y arrastra el campo. Mitigación: la regla solo lo mira en `review`, y solo `propose` lleva un cambio a `review`, y lo borra.
 - R2: P219 y P221 tocan ARCHITECTURE en los párrafos del guard y del fin de turno. Mitigación: la documentación va en §4 y §15, sin tocar esos párrafos; si chocan al incorporar main, se resuelve con `specty integrate`.
+
+## Cierre
+
+### Resumen
+
+Cuando la persona devuelve la revisión, porque pide cambios desde la UI o rechaza supuestos al aprobar, el cambio sigue en `review` pero espera al agente. `specty wait` le devuelve enseguida la tarjeta de `next`, `status` dice «espera al agente», el guard deja pasar `sleep` y el fin de turno ya no le pide esperar. Una propuesta nueva devuelve el turno a la persona. Las piezas:
+- Core: `changeWaitsFor` (`flow/waiting.ts`) es la única regla de a quién espera un cambio. `state.json` gana `changesRequestedAt`.
+- CLI: `requestChanges` y la rama de `approve` con supuestos rechazados anotan el campo, y `propose` y la aprobación lo quitan. `isWaitingForHuman` (que usan `wait`, el fin de turno y el guard) y `status` leen `changeWaitsFor`. `server/unattended.ts` lee el `waitingFor` de `status`, sin su caso especial de `review.changes_requested`.
+- Documentación: el campo en formats.md §3 y §5, y la regla en ARCHITECTURE §4 (tabla y párrafo «A quién espera») y §15.
+
+### Desviaciones (respecto al plan)
+
+- Ninguna. Antes de aprobarla, la spec partió en dos la tarea de la CLI (quién escribe el campo y quién lo lee) por el aviso de tamaño, y quitó `pnpm typecheck` del `verify` de T2.
+
+### Decisiones
+
+- El hecho va en `state.json` y no se deduce de la auditoría, porque el guard y `wait` solo leen el estado, en cada llamada y en cada vuelta.
+- `isWaitingForHuman` sigue en `commands/wait.ts` como envoltorio de `changeWaitsFor`: así `enforce/guard.ts` y `enforce/agent-stop.ts`, cerca de lo que tocan P219 y P221, no cambian.
+- `unansweredDecision` de `server/unattended.ts` aún devuelve `event`, que ya nadie lee: lo dejé así para no tocar más de lo necesario.
+
+### Pendientes
+
+- P231: la tarjeta de `next` y la UI siguen leyendo los cambios pedidos de la auditoría, y `next` trata un supuesto rechazado suelto desde la UI como cambios pedidos, mientras `changeWaitsFor` dice que espera a la persona.
+- P232: tras rechazar supuestos al aprobar en la terminal, la UI no marca «Nadie retoma tu decisión», porque `assumption.decided` no está en `DECISIONS`.
