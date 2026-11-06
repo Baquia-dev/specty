@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-verificar-que-se-para-sin-mover-nada-deja-en-la-2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-verificar-que-se-para-sin-mover-nada-deja-en-la-2",
   "baseCommit": "d53e642555488d831c57061281c64b6a9b36f795",
   "revision": 1,
@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "02d905260d4bf59a5e7908708727f4becdf9e508",
+      "attempts": 1,
       "startedAt": "2026-11-06T21:30:26.876Z",
       "doneAt": "2026-11-06T21:33:31.569Z",
-      "summary": "El código y los tests de la rama de partida (73607fd, 162f3c4 y d53e642) pasan con comandos que de verdad cargan sus tests: vitest de la CLI para el servidor y ng test --include para la UI, más typecheck y lint."
+      "summary": "El código y los tests de la rama de partida (73607fd, 162f3c4 y d53e642) pasan con comandos que de verdad cargan sus tests: vitest de la CLI para el servidor y ng test --include para la UI, más typecheck y lint.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6af47c8accac133a6ea2a6d9ba838bd3856a9bf7",
+      "startedAt": "2026-11-06T21:33:32.020Z",
+      "doneAt": "2026-11-06T21:33:51.257Z",
+      "summary": "La documentación de la rama de partida (d53e642) ya cuenta la ejecución parada: docs/ui.md, en la sección «Verificación completa», y docs/ARCHITECTURE.md, en «Verificación completa desde la UI»."
     }
   },
   "pending": {

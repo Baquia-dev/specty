@@ -63,7 +63,7 @@ Cuando «Verificar» de la UI incorpora main antes de verificar y la incorporaci
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/verify-merge.test.ts test/server/runs.test.ts test/server/runs-turn.test.ts test/server/live.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/full-verification.test.ts --include src/acceptance/acceptance-actions.test.ts && pnpm typecheck && pnpm lint
   - type: test
-- [ ] T2: La documentación cuenta la ejecución parada
+- [x] T2: La documentación cuenta la ejecución parada
   - files: docs/ui.md, docs/ARCHITECTURE.md
   - ac: AC1, AC3
   - verify: grep -q 'se paró sin resultado' docs/ui.md && grep -q 'ejecución parada' docs/ARCHITECTURE.md
