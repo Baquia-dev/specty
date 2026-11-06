@@ -78,7 +78,7 @@ Hoy, si la persona aprueba, decide el alcance, pide cambios, acepta, ajusta o ci
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-row.test.ts --include src/data/fixtures.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T4: La documentación cuenta el aviso de la UI cuando nadie retoma una decisión
+- [x] T4: La documentación cuenta el aviso de la UI cuando nadie retoma una decisión
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC3
   - verify: pnpm typecheck && pnpm lint && pnpm sources && pnpm knip
