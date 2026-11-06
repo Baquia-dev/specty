@@ -18,6 +18,7 @@ import {
   hasGuard,
   missingEvents,
   removeFromJson,
+  stopLines,
   withHooks,
 } from "../install/agents";
 import { rewriteJson } from "../install/files";
@@ -130,15 +131,16 @@ export const geminiCli: AgentAdapter = {
     if (!hasGuard(text, "gemini-cli")) {
       return { ok: [], problems: [{ code: "no-gemini-guard", file }] };
     }
+    const stop = stopLines([text], "gemini-cli", ["agent-stop"]);
     const missing = missingEvents([text], Object.keys(EVENTS), "gemini-cli");
     if (missing.length > 0) {
-      return { ok: [], problems: [{ code: "gemini-hooks", file, events: missing.join(", ") }] };
+      const events = missing.join(", ");
+      return { ok: [], problems: [{ code: "gemini-hooks", file, events }, ...stop] };
     }
-    const outdated = beforeEnter(text);
-    return {
-      ok: [{ code: "gemini-guard", file }],
-      problems: outdated ? [{ code: "enter-outdated", tool: "gemini-cli", file }] : [],
-    };
+    const outdated = beforeEnter(text)
+      ? [{ code: "enter-outdated", tool: "gemini-cli", file } as const]
+      : [];
+    return { ok: [{ code: "gemini-guard", file }], problems: [...outdated, ...stop] };
   },
 };
 

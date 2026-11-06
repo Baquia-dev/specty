@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "id": "20261107-la-tarjeta-de-next-y-la-ui-leen-del-estado-que",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-la-tarjeta-de-next-y-la-ui-leen-del-estado-que",
+  "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c9a426e9343c7d0b5b00de3ee872a7e9ab7c5fe0348fbb6645b0255c6ef42a80",
+    "at": "2026-11-06T16:36:10.258Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "3 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c12bf4227f7da197de5574bfb4aea822d5f20362d26891f473f40389f6bac28d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c78c7fc647ce8afd52a4c1079ef37142d1af927d5ebdf0bffa522b1819dbc816",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:58f4ab3c14c4ed4c512dc0090d18a0f945468ef8dc1f1f17f84f499fcf4e7a0e",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:57201dfde7a54503625388f70ceba2579da9b9a6ac77bf268e6b12b1d1cf092c",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:6bb823377f1d7028076b6bafaff9a5a9c41f5e4113bc802950301b03590d2296",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "b3c4af76c449ee6f167218dcbf78a60abfac14bc",
+      "attempts": 1,
+      "startedAt": "2026-11-06T16:54:15.233Z",
+      "doneAt": "2026-11-06T16:58:35.284Z",
+      "summary": "reviewCard da los cambios pedidos solo si el ChangeView trae requested (la revisión devuelta); sin nada que listar dice que el usuario devolvió la revisión",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "36c219d918b5d7d7af0faae5388e87ef1e398284",
+      "attempts": 1,
+      "startedAt": "2026-11-06T16:58:35.603Z",
+      "doneAt": "2026-11-06T16:59:26.694Z",
+      "summary": "phaseFacts pone requested solo en review con changeWaitsFor = agent (changesRequestedAt), y requested lee los comentarios sin la auditoría",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "30821226c8ad9a3b7faad1326bc08ebb85db3792",
+      "attempts": 1,
+      "startedAt": "2026-11-06T16:59:27.058Z",
+      "doneAt": "2026-11-06T17:05:10.429Z",
+      "summary": "decisionOf y changesRequestedOf leen el estado (changeWaitsFor y changesRequestedAt), no la auditoría; el prototipo pone changesRequestedAt al pedir cambios y lo quita al aprobar",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "afc1f4447e03fc045925b28aad012f1939a685d3",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:05:10.841Z",
+      "doneAt": "2026-11-06T17:10:24.898Z",
+      "summary": "formats §5, ARCHITECTURE §4 y ui.md cuentan que next y la UI leen changesRequestedAt / changeWaitsFor y no la auditoría",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-06T17:24:00.048Z",
+  "lockedTests": {
+    "packages/core/test/cards.test.ts": "sha256:3c906608772b822e69281aecdb510c99f0879d12dc37779de01263b5c6d5cf0c",
+    "packages/core/test/cards/delegated.test.ts": "sha256:63896555fab3514bcc851160bf1d31070c7af877af8a641a865980c4e2a3ee51",
+    "packages/ui/src/data/fixtures.test.ts": "sha256:41fb154cd53e20aa9692c9f944d308bb1e6d36e396585e5efb06e911edf1ce89",
+    "packages/ui/src/data/views.test.ts": "sha256:e0f89297f4a7b65a2d08046ccb74f0d28d2dbc2398336ed6e17f570bc9410395",
+    "packages/cli/test/changes-requested-card.test.ts": "sha256:b57765658eaf41ab7afd7db6d1240bb820d72138aad4967e496a78d5bbcdf42d"
+  }
+}

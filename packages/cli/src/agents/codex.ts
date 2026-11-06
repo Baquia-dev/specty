@@ -17,9 +17,9 @@ import {
   excludeLocally,
   hasGuard,
   isOurs,
-  memoryStopLines,
   missingEvents,
   removeFromJson,
+  stopLines,
   withHooks,
   withMemoryStop,
 } from "../install/agents";
@@ -177,7 +177,7 @@ export const codex: AgentAdapter = {
         ...(compact ? [] : [{ code: "codex-compact", file: CODEX_HOOKS } as const]),
         ...(starts ? [] : [{ code: "codex-startup", file: CODEX_HOOKS } as const]),
         ...beforeEnter(rules),
-        ...memoryStopLines([hooks], "codex"),
+        ...stopLines([hooks], "codex", ["memory-stop", "agent-stop"]),
       ],
     };
   },

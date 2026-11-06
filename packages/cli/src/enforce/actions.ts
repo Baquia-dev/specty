@@ -77,8 +77,18 @@ export type RawAction =
       readonly writes: readonly string[];
       readonly deletes: readonly string[];
     }
-  | { readonly kind: "shell"; readonly command: string }
+  | {
+      readonly kind: "shell";
+      readonly command: string;
+      /**
+       * Whether the tool runs it in the background, for a tool whose shell says so (Claude Code's
+       * `run_in_background`).
+       */
+      readonly background?: boolean;
+    }
   | { readonly kind: "enter"; readonly request: EnterRequest }
+  /** A tool of the agent's own removes the worktree at `path` (OpenCode's `worktree_remove`). */
+  | { readonly kind: "remove-worktree"; readonly path: string }
   | { readonly kind: "other" };
 
 /** A path the tool sent, as a list: empty when it sent none. */
@@ -86,7 +96,13 @@ export function sentPaths(value: unknown): string[] {
   return typeof value === "string" && value.length > 0 ? [value] : [];
 }
 
-/** A shell command the tool sent, as an action; anything else is no action of Specty's. */
-export function shellAction(command: unknown): RawAction {
-  return typeof command === "string" ? { kind: "shell", command } : { kind: "other" };
+/**
+ * A shell command the tool sent, as an action, with whether it runs in the background for a tool
+ * that says so; anything else is no action of Specty's.
+ */
+export function shellAction(command: unknown, background?: boolean): RawAction {
+  if (typeof command !== "string") return { kind: "other" };
+  return background === undefined
+    ? { kind: "shell", command }
+    : { kind: "shell", command, background };
 }

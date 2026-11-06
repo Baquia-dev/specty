@@ -4,6 +4,7 @@
 import {
   type ChangeState,
   type ChangeSummary as CoreChangeSummary,
+  changeWaitsFor,
   parseChangeState,
   parseSpec,
   recommendEffort,
@@ -26,9 +27,12 @@ import { warningsOf } from "./warnings";
 /** The tab a change opens on, by phase: core's rule, the same the local server summarizes with. */
 export { initialTab } from "@baquia-dev/specty-core";
 
-/** What the person has to decide now, if anything (docs/ui.md, Bandeja). */
+/**
+ * What the person has to decide now, if anything (docs/ui.md, Bandeja). The review, only while
+ * it is theirs (`changeWaitsFor`): not once they sent it back.
+ */
 export function decisionOf(state: ChangeState): DecisionKind | undefined {
-  if (state.phase === "review") return "review";
+  if (state.phase === "review") return changeWaitsFor(state) === "human" ? "review" : undefined;
   if (state.phase === "testing" && state.testsSubmittedAt !== undefined) return "tests";
   if (state.phase === "implementing" && state.pending.scopeRequests.length > 0) return "scope";
   if (state.phase === "acceptance") return "acceptance";
@@ -38,19 +42,12 @@ export function decisionOf(state: ChangeState): DecisionKind | undefined {
 
 /**
  * The changes the person asked for on the revision in review, while the agent owes the next one:
- * the last proposal or request in the audit is a request, as `specty next` reads it.
+ * `changesRequestedAt` in the state, as `specty next` and `specty wait` read it. The revision is
+ * the one in review, since only the next proposal raises it, and that proposal clears the field.
  */
-function changesRequestedOf(
-  state: ChangeState,
-  audit: readonly AuditRecord[],
-): ChangeView["changesRequested"] {
-  if (state.phase !== "review") return undefined;
-  const last = audit.findLast(
-    (entry) => entry.event === "spec.proposed" || entry.event === "review.changes_requested",
-  );
-  if (last?.event !== "review.changes_requested") return undefined;
-  const { revision } = last.data;
-  return { revision: typeof revision === "number" ? revision : state.revision, at: last.ts };
+function changesRequestedOf(state: ChangeState): ChangeView["changesRequested"] {
+  if (state.phase !== "review" || state.changesRequestedAt === undefined) return undefined;
+  return { revision: state.revision, at: state.changesRequestedAt };
 }
 
 /** High-impact assumptions without a decision of the person. */
@@ -66,8 +63,8 @@ export function deriveView(record: ChangeRecord): ChangeView {
   const { state, spec, problems } = parseRecord(record);
   const audit = record.audit ?? [];
   const summary = summarizeChange({ spec, state, phaseSince: record.phaseSince, audit });
-  const requested = changesRequestedOf(state, audit);
-  const decision = requested === undefined ? decisionOf(state) : undefined;
+  const requested = changesRequestedOf(state);
+  const decision = decisionOf(state);
   return {
     ...identityOf(record, state, spec, summary),
     effort: recommendEffort(summary.size.level),
@@ -133,6 +130,7 @@ function identityOf(
   | "lost"
   | "orphan"
   | "away"
+  | "unattended"
   | "configIssues"
   | "phaseSince"
   | "createdAt"
@@ -151,10 +149,21 @@ function identityOf(
     ...(state.branch === undefined ? {} : { branch: state.branch }),
     ...(record.folder === undefined ? {} : { folder: record.folder }),
     ...(record.lost === true ? { lost: true } : {}),
-    ...(record.orphan === true ? { orphan: true } : {}),
-    ...(record.away === undefined ? {} : { away: record.away }),
+    ...holdsOf(record),
     ...(record.configIssues === undefined ? {} : { configIssues: record.configIssues }),
     goal: spec.sections.goal ?? spec.sections.reason ?? "",
+  };
+}
+
+/**
+ * Who holds it, as the server says: nobody (an orphan), its conversation from another folder, or
+ * nobody picks up the person's last decision.
+ */
+function holdsOf(record: ChangeRecord): Pick<ChangeView, "orphan" | "away" | "unattended"> {
+  return {
+    ...(record.orphan === true ? { orphan: true } : {}),
+    ...(record.away === undefined ? {} : { away: record.away }),
+    ...(record.unattended === undefined ? {} : { unattended: record.unattended }),
   };
 }
 

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { lookup } from "../lookup";
 import { basename } from "../paths";
-import { analyzeGit, type GitCommit } from "./git";
+import { analyzeGit, type GitCommit, type GitRemoval } from "./git";
 import { type SpectyCalls, spectyCalls, subcommand } from "./specty-calls";
 import { type Token, tokenize } from "./tokens";
+import { waitingProgram } from "./waits";
 
 /** What a shell command would do, as far as the flow is concerned. */
 export interface ShellAnalysis extends SpectyCalls {
@@ -16,6 +17,13 @@ export interface ShellAnalysis extends SpectyCalls {
    * somewhere unknown.
    */
   readonly commits: readonly { readonly all: boolean; readonly directory?: string }[];
+  /**
+   * The worktrees its `git worktree remove` commands remove: by `name`, as typed, which git also
+   * takes as the end of a worktree's path, and by `path`, placed like `directory` in `commits`,
+   * when the analysis can name where it runs. One with shell variables, `~` or backquotes is
+   * left out.
+   */
+  readonly worktreeRemovals: readonly { readonly name: string; readonly path?: string }[];
   /** Skips or disables hooks: `--no-verify`, `core.hooksPath`, `HUSKY=0`… */
   readonly bypass: boolean;
   /** The branches its git commands write, delete, push or check out; `*` for all or unknown. */
@@ -27,6 +35,12 @@ export interface ShellAnalysis extends SpectyCalls {
   /** Written or removed paths it cannot place: shell variables, `~`, or after `cd` to an unknown directory. */
   readonly unresolved: readonly string[];
   /**
+   * The program of each simple command that only waits (`sleep`, `caffeinate -w`, the shell's
+   * `wait`…, `guard/waits.ts`), also after the words that open a compound command or one of its
+   * branches (`do`, `then`, `{`…), assignments and wrappers.
+   */
+  readonly waits: readonly string[];
+  /**
    * Where each simple command but `cd` runs: relative to where the command starts (`""` is
    * there), absolute, or undefined after a `cd` somewhere the analysis cannot name.
    */
@@ -37,6 +51,23 @@ export interface ShellAnalysis extends SpectyCalls {
 type Directory = string | undefined;
 
 const WRAPPERS: ReadonlySet<string> = new Set(["sudo", "env", "command", "exec", "time", "nohup"]);
+/**
+ * The words that open a compound command or one of its branches, before the command it runs:
+ * every rule reads the program past them, and `cd` too.
+ */
+const OPENERS: ReadonlySet<string> = new Set([
+  "if",
+  "then",
+  "elif",
+  "else",
+  "while",
+  "until",
+  "do",
+  "!",
+  "{",
+]);
+/** The words that close a compound command: a simple command of only these runs nothing. */
+const CLOSERS: ReadonlySet<string> = new Set(["}", "fi", "done", "esac"]);
 const RUNNERS: ReadonlySet<string> = new Set(["node", "bun", "deno"]);
 const BYPASS_ENV: Readonly<Record<string, string>> = { HUSKY: "0", LEFTHOOK: "0" };
 const SENSITIVE_SPECTY = /common\/specty\/delegated\.json|\.git\/common\/specty/;
@@ -48,11 +79,13 @@ const EMPTY: ShellAnalysis = {
   specty: [],
   unscopedNpx: false,
   commits: [],
+  worktreeRemovals: [],
   bypass: false,
   refs: [],
   writes: [],
   deletes: [],
   unresolved: [],
+  waits: [],
   enters: [],
   fronts: [],
   resolves: [],
@@ -61,9 +94,10 @@ const EMPTY: ShellAnalysis = {
   runsIn: [],
 };
 
-/** What one simple command does, before placing its paths and commits. */
-type Segment = Omit<ShellAnalysis, "unresolved" | "commits" | "runsIn"> & {
+/** What one simple command does, before placing its paths, commits and removed worktrees. */
+type Segment = Omit<ShellAnalysis, "unresolved" | "commits" | "worktreeRemovals" | "runsIn"> & {
   readonly commits: readonly GitCommit[];
+  readonly removes: readonly GitRemoval[];
 };
 
 /** Paths are relative to where the command starts, following its `cd`s, or absolute. */
@@ -71,8 +105,14 @@ export function analyzeShell(command: string): ShellAnalysis {
   let directory: Directory = "";
   // Where to return when each open subshell closes: its `cd`s stay inside it.
   const outer: Directory[] = [];
+  // Whether a command before sent jobs to the background, which the shell's `wait` collects.
+  let launched = false;
   let result = EMPTY;
   for (const tokens of tokenize(command)) {
+    if (tokens === "&") {
+      launched = true;
+      continue;
+    }
     if (tokens === "(") {
       outer.push(directory);
       continue;
@@ -81,7 +121,7 @@ export function analyzeShell(command: string): ShellAnalysis {
       if (outer.length > 0) directory = outer.pop();
       continue;
     }
-    const segment = analyzeSegment(tokens);
+    const segment = analyzeSegment(tokens, launched);
     const place = (paths: readonly string[]) => paths.map((path) => locate(directory, path));
     const writes = place(segment.writes);
     const deletes = place(segment.deletes);
@@ -89,10 +129,11 @@ export function analyzeShell(command: string): ShellAnalysis {
     result = merge(result, {
       ...segment,
       commits: segment.commits.map((commit) => placeCommit(directory, commit)),
+      worktreeRemovals: segment.removes.flatMap((removal) => placeRemoval(directory, removal)),
       writes: writes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
       deletes: deletes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
       unresolved: unresolved.map((item) => item.raw),
-      runsIn: isCd(tokens) ? [] : [directory],
+      runsIn: isCd(tokens) || closesOnly(tokens) ? [] : [directory],
     });
     directory = changeDirectory(directory, tokens);
   }
@@ -109,12 +150,18 @@ function locate(directory: Directory, raw: string): { raw: string; path: string 
 }
 
 function isCd(tokens: readonly Token[]): boolean {
-  return tokens.find((token) => !token.operator)?.text === "cd";
+  return commandWords(tokens)[0] === "cd";
+}
+
+/** Whether a simple command only closes blocks (`}`, `fi`, `done`, `esac`), redirections apart. */
+function closesOnly(tokens: readonly Token[]): boolean {
+  const { words } = splitRedirections(tokens);
+  return words.length > 0 && words.every((word) => CLOSERS.has(word));
 }
 
 /** The directory after this segment: it only changes on `cd`. */
 function changeDirectory(directory: Directory, tokens: readonly Token[]): Directory {
-  const words = tokens.filter((token) => !token.operator).map((token) => token.text);
+  const words = commandWords(tokens);
   if (words[0] !== "cd") return directory;
   const target = words.slice(1).find((word) => !word.startsWith("-") || word === "-");
   return target === undefined ? undefined : enter(directory, target);
@@ -137,21 +184,29 @@ function placeCommit(directory: Directory, commit: GitCommit): ShellAnalysis["co
     : { all: commit.all, directory: where };
 }
 
-function analyzeSegment(tokens: readonly Token[]): Segment {
+/** A removed worktree, named from its segment's directory moved by its `-C` options. */
+function placeRemoval(
+  directory: Directory,
+  { worktree, moves }: GitRemoval,
+): ShellAnalysis["worktreeRemovals"] {
+  if (UNRESOLVABLE.test(worktree)) return [];
+  const where = moves.reduce<Directory>((from, move) => enter(from, move), directory);
+  const { path } = locate(where, worktree);
+  return [path === undefined ? { name: worktree } : { name: worktree, path }];
+}
+
+function analyzeSegment(tokens: readonly Token[], launched: boolean): Segment {
   const { words, redirected } = splitRedirections(tokens);
-  const assignments = words.filter(
-    (word, index) => isAssignment(word) && words.slice(0, index).every(isAssignment),
-  );
+  const { assignments, program, args } = locateProgram(opened(words));
   const bypassByEnv = assignments.some((assignment) => {
     const [name, value] = assignment.split("=", 2);
     return name !== undefined && lookup(BYPASS_ENV, name) === value;
   });
-  const start = skipWrappers(words, assignments.length);
-  const program = basename(words[start] ?? "");
-  const args = words.slice(start + 1);
-  const git = program === "git" ? analyzeGit(args) : { commits: [], bypass: false, refs: [] };
+  const git =
+    program === "git" ? analyzeGit(args) : { commits: [], removes: [], bypass: false, refs: [] };
   const files = program === "" ? { writes: [], deletes: [] } : fileEffects(program, args);
   const specty = spectyArgs(program, args);
+  const waiting = waitingProgram(program, args, launched);
   const bypassBySpecty =
     specty === undefined &&
     (words.some((word) => SENSITIVE_SPECTY.test(word)) ||
@@ -160,10 +215,42 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
     ...spectyCalls(specty),
     unscopedNpx: isUnscopedNpx(program, args),
     commits: git.commits,
+    removes: git.removes,
     bypass: bypassByEnv || git.bypass || bypassBySpecty,
     refs: git.refs,
     writes: [...redirected, ...files.writes],
     deletes: files.deletes,
+    waits: waiting === undefined ? [] : [waiting],
+  };
+}
+
+/** A simple command's words, redirection targets included, past the words in `OPENERS`. */
+function commandWords(tokens: readonly Token[]): readonly string[] {
+  return opened(tokens.filter((token) => !token.operator).map((token) => token.text));
+}
+
+/**
+ * A simple command's words past the ones that open a compound command or one of its branches
+ * (`then`, `do`, `{`…): only at its start, so `echo then x` keeps them all.
+ */
+function opened(words: readonly string[]): readonly string[] {
+  const first = words.findIndex((word) => !OPENERS.has(word));
+  return first === -1 ? [] : words.slice(first);
+}
+
+/** The program a simple command runs, past its assignments and wrappers, and its arguments. */
+function locateProgram(words: readonly string[]): {
+  readonly assignments: readonly string[];
+  readonly program: string;
+  readonly args: readonly string[];
+} {
+  const assigned = words.findIndex((word) => !isAssignment(word));
+  const assignments = assigned === -1 ? words : words.slice(0, assigned);
+  const start = skipWrappers(words, assignments.length);
+  return {
+    assignments,
+    program: basename(words[start] ?? ""),
+    args: words.slice(start + 1),
   };
 }
 
@@ -172,11 +259,13 @@ function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
     specty: [...a.specty, ...b.specty],
     unscopedNpx: a.unscopedNpx || b.unscopedNpx,
     commits: [...a.commits, ...b.commits],
+    worktreeRemovals: [...a.worktreeRemovals, ...b.worktreeRemovals],
     bypass: a.bypass || b.bypass,
     refs: [...a.refs, ...b.refs],
     writes: [...a.writes, ...b.writes],
     deletes: [...a.deletes, ...b.deletes],
     unresolved: [...a.unresolved, ...b.unresolved],
+    waits: [...a.waits, ...b.waits],
     enters: [...a.enters, ...b.enters],
     fronts: [...a.fronts, ...b.fronts],
     resolves: [...a.resolves, ...b.resolves],

@@ -19,10 +19,13 @@ import {
   scopeAddRefusalCard,
   scopeRequestedCard,
   scopeRulesFrom,
+  type UnlockRefusal,
+  unlockRefusalCard,
   withLead,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { listed, sharedBlock, sharedFiles } from "../flow/shared";
+import { type UnlockOptions, type UnlockProposal, unlockProposal } from "../flow/unlock-proposal";
 import { changeView } from "../flow/views";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
@@ -33,12 +36,17 @@ function requestedTask(state: ChangeState, option: string | undefined): string {
   return (option ?? active ?? "").toUpperCase();
 }
 
+/** What `specty scope add` gives besides its paths: why, for which task, and an unlock's options. */
+export interface ScopeAsk extends UnlockOptions {
+  readonly reason: string;
+  readonly task: string | undefined;
+}
+
 /** `specty scope add`: extends the active task's scope, by policy or on a person's approval. */
 export async function scopeAdd(
   session: Session,
   rawPaths: readonly string[],
-  reason: string,
-  taskOption: string | undefined,
+  ask: ScopeAsk,
 ): Promise<Output> {
   const { cards } = session;
   const active = await resolveActive(session);
@@ -47,13 +55,13 @@ export async function scopeAdd(
   }
   const { state } = active;
   const header = headerOf(state.id, "implementing");
-  const taskId = requestedTask(state, taskOption);
+  const taskId = requestedTask(state, ask.task);
   const stored = state.tasks[taskId];
   if (stored?.status !== "active") {
     return scopeAddRefusalCard({ reason: "not-active", task: taskId }, header, cards);
   }
   const paths = rawPaths.map(normalizePath);
-  const refusal = requestRefusal(paths, reason, taskId);
+  const refusal = requestRefusal(paths, ask.reason, taskId);
   if (refusal !== undefined) return scopeAddRefusalCard(refusal, header, cards);
   const spec = parseSpec(await readSpec(active.files), { language: session.lang }).spec;
   const task = spec.sections.tasks?.items.find((item) => item.id === taskId);
@@ -65,13 +73,15 @@ export async function scopeAdd(
     active.state,
     rules,
   );
+  const unlock = await unlockOf(session, state, locked, ask);
+  if (!unlock.ok) return unlockRefusalCard(unlock.refusal, { task: taskId, paths }, header, cards);
   if (missing.length === 0) {
     return withLead(
       inScopeLead(cards),
       nextCard({ change: await changeView(session, active), dirty: [] }, cards),
     );
   }
-  const wanted: Wanted = { task: taskId, paths: missing, reason: reason.trim() };
+  const wanted: Wanted = { task: taskId, paths: missing, reason: ask.reason.trim() };
   // The change's scope: what the approved spec lists in Files, both sides of each rename.
   const planned = listed(spec);
   // Requested files another open change also lists, shown whatever the decision.
@@ -80,13 +90,33 @@ export async function scopeAdd(
   const card =
     locked.length === 0 && decideScopeRequest(missing, rules, planned) === "auto"
       ? await approveByPolicy(session, active, spec, wanted, planned)
-      : await requestApproval(session, active, header, wanted, locked.length > 0);
+      : await requestApproval(session, active, header, wanted, unlock.proposal);
   return { ...card, blocks: [...card.blocks, ...shared] };
 }
 
 /**
+ * The unlock a request asks for: the patch and the evidence of its `locked` tests, none without
+ * them, or why not. `--patch` and `--evidence` only explain an unlock (ADR 0014).
+ */
+async function unlockOf(
+  session: Session,
+  state: ChangeState,
+  locked: readonly string[],
+  ask: ScopeAsk,
+): Promise<
+  | { readonly ok: true; readonly proposal: UnlockProposal | undefined }
+  | { readonly ok: false; readonly refusal: UnlockRefusal }
+> {
+  if (locked.length > 0) return unlockProposal(session, state, locked, ask);
+  return ask.patch === undefined && ask.evidence.length === 0
+    ? { ok: true, proposal: undefined }
+    : { ok: false, refusal: { reason: "not-unlock" } };
+}
+
+/**
  * What the task asks for: the paths outside its scope and, though inside it, the approved tests
- * still locked for it (`locked`), whose unlock is a request too.
+ * (`locked`), whose unlock is a request too; also one already unlocked for it, whose new patch
+ * replaces the earlier one (ADR 0014).
  */
 function askedFor(
   paths: readonly string[],
@@ -98,9 +128,7 @@ function askedFor(
   const outside = paths.filter(
     (path) => classifyPath(path, { taskFiles, extras, rules }) === "out-of-scope",
   );
-  const locked = paths.filter(
-    (path) => Object.hasOwn(state.lockedTests ?? {}, path) && !extras.includes(path),
-  );
+  const locked = paths.filter((path) => Object.hasOwn(state.lockedTests ?? {}, path));
   return { missing: [...new Set([...outside, ...locked])], locked };
 }
 
@@ -167,15 +195,15 @@ async function approveByPolicy(
 }
 
 /**
- * A request the person decides on, numbered after the change's last one. One that `unlocks` an
- * approved test is the person's alone.
+ * A request the person decides on, numbered after the change's last one. One that unlocks an
+ * approved test, with its `unlock` patch and evidence, is the person's alone.
  */
 async function requestApproval(
   session: Session,
   active: StoredChange,
   header: string,
   wanted: Wanted,
-  unlocks: boolean,
+  unlock: UnlockProposal | undefined,
 ): Promise<Output> {
   const { state } = active;
   const number = (state.maxIds.S ?? 0) + 1;
@@ -184,6 +212,7 @@ async function requestApproval(
     task: wanted.task,
     paths: [...wanted.paths],
     reason: wanted.reason,
+    ...(unlock === undefined ? {} : { patch: unlock.patch, evidence: [...unlock.evidence] }),
   };
   await commitState(
     session,
@@ -196,7 +225,7 @@ async function requestApproval(
     "scope.requested",
     request,
   );
-  return scopeRequestedCard(header, request.id, wanted.paths, session.cards, unlocks);
+  return scopeRequestedCard(header, request.id, wanted.paths, session.cards, unlock !== undefined);
 }
 
 export function withExtras(

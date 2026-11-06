@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261106-init-lleva-el-fin-de-turno-de-claude-code-al",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261106-init-lleva-el-fin-de-turno-de-claude-code-al",
+  "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d6b1ec07ac88fec1819075a91d27e3f6e8bfef4c27833450b930faf2f89ce87b",
+    "at": "2026-11-06T15:34:02.598Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "863808fd820ee9563b6cdde79c320be20dcefede",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:35:22.274Z",
+      "doneAt": "2026-11-06T15:41:42.503Z",
+      "summary": "install de Claude Code quita el agent-stop del archivo de ajustes anterior (withoutTurnEnd) y lo lleva al nuevo con el comando del guard, su límite de tiempo y su check (withTurnEndFrom); si el nuevo ya tenía uno, queda ese, con el check si alguno lo corría",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/cli/test/init-agent-stop-move.test.ts": "sha256:0f0463156945bf8e986d6d10c3bbe283c2906abafc7f9eb92a6d65b787ef190b"
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "id": "20261106-la-limpieza-no-deja-huerfanos-y-rescata-lo-que",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-la-limpieza-no-deja-huerfanos-y-rescata-lo-que",
+  "baseCommit": "f5ec51b661b7488ba529dca5e6648e0857548033",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9d35156c80b4ad043da924c0769c392e33ef74fbd9fb89de2081b44566e0b1fb",
+    "at": "2026-11-06T09:41:15.315Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:76dcd974373ec33f3c7cb24e0a59a49d522461a9f3a57772579a53b1c894befe",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a62bd0e3a44ba4049dc6df846fab97da7f2091689a50203d2f4732847bde37f4",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:421c3da24310b4992db54b83060fb56f3012b1a927644d04909a7e9c6ed99b9e",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:5b6466a827290776ac1355e746e9aa3bb34fdde80ec0b76d1b93b4f5c4afd60d",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:51037130c8c2b832ea274883ba9ec7d08025572c01e128df81e8183900965873",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:109ec8912f25e00445cc9399f4ecce8ac1ff0431af610d97d2fbceffdf66f561",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:24e117c0b914647a58f7a558c7132507c5e6ff76e9bb167eab7b16eaf01e7472",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0f8c823e9742a973df7992a1a1da5180f6efe826",
+      "attempts": 1,
+      "startedAt": "2026-11-06T09:47:57.787Z",
+      "doneAt": "2026-11-06T09:54:35.445Z",
+      "summary": "cards/parallel.ts: RescuedFolder, UnsavedFolder, rescueCommitSubject, cleanupBlocks y las secciones nuevas de pruneCard (fantasmas, refs de rescate con su peso desde 10 MB, registros olvidados, carpetas vacías, no guardadas en QUEDAN), en es y en; exportados en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "3bf61d6fed354715a56f1d174c206c6627f94d8c",
+      "attempts": 1,
+      "startedAt": "2026-11-06T09:54:35.782Z",
+      "doneAt": "2026-11-06T09:56:44.178Z",
+      "summary": "flow/rescue.ts: rescueFolder guarda una carpeta en refs/specty/rescue/<nombre>/<hora> con un índice temporal; removeFinished rescata lo sin commit de un cambio terminado y lo quita con --force, o lo deja si no puede guardarlo",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "87b058998f23dc4c74d997c6ff513a7fbd45ba10",
+      "attempts": 1,
+      "startedAt": "2026-11-06T09:56:44.501Z",
+      "doneAt": "2026-11-06T09:59:24.412Z",
+      "summary": "flow/orphans.ts encuentra los registros sin carpeta, las carpetas fantasma que se barren y las carpetas vacías de .specty/changes/; cleanUp en flow/prune.ts poda, quita con rescate, barre y borra, y prune lo dice",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "303daf4dd42f41ae707496ac4c75e0b0f288adba",
+      "attempts": 2,
+      "startedAt": "2026-11-06T09:59:24.734Z",
+      "doneAt": "2026-11-06T10:15:09.546Z",
+      "summary": "new limpia con cleanUp y su tarjeta añade fantasmas y refs de rescate; close y cancel limpian al terminar desde la carpeta principal (withCleanupFrom); prune.test y worktrees.test adaptan su preparación a esa limpieza",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "3810dc6ffdba1cd397d52b339be4bc5e8e8177bb",
+      "attempts": 1,
+      "startedAt": "2026-11-06T10:15:09.852Z",
+      "doneAt": "2026-11-06T10:16:39.772Z",
+      "summary": "ARCHITECTURE §9 y §10 cuentan la limpieza nueva y las refs de rescate, formats.md §1 las refs de rescate y el índice temporal del rescate, y el glosario gana «Ref de rescate»",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 11,
+    "T": 5,
+    "R": 5
+  },
+  "closingSubmittedAt": "2026-11-06T10:22:19.604Z",
+  "lockedTests": {
+    "packages/cli/test/prune-commands.test.ts": "sha256:276b8cefc93a7f09bd176e264790f68c462c40dd65bf621c72b2468d02d2bd51",
+    "packages/cli/test/prune-orphans.test.ts": "sha256:53d44b0a9b31c458242bf39f74d99ae580ecd36bb6a0185d4a2e264e6b6132e2",
+    "packages/cli/test/prune-rescue.test.ts": "sha256:26bc701540b2293e036cca80144c78a11bfb7f088eccf93ac02ec42b08d43685",
+    "packages/core/test/cards/prune-orphans.test.ts": "sha256:785b02b50ea45b3260abb11d9bcd700ae72a92dcba08f1ca96b46c88629e366d"
+  }
+}

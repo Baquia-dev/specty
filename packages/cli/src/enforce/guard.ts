@@ -17,12 +17,14 @@ import { ADAPTERS } from "../agents";
 import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
 import { waitingMessages } from "../commands/message";
 import { next } from "../commands/next";
+import { isWaitingForHuman } from "../commands/wait";
 import { isFinished, resolveActive } from "../flow/active";
 import { gitCommonFolder } from "../flow/worktree";
 import { isRecord, parseJson, remove } from "../io/files";
 import { COMMAND, type Environment, type Session } from "../session";
 import { noteActivity } from "../store/activity";
 import { readSpec, type StoredChange } from "../store/changes";
+import { liveHolder } from "../store/lock";
 import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
 import { enterCommand } from "./enter-command";
 import { endConversation, judgeFronts } from "./fronts";
@@ -226,7 +228,7 @@ async function leave(
 async function beforeAction(call: Call): Promise<GuardReply> {
   const { agent, environment, session, event, cwd } = call;
   const raw = agent.action(event);
-  const ctx = await guardContext(session);
+  const ctx = await guardContext(session, agent.tool);
   // A subagent must neither move nor bind the session that launched it (ARCHITECTURE §10).
   const asked = await subagentDenial(call, raw, ctx);
   if (asked !== undefined) return agent.reply(verdict(asked, session), "before");
@@ -322,13 +324,18 @@ async function revertDelegation(session: Session, previous: string | undefined):
   }
 }
 
-async function guardContext(session: Session) {
+/**
+ * What the flow's rules judge with: the session's configuration and language, the active change
+ * and, before an action, the guard's tool, whose way of running `specty wait` its messages give.
+ */
+async function guardContext(session: Session, tool?: GuardTool) {
   const active = await resolveActive(session);
   const base = {
     config: session.config,
     lang: session.lang,
     command: COMMAND,
     delegated: session.delegated,
+    ...(tool === undefined ? {} : { tool }),
   };
   if (active === undefined || isFinished(active.state)) return base;
   return { ...base, change: await guardChange(session, active) };
@@ -349,6 +356,8 @@ async function guardChange(session: Session, active: StoredChange): Promise<Guar
     phase: state.phase,
     closingSubmitted: state.closingSubmittedAt !== undefined,
     specPath: session.paths.relative(active.files.spec),
+    // While a live Specty command holds the lock, such as an `accept`, whoever waits waits for it.
+    waiting: isWaitingForHuman(active) && (await liveHolder(session.git, state.id)) === undefined,
     ...(taskEntry !== undefined
       ? {
           task: {

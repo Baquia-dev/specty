@@ -15,11 +15,13 @@ import {
   CLAUDE_WORKTREE_EVENTS,
   excludeLocally,
   isOurs,
-  memoryStopLines,
   missingEvents,
   removeFromJson,
+  stopLines,
   withHooks,
   withMemoryStop,
+  withoutTurnEnd,
+  withTurnEndFrom,
 } from "../install/agents";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
@@ -96,15 +98,29 @@ export const claudeCode: AgentAdapter = {
     const local = !invocation.portable;
     const target = local ? CLAUDE_LOCAL_SETTINGS : CLAUDE_SETTINGS;
     const other = local ? CLAUDE_SETTINGS : CLAUDE_LOCAL_SETTINGS;
+    // Its end of turn goes with the guard too, with its check if it had it: never two of them.
+    const before: unknown = parse((await files.read(join(root, other))) ?? "null");
     const without: JsonUpdate = (value) =>
-      withMemoryStop(withHooks(value, EVENTS, "claude-code", undefined), "claude-code", undefined);
+      withoutTurnEnd(
+        withMemoryStop(
+          withHooks(value, EVENTS, "claude-code", undefined),
+          "claude-code",
+          undefined,
+        ),
+        "claude-code",
+      );
     await rewriteJson(join(root, other), without, false, files);
     const command = `${invocation.command} guard --tool claude-code`;
     // The memory's net at the end of the turn goes with the guard (ADR 0016).
     const net = `${invocation.command} hook memory-stop claude-code`;
     const update: JsonUpdate = (value) =>
       withPermissions(
-        withMemoryStop(withHooks(value, EVENTS, "claude-code", command), "claude-code", net),
+        withTurnEndFrom(
+          withMemoryStop(withHooks(value, EVENTS, "claude-code", command), "claude-code", net),
+          before,
+          "claude-code",
+          invocation.command,
+        ),
       );
     await rewriteJson(join(root, target), update, true, files);
     if (local) await excludeLocally(git, target, files);
@@ -149,7 +165,7 @@ export const claudeCode: AgentAdapter = {
     // An install from before the card at a session's start lacks `resume` too: one `init` fixes both.
     if (missesSource(settings, "startup")) problems.push({ code: "claude-startup" });
     else if (missesSource(settings, "resume")) problems.push({ code: "claude-resume" });
-    problems.push(...memoryStopLines(settings, "claude-code"));
+    problems.push(...stopLines(settings, "claude-code", ["memory-stop", "agent-stop"]));
     if (missingPermissions(settings).length > 0) {
       problems.push({ code: "no-claude-permissions" });
     }
@@ -167,7 +183,8 @@ function action(event: Readonly<Record<string, unknown>>): RawAction {
     case "NotebookEdit":
       return { kind: "write", paths: sentPaths(input.notebook_path) };
     case "Bash":
-      return shellAction(input.command);
+      // `specty wait` waits for the person in the background, where Bash tells when it ends.
+      return shellAction(input.command, input.run_in_background === true);
     case "EnterWorktree":
       return {
         kind: "enter",

@@ -21,6 +21,7 @@ import { memoryOrigins } from "./origins";
 import { changeRecord, openRecords } from "./records";
 import { sessionsView } from "./sessions";
 import { epicSliceChanges } from "./slices";
+import { testCode } from "./test-code";
 import { changeTrace, traceReply } from "./trace";
 
 /** A read of the API: from this origin and with the session. */
@@ -96,7 +97,8 @@ type ChangePart = (
 
 /**
  * The parts of a change that can be read: its diff, whole or of one task; its verification going
- * on; its traceability; and, if it is an epic, the change of each of its slices.
+ * on; its traceability; the code of one of its tests; and, if it is an epic, the change of each
+ * of its slices.
  */
 const PARTS: ReadonlyMap<string, ChangePart> = new Map<string, ChangePart>([
   [
@@ -119,6 +121,15 @@ const PARTS: ReadonlyMap<string, ChangePart> = new Map<string, ChangePart>([
       const path = url.searchParams.get("path") ?? undefined;
       const reply = traceReply(await changeTrace(context.session, id, path));
       send(response, reply.status, JSON_TYPE, reply.body);
+    },
+  ],
+  [
+    "test",
+    async (response, context, id, url) => {
+      const path = url.searchParams.get("path") ?? "";
+      const answer = await testCode(context.session, id, path);
+      if (answer.kind === "code") send(response, 200, TEXT, answer.text);
+      else send(response, 404, JSON_TYPE, '{"error":"not found"}');
     },
   ],
   [

@@ -72,6 +72,8 @@ export interface Worktree {
   readonly folder: string;
   /** Its branch, unless it is detached. */
   readonly branch?: string;
+  /** Locked (`git worktree lock`): `git worktree prune` keeps its record, also with no folder. */
+  readonly locked?: boolean;
 }
 
 /** Root of the repository that contains `cwd`, or undefined outside git. */
@@ -215,7 +217,7 @@ function runner(root: string, baseEnv: NodeJS.ProcessEnv): Runner & Recalling {
 
 function worktreeQueries(git: Runner): Pick<Git, "worktrees" | "nestedWorktrees"> {
   // `--porcelain` prints one block per worktree: `worktree <folder>`, then `branch refs/heads/…`
-  // unless it is detached.
+  // unless it is detached, and `locked`, with its reason or not, when it is locked.
   const worktrees = async () =>
     (await git.output(["worktree", "list", "--porcelain"])).split("\n\n").flatMap((block) => {
       const lines = block.split("\n");
@@ -224,7 +226,10 @@ function worktreeQueries(git: Runner): Pick<Git, "worktrees" | "nestedWorktrees"
       const folder = value("worktree ");
       const branch = value("branch refs/heads/");
       if (folder === undefined) return [];
-      return [branch === undefined ? { folder } : { folder, branch }];
+      const locked = lines.some((line) => line === "locked" || line.startsWith("locked "));
+      return [
+        { folder, ...(branch === undefined ? {} : { branch }), ...(locked ? { locked } : {}) },
+      ];
     });
   const nestedWorktrees = async () => {
     const own = await resolved(git.root);

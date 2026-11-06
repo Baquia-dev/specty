@@ -32,6 +32,7 @@ import {
 } from "../components/icons";
 import { Skeleton } from "../components/skeleton";
 import { TabPanel, Tabs } from "../components/tabs";
+import { Toasts } from "../components/toast";
 import { ChangesStore } from "../data/changes-store";
 import {
   type ChangeTab,
@@ -189,7 +190,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
           @if (change.lost) {
             <sp-lost-folder [change]="change" />
           } @else {
-          @if (change.orphan || change.away) {
+          @if (change.orphan || change.away || change.unattended) {
             <sp-resume-hints [change]="change" />
           }
           <sp-tabs [label]="t()('Secciones del cambio', 'Change sections')" [selected]="tab()" (selectedChange)="select($event)">
@@ -233,6 +234,7 @@ export class ChangePage {
   private readonly store = inject(ChangesStore);
   private readonly preferences = inject(Preferences);
   private readonly router = inject(Router);
+  private readonly toasts = inject(Toasts);
   protected readonly t = this.preferences.t;
   protected readonly back = LucideArrowLeft;
   protected readonly warning = LucideTriangleAlert;
@@ -286,6 +288,32 @@ export class ChangePage {
     inject(DestroyRef).onDestroy(() => {
       resize?.disconnect();
       intersection?.disconnect();
+    });
+    this.toastWhenUnattended();
+  }
+
+  /**
+   * A toast says nobody picks up the person's decision when it appears while they look at the
+   * change: not when the page opens with it, nor when they go to another change that has it.
+   */
+  private toastWhenUnattended(): void {
+    let seen: { readonly id: string; readonly unattended: boolean } | undefined;
+    effect(() => {
+      const change = this.change();
+      if (change === undefined) return;
+      const unattended = change.unattended !== undefined;
+      const appeared = seen?.id === change.id && !seen.unattended && unattended;
+      seen = { id: change.id, unattended };
+      if (!appeared) return;
+      untracked(() =>
+        this.toasts.show(
+          this.t()(
+            "Nadie retoma tu decisión: mira «Cómo retomarlo».",
+            "Nobody picks up your decision: see “How to resume it”.",
+          ),
+          "warning",
+        ),
+      );
     });
   }
 

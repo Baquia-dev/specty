@@ -23,7 +23,7 @@ import { commitState, isFinished, resolveActive } from "../flow/active";
 import { freeBranch, markBranch } from "../flow/branches";
 import { duplicatesOf } from "../flow/duplicates";
 import { sliceRefusal } from "../flow/epic";
-import { removeFinished } from "../flow/prune";
+import { cleanUp, type Swept, withCleanup } from "../flow/prune";
 import { changeView } from "../flow/views";
 import {
   addWorktree,
@@ -191,8 +191,9 @@ async function newInWorktree(
   if (base.commit === undefined) {
     return newRefusalCard({ reason: "unknown-base", base: base.name }, cards);
   }
-  // Folders of changes already closed (and incorporated) or cancelled are no longer needed.
-  const { removed } = await removeFinished(session);
+  // Folders of changes already closed (and incorporated) or cancelled are no longer needed, nor
+  // the orphans (`cleanUp`).
+  const swept = await cleanUp(session);
   const home = await worktreesHome(git);
   const changeTitle = options.slug?.trim() ? options.slug : title;
   const id = await uniqueId(session, makeChangeId(session.environment.now(), changeTitle), home);
@@ -221,7 +222,7 @@ async function newInWorktree(
       ...(prepared !== undefined ? { prepared } : {}),
       copied: hooks,
       ...(workspace !== undefined ? { workspace } : {}),
-      removed,
+      removed: swept.removed,
       // With Specty's worktree hooks, entering by name skips the prompt a folder outside `.claude` gets.
       byName: await entersByName(session.root),
       // Any other agent carries on in a session of its own, which the card says how to open.
@@ -232,8 +233,22 @@ async function newInWorktree(
     },
     cards,
   );
-  // Its development servers get ports of their own (`dev.ports`), apart from other folders'.
-  return withDevPorts(card, await portsOf(session, folder), session.lang);
+  return withSweptAndPorts(session, card, swept, folder);
+}
+
+/**
+ * The card of the new folder with the rest of what its clean-up did (it already names the folders
+ * of finished changes), and the ports its development servers get (`dev.ports`), apart from other
+ * folders'.
+ */
+async function withSweptAndPorts(
+  session: Session,
+  card: Output,
+  swept: Swept,
+  folder: string,
+): Promise<Output> {
+  const cleaned = withCleanup(card, swept, session.lang, false);
+  return withDevPorts(cleaned, await portsOf(session, folder), session.lang);
 }
 
 /**

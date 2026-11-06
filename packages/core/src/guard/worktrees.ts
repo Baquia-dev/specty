@@ -30,6 +30,16 @@ export interface GhostPath {
   readonly lost?: string;
 }
 
+/**
+ * The folder of an open change, which an action would remove: it stays while the change is open,
+ * and only `specty close` and `specty cancel` remove it.
+ */
+export interface OpenFolder {
+  readonly folder: string;
+  /** The open change whose folder it is. */
+  readonly id: string;
+}
+
 /** A command that would run outside the change's folder the conversation entered. */
 export interface Elsewhere {
   readonly folder: string;

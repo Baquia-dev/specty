@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261106-la-epica-sale-una-sola-vez-en-la-seccion-mas",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-la-epica-sale-una-sola-vez-en-la-seccion-mas",
+  "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:b8cc0f1aacd7fabe667cb0da305a506f46f0b59b5b3e22cde755c03b6aacc4c9",
+    "at": "2026-11-06T15:00:34.994Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8407c97b194912fb9a98a6f7d81d5f4acc61838ec41acf349ad7b062611baf98",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f58affc56e21d0196a74d62be825c4f30e9aa861689599a298b96f43fc7d971c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:396ffc1dc598702511468988f0cfa622f9c43342b816dbcaaf330b1912fe055b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:957b95eaae37fe8e7dd2302224d2a4c839f6365259a0bf38f3a80c1365ddd473",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:7ba1231ba27645191d68d56f73d75a7e804be0ec5e1f4efaadb1996e83253baa",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "645be2e9a19d384f984e3046027f7951ac2f6144",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:06:22.328Z",
+      "doneAt": "2026-11-06T15:07:32.350Z",
+      "summary": "inboxSections reúne cada épica cargada con todos sus cortes en un bloque que va a una sola sección y pasa el filtro si pasa cualquiera de sus miembros; InboxSection lleva blocks y order (j/k)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b3caa542d6abf303d42245f161c3d2167355cb87",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:07:32.688Z",
+      "doneAt": "2026-11-06T15:08:46.715Z",
+      "summary": "La Bandeja recorre los bloques de cada sección, cuenta bloques y j/k siguen order; sp-inbox-epic solo envuelve la fila de la épica y sus cortes, sin la cabecera de una épica de otra sección; docs/ui.md al día",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 10,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-06T15:14:50.861Z",
+  "lockedTests": {
+    "packages/ui/src/inbox/inbox-more.test.ts": "sha256:2049feef8c0abfe0b4a682c74f45fbc27546ea5f9ceaa4e6197b0c7e43143951",
+    "packages/ui/src/inbox/inbox-view.test.ts": "sha256:5633a9a9a5879fc4df1e034e74ef1a3896d008329ae1e600063c89795a1b6397",
+    "packages/ui/src/inbox/inbox.test.ts": "sha256:046fb524cecbd6899eb7b425915166a723e81fdd01ff4cdacaf3c5be35495041"
+  }
+}

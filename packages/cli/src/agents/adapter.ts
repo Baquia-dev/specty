@@ -171,6 +171,13 @@ interface Installed {
   readonly written: readonly string[];
 }
 
+/**
+ * The mark of the end of turn `init` installs (`specty hook agent-stop <agent> --no-check`): it
+ * keeps to the rule of `wait`, and `specty check --changed` runs only once `check --install`
+ * takes the mark away (ADR 0012).
+ */
+export const NO_CHECK = "--no-check";
+
 /** `specty hook agent-stop <agent>`: when it runs, what it answers, and how it is installed. */
 export interface AgentStop {
   /** Whether this end of turn is one to check. */
@@ -185,8 +192,11 @@ export interface AgentStop {
    */
   readonly counts?: true;
   /**
-   * Writes the hook into the plan of `check --install`, next to Specty's guard and with its
-   * command; nothing when the guard is not there, or the hook already is.
+   * Writes the hook into the plan of `init` or of `check --install`, next to Specty's guard and
+   * with its command: `init`'s with `--no-check`, and `check --install`'s without it, which also
+   * takes the mark away from the one `init` wrote. One already there takes the guard's command, as
+   * when `init` changes it, and keeps its time limit; one that runs the check keeps it. Nothing
+   * when the guard is not there, or the hook already is as it asks.
    */
   readonly plan: (context: StopPlan) => Promise<void>;
 }
@@ -197,26 +207,79 @@ interface StopPlan {
   readonly files: InstallFiles;
   readonly timeout: number;
   readonly tool: GuardTool;
+  /** Whether it runs `specty check --changed` too: only `check --install` turns it on. */
+  readonly check: boolean;
 }
 
 /**
  * The end of turn of an agent whose hooks live in JSON files: in each of `files` that has
- * Specty's guard, `hook` adds `specty hook agent-stop <agent>` with the guard's own command.
+ * Specty's guard, `hook` adds `specty hook agent-stop <agent>` with the guard's own command, and
+ * with `--no-check` unless the plan checks. One already there takes the guard's command where it
+ * is, with its time limit, and, with the check, loses the mark.
  */
 export function jsonStop(
   files: readonly string[],
   hook: (command: string, timeout: number) => JsonUpdate,
 ): AgentStop["plan"] {
-  return async ({ root, files: planned, timeout, tool }) => {
+  return async ({ root, files: planned, timeout, tool, check }) => {
+    const ours = `hook agent-stop ${tool}`;
     for (const path of files) {
       const file = join(root, path);
       const text = await planned.read(file);
-      if (text === undefined || text.includes(`hook agent-stop ${tool}`)) continue;
+      if (text === undefined) continue;
       const prefix = guardPrefix(text, tool);
+      if (text.includes(ours)) {
+        await rewriteJson(
+          file,
+          (value) => withTurnEnds(value, tool, prefix, check),
+          false,
+          planned,
+        );
+        continue;
+      }
       if (prefix === undefined) continue;
-      await rewriteJson(file, hook(`${prefix} hook agent-stop ${tool}`, timeout), false, planned);
+      const command = `${prefix} ${ours}${check ? "" : ` ${NO_CHECK}`}`;
+      await rewriteJson(file, hook(command, timeout), false, planned);
     }
   };
+}
+
+/**
+ * `value`, a hooks file or a part of one, with each end of turn of `tool` in it (`hook agent-stop
+ * <tool>`, at any depth): it calls Specty with `command`, as the guard does, when there is one,
+ * and loses `--no-check` when `check` is on. Its other arguments, its time limit and the other
+ * hooks stay as they were.
+ */
+export function withTurnEnds(
+  value: Readonly<Record<string, unknown>>,
+  tool: GuardTool,
+  command: string | undefined,
+  check: boolean,
+): Record<string, unknown> {
+  const mark = ` hook agent-stop ${tool}`;
+  const unchecked = `${mark} ${NO_CHECK}`;
+  return withCommands(value, (text) => {
+    if (!text.includes(mark)) return text;
+    const called = command === undefined ? text : command + text.slice(text.indexOf(mark));
+    return check && called.endsWith(unchecked) ? called.slice(0, -` ${NO_CHECK}`.length) : called;
+  });
+}
+
+/** `value` with each `command` in it, at any depth, through `change`. */
+function withCommands(
+  value: Readonly<Record<string, unknown>>,
+  change: (command: string) => string,
+): Record<string, unknown> {
+  const changed = (item: unknown): unknown => {
+    if (Array.isArray(item)) return item.map(changed);
+    return isRecord(item) ? withCommands(item, change) : item;
+  };
+  return Object.fromEntries(
+    Object.entries(value).map(([key, item]) => [
+      key,
+      key === "command" && typeof item === "string" ? change(item) : changed(item),
+    ]),
+  );
 }
 
 /** How the guard calls Specty in a hooks file (`specty`, `node "<path>"`…), if it is there. */

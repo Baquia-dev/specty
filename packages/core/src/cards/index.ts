@@ -29,6 +29,7 @@ export {
   type ScopeRequestDecided,
   scopeDecidedLine,
   scopeDecisionQuestion,
+  scopeRequestNote,
   specApprovedLine,
   specChangedCard,
 } from "./approve";
@@ -128,6 +129,7 @@ export {
   blockedCommitMessage,
   checkChangedFailedLine,
   checkStagedFailedLine,
+  noWaitLine,
   type WorktreeHookRefusal,
   worktreeHookRefusal,
 } from "./hooks";
@@ -311,12 +313,16 @@ export {
 export { type NextView, nextCard, notInitializedCard, taskCard } from "./next";
 export { type NoteRefusal, notedCard, noteRefusalCard } from "./notes";
 export {
+  cleanupBlocks,
   notInTargetBranchLine,
   notInTargetFolderLine,
   preparingNote,
   pruneCard,
+  type RescuedFolder,
+  rescueCommitSubject,
   sharedLine,
   sharedTitle,
+  type UnsavedFolder,
   workingFolderLine,
 } from "./parallel";
 export { withDevPorts } from "./ports";
@@ -429,6 +435,18 @@ export {
   unitsReusedNote,
 } from "./units";
 export {
+  type UnlockAsked,
+  type UnlockPatchRefusal,
+  type UnlockRefusal,
+  unlockRefusalCard,
+} from "./unlock";
+export {
+  type UnlockMismatch,
+  unlockMismatchCard,
+  unlockStaleCard,
+  unlockStaleReason,
+} from "./unlock-check";
+export {
   ccusageAddedLine,
   ccusageFailedWarning,
   ccusageHint,
@@ -448,7 +466,7 @@ export type {
   SliceView,
   TaskView,
 } from "./view";
-export { waitTimeoutCard } from "./wait";
+export { waitHeartbeat, waitTimeoutCard } from "./wait";
 export {
   type WhyCommit,
   type WhyRefusal,

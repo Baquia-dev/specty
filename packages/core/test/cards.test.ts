@@ -147,9 +147,28 @@ describe("next cards", () => {
         "en",
       ),
     ).toContain('c4 · Slices "La bandeja": Divídelo.');
-    expect(text({ ...view("review"), requested: [] })).toContain(
-      "Esperando la revisión del usuario",
+    expect(text(view("review"))).toContain("Esperando la revisión del usuario");
+  });
+
+  it("AC3: answers the review the person sent back, and only it", () => {
+    const back = text({ ...view("review"), requested: [] });
+    expect(back).toContain("El usuario te devolvió la revisión 2.");
+    expect(back).toContain(
+      "SIGUIENTE: corrige .specty/changes/20261021-x/spec.md y ejecuta `specty propose`.",
     );
+    const english = renderText(
+      nextCard({ change: { ...view("review"), requested: [] }, dirty: [] }, { ...ES, lang: "en" }),
+      "en",
+    );
+    expect(english).toContain("The user sent revision 2 back to you.");
+    const rejected = [{ id: "A1", text: "Supuesto", comment: "No" }];
+    const listed = text({ ...view("review"), rejected, requested: [] });
+    expect(listed).toContain("SUPUESTOS RECHAZADOS:\n  A1 «Supuesto» — No");
+    expect(listed).not.toContain("te devolvió");
+    // A rejected assumption alone, without the review sent back, leaves it with the person.
+    const loose = text({ ...view("review"), rejected });
+    expect(loose).toContain("Esperando la revisión del usuario. No modifiques código.");
+    expect(loose).not.toContain("SUPUESTOS RECHAZADOS");
   });
 
   it("blocks when the approved spec was edited", () => {

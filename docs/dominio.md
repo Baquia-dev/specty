@@ -11,6 +11,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Incorporación** (`IntegrationState`): traer la rama destino al cambio al cerrarlo.
 - **Recibo** (`Receipt`): lo que deja Specty para que el pre-commit acepte su commit.
 - **Bloqueo** (`LockHolder`): qué comando está cambiando un cambio; uno a la vez.
+- **Marca de espera** (`.git/common/specty/waits/<id>.json`, `readWait`): el `specty wait` que espera la decisión de la persona en un cambio; viva mientras su proceso la renueva, y al terminar dice por qué: `decided`, `timeout` o, si se cortó, `stopped`.
 - **Plaza de verificación** (`verify.slots`, `inSlots`): una de las verificaciones que corren a la vez en el clon; la de una tarea ocupa una, y la completa, todas.
 - **Unidad de verificación** (`verify.units`, `VerifyUnit`): una parte de la verificación completa, con su comando y los archivos de los que depende; no se repite si ya pasó con la misma huella en el clon.
 - **Registro de unidades** (`.git/common/specty/verified/`, `fullPlan`): las unidades que pasaron, una por huella, en cualquier cambio y worktree del clon; la verificación completa de `accept`, la incorporación, `specty integrate` y la UI no repiten las que están en él; `specty prune` borra las anotadas hace más de 30 días (`pruneRecord`).
@@ -19,7 +20,8 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Unidad inestable** (`flaky`): una unidad que en una verificación fresca falla y pasa al repetirla; queda en la memoria como lección de sus `paths`.
 - **Cambio huérfano** (`orphan`): uno que espera al agente sin que ninguna sesión trabaje en él.
 - **Cambio sin carpeta** (`lost`, `specty restore`): uno abierto cuya carpeta se borró o git podó, y que sigue en su rama, desde la que se recupera.
-- **Carpeta fantasma** (`ghostFolders`, regla `ghost` del guard): una entrada de `.worktrees/` o de la carpeta hermana `<repo>.worktrees/` que no es una worktree registrada en git, exista o no; el guard no deja escribir ni borrar en ella.
+- **Carpeta fantasma** (`ghostFolders`, regla `ghost` del guard): una entrada de `.worktrees/` o de la carpeta hermana `<repo>.worktrees/` que no es una worktree registrada en git, exista o no; el guard no deja escribir ni borrar en ella, y la limpieza la barre.
+- **Ref de rescate** (`refs/specty/rescue/`, `rescueFolder`): un commit fuera de toda rama con lo que una carpeta tenía sin commit cuando la limpieza la quitó; se ve con `git show <ref>` y se recupera con `git worktree add <carpeta> <ref>`.
 - **Entrada de la memoria** (`MemoryEntry`): un pendiente, una mejora, un recordatorio o una decisión, con id `Pn` o `Dn`.
 - **Memoria de Specty** (`specty memory`): las entradas de la rama `specty-memory`, que todas las sesiones y carpetas ven.
 - **Lección** (`lesson`): una entrada de la memoria con lo que un agente aprendió de unas rutas del código, que siempre las lleva.
@@ -28,6 +30,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Bitácora** (`specty note`): las notas de un cambio en su audit (`change.noted`); la tarjeta de `next` muestra las tres últimas.
 - **Mensaje** (`MessageView`, `specty message`): lo que una sesión o la persona deja para la sesión de un cambio abierto; le llega una vez, tras su siguiente comando.
 - **Test aprobado** (`lockedTests`): un test que aprobó la persona, o el rojo de un bug; solo cambia con un desbloqueo.
+- **Desbloqueo** (`scope add --patch --evidence`): la solicitud de cambiar un test aprobado para una tarea, con el parche exacto y las líneas que lo justifican; lo decide solo la persona, y `task done` exige que el test quede como lo deja el parche. Otro desbloqueo del mismo test sustituye al anterior.
 - **Ciclo de tests** (`TestCycle`): con `contract`, el de una feature (gate 2) o el de un bug (su rojo se bloquea solo).
 - **Modo delegado** (`Delegation`): el agente aprueba, acepta y cierra por la persona.
 - **Retro-spec**: la spec que documenta después cambios hechos sin spec.

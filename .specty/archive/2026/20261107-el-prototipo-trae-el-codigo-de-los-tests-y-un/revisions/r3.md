@@ -1,0 +1,97 @@
+---
+kind: standard
+---
+
+# El prototipo trae el código de los tests y un desbloqueo de muestra
+
+## Objetivo
+
+En el prototipo de la UI (`FixtureData`), «Ver código» dice hoy que la fuente no da el código de los tests, y ningún cambio de muestra trae un desbloqueo con parche y evidencia, así que allí no se ven ni la solicitud pendiente con su detalle ni «Ver el desbloqueo». Con este cambio, el prototipo da el código de cada test de sus cambios de muestra y trae dos desbloqueos: uno pendiente en «Exportar boletines en PDF» y otro ya aprobado en «Login con Google». Resuelve P213 y P227.
+
+## Fuera de alcance
+
+- El aviso «Aprobaste S1: T3 vuelve a su lugar.», que sale aunque la tarea aún espere otra solicitud: sigue como hoy, y queda anotado como pendiente.
+- Dar el código de los tests en el MCP App o en la extensión de VS Code.
+- Simular que el agente aplica el parche aprobado: el test de muestra sigue con el código con que se bloqueó.
+- Los archivos de P214 (`data/diff.ts`, `history/trace-view.ts`, `progress/code-lines.ts`) y de P210 (CLI y core), que llevan otros cambios a la vez.
+
+## Supuestos
+
+- A1: El desbloqueo pendiente va en «Exportar boletines en PDF», como S2 de T3 junto a S1, porque es el único cambio de muestra que ya espera una decisión de alcance: la Bandeja sigue con los mismos cambios por decidir, y solo cambian el resumen de Progreso («2 decisiones te esperan») y que aprobar o rechazar S1 deja T3 esperando a S2. El desbloqueo aprobado va en «Login con Google», que sigue en curso sin esperar a nadie. Se descartó un cambio de muestra nuevo, que movería los recuentos de toda la Bandeja.
+  - impacto: alto
+- A2: El código de cada test de muestra se guarda por cambio y ruta, como el servidor local solo da los tests del cambio (los enviados, los bloqueados y los desbloqueados). El prototipo no lee git, así que da siempre el mismo texto, y una ruta que no es un test del cambio se rechaza con el mismo mensaje que el servidor.
+- A3: Decidir una solicitud en el prototipo anota el `scope.decided` con `id`, como `specty`, y no con `request`; un desbloqueo aprobado guarda además `unlock` (las rutas que desbloqueó, con la regla de `unlocksOf`), `task`, `patch` y `evidence`. Así «Tests bloqueados» lo lee igual que con el servidor local, y el Historial ya lee los dos nombres.
+- A4: Los tests escritos antes que el código no importan el módulo nuevo: usan `FixtureData`, `deriveViews` y `patchFiles`, porque el constructor de tests de Angular comprueba los tipos de todos a la vez.
+
+## Criterios de aceptación
+
+- AC1: CUANDO la persona abre «Ver código» de un test de un cambio de muestra en el prototipo (los enviados de «Avisos de nuevas calificaciones», también una vez aprobados, y los bloqueados de «Exportar boletines en PDF» y «Login con Google») ENTONCES ve su código con sus números de línea, en lugar de «Esta fuente no da el código de los tests.».
+- AC2: CUANDO se pide al prototipo el código de una ruta que no es un test del cambio, o de un cambio que no tiene, ENTONCES lo rechaza con el mismo mensaje que el servidor local («No se puede mostrar el código de este test: no es un test del cambio o no se pudo leer.») o con «No existe el cambio …».
+- AC3: CUANDO la persona abre el Progreso de «Exportar boletines en PDF» en el prototipo ENTONCES T3 espera, además de S1, a S2: el desbloqueo de su test aprobado `test/reports/report_card_test.dart`, con su motivo, su parche, que se aplica al test tal como se bloqueó, y su evidencia con su ruta y sus líneas.
+- AC4: CUANDO la persona abre el Progreso de «Login con Google» en el prototipo ENTONCES su test bloqueado `test/auth/google_provider_test.dart` tiene «Ver el desbloqueo S1», que muestra el motivo del agente, el parche aprobado para T1, que casa con el código que dejó en el test, y la evidencia.
+- AC5: CUANDO la persona aprueba S2 en el prototipo ENTONCES el `scope.decided` guarda, como `specty`, su `id`, el test desbloqueado (`unlock`), la tarea, el parche y la evidencia, y el test queda «Desbloqueado para T3» con «Ver el desbloqueo S2»; CUANDO lo rechaza ENTONCES no desbloquea nada.
+
+## Diseño
+
+- **Código de muestra** (`data/sample-test-code.ts`, nuevo): el código Dart de los tests de muestra, por cambio y ruta: los dos enviados de «Avisos de nuevas calificaciones», `test/reports/report_card_test.dart` de los boletines (tal como se bloqueó) y `test/auth/google_provider_test.dart` del login (como lo dejó el desbloqueo aprobado). `sampleTestCode(records, change, path)` lo da, o lo rechaza con un `ActionError` (AC2), como `sampleDiffOf`. Exporta también el parche y la evidencia de los dos desbloqueos, junto al código al que se aplican.
+- **Fuente** (`data/fixtures.ts`): `FixtureData.testCode` llama a `sampleTestCode`.
+- **Progreso de muestra** (`data/sample-progress.ts`): `Progress` gana `lockedTests`, que `withProgress` copia al estado. Los boletines bloquean su test y suman S2 a sus solicitudes, con su `scope.requested` como lo escribe `specty` (la solicitud entera). El login bloquea su test, y su auditoría trae el `scope.requested` de S1 y el `scope.decided` que lo aprobó para T1, que también entra en su `scopeExtra`. `decideScopeIn` escribe `id` y, si aprueba un desbloqueo, lo que guarda `unlockDecided`, como en el CLI.
+- **Tests**: a través de `FixtureData`, `data/sample-test-code.test.ts` (nuevo) comprueba el código de los tests enviados y sus negativas, y `data/sample-unlocks.test.ts` (nuevo), el código de los bloqueados y los dos desbloqueos, y que cada parche casa línea a línea con el código de su test (el pendiente con el lado viejo; el aprobado, con el nuevo). `progress/progress-tab.test.ts` comprueba que el prototipo muestra el detalle del pendiente, «Ver el desbloqueo S1» y «Ver código». Los tests que fijaban una sola solicitud en los boletines pasan a contar con S2.
+
+## Archivos
+
+- crear packages/ui/src/data/sample-test-code.ts — el código de los tests de muestra y el parche y la evidencia de los dos desbloqueos de muestra
+- modificar packages/ui/src/data/fixtures.ts — `testCode` da el código de los tests de muestra
+- modificar packages/ui/src/data/sample-progress.ts — los tests bloqueados de los boletines y del login, S2 pendiente y S1 aprobado; decidir un desbloqueo lo anota como `specty`
+- crear packages/ui/src/data/sample-test-code.test.ts — el código de los tests enviados, también aprobados, y las negativas
+- crear packages/ui/src/data/sample-unlocks.test.ts — el código de los tests bloqueados y los dos desbloqueos de muestra
+- modificar packages/ui/src/data/fixtures.test.ts — los boletines esperan dos solicitudes, y `scope.decided` lleva `id`
+- modificar packages/ui/src/data/sample-specs.test.ts — el Historial de los boletines con la solicitud S2
+- modificar packages/ui/src/progress/progress-tab.test.ts — dos decisiones en los boletines; los desbloqueos de muestra y «Ver código» en el prototipo
+- modificar packages/ui/src/change/change-page.test.ts — aprobar las dos solicitudes de T3 antes de terminarla
+- modificar docs/ui.md — el prototipo da el código de los tests y trae los dos desbloqueos de muestra
+
+## Tareas
+
+- [x] T1: El prototipo da el código de los tests de sus cambios de muestra
+  - files: packages/ui/src/data/sample-test-code.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-test-code.test.ts
+  - ac: AC1, AC2
+  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/sample-test-code.test.ts
+  - type: feat
+- [x] T2: Los boletines esperan un desbloqueo y el login trae uno aprobado
+  - files: packages/ui/src/data/sample-test-code.ts, packages/ui/src/data/sample-progress.ts, packages/ui/src/data/sample-unlocks.test.ts, packages/ui/src/data/fixtures.test.ts, packages/ui/src/data/sample-specs.test.ts, packages/ui/src/progress/progress-tab.test.ts, packages/ui/src/change/change-page.test.ts
+  - ac: AC1, AC3, AC4, AC5
+  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data --include src/progress --include src/change/change-page.test.ts && pnpm typecheck
+  - type: feat
+- [x] T3: ui.md cuenta lo que trae el prototipo
+  - files: docs/ui.md
+  - ac: —
+  - verify: grep -q "sample-test-code" docs/ui.md
+  - type: docs
+
+## Riesgos
+
+- R1: Otros tests fijan la única solicitud de los boletines o el recuento de sus decisiones — la implementación se probó antes en una copia de la carpeta del cambio fuera del repositorio, con los 777 tests de la UI, y los que fallaban están en Archivos.
+- R2: T2 toca siete archivos, más de los cinco recomendados — cuatro son tests que ya fijaban la única solicitud de los boletines, y el desbloqueo pendiente no se puede separar de ellos sin dejarlos en rojo entre tareas.
+
+## Cierre
+
+### Resumen
+
+El prototipo de la UI (`FixtureData`) da ahora el código de los tests de sus cambios de muestra: `data/sample-test-code.ts` lo guarda por cambio y ruta y `sampleTestCode` lo da, o lo rechaza con el mismo mensaje que el servidor local cuando la ruta no es un test del cambio, y con «No existe el cambio …» cuando no tiene el cambio. Así «Ver código» se ve con los dos tests enviados de «Avisos de nuevas calificaciones», también una vez aprobados, y con los bloqueados. Trae además un desbloqueo de cada clase, con su parche y su evidencia. En «Exportar boletines en PDF», T3 espera, además de S1, a S2, que pide cambiar su test aprobado `test/reports/report_card_test.dart`. En «Login con Google», el test bloqueado `test/auth/google_provider_test.dart` tiene «Ver el desbloqueo S1», aprobado para T1. Decidir una solicitud en el prototipo la anota como `specty` (`id` y, en un desbloqueo aprobado, `unlock`, `task`, `patch` y `evidence`), así que aprobar S2 deja el test «Desbloqueado para T3» con «Ver el desbloqueo S2». `docs/ui.md` lo cuenta. Lo comprueban `data/sample-test-code.test.ts`, `data/sample-unlocks.test.ts`, que también mira que cada parche casa línea a línea con el código de su test, y dos tests nuevos de `progress/progress-tab.test.ts`. Pasaron además la verificación completa de `accept` y el 100 % de las 23 líneas que añade el cambio.
+
+### Desviaciones
+
+- La revisión 1 tenía una sola tarea de código con ocho archivos, y `propose` avisó de ello y de que no comprobaba los tipos. Antes de aprobarla, la revisión 2 la partió en T1 (el código de los tests) y T2 (los desbloqueos), con `pnpm typecheck` en la verificación de T2. Los tests de los desbloqueos pasaron a su propio archivo, `data/sample-unlocks.test.ts`, para que la verificación de T1 no los corriera. T2 sigue con siete archivos, como dice R2.
+- Antes de enviar los tests, el código se probó en una copia de la carpeta del cambio fuera del repositorio, como en los cortes C2 y C3: con él pasaron los 777 tests de la UI, y sin él fallaban 17. En el cambio no quedó nada de esa copia.
+
+### Decisiones
+
+- El desbloqueo pendiente va en los boletines, junto a S1, y el aprobado en el login, que sigue en curso sin esperar a nadie. Así la Bandeja tiene los mismos cambios por decidir. Cambian solo el resumen de Progreso («2 decisiones te esperan») y que aprobar o rechazar S1 deja T3 esperando a S2. Los tests que fijaban una sola solicitud se ajustaron a eso.
+- El código de muestra vive en un módulo propio, `data/sample-test-code.ts`, y no en `data/sample-tests.ts`, que es el cambio en `testing`: los parches de los desbloqueos van junto al código al que se aplican, y el test de bloqueados lo comprueba.
+- El test de los boletines está como se bloqueó, y el del login como lo dejó el parche aprobado. El prototipo no simula que el agente aplica el parche de S2.
+- `decideScopeIn` comparte con la auditoría del login `unlockDecided`, que guarda lo mismo que `unlockDecided` de `commands/scope-decision.ts`. El `scope.requested` nuevo lleva la solicitud entera, como `specty`. El de S1 de los boletines sigue con su forma anterior, que el Historial ya lee.
+
+### Pendientes
+
+- P235: en Progreso, aprobar una solicitud avisa «Aprobaste S1: T3 vuelve a su lugar.» aunque la tarea aún espere otra, como S1 y S2 de los boletines en el prototipo.

@@ -38,6 +38,7 @@ import {
   SpectyData,
   type TaskItemView,
 } from "../data/records";
+import { loadedSliceChanges } from "../data/slice-changes";
 import { Preferences } from "../theme/preferences";
 
 /** Shows an action's failure as an error toast, in the current language. */
@@ -292,31 +293,18 @@ export class ReviewItems {
 
   /**
    * The change of each slice of `epic`: what the source gives once it answers or else, while it
-   * does not or when it fails, the one among the changes loaded (`loadedSliceChanges`).
+   * does not or when it fails, the one among the changes loaded (`loaded`).
    */
   protected readonly sliceChanges = computed((): ReadonlyMap<string, SliceLink> => {
     const given = this.given.hasValue() ? this.given.value() : undefined;
-    if (given === undefined) return this.loadedSliceChanges();
+    if (given === undefined) return this.loaded();
     return new Map(given.map((change) => [change.slice, change]));
   });
 
-  /**
-   * The change of each slice of `epic` among the changes loaded: a closed one or, without one, the
-   * first of the others; a cancelled change frees its slice, as in the epic's card (`flow/epic.ts`).
-   */
-  private readonly loadedSliceChanges = computed((): ReadonlyMap<string, SliceLink> => {
+  /** The change of each slice of `epic` among the changes loaded, as the Inbox picks it too. */
+  private readonly loaded = computed((): ReadonlyMap<string, SliceLink> => {
     const epic = this.epic();
-    const found = new Map<string, ChangeSummary>();
-    if (epic === undefined) return found;
-    for (const change of this.changes()) {
-      const slice = change.epic?.id === epic ? change.epic.slice : undefined;
-      if (slice === undefined || change.phase === "cancelled") continue;
-      const kept = found.get(slice);
-      if (kept === undefined || (change.phase === "done" && kept.phase !== "done")) {
-        found.set(slice, change);
-      }
-    }
-    return found;
+    return epic === undefined ? new Map() : loadedSliceChanges(epic, this.changes());
   });
 
   constructor() {

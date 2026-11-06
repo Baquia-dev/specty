@@ -1,6 +1,25 @@
 // SPDX-License-Identifier: Apache-2.0
+import { access, readFile, stat } from "node:fs/promises";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { CONFIG, cli, person, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import { type WaitOptions, wait } from "../src/commands/wait";
+import { openSession } from "../src/session";
+import {
+  AGENT,
+  APP,
+  CHANGE,
+  CONFIG,
+  cli,
+  DIST,
+  git,
+  NOW,
+  person,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  testEnv,
+  writeFiles,
+} from "./support";
 
 async function implementing(): Promise<string> {
   const root = await tempRepo({
@@ -83,5 +102,129 @@ describe("specty wait", () => {
 
     const result = await cli(root, ["wait", "--interval", "50", "--timeout", "1"]);
     expect(result.out).toContain("Tiempo de espera agotado");
+  });
+});
+
+/** A repository whose change waits for the person to approve its spec. */
+async function proposed(): Promise<string> {
+  const root = await tempRepo(APP);
+  await cli(root, ["new", "Saludo personalizado"]);
+  await writeFiles(root, { [SPEC_PATH]: SPEC });
+  await cli(root, ["propose"]);
+  return root;
+}
+
+/** Where the mark of the `wait` of change `id` of `root` lives, shared by every worktree. */
+const markPath = (root: string, id = CHANGE) =>
+  join(root, git(root, "rev-parse", "--git-path", `common/specty/waits/${id}.json`));
+
+const hasMark = (root: string) =>
+  access(markPath(root)).then(
+    () => true,
+    () => false,
+  );
+
+const markOf = async (root: string) => JSON.parse(await readFile(markPath(root), "utf8"));
+
+const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** Waits until the mark of `root`'s change exists, for 5 s at most. */
+async function marked(root: string): Promise<void> {
+  for (let look = 0; look < 100 && !(await hasMark(root)); look += 1) await pause(50);
+  expect(await hasMark(root)).toBe(true);
+}
+
+/** Runs `wait` in `root` as the agent of the tool `env` marks, and what it wrote on stderr. */
+async function waitAs(
+  root: string,
+  env: Record<string, string>,
+  options: WaitOptions,
+): Promise<readonly string[]> {
+  const err: string[] = [];
+  const opened = await openSession({
+    cwd: root,
+    env: testEnv(env),
+    now: () => NOW,
+    terminal: AGENT,
+    io: { out: () => undefined, err: (text) => err.push(text) },
+    invocation: { command: `node "${DIST}"`, portable: false, script: DIST },
+  });
+  if (opened.kind !== "ok") throw new Error("no Specty session");
+  await wait(opened.session, options);
+  return err;
+}
+
+describe("the mark of `specty wait`", () => {
+  it("AC1, AC2: while it waits, its mark is alive and renewed; when the person decides, it ends as `decided`", async () => {
+    const root = await proposed();
+    const waiting = cli(root, ["wait", "--interval", "100", "--timeout", "5"], {
+      env: { SPECTY_AGENT: "claude-code" },
+    });
+    await marked(root);
+    const mark = await markOf(root);
+    expect(mark).toMatchObject({
+      pid: process.pid,
+      tool: "claude-code",
+      intervalMs: 100,
+      timeoutSec: 5,
+    });
+    expect(Number.isNaN(Date.parse(mark.since))).toBe(false);
+    expect(mark.ended).toBeUndefined();
+    const before = (await stat(markPath(root))).mtimeMs;
+    await pause(300);
+    expect((await stat(markPath(root))).mtimeMs).toBeGreaterThan(before);
+
+    const decidedAfter = Date.now();
+    await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    expect((await waiting).out).toContain("TAREA T1");
+    const ended = (await markOf(root)).ended;
+    expect(ended.reason).toBe("decided");
+    expect(Date.parse(ended.at)).toBeGreaterThanOrEqual(decidedAfter - 1000);
+  });
+
+  it("AC2: when its time runs out, the mark ends as `timeout`", async () => {
+    const root = await proposed();
+    const result = await cli(root, ["wait", "--interval", "50", "--timeout", "1"]);
+    expect(result.out).toContain("Tiempo de espera agotado");
+    expect((await markOf(root)).ended.reason).toBe("timeout");
+  });
+
+  it("AC1: a `wait` that returns at once because nothing waited for the person leaves no mark", async () => {
+    const empty = await tempRepo(APP);
+    await cli(empty, ["wait"]);
+    expect(await hasMark(empty)).toBe(false);
+
+    const root = await implementing();
+    expect((await cli(root, ["wait", "--interval", "50", "--timeout", "1"])).out).toContain(
+      "TAREA T1",
+    );
+    expect(await hasMark(root)).toBe(false);
+  });
+
+  it("AC3: without `--timeout`, it waits an hour", async () => {
+    const root = await proposed();
+    const waiting = cli(root, ["wait", "--interval", "100"]);
+    await marked(root);
+    expect((await markOf(root)).timeoutSec).toBe(3600);
+    await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    expect((await waiting).out).toContain("TAREA T1");
+  });
+});
+
+describe("the heartbeat of `specty wait`", () => {
+  const options: WaitOptions = { interval: 50, timeout: 1, beatMs: 200 };
+  const beats = (err: readonly string[]) =>
+    err.filter((line) => line.includes(`sigue esperando la decisión de la persona en ${CHANGE}`));
+
+  it("AC4: in Gemini CLI, it writes a heartbeat line with the change and its minutes, never further apart than its limit", async () => {
+    const root = await proposed();
+    const lines = beats(await waitAs(root, { GEMINI_CLI: "1" }, options));
+    expect(lines.length).toBeGreaterThanOrEqual(3);
+    expect(lines[0]).toContain("(0 de 1 min)");
+  });
+
+  it("AC4: in another tool, it writes no heartbeat line", async () => {
+    const root = await proposed();
+    expect(beats(await waitAs(root, { SPECTY_AGENT: "claude-code" }, options))).toEqual([]);
   });
 });

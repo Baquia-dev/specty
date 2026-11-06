@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "id": "20261106-tras-pedir-cambios-la-revision-espera-al-agente",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-tras-pedir-cambios-la-revision-espera-al-agente",
+  "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
+  "revision": 4,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:748e778b51453a671ad13dad0b46c65ed68cd875e9142bed6b031b30a5be8b50",
+    "at": "2026-11-06T15:39:18.098Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:be9ae8d96cbeaa46abcf643c8b217b00152aa7ffd22d900640fb23ae9bd4ff11",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:60f6465d994a14327cfb632bcd5e314bc771437b06465adde93426836ddd9033",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:02acc764390d69487b07cf9ea90b16120e143061d692329969b377b8d9a0922a",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:afa559ef2673b0c8d695fdaeb0612c5c0a150cdf5afbf6da63d5d1233997cf33",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d3b738bf9e8b3519a2fee6d87184f841ee7af3f7e85315cbff8b07569d95cad2",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:718698422d19348fd63588a85d4649629c7e438a4b7d2086b6371990a9cdf494",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "a2c28c25fda4219f146cac1838a46f1cd63767fe",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:46:36.604Z",
+      "doneAt": "2026-11-06T15:47:31.567Z",
+      "summary": "changeWaitsFor en core (flow/waiting.ts) y el campo changesRequestedAt de state.json",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "4869f5c5f9c5089599956356e83c883649333dfa",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:47:31.868Z",
+      "doneAt": "2026-11-06T15:48:20.925Z",
+      "summary": "Pedir cambios y rechazar supuestos al aprobar anotan changesRequestedAt; proponer y aprobar lo quitan",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "b5f33020cdf97a8395df119e51e5fdc06d59f1b1",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:48:21.250Z",
+      "doneAt": "2026-11-06T15:49:12.451Z",
+      "summary": "isWaitingForHuman y status usan changeWaitsFor; unattended lee su waitingFor sin el caso especial",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "efeeb15aab82da9533d02e7e6170bbaecf1425c0",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:49:12.763Z",
+      "doneAt": "2026-11-06T15:50:20.772Z",
+      "summary": "formats.md documenta changesRequestedAt; ARCHITECTURE §4 y §15, la regla común changeWaitsFor",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T15:56:24.319Z",
+  "lockedTests": {
+    "packages/cli/test/changes-requested-state.test.ts": "sha256:42be1eccb8e3040832f24155b9b5243ec4803ca4a642f41eb508de0b6c97fc9b",
+    "packages/cli/test/changes-requested-turn.test.ts": "sha256:4fd68a8ccbe037aa94720529500eb577d1f6cc3de6729127d48fc638a404a258",
+    "packages/core/test/flow/waiting.test.ts": "sha256:c343788d0a5d9982964b4ec1e9cb7a2e1b54d62aa04ce1a84d581e9d1007531e"
+  }
+}

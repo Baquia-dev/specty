@@ -103,9 +103,11 @@ describe("specty new --worktree", () => {
     const alone = await cli(root, ["new", "--from", "base", "Desde base"]);
     expect(alone.code).toBe(1);
     expect(alone.out).toContain("`--from` solo vale con `--worktree`.");
-    // A folder left behind keeps its id.
+    // A folder left behind that the clean-up does not take, as one with a repository of its own,
+    // keeps its id.
     const id = CHANGE.replace("saludo-personalizado", "desde-base");
     await mkdir(join(home(root), id), { recursive: true });
+    git(join(home(root), id), "init", "-q");
     expect((await cli(root, ["new", "--worktree", "--from", "base", "Desde base"])).code).toBe(0);
     expect(git(join(home(root), `${id}-2`), "rev-parse", "HEAD")).toBe(
       git(root, "rev-parse", "base"),

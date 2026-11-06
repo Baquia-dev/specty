@@ -18,6 +18,10 @@ export function noAssumptionCard(item: string, header: string, ctx: CardContext)
   );
 }
 
+/**
+ * An assumption decided alone from the UI. Rejecting it does not send the review back: it stays
+ * with the person until they approve or ask for the changes (`changeWaitsFor`).
+ */
 export function assumptionDecidedLine(
   item: string,
   decision: "confirmed" | "rejected",
@@ -27,8 +31,8 @@ export function assumptionDecidedLine(
   return decision === "confirmed"
     ? t(`${item} confirmado.`, `${item} confirmed.`)
     : t(
-        `${item} rechazado: el agente debe corregir la spec.`,
-        `${item} rejected: the agent must fix the spec.`,
+        `${item} rechazado; la revisión sigue contigo: apruébala, y el rechazo se la devuelve al agente, o pide los cambios.`,
+        `${item} rejected; the review stays with you: approve it, and the rejection sends it back to the agent, or ask for the changes.`,
       );
 }
 

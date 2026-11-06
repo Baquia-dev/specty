@@ -19,6 +19,7 @@ import {
   type TaskDoneRefusal,
   taskDoneCard,
   taskDoneRefusalCard,
+  unlockMismatchCard,
   verifyFailedCard,
   verifyingNote,
 } from "@baquia-dev/specty-core";
@@ -28,6 +29,7 @@ import { longFilesOf } from "../flow/lines";
 import { riskFindings } from "../flow/risk";
 import { completeTask, type TaskNotes, verifyTask } from "../flow/task-done";
 import { taskVerification } from "../flow/task-views";
+import { unlockMismatches } from "../flow/unlock-check";
 import { changeView } from "../flow/views";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
@@ -145,8 +147,8 @@ type CheckedDiff =
 
 /**
  * What `task done` checks on the task's diff before its verification: no scope request of the
- * task still pending, every file within its scope, none past the maximum length and
- * `specty check` passing.
+ * task still pending, every file within its scope, each test unlocked for it as its approved patch
+ * leaves it (ADR 0014), none past the maximum length and `specty check` passing.
  */
 async function checkedDiff(
   session: Session,
@@ -171,6 +173,10 @@ async function checkedDiff(
     rules: scopeRulesFrom(config),
   });
   if (!scope.ok) return { card: outOfScopeCard(header, task.id, scope.outOfScope, cards) };
+  const mismatches = await unlockMismatches(session, change, task.id);
+  if (mismatches.length > 0) {
+    return { card: unlockMismatchCard(mismatches, task.id, header, cards) };
+  }
   const long = await longFilesOf(session, base, changed);
   const tooLong = long.filter((file) => file.severity === "error");
   if (tooLong.length > 0) return { card: longFileCard(header, task.id, tooLong, cards) };

@@ -8,6 +8,8 @@ import {
   installOpencode,
   opencodePluginFile,
   planOpencodeStop,
+  planOpencodeTurn,
+  stopOf,
 } from "../install/opencode";
 import { isRecord, readText } from "../io/files";
 import {
@@ -43,10 +45,12 @@ export const opencode: AgentAdapter = {
       : exitReply(verdict),
   failed: exitFailed,
   card: textCard,
-  // `check --install` turns it on in the plugin, which keeps it once a turn went back to work.
+  // `init` turns it on in the plugin and `check --install` its check; the plugin keeps the turn
+  // it sent back to work.
   stop: {
     ...blockingStop([]),
-    plan: ({ root, files, timeout }) => planOpencodeStop(root, files, timeout),
+    plan: ({ root, files, timeout, check }) =>
+      (check ? planOpencodeStop : planOpencodeTurn)(root, files, timeout),
   },
   install: async ({ root, git, invocation, files, lang }) => {
     const { file, local } = await installOpencode(root, git, invocation, files);
@@ -80,12 +84,15 @@ export const opencode: AgentAdapter = {
     const compact = plugin?.includes("session.compacted") === true;
     // One from before OpenCode 2.2's end of turn only listens to `session.idle`, which 2.2 dropped.
     const turnEnd = plugin?.includes("session.execution.succeeded") === true;
+    // Its text always runs `hook agent-stop`: the end of turn is off while `STOP` is.
+    const stop = stopOf(plugin) !== undefined;
     return {
       ...lines,
       problems: [
         ...lines.problems,
         ...(compact ? [] : [{ code: "opencode-compact" } as const]),
         ...(turnEnd ? [] : [{ code: "opencode-turn-end" } as const]),
+        ...(stop ? [] : [{ code: "agent-stop", tool: "opencode" } as const]),
         ...beforeEnter(plugin ?? ""),
       ],
     };
@@ -179,6 +186,11 @@ const sessionMove = (input: Input): RawAction =>
   typeof input.directory === "string" && input.directory !== ""
     ? { kind: "enter", request: { path: input.directory } }
     : { kind: "other" };
+// It removes the worktree of `directory`, as `git worktree remove`, with `force` too.
+const worktreeRemove = (input: Input): RawAction =>
+  typeof input.directory === "string" && input.directory !== ""
+    ? { kind: "remove-worktree", path: input.directory }
+    : { kind: "other" };
 
 /** What each tool the guard judges does; the others are `other`. */
 const ACTIONS: ReadonlyMap<string, (input: Input) => RawAction> = new Map([
@@ -190,4 +202,5 @@ const ACTIONS: ReadonlyMap<string, (input: Input) => RawAction> = new Map([
   ["patch", patch],
   ["apply_patch", patch],
   ["opencode_session_move", sessionMove],
+  ["opencode_worktree_remove", worktreeRemove],
 ]);

@@ -75,6 +75,12 @@ describe("approving the tests locks them", () => {
       expect(denied.err).toContain("explícaselo al usuario");
       // AC6: and how to ask for its unlock, which only the person decides.
       expect(denied.err).toContain("`specty scope add src/app.test.ts --task T1 --reason");
+      // AC2: the full command, with the patch and the evidence, and what each one is.
+      expect(denied.err).toContain(
+        '--reason "<motivo>" --patch <parche> --evidence <ruta>:<desde>-<hasta>`, que solo decide la persona.',
+      );
+      expect(denied.err).toContain("`--patch` es el cambio exacto que harás al test");
+      expect(denied.err).toContain("`--evidence` son las líneas que lo justifican");
     }
     // The task's code, and a new test in its own file, stay open.
     expect((await guard(root, "Write", { file_path: `${root}/src/app.ts` })).code).toBe(0);
@@ -110,20 +116,38 @@ describe("tests-locked", () => {
 });
 
 const REASON = "El test espera «Hola, Ana» y el criterio dice «Hola Ana»";
+/** The change the unlock asks to make to TEST, as `git diff` writes it. */
+const PATCH = [
+  "diff --git a/src/app.test.ts b/src/app.test.ts",
+  "--- a/src/app.test.ts",
+  "+++ b/src/app.test.ts",
+  "@@ -1 +1 @@",
+  "-it('AC1: saluda a Ana', () => {});",
+  "+it('AC1: saluda a Ana', () => {}); // Hola, Ana",
+  "",
+].join("\n");
 
 /** FEATURE's change with T1 active and an unlock of its approved test requested. */
 async function unlockRequested() {
   const root = await approvedTests();
   await cli(root, ["next"]);
-  const asked = await cli(root, [
-    "scope",
-    "add",
-    "src/app.test.ts",
-    "--task",
-    "T1",
-    "--reason",
-    REASON,
-  ]);
+  const asked = await cli(
+    root,
+    [
+      "scope",
+      "add",
+      "src/app.test.ts",
+      "--task",
+      "T1",
+      "--reason",
+      REASON,
+      "--patch",
+      "-",
+      "--evidence",
+      "src/app.ts:1-1",
+    ],
+    { stdin: PATCH },
+  );
   return { root, asked };
 }
 
@@ -163,6 +187,93 @@ describe("unlocking an approved test", () => {
     expect((await guard(root, "Write", { file_path: `${root}/src/app.test.ts` })).code).toBe(0);
     await writeFiles(root, { "src/app.test.ts": "it('AC1: saluda a Ana', () => {}); // Hola\n" });
     expect((await cli(root, ["check", "--changed"])).out).not.toContain("FALLA tests-locked");
+  });
+
+  it("AC7: once the person approves it, scope.decided keeps the patch and the evidence", async () => {
+    const { root, asked } = await unlockRequested();
+    expect(asked.code, asked.out).toBe(0);
+    const approval = await cli(root, ["approve", "--scope", "S1"], { terminal: person() });
+    expect(approval.code, approval.out).toBe(0);
+    const audit = (await read(root, `.specty/changes/${CHANGE}/audit.jsonl`))
+      .trim()
+      .split("\n")
+      .map((line) => JSON.parse(line));
+    expect(audit.findLast((entry) => entry.event === "scope.decided")?.data).toEqual({
+      id: "S1",
+      decision: "approved",
+      unlock: ["src/app.test.ts"],
+      task: "T1",
+      patch: PATCH,
+      evidence: [
+        { path: "src/app.ts", from: 1, to: 1, text: "export const greet = () => 'hola';" },
+      ],
+    });
+    expect((await stateOf(root)).pending.scopeRequests).toEqual([]);
+  });
+
+  it("AC1: shows the person its patch and its evidence before deciding", async () => {
+    const { root } = await unlockRequested();
+    const terminal = person();
+    const approval = await cli(root, ["approve", "--scope", "S1"], { terminal });
+    expect(approval.code, approval.out).toBe(0);
+    expect(terminal.notes).toContain(
+      [
+        "S1 · T1",
+        "src/app.test.ts",
+        `— ${REASON}`,
+        "",
+        "El cambio al test:",
+        ...PATCH.split("\n").slice(0, -1),
+        "",
+        "El código que lo sustenta:",
+        "src/app.ts:1-1",
+        "1 │ export const greet = () => 'hola';",
+      ].join("\n"),
+    );
+  });
+
+  it("AC3: shows only the paths and the reason of a request without a patch", async () => {
+    const root = await approvedTests();
+    await cli(root, ["next"]);
+    const asked = await cli(root, [
+      "scope",
+      "add",
+      "src/greeting.ts",
+      "--task",
+      "T1",
+      "--reason",
+      "El saludo va en su propio módulo",
+    ]);
+    expect(asked.code, asked.out).toBe(0);
+    const terminal = person();
+    const rejection = await cli(root, ["reject", "--scope", "S1", "--reason", "No hace falta"], {
+      terminal,
+    });
+    expect(rejection.code, rejection.out).toBe(0);
+    expect(terminal.notes).toContain(
+      "S1 · T1\nsrc/greeting.ts\n— El saludo va en su propio módulo",
+    );
+  });
+
+  it("AC7: a rejected unlock keeps neither in scope.decided", async () => {
+    const { root } = await unlockRequested();
+    const rejection = await cli(
+      root,
+      ["reject", "--scope", "S1", "--reason", "El test está bien"],
+      {
+        terminal: person(),
+      },
+    );
+    expect(rejection.code, rejection.out).toBe(0);
+    const audit = (await read(root, `.specty/changes/${CHANGE}/audit.jsonl`))
+      .trim()
+      .split("\n")
+      .map((line) => JSON.parse(line));
+    expect(audit.findLast((entry) => entry.event === "scope.decided")?.data).toEqual({
+      id: "S1",
+      decision: "rejected",
+      reason: "El test está bien",
+    });
   });
 
   it("AC4 AC5: locks the new version when its task is done, and the acceptance shows the unlock", async () => {
