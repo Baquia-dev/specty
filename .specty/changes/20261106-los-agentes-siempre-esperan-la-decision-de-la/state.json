@@ -5,7 +5,14 @@
   "phase": "implementing",
   "branch": "specty/20261106-los-agentes-siempre-esperan-la-decision-de-la",
   "baseCommit": "36170f0d131f950b7eac367a27c7b3253d3de393",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:e5bc3317246a02802e50d6b0787d7207e530c3d1a7f69f763a46cf5bf6233da6",
+    "at": "2026-11-06T11:47:11.910Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -48,14 +55,7 @@
   "maxIds": {
     "A": 6,
     "AC": 9,
-    "C": 2,
+    "C": 3,
     "R": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7e6d19f7f008d39a13bfea63ce294f3583463142d9b932423ffab8cb68070209",
-    "at": "2026-11-06T11:17:39.801Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -35,7 +35,7 @@ Hoy cada agente decide cómo esperar la decisión de la persona. Unos ejecutan `
 ## Criterios de aceptación
 
 - AC1: CUANDO una salida de Specty deja el cambio esperando a la persona (aprobar la spec o los tests, decidir el alcance, aceptar, cerrar o repetir una incorporación) ENTONCES su `SIGUIENTE:` pide ejecutar `specty wait` con la misma frase en todas y dice cómo en la herramienta del agente: en Claude Code, en segundo plano; en las demás, en primer plano, repitiéndolo cada vez que se agote.
-- AC2: CUANDO `specty wait` agota su tiempo ENTONCES su salida pide volver a ejecutarlo ya y recordar a la persona la decisión pendiente, sin dejarlo a criterio del agente. CUANDO un agente lo ejecuta sin `--timeout` ENTONCES dura menos que el límite con que su herramienta corta un comando en primer plano, o una hora en Claude Code.
+- AC2: CUANDO `specty wait` agota su tiempo ENTONCES su salida pide volver a ejecutarlo ya y recordar a la persona la decisión pendiente, sin dejarlo a criterio del agente. CUANDO un agente lo ejecuta sin `--timeout` ENTONCES espera una hora, que todas las herramientas medidas aguantan en segundo plano o consultándolo, y en Gemini CLI, que corta un comando que pasa 300 s sin escribir nada, escribe una línea de latido al menos cada 60 s.
 - AC3: CUANDO `init` escribe las reglas de AGENTS.md ENTONCES dicen que, si el cambio espera a la persona, el agente ejecuta siempre `specty wait` (en Claude Code, en segundo plano), lo repite si se agota y no espera terminando el turno, con `sleep` ni consultando `status`.
 - AC4: CUANDO el agente de Claude Code ejecuta `specty wait` en primer plano ENTONCES el guard no lo deja correr así: lo pasa a segundo plano o lo rechaza y le pide ejecutarlo en segundo plano (`run_in_background: true`).
 - AC5: CUANDO el cambio de la carpeta espera a la persona y el agente ejecuta un comando de shell con `sleep` ENTONCES el guard lo rechaza y le pide `specty wait`.
@@ -46,15 +46,19 @@ Hoy cada agente decide cómo esperar la decisión de la persona. Unos ejecutan `
 
 ## Diseño
 
-- **C1, la regla en los textos y en `wait`** (core `cards/` y `agents-md.ts`, CLI `commands/wait.ts`, `store/waits.ts`, `agents/`): un solo texto en core para «ejecuta `specty wait`», con la forma de cada herramienta según `ctx.tool`, que usan todas las tarjetas que hoy lo piden a mano (`next`, `flow`, `acceptance`, `work`, `integration`, `epic`) y la de los tests del gate 2. La tarjeta de tiempo agotado pide repetirlo. Cada módulo de agente dice su tiempo de `wait` por defecto. La marca de `wait` (A6) va en `store/waits.ts`.
+- **C1, la regla en los textos** (core `cards/` y `agents-md.ts`): un solo texto en core para «ejecuta `specty wait`», con la forma de cada herramienta según `ctx.tool` (una tabla en `cards/wait.ts`), que usan todas las tarjetas que hoy lo piden a mano (`next`, `flow`, `acceptance`, `work`, `integration`, `testing`, `epic`). La tarjeta de tiempo agotado pide repetirlo ya y recordar a la persona la decisión.
+- **C3, la marca y el aguante de `wait`** (CLI `store/waits.ts`, `commands/wait.ts`, `commands/agent-commands.ts`; core `cards/wait.ts` para la línea de latido): la marca de A6 y, en Gemini CLI, una línea de latido al menos cada 60 s. `--timeout` deja de tener un valor por defecto en commander para que `wait` tome el suyo.
 - **C2, el guard y el fin de turno** (CLI `enforce/`, `agents/`, `install/`, `check/install-agents.ts`, core `guard/`): El guard de Claude Code no deja correr `specty wait` en primer plano: lo reescribe con `run_in_background: true` si la respuesta de la herramienta lo permite sin saltarse los permisos de la persona, y si no lo rechaza pidiendo ese parámetro. Una regla del guard rechaza `sleep` mientras el cambio espera a la persona. `hook agent-stop` comprueba la regla de `wait` antes del `check --changed`, que solo corre si `check --install` lo activó. `init`, `doctor` y `uninstall` instalan, comprueban y quitan el hook de cada agente.
 
 ## Cortes
 
-- C1: `specty wait` es la regla en todos los textos y en el propio `wait`
-  - ac: AC1, AC2, AC3, AC8, AC9
+- C1: `specty wait` es la regla en todos los textos
+  - ac: AC1, AC2, AC3, AC9
 - C2: El guard y el fin de turno hacen cumplir `specty wait` en cada agente
   - ac: AC4, AC5, AC6, AC7, AC9
+  - depends: C1, C3
+- C3: `specty wait` deja su marca y aguanta en cada herramienta
+  - ac: AC2, AC8, AC9
   - depends: C1
 
 ## Riesgos
