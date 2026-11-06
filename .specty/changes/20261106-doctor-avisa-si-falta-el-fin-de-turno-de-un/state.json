@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261106-doctor-avisa-si-falta-el-fin-de-turno-de-un",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-doctor-avisa-si-falta-el-fin-de-turno-de-un",
+  "baseCommit": "798f2e7348400e1b9900903d7b61240592143fac",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:66a3defb473c55d283ced493bb2261f89631dca4c98d4730ecc007e3e879c979",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f8f2d35af539165628b21faa79f42625c77b40aeb9720473c5c81079c50ecab8",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:69ce7dbff0c0c6041bd49640c404c691c40e3c7bce2af67ec01a6eb7ca3e81ec",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1cfec410534df5015ba1c068fd1c6cb6941e7c0204c201d55c4b5486f5bc466f",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:32b8d4ee461be4ce21da9882e853b6d484e467fae3d7e3aecb5f16055b58fdc7",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5ea83e2ed66a3c2d6ae3c09ce729de1f2227a6b4be0104838a1e1f0da78ea071",
+    "at": "2026-11-06T13:55:04.335Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
