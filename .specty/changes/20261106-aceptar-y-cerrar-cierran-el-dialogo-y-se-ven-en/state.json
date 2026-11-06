@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261106-aceptar-y-cerrar-cierran-el-dialogo-y-se-ven-en",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-aceptar-y-cerrar-cierran-el-dialogo-y-se-ven-en",
+  "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:96cfb89862504c85549332b668e8b284dac8da27732a1d6faf9bc52a2928d948",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7ccb60015de64d1b7bceb141c5169eff3e397c041ce8d7dd3c1459b95fa1a28a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f3809b91daf6de5b25fe4ef0439f373cce0fb0ac2f9974f6a4ff297e4926abe3",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:9384bbe678541e9224ec9ad69a76887de57b67ef2fd46f34c862ece29ee73c3d",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:3e96e180cf11be6a2dd8165f16f805bb36f39c116bb5123c47b7db67b46f0286",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f25a269a1d5ca6a7d91d19fb3a6320f3506981b3f873c53a63252b318347c781",
+    "at": "2026-11-06T07:46:18.109Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "testCycle": "feature"
+}
