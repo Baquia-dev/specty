@@ -6,6 +6,13 @@
   "branch": "specty/20261106-specty-wait-es-la-regla-en-todos-los-textos-y",
   "baseCommit": "36170f0d131f950b7eac367a27c7b3253d3de393",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:942b1a914ffb2068e9b4b388baa9a8574c6e8dfd6aecca729c84d62bf876296f",
+    "at": "2026-11-06T11:57:05.647Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -47,12 +54,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:942b1a914ffb2068e9b4b388baa9a8574c6e8dfd6aecca729c84d62bf876296f",
-    "at": "2026-11-06T11:57:05.647Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T12:00:24.939Z"
 }

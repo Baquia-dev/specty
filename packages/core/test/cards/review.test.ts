@@ -72,7 +72,7 @@ describe("the independent review", () => {
       ],
     });
     expect(card.next).toBe(
-      "corrige en la spec lo que sea un problema real y vuelve a ejecutar `specty propose`; si no hay nada que corregir, cuéntale al usuario lo que encontró la revisión y pídele que apruebe con `specty approve`. La revisión es información: decide la persona.",
+      "corrige en la spec lo que sea un problema real y vuelve a ejecutar `specty propose`; si no hay nada que corregir, cuéntale al usuario lo que encontró la revisión y pídele que apruebe con `specty approve`, y ejecuta `specty wait` para esperar su decisión. Ejecútalo en primer plano y vuelve a ejecutarlo cada vez que se agote o se corte. La revisión es información: decide la persona.",
     );
     expect(reviewedCard(view, { ...ES, delegated: true }).next).toContain(
       "si no hay nada que corregir, aprueba tú con `specty approve`",
@@ -134,7 +134,7 @@ describe("the independent review of the result", () => {
       text: "- Alta: eval sobre la entrada.",
     };
     expect(reviewedCard(view, ES).next).toBe(
-      'cuéntale al usuario lo que encontró la revisión y pídele que acepte con `specty accept`, o, si pide arreglar algo, ejecuta `specty adjust "<petición literal>"`. La revisión es información: decide la persona.',
+      'cuéntale al usuario lo que encontró la revisión y pídele que acepte con `specty accept`, y ejecuta `specty wait` para esperar su decisión. Ejecútalo en primer plano y vuelve a ejecutarlo cada vez que se agote o se corte. Si pide arreglar algo, ejecuta `specty adjust "<petición literal>"`. La revisión es información: decide la persona.',
     );
     expect(reviewedCard(view, { ...ES, delegated: true }).next).toBe(
       'si la revisión encontró un defecto real, pide el ajuste con `specty adjust "<qué arreglar>"`; si no, acepta tú con `specty accept`. La revisión es información.',
