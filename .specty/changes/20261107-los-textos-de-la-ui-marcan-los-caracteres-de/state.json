@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261107-los-textos-de-la-ui-marcan-los-caracteres-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-los-textos-de-la-ui-marcan-los-caracteres-de",
+  "baseCommit": "83686f522106f89c261fe441063c60f9c2cf4510",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7cc11a521c6f5d77180fbd69c9329a57c03f56e4986938a641ede702eff6a730",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:18c550f9e9397edd31adb78381189d7e52a647ea465237331241debe2ca6d2ae",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f17b9d601d5e4f53ab0502253d2fccca3336ada7faf958cdbfb359d5ed7f04cb",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:13815c227dfdf102362a370c44ac20c69e506883671fe3d89516910ccb7c1147",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 5,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:2034755a6267a68aed49269985a29b121c1bd6c43e0a3f60a47d10283e75c5dd",
+    "at": "2026-11-06T19:48:00.557Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
