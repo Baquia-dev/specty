@@ -6,6 +6,13 @@
   "branch": "specty/20261107-cada-cambio-que-pide-el-usuario-va-a-un",
   "baseCommit": "4cb3c564510dd4310d15d040f936f5fc27d53379",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:e2ca05e2a1b88e4d682a0d5ec5f320dc513ffbc71d5865db8f4c4be37514947f",
+    "at": "2026-11-06T20:11:16.659Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:e2ca05e2a1b88e4d682a0d5ec5f320dc513ffbc71d5865db8f4c4be37514947f",
-    "at": "2026-11-06T20:11:16.659Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T20:13:18.712Z"
 }
