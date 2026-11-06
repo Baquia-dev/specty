@@ -23,6 +23,7 @@ import {
   excludeLocally,
   guardMatcher,
   removeFromJson,
+  stopLines,
   withHooks,
 } from "../install/agents";
 import { type InstallFiles, rewriteJson } from "../install/files";
@@ -125,7 +126,8 @@ export const windsurf: AgentAdapter = {
     );
   },
   doctor: async (root, git) => {
-    const value: unknown = parse((await readText(join(root, DEVIN_HOOKS))) ?? "null");
+    const text = await readText(join(root, DEVIN_HOOKS));
+    const value: unknown = parse(text ?? "null");
     const hooks = isRecord(value) ? value : {};
     const missing = Object.keys(EVENTS).filter(
       (event) => !JSON.stringify(hooks[event] ?? null).includes("guard --tool windsurf"),
@@ -134,12 +136,14 @@ export const windsurf: AgentAdapter = {
     if (missing.includes("PreToolUse")) {
       return { ok: [], problems: [{ code: "no-windsurf-guard", file }] };
     }
+    const stop = stopLines([text], "windsurf", ["agent-stop"]);
     if (missing.length > 0) {
-      return { ok: [], problems: [{ code: "windsurf-hooks", file, events: missing.join(", ") }] };
+      const events = missing.join(", ");
+      return { ok: [], problems: [{ code: "windsurf-hooks", file, events }, ...stop] };
     }
     return {
       ok: [{ code: "windsurf-guard", file }],
-      problems: await beforeEnter(hooks, root, git),
+      problems: [...(await beforeEnter(hooks, root, git)), ...stop],
     };
   },
 };

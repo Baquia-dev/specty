@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "id": "20261106-el-guard-y-el-fin-de-turno-hacen-cumplir-specty",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-el-guard-y-el-fin-de-turno-hacen-cumplir-specty",
+  "baseCommit": "ddaa47217dcb6b75a40be45d70016d60cc09f4db",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:446e7f8ce61c3593e622fb12ae90c1517db64932aa127af2c0478934d827becc",
+    "at": "2026-11-06T12:48:58.301Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4d43acd0b159a764e59e1b3fb47ead215b1466e1e01e323a5f278ce07bac2e98",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:31cba17fb4e40b8386840381c906ca917bee27b0bd657e43ebd4a03da542c107",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:15a7b65f3a50a6306eefbb3ba6c43aeaad3086bc4387f3ca4147fb90c41f0f52",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:b20163c78ddb38057185ca87720ea5be14067481be3bbb654ea76481cf99fc36",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:70a59082e4291de24bb5c3394f0d1752e7de47e0304a30b1bd371656369880f3",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:ef521a801e84d69e5fd9d63f62b465b4d03cc5888a5c5c2c0e26fb5253d6a9e0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e80bbd0967b874fea3aaaf422f7facdbf2f6c540",
+      "attempts": 1,
+      "startedAt": "2026-11-06T12:51:19.139Z",
+      "doneAt": "2026-11-06T12:54:14.003Z",
+      "summary": "La regla wait de core rechaza specty wait con background false y sleep con el cambio esperando; analyzeShell da sleeps; cards/wait.ts da foregroundWaitDenial y sleepDenial (es/en) y waitStep acepta solo lang, command y tool; npx y bypass pasan a toolingDenial por complejidad",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "db07b5920b44726023dd1732c74f75b91344799e",
+      "attempts": 1,
+      "startedAt": "2026-11-06T12:54:14.336Z",
+      "doneAt": "2026-11-06T12:54:33.495Z",
+      "summary": "humanDenial arma su siguiente paso con waitStep y la herramienta del contexto (HumanContext.tool), así pide specty wait con la frase común en la forma de cada herramienta",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "63662ca0f87da2b0cb18b88d6be76b029619f661",
+      "attempts": 1,
+      "startedAt": "2026-11-06T12:54:33.966Z",
+      "doneAt": "2026-11-06T13:00:33.239Z",
+      "summary": "La acción de shell lleva background, que Claude Code saca de run_in_background; los hechos del shell pasan a shellFacts en place.ts, con sleeps y background; el guard pone su herramienta en el contexto y rechaza specty wait en primer plano",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "3645ede4da92d70991ac1688684eb0e70e15f0da",
+      "attempts": 1,
+      "startedAt": "2026-11-06T13:00:33.568Z",
+      "doneAt": "2026-11-06T13:01:48.351Z",
+      "summary": "commands/wait.ts exporta isWaitingForHuman y el guard marca waiting en su cambio, así frena sleep mientras el cambio espera a la persona; ARCHITECTURE cuenta la regla wait del guard",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-06T13:07:53.006Z",
+  "lockedTests": {
+    "packages/core/test/guard/decide.test.ts": "sha256:866c42dd87f08cdc53c09503a2002138c0c3364096773c3d3cc98642f2bc3761",
+    "packages/cli/test/wait-guard.test.ts": "sha256:797a35e1d7ff7509346f1154859a37e4b00296775814660a02571249f407fc45",
+    "packages/core/test/guard/wait.test.ts": "sha256:c8240fa8a8bb2f8b6a24b4f4a77023504513bac52a506833cac8c205fe304983"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "23afc82bb2278d4b7687512b7b3a56bc10852115",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/cli/src/commands/wait.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/agents/claude-code.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/enforce/actions.ts",
+      "packages/cli/src/enforce/agent-stop.ts",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/enforce/place.ts",
+      "packages/cli/test/agent-stop-wait.test.ts",
+      "packages/cli/test/wait-guard.test.ts",
+      "packages/core/src/cards/hooks.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/wait.ts",
+      "packages/core/src/guard/action.ts",
+      "packages/core/src/guard/decide.ts",
+      "packages/core/src/guard/human.ts",
+      "packages/core/src/guard/shell.ts",
+      "packages/core/test/cards/hooks.test.ts",
+      "packages/core/test/guard/decide.test.ts",
+      "packages/core/test/guard/wait.test.ts"
+    ],
+    "at": "2026-11-06T13:02:11.694Z",
+    "resolved": {
+      "commit": "3375185",
+      "at": "2026-11-06T13:07:06.755Z"
+    }
+  }
+}

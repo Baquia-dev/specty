@@ -44,6 +44,7 @@ type AgentCode =
   | "no-gemini-guard"
   | "gemini-hooks"
   | "memory-stop"
+  | "agent-stop"
   | "enter-outdated";
 
 /** The lines of `doctor` about each agent's installation, which `cards/doctor.ts` adds to its own. */
@@ -224,6 +225,11 @@ export const AGENT_WRITERS: {
     t(
       `${AGENT_NAMES[line.tool]}: el fin de turno no lleva la red de la memoria de Specty (\`hook memory-stop\`); ejecuta \`${command} init\`.`,
       `${AGENT_NAMES[line.tool]}: its end of turn lacks Specty's memory safety net (\`hook memory-stop\`); run \`${command} init\`.`,
+    ),
+  "agent-stop": (line, t, command) =>
+    t(
+      `${AGENT_NAMES[line.tool]}: falta el fin de turno de Specty (\`hook agent-stop\`), que devuelve al agente a \`${command} wait\` cuando el cambio espera a la persona; ejecuta \`${command} init\`.`,
+      `${AGENT_NAMES[line.tool]}: Specty's end of turn (\`hook agent-stop\`) is missing, which sends the agent back to \`${command} wait\` when the change waits for the person; run \`${command} init\`.`,
     ),
   "enter-outdated": (line, t, command) =>
     t(

@@ -6,6 +6,7 @@ import { blockedCard } from "./flow";
 import { runNext, type Translate, translator } from "./text";
 import type { UnitsOutcome } from "./units";
 import type { CardContext, ChangeView, IntegrationView } from "./view";
+import { waitStep } from "./wait";
 
 // Bringing the main branch into a change before it closes (ARCHITECTURE §9): what `next` shows
 // while the merge waits, what `close` or `accept` says when it cannot finish it, and `integrate`.
@@ -362,7 +363,7 @@ export function runAgainNext(again: "close" | "accept", ctx: CardContext): strin
         `delegated mode: run \`${ctx.command} ${again}\` again yourself and follow its output.`,
       )
     : t(
-        `pide al usuario que vuelva a ejecutar \`${ctx.command} ${again}\` y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
-        `ask the user to run \`${ctx.command} ${again}\` again and run \`${ctx.command} wait\` to wait for their decision.`,
+        `pide al usuario que vuelva a ejecutar \`${ctx.command} ${again}\` y ${waitStep(ctx)}.`,
+        `ask the user to run \`${ctx.command} ${again}\` again and ${waitStep(ctx)}.`,
       );
 }

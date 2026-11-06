@@ -64,8 +64,8 @@ function flowLines(t: Translate, command: string): string[] {
       `- If you need a file outside the task's scope, request it with \`${command} scope add\`.`,
     ),
     t(
-      `- Aprobar, decidir el alcance, aceptar y cerrar lo decide solo el usuario en su terminal o UI (no alteres .git ni eludas permisos); pídeselo y ejecuta \`${command} wait\` para esperar su decisión. Solo si \`SIGUIENTE:\` te lo pide (modo delegado), los ejecutas tú.`,
-      `- Approving, deciding scope, accepting and closing are the user's alone in their terminal or UI (do not alter .git or bypass permissions); ask them and run \`${command} wait\` to wait for their decision. Only when \`NEXT:\` tells you to (delegated mode) do you run them yourself.`,
+      `- Aprobar, decidir el alcance, aceptar y cerrar lo decide solo el usuario en su terminal o UI (no alteres .git ni eludas permisos); pídeselo y espera su decisión siempre con \`${command} wait\` (en Claude Code, en segundo plano) y vuelve a ejecutarlo cada vez que se agote o se corte; no esperes terminando el turno, con \`sleep\` ni consultando \`${command} status\`. Solo si \`SIGUIENTE:\` te lo pide (modo delegado), los ejecutas tú.`,
+      `- Approving, deciding scope, accepting and closing are the user's alone in their terminal or UI (do not alter .git or bypass permissions); ask them and always wait for their decision with \`${command} wait\` (in Claude Code, in the background), running it again each time it times out or is cut off; do not wait by ending your turn, with \`sleep\` or by polling \`${command} status\`. Only when \`NEXT:\` tells you to (delegated mode) do you run them yourself.`,
     ),
     t(
       "- Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.",

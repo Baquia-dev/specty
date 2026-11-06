@@ -3,6 +3,7 @@ import { join } from "node:path";
 import {
   type AgentTool,
   agentsMdLine,
+  DEFAULT_CONFIG,
   defaultGlossary,
   type GitFlow,
   glossaryLine,
@@ -19,7 +20,7 @@ import type { Environment } from "../session";
 import { repoPaths } from "../store/paths";
 import { type InstallFiles, installFiles } from "./files";
 import { flowToWrite, noFlowWarnings } from "./git-flow";
-import { agentsToInstall, installHooks } from "./hooks";
+import { agentsToInstall, installAgentStops, installHooks } from "./hooks";
 import { installMcp, mcpInRepo } from "./mcp";
 import { writeProduct } from "./product";
 import { writeAgentsMd, writeConfig, writeGlossary, writeWorktreesIgnore } from "./project-files";
@@ -99,6 +100,9 @@ export async function install(setup: InitSetup, fresh: boolean): Promise<Install
   const project = await writeProjectFiles(setup, fresh, files, flow.flow, mcp.served);
   const noFlow = noFlowWarnings(flow, project.product !== undefined, lang);
   const hooks = await installHooks({ environment, root, git, tools, lang, files });
+  // Each agent's end of turn goes next to its guard, with the time the configuration gives checks.
+  const timeout = setup.config?.verify.timeoutSec ?? DEFAULT_CONFIG.verify.timeoutSec;
+  await installAgentStops({ root, files, tools, timeout });
   // Last: ccusage, so that closing measures each change's consumption.
   const steps = [hooks, mcp, await usageTool(setup)];
   const noTests =

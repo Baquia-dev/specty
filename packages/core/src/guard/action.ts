@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import type { AgentTool } from "../agents";
 import type { Phase } from "../flow/phases";
 import type { Lang } from "../i18n";
 import type { ResolvedConfig } from "../schema/config";
@@ -25,6 +26,8 @@ export interface GuardChange {
   readonly locked?: readonly string[];
   /** A pending incorporation of the main branch: it alone decides about code, in any phase. */
   readonly integration?: GuardIntegration;
+  /** The change waits for the person's decision, as `specty wait` reads it. */
+  readonly waiting?: boolean;
 }
 
 export interface GuardContext {
@@ -35,6 +38,8 @@ export interface GuardContext {
   readonly command: string;
   /** The person delegated their decisions to the agent (ADR 0010): their commands are open. */
   readonly delegated?: boolean;
+  /** The agent's tool, for the way each one runs `specty wait`. */
+  readonly tool?: AgentTool;
 }
 
 /** Facts about a shell command, with paths already relative to the repository root. */
@@ -56,6 +61,13 @@ export interface ShellFacts {
   readonly elsewhere?: Elsewhere;
   /** The folders of open changes its `git worktree remove` commands would remove. */
   readonly removedFolders?: readonly OpenFolder[];
+  /** One of its simple commands waits with `sleep`. */
+  readonly sleeps?: boolean;
+  /**
+   * Whether the tool runs it in the background, for a tool whose shell says so (Claude Code's
+   * `run_in_background`); undefined for the others.
+   */
+  readonly background?: boolean;
 }
 
 export type GuardAction =
@@ -114,7 +126,8 @@ export type GuardRule =
   | "change-folder"
   | "integration"
   | "session"
-  | "locked";
+  | "locked"
+  | "wait";
 
 export type GuardDecision =
   | { readonly allow: true }
