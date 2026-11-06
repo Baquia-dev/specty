@@ -32,14 +32,15 @@ const brief = (
     "  3. Tu `cd` no dura entre comandos: empieza cada uno con `cd '<carpeta del cambio>' &&` y usa rutas absolutas de esa carpeta.",
     `  4. Sigue \`specty next\` hasta cerrarlo; cuando espere a la persona, ${WAIT}`,
     "  5. Si para la spec te falta una respuesta del usuario, no la supongas: detente y responde con la pregunta.",
-    "  6. Responde en tres líneas: el cambio, su fase y lo que falta.",
+    "  6. Si `propose` dice que el cambio es demasiado grande y pide dividirlo en una épica, no lo conviertas tú: detente y responde con eso, que la épica la hace la sesión principal en tu cambio.",
+    "  7. Responde en tres líneas: el cambio, su fase y lo que falta.",
   ].join("\n");
 
 const QUICK = "(añade `--kind quick` si son hasta 3 archivos de código sin rutas sensibles)";
 
 /** The card's next step, with what goes in place of the brief's markers. */
 const launch = (markers: string, how = "") =>
-  `SIGUIENTE: lanza un subagente por cada cambio que pidió el usuario, con el encargo tal cual${how}, y pon en él su título y su petición literal en lugar de ${markers} ${QUICK}; si son varios, lánzalos en paralelo, en un solo mensaje. No entres en sus carpetas, y una épica créala tú aquí, sin subagente. Si uno vuelve con una pregunta, házsela al usuario y pásale la respuesta (en Claude Code, con \`SendMessage\`); cuando terminen, vuelve a ejecutar \`specty next\` aquí.`;
+  `SIGUIENTE: lanza un subagente por cada cambio que pidió el usuario, con el encargo tal cual${how}, y pon en él su título y su petición literal en lugar de ${markers} ${QUICK}; si son varios, lánzalos en paralelo, en un solo mensaje. No entres en sus carpetas, y una épica créala tú aquí, sin subagente. Si uno vuelve con una pregunta, házsela al usuario y pásale la respuesta (en Claude Code, con \`SendMessage\`). Cuando terminen, si uno volvió porque su cambio es demasiado grande, entra tú en él (\`specty enter <id>\`) y conviértelo allí en la épica; si no, vuelve a ejecutar \`specty next\` aquí.`;
 
 const MARKERS = "`<título>` y `<petición literal del usuario>`";
 
@@ -124,11 +125,12 @@ describe("the card with no change active, when the tool hands changes to subagen
     expect(text).toContain(
       [
         "  5. If the spec needs an answer from the user, do not assume it: stop and answer with the question.",
-        "  6. Answer in three lines: the change, its phase and what is left.",
+        "  6. If `propose` says the change is too large and asks to split it into an epic, do not turn it into one yourself: stop and answer with that, since the main session makes the epic in your change.",
+        "  7. Answer in three lines: the change, its phase and what is left.",
       ].join("\n"),
     );
     expect(text.split("\n").at(-1)).toBe(
-      "NEXT: launch one subagent per change the user asked for, with the brief as is, putting in it its title and literal request in place of `<title>` and `<the user's literal request>` (add `--kind quick` for up to 3 code files without sensitive paths); if there are several, launch them in parallel, in a single message. Do not enter their folders, and create an epic yourself here, without a subagent. If one comes back with a question, ask the user and pass it the answer (in Claude Code, with `SendMessage`); once they finish, run `specty next` again here.",
+      "NEXT: launch one subagent per change the user asked for, with the brief as is, putting in it its title and literal request in place of `<title>` and `<the user's literal request>` (add `--kind quick` for up to 3 code files without sensitive paths); if there are several, launch them in parallel, in a single message. Do not enter their folders, and create an epic yourself here, without a subagent. If one comes back with a question, ask the user and pass it the answer (in Claude Code, with `SendMessage`). Once they finish, if one came back because its change is too large, enter it yourself (`specty enter <id>`) and turn it into the epic there; otherwise, run `specty next` again here.",
     );
   });
 

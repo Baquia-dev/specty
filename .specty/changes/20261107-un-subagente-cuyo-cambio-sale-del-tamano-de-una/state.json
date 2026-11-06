@@ -6,6 +6,13 @@
   "branch": "specty/20261107-un-subagente-cuyo-cambio-sale-del-tamano-de-una",
   "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2a3a6efd00c07d1c93a63b7d1f0e259e4ab090bb17f84dabccc7d0aabb8918b9",
+    "at": "2026-11-06T21:26:51.872Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -39,12 +46,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2a3a6efd00c07d1c93a63b7d1f0e259e4ab090bb17f84dabccc7d0aabb8918b9",
-    "at": "2026-11-06T21:26:51.872Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T21:32:34.395Z"
 }
