@@ -76,7 +76,7 @@ Una `verify` de tarea mal escrita (por ejemplo, `vitest run` en la UI de Angular
   - files: packages/core/src/cards/adjust.ts, packages/core/src/cards/work.ts, packages/core/src/cards/flow.ts, packages/core/test/cards/adjust.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/adjust.test.ts test/cards/adjusting.test.ts
-- [ ] T3: La aprobación del ajuste vuelve a la tarea activa sin fase de tests, y la documentación lo cuenta
+- [x] T3: La aprobación del ajuste vuelve a la tarea activa sin fase de tests, y la documentación lo cuenta
   - files: packages/cli/src/flow/adjusted-tests.ts, packages/cli/test/epic-adjust.test.ts, packages/cli/test/commands.test.ts, packages/cli/test/server/epic-adjust.test.ts, docs/ARCHITECTURE.md, docs/formats.md, docs/ui.md
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-adjust.test.ts test/commands.test.ts test/server/epic-adjust.test.ts test/adjusted-tests.test.ts && grep -q 'pending-tasks-only' docs/formats.md && grep -q 'pending-tasks-only' docs/ARCHITECTURE.md && grep -q 'tareas pendientes' docs/ui.md && pnpm typecheck && pnpm lint

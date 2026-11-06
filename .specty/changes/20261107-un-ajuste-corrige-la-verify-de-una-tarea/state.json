@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-un-ajuste-corrige-la-verify-de-una-tarea",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-un-ajuste-corrige-la-verify-de-una-tarea",
   "baseCommit": "efe8573c8c939f04712e3ff9ccede27b7c150138",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c2cf2c00e89827b1f17c5dbf1ac07e2967095291",
+      "attempts": 1,
       "startedAt": "2026-11-06T23:25:25.735Z",
       "doneAt": "2026-11-06T23:25:49.173Z",
-      "summary": "La negativa de adjust nombra implementing y la aceptación; en adjusting con una tarea activa la tarjeta da «CÓMO CORREGIRLAS»; la verificación fallida de task done sugiere corregir con adjust una verify que no carga sus tests"
+      "summary": "La negativa de adjust nombra implementing y la aceptación; en adjusting con una tarea activa la tarjeta da «CÓMO CORREGIRLAS»; la verificación fallida de task done sugiere corregir con adjust una verify que no carga sus tests",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e7afe9f016693175e9200ed9de616f178a948f54",
+      "startedAt": "2026-11-06T23:25:49.496Z",
+      "doneAt": "2026-11-06T23:27:15.934Z",
+      "summary": "El ciclo de tests de un ajuste cuenta solo las tareas que trae (las aprobadas ya pasaron su fase de tests), así que corregir tareas pendientes vuelve a implementing con la tarea activa y los tests bloqueados; ARCHITECTURE §4 y §12, formats §2 y ui.md lo cuentan"
     }
   },
   "pending": {
