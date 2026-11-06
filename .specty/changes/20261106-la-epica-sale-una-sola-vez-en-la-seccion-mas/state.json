@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-epica-sale-una-sola-vez-en-la-seccion-mas",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-la-epica-sale-una-sola-vez-en-la-seccion-mas",
   "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
   "revision": 2,
@@ -54,6 +54,9 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T15:05:05.305Z"
+  "lockedTests": {
+    "packages/ui/src/inbox/inbox-more.test.ts": "sha256:2049feef8c0abfe0b4a682c74f45fbc27546ea5f9ceaa4e6197b0c7e43143951",
+    "packages/ui/src/inbox/inbox-view.test.ts": "sha256:5633a9a9a5879fc4df1e034e74ef1a3896d008329ae1e600063c89795a1b6397",
+    "packages/ui/src/inbox/inbox.test.ts": "sha256:046fb524cecbd6899eb7b425915166a723e81fdd01ff4cdacaf3c5be35495041"
+  }
 }
