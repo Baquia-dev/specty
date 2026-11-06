@@ -63,7 +63,7 @@ Hoy la UI pinta el parche y la evidencia de un desbloqueo, y cualquier otra lín
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/diff-file.test.ts --include src/components/diff-file-marks.test.ts --include src/components/diff-viewer.test.ts && pnpm lint && pnpm knip
   - type: feat
-- [ ] T3: «Ver código», la evidencia de un desbloqueo y la trazabilidad los pintan igual
+- [x] T3: «Ver código», la evidencia de un desbloqueo y la trazabilidad los pintan igual
   - files: packages/ui/src/progress/code-lines.ts, packages/ui/src/progress/unlock-detail.test.ts, packages/ui/src/history/trace-view.ts, packages/ui/src/history/trace-view.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/unlock-detail.test.ts --include src/history/trace-view.test.ts --include src/progress/locked-tests.test.ts --include src/progress/tests-sent.test.ts && pnpm typecheck && pnpm lint && pnpm knip

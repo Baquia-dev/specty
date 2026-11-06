@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7c32e62f41e07119f0877ffb6b41f023227d53c9",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:58:09.505Z",
       "doneAt": "2026-11-06T18:58:51.327Z",
-      "summary": "DIRECTION_MARK (highlight.ts) da el tono de atención (phase-review sobre phase-review-bg) y el título en español y en inglés; el visor de diffs lo pone, con data-direction, en la pieza marcada de las dos vistas, en lugar del tono de la palabra cambiada."
+      "summary": "DIRECTION_MARK (highlight.ts) da el tono de atención (phase-review sobre phase-review-bg) y el título en español y en inglés; el visor de diffs lo pone, con data-direction, en la pieza marcada de las dos vistas, en lugar del tono de la palabra cambiada.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a22c171eb2cb133197e86720a8da9a19b43bb0b4",
+      "startedAt": "2026-11-06T18:58:51.704Z",
+      "doneAt": "2026-11-06T18:59:39.691Z",
+      "summary": "«Ver código» y la evidencia (code-lines.ts, que lee el idioma de Preferences) y la trazabilidad (trace-view.ts) pintan la pieza marcada con el tono y el título de DIRECTION_MARK y data-direction."
     }
   },
   "pending": {
