@@ -85,3 +85,23 @@ Desde C5, `specty init` instala el fin de turno de cada agente (`hook agent-stop
 ## Riesgos
 
 - R1: Los proyectos que ya usan Specty verán en `doctor` un problema nuevo hasta que vuelvan a ejecutar `init`. La línea dice qué falta y cómo arreglarlo, y el fin de turno que escribe `init` no ejecuta `check --changed`.
+
+## Cierre
+
+### Resumen
+
+`specty doctor` avisa ahora (`agent-stop`, un problema que hace salir con 1) cuando el guard de un agente está en su archivo de hooks y su fin de turno no, como en una instalación de antes de C5, y pide volver a ejecutar `specty init`. La línea está en español y en inglés (`AGENT_WRITERS` en `cards/doctor-agents.ts`). `memoryStopLines` pasó a ser `stopLines(texts, tool, hooks)` en `install/agents.ts`. Claude Code y Codex comprueban `memory-stop` y `agent-stop`, y Cursor, Gemini CLI, Devin y Antigravity solo `agent-stop`. El fin de turno cuenta con `--no-check` o sin la marca. En OpenCode cuenta `STOP` del plugin (`stopOf`, ahora exportada desde `install/opencode.ts`), porque su texto siempre contiene `hook agent-stop`. `docs/ARCHITECTURE.md` («Fin de turno») cuenta el aviso.
+
+### Desviaciones (respecto al plan)
+
+- Ninguna.
+
+### Decisiones
+
+- Para no duplicar `memoryStopLines`, la generalicé en `stopLines`, que recibe los fines de turno que se comprueban. La línea de `agent-stop` va en el mismo tipo de `DoctorLine` que `memory-stop`.
+- En Gemini CLI, Devin y Antigravity la línea sale también cuando faltan otros hooks del guard, y en Cursor no quita la línea buena del guard, como pasa con la red de la memoria en Claude Code.
+- T2 quedó con 8 archivos (el aviso recomendaba 5 como máximo), para que los seis agentes con hooks en JSON cambiaran en la misma tarea que su test.
+
+### Pendientes
+
+- Ninguno.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-doctor-avisa-si-falta-el-fin-de-turno-de-un",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-doctor-avisa-si-falta-el-fin-de-turno-de-un",
   "baseCommit": "798f2e7348400e1b9900903d7b61240592143fac",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:5ea83e2ed66a3c2d6ae3c09ce729de1f2227a6b4be0104838a1e1f0da78ea071",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7a9ae2fd83f7227cfa26807bb1fc3fdb5a64fd61",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:58:49.888Z",
       "doneAt": "2026-11-06T13:59:54.382Z",
-      "summary": "`install/opencode.ts` exporta `stopOf`, y el `doctor` de OpenCode da `agent-stop` cuando el plugin tiene el guard y `STOP` apagado. `docs/ARCHITECTURE.md` («Fin de turno») cuenta el aviso."
+      "summary": "`install/opencode.ts` exporta `stopOf`, y el `doctor` de OpenCode da `agent-stop` cuando el plugin tiene el guard y `STOP` apagado. `docs/ARCHITECTURE.md` («Fin de turno») cuenta el aviso.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,6 +83,7 @@
     "T": 3,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-06T14:05:29.017Z",
   "lockedTests": {
     "packages/cli/test/doctor-agent-stop.test.ts": "sha256:c2e0143787c9a6a1cea260fa1a47ba97fd6cba9faee4be9f43f7aa9dd01e2b06",
     "packages/cli/test/doctor-opencode-stop.test.ts": "sha256:d83ea7bdeefd804f9b3c86667fec0778a58644e6743077dc754bf7927973ce4e",
