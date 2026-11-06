@@ -45,7 +45,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b64631bf404d864dca1353a6270339af8705150d",
+      "startedAt": "2026-11-06T13:34:44.044Z",
+      "doneAt": "2026-11-06T13:39:51.344Z",
+      "summary": "GET /api/changes/<id>/test (server/test-code.ts) da un test del cambio desde su rama o, cerrado, desde la principal; 404 para lo demás. SpectyData.testCode y ServerData.testCode lo piden."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

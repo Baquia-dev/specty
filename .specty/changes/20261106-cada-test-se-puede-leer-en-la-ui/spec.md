@@ -64,7 +64,7 @@ Hoy la UI solo da la ruta de cada test, en «Tests por aprobar» y en «Tests bl
 
 ## Tareas
 
-- [ ] T1: El servidor da el código de los tests del cambio, y la fuente de datos lo pide
+- [x] T1: El servidor da el código de los tests del cambio, y la fuente de datos lo pide
   - files: packages/cli/src/server/test-code.ts, packages/cli/src/server/api.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/cli/test/server/test-code.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/test-code.test.ts test/server/trace.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts --include src/data/server-trace.test.ts
