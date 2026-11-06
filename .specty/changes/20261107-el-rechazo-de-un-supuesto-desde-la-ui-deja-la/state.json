@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-el-rechazo-de-un-supuesto-desde-la-ui-deja-la",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-rechazo-de-un-supuesto-desde-la-ui-deja-la",
   "baseCommit": "fc68f756b2f6ed7805ea8310f3093b51ec428cc9",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7331a8bd0b7118ee8d91e060e68a10ee7fa8b98f3b0a303b5347784b087d7339",
+    "at": "2026-11-06T17:48:06.231Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7331a8bd0b7118ee8d91e060e68a10ee7fa8b98f3b0a303b5347784b087d7339",
-    "at": "2026-11-06T17:48:06.231Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/core/test/cards/review-texts.test.ts": "sha256:a31db7b54c5a50502b9b0d503927b5db8b12bb3d84171936dae93519aaeae987"
+  }
 }

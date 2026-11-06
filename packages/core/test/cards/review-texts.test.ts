@@ -67,8 +67,14 @@ describe("the review of a spec in the UI", () => {
       `${HEADER}\nLa spec no tiene el supuesto A9.\nSIGUIENTE: vuelve a cargar la revisión.`,
     );
     expect(assumptionDecidedLine("A1", "confirmed", "es")).toBe("A1 confirmado.");
+  });
+
+  it("AC1: an assumption rejected alone leaves the review with the person, who approves or asks for the changes", () => {
+    expect(assumptionDecidedLine("A2", "rejected", "es")).toBe(
+      "A2 rechazado; la revisión sigue contigo: apruébala, y el rechazo se la devuelve al agente, o pide los cambios.",
+    );
     expect(assumptionDecidedLine("A2", "rejected", "en")).toBe(
-      "A2 rejected: the agent must fix the spec.",
+      "A2 rejected; the review stays with you: approve it, and the rejection sends it back to the agent, or ask for the changes.",
     );
   });
 
