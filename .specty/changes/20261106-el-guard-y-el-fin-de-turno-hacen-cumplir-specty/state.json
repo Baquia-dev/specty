@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-guard-y-el-fin-de-turno-hacen-cumplir-specty",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-el-guard-y-el-fin-de-turno-hacen-cumplir-specty",
   "baseCommit": "ddaa47217dcb6b75a40be45d70016d60cc09f4db",
   "revision": 1,
@@ -60,6 +60,9 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T12:51:00.668Z"
+  "lockedTests": {
+    "packages/core/test/guard/decide.test.ts": "sha256:866c42dd87f08cdc53c09503a2002138c0c3364096773c3d3cc98642f2bc3761",
+    "packages/cli/test/wait-guard.test.ts": "sha256:797a35e1d7ff7509346f1154859a37e4b00296775814660a02571249f407fc45",
+    "packages/core/test/guard/wait.test.ts": "sha256:c8240fa8a8bb2f8b6a24b4f4a77023504513bac52a506833cac8c205fe304983"
+  }
 }
