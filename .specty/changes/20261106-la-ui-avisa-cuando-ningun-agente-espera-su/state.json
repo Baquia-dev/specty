@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-ui-avisa-cuando-ningun-agente-espera-su",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-la-ui-avisa-cuando-ningun-agente-espera-su",
   "baseCommit": "0185f80fb3f07c73eb81623f7615345dda2f31e4",
   "revision": 3,
@@ -60,6 +60,10 @@
     "T": 5,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T14:41:35.991Z"
+  "lockedTests": {
+    "packages/ui/src/change/resume-hints.test.ts": "sha256:16145e1b715e6383667be86134e3a9c731dd02ba66103a0bee74dfed255d2ec9",
+    "packages/ui/src/inbox/inbox-row.test.ts": "sha256:bc457e6375cc2879bb86278d7cec30e25207068e6e1158f3b23088340ba4132a",
+    "packages/cli/test/server-unattended.test.ts": "sha256:077d1e94d285c07cc1b57d7e36f999c4b407cafd7a51baac01d72fdbd177797e",
+    "packages/ui/src/change/change-page.unattended.test.ts": "sha256:73490987741cd5b67164685468147bf4cb822413cc56b7ab23f58bc0f258d44b"
+  }
 }
