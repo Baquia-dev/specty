@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-cabecera-dice-por-que-espera-una-aceptacion",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-la-cabecera-dice-por-que-espera-una-aceptacion",
   "baseCommit": "288e88cbf522a73c14ab890101f8b1cb626ee433",
   "revision": 2,
@@ -56,6 +56,10 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T09:45:13.647Z"
+  "lockedTests": {
+    "packages/ui/src/acceptance/acceptance-actions.test.ts": "sha256:2f7bc3220da2639423d4471d7d23c3fc28c09d1f20f4e22391f68d0bf334e3b8",
+    "packages/ui/src/acceptance/closing-actions.test.ts": "sha256:326d24cad4b4c3697a0de659047f32554ddea67c701121d79382021993764e48",
+    "packages/cli/test/server/action-notes.test.ts": "sha256:80348e4bcc5d4b2d88a7bb0e1b0d6220a0650d93ebc19be86623e18501765600",
+    "packages/ui/src/data/in-flight.test.ts": "sha256:6f8df577f088ddf926ff4959e9ddf425967d0f45c4e62008167754eacfe2390e"
+  }
 }
