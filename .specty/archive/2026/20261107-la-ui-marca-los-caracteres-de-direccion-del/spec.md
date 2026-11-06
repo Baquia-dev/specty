@@ -78,3 +78,27 @@ Hoy la UI pinta el parche y la evidencia de un desbloqueo, y cualquier otra lín
 
 - R1: Marcar los caracteres antes de aplicar los colores dejaría tokens del resaltador que no deletrean la línea, y la línea saldría sin colores — se marcan después de cortar por colores y palabras cambiadas, y AC1 comprueba los colores alrededor del carácter, en el visor de diffs y en la evidencia.
 - R2: El tono de atención de la pieza marcada tapa el de la palabra cambiada en la que está — la pieza conserva `changed` (`data-changed`), y la persona ve el carácter, que es lo que importa al decidir.
+
+## Cierre
+
+### Resumen
+
+La UI muestra con su código cada carácter de dirección del texto (U+202A–U+202E, U+2066–U+2069) en el visor de diffs, en «Ver código», en la evidencia de un desbloqueo y en la trazabilidad del Historial, en lugar de dejar que el navegador lo aplique y reordene lo que se lee («Trojan Source», CVE-2021-42574). Lo marca un solo sitio, `spansOf` (`highlight/highlight.ts`): después de cortar la línea por sus colores y sus palabras cambiadas, corta cada pieza alrededor de cada carácter y lo da como su código, `\u` y sus cuatro cifras hexadecimales, como la terminal, sin color ni cursiva, con `direction` y conservando `changed`. `DIRECTION_MARK` da el tono de atención (`--color-phase-review` sobre `--color-phase-review-bg`) y el título en español y en inglés, y el visor de diffs (en sus dos vistas), `progress/code-lines.ts` y `history/trace-view.ts` los ponen en la pieza marcada, con `data-direction`. El resto de la línea conserva sus colores y sus palabras cambiadas. ui.md lo cuenta en «Visor de diffs».
+
+### Desviaciones
+
+- Antes de aprobar la spec, T2 se dividió en dos tareas (el visor de diffs, y «Ver código», la evidencia y la trazabilidad) porque tocaba 7 archivos, y la comprobación de tipos quedó solo en la última tarea de código, como pidió `propose`; la documentación pasó a T4.
+- Antes de enviar los tests, el código se probó en una copia de la carpeta del cambio en el scratchpad, porque solo la persona puede desbloquear un test aprobado mal escrito. Ejecutar allí `pnpm exec` reenlazó los paquetes del espacio de trabajo de la carpeta del cambio hacia la copia, a través de los enlaces de `node_modules`; se deshizo con `pnpm install --prefer-offline` en la carpeta del cambio, sin ningún enlace a la copia después.
+- Al escribir la spec, el código del carácter que servía de ejemplo, escrito con su barra invertida, se guardó como el propio carácter U+202E, que quedó crudo en el Objetivo y en AC1. No se corrigió porque la spec ya estaba aprobada: queda en Pendientes.
+
+### Decisiones
+
+- Un solo sitio, `spansOf`, en lugar de marcar solo el parche y la evidencia: cubre también «Ver código», la trazabilidad y el diff de cualquier cambio, porque un test o un diff con estos caracteres engaña igual que un parche.
+- Se marcan los mismos nueve caracteres que la terminal (`visible` en `cards/approve.ts`), con la misma forma de su código. La regla se repite en la UI, con un comentario que lo dice, en lugar de exportarla del core, para no ampliar su API pública por dos comparaciones.
+- La pieza marcada toma el tono de atención en lugar del fondo de la palabra cambiada, pero conserva `changed` (`data-changed`).
+- El título dice qué es el carácter y por qué se ve su código; un lector de pantalla lee el código tal cual, sin texto aparte.
+
+### Pendientes
+
+- Los textos de la UI que no son código (la spec, el motivo de una solicitud, una ruta) no marcan los caracteres de dirección del texto: la spec de 20261107-la-ui-marca-los-caracteres-de-direccion-del lleva un U+202E crudo en el Objetivo y en AC1, que en la pestaña Spec invierte el resto de esas líneas.
+- Mirar a ojo en `specty ui`, en claro y en oscuro, cómo se ve un carácter de dirección marcado en el visor de diffs, en la evidencia de un desbloqueo y en la trazabilidad: solo lo comprueban los tests.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-la-ui-marca-los-caracteres-de-direccion-del",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-la-ui-marca-los-caracteres-de-direccion-del",
   "baseCommit": "7364903203145fdcd85c7f2a4455e068e59045f7",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:7db43ada1ae0f589dbae0116547fe4a65976804bf095876b7a89149ee21a0308",
@@ -70,12 +70,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "229068435a02817a0a2a385e8c670751f65b3fa0",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:59:40.034Z",
       "doneAt": "2026-11-06T19:04:18.164Z",
-      "summary": "ui.md (Visor de diffs) cuenta cómo se ve un carácter de dirección del texto y que spansOf lo marca para el visor, «Ver código», la evidencia y la trazabilidad."
+      "summary": "ui.md (Visor de diffs) cuenta cómo se ve un carácter de dirección del texto y que spansOf lo marca para el visor, «Ver código», la evidencia y la trazabilidad.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,6 +88,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T19:10:10.424Z",
   "lockedTests": {
     "packages/ui/src/components/diff-file.test.ts": "sha256:302851228f9685e518ae0262cff85eb8f4702ab7ca1efbd212772975f7660d74",
     "packages/ui/src/highlight/highlight.test.ts": "sha256:838a61a7ed579e987dbf5d0e80f6d161c9a00168638cca8a3dd4e2fb543a2845",
