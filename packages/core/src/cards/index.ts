@@ -311,12 +311,16 @@ export {
 export { type NextView, nextCard, notInitializedCard, taskCard } from "./next";
 export { type NoteRefusal, notedCard, noteRefusalCard } from "./notes";
 export {
+  cleanupBlocks,
   notInTargetBranchLine,
   notInTargetFolderLine,
   preparingNote,
   pruneCard,
+  type RescuedFolder,
+  rescueCommitSubject,
   sharedLine,
   sharedTitle,
+  type UnsavedFolder,
   workingFolderLine,
 } from "./parallel";
 export { withDevPorts } from "./ports";

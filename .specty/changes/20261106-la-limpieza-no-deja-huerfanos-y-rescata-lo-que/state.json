@@ -53,7 +53,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0f8c823e9742a973df7992a1a1da5180f6efe826",
+      "startedAt": "2026-11-06T09:47:57.787Z",
+      "doneAt": "2026-11-06T09:54:35.445Z",
+      "summary": "cards/parallel.ts: RescuedFolder, UnsavedFolder, rescueCommitSubject, cleanupBlocks y las secciones nuevas de pruneCard (fantasmas, refs de rescate con su peso desde 10 MB, registros olvidados, carpetas vacías, no guardadas en QUEDAN), en es y en; exportados en cards/index.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

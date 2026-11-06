@@ -72,7 +72,7 @@ Hoy la limpieza no poda los registros de git de worktrees cuya carpeta ya no exi
 
 ## Tareas
 
-- [ ] T1: Los textos de la limpieza nueva, en español y en inglés
+- [x] T1: Los textos de la limpieza nueva, en español y en inglés
   - files: packages/core/src/cards/parallel.ts, packages/core/src/cards/index.ts, packages/core/test/cards/prune-orphans.test.ts
   - ac: AC4, AC5, AC6, AC7, AC8, AC11
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/prune-orphans.test.ts test/cards/parallel.test.ts test/cards/prune-leftovers.test.ts test/cards/prune-live.test.ts test/cards/prune-units.test.ts test/cards/close.test.ts && pnpm typecheck && pnpm lint

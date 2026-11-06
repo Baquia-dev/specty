@@ -5,7 +5,9 @@ import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
 // Working in parallel, a worktree per change: files another open change also lists, preparing a
-// new folder, and cleaning up the folders and branches of finished changes (`prune`).
+// new folder, and cleaning up the folders and branches of finished changes and the orphans, with
+// the rescue refs of what they had (`prune`, and the clean-up at the end of `new`, `close` and
+// `cancel`).
 
 /** A file another open change also lists, and those changes. */
 export function sharedLine(path: string, changes: readonly string[], lang: Lang): string {
@@ -60,6 +62,107 @@ interface Leftovers {
   readonly indexes: number;
 }
 
+/** A folder whose work the clean-up saved in a rescue ref before removing it. */
+export interface RescuedFolder {
+  readonly folder: string;
+  /** `refs/specty/rescue/<name>/<YYYYMMDDHHMMSS>`. */
+  readonly ref: string;
+  /** What the blobs it saved weigh, new against the commit it went on top of. */
+  readonly bytes: number;
+}
+
+/** A folder the clean-up could not save in a rescue ref, so it stays with what it has. */
+export interface UnsavedFolder {
+  readonly folder: string;
+  /** Git's reason. */
+  readonly reason: string;
+}
+
+/** From this weight on, the line of a rescue ref says how much it saved (R2 of the epic). */
+const HEAVY_BYTES = 10 * 1024 * 1024;
+
+/** A rescue ref, with how to see what it saved and get it back, and its weight when heavy. */
+function rescuedLine({ folder, ref, bytes }: RescuedFolder, t: Translate): string {
+  const mb = Math.round(bytes / (1024 * 1024));
+  const weight = bytes >= HEAVY_BYTES ? t(` Pesa ${mb} MB.`, ` It weighs ${mb} MB.`) : "";
+  const line = t(
+    `${folder}: lo que tenía sin commit quedó en ${ref}; míralo con \`git show ${ref}\` y recupéralo con \`git worktree add <carpeta> ${ref}\`.`,
+    `${folder}: what it had uncommitted is in ${ref}; see it with \`git show ${ref}\` and get it back with \`git worktree add <folder> ${ref}\`.`,
+  );
+  return `${line}${weight}`;
+}
+
+/** A folder that stays because what it has could not be saved, with git's reason. */
+function unsavedLine({ folder, reason }: UnsavedFolder, t: Translate): string {
+  return t(
+    `${folder}: lo que tiene no se pudo guardar en una ref de rescate, así que queda: ${reason}`,
+    `${folder}: what it has could not be saved in a rescue ref, so it stays: ${reason}`,
+  );
+}
+
+/** The subject of the commit of a rescue ref, which keeps what the folder `name` had. */
+export function rescueCommitSubject(name: string, lang: Lang): string {
+  return `wip: ${translator(lang)(`lo que ${name} tenía sin commit al quitar su carpeta`, `what ${name} had uncommitted when its folder was removed`)}`;
+}
+
+/** The ghost folders removed, and the rescue refs of what the folders removed had. */
+function rescueSections(
+  ghosts: readonly string[],
+  rescued: readonly RescuedFolder[],
+  t: Translate,
+): OutputBlock[] {
+  return [
+    ...section(t("CARPETAS FANTASMA BORRADAS", "GHOST FOLDERS REMOVED"), ghosts),
+    ...section(
+      t("GUARDADO EN REFS DE RESCATE", "SAVED IN RESCUE REFS"),
+      rescued.map((folder) => rescuedLine(folder, t)),
+    ),
+  ];
+}
+
+/**
+ * What `new`, `close` and `cancel` add to their card of the clean-up at their end: the folders of
+ * finished changes removed (`new` says them itself, so it leaves `finished` out), the ghost ones,
+ * the rescue refs and the folders that stay because they could not be saved.
+ */
+export function cleanupBlocks(
+  swept: {
+    readonly finished?: readonly string[];
+    readonly ghosts: readonly string[];
+    readonly rescued: readonly RescuedFolder[];
+    readonly unsaved: readonly UnsavedFolder[];
+  },
+  lang: Lang,
+): OutputBlock[] {
+  const t = translator(lang);
+  const { finished = [] } = swept;
+  return [
+    ...section(
+      t("CARPETAS DE CAMBIOS TERMINADOS, BORRADAS", "FOLDERS OF FINISHED CHANGES, REMOVED"),
+      finished,
+    ),
+    ...rescueSections(swept.ghosts, swept.rescued, t),
+    ...section(
+      t("QUEDAN", "KEPT"),
+      swept.unsaved.map((folder) => unsavedLine(folder, t)),
+    ),
+  ];
+}
+
+/** What `prune` did with the orphans besides the folders of finished changes (ARCHITECTURE §9). */
+interface Orphans {
+  /** The ghost folders it removed. */
+  readonly ghosts?: readonly string[];
+  /** What it saved in rescue refs before removing a folder. */
+  readonly rescued?: readonly RescuedFolder[];
+  /** The folders it could not save, which stay with what they have. */
+  readonly unsaved?: readonly UnsavedFolder[];
+  /** How many records of worktrees whose folder no longer existed git forgot. */
+  readonly records?: number;
+  /** The folders of `.specty/changes/` with no file that it removed. */
+  readonly empty?: readonly string[];
+}
+
 /** `specty prune`: the folders and branches it removed, and the ones it kept, with why. */
 export function pruneCard(
   pruned: {
@@ -74,7 +177,7 @@ export function pruneCard(
     readonly units?: { readonly removed: number; readonly days: number };
     /** What processes that died left in git's folders, and it removed. */
     readonly leftovers?: Leftovers;
-  },
+  } & Orphans,
   ctx: CardContext,
 ): Output {
   const t = translator(ctx.lang);
@@ -82,8 +185,12 @@ export function pruneCard(
   const messages = pruned.messages ?? [];
   const { removed = 0, days = 0 } = pruned.units ?? {};
   const { writes = 0, runs = 0, indexes = 0 } = pruned.leftovers ?? {};
+  const { ghosts = [], rescued = [], unsaved = [], records = 0, empty = [] } = pruned;
   const counts = [pruned.folders.length, pruned.branches.length, activity, messages.length];
-  const nothing = [...counts, removed, writes, runs, indexes].every((count) => count === 0);
+  const orphans = [ghosts.length, rescued.length, records, empty.length];
+  const nothing = [...counts, ...orphans, removed, writes, runs, indexes].every(
+    (count) => count === 0,
+  );
   return {
     status: "ok",
     header: headerOf(t("limpieza", "cleanup")),
@@ -93,16 +200,36 @@ export function pruneCard(
         nothing ? [t("No había nada que limpiar.", "There was nothing to clean up.")] : [],
       ),
       ...section(t("CARPETAS BORRADAS", "FOLDERS REMOVED"), pruned.folders),
+      ...rescueSections(ghosts, rescued, t),
       ...section(t("RAMAS BORRADAS", "BRANCHES DELETED"), pruned.branches),
+      ...orphanSections(records, empty, t),
       ...recordSections(activity, messages, { removed, days }, t),
       ...leftoverSection({ writes, runs, indexes }, t),
-      ...section(t("QUEDAN", "KEPT"), pruned.kept),
+      ...section(t("QUEDAN", "KEPT"), [
+        ...pruned.kept,
+        ...unsaved.map((folder) => unsavedLine(folder, t)),
+      ]),
     ],
     next: t(
       `para otro cambio, \`${ctx.command} new "<título>"\`.`,
       `for another change, \`${ctx.command} new "<title>"\`.`,
     ),
   };
+}
+
+/** How many records of worktrees git forgot, and the empty folders of `.specty/changes/` removed. */
+function orphanSections(records: number, empty: readonly string[], t: Translate): OutputBlock[] {
+  return [
+    ...counted(
+      records,
+      t("REGISTROS DE WORKTREES OLVIDADOS", "WORKTREE RECORDS FORGOTTEN"),
+      t(
+        `Registros de git de worktrees cuya carpeta ya no existía: ${records}.`,
+        `Git records of worktrees whose folder no longer existed: ${records}.`,
+      ),
+    ),
+    ...section(t("CARPETAS VACÍAS BORRADAS", "EMPTY FOLDERS REMOVED"), empty),
+  ];
 }
 
 /**
