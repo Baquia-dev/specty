@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0867e7ccba6f750cb0ee0575710f2aa78f91a549",
+      "attempts": 1,
       "startedAt": "2026-11-06T12:01:23.373Z",
       "doneAt": "2026-11-06T12:02:28.041Z",
-      "summary": "cards/wait.ts reúne la tabla de cómo espera cada herramienta, la frase común waitStep y la tarjeta de tiempo agotado, que pide recordar la decisión y volver a ejecutar wait ya; ya no importa blockedCard de flow.ts para evitar un ciclo"
+      "summary": "cards/wait.ts reúne la tabla de cómo espera cada herramienta, la frase común waitStep y la tarjeta de tiempo agotado, que pide recordar la decisión y volver a ejecutar wait ya; ya no importa blockedCard de flow.ts para evitar un ciclo",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "668b4cb2a8414665f83371f9a1ea397e281a596d",
+      "startedAt": "2026-11-06T12:02:28.338Z",
+      "doneAt": "2026-11-06T12:03:56.743Z",
+      "summary": "Las tarjetas de flow, next, acceptance, work, integration, testing y epic piden wait con waitStep(ctx) en lugar del texto a mano, y review.ts lo añade tras pedir aprobar o aceptar fuera del modo delegado"
     }
   },
   "pending": {

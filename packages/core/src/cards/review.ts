@@ -4,6 +4,7 @@ import { type Output, section } from "../output";
 import { blockedCard } from "./flow";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
+import { waitStep } from "./wait";
 
 /**
  * The independent review (ADR 0011): what the reviewer reads, and the card that shows its answer.
@@ -94,8 +95,8 @@ export function reviewedCard(view: ReviewedView, ctx: CardContext): Output {
           `if there is nothing to fix, approve it yourself with \`${ctx.command} approve\``,
         )
       : t(
-          `si no hay nada que corregir, cuéntale al usuario lo que encontró la revisión y pídele que apruebe con \`${ctx.command} approve\``,
-          `if there is nothing to fix, tell the user what the review found and ask them to approve with \`${ctx.command} approve\``,
+          `si no hay nada que corregir, cuéntale al usuario lo que encontró la revisión y pídele que apruebe con \`${ctx.command} approve\`, y ${waitStep(ctx)}`,
+          `if there is nothing to fix, tell the user what the review found and ask them to approve with \`${ctx.command} approve\`, and ${waitStep(ctx)}`,
         );
   return {
     status: "ok",
@@ -117,8 +118,8 @@ function afterResult(ctx: CardContext): string {
         `if the review found a real defect, ask for the adjustment with \`${ctx.command} adjust "<what to fix>"\`; if not, accept it yourself with \`${ctx.command} accept\`. The review is information.`,
       )
     : t(
-        `cuéntale al usuario lo que encontró la revisión y pídele que acepte con \`${ctx.command} accept\`, o, si pide arreglar algo, ejecuta \`${ctx.command} adjust "<petición literal>"\`. La revisión es información: decide la persona.`,
-        `tell the user what the review found and ask them to accept with \`${ctx.command} accept\` or, if they ask to fix something, run \`${ctx.command} adjust "<literal request>"\`. The review is information: the person decides.`,
+        `cuéntale al usuario lo que encontró la revisión y pídele que acepte con \`${ctx.command} accept\`, y ${waitStep(ctx)}. Si pide arreglar algo, ejecuta \`${ctx.command} adjust "<petición literal>"\`. La revisión es información: decide la persona.`,
+        `tell the user what the review found and ask them to accept with \`${ctx.command} accept\`, and ${waitStep(ctx)}. If they ask to fix something, run \`${ctx.command} adjust "<literal request>"\`. The review is information: the person decides.`,
       );
 }
 

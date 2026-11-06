@@ -74,7 +74,7 @@ Hoy cada salida que deja el cambio esperando a la persona pide «ejecuta `specty
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/wait.test.ts
   - type: feat
-- [ ] T2: Las salidas que esperan a la persona piden `specty wait` con la misma frase
+- [x] T2: Las salidas que esperan a la persona piden `specty wait` con la misma frase
   - files: packages/core/src/cards/wait.ts, packages/core/src/cards/flow.ts, packages/core/src/cards/next.ts, packages/core/src/cards/acceptance.ts, packages/core/src/cards/work.ts, packages/core/src/cards/integration.ts, packages/core/src/cards/testing.ts, packages/core/src/cards/review.ts, packages/core/src/cards/epic.ts, packages/core/test/cards/delegated.test.ts, packages/core/test/cards/review.test.ts, packages/core/test/cards/incorporation.test.ts, packages/core/test/cards/epic.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/delegated.test.ts test/cards/review.test.ts test/cards/incorporation.test.ts test/cards/epic.test.ts test/cards/testing.test.ts

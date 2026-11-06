@@ -5,6 +5,7 @@ import { headerOf, type Output, type OutputBlock, section } from "../output";
 import { blockedCard } from "./flow";
 import { type Translate, translator } from "./text";
 import type { CardContext, ChangeView, SliceView } from "./view";
+import { waitStep } from "./wait";
 
 /**
  * An approved epic's card: it has no tasks, so it shows its slices, each one a change of its own,
@@ -216,8 +217,8 @@ function inItsFolder(folder: string, ctx: CardContext): string[] {
       `Your \`cd\` does not last between commands: start each one with \`${cd}\` and use absolute paths in that folder.`,
     ),
     t(
-      `Sigue \`${ctx.command} next\` hasta cerrarlo; cuando espere a la persona, ejecuta \`${ctx.command} wait\`.`,
-      `Follow \`${ctx.command} next\` until it is closed; when it waits for the person, run \`${ctx.command} wait\`.`,
+      `Sigue \`${ctx.command} next\` hasta cerrarlo; cuando espere a la persona, ${waitStep(ctx)}.`,
+      `Follow \`${ctx.command} next\` until it is closed; when it waits for the person, ${waitStep(ctx)}.`,
     ),
     t(
       "Responde en tres líneas: el cambio, su fase y lo que falta.",
