@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-test-queda-como-lo-deja-el-parche-aprobado",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-el-test-queda-como-lo-deja-el-parche-aprobado",
   "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
   "revision": 1,
@@ -82,12 +82,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "33d614442b02b945e9d4eb877fe63305c66eba04",
+      "attempts": 1,
       "startedAt": "2026-11-06T14:59:03.450Z",
       "doneAt": "2026-11-06T15:03:58.280Z",
-      "summary": "Al aprobar un desbloqueo con parche, scope-decision repite checkUnlockPatch y, si ya no vale, Specty lo rechaza con el motivo; scope add trata como bloqueado un test ya desbloqueado para la tarea, para pedir otro desbloqueo."
+      "summary": "Al aprobar un desbloqueo con parche, scope-decision repite checkUnlockPatch y, si ya no vale, Specty lo rechaza con el motivo; scope add trata como bloqueado un test ya desbloqueado para la tarea, para pedir otro desbloqueo.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c9bc76a7ec467830f897a8c738aaa0558701738f",
+      "startedAt": "2026-11-06T15:03:58.618Z",
+      "doneAt": "2026-11-06T15:04:21.424Z",
+      "summary": "formats.md, ARCHITECTURE.md §8, el ADR 0014 y dominio.md cuentan la comprobación de task done, el segundo desbloqueo y el rechazo de Specty al aprobar un parche que ya no vale."
     }
   },
   "pending": {

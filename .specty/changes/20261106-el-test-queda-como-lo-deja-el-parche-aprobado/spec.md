@@ -95,7 +95,7 @@ Desde el corte C2, un desbloqueo de un test aprobado lleva el parche exacto que 
   - ac: AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/unlock-again.test.ts test/unlock-request.test.ts test/test-locks.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T4: La documentación cuenta qué comprueba `task done` de un test desbloqueado
+- [x] T4: La documentación cuenta qué comprueba `task done` de un test desbloqueado
   - files: docs/formats.md, docs/ARCHITECTURE.md, docs/decisions/0014-los-tests-como-contrato.md, docs/dominio.md
   - ac: AC1, AC4, AC7, AC8
   - verify: pnpm sources
