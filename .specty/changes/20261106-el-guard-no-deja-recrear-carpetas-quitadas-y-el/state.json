@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261106-el-guard-no-deja-recrear-carpetas-quitadas-y-el",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-el-guard-no-deja-recrear-carpetas-quitadas-y-el",
+  "baseCommit": "723a599e2ab1ed33d68368a923a91151b72ffeb6",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a6c4c2f8d6216dee636b6e40ce8b2fc89e5119324cbdea8044db63642b17cd98",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:afebf9c964bcd50f4bb8f6c581e0d57a11348db1be30b7fd8bec25bb4b1a1deb",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:39cce9a04723e395a71fd02e42c3a87f941ae3e2b87c3ba1c82c493cc81636ba",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:bd121ed8dcda09ccb62170e436143c219771feed2ecf7a4718409cf13736d2b9",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d5c97dc4a710289b0c778727ba5dfebb04dc277659394fcd681a29dcb2052a98",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 11,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:84adfc38dc3671772b3140311d8c4c524009cbf9a92edabf43081ab8d6728aae",
+    "at": "2026-11-06T08:35:47.707Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
