@@ -38,14 +38,24 @@ export async function locateChange(paths: RepoPaths, id: string): Promise<Change
   return undefined;
 }
 
+/**
+ * The change `id`, open or archived. Its folder can go between finding it and reading its state
+ * (archived, or its worktree removed): then it is not there either.
+ */
 export async function loadChange(paths: RepoPaths, id: string): Promise<StoredChange | undefined> {
   const files = await locateChange(paths, id);
-  if (files === undefined) return undefined;
-  return { files, state: await loadState(files), archived: files.dir.startsWith(paths.archive) };
+  const text = files === undefined ? undefined : await readText(files.state);
+  if (files === undefined || text === undefined) return undefined;
+  return { files, state: parsedState(files, text), archived: files.dir.startsWith(paths.archive) };
 }
 
 export async function loadState(files: ChangeFiles): Promise<ChangeState> {
-  const result = parseChangeState(parseJson(await readText(files.state)));
+  return parsedState(files, await readText(files.state));
+}
+
+/** The state `text` of `files` holds; one that is not valid, or none, throws. */
+function parsedState(files: ChangeFiles, text: string | undefined): ChangeState {
+  const result = parseChangeState(parseJson(text));
   if (!result.ok) throw new StoreError(`${files.state}: ${result.issues.join("; ")}`);
   return result.state;
 }

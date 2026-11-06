@@ -2,6 +2,7 @@
 import { join, posix } from "node:path";
 import type { WorkspacePackage } from "@baquia-dev/specty-core";
 import { exists, isDirectory, readText } from "../io/files";
+import { rootPackagePaths } from "./root-package";
 import type { WorkspaceFacts } from "./workspace-units";
 
 /** The root files every subproject's build reads, when they exist. */
@@ -24,6 +25,9 @@ const INCLUDE = /(?<![\w.])include(?!\w)\s*\(?\s*((?:["'][^"'\n]*["']\s*,?\s*)+)
 
 const INCLUDE_BUILD = /(?<![\w.])includeBuild\s*\(?\s*["']([^"'\n]+)["']/g;
 
+/** The root project's name in the settings: `rootProject.name = "demo"`. */
+const ROOT_NAME = /(?<![\w.])rootProject\.name\s*=\s*["']([^"'\n]+)["']/;
+
 /** A dependency on a project by its path: `project(":a")`, `project(path: ':a')`. */
 const PROJECT = /(?<![\w.])project\s*\(?\s*(?:path\s*[:=]\s*)?["'](:[^"'\n]*)["']/g;
 
@@ -37,25 +41,52 @@ interface Subproject extends Omit<WorkspacePackage, "uses"> {
 
 /**
  * A Gradle build with subprojects: the ones `settings.gradle(.kts)` includes and that have a
- * folder, those with `src/test` tested with their `test` task, and what they share. Undefined
- * without settings, with fewer than two subprojects with tests, or with tests in the root project,
- * whose folder is the whole repository.
+ * folder, those with `src/test` tested with their `test` task, and what they share. A root project
+ * with tests is one more (`rootProjectOf`). Undefined without settings and with fewer than two
+ * projects with tests.
  */
 export async function gradleWorkspace(root: string): Promise<WorkspaceFacts | undefined> {
   const settings = await script(root, "settings");
-  if (settings === undefined || (await isDirectory(join(root, "src", "test")))) return undefined;
+  if (settings === undefined) return undefined;
   const runner = (await exists(join(root, "gradlew"))) ? "./gradlew" : "gradle";
   const read = await Promise.all(
     includes(settings).map((path) => subprojectOf(root, path, runner)),
   );
-  const found = read.flatMap((subproject) => (subproject === undefined ? [] : [subproject]));
+  const subprojects = read.flatMap((subproject) => (subproject === undefined ? [] : [subproject]));
+  const self = await rootProjectOf(root, settings, runner, subprojects);
+  const found = self === undefined ? subprojects : [self, ...subprojects];
   if (found.filter((subproject) => subproject.tests).length < 2) return undefined;
-  const accessors = new Map(found.map(({ name }) => [accessorOf(name), name]));
+  const accessors = new Map(subprojects.map(({ name }) => [accessorOf(name), name]));
   const packages = found.map(({ build, ...subproject }) => ({
     ...subproject,
-    uses: usesOf(build, accessors).filter((name) => name !== subproject.name),
+    uses: usesOf(build, accessors, self?.name).filter((name) => name !== subproject.name),
   }));
   return { packages, shared: await sharedOf(root, settings) };
+}
+
+/**
+ * The root project when it has tests (`src/test`): tested with its own `:test` task, named as the
+ * settings' `rootProject.name` (`root` without it), and reading the root outside the subprojects'
+ * folders (`rootPackagePaths`); undefined without tests.
+ */
+async function rootProjectOf(
+  root: string,
+  settings: string,
+  runner: string,
+  subprojects: readonly Subproject[],
+): Promise<Subproject | undefined> {
+  if (!(await isDirectory(join(root, "src", "test")))) return undefined;
+  return {
+    dir: ".",
+    name: ROOT_NAME.exec(settings)?.[1] ?? "root",
+    tests: true,
+    command: `${runner} :test`,
+    build: (await script(root, "build")) ?? "",
+    paths: await rootPackagePaths(
+      root,
+      subprojects.map(({ dir }) => dir),
+    ),
+  };
 }
 
 /** The project paths of the settings' `include`s, with their leading `:`, once each. */
@@ -87,11 +118,20 @@ async function subprojectOf(
   };
 }
 
-/** The paths of the subprojects a build script names, by path or by typed accessor. */
-function usesOf(build: string, accessors: ReadonlyMap<string, string>): readonly string[] {
-  const byPath = [...build.matchAll(PROJECT)].map(([, path]) => path ?? "");
+/**
+ * The paths of the subprojects a build script names, by path or by typed accessor, and the root
+ * project's name, `rootName`, for `project(":")`.
+ */
+function usesOf(
+  build: string,
+  accessors: ReadonlyMap<string, string>,
+  rootName: string | undefined,
+): readonly string[] {
+  const byPath = [...build.matchAll(PROJECT)].map(([, path]) =>
+    path === ":" ? (rootName ?? "") : (path ?? ""),
+  );
   const typed = [...build.matchAll(ACCESSOR)].map(([, chain]) => (chain ?? "").slice(1));
-  const known = new Set(accessors.values());
+  const known = new Set([...accessors.values(), ...(rootName === undefined ? [] : [rootName])]);
   const used = [...byPath, ...typed.map((chain) => accessors.get(chain) ?? "")];
   return [...new Set(used)].filter((name) => known.has(name));
 }

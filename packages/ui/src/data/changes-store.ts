@@ -5,6 +5,7 @@ import {
   Injectable,
   InjectionToken,
   inject,
+  linkedSignal,
   PendingTasks,
   resource,
   type Signal,
@@ -89,11 +90,22 @@ export class ChangesStore {
   /** The pages of finished changes the Inbox asked for (`data/finished-pages.ts`). */
   readonly pages = new FinishedPages(this.data, inject(PendingTasks));
 
+  /** The views last derived: a read that fails keeps them; none until the first one. */
+  private readonly kept = linkedSignal<
+    readonly ChangeView[] | undefined,
+    readonly ChangeView[] | undefined
+  >({
+    source: () => (this.views.hasValue() ? this.views.value() : undefined),
+    computation: (views, previous) => views ?? previous?.value,
+  });
+  /** The source listed the changes at least once: until then, the screens wait. */
+  readonly ready = computed(() => this.kept() !== undefined);
   /**
    * The changes the source lists, each whole: with the local server, the open ones and those whose
-   * folder was lost; with a source that gives every change, all of them.
+   * folder was lost; with a source that gives every change, all of them. When reading them again
+   * fails, the last ones read.
    */
-  readonly listed = computed(() => (this.views.hasValue() ? this.views.value() : []));
+  readonly listed = computed(() => this.kept() ?? []);
   /** The open changes: waiting for the person, in progress, or whose folder was lost. */
   readonly open = computed(() => this.listed().filter((view) => !isFinished(view)));
   /**
@@ -146,8 +158,9 @@ export class ChangesStore {
   /**
    * The change `id`: among the changes the source lists, whole, or, when they leave it out (a
    * finished change, even one a page of the Inbox brought), asked to the source by its id, and
-   * again whenever the source says something changed. Called in an injection context, as
-   * `resource`: it lasts as long as its caller.
+   * again whenever the source says something changed. Once found, a read that fails or misses it
+   * (its folder archived, or its worktree removed) keeps the last view of that id: a change shown
+   * does not go. Called in an injection context, as `resource`: it lasts as long as its caller.
    */
   byId(id: Signal<string>): FoundChange {
     const loaded = computed(() => this.listed().find((view) => view.id === id()));
@@ -160,15 +173,21 @@ export class ChangesStore {
     });
     const stop = this.data.subscribe(() => asked.reload());
     inject(DestroyRef).onDestroy(stop);
+    const found = computed(() => {
+      const view = asked.hasValue() ? asked.value() : undefined;
+      const all = new Map<string, ChangeSummary>(this.all().map((other) => [other.id, other]));
+      return loaded() ?? (view === undefined ? undefined : withEpic(view, all));
+    });
+    const view = linkedSignal({
+      source: () => ({ id: id(), found: found() }),
+      computation: (now, previous): ChangeView | undefined =>
+        now.found ?? (previous?.source.id === now.id ? previous.value : undefined),
+    });
     return {
-      view: computed(() => {
-        const view = asked.hasValue() ? asked.value() : undefined;
-        const all = new Map<string, ChangeSummary>(this.all().map((other) => [other.id, other]));
-        return loaded() ?? (view === undefined ? undefined : withEpic(view, all));
-      }),
+      view: view.asReadonly(),
       missing: computed(
         () =>
-          loaded() === undefined &&
+          view() === undefined &&
           (asked.status() === "error" ||
             (asked.status() === "resolved" && asked.value() === undefined)),
       ),
@@ -180,7 +199,10 @@ export class ChangesStore {
 export interface FoundChange {
   /** Its view, once known. */
   readonly view: Signal<ChangeView | undefined>;
-  /** Neither the loaded changes nor the source have it, or the source failed to look for it. */
+  /**
+   * It was never found, and neither the loaded changes nor the source have it, or the source
+   * failed to look for it.
+   */
   readonly missing: Signal<boolean>;
 }
 

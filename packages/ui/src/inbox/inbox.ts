@@ -79,12 +79,16 @@ const TICK_MS = 30_000;
           <sp-button size="sm" (pressed)="retry()">{{ t()('Reintentar', 'Retry') }}</sp-button>
         </div>
         </div>
-      } @else if (!store.views.hasValue() || !store.pages.ready()) {
+      }
+      <!-- A read that fails after the first keeps the list under the alert. -->
+      @if (!store.ready() || !store.pages.ready()) {
+        @if (!failure()) {
         <div [class]="page + ' flex flex-col gap-3 pt-3'">
           <sp-skeleton height="2.5rem" />
           <sp-skeleton height="4.5rem" [announce]="false" />
           <sp-skeleton height="4.5rem" [announce]="false" />
         </div>
+        }
       } @else {
         <sp-inbox-toolbar [counts]="counts()" [shown]="shown()" [total]="total()" />
         <div [class]="page + ' flex flex-col gap-8 pt-5'">
