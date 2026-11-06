@@ -17,7 +17,7 @@ En modo delegado, el agente escribe en aceptación el cierre de un cambio `stand
 
 ## Tareas
 
-- [ ] T1: En aceptación delegada, la tarjeta muestra las observaciones de la revisión que el cierre no cita
+- [x] T1: En aceptación delegada, la tarjeta muestra las observaciones de la revisión que el cierre no cita
   - files: packages/cli/src/flow/views.ts, packages/cli/test/review-remarks.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/review-remarks.test.ts test/closing-ahead.test.ts && pnpm typecheck && pnpm lint
   - type: fix

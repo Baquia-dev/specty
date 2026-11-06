@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-en-aceptacion-delegada-la-tarjeta-muestra-las",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-en-aceptacion-delegada-la-tarjeta-muestra-las",
   "baseCommit": "bb32977a94e76f405187f4486874e76c19d8c9f9",
   "revision": 2,
@@ -22,7 +22,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d80657fcde0b549eefc861f580c668e76ef90baf",
+      "startedAt": "2026-11-06T20:16:06.376Z",
+      "doneAt": "2026-11-06T20:22:49.873Z",
+      "summary": "La vista lee en la aceptación delegada (closingInAcceptance) las observaciones de la revisión que el cierre no cita, y la tarjeta las muestra como en closing; ARCHITECTURE §4 y §7 y formats.md §6 lo cuentan"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
