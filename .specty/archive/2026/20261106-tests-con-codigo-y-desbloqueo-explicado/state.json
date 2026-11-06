@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261106-tests-con-codigo-y-desbloqueo-explicado",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261106-tests-con-codigo-y-desbloqueo-explicado",
   "baseCommit": "f19607fdbad60c614358e7ea82b9039bb5273542",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a2331eba1a59e19c073c87851d7c109e522c8c120a9370d37b7851dd3b8e8a0e",
+    "at": "2026-11-06T10:33:19.892Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -71,11 +78,5 @@
     "C": 4,
     "R": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a2331eba1a59e19c073c87851d7c109e522c8c120a9370d37b7851dd3b8e8a0e",
-    "at": "2026-11-06T10:33:19.892Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "ui"
-  }
+  "closingSubmittedAt": "2026-11-06T18:21:13.735Z"
 }

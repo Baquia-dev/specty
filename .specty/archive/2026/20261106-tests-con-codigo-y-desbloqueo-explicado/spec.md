@@ -76,3 +76,34 @@ Hoy la UI solo da la ruta de cada test, en «Tests por aprobar» y en «Tests bl
 - R2: La evidencia copia código al `state.json` de la rama — se limita a 5 fragmentos de 40 líneas, de archivos que git sigue, y sale de la solicitud al decidirla.
 - R3: Exigir el parche y la evidencia añade fricción al agente — el guard le da el comando completo de una vez, y `--patch -` evita escribir un archivo en el repositorio.
 - R4: `cards/task.ts` (258 líneas) se acerca al aviso de 300, y `commands/scope.ts` (211) y `flow/task-done.ts` (198) crecerían — lo nuevo va en módulos propios (`flow/unlock-proposal.ts`, `progress/unlock-detail.ts`, `progress/test-code.ts`) y, si los rechazos no caben en `cards/task.ts`, en una tarjeta propia del desbloqueo.
+
+## Cierre
+
+### Resumen
+
+Cada test de «Tests por aprobar» y de «Tests bloqueados», en Progreso y en Aceptación, tiene «Ver código». Despliega el test entero en su fila, con sus líneas numeradas y resaltadas. El servidor lo da en `GET /api/changes/<id>/test` y solo para los tests del cambio, leídos de su rama o, con el cambio cerrado, de la principal (C1). Para desbloquear un test aprobado, `scope add` exige `--patch`, el cambio exacto al test, y de 1 a 5 `--evidence <ruta>:<desde>-<hasta>`. Specty comprueba que el parche se aplica a la versión bloqueada con `git apply --check --recount`, y guarda las líneas de la evidencia tal como estaban; el guard da al agente el comando completo (C2). La solicitud pendiente muestra en Progreso el motivo, el parche en el visor de diffs y cada fragmento de evidencia, junto a Aprobar y Rechazar. Una vez aprobado, «Tests bloqueados» lo conserva en «Ver el desbloqueo S1» (C3). `task done` no completa la tarea si un test desbloqueado no queda como lo deja el último parche aprobado: muestra la diferencia y el comando para pedir otro desbloqueo. Al aprobar, Specty vuelve a comprobar el parche (C4). Tras la épica, cuatro cambios cerraron sus pendientes:
+- la terminal muestra el parche y la evidencia al decidir un desbloqueo (P210, f94d12b);
+- el prototipo da el código de los tests y trae un desbloqueo pendiente y otro aprobado (P213 y P227, 4471046);
+- la trazabilidad y «Ver código» arman sus líneas con `contextFile` (P214, 8c4af06).
+
+### Desviaciones
+
+- C4 aplica a cada test solo el último parche aprobado para la tarea, y no todos en orden como decía A8. C2 comprueba cada parche sobre la versión bloqueada, así que el último ya trae el cambio completo, y encadenarlos fallaría si tocan las mismas líneas. Por lo mismo, un test ya desbloqueado se puede volver a pedir (A6 de C4).
+- El código de un test no se pinta con `DiffFileView`, como decía el diseño, sino como las líneas de la trazabilidad del Historial, con un solo número por línea (C1). El parche sí usa el visor de diffs (C3).
+- C1 salió XL en su primera spec y se estrechó: el código en el prototipo quedó para P213, ya hecho.
+- El parche se normaliza en la UI (`data/patch.ts`) y no se guarda normalizado en el CLI.
+- Los rechazos del desbloqueo van en tarjetas propias (`cards/unlock.ts`, `cards/unlock-check.ts`), no en `cards/task.ts`, como preveía R4.
+- El clasificador de permisos de Claude Code no dejó al agente aprobar en modo delegado el gate 2 de C1 y C2, aunque el usuario lo había autorizado en el chat, así que los aprobó la persona. En C3, C4 y los pendientes, no rechazó nada.
+
+### Decisiones
+
+- El usuario eligió que el desbloqueo exija a la vez el parche y la evidencia, y que `task done` rechace el test que no quede como lo deja el parche aprobado.
+- Un archivo que no se puede mostrar, también uno de más de 512 KB, responde 404, y la fila lo dice (C1).
+- La evidencia solo sale de archivos que git sigue, para no copiar secretos al estado (C2).
+- La versión bloqueada es la del último commit, y vale solo si su hash es el de `lockedTests`. El parche se aplica en un índice temporal, sin tocar la carpeta del cambio (C4).
+- La UI muestra desplegado el detalle de una solicitud pendiente, porque hace falta para decidir, y plegado el de los desbloqueos ya aprobados (C3).
+
+### Pendientes
+
+- P234: la UI no marca los caracteres de dirección del texto (U+202A–U+202E, U+2066–U+2069) en el parche ni en la evidencia, y en el navegador pueden reordenar lo que se lee. La terminal sí los escribe con su código.
+- P235: en Progreso, aprobar una solicitud de alcance avisa «T3 vuelve a su lugar» aunque la tarea aún espere otra solicitud.
