@@ -6,6 +6,13 @@
   "branch": "specty/20261106-la-ui-avisa-cuando-ningun-agente-espera-su",
   "baseCommit": "0185f80fb3f07c73eb81623f7615345dda2f31e4",
   "revision": 3,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:eb34e2e05faf1af8adeba35a8d7f1d4b6b677d87a33320edf1ca93b9e06ced6e",
+    "at": "2026-11-06T14:24:11.513Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -53,12 +60,6 @@
     "T": 5,
     "R": 3
   },
-  "approved": {
-    "revision": 3,
-    "hash": "sha256:eb34e2e05faf1af8adeba35a8d7f1d4b6b677d87a33320edf1ca93b9e06ced6e",
-    "at": "2026-11-06T14:24:11.513Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T14:41:35.991Z"
 }
