@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-cada-cambio-que-pide-el-usuario-va-a-un",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-cada-cambio-que-pide-el-usuario-va-a-un",
   "baseCommit": "4cb3c564510dd4310d15d040f936f5fc27d53379",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:e2ca05e2a1b88e4d682a0d5ec5f320dc513ffbc71d5865db8f4c4be37514947f",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "02aa5aa211ff523bf9ce38c788684519b17f6bd3",
+      "attempts": 1,
       "startedAt": "2026-11-06T20:16:52.064Z",
       "doneAt": "2026-11-06T20:22:26.716Z",
-      "summary": "formats.md (subagents), ARCHITECTURE §7 (Tarjeta sin cambio activo) y §16, y los comentarios de subagents en view.ts, schema/config.ts y session.ts cuentan que cada cambio que pide el usuario va a un subagente"
+      "summary": "formats.md (subagents), ARCHITECTURE §7 (Tarjeta sin cambio activo) y §16, y los comentarios de subagents en view.ts, schema/config.ts y session.ts cuentan que cada cambio que pide el usuario va a un subagente",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,7 +87,67 @@
     "T": 3,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-06T20:23:13.205Z",
   "lockedTests": {
     "packages/core/test/cards/idle-subagents.test.ts": "sha256:aefde6a3ee7343769e663394be892de90d121d457f5573aef3dfe513648243cf"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "9195e5f74ecf17893ee8c8c9ebbf5d5daa222935",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/finish.ts",
+      "packages/cli/src/commands/propose.ts",
+      "packages/cli/src/flow/closing-turn.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/session.ts",
+      "packages/cli/test/accept-quick-turn.test.ts",
+      "packages/cli/test/close-shared-file.test.ts",
+      "packages/cli/test/closing-ahead.test.ts",
+      "packages/cli/test/delegate.test.ts",
+      "packages/cli/test/friction.test.ts",
+      "packages/cli/test/review-remarks.test.ts",
+      "packages/core/src/cards/acceptance.ts",
+      "packages/core/src/cards/epic.ts",
+      "packages/core/src/cards/idle.ts",
+      "packages/core/src/cards/subagents.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/flow/machine.ts",
+      "packages/core/src/flow/phases.ts",
+      "packages/core/src/guard/decide.ts",
+      "packages/core/src/guard/spec.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/test/cards/idle-subagents.test.ts",
+      "packages/core/test/cards/rejoin.test.ts",
+      "packages/core/test/closing-ahead.test.ts",
+      "packages/core/test/flow/machine.test.ts",
+      "packages/ui/src/change/change-bar.ts",
+      "packages/ui/src/change/change-direction.test.ts",
+      "packages/ui/src/change/change-page.ts",
+      "packages/ui/src/components/item-tooltip.ts",
+      "packages/ui/src/components/shown-text.ts",
+      "packages/ui/src/highlight/highlight.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "packages/ui/src/progress/progress-direction.test.ts",
+      "packages/ui/src/progress/scope-request.ts",
+      "packages/ui/src/progress/task-row.ts",
+      "packages/ui/src/review/assumption-row.ts",
+      "packages/ui/src/review/markdown.test.ts",
+      "packages/ui/src/review/markdown.ts",
+      "packages/ui/src/review/spec-direction.test.ts",
+      "packages/ui/src/review/spec-sections.ts"
+    ],
+    "at": "2026-11-06T20:38:25.833Z",
+    "resolved": {
+      "commit": "acbf06f",
+      "at": "2026-11-06T20:54:24.630Z"
+    }
   }
 }

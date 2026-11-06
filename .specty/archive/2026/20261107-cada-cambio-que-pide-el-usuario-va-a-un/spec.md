@@ -83,3 +83,29 @@ Hoy solo los cortes de una épica van a subagentes. Una feature suelta se hace e
 - R1: Un cambio corto en una sesión corta cuesta más con un subagente (unos 0,12 USD de arranque por cambio, §16). Mitigación: es el precio de la petición (tiempo y contexto limpio), §16 lo dice y `subagents: false` lo apaga.
 - R2: Un subagente cuya spec sale del tamaño de una épica recibiría la tarjeta de la épica, que pide lanzar subagentes, y su encargo se lo prohíbe. Mitigación: el `SIGUIENTE:` pide a la sesión principal crear ella misma las épicas, y el subagente responde con lo que falta.
 - R3: Las preguntas al usuario pasan por la sesión principal y cuestan una ronda más. Mitigación: el encargo pide no suponerlas, y la sesión principal le pasa la respuesta al mismo subagente cuando su herramienta puede.
+
+## Cierre
+
+### Resumen
+
+Sin cambio activo, con una herramienta que reparte en subagentes y sin `subagents: false`, `specty next` ya no pide `specty new` en la propia sesión, sino un subagente por cada cambio que pide el usuario:
+- `core/src/cards/subagents.ts` (nuevo): las piezas de los encargos que comparten la épica y la tarjeta sin cambio activo (`toSubagents`, `launchedWith`, `inItsFolder`, `numbered`), salidas de `epic.ts` sin cambiar sus textos. `launchedWith` dice «su corte» o «su cambio», e `inItsFolder` admite pasos propios antes de la respuesta.
+- `core/src/cards/idle.ts`: `idleCard` añade el «ENCARGO» de un cambio (`changeBrief`: `new --subagent`, con `--type <tipo>` si las ramas van por tipo, `enter`, el `cd`, `next` con `specty wait`, la pregunta al usuario y la respuesta en tres líneas) y un `SIGUIENTE:` que pide lanzarlos en paralelo, no entrar en sus carpetas, crear las épicas en la sesión y pasar las respuestas del usuario (`SendMessage` en Claude Code). El esqueleto y la retro no cambian.
+- Documentación: formats.md (`subagents`), ARCHITECTURE §7 («Tarjeta sin cambio activo») y §16 (la decisión y su coste), `docs/dominio.md` («Encargo») y los comentarios de `subagents` en `view.ts`, `schema/config.ts` y `session.ts`.
+
+### Desviaciones (respecto al plan)
+
+- `packages/core/test/cards/rejoin.test.ts` (añadido con `scope add`): su AC3 de los huérfanos usa Claude Code como contexto por defecto y esperaba el `SIGUIENTE: ejecuta \`specty new\`` de antes. Ahora comprueba el `new` del encargo y el nuevo `SIGUIENTE:`, y sin herramienta, el de siempre.
+- `docs/dominio.md` no estaba en la lista de archivos: el término «Encargo» ahora también nombra el de un cambio.
+
+### Decisiones
+
+- El texto de Antigravity en la épica no cambia; en la tarjeta sin cambio activo dice «la de su cambio».
+- El paso `specty enter <id>` del encargo repite el texto del de un corte en vez de compartirlo, para no tocar `epic.ts` en T2.
+
+### Pendientes
+
+- El bloque «CAMBIOS SIN CONVERSACIÓN» sigue pidiendo retomar un huérfano en su carpeta (en Claude Code, `EnterWorktree`), lo que aislaría a los subagentes que ya trabajan; con subagentes, debería traer un encargo para retomarlo con `specty enter <id>`, como los cortes huérfanos.
+- El aviso de sesión nueva del cierre lee el contexto de la sesión principal (en un subagente, `CLAUDE_CODE_SESSION_ID` es el de ella), aunque el siguiente cambio ya arranque en un subagente limpio: decidir si se calla cuando los cambios van a subagentes.
+- Comprobar con Claude Code real que una sesión lanza el encargo, que el subagente redacta la spec, espera la aprobación con `specty wait` y cierra, y que una pregunta vuelve a la sesión principal.
+- R2: un subagente cuya spec sale del tamaño de una épica recibe una tarjeta que pide subagentes y su encargo se lo prohíbe.
