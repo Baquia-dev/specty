@@ -6,6 +6,13 @@
   "branch": "specty/20261107-los-textos-de-la-ui-marcan-los-caracteres-de",
   "baseCommit": "83686f522106f89c261fe441063c60f9c2cf4510",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:2034755a6267a68aed49269985a29b121c1bd6c43e0a3f60a47d10283e75c5dd",
+    "at": "2026-11-06T19:48:00.557Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -44,12 +51,6 @@
     "T": 5,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:2034755a6267a68aed49269985a29b121c1bd6c43e0a3f60a47d10283e75c5dd",
-    "at": "2026-11-06T19:48:00.557Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T20:06:40.794Z"
 }
