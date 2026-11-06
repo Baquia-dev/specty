@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261107-el-prototipo-trae-el-codigo-de-los-tests-y-un",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-prototipo-trae-el-codigo-de-los-tests-y-un",
+  "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:16cf4c73f3b3c07febe5b8efa6096dea413a1584aa1dfd424dd2d2336e5721ec",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2f9157ae9b058d1d2a3ccb17bc1602191aa8779eaa01dc6da2881f510bc14d7b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9b48bf241a4daa7cbab70596aaff79e787b79cb556c0df8c376e3c9aa378a642",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:8755a13bac4ab11ae58fce58d4c4ce1ef668bec18fa35a74e2c55d2e1108ef74",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:1d73bdc9126cfdda1be2cb0949cf591d23c6802dfadbaa79c7a085338887d9f5",
+    "at": "2026-11-06T17:28:04.098Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
