@@ -85,7 +85,7 @@ Desde el corte C2, una solicitud para desbloquear un test aprobado lleva el camb
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/locked-tests.test.ts --include src/progress/progress-tab.test.ts --include src/acceptance/acceptance-tab.test.ts && pnpm typecheck
   - type: feat
-- [ ] T5: ui.md cuenta el detalle del desbloqueo
+- [x] T5: ui.md cuenta el detalle del desbloqueo
   - files: docs/ui.md
   - ac: —
   - verify: grep -q "Ver el desbloqueo" docs/ui.md

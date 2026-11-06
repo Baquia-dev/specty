@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-desbloqueo-se-ve-en-detalle-antes-y-despues",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-el-desbloqueo-se-ve-en-detalle-antes-y-despues",
   "baseCommit": "72be6161cea686781eb41c05136ed361093aeae0",
   "revision": 2,
@@ -78,12 +78,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "23e300796453e96485a32ba10229a5856c8b4b67",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:18:40.726Z",
       "doneAt": "2026-11-06T15:19:18.827Z",
-      "summary": "Cada test de «Tests bloqueados», en Progreso y en Aceptación, tiene «Ver el desbloqueo S1» por cada desbloqueo con motivo, parche o evidencia, que despliega el motivo del agente y sp-unlock-detail, y lo vuelve a plegar."
+      "summary": "Cada test de «Tests bloqueados», en Progreso y en Aceptación, tiene «Ver el desbloqueo S1» por cada desbloqueo con motivo, parche o evidencia, que despliega el motivo del agente y sp-unlock-detail, y lo vuelve a plegar.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "627d66a0185016a14b305d6ba411472efa1cfd4d",
+      "startedAt": "2026-11-06T15:19:19.230Z",
+      "doneAt": "2026-11-06T15:19:43.287Z",
+      "summary": "ui.md cuenta el parche y la evidencia en la solicitud pendiente («Te espera»), «Ver el desbloqueo S1» en «Tests bloqueados» y que sp-code-lines pinta «Ver código» y la evidencia."
     }
   },
   "pending": {
