@@ -70,3 +70,24 @@ En la Bandeja, la cabecera de la tarjeta de una épica en implementación dice c
 ## Riesgos
 
 - R1: La fila de la épica pasa a depender de su tarjeta, y C3 cambia en paralelo la línea y los registros. Mitigación: la fila solo recibe un dato puro (`tally`) por una entrada nueva, y los cambios en `epic-lanes.ts` e `inbox-epic.ts` son añadidos al final o de una línea.
+
+## Cierre
+
+### Resumen
+
+En la Bandeja, con la épica en implementación, la fila que encabeza su tarjeta recibe de ella el recuento de sus líneas (`epicTally` en `inbox/epic-lanes.ts`, que la tarjeta expone como `tally` y la Bandeja pasa a la fila con una referencia en la plantilla). En el sitio de la insignia de fase lleva «1/5 cortes» con un anillo SVG cuyo arco, en el verde de `done`, es la parte terminada; en lugar de lo que hace y su tamaño, «1 de 5 terminados · 1 te espera · 2 en marcha · 1 listo para empezar · 1 espera a otro corte», solo con las partes que tienen cortes; sin carpeta ni avisos de quién la lleva; y, si ningún corte tiene un cambio abierto y alguno está listo, «Ningún corte en marcha: nadie empezó C2, C3 ni C5». En las demás fases la cabecera sigue como antes. `docs/ui.md` lo cuenta en «La cabecera de la épica».
+
+### Desviaciones
+
+- El test de AC1 de `inbox/inbox.test.ts` leía la fase de la épica en implementación en su cabecera; ahora lee su avance, como preveía Archivos.
+
+### Decisiones
+
+- El repo no tenía un anillo ni un indicador de avance reutilizable (solo la barra de tareas de la fila), así que el anillo es un SVG de la fila con `pathLength="100"`, con los tokens `text` y `--color-phase-done`.
+- La cabecera sigue siendo la fila de la épica (`sp-inbox-row`) con una entrada nueva, `tally`, en lugar de un componente propio: así conserva su foco, su enlace y su sitio en `j`/`k` sin tocar el recorrido.
+- En implementación tampoco dice que la conversación de la épica salió de su carpeta (A4), y «Ningún corte en marcha» une los cortes con «ni» («or» en inglés) a mano, porque `Intl.ListFormat` no da «ni».
+
+### Pendientes
+
+- `packages/ui/src/inbox/inbox-row.ts` pasó a 320 líneas de código (aviso desde 300). Propuesta: llevar el avance con su anillo y los textos del recuento de la épica a un componente propio (`inbox/epic-progress.ts`), que la fila usaría en lugar de su insignia de fase.
+- Mirar a ojo el anillo y la línea del recuento en `specty ui`, en claro y en oscuro: solo los comprueban los tests.

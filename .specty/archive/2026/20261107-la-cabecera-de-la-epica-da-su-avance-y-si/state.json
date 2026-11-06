@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-la-cabecera-de-la-epica-da-su-avance-y-si",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-la-cabecera-de-la-epica-da-su-avance-y-si",
   "baseCommit": "8c4af062c7aa39651c4c843dc1b5aca2932d3eb3",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:055c40fc1c188bb122c72a24d5f4ef7a476f910a257e6df7e872e63535a0e412",
@@ -68,12 +68,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6913176bfd69a2af58e1f93a64bda5edf5c7d1bd",
+      "attempts": 1,
       "startedAt": "2026-11-06T17:55:35.332Z",
       "doneAt": "2026-11-06T18:01:44.757Z",
-      "summary": "docs/ui.md cuenta la cabecera de la tarjeta de la épica: su avance con anillo, el recuento y «Ningún corte en marcha» en implementación"
+      "summary": "docs/ui.md cuenta la cabecera de la tarjeta de la épica: su avance con anillo, el recuento y «Ningún corte en marcha» en implementación",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -86,6 +86,7 @@
     "T": 3,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-06T18:13:10.953Z",
   "lockedTests": {
     "packages/ui/src/inbox/epic-lanes.test.ts": "sha256:c657bb9909830609d8e16438d23d7ef3bef4360e7248535beda675f22193542b",
     "packages/ui/src/inbox/inbox.test.ts": "sha256:86f98ccc679b9d2aad4ebf0e0237ebf83926cb2a97180ec9aef66e3623a4e271",
