@@ -82,7 +82,7 @@ Hoy la limpieza no poda los registros de git de worktrees cuya carpeta ya no exi
   - ac: AC5, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-rescue.test.ts test/prune.test.ts test/cancel-folder.test.ts test/session-end-binding.test.ts test/prune-leftovers.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T3: La limpieza poda los registros, barre las carpetas fantasma y borra las carpetas vacías
+- [x] T3: La limpieza poda los registros, barre las carpetas fantasma y borra las carpetas vacías
   - files: packages/cli/src/flow/orphans.ts, packages/cli/src/flow/prune.ts, packages/cli/src/commands/prune.ts, packages/cli/test/prune-orphans.test.ts
   - ac: AC4, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-orphans.test.ts test/prune-rescue.test.ts test/prune.test.ts test/lost-folder.test.ts test/restore.test.ts test/ghost-folders.test.ts && pnpm typecheck && pnpm lint && pnpm knip

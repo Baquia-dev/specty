@@ -65,12 +65,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3bf61d6fed354715a56f1d174c206c6627f94d8c",
+      "attempts": 1,
       "startedAt": "2026-11-06T09:54:35.782Z",
       "doneAt": "2026-11-06T09:56:44.178Z",
-      "summary": "flow/rescue.ts: rescueFolder guarda una carpeta en refs/specty/rescue/<nombre>/<hora> con un índice temporal; removeFinished rescata lo sin commit de un cambio terminado y lo quita con --force, o lo deja si no puede guardarlo"
+      "summary": "flow/rescue.ts: rescueFolder guarda una carpeta en refs/specty/rescue/<nombre>/<hora> con un índice temporal; removeFinished rescata lo sin commit de un cambio terminado y lo quita con --force, o lo deja si no puede guardarlo",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "87b058998f23dc4c74d997c6ff513a7fbd45ba10",
+      "startedAt": "2026-11-06T09:56:44.501Z",
+      "doneAt": "2026-11-06T09:59:24.412Z",
+      "summary": "flow/orphans.ts encuentra los registros sin carpeta, las carpetas fantasma que se barren y las carpetas vacías de .specty/changes/; cleanUp en flow/prune.ts poda, quita con rescate, barre y borra, y prune lo dice"
     }
   },
   "pending": {

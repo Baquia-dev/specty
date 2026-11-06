@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
-import { realpath } from "node:fs/promises";
+import { readdir, realpath, rm, rmdir } from "node:fs/promises";
+import { join } from "node:path";
 import {
   cancelledFolderStaysLine,
   cancelledWorkSavedLine,
@@ -12,7 +13,7 @@ import {
   workingFolderLine,
 } from "@baquia-dev/specty-core";
 import { exists } from "../io/files";
-import { resolved } from "../io/git";
+import { type Git, resolved } from "../io/git";
 import type { Session } from "../session";
 import { removeActivity } from "../store/activity";
 import type { StoredChange } from "../store/changes";
@@ -24,8 +25,9 @@ import { locateChanges } from "./changes";
 import { commitWithReceipt, decisionTrailers } from "./commits";
 import { integrationOf, isIncorporated, reasonOf } from "./integrate";
 import { type FolderLeft, leaveChangeFolder, within } from "./land";
+import { emptyChangeFolders, staleRecords, sweepableGhosts } from "./orphans";
 import { type Rescue, rescueFolder } from "./rescue";
-import { targetBranch } from "./worktree";
+import { formerWorktreesHome, targetBranch } from "./worktree";
 
 export interface Cleanup {
   readonly removed: readonly string[];
@@ -57,6 +59,96 @@ const NOTHING: Rescue = { kind: "nothing" };
  * conversation ended (`ended`): nothing deletes it at the end.
  */
 const SESSION_DAY = 24 * 60 * 60 * 1000;
+
+/** What the clean-up did (`cleanUp`), for the card of the command that ran it. */
+export interface Swept extends FolderCleanup {
+  /** The ghost folders it removed; `removed` are the folders of finished changes. */
+  readonly ghosts: readonly string[];
+  /** How many records of worktrees whose folder no longer existed git forgot. */
+  readonly records: number;
+  /** The folders of `.specty/changes/` with no file that it removed. */
+  readonly empty: readonly string[];
+}
+
+/**
+ * The clean-up of `prune`, which `new`, `close` and `cancel` also run (ARCHITECTURE §9): git
+ * forgets the records of worktrees whose folder no longer exists, but locked ones; the folders of
+ * finished changes and the ghost folders go, once what they have went to a rescue ref; the sibling
+ * folder from before ADR 0018 goes if it is left empty, and so do the folders of `.specty/changes/`
+ * with no file.
+ */
+export async function cleanUp(session: Session): Promise<Swept> {
+  const records = await forgetMissing(session.git);
+  const finished = await removeFinished(session);
+  const ghosts = await sweepGhosts(session);
+  // `rmdir` takes only an empty folder.
+  await rmdir(await formerWorktreesHome(session.git)).catch(() => undefined);
+  const empty = await removeEmptyTrees(await emptyChangeFolders(session.git));
+  return {
+    removed: finished.removed,
+    kept: [...finished.kept, ...ghosts.kept],
+    rescued: [...finished.rescued, ...ghosts.rescued],
+    unsaved: [...finished.unsaved, ...ghosts.unsaved],
+    ghosts: ghosts.removed,
+    records,
+    empty,
+  };
+}
+
+/** `git worktree prune`, which spares the locked worktrees: how many records git forgot. */
+async function forgetMissing(git: Git): Promise<number> {
+  const before = await staleRecords(git);
+  if (before === 0) return 0;
+  await git.run(["worktree", "prune"]);
+  return before - (await staleRecords(git));
+}
+
+/**
+ * Sweeps the ghost folders (`sweepableGhosts`), but the one this process runs in: what git does
+ * not ignore of each goes to a rescue ref with no parent, and then the folder goes whole.
+ */
+async function sweepGhosts(session: Session): Promise<Tally> {
+  const done = tally();
+  for (const folder of await sweepableGhosts(session)) {
+    if (await within(session.environment.cwd, folder)) continue;
+    await rescueThenRemove(session, { folder, save: true, parent: undefined }, done, () =>
+      removeTree(folder),
+    );
+  }
+  return done;
+}
+
+/** Removes `folder` with all it holds; why it could not, or undefined. */
+async function removeTree(folder: string): Promise<string | undefined> {
+  try {
+    await rm(folder, { recursive: true, force: true });
+    return undefined;
+  } catch (error) {
+    return error instanceof Error ? error.message : String(error);
+  }
+}
+
+/** Removes each of `folders`, which held no file, and gives those that went. */
+async function removeEmptyTrees(folders: readonly string[]): Promise<string[]> {
+  const gone = await Promise.all(folders.map(rmdirTree));
+  return folders.filter((_, index) => gone[index] === true);
+}
+
+/**
+ * Removes `folder` and the folders inside it from the bottom up with `rmdir`, which takes only an
+ * empty one: a file that arrived meanwhile keeps it. Whether it went.
+ */
+async function rmdirTree(folder: string): Promise<boolean> {
+  try {
+    for (const entry of await readdir(folder, { withFileTypes: true })) {
+      if (!entry.isDirectory() || !(await rmdirTree(join(folder, entry.name)))) return false;
+    }
+    await rmdir(folder);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Removes the worktrees of finished changes that no longer need one: closed and already in their
