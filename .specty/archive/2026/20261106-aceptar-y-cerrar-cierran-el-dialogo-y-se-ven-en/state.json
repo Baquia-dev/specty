@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-aceptar-y-cerrar-cierran-el-dialogo-y-se-ven-en",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-aceptar-y-cerrar-cierran-el-dialogo-y-se-ven-en",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
-  "revision": 1,
+  "revision": 3,
   "approved": {
     "revision": 1,
     "hash": "sha256:f25a269a1d5ca6a7d91d19fb3a6320f3506981b3f873c53a63252b318347c781",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "97e609341ca329572ba03c18db3e50b014aaa332",
+      "attempts": 1,
       "startedAt": "2026-11-06T08:00:34.720Z",
       "doneAt": "2026-11-06T08:01:00.225Z",
-      "summary": "ui.md cuenta que «Aceptar» y «Confirmar y archivar» cierran el diálogo al momento, que los botones cargan y que la cabecera dice «Aceptando…» o «Cerrando…» hasta que el servidor responde."
+      "summary": "ui.md cuenta que «Aceptar» y «Confirmar y archivar» cierran el diálogo al momento, que los botones cargan y que la cabecera dice «Aceptando…» o «Cerrando…» hasta que el servidor responde.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,6 +82,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T08:57:24.707Z",
   "lockedTests": {
     "packages/ui/src/acceptance/acceptance-actions.test.ts": "sha256:f57a0ebfebbd30d11d926b779a4838a9136038f264601748af109b6f0127475a",
     "packages/ui/src/acceptance/closing-actions.test.ts": "sha256:00ef881fb863625a9cb6afbcf5f891fbc1a182d2ce4f0f5add0f77acea262a9c"

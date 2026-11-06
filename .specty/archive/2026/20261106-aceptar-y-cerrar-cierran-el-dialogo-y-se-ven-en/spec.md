@@ -87,3 +87,23 @@ Hoy, al aceptar o confirmar el cierre desde la UI, el diálogo se queda abierto 
 
 - R1: Con el diálogo cerrado, un fallo solo queda en el aviso, que desaparece. Mitigación: el aviso de error es el de hoy y dice por qué; los botones vuelven a su estado para reintentarlo.
 - R2: Si la petición nunca responde, la cabecera sigue diciendo «Aceptando…» hasta recargar la página. Mitigación: es lo mismo que hoy hace el diálogo, pero sin tapar la página; C4 añade la línea de por qué espera.
+
+## Cierre
+
+### Resumen
+
+«Aceptar» y «Confirmar y archivar» cierran su diálogo al momento y lanzan la petición con `InFlight`, un servicio raíz nuevo (`packages/ui/src/data/in-flight.ts`) que guarda por id del cambio la acción en curso. Mientras el servidor no responde, el botón principal de la cabecera y el de la barra compacta cargan, «Pedir ajustes…» queda desactivado con el motivo «Aceptando…», y la cabecera dice «Aceptando…» o «Cerrando…» bajo los botones en lugar de la línea de la verificación completa. Al responder, el aviso de éxito de siempre o el motivo del fallo, y los botones vuelven a su estado. Como el servicio es raíz, la acción sigue viéndose en curso al salir de la página del cambio y volver. `docs/ui.md` lo cuenta.
+
+### Desviaciones
+
+- `ClosingActions` pasó a columna, como `AcceptanceActions`, para poner la línea «Cerrando…» bajo su botón.
+- La aceptación esperó al arreglo del E2E de OpenCode en main (`20261106-el-e2e-de-opencode-funciona-con-opencode-2-2-5`): con OpenCode 2.2.5 en el PATH, sus 7 tests fallaban también en main. La primera incorporación de main se abortó para rehacerla con ese arreglo.
+
+### Decisiones
+
+- La barra compacta no añade la línea «Aceptando…»: solo carga su botón, como ya no lleva la de la verificación completa.
+- Si la acción falla, no se reabre el diálogo: el aviso dice por qué y la persona vuelve a pulsar el botón para reintentarlo.
+
+### Pendientes
+
+- Ninguno
