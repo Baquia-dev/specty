@@ -71,3 +71,23 @@ En la Bandeja, una épica cargada y todos sus cortes cargados forman un solo blo
 ## Riesgos
 
 - R1: `j`/`k` recorren `order`, que tiene que coincidir con el orden en que se dibujan las filas; si no, `j` saltaría filas. Mitigación: `order` sale de los mismos bloques que dibuja la plantilla, y el test de AC1 en la Bandeja recorre el bloque con `j`.
+
+## Cierre
+
+### Resumen
+
+En la Bandeja, cada épica cargada forma con todos sus cortes cargados un solo bloque que sale una vez, en una única sección: la más urgente entre sus miembros al agrupar por estado (decisión › en curso › recientes), la de la fase de la épica al agrupar por fase, el sitio de su primer miembro sin agrupar y la suya al agrupar por épica. Un filtro deja pasar el bloque entero si deja pasar a cualquiera de sus miembros. `InboxSection` lleva ahora `blocks`, cuyo número es el de la sección, y `order`, el recorrido de `j`/`k`: la épica y después sus cortes. `sp-inbox-epic` solo envuelve la fila de la épica y sus cortes sangrados; la cabecera de una épica que estaba en otra sección desapareció con `sectionBlocks` y `clusterByEpic`. `docs/ui.md` describe el bloque en «Cada épica, una sola vez».
+
+### Desviaciones
+
+- Ninguna: el cambio sigue el diseño de la spec y el de C1 en la épica.
+
+### Decisiones
+
+- Toda épica cargada es un bloque, aunque no tenga cortes cargados (A1): lo encabeza su fila, y el contenedor de los cortes se oculta vacío (`empty:hidden`), para que C2 dé a todas las épicas la misma tarjeta.
+- La urgencia del bloque cuenta a todos sus miembros cargados, no solo a los que deja pasar un filtro (A2), así que el bloque no cambia de sección al buscar.
+- Dentro del bloque, los cortes van en el orden elegido (A3); el orden de la spec llega con las líneas de C2.
+
+### Pendientes
+
+- Ninguno

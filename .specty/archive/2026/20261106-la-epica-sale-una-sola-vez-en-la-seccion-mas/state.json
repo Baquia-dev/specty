@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-la-epica-sale-una-sola-vez-en-la-seccion-mas",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-la-epica-sale-una-sola-vez-en-la-seccion-mas",
   "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:b8cc0f1aacd7fabe667cb0da305a506f46f0b59b5b3e22cde755c03b6aacc4c9",
@@ -55,12 +55,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b3caa542d6abf303d42245f161c3d2167355cb87",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:07:32.688Z",
       "doneAt": "2026-11-06T15:08:46.715Z",
-      "summary": "La Bandeja recorre los bloques de cada sección, cuenta bloques y j/k siguen order; sp-inbox-epic solo envuelve la fila de la épica y sus cortes, sin la cabecera de una épica de otra sección; docs/ui.md al día"
+      "summary": "La Bandeja recorre los bloques de cada sección, cuenta bloques y j/k siguen order; sp-inbox-epic solo envuelve la fila de la épica y sus cortes, sin la cabecera de una épica de otra sección; docs/ui.md al día",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -73,6 +73,7 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-06T15:14:50.861Z",
   "lockedTests": {
     "packages/ui/src/inbox/inbox-more.test.ts": "sha256:2049feef8c0abfe0b4a682c74f45fbc27546ea5f9ceaa4e6197b0c7e43143951",
     "packages/ui/src/inbox/inbox-view.test.ts": "sha256:5633a9a9a5879fc4df1e034e74ef1a3896d008329ae1e600063c89795a1b6397",
