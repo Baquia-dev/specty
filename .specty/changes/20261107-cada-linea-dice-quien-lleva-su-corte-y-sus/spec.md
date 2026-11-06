@@ -68,7 +68,7 @@ En la tarjeta de una épica de la Bandeja, la línea de cada corte con un cambio
   - files: packages/cli/src/server/records.ts, packages/cli/test/server-holds.test.ts
   - ac: AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-holds.test.ts
-- [ ] T2: La vista lleva quién lo lleva, y la entrada ligera de core los nombres de los agentes
+- [x] T2: La vista lleva quién lo lleva, y la entrada ligera de core los nombres de los agentes
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts, packages/core/src/light.ts, packages/core/test/light.test.ts
   - ac: AC5, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/light.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts

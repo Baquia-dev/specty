@@ -131,6 +131,7 @@ function identityOf(
   | "branch"
   | "folder"
   | "lost"
+  | "holder"
   | "orphan"
   | "away"
   | "unattended"
@@ -159,11 +160,14 @@ function identityOf(
 }
 
 /**
- * Who holds it, as the server says: nobody (an orphan), its conversation from another folder, or
- * nobody picks up the person's last decision.
+ * Who holds it, as the server says: the agent that stepped last in its folder, nobody (an
+ * orphan), its conversation from another folder, or nobody picks up the person's last decision.
  */
-function holdsOf(record: ChangeRecord): Pick<ChangeView, "orphan" | "away" | "unattended"> {
+function holdsOf(
+  record: ChangeRecord,
+): Pick<ChangeView, "holder" | "orphan" | "away" | "unattended"> {
   return {
+    ...(record.holder === undefined ? {} : { holder: record.holder }),
     ...(record.orphan === true ? { orphan: true } : {}),
     ...(record.away === undefined ? {} : { away: record.away }),
     ...(record.unattended === undefined ? {} : { unattended: record.unattended }),
