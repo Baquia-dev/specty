@@ -20,3 +20,9 @@ Cuando `init` cambia el comando con que se llama a Specty (de `specty` a `node "
 - [x] T1: El fin de turno que ya estaba toma el comando del guard
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/install/agents.ts, packages/cli/test/init-agent-stop.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-agent-stop.test.ts test/init-agent-stop-move.test.ts test/check-agent-stop.test.ts && pnpm typecheck && pnpm lint
+
+## Cierre
+
+### Resumen
+
+jsonStop pone el comando del guard en el fin de turno que ya está, con su marca o su check y su límite de tiempo (withTurnEnds, que también usa withTurnEndFrom); tests al cambiar de comando en ambos sentidos, OpenCode incluido; AC4 espera el comando del guard

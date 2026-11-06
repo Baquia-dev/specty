@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-init-pone-el-comando-nuevo-de-specty-en-el-fin",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-init-pone-el-comando-nuevo-de-specty-en-el-fin",
   "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "76258e63d335a70c3717a50fb3384cfa8aeb78a0",
+      "attempts": 2,
       "startedAt": "2026-11-06T16:32:41.996Z",
       "doneAt": "2026-11-06T16:44:01.309Z",
-      "summary": "jsonStop pone el comando del guard en el fin de turno que ya está, con su marca o su check y su límite de tiempo (withTurnEnds, que también usa withTurnEndFrom); tests al cambiar de comando en ambos sentidos, OpenCode incluido; AC4 espera el comando del guard"
+      "summary": "jsonStop pone el comando del guard en el fin de turno que ya está, con su marca o su check y su límite de tiempo (withTurnEnds, que también usa withTurnEndFrom); tests al cambiar de comando en ambos sentidos, OpenCode incluido; AC4 espera el comando del guard",
+      "scopeExtra": []
     }
   },
   "pending": {
