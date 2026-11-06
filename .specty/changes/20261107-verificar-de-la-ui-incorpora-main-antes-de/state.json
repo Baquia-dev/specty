@@ -52,12 +52,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3eb7f893be0de94e4c16ede5c831a711be7d3b1b",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:57:51.827Z",
       "doneAt": "2026-11-06T18:58:09.174Z",
-      "summary": "runStartedCard recibe la rama destino y dice, en español y en inglés, que se incorpora antes de verificar"
+      "summary": "runStartedCard recibe la rama destino y dice, en español y en inglés, que se incorpora antes de verificar",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "760f4f3a2301ab30b3f49ad52b09cd0efebf3281",
+      "startedAt": "2026-11-06T18:58:09.587Z",
+      "doneAt": "2026-11-06T18:58:35.358Z",
+      "summary": "taskRuns y alive pasan sin cambios a server/watched-runs.ts, el vigilante de las ejecuciones del almacén"
     }
   },
   "pending": {
