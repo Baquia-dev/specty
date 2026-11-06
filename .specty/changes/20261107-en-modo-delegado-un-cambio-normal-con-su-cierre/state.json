@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-en-modo-delegado-un-cambio-normal-con-su-cierre",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-en-modo-delegado-un-cambio-normal-con-su-cierre",
   "baseCommit": "ccf8184df3194fbfcfc345b8592244abcd277006",
   "revision": 1,
@@ -80,6 +80,10 @@
     "T": 4,
     "R": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T19:35:02.134Z"
+  "lockedTests": {
+    "packages/cli/test/accept-quick-turn.test.ts": "sha256:445195b5307c21619cee88c1f0fb09c2ac1edcf0799ab7a3b0ad08de1c47c8d7",
+    "packages/core/test/flow/machine.test.ts": "sha256:a4220a6dc28b2555b109edf18afd061690053d05cfde33fd6c0fb63ecab0f787",
+    "packages/cli/test/closing-ahead.test.ts": "sha256:f556116b0e87c7817c7c7572f5cc8ee3677a27349515c084e5fb86ae67d11ae4",
+    "packages/core/test/closing-ahead.test.ts": "sha256:ab23d94f59dedff2a9f402c6994c7c6a55c19f412009aaced51dcc08ddf50e1a"
+  }
 }
