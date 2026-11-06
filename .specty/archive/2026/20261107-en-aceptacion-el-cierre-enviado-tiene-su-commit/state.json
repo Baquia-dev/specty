@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261107-en-aceptacion-el-cierre-enviado-tiene-su-commit",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261107-en-aceptacion-el-cierre-enviado-tiene-su-commit",
+  "baseCommit": "bb32977a94e76f405187f4486874e76c19d8c9f9",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f039694ec5b5723d89302a3da42062b1ed46511774a89c824af59e2c65f55aaa",
+    "at": "2026-11-06T20:15:43.402Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6636abc93b0632eb21016938e03c40ff6667bffe",
+      "attempts": 1,
+      "startedAt": "2026-11-06T20:16:46.145Z",
+      "doneAt": "2026-11-06T20:22:53.738Z",
+      "summary": "accept pasa a mergeTarget closingFirst, que con el cierre enviado reutiliza commitClosing antes de incorporar main; tests del accept del agente y de la persona con el glosario cambiado en main; ARCHITECTURE §9",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/cli/test/close-shared-file.test.ts": "sha256:c52226a7865ae73d32bc57cf6e7ebc2e8a1b08d42cb85ed569f9335e96b9b9a5"
+  }
+}

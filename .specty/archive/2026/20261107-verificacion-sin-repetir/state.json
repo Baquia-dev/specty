@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "id": "20261107-verificacion-sin-repetir",
+  "kind": "epic",
+  "phase": "done",
+  "branch": "specty/20261107-verificacion-sin-repetir",
+  "baseCommit": "25a6ccd6a24750c59639929aca63d27a68422000",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c6d4aff2fee489a005215c9e763635019267bd00e8810f1bfca02d829f8b5268",
+    "at": "2026-11-06T18:37:11.377Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:16ad792350066a564856d4767e643b1ab1e604211433cccd77acdf15bd1e7db1",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7c71e858473c94b9eb7d27e11221c7689f2877e0fdbe9bcdc980aa408b10d1bc",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:910443fab69680a1c55ac3db202bd28a808094df6077a9fab43bf1ff38ff13d3",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:7061ec5b787ff6ff3125c774eb2ffc66301474bc509bd54d4714a13e5e7ab12b",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:16b662889561fa97776dd265f0acd39130f23dacc150a517bb21be37a81b9fdf",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:e4c7b3459176c17568493ea982cbcca9d4ed568b5b16de18a9a024346e04c922",
+      "decision": "confirmed"
+    },
+    "A7": {
+      "hash": "sha256:5ddf04865404765c3850ed815558484e1b589d26311faa604f49023e18d2638b",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:419af6dcf619760038aaf3cb6c6694a5fe8db2568a2afe98d1ac74de0b5f0425",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 8,
+    "AC": 13,
+    "C": 4,
+    "R": 4
+  },
+  "closingSubmittedAt": "2026-11-06T20:04:05.422Z"
+}

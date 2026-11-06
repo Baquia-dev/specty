@@ -26,6 +26,7 @@ import {
   LucideTriangleAlert,
 } from "../components/icons";
 import { ItemTooltips } from "../components/item-tooltip";
+import { ShownText } from "../components/shown-text";
 import type { Toasts } from "../components/toast";
 import {
   ActionError,
@@ -56,9 +57,10 @@ export function reportFailure(toasts: Toasts, preferences: Preferences) {
  */
 @Component({
   selector: "sp-word-diff",
+  imports: [ShownText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "whitespace-pre-wrap" },
-  template: `@for (part of parts(); track $index) {@if (part.change === 'added') {<ins class="rounded-sm bg-phase-done-bg/70 no-underline shadow-[inset_0_-1px_0_var(--color-phase-done)]"><span class="sr-only">{{ t()('[añadido: ', '[added: ') }}</span>{{ part.text }}<span class="sr-only">]</span></ins>} @else if (part.change === 'removed') {<del class="rounded-sm bg-phase-cancelled-bg/70 line-through decoration-phase-cancelled"><span class="sr-only">{{ t()('[eliminado: ', '[removed: ') }}</span>{{ part.text }}<span class="sr-only">]</span></del>} @else {<span>{{ part.text }}</span>}}`,
+  template: `@for (part of parts(); track $index) {@if (part.change === 'added') {<ins class="rounded-sm bg-phase-done-bg/70 no-underline shadow-[inset_0_-1px_0_var(--color-phase-done)]"><span class="sr-only">{{ t()('[añadido: ', '[added: ') }}</span><sp-text [text]="part.text" /><span class="sr-only">]</span></ins>} @else if (part.change === 'removed') {<del class="rounded-sm bg-phase-cancelled-bg/70 line-through decoration-phase-cancelled"><span class="sr-only">{{ t()('[eliminado: ', '[removed: ') }}</span><sp-text [text]="part.text" /><span class="sr-only">]</span></del>} @else {<span><sp-text [text]="part.text" /></span>}}`,
 })
 export class WordDiff {
   readonly parts = input.required<readonly DiffPart[]>();
@@ -117,7 +119,7 @@ type SliceLink = Pick<ChangeSummary, "id" | "phase">;
  */
 @Component({
   selector: "sp-review-items",
-  imports: [LucideDynamicIcon, RouterLink, Badge, PhaseBadge, IconButton],
+  imports: [LucideDynamicIcon, RouterLink, Badge, PhaseBadge, IconButton, ShownText],
   hostDirectives: [ItemTooltips],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -128,7 +130,7 @@ type SliceLink = Pick<ChangeSummary, "id" | "phase">;
             <li [class]="row" [attr.data-item]="criterion.id">
               <span class="pt-0.5 font-mono text-xs text-text-muted">{{ criterion.id }}</span>
               <div class="flex min-w-0 flex-col gap-1">
-                <p class="m-0">{{ criterion.text }}</p>
+                <p class="m-0"><sp-text [text]="criterion.text" /></p>
                 @for (warning of criterion.warnings; track $index) {
                   <p class="m-0 flex items-start gap-2 text-sm" style="color: var(--color-phase-review)" role="note">
                     <svg class="mt-1 shrink-0" [lucideIcon]="warningIcon" size="14" aria-hidden="true"></svg>{{ warning[lang()] }}
@@ -152,14 +154,14 @@ type SliceLink = Pick<ChangeSummary, "id" | "phase">;
                   <svg [lucideIcon]="actions[file.action].icon" size="13" aria-hidden="true"></svg>{{ actionLabel(file) }}
                 </span>
                 <span class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
-                  <code class="font-mono text-[13px] wrap-anywhere">{{ file.from ? file.from + ' → ' : '' }}{{ file.path }}</code>
+                  <code class="font-mono text-[13px] wrap-anywhere"><sp-text [text]="(file.from ? file.from + ' → ' : '') + file.path" /></code>
                   @if (file.sensitive) {
                     <span class="flex items-center gap-1 text-xs font-medium" style="color: var(--color-phase-review)" data-sensitive>
                       <svg [lucideIcon]="sensitiveIcon" size="13" aria-hidden="true"></svg>{{ t()('Ruta sensible', 'Sensitive path') }}
                     </span>
                   }
                   @if (file.reason) {
-                    <span class="text-text-muted">— {{ file.reason }}</span>
+                    <span class="text-text-muted">— <sp-text [text]="file.reason" /></span>
                   }
                 </span>
               </li>
@@ -173,13 +175,13 @@ type SliceLink = Pick<ChangeSummary, "id" | "phase">;
             <li [class]="row" [attr.data-item]="task.id">
               <span class="pt-0.5 font-mono text-xs text-text-muted">{{ task.id }}</span>
               <div class="flex min-w-0 flex-col gap-1.5">
-                <p class="m-0 font-medium">{{ task.title }}</p>
+                <p class="m-0 font-medium"><sp-text [text]="task.title" /></p>
                 <div class="flex flex-wrap gap-1">
                   @for (criterion of task.ac; track criterion) {
                     <sp-badge>{{ criterion }}</sp-badge>
                   }
                   @for (path of task.files; track path) {
-                    <code class="rounded-sm border border-border px-1 font-mono text-xs">{{ path }}</code>
+                    <code class="rounded-sm border border-border px-1 font-mono text-xs"><sp-text [text]="path" /></code>
                   }
                 </div>
                 @for (warning of task.warnings; track $index) {
@@ -207,9 +209,9 @@ type SliceLink = Pick<ChangeSummary, "id" | "phase">;
               <span class="pt-0.5 font-mono text-xs text-text-muted">{{ slice.id }}</span>
               <div class="flex min-w-0 flex-col gap-1.5">
                 @if (sliceChanges().get(slice.id); as change) {
-                  <a class="self-start font-medium text-text underline underline-offset-2" [routerLink]="['/changes', change.id]">{{ slice.title }}</a>
+                  <a class="self-start font-medium text-text underline underline-offset-2" [routerLink]="['/changes', change.id]"><sp-text [text]="slice.title" /></a>
                 } @else {
-                  <p class="m-0 font-medium">{{ slice.title }}</p>
+                  <p class="m-0 font-medium"><sp-text [text]="slice.title" /></p>
                 }
                 <div class="flex flex-wrap items-center gap-1">
                   @for (criterion of slice.ac; track criterion) {
@@ -242,7 +244,7 @@ type SliceLink = Pick<ChangeSummary, "id" | "phase">;
           @for (risk of review().risks; track risk.id) {
             <li [class]="row" [attr.data-item]="risk.id">
               <span class="pt-0.5 font-mono text-xs text-text-muted">{{ risk.id }}</span>
-              <p class="m-0">{{ risk.text }}</p>
+              <p class="m-0"><sp-text [text]="risk.text" /></p>
               @if (editable()) {
                 <sp-icon-button [class]="reveal" size="sm" [label]="commentLabel(risk.id)" [icon]="commentIcon" (pressed)="comment.emit({ item: risk.id })" />
               }

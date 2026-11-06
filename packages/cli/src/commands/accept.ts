@@ -7,8 +7,6 @@ import {
   blockedCard,
   type ChangeView,
   checkStatus,
-  closeCommitSubject,
-  closedCard,
   coverageLines,
   decisionCard,
   delegatedFailureCard,
@@ -16,13 +14,9 @@ import {
   noCodeVerificationNote,
   nothingPendingCard,
   type Output,
-  parseSpec,
-  quickClosedLine,
-  quickClosing,
   riskLessons,
   riskLessonsLine,
   runVerificationQuestion,
-  serializeSpec,
   slowTestLines,
   transition,
   unitsLines,
@@ -32,32 +26,29 @@ import {
 } from "@baquia-dev/specty-core";
 import { slowTestsSince } from "../check/test-time";
 import { commitState } from "../flow/active";
-import { harvestEntries, withArchivedMemory } from "../flow/archive-memory";
-import { verifyHints, withVerifyHints } from "../flow/detected";
-import { archive, commitArchive } from "../flow/finish";
-import { fullCommand, landingTurn } from "../flow/full-verification";
+import { harvestEntries } from "../flow/archive-memory";
 import {
-  type Absorbed,
-  absorbTarget,
-  type Integration,
-  integrationOf,
-  mergeTarget,
-} from "../flow/integrate";
-import { landRetrying, withIntegration } from "../flow/land";
+  closeAccepted,
+  closeQuick,
+  closingFirst,
+  closingSent,
+  closingTurn,
+} from "../flow/closing-turn";
+import { fullCommand } from "../flow/full-verification";
+import { type Absorbed, type Integration, integrationOf, mergeTarget } from "../flow/integrate";
 import { type FullPlan, fullPlan, runFull } from "../flow/units";
-import { measureUsage, withUsage } from "../flow/usage";
 import { codeTree, passedOnThisCode, recordFullVerification, touchesCode } from "../flow/verified";
 import { changeView } from "../flow/views";
-import { writeText } from "../io/files";
 import type { Session } from "../session";
-import { readSpec, type StoredChange } from "../store/changes";
+import type { StoredChange } from "../store/changes";
 import { humanChange, postponed } from "./human";
 import { pendingIntegration } from "./integrate";
 import { thenNext } from "./next";
 
 /**
- * `specty accept`: a person accepts the result; quick changes close right away. `verify` answers
- * beforehand whether to run the full verification first (the UI runs it on its own).
+ * `specty accept`: a person accepts the result; quick changes close right away, and so does, in
+ * delegated mode, one whose closing the agent sent first. `verify` answers beforehand whether to
+ * run the full verification first (the UI runs it on its own).
  */
 export async function accept(session: Session, verify?: boolean): Promise<Output> {
   const guard = await humanChange(session, "accept");
@@ -70,23 +61,6 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
   const { change } = pending;
   const plan = await integrationOf(session, change.state);
   return closingTurn(session, change, plan, () => acceptMerged(session, change, plan, verify));
-}
-
-/**
- * In delegated mode, accepting a change that closes on it, a quick one, runs on the landing turn
- * from before main comes in until the change lands (`landingTurn`): no other session lands
- * between its verification and its landing, so it verifies once and the closing has nothing left
- * to merge. The person's acceptance, at the terminal or on the UI, takes the turn only to verify
- * and to land, never while they answer.
- */
-function closingTurn(
-  session: Session,
-  change: StoredChange,
-  plan: Integration | undefined,
-  run: () => Promise<Output>,
-): Promise<Output> {
-  const closes = session.actor === "agent" && change.state.kind === "quick";
-  return closes ? landingTurn(session, plan, run) : run();
 }
 
 /** Accepting with main merged in first, if it moved: the verification, the question and the rest. */
@@ -117,7 +91,8 @@ async function acceptMerged(
 /**
  * The main branch comes into the change first, so that the full verification runs once, on the
  * merged code, and `close` has nothing left to merge unless main moves again. Main's folder is
- * not checked here: nothing lands yet.
+ * not checked here: nothing lands yet. A closing sent already gets its commit first, if main
+ * changed its files (`closingFirst`).
  */
 async function mergeFirst(
   session: Session,
@@ -126,7 +101,7 @@ async function mergeFirst(
 ): Promise<Absorbed> {
   return plan === undefined
     ? { ok: true, lines: [] }
-    : mergeTarget(session, plan, change, "accept");
+    : mergeTarget(session, plan, change, "accept", closingFirst(session, change));
 }
 
 /**
@@ -239,8 +214,9 @@ async function slowTestNote(session: Session, started: number): Promise<string[]
 }
 
 /**
- * The person accepted: a quick change closes; any other goes on to its closing. `merged` says
- * how the main branch came in before the verification, if it did.
+ * The person accepted: a quick change closes; any other goes on to its closing, and closes too
+ * when the agent sent it first, in delegated mode. `merged` says how the main branch came in
+ * before the verification, if it did.
  */
 async function accepted(
   session: Session,
@@ -266,7 +242,7 @@ async function accepted(
       view.tasks.map((task) => task.summary ?? task.title),
       lines,
     );
-  await commitState(
+  const inClosing = await commitState(
     session,
     change,
     { ...state, phase: moved.phase },
@@ -274,6 +250,8 @@ async function accepted(
     { revision: state.revision },
     "human",
   );
+  // On the same landing turn that `closingTurn` holds, as `close` would close it.
+  if (closingSent(session, change)) return closeAccepted(session, inClosing, lines);
   return thenNext(
     session,
     decisionCard(headerOf(state.id, moved.phase), [acceptedLine(session.lang), ...lines], cards),
@@ -293,73 +271,4 @@ async function acceptedRisks(
   const ids = (await harvestEntries(session, change.state, lessons)).map(({ id }) => id);
   const line = riskLessonsLine(ids, session.lang);
   return line === undefined ? [] : [line];
-}
-
-/**
- * Quick lane: accepting closes the change, with the task summary as its closing. As when closing,
- * it lands on the full verification's turn, so that no other session lands in between; in
- * delegated mode, this process holds it already (`closingTurn`), and it does not wait.
- */
-async function closeQuick(
-  session: Session,
-  change: StoredChange,
-  summaries: readonly string[],
-  merged: readonly string[],
-): Promise<Output> {
-  const plan = await integrationOf(session, change.state);
-  return landingTurn(session, plan, () =>
-    closeQuickOnTurn(session, change, plan, { summaries, merged }),
-  );
-}
-
-async function closeQuickOnTurn(
-  session: Session,
-  change: StoredChange,
-  plan: Integration | undefined,
-  {
-    summaries,
-    merged,
-  }: { readonly summaries: readonly string[]; readonly merged: readonly string[] },
-): Promise<Output> {
-  // As when closing, before it lands: main's folder is checked and main comes in again if it
-  // moved since the verification. A refusal leaves the change in acceptance.
-  const absorbed =
-    plan === undefined ? undefined : await absorbTarget(session, plan, change, "accept");
-  if (absorbed?.ok === false) return absorbed.output;
-  const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
-  const closing = quickClosing(summaries, session.lang);
-  await writeText(
-    change.files.spec,
-    serializeSpec({ ...spec, sections: { ...spec.sections, closing } }),
-  );
-  // Measured before archiving, so that the consumption goes with the change.
-  const usage = await measureUsage(session, change);
-  const archived = await archive(
-    session,
-    change,
-    { ...change.state, phase: "done" },
-    "change.closed",
-    { lane: "quick" },
-  );
-  const commit = await commitArchive(
-    session,
-    change,
-    archived,
-    closeCommitSubject(spec.title, session.lang),
-  );
-  // Read while the folder exists: landing removes a worktree of its own.
-  const hints = await verifyHints(session, plan?.main ?? session.root);
-  const landed = plan === undefined ? undefined : await landRetrying(session, plan);
-  const card = withIntegration(
-    session,
-    closedCard(
-      headerOf(change.state.id, "done"),
-      quickClosedLine(commit, session.lang),
-      landed?.landed === true ? undefined : change.state.branch,
-      session.cards,
-    ),
-    [...merged, ...(absorbed?.lines ?? [])],
-    landed,
-  );
-  return withVerifyHints(withUsage(withArchivedMemory(session, card, archived), usage), hints);
 }

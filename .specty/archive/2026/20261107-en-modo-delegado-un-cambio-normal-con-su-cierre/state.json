@@ -1,0 +1,183 @@
+{
+  "schema": 1,
+  "id": "20261107-en-modo-delegado-un-cambio-normal-con-su-cierre",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-en-modo-delegado-un-cambio-normal-con-su-cierre",
+  "baseCommit": "ccf8184df3194fbfcfc345b8592244abcd277006",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7f1a00216e0ca755cc56233c85e6293c7c4dc1ef02200b191b8e3d637dbb151c",
+    "at": "2026-11-06T19:28:46.805Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:174aab52ef68cfa448b9ad8e81878f1d546b12dcf86cdf204146f3a70e08bb1d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2e21fa34db71f0e17dba00038119744dfcd9d374096f213b38a4e344d50f2d33",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e4bbfb167b2e659d4bb9c11aa8c93eae48e530eb04b687e87d4c4836664ca965",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:390583a0b01cdb3081d59c95674a35f232270d401a2c7081f50fcc6296b4c50a",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:88ddef97508f46af4cf7cf5601e4b17e4260ae7f260889d72f185a8441175665",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:ef7badfc8ae910925d1094f9805cb5b52700506614c27a5d20494fff7e9b26ba",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:bfb9d60a91e32c57a102a4e5bda559030db90ddf52c223650bfb3f41764cf4c9",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:61364d383f1f633270a6af63dabb69c9e538ad406a90bfeaed95f271cfa4cb2e",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:dfd4e1944c188fce1be807432ec39a8f4b5ec6959b86387d7f24a627474d8354",
+      "decision": "implicit"
+    },
+    "A10": {
+      "hash": "sha256:ec5f92d3b7b64ac4ddf67e81b53bf2fb37987024bf38fbca9e715cca4dda3a9c",
+      "decision": "implicit"
+    },
+    "A11": {
+      "hash": "sha256:15d55af9ab8a4483cdab9651c948f98c86f6db780607a8c35aa03d8cb9c35f1f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c61cad49d1a9e2256644ec8342a23878169fa5dd",
+      "attempts": 1,
+      "startedAt": "2026-11-06T19:35:41.549Z",
+      "doneAt": "2026-11-06T19:37:41.150Z",
+      "summary": "En aceptación delegada de un cambio con cierre propio, la spec es closing-only (closingInAcceptance), el guard la deja escribir, propose desde acceptance no cambia de fase y la tarjeta añade «CÓMO CERRAR» (ahora en acceptance.ts) y pide el cierre antes de accept",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "afba5248e91d5cca8585765dd7414f3252c0cbf0",
+      "attempts": 1,
+      "startedAt": "2026-11-06T19:37:41.497Z",
+      "doneAt": "2026-11-06T19:41:58.566Z",
+      "summary": "propose en aceptación delegada valida y envía el cierre (closingSubmittedAt) sin cambiar de fase, con el SIGUIENTE de la tarjeta de aceptación; fuera de un cierre ya no conserva closingSubmittedAt, así que un ajuste lo descarta. delegate.test.ts espera el SIGUIENTE nuevo",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "734ced85b4f080703b568bfc6019b9aa195234ac",
+      "attempts": 1,
+      "startedAt": "2026-11-06T19:41:58.890Z",
+      "doneAt": "2026-11-06T19:45:56.368Z",
+      "summary": "flow/closing-turn.ts reúne el cerrar en el turno de aterrizaje: closingTurn (ahora también con el cierre enviado), closeQuick y closeOnTurn (movidos, con la tarjeta compartida) y closeAccepted; en modo delegado, accept con el cierre enviado anota change.accepted y cierra en el mismo turno",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "b090929edbce2fa2d7fd26f4bf6a4206542dcaa9",
+      "attempts": 1,
+      "startedAt": "2026-11-06T19:45:56.705Z",
+      "doneAt": "2026-11-06T19:46:56.135Z",
+      "summary": "ARCHITECTURE §4 (cierre antes de aceptar en modo delegado, fila y diagrama), §6 (delegate) y §9 (el accept que cierra en un turno, en flow/closing-turn.ts), y formats.md §1 y §3 (closingSubmittedAt en aceptación)",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 11,
+    "AC": 7,
+    "T": 4,
+    "R": 4
+  },
+  "closingSubmittedAt": "2026-11-06T20:02:20.125Z",
+  "lockedTests": {
+    "packages/cli/test/accept-quick-turn.test.ts": "sha256:445195b5307c21619cee88c1f0fb09c2ac1edcf0799ab7a3b0ad08de1c47c8d7",
+    "packages/core/test/flow/machine.test.ts": "sha256:a4220a6dc28b2555b109edf18afd061690053d05cfde33fd6c0fb63ecab0f787",
+    "packages/cli/test/closing-ahead.test.ts": "sha256:f556116b0e87c7817c7c7572f5cc8ee3677a27349515c084e5fb86ae67d11ae4",
+    "packages/core/test/closing-ahead.test.ts": "sha256:ab23d94f59dedff2a9f402c6994c7c6a55c19f412009aaced51dcc08ddf50e1a"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "4cb3c564510dd4310d15d040f936f5fc27d53379",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/finish.ts",
+      "packages/cli/src/commands/propose.ts",
+      "packages/cli/src/flow/closing-turn.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/merged-run.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/src/server/watched-runs.ts",
+      "packages/cli/test/accept-quick-turn.test.ts",
+      "packages/cli/test/closing-ahead.test.ts",
+      "packages/cli/test/delegate.test.ts",
+      "packages/cli/test/server/verify-merge.test.ts",
+      "packages/core/src/cards/acceptance.ts",
+      "packages/core/src/cards/server.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/flow/machine.ts",
+      "packages/core/src/flow/phases.ts",
+      "packages/core/src/guard/decide.ts",
+      "packages/core/src/guard/spec.ts",
+      "packages/core/src/index.ts",
+      "packages/core/test/cards/server.test.ts",
+      "packages/core/test/closing-ahead.test.ts",
+      "packages/core/test/flow/machine.test.ts",
+      "packages/ui/src/change/change-page.unattended.test.ts",
+      "packages/ui/src/change/resume-hints.test.ts",
+      "packages/ui/src/change/resume-hints.ts",
+      "packages/ui/src/components/diff-file.test.ts",
+      "packages/ui/src/components/diff-file.ts",
+      "packages/ui/src/data/agent-name.test.ts",
+      "packages/ui/src/data/agent-name.ts",
+      "packages/ui/src/highlight/highlight.test.ts",
+      "packages/ui/src/highlight/highlight.ts",
+      "packages/ui/src/history/history-tab.ts",
+      "packages/ui/src/history/history-who.test.ts",
+      "packages/ui/src/history/trace-view.test.ts",
+      "packages/ui/src/history/trace-view.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "packages/ui/src/inbox/lane-holds.ts",
+      "packages/ui/src/progress/code-lines.ts",
+      "packages/ui/src/progress/unlock-detail.test.ts"
+    ],
+    "at": "2026-11-06T19:51:51.094Z",
+    "resolved": {
+      "commit": "904119b",
+      "at": "2026-11-06T20:00:29.314Z"
+    }
+  }
+}

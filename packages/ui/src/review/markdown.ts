@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
-import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
 import { marked } from "marked";
+import { DIRECTION_MARK, directionPieces } from "../highlight/highlight";
+import { Preferences } from "../theme/preferences";
 
 /**
  * Markdown written by the agent or the person. Angular sanitizes what `[innerHTML]` receives,
  * so scripts, event handlers and unsafe URLs never reach the page. In the chat its code takes a
- * tint of the text, as the paths of a task do, instead of the chat's opaque ground.
+ * tint of the text, as the paths of a task do, instead of the chat's opaque ground. Each
+ * character of text direction shows as its code, marked as in the code (`markDirection`).
  */
 @Component({
   selector: "sp-markdown",
@@ -18,5 +21,31 @@ import { marked } from "marked";
 })
 export class Markdown {
   readonly text = input("");
-  protected readonly html = computed(() => marked(this.text(), { async: false, gfm: true }));
+  private readonly lang = inject(Preferences).lang;
+  protected readonly html = computed(() =>
+    markDirection(
+      marked(this.text(), { async: false, gfm: true }),
+      DIRECTION_MARK.note[this.lang()],
+    ),
+  );
+}
+
+/**
+ * The HTML with each character of text direction as its code, so that the browser cannot reorder
+ * what the person reads: in the text and the code, in a `span` with the tone and the title of
+ * `DIRECTION_MARK`; inside a tag, such as a link's title, plain, because it does not show as text.
+ * `marked` escapes `<` and `>` in the text and in the attributes, so every `<…>` is a tag.
+ */
+function markDirection(html: string, note: string): string {
+  const mark = `<span class="${DIRECTION_MARK.look}" title="${note}">`;
+  return html
+    .split(/(<[^>]*>)/)
+    .map((part, index) =>
+      directionPieces(part)
+        .map((piece) =>
+          piece.direction && index % 2 === 0 ? `${mark}${piece.text}</span>` : piece.text,
+        )
+        .join(""),
+    )
+    .join("");
 }

@@ -65,8 +65,9 @@ describe("the card with no active change in a Codex thread that holds a front", 
     ]);
     for (const outside of ["P1", "P3", "P5"]) expect(next.out).not.toContain(`${outside} ·`);
     expect(next.out).not.toContain("`specty memory`");
-    // The guard knows the thread by its event, as when the session starts.
-    expect((await started(root, "t1")).out).toBe(next.out);
+    // The guard knows the thread by its event, as when the session starts: the same entries. The
+    // rest of its card follows the tool its environment tells, none here (ARCHITECTURE §7).
+    expect(memoryOf((await started(root, "t1")).out)).toEqual(memoryOf(next.out));
   });
 
   it("AC1: gives another Codex thread no entry", async () => {
@@ -75,6 +76,6 @@ describe("the card with no active change in a Codex thread that holds a front", 
     const other = await cli(root, ["next"], inThread("t2"));
     expect(memoryOf(other.out)).toEqual([]);
     for (const id of ["P1", "P2", "P3", "P4", "P5"]) expect(other.out).not.toContain(`${id} ·`);
-    expect((await started(root, "t2")).out).toBe(other.out);
+    expect((await started(root, "t2")).out).toBe((await cli(root, ["next"])).out);
   });
 });
