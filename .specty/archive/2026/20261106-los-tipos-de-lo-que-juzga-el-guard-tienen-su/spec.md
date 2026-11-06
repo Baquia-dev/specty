@@ -44,3 +44,21 @@ kind: standard
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard && pnpm typecheck && pnpm lint && pnpm knip
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los tipos de lo que juzga el guard (`GuardChange`, `GuardContext`, `ShellFacts`, `GuardAction`, `GuardRule` y `GuardDecision`) pasan, tal cual y con sus comentarios, a `packages/core/src/guard/action.ts` (P207). `decide.ts` queda solo con `decideGuard` y sus reglas, y baja de 323 a 243 líneas de código. `index.ts` exporta los mismos nombres, los tipos desde `./guard/action`, y `after.ts` también los importa de allí. No cambia nada de lo que hace el guard. La verificación completa pasó en la aceptación sin cambiar ningún test, y el `check` de la tarea ya no avisa del tamaño de `decide.ts` (AC1, AC2).
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `decide.ts` no reexporta los tipos: quien los usa los importa de `./action`, para que no haya dos caminos.
+
+### Pendientes
+
+- Ninguno.
