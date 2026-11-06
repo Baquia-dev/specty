@@ -45,7 +45,7 @@ Desde 6bfc989, `specty init` propone una unidad para la raíz de un workspace de
 
 ## Tareas
 
-- [ ] T1: El módulo de la raíz de go.work recibe su unidad
+- [x] T1: El módulo de la raíz de go.work recibe su unidad
   - files: packages/cli/src/detect/units-go.ts, packages/cli/test/units-go.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/units-go.test.ts && pnpm lint
