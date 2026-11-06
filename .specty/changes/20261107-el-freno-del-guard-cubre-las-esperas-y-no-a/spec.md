@@ -58,7 +58,7 @@ Resuelve P224. Mientras el cambio espera a la persona, el guard solo frena `slee
 
 ## Tareas
 
-- [ ] T1: El análisis del shell cuenta las esperas evidentes
+- [x] T1: El análisis del shell cuenta las esperas evidentes
   - files: packages/core/src/guard/waits.ts, packages/core/src/guard/tokens.ts, packages/core/src/guard/shell.ts, packages/core/test/guard/waits.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/waits.test.ts test/guard/shell.test.ts test/guard/control-words.test.ts

@@ -6,8 +6,11 @@ export interface Token {
   readonly operator: boolean;
 }
 
-/** A simple command, with its words and redirections, or where a subshell opens or closes. */
-export type Piece = readonly Token[] | "(" | ")";
+/**
+ * A simple command, with its words and redirections, where a subshell opens or closes, or `&`
+ * after a command that runs in the background.
+ */
+export type Piece = readonly Token[] | "(" | ")" | "&";
 
 /** A heredoc opened on the current line; its body starts on the next one. */
 interface Heredoc {
@@ -17,7 +20,7 @@ interface Heredoc {
 }
 
 interface State {
-  readonly pieces: (Token[] | "(" | ")")[];
+  readonly pieces: (Token[] | "(" | ")" | "&")[];
   readonly heredocs: Heredoc[];
   word: string;
   started: boolean;
@@ -32,7 +35,8 @@ const ARITHMETIC: ReadonlySet<string> = new Set([..."<>&|()"]);
 
 /**
  * Splits a shell command into simple commands (`;`, `&&`, `||`, `|`, `&`, newlines) made of
- * words and redirections, and marks where each subshell (`(…)`, `$(…)`) opens and closes. Like
+ * words and redirections, and marks where each subshell (`(…)`, `$(…)`) opens and closes and
+ * each command that `&` sends to the background. Like
  * bash, it skips comments and heredoc bodies, which do not run. Best effort: enough to read
  * intent, not a full shell grammar.
  */
@@ -122,7 +126,8 @@ function redirecting(state: State, chars: readonly string[], index: number): num
   const char = chars[index];
   if (char === ">") return redirect(state, chars[index + 1], index);
   if (char === "<") return input(state, chars, index);
-  if (char === "&" || char === "|") return ampersandOrPipe(state, char, chars, index);
+  if (char === "&") return ampersand(state, chars, index);
+  if (char === "|") return pipe(state, chars[index + 1], index);
   return undefined;
 }
 
@@ -240,26 +245,34 @@ function subshell(state: State, char: "(" | ")", index: number): number {
   return index;
 }
 
-function ampersandOrPipe(
-  state: State,
-  char: string,
-  chars: readonly string[],
-  index: number,
-): number {
+/** `&` in a redirection (`2>&1`, `&>`, `&>>`), in `&&`, or after a command it sends to the background. */
+function ampersand(state: State, chars: readonly string[], index: number): number {
   const next = chars[index + 1];
   const last = current(state).at(-1);
   // `2>&1`: the `&` starts the redirection target.
-  if (char === "&" && !state.started && last?.operator === true && last.text.endsWith(">")) {
-    append(state, char);
+  if (!state.started && last?.operator === true && last.text.endsWith(">")) {
+    append(state, "&");
     return index;
   }
-  if (char === "&" && next === ">") {
+  if (next === ">") {
     flush(state);
     const doubled = chars[index + 2] === ">";
     current(state).push({ text: doubled ? "&>>" : "&>", operator: true });
     return index + (doubled ? 2 : 1);
   }
-  return split(state, next === char ? index + 1 : index);
+  return next === "&" ? split(state, index + 1) : background(state, index);
+}
+
+/** `|` between commands: a pipe, `||`, or `|&`, which pipes the errors too. */
+function pipe(state: State, next: string | undefined, index: number): number {
+  return split(state, next === "|" || next === "&" ? index + 1 : index);
+}
+
+/** A lone `&`: the command before it runs in the background. */
+function background(state: State, index: number): number {
+  flush(state);
+  state.pieces.push("&");
+  return index;
 }
 
 function split(state: State, index: number): number {

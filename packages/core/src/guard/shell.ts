@@ -4,6 +4,7 @@ import { basename } from "../paths";
 import { analyzeGit, type GitCommit, type GitRemoval } from "./git";
 import { type SpectyCalls, spectyCalls, subcommand } from "./specty-calls";
 import { type Token, tokenize } from "./tokens";
+import { waitingProgram } from "./waits";
 
 /** What a shell command would do, as far as the flow is concerned. */
 export interface ShellAnalysis extends SpectyCalls {
@@ -34,10 +35,11 @@ export interface ShellAnalysis extends SpectyCalls {
   /** Written or removed paths it cannot place: shell variables, `~`, or after `cd` to an unknown directory. */
   readonly unresolved: readonly string[];
   /**
-   * One of its simple commands runs `sleep`, also after the words that open a compound command or
-   * one of its branches (`do`, `then`, `{`…), assignments and wrappers.
+   * The program of each simple command that only waits (`sleep`, `caffeinate -w`, the shell's
+   * `wait`…, `guard/waits.ts`), also after the words that open a compound command or one of its
+   * branches (`do`, `then`, `{`…), assignments and wrappers.
    */
-  readonly sleeps: boolean;
+  readonly waits: readonly string[];
   /**
    * Where each simple command but `cd` runs: relative to where the command starts (`""` is
    * there), absolute, or undefined after a `cd` somewhere the analysis cannot name.
@@ -81,7 +83,7 @@ const EMPTY: ShellAnalysis = {
   writes: [],
   deletes: [],
   unresolved: [],
-  sleeps: false,
+  waits: [],
   enters: [],
   fronts: [],
   resolves: [],
@@ -101,8 +103,14 @@ export function analyzeShell(command: string): ShellAnalysis {
   let directory: Directory = "";
   // Where to return when each open subshell closes: its `cd`s stay inside it.
   const outer: Directory[] = [];
+  // Whether a command before sent jobs to the background, which the shell's `wait` collects.
+  let launched = false;
   let result = EMPTY;
   for (const tokens of tokenize(command)) {
+    if (tokens === "&") {
+      launched = true;
+      continue;
+    }
     if (tokens === "(") {
       outer.push(directory);
       continue;
@@ -111,7 +119,7 @@ export function analyzeShell(command: string): ShellAnalysis {
       if (outer.length > 0) directory = outer.pop();
       continue;
     }
-    const segment = analyzeSegment(tokens);
+    const segment = analyzeSegment(tokens, launched);
     const place = (paths: readonly string[]) => paths.map((path) => locate(directory, path));
     const writes = place(segment.writes);
     const deletes = place(segment.deletes);
@@ -179,7 +187,7 @@ function placeRemoval(
   return [path === undefined ? { name: worktree } : { name: worktree, path }];
 }
 
-function analyzeSegment(tokens: readonly Token[]): Segment {
+function analyzeSegment(tokens: readonly Token[], launched: boolean): Segment {
   const { words, redirected } = splitRedirections(tokens);
   const { assignments, program, args } = locateProgram(opened(words));
   const bypassByEnv = assignments.some((assignment) => {
@@ -190,6 +198,7 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
     program === "git" ? analyzeGit(args) : { commits: [], removes: [], bypass: false, refs: [] };
   const files = program === "" ? { writes: [], deletes: [] } : fileEffects(program, args);
   const specty = spectyArgs(program, args);
+  const waiting = waitingProgram(program, args, launched);
   const bypassBySpecty =
     specty === undefined &&
     (words.some((word) => SENSITIVE_SPECTY.test(word)) ||
@@ -203,7 +212,7 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
     refs: git.refs,
     writes: [...redirected, ...files.writes],
     deletes: files.deletes,
-    sleeps: program === "sleep",
+    waits: waiting === undefined ? [] : [waiting],
   };
 }
 
@@ -248,7 +257,7 @@ function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
     writes: [...a.writes, ...b.writes],
     deletes: [...a.deletes, ...b.deletes],
     unresolved: [...a.unresolved, ...b.unresolved],
-    sleeps: a.sleeps || b.sleeps,
+    waits: [...a.waits, ...b.waits],
     enters: [...a.enters, ...b.enters],
     fronts: [...a.fronts, ...b.fronts],
     resolves: [...a.resolves, ...b.resolves],
