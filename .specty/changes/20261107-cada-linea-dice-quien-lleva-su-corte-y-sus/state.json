@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261107-cada-linea-dice-quien-lleva-su-corte-y-sus",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-cada-linea-dice-quien-lleva-su-corte-y-sus",
+  "baseCommit": "8c4af062c7aa39651c4c843dc1b5aca2932d3eb3",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "3 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:58c5612480424b8efd2af334f3995271006b4926a0f58600383398671a613d46",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f6fa6f977454c249f60c633a327c927d6c9e5e5e162ad6b42db78213d9077733",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:0606e9a96fac03216f9a78f236c48b04249abeb3632ab1d11934829c7ac3fa1d",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:489e3189afff118b22a17ac1eb8db4680d678a36c49450643aac273688cba3ad",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:696689e39592cb0b0ea45911f03209223c5137c4826915cf2ae4aa6b89aeaae6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 8,
+    "T": 5,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:651ea17f6734fc1790ce0e025b3a3d5d597c2ca60788318e5e07135c35d6adb3",
+    "at": "2026-11-06T17:37:10.893Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
