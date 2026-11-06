@@ -286,7 +286,7 @@ describe("Inbox", () => {
 
   it("AC1: shows an epic once, in «Esperan tu decisión», with all its slices, counted as one", async () => {
     // The epic is in progress; two slices wait for the person, one is in progress, one finished.
-    const { element, fixture, rows, sections, press } = await open({
+    const { element, fixture, sections, press } = await open({
       records: epicRecords("implementing", LATER_SLICES),
     });
     expect(epicGroups(element)).toEqual([["decision", "20261015-panel"]]);
@@ -297,26 +297,17 @@ describe("Inbox", () => {
     expect(head?.querySelector("a")?.getAttribute("href")).toBe(
       "/changes/20261015-panel?tab=progress",
     );
-    expect(slicesIn(group)).toEqual([
-      "asistencia-curso",
-      "justificar-faltas",
-      "login-google",
-      "chat-docentes",
-    ]);
+    // Its slices are lines of its card; the cancelled one, whose slice the Cortes do not name, none.
+    expect(slicesIn(group)).toEqual(["asistencia-curso", "justificar-faltas", "login-google"]);
     // No slice of it goes as a row in another section, and the section counts the epic as one.
-    for (const id of EPIC_MEMBERS) {
-      expect([id, element.querySelectorAll(`sp-inbox-row[data-id="${id}"]`).length]).toEqual([
-        id,
-        1,
-      ]);
-    }
+    expect(EPIC_MEMBERS.map((id) => [id, shownAs(element, id)])).toEqual(
+      EPIC_MEMBERS.map((id) => [id, id === "20261014-chat-docentes" ? 0 : 1]),
+    );
     expect(sections()).toEqual(["Esperan tu decisión 5", "En curso 1", "Recientes 1"]);
     // j/k go through the epic and then through each of its slices, in order.
     const walked: (string | undefined)[] = [];
-    for (let step = 0; step < 6; step++) {
-      walked.push(
-        short(rows().find((item) => item.getAttribute("aria-current") === "true")?.dataset.id),
-      );
+    for (let step = 0; step < 5; step++) {
+      walked.push(short(element.querySelector<HTMLElement>(PICKED)?.dataset.id));
       press("j");
       await fixture.whenStable();
     }
@@ -325,7 +316,6 @@ describe("Inbox", () => {
       "asistencia-curso",
       "justificar-faltas",
       "login-google",
-      "chat-docentes",
       "recordatorios-correo",
     ]);
   });
@@ -345,12 +335,10 @@ describe("Inbox", () => {
       const group = element.querySelector<HTMLElement>('[data-epic-group="20261015-panel"]');
       expect([grouping, slicesIn(group)]).toEqual([
         grouping,
-        ["asistencia-curso", "justificar-faltas", "login-google", "chat-docentes"],
+        ["asistencia-curso", "justificar-faltas", "login-google"],
       ]);
-      const counted = EPIC_MEMBERS.map(
-        (id) => element.querySelectorAll(`sp-inbox-row[data-id="${id}"]`).length,
-      );
-      expect([grouping, counted]).toEqual([grouping, EPIC_MEMBERS.map(() => 1)]);
+      const counted = EPIC_MEMBERS.map((id) => shownAs(element, id));
+      expect([grouping, counted]).toEqual([grouping, [1, 1, 1, 1, 0]]);
     }
   });
 
@@ -365,24 +353,20 @@ describe("Inbox", () => {
     expect(group?.querySelector<HTMLElement>("sp-inbox-row[data-epic-head]")?.dataset.id).toBe(
       "20261015-panel",
     );
-    expect(slicesIn(group)).toEqual([
-      "asistencia-curso",
-      "justificar-faltas",
-      "login-google",
-      "chat-docentes",
-    ]);
+    expect(slicesIn(group)).toEqual(["asistencia-curso", "justificar-faltas", "login-google"]);
     expect(sections()).toEqual(["Esperan tu decisión 1"]);
   });
 
-  it("AC3: labels each slice with its id and title in the group, and with the epic in its page", async () => {
-    const { row, element, router, settle } = await open({ records: epicRecords("implementing") });
-    // The epic's Cortes section names C1, not C2.
-    expect(text(row("20261018-asistencia-curso")?.querySelector("sp-kind-badge"))).toBe(
-      "Feature · C1 · Asistencia por curso",
+  it("AC2: names each slice in its epic's card by its id and title, and with the epic in its page", async () => {
+    const { element, router, settle } = await open({ records: epicRecords("implementing") });
+    const line = (id: string) =>
+      element.querySelector<HTMLElement>(`[data-epic-lanes] sp-inbox-lane[data-id="${id}"]`);
+    // The epic's Cortes section names C1, with its title; C2, which it does not name, goes after it.
+    expect(text(line("20261018-asistencia-curso")?.querySelector("[data-slice-id]"))).toBe("C1");
+    expect(text(line("20261018-asistencia-curso")?.querySelector("a"))).toBe(
+      "Asistencia por curso",
     );
-    expect(text(row("20261016-justificar-faltas")?.querySelector("sp-kind-badge"))).toBe(
-      "Feature · C2",
-    );
+    expect(text(line("20261016-justificar-faltas")?.querySelector("[data-slice-id]"))).toBe("C2");
     await router.navigateByUrl("/changes/20261016-justificar-faltas");
     await settle();
     const heroBadge = element.querySelector("sp-change-page [data-hero] sp-kind-badge");
@@ -413,11 +397,18 @@ const epicGroups = (element: HTMLElement) =>
     group.dataset.epicGroup,
   ]);
 
-/** The slices of an epic group, as rows under its head. */
+/** The changes of an epic group's lines, under its head. */
 const slicesIn = (group: HTMLElement | null | undefined) =>
-  [...(group?.querySelectorAll<HTMLElement>("[data-epic-features] sp-inbox-row") ?? [])].map(
-    (item) => short(item.dataset.id),
+  [...(group?.querySelectorAll<HTMLElement>("[data-epic-lanes] sp-inbox-lane") ?? [])].map((item) =>
+    short(item.dataset.id),
   );
+
+/** How many times the Inbox shows the change `id`: as a row or as a line of its epic's card. */
+const shownAs = (element: HTMLElement, id: string) =>
+  element.querySelectorAll(`sp-inbox-row[data-id="${id}"], sp-inbox-lane[data-id="${id}"]`).length;
+
+/** The row or the line picked with j/k. */
+const PICKED = 'sp-inbox [aria-current="true"]';
 
 /**
  * The sample project with an epic, «Panel académico», in `phase`, whose Cortes section names C1:

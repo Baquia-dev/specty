@@ -276,12 +276,11 @@ async function settle(): Promise<void> {
   }
 }
 
-/** The Inbox row of `change`, by the same clock: alone, or under its epic's header. */
-async function rowOf(change: unknown, inEpic = false): Promise<HTMLElement> {
+/** The Inbox row of `change`, by the same clock. */
+async function rowOf(change: unknown): Promise<HTMLElement> {
   const fixture = TestBed.createComponent(InboxRow);
   fixture.componentRef.setInput("change", change);
   fixture.componentRef.setInput("now", NOW);
-  fixture.componentRef.setInput("inEpic", inEpic);
   await fixture.whenStable();
   return fixture.nativeElement;
 }
@@ -335,12 +334,10 @@ describe("the summary the store keeps of each finished change", () => {
     const store = await loaded();
     const kept = (id: string) => store.finished().find((summary) => summary.id === id);
     for (const id of [SLICE, DONE_EPIC, DONE_SLICE, CANCELLED]) {
-      for (const inEpic of [false, true]) {
-        const summary = await rowOf(kept(id), inEpic);
-        const full = await rowOf(whole(id), inEpic);
-        expect([id, inEpic, text(summary)]).toEqual([id, inEpic, text(full)]);
-        expect(summary.querySelector("a")?.getAttribute("href")).toBe(`/changes/${id}?tab=history`);
-      }
+      const summary = await rowOf(kept(id));
+      const full = await rowOf(whole(id));
+      expect([id, text(summary)]).toEqual([id, text(full)]);
+      expect(summary.querySelector("a")?.getAttribute("href")).toBe(`/changes/${id}?tab=history`);
     }
     const slice = await rowOf(kept(SLICE));
     expect(slice.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("done");
@@ -348,9 +345,6 @@ describe("the summary the store keeps of each finished change", () => {
     expect(text(slice.querySelector("[data-took]"))).toBe("Tardó 3 h 30 min");
     expect(text(slice.querySelector("[data-waits]"))).toBe("M · 3 archivos · 2 módulos");
     expect(text(slice.querySelector("sp-kind-badge"))).toBe("Feature · C1 · Panel académico");
-    // Under its epic's header, the slice's own title.
-    const under = await rowOf(kept(SLICE), true);
-    expect(text(under.querySelector("sp-kind-badge"))).toBe("Feature · C1 · Asistencia por curso");
   });
 
   it("AC4: links the open epic's slice to the finished change of a page, with its phase", async () => {
