@@ -295,25 +295,29 @@ describe("decisions and tabs", () => {
     expect(deriveView(record({ phase: "implementing" })).lockedTests).toBeUndefined();
   });
 
-  it("waits for the agent once the person asked for changes, until the next proposal (AC1, AC3)", () => {
-    const step = (ts: string, event: string, revision: number) => ({
-      ts,
-      actor: "human" as const,
-      event,
-      data: { revision },
-    });
+  it("AC4: waits for the agent while the state says the person sent the review back", () => {
+    const at = "2026-10-20T15:00:00.000Z";
+    const sentBack = state({ phase: "review", revision: 1, changesRequestedAt: at });
+    expect(decisionOf(sentBack)).toBeUndefined();
+    const view = deriveView({ ...record({ phase: "review", revision: 1 }), state: sentBack });
+    expect([view.decision, view.changesRequested]).toEqual([undefined, { revision: 1, at }]);
+    // The audit alone does not send it back: a request from before `changesRequestedAt`.
     const asked = [
-      step("2026-10-20T14:00:00Z", "spec.proposed", 1),
-      step("2026-10-20T15:00:00Z", "review.changes_requested", 1),
+      {
+        ts: "2026-10-20T14:00:00Z",
+        actor: "agent" as const,
+        event: "spec.proposed",
+        data: { revision: 1 },
+      },
+      {
+        ts: at,
+        actor: "human" as const,
+        event: "review.changes_requested",
+        data: { revision: 1 },
+      },
     ];
-    const view = deriveView({ ...record({ phase: "review", revision: 1 }), audit: asked });
-    expect([view.decision, view.changesRequested]).toEqual([
-      undefined,
-      { revision: 1, at: "2026-10-20T15:00:00Z" },
-    ]);
-    const proposed = [...asked, step("2026-10-20T16:00:00Z", "spec.proposed", 2)];
-    const next = deriveView({ ...record({ phase: "review", revision: 2 }), audit: proposed });
-    expect([next.decision, next.changesRequested]).toEqual(["review", undefined]);
+    const old = deriveView({ ...record({ phase: "review", revision: 1 }), audit: asked });
+    expect([old.decision, old.changesRequested]).toEqual(["review", undefined]);
   });
 
   it("carries the findings, and the last review of the spec and of the result (AC1, AC2, AC3)", () => {

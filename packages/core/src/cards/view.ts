@@ -174,7 +174,10 @@ export interface ChangeView {
   readonly conventions: readonly string[];
   readonly pendingScope: readonly ScopeRequestView[];
   readonly rejected: readonly RejectedView[];
-  /** The unresolved comments, once the person asked for changes after the last proposal. */
+  /**
+   * The unresolved comments, once the person sent the review back (`changesRequestedAt`), even
+   * with none: absent while the review is still the person's.
+   */
   readonly requested?: readonly CommentView[];
   /** The user's literal adjustment request, while adjusting. */
   readonly adjustment?: string;

@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import type { Output } from "../output";
+import type { UnlockEvidence } from "../schema/state";
 import type { EffortRecommendation } from "../sizing/effort";
 import { formatSizeReason, type SizeResult } from "../sizing/size";
 import type { DeltaEntry } from "../spec/delta";
 import type { Diagnostic } from "../spec/diagnostics";
 import { blockedCard, deltaLine } from "./flow";
 import { checkStatus } from "./refusals";
-import { effortLine, translator } from "./text";
+import { cappedLines, effortLine, translator } from "./text";
 import type { CardContext } from "./view";
 
 // The texts of a person's `approve` and `reject`: of a spec and of a scope request.
@@ -135,6 +136,98 @@ export interface ScopeRequestDecided {
   readonly id: string;
   readonly task: string;
   readonly paths: readonly string[];
+}
+
+/** The lines of an unlock's patch the note shows before deciding; it says how many it leaves out. */
+const NOTE_PATCH_LINES = 40;
+/** The lines of each piece of an unlock's evidence the note shows before deciding. */
+const NOTE_EVIDENCE_LINES = 10;
+
+/** A scope request, as the terminal shows it before the person decides on it. */
+interface ScopeRequestNoted extends ScopeRequestDecided {
+  readonly reason: string;
+  /** An unlock of approved tests: the exact change to them (ADR 0014); none from an older CLI. */
+  readonly patch?: string | undefined;
+  /** An unlock of approved tests: the lines that justify it. */
+  readonly evidence?: readonly UnlockEvidence[] | undefined;
+}
+
+/**
+ * The note before `approve --scope` or `reject --scope`: the paths and the reason and, of an
+ * unlock, its patch and each piece of its evidence, cut so it stays short.
+ */
+export function scopeRequestNote(request: ScopeRequestNoted, ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  const patch = request.patch === undefined ? [] : patchLines(request.patch);
+  const evidence = request.evidence ?? [];
+  const cut =
+    patch.length > NOTE_PATCH_LINES ||
+    evidence.some((piece) => piece.text.split("\n").length > NOTE_EVIDENCE_LINES);
+  return [
+    ...request.paths,
+    `— ${request.reason}`,
+    ...(patch.length === 0 ? [] : ["", t("El cambio al test:", "The change to the test:")]),
+    ...cappedLines(patch, NOTE_PATCH_LINES, ctx.lang),
+    ...(evidence.length === 0
+      ? []
+      : ["", t("El código que lo sustenta:", "The code that supports it:")]),
+    ...evidence.flatMap((piece) => evidenceLines(piece, ctx.lang)),
+    ...(cut
+      ? [
+          "",
+          t(
+            `La solicitud entera se ve en la UI: \`${ctx.command} ui\`.`,
+            `The whole request shows in the UI: \`${ctx.command} ui\`.`,
+          ),
+        ]
+      : []),
+  ]
+    .join("\n")
+    .split("\n")
+    .map(visible)
+    .join("\n");
+}
+
+/** The lines of a unified diff, without the empty one after its last newline. */
+function patchLines(patch: string): readonly string[] {
+  const lines = patch.split("\n");
+  return lines.at(-1) === "" ? lines.slice(0, -1) : lines;
+}
+
+/** A piece of evidence: where it is and its first lines, each with its number in the file. */
+function evidenceLines(piece: UnlockEvidence, lang: Lang): readonly string[] {
+  const lines = piece.text.split("\n");
+  const width = String(piece.from + Math.min(lines.length, NOTE_EVIDENCE_LINES) - 1).length;
+  const numbered = lines.map(
+    (line, index) => `${String(piece.from + index).padStart(width)} │ ${line}`,
+  );
+  return [
+    `${piece.path}:${piece.from}-${piece.to}`,
+    ...cappedLines(numbered, NOTE_EVIDENCE_LINES, lang),
+  ];
+}
+
+/**
+ * A line as the person should read it: without the `\r` of a CRLF ending, and each character a
+ * terminal acts on (control, or direction of the text) as its code, so it cannot hide or reorder
+ * what the request does.
+ */
+function visible(line: string): string {
+  const text = line.endsWith("\r") ? line.slice(0, -1) : line;
+  return Array.from(text, (char) => {
+    const code = char.codePointAt(0) ?? 0;
+    return actsOnTerminal(code) ? `\\u${code.toString(16).padStart(4, "0")}` : char;
+  }).join("");
+}
+
+/** C0 controls but the tab, C1 controls, and the embeddings, overrides and isolates of Unicode. */
+function actsOnTerminal(code: number): boolean {
+  return (
+    (code < 0x20 && code !== 0x09) ||
+    (code >= 0x7f && code <= 0x9f) ||
+    (code >= 0x202a && code <= 0x202e) ||
+    (code >= 0x2066 && code <= 0x2069)
+  );
 }
 
 export function scopeDecisionQuestion(

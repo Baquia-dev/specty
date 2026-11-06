@@ -17,6 +17,7 @@ import { ItemTooltips } from "../components/item-tooltip";
 import { formatDuration } from "../data/progress";
 import { type Bilingual, type DecisionKind, isWhole, type ListedChange } from "../data/records";
 import { Preferences } from "../theme/preferences";
+import type { EpicTally } from "./epic-lanes";
 
 /** What each decision is called and the action that takes the person to it: rows and lines share them. */
 export const DECISIONS: Readonly<
@@ -65,6 +66,18 @@ function detailOf(change: ListedChange, t: (es: string, en: string) => string): 
     : t(` · ${sent} tests nuevos`, ` · ${sent} new tests`);
 }
 
+/** «2 te esperan»: `n` with its word, or nothing when there are none. */
+function counted(n: number, one: string, many: string): string {
+  if (n === 0) return "";
+  return `${n} ${n === 1 ? one : many}`;
+}
+
+/** «C1, C2 ni C5»: the items, the last one after `word`. */
+function either(items: readonly string[], word: string): string {
+  if (items.length < 2) return items.join("");
+  return `${items.slice(0, -1).join(", ")} ${word} ${items.at(-1)}`;
+}
+
 /** The milliseconds from an ISO time to `end`; none when the time cannot be read or comes later. */
 function elapsed(from: string, end: number): number {
   const start = Date.parse(from);
@@ -111,7 +124,18 @@ const ROW =
   template: `
     <!-- How long under the phase; on a phone, beside it. -->
     <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5 sm:flex-col sm:items-start sm:gap-0.5">
-      <sp-phase-badge [phase]="change().phase" />
+      @if (tally(); as tally) {
+        <!-- An epic in implementation: how many of its slices finished, with a ring. -->
+        <span class="inline-flex h-6 items-center gap-1.5 rounded-md bg-text/8 px-2 text-xs font-medium whitespace-nowrap text-text" data-epic-progress>
+          <svg class="size-3.5 shrink-0 -rotate-90" viewBox="0 0 16 16" aria-hidden="true" data-ring>
+            <circle class="stroke-text/20" cx="8" cy="8" r="6" fill="none" stroke-width="3" />
+            <circle cx="8" cy="8" r="6" fill="none" stroke-width="3" pathLength="100" stroke="var(--color-phase-done)" [attr.stroke-dasharray]="share() + ' 100'" data-arc />
+          </svg>
+          {{ t()(tally.done + '/' + tally.total + ' cortes', tally.done + '/' + tally.total + ' slices') }}
+        </span>
+      } @else {
+        <sp-phase-badge [phase]="change().phase" />
+      }
       <span class="text-xs whitespace-nowrap text-text-muted" data-since data-started>{{ started() }}</span>
       @if (isFinished()) {
         <span class="text-xs whitespace-nowrap text-text-muted" data-took>{{ took() }}</span>
@@ -124,13 +148,20 @@ const ROW =
         <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change().id]" [queryParams]="{ tab: change().tab }" (focus)="picked.emit()">{{ change().title }}</a>
         <sp-kind-badge [kind]="change().kind" [epic]="change().epic" />
       </div>
-      @if (waits(); as line) {
+      @if (tally()) {
+        <span class="text-[13px] text-text-muted" data-tally>{{ tallyLine() }}</span>
+      } @else if (waits(); as line) {
         <span class="text-[13px] text-text-muted" data-waits>{{ line }}</span>
       }
       @if (folder(); as place) {
         <span class="font-mono text-xs break-all text-text-muted" [attr.title]="change().folder" data-folder>{{ place }}</span>
       }
-      @if (change().unattended) {
+      @if (tally()) {
+        <!-- Nobody works on an epic in implementation: its slices say who holds them. -->
+        @if (idle(); as line) {
+          <span class="text-[13px]" style="color: var(--color-phase-review)" data-idle>{{ line }}</span>
+        }
+      } @else if (change().unattended) {
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-unattended>{{ t()('Nadie retoma tu decisión', 'Nobody picks up your decision') }}</span>
       } @else if (change().away; as away) {
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-unheld>{{ t()('Su conversación (' + away.tool + ') salió de su carpeta', 'Its conversation (' + away.tool + ') left its folder') }}</span>
@@ -185,6 +216,11 @@ export class InboxRow {
   readonly change = input.required<ListedChange>();
   /** Picked with j/k: highlighted, with its action as the main one. */
   readonly current = input(false);
+  /**
+   * How the slices go, when the row heads the card of an epic in implementation: it takes the
+   * place of its phase, what it does with its size, its folder and who holds it.
+   */
+  readonly tally = input<EpicTally | undefined>(undefined);
   /** The clock of the page, so "hace 3 min" moves on. */
   readonly now = input(Date.now());
   /** The person reached it with the keyboard or the pointer. */
@@ -222,9 +258,55 @@ export class InboxRow {
   });
 
   /** Where it lives, by the last two parts of its folder: «specty.worktrees/<id>». */
-  protected readonly folder = computed(
-    () => this.change().folder?.split(/[\\/]/).filter(Boolean).slice(-2).join("/") ?? "",
+  protected readonly folder = computed(() =>
+    this.tally() === undefined
+      ? (this.change().folder?.split(/[\\/]/).filter(Boolean).slice(-2).join("/") ?? "")
+      : "",
   );
+
+  /** The share of an epic's slices finished, in hundredths: the arc of its ring. */
+  protected readonly share = computed(() => {
+    const tally = this.tally();
+    return tally === undefined || tally.total === 0
+      ? 0
+      : Math.round((tally.done / tally.total) * 100);
+  });
+
+  /** «1 de 5 terminados · 1 te espera · 2 en marcha · 1 listo para empezar · 1 espera a otro corte». */
+  protected readonly tallyLine = computed(() => {
+    const tally = this.tally();
+    if (tally === undefined) return "";
+    const t = this.t();
+    return [
+      t(`${tally.done} de ${tally.total} terminados`, `${tally.done} of ${tally.total} finished`),
+      counted(tally.waiting, t("te espera", "waits for you"), t("te esperan", "wait for you")),
+      counted(tally.running, t("en marcha", "under way"), t("en marcha", "under way")),
+      counted(
+        tally.ready,
+        t("listo para empezar", "ready to start"),
+        t("listos para empezar", "ready to start"),
+      ),
+      counted(
+        tally.blocked,
+        t("espera a otro corte", "waits for another slice"),
+        t("esperan a otro corte", "wait for another slice"),
+      ),
+    ]
+      .filter((part) => part !== "")
+      .join(" · ");
+  });
+
+  /** «Ningún corte en marcha: nadie empezó C1, C2 ni C5», when none has an open change. */
+  protected readonly idle = computed(() => {
+    const slices = this.tally()?.idle ?? [];
+    if (slices.length === 0) return "";
+    const t = this.t();
+    const nobody = either(slices, t("ni", "or"));
+    return t(
+      `Ningún corte en marcha: nadie empezó ${nobody}`,
+      `No slice under way: nobody started ${nobody}`,
+    );
+  });
 
   /** The other open changes that list the same files, by title. */
   protected readonly sharers = computed(() => {

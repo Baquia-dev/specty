@@ -70,6 +70,7 @@ describe("sample data", () => {
       "task.started",
       "task.verified",
       "scope.requested",
+      "scope.requested",
     ]);
   });
 

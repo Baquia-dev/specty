@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "id": "20261107-el-prototipo-trae-el-codigo-de-los-tests-y-un",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-el-prototipo-trae-el-codigo-de-los-tests-y-un",
+  "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:1d73bdc9126cfdda1be2cb0949cf591d23c6802dfadbaa79c7a085338887d9f5",
+    "at": "2026-11-06T17:28:04.098Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:16cf4c73f3b3c07febe5b8efa6096dea413a1584aa1dfd424dd2d2336e5721ec",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2f9157ae9b058d1d2a3ccb17bc1602191aa8779eaa01dc6da2881f510bc14d7b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9b48bf241a4daa7cbab70596aaff79e787b79cb556c0df8c376e3c9aa378a642",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:8755a13bac4ab11ae58fce58d4c4ce1ef668bec18fa35a74e2c55d2e1108ef74",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6eaf78b88b9a30e7169d2435fec485207f82647e",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:31:06.964Z",
+      "doneAt": "2026-11-06T17:36:11.140Z",
+      "summary": "sample-test-code.ts guarda el código de los dos tests enviados de «Avisos de nuevas calificaciones» y sampleTestCode lo da por cambio y ruta, o lo rechaza como el servidor; FixtureData.testCode lo usa, así «Ver código» funciona en el prototipo.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "a9987af6a679db9fb775c7a1be8c1da501079d02",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:36:11.515Z",
+      "doneAt": "2026-11-06T17:42:05.477Z",
+      "summary": "Los boletines esperan S2, el desbloqueo de su test aprobado con parche y evidencia, y el login trae S1 ya aprobado para T1. decideScopeIn anota id y, si aprueba un desbloqueo, unlock, task, patch y evidence, como specty.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "e271e65a8e3fde5b0b7b6a9994ad7be92ee92862",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:42:05.892Z",
+      "doneAt": "2026-11-06T17:48:49.061Z",
+      "summary": "ui.md cuenta que el prototipo da el código de los tests de muestra y trae un desbloqueo pendiente (S2 de los boletines) y otro aprobado (S1 del login).",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T17:59:34.231Z",
+  "lockedTests": {
+    "packages/ui/src/change/change-page.test.ts": "sha256:87cd4a1d18aa5714e9ddb6865b2082440c0d027f0b109edf6316f698672ad0a5",
+    "packages/ui/src/data/fixtures.test.ts": "sha256:ab03053d2b99acf629f2ed2c98ee93dc53848ec642e328ba2a7dac327f29fca5",
+    "packages/ui/src/data/sample-specs.test.ts": "sha256:301531cb1e2d58aa986c4dc28ccaa3d54922c0a699744f6c86740ab94de5da6e",
+    "packages/ui/src/progress/progress-tab.test.ts": "sha256:3aa2db1106782b9776b79a725aa4ebda57eea4c34bd86191f6b63459a6fd8343",
+    "packages/ui/src/data/sample-test-code.test.ts": "sha256:47668370df75e1c4dcc35a03bd3c06c496f805df4717dfb4c24964bf03060da5",
+    "packages/ui/src/data/sample-unlocks.test.ts": "sha256:4952fae560bdfe5d92bccaaa70f61922a4a4f2ecd6717e5f99d85ae61258999f"
+  }
+}

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { AGENT_NAMES, effortName } from "../agents";
-import type { Lang } from "../i18n";
+import { counted, type Lang } from "../i18n";
 import type { EffortLevel, EffortRecommendation } from "../sizing/effort";
 import type { CardContext, ChangeView } from "./view";
 
@@ -47,6 +47,19 @@ export function progressOf(change: ChangeView, lang: Lang): string | undefined {
 
 export function quoted(text: string, lang: Lang): string {
   return lang === "es" ? `«${text}»` : `"${text}"`;
+}
+
+/** The first `max` of `lines` and, if it leaves some out, a line that says how many. */
+export function cappedLines(lines: readonly string[], max: number, lang: Lang): readonly string[] {
+  const left = lines.length - max;
+  if (left <= 0) return lines;
+  return [
+    ...lines.slice(0, max),
+    translator(lang)(
+      `… y ${counted(left, "línea más", "líneas más")}`,
+      `… and ${counted(left, "more line", "more lines")}`,
+    ),
+  ];
 }
 
 /** `ejecuta \`specty next\``: the way on when the flow, not the command, knows what comes now. */

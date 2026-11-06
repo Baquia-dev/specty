@@ -16,6 +16,7 @@ import {
   asksForSlices,
   type EpicLane,
   epicLanes,
+  epicTally,
   LANE_STEPS,
   type SliceAnswer,
 } from "./epic-lanes";
@@ -88,6 +89,9 @@ export class InboxEpic {
   });
 
   protected readonly lanes = computed(() => epicLanes(this.epic(), this.slices(), this.answer()));
+
+  /** How its slices go, while the epic is in implementation: what the epic's row says instead. */
+  readonly tally = computed(() => epicTally(this.epic(), this.lanes()));
 
   /** The changes of its lines, in their order: where j/k stop after the epic's row. */
   readonly stops = computed(() =>

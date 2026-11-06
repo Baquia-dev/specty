@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "id": "20261107-la-cabecera-de-la-epica-da-su-avance-y-si",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-la-cabecera-de-la-epica-da-su-avance-y-si",
+  "baseCommit": "8c4af062c7aa39651c4c843dc1b5aca2932d3eb3",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:055c40fc1c188bb122c72a24d5f4ef7a476f910a257e6df7e872e63535a0e412",
+    "at": "2026-11-06T17:38:09.083Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:13f9fe2078d84f2e594e3068d155561de45a5de445dce585280715795c8a05cd",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:36568d14b19063fc7270263e9a4b55fbc18c30f5bf86ab2758c3e37257df57b5",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:4d6e4a1c68ee37744176976379f05abef2cf088745a394b6e79d5b63aec56723",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:29694db441b45464195ca19929c05b3a9a6e0682974407dd4d9e515bd5553889",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d65940516d61b79c9071dc11b107e4caf2726fffc73fa6a267358f991b0e41e4",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:bca1261de9ee4078da15435b3cb8faafead336da8f5ddab6b87dd7645253af93",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "35a6b106e5bbe1ddc26011899f09f7601b9adec0",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:42:17.608Z",
+      "doneAt": "2026-11-06T17:49:01.979Z",
+      "summary": "epic-lanes.ts da epicTally: el recuento de las líneas de una épica en implementación (terminados, te esperan, en marcha, listos, esperan a otro corte) y los cortes listos cuando ninguno tiene un cambio abierto",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "447821ae02d61d766e3464762862dd5894004183",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:49:02.414Z",
+      "doneAt": "2026-11-06T17:55:34.998Z",
+      "summary": "La fila de la épica en implementación recibe el recuento de su tarjeta: «1/5 cortes» con anillo en lugar de la fase, la línea del recuento sin tamaño ni carpeta, sin avisos de quién la lleva, y «Ningún corte en marcha» cuando toca",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "6913176bfd69a2af58e1f93a64bda5edf5c7d1bd",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:55:35.332Z",
+      "doneAt": "2026-11-06T18:01:44.757Z",
+      "summary": "docs/ui.md cuenta la cabecera de la tarjeta de la épica: su avance con anillo, el recuento y «Ningún corte en marcha» en implementación",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 7,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-06T18:13:10.953Z",
+  "lockedTests": {
+    "packages/ui/src/inbox/epic-lanes.test.ts": "sha256:c657bb9909830609d8e16438d23d7ef3bef4360e7248535beda675f22193542b",
+    "packages/ui/src/inbox/inbox.test.ts": "sha256:86f98ccc679b9d2aad4ebf0e0237ebf83926cb2a97180ec9aef66e3623a4e271",
+    "packages/ui/src/inbox/inbox-epic-head.test.ts": "sha256:44f06948729d7acf7cac83257d2e8bb4da5cdc4b253dd1ac55cc827193345019"
+  }
+}
