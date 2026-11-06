@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "id": "20261106-la-pagina-no-da-por-perdido-un-cambio-que-ya",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-la-pagina-no-da-por-perdido-un-cambio-que-ya",
+  "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e7f295fe8a6091e54ff269bada991ee05b0af1969d382d76227cfbc83f8d5d28",
+    "at": "2026-11-06T07:46:16.491Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bc15509083026cbbd90bf8aa91a5666fb6347443d2ea081e677bc58d3f2fac97",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fe9711bd196bea65dd5c0244d1cf7526e2fd9066d5bd805bcd4ff7dc4df4ea8b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b0836be0c1421039b687ea1aa84d3d37a74afece0c9f13ea8f93095533b33090",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:e11c0da5b3b5c841da7889b060e831c99e464f162c4e4ecc5ba75b44c2a53f3d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7602117943e6f5756af99c416b0cd8d04c1ee440",
+      "attempts": 1,
+      "startedAt": "2026-11-06T07:49:09.954Z",
+      "doneAt": "2026-11-06T07:49:52.391Z",
+      "summary": "loadChange da por no encontrado un cambio cuyo state.json desaparece entre encontrarlo y leerlo, y readRecord deja fuera el cambio cuya carpeta se va antes de fechar su fase (stat sin lanzar): GET /api/changes responde 200 sin él en lugar de 500.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "50c3a739622f97b243ea572600a4d865b22eeed6",
+      "attempts": 1,
+      "startedAt": "2026-11-06T07:49:52.711Z",
+      "doneAt": "2026-11-06T07:51:30.567Z",
+      "summary": "ChangesStore guarda lo último derivado en un linkedSignal (listed lo da y ready dice si se leyó alguna vez) y byId conserva la última vista del mismo id, con missing solo para un id nunca encontrado; la Bandeja muestra el aviso de error sobre la lista en lugar de sustituirla.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T08:47:47.064Z",
+  "lockedTests": {
+    "packages/ui/src/change/change-page.unloaded.test.ts": "sha256:5e7f4deac9a25c7c48e8f46b7b5a5cd25a9740fac390fd28469f844ee548486a",
+    "packages/ui/src/data/changes-store.test.ts": "sha256:92c796f7e5bdcd03890f26eb4b2513179cb7b3d5fed59dc68afe45bf03709204",
+    "packages/ui/src/inbox/inbox.test.ts": "sha256:64f0a528ff21cca1bc0fde43f8ec39469d8e3069d1e0c037afda4cb994195f13",
+    "packages/cli/test/server/vanishing.test.ts": "sha256:74eda3cc860961621b1ea54527e13d5d456ed1fd9c74b67c98bce522bda4068b"
+  }
+}

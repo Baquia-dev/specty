@@ -299,6 +299,33 @@ describe("Specty's plugin and OpenCode's sessions", () => {
     expect(JSON.stringify(sent[0])).toContain("FALLA todo");
     if (typeof stop === "function") stop();
   });
+
+  it("AC1: sends OpenCode 2.2's session back to work when its turn succeeds, once in a row", async () => {
+    const root = await failing();
+    const plugin = await loadPlugin(600);
+    const sent: unknown[] = [];
+    const tool = { hook: async () => {} };
+    const session = {
+      hook: async () => {},
+      prompt: async (request: unknown) => void sent.push(request),
+    };
+    // OpenCode 2.2 ends each turn with this event, and gives its session in `data`.
+    const ended = { type: "session.execution.succeeded", data: { sessionID: "s" } };
+    let drained = false;
+    const event = {
+      subscribe: async function* () {
+        for (let turn = 0; turn < 3; turn++) yield ended;
+        drained = true;
+      },
+    };
+    const stop = await plugin.setup({ location: { directory: root }, tool, session, event });
+    await vi.waitFor(() => expect(drained).toBe(true), { timeout: 40_000 });
+    // The turn it sent back may end; the next one is checked again.
+    expect(sent).toHaveLength(2);
+    expect(sent[0]).toMatchObject({ sessionID: "s" });
+    expect(JSON.stringify(sent[0])).toContain("FALLA todo");
+    if (typeof stop === "function") stop();
+  });
 });
 
 type SessionRequest = { readonly path: { readonly id: string } };

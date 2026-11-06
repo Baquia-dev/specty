@@ -23,12 +23,17 @@ import {
   writeFiles,
 } from "./support";
 
-/** OpenCode's CLI: `SPECTY_E2E_OPENCODE` or `opencode` on the PATH. Undefined: the tests skip. */
+/**
+ * OpenCode's CLI: `SPECTY_E2E_OPENCODE` or `opencode` on the PATH, from 2.2 on, whose tools,
+ * `opencode run` and `opencode serve` the tests drive. Undefined, or older: the tests skip.
+ */
 function findOpencode(): string | undefined {
   const configured = process.env.SPECTY_E2E_OPENCODE;
-  if (configured !== undefined && configured.length > 0) return configured;
-  const found = spawnSync("opencode", ["--version"], { encoding: "utf8" });
-  return found.status === 0 ? "opencode" : undefined;
+  const command = configured !== undefined && configured.length > 0 ? configured : "opencode";
+  const found = spawnSync(command, ["--version"], { encoding: "utf8" });
+  const version = /(\d+)\.(\d+)/.exec(found.stdout ?? "");
+  const [major, minor] = [Number(version?.[1] ?? 0), Number(version?.[2] ?? 0)];
+  return found.status === 0 && (major > 2 || (major === 2 && minor >= 2)) ? command : undefined;
 }
 
 const OPENCODE = findOpencode();
@@ -88,7 +93,7 @@ async function isolated(chat: FakeChat): Promise<NodeJS.ProcessEnv> {
     XDG_DATA_HOME: join(home, "data"),
     XDG_STATE_HOME: join(home, "state"),
     XDG_CACHE_HOME: CACHE,
-    // OpenCode 1.19 installs its plugin's packages with npm, whose cache would live in `HOME`.
+    // What installs with npm (OpenCode 1.19 did, its plugin's packages) would cache in `HOME`.
     npm_config_cache: join(CACHE, "npm"),
     OPENCODE_DISABLE_AUTOUPDATE: "1",
     LANG: "es_ES.UTF-8",
@@ -97,7 +102,8 @@ async function isolated(chat: FakeChat): Promise<NodeJS.ProcessEnv> {
 
 /**
  * `opencode run` in `root` against a fake that plays `script`, and to each subagent whose task
- * carries a mark of `subagents`, that mark's script.
+ * carries a mark of `subagents`, that mark's script. `--standalone` runs it with a server of its
+ * own, in the isolated environment, instead of the person's background service.
  */
 async function opencodeRun(
   root: string,
@@ -106,7 +112,7 @@ async function opencodeRun(
 ): Promise<FakeChat> {
   const chat = await fakeChat(script, subagents);
   const env = await isolated(chat);
-  const args = ["run", "--dir", root, "--model", "fake/scripted", "Sigue el guion."];
+  const args = ["run", "--standalone", "--model", "fake/scripted", "Sigue el guion."];
   await new Promise<void>((resolve) => {
     const run = execFile(OPENCODE ?? "opencode", args, { cwd: root, env, timeout: 180_000 }, () =>
       resolve(),
@@ -120,34 +126,59 @@ async function opencodeRun(
   return chat;
 }
 
+/** A request to OpenCode's API: a `POST` with `body`, a `GET` without it. */
+type Request = (path: string, body?: unknown) => Promise<unknown>;
+
 /**
  * `opencode serve` in `root`, as OpenCode's interface runs it, with one session to talk to over
- * HTTP: the end of a turn and a compaction need a server that outlives the turn.
+ * HTTP: the end of a turn and a compaction need a server that outlives the turn. Its API asks for
+ * the password the test gives it, and each message and compaction wait until the session is idle.
  */
 async function served(root: string, chat: FakeChat) {
   const port = await freePort();
+  const password = "specty-e2e";
+  const env = { ...(await isolated(chat)), OPENCODE_SERVER_PASSWORD: password };
   const server = spawn(
     OPENCODE ?? "opencode",
     ["serve", "--port", String(port), "--hostname", "127.0.0.1"],
-    { cwd: root, env: await isolated(chat), stdio: "ignore" },
+    { cwd: root, env, stdio: "ignore" },
   );
-  const base = `http://127.0.0.1:${port}`;
-  const request = async (path: string, body?: unknown): Promise<unknown> => {
+  const base = `http://127.0.0.1:${port}/api`;
+  const authorization = `Basic ${Buffer.from(`opencode:${password}`).toString("base64")}`;
+  const request: Request = async (path, body) => {
     const init = body === undefined ? {} : { method: "POST", body: JSON.stringify(body) };
-    const headers = { "content-type": "application/json" };
-    return (await fetch(`${base}${path}`, { ...init, headers })).json();
+    const headers = { "content-type": "application/json", authorization };
+    const response = await fetch(`${base}${path}`, { ...init, headers });
+    const text = await response.text();
+    if (!response.ok) throw new Error(`${path}: ${response.status} ${text}`);
+    return text === "" ? undefined : JSON.parse(text);
   };
-  await vi.waitFor(() => request("/session"), { timeout: 60_000, interval: 250 });
-  const session = await request("/session", {});
-  const id = typeof session === "object" && session !== null && "id" in session ? session.id : "";
-  const model = { providerID: "fake", modelID: "scripted" };
+  const id = await sessionIn(root, request).catch((error: unknown) => {
+    // A server that never answered would outlive the test.
+    server.kill();
+    throw error;
+  });
+  const idle = () => request(`/experimental/session/${id}/wait`, {});
   return {
-    say: (text: string) =>
-      request(`/session/${id}/message`, { parts: [{ type: "text", text }], model }),
-    compact: () => request(`/session/${id}/summarize`, model),
-    messages: async () => JSON.stringify(await request(`/session/${id}/message`)),
+    say: async (text: string) => {
+      await request(`/session/${id}/prompt`, { text });
+      await idle();
+    },
+    compact: async () => {
+      await request(`/session/${id}/compact`, {});
+      await idle();
+    },
     close: () => server.kill(),
   };
+}
+
+/** The id of a new session in `root`, once the server answers. */
+async function sessionIn(root: string, request: Request): Promise<string> {
+  await vi.waitFor(() => request("/session"), { timeout: 60_000, interval: 250 });
+  const created = await request("/session", { location: { directory: root } });
+  const data =
+    typeof created === "object" && created !== null && "data" in created ? created.data : undefined;
+  return typeof data === "object" && data !== null && "id" in data ? String(data.id) : "";
 }
 
 async function freePort(): Promise<number> {
@@ -158,18 +189,16 @@ async function freePort(): Promise<number> {
   return port;
 }
 
+// OpenCode 2.2's tools, with its fields.
 const write = (path: string, content: string): ToolCall => ({
   name: "write",
-  arguments: { filePath: path, content },
+  arguments: { path, content },
 });
-const bash = (command: string): ToolCall => ({
-  name: "bash",
-  arguments: { command, description: "Sigue el guion" },
-});
+const shell = (command: string): ToolCall => ({ name: "shell", arguments: { command } });
 /** A subagent launched with a task that carries `mark`, so the fake plays it its own script. */
 const delegate = (mark: string, task: string): ToolCall => ({
-  name: "task",
-  arguments: { description: task, prompt: `${mark}: ${task}`, subagent_type: "general" },
+  name: "subagent",
+  arguments: { description: task, prompt: `${mark}: ${task}`, agent: "general" },
 });
 
 const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
@@ -189,7 +218,7 @@ async function bindings(root: string): Promise<Readonly<Record<string, string>>>
 }
 
 describe.skipIf(OPENCODE === undefined)(
-  "OpenCode with a scripted model (needs OpenCode: SPECTY_E2E_OPENCODE or the PATH)",
+  "OpenCode with a scripted model (needs OpenCode 2.2 or later: SPECTY_E2E_OPENCODE or the PATH)",
   () => {
     it(
       "blocks code, commits and person commands without a change, naming the way on (AC1)",
@@ -200,8 +229,8 @@ describe.skipIf(OPENCODE === undefined)(
         const commits = git(root, "rev-list", "--count", "HEAD");
         const chat = await opencodeRun(root, [
           write(join(root, "src/nuevo.ts"), "export const nuevo = 1;\n"),
-          bash("git commit -am 'Sin spec'"),
-          bash("specty approve"),
+          shell("git commit -am 'Sin spec'"),
+          shell("specty approve"),
         ]);
         const results = chat.results();
         expect(results).toHaveLength(3);
@@ -228,7 +257,7 @@ describe.skipIf(OPENCODE === undefined)(
     it("warns what a command changed outside the task, in its result (AC3)", LONG, async () => {
       const root = await implementing();
       const chat = await opencodeRun(root, [
-        bash(`node -e "require('fs').writeFileSync('src/otro.ts', 'x')"`),
+        shell(`node -e "require('fs').writeFileSync('src/otro.ts', 'x')"`),
       ]);
       expect(chat.results()[0]).toContain("`src/otro.ts` está fuera del alcance de T1.");
     });
@@ -241,10 +270,10 @@ describe.skipIf(OPENCODE === undefined)(
         expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
         const folder = folderOf(root);
         const chat = await opencodeRun(root, [
-          bash(`node "${DIST}" enter ${CHANGE}`),
+          shell(`node "${DIST}" enter ${CHANGE}`),
           write(SPEC_PATH, "# Plan del saludo\n"),
-          { name: "read", arguments: { filePath: SPEC_PATH } },
-          bash("pwd"),
+          { name: "read", arguments: { path: SPEC_PATH } },
+          shell("pwd"),
         ]);
         const [entered, written, shown, ran] = chat.results();
         expect(entered).toContain(`Esta conversación trabaja ahora en \`${folder}\``);
@@ -256,7 +285,7 @@ describe.skipIf(OPENCODE === undefined)(
       },
     );
 
-    describe("AC3: a subagent that OpenCode launches with task (subagents)", () => {
+    describe("AC3: a subagent that OpenCode launches with subagent (subagents)", () => {
       it(
         "works in the folder its child session entered, and its session stays in its own",
         LONG,
@@ -268,15 +297,15 @@ describe.skipIf(OPENCODE === undefined)(
           const chat = await opencodeRun(
             root,
             [
-              bash(`node "${DIST}" enter ${CHANGE}`),
+              shell(`node "${DIST}" enter ${CHANGE}`),
               delegate("SUBAGENTE-1", "Entra en el otro cambio"),
-              bash("pwd"),
+              shell("pwd"),
             ],
             {
               "SUBAGENTE-1": [
-                bash(`node "${DIST}" enter ${OTHER}`),
+                shell(`node "${DIST}" enter ${OTHER}`),
                 write(OTHER_SPEC, "# Plan del otro\n"),
-                bash("pwd"),
+                shell("pwd"),
               ],
             },
           );
@@ -291,8 +320,8 @@ describe.skipIf(OPENCODE === undefined)(
           // Once the subagent is done, its session still works in the folder it had entered.
           expect(ran).toContain(first);
           expect(ran).not.toContain(second);
-          // The subagent's binding is its child session's: the id `task` answers with.
-          const child = /<task id="([\w-]+)"/.exec(delegated ?? "")?.[1] ?? "";
+          // The subagent's binding is its child session's: the id `subagent` answers with.
+          const child = /<subagent sessionID="([\w-]+)"/.exec(delegated ?? "")?.[1] ?? "";
           const bound = await bindings(root);
           expect(bound[child]).toBe(second);
           expect(Object.values(bound).toSorted()).toEqual([first, second].toSorted());
@@ -304,18 +333,17 @@ describe.skipIf(OPENCODE === undefined)(
       const root = await implementing();
       const chat = await fakeChat([]);
       const opencode = await served(root, chat);
+      // OpenCode 2 gets the card among the system parts of its next model call (ARCHITECTURE §10).
+      const card = () =>
+        (chat.requests().at(-1) ?? []).some(
+          ({ role, text }) => role === "system" && text.includes("TAREA T1"),
+        );
       try {
         await opencode.say("Sigue el guion.");
+        expect(card()).toBe(false);
         await opencode.compact();
-        await vi.waitFor(async () => expect(await opencode.messages()).toContain("TAREA T1"), {
-          timeout: 60_000,
-          interval: 250,
-        });
         await opencode.say("¿Y ahora?");
-        const after = chat.requests().at(-1) ?? [];
-        expect(after.some(({ role, text }) => role === "user" && text.includes("TAREA T1"))).toBe(
-          true,
-        );
+        expect(card()).toBe(true);
       } finally {
         opencode.close();
         await chat.close();

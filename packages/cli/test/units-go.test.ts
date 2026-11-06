@@ -87,19 +87,36 @@ describe("specty init in a go.work workspace", () => {
     ]);
   });
 
-  it("AC1: proposes nothing with fewer than two modules or with the root module", async () => {
+  it("AC1: proposes nothing with fewer than two modules", async () => {
     const single = await unitsFor({
       "go.work": "go 1.22\n\nuse (\n\t./core\n\t./docs\n)\n",
       "core/go.mod": goMod("example.com/demo/core"),
       "docs/README.md": "# docs\n",
     });
     expect(single).toBeUndefined();
-    const withRoot = await unitsFor({
-      "go.work": "go 1.22\n\nuse (\n\t.\n\t./core\n\t./api\n)\n",
-      "go.mod": goMod("example.com/demo"),
-      "core/go.mod": goMod("example.com/demo/core"),
-      "api/go.mod": goMod("example.com/demo/api", ["example.com/demo/core"]),
-    });
-    expect(withRoot).toBeUndefined();
+  });
+});
+
+describe("specty init in a go.work workspace that uses the root module", () => {
+  it("AC1: proposes the root's unit with go test ./... and the root outside the modules' folders, also in the modules that require it", async () => {
+    const units = unitsOf(
+      await unitsFor({
+        "go.work": "go 1.22\n\nuse (\n\t.\n\t./core\n\t./api\n)\n",
+        "go.mod": goMod("example.com/demo", ["example.com/demo/core"]),
+        "main.go": "package main\n",
+        "internal/x/x.go": "package x\n",
+        "README.md": "# demo\n",
+        ".github/workflows/ci.yml": "on: push\n",
+        "core/go.mod": goMod("example.com/demo/core"),
+        "api/go.mod": goMod("example.com/demo/api", ["example.com/demo"]),
+      }),
+    );
+    const own = ["README.md", "go.mod", "go.work", "internal/**", "main.go"];
+    expect(units).toEqual([
+      { name: "static", command: "go vet ./...", paths: ["**"] },
+      { name: "core", command: "go test ./core/...", paths: ["core/**", "go.work"] },
+      { name: "example.com/demo", command: "go test ./...", paths: [...own, "core/**"] },
+      { name: "api", command: "go test ./api/...", paths: ["api/**", ...own, "core/**"] },
+    ]);
   });
 });
