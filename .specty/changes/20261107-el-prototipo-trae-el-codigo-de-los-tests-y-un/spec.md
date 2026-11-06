@@ -58,7 +58,7 @@ En el prototipo de la UI (`FixtureData`), «Ver código» dice hoy que la fuente
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/sample-test-code.test.ts
   - type: feat
-- [ ] T2: Los boletines esperan un desbloqueo y el login trae uno aprobado
+- [x] T2: Los boletines esperan un desbloqueo y el login trae uno aprobado
   - files: packages/ui/src/data/sample-test-code.ts, packages/ui/src/data/sample-progress.ts, packages/ui/src/data/sample-unlocks.test.ts, packages/ui/src/data/fixtures.test.ts, packages/ui/src/data/sample-specs.test.ts, packages/ui/src/progress/progress-tab.test.ts, packages/ui/src/change/change-page.test.ts
   - ac: AC1, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data --include src/progress --include src/change/change-page.test.ts && pnpm typecheck

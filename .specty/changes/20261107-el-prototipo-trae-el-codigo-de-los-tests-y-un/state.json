@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6eaf78b88b9a30e7169d2435fec485207f82647e",
+      "attempts": 1,
       "startedAt": "2026-11-06T17:31:06.964Z",
       "doneAt": "2026-11-06T17:36:11.140Z",
-      "summary": "sample-test-code.ts guarda el código de los dos tests enviados de «Avisos de nuevas calificaciones» y sampleTestCode lo da por cambio y ruta, o lo rechaza como el servidor; FixtureData.testCode lo usa, así «Ver código» funciona en el prototipo."
+      "summary": "sample-test-code.ts guarda el código de los dos tests enviados de «Avisos de nuevas calificaciones» y sampleTestCode lo da por cambio y ruta, o lo rechaza como el servidor; FixtureData.testCode lo usa, así «Ver código» funciona en el prototipo.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a9987af6a679db9fb775c7a1be8c1da501079d02",
+      "startedAt": "2026-11-06T17:36:11.515Z",
+      "doneAt": "2026-11-06T17:42:05.477Z",
+      "summary": "Los boletines esperan S2, el desbloqueo de su test aprobado con parche y evidencia, y el login trae S1 ya aprobado para T1. decideScopeIn anota id y, si aprueba un desbloqueo, unlock, task, patch y evidence, como specty."
     }
   },
   "pending": {
