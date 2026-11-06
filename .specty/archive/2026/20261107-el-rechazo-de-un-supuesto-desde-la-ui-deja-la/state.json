@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261107-el-rechazo-de-un-supuesto-desde-la-ui-deja-la",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261107-el-rechazo-de-un-supuesto-desde-la-ui-deja-la",
+  "baseCommit": "fc68f756b2f6ed7805ea8310f3093b51ec428cc9",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7331a8bd0b7118ee8d91e060e68a10ee7fa8b98f3b0a303b5347784b087d7339",
+    "at": "2026-11-06T17:48:06.231Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "8c1da1d69c32f38a34cf0cc9bb1adf96df2e3bea",
+      "attempts": 1,
+      "startedAt": "2026-11-06T17:49:01.368Z",
+      "doneAt": "2026-11-06T17:55:25.383Z",
+      "summary": "assumptionDecidedLine con rejected dice, en los dos idiomas, que la revisión sigue con la persona, que puede aprobarla (el rechazo se la devuelve al agente) o pedir los cambios, como changeWaitsFor; el caso que ya había en review-texts.test.ts deja de comprobar el texto viejo",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/core/test/cards/review-texts.test.ts": "sha256:a31db7b54c5a50502b9b0d503927b5db8b12bb3d84171936dae93519aaeae987"
+  }
+}
