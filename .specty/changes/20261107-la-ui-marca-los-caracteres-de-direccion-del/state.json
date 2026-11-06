@@ -6,6 +6,13 @@
   "branch": "specty/20261107-la-ui-marca-los-caracteres-de-direccion-del",
   "baseCommit": "7364903203145fdcd85c7f2a4455e068e59045f7",
   "revision": 3,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:7db43ada1ae0f589dbae0116547fe4a65976804bf095876b7a89149ee21a0308",
+    "at": "2026-11-06T18:48:12.429Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -44,12 +51,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 3,
-    "hash": "sha256:7db43ada1ae0f589dbae0116547fe4a65976804bf095876b7a89149ee21a0308",
-    "at": "2026-11-06T18:48:12.429Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T18:57:22.428Z"
 }
