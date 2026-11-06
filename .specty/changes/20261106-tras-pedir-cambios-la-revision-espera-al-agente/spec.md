@@ -73,7 +73,7 @@ Cuando la persona pide cambios en la revisión, o rechaza supuestos al aprobar, 
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/changes-requested-state.test.ts test/comments.test.ts test/server-actions.test.ts test/flow.test.ts && pnpm lint
   - type: fix
-- [ ] T3: `wait`, `status` y la marca de la UI leen la regla común
+- [x] T3: `wait`, `status` y la marca de la UI leen la regla común
   - files: packages/cli/src/commands/wait.ts, packages/cli/src/commands/status.ts, packages/cli/src/server/unattended.ts, packages/cli/test/changes-requested-turn.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/changes-requested-turn.test.ts test/server-unattended.test.ts test/wait.test.ts test/wait-guard.test.ts test/agent-stop-wait.test.ts test/status-json.test.ts && pnpm typecheck && pnpm lint && pnpm knip
