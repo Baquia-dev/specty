@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261106-la-epica-sale-una-sola-vez-en-la-seccion-mas",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-la-epica-sale-una-sola-vez-en-la-seccion-mas",
+  "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8407c97b194912fb9a98a6f7d81d5f4acc61838ec41acf349ad7b062611baf98",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f58affc56e21d0196a74d62be825c4f30e9aa861689599a298b96f43fc7d971c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:396ffc1dc598702511468988f0cfa622f9c43342b816dbcaaf330b1912fe055b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:957b95eaae37fe8e7dd2302224d2a4c839f6365259a0bf38f3a80c1365ddd473",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:7ba1231ba27645191d68d56f73d75a7e804be0ec5e1f4efaadb1996e83253baa",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 10,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:b8cc0f1aacd7fabe667cb0da305a506f46f0b59b5b3e22cde755c03b6aacc4c9",
+    "at": "2026-11-06T15:00:34.994Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
