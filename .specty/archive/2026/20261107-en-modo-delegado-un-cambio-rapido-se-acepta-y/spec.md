@@ -61,3 +61,23 @@ Cuando el agente acepta un cambio `quick` en modo delegado, hoy la verificación
 ## Riesgos
 
 - R1: Mantener el turno durante todo el `accept` rápido bloquea a las demás sesiones más tiempo — solo se añade el archivado y el aterrizaje (segundos), porque la verificación ya tenía el turno, y solo en modo delegado, donde nadie espera una respuesta.
+
+## Cierre
+
+### Resumen
+
+En modo delegado, el `accept` de un cambio `quick` corre ahora en el turno de aterrizaje desde antes de incorporar main hasta aterrizar (`closingTurn` en `commands/accept.ts`). La verificación completa corre una vez, y ninguna otra sesión aterriza entre ella y el aterrizaje. Con la persona, en la terminal o en la UI, el turno se toma como antes, solo para verificar y aterrizar. ARCHITECTURE §9 y formats.md §1 lo cuentan.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- El turno vive en `closingTurn`, aparte del resto de `accept`, para que el corte C4 solo amplíe su condición al cambio normal con el cierre enviado.
+- `accept.ts` queda en unas 297 líneas de código, justo bajo el aviso de 300. C4 lo pasará, así que, como dice el diseño de la épica, tendrá que llevar el aceptar-que-cierra a `flow/`.
+- El test de AC1 simula a la otra sesión con un proceso real en la cola del turno. Ese proceso aterriza en main en cuanto nadie tiene el turno, así que, con el código anterior, el test fallaba porque la verificación corría dos veces.
+
+### Pendientes
+
+Ninguno.

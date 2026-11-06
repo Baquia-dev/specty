@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-en-modo-delegado-un-cambio-rapido-se-acepta-y",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-en-modo-delegado-un-cambio-rapido-se-acepta-y",
   "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:a9669b464bd29cf287b35ceb484095a5772ad24a8522568c296b9f56a94c322e",
@@ -59,12 +59,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "25a5c8698d1e45a021d7142052f87c97966521d4",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:58:55.584Z",
       "doneAt": "2026-11-06T18:59:13.743Z",
-      "summary": "ARCHITECTURE §9 y formats.md §1 cuentan que, en modo delegado, el accept de un cambio rápido tiene el turno desde antes de incorporar main hasta aterrizar"
+      "summary": "ARCHITECTURE §9 y formats.md §1 cuentan que, en modo delegado, el accept de un cambio rápido tiene el turno desde antes de incorporar main hasta aterrizar",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,6 +77,7 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-06T19:04:35.317Z",
   "lockedTests": {
     "packages/cli/test/accept-quick-turn.test.ts": "sha256:ac74a356038d16f9f529cdafb0affb930b94d1b1e241513794dcf9875cf2c938"
   }
