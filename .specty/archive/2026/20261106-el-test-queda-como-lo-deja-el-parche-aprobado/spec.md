@@ -106,3 +106,28 @@ Desde el corte C2, un desbloqueo de un test aprobado lleva el parche exacto que 
 - R1: Un agente que ya aplicó a mano parte de un parche y pide otro desbloqueo choca con la comprobación de C2 (el test ya no está como se bloqueó) — la tarjeta que rechaza la tarea le dice que vuelva a dejar el test como se bloqueó, y dónde está esa versión (`git show HEAD:<ruta>`).
 - R2: Un test bloqueado que no se confirmó (por ejemplo, cambiado tras enviarlo y antes de aprobarlo) no está en el último commit, y `task done` no puede comprobarlo — la tarjeta lo dice y pide parar y explicárselo al usuario; con el flujo normal no pasa, porque `specty propose` confirma los tests al enviarlos.
 - R3: `git apply --cached` escribe en la base de objetos de git los blobs de lo que deja el parche — son objetos sueltos que nadie referencia, y `git gc` los limpia como los de un `git add` que no se confirma.
+
+## Cierre
+
+### Resumen
+
+`specty task done` ya no completa una tarea si un test desbloqueado no queda como lo deja su parche aprobado. `flow/unlock-check.ts` busca, de cada test que sigue en `lockedTests`, el último desbloqueo aprobado para la tarea desde su último `task.started`. Comprueba que la versión del último commit tiene el hash bloqueado, aplica el parche con `git apply --cached --recount` en un índice temporal (`GIT_INDEX_FILE`) y compara el resultado con el archivo en disco. Si no coincide, o el parche borra el test y sigue, o lo deja y falta, la tarjeta de `cards/unlock-check.ts` muestra la diferencia (`git diff --no-index`, 40 líneas por test) y da el comando para pedir otro desbloqueo. Si falta la versión bloqueada, pide parar. Esto ocurre tras el alcance y antes de `specty check` y la verificación. Al aprobar un desbloqueo, `approve --scope` repite la comprobación del parche de C2 (`checkUnlockPatch`): si ya no vale, Specty rechaza la solicitud (actor `specty`) con el motivo. Además, `scope add` acepta otra solicitud para un test ya desbloqueado en la tarea, y su parche sustituye al anterior. Los textos están en español y en inglés. formats.md, ARCHITECTURE.md §8, el ADR 0014 y dominio.md («Desbloqueo») lo explican.
+
+### Desviaciones
+
+- Para cada test cuenta el último desbloqueo aprobado, y no todos aplicados uno tras otro como decía el A8 de la épica (A3): C2 comprueba cada parche sobre la versión bloqueada, así que aplicarlos en cadena fallaría si tocan las mismas líneas.
+- Además de `unlockProblem`, `cards/unlock.ts` exporta el tipo `UnlockPatchRefusal`. `checkUnlockPatch` lo devuelve, y la tarjeta y el motivo del rechazo al aprobar lo reciben. El diseño no lo preveía.
+- Specty ya rechazaba un `retro --into` cuyo preparado cambió (`rejectStaleRetro`). Ese camino pasa a ser `staleRequest` y `rejectStale`, que también sirven para el desbloqueo, sin que `decideScope` gane complejidad.
+- El código se probó en una copia temporal de la carpeta del cambio, fuera del repositorio, antes de enviar los tests, porque un test aprobado mal escrito solo lo desbloquea la persona. No quedó nada de esa copia. En el caso del parche que borra el test, este pone otro test del criterio en un archivo propio para que `criteria-tested` no falle.
+- El agente aprobó la spec y los tests en modo delegado, y el clasificador de permisos no lo rechazó. La aceptación la hizo la persona.
+
+### Decisiones
+
+- La versión bloqueada de un test es la del último commit (`git show HEAD:<ruta>`), y vale solo si su hash es el de `lockedTests` (A1). Si no lo es, `task done` no completa la tarea y pide parar y explicárselo al usuario, en lugar de no compararlo.
+- De cada test cuenta el último desbloqueo aprobado para la tarea, que sustituye a los anteriores, y uno sin parche (de un CLI anterior) deja ese test sin comparar (A3, A4). Un test que el desbloqueo nombra y su parche no toca tiene que quedar como se bloqueó.
+- Un test ya desbloqueado para la tarea se puede volver a pedir, con parche y evidencia (A6). Como C2 comprueba el parche sobre la versión bloqueada, el agente lo deja antes como se bloqueó, y la tarjeta que rechaza la tarea se lo dice.
+- El parche se aplica con `--cached` en un índice temporal, en una carpeta temporal del sistema que se borra al terminar (A2): no se tocan ni la carpeta del cambio ni su índice.
+
+### Pendientes
+
+- Ninguno.

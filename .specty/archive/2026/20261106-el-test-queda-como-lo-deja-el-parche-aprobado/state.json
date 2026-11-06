@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-el-test-queda-como-lo-deja-el-parche-aprobado",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-el-test-queda-como-lo-deja-el-parche-aprobado",
   "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:726ad38556c7822125fff64c44d24e84cefecad5d510a7cbd078751824fdc6d2",
@@ -91,12 +91,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c9bc76a7ec467830f897a8c738aaa0558701738f",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:03:58.618Z",
       "doneAt": "2026-11-06T15:04:21.424Z",
-      "summary": "formats.md, ARCHITECTURE.md §8, el ADR 0014 y dominio.md cuentan la comprobación de task done, el segundo desbloqueo y el rechazo de Specty al aprobar un parche que ya no vale."
+      "summary": "formats.md, ARCHITECTURE.md §8, el ADR 0014 y dominio.md cuentan la comprobación de task done, el segundo desbloqueo y el rechazo de Specty al aprobar un parche que ya no vale.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -109,6 +109,7 @@
     "T": 4,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-06T15:34:32.373Z",
   "lockedTests": {
     "packages/cli/test/unlock-again.test.ts": "sha256:2dee9b46298c1d320441f12f59fda455ce7c53c162d00e5723fafe71c944a72a",
     "packages/cli/test/unlock-done.test.ts": "sha256:0406c4f3210dd5e78a9b0b8feae0dda0cc71332cab6342a6a1aa94d84dfc2534",
