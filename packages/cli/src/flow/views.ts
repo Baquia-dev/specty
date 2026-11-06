@@ -3,6 +3,7 @@ import { join } from "node:path";
 import {
   type ChangeState,
   type ChangeView,
+  changeWaitsFor,
   dirname,
   entriesForPaths,
   isIntegrating,
@@ -110,7 +111,9 @@ async function phaseFacts(
   const { state } = change;
   const { audit } = read;
   return {
-    requested: state.phase === "review" ? await requested(change, audit) : [],
+    ...(state.phase === "review" && changeWaitsFor(state) === "agent"
+      ? { requested: await requested(change) }
+      : {}),
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
     ...(state.phase === "draft" ? await draftFacts(session, spec, audit) : {}),
     ...(state.phase === "acceptance" ? await acceptanceFacts(session, change, spec, read) : {}),
@@ -126,17 +129,10 @@ function integrationView(state: ChangeState): Pick<ChangeView, "integration"> {
 }
 
 /**
- * The unresolved comments the agent must answer: only once the person asked for changes after
- * the last proposal; until then, the review is still theirs.
+ * The unresolved comments the agent must answer, once the person sent the review back
+ * (`changeWaitsFor`, by `changesRequestedAt`); until then, the review is still theirs.
  */
-async function requested(
-  change: StoredChange,
-  audit: Audit,
-): Promise<NonNullable<ChangeView["requested"]>> {
-  const last = audit.findLast(
-    (entry) => entry.event === "spec.proposed" || entry.event === "review.changes_requested",
-  );
-  if (last?.event !== "review.changes_requested") return [];
+async function requested(change: StoredChange): Promise<NonNullable<ChangeView["requested"]>> {
   return (await readComments(change.files))
     .filter((comment) => comment.resolvedInRevision === undefined)
     .map(({ id, anchor, body }) => ({ id, anchor, body }));

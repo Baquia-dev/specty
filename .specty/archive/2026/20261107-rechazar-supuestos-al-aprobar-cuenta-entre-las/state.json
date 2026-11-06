@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261107-rechazar-supuestos-al-aprobar-cuenta-entre-las",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261107-rechazar-supuestos-al-aprobar-cuenta-entre-las",
+  "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6c2facd7d70c77ddb156ca969b82e0522ae31acf84b9878abb33aaac4fd81001",
+    "at": "2026-11-06T16:33:16.765Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "300d3ec3aff170d0dfe8c1eb9ac24ad501a8e375",
+      "attempts": 1,
+      "startedAt": "2026-11-06T16:37:55.036Z",
+      "doneAt": "2026-11-06T16:44:02.841Z",
+      "summary": "unattended.ts cuenta como decisión de la persona el assumption.decided con rejected que approve escribe junto a changesRequestedAt; un supuesto decidido suelto desde la UI sigue sin contar; ARCHITECTURE §15 y formats §4 lo cuentan",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/cli/test/server-unattended.test.ts": "sha256:e77ddb5237f9d7c75e901c0a401497139e02714c69ec0a517d0434951f5ef0d6"
+  }
+}

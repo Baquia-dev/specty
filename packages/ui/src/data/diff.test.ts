@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { type DiffLine, parseDiff, splitRows } from "./diff";
+import { contextFile, type DiffLine, parseDiff, splitRows } from "./diff";
 import { FixtureData, sampleRecords } from "./fixtures";
 import { ActionError, type ChangeRecord, SpectyData } from "./records";
 import { deriveViews } from "./views";
@@ -210,6 +210,26 @@ describe("splitRows", () => {
         },
       ).map((row) => row.right),
     ).toEqual([undefined, undefined]);
+  });
+});
+
+describe("contextFile", () => {
+  it("puts the lines, as they come, in one section of context lines numbered from the first", () => {
+    const file = contextFile("src/a.ts", ["const a = 1;", ""], 40);
+    expect(file).toMatchObject({
+      path: "src/a.ts",
+      status: "modified",
+      additions: 0,
+      deletions: 0,
+    });
+    expect(file.hunks).toHaveLength(1);
+    expect(file.hunks[0]).toMatchObject({ oldStart: 40, oldLines: 2, newStart: 40, newLines: 2 });
+    expect(file.hunks[0]?.lines).toEqual([
+      { kind: "context", text: "const a = 1;", oldNumber: 40, newNumber: 40 },
+      { kind: "context", text: "", oldNumber: 41, newNumber: 41 },
+    ]);
+    expect(contextFile("b.ts", ["x"]).hunks[0]?.lines[0]?.newNumber).toBe(1);
+    expect(contextFile("c.ts", []).hunks[0]?.lines).toEqual([]);
   });
 });
 

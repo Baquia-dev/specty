@@ -90,11 +90,8 @@ const TICK_MS = 30_000;
             <div role="list" [class]="list + ' mt-2'">
               @for (block of section.blocks; track block.key) {
                 @if (block.kind === 'epic') {
-                  <sp-inbox-epic [epicId]="block.epic.id">
+                  <sp-inbox-epic [epic]="block.epic" [slices]="block.slices" [selected]="selected()" (picked)="selectedId.set($event)">
                     <sp-inbox-row data-epic-head [change]="block.epic" [current]="isSelected(block.epic)" [now]="now()" (picked)="selectedId.set(block.epic.id)" />
-                    @for (change of block.slices; track change.id) {
-                      <sp-inbox-row [change]="change" [inEpic]="true" [current]="isSelected(change)" [now]="now()" (picked)="selectedId.set(change.id)" />
-                    }
                   </sp-inbox-epic>
                 } @else {
                   <sp-inbox-row [change]="block.change" [current]="isSelected(block.change)" [now]="now()" (picked)="selectedId.set(block.change.id)" />
@@ -136,6 +133,7 @@ export class Inbox {
   protected readonly empty = LucideInbox;
   protected readonly now = signal(Date.now());
   private readonly rows = viewChildren(InboxRow);
+  private readonly epics = viewChildren(InboxEpic);
   private readonly toolbar = viewChild(InboxToolbar, { read: ElementRef });
   private readonly injector = inject(Injector);
 
@@ -153,18 +151,30 @@ export class Inbox {
       this.store.pages.counts(),
     ),
   );
-  /** The rows j/k walk through, in the order they are shown: each epic, then its slices. */
-  private readonly order = computed(() => this.sections().flatMap((section) => section.order));
+  /**
+   * The changes j/k walk through, in the order they are shown: each row and, in an epic's card,
+   * its row and then the lines of its slices that have a change.
+   */
+  private readonly order = computed(() => {
+    const cards = this.epics();
+    return this.sections().flatMap((section) =>
+      section.blocks.flatMap((block): readonly string[] => {
+        if (block.kind === "row") return [block.change.id];
+        const card = cards.find((item) => item.epic().id === block.epic.id);
+        return [block.epic.id, ...(card?.stops() ?? [])];
+      }),
+    );
+  });
   /** How many changes the filters let through, loaded or not, and how many there are. */
   protected readonly shown = computed(
     () => visibleChanges(this.store.open(), this.state.filters()).length + this.store.pages.total(),
   );
   protected readonly total = computed(() => this.store.open().length + this.store.pages.finished());
-  /** The row picked with j/k: the first one until the person moves. */
+  /** The row or line picked with j/k: the first one until the person moves. */
   protected readonly selectedId = signal<string | undefined>(undefined);
-  private readonly selected = computed(() => {
+  protected readonly selected = computed(() => {
     const id = this.selectedId();
-    return this.order().some((change) => change.id === id) ? id : this.order()[0]?.id;
+    return id !== undefined && this.order().includes(id) ? id : this.order()[0];
   });
 
   /** "5 decisiones · 2 en curso · 2 recientes". */
@@ -189,7 +199,7 @@ export class Inbox {
     const move = (step: number) => (): void => {
       const order = this.order();
       if (order.length === 0) return;
-      const at = order.findIndex((change) => change.id === this.selected());
+      const at = order.indexOf(this.selected() ?? "");
       // Past the last row loaded, the next page of finished changes, and then on to it.
       if (step > 0 && at === order.length - 1) {
         void pastTheEnd(this.store.pages, move(step));
@@ -197,8 +207,8 @@ export class Inbox {
       }
       const next = order[Math.min(Math.max(at + step, 0), order.length - 1)];
       if (next === undefined) return;
-      this.selectedId.set(next.id);
-      this.focus(next.id);
+      this.selectedId.set(next);
+      this.focus(next);
     };
     shortcuts.register({
       keys: "j",
@@ -238,12 +248,17 @@ export class Inbox {
     void this.store.pages.reload();
   }
 
-  /** Focuses the row of `id`, or once it is drawn: a row of a page that just arrived. */
+  /**
+   * Focuses the row or the line of `id`, or once it is drawn: a row of a page that just arrived,
+   * or the line of a slice whose change the source just gave.
+   */
   private focus(id: string): void {
-    const row = () => this.rows().find((item) => item.change().id === id);
-    const now = row();
-    if (now !== undefined) now.focus();
-    else afterNextRender(() => row()?.focus(), { injector: this.injector });
+    const reach = (): boolean => {
+      const row = this.rows().find((item) => item.change().id === id);
+      row?.focus();
+      return row !== undefined || this.epics().some((card) => card.focus(id));
+    };
+    if (!reach()) afterNextRender(() => void reach(), { injector: this.injector });
   }
 
   protected message(error: unknown): string {

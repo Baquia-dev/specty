@@ -176,6 +176,23 @@ describe("FixtureData actions", () => {
     });
   });
 
+  it("AC5: asking for changes notes it in the state, as the server does, and approving clears it", async () => {
+    const { fixtures, store, settle } = setup();
+    await settle();
+    const stateOf = async () =>
+      (await fixtures.changes()).find((record) => record.state.id === REVIEW)?.state;
+    expect((await stateOf())?.changesRequestedAt).toBeUndefined();
+    await fixtures.requestChanges(REVIEW);
+    await settle();
+    expect((await stateOf())?.changesRequestedAt).toEqual(expect.any(String));
+    expect(store.listed().find((change) => change.id === REVIEW)?.decision).toBeUndefined();
+    await fixtures.approve(REVIEW, 2);
+    await settle();
+    const approved = await stateOf();
+    expect(approved?.phase).toBe("implementing");
+    expect(approved).not.toHaveProperty("changesRequestedAt");
+  });
+
   it("AC3: brings a change in testing with its red tests, and approving them locks them", async () => {
     const { fixtures, store, settle } = setup();
     await settle();

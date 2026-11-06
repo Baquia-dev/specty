@@ -29,6 +29,7 @@ export {
   type ScopeRequestDecided,
   scopeDecidedLine,
   scopeDecisionQuestion,
+  scopeRequestNote,
   specApprovedLine,
   specChangedCard,
 } from "./approve";

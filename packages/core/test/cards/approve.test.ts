@@ -19,6 +19,7 @@ import {
   renderText,
   scopeDecidedLine,
   scopeDecisionQuestion,
+  scopeRequestNote,
   specApprovedLine,
   specChangedCard,
 } from "../../src";
@@ -127,5 +128,127 @@ describe("the decision on a scope request", () => {
       "S1 aprobada: src/a.ts, src/b.ts entra en el alcance de T2.",
     );
     expect(scopeDecidedLine("reject", request, "en")).toBe("S1 rejected.");
+  });
+});
+
+describe("the note before deciding on a scope request", () => {
+  const asked = {
+    id: "S1",
+    task: "T1",
+    paths: ["src/app.test.ts"],
+    reason: "El test no comprueba el saludo",
+  };
+  /** The change an unlock asks to make to the test, as `git diff` writes it. */
+  const PATCH = [
+    "diff --git a/src/app.test.ts b/src/app.test.ts",
+    "--- a/src/app.test.ts",
+    "+++ b/src/app.test.ts",
+    "@@ -1 +1 @@",
+    "-it('AC1: saluda a Ana', () => {});",
+    "+it('AC1: saluda a Ana', () => {}); // Hola, Ana",
+    "",
+  ].join("\n");
+  const unlock = {
+    ...asked,
+    patch: PATCH,
+    evidence: [
+      {
+        path: "src/app.ts",
+        from: 9,
+        to: 10,
+        text: "export const greet = (name) =>\n  'Hola, ' + name;",
+      },
+      { path: "SPEC.md", from: 3, to: 3, text: "- AC1: saluda con «Hola, Ana»" },
+    ],
+  };
+
+  it("AC3: is the paths and the reason of a request without a patch or evidence", () => {
+    expect(scopeRequestNote({ ...asked, paths: ["src/a.ts", "src/b.ts"] }, ES)).toBe(
+      "src/a.ts\nsrc/b.ts\n— El test no comprueba el saludo",
+    );
+  });
+
+  it("AC1: shows the patch and each piece of evidence with its path and its numbered lines", () => {
+    expect(scopeRequestNote(unlock, ES)).toBe(
+      [
+        "src/app.test.ts",
+        "— El test no comprueba el saludo",
+        "",
+        "El cambio al test:",
+        ...PATCH.split("\n").slice(0, -1),
+        "",
+        "El código que lo sustenta:",
+        "src/app.ts:9-10",
+        " 9 │ export const greet = (name) =>",
+        "10 │   'Hola, ' + name;",
+        "SPEC.md:3-3",
+        "3 │ - AC1: saluda con «Hola, Ana»",
+      ].join("\n"),
+    );
+    const english = scopeRequestNote(unlock, EN);
+    expect(english).toContain("\n\nThe change to the test:\ndiff --git a/src/app.test.ts");
+    expect(english).toContain("\n\nThe code that supports it:\nsrc/app.ts:9-10\n 9 │ export");
+  });
+
+  it("AC2: shows the first 40 lines of the patch and 10 of each piece, and says how many it leaves out", () => {
+    const patch = [
+      "diff --git a/src/app.test.ts b/src/app.test.ts",
+      "--- a/src/app.test.ts",
+      "+++ b/src/app.test.ts",
+      "@@ -0,0 +1,42 @@",
+      ...Array.from({ length: 42 }, (_, index) => `+línea ${index + 1}`),
+    ];
+    const code = Array.from({ length: 13 }, (_, index) => `código ${95 + index}`);
+    const long = {
+      ...asked,
+      patch: `${patch.join("\n")}\n`,
+      evidence: [{ path: "src/app.ts", from: 95, to: 107, text: code.join("\n") }],
+    };
+    expect(scopeRequestNote(long, ES)).toBe(
+      [
+        "src/app.test.ts",
+        "— El test no comprueba el saludo",
+        "",
+        "El cambio al test:",
+        ...patch.slice(0, 40),
+        "… y 6 líneas más",
+        "",
+        "El código que lo sustenta:",
+        "src/app.ts:95-107",
+        ...code.slice(0, 10).map((line, index) => `${String(95 + index).padStart(3)} │ ${line}`),
+        "… y 3 líneas más",
+        "",
+        "La solicitud entera se ve en la UI: `specty ui`.",
+      ].join("\n"),
+    );
+    const english = scopeRequestNote(long, EN);
+    expect(english).toContain("\n… and 6 more lines\n");
+    expect(english).toContain("\n… and 3 more lines\n");
+    expect(english).toContain("\n\nThe whole request shows in the UI: `specty ui`.");
+  });
+
+  it("AC4: shows control and direction characters by their code instead of letting them act", () => {
+    const tricky = {
+      ...asked,
+      reason: "Motivo\u001b[2K",
+      patch:
+        "diff --git a/src/app.test.ts b/src/app.test.ts\r\n+oculto\rvisible\r\n+al revés \u202e)(\r\n",
+      evidence: [{ path: "src/app.ts", from: 1, to: 1, text: "uno\u0007\tdos\u009b" }],
+    };
+    expect(scopeRequestNote(tricky, ES)).toBe(
+      [
+        "src/app.test.ts",
+        "— Motivo\\u001b[2K",
+        "",
+        "El cambio al test:",
+        "diff --git a/src/app.test.ts b/src/app.test.ts",
+        "+oculto\\u000dvisible",
+        "+al revés \\u202e)(",
+        "",
+        "El código que lo sustenta:",
+        "src/app.ts:1-1",
+        "1 │ uno\\u0007\tdos\\u009b",
+      ].join("\n"),
+    );
   });
 });

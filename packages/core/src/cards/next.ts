@@ -185,10 +185,7 @@ function reviewCard(change: ChangeView, ctx: CardContext): Output {
     "review",
     t(`revisión ${change.revision}`, `revision ${change.revision}`),
   );
-  const requested = change.requested ?? [];
-  if (change.rejected.length > 0 || requested.length > 0) {
-    return changesRequestedCard(change, header, ctx);
-  }
+  if (change.requested !== undefined) return changesRequestedCard(change, header, ctx);
   if (ctx.delegated === true) {
     return {
       status: "ok",
@@ -221,7 +218,10 @@ function reviewCard(change: ChangeView, ctx: CardContext): Output {
   };
 }
 
-/** The person rejected assumptions or asked for changes: the agent fixes the spec. */
+/**
+ * The person sent the review back (`changesRequestedAt`): the agent fixes the spec, with the
+ * rejected assumptions and the unresolved comments, or, with none left, just the revision.
+ */
 function changesRequestedCard(change: ChangeView, header: string, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   const rejected = change.rejected.map(
@@ -231,13 +231,18 @@ function changesRequestedCard(change: ChangeView, header: string, ctx: CardConte
   const comments = (change.requested ?? []).map(
     (comment) => `${comment.id} · ${anchorOf(comment, ctx)}: ${comment.body}`,
   );
+  const blocks = [
+    ...section(t("SUPUESTOS RECHAZADOS", "REJECTED ASSUMPTIONS"), rejected),
+    ...section(t("CAMBIOS PEDIDOS", "CHANGES REQUESTED"), comments),
+  ];
+  const sentBack = t(
+    `El usuario te devolvió la revisión ${change.revision}.`,
+    `The user sent revision ${change.revision} back to you.`,
+  );
   return {
     status: "ok",
     header,
-    blocks: [
-      ...section(t("SUPUESTOS RECHAZADOS", "REJECTED ASSUMPTIONS"), rejected),
-      ...section(t("CAMBIOS PEDIDOS", "CHANGES REQUESTED"), comments),
-    ],
+    blocks: blocks.length > 0 ? blocks : section(undefined, [sentBack]),
     next: t(
       `corrige ${change.specPath} y ejecuta \`${ctx.command} propose\`.`,
       `fix ${change.specPath} and run \`${ctx.command} propose\`.`,

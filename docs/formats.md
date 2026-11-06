@@ -347,7 +347,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `change.created` | carril, rama, origen (`follows`; `epic` y `slice` en el corte de una épica), con `new --resolves` las entradas de la memoria que toma (`resolves`), con `new --distinct-from` los cambios abiertos que el usuario dijo que no duplica (`distinctFrom`) y, con `new --request`, la petición literal del usuario (`request`), tal como la escribió; `bootstrap: true` si es el primer cambio de un proyecto nuevo, su esqueleto (ARCHITECTURE §14) |
 | `change.noted` | una nota de la bitácora del cambio (`specty note "<texto>"`), del agente o de la persona, en cualquier fase del cambio abierto: `text`. La tarjeta de `next` muestra las tres últimas en «BITÁCORA» |
 | `spec.proposed` | revisión, hash, tamaño, avisos |
-| `assumption.decided` | ítem, decisión, comentario |
+| `assumption.decided` | ítem, decisión, comentario; al rechazar supuestos al aprobar, `rejected` con sus ids |
 | `review.changes_requested` | la persona pidió cambios: revisión e ids de los comentarios sin resolver |
 | `spec.approved` | revisión, hash, canal (`ui`, `tty`, `pr`), presencia verificada; si un ajuste desbloqueó tests aprobados, `unlocked` (sus rutas) |
 | `tests.proposed` | en la fase `testing`, el agente envió los tests: `count` y `files`, los que van en el commit, y `red`: cada comando de la verificación que falló, `{ cmd, exit }` |
@@ -398,7 +398,7 @@ Un ancla puede ser un ítem (`{ "item": "A1" }`) o una cita dentro de una secci�
 
 - La persona comenta solo durante la revisión (fase `review`), desde la UI. `id` es `c<n>` por orden de llegada, `revision` es la revisión comentada y `author`, el `user.name` de git. Un comentario vacío se rechaza.
 - Comentar no entra en la auditoría; pedir cambios, sí: `review.changes_requested` con los ids de los comentarios sin resolver, y `state.json` anota `changesRequestedAt`, con lo que el cambio pasa a esperar al agente (§3). Sin comentarios sin resolver ni supuestos rechazados, no hay nada que pedir y se rechaza.
-- Los comentarios sin resolver llegan al agente en `specty next` («CAMBIOS PEDIDOS») solo cuando la persona pidió cambios después de la última propuesta: mientras comenta, la revisión sigue siendo suya.
+- Los comentarios sin resolver («CAMBIOS PEDIDOS») y los supuestos rechazados («SUPUESTOS RECHAZADOS») llegan al agente en `specty next` solo mientras `state.json` lleva `changesRequestedAt` (§3), la misma regla de `specty wait` y `status`: mientras comenta o rechaza supuestos sueltos, la revisión sigue siendo suya. Si la persona ya no deja nada pendiente, la tarjeta dice que le devolvió la revisión y le sigue pidiendo `propose`.
 - `propose` con una revisión nueva marca los comentarios sin resolver con `resolvedInRevision`. Si la spec no cambió, no hay revisión nueva y siguen abiertos.
 
 ## 6. `config.yaml`
