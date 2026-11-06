@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261106-init-propone-la-unidad-de-la-raiz-que-tambien",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-init-propone-la-unidad-de-la-raiz-que-tambien",
+  "baseCommit": "db367341b166a577054bc4e764b86f2b224074b1",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:632983a603d34b54109380c8592ef46db53dd75ea7b4aee3db4b8c5fec082a01",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1ba6bd198e71e4136b7cf04997284d53cadc85bbf4581bf9f48a527421d93907",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9d35558d27028e8d23764a3c1e39e91ab04337964af2cc0b5ccb8cd5ec299d89",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:b4207fff50da67f1cbd22d9cc11c29b4b95bd158df9a00dafaca10059a780fb2",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:622ad824871cf4057b740023f2b210da982c4bfaa23aa6e6adc75e69a2f85ba7",
+    "at": "2026-11-06T02:51:09.993Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
