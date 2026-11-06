@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-verificar-que-se-para-sin-mover-nada-deja-en-la-2",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-verificar-que-se-para-sin-mover-nada-deja-en-la-2",
   "baseCommit": "d53e642555488d831c57061281c64b6a9b36f795",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:8b5804271cf2ce6dcb4f9ab2b7c174fd20319f59fcd2284f7b1c8846a2c42bc3",
@@ -56,12 +56,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6af47c8accac133a6ea2a6d9ba838bd3856a9bf7",
+      "attempts": 1,
       "startedAt": "2026-11-06T21:33:32.020Z",
       "doneAt": "2026-11-06T21:33:51.257Z",
-      "summary": "La documentación de la rama de partida (d53e642) ya cuenta la ejecución parada: docs/ui.md, en la sección «Verificación completa», y docs/ARCHITECTURE.md, en «Verificación completa desde la UI»."
+      "summary": "La documentación de la rama de partida (d53e642) ya cuenta la ejecución parada: docs/ui.md, en la sección «Verificación completa», y docs/ARCHITECTURE.md, en «Verificación completa desde la UI».",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -73,5 +73,6 @@
     "AC": 3,
     "T": 2,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-11-06T21:34:06.338Z"
 }

@@ -74,3 +74,22 @@ Cuando «Verificar» de la UI incorpora main antes de verificar y la incorporaci
 - R1: Una parada que ya no vale (la persona hizo el commit y aceptó desde la terminal) seguiría a la vista. Mitigación: la sección solo la muestra en aceptación y sin un resultado posterior, con su hora; y «Ejecutar de nuevo» la quita.
 - R2: Otro consumidor de las ejecuciones la tomaría por una en curso. Mitigación: solo la verificación completa de un cambio puede pararse así, y sus dos consumidores en la UI (`FullVerification` y `fullStateOf`) la distinguen; Progreso solo mira las de cada tarea.
 - R3: El historial de main recibe los commits del cambio cancelado, también el de lo que tenía sin commit. Mitigación: es lo que pidió la persona al elegir rehacerlo desde su rama; llevan el trailer de su cambio, archivado como cancelado en la misma rama.
+
+## Cierre
+
+### Resumen
+
+El servidor conserva la incorporación de «Verificar» que se para sin mover nada, marcada `stopped` con su motivo, hasta el siguiente «Verificar», y la sección «Verificación completa» la muestra con su salida, sin el bloque en vivo y sin contarla como en curso. El código, los tests y la documentación llegan de la rama del cambio cancelado `20261107-verificar-que-se-para-sin-mover-nada-deja-en-la` (73607fd, 162f3c4 y d53e642); este cambio los verificó con comandos que cargan de verdad sus tests (vitest de la CLI y `ng test --no-watch --include` en la UI) y los incorpora.
+
+### Desviaciones
+
+- Las tareas no reescriben código: la rama de partida ya lo traía con commit, así que no había rojo posible y el cambio no tuvo fase de tests; T1 es la verificación de ese código y T2 la de su documentación. Los tests ya pasaron el rojo en el cambio cancelado (2f95b5a).
+- La aceptación muestra los criterios «sin test» porque sus tests (`AC1` y `AC2` en `packages/cli/test/server/verify-merge.test.ts`, `AC3` en `packages/ui/src/acceptance/full-verification.test.ts`) llevan los commits del cambio cancelado, no los de las tareas de este.
+
+### Decisiones
+
+- Rehacerlo desde la rama del cambio cancelado, como eligió la persona, en vez de copiar el trabajo a un cambio desde main: main recibe también los commits de aquel, con su trailer y su archivo de cancelado.
+
+### Pendientes
+
+- Un cambio rehecho con `--from` desde la rama de uno cancelado, con `policy.tests: contract`, no puede pasar por la fase de tests (sus tests y su código ya tienen commit, así que no hay rojo), y su aceptación muestra los criterios sin test porque los tests llevan los commits del cambio cancelado; `new --from` podría avisarlo o reconocer los tests de la rama de partida.
