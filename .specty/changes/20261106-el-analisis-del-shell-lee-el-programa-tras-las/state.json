@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261106-el-analisis-del-shell-lee-el-programa-tras-las",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-el-analisis-del-shell-lee-el-programa-tras-las",
   "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6b89b6f8271a10f1f9131494da52f59290f21abf3e0af1b57649fcee8f18f44d",
+    "at": "2026-11-06T15:32:46.888Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6b89b6f8271a10f1f9131494da52f59290f21abf3e0af1b57649fcee8f18f44d",
-    "at": "2026-11-06T15:32:46.888Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/core/test/guard/control-words.test.ts": "sha256:711a2c86749e52b2a3027c56397302ccda804c96c698e78a42d65a0f9f064037"
+  }
 }
