@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-pagina-configuracion-muestra-todos-los",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-la-pagina-configuracion-muestra-todos-los",
   "baseCommit": "53eef2c1668b92bbf9d89a26fd7a562eef5cbf60",
   "revision": 1,
@@ -63,6 +63,10 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T23:22:54.346Z"
+  "lockedTests": {
+    "packages/ui/src/app/shell.test.ts": "sha256:0a26e7dcff9dee3bd63dc6a8a1cb8a0c80ffec681e5d91ac4542f7f37d74a945",
+    "packages/cli/test/server/config.test.ts": "sha256:fb7b1d9b1aa8c587c980d3a0993faf2e5302fd4dd0e6e3a1dd61ed5157a0ae09",
+    "packages/core/test/settings/catalog.test.ts": "sha256:7a12a96749c68c33364bd7c23083629df3fe39c8129eec0a53089b413f906fbf",
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:641421c05ed32c4498c1c76a733427c95595f5860ee73e03231e76f4b3376e1b"
+  }
 }
