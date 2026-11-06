@@ -45,7 +45,20 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/server/merged-run.ts",
+        "packages/cli/src/server/watched-runs.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "2f95b5aec94551cdb047f9ca7e64fa62b7166541",
+      "startedAt": "2026-11-06T21:00:11.106Z",
+      "doneAt": "2026-11-06T21:08:19.374Z",
+      "summary": "La salida en vivo pasa a server/run-output.ts; como la verificación de T1 corre el test de AC1, incluye además la ejecución parada (stops, mergedEnd, Incorporated) y que forget borre lo que vio."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -54,7 +67,8 @@
     "A": 5,
     "AC": 3,
     "T": 4,
-    "R": 2
+    "R": 2,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/server/verify-merge.test.ts": "sha256:b1c043ca9dac46f44e43d3d2a49ebc98985ebfe7efa9f883b7e185eca5f052c3",

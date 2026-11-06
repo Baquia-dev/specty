@@ -56,7 +56,7 @@ Cuando «Verificar» de la UI incorpora main antes de verificar y la incorporaci
 
 ## Tareas
 
-- [ ] T1: La salida en vivo de una ejecución pasa a su propio módulo
+- [x] T1: La salida en vivo de una ejecución pasa a su propio módulo
   - files: packages/cli/src/server/runs.ts, packages/cli/src/server/run-output.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/runs.test.ts test/server/runs-turn.test.ts test/server/live.test.ts test/server/verify-merge.test.ts && pnpm lint

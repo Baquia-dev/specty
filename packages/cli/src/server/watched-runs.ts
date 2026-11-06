@@ -53,7 +53,10 @@ export function taskRuns(
   timer.unref();
   return {
     current: (id) => runs.get(id),
-    forget: (id) => said.delete(id),
+    forget(id) {
+      said.delete(id);
+      runs.delete(id);
+    },
     close: () => clearInterval(timer),
   };
 }
