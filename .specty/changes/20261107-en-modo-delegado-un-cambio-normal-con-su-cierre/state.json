@@ -6,6 +6,13 @@
   "branch": "specty/20261107-en-modo-delegado-un-cambio-normal-con-su-cierre",
   "baseCommit": "ccf8184df3194fbfcfc345b8592244abcd277006",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7f1a00216e0ca755cc56233c85e6293c7c4dc1ef02200b191b8e3d637dbb151c",
+    "at": "2026-11-06T19:28:46.805Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -73,12 +80,6 @@
     "T": 4,
     "R": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7f1a00216e0ca755cc56233c85e6293c7c4dc1ef02200b191b8e3d637dbb151c",
-    "at": "2026-11-06T19:28:46.805Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T19:35:02.134Z"
 }
