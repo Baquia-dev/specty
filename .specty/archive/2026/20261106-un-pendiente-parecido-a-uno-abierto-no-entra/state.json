@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-un-pendiente-parecido-a-uno-abierto-no-entra",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-un-pendiente-parecido-a-uno-abierto-no-entra",
   "baseCommit": "7fe3f0eb898f56a60cbd47a71b709c1dd85319c9",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:d8f753c1ff65e6c0a60bd544c25ddfece4a84db986bf0a776db0b57a3ba4bae4",
@@ -79,12 +79,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7227c10968b55db78362a36bf35230afc76da69e",
+      "attempts": 1,
       "startedAt": "2026-11-05T21:51:33.322Z",
       "doneAt": "2026-11-05T21:52:16.154Z",
-      "summary": "formats.md, ARCHITECTURE.md y el ADR 0016 cuentan memory add --distinct-from y el freno de parecidos: quién lo tiene, qué compara, qué dice su salida y que la cosecha del cierre sigue con el texto exacto"
+      "summary": "formats.md, ARCHITECTURE.md y el ADR 0016 cuentan memory add --distinct-from y el freno de parecidos: quién lo tiene, qué compara, qué dice su salida y que la cosecha del cierre sigue con el texto exacto",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -97,9 +97,54 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T03:42:33.027Z",
   "lockedTests": {
     "packages/cli/test/memory-similar.test.ts": "sha256:46bac86e3506bf30c44a723a240bc29d2363d574f1dad7793534742f37ca972f",
     "packages/core/test/cards/memory-similar.test.ts": "sha256:1a8a331bb7687d450367bef0794ad77273efbf6d4732f263fbb57e2683e34524",
     "packages/core/test/memory/similar.test.ts": "sha256:2ba3e63ad6a007cbf7c975198cbc781d79924f0070d4231fdc69ffdbcee485b8"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "204622d8f501dccfd49f2b4604df95472a5210a9",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/decisions/0016-la-memoria-de-specty.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/memory.ts",
+      "packages/cli/src/flow/epic.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/slices.ts",
+      "packages/cli/test/memory-similar.test.ts",
+      "packages/cli/test/server/slices.test.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/memory-similar.ts",
+      "packages/core/src/cards/memory.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/memory/similar.ts",
+      "packages/core/test/cards/memory-similar.test.ts",
+      "packages/core/test/memory/similar.test.ts",
+      "packages/ui/src/change/change-memory.test.ts",
+      "packages/ui/src/change/change-memory.ts",
+      "packages/ui/src/change/change-page.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/sample-memory.test.ts",
+      "packages/ui/src/data/sample-memory.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/memory/memory-lines.ts",
+      "packages/ui/src/memory/memory-page.ts",
+      "packages/ui/src/memory/memory-url.test.ts",
+      "packages/ui/src/review/spec-sections.test.ts",
+      "packages/ui/src/review/spec-sections.ts"
+    ],
+    "at": "2026-11-05T22:14:01.379Z",
+    "resolved": {
+      "commit": "7a64a7d",
+      "at": "2026-11-06T02:38:21.258Z"
+    }
   }
 }

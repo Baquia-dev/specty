@@ -90,3 +90,23 @@ Desde C1 un agente ya no ve los pendientes abiertos al empezar, así que puede v
 
 - R1: El freno da falsos positivos, como P2/P9, que son distintos y se parecen — `--distinct-from` lo resuelve en un paso, y la persona no tiene freno.
 - R2: Un test que añade desde un agente dos pendientes parecidos deja de pasar — se buscaron con grep los `memory add` de los tests de `packages/cli/test` y de `evals`: todos usan palabras sueltas («Uno», «Dos») o textos distintos, o son de la persona, de recordatorios, de decisiones o de lecciones. Los tests de `memory` van en la verificación de T3.
+
+## Cierre
+
+### Resumen
+
+El `memory add` de un agente ya no escribe un pendiente ni una mejora cuyo texto se parece al de uno abierto (libre, tomado o propuesto para descartar). Responde bloqueado con los parecidos y pide repetirlo con `--distinct-from <ids>` si es distinto; si es el mismo, que no lo añada ni se lo mencione al usuario. La regla de parecido es la de `new` para los cambios (`similarTexts`), en `core/memory/similar.ts` (`similarEntries`), y la tarjeta está en `cards/memory-similar.ts`. La persona no tiene freno, y los recordatorios, las decisiones y las lecciones tampoco. formats.md, ARCHITECTURE.md y el ADR 0016 lo cuentan.
+
+### Desviaciones
+
+- La primera aceptación falló porque la unidad core agotó el tiempo al arrancar los workers de Vitest («Timeout starting forks runner», 21 min) con la máquina cargada y un corte de red. No era un test en rojo: `specty integrate` repitió la verificación con la carga baja y pasaron todas las unidades.
+- El subagente del corte se cortó por un error de red antes del cierre, y el agente principal escribió este cierre.
+
+### Decisiones
+
+- Reusar `similarTexts` de `flow/duplicates.ts` en lugar de otra métrica: medida sobre las entradas abiertas de este repositorio, encuentra los repetidos reales (P78/P79, P98/P99/P100/P108) y sus falsos positivos más claros eran lecciones de plantilla, que quedan fuera del freno.
+- La comparación va dentro de la edición de la memoria, para que dos sesiones que anotan a la vez textos parecidos no los escriban los dos.
+
+### Pendientes
+
+- Ninguno nuevo.
