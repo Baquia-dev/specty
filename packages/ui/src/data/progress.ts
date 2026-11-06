@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // The progress of a change's tasks (docs/ui.md, Progreso): the spec's tasks joined with their
 // state and their verifications. Only types come from core, so screens may import the helpers.
-import type { ChangeState, Lang, Spec, Task } from "@baquia-dev/specty-core";
+import type { ChangeState, Lang, Spec, Task, UnlockEvidence } from "@baquia-dev/specty-core";
 import { unlocksOf } from "./locks";
 import { isObject } from "./server-answers";
 
@@ -71,6 +71,10 @@ export interface TaskScopeRequest {
   readonly reason: string;
   /** The approved tests it asks to unlock (ADR 0014); none for a plain widening. */
   readonly unlocks?: readonly string[];
+  /** An unlock's exact change to the tests, as a unified diff; none from an older CLI. */
+  readonly patch?: string;
+  /** The lines that justify an unlock, as they were when it was asked. */
+  readonly evidence?: readonly UnlockEvidence[];
 }
 
 export interface TaskProgressView {
@@ -191,11 +195,24 @@ function taskProgress(
     ...lastVerification(last),
     scopeRequests: state.pending.scopeRequests
       .filter((request) => request.task === task.id)
-      .map((request) => {
-        const { id, paths, reason } = request;
-        const unlocks = unlocksOf(state, request);
-        return { id, paths, reason, ...(unlocks.length === 0 ? {} : { unlocks }) };
-      }),
+      .map((request) => requestOf(state, request)),
+  };
+}
+
+/** A pending scope request: what it asks for and why, and, to unlock a test, its patch and evidence. */
+function requestOf(
+  state: ChangeState,
+  request: ChangeState["pending"]["scopeRequests"][number],
+): TaskScopeRequest {
+  const { id, paths, reason, patch, evidence } = request;
+  const unlocks = unlocksOf(state, request);
+  return {
+    id,
+    paths,
+    reason,
+    ...(unlocks.length === 0 ? {} : { unlocks }),
+    ...(patch === undefined ? {} : { patch }),
+    ...(evidence === undefined ? {} : { evidence }),
   };
 }
 

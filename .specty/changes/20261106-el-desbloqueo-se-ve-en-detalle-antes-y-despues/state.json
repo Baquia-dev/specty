@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8a3b2ba2cfaa12b6daa2929f48e87866585bed9e",
+      "startedAt": "2026-11-06T15:16:56.708Z",
+      "doneAt": "2026-11-06T15:17:40.853Z",
+      "summary": "TaskScopeRequest lleva el patch y la evidence de la solicitud de state.json (requestOf en data/progress.ts); cada desbloqueo de lockedOf (data/locks.ts) lleva el motivo de su scope.requested, y el parche y la evidencia de su scope.decided, sin las piezas mal formadas."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -65,7 +65,7 @@ Desde el corte C2, una solicitud para desbloquear un test aprobado lleva el camb
 
 ## Tareas
 
-- [ ] T1: La solicitud y cada desbloqueo aprobado llevan su parche, su evidencia y su motivo
+- [x] T1: La solicitud y cada desbloqueo aprobado llevan su parche, su evidencia y su motivo
   - files: packages/ui/src/data/progress.ts, packages/ui/src/data/locks.ts, packages/ui/src/data/progress.test.ts, packages/ui/src/data/locks.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts --include src/data/locks.test.ts
