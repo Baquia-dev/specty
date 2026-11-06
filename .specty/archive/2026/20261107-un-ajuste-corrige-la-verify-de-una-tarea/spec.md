@@ -85,3 +85,25 @@ Una `verify` de tarea mal escrita (por ejemplo, `vitest run` en la UI de Angular
 
 - R1: El agente podría usar el ajuste para cambiar una `verify` que falla con razón, en lugar de corregir el código. Mitigación: la tarjeta lo limita a una `verify` que no carga ni ejecuta sus tests, y el ajuste lo aprueba la persona viendo solo el delta.
 - R2: Con el trabajo de la tarea activa sin commit, el ajuste podría mezclarlo con la spec. Mitigación: en `adjusting` el código está bloqueado, y `approve` solo hace commit de la carpeta del cambio.
+
+## Cierre
+
+### Resumen
+
+`specty adjust` se admite ahora mientras se implementa cualquier cambio con tareas (una retro no, porque no tiene implementación), para corregir sus tareas pendientes: su `verify`, sus `files` o su texto. Es el arreglo de P258, una `verify` que no carga sus tests y deja la tarea sin poder completarse. `propose` limita ese ajuste con `pending-tasks-only` (ni tareas añadidas o borradas ni criterios cambiados), la tarjeta de `adjusting` da «CÓMO CORREGIRLAS» y la verificación fallida de `task done` sugiere el ajuste. Al aprobarlo, el ciclo de tests cuenta solo las tareas que trae el ajuste, así que el cambio vuelve a `implementing` sin fase de tests, con la tarea activa intacta (`baseCommit`, inicio) y los tests aprobados bloqueados. Lo prueba de punta a punta, con `contract`, `packages/cli/test/epic-adjust.test.ts`.
+
+### Desviaciones
+
+- Ninguna respecto al plan aprobado. Antes de proponerlo, el plan se recortó para no pasar de `L`: sin `ChangeView.pendingTasksOnly` (la tarjeta mira si hay una tarea activa), sin exportar el criterio desde core y sin tocar `commands/adjust.ts` ni la descripción MCP.
+
+### Decisiones
+
+- El ajuste pedido en `implementing` no deja marca en `state.json`: `propose` lo reconoce porque la revisión aprobada aún tiene tareas sin completar, y la tarjeta porque hay una tarea activa.
+- En el ciclo de tests de una aprobación, las tareas de la revisión aprobada cuentan como ya probadas; en aceptación da lo mismo que antes, porque allí están todas hechas.
+- La vía del rojo que no cuenta una suite que no carga queda descartada: depende de cada herramienta de tests.
+
+### Pendientes
+
+- P266: la descripción MCP de `specty_adjust` aún dice que el ajuste se pide en aceptación.
+- P267: si `adjust` se pide en `implementing` antes de que `next` active una tarea, la tarjeta da la clasificación de aceptación (`propose` sí lo limita).
+- P191, que ya existía, vale también para `pending-tasks-only`: `checkAdjusting` no corre en la revisión del ajuste.
