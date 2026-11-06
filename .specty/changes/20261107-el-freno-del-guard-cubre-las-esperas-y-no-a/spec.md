@@ -73,7 +73,7 @@ Resuelve P224. Mientras el cambio espera a la persona, el guard solo frena `slee
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait-guard.test.ts && pnpm typecheck && pnpm lint
   - type: fix
-- [ ] T4: La documentación cuenta las esperas que frena el guard
+- [x] T4: La documentación cuenta las esperas que frena el guard
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC3
   - verify: pnpm lint

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-freno-del-guard-cubre-las-esperas-y-no-a",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-freno-del-guard-cubre-las-esperas-y-no-a",
   "baseCommit": "0ee3cb079729fe1571746a0e0f095ddf996a4993",
   "revision": 2,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "68e9617f449ce92eb2f6762bcd6ac9d3540179e3",
+      "attempts": 1,
       "startedAt": "2026-11-06T16:09:36.213Z",
       "doneAt": "2026-11-06T16:10:16.860Z",
-      "summary": "guardChange deja waiting en falso mientras liveHolder da un proceso vivo de Specty con el candado del cambio (un accept o un close en marcha), así que el guard deja pasar las esperas"
+      "summary": "guardChange deja waiting en falso mientras liveHolder da un proceso vivo de Specty con el candado del cambio (un accept o un close en marcha), así que el guard deja pasar las esperas",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "22a25010bf6a37b5ba2a1969acff2b82083a50f0",
+      "startedAt": "2026-11-06T16:10:17.234Z",
+      "doneAt": "2026-11-06T16:10:43.228Z",
+      "summary": "ARCHITECTURE §4, §6 y §10: el freno cubre las esperas evidentes (waits.ts), la marca & del tokenizador y que no frena mientras un proceso vivo de Specty tiene el candado del cambio"
     }
   },
   "pending": {
