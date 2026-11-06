@@ -92,3 +92,25 @@ Hoy ninguna pantalla de `specty ui` enseña `.specty/config.yaml`: para saber c�
 
 - R1: El corte queda en el límite de tamaño (L) con tres paquetes. Mitigación: lo de guardar, el ejemplo del prototipo y la vista Flujo quedan fuera, y la lectura del servidor va en `api.ts` hasta que C2 añada sus rutas.
 - R2: Los textos de 54 ajustes pueden pasar de 300 líneas en un archivo. Mitigación: descripciones de una línea, un objeto por ajuste con su par español e inglés, y si aun así pasa, se avisa en el cierre para partirlo por secciones.
+
+## Cierre
+
+### Resumen
+
+`specty ui` tiene la página «Configuración» (`/settings`, con su enlace tras «Sesiones»), en solo lectura. Muestra por sección los 53 ajustes de `.specty/config.yaml` y el modo delegado, del catálogo nuevo del core (`settings/catalog.ts`, con sus textos en español e inglés en `cards/settings.ts`, ambos en la entrada ligera). Cada uno lleva su nombre, su descripción, su clave en mono y su valor a la derecha, y si difiere del de por defecto, la marca «Modificado» y la línea «Por defecto: …». Las marcas «Afecta permisos», «Ejecuta un comando», «Este clon» y «Próximamente» salen en píldoras, y la barra busca sin tildes y filtra por marca con su cuenta. Los datos vienen de `GET /api/config` (`configView` en `server/api.ts`), que vuelve a leer el archivo en cada petición y da el archivo leído, lo que usa Specty, los valores por defecto y los errores del validador por clave. Con un archivo no válido, la página lo avisa arriba con los errores sueltos, pone cada error bajo su ajuste y muestra el valor del archivo o el de por defecto.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El valor de cada ajuste es el que usa Specty, si no el del archivo y si no el de por defecto. Así `effort`, que `resolveConfig` no conserva, también enseña lo que dice el archivo.
+- El modo delegado sin dato de la fuente no lleva «Modificado»: su valor por defecto solo cuenta cuando la fuente dice si está activo.
+- `configView` lee el YAML con `parse` de `yaml` en `server/api.ts`, sin tocar `store/config.ts`, para no añadir un archivo al corte.
+- Los errores salen con el tono de «cancelado», porque el sistema de diseño no tiene un token de peligro.
+
+### Pendientes
+
+- El prototipo (`data/fixtures.ts`) no da configuración: con `ng serve`, la página dice que su fuente no la da. Falta una configuración de ejemplo, en un `data/sample-config.ts` como `sample-memory.ts`.
+- `packages/ui/src/data/server.ts` tiene 345 líneas de código (el aviso salta a partir de 300): llevar `isConfigRecord` a `data/server-answers.ts`, con las demás comprobaciones de respuestas.

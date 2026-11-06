@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-la-pagina-configuracion-muestra-todos-los",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-la-pagina-configuracion-muestra-todos-los",
   "baseCommit": "53eef2c1668b92bbf9d89a26fd7a562eef5cbf60",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:39acc6b969167077702bd8e5b44356225764418e29d9717181bd195c01c66d01",
@@ -73,12 +73,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cf555b8d380585f0b2300e4abb0e128cc5ed1743",
+      "attempts": 1,
       "startedAt": "2026-11-06T23:24:56.358Z",
       "doneAt": "2026-11-06T23:33:53.505Z",
-      "summary": "Página «Configuración» (/settings, enlace tras «Sesiones»): cada ajuste por sección con su valor, su valor por defecto si difiere, marcas, errores, buscador y filtros; config() en la fuente de datos y en ServerData; docs/ui.md"
+      "summary": "Página «Configuración» (/settings, enlace tras «Sesiones»): cada ajuste por sección con su valor, su valor por defecto si difiere, marcas, errores, buscador y filtros; config() en la fuente de datos y en ServerData; docs/ui.md",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -91,6 +91,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T23:35:57.359Z",
   "lockedTests": {
     "packages/ui/src/app/shell.test.ts": "sha256:0a26e7dcff9dee3bd63dc6a8a1cb8a0c80ffec681e5d91ac4542f7f37d74a945",
     "packages/cli/test/server/config.test.ts": "sha256:fb7b1d9b1aa8c587c980d3a0993faf2e5302fd4dd0e6e3a1dd61ed5157a0ae09",
