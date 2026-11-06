@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261106-el-fin-de-turno-devuelve-al-agente-a-esperar",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-el-fin-de-turno-devuelve-al-agente-a-esperar",
+  "baseCommit": "ddaa47217dcb6b75a40be45d70016d60cc09f4db",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0ca9de1f7a3714b120979c3769763ce03d7688f52d41613841a2d89fcb5d8661",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:b1c238d54d936fc0873ddea783142dd331e38e3747ffdbb95096a3fc2c935bf0",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:b317ba1824538163f576cb2bde1d02f43913f91e81750f5d1856a222faf11416",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:97280c53eb3f2d7c14c5960ad66fa5e3f15f7e3fc17707b4b6788049e9d32db0",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:898d30a594370d6a7f52dbfa702d1622e76f727e9e6aa4f7d87f2bf9b43be9e6",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:47033559ae062a4f9f25d3c61595264fe11c16e391ebb7272dab96f7602578e5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c8f0e0496b96bffdbb53eedfdadc5a9d2895e86f755b223a88ffe8ce443cb9f2",
+    "at": "2026-11-06T12:50:24.193Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
