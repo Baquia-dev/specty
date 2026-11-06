@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c77af8fee60660532b3f5449bae6506be72495bb",
+      "startedAt": "2026-11-06T12:23:28.695Z",
+      "doneAt": "2026-11-06T12:23:49.669Z",
+      "summary": "Core: la tabla de cómo espera cada herramienta marca qué herramienta necesita latido (Gemini CLI) y waitHeartbeat da la línea en español e inglés, exportada en cards/index.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

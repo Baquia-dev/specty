@@ -60,7 +60,7 @@ Hoy nadie sabe si un agente sigue esperando con `specty wait`, y Gemini CLI cort
 
 ## Tareas
 
-- [ ] T1: La línea de latido de Gemini CLI, en español y en inglés
+- [x] T1: La línea de latido de Gemini CLI, en español y en inglés
   - files: packages/core/src/cards/wait.ts, packages/core/src/cards/index.ts, packages/core/test/cards/wait.test.ts
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/wait.test.ts
