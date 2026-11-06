@@ -95,3 +95,29 @@ Desde el corte C2, una solicitud para desbloquear un test aprobado lleva el camb
 
 - R1: Un parche que `git apply --recount` aceptó y que la lectura de la UI entiende de otra forma — la normalización sigue la regla de `--recount` de git (hasta la siguiente línea que no es del bloque, como un `@@` o un `diff`), y AC2 la comprueba con un parche escrito a mano sin `diff --git` y con las cuentas mal.
 - R2: Mover las líneas de «Ver código» a `sp-code-lines` puede cambiar su DOM — `sp-test-code` pone `data-test-code` en el componente nuevo, la verificación de T2 vuelve a pasar los tests de «Ver código» de los tests enviados (su contrato, porque es un `refactor`), y la de T4 los de los bloqueados.
+
+## Cierre
+
+### Resumen
+
+Una solicitud de desbloqueo pendiente muestra ahora en Progreso, bajo el motivo y junto a Aprobar y Rechazar, lo que el agente adjuntó al pedirla. Lo pinta `sp-unlock-detail` (`progress/unlock-detail.ts`): «El cambio al test», con el parche en el visor de diffs, y «El código que lo sustenta», con cada fragmento de evidencia, su ruta y sus líneas, numerado desde su primera línea y resaltado. El parche se lee como lo leyó `git apply --check --recount` (`data/patch.ts`): las cuentas de cada bloque `@@` salen de sus líneas, y también se lee un diff sin `diff --git`, que sale como borrado si su `+++` es `/dev/null`. Una vez aprobado, cada test de «Tests bloqueados», en Progreso y en Aceptación, tiene «Ver el desbloqueo S1» por cada desbloqueo con algo que mostrar. El botón despliega el motivo del agente (del `scope.requested` con ese `id`) y el parche y la evidencia del `scope.decided`, y «Ocultar el desbloqueo S1» lo pliega. Una solicitud o un desbloqueo de un CLI anterior, sin parche ni evidencia, se ve como antes. Las líneas numeradas de «Ver código» pasaron a `sp-code-lines` (`progress/code-lines.ts`), que también pinta la evidencia. `docs/ui.md` lo cuenta. Lo comprueban los tests de `data/progress.ts`, `data/locks.ts` y de las dos secciones, que pasan en español y en inglés, además de los 757 tests de la UI y `pnpm typecheck`.
+
+### Desviaciones
+
+- La revisión 1 tenía una T2 con seis archivos, y `propose` avisó de ello. Antes de aprobarla, la revisión 2 la partió en un `refactor` (las líneas de «Ver código» a `sp-code-lines`, con los tests de «Ver código» como contrato) y en la tarea de la solicitud pendiente. Las cinco tareas salieron como las planeó la revisión 2.
+- El diseño preveía añadir `new file mode` cuando el `---` de un parche sin `diff --git` es `/dev/null`. Solo se añade `deleted file mode`: un desbloqueo cambia o borra un test que ya existe y está bloqueado, nunca lo crea. El test de AC2 comprueba también ese borrado.
+- Antes de enviar los tests, el código se probó en una copia de la carpeta del cambio fuera del repositorio, como en el corte C2, porque un test aprobado mal escrito solo lo desbloquea la persona. En el cambio no quedó nada de esa copia.
+
+### Decisiones
+
+- El parche se normaliza en la UI (`data/patch.ts`, antes de `parseDiff`) y no se guarda normalizado en el CLI, como apuntaba el riesgo R1 del corte C2. Así no se tocan `flow/unlock-proposal.ts` ni los archivos del corte C4, que corría a la vez, y la lectura de `git diff` no cambia.
+- En la solicitud pendiente, el detalle se ve desplegado, porque la persona lo necesita para decidir. En «Tests bloqueados» queda plegado por desbloqueo, para que la sección no empuje las tareas hacia abajo.
+- El motivo de un desbloqueo aprobado sale del `scope.requested` con su mismo `id`, porque el `scope.decided` no lo lleva. El detalle no pide `testCode`: se ve con cualquier fuente que dé el estado y la auditoría.
+- La evidencia se rotula siempre `<ruta>:<desde>-<hasta>` («test/login_test.dart:4-4»), como la escribe el agente en `--evidence`.
+- Un desbloqueo de dos tests muestra su parche entero en la fila de cada uno, porque se aprobó entero.
+- Los tests escritos antes que el código crean las secciones con `TestBed.createComponent` y `setInput`, y comprueban los datos con `toEqual`, para que compilaran sin los tipos nuevos.
+
+### Pendientes
+
+- P227: el prototipo (`FixtureData`) no trae un desbloqueo de muestra con parche y evidencia, así que allí no se ve este detalle.
+- P214 sigue abierto: el archivo de líneas de contexto que arma `asFile` está ahora en `progress/code-lines.ts` (`sp-code-lines`), y no en `progress/test-code.ts`. Falta unirlo con `diffOf` de `history/trace-view.ts` en `data/diff.ts`.
