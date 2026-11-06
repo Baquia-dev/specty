@@ -357,7 +357,7 @@ describe("the open changes before the finished ones", () => {
     for (const group of INBOX_GROUPS) {
       for (const sort of INBOX_SORTS) {
         for (const section of inboxSections(all, { ...defaults, group, sort }, "es")) {
-          const opens = section.changes.map(isOpen);
+          const opens = section.order.map(isOpen);
           expect([group, sort, section.key, opens]).toEqual([
             group,
             sort,
@@ -369,7 +369,7 @@ describe("the open changes before the finished ones", () => {
     }
     const [none] = inboxSections(all, { ...defaults, group: "none", sort: "title" }, "es");
     const ids = (changes: readonly { readonly id: string }[]) => changes.map((change) => change.id);
-    expect(ids(none?.changes ?? [])).toEqual([
+    expect(ids(none?.order ?? [])).toEqual([
       ...ids(sortChanges(open, "title", "es")),
       ...ids(sortChanges(finished, "title", "es")),
     ]);

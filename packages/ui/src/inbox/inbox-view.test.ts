@@ -3,11 +3,11 @@ import { matchesQuery, sortChanges } from "@baquia-dev/specty-core/light";
 import { sampleRecords } from "../data/fixtures";
 import type { ChangeView } from "../data/records";
 import { deriveViews } from "../data/views";
-import * as inboxViewModule from "./inbox-view";
 import {
   INBOX_SORTS,
+  type InboxBlock,
   type InboxFilters,
-  type InboxSection,
+  type InboxState,
   inboxSections,
   phaseCounts,
   stateOf,
@@ -30,12 +30,12 @@ describe("inbox view", () => {
 
   it("groups by state by default, what has waited longest first (AC4)", () => {
     const sections = inboxSections(CHANGES, DEFAULTS, "es");
-    expect(sections.map((section) => `${section.label.es} ${section.changes.length}`)).toEqual([
+    expect(sections.map((section) => `${section.label.es} ${section.blocks.length}`)).toEqual([
       "Esperan tu decisión 6",
       "En curso 2",
       "Recientes 2",
     ]);
-    expect(ids(sections[0]?.changes ?? [])).toEqual([
+    expect(ids(sections[0]?.order ?? [])).toEqual([
       "asistencia-curso",
       "recordatorios-correo",
       "justificar-faltas",
@@ -84,7 +84,7 @@ describe("inbox view", () => {
     ]);
     expect(byPhase[1]?.label.es).toBe("Revisión");
     const none = inboxSections(CHANGES, { ...DEFAULTS, group: "none" }, "es");
-    expect(none.map((section) => [section.label.es, section.changes.length])).toEqual([
+    expect(none.map((section) => [section.label.es, section.blocks.length])).toEqual([
       ["Todos los cambios", 10],
     ]);
     expect(inboxSections(CHANGES, { ...DEFAULTS, query: "nada parecido" }, "es")).toEqual([]);
@@ -111,56 +111,107 @@ describe("inbox view", () => {
     );
     for (const sort of INBOX_SORTS) {
       const [section] = inboxSections(tied, { ...DEFAULTS, group: "none", sort }, "es");
-      expect([sort, ids(section?.changes ?? [])]).toEqual([sort, ["a", "b", "c"]]);
+      expect([sort, ids(section?.order ?? [])]).toEqual([sort, ["a", "b", "c"]]);
     }
     expect(visibleChanges(CHANGES, { query: "EVOLUCIÓN", phase: "all" })).toEqual(
       CHANGES.filter((change) => matchesQuery(change, "evolucion")),
     );
   });
 
-  it("AC1: heads the group of an epic in its section with the epic, its slices below, in j/k order", () => {
-    const { epic, slice1, standalone, slice2 } = epicSamples();
-    const all = [slice1, standalone, epic, slice2];
-    const [section] = inboxSections(all, DEFAULTS, "es");
-    // j/k walk the section's changes: the epic first, then each of its slices.
-    expect(ids(section?.changes ?? [])).toEqual(["panel", "corte-1", "corte-2", "sola"]);
-    expect(blockSummary(blocksOf(section ?? fail(), all))).toEqual([
-      ["epic", "20261015-panel", "Panel académico", "20261015-panel", ["corte-1", "corte-2"]],
-      ["row", undefined, undefined, undefined, []],
+  it("AC1: shows an epic once, with all its slices, in its most urgent section, counted as one", () => {
+    const { epic, waiting, working, finished, standalone, other } = epicSamples();
+    const all = [finished, working, standalone, epic, other, waiting];
+    const sections = inboxSections(all, DEFAULTS, "es");
+    // The epic is in progress, a slice waits for a decision: the block goes to the decisions.
+    expect(sections.map((s) => [s.key, s.blocks.length, ids(s.order)])).toEqual([
+      ["decision", 2, ["panel", "corte-1", "corte-2", "corte-3", "sola"]],
+      ["active", 1, ["otra"]],
     ]);
-    // Grouped by epic, each epic's section is headed by the epic too.
-    const [byEpic] = inboxSections(all, { ...DEFAULTS, group: "epic" }, "es");
-    expect(ids(byEpic?.changes ?? [])).toEqual(["panel", "corte-1", "corte-2"]);
-    expect(blockSummary(blocksOf(byEpic ?? fail(), all))).toEqual([
-      ["epic", "20261015-panel", "Panel académico", "20261015-panel", ["corte-1", "corte-2"]],
+    expect(blockSummary(sections[0]?.blocks ?? [])).toEqual([
+      ["epic", "panel", ["corte-1", "corte-2", "corte-3"]],
+      ["row", "sola", []],
     ]);
-    expect(matchesQuery(slice1, "Panel académico")).toBe(true);
-    expect(matchesQuery(slice1, "C1")).toBe(true);
+    // Without a slice waiting, in progress; with only finished members, among the recent ones.
+    const calm = inboxSections([epic, working, finished], DEFAULTS, "es");
+    expect(calm.map((s) => [s.key, s.blocks.length, ids(s.order)])).toEqual([
+      ["active", 1, ["panel", "corte-2", "corte-3"]],
+    ]);
+    const over = { ...epic, phase: "done" } as ChangeView;
+    const past = inboxSections([finished, over], DEFAULTS, "es");
+    expect(past.map((s) => [s.key, s.blocks.length, ids(s.order)])).toEqual([
+      ["recent", 1, ["panel", "corte-3"]],
+    ]);
   });
 
-  it("AC2: heads the slices of an epic outside the section with the epic as loaded, or its title", () => {
-    const { epic, slice1, standalone, slice2 } = epicSamples();
-    // In progress, it waits for nothing: no decision.
-    const { decision: _waits, ...rest } = epic;
-    const working: ChangeView = { ...rest, phase: "implementing" };
-    const all = [slice1, standalone, working, slice2];
-    const sections = inboxSections(all, DEFAULTS, "es");
-    const waiting = sections.find((section) => section.key === "decision") ?? fail();
-    expect(ids(waiting.changes)).toEqual(["corte-1", "corte-2", "sola"]);
-    const [group] = blocksOf(waiting, all);
-    expect(blockSummary([group ?? fail()])).toEqual([
-      ["epic", "20261015-panel", "Panel académico", undefined, ["corte-1", "corte-2"]],
+  it("AC1: keeps an epic without slices loaded as its block, and a slice without its epic as a row", () => {
+    const { epic, waiting, standalone } = epicSamples();
+    const lost = sample("20261022-suelta", "Suelta", "decision", "review", "2026-11-04T09:00:00Z", {
+      epic: { id: "20261001-vieja", title: "Épica vieja", slice: "C2" },
+    });
+    const all = [epic, lost, standalone];
+    const byState = inboxSections(all, DEFAULTS, "es");
+    expect(byState.map((s) => [s.key, blockSummary(s.blocks)])).toEqual([
+      [
+        "decision",
+        [
+          ["row", "suelta", []],
+          ["row", "sola", []],
+        ],
+      ],
+      ["active", [["epic", "panel", []]]],
     ]);
-    // The header without a row takes the epic's phase and tab from the epic loaded elsewhere.
-    expect([group?.epic?.id, group?.epic?.phase]).toEqual(["20261015-panel", "implementing"]);
-    // In its own section, without slices there, the epic is a plain row.
-    const active = sections.find((section) => section.key === "active") ?? fail();
-    expect(blockSummary(blocksOf(active, all))).toEqual([
-      ["row", undefined, undefined, undefined, []],
+    // Grouping by epic, the lone slice goes to its epic's section, with the title it brings.
+    const byEpic = inboxSections([...all, waiting], { ...DEFAULTS, group: "epic" }, "es");
+    expect(byEpic.map((s) => [s.key, s.label.es, blockSummary(s.blocks)])).toEqual([
+      ["epic:20261015-panel", "Épica · Panel académico", [["epic", "panel", ["corte-1"]]]],
+      ["epic:20261001-vieja", "Épica · Épica vieja", [["row", "suelta", []]]],
+      ["standard", "Features", [["row", "sola", []]]],
     ]);
-    // Not loaded at all: the title each slice brings, and no epic.
-    const [lone] = blocksOf(waiting, [slice1, standalone, slice2]);
-    expect([lone?.kind, lone?.title, lone?.epic]).toEqual(["epic", "Panel académico", undefined]);
+  });
+
+  it("AC10: puts the epic once, with all its slices, in its phase, in its place or in its own section", () => {
+    const { epic, waiting, working, finished, standalone, other } = epicSamples();
+    const all = [finished, working, standalone, epic, other, waiting];
+    const shape = (filters: Partial<InboxFilters>) =>
+      inboxSections(all, { ...DEFAULTS, ...filters }, "es").map((s) => [
+        s.key,
+        s.blocks.length,
+        ids(s.order),
+      ]);
+    // By phase: the epic's own phase, whatever the phases of its slices.
+    expect(shape({ group: "phase" })).toEqual([
+      ["testing", 1, ["otra"]],
+      ["implementing", 1, ["panel", "corte-1", "corte-2", "corte-3"]],
+      ["acceptance", 1, ["sola"]],
+    ]);
+    // Without grouping: where its first member goes in the order chosen, the open ones first.
+    expect(shape({ group: "none", sort: "title" })).toEqual([
+      ["all", 3, ["sola", "panel", "corte-1", "corte-2", "corte-3", "otra"]],
+    ]);
+    // By epic: its own section, and the other changes by kind.
+    expect(shape({ group: "epic" })).toEqual([
+      ["epic:20261015-panel", 1, ["panel", "corte-1", "corte-2", "corte-3"]],
+      ["standard", 2, ["sola", "otra"]],
+    ]);
+  });
+
+  it("AC10: lets the whole epic through when a filter lets through any one of its members", () => {
+    const { epic, waiting, working, finished, standalone, other } = epicSamples();
+    const all = [finished, working, standalone, epic, other, waiting];
+    const shape = (filters: Partial<InboxFilters>) =>
+      inboxSections(all, { ...DEFAULTS, ...filters }, "es").map((s) => [
+        s.key,
+        s.blocks.length,
+        ids(s.order),
+      ]);
+    const whole = ["panel", "corte-1", "corte-2", "corte-3"];
+    // Only the finished slice matches: the epic still goes, whole, with the decisions.
+    expect(shape({ query: "Corte 3" })).toEqual([["decision", 1, whole]]);
+    expect(shape({ phase: "done" })).toEqual([["decision", 1, whole]]);
+    expect(shape({ phase: "done", group: "phase" })).toEqual([["implementing", 1, whole]]);
+    expect(shape({ query: "Panel", group: "epic" })).toEqual([["epic:20261015-panel", 1, whole]]);
+    // None of its members matches: the epic is not shown.
+    expect(shape({ query: "Alfa" })).toEqual([["decision", 1, ["sola"]]]);
   });
 
   it("AC4, AC5: groups by epic into per-epic sections, then «Features» and the other kinds", () => {
@@ -188,7 +239,7 @@ describe("inbox view", () => {
       { ...DEFAULTS, group: "epic" as InboxFilters["group"] },
       "es",
     );
-    expect(sections.map((s) => [s.key, s.label.es, ids(s.changes)])).toEqual([
+    expect(sections.map((s) => [s.key, s.label.es, ids(s.order)])).toEqual([
       ["epic:20261015-panel", "Épica · Panel académico", ["panel", "corte-1"]],
       ["standard", "Features", ["sola"]],
       ["quick", "Cambios quick", ["rapida"]],
@@ -199,45 +250,78 @@ describe("inbox view", () => {
   });
 });
 
-/** What the epic blocks bring: an epic, the epic that heads it in the section, and its slices. */
-interface EpicBlockForTest {
-  readonly kind: string;
-  readonly epicId?: string;
-  readonly title?: string;
-  readonly head?: ChangeView;
-  readonly epic?: ChangeView;
-  readonly slices?: readonly ChangeView[];
+/** Each block: an epic with its slices, or a row. */
+const blockSummary = (blocks: readonly InboxBlock[]) =>
+  blocks.map((block) =>
+    block.kind === "epic"
+      ? ["epic", ids([block.epic])[0], ids(block.slices)]
+      : ["row", ids([block.change])[0], []],
+  );
+
+/** A change like the samples in `state`, with the given id, title, phase and phase start. */
+function sample(
+  id: string,
+  title: string,
+  state: InboxState,
+  phase: ChangeView["phase"],
+  phaseSince: string,
+  extra: Partial<ChangeView> = {},
+): ChangeView {
+  const { epic: _epic, ...base } = CHANGES.find((change) => stateOf(change) === state) ?? fail();
+  return { ...base, id, title, kind: "standard", phase, phaseSince, ...extra } as ChangeView;
 }
 
-/** `sectionBlocks` with every change, so a header can take the epic from another section. */
-const blocksOf = inboxViewModule.sectionBlocks as unknown as (
-  section: InboxSection,
-  all: readonly ChangeView[],
-) => readonly EpicBlockForTest[];
-
-const blockSummary = (blocks: readonly EpicBlockForTest[]) =>
-  blocks.map((block) => [
-    block.kind,
-    block.epicId,
-    block.title,
-    block.head?.id,
-    ids(block.slices ?? []),
-  ]);
-
-/** An epic waiting for its review, two of its slices and a standalone change. */
+/**
+ * An epic in progress, «Panel académico», with a slice waiting for a decision, one in progress and
+ * one finished; and two changes of their own, one waiting for a decision and one in progress.
+ */
 function epicSamples() {
-  const base = CHANGES[0] ?? fail();
-  const epicRef = { id: "20261015-panel", title: "Panel académico", slice: "C1" };
+  const of = (slice: string) => ({
+    epic: { id: "20261015-panel", title: "Panel académico", slice },
+  });
   return {
-    epic: { ...base, id: "20261015-panel", title: "Panel académico", kind: "epic" } as ChangeView,
-    slice1: { ...base, id: "20261018-corte-1", title: "Corte 1", epic: epicRef } as ChangeView,
-    standalone: { ...base, id: "20261019-sola", title: "Spec sola" } as ChangeView,
-    slice2: {
-      ...base,
-      id: "20261020-corte-2",
-      title: "Corte 2",
-      epic: { ...epicRef, slice: "C2" },
-    } as ChangeView,
+    epic: sample(
+      "20261015-panel",
+      "Panel académico",
+      "active",
+      "implementing",
+      "2026-11-01T10:00:00Z",
+      {
+        kind: "epic",
+      },
+    ),
+    waiting: sample(
+      "20261018-corte-1",
+      "Corte 1",
+      "decision",
+      "review",
+      "2026-11-02T10:00:00Z",
+      of("C1"),
+    ),
+    working: sample(
+      "20261019-corte-2",
+      "Corte 2",
+      "active",
+      "testing",
+      "2026-11-03T10:00:00Z",
+      of("C2"),
+    ),
+    finished: sample(
+      "20261012-corte-3",
+      "Corte 3",
+      "recent",
+      "done",
+      "2026-10-30T10:00:00Z",
+      of("C3"),
+    ),
+    standalone: sample(
+      "20261020-sola",
+      "Alfa sola",
+      "decision",
+      "acceptance",
+      "2026-11-04T10:00:00Z",
+    ),
+    other: sample("20261021-otra", "Zeta otra", "active", "testing", "2026-11-05T10:00:00Z"),
   };
 }
 

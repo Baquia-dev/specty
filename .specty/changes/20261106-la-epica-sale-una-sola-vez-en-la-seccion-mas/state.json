@@ -6,6 +6,13 @@
   "branch": "specty/20261106-la-epica-sale-una-sola-vez-en-la-seccion-mas",
   "baseCommit": "b5ad80b2796a175e2c0ad187415e989468f61809",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:b8cc0f1aacd7fabe667cb0da305a506f46f0b59b5b3e22cde755c03b6aacc4c9",
+    "at": "2026-11-06T15:00:34.994Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -47,12 +54,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:b8cc0f1aacd7fabe667cb0da305a506f46f0b59b5b3e22cde755c03b6aacc4c9",
-    "at": "2026-11-06T15:00:34.994Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T15:05:05.305Z"
 }
