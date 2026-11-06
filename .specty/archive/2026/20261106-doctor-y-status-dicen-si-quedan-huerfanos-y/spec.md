@@ -80,3 +80,33 @@ La limpieza de C2 quita los huérfanos al terminar `new`, `close`, `cancel` y `p
 
 - R1: `status` se hace más lento al buscar los huérfanos, y lo lee la extensión de VS Code — los buscadores leen carpetas y la lista de worktrees, y solo miran el estado de los cambios terminados; sin carpetas fantasma no busca los cambios sin carpeta.
 - R2: Un aviso que `prune` no quita nunca, como el registro de una worktree bloqueada — los bloqueados no cuentan, y cada tipo cuenta solo lo que la limpieza quitaría desde esa carpeta.
+
+## Cierre
+
+### Resumen
+
+`doctor` y `status` dicen ahora si quedan huérfanos y refs de rescate (P208, corte C3 de la épica). Con él están hechos los tres cortes de la épica: guard, limpieza y avisos.
+
+- `specty doctor` da, entre sus avisos, una línea por cada tipo de huérfano que hay, con cuántos y lo que hará `specty prune`: registros de worktrees sin carpeta, carpetas de cambios terminados, carpetas fantasma y carpetas vacías de `.specty/changes/`. Si hay refs de rescate, otra línea dice cuántas hay, cuál es la más reciente, cómo verla (`git show`), recuperarla (`git worktree add`), listar las demás y borrarlas.
+- `specty status` añade la sección «LIMPIEZA», con el total y `specty doctor` para el detalle.
+- Sin huérfanos ni refs, ninguno de los dos dice nada.
+- Para contar sin tocar nada, `flow/orphans.ts` tiene ahora `countOrphans`, más `finishedFolders` y `workingFolders`, traídos de `flow/prune.ts`. `removeFinished` los usa, así que la limpieza hace lo mismo que antes.
+- `staleRecords` ya no cuenta los registros bloqueados, que git no poda; para eso, `Worktree.locked` sale de `git worktree list --porcelain`. `rescueRefs` (`flow/rescue.ts`) lista las refs, la más reciente primero.
+- Los textos, en español y en inglés, están en `cards/doctor-cleanup.ts` y `cards/status.ts`.
+- Los tests: `packages/cli/test/doctor-orphans.test.ts` (AC9, AC10) y `packages/core/test/cards/doctor-cleanup.test.ts` (AC9–AC11).
+- La verificación completa pasó entera, y los tests ejecutan el 100 % de las líneas añadidas.
+
+### Desviaciones
+
+- Ninguna respecto a las tareas. Ningún test que ya existía tuvo que cambiar.
+
+### Decisiones
+
+- Las refs de rescate se ven con `git show <ref>`, como en la salida de `prune`, y no con el `git log -p` de A6 de la épica (decisión de C2).
+- La más reciente se elige por la hora del último nivel de su nombre y, a igual hora, por el nombre entero; no por la fecha del commit.
+- Los huérfanos y las refs son avisos, no problemas: `doctor` no se pone en rojo por ellos.
+- `status --json` no gana campos: solo cambia el texto de la tarjeta.
+
+### Pendientes
+
+- `packages/cli/src/io/git.ts` tiene 302 líneas de código (aviso desde 300) tras `Worktree.locked`: falta proponer cómo dividirlo (P209).

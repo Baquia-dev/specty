@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-doctor-y-status-dicen-si-quedan-huerfanos-y",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-doctor-y-status-dicen-si-quedan-huerfanos-y",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:e26cb9c26a9fb4d5f1b7b299b746d11bd0b08de5eec2d00221eafb494cbc01aa",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "93a93e9fada53b3b61a474c29cba3044ef251430",
+      "attempts": 1,
       "startedAt": "2026-11-06T10:45:13.980Z",
       "doneAt": "2026-11-06T10:46:08.544Z",
-      "summary": "ARCHITECTURE cuenta los avisos de doctor (huérfanos por tipo y refs de rescate), la sección «LIMPIEZA» de status y que workingFolders vive en flow/orphans.ts"
+      "summary": "ARCHITECTURE cuenta los avisos de doctor (huérfanos por tipo y refs de rescate), la sección «LIMPIEZA» de status y que workingFolders vive en flow/orphans.ts",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,6 +83,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T10:52:09.906Z",
   "lockedTests": {
     "packages/cli/test/doctor-orphans.test.ts": "sha256:9af2bfaa223085c10207e95804504b5e5a419a04aa4a04c95ac6a997d77f7b63",
     "packages/core/test/cards/doctor-cleanup.test.ts": "sha256:33255e93e3693d80f672b14fc8ccbeb498d1d36e907f03fa30b31b1a0b729f06"
