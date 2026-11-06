@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b24950e86864e7967358e8af2740a7ba2ad7eba9",
+      "startedAt": "2026-11-06T17:49:39.760Z",
+      "doneAt": "2026-11-06T17:55:13.834Z",
+      "summary": "holdsById da también el holder de status (la herramienta de la última conversación que dio un paso en la carpeta y hace cuántos minutos) en el registro de cada cambio abierto, espere a quien espere"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

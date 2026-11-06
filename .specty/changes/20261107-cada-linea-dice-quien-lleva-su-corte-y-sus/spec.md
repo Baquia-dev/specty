@@ -64,7 +64,7 @@ En la tarjeta de una épica de la Bandeja, la línea de cada corte con un cambio
 
 ## Tareas
 
-- [ ] T1: El servidor da quién lleva cada cambio abierto
+- [x] T1: El servidor da quién lleva cada cambio abierto
   - files: packages/cli/src/server/records.ts, packages/cli/test/server-holds.test.ts
   - ac: AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-holds.test.ts
