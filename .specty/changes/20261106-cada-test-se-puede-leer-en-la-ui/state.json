@@ -6,6 +6,13 @@
   "branch": "specty/20261106-cada-test-se-puede-leer-en-la-ui",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:921447ede8118b0a5c7997cfabf36f807767f7a0988b9b9b5cfe6ca7f07270be",
+    "at": "2026-11-06T11:14:42.788Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:921447ede8118b0a5c7997cfabf36f807767f7a0988b9b9b5cfe6ca7f07270be",
-    "at": "2026-11-06T11:14:42.788Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T11:17:44.177Z"
 }
