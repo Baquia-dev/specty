@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-verificar-de-la-ui-incorpora-main-antes-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-verificar-de-la-ui-incorpora-main-antes-de",
   "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
   "revision": 2,
@@ -60,6 +60,8 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T18:57:45.679Z"
+  "lockedTests": {
+    "packages/core/test/cards/server.test.ts": "sha256:8817730e8945fa4db388d52aa4f6c7d49dc06b43ce30f33b73c8a69c4d832ff7",
+    "packages/cli/test/server/verify-merge.test.ts": "sha256:f053440315853e87f02120059431d924917b31c64fcf91ef15c5c9281d0abd52"
+  }
 }
