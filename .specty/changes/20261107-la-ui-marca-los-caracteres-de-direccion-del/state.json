@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-ui-marca-los-caracteres-de-direccion-del",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-ui-marca-los-caracteres-de-direccion-del",
   "baseCommit": "7364903203145fdcd85c7f2a4455e068e59045f7",
   "revision": 3,
@@ -61,12 +61,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a22c171eb2cb133197e86720a8da9a19b43bb0b4",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:58:51.704Z",
       "doneAt": "2026-11-06T18:59:39.691Z",
-      "summary": "«Ver código» y la evidencia (code-lines.ts, que lee el idioma de Preferences) y la trazabilidad (trace-view.ts) pintan la pieza marcada con el tono y el título de DIRECTION_MARK y data-direction."
+      "summary": "«Ver código» y la evidencia (code-lines.ts, que lee el idioma de Preferences) y la trazabilidad (trace-view.ts) pintan la pieza marcada con el tono y el título de DIRECTION_MARK y data-direction.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "229068435a02817a0a2a385e8c670751f65b3fa0",
+      "startedAt": "2026-11-06T18:59:40.034Z",
+      "doneAt": "2026-11-06T19:04:18.164Z",
+      "summary": "ui.md (Visor de diffs) cuenta cómo se ve un carácter de dirección del texto y que spansOf lo marca para el visor, «Ver código», la evidencia y la trazabilidad."
     }
   },
   "pending": {

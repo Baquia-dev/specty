@@ -68,7 +68,7 @@ Hoy la UI pinta el parche y la evidencia de un desbloqueo, y cualquier otra lín
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/unlock-detail.test.ts --include src/history/trace-view.test.ts --include src/progress/locked-tests.test.ts --include src/progress/tests-sent.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T4: ui.md cuenta cómo se ven esos caracteres
+- [x] T4: ui.md cuenta cómo se ven esos caracteres
   - files: docs/ui.md
   - ac: —
   - verify: grep -q "dirección del texto" docs/ui.md
