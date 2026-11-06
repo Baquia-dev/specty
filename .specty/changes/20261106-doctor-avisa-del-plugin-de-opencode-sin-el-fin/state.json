@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-doctor-avisa-del-plugin-de-opencode-sin-el-fin",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-doctor-avisa-del-plugin-de-opencode-sin-el-fin",
   "baseCommit": "bb6b8c18c0ff709f2414c7b4de05ba47d4343812",
   "revision": 1,
@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "91ba8f136bf3182be99398872b421293a63285db",
+      "attempts": 1,
       "startedAt": "2026-11-06T09:04:34.179Z",
       "doneAt": "2026-11-06T09:04:58.298Z",
-      "summary": "Código opencode-turn-end en DoctorLine y su texto en español e inglés en cards/doctor-agents.ts"
+      "summary": "Código opencode-turn-end en DoctorLine y su texto en español e inglés en cards/doctor-agents.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f1043356808a15d0740bb4434af9b1bf52a12c15",
+      "startedAt": "2026-11-06T09:04:58.605Z",
+      "doneAt": "2026-11-06T09:05:57.263Z",
+      "summary": "El doctor de OpenCode avisa (opencode-turn-end) cuando el plugin con guard no escucha session.execution.succeeded, como opencode-compact; ARCHITECTURE lo cuenta"
     }
   },
   "pending": {
