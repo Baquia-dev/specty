@@ -32,8 +32,9 @@ const FILLS: Readonly<Record<LaneCell, string>> = {
 };
 
 /**
- * A slice of an epic in its card: its id, its title linked to its change, a track of four
- * stretches (Spec, Tests, Impl., Acept.) or what it waits for, and the button of its decision.
+ * A slice of an epic in its card: its id, its title linked to its change with the notices of its
+ * row under it, a track of four stretches (Spec, Tests, Impl., Acept.) or what it waits for, and
+ * on the right the button of its decision or, without one, who holds its change.
  */
 @Component({
   selector: "sp-inbox-lane",
@@ -49,11 +50,29 @@ const FILLS: Readonly<Record<LaneCell, string>> = {
   },
   template: `
     <span class="font-mono text-xs text-text-muted" data-slice-id>{{ lane().slice }}</span>
-    <span class="min-w-0 truncate text-[13px]">
-      @if (lane().change; as change) {
-        <a class="font-medium text-text no-underline hover:underline" [routerLink]="['/changes', change.id]" [queryParams]="change.tab === undefined ? null : { tab: change.tab }" (focus)="picked.emit()">{{ lane().title }}</a>
-      } @else {
-        <span class="text-text" data-title>{{ lane().title }}</span>
+    <span class="flex min-w-0 flex-col gap-0.5 text-[13px]">
+      <span class="min-w-0 truncate">
+        @if (lane().change; as change) {
+          <a class="font-medium text-text no-underline hover:underline" [routerLink]="['/changes', change.id]" [queryParams]="change.tab === undefined ? null : { tab: change.tab }" (focus)="picked.emit()">{{ lane().title }}</a>
+        } @else {
+          <span class="text-text" data-title>{{ lane().title }}</span>
+        }
+      </span>
+      @if (lane().holds; as holds) {
+        @if (holds.away; as away) {
+          <span class="text-xs" style="color: var(--color-phase-review)" data-unheld>{{ t()('Su conversación (' + away + ') salió de su carpeta', 'Its conversation (' + away + ') left its folder') }}</span>
+        } @else if (holds.orphan) {
+          <span class="text-xs" style="color: var(--color-phase-review)" data-unheld>{{ t()('Ninguna conversación lo lleva', 'No conversation holds it') }}</span>
+        }
+        @if (holds.shared; as shared) {
+          <span class="text-xs break-all" style="color: var(--color-phase-review)" data-shared>
+            {{ t()('Comparte', 'Shares') }}
+            @for (path of shared.paths; track path; let last = $last) {
+              <code class="font-mono">{{ path }}</code>@if (!last) {,&ngsp;}
+            }
+            {{ t()('con', 'with') }} {{ shared.with.join(', ') }}
+          </span>
+        }
       }
     </span>
     @if (planned(); as line) {
@@ -70,6 +89,12 @@ const FILLS: Readonly<Record<LaneCell, string>> = {
         <sp-button size="sm" [variant]="current() ? 'primary' : 'secondary'" (pressed)="open()">
           {{ t()(decisions[decision].action.es, decisions[decision].action.en) }}
         </sp-button>
+      } @else if (lane().holds; as holds) {
+        @if (holds.orphan) {
+          <span class="text-xs whitespace-nowrap" style="color: var(--color-phase-review)" data-holder>{{ t()('Sin conversación', 'No conversation') }}</span>
+        } @else if (holds.agent; as agent) {
+          <span class="text-xs whitespace-nowrap text-text-muted" data-holder>{{ agent }}</span>
+        }
       }
     </span>
   `,

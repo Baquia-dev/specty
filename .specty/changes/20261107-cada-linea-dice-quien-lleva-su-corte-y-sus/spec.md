@@ -76,7 +76,7 @@ En la tarjeta de una épica de la Bandeja, la línea de cada corte con un cambio
   - files: packages/ui/src/inbox/lane-holds.ts, packages/ui/src/inbox/lane-holds.test.ts, packages/ui/src/inbox/epic-lanes.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/lane-holds.test.ts --include src/inbox/epic-lanes.test.ts
-- [ ] T4: La línea dice el agente o «Sin conversación» y sus avisos bajo el título
+- [x] T4: La línea dice el agente o «Sin conversación» y sus avisos bajo el título
   - files: packages/ui/src/inbox/inbox-lane.ts, packages/ui/src/inbox/inbox-lane.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-lane.test.ts --include src/inbox/inbox-epic.test.ts && pnpm typecheck && pnpm lint && pnpm knip
