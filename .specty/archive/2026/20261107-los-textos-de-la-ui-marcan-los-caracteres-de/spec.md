@@ -95,3 +95,29 @@ Desde el cambio anterior, la UI muestra con su código, en el tono de atención,
 
 - R1: Envolver un texto en `sp-text` podría cambiar cómo se recorta o se parte, o lo que leen los tests que miran su texto — `sp-text` no añade clases ni espacios, es un elemento en línea, y las verificaciones incluyen los tests de los componentes que lo usan.
 - R2: Partir el HTML del markdown en etiquetas y texto fallaría con un `>` dentro de un atributo — `marked` lo escapa, y el HTML que escribe el agente lo sigue saneando Angular después, así que lo peor sería una marca de más, nunca un script.
+
+## Cierre
+
+### Resumen
+
+Los textos que vienen del agente o de disco y no son código muestran cada carácter de dirección del texto (U+202A–U+202E, U+2066–U+2069) con la misma marca que el código: su código, en el tono de atención (`DIRECTION_MARK`) y con su título en español y en inglés, en lugar de dejar que el navegador lo aplique y reordene lo que se lee. Lo corta un solo sitio, `directionPieces` (`highlight/highlight.ts`), que también usa `spansOf`, y lo pintan dos: el markdown (`review/markdown.ts`), que cambia cada carácter de su HTML por su código, marcado en el texto y en el código y sin marca dentro de una etiqueta, y `sp-text` (`components/shown-text.ts`), que las plantillas usan en lugar de interpolar el texto. Lo usan los criterios, los supuestos, las rutas y sus motivos, las tareas, los cortes, los riesgos y la comparación palabra a palabra de la pestaña Spec, `sp-item-text` (los comentarios y el Historial), la solicitud de alcance y las tareas de Progreso, el título de un cambio en la Bandeja, en su cabecera y en su barra compacta, y sus rutas compartidas y solicitudes en la Bandeja. Un texto sin ninguno se ve como antes. ui.md lo cuenta en «Visor de diffs».
+
+### Desviaciones
+
+- Antes de aprobar la spec, se quitó `pnpm typecheck` de la verificación de T1, T2 y T3, como pidió `propose`; la comprueba T4, la última tarea de código.
+- T3 tomó también `components/shown-text.ts` (S1, aprobada sola porque estaba en la spec). Su plantilla escribía el texto de una pieza con tres llaves seguidas, y el aviso de riesgo `html-unescaped` (CWE-79) de T2 lo leyó como HTML sin escapar, aunque Angular lo escapa. Ahora va en un `ng-container`, y el código final no tiene ese patrón, pero el aviso sigue en el registro de T2.
+- Una tarea de Progreso marca también sus rutas, además de su título y su resumen.
+- Antes de enviar los tests, un bloque temporal en los mismos archivos de test volcó el DOM de hoy para comprobar sus selectores y sus textos, y se quitó antes de `propose`. Unos archivos de sondeo aparte, creados con un script, no eran archivos permitidos del cambio: el guard bloqueó editarlos y se borraron.
+
+### Decisiones
+
+- Un componente, `sp-text`, en lugar de una pipe: una pipe solo da texto, y la marca necesita un elemento con su tono y su título.
+- El markdown marca su HTML como texto, partido en etiquetas y texto, en lugar de recorrer el DOM después de pintarlo: es una función pura y Angular sigue saneando el resultado. Allí la marca lleva su clase y su título, sin `data-direction`, que el saneador quitaría.
+- `sp-item-text` envuelve en `sp-text` sus trozos sin id, así que los comentarios y el Historial se marcan sin tocar sus componentes, y cada id sigue señalando su elemento.
+- Los demás textos quedan como pendiente para no pasar de 15 archivos de código.
+
+### Pendientes
+
+- Siguen sin marcar los caracteres de dirección del texto los textos del agente o de disco que este cambio no cubrió: la pestaña Aceptación (la evidencia de cada criterio, las rutas de sus tests, la matriz de trazabilidad y los diálogos del resultado), la Memoria, la trazabilidad del Historial, la vista del cambio en el chat (MCP App), los cortes de una épica en la Bandeja (`inbox/inbox-lane.ts`), las burbujas de los ids (`components/item-bubble.ts`), la revisión independiente, las rutas de los tests enviados y bloqueados, la carpeta de un cambio, los avisos de Specty que citan un texto del agente, los atributos como `title` o `aria-label` y la salida de los comandos.
+- En Progreso, las rutas de una solicitud de alcance se pintan pegadas, sin espacio ni coma entre una y otra (`progress/scope-request.ts`); ya pasaba antes de este cambio.
+- P242 vale también para estos textos: mirar a ojo en `specty ui`, en claro y en oscuro, la marca en la pestaña Spec, en una solicitud de alcance y en la Bandeja.

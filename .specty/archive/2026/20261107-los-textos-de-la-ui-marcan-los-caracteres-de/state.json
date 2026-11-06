@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-los-textos-de-la-ui-marcan-los-caracteres-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-los-textos-de-la-ui-marcan-los-caracteres-de",
   "baseCommit": "83686f522106f89c261fe441063c60f9c2cf4510",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:2034755a6267a68aed49269985a29b121c1bd6c43e0a3f60a47d10283e75c5dd",
@@ -81,12 +81,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "283542041cf0b7e48e650c4d2aa19f0a6d9cec8d",
+      "attempts": 1,
       "startedAt": "2026-11-06T20:11:02.929Z",
       "doneAt": "2026-11-06T20:11:34.717Z",
-      "summary": "ui.md cuenta que el markdown de la spec y sp-text muestran los caracteres de dirección con la misma marca que el código, y qué textos los usan"
+      "summary": "ui.md cuenta que el markdown de la spec y sp-text muestran los caracteres de dirección con la misma marca que el código, y qué textos los usan",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -99,10 +99,69 @@
     "T": 5,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T20:13:22.974Z",
   "lockedTests": {
     "packages/ui/src/review/markdown.test.ts": "sha256:8c224c17401cb8e4143fdc9b54a05a772bffa981d5c487be12255986043df80d",
     "packages/ui/src/change/change-direction.test.ts": "sha256:c1da9623209cbfc856beec4526c6c0c6f8baf6f8355a97bab736d6c977526bb4",
     "packages/ui/src/progress/progress-direction.test.ts": "sha256:f4f6f97e68f6d53487cc033d0d30ce8dfd43751891dd158630aa0a6248db41b6",
     "packages/ui/src/review/spec-direction.test.ts": "sha256:c25e532c1bce72ea8033aafbb515498826e1b353c879ac9497c0c09798aecc27"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "bb32977a94e76f405187f4486874e76c19d8c9f9",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/ui/src/inbox/inbox-row.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/finish.ts",
+      "packages/cli/src/commands/propose.ts",
+      "packages/cli/src/flow/closing-turn.ts",
+      "packages/cli/test/accept-quick-turn.test.ts",
+      "packages/cli/test/closing-ahead.test.ts",
+      "packages/cli/test/delegate.test.ts",
+      "packages/cli/test/friction.test.ts",
+      "packages/core/src/cards/acceptance.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/flow/machine.ts",
+      "packages/core/src/flow/phases.ts",
+      "packages/core/src/guard/decide.ts",
+      "packages/core/src/guard/spec.ts",
+      "packages/core/src/index.ts",
+      "packages/core/test/closing-ahead.test.ts",
+      "packages/core/test/flow/machine.test.ts",
+      "packages/ui/src/change/change-bar.ts",
+      "packages/ui/src/change/change-direction.test.ts",
+      "packages/ui/src/change/change-page.ts",
+      "packages/ui/src/change/change-page.unattended.test.ts",
+      "packages/ui/src/change/resume-hints.test.ts",
+      "packages/ui/src/change/resume-hints.ts",
+      "packages/ui/src/components/item-tooltip.ts",
+      "packages/ui/src/components/shown-text.ts",
+      "packages/ui/src/data/agent-name.test.ts",
+      "packages/ui/src/data/agent-name.ts",
+      "packages/ui/src/highlight/highlight.ts",
+      "packages/ui/src/history/history-tab.ts",
+      "packages/ui/src/history/history-who.test.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "packages/ui/src/inbox/lane-holds.ts",
+      "packages/ui/src/progress/progress-direction.test.ts",
+      "packages/ui/src/progress/scope-request.ts",
+      "packages/ui/src/progress/task-row.ts",
+      "packages/ui/src/review/assumption-row.ts",
+      "packages/ui/src/review/markdown.test.ts",
+      "packages/ui/src/review/markdown.ts",
+      "packages/ui/src/review/spec-direction.test.ts",
+      "packages/ui/src/review/spec-sections.ts"
+    ],
+    "at": "2026-11-06T20:16:07.190Z",
+    "resolved": {
+      "commit": "56a34e0",
+      "at": "2026-11-06T20:22:24.588Z"
+    }
   }
 }
