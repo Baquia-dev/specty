@@ -71,7 +71,7 @@ Desde C5, `specty init` instala el fin de turno de cada agente (`hook agent-stop
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-agent-stop.test.ts
   - type: feat
-- [ ] T2: `doctor` avisa si falta el fin de turno en los hooks de Claude Code, Codex, Cursor, Gemini CLI, Devin y Antigravity
+- [x] T2: `doctor` avisa si falta el fin de turno en los hooks de Claude Code, Codex, Cursor, Gemini CLI, Devin y Antigravity
   - files: packages/cli/src/install/agents.ts, packages/cli/src/agents/claude-code.ts, packages/cli/src/agents/codex.ts, packages/cli/src/agents/cursor.ts, packages/cli/src/agents/gemini-cli.ts, packages/cli/src/agents/windsurf.ts, packages/cli/src/agents/antigravity.ts, packages/cli/test/doctor-agent-stop.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-agent-stop.test.ts test/memory-stop-install.test.ts

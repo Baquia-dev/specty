@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "be667c3690be500fc71f22d0b6547ab069c977cd",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:55:53.994Z",
       "doneAt": "2026-11-06T13:56:20.636Z",
-      "summary": "La línea `agent-stop` de `doctor` (con `tool`) va en `DoctorLine` junto a `memory-stop`, y su texto en `AGENT_WRITERS`, en español y en inglés: falta el fin de turno de Specty, que devuelve al agente a `specty wait`, y se arregla con `specty init`."
+      "summary": "La línea `agent-stop` de `doctor` (con `tool`) va en `DoctorLine` junto a `memory-stop`, y su texto en `AGENT_WRITERS`, en español y en inglés: falta el fin de turno de Specty, que devuelve al agente a `specty wait`, y se arregla con `specty init`.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "225fb02fe1dab0eabc5c9e1f09a1272fc2148e8a",
+      "startedAt": "2026-11-06T13:56:20.999Z",
+      "doneAt": "2026-11-06T13:58:49.558Z",
+      "summary": "`stopLines` (antes `memoryStopLines`, en `install/agents.ts`) da la línea de cada fin de turno de Specty que falta junto al guard; los `doctor` de Claude Code y Codex piden `memory-stop` y `agent-stop`, y los de Cursor, Gemini CLI, Devin y Antigravity, `agent-stop`."
     }
   },
   "pending": {
