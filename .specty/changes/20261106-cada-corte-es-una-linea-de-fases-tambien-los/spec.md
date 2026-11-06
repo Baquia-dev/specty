@@ -87,7 +87,7 @@ En la Bandeja, la tarjeta de una épica dibuja, bajo su fila, una línea por cad
   - files: packages/ui/src/inbox/inbox-lane.ts, packages/ui/src/inbox/inbox-lane.test.ts, packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/data/finished-summaries.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-lane.test.ts --include src/inbox/inbox-row.test.ts --include src/data/finished-summaries.test.ts
-- [ ] T3: La tarjeta de la épica dibuja una línea por corte y `j`/`k` las recorren
+- [x] T3: La tarjeta de la épica dibuja una línea por corte y `j`/`k` las recorren
   - files: packages/ui/src/inbox/inbox-epic.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox-epic.test.ts, packages/ui/src/inbox/inbox.test.ts
   - ac: AC2, AC3, AC4, AC9, AC11
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-epic.test.ts --include src/inbox/inbox.test.ts --include src/inbox/inbox-more.test.ts --include src/inbox/inbox-view.test.ts --include src/inbox/inbox-row.test.ts && pnpm typecheck && pnpm lint && pnpm knip

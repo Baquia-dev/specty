@@ -72,12 +72,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f809dd98c6a24a2d4a2382e31ec4138447449a0a",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:48:49.092Z",
       "doneAt": "2026-11-06T15:50:20.215Z",
-      "summary": "sp-inbox-lane dibuja la línea de un corte (id, título con su enlace, pista de cuatro tramos con el color de su fase o lo que espera, y el botón de su decisión con los textos de la fila); InboxRow comparte DECISIONS y deja de recibir inEpic"
+      "summary": "sp-inbox-lane dibuja la línea de un corte (id, título con su enlace, pista de cuatro tramos con el color de su fase o lo que espera, y el botón de su decisión con los textos de la fila); InboxRow comparte DECISIONS y deja de recibir inEpic",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/inbox/inbox-epic.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "c215c35fe76b6f93add1cd6c9bdb72317c8bed9a",
+      "startedAt": "2026-11-06T15:50:20.569Z",
+      "doneAt": "2026-11-06T16:26:15.003Z",
+      "summary": "La tarjeta de la épica dibuja las cabeceras de los tramos y una línea por corte, pide sliceChanges sin resource y con cada aviso, y j/k recorren su fila y sus líneas con cambio; el test de la tarjeta se corrigió con S1"
     }
   },
   "pending": {
@@ -88,12 +99,13 @@
     "A": 9,
     "AC": 11,
     "T": 4,
-    "R": 2
+    "R": 2,
+    "S": 1
   },
   "lockedTests": {
     "packages/ui/src/inbox/inbox.test.ts": "sha256:7e3b52eb54b7a1caae989401f19d585c4c0e34a91739571664da24c214d4c3a3",
     "packages/ui/src/inbox/epic-lanes.test.ts": "sha256:d47ec984e82620dc98ff37a7e1791fcefd8f1b86973e7302e5e8bef084054693",
-    "packages/ui/src/inbox/inbox-epic.test.ts": "sha256:2396ba054ea5b8bba9eb46cea1703250894141c469be2f6137147fb5dd6c80a9",
+    "packages/ui/src/inbox/inbox-epic.test.ts": "sha256:2ab92bfb4cf68f9d5ef87780868ff28aeb93d2343695e20e3548473e16a766b1",
     "packages/ui/src/inbox/inbox-lane.test.ts": "sha256:26f40675752fa81c627e410efc82669f2f4a5944d15f466276aef1e5941118d6"
   }
 }

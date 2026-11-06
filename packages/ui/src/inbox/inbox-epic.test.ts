@@ -53,8 +53,9 @@ function epicRecords(
     ...records.map((record) => {
       const slice = slices[record.state.id];
       if (slice === undefined) return record;
-      const front = `kind: standard\nepic: ${EPIC}\nslice: ${slice}`;
-      return { ...record, spec: record.spec.replace("kind: standard", front) };
+      // C1's change is a quick one: its spec keeps its kind and names the epic and the slice.
+      const front = (line: string) => `${line}\nepic: ${EPIC}\nslice: ${slice}`;
+      return { ...record, spec: record.spec.replace(/^kind: \w+$/m, front) };
     }),
   ];
 }
