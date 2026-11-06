@@ -803,8 +803,9 @@ Claude Code siguió el flujo sin que el guard tuviera que bloquearlo: ninguna ac
 - Antigravity y Devin (Windsurf), que no tienen un modo sin interfaz.
 
 **Experimentos de consumo** (`src/experiments.ts`). No miden si el agente cumple el flujo, sino lo que cuesta.
-- `changes` y `changes-subagent` piden tres arreglos seguidos, cada uno como un cambio quick, en modo delegado (lo activa la persona simulada).
-- En el segundo, el repositorio trae el subagente `specty-change` de Claude Code (`.claude/agents/`), que sigue `specty next` hasta cerrar su cambio y responde en tres líneas, y el encargo pide hacer cada cambio con él.
+- `changes` y `changes-subagent` piden tres arreglos, cada uno como un cambio quick, en modo delegado (lo activa la persona simulada).
+- Hasta el 2026-11-07, los dos trabajaban en la carpeta principal (`git.worktrees: false`) y pedían los arreglos uno tras otro. En el segundo, el repositorio traía el subagente `specty-change` de Claude Code (`.claude/agents/`), que seguía `specty next` hasta cerrar su cambio, y el encargo pedía hacer cada cambio con él.
+- Desde entonces, como en las épicas, el encargo es el mismo y decide la configuración: `changes` lleva `subagents: false`, y la sesión hace cada cambio ella misma; `changes-subagent` lleva la configuración por defecto, y la tarjeta sin cambio activo pide un subagente por cambio, en paralelo (§7). Cada cambio va en su carpeta, sin preparación (`git.setup: false`): en la carpeta principal, un segundo `new` se rechaza mientras el primero sigue abierto y `specty enter` no tiene carpeta a la que entrar, así que los subagentes en paralelo no caben.
 - Se juzgan por el repositorio: cumplen con los tres archivos arreglados y tres cambios cerrados; código sin ningún cambio de Specty es una violación.
 - Solo corren si `SPECTY_EVALS_SCENARIOS` los nombra, con 150 turnos y 30 minutos.
 - De cada ejecución de Claude Code, la suite guarda el coste que da su `stream-json` (`total_cost_usd`, sus subagentes incluidos) y el mayor contexto que leyó su hilo principal (`consumptionOf`). El informe da sus medias en «Consumo».
@@ -861,6 +862,26 @@ Con el arreglo, el reparto cumple el flujo y termina un 27 % antes, por un 25 % 
 Con tres cortes de una línea, la ganancia es pequeña. En orden, la sesión hace cada corte tras el anterior; con el reparto, la épica tarda lo que su corte más lento, así que se espera que la ganancia crezca con cortes más largos. Por eso repartir sigue siendo lo que hace una épica por defecto, y `subagents: false` queda para quien prefiera gastar menos.
 
 Mientras corrían, otras sesiones verificaban en la misma máquina, con una carga de unos 15, así que los tiempos son orientativos.
+
+**Un subagente por cambio, y una pregunta que vuelve** (P254). Desde que la tarjeta sin cambio activo pide un subagente por cambio, `changes` y `changes-subagent` miden eso (arriba), y `question` mide el camino de vuelta de una pregunta:
+- Pide en `src/descuento.ts` una función que aplique el descuento de la campaña de primavera, que ningún archivo del repositorio dice, en modo delegado y con la configuración por defecto: cada cambio en su carpeta, sin preparación, y los cambios a subagentes.
+- Cumple si un subagente creó el cambio (`specty new … --subagent`), el cambio sigue abierto en su carpeta de `.worktrees/` y la respuesta final de la sesión principal hace una pregunta. `src/descuento.ts` en cualquier carpeta es una violación, porque supuso el dato; lo demás, también que la sesión principal cree el cambio o no pregunte, queda sin avance.
+- Lo que el repositorio no guarda lo lee de la transcripción: la suite le pasa al juicio de un experimento el `stream-json`, del que `agents.ts` saca la respuesta final (`answerOf`, el `result` de su línea `result`) y los comandos de los subagentes (`subagentCommandsOf`, los `Bash` de los mensajes con `parent_tool_use_id`). De otro agente no saca nada, y su ejecución queda sin avance.
+- Corre con los turnos y minutos de los tres cambios, y solo si `SPECTY_EVALS_SCENARIOS` lo nombra.
+
+El 2026-11-07, con Claude Code 2.1.318 y Opus 5.5, una ejecución de cada uno (1,96 USD en total):
+
+| Experimento | Cumplió | Tiempo (s) | Rondas | Bloqueos | Coste (USD) | Contexto máximo del hilo principal |
+| --- | --- | --- | --- | --- | --- | --- |
+| Tres cambios, por el agente | 1 de 1 | 107 | 45 | 0 | 0,68 | 47.550 |
+| Tres cambios, un subagente por cambio | 1 de 1 | 75 | 36 | 1 | 0,92 | 34.326 |
+| Una pregunta que vuelve | 1 de 1 | 58 | 10 | 1 | 0,36 | 28.425 |
+
+La sesión lanzó los tres subagentes en paralelo con la tarjeta que le dio el `SessionStart`, sin ejecutar antes `specty next`, y cada uno cerró su cambio: terminó un 30 % antes y con un 28 % menos de contexto en el hilo principal, por un 35 % más de coste. En `question`, el subagente creó el cambio, se detuvo en el borrador sin proponer la spec y volvió con la pregunta, que la sesión le hizo al usuario sin escribir código.
+
+Con una ejecución de cada uno, las cifras son orientativas, pero no cambian la conclusión de arriba: en una sesión corta el reparto cuesta más y termina antes. La diferencia de coste es menor que el 2026-10-29 (1,8 veces) porque ahora la sesión que lo hace todo también cambia de carpeta en cada cambio. Dos detalles:
+- Los subagentes de `b` y `c` recibieron de `new` el aviso de posible duplicado (los tres traen la misma petición) y lo resolvieron ellos con `--distinct-from`, en lugar de volver con la pregunta que pide esa tarjeta.
+- La espera con `specty wait` a una persona no se mide: en modo delegado, el subagente aprueba, acepta y cierra él mismo, y la suite no tiene una persona que decida mientras corre el agente.
 
 **El agente real con un modelo guionizado** (`agent-e2e.test.ts`, con `fake-model.ts`). Es la parte de la suite que no necesita un modelo de verdad. Claude Code corre en modo headless (`claude -p`) en un repositorio preparado con `specty init`. Habla con un servidor local que imita la API de Messages: responde por SSE una secuencia fija de llamadas a herramientas, y sabe por dónde va contando los `tool_result` que trae la conversación. La prueba lee esos `tool_result` y comprueba lo que Claude Code le devolvió al modelo:
 

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-evals-miden-un-subagente-por-cambio-como-lo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-las-evals-miden-un-subagente-por-cambio-como-lo",
   "baseCommit": "41695f12cb51d5920f2e84f8d76c388386a21e34",
   "revision": 2,
@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4bdde5923c7a4e4fe2b573ce3ab1ad24ec86f392",
+      "attempts": 1,
       "startedAt": "2026-11-06T23:06:32.081Z",
       "doneAt": "2026-11-06T23:11:46.000Z",
-      "summary": "Experimento question: el subagente vuelve con una pregunta; el juicio lee la respuesta final y los Bash de los subagentes del stream-json, que la suite le pasa"
+      "summary": "Experimento question: el subagente vuelve con una pregunta; el juicio lee la respuesta final y los Bash de los subagentes del stream-json, que la suite le pasa",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "67e667a8bc71b1025c54a8617ee253b63628d397",
+      "startedAt": "2026-11-06T23:11:46.357Z",
+      "doneAt": "2026-11-06T23:17:16.328Z",
+      "summary": "ARCHITECTURE §16 cuenta los experimentos de cambios con la tarjeta, el experimento question y una ejecución real de cada uno (2026-11-07)"
     }
   },
   "pending": {

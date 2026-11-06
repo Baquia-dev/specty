@@ -68,7 +68,7 @@ Desde hoy, sin cambio activo, la tarjeta de `specty next` pide un subagente por 
   - ac: AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/question.test.ts test/experiments.test.ts test/changes-card.test.ts test/consumption.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T3: La arquitectura cuenta los experimentos y sus resultados reales
+- [x] T3: La arquitectura cuenta los experimentos y sus resultados reales
   - files: docs/ARCHITECTURE.md
   - ac: AC7
   - verify: grep -q 'question' docs/ARCHITECTURE.md && grep -q '2026-11-07, con Claude Code' docs/ARCHITECTURE.md && pnpm lint
