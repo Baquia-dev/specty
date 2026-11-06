@@ -6,6 +6,13 @@
   "branch": "specty/20261106-cancelar-quita-la-carpeta-del-cambio-aunque",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:524c6b9cfa0ecbd8def95fe20200c00eaef8eec058881a70be0c999ecac30058",
+    "at": "2026-11-06T04:07:44.743Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -44,12 +51,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:524c6b9cfa0ecbd8def95fe20200c00eaef8eec058881a70be0c999ecac30058",
-    "at": "2026-11-06T04:07:44.743Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T04:10:04.347Z"
 }
