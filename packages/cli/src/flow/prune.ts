@@ -8,27 +8,29 @@ import {
   cleanupBlocks,
   type Lang,
   notInTargetBranchLine,
-  notInTargetFolderLine,
   type Output,
   type RescuedFolder,
   type UnsavedFolder,
-  workingFolderLine,
 } from "@baquia-dev/specty-core";
 import { exists } from "../io/files";
 import { createGit, type Git, resolved } from "../io/git";
 import { type Session, sessionFrom } from "../session";
 import { removeActivity } from "../store/activity";
-import type { StoredChange } from "../store/changes";
-import { readBindings } from "../store/local";
 import { dropMessages, messageChanges } from "../store/messages";
 import { repoPaths } from "../store/paths";
 import { isFinished } from "./active";
 import { markedBranches } from "./branches";
 import { locateChanges } from "./changes";
 import { commitWithReceipt, decisionTrailers } from "./commits";
-import { integrationOf, isIncorporated, reasonOf } from "./integrate";
+import { reasonOf } from "./integrate";
 import { type FolderLeft, leaveChangeFolder, within } from "./land";
-import { emptyChangeFolders, staleRecords, sweepableGhosts } from "./orphans";
+import {
+  emptyChangeFolders,
+  finishedFolders,
+  staleRecords,
+  sweepableGhosts,
+  workingFolders,
+} from "./orphans";
 import { type Rescue, rescueFolder } from "./rescue";
 import { formerWorktreesHome, targetBranch } from "./worktree";
 
@@ -56,12 +58,6 @@ const tally = (): Tally => ({ removed: [], kept: [], rescued: [], unsaved: [] })
 
 /** No rescue: a folder with nothing to save. */
 const NOTHING: Rescue = { kind: "nothing" };
-
-/**
- * A session's record stops counting a day after it was made, or once its tool said the
- * conversation ended (`ended`): nothing deletes it at the end.
- */
-const SESSION_DAY = 24 * 60 * 60 * 1000;
 
 /** What the clean-up did (`cleanUp`), for the card of the command that ran it. */
 export interface Swept extends FolderCleanup {
@@ -195,17 +191,11 @@ async function rmdirTree(folder: string): Promise<boolean> {
  * session works in (as the guard recorded it), nor the main folder. The branches stay.
  */
 async function removeFinished(session: Session): Promise<FolderCleanup> {
-  const { lang } = session;
   const main = (await session.git.worktrees())[0]?.folder ?? session.root;
-  const working = await workingFolders(session);
   const done = tally();
-  for (const { change, session: there } of await locateChanges(session)) {
-    const { state } = change;
-    if (!isFinished(state) || there.root === main) continue;
-    if (await within(session.environment.cwd, there.root)) continue;
-    const reason = await keptBecause(there, state, working, lang);
-    if (reason === undefined) await removeWorktree(session, main, there, done);
-    else done.kept.push(reason);
+  for (const { there, kept } of await finishedFolders(session)) {
+    if (kept === undefined) await removeWorktree(session, main, there, done);
+    else done.kept.push(kept);
   }
   return done;
 }
@@ -259,19 +249,6 @@ async function rescueThenRemove(
   }
   done.removed.push(folder);
   if (saved.kind === "saved") done.rescued.push({ folder, ref: saved.ref, bytes: saved.bytes });
-}
-
-/**
- * The folders agent sessions work in, as the guard recorded them in the last day, resolved; not
- * those of conversations their tool said ended.
- */
-async function workingFolders(session: Session): Promise<string[]> {
-  const now = session.environment.now().getTime();
-  return Promise.all(
-    (await readBindings(session.git))
-      .filter(({ at, ended }) => ended === undefined && now - Date.parse(at) < SESSION_DAY)
-      .map(({ folder }) => resolved(folder)),
-  );
 }
 
 /** What became of the cancelled change's folder, and the line of the commit that kept its work. */
@@ -340,22 +317,6 @@ async function cancelledKeptBecause(
   if (!inside && (await workingFolders(session)).includes(await resolved(folder))) return "working";
   const status = await session.git.run(["status", "--porcelain"]);
   return status.code !== 0 || status.stdout.trim().length > 0 ? "uncommitted" : undefined;
-}
-
-/** Why a finished change's folder stays: an agent session works in it, or it is not in its target. */
-async function keptBecause(
-  there: Session,
-  state: StoredChange["state"],
-  working: readonly string[],
-  lang: Lang,
-): Promise<string | undefined> {
-  // Such as the session that closed its change from inside, in delegated mode.
-  if (working.includes(await resolved(there.root))) return workingFolderLine(there.root, lang);
-  const plan = state.phase === "done" ? await integrationOf(there, state) : undefined;
-  if (plan !== undefined && !(await isIncorporated(there, plan))) {
-    return notInTargetFolderLine(there.root, state.id, plan.target, lang);
-  }
-  return undefined;
 }
 
 /**

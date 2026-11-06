@@ -14,6 +14,7 @@ import {
 import { isFinished } from "../flow/active";
 import { locateChanges } from "../flow/changes";
 import { lostChanges } from "../flow/lost";
+import { countOrphans } from "../flow/orphans";
 import type { Session } from "../session";
 import { type Activity, readActivity } from "../store/activity";
 import { readSpec, type StoredChange } from "../store/changes";
@@ -27,7 +28,8 @@ const MINUTE_MS = 60_000;
 
 /**
  * `specty status`: the open changes of every worktree, their phase and who they wait for, the
- * memory's fronts with who holds each in «FRENTES», and its open reminders in «TE TOCA» (ADR 0016).
+ * memory's fronts with who holds each in «FRENTES», its open reminders in «TE TOCA» (ADR 0016),
+ * and how many orphans `specty prune` would remove in «LIMPIEZA».
  */
 export async function status(session: Session): Promise<Output> {
   const open = await openChanges(session);
@@ -41,7 +43,9 @@ export async function status(session: Session): Promise<Output> {
       ? []
       : await liveHolds(session.git, now, session.config.memory.orphanAfterMin);
   const reminders = sessionEntries(memory.entries, localDay(now));
-  return statusCard(entries, session.cards, reminders, { fronts: memory.fronts, owners });
+  const orphans = Object.values(await countOrphans(session)).reduce((sum, count) => sum + count);
+  const fronts = { fronts: memory.fronts, owners };
+  return statusCard(entries, session.cards, reminders, fronts, orphans);
 }
 
 /** The open changes whose folder is gone, read from their branches (`lost`). */

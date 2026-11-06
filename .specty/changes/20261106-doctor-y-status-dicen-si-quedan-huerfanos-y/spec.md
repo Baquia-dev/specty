@@ -65,7 +65,7 @@ La limpieza de C2 quita los huérfanos al terminar `new`, `close`, `cancel` y `p
   - ac: AC9, AC10, AC11
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-cleanup.test.ts test/cards/doctor.test.ts test/cards/status-fronts.test.ts test/cards/status-holder.test.ts test/cards/status-away.test.ts test/cards/status-turn.test.ts test/cards.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T2: `doctor` y `status` cuentan los huérfanos y las refs de rescate
+- [x] T2: `doctor` y `status` cuentan los huérfanos y las refs de rescate
   - files: packages/cli/src/io/git.ts, packages/cli/src/flow/orphans.ts, packages/cli/src/flow/prune.ts, packages/cli/src/flow/rescue.ts, packages/cli/src/commands/doctor.ts, packages/cli/src/commands/status.ts, packages/cli/test/doctor-orphans.test.ts
   - ac: AC9, AC10
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-orphans.test.ts test/prune-orphans.test.ts test/prune-rescue.test.ts test/prune.test.ts test/prune-commands.test.ts test/lost-status.test.ts test/lost-folder.test.ts test/status-json.test.ts test/status-away.test.ts test/front-status.test.ts test/memory-status.test.ts test/doctor-worktrees.test.ts test/doctor-enter.test.ts test/cancel-folder.test.ts test/session-end-binding.test.ts test/restore.test.ts test/ghost-folders.test.ts test/git-memo.test.ts && pnpm typecheck && pnpm lint && pnpm knip
