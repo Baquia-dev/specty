@@ -72,7 +72,7 @@ Hoy solo los cortes de una épica van a subagentes. Una feature suelta se hace e
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/idle-subagents.test.ts test/cards/bootstrap.test.ts test/cards.test.ts test/cards/epic.test.ts test/cards/rejoin.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T3: La documentación y los comentarios de `subagents` cuentan que cada cambio va a un subagente
+- [x] T3: La documentación y los comentarios de `subagents` cuentan que cada cambio va a un subagente
   - files: docs/formats.md, docs/ARCHITECTURE.md, packages/core/src/cards/view.ts, packages/core/src/schema/config.ts, packages/cli/src/session.ts
   - ac: AC1, AC2
   - verify: grep -q 'cada cambio que pide el usuario' docs/formats.md && grep -q 'Tarjeta sin cambio activo' docs/ARCHITECTURE.md && pnpm lint

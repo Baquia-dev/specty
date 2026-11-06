@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-cada-cambio-que-pide-el-usuario-va-a-un",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-cada-cambio-que-pide-el-usuario-va-a-un",
   "baseCommit": "4cb3c564510dd4310d15d040f936f5fc27d53379",
   "revision": 2,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "036a5b0c83cd14a81b7b80048f9f890eada2abd9",
+      "attempts": 1,
       "startedAt": "2026-11-06T20:14:11.403Z",
       "doneAt": "2026-11-06T20:16:51.676Z",
-      "summary": "Sin cambio activo y con una herramienta que reparte en subagentes, la tarjeta trae el encargo de un cambio (de new --subagent a su cierre) y pide un subagente por cambio en paralelo; rejoin.test.ts sigue el nuevo SIGUIENTE con Claude Code"
+      "summary": "Sin cambio activo y con una herramienta que reparte en subagentes, la tarjeta trae el encargo de un cambio (de new --subagent a su cierre) y pide un subagente por cambio en paralelo; rejoin.test.ts sigue el nuevo SIGUIENTE con Claude Code",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "02aa5aa211ff523bf9ce38c788684519b17f6bd3",
+      "startedAt": "2026-11-06T20:16:52.064Z",
+      "doneAt": "2026-11-06T20:22:26.716Z",
+      "summary": "formats.md (subagents), ARCHITECTURE §7 (Tarjeta sin cambio activo) y §16, y los comentarios de subagents en view.ts, schema/config.ts y session.ts cuentan que cada cambio que pide el usuario va a un subagente"
     }
   },
   "pending": {

@@ -26,8 +26,8 @@ export interface CardContext {
   /** The person delegated their decisions to the agent (ADR 0010): the agent runs them itself. */
   readonly delegated?: boolean;
   /**
-   * `subagents` of `config.yaml` (formats.md §6): `false` keeps an epic's slices out of
-   * subagents, even with a tool that can take them.
+   * `subagents` of `config.yaml` (formats.md §6): `false` keeps an epic's slices, and the changes
+   * the user asks for, out of subagents, even with a tool that can take them.
    */
   readonly subagents?: boolean;
 }
