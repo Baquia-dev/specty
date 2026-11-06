@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-specty-integrate-anota-su-verificacion-y-accept",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-specty-integrate-anota-su-verificacion-y-accept",
   "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fef210f436975516aed0b6737b7195224daf65102a445c8f221ff2f794e2aa96",
+    "at": "2026-11-06T18:47:43.263Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -42,12 +49,8 @@
     "AC": 2,
     "T": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:fef210f436975516aed0b6737b7195224daf65102a445c8f221ff2f794e2aa96",
-    "at": "2026-11-06T18:47:43.263Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/integrate-units.test.ts": "sha256:3b9e3949fd7f8f6bf0e5e74ea1961fd21dabc38b618c7b84efabb2053e336367",
+    "packages/cli/test/integrate.test.ts": "sha256:11593d81b0bf5b00ab46427ee4b7cc189b7aec01d76ab91cdf322c4428982b2a"
+  }
 }
