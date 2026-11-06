@@ -45,8 +45,8 @@ function parseWaitLimits(options: WaitOptions): WaitLimits {
 }
 
 /**
- * Checks whether the active change is waiting for a person's decision or action: the guard's
- * brake on `sleep` reads it too.
+ * Checks whether the active change is waiting for a person's decision or action: the end of the
+ * agent's turn and the guard's brake on `sleep` read it too.
  */
 export function isWaitingForHuman(change: StoredChange): boolean {
   const { state } = change;
