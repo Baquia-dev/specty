@@ -87,7 +87,7 @@ Hoy la limpieza no poda los registros de git de worktrees cuya carpeta ya no exi
   - ac: AC4, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-orphans.test.ts test/prune-rescue.test.ts test/prune.test.ts test/lost-folder.test.ts test/restore.test.ts test/ghost-folders.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T4: `new`, `close` y `cancel` limpian al terminar
+- [x] T4: `new`, `close` y `cancel` limpian al terminar
   - files: packages/cli/src/commands/new.ts, packages/cli/src/commands/finish.ts, packages/cli/src/flow/prune.ts, packages/cli/test/prune-commands.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-commands.test.ts test/prune.test.ts test/cancel-folder.test.ts test/ghost-folders.test.ts test/session-return.test.ts test/sessions.test.ts test/worktrees.test.ts test/close-turn.test.ts test/epic-closed-slices.test.ts && pnpm typecheck && pnpm lint && pnpm knip

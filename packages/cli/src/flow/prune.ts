@@ -5,20 +5,23 @@ import {
   cancelledFolderStaysLine,
   cancelledWorkSavedLine,
   cancelWorkCommitSubject,
+  cleanupBlocks,
   type Lang,
   notInTargetBranchLine,
   notInTargetFolderLine,
+  type Output,
   type RescuedFolder,
   type UnsavedFolder,
   workingFolderLine,
 } from "@baquia-dev/specty-core";
 import { exists } from "../io/files";
-import { type Git, resolved } from "../io/git";
-import type { Session } from "../session";
+import { createGit, type Git, resolved } from "../io/git";
+import { type Session, sessionFrom } from "../session";
 import { removeActivity } from "../store/activity";
 import type { StoredChange } from "../store/changes";
 import { readBindings } from "../store/local";
 import { dropMessages, messageChanges } from "../store/messages";
+import { repoPaths } from "../store/paths";
 import { isFinished } from "./active";
 import { markedBranches } from "./branches";
 import { locateChanges } from "./changes";
@@ -36,7 +39,7 @@ export interface Cleanup {
 }
 
 /** What a clean-up of folders did: also what it saved in rescue refs, and what it could not. */
-export interface FolderCleanup extends Cleanup {
+interface FolderCleanup extends Cleanup {
   readonly rescued: readonly RescuedFolder[];
   readonly unsaved: readonly UnsavedFolder[];
 }
@@ -93,6 +96,41 @@ export async function cleanUp(session: Session): Promise<Swept> {
     records,
     empty,
   };
+}
+
+/**
+ * `card` with what the clean-up at the end of its command did (`cleanupBlocks`): `new` says the
+ * folders of finished changes itself, so it passes `finished: false`.
+ */
+export function withCleanup(card: Output, swept: Swept, lang: Lang, finished = true): Output {
+  const { ghosts, rescued, unsaved } = swept;
+  const blocks = cleanupBlocks(
+    { ...(finished ? { finished: swept.removed } : {}), ghosts, rescued, unsaved },
+    lang,
+  );
+  return blocks.length === 0 ? card : { ...card, blocks: [...card.blocks, ...blocks] };
+}
+
+/**
+ * `card` of `close` or `cancel` once the clean-up ran, with what it did. It runs from the main
+ * folder `main`, as their change's own folder may be gone by then and git cannot run in it; from
+ * `session`'s without one.
+ */
+export async function withCleanupFrom(
+  session: Session,
+  main: string | undefined,
+  card: Output,
+): Promise<Output> {
+  return withCleanup(card, await cleanUp(await mainSession(session, main)), session.lang);
+}
+
+/** The session of the main folder `main`, with `session`'s configuration; `session` if it is that one. */
+async function mainSession(session: Session, main: string | undefined): Promise<Session> {
+  if (main === undefined || (await resolved(main)) === (await resolved(session.root)))
+    return session;
+  const git = createGit(main, session.environment.env);
+  const { environment, config, delegated } = session;
+  return sessionFrom(environment, main, repoPaths(main), git, config, delegated);
 }
 
 /** `git worktree prune`, which spares the locked worktrees: how many records git forgot. */
@@ -156,7 +194,7 @@ async function rmdirTree(folder: string): Promise<boolean> {
  * which first goes to a rescue ref. Never the folder this process runs in, nor one an agent
  * session works in (as the guard recorded it), nor the main folder. The branches stay.
  */
-export async function removeFinished(session: Session): Promise<FolderCleanup> {
+async function removeFinished(session: Session): Promise<FolderCleanup> {
   const { lang } = session;
   const main = (await session.git.worktrees())[0]?.folder ?? session.root;
   const working = await workingFolders(session);
