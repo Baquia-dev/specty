@@ -78,7 +78,7 @@ Hoy «Verificar» en la UI verifica la rama del cambio sin main, y después «Ac
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/verify-merge.test.ts test/server/runs.test.ts test/server/runs-turn.test.ts test/server/verify.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T4: La documentación cuenta que «Verificar» incorpora main
+- [x] T4: La documentación cuenta que «Verificar» incorpora main
   - files: docs/ui.md, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1
   - verify: grep -q 'incorpora main antes' docs/ui.md && grep -q 'va en la cola de las acciones' docs/ARCHITECTURE.md && grep -q 'al verificar desde la UI' docs/formats.md
