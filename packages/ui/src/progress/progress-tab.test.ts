@@ -8,6 +8,7 @@ import { FixtureData } from "../data/fixtures";
 import { ActionError, type Bilingual, type ChangeRecord, SpectyData } from "../data/records";
 import { STEP_MS } from "../data/sample-run";
 import { deriveViews } from "../data/views";
+import { Preferences } from "../theme/preferences";
 import { ProgressTab } from "./progress-tab";
 
 const PDF = "20261019-boletines-pdf";
@@ -170,6 +171,30 @@ describe("Progress tab", () => {
     expect(rows("tasks")).toEqual(["T1", "T2", "T3"]);
     expect(text(element.querySelector("[data-summary]"))).not.toContain("decisi");
     expect(toasts()).toContain("Aprobaste S2: T3 vuelve a su lugar.");
+  });
+
+  it("names the requests its task still waits for, and only says it goes back with none left (P235)", async () => {
+    const { settle, row, toasts } = await render();
+    const approve = () =>
+      row("T3")?.querySelector<HTMLButtonElement>("[data-scope-request] sp-button button")?.click();
+    approve();
+    await settle();
+    expect(toasts()).toEqual(["Aprobaste S1: T3 sigue esperando S2."]);
+    approve();
+    await settle();
+    expect(toasts()).toEqual([
+      "Aprobaste S1: T3 sigue esperando S2.",
+      "Aprobaste S2: T3 vuelve a su lugar.",
+    ]);
+  });
+
+  it("names them in English too (P235)", async () => {
+    const { settle, row, toasts } = await render();
+    TestBed.inject(Preferences).lang.set("en");
+    await settle();
+    row("T3")?.querySelector<HTMLButtonElement>("[data-scope-request] sp-button button")?.click();
+    await settle();
+    expect(toasts()).toEqual(["You approved S1: T3 still waits for S2."]);
   });
 
   it("asks for the reason before rejecting, and the task goes back too (AC3)", async () => {

@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261107-aprobar-una-solicitud-solo-dice-que-la-tarea",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261107-aprobar-una-solicitud-solo-dice-que-la-tarea",
+  "baseCommit": "7364903203145fdcd85c7f2a4455e068e59045f7",
+  "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:d5be952c467cae7276143f861cc4904a1a39a6c6b274728dd4053daca6bbddf9",
+    "at": "2026-11-06T18:38:10.645Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3d417905cfb0d157ef75e84c2bc902800e6dd2c7",
+      "attempts": 1,
+      "startedAt": "2026-11-06T18:39:31.066Z",
+      "doneAt": "2026-11-06T18:40:32.647Z",
+      "summary": "scope-request recibe las solicitudes pendientes de su tarea (pending) y el aviso de aprobar nombra las que siguen esperando con Intl.ListFormat, o dice que la tarea vuelve a su lugar si no queda ninguna; progress-tab le pasa task.scopeRequests; docs/ui.md lo cuenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/ui/src/progress/progress-tab.test.ts": "sha256:616138e7ec3d331f318ac2e77e95fa9971e4717ff57b59cb42fec6ae1dafc5f8"
+  }
+}
