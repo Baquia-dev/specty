@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-ui-marca-los-caracteres-de-direccion-del",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-la-ui-marca-los-caracteres-de-direccion-del",
   "baseCommit": "7364903203145fdcd85c7f2a4455e068e59045f7",
   "revision": 3,
@@ -51,6 +51,10 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T18:57:22.428Z"
+  "lockedTests": {
+    "packages/ui/src/components/diff-file.test.ts": "sha256:302851228f9685e518ae0262cff85eb8f4702ab7ca1efbd212772975f7660d74",
+    "packages/ui/src/highlight/highlight.test.ts": "sha256:838a61a7ed579e987dbf5d0e80f6d161c9a00168638cca8a3dd4e2fb543a2845",
+    "packages/ui/src/history/trace-view.test.ts": "sha256:84d0ac1303d9ba93778b26289f84de0dc47e5a9397c0e400e7bae20f73497579",
+    "packages/ui/src/progress/unlock-detail.test.ts": "sha256:43c628c475cfb5d9f8bfdd396e3a242e8561f879fc8697be29f2c01b0f2ef210"
+  }
 }
