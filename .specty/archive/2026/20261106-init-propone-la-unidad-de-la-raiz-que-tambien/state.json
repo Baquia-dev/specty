@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-init-propone-la-unidad-de-la-raiz-que-tambien",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-init-propone-la-unidad-de-la-raiz-que-tambien",
   "baseCommit": "db367341b166a577054bc4e764b86f2b224074b1",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:622ad824871cf4057b740023f2b210da982c4bfaa23aa6e6adc75e69a2f85ba7",
@@ -71,12 +71,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8af1c65b61459a3b0f3deea7ef56b76613739737",
+      "attempts": 1,
       "startedAt": "2026-11-06T02:57:25.424Z",
       "doneAt": "2026-11-06T02:58:52.348Z",
-      "summary": "detect/toml.ts reúne readToml, table y strings, que usan units-cargo.ts y units-uv.ts en lugar de sus copias (P172)"
+      "summary": "detect/toml.ts reúne readToml, table y strings, que usan units-cargo.ts y units-uv.ts en lugar de sus copias (P172)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -89,6 +89,7 @@
     "T": 4,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-06T03:03:39.441Z",
   "lockedTests": {
     "packages/cli/test/units-cargo.test.ts": "sha256:9dea60b5095153f32c17daf862a434986da8ebda8d730e8809a120a2f800cd5c",
     "packages/cli/test/units-uv.test.ts": "sha256:88064118d499b98bbbe99acc1dc5b4cac86ca2ca8ae5fb8b13d4c9613e54d1a2",

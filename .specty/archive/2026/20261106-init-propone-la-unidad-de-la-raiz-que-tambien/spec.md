@@ -72,3 +72,23 @@ Hoy `specty init` no propone unidades de verificación en un workspace de Cargo 
 ## Riesgos
 
 - R1: Los `paths` de la raíz incluyen de más y su unidad corre más de lo necesario — es una propuesta que la persona recorta antes de pegarla; la tarjeta ya pide comprobarla.
+
+## Cierre
+
+### Resumen
+
+`specty init` propone ahora unidades en un workspace de Cargo cuya raíz es también un paquete (`[workspace]` con `[package]`, P170) y en uno de uv cuya raíz es también un proyecto (`[project]`): la raíz es un miembro más, en `.`, que se prueba con `cargo test -p <nombre>` o `uv run --package <nombre> pytest tests`, se llama como su paquete y tiene por `paths` las entradas de la raíz fuera de las carpetas de los miembros y de las ocultas (`rootPackagePaths`, en `detect/root-package.ts`). En core, `WorkspacePackage` gana `paths` opcionales, que `proposeUnits` usa en lugar de `<carpeta>/**` para el paquete y para los que dependen de él, sin rutas repetidas. Los detectores de Cargo y de uv comparten `detect/toml.ts` (`readToml`, `table`, `strings`) en lugar de sus copias (P172). `docs/formats.md` lo cuenta. Los criterios tienen sus tests en `packages/core/test/units-proposal.test.ts`, `packages/cli/test/units-cargo.test.ts` y `packages/cli/test/units-uv.test.ts`; la verificación completa pasó en la aceptación.
+
+### Desviaciones
+
+- El refactor del lector de TOML (P172) pasó de primera a última tarea antes de aprobar la spec: en la fase de tests, los archivos de tests que corría ya tenían en rojo los de la raíz de Cargo y uv.
+- En los tests que ya existían salieron los casos de la raíz que es un paquete, que esperaban que no hubiera propuesta: el de Cargo de «no encuentra workspace» y el de uv de «no propone nada», cuyo título se ajustó. Es el comportamiento que P170 pide cambiar; lo cubren los tests nuevos.
+
+### Decisiones
+
+- Una carpeta que el glob de los miembros recoge sin un paquete dentro (como `crates/docs` sin `Cargo.toml`) no es un miembro: entra en los `paths` de la raíz, que puede leerla.
+- El orden de las carpetas que usa cada paquete sigue siendo el de los códigos de carácter, como antes, y no el del idioma, para que las propuestas de los workspaces que ya funcionaban no cambien.
+
+### Pendientes
+
+- Los workspaces de `go.work`, Gradle y pub o melos siguen sin propuesta cuando la raíz es también un paquete (`use .`, `src/test` o `test` en la raíz): podrían usar el mismo mecanismo, `WorkspacePackage.paths` con `rootPackagePaths`.
