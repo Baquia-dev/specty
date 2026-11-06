@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-aprobar-una-solicitud-solo-dice-que-la-tarea",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-aprobar-una-solicitud-solo-dice-que-la-tarea",
   "baseCommit": "7364903203145fdcd85c7f2a4455e068e59045f7",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:d5be952c467cae7276143f861cc4904a1a39a6c6b274728dd4053daca6bbddf9",
+    "at": "2026-11-06T18:38:10.645Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:d5be952c467cae7276143f861cc4904a1a39a6c6b274728dd4053daca6bbddf9",
-    "at": "2026-11-06T18:38:10.645Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/ui/src/progress/progress-tab.test.ts": "sha256:616138e7ec3d331f318ac2e77e95fa9971e4717ff57b59cb42fec6ae1dafc5f8"
+  }
 }
