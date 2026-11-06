@@ -30,6 +30,7 @@ import {
   LucideLightbulb,
   LucideTriangleAlert,
 } from "../components/icons";
+import { ShownText } from "../components/shown-text";
 import { Skeleton } from "../components/skeleton";
 import { TabPanel, Tabs } from "../components/tabs";
 import { Toasts } from "../components/toast";
@@ -94,6 +95,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     ReviewActions,
     ChangeBar,
     ChangeFacts,
+    ShownText,
     ChangeMemory,
     ProgressTab,
     AcceptanceTab,
@@ -134,7 +136,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
                 <!-- On a phone, how long goes on its own line instead of after a dangling dot. -->
                 <span class="w-full text-sm text-text-muted sm:w-auto" data-since>{{ since(change.phaseSince) }}</span>
               </div>
-              <h1 class="mt-3 mb-0 max-w-4xl text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.028em] sm:text-[2.375rem]">{{ change.title }}</h1>
+              <h1 class="mt-3 mb-0 max-w-4xl text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.028em] sm:text-[2.375rem]"><sp-text [text]="change.title" /></h1>
             </div>
             <!--
               Beside the title: the decision waiting (on the spec in review, on the tests once the
