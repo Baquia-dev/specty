@@ -70,7 +70,7 @@ Desde el corte C2, una solicitud para desbloquear un test aprobado lleva el camb
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts --include src/data/locks.test.ts
   - type: feat
-- [ ] T2: Las líneas numeradas de «Ver código» pasan a un componente que empieza en cualquier línea
+- [x] T2: Las líneas numeradas de «Ver código» pasan a un componente que empieza en cualquier línea
   - files: packages/ui/src/progress/code-lines.ts, packages/ui/src/progress/test-code.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/tests-sent.test.ts
