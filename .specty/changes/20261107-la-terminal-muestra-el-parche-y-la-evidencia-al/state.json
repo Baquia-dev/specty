@@ -6,6 +6,13 @@
   "branch": "specty/20261107-la-terminal-muestra-el-parche-y-la-evidencia-al",
   "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cb545a22e28ca7a645449395b221b4de1c7a1cb2c4de376b59478784ce62552b",
+    "at": "2026-11-06T17:08:01.668Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -39,12 +46,6 @@
     "AC": 4,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:cb545a22e28ca7a645449395b221b4de1c7a1cb2c4de376b59478784ce62552b",
-    "at": "2026-11-06T17:08:01.668Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T17:17:21.400Z"
 }

@@ -211,6 +211,50 @@ describe("unlocking an approved test", () => {
     expect((await stateOf(root)).pending.scopeRequests).toEqual([]);
   });
 
+  it("AC1: shows the person its patch and its evidence before deciding", async () => {
+    const { root } = await unlockRequested();
+    const terminal = person();
+    const approval = await cli(root, ["approve", "--scope", "S1"], { terminal });
+    expect(approval.code, approval.out).toBe(0);
+    expect(terminal.notes).toContain(
+      [
+        "S1 · T1",
+        "src/app.test.ts",
+        `— ${REASON}`,
+        "",
+        "El cambio al test:",
+        ...PATCH.split("\n").slice(0, -1),
+        "",
+        "El código que lo sustenta:",
+        "src/app.ts:1-1",
+        "1 │ export const greet = () => 'hola';",
+      ].join("\n"),
+    );
+  });
+
+  it("AC3: shows only the paths and the reason of a request without a patch", async () => {
+    const root = await approvedTests();
+    await cli(root, ["next"]);
+    const asked = await cli(root, [
+      "scope",
+      "add",
+      "src/greeting.ts",
+      "--task",
+      "T1",
+      "--reason",
+      "El saludo va en su propio módulo",
+    ]);
+    expect(asked.code, asked.out).toBe(0);
+    const terminal = person();
+    const rejection = await cli(root, ["reject", "--scope", "S1", "--reason", "No hace falta"], {
+      terminal,
+    });
+    expect(rejection.code, rejection.out).toBe(0);
+    expect(terminal.notes).toContain(
+      "S1 · T1\nsrc/greeting.ts\n— El saludo va en su propio módulo",
+    );
+  });
+
   it("AC7: a rejected unlock keeps neither in scope.decided", async () => {
     const { root } = await unlockRequested();
     const rejection = await cli(
