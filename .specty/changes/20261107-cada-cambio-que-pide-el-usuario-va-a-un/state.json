@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261107-cada-cambio-que-pide-el-usuario-va-a-un",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-cada-cambio-que-pide-el-usuario-va-a-un",
+  "baseCommit": "4cb3c564510dd4310d15d040f936f5fc27d53379",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:582b97f4e1cf5a647552f8a39e8fbbef438c313309f0f3086489070dfb946965",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:30eaea0f29b1a304e59af7df45d44d1f96c68e00ca44f8a335eabf74aa855b6a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:4628b3410e2096f82e24fbf9656d28422bcdacfb25400975942d14486eefe115",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:bdd61c61b20583b127124c91d8749303065b44033498cab93247c9385637ff2d",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:dc12651139c7559f326295578b9c26a938223e3587895992e9e680e1d4efb9f6",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:2bcc98fcd9969176e7ba9b7ba2c55fe451648e8272a6e107ac3740fc46e78c89",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 6,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:e2ca05e2a1b88e4d682a0d5ec5f320dc513ffbc71d5865db8f4c4be37514947f",
+    "at": "2026-11-06T20:11:16.659Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
