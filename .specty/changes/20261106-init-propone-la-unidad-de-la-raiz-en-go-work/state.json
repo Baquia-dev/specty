@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-init-propone-la-unidad-de-la-raiz-en-go-work",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-init-propone-la-unidad-de-la-raiz-en-go-work",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
   "revision": 1,
@@ -50,6 +50,9 @@
     "T": 3,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T03:58:09.930Z"
+  "lockedTests": {
+    "packages/cli/test/units-dart.test.ts": "sha256:ec21a217d77949d4118f711f3d9599c346de1a3de28bbdd99f8072b5376cdbf3",
+    "packages/cli/test/units-go.test.ts": "sha256:a48d963586194bf073d0099d900f9550c562a13192f1b5cf7f8846ff2e8f29fc",
+    "packages/cli/test/units-gradle.test.ts": "sha256:31c6f8d4a5dd179f57612109b927ed87572a8592ddf614bfb8981ff25e7cbc53"
+  }
 }
