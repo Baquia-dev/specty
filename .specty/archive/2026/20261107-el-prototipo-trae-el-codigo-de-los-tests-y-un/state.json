@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-el-prototipo-trae-el-codigo-de-los-tests-y-un",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-el-prototipo-trae-el-codigo-de-los-tests-y-un",
   "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:1d73bdc9126cfdda1be2cb0949cf591d23c6802dfadbaa79c7a085338887d9f5",
@@ -60,12 +60,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e271e65a8e3fde5b0b7b6a9994ad7be92ee92862",
+      "attempts": 1,
       "startedAt": "2026-11-06T17:42:05.892Z",
       "doneAt": "2026-11-06T17:48:49.061Z",
-      "summary": "ui.md cuenta que el prototipo da el código de los tests de muestra y trae un desbloqueo pendiente (S2 de los boletines) y otro aprobado (S1 del login)."
+      "summary": "ui.md cuenta que el prototipo da el código de los tests de muestra y trae un desbloqueo pendiente (S2 de los boletines) y otro aprobado (S1 del login).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,6 +78,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T17:59:34.231Z",
   "lockedTests": {
     "packages/ui/src/change/change-page.test.ts": "sha256:87cd4a1d18aa5714e9ddb6865b2082440c0d027f0b109edf6316f698672ad0a5",
     "packages/ui/src/data/fixtures.test.ts": "sha256:ab03053d2b99acf629f2ed2c98ee93dc53848ec642e328ba2a7dac327f29fca5",
