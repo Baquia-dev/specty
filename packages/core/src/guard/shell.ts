@@ -4,6 +4,7 @@ import { basename } from "../paths";
 import { analyzeGit, type GitCommit, type GitRemoval } from "./git";
 import { type SpectyCalls, spectyCalls, subcommand } from "./specty-calls";
 import { type Token, tokenize } from "./tokens";
+import { waitingProgram } from "./waits";
 
 /** What a shell command would do, as far as the flow is concerned. */
 export interface ShellAnalysis extends SpectyCalls {
@@ -34,10 +35,11 @@ export interface ShellAnalysis extends SpectyCalls {
   /** Written or removed paths it cannot place: shell variables, `~`, or after `cd` to an unknown directory. */
   readonly unresolved: readonly string[];
   /**
-   * One of its simple commands runs `sleep`, also after the words that open a compound command or
-   * one of its branches (`do`, `then`, `{`…), assignments and wrappers.
+   * The program of each simple command that only waits (`sleep`, `caffeinate -w`, the shell's
+   * `wait`…, `guard/waits.ts`), also after the words that open a compound command or one of its
+   * branches (`do`, `then`, `{`…), assignments and wrappers.
    */
-  readonly sleeps: boolean;
+  readonly waits: readonly string[];
   /**
    * Where each simple command but `cd` runs: relative to where the command starts (`""` is
    * there), absolute, or undefined after a `cd` somewhere the analysis cannot name.
@@ -49,7 +51,10 @@ export interface ShellAnalysis extends SpectyCalls {
 type Directory = string | undefined;
 
 const WRAPPERS: ReadonlySet<string> = new Set(["sudo", "env", "command", "exec", "time", "nohup"]);
-/** The words that open a compound command or one of its branches, before the command it runs. */
+/**
+ * The words that open a compound command or one of its branches, before the command it runs:
+ * every rule reads the program past them, and `cd` too.
+ */
 const OPENERS: ReadonlySet<string> = new Set([
   "if",
   "then",
@@ -78,7 +83,7 @@ const EMPTY: ShellAnalysis = {
   writes: [],
   deletes: [],
   unresolved: [],
-  sleeps: false,
+  waits: [],
   enters: [],
   fronts: [],
   resolves: [],
@@ -98,8 +103,14 @@ export function analyzeShell(command: string): ShellAnalysis {
   let directory: Directory = "";
   // Where to return when each open subshell closes: its `cd`s stay inside it.
   const outer: Directory[] = [];
+  // Whether a command before sent jobs to the background, which the shell's `wait` collects.
+  let launched = false;
   let result = EMPTY;
   for (const tokens of tokenize(command)) {
+    if (tokens === "&") {
+      launched = true;
+      continue;
+    }
     if (tokens === "(") {
       outer.push(directory);
       continue;
@@ -108,7 +119,7 @@ export function analyzeShell(command: string): ShellAnalysis {
       if (outer.length > 0) directory = outer.pop();
       continue;
     }
-    const segment = analyzeSegment(tokens);
+    const segment = analyzeSegment(tokens, launched);
     const place = (paths: readonly string[]) => paths.map((path) => locate(directory, path));
     const writes = place(segment.writes);
     const deletes = place(segment.deletes);
@@ -137,12 +148,12 @@ function locate(directory: Directory, raw: string): { raw: string; path: string 
 }
 
 function isCd(tokens: readonly Token[]): boolean {
-  return tokens.find((token) => !token.operator)?.text === "cd";
+  return commandWords(tokens)[0] === "cd";
 }
 
 /** The directory after this segment: it only changes on `cd`. */
 function changeDirectory(directory: Directory, tokens: readonly Token[]): Directory {
-  const words = tokens.filter((token) => !token.operator).map((token) => token.text);
+  const words = commandWords(tokens);
   if (words[0] !== "cd") return directory;
   const target = words.slice(1).find((word) => !word.startsWith("-") || word === "-");
   return target === undefined ? undefined : enter(directory, target);
@@ -176,22 +187,18 @@ function placeRemoval(
   return [path === undefined ? { name: worktree } : { name: worktree, path }];
 }
 
-function analyzeSegment(tokens: readonly Token[]): Segment {
+function analyzeSegment(tokens: readonly Token[], launched: boolean): Segment {
   const { words, redirected } = splitRedirections(tokens);
-  const assignments = words.filter(
-    (word, index) => isAssignment(word) && words.slice(0, index).every(isAssignment),
-  );
+  const { assignments, program, args } = locateProgram(opened(words));
   const bypassByEnv = assignments.some((assignment) => {
     const [name, value] = assignment.split("=", 2);
     return name !== undefined && lookup(BYPASS_ENV, name) === value;
   });
-  const start = skipWrappers(words, assignments.length);
-  const program = basename(words[start] ?? "");
-  const args = words.slice(start + 1);
   const git =
     program === "git" ? analyzeGit(args) : { commits: [], removes: [], bypass: false, refs: [] };
   const files = program === "" ? { writes: [], deletes: [] } : fileEffects(program, args);
   const specty = spectyArgs(program, args);
+  const waiting = waitingProgram(program, args, launched);
   const bypassBySpecty =
     specty === undefined &&
     (words.some((word) => SENSITIVE_SPECTY.test(word)) ||
@@ -205,18 +212,38 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
     refs: git.refs,
     writes: [...redirected, ...files.writes],
     deletes: files.deletes,
-    sleeps: sleepsIn(words),
+    waits: waiting === undefined ? [] : [waiting],
   };
 }
 
-/** Whether a simple command's program, past the words that open a compound command, is `sleep`. */
-function sleepsIn(words: readonly string[]): boolean {
-  const opened = words.findIndex((word) => !OPENERS.has(word));
-  if (opened === -1) return false;
-  const rest = words.slice(opened);
-  const assigned = rest.findIndex((word) => !isAssignment(word));
-  const start = skipWrappers(rest, assigned === -1 ? rest.length : assigned);
-  return basename(rest[start] ?? "") === "sleep";
+/** A simple command's words, redirection targets included, past the words in `OPENERS`. */
+function commandWords(tokens: readonly Token[]): readonly string[] {
+  return opened(tokens.filter((token) => !token.operator).map((token) => token.text));
+}
+
+/**
+ * A simple command's words past the ones that open a compound command or one of its branches
+ * (`then`, `do`, `{`…): only at its start, so `echo then x` keeps them all.
+ */
+function opened(words: readonly string[]): readonly string[] {
+  const first = words.findIndex((word) => !OPENERS.has(word));
+  return first === -1 ? [] : words.slice(first);
+}
+
+/** The program a simple command runs, past its assignments and wrappers, and its arguments. */
+function locateProgram(words: readonly string[]): {
+  readonly assignments: readonly string[];
+  readonly program: string;
+  readonly args: readonly string[];
+} {
+  const assigned = words.findIndex((word) => !isAssignment(word));
+  const assignments = assigned === -1 ? words : words.slice(0, assigned);
+  const start = skipWrappers(words, assignments.length);
+  return {
+    assignments,
+    program: basename(words[start] ?? ""),
+    args: words.slice(start + 1),
+  };
 }
 
 function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
@@ -230,7 +257,7 @@ function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
     writes: [...a.writes, ...b.writes],
     deletes: [...a.deletes, ...b.deletes],
     unresolved: [...a.unresolved, ...b.unresolved],
-    sleeps: a.sleeps || b.sleeps,
+    waits: [...a.waits, ...b.waits],
     enters: [...a.enters, ...b.enters],
     fronts: [...a.fronts, ...b.fronts],
     resolves: [...a.resolves, ...b.resolves],

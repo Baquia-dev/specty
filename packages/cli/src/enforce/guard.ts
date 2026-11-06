@@ -24,6 +24,7 @@ import { isRecord, parseJson, remove } from "../io/files";
 import { COMMAND, type Environment, type Session } from "../session";
 import { noteActivity } from "../store/activity";
 import { readSpec, type StoredChange } from "../store/changes";
+import { liveHolder } from "../store/lock";
 import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
 import { enterCommand } from "./enter-command";
 import { endConversation, judgeFronts } from "./fronts";
@@ -355,7 +356,8 @@ async function guardChange(session: Session, active: StoredChange): Promise<Guar
     phase: state.phase,
     closingSubmitted: state.closingSubmittedAt !== undefined,
     specPath: session.paths.relative(active.files.spec),
-    waiting: isWaitingForHuman(active),
+    // While a live Specty command holds the lock, such as an `accept`, whoever waits waits for it.
+    waiting: isWaitingForHuman(active) && (await liveHolder(session.git, state.id)) === undefined,
     ...(taskEntry !== undefined
       ? {
           task: {
