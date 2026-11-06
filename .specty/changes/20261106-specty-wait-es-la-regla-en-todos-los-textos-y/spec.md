@@ -79,7 +79,7 @@ Hoy cada salida que deja el cambio esperando a la persona pide «ejecuta `specty
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/delegated.test.ts test/cards/review.test.ts test/cards/incorporation.test.ts test/cards/epic.test.ts test/cards/testing.test.ts
   - type: feat
-- [ ] T3: Las reglas de AGENTS.md mandan esperar siempre con `specty wait`
+- [x] T3: Las reglas de AGENTS.md mandan esperar siempre con `specty wait`
   - files: packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts test/cards.test.ts test/cards/language.test.ts && pnpm typecheck && pnpm lint

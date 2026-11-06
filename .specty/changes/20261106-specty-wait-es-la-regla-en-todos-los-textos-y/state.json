@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-specty-wait-es-la-regla-en-todos-los-textos-y",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-specty-wait-es-la-regla-en-todos-los-textos-y",
   "baseCommit": "36170f0d131f950b7eac367a27c7b3253d3de393",
   "revision": 1,
@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "668b4cb2a8414665f83371f9a1ea397e281a596d",
+      "attempts": 1,
       "startedAt": "2026-11-06T12:02:28.338Z",
       "doneAt": "2026-11-06T12:03:56.743Z",
-      "summary": "Las tarjetas de flow, next, acceptance, work, integration, testing y epic piden wait con waitStep(ctx) en lugar del texto a mano, y review.ts lo añade tras pedir aprobar o aceptar fuera del modo delegado"
+      "summary": "Las tarjetas de flow, next, acceptance, work, integration, testing y epic piden wait con waitStep(ctx) en lugar del texto a mano, y review.ts lo añade tras pedir aprobar o aceptar fuera del modo delegado",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "48f0ce3fb92ca86b20b469f1059eb1b3d54ac4b5",
+      "startedAt": "2026-11-06T12:03:57.049Z",
+      "doneAt": "2026-11-06T12:04:39.042Z",
+      "summary": "La regla de AGENTS.md pide esperar siempre con specty wait (en Claude Code, en segundo plano), repetirlo si se agota o se corta y no esperar terminando el turno, con sleep ni con status; formats.md y ARCHITECTURE.md cuentan la frase común"
     }
   },
   "pending": {
