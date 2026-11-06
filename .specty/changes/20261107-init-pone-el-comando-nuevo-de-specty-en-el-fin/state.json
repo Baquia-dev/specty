@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261107-init-pone-el-comando-nuevo-de-specty-en-el-fin",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261107-init-pone-el-comando-nuevo-de-specty-en-el-fin",
+  "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:105a89b04fb404711bb80353b5d20cff95325997a9ad555c1bacead038266481",
+    "at": "2026-11-06T16:32:41.293Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
