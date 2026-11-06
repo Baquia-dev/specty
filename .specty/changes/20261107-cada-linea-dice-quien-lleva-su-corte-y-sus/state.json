@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-cada-linea-dice-quien-lleva-su-corte-y-sus",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-cada-linea-dice-quien-lleva-su-corte-y-sus",
   "baseCommit": "8c4af062c7aa39651c4c843dc1b5aca2932d3eb3",
   "revision": 1,
@@ -56,6 +56,10 @@
     "T": 5,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T17:49:12.935Z"
+  "lockedTests": {
+    "packages/cli/test/server-holds.test.ts": "sha256:db26177ecfd60fd06ee72541d65957d425398993a84de48de37d8dac93c0ddc4",
+    "packages/ui/src/data/views.test.ts": "sha256:6f8d70c0b1c25614edb491c37edffb58eaf7a0f82b2c95d07b5ba5603d4b3128",
+    "packages/ui/src/inbox/inbox-lane.test.ts": "sha256:0acead3b7abee5866333419ba2bf9c7854ab9cffe9e3a5c9e175dd812fb37a9c",
+    "packages/ui/src/inbox/lane-holds.test.ts": "sha256:17baf46ddee62d54cb90587b0f6c03a63a69e0db22273168f22d2632f572fc6b"
+  }
 }
