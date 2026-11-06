@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "12da38eb83e244b854b42680fb4b095e3a0c0bfe",
+      "startedAt": "2026-11-06T21:32:43.009Z",
+      "doneAt": "2026-11-06T21:33:24.354Z",
+      "summary": "El encargo de un cambio sin cambio activo añade el paso: si propose pide dividirlo en una épica, el subagente se detiene y lo dice; el SIGUIENTE pide a la sesión principal, cuando terminen, entrar en ese cambio y convertirlo allí en la épica (es/en)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

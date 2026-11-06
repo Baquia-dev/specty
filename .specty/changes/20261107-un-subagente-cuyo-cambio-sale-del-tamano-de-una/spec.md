@@ -43,7 +43,7 @@ Un subagente que lleva un cambio pedido por el usuario y cuya spec sale demasiad
 
 ## Tareas
 
-- [ ] T1: El encargo de un cambio deja la épica a la sesión principal
+- [x] T1: El encargo de un cambio deja la épica a la sesión principal
   - files: packages/core/src/cards/idle.ts, packages/core/test/cards/idle-epic-size.test.ts, packages/core/test/cards/idle-subagents.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/idle-epic-size.test.ts test/cards/idle-subagents.test.ts test/cards/epic.test.ts test/cards/rejoin.test.ts && pnpm typecheck && pnpm lint
