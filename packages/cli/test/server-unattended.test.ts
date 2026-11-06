@@ -30,6 +30,14 @@ async function approveFromUi(served: Served): Promise<void> {
   await decide(served, "approve", { revision: 1 });
 }
 
+/** The person rejects SPEC's assumption when approving at the terminal: the review goes back. */
+async function rejectAtTerminal(root: string): Promise<void> {
+  const approved = await cli(root, ["approve"], {
+    terminal: person({ choose: ["reject"], ask: ["El nombre viene de la config"] }),
+  });
+  expect(approved.code).toBe(0);
+}
+
 /** The change as the UI reads it: among the open ones, or by its id once it is archived. */
 async function record({ server, headers }: Served, byId = false): Promise<Record<string, unknown>> {
   if (byId) return JSON.parse((await call(server.port, `/api/changes/${CHANGE}`, headers)).body);
@@ -162,6 +170,18 @@ describe("the change the UI reads when nobody picks up the person's decision", (
     }
   });
 
+  it("AC1: also after the person rejects an assumption when approving at the terminal", async () => {
+    const served = await serving();
+    try {
+      await rejectAtTerminal(served.root);
+      const since = await decidedAt(served.root, "assumption.decided");
+      expect(since).not.toBe("");
+      expect((await record(served)).unattended).toEqual({ since });
+    } finally {
+      await served.server.close();
+    }
+  });
+
   it("AC1: also after the person accepts from the UI", async () => {
     const served = await serving();
     try {
@@ -232,6 +252,31 @@ describe("the change the UI reads when nobody picks up the person's decision", (
       const seen = await record(served);
       expect(seen).toMatchObject({ state: { pending: { scopeRequests: [{ id: "S2" }] } } });
       expect(seen).not.toHaveProperty("unattended");
+    } finally {
+      await served.server.close();
+    }
+  });
+
+  it("AC2: nor after the person rejects an assumption alone from the UI: the change still waits for them", async () => {
+    const served = await serving();
+    try {
+      await decide(served, "assumptions/A1", {
+        decision: "rejected",
+        comment: "El nombre viene de la config",
+      });
+      expect(await record(served)).not.toHaveProperty("unattended");
+    } finally {
+      await served.server.close();
+    }
+  });
+
+  it("AC2: nor when the person decides an assumption alone from the UI once the agent took up the review sent back", async () => {
+    const served = await serving();
+    try {
+      await rejectAtTerminal(served.root);
+      expect((await cli(served.root, ["note", "Reviso A1."])).code).toBe(0);
+      await decide(served, "assumptions/A1", { decision: "confirmed" });
+      expect(await record(served)).not.toHaveProperty("unattended");
     } finally {
       await served.server.close();
     }
