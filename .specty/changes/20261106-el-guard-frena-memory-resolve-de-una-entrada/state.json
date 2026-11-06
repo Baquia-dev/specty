@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-guard-frena-memory-resolve-de-una-entrada",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-el-guard-frena-memory-resolve-de-una-entrada",
   "baseCommit": "f92005015cb9041aed1f70734b853552986457e4",
   "revision": 1,
@@ -48,6 +48,9 @@
     "T": 4,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T07:48:43.513Z"
+  "lockedTests": {
+    "packages/cli/test/front-brakes.test.ts": "sha256:c3111c27353a6a9d61a770fb683df62a9cc9b2798a5d0fea1b5b906657debc7e",
+    "packages/core/test/cards/front-brakes.test.ts": "sha256:9f5d86f640ad344e3db816d46c196b2b9d4ee53724641a89edd7dfe5a4507789",
+    "packages/core/test/guard/shell.test.ts": "sha256:5d6024ed6487ba1b3230c5abd62145e6ae163d7bfe719a87c893c287f6d308fc"
+  }
 }
