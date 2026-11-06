@@ -73,7 +73,7 @@ Hoy «Verificar» en la UI verifica la rama del cambio sin main, y después «Ac
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/runs.test.ts test/server/runs-turn.test.ts test/server/live.test.ts && pnpm lint
   - type: refactor
-- [ ] T3: «Verificar» incorpora main cuando avanzó y verifica una vez el código incorporado
+- [x] T3: «Verificar» incorpora main cuando avanzó y verifica una vez el código incorporado
   - files: packages/cli/src/server/runs.ts, packages/cli/src/server/merged-run.ts, packages/cli/src/server/http.ts, packages/cli/test/server/verify-merge.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/verify-merge.test.ts test/server/runs.test.ts test/server/runs-turn.test.ts test/server/verify.test.ts && pnpm typecheck && pnpm lint

@@ -61,12 +61,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "760f4f3a2301ab30b3f49ad52b09cd0efebf3281",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:58:09.587Z",
       "doneAt": "2026-11-06T18:58:35.358Z",
-      "summary": "taskRuns y alive pasan sin cambios a server/watched-runs.ts, el vigilante de las ejecuciones del almacén"
+      "summary": "taskRuns y alive pasan sin cambios a server/watched-runs.ts, el vigilante de las ejecuciones del almacén",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f441c56122e5626e1c71579fb4450f419b0e798b",
+      "startedAt": "2026-11-06T18:58:35.697Z",
+      "doneAt": "2026-11-06T19:04:45.928Z",
+      "summary": "«Verificar» incorpora main si avanzó: runMerged, en el turno y la cola de acciones del servidor, llama a mergeTarget con el bloqueo del cambio (server/merged-run.ts) y muestra en vivo la verificación de runLive; con el agente resolviendo, se rechaza"
     }
   },
   "pending": {

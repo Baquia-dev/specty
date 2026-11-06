@@ -55,8 +55,11 @@ export async function startServer(options: ServerOptions): Promise<UiServer> {
     return run;
   };
   const cookie = `specty-${port}`;
-  const runs = changeRuns(options.session, (change, run) =>
-    events.send("run", { change, run: run ?? null }),
+  // A full verification that merges main changes the change: it goes in the actions' queue.
+  const runs = changeRuns(
+    options.session,
+    (change, run) => events.send("run", { change, run: run ?? null }),
+    serial,
   );
   const context: Context = { ...options, ui, port, token, cookie, csrf, events, serial, runs };
   server.on("request", (request: IncomingMessage, response: ServerResponse) => {
