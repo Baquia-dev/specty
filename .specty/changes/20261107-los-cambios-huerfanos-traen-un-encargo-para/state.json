@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261107-los-cambios-huerfanos-traen-un-encargo-para",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-los-cambios-huerfanos-traen-un-encargo-para",
+  "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d0d038559c7dfb2756ea9b68a6b201e808987954cd91bd526bce03888e0fed08",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:2798299827e74297c77dc610f47be028ff842d8b1d6b0f1775c31278bffac6a3",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:cf9ee7b5083203a9dbedebce7de6b7263a44f52e5ddb1c44e0b5485707490999",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:0a3a254171a06a36729f10fe143a7141a428508789c2b0cd3aaba6e0111c5303",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:116d004ac818842b8ca1b0cd7e50ae13f44994fd894657d1ce86f7b4c5132176",
+    "at": "2026-11-06T21:26:13.065Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
