@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cc4059c9b7774a9871b4fbf083eb258715b27af8",
+      "startedAt": "2026-11-06T09:04:54.463Z",
+      "doneAt": "2026-11-06T09:05:56.807Z",
+      "summary": "ServerData.post, tras un 200, llama a cada oyente de subscribe y espera sus promesas con Promise.allSettled, como mucho 10 s (REREAD_MS); subscribe acepta un oyente que devuelve una promesa; ARCHITECTURE §15 lo cuenta."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

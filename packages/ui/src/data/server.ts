@@ -55,6 +55,9 @@ interface ServerSession {
 
 type RunListener = (change: string, run: RunRecord | undefined) => void;
 
+/** How long an action waits for the screens to read again before it ends anyway. */
+const REREAD_MS = 10_000;
+
 /**
  * The local server's data (`specty ui`): the changes of every worktree through `fetch`, read
  * again on each `changes` event, and the person's decisions as POSTs with the CSRF token. Page
@@ -65,7 +68,7 @@ export class ServerData extends SpectyData {
   private session: Promise<ServerSession> | undefined;
   /** One event stream for every subscriber: the Inbox, delegated mode and the runs alike. */
   private events: EventSource | undefined;
-  private readonly listeners = new Set<() => void>();
+  private readonly listeners = new Set<() => unknown>();
   private readonly runListeners = new Set<RunListener>();
 
   override async changes(): Promise<readonly ChangeRecord[]> {
@@ -106,7 +109,7 @@ export class ServerData extends SpectyData {
     return page;
   }
 
-  override subscribe(listener: () => void): () => void {
+  override subscribe(listener: () => unknown): () => void {
     this.listeners.add(listener);
     this.listen();
     return () => {
@@ -293,7 +296,7 @@ export class ServerData extends SpectyData {
     if (this.events !== undefined) return;
     this.events = new EventSource("/api/events");
     this.events.addEventListener("changes", () => {
-      for (const heard of this.listeners) heard();
+      for (const heard of this.listeners) void heard();
     });
     this.events.addEventListener("run", (event: MessageEvent) => {
       const told = runEvent(event.data);
@@ -314,7 +317,10 @@ export class ServerData extends SpectyData {
     return this.post(`/api/changes/${encodeURIComponent(change)}/${verb}`, body);
   }
 
-  /** A decision of the person: done (200) or refused with its reason. */
+  /**
+   * A decision of the person: refused with its reason, or done (200) once the screens show it,
+   * read again as on a `changes` event.
+   */
   private async post(path: string, body: object): Promise<void> {
     const { actions, csrf } = await this.serverSession();
     if (!actions || csrf === undefined) throw new ActionError(READ_ONLY);
@@ -324,6 +330,21 @@ export class ServerData extends SpectyData {
       body: JSON.stringify(body),
     });
     if (!response.ok) throw new ActionError(await refusal(response));
+    await this.reread();
+  }
+
+  /**
+   * Has every listener read again and waits for them, `REREAD_MS` at most: past that, the next
+   * `changes` event brings the rest. One that fails does not undo what the server already did.
+   */
+  private async reread(): Promise<void> {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const late = new Promise<void>((done) => {
+      timer = setTimeout(done, REREAD_MS);
+    });
+    const heard = Promise.allSettled([...this.listeners].map(async (listener) => listener()));
+    await Promise.race([heard, late]);
+    clearTimeout(timer);
   }
 
   /** The server's session, asked once; a failed ask is asked again next time. */

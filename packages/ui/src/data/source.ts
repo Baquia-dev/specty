@@ -74,8 +74,12 @@ export type MemoryVerb = "drop" | "keep" | "done";
  */
 export abstract class SpectyData {
   abstract changes(): Promise<readonly ChangeRecord[]>;
-  /** Calls `listener` whenever the data may have changed; returns how to stop. */
-  abstract subscribe(listener: () => void): () => void;
+  /**
+   * Calls `listener` whenever the data may have changed; returns how to stop. The listener may give
+   * back a promise that ends once it has read again: a source that waits for the screens to show
+   * an action's result (`ServerData`) waits for it; the others ignore it.
+   */
+  abstract subscribe(listener: () => unknown): () => void;
 
   /**
    * The change `id`, open or finished, even if `changes` leaves it out; none when there is no

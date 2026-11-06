@@ -53,7 +53,7 @@ Hoy, al confirmar un supuesto en la UI, el botón deja de cargar en cuanto el se
 
 ## Tareas
 
-- [ ] T1: Cada decisión del servidor local espera a que quienes escuchan vuelvan a leer
+- [x] T1: Cada decisión del servidor local espera a que quienes escuchan vuelvan a leer
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-actions.test.ts, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server-actions.test.ts --include src/data/server.test.ts --include src/review/spec-sections.test.ts && pnpm lint
