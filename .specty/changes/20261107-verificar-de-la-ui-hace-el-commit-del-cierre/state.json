@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-verificar-de-la-ui-hace-el-commit-del-cierre",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-verificar-de-la-ui-hace-el-commit-del-cierre",
   "baseCommit": "dc5b53242d3e8ef03684a4240f1ec1e080be6de3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4650759872fd82bc0f2a3701bb51796b54d572aebe5fef76578f0eb1f9d133cd",
+    "at": "2026-11-06T21:51:43.590Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4650759872fd82bc0f2a3701bb51796b54d572aebe5fef76578f0eb1f9d133cd",
-    "at": "2026-11-06T21:51:43.590Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/server/verify-merge.test.ts": "sha256:5a55f6b4393ae5d1182923d4d42578e8d6ede9c4019089e9aef88c1883f988b0"
+  }
 }
