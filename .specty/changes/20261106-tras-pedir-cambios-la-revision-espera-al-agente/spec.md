@@ -68,7 +68,7 @@ Cuando la persona pide cambios en la revisión, o rechaza supuestos al aprobar, 
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow/waiting.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm sources
   - type: fix
-- [ ] T2: Pedir cambios y rechazar supuestos anotan `changesRequestedAt`; proponer y aprobar lo quitan
+- [x] T2: Pedir cambios y rechazar supuestos anotan `changesRequestedAt`; proponer y aprobar lo quitan
   - files: packages/cli/src/flow/review.ts, packages/cli/src/commands/approve.ts, packages/cli/src/commands/propose.ts, packages/cli/test/changes-requested-state.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/changes-requested-state.test.ts test/comments.test.ts test/server-actions.test.ts test/flow.test.ts && pnpm lint

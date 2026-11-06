@@ -52,12 +52,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a2c28c25fda4219f146cac1838a46f1cd63767fe",
+      "attempts": 1,
       "startedAt": "2026-11-06T15:46:36.604Z",
       "doneAt": "2026-11-06T15:47:31.567Z",
-      "summary": "changeWaitsFor en core (flow/waiting.ts) y el campo changesRequestedAt de state.json"
+      "summary": "changeWaitsFor en core (flow/waiting.ts) y el campo changesRequestedAt de state.json",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4869f5c5f9c5089599956356e83c883649333dfa",
+      "startedAt": "2026-11-06T15:47:31.868Z",
+      "doneAt": "2026-11-06T15:48:20.925Z",
+      "summary": "Pedir cambios y rechazar supuestos al aprobar anotan changesRequestedAt; proponer y aprobar lo quitan"
     }
   },
   "pending": {

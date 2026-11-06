@@ -94,8 +94,10 @@ async function recordProposal(
   }
   const now = session.environment.now().toISOString();
   const size = keptSize(state, analysis.size, phase, session.lang);
+  // A new proposal hands the review back to the person (`changeWaitsFor`).
+  const { changesRequestedAt: _requested, ...rest } = state;
   const nextState: ChangeState = {
-    ...state,
+    ...rest,
     phase: moved,
     revision,
     items: decisions(state, analysis.spec),
