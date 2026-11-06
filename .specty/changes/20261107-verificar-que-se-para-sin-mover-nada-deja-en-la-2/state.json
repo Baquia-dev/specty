@@ -6,6 +6,13 @@
   "branch": "specty/20261107-verificar-que-se-para-sin-mover-nada-deja-en-la-2",
   "baseCommit": "d53e642555488d831c57061281c64b6a9b36f795",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8b5804271cf2ce6dcb4f9ab2b7c174fd20319f59fcd2284f7b1c8846a2c42bc3",
+    "at": "2026-11-06T21:30:26.143Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -37,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "02d905260d4bf59a5e7908708727f4becdf9e508",
+      "startedAt": "2026-11-06T21:30:26.876Z",
+      "doneAt": "2026-11-06T21:33:31.569Z",
+      "summary": "El código y los tests de la rama de partida (73607fd, 162f3c4 y d53e642) pasan con comandos que de verdad cargan sus tests: vitest de la CLI para el servidor y ng test --include para la UI, más typecheck y lint."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -47,12 +64,5 @@
     "AC": 3,
     "T": 2,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:8b5804271cf2ce6dcb4f9ab2b7c174fd20319f59fcd2284f7b1c8846a2c42bc3",
-    "at": "2026-11-06T21:30:26.143Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

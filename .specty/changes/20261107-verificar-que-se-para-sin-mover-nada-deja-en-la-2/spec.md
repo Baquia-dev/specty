@@ -58,7 +58,7 @@ Cuando «Verificar» de la UI incorpora main antes de verificar y la incorporaci
 
 ## Tareas
 
-- [ ] T1: La ejecución parada pasa sus tests del servidor y de la UI
+- [x] T1: La ejecución parada pasa sus tests del servidor y de la UI
   - files: packages/cli/src/server/run-output.ts, packages/cli/src/server/runs.ts, packages/cli/src/server/watched-runs.ts, packages/cli/src/server/merged-run.ts, packages/cli/test/server/verify-merge.test.ts, packages/ui/src/data/progress.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/acceptance/full-verification.ts, packages/ui/src/acceptance/result-dialogs.ts, packages/ui/src/acceptance/full-verification.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/verify-merge.test.ts test/server/runs.test.ts test/server/runs-turn.test.ts test/server/live.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/full-verification.test.ts --include src/acceptance/acceptance-actions.test.ts && pnpm typecheck && pnpm lint
