@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-cada-linea-dice-quien-lleva-su-corte-y-sus",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-cada-linea-dice-quien-lleva-su-corte-y-sus",
   "baseCommit": "8c4af062c7aa39651c4c843dc1b5aca2932d3eb3",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:651ea17f6734fc1790ce0e025b3a3d5d597c2ca60788318e5e07135c35d6adb3",
@@ -84,12 +84,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "792b3a76880e556641d134c64b018d59081a1a9b",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:18:43.364Z",
       "doneAt": "2026-11-06T18:19:01.420Z",
-      "summary": "ARCHITECTURE §15 cuenta holder en los registros de los cambios abiertos, y ui.md lo que la línea de un corte dice de quién lo lleva y sus avisos"
+      "summary": "ARCHITECTURE §15 cuenta holder en los registros de los cambios abiertos, y ui.md lo que la línea de un corte dice de quién lo lleva y sus avisos",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -102,10 +102,72 @@
     "T": 5,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T18:33:48.094Z",
   "lockedTests": {
     "packages/cli/test/server-holds.test.ts": "sha256:db26177ecfd60fd06ee72541d65957d425398993a84de48de37d8dac93c0ddc4",
     "packages/ui/src/data/views.test.ts": "sha256:6f8d70c0b1c25614edb491c37edffb58eaf7a0f82b2c95d07b5ba5603d4b3128",
     "packages/ui/src/inbox/inbox-lane.test.ts": "sha256:0acead3b7abee5866333419ba2bf9c7854ab9cffe9e3a5c9e175dd812fb37a9c",
     "packages/ui/src/inbox/lane-holds.test.ts": "sha256:17baf46ddee62d54cb90587b0f6c03a63a69e0db22273168f22d2632f572fc6b"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "52ed2ee434bd8f1889e51e4498b03a87e60e9a6f",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ui.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/scope-decision.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/test/changes-requested-card.test.ts",
+      "packages/cli/test/server-holds.test.ts",
+      "packages/cli/test/test-locks.test.ts",
+      "packages/core/src/cards/approve.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/core/src/cards/review-ui.ts",
+      "packages/core/src/cards/text.ts",
+      "packages/core/src/cards/unlock-check.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/light.ts",
+      "packages/core/test/cards.test.ts",
+      "packages/core/test/cards/approve.test.ts",
+      "packages/core/test/cards/delegated.test.ts",
+      "packages/core/test/cards/review-texts.test.ts",
+      "packages/ui/src/change/change-page.test.ts",
+      "packages/ui/src/data/fixtures.test.ts",
+      "packages/ui/src/data/fixtures.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/sample-progress.ts",
+      "packages/ui/src/data/sample-records.ts",
+      "packages/ui/src/data/sample-review.ts",
+      "packages/ui/src/data/sample-specs.test.ts",
+      "packages/ui/src/data/sample-test-code.test.ts",
+      "packages/ui/src/data/sample-test-code.ts",
+      "packages/ui/src/data/sample-unlocks.test.ts",
+      "packages/ui/src/data/views.test.ts",
+      "packages/ui/src/data/views.ts",
+      "packages/ui/src/inbox/epic-lanes.test.ts",
+      "packages/ui/src/inbox/epic-lanes.ts",
+      "packages/ui/src/inbox/inbox-epic-head.test.ts",
+      "packages/ui/src/inbox/inbox-epic.ts",
+      "packages/ui/src/inbox/inbox-lane.test.ts",
+      "packages/ui/src/inbox/inbox-lane.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "packages/ui/src/inbox/inbox.test.ts",
+      "packages/ui/src/inbox/inbox.ts",
+      "packages/ui/src/inbox/lane-holds.test.ts",
+      "packages/ui/src/inbox/lane-holds.ts",
+      "packages/ui/src/progress/progress-tab.test.ts"
+    ],
+    "at": "2026-11-06T18:19:29.104Z",
+    "resolved": {
+      "commit": "40b7979",
+      "at": "2026-11-06T18:28:40.684Z"
+    }
   }
 }

@@ -90,3 +90,25 @@ En la tarjeta de una épica de la Bandeja, la línea de cada corte con un cambio
 
 - R1: El corte C4 cambia en paralelo `epic-lanes.ts`, `inbox-epic.ts` y quizá la fila. Mitigación: la lógica nueva va en su propio archivo (`lane-holds.ts`), `epic-lanes.ts` solo cambia en `EpicLane` y en la última línea de `epicLanes`, y ni la tarjeta ni la fila cambian; un conflicto al incorporar main se resuelve con `specty integrate`.
 - R2: Con su aviso debajo, una línea crece y sus tramos dejan de alinearse con los de las demás. Mitigación: la pista y la columna de la derecha siguen centradas en su fila de la cuadrícula compartida (`grid-cols-subgrid`), y los avisos solo ocupan la columna del título.
+
+## Cierre
+
+### Resumen
+
+En la tarjeta de una épica de la Bandeja, la línea de cada corte con un cambio abierto dice a la derecha, si no espera una decisión, el agente que lo lleva con su nombre de `AGENT_NAMES` («Claude Code», «Codex»…, o el id de una herramienta que no está en la lista), o «Sin conversación» en el color de los avisos si es huérfano. Bajo su título lleva los avisos de su fila: «Su conversación (Codex) salió de su carpeta» o, si no, «Ninguna conversación lo lleva», y «Comparte `ruta` con C5», que nombra cada cambio con el que comparte archivos por su corte si es de la misma épica y por su título si no. `inbox/lane-holds.ts` (puro) lo calcula del cambio cargado, y `epicLanes` lo pone en cada línea como `holds`. Para eso el servidor da en el registro de cada cambio abierto el `holder` de `status` (`holdsById`), la vista de la UI lo copia y la entrada ligera de core exporta `AGENT_NAMES`. `docs/ARCHITECTURE.md` §15 y `docs/ui.md` lo cuentan.
+
+### Desviaciones
+
+- `packages/core/test/light.test.ts` estaba en Archivos y no cambió: su test de AC5 se quitó antes de enviar los tests, porque la verificación de T2 encadena con `&&` el test de core y el de la vista, y el de core, en rojo, impedía que se ejecutara `views.test.ts`. Que la entrada ligera da los nombres de los agentes lo comprueba `lane-holds.test.ts`, que espera «Claude Code» y «Codex».
+- `epicLanes` solo pone `holds` en una línea que tiene algo que decir (agente, huérfano, conversación fuera o archivos compartidos; `saysSomething`): un test de C2 compara entera la línea de un cambio sin corte con `toEqual`, y un `holds` vacío lo habría roto.
+- Al aceptar, `docs/ui.md` chocó con C4, que cambió las líneas vecinas (la épica una sola vez y su cabecera); se resolvió con los dos cambios y `specty integrate`.
+
+### Decisiones
+
+- A la derecha va una sola cosa, como en la maqueta: el botón de la decisión si el cambio espera una; si no, el agente o «Sin conversación» (A3).
+- En la línea, la herramienta de una conversación que salió de su carpeta va con su nombre, como a la derecha; la fila sigue con su id.
+- «Comparte» nombra a cada cambio una vez, separado por comas, y un cambio de otra épica con el mismo id de corte va por su título.
+
+### Pendientes
+
+- P240: que la fila y la página de un cambio nombren también con su nombre la herramienta de una conversación que salió de su carpeta.
