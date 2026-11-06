@@ -76,3 +76,26 @@ Con OpenCode 2.2.5 (Homebrew, instalado el 2026-11-06) fallan los 7 tests de `op
 - R1: Otra versión de OpenCode 2 cambia otra vez los nombres o la API — el E2E falla con el nombre del paso que cambió, y el plugin sigue escuchando los dos eventos de fin de turno.
 - R2: `wait` responde antes de que empiece el turno que acaba de admitir `prompt` — se comprobó en 2.2.5 que espera al turno; si no, el test de compactar fallaría por falta de la tarjeta, no por pasar en falso.
 - R3: Con OpenCode 2.2, el fin de turno también salta en la sesión hija de un subagente, como ya pasaba con la beta — queda como estaba, fuera de alcance.
+
+## Cierre
+
+### Resumen
+
+El E2E de OpenCode vuelve a pasar con OpenCode 2.2.5 (los 7 tests, en unos 30 s) y deja de bloquear la unidad `cli`. Lanza `opencode run --standalone` en la carpeta del repositorio, usa las herramientas de 2.2 (`shell`, `write` y `read` con `path`, `subagent` con `agent`), lee la sesión hija de `<subagent sessionID="…">` y maneja `opencode serve` por su API `/api`, con la contraseña de `OPENCODE_SERVER_PASSWORD` y `wait` tras cada mensaje y cada compactación. Si el servidor no arranca, lo para antes de fallar. Busca la tarjeta tras compactar en las partes de sistema de la siguiente petición, y comprueba que la de antes no la traía. Con un OpenCode anterior a 2.2, el E2E se salta. El modelo simulado responde a la petición de compactar de 2.2 con la primera cabecera de su plantilla. La integración necesitó un arreglo: el fin de turno del plugin no se disparaba con 2.2, que ya no publica `session.idle` y da la sesión en `data`. Ahora el plugin escucha también `session.execution.succeeded`. ARCHITECTURE cuenta la versión comprobada y el fin de turno de 2.2.
+
+### Desviaciones
+
+- Ninguna respecto al plan aprobado. Todo lo de OpenCode 2.2.5 se averiguó antes de proponer la spec, con un modelo simulado y OpenCode siempre aislado (HOME y XDG temporales, `--standalone`).
+
+### Decisiones
+
+- El E2E solo corre desde OpenCode 2.2 y se salta con una versión anterior: soportar a la vez 1.x, la beta y 2.2 pedía dos maneras de lanzar `opencode run`, de nombrar las herramientas, de hablar con `opencode serve` y de buscar la tarjeta, sin poder comprobarlas aquí. El plugin sigue admitiendo OpenCode 1 y la beta, y sus tests unitarios lo prueban.
+- El test de compactar busca la tarjeta en un mensaje `system`, que es donde la pone el plugin en OpenCode 2 (`context`), en lugar de un mensaje `user` (OpenCode 1). Comprueba además que la petición de antes de compactar no la traía.
+- Con 2.2.5 se comprobó también P93: cada subagente de `subagent` es una sesión hija, y `execute.before` trae su `sessionID`.
+
+### Pendientes
+
+- P199: los `opencode serve` que dejaron vivos ejecuciones anteriores del E2E; pararlos lo decide la persona.
+- P200: el guard no juzga la herramienta `execute` (Code Mode) de OpenCode 2.2.5, con `session_move` y `worktree_*`.
+- P201: `doctor` no avisa de un plugin de OpenCode sin el fin de turno de 2.2.
+- P135 sigue abierto: el fin de turno de OpenCode 2 no distingue la sesión hija de un subagente.
