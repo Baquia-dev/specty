@@ -49,7 +49,7 @@ Hoy, al decidir en la terminal una solicitud de alcance con `approve --scope` o 
 
 ## Tareas
 
-- [ ] T1: Los textos arman la nota de una solicitud de alcance con su parche y su evidencia
+- [x] T1: Los textos arman la nota de una solicitud de alcance con su parche y su evidencia
   - files: packages/core/src/cards/approve.ts, packages/core/src/cards/text.ts, packages/core/src/cards/unlock-check.ts, packages/core/src/cards/index.ts, packages/core/test/cards/approve.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/approve.test.ts test/cards/unlock-check.test.ts && pnpm typecheck && pnpm lint

@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fc6af5165c986b81bb1cb196a94e17e3389fa0da",
+      "startedAt": "2026-11-06T17:17:49.689Z",
+      "doneAt": "2026-11-06T17:23:28.910Z",
+      "summary": "scopeRequestNote (cards/approve.ts) arma la nota de una solicitud: rutas, motivo y, de un desbloqueo, el parche y cada evidencia numerada, recortados y con los caracteres de control a la vista; cappedLines pasa a cards/text.ts."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
