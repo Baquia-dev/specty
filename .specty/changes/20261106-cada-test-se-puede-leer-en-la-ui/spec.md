@@ -76,7 +76,7 @@ Hoy la UI solo da la ruta de cada test, en «Tests por aprobar» y en «Tests bl
   - files: packages/ui/src/progress/locked-tests.ts, packages/ui/src/progress/progress-tab.ts, packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/progress/locked-tests.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/locked-tests.test.ts --include src/progress/progress-tab.test.ts --include src/acceptance/acceptance-tab.test.ts && pnpm typecheck
-- [ ] T4: La arquitectura y ui.md cuentan «Ver código» y su ruta
+- [x] T4: La arquitectura y ui.md cuentan «Ver código» y su ruta
   - files: docs/ARCHITECTURE.md, docs/ui.md
   - ac: —
   - verify: grep -q "/api/changes/<id>/test" docs/ARCHITECTURE.md && grep -q "Ver código" docs/ui.md

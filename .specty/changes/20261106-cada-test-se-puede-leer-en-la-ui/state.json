@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-cada-test-se-puede-leer-en-la-ui",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-cada-test-se-puede-leer-en-la-ui",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d049d9a001fdbce474fd4df4d1a2a357fc52bee3",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:41:01.434Z",
       "doneAt": "2026-11-06T13:42:38.854Z",
-      "summary": "sp-locked-tests gana la entrada change y «Ver código» bajo el estado de cada test bloqueado; progress-tab y acceptance-tab le pasan el cambio."
+      "summary": "sp-locked-tests gana la entrada change y «Ver código» bajo el estado de cada test bloqueado; progress-tab y acceptance-tab le pasan el cambio.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0d5fe704d1ce2e94f15b055983c3d9011e315980",
+      "startedAt": "2026-11-06T13:42:39.175Z",
+      "doneAt": "2026-11-06T13:43:21.580Z",
+      "summary": "ARCHITECTURE §15 describe GET /api/changes/<id>/test y ui.md «Ver código» en tests por aprobar y bloqueados."
     }
   },
   "pending": {
