@@ -105,3 +105,28 @@ Hoy la limpieza no poda los registros de git de worktrees cuya carpeta ya no exi
 - R3: Podar los registros rompe la detección de los cambios sin carpeta o `specty restore` — un cambio sin carpeta se detecta por su rama, no por el registro; un test lo comprueba después de `specty prune`.
 - R4: Una ref de rescate nueva en cada limpieza para una carpeta que git no deja quitar (bloqueada) — si la carpeta queda, la ref recién creada se borra.
 - R5: `close` dice que su carpeta queda, porque tenía algo sin commit, y la limpieza del final la quita — la sección de la limpieza va después en la tarjeta y nombra la ref.
+
+## Cierre
+
+### Resumen
+
+La limpieza ya no deja huérfanos (P198, corte C2 de la épica). `cleanUp`, en `flow/prune.ts`, la ejecutan `specty prune`, `new` antes de crear su carpeta, y `close` y `cancel` al terminar, estos dos desde la carpeta principal (`withCleanupFrom`). Primero `git worktree prune` olvida los registros de worktrees sin carpeta, salvo los bloqueados; un cambio abierto sin carpeta se sigue detectando por su rama, y `specty restore` lo recupera. Después quita las carpetas de cambios terminados, también con algo sin commit, que antes guarda en una ref de rescate encima de su HEAD, para luego usar `git worktree remove --force`. Barre las carpetas fantasma de `.worktrees/` y de la carpeta hermana (`sweepableGhosts`, en el nuevo `flow/orphans.ts`), salvo la del proceso, las que tienen un repositorio propio y las que se llaman como un cambio sin carpeta. Por último, borra la carpeta hermana si queda vacía y las carpetas sin archivos de `.specty/changes/`. El rescate (`rescueFolder`, en el nuevo `flow/rescue.ts`) hace un commit en `refs/specty/rescue/<nombre>/<AAAAMMDDHHMMSS>` con un índice temporal y la carpeta como árbol de trabajo, sin mover ninguna rama; si falla, la carpeta se queda y la salida da la razón de git. La tarjeta de `prune` (`cards/parallel.ts`) dice las carpetas fantasma, las refs de rescate con cómo verlas y recuperarlas (y su peso desde 10 MB), los registros olvidados y las carpetas vacías; `new`, `close` y `cancel` añaden lo suyo con `cleanupBlocks`. Los tests: `packages/cli/test/prune-orphans.test.ts` (AC4, AC6, AC7), `prune-rescue.test.ts` (AC5, AC8), `prune-commands.test.ts` (AC4) y `packages/core/test/cards/prune-orphans.test.ts` (AC4–AC8, AC11). La verificación completa pasó entera.
+
+### Desviaciones
+
+- Dos tests que ya existían adaptaron su preparación a la limpieza nueva, sin cambiar lo que comprueban. En `prune.test.ts`, la carpeta cancelada sigue bloqueada mientras se cierra el otro cambio, porque la limpieza del final de `close` ya la quitaría. En `worktrees.test.ts`, la carpeta que deja el test para comprobar el sufijo `-2` tiene un repositorio propio, porque `new` ya barre una carpeta fantasma vacía.
+- `removeFinished` y su tipo dejaron de exportarse: fuera de `flow/prune.ts` solo se usa `cleanUp`.
+- Para no pasar de 50 líneas por función, `cancel` quita su carpeta y arma sus líneas con `leaveCancelled` y `folderLines` (`commands/finish.ts`), y `new` añade lo de la limpieza con `withSweptAndPorts`.
+
+### Decisiones
+
+- Lo guardado en una ref de rescate se ve con `git show <ref>`, que enseña solo eso; el `git log -p` que la épica prevé para `doctor` (A6, corte C3) enseñaría también la historia de la rama.
+- El umbral del peso (R2 de la épica) es de 10 MB.
+- El rescate de una carpeta fantasma aplica también el `.gitignore` de la carpeta principal.
+- Una carpeta de `.worktrees/` con un repositorio propio no se barre: no es de Specty.
+- Si una carpeta se queda después de guardarla (por ejemplo, bloqueada), su ref recién creada se borra.
+- `sweepableGhosts` olvida lo que `Git` recordaba (`git.forget()`) antes de pedir la lista de worktrees, para leerla después de las carpetas.
+
+### Pendientes
+
+- Corte C3: `doctor` y `status` cuentan los huérfanos con `flow/orphans.ts` y las refs de rescate.
