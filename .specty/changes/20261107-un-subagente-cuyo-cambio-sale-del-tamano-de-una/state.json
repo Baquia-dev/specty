@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261107-un-subagente-cuyo-cambio-sale-del-tamano-de-una",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-un-subagente-cuyo-cambio-sale-del-tamano-de-una",
+  "baseCommit": "b2b25619f54c3a679b265807715ceafdef7d9fbb",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:52c44bebfda9aae8146f8e9e5120a6618bc545c104da8608ba3fdc17c3948ce5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:59ca56aeb537cb8829b36efb60c1712e4f7e87c7c0f8d1d8ba864459fd4190ac",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:4f29b6499af2f6b9d3ad72ad4e6468ecd78781d25fe51c98738dbfc2048c44e1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2a3a6efd00c07d1c93a63b7d1f0e259e4ab090bb17f84dabccc7d0aabb8918b9",
+    "at": "2026-11-06T21:26:51.872Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
