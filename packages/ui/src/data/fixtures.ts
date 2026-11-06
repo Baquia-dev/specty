@@ -87,6 +87,9 @@ export class FixtureData extends SpectyData {
     simulate("outage", "cortar o recuperar la conexión", "drop or restore the connection", () =>
       this.toggleOutage(),
     );
+    simulate("unattended", "nadie retoma tu decisión", "nobody picks up your decision", () =>
+      this.toggleUnattended(),
+    );
   }
 
   changes(): Promise<readonly ChangeRecord[]> {
@@ -218,6 +221,22 @@ export class FixtureData extends SpectyData {
   toggleOutage(): void {
     this.failing = !this.failing;
     this.notify();
+  }
+
+  /**
+   * The example of a change nobody picks up: the first one in implementation, as the local server
+   * says it when the agent's `specty wait` ran out of time after the person decided; or again not.
+   */
+  toggleUnattended(): void {
+    const record = this.records.find((item) => item.state.phase === "implementing");
+    if (record === undefined) return;
+    const unattended = {
+      since: new Date().toISOString(),
+      wait: { tool: "claude-code", ended: "timeout" as const, ago: 12 },
+    };
+    void this.edit(record.state.id, ({ unattended: shown, ...rest }) =>
+      shown === undefined ? { ...rest, unattended } : rest,
+    );
   }
 
   override decideAssumption(

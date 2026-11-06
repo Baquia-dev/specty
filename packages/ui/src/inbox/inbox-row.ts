@@ -129,7 +129,9 @@ const ROW =
       @if (folder(); as place) {
         <span class="font-mono text-xs break-all text-text-muted" [attr.title]="change().folder" data-folder>{{ place }}</span>
       }
-      @if (change().away; as away) {
+      @if (change().unattended) {
+        <span class="text-[13px]" style="color: var(--color-phase-review)" data-unattended>{{ t()('Nadie retoma tu decisión', 'Nobody picks up your decision') }}</span>
+      } @else if (change().away; as away) {
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-unheld>{{ t()('Su conversación (' + away.tool + ') salió de su carpeta', 'Its conversation (' + away.tool + ') left its folder') }}</span>
       } @else if (change().orphan) {
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-unheld>{{ t()('Ninguna conversación lo lleva', 'No conversation holds it') }}</span>

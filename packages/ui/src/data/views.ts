@@ -133,6 +133,7 @@ function identityOf(
   | "lost"
   | "orphan"
   | "away"
+  | "unattended"
   | "configIssues"
   | "phaseSince"
   | "createdAt"
@@ -151,10 +152,21 @@ function identityOf(
     ...(state.branch === undefined ? {} : { branch: state.branch }),
     ...(record.folder === undefined ? {} : { folder: record.folder }),
     ...(record.lost === true ? { lost: true } : {}),
-    ...(record.orphan === true ? { orphan: true } : {}),
-    ...(record.away === undefined ? {} : { away: record.away }),
+    ...holdsOf(record),
     ...(record.configIssues === undefined ? {} : { configIssues: record.configIssues }),
     goal: spec.sections.goal ?? spec.sections.reason ?? "",
+  };
+}
+
+/**
+ * Who holds it, as the server says: nobody (an orphan), its conversation from another folder, or
+ * nobody picks up the person's last decision.
+ */
+function holdsOf(record: ChangeRecord): Pick<ChangeView, "orphan" | "away" | "unattended"> {
+  return {
+    ...(record.orphan === true ? { orphan: true } : {}),
+    ...(record.away === undefined ? {} : { away: record.away }),
+    ...(record.unattended === undefined ? {} : { unattended: record.unattended }),
   };
 }
 

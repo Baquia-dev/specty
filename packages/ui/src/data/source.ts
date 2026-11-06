@@ -39,6 +39,10 @@ const NO_TRACE: Bilingual = {
   es: "Esta fuente no da la trazabilidad.",
   en: "This source gives no traceability.",
 };
+const NO_TEST_CODE: Bilingual = {
+  es: "Esta fuente no da el código de los tests.",
+  en: "This source gives no test code.",
+};
 
 /** A page of the finished changes, as the Inbox asks for it (`GET /api/changes/finished`). */
 export interface FinishedRequest {
@@ -221,6 +225,11 @@ export abstract class SpectyData {
   /** `path` as the change left it, in blocks with the commit, change, task and criteria of each. */
   trace(_change: string, _path: string): Promise<TraceRecord> {
     return Promise.reject(new ActionError(NO_TRACE));
+  }
+
+  /** The code of `path`, a test of the change, as its branch has it (ADR 0014). */
+  testCode(_change: string, _path: string): Promise<string> {
+    return Promise.reject(new ActionError(NO_TEST_CODE));
   }
 
   /**

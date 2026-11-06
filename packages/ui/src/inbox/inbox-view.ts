@@ -28,27 +28,30 @@ export interface InboxFilters {
   readonly sort: InboxSort;
 }
 
-/** A section of the Inbox, with the changes as they were given: summaries, whole views or both. */
-export interface InboxSection<T extends ListedChange = ListedChange> {
-  readonly key: string;
-  readonly label: Bilingual;
-  readonly changes: readonly T[];
-}
-
+/**
+ * A block of the Inbox: a change of its own, or a loaded epic with all its loaded slices, whatever
+ * their state, which goes to a single section. The changes are as they were given: summaries,
+ * whole views or both.
+ */
 export type InboxBlock<T extends ListedChange = ListedChange> =
   | { readonly kind: "row"; readonly key: string; readonly change: T }
   | {
       readonly kind: "epic";
       readonly key: string;
-      readonly epicId: string;
-      readonly title: string;
-      /** The epic itself, when it is in the section: its own row heads the group. */
-      readonly head?: T;
-      /** The epic as loaded, from every change: the phase and tab of a header without a row. */
-      readonly epic?: T;
-      /** Its slices in the section, in the section's order. */
+      /** The epic: its own row heads the block. */
+      readonly epic: T;
+      /** Its slices loaded, in the order chosen. */
       readonly slices: readonly T[];
     };
+
+/** A section of the Inbox: its blocks, which it counts, and the changes j/k walk through. */
+export interface InboxSection<T extends ListedChange = ListedChange> {
+  readonly key: string;
+  readonly label: Bilingual;
+  readonly blocks: readonly InboxBlock<T>[];
+  /** In the order shown: each row, or the epic and then its slices. */
+  readonly order: readonly T[];
+}
 
 /** Waiting for the person, in progress, or finished. */
 export type InboxState = "decision" | "active" | "recent";
@@ -76,10 +79,13 @@ export function visibleChanges<T extends ListedChange>(
   changes: readonly T[],
   filters: Pick<InboxFilters, "query" | "phase">,
 ): readonly T[] {
-  return changes.filter(
-    (change) =>
-      matchesQuery(change, filters.query) &&
-      (filters.phase === "all" || change.phase === filters.phase),
+  return changes.filter((change) => passes(change, filters));
+}
+
+function passes(change: ListedChange, filters: Pick<InboxFilters, "query" | "phase">): boolean {
+  return (
+    matchesQuery(change, filters.query) &&
+    (filters.phase === "all" || change.phase === filters.phase)
   );
 }
 
@@ -101,125 +107,113 @@ export function phaseCounts(
 /**
  * The sections of the Inbox, sorted inside, without empty ones. The open changes go before the
  * finished ones, each part in the order chosen, so a new page of finished changes goes at the end
- * of what is shown (A4 of the epic `20261105-bandeja-por-paginas`).
+ * of what is shown (A4 of the epic `20261105-bandeja-por-paginas`). Each epic goes once, with all
+ * its slices, where its block goes: the filters let it through if they let any of them through.
  */
 export function inboxSections<T extends ListedChange>(
   changes: readonly T[],
   filters: InboxFilters,
   lang: Lang,
 ): readonly InboxSection<T>[] {
-  const visible = visibleChanges(changes, filters);
   const sorted = (finished: boolean) =>
     sortChanges(
-      visible.filter((change) => (stateOf(change) === "recent") === finished),
+      changes.filter((change) => (stateOf(change) === "recent") === finished),
       filters.sort,
       lang,
     );
-  const shown = [...sorted(false), ...sorted(true)];
+  const shown = blocksOf([...sorted(false), ...sorted(true)]).filter((block) =>
+    membersOf(block).some((change) => passes(change, filters)),
+  );
   const sections: readonly InboxSection<T>[] =
     filters.group === "epic"
-      ? epicSections(shown, changes)
+      ? epicSections(shown)
       : filters.group === "state"
-        ? STATES.map(({ key, label }) => ({
-            key,
-            label,
-            changes: clusterByEpic(shown.filter((change) => stateOf(change) === key)),
-          }))
+        ? STATES.map(({ key, label }) =>
+            section(
+              key,
+              label,
+              shown.filter((block) => blockState(block) === key),
+            ),
+          )
         : filters.group === "phase"
-          ? PHASES.map((phase) => ({
-              key: phase,
-              label: PHASE_LABELS[phase],
-              changes: clusterByEpic(shown.filter((change) => change.phase === phase)),
-            }))
-          : [
-              {
-                key: "all",
-                label: { es: "Todos los cambios", en: "All changes" },
-                changes: clusterByEpic(shown),
-              },
-            ];
-  return sections.filter((section) => section.changes.length > 0);
+          ? PHASES.map((phase) =>
+              section(
+                phase,
+                PHASE_LABELS[phase],
+                shown.filter((block) => leadOf(block).phase === phase),
+              ),
+            )
+          : [section("all", { es: "Todos los cambios", en: "All changes" }, shown)];
+  return sections.filter((item) => item.blocks.length > 0);
 }
 
 /**
- * Visual blocks inside a section: the slices of an epic under it, headed by the epic's own row when
- * it is in the section, and the other changes as rows. `all` gives the epic loaded elsewhere.
+ * The blocks of `changes`, in their order: each loaded epic with every slice of it, where its first
+ * member goes, and each other change as a row. A slice whose epic is not loaded is a row.
  */
-export function sectionBlocks<T extends ListedChange>(
-  section: InboxSection<T>,
-  all: readonly T[],
-): readonly InboxBlock<T>[] {
-  const sliceEpics = new Set(section.changes.flatMap((c) => (c.epic ? [c.epic.id] : [])));
+function blocksOf<T extends ListedChange>(changes: readonly T[]): readonly InboxBlock<T>[] {
+  const epics = new Map(
+    changes.flatMap((c): [string, T][] => (c.kind === "epic" ? [[c.id, c]] : [])),
+  );
+  const home = (change: T) =>
+    change.epic !== undefined && epics.has(change.epic.id) ? change.epic.id : change.id;
   const seen = new Set<string>();
-  return section.changes.flatMap((change): InboxBlock<T>[] => {
-    const epicId = epicClusterId(change, sliceEpics);
-    if (epicId === undefined) return [{ kind: "row", key: change.id, change }];
-    if (seen.has(epicId)) return [];
-    seen.add(epicId);
-    const group = section.changes.filter((item) => epicClusterId(item, sliceEpics) === epicId);
-    const head = group.find((item) => item.id === epicId);
-    const epic = head ?? all.find((item) => item.id === epicId);
-    const title =
-      epic?.title ?? group.find((item) => item.epic !== undefined)?.epic?.title ?? epicId;
-    const slices = group.filter((item) => item !== head);
-    return [
-      {
-        kind: "epic",
-        key: `epic-${epicId}`,
-        epicId,
-        title,
-        ...(head === undefined ? {} : { head }),
-        ...(epic === undefined ? {} : { epic }),
-        slices,
-      },
-    ];
+  return changes.flatMap((change): InboxBlock<T>[] => {
+    const key = home(change);
+    if (seen.has(key)) return [];
+    seen.add(key);
+    const epic = epics.get(key);
+    if (epic === undefined) return [{ kind: "row", key, change }];
+    const slices = changes.filter((item) => item !== epic && home(item) === key);
+    return [{ kind: "epic", key: `epic-${key}`, epic, slices }];
   });
 }
 
-function epicClusterId(change: ListedChange, sliceEpics: ReadonlySet<string>): string | undefined {
-  if (change.epic !== undefined) return change.epic.id;
-  return change.kind === "epic" && sliceEpics.has(change.id) ? change.id : undefined;
+function section<T extends ListedChange>(
+  key: string,
+  label: Bilingual,
+  blocks: readonly InboxBlock<T>[],
+): InboxSection<T> {
+  return { key, label, blocks, order: blocks.flatMap(membersOf) };
 }
 
-function clusterByEpic<T extends ListedChange>(changes: readonly T[]): readonly T[] {
-  const sliceEpics = new Set(changes.flatMap((c) => (c.epic ? [c.epic.id] : [])));
-  const seen = new Set<string>();
-  return changes.flatMap((change) => {
-    const epicId = epicClusterId(change, sliceEpics);
-    if (epicId === undefined) return [change];
-    if (seen.has(epicId)) return [];
-    seen.add(epicId);
-    return changes
-      .filter((item) => epicClusterId(item, sliceEpics) === epicId)
-      .toSorted((a, b) => Number(b.kind === "epic") - Number(a.kind === "epic"));
-  });
+/** A row's change, or an epic and then its slices. */
+function membersOf<T extends ListedChange>(block: InboxBlock<T>): readonly T[] {
+  return block.kind === "row" ? [block.change] : [block.epic, ...block.slices];
 }
 
+/** The change that leads a block: its row, or its epic. */
+function leadOf<T extends ListedChange>(block: InboxBlock<T>): T {
+  return block.kind === "row" ? block.change : block.epic;
+}
+
+/** The most urgent state among a block's members: a decision, then in progress, then recent. */
+function blockState(block: InboxBlock): InboxState {
+  const states = new Set(membersOf(block).map(stateOf));
+  return STATES.find(({ key }) => states.has(key))?.key ?? "recent";
+}
+
+/**
+ * One section per epic, in the order of the blocks, and then one per kind. The slices whose epic
+ * is not loaded go, as rows, to their epic's section, with the title of the epic they bring.
+ */
 function epicSections<T extends ListedChange>(
-  shown: readonly T[],
-  all: readonly T[],
+  blocks: readonly InboxBlock<T>[],
 ): readonly InboxSection<T>[] {
-  const epicOf = (c: ListedChange) => (c.kind === "epic" ? c.id : c.epic?.id);
-  const epicIds = [...new Set(shown.flatMap((c) => (epicOf(c) ? [epicOf(c) ?? ""] : [])))];
-  const byEpic: InboxSection<T>[] = epicIds.map((epicId) => {
-    const group = shown
-      .filter((c) => epicOf(c) === epicId)
-      .toSorted((a, b) => Number(b.kind === "epic") - Number(a.kind === "epic"));
-    const title =
-      all.find((c) => c.id === epicId)?.title ??
-      group.find((c) => c.epic !== undefined)?.epic?.title ??
-      epicId;
-    return {
-      key: `epic:${epicId}`,
-      label: { es: `Épica · ${title}`, en: `Epic · ${title}` },
-      changes: group,
-    };
+  const epicOf = (block: InboxBlock<T>) => (block.kind === "epic" ? block.epic : block.change.epic);
+  const epicIds = [...new Set(blocks.flatMap((block) => epicOf(block)?.id ?? []))];
+  const byEpic = epicIds.map((epicId) => {
+    const group = blocks.filter((block) => epicOf(block)?.id === epicId);
+    const title = group.map(epicOf).find((epic) => epic !== undefined)?.title ?? epicId;
+    return section(`epic:${epicId}`, { es: `Épica · ${title}`, en: `Epic · ${title}` }, group);
   });
-  const rest = shown.filter((c) => epicOf(c) === undefined);
-  const byKind: InboxSection<T>[] = KIND_SECTIONS.map(({ key, label }) => ({
-    key,
-    label,
-    changes: rest.filter((c) => c.kind === key),
-  }));
+  const rest = blocks.filter((block) => epicOf(block) === undefined);
+  const byKind = KIND_SECTIONS.map(({ key, label }) =>
+    section(
+      key,
+      label,
+      rest.filter((block) => leadOf(block).kind === key),
+    ),
+  );
   return [...byEpic, ...byKind];
 }

@@ -2,7 +2,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
 import { Button } from "../components/button";
 import { Toasts } from "../components/toast";
-import type { ChangeView } from "../data/records";
+import type { ChangeView, Unattended } from "../data/records";
 import { Preferences } from "../theme/preferences";
 
 /** One agent and the order that opens it in the change's folder. */
@@ -27,8 +27,9 @@ const OPEN_IN: readonly ((folder: string) => Hint)[] = [
 
 /**
  * A change that waits for the agent with no conversation in its folder (an orphan, or one whose
- * conversation left): why, how to resume it with each agent, each order with «Copiar», and how
- * from a session already open. Above the change's tabs.
+ * conversation left), or where nobody picks up the person's last decision: why, what to do then,
+ * how to resume it with each agent, each order with «Copiar», and how from a session already
+ * open. Above the change's tabs.
  */
 @Component({
   selector: "sp-resume-hints",
@@ -38,6 +39,13 @@ const OPEN_IN: readonly ((folder: string) => Hint)[] = [
     <section class="flex flex-col gap-2 pt-4" [attr.aria-label]="t()('Cómo retomarlo', 'How to resume it')">
       <h2 class="m-0 text-sm font-semibold">{{ t()('Cómo retomarlo', 'How to resume it') }}</h2>
       <p class="m-0 text-sm" data-why>{{ why() }}</p>
+      @if (change().unattended) {
+        <p class="m-0 text-sm" data-todo>
+          {{ t()('Si la conversación del agente sigue abierta, escríbele «sigue» para que ejecute', "If the agent's conversation is still open, write “go on” in it so it runs") }}
+          <code class="font-mono text-xs">specty next</code>
+          {{ t()('y siga desde tu decisión; si se cerró, abre otra en su carpeta con una de estas órdenes.', 'and goes on from your decision; if it closed, open another one in its folder with one of these orders.') }}
+        </p>
+      }
       <ul class="m-0 flex list-none flex-col gap-1 p-0">
         @for (hint of hints(); track hint.agent) {
           <li class="flex flex-wrap items-center gap-2" data-agent>
@@ -65,9 +73,13 @@ export class ResumeHints {
   private readonly toasts = inject(Toasts);
   protected readonly t = inject(Preferences).t;
 
-  /** Why nobody works on it: its conversation left its folder, or no conversation holds it. */
+  /**
+   * Why nobody works on it: nobody picks up the person's decision, its conversation left its
+   * folder, or no conversation holds it.
+   */
   protected readonly why = computed(() => {
-    const { away } = this.change();
+    const { away, unattended } = this.change();
+    if (unattended !== undefined) return this.unattendedWhy(unattended);
     if (away === undefined) {
       return this.t()(
         "Ninguna conversación trabaja en su carpeta.",
@@ -80,6 +92,34 @@ export class ResumeHints {
       `Its conversation (${away.tool}) left its folder ${when.en}.`,
     );
   });
+
+  /** What happened to the person's decision: the agent's `wait` ended, or no agent waited. */
+  private unattendedWhy({ wait, holder }: Unattended): string {
+    if (wait !== undefined) {
+      const tool = wait.tool === undefined ? "" : ` (${wait.tool})`;
+      const when = minutesAgo(wait.ago);
+      return wait.ended === "timeout"
+        ? this.t()(
+            `El specty wait del agente${tool} agotó su tiempo ${when.es}.`,
+            `The agent's specty wait${tool} ran out of time ${when.en}.`,
+          )
+        : this.t()(
+            `El specty wait del agente${tool} se cortó ${when.es}.`,
+            `The agent's specty wait${tool} was cut off ${when.en}.`,
+          );
+    }
+    if (holder === undefined) {
+      return this.t()(
+        "Ningún agente esperaba tu decisión, y ninguna conversación trabaja en su carpeta.",
+        "No agent was waiting for your decision, and no conversation works in its folder.",
+      );
+    }
+    const when = minutesAgo(holder.ago);
+    return this.t()(
+      `Ningún agente esperaba tu decisión; la última conversación en su carpeta (${holder.tool}) dio un paso ${when.es}.`,
+      `No agent was waiting for your decision; the last conversation in its folder (${holder.tool}) took a step ${when.en}.`,
+    );
+  }
 
   protected readonly hints = computed(() => {
     const folder = this.change().folder;
