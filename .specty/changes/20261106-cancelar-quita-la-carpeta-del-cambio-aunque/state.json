@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b5d6aa56d14d0242825f949ac347089262b0dd1e",
+      "attempts": 1,
       "startedAt": "2026-11-06T04:10:18.871Z",
       "doneAt": "2026-11-06T04:10:46.635Z",
-      "summary": "Textos cancelWorkCommitSubject y cancelledWorkSavedLine en core (es/en), exportados; cancelledCard recibe una lista de líneas sobre la carpeta."
+      "summary": "Textos cancelWorkCommitSubject y cancelledWorkSavedLine en core (es/en), exportados; cancelledCard recibe una lista de líneas sobre la carpeta.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "070fcd00acbac67888fba4d24839de7502a1d22d",
+      "startedAt": "2026-11-06T04:10:46.942Z",
+      "doneAt": "2026-11-06T04:12:14.762Z",
+      "summary": "removeCancelled guarda lo sin commit en un commit de la rama (commitUncommitted, recibo close, git reset si falla) antes de decidir si la carpeta queda; la tarjeta de cancel nombra ese commit."
     }
   },
   "pending": {
