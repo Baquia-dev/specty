@@ -4,6 +4,7 @@ import { TestBed } from "@angular/core/testing";
 import { Toasts } from "../components/toast";
 import { ChangesStore, DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
+import type { RunRecord } from "../data/progress";
 import {
   ActionError,
   type Bilingual,
@@ -16,6 +17,7 @@ import { STEP_MS } from "../data/sample-run";
 import { deriveViews } from "../data/views";
 import { Preferences } from "../theme/preferences";
 import { AcceptanceTab } from "./acceptance-tab";
+import { fullStateOf } from "./result-dialogs";
 
 const ASISTENCIA = "20261018-asistencia-curso";
 
@@ -48,6 +50,26 @@ class Refusing extends FixtureData {
     return Promise.reject(
       new ActionError({ es: "El servidor no responde.", en: "The server does not answer." }),
     );
+  }
+}
+
+/** A full verification that stopped without a result, as the server keeps it. */
+const STOPPED: RunRecord = {
+  command: VERIFY_FULL,
+  startedAt: "2026-11-07T10:00:00.000Z",
+  output: [
+    "Antes de verificar, main se incorpora a la rama del cambio.",
+    "main también cambió archivos que aquí tienen cambios sin commit: el merge los pisaría, así que no empezó.",
+  ],
+  stopped: true,
+};
+
+/** A server whose last «Verificar» of the change stopped without a result. */
+@Injectable()
+class StoppedRun extends FixtureData {
+  override watchRun(_change: string, listener: (run: RunRecord | undefined) => void): () => void {
+    listener(STOPPED);
+    return () => undefined;
   }
 }
 
@@ -288,6 +310,41 @@ describe("Full verification", () => {
       expect(failed.part("[data-coverage]")).toBeNull();
       const without = await withLast(true);
       expect(without.part("[data-coverage]")).toBeNull();
+    });
+  });
+
+  describe("a run that stopped without a result", () => {
+    /** The change's view with a last full verification that passed at `at`. */
+    const passedAt = (view: ChangeView, at: string): ChangeView => ({
+      ...view,
+      progress: {
+        ...view.progress,
+        full: {
+          command: VERIFY_FULL,
+          last: { at, command: VERIFY_FULL, passed: true, ms: 41_000, output: [] },
+        },
+      },
+    });
+
+    it("AC3: shows that it stopped and its output, not as running, until a later result arrives", async () => {
+      const { section, store, remount } = await render(ASISTENCIA, StoppedRun);
+      const stopped = () => section()?.querySelector("[data-stopped]") ?? null;
+      expect(text(stopped())).toContain("Se paró sin resultado");
+      expect(text(stopped())).toContain("el merge los pisaría, así que no empezó.");
+      expect(section()?.querySelector("[data-live]")).toBeNull();
+      const run = section()?.querySelector<HTMLButtonElement>("[data-run] button");
+      expect(run?.disabled).toBe(false);
+      const view = store.listed().find((item) => item.id === ASISTENCIA);
+      if (view === undefined) throw new Error("no view");
+      expect(fullStateOf(view, STOPPED)).toBe("not-run");
+
+      // A result from before it does not hide it; one from after it does.
+      await remount(passedAt(view, "2026-11-07T09:00:00.000Z"));
+      expect(text(stopped())).toContain("Se paró sin resultado");
+      expect(fullStateOf(passedAt(view, "2026-11-07T09:00:00.000Z"), STOPPED)).toBe("passed");
+      await remount(passedAt(view, "2026-11-07T11:00:00.000Z"));
+      expect(stopped()).toBeNull();
+      expect(text(section()?.querySelector("[data-verdict]"))).toMatch(/^Correcta · /);
     });
   });
 });
