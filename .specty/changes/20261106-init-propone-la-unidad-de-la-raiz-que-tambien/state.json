@@ -6,6 +6,13 @@
   "branch": "specty/20261106-init-propone-la-unidad-de-la-raiz-que-tambien",
   "baseCommit": "db367341b166a577054bc4e764b86f2b224074b1",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:622ad824871cf4057b740023f2b210da982c4bfaa23aa6e6adc75e69a2f85ba7",
+    "at": "2026-11-06T02:51:09.993Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -45,12 +52,6 @@
     "T": 4,
     "R": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:622ad824871cf4057b740023f2b210da982c4bfaa23aa6e6adc75e69a2f85ba7",
-    "at": "2026-11-06T02:51:09.993Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T02:53:34.171Z"
 }

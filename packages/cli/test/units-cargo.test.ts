@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
+import { detectProject } from "../src/detect/project";
 import { cargoWorkspace } from "../src/detect/units-cargo";
+import { proposedUnits } from "../src/detect/workspace-units";
 import { tempRepo } from "./support";
 
 /** A member's `Cargo.toml`: its `[package]` named `name`, then `rest`. */
@@ -89,11 +91,10 @@ describe("the Cargo workspace detector", () => {
     const roots = await Promise.all([
       tempRepo({ "README.md": "# demo\n" }),
       tempRepo({ "Cargo.toml": member("demo"), ...MEMBERS }),
-      tempRepo({ "Cargo.toml": `${member("demo")}\n${ROOT}`, ...MEMBERS }),
       tempRepo({ "Cargo.toml": "[workspace\nmembers = [", ...MEMBERS }),
     ]);
     const found = await Promise.all(roots.map((root) => cargoWorkspace(root)));
-    expect(found).toEqual([undefined, undefined, undefined, undefined]);
+    expect(found).toEqual([undefined, undefined, undefined]);
   });
 
   it("AC2: skips the members whose manifest has no package name", async () => {
@@ -106,5 +107,66 @@ describe("the Cargo workspace detector", () => {
     const facts = await cargoWorkspace(root);
     expect(facts?.packages.map((pkg) => pkg.dir)).toEqual(["crates/core"]);
     expect(facts?.shared).toEqual(["Cargo.toml"]);
+  });
+});
+
+/** The files of a workspace whose root `Cargo.toml` is a package on core, besides `[workspace]`. */
+const ROOTED = {
+  "Cargo.toml": `${member("demo", "\n[dependencies]\ndemo-core = { workspace = true }\n")}\n${ROOT}`,
+  "Cargo.lock": "version = 4\n",
+  "build.rs": "fn main() {}\n",
+  "src/main.rs": "fn main() {}\n",
+  "tests/it.rs": "#[test]\nfn it() {}\n",
+  "docs/guide.md": "# guía\n",
+  ".github/workflows/ci.yml": "on: push\n",
+  ...MEMBERS,
+};
+
+/** What the root package reads of its own: the root outside the members' folders and hidden ones. */
+const ROOT_PATHS = [
+  "Cargo.lock",
+  "Cargo.toml",
+  "build.rs",
+  "crates/docs/**",
+  "crates/legacy/**",
+  "docs/**",
+  "src/**",
+  "tests/**",
+];
+
+describe("a Cargo workspace whose root is a package too", () => {
+  it("AC2: reads the root as one more package, with `cargo test -p` and the root outside the members' folders", async () => {
+    const root = await tempRepo(ROOTED);
+    const facts = await cargoWorkspace(root);
+    expect(facts?.packages.map((pkg) => pkg.dir)).toEqual([
+      ".",
+      "crates/cli",
+      "crates/core",
+      "crates/http",
+      "tools/gen",
+    ]);
+    expect(facts?.packages[0]).toEqual({
+      dir: ".",
+      name: "demo",
+      tests: true,
+      uses: ["demo-core"],
+      command: "cargo test -p demo",
+      paths: ROOT_PATHS,
+    });
+    expect(facts?.shared).toEqual(["Cargo.toml", "Cargo.lock"]);
+  });
+
+  it("AC2: `init` proposes the root's unit, named as its package, besides one per member", async () => {
+    const root = await tempRepo(ROOTED);
+    const lines = (await proposedUnits(root, await detectProject(root, "demo"), "en")) ?? [];
+    const at = lines.indexOf('    - name: "demo"');
+    expect(at).toBeGreaterThan(0);
+    expect(lines.slice(at + 1, at + 3)).toEqual([
+      '      command: "cargo test -p demo"',
+      `      paths: ${JSON.stringify([...ROOT_PATHS, "crates/core/**"])}`,
+    ]);
+    for (const name of ["cli", "core", "http", "gen"]) {
+      expect(lines).toContain(`    - name: ${JSON.stringify(name)}`);
+    }
   });
 });
