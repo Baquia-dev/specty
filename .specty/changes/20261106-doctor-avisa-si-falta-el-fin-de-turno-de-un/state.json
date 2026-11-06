@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "be667c3690be500fc71f22d0b6547ab069c977cd",
+      "startedAt": "2026-11-06T13:55:53.994Z",
+      "doneAt": "2026-11-06T13:56:20.636Z",
+      "summary": "La línea `agent-stop` de `doctor` (con `tool`) va en `DoctorLine` junto a `memory-stop`, y su texto en `AGENT_WRITERS`, en español y en inglés: falta el fin de turno de Specty, que devuelve al agente a `specty wait`, y se arregla con `specty init`."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -66,7 +66,7 @@ Desde C5, `specty init` instala el fin de turno de cada agente (`hook agent-stop
 
 ## Tareas
 
-- [ ] T1: La línea de `doctor` cuando falta el fin de turno de un agente, en español y en inglés
+- [x] T1: La línea de `doctor` cuando falta el fin de turno de un agente, en español y en inglés
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/test/cards/doctor-agent-stop.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-agent-stop.test.ts
