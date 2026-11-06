@@ -63,7 +63,7 @@ Cuando la persona pide cambios en la revisión, o rechaza supuestos al aprobar, 
 
 ## Tareas
 
-- [ ] T1: La regla común de a quién espera un cambio, en core
+- [x] T1: La regla común de a quién espera un cambio, en core
   - files: packages/core/src/flow/waiting.ts, packages/core/src/schema/state.ts, packages/core/src/index.ts, packages/core/test/flow/waiting.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow/waiting.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm sources

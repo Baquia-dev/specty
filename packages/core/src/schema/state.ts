@@ -127,6 +127,11 @@ export const ChangeStateSchema = z.strictObject({
   closingSubmittedAt: Timestamp.optional(),
   /** In the testing phase, the tests were sent and wait for the person's approval (ADR 0014). */
   testsSubmittedAt: Timestamp.optional(),
+  /**
+   * In review, the person sent it back (asked for changes or rejected assumptions): the turn is
+   * the agent's until its next proposal.
+   */
+  changesRequestedAt: Timestamp.optional(),
   /** The tests the person approved, locked by path to the hash of their content (ADR 0014). */
   lockedTests: z.record(z.string().min(1), Hash).optional(),
   /** In the testing phase, the cycle its approval decided: a feature's or a bug's (ADR 0014). */
