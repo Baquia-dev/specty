@@ -114,7 +114,8 @@ export function sampleRecords(now: number): ChangeRecord[] {
 
 /**
  * The person asks for changes, as the local server does: the unresolved comments go to the agent
- * in a `review.changes_requested`; with none, and no rejected assumption, there is nothing to ask.
+ * in a `review.changes_requested`, and `changesRequestedAt` hands it the turn; with none, and no
+ * rejected assumption, there is nothing to ask.
  */
 export function requestChangesIn(record: ChangeRecord, now: number): ChangeRecord {
   const { state } = record;
@@ -128,11 +129,17 @@ export function requestChangesIn(record: ChangeRecord, now: number): ChangeRecor
       en: "There are no unresolved comments or rejected assumptions to ask for.",
     });
   }
+  const at = new Date(now).toISOString();
   const entry = {
-    ts: new Date(now).toISOString(),
+    ts: at,
     actor: "human" as const,
     event: "review.changes_requested",
     data: { revision: state.revision, comments: open },
   };
-  return { ...record, audit: [...(record.audit ?? []), entry] };
+  // The turn is the agent's until its next proposal, as `state.json` says on the server.
+  return {
+    ...record,
+    state: { ...state, changesRequestedAt: at },
+    audit: [...(record.audit ?? []), entry],
+  };
 }
