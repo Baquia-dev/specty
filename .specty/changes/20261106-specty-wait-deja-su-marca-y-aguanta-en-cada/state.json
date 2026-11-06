@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c77af8fee60660532b3f5449bae6506be72495bb",
+      "attempts": 1,
       "startedAt": "2026-11-06T12:23:28.695Z",
       "doneAt": "2026-11-06T12:23:49.669Z",
-      "summary": "Core: la tabla de cómo espera cada herramienta marca qué herramienta necesita latido (Gemini CLI) y waitHeartbeat da la línea en español e inglés, exportada en cards/index.ts"
+      "summary": "Core: la tabla de cómo espera cada herramienta marca qué herramienta necesita latido (Gemini CLI) y waitHeartbeat da la línea en español e inglés, exportada en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6242185c6c5ad1f7a9846270940b93e2136dd596",
+      "startedAt": "2026-11-06T12:23:49.987Z",
+      "doneAt": "2026-11-06T12:25:23.455Z",
+      "summary": "store/waits.ts escribe, renueva, termina y lee la marca (viva, decided, timeout o stopped); wait la deja con su herramienta y tiempo máximo y la termina con su razón. El latido de Gemini CLI ya va en wait.ts, porque la verificación de T2 lo prueba."
     }
   },
   "pending": {

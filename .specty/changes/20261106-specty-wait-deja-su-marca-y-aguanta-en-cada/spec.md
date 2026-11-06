@@ -65,7 +65,7 @@ Hoy nadie sabe si un agente sigue esperando con `specty wait`, y Gemini CLI cort
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/wait.test.ts
   - type: feat
-- [ ] T2: `specty wait` deja su marca y la termina con su razón
+- [x] T2: `specty wait` deja su marca y la termina con su razón
   - files: packages/cli/src/store/waits.ts, packages/cli/test/waits.test.ts, packages/cli/src/commands/wait.ts, packages/cli/test/wait.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/waits.test.ts test/wait.test.ts
