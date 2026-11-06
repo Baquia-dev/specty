@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261106-cancelar-quita-la-carpeta-del-cambio-aunque",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-cancelar-quita-la-carpeta-del-cambio-aunque",
+  "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c12ee7a410c89c104450c2ee7ab70736698231be7f7ba74fae9e1a8f5af8cba2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ad7801fdcf722b519eda1f6caf5135f299255fd71935e79450d7589f7a519396",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:9e392115e5e6940bd2fe9a8010d5e9f7a67d6440e818f31a29bdc31d69aae069",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:97ec3ae5a85f9d6d6dd5b4f6036b1a44e4e22d0b18ea21d3d61c0e6329c05ff8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:524c6b9cfa0ecbd8def95fe20200c00eaef8eec058881a70be0c999ecac30058",
+    "at": "2026-11-06T04:07:44.743Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
