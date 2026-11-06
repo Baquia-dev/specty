@@ -433,6 +433,7 @@ export {
   unitsLines,
   unitsReusedNote,
 } from "./units";
+export { type UnlockAsked, type UnlockRefusal, unlockRefusalCard } from "./unlock";
 export {
   ccusageAddedLine,
   ccusageFailedWarning,

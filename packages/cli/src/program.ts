@@ -58,7 +58,7 @@ export async function runCli(
     });
 
   // Each group of commands registers itself from its module; here, reading and setting up.
-  agentCommands(program, run, environment.env, (output) =>
+  agentCommands(program, run, environment, (output) =>
     emit(output, systemLanguage(environment.env)),
   );
   personCommands(program, run);

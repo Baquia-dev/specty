@@ -43,6 +43,10 @@ const NO_TRACE_YET: Bilingual = {
   es: "Este cambio aún no tiene commits, o ese archivo no es suyo.",
   en: "This change has no commits yet, or that file is not its own.",
 };
+const NOT_A_TEST: Bilingual = {
+  es: "No se puede mostrar el código de este test: no es un test del cambio o no se pudo leer.",
+  en: "This test's code cannot be shown: it is not a test of the change, or it could not be read.",
+};
 const TRACE_TOO_LARGE: Bilingual = {
   es: "Este archivo es demasiado grande para trazarlo aquí: usa `specty why <archivo>:<línea>` en la terminal.",
   en: "This file is too large to trace here: use `specty why <file>:<line>` in the terminal.",
@@ -278,6 +282,16 @@ export class ServerData extends SpectyData {
     const body = await this.traced(`/api/changes/${encodeURIComponent(change)}/trace${query}`);
     if (isTrace(body)) return body;
     throw new ActionError(UNEXPECTED);
+  }
+
+  /** A test of the change as its branch has it; a read, so even an agent's server gives it. */
+  override async testCode(change: string, path: string): Promise<string> {
+    const query = `?path=${encodeURIComponent(path)}`;
+    const response = await fetch(`/api/changes/${encodeURIComponent(change)}/test${query}`);
+    if (response.ok) return response.text();
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    if (response.status === 404) throw new ActionError(NOT_A_TEST);
+    throw new ActionError(answered(response.status));
   }
 
   /** A read of the traceability, or why there is none. */

@@ -6,15 +6,17 @@ import { LucideCircleX, LucideFlaskConical } from "../components/icons";
 import { relativeTime } from "../data/records";
 import type { RedCommand, TestsView } from "../data/tests";
 import { Preferences } from "../theme/preferences";
+import { TestCode } from "./test-code";
 
 /**
  * The tests of a change in `testing` (ADR 0014): while the agent writes them, a line that says
- * so; once sent, each new test by its path, each verification command that fails with its exit,
- * and what approving them means. Approving is in the header, as every decision.
+ * so; once sent, each new test by its path with «Ver código», each verification command that
+ * fails with its exit, and what approving them means. Approving is in the header, as every
+ * decision.
  */
 @Component({
   selector: "sp-tests-sent",
-  imports: [LucideDynamicIcon, SectionDivider],
+  imports: [LucideDynamicIcon, SectionDivider, TestCode],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section aria-labelledby="progress-tests" data-tests>
@@ -25,7 +27,10 @@ import { Preferences } from "../theme/preferences";
           @for (path of tests().files; track path) {
             <li [class]="row" data-test>
               <svg class="mt-0.5 text-text-muted" [lucideIcon]="testIcon" size="14" aria-hidden="true"></svg>
-              <code class="font-mono text-xs break-all">{{ path }}</code>
+              <div class="flex min-w-0 flex-col gap-1">
+                <code class="font-mono text-xs break-all">{{ path }}</code>
+                <sp-test-code [change]="change()" [path]="path" />
+              </div>
             </li>
           }
         </ul>
@@ -50,6 +55,8 @@ import { Preferences } from "../theme/preferences";
   `,
 })
 export class TestsSent {
+  /** The change's id: «Ver código» asks the source for its tests. */
+  readonly change = input.required<string>();
   readonly tests = input.required<TestsView>();
   /** The clock of the page, so «hace 3 min» moves on. */
   readonly now = input(Date.now());
