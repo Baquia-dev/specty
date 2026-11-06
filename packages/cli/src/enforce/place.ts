@@ -78,7 +78,7 @@ async function shellFacts(
     bypass: analysis.bypass,
     refs: analysis.refs,
     committedGoverned,
-    sleeps: analysis.sleeps,
+    waits: analysis.waits,
     ...(raw.background === undefined ? {} : { background: raw.background }),
     ...(await placeFiles(place, analysis)),
     ...(bound !== undefined && (await runsOutside(analysis, cwd, bound))

@@ -157,19 +157,20 @@ export function foregroundWaitDenial(ctx: WaitContext): WaitDenial {
 }
 
 /**
- * The guard's denial of a command that waits with `sleep` while change `id` waits for the
- * person: `specty wait` in the tool's way, or `specty next` in delegated mode, which tells
- * whether the agent decides.
+ * The guard's denial of a command that only waits, with `program` (`sleep`, `caffeinate`…), while
+ * change `id` waits for the person: `specty wait` in the tool's way, or `specty next` in
+ * delegated mode, which tells whether the agent decides.
  */
-export function sleepDenial(
+export function waitCommandDenial(
   id: string,
+  program: string,
   ctx: WaitContext & { readonly delegated?: boolean },
 ): WaitDenial {
   const t = translator(ctx.lang);
   return {
     reason: t(
-      `El cambio ${id} espera la decisión de la persona: no se espera con \`sleep\`.`,
-      `Change ${id} is waiting for the person's decision: do not wait with \`sleep\`.`,
+      `El cambio ${id} espera la decisión de la persona: no se espera con \`${program}\`.`,
+      `Change ${id} is waiting for the person's decision: do not wait with \`${program}\`.`,
     ),
     next:
       ctx.delegated === true

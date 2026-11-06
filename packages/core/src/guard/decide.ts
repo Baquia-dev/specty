@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { openFolderDenial } from "../cards/change-folder";
 import { ghostFolderDenial } from "../cards/ghost-folder";
-import { foregroundWaitDenial, sleepDenial } from "../cards/wait";
+import { foregroundWaitDenial, waitCommandDenial } from "../cards/wait";
 import { isGoverned } from "../scope/governed";
 import { classifyPath, scopeRulesFrom } from "../scope/scope";
 import type {
@@ -159,7 +159,8 @@ function toolingDenial(facts: ShellFacts, ctx: GuardContext): GuardDecision | un
 
 /**
  * The ways of waiting for the person that do not hold: `specty wait` in the foreground of a tool
- * that can run it in the background, and `sleep` while the change waits for the person.
+ * that can run it in the background, and a command that only waits (`sleep`, `caffeinate -w`…)
+ * while the change waits for the person.
  */
 function waitDenial(facts: ShellFacts, ctx: GuardContext): GuardDecision | undefined {
   if (facts.background === false && facts.specty.includes("wait")) {
@@ -167,8 +168,9 @@ function waitDenial(facts: ShellFacts, ctx: GuardContext): GuardDecision | undef
     return deny("wait", denial.reason, denial.next);
   }
   const { change } = ctx;
-  if (facts.sleeps !== true || change?.waiting !== true) return undefined;
-  const denial = sleepDenial(change.id, ctx);
+  const program = facts.waits?.[0];
+  if (program === undefined || change?.waiting !== true) return undefined;
+  const denial = waitCommandDenial(change.id, program, ctx);
   return deny("wait", denial.reason, denial.next);
 }
 

@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3e9d1e782ce4d917fce7155fcdb739160ed45796",
+      "attempts": 1,
       "startedAt": "2026-11-06T16:07:43.760Z",
       "doneAt": "2026-11-06T16:09:13.732Z",
-      "summary": "waits.ts dice qué comandos solo esperan (sleep, pwait, pidwait, caffeinate sin programa, wait sin trabajos lanzados, tail -f /dev/null); el tokenizador marca el & de segundo plano; ShellAnalysis.waits sustituye a sleeps"
+      "summary": "waits.ts dice qué comandos solo esperan (sleep, pwait, pidwait, caffeinate sin programa, wait sin trabajos lanzados, tail -f /dev/null); el tokenizador marca el & de segundo plano; ShellAnalysis.waits sustituye a sleeps",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e54539f6292f2a37788452aba22b896fbbc268c0",
+      "startedAt": "2026-11-06T16:09:14.087Z",
+      "doneAt": "2026-11-06T16:09:35.851Z",
+      "summary": "ShellFacts.waits sustituye a sleeps; waitDenial frena con el primer programa que espera y waitCommandDenial lo nombra en español y en inglés; place.ts pasa waits"
     }
   },
   "pending": {

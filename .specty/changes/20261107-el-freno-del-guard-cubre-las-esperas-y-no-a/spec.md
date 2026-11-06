@@ -63,7 +63,7 @@ Resuelve P224. Mientras el cambio espera a la persona, el guard solo frena `slee
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/waits.test.ts test/guard/shell.test.ts test/guard/control-words.test.ts
   - type: fix
-- [ ] T2: El guard frena las esperas y nombra el programa con que se espera
+- [x] T2: El guard frena las esperas y nombra el programa con que se espera
   - files: packages/core/src/guard/action.ts, packages/core/src/guard/decide.ts, packages/core/src/cards/wait.ts, packages/cli/src/enforce/place.ts, packages/core/test/guard/wait.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/wait.test.ts test/guard/decide.test.ts
