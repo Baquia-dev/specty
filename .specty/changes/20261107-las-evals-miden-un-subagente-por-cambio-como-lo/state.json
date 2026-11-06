@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261107-las-evals-miden-un-subagente-por-cambio-como-lo",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-las-evals-miden-un-subagente-por-cambio-como-lo",
+  "baseCommit": "41695f12cb51d5920f2e84f8d76c388386a21e34",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d4eda8ce653b83a5acaf7ecbc72903afe40ccabd46e739d46a374ff4c82452a7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1faec3619232f39a29616317bf0a6aeb7454207a8e29e32099816f340ce9830f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:77a2c4b2fbe576d230e5e2c6f085cb33a3c23f1007f3e47444850db0cd7e7063",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e7c7a5ef3c98fc2033276141c63b42736e32aed524293efb68d5b7a978fc171d",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:57c7d38165255e35229d3133623f6e09a2dde04305f95a81fbfe015135e8df56",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:63dab9b054a4c94de36c4452f85cd2986c0a23547124647e55d82faafb385215",
+    "at": "2026-11-06T23:02:31.308Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
