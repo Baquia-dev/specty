@@ -7,6 +7,8 @@ import {
   computed,
   DestroyRef,
   inject,
+  input,
+  linkedSignal,
   resource,
   signal,
 } from "@angular/core";
@@ -28,19 +30,8 @@ import { reportFailure } from "../review/spec-sections";
 import { Preferences } from "../theme/preferences";
 import { DropEntry } from "./drop-entry";
 import { MemoryGroupView } from "./memory-group";
-import { changeLine, entryLine } from "./memory-lines";
+import { changeLine, ENTRY_KINDS, entryLine, firstLine } from "./memory-lines";
 import { type MemoryItem, memorySections } from "./memory-view";
-
-/** Each kind of entry: its name and the phase color it borrows. */
-const KINDS: Readonly<
-  Record<MemoryEntry["kind"], { readonly label: Bilingual; readonly tone: string }>
-> = {
-  pending: { label: { es: "pendiente", en: "pending" }, tone: "draft" },
-  improvement: { label: { es: "mejora", en: "improvement" }, tone: "implementing" },
-  reminder: { label: { es: "recordatorio", en: "reminder" }, tone: "acceptance" },
-  decision: { label: { es: "decisión", en: "decision" }, tone: "review" },
-  lesson: { label: { es: "lección", en: "lesson" }, tone: "testing" },
-};
 
 /** The toolbar's choices of kind: every entry, or one kind. */
 const KIND_FILTERS = ["all", "pending", "improvement", "reminder", "decision", "lesson"] as const;
@@ -185,6 +176,10 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
   `,
 })
 export class MemoryPage {
+  /** From the route: `/memory?q=P12&closed=1`, as a change's page links one of its entries. */
+  readonly q = input<string | undefined>(undefined);
+  readonly closedParam = input<string | undefined>(undefined, { alias: "closed" });
+
   private readonly data = inject(SpectyData);
   private readonly dialogs = inject(Dialogs);
   private readonly toasts = inject(Toasts);
@@ -198,7 +193,8 @@ export class MemoryPage {
   protected readonly list = LIST;
   protected readonly row = ROW;
   protected readonly reveal = REVEAL;
-  protected readonly kinds = KINDS;
+  protected readonly kinds = ENTRY_KINDS;
+  protected readonly firstLine = firstLine;
 
   /** «Descartar»: the dialog with the reason, which brings the one of a proposal. */
   protected drop(entry: MemoryEntry): void {
@@ -222,9 +218,10 @@ export class MemoryPage {
   }
 
   protected readonly searchIcon = LucideSearch;
-  protected readonly query = signal("");
+  /** The search and the closed entries start as the URL says; the toolbar changes them after. */
+  protected readonly query = linkedSignal(() => this.q() ?? "");
   protected readonly kind = signal("all");
-  protected readonly closed = signal(false);
+  protected readonly closed = linkedSignal(() => this.closedParam() === "1");
 
   /** The page's sections without the toolbar's filter: none means the memory is empty. */
   protected readonly everything = computed(() => memorySections(this.record()));
@@ -277,10 +274,6 @@ export class MemoryPage {
 
   protected changeOf(item: MemoryItem): StatusEntry | undefined {
     return "change" in item ? item.change : undefined;
-  }
-
-  protected firstLine(text: string): string {
-    return text.trim().split("\n")[0] ?? "";
   }
 
   /** Under an entry: who proposed to drop it and why, or who took it, its quote and its origin. */

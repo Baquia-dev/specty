@@ -7,10 +7,12 @@ import { Toasts } from "../components/toast";
 import {
   type AssumptionView,
   type ChangeRecord,
+  type ChangeSummary,
   type CommentAnchor,
   SpectyData,
 } from "../data/records";
 import { deriveReview } from "../data/review";
+import { ServerData } from "../data/server";
 import { deriveViews } from "../data/views";
 import { AssumptionRow } from "./assumption-row";
 import { SECTION_LABELS } from "./comments";
@@ -413,9 +415,17 @@ const LOADED = deriveViews([
   sliceRecord("20261107-avisos-de-otra-epica", "C3", "implementing", "20261101-otra-epica"),
 ]);
 
-/** The slices of the epic, as `sp-review-items` shows them; links only with `epic` and `changes`. */
+/**
+ * The slices of the epic, as `sp-review-items` shows them; links only with `epic` and `changes`
+ * (`LOADED` with `links`, or the ones given), from `data` as the source.
+ */
 async function renderSlices(
-  options: { readonly links?: boolean; readonly lang?: "es" | "en" } = {},
+  options: {
+    readonly links?: boolean;
+    readonly lang?: "es" | "en";
+    readonly data?: SpectyData;
+    readonly changes?: readonly ChangeSummary[];
+  } = {},
 ) {
   window.matchMedia = (() => ({
     matches: false,
@@ -424,19 +434,27 @@ async function renderSlices(
   localStorage.setItem("specty.lang", options.lang ?? "es");
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
-    providers: [provideRouter([]), { provide: SpectyData, useValue: new Recording() }],
+    providers: [
+      provideRouter([]),
+      { provide: SpectyData, useValue: options.data ?? new Recording() },
+    ],
   });
   const fixture = TestBed.createComponent(ReviewItems);
   fixture.componentRef.setInput("review", EPIC_REVIEW);
   fixture.componentRef.setInput("section", "slices");
   fixture.componentRef.setInput("editable", true);
-  if (options.links === true) {
+  const changes = options.changes ?? (options.links === true ? LOADED : undefined);
+  if (changes !== undefined) {
     fixture.componentRef.setInput("epic", EPIC_ID);
-    fixture.componentRef.setInput("changes", LOADED);
+    fixture.componentRef.setInput("changes", changes);
   }
   const anchors: CommentAnchor[] = [];
   fixture.componentInstance.comment.subscribe((anchor) => anchors.push(anchor));
-  await fixture.whenStable();
+  // What the source answers arrives after a few turns.
+  for (let round = 0; round < 5; round++) {
+    await fixture.whenStable();
+    await new Promise((resolve) => setTimeout(resolve));
+  }
   const element: HTMLElement = fixture.nativeElement;
   const row = (id: string) => element.querySelector<HTMLElement>(`[data-item=${id}]`);
   return { element, row, anchors };
@@ -514,5 +532,86 @@ describe("ReviewItems on an epic's slices", () => {
     });
     const { row } = await renderSlices({ lang: "en" });
     expect(text(row("C2")?.querySelector("[data-depends]"))).toMatch(/^Depends on/);
+  });
+});
+
+/** jsdom has no EventSource: the server's events never come in these tests. */
+class SilentEvents {
+  addEventListener(): void {}
+  close(): void {}
+}
+
+/** `fetch` answering every request with `status` and `body` as JSON, as the local server would. */
+function answering(status: number, body: unknown) {
+  const fetched = vi.fn((_url: string) =>
+    Promise.resolve(new Response(JSON.stringify(body), { status })),
+  );
+  vi.stubGlobal("fetch", fetched);
+  vi.stubGlobal("EventSource", SilentEvents);
+  return fetched;
+}
+
+describe("ReviewItems on an epic's slices, with the local server", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    TestBed.resetTestingModule();
+  });
+
+  it("AC2: links each slice to the change the server gives, with its phase, though it is not loaded", async () => {
+    const fetched = answering(200, [
+      { slice: "C1", id: "20261020-asistencia-antigua", phase: "done" },
+      { slice: "C3", id: "20261021-avisos", phase: "implementing" },
+    ]);
+    const { row } = await renderSlices({ data: new ServerData(), changes: [] });
+    expect(fetched).toHaveBeenCalledWith(`/api/changes/${EPIC_ID}/slices`);
+    const first = row("C1")?.querySelector<HTMLAnchorElement>("a");
+    expect(text(first)).toBe("Asistencia por curso");
+    expect(first?.getAttribute("href")).toBe("/changes/20261020-asistencia-antigua");
+    expect(row("C1")?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("done");
+    expect(row("C2")?.querySelector("a")).toBeNull();
+    expect(row("C2")?.querySelector("sp-phase-badge")).toBeNull();
+    expect(row("C3")?.querySelector("a")?.getAttribute("href")).toBe("/changes/20261021-avisos");
+    expect(row("C3")?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe(
+      "implementing",
+    );
+  });
+
+  it("AC2: uses only what the server gives once it answers, over the loaded changes", async () => {
+    answering(200, [{ slice: "C2", id: "20261022-justificar-antigua", phase: "done" }]);
+    const { row } = await renderSlices({ data: new ServerData(), changes: LOADED });
+    expect(row("C1")?.querySelector("a")).toBeNull();
+    expect(row("C2")?.querySelector("a")?.getAttribute("href")).toBe(
+      "/changes/20261022-justificar-antigua",
+    );
+  });
+
+  it("AC3: links each slice to the loaded changes when the server fails or answers unexpected data", async () => {
+    const answers: readonly (readonly [number, unknown])[] = [
+      [403, { error: "forbidden" }],
+      [500, { error: "boom" }],
+      [200, [{ slice: "C1" }]],
+      [200, { slices: [] }],
+    ];
+    for (const [status, body] of answers) {
+      answering(status, body);
+      const { row } = await renderSlices({ data: new ServerData(), changes: LOADED });
+      expect(row("C1")?.querySelector("a")?.getAttribute("href")).toBe(
+        "/changes/20261104-asistencia",
+      );
+      expect(row("C2")?.querySelector("a")?.getAttribute("href")).toBe(
+        "/changes/20261105-justificar",
+      );
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it("AC3: links each slice to the loaded changes with a source that does not give them", async () => {
+    const fetched = answering(200, []);
+    const { row } = await renderSlices({ links: true });
+    expect(fetched).not.toHaveBeenCalled();
+    expect(row("C1")?.querySelector("a")?.getAttribute("href")).toBe(
+      "/changes/20261104-asistencia",
+    );
+    expect(row("C1")?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("done");
   });
 });

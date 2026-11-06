@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // Specty's memory in the prototype (ADR 0016): an entry of every kind and status, open changes
 // held by an agent, waiting for the person and orphaned, and the changes the entries came from, a
-// feature and a slice of an epic, as `GET /api/memory` gives them.
+// feature, a slice of an epic and the done sample change, which also took one, as
+// `GET /api/memory` gives them.
 import type { MemoryEntry } from "@baquia-dev/specty-core";
 import type { MemoryRecord } from "./records";
 import type { MemoryVerb } from "./source";
@@ -73,6 +74,24 @@ const ENTRIES: MemoryRecord["entries"] = [
     text: "Instalar la red de la memoria en el fin de turno.",
   },
   {
+    id: "P21",
+    kind: "pending",
+    status: "open",
+    created: "2026-10-15T16:00:00.000Z",
+    origin: { change: "20261015-redondeo-promedios", by: "claude-code" },
+    text: "Las notas que se importan desde un CSV no pasan por el redondeo de los promedios.",
+  },
+  {
+    id: "P22",
+    kind: "improvement",
+    status: "done",
+    created: "2026-10-14T09:00:00.000Z",
+    origin: { by: "person" },
+    taken: { change: "20261015-redondeo-promedios", at: "2026-10-15T10:00:00.000Z" },
+    closed: { at: "2026-10-16T12:00:00.000Z", by: "person" },
+    text: "Redondear los promedios a una cifra decimal, como el boletín oficial.",
+  },
+  {
     id: "D1",
     kind: "decision",
     status: "open",
@@ -133,6 +152,11 @@ const ORIGINS: NonNullable<MemoryRecord["origins"]> = {
     title: "Devin y Cursor sin permisos en la carpeta del usuario",
     kind: "standard",
     phase: "acceptance",
+  },
+  "20261015-redondeo-promedios": {
+    title: "Corregir el redondeo de promedios",
+    kind: "quick",
+    phase: "done",
   },
 };
 

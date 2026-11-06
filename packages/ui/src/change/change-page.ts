@@ -47,6 +47,7 @@ import { SpecReview } from "../review/spec-review";
 import { Preferences } from "../theme/preferences";
 import { ChangeBar } from "./change-bar";
 import { ChangeFacts } from "./change-facts";
+import { ChangeMemory } from "./change-memory";
 import { LostFolder } from "./lost-folder";
 import { ResumeHints } from "./resume-hints";
 
@@ -92,6 +93,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     ReviewActions,
     ChangeBar,
     ChangeFacts,
+    ChangeMemory,
     ProgressTab,
     AcceptanceTab,
     AcceptanceActions,
@@ -180,6 +182,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               </div>
             </div>
           }
+          <sp-change-memory [change]="change.id" />
         </header>
 
         <div [class]="page + ' mt-2'">

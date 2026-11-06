@@ -1,5 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
-import { ChangeDetectionStrategy, Component, computed, inject, input, output } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  resource,
+} from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { LucideDynamicIcon } from "@lucide/angular";
 import { Badge, PhaseBadge } from "../components/badge";
@@ -26,6 +35,7 @@ import {
   type FileView,
   type ReviewSection,
   type ReviewView,
+  SpectyData,
   type TaskItemView,
 } from "../data/records";
 import { Preferences } from "../theme/preferences";
@@ -96,9 +106,13 @@ export function itemSection(key: ReviewSection): ItemSection {
   }
 }
 
+/** What a slice's row shows of the change that implements it: its page and its phase. */
+type SliceLink = Pick<ChangeSummary, "id" | "phase">;
+
 /**
  * Criteria, files by module, tasks, slices and risks as document rows: each item can be commented
- * on. With `epic` and `changes`, each slice links to the change that implements it.
+ * on. With `epic`, each slice links to the change that implements it: the one the source gives
+ * or, while it does not, the one among `changes`.
  */
 @Component({
   selector: "sp-review-items",
@@ -245,7 +259,10 @@ export class ReviewItems {
   readonly editable = input(false);
   /** The change under review, whose slices link to their changes; none in the chat's cards. */
   readonly epic = input<string | undefined>(undefined);
-  /** The changes loaded, among which each slice of `epic` finds the one that implements it. */
+  /**
+   * The changes loaded, among which each slice of `epic` finds the one that implements it while
+   * the source does not say it.
+   */
   readonly changes = input<readonly ChangeSummary[]>([]);
   readonly comment = output<CommentAnchor>();
 
@@ -261,11 +278,33 @@ export class ReviewItems {
   protected readonly list = LIST;
   protected readonly reveal = REVEAL;
 
+  /** The source, to ask for the change of each slice; none where the cards render the sections. */
+  private readonly data = inject(SpectyData, { optional: true });
   /**
-   * The change of each slice of `epic`: a closed one or, without one, the first of the others; a
-   * cancelled change frees its slice, as in the epic's card (`flow/epic.ts`).
+   * The change of each slice of `epic`, as the source picks it among every change, archived ones
+   * too: asked only in an epic's Cortes section, and again whenever the source says something
+   * changed; nothing when the source cannot tell.
    */
-  protected readonly sliceChanges = computed((): ReadonlyMap<string, ChangeSummary> => {
+  private readonly given = resource({
+    params: () => (this.section() === "slices" ? this.epic() : undefined),
+    loader: ({ params }) => this.data?.sliceChanges(params) ?? Promise.resolve(undefined),
+  });
+
+  /**
+   * The change of each slice of `epic`: what the source gives once it answers or else, while it
+   * does not or when it fails, the one among the changes loaded (`loadedSliceChanges`).
+   */
+  protected readonly sliceChanges = computed((): ReadonlyMap<string, SliceLink> => {
+    const given = this.given.hasValue() ? this.given.value() : undefined;
+    if (given === undefined) return this.loadedSliceChanges();
+    return new Map(given.map((change) => [change.slice, change]));
+  });
+
+  /**
+   * The change of each slice of `epic` among the changes loaded: a closed one or, without one, the
+   * first of the others; a cancelled change frees its slice, as in the epic's card (`flow/epic.ts`).
+   */
+  private readonly loadedSliceChanges = computed((): ReadonlyMap<string, SliceLink> => {
     const epic = this.epic();
     const found = new Map<string, ChangeSummary>();
     if (epic === undefined) return found;
@@ -282,6 +321,11 @@ export class ReviewItems {
 
   constructor() {
     inject(ItemTooltips).setSource(() => this.review());
+    effect((onCleanup) => {
+      const data = this.data;
+      if (data === null || this.section() !== "slices" || this.epic() === undefined) return;
+      onCleanup(data.subscribe(() => this.given.reload()));
+    });
   }
 
   protected actionLabel(file: FileView): string {

@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261106-cortes-enlazan-su-cambio-sin-cargarlo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-cortes-enlazan-su-cambio-sin-cargarlo",
+  "baseCommit": "3fadac74be8a5c2b2c5becf7bf901084b2bf2210",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ab0c325a687a33bd9d32ace2b08be2e99e4d2057a739a80cb8a2785166c49106",
+    "at": "2026-11-05T21:13:22.896Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f8488d1477e9b95f8ae0ea987c24ccd7578da4b638283226a232baafcfada48e",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:1e970b661b3a4fcd4b309ec59b0308028f70eb930372cdca96572a3503940a14",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b6066aca5b97475ca3807ee3f89f6b3d98ee79e19c21f28ecda28159b10ff8aa",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b95e266c5a1264057f2ec02374ef5d04df8b20cf417bd0e80a13e8c8c488ef81",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "a071767d9aa1e5a813c3503328680402d6fe7e56",
+      "attempts": 1,
+      "startedAt": "2026-11-05T21:18:43.460Z",
+      "doneAt": "2026-11-05T21:22:21.340Z",
+      "summary": "GET /api/changes/<id>/slices (server/slices.ts) da el cambio de cada corte de una épica con sliceChanges de flow/epic.ts; readChange lee cada parte de un mapa para no crecer en complejidad; ARCHITECTURE §15 lo cuenta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "518b1bf51b1146fc6c1e6cb994cef47982f19f51",
+      "attempts": 1,
+      "startedAt": "2026-11-05T21:22:21.644Z",
+      "doneAt": "2026-11-05T21:24:15.593Z",
+      "summary": "La sección Cortes pide a la fuente el cambio de cada corte (SpectyData.sliceChanges; ServerData lee /api/changes/<id>/slices y lo valida) y lo usa; sin respuesta, los cambios cargados. docs/ui.md lo cuenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-05T21:33:23.259Z",
+  "lockedTests": {
+    "packages/ui/src/review/spec-sections.test.ts": "sha256:5b0e405b7136b1e079dbd48c12ac32d66e1767bcfedc7c65a1948febe7f64669",
+    "packages/cli/test/server/slices.test.ts": "sha256:96ae926eacad8f7dd5665f9e0a3a6ee59abca4cb21f69881cb52c005f778f88d"
+  }
+}
