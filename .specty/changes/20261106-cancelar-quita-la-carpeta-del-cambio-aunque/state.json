@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-cancelar-quita-la-carpeta-del-cambio-aunque",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-cancelar-quita-la-carpeta-del-cambio-aunque",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
   "revision": 1,
@@ -51,6 +51,8 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T04:10:04.347Z"
+  "lockedTests": {
+    "packages/cli/test/cancel-folder.test.ts": "sha256:ca5e51853181dab16eff91e4c2b45a51f664292311f02e5f5461e11d4bf5e2b0",
+    "packages/core/test/cards/close.test.ts": "sha256:6b0a05bdf4721b6cadaa37d3b6159e3e70c567fcb33db9ef38fb7f6d193363ac"
+  }
 }
