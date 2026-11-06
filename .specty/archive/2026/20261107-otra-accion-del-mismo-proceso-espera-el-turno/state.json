@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261107-otra-accion-del-mismo-proceso-espera-el-turno",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261107-otra-accion-del-mismo-proceso-espera-el-turno",
+  "baseCommit": "bb32977a94e76f405187f4486874e76c19d8c9f9",
+  "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:404f916fdb646c988324e2da3aed694e423ad29071397aa9e98918265ba10bee",
+    "at": "2026-11-06T20:18:04.953Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "55a2c68dc0151d51f5ba3db977563ef227e3842f",
+      "attempts": 1,
+      "startedAt": "2026-11-06T20:23:11.621Z",
+      "doneAt": "2026-11-06T20:28:13.943Z",
+      "summary": "El turno de la verificación completa es de quien lo toma y de lo que corre dentro (AsyncLocalStorage, onFullVerificationTurn): otra acción del mismo proceso hace cola y dice quién lo tiene; ARCHITECTURE §9 y formats §1 lo cuentan.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/cli/src/flow/full-verification.test.ts": "sha256:5377c58954a2a40edd302c024a7058a17fbccec102550390913bc88beb52c22e"
+  }
+}

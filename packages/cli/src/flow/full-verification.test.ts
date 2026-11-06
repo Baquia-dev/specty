@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { spawn } from "node:child_process";
-import { mkdir, readdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { sessionAt } from "../../test/server/support";
 import { AGENT, APP, CONFIG, tempRepo } from "../../test/support";
-import { exists } from "../io/files";
-import { oneAtATime } from "./full-verification";
+import { exists, isRecord, parseJson } from "../io/files";
+import { landingTurn, oneAtATime } from "./full-verification";
 
 const LOCKS = ".git/common/specty/locks";
 const LOCK = `${LOCKS}/full-verification.json`;
@@ -149,6 +149,126 @@ describe("the queue of the full verification's turn", () => {
     expect(waiting).toHaveLength(1);
     expect(waiting[0]).toContain("Delante en la cola: 1.");
     expect(await readdir(join(root, QUEUE))).toEqual([]);
+    expect(await exists(join(root, LOCK))).toBe(false);
+  });
+});
+
+const pause = (ms: number) => new Promise((done) => setTimeout(done, ms));
+
+/** The command of whoever holds the turn in `root` now, if anyone does. */
+async function turnHolder(root: string): Promise<unknown> {
+  const holder = parseJson(await readFile(join(root, LOCK), "utf8").catch(() => undefined));
+  return isRecord(holder) ? holder.command : undefined;
+}
+
+/** Waits, in real time, until someone holds the turn in `root`. */
+async function untilHeld(root: string): Promise<void> {
+  const deadline = Date.now() + 10_000;
+  while (!(await exists(join(root, LOCK)))) {
+    if (Date.now() > deadline) throw new Error("timed out");
+    await pause(20);
+  }
+}
+
+describe("the turn within one process", () => {
+  it("AC1: another part of the same process waits for the turn, says who has it, and holds it while it runs", async () => {
+    const root = await tempRepo(APP);
+    const first = await watched(root);
+    const second = await watched(root);
+    let firstEnded = 0;
+    let secondStarted = 0;
+    let holderInside: unknown;
+    // The UI's server verifying a change...
+    const verifying = oneAtATime(
+      first.session,
+      "pnpm check",
+      async () => {
+        await pause(800);
+        firstEnded = Date.now();
+      },
+      { pollMs: 50 },
+    );
+    await untilHeld(root);
+    // ...while the person accepts another one, in the same process.
+    const accepting = oneAtATime(
+      second.session,
+      "pnpm test",
+      async () => {
+        secondStarted = Date.now();
+        holderInside = await turnHolder(root);
+      },
+      { pollMs: 50 },
+    );
+    await Promise.all([verifying, accepting]);
+    expect(secondStarted).toBeGreaterThanOrEqual(firstEnded);
+    const waiting = second.errors.filter((text) =>
+      text.includes("otra sesión está haciendo una verificación completa"),
+    );
+    expect(waiting).toHaveLength(1);
+    expect(waiting[0]).toContain("`pnpm check`");
+    expect(holderInside).toBe("pnpm test");
+    expect(await exists(join(root, LOCK))).toBe(false);
+  });
+
+  it("AC2: a closing's landing in the same process waits for the turn another part holds", async () => {
+    const root = await tempRepo({
+      ...APP,
+      ".specty/config.yaml": `${CONFIG()}  full: "pnpm check"\n`,
+    });
+    const first = await watched(root);
+    const second = await watched(root);
+    const plan = {
+      id: "cambio",
+      target: "main",
+      branch: "specty/cambio",
+      holder: root,
+      main: root,
+      inMain: false,
+    };
+    let firstEnded = 0;
+    let landed = 0;
+    const verifying = oneAtATime(
+      first.session,
+      "pnpm check",
+      async () => {
+        await pause(800);
+        firstEnded = Date.now();
+      },
+      { pollMs: 50 },
+    );
+    await untilHeld(root);
+    await landingTurn(second.session, plan, async () => {
+      landed = Date.now();
+    });
+    await verifying;
+    expect(landed).toBeGreaterThanOrEqual(firstEnded);
+  });
+
+  it("AC3: what runs inside the turn of a closing has it too, and does not wait for it", async () => {
+    const root = await tempRepo({
+      ...APP,
+      ".specty/config.yaml": `${CONFIG()}  full: "pnpm check"\n`,
+    });
+    const { session, errors } = await watched(root);
+    const plan = {
+      id: "cambio",
+      target: "main",
+      branch: "specty/cambio",
+      holder: root,
+      main: root,
+      inMain: false,
+    };
+    const started = Date.now();
+    const holders = await landingTurn(session, plan, async () => {
+      const outer = await turnHolder(root);
+      const inner = await oneAtATime(session, "pnpm check", () => turnHolder(root), {
+        pollMs: 50,
+      });
+      return [outer, inner];
+    });
+    expect(holders).toEqual(["pnpm check", "pnpm check"]);
+    expect(Date.now() - started).toBeLessThan(1000);
+    expect(errors.join("\n")).not.toContain("otra sesión");
     expect(await exists(join(root, LOCK))).toBe(false);
   });
 });

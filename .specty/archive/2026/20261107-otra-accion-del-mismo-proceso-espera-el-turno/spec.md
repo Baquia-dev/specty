@@ -1,0 +1,31 @@
+---
+kind: quick
+---
+
+# Otra acción del mismo proceso espera el turno de la verificación completa
+
+## Objetivo
+
+El turno de la verificación completa contaba como tomado para todo el proceso que lo tenía (`holdsFullVerification` mira un conjunto del proceso, y `lockFullVerification` se lo daba otra vez a cualquiera de ese proceso). En el servidor de `specty ui`, un «Aceptar» o un «Cerrar» que verifica o aterriza mientras «Verificar» de otro cambio tiene el turno no hacía cola: entraba sin turno, solo las plazas de verificación lo hacían esperar, y cuando el primero soltaba el turno, otra sesión podía tomarlo e integrar en main mientras el segundo aterrizaba, que entonces volvía a incorporar main y a verificar. Con este cambio, el turno es de quien lo tomó y de lo que corre dentro de él (`AsyncLocalStorage`), como la verificación de la incorporación de un cierre; otra acción del mismo proceso hace cola como otra sesión, dice quién lo tiene y lo tiene mientras verifica. El bloqueo de un cambio sigue siendo del proceso.
+
+## Archivos
+
+- modificar packages/cli/src/store/lock.ts — el turno de la verificación completa solo se da otra vez a lo que corre dentro de quien lo tomó; otra parte del mismo proceso lo encuentra ocupado
+- modificar packages/cli/src/flow/full-verification.ts — `onTurn` corre lo que espera dentro del turno que tomó
+- modificar packages/cli/src/server/runs.ts — el comentario de la cola de verificaciones del servidor ya no dice que el turno es del proceso
+- modificar packages/cli/src/flow/full-verification.test.ts — otra parte del mismo proceso espera el turno, dice quién lo tiene y lo tiene mientras verifica; lo que corre dentro del turno de un cierre no hace cola
+- modificar docs/ARCHITECTURE.md — §9: el turno es de quien lo toma y de lo que corre dentro, no de todo el proceso
+- modificar docs/formats.md — §1: `locks/full-verification.json` dentro de un mismo proceso
+
+## Tareas
+
+- [x] T1: Otra acción del mismo proceso espera el turno de la verificación completa
+  - files: packages/cli/src/store/lock.ts, packages/cli/src/flow/full-verification.ts, packages/cli/src/server/runs.ts, packages/cli/src/flow/full-verification.test.ts, docs/ARCHITECTURE.md, docs/formats.md
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run src/flow/full-verification.test.ts test/server/runs-turn.test.ts test/server/verify-merge.test.ts && pnpm typecheck && pnpm lint
+  - type: fix
+
+## Cierre
+
+### Resumen
+
+El turno de la verificación completa es de quien lo toma y de lo que corre dentro (AsyncLocalStorage, onFullVerificationTurn): otra acción del mismo proceso hace cola y dice quién lo tiene; ARCHITECTURE §9 y formats §1 lo cuentan.
