@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-verificar-de-la-ui-incorpora-main-antes-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-verificar-de-la-ui-incorpora-main-antes-de",
   "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:5bfab8fc25e2a1e984ded05e1f97c4764c935de1d730989e9bfb4f6825dacf39",
@@ -79,12 +79,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "41dd67ed3bb8170b6e87801b960898c2dbe0e2b2",
+      "attempts": 1,
       "startedAt": "2026-11-06T19:04:46.270Z",
       "doneAt": "2026-11-06T19:09:26.515Z",
-      "summary": "ui.md, ARCHITECTURE («Verificación completa desde la UI») y formats.md (integration.started) cuentan que «Verificar» incorpora main si avanzó, en la cola de acciones"
+      "summary": "ui.md, ARCHITECTURE («Verificación completa desde la UI») y formats.md (integration.started) cuentan que «Verificar» incorpora main si avanzó, en la cola de acciones",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -97,8 +97,40 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T19:15:33.774Z",
   "lockedTests": {
     "packages/core/test/cards/server.test.ts": "sha256:8817730e8945fa4db388d52aa4f6c7d49dc06b43ce30f33b73c8a69c4d832ff7",
     "packages/cli/test/server/verify-merge.test.ts": "sha256:f053440315853e87f02120059431d924917b31c64fcf91ef15c5c9281d0abd52"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "c6412c81c01618b67b4383f4095defd2a8dbb477",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/merged-run.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/src/server/watched-runs.ts",
+      "packages/cli/test/server/verify-merge.test.ts",
+      "packages/core/src/cards/server.ts",
+      "packages/core/test/cards/server.test.ts",
+      "packages/ui/src/components/diff-file.test.ts",
+      "packages/ui/src/components/diff-file.ts",
+      "packages/ui/src/highlight/highlight.test.ts",
+      "packages/ui/src/highlight/highlight.ts",
+      "packages/ui/src/history/trace-view.test.ts",
+      "packages/ui/src/history/trace-view.ts",
+      "packages/ui/src/progress/code-lines.ts",
+      "packages/ui/src/progress/unlock-detail.test.ts"
+    ],
+    "at": "2026-11-06T19:25:50.360Z",
+    "resolved": {
+      "commit": "832afcf",
+      "at": "2026-11-06T19:32:31.042Z"
+    }
   }
 }

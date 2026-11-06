@@ -88,3 +88,31 @@ Hoy «Verificar» en la UI verifica la rama del cambio sin main, y después «Ac
 
 - R1: Que «Verificar» haga un merge sorprende a quien esperaba una acción sin efectos. Mitigación: la respuesta lo dice, es lo mismo que hacen «Aceptar» y `accept` en la terminal antes de verificar, y `docs/ui.md` lo cuenta.
 - R2: Mientras la incorporación verifica, ocupa la cola de acciones del servidor y las demás acciones de la UI esperan. Mitigación: ya pasa con «Aceptar», que verifica en la misma cola, y solo ocurre cuando main avanzó; sin merge, «Verificar» sigue fuera de la cola.
+
+## Cierre
+
+### Resumen
+
+«Verificar» de la UI ya no verifica sin main cuando main avanzó desde la rama del cambio:
+- Core: `runStartedCard` recibe la rama destino y dice, en español y en inglés, que se incorpora antes de verificar.
+- `server/runs.ts`: `started` mira si la rama del cambio contiene la destino. Si no, rechaza al momento mientras el agente resuelve una incorporación anterior (`pendingIntegration`) y lanza `runMerged`. Este corre en el turno del servidor y en su cola de acciones (`queued`, el `serial` de `http.ts`). Su ejecución en vivo junta sus notas, las verificaciones de `runLive` que el vigilante le pasa (`follow`, una parte por ejecución) y lo que dijo la incorporación. Su fin se oye con el resultado ya anotado.
+- `server/merged-run.ts`: vuelve a leer el cambio, sigue solo en aceptación, aplica `pendingIntegration`, toma el bloqueo del cambio y llama a `mergeTarget` con `accept`.
+- `server/watched-runs.ts`: el vigilante de las ejecuciones del almacén (`taskRuns`), que salió de `runs.ts` sin cambios.
+- Documentación: `docs/ui.md`, ARCHITECTURE («Verificación completa desde la UI») y formats.md (`integration.started`).
+
+### Desviaciones (respecto al plan)
+
+- `start` pasó a su propia función (`started`), porque `changeRuns` llegó a 57 líneas y el límite es 50.
+- La fila de `change.verified` de formats.md no cambió: ya cubre la verificación de la incorporación de main en un cambio abierto.
+
+### Decisiones
+
+- La incorporación va en la cola de acciones del servidor, además de en su turno y con el bloqueo del cambio. El bloqueo del cambio es reentrante en el mismo proceso, así que solo no impediría que un «Aceptar» del mismo servidor fusionara a la vez.
+- `pendingIntegration` se aplica dos veces: al empezar, para rechazar enseguida, y dentro de la cola, porque el estado puede cambiar mientras espera.
+- `commands/integrate.ts` no se tocó, porque el corte C1 lo cambia.
+
+### Pendientes
+
+- `packages/cli/src/server/runs.ts` tiene 306 líneas de código (aviso a partir de 300): proponer sacar la salida en vivo (`LiveRun`, `Part` y `liveRun`) a su propio módulo.
+- En un mismo servidor, un «Aceptar» de la UI puede verificar a la vez que un «Verificar» sin merge de otro cambio, porque el turno de la verificación completa es del proceso (`holdsFullVerification`) y las acciones no pasan por `inTurn`.
+- Lo que para la incorporación de «Verificar» sin mover nada (cambios sin commit, configuración fusionada no válida, cambio bloqueado por otro proceso) solo sale en la salida en vivo, que termina enseguida; la UI no lo conserva, y solo «Aceptar» lo vuelve a decir.
