@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-cada-corte-es-una-linea-de-fases-tambien-los",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-cada-corte-es-una-linea-de-fases-tambien-los",
   "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
   "revision": 1,
@@ -71,6 +71,10 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T15:46:41.993Z"
+  "lockedTests": {
+    "packages/ui/src/inbox/inbox.test.ts": "sha256:7e3b52eb54b7a1caae989401f19d585c4c0e34a91739571664da24c214d4c3a3",
+    "packages/ui/src/inbox/epic-lanes.test.ts": "sha256:d47ec984e82620dc98ff37a7e1791fcefd8f1b86973e7302e5e8bef084054693",
+    "packages/ui/src/inbox/inbox-epic.test.ts": "sha256:2396ba054ea5b8bba9eb46cea1703250894141c469be2f6137147fb5dd6c80a9",
+    "packages/ui/src/inbox/inbox-lane.test.ts": "sha256:26f40675752fa81c627e410efc82669f2f4a5944d15f466276aef1e5941118d6"
+  }
 }
