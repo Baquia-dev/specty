@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d8c048510cdded50f1f87c886fb23e90b81b1ecb",
+      "startedAt": "2026-11-06T08:48:00.594Z",
+      "doneAt": "2026-11-06T08:51:49.958Z",
+      "summary": "GhostPath en guard/worktrees.ts, la regla ghost en decide.ts (antes que la de otra worktree, en write/delete, files y shell) y su texto en cards/ghost-folder.ts, en español y en inglés"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

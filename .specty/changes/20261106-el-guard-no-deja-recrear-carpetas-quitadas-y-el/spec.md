@@ -63,7 +63,7 @@ Hoy, una herramienta que escribe en la carpeta de un cambio ya quitada la vuelve
 
 ## Tareas
 
-- [ ] T1: La negativa de una carpeta fantasma, con su regla y sus textos
+- [x] T1: La negativa de una carpeta fantasma, con su regla y sus textos
   - files: packages/core/src/guard/worktrees.ts, packages/core/src/guard/decide.ts, packages/core/src/cards/ghost-folder.ts, packages/core/src/index.ts, packages/core/test/guard/ghosts.test.ts
   - ac: AC1, AC11
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/ghosts.test.ts test/guard/decide.test.ts test/guard/worktrees.test.ts && pnpm lint
