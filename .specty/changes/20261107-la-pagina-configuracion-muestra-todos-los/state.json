@@ -6,6 +6,13 @@
   "branch": "specty/20261107-la-pagina-configuracion-muestra-todos-los",
   "baseCommit": "53eef2c1668b92bbf9d89a26fd7a562eef5cbf60",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:39acc6b969167077702bd8e5b44356225764418e29d9717181bd195c01c66d01",
+    "at": "2026-11-06T23:14:45.457Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -56,12 +63,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:39acc6b969167077702bd8e5b44356225764418e29d9717181bd195c01c66d01",
-    "at": "2026-11-06T23:14:45.457Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T23:22:54.346Z"
 }

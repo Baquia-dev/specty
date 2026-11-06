@@ -61,9 +61,10 @@ describe("Shell", () => {
       "/",
       "/memory",
       "/sessions",
+      "/settings",
       "/catalog",
     ]);
-    expect(main[3]?.getAttribute("aria-current")).toBe("page");
+    expect(main[4]?.getAttribute("aria-current")).toBe("page");
     expect(element.querySelector("header sp-kbd")).not.toBeNull();
     expect(element.querySelectorAll("header input[name=theme]")).toHaveLength(3);
     expect(element.querySelectorAll("header input[name=lang]")).toHaveLength(2);
@@ -74,7 +75,12 @@ describe("Shell", () => {
   it("leaves the catalog out of the build people use: no link, no command, no page", async () => {
     const { element, router } = await open("/catalog/colors", false);
     const main = [...element.querySelectorAll<HTMLAnchorElement>("header nav a")];
-    expect(main.map((link) => link.getAttribute("href"))).toEqual(["/", "/memory", "/sessions"]);
+    expect(main.map((link) => link.getAttribute("href"))).toEqual([
+      "/",
+      "/memory",
+      "/sessions",
+      "/settings",
+    ]);
     expect(element.querySelector("sp-catalog")).toBeNull();
     expect(router.url).toBe("/");
     const ids = TestBed.inject(Commands)
