@@ -75,7 +75,7 @@ Desde el cambio anterior, la UI muestra con su código, en el tono de atención,
   - ac: AC2, AC3, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-direction.test.ts --include src/review/spec-sections.test.ts --include src/review/delta-review.test.ts --include src/review/comments.test.ts --include src/components/item-tooltip.test.ts && pnpm lint && pnpm knip
   - type: feat
-- [ ] T3: Progreso los marca en las solicitudes de alcance y en las tareas
+- [x] T3: Progreso los marca en las solicitudes de alcance y en las tareas
   - files: packages/ui/src/progress/scope-request.ts, packages/ui/src/progress/task-row.ts, packages/ui/src/progress/progress-direction.test.ts
   - ac: AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/progress-direction.test.ts --include src/progress/scope-request.test.ts --include src/progress/progress-tab.test.ts && pnpm lint

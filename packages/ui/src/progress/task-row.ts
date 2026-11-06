@@ -17,6 +17,7 @@ import {
   LucideGitCommitHorizontal,
   LucideX,
 } from "../components/icons";
+import { ShownText } from "../components/shown-text";
 import {
   formatDuration,
   outputSegments,
@@ -55,7 +56,7 @@ const ENTER =
  */
 @Component({
   selector: "sp-task-row",
-  imports: [LucideDynamicIcon],
+  imports: [LucideDynamicIcon, ShownText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     role: "listitem",
@@ -66,9 +67,9 @@ const ENTER =
   template: `
     <span class="pt-0.5 font-mono text-xs text-text-muted">{{ task().id }}</span>
     <div class="flex min-w-0 flex-col gap-1.5">
-      <span [class]="task().status === 'pending' ? 'font-semibold text-text-muted' : 'font-semibold'">{{ task().title }}</span>
+      <span [class]="task().status === 'pending' ? 'font-semibold text-text-muted' : 'font-semibold'"><sp-text [text]="task().title" /></span>
       @if (task().summary; as summary) {
-        <span class="text-sm text-text-muted" data-summary>{{ summary }}</span>
+        <span class="text-sm text-text-muted" data-summary><sp-text [text]="summary" /></span>
       }
       @if (running(); as since) {
         <span class="flex items-center gap-2 text-[13px]" style="color: var(--color-phase-implementing)" data-running>
@@ -82,7 +83,7 @@ const ENTER =
           <span class="inline-flex items-center gap-1 font-mono text-xs text-text"><svg [lucideIcon]="commitIcon" size="13" aria-hidden="true"></svg><span class="sr-only">{{ t()('commit', 'commit') }}&ngsp;</span>{{ commit }}</span>&ngsp;
         }
         @for (file of task().files; track file) {
-          <code class="rounded-md bg-text/5 px-1.5 font-mono text-xs">{{ file }}</code>&ngsp;
+          <code class="rounded-md bg-text/5 px-1.5 font-mono text-xs"><sp-text [text]="file" /></code>&ngsp;
         }
         @for (criterion of task().criteria; track criterion) {
           <span class="rounded-md border border-border px-1.5 font-mono text-xs">{{ criterion }}</span>&ngsp;

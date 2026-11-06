@@ -52,12 +52,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2f1b4a3bd27ee8a777a870969481f27037ca6a0f",
+      "attempts": 1,
       "startedAt": "2026-11-06T20:07:41.373Z",
       "doneAt": "2026-11-06T20:08:25.245Z",
-      "summary": "sp-text (components/shown-text.ts) pinta un texto del agente o de disco con cada carácter de dirección marcado como en el código; lo usan sp-word-diff y sp-review-items (criterios, rutas y motivos, tareas, cortes y riesgos), el supuesto y sp-item-text en sus trozos sin id"
+      "summary": "sp-text (components/shown-text.ts) pinta un texto del agente o de disco con cada carácter de dirección marcado como en el código; lo usan sp-word-diff y sp-review-items (criterios, rutas y motivos, tareas, cortes y riesgos), el supuesto y sp-item-text en sus trozos sin id",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/components/shown-text.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "1659adb4087191a13aa41b89f1a28e20b931f064",
+      "startedAt": "2026-11-06T20:08:25.585Z",
+      "doneAt": "2026-11-06T20:10:16.654Z",
+      "summary": "Progreso marca los caracteres de dirección en el motivo y las rutas de una solicitud de alcance y en el título, el resumen y las rutas de una tarea, con sp-text; sp-text escribe su texto en un ng-container en lugar de con tres llaves, que el aviso CWE-79 confundía con HTML sin escapar"
     }
   },
   "pending": {

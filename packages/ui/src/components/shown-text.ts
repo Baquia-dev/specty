@@ -12,7 +12,7 @@ import { Preferences } from "../theme/preferences";
 @Component({
   selector: "sp-text",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `@for (piece of pieces(); track $index) {@if (piece.direction) {<span [class]="mark.look" [attr.title]="mark.note[lang()]" data-direction>{{ piece.text }}</span>} @else {{{ piece.text }}}}`,
+  template: `@for (piece of pieces(); track $index) {@if (piece.direction) {<span [class]="mark.look" [attr.title]="mark.note[lang()]" data-direction>{{ piece.text }}</span>} @else {<ng-container>{{ piece.text }}</ng-container>}}`,
 })
 export class ShownText {
   readonly text = input.required<string>();
