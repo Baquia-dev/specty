@@ -73,3 +73,21 @@ Hoy el guard rechaza `specty new --resolves <id>` cuando la entrada está en un 
 ## Riesgos
 
 - R1: Una palabra `resolve` que no es el subcomando (`specty memory add "resolve X"`) daría ids — solo cuenta cuando `resolve` es la primera palabra sin opción tras `memory`; el texto entre comillas de `add` es otra palabra.
+
+## Cierre
+
+### Resumen
+
+El guard frena ahora `specty memory resolve <id>…` como ya frenaba `specty new --resolves`: si la conversación de un agente nombra una entrada de un frente cuyo dueño vivo es otra conversación, lo rechaza antes de que corra (P194). La negativa dice de qué frente es la entrada, quién lo lleva y desde cuándo, y propone volver a ejecutar `memory resolve` sin esa entrada, que resolverá la conversación de ese frente, o que la persona libere el frente con `specty front free <frente>`. El análisis del shell da los ids de `memory resolve` en un campo propio, `memoryResolves` (`guard/specty-calls.ts`, juntado entre segmentos en `guard/shell.ts`), y `frontResolvesDenial` recibe con `via` qué comando los pidió. `judgeFronts` (`enforce/fronts.ts`) mira los dos. Los tests de AC1 y AC2 están en `packages/cli/test/front-brakes.test.ts`, los de AC3 en `packages/core/test/guard/shell.test.ts` y el de AC4 en `packages/core/test/cards/front-brakes.test.ts`. La verificación completa falló solo en los e2e de OpenCode (P197), como en main desde que Homebrew actualizó OpenCode a 2.2.5, y la persona aceptó de todos modos.
+
+### Desviaciones
+
+- Ninguna respecto al plan aprobado.
+
+### Decisiones
+
+- Los ids de `memory resolve` van en un campo propio y no en `resolves`, para que la negativa sepa qué comando la pidió y proponga su propio siguiente paso, sin cambiar lo que ya daba `resolves`.
+
+### Pendientes
+
+- Ninguno.

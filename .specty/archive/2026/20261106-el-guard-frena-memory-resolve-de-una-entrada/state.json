@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-el-guard-frena-memory-resolve-de-una-entrada",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-el-guard-frena-memory-resolve-de-una-entrada",
   "baseCommit": "f92005015cb9041aed1f70734b853552986457e4",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:d124df0a241cb3e65b5452ab8a94f641cf1eae8638caed1c1782d181195ebf9c",
@@ -67,12 +67,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a76583c8e06a11dba526f0cb9871902a444efccd",
+      "attempts": 1,
       "startedAt": "2026-11-06T07:50:26.180Z",
       "doneAt": "2026-11-06T07:51:10.267Z",
-      "summary": "formats.md (Frenos de los frentes) y ARCHITECTURE: el guard frena también memory resolve, con sus ids y su siguiente paso."
+      "summary": "formats.md (Frenos de los frentes) y ARCHITECTURE: el guard frena también memory resolve, con sus ids y su siguiente paso.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -85,6 +85,7 @@
     "T": 4,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-06T08:19:37.202Z",
   "lockedTests": {
     "packages/cli/test/front-brakes.test.ts": "sha256:c3111c27353a6a9d61a770fb683df62a9cc9b2798a5d0fea1b5b906657debc7e",
     "packages/core/test/cards/front-brakes.test.ts": "sha256:9f5d86f640ad344e3db816d46c196b2b9d4ee53724641a89edd7dfe5a4507789",
