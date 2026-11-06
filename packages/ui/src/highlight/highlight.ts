@@ -62,26 +62,46 @@ function changesDirection(char: string): boolean {
   return (code >= 0x202a && code <= 0x202e) || (code >= 0x2066 && code <= 0x2069);
 }
 
+/** A piece of a text: a character of text direction, shown as its code, or the text around it. */
+interface DirectionPiece {
+  readonly text: string;
+  readonly direction?: true;
+}
+
 /**
- * A piece cut around each character of text direction: that character shows as its code, as the
- * terminal shows it, with no color or italics, and is still part of the word that changed.
+ * A text cut around each character of text direction, which shows as its code, as the terminal
+ * shows it: `\u` and its four hexadecimal digits. A text with none is a single piece.
  */
-function directionSpans(span: LineSpan): readonly LineSpan[] {
-  if (!Array.from(span.text).some(changesDirection)) return [span];
-  const spans: LineSpan[] = [];
+export function directionPieces(text: string): readonly DirectionPiece[] {
+  if (!Array.from(text).some(changesDirection)) return [{ text }];
+  const pieces: DirectionPiece[] = [];
   let plain = "";
-  for (const char of span.text) {
+  for (const char of text) {
     if (!changesDirection(char)) {
       plain += char;
       continue;
     }
-    if (plain !== "") spans.push({ ...span, text: plain });
+    if (plain !== "") pieces.push({ text: plain });
     plain = "";
     const code = (char.codePointAt(0) ?? 0).toString(16).padStart(4, "0");
-    spans.push({ text: `\\u${code}`, changed: span.changed, direction: true });
+    pieces.push({ text: `\\u${code}`, direction: true });
   }
-  if (plain !== "") spans.push({ ...span, text: plain });
-  return spans;
+  if (plain !== "") pieces.push({ text: plain });
+  return pieces;
+}
+
+/**
+ * A piece cut around each character of text direction: that character shows as its code, with no
+ * color or italics, and is still part of the word that changed.
+ */
+function directionSpans(span: LineSpan): readonly LineSpan[] {
+  const pieces = directionPieces(span.text);
+  if (pieces.length === 1 && pieces[0]?.direction === undefined) return [span];
+  return pieces.map((piece) =>
+    piece.direction
+      ? { text: piece.text, changed: span.changed, direction: true }
+      : { ...span, text: piece.text },
+  );
 }
 
 /** How a character of text direction shows: in the attention tone, with what it is as its title. */
