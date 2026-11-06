@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-el-guard-no-deja-quitar-la-carpeta-de-un-cambio",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-el-guard-no-deja-quitar-la-carpeta-de-un-cambio",
   "baseCommit": "98153584ec94f57f6b6990a486a76b18bead7ff8",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:2826003fe86eea8566832094a0c5587c97e390f9b6d9c11acc26826b46682630",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9be9222e205ce922774fe9e8a47b4ffe04b25b22",
+      "attempts": 1,
       "startedAt": "2026-11-06T10:08:23.340Z",
       "doneAt": "2026-11-06T10:09:52.182Z",
-      "summary": "OpenCode: opencode_worktree_remove con directory se lee como la acción remove-worktree, que el guard juzga como git worktree remove; ARCHITECTURE cuenta las carpetas de cambios abiertos y la fila de OpenCode"
+      "summary": "OpenCode: opencode_worktree_remove con directory se lee como la acción remove-worktree, que el guard juzga como git worktree remove; ARCHITECTURE cuenta las carpetas de cambios abiertos y la fila de OpenCode",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T10:15:19.812Z",
   "lockedTests": {
     "packages/core/test/guard/shell.test.ts": "sha256:829103abbef6dec80baadfa50ef2bacf5489bf2ff2a60808ca88c0525dc85b7c",
     "packages/cli/test/opencode-worktree-remove.test.ts": "sha256:1f77a81441738274fc0fa9ac0512792c04cb8b167964faa071b43c73d3b035b0",

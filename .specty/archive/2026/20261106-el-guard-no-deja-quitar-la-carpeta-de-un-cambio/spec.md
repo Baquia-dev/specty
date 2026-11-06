@@ -86,3 +86,25 @@ Hoy la carpeta de un cambio abierto se puede quitar sin pasar por `specty close`
 
 - R1: Encajar por final de ruta niega quitar una worktree ajena que se llama como la carpeta de un cambio — solo encajan las worktrees registradas en este repositorio, y negar de más aquí no pierde nada: la persona puede quitarla en su terminal.
 - R2: `locateChanges` abre una sesión por worktree y es lento con muchas — solo corre cuando la acción quita alguna worktree, que es raro.
+
+## Cierre
+
+### Resumen
+
+El guard ya no deja que un agente quite la carpeta de un cambio abierto fuera de `specty close` y `specty cancel` (P204). Lo niega con `git worktree remove` desde el shell, con o sin `--force`, y con `worktree_remove` de Code Mode de OpenCode 2.2, también con `force: true`. La negativa tiene su propia regla, `change-folder`, dice de qué cambio es la carpeta, avisa de que con `--force` se perdería lo que tiene sin commit, y propone `specty cancel <id>` o `specty close`. En core, `analyzeGit` lee el argumento de cada `git worktree remove` y `analyzeShell` lo sitúa como los commits (`worktreeRemovals`); `decideGuard` niega con `ShellFacts.removedFolders` y con la acción nueva `remove-worktree`, justo después de la regla de los comandos de la persona. En la CLI, `enforce/removals.ts` busca, entre las worktrees de git que nombra la acción (por ruta real o por final de ruta, como git), las de un cambio abierto. OpenCode lee `opencode_worktree_remove` como esa acción. Quitar otra worktree pasa como antes. ARCHITECTURE §10 lo cuenta en «Carpetas de cambios abiertos» y en la fila de OpenCode. Los criterios tienen sus tests en core (`test/guard/shell.test.ts`, `test/guard/change-folder.test.ts`) y en la CLI (`test/remove-change-folder.test.ts`, `test/opencode-worktree-remove.test.ts`). La verificación completa pasó en la aceptación, y los tests ejecutan el 100 % de las líneas que añade el cambio.
+
+### Desviaciones
+
+- Las dos tareas del primer borrador pasaron a cuatro: `propose` avisó de que tocaban demasiados archivos y de que el `typecheck` de la primera compilaría tests de las siguientes. Los tests de la CLI se separaron en uno para el shell y otro para OpenCode.
+- `decideGuard` superaba la complejidad máxima (11 de 10) con el caso nuevo: la lectura y la entrada salieron a `decideRead` y `decideEnter`.
+
+### Decisiones
+
+- Solo se protege la carpeta de un cambio abierto. La de un cambio terminado que `close` o `cancel` dejaron la quita la limpieza, y quitarla a mano sigue pasando.
+- Se niega también en modo delegado y desde la propia carpeta: quitarla no es una decisión de la persona; cancelar el cambio sí.
+- Para el shell, una worktree cuenta como quitada si encaja con el argumento por ruta o por final de ruta, como lo toma git. Un argumento con variables, `~` o comillas invertidas no se juzga, como las demás rutas que el análisis no sabe situar.
+- `git worktree move` y `git worktree add` (o `worktree_create`) siguen sin juzgarse: no quitan ninguna carpeta.
+
+### Pendientes
+
+- P207: `packages/core/src/guard/decide.ts` pasa de 298 a 323 líneas de código (el aviso salta en 300). La propuesta es llevar los tipos de lo que juzga el guard a `guard/action.ts`.
