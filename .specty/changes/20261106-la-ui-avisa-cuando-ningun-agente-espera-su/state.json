@@ -61,14 +61,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/data/views.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "95166b2efb59fa0e2865a5f3b0ca01459436d36d",
+      "attempts": 1,
       "startedAt": "2026-11-06T14:49:30.504Z",
       "doneAt": "2026-11-06T14:55:36.591Z",
-      "summary": "La UI lee unattended (records.ts, views.ts); «Cómo retomarlo» dice qué pasó y qué hacer antes de las órdenes, con prioridad sobre away y huérfano, y la página saca un toast cuando aparece con ella abierta."
+      "summary": "La UI lee unattended (records.ts, views.ts); «Cómo retomarlo» dice qué pasó y qué hacer antes de las órdenes, con prioridad sobre away y huérfano, y la página saca un toast cuando aparece con ella abierta.",
+      "scopeExtra": [
+        "packages/ui/src/data/views.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7bd187ed23ffbddb212871b0966fe48b0727485a",
+      "startedAt": "2026-11-06T14:55:36.962Z",
+      "doneAt": "2026-11-06T14:56:52.377Z",
+      "summary": "La fila de la Bandeja muestra «Nadie retoma tu decisión» en lugar de las marcas de huérfano y fuera de su carpeta; FixtureData tiene un «Simular: nadie retoma tu decisión» que lo pone en el primer cambio en implementación."
     }
   },
   "pending": {

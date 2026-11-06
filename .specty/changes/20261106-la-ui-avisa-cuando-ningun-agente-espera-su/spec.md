@@ -73,7 +73,7 @@ Hoy, si la persona aprueba, decide el alcance, pide cambios, acepta, ajusta o ci
   - ac: AC3, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/resume-hints.test.ts --include src/change/change-page.unattended.test.ts --include src/change/change-page.test.ts
   - type: feat
-- [ ] T3: La Bandeja marca el cambio que nadie retoma
+- [x] T3: La Bandeja marca el cambio que nadie retoma
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-row.test.ts, packages/ui/src/data/fixtures.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-row.test.ts --include src/data/fixtures.test.ts && pnpm typecheck && pnpm lint
