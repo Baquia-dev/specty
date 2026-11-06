@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-cabecera-de-la-epica-da-su-avance-y-si",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-la-cabecera-de-la-epica-da-su-avance-y-si",
   "baseCommit": "8c4af062c7aa39651c4c843dc1b5aca2932d3eb3",
   "revision": 1,
@@ -58,6 +58,9 @@
     "T": 3,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T17:42:10.711Z"
+  "lockedTests": {
+    "packages/ui/src/inbox/epic-lanes.test.ts": "sha256:c657bb9909830609d8e16438d23d7ef3bef4360e7248535beda675f22193542b",
+    "packages/ui/src/inbox/inbox.test.ts": "sha256:86f98ccc679b9d2aad4ebf0e0237ebf83926cb2a97180ec9aef66e3623a4e271",
+    "packages/ui/src/inbox/inbox-epic-head.test.ts": "sha256:44f06948729d7acf7cac83257d2e8bb4da5cdc4b253dd1ac55cc827193345019"
+  }
 }
