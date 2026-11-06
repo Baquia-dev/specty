@@ -319,3 +319,28 @@ export function splitRows(hunk: DiffHunk): readonly SplitRow[] {
   }
   return rows;
 }
+
+/**
+ * Lines of a file, whole or a stretch of it, as context lines of one section numbered from
+ * `start`: what the diff viewer's colors read, without green or red.
+ */
+export function contextFile(path: string, lines: readonly string[], start = 1): DiffFile {
+  const context = lines.map(
+    (text, index): DiffLine => ({
+      kind: "context",
+      text,
+      oldNumber: start + index,
+      newNumber: start + index,
+    }),
+  );
+  const count = context.length;
+  const hunk = {
+    oldStart: start,
+    oldLines: count,
+    newStart: start,
+    newLines: count,
+    section: "",
+    lines: context,
+  };
+  return { path, status: "modified", binary: false, additions: 0, deletions: 0, hunks: [hunk] };
+}

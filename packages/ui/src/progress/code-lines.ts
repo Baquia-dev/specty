@@ -7,30 +7,13 @@ import {
   input,
   resource,
 } from "@angular/core";
-import type { DiffFile, DiffLine } from "../data/diff";
+import { contextFile } from "../data/diff";
 import { HIGHLIGHT, spansOf } from "../highlight/highlight";
 
-/** Lines of code as context lines of one section, numbered from `start`: what the colors read. */
-function asFile(path: string, text: string, start: number): DiffFile {
-  const rows = text.endsWith("\n") ? text.slice(0, -1).split("\n") : text.split("\n");
-  const lines = (text === "" ? [] : rows).map(
-    (line, index): DiffLine => ({
-      kind: "context",
-      text: line,
-      oldNumber: start + index,
-      newNumber: start + index,
-    }),
-  );
-  const count = lines.length;
-  const hunk = {
-    oldStart: start,
-    oldLines: count,
-    newStart: start,
-    newLines: count,
-    section: "",
-    lines,
-  };
-  return { path, status: "modified", binary: false, additions: 0, deletions: 0, hunks: [hunk] };
+/** The lines of a text: none when it is empty, and no empty one for the newline that ends it. */
+function linesOf(text: string): readonly string[] {
+  if (text === "") return [];
+  return (text.endsWith("\n") ? text.slice(0, -1) : text).split("\n");
 }
 
 /**
@@ -61,7 +44,10 @@ export class CodeLines {
 
   private readonly highlight = inject(HIGHLIGHT);
 
-  private readonly file = computed(() => asFile(this.path(), this.text(), this.start()));
+  /** The lines as context lines of one section, numbered from `start`: what the colors read. */
+  private readonly file = computed(() =>
+    contextFile(this.path(), linesOf(this.text()), this.start()),
+  );
 
   private readonly colors = resource({
     params: () => this.file(),

@@ -16,7 +16,7 @@ Dos vistas arman a mano el mismo `DiffFile` de una sola sección de líneas de c
 
 ## Tareas
 
-- [ ] T1: Unir en data/diff.ts el archivo de líneas de contexto de la trazabilidad y de las líneas de código
+- [x] T1: Unir en data/diff.ts el archivo de líneas de contexto de la trazabilidad y de las líneas de código
   - files: packages/ui/src/data/diff.ts, packages/ui/src/history/trace-view.ts, packages/ui/src/progress/code-lines.ts
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/diff.test.ts --include src/history/trace-view.test.ts --include src/progress/locked-tests.test.ts --include src/progress/tests-sent.test.ts --include src/progress/scope-request.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
   - type: refactor
