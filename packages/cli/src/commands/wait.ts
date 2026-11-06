@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  isIntegrating,
+  changeWaitsFor,
   type Output,
-  phasePermissions,
   waitHeartbeat,
   waitTimeoutCard,
 } from "@baquia-dev/specty-core";
@@ -45,15 +44,11 @@ function parseWaitLimits(options: WaitOptions): WaitLimits {
 }
 
 /**
- * Checks whether the active change is waiting for a person's decision or action: the end of the
- * agent's turn and the guard's brake on `sleep` read it too.
+ * Checks whether the active change is waiting for a person's decision or action, by core's rule
+ * (`changeWaitsFor`): the end of the agent's turn and the guard's brake on `sleep` read it too.
  */
 export function isWaitingForHuman(change: StoredChange): boolean {
-  const { state } = change;
-  if (state.pending.scopeRequests.length > 0) return true;
-  const submitted =
-    (state.phase === "testing" ? state.testsSubmittedAt : state.closingSubmittedAt) !== undefined;
-  return phasePermissions(state.phase, submitted, isIntegrating(state)).waitingFor === "human";
+  return changeWaitsFor(change.state) === "human";
 }
 
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));

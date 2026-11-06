@@ -101,6 +101,14 @@ describe("deriveView", () => {
     expect(deriveViews([record()])[0]?.shared).toBeUndefined();
   });
 
+  it("AC8: carries who holds it, as the server gives it, next to its other marks", () => {
+    const holder = { tool: "codex", ago: 7 };
+    expect(deriveView({ ...record(), holder }).holder).toEqual(holder);
+    const orphan = deriveView({ ...record(), holder, orphan: true });
+    expect([orphan.holder, orphan.orphan]).toEqual([holder, true]);
+    expect(deriveView(record())).not.toHaveProperty("holder");
+  });
+
   it("carries the approved revision: which one, when and by whom", () => {
     const at = "2026-10-21T15:02:11.000Z";
     const approved = { revision: 1, hash: HASH, at, by: "Ana Gómez", channel: "ui" } as const;
@@ -287,25 +295,29 @@ describe("decisions and tabs", () => {
     expect(deriveView(record({ phase: "implementing" })).lockedTests).toBeUndefined();
   });
 
-  it("waits for the agent once the person asked for changes, until the next proposal (AC1, AC3)", () => {
-    const step = (ts: string, event: string, revision: number) => ({
-      ts,
-      actor: "human" as const,
-      event,
-      data: { revision },
-    });
+  it("AC4: waits for the agent while the state says the person sent the review back", () => {
+    const at = "2026-10-20T15:00:00.000Z";
+    const sentBack = state({ phase: "review", revision: 1, changesRequestedAt: at });
+    expect(decisionOf(sentBack)).toBeUndefined();
+    const view = deriveView({ ...record({ phase: "review", revision: 1 }), state: sentBack });
+    expect([view.decision, view.changesRequested]).toEqual([undefined, { revision: 1, at }]);
+    // The audit alone does not send it back: a request from before `changesRequestedAt`.
     const asked = [
-      step("2026-10-20T14:00:00Z", "spec.proposed", 1),
-      step("2026-10-20T15:00:00Z", "review.changes_requested", 1),
+      {
+        ts: "2026-10-20T14:00:00Z",
+        actor: "agent" as const,
+        event: "spec.proposed",
+        data: { revision: 1 },
+      },
+      {
+        ts: at,
+        actor: "human" as const,
+        event: "review.changes_requested",
+        data: { revision: 1 },
+      },
     ];
-    const view = deriveView({ ...record({ phase: "review", revision: 1 }), audit: asked });
-    expect([view.decision, view.changesRequested]).toEqual([
-      undefined,
-      { revision: 1, at: "2026-10-20T15:00:00Z" },
-    ]);
-    const proposed = [...asked, step("2026-10-20T16:00:00Z", "spec.proposed", 2)];
-    const next = deriveView({ ...record({ phase: "review", revision: 2 }), audit: proposed });
-    expect([next.decision, next.changesRequested]).toEqual(["review", undefined]);
+    const old = deriveView({ ...record({ phase: "review", revision: 1 }), audit: asked });
+    expect([old.decision, old.changesRequested]).toEqual(["review", undefined]);
   });
 
   it("carries the findings, and the last review of the spec and of the result (AC1, AC2, AC3)", () => {

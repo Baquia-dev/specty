@@ -288,6 +288,8 @@ describe("ChangePage", () => {
     const tab = element.querySelector("[role=tabpanel]:not([hidden]) sp-progress-tab");
     expect(tab?.querySelectorAll("sp-task-row")).toHaveLength(3);
     expect(text(tab?.querySelector("[data-waiting] [data-scope-request]"))).toContain("T3 pide");
+    // Both requests of T3: the file it asked for and the unlock of its approved test.
+    fixtures.approveScope();
     fixtures.approveScope();
     fixtures.finishTask();
     await settle();

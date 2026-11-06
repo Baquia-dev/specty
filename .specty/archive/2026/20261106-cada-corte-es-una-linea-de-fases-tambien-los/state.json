@@ -1,0 +1,161 @@
+{
+  "schema": 1,
+  "id": "20261106-cada-corte-es-una-linea-de-fases-tambien-los",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-cada-corte-es-una-linea-de-fases-tambien-los",
+  "baseCommit": "492ed8c9b1d87de583a2777b6539625473710784",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0445fbe6f8fadb90d86f98d9e972e56a41c580fca6215356b9108cbb97ab84c7",
+    "at": "2026-11-06T15:35:26.132Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9b7b7d68cf4d1d1cbb71504ec4248b024d6b9e0684a9ebcf2a0550c6ce771784",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:ed0e83475431cacaee1e5ce661b1903b8351cf3af410ea07c7c60f3fda5c2f0f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9c3cc188f3337d8b310bb84b6fb7d01d071b9b088fc63542fdb25a0a316baa9c",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:3bc385804bd2e906bd50df3b55fc9ab97099fa229f1d0c2a9833666b34d30cb8",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:749bd2e920bb1f8651e29efd7e88ed8f87d6b468cc99584331fef608f63a408d",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:42ebea9daea199b23098aa1a769cca55c03577e2c0001984115947d0f9a3f725",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:397cf818bf4ee14e72de58bf341a664251d22c25271a8462c94818adaf28e00f",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:a9f0c38bbc33a8159af3723954dbbcfd7f21bfeae70723c87c5ad3ef3fe99e0c",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:8ed92e3d671c2c85fd1a3aca4a5133f5e108c0c794b62b6580453d4fc42b7958",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c96accdb742563861188a1b63562c5a7d99d3279",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:47:24.325Z",
+      "doneAt": "2026-11-06T15:48:48.791Z",
+      "summary": "loadedSliceChanges pasa a data/slice-changes.ts y la usa la sección Cortes; epic-lanes.ts da por corte, en el orden de la spec, su cambio y su estado (sin estado, planeado, abierto con su decisión o terminado), los cortes sin nombrar al final y los tramos de su pista",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "f809dd98c6a24a2d4a2382e31ec4138447449a0a",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:48:49.092Z",
+      "doneAt": "2026-11-06T15:50:20.215Z",
+      "summary": "sp-inbox-lane dibuja la línea de un corte (id, título con su enlace, pista de cuatro tramos con el color de su fase o lo que espera, y el botón de su decisión con los textos de la fila); InboxRow comparte DECISIONS y deja de recibir inEpic",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "c215c35fe76b6f93add1cd6c9bdb72317c8bed9a",
+      "attempts": 1,
+      "startedAt": "2026-11-06T15:50:20.569Z",
+      "doneAt": "2026-11-06T16:26:15.003Z",
+      "summary": "La tarjeta de la épica dibuja las cabeceras de los tramos y una línea por corte, pide sliceChanges sin resource y con cada aviso, y j/k recorren su fila y sus líneas con cambio; el test de la tarjeta se corrigió con S1",
+      "scopeExtra": [
+        "packages/ui/src/inbox/inbox-epic.test.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "db8ef5bd26a7b368b5d961843b97e5fea986869d",
+      "attempts": 1,
+      "startedAt": "2026-11-06T16:26:15.319Z",
+      "doneAt": "2026-11-06T16:32:08.380Z",
+      "summary": "ui.md describe la tarjeta de la épica con una línea por corte y ARCHITECTURE §15, que también la tarjeta pide los cambios de los cortes",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 9,
+    "AC": 11,
+    "T": 4,
+    "R": 2,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-06T16:44:41.269Z",
+  "lockedTests": {
+    "packages/ui/src/inbox/inbox.test.ts": "sha256:7e3b52eb54b7a1caae989401f19d585c4c0e34a91739571664da24c214d4c3a3",
+    "packages/ui/src/inbox/epic-lanes.test.ts": "sha256:d47ec984e82620dc98ff37a7e1791fcefd8f1b86973e7302e5e8bef084054693",
+    "packages/ui/src/inbox/inbox-epic.test.ts": "sha256:2ab92bfb4cf68f9d5ef87780868ff28aeb93d2343695e20e3548473e16a766b1",
+    "packages/ui/src/inbox/inbox-lane.test.ts": "sha256:26f40675752fa81c627e410efc82669f2f4a5944d15f466276aef1e5941118d6"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "99f6ec70bf6f3267f4f36c18b7f31d42b01aff25",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/ui.md",
+      "packages/ui/src/data/finished-summaries.test.ts",
+      "packages/ui/src/data/locks.test.ts",
+      "packages/ui/src/data/locks.ts",
+      "packages/ui/src/data/patch.ts",
+      "packages/ui/src/data/progress.test.ts",
+      "packages/ui/src/data/progress.ts",
+      "packages/ui/src/data/slice-changes.ts",
+      "packages/ui/src/inbox/epic-lanes.test.ts",
+      "packages/ui/src/inbox/epic-lanes.ts",
+      "packages/ui/src/inbox/inbox-epic.test.ts",
+      "packages/ui/src/inbox/inbox-epic.ts",
+      "packages/ui/src/inbox/inbox-lane.test.ts",
+      "packages/ui/src/inbox/inbox-lane.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "packages/ui/src/inbox/inbox-view.ts",
+      "packages/ui/src/inbox/inbox.test.ts",
+      "packages/ui/src/inbox/inbox.ts",
+      "packages/ui/src/progress/code-lines.ts",
+      "packages/ui/src/progress/locked-tests.test.ts",
+      "packages/ui/src/progress/locked-tests.ts",
+      "packages/ui/src/progress/scope-request.test.ts",
+      "packages/ui/src/progress/scope-request.ts",
+      "packages/ui/src/progress/test-code.ts",
+      "packages/ui/src/progress/unlock-detail.ts",
+      "packages/ui/src/review/spec-sections.ts"
+    ],
+    "at": "2026-11-06T16:59:18.969Z",
+    "resolved": {
+      "commit": "2c62513",
+      "at": "2026-11-06T17:16:18.740Z"
+    }
+  }
+}

@@ -22,6 +22,22 @@ import type { TestsView } from "./tests";
 export { ActionError, SpectyData } from "./source";
 export { relativeTime } from "./time";
 
+/**
+ * Nobody picks up the person's last decision on a change that waits for the agent (the server's
+ * `unattended.ts`): when they took it and, if a `specty wait` waited, its agent, whether its time
+ * ran out or it was cut off, and how many minutes ago; with no `wait`, the conversation that
+ * stepped last in the change's folder.
+ */
+export interface Unattended {
+  readonly since: string;
+  readonly wait?: {
+    readonly tool?: string;
+    readonly ended: "timeout" | "stopped";
+    readonly ago: number;
+  };
+  readonly holder?: { readonly tool: string; readonly ago: number };
+}
+
 /** What a data source gives for each change: the files as they are, and when its phase began. */
 export interface ChangeRecord {
   readonly spec: string;
@@ -40,10 +56,14 @@ export interface ChangeRecord {
   readonly folder?: string;
   /** An open change whose folder is gone: its files come from its branch (`specty restore`). */
   readonly lost?: boolean;
+  /** The agent of the conversation that stepped last in its folder, and how many minutes ago. */
+  readonly holder?: { readonly tool: string; readonly ago: number };
   /** It waits for the agent and no conversation stepped in it nor wrote to it lately. */
   readonly orphan?: boolean;
   /** It waits for the agent and its conversation stepped last in another folder, minutes ago. */
   readonly away?: { readonly tool: string; readonly ago: number };
+  /** It waits for the agent and nobody picks up the person's last decision, as the server says. */
+  readonly unattended?: Unattended;
   /** Its folder's `.specty/config.yaml` could not be read: each issue, as the server says it. */
   readonly configIssues?: readonly string[];
   /** The independent reviews that answered, with their text, oldest first (ADR 0011). */
@@ -339,10 +359,14 @@ export interface ChangeView {
   readonly folder?: string;
   /** Its folder is gone and it is still on its branch: the page offers to bring it back. */
   readonly lost?: boolean;
+  /** The agent of the conversation that stepped last in its folder, and how many minutes ago. */
+  readonly holder?: { readonly tool: string; readonly ago: number };
   /** No conversation holds it: the page says how to resume it. */
   readonly orphan?: boolean;
   /** Its conversation left its folder: which agent, and how many minutes ago. */
   readonly away?: { readonly tool: string; readonly ago: number };
+  /** Nobody picks up the person's last decision: the page says what happened and what to do. */
+  readonly unattended?: Unattended;
   /** Its folder's configuration could not be read: each issue; none when it was. */
   readonly configIssues?: readonly string[];
   /** Governed files that other open changes also list. */

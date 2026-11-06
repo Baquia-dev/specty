@@ -44,44 +44,6 @@ const BACKGROUND_ES =
 const BACKGROUND_EN =
   "Run it in the background (`run_in_background: true`), which tells you when it ends, and run it again each time it times out or is cut off.";
 
-describe("the shell analysis of `sleep`", () => {
-  it("AC2: finds `sleep` in any simple command, also inside loops, groups and wrappers", () => {
-    for (const command of [
-      "sleep 30",
-      "sleep 5 && specty status",
-      "specty status; sleep 10",
-      "while true; do specty status; sleep 10; done",
-      "until specty status | grep -q aprobada; do sleep 5; done",
-      "if true; then sleep 1; fi",
-      "{ sleep 1; }",
-      "(sleep 1)",
-      "! sleep 1",
-      "nohup sleep 60 &",
-      "FOO=1 sleep 2",
-      "env FOO=1 sleep 2",
-      "time sleep 2",
-      "/bin/sleep 2",
-    ]) {
-      expect(analyzeShell(command).sleeps, command).toBe(true);
-    }
-  });
-
-  it("AC2: does not take a mention of `sleep` for running it", () => {
-    for (const command of [
-      "specty status",
-      "specty next",
-      "specty wait",
-      'echo "sleep 5"',
-      "grep -r sleep src",
-      "cat sleep.txt",
-      "git commit -m sleep",
-      "ls # sleep 5",
-    ]) {
-      expect(analyzeShell(command).sleeps, command).toBe(false);
-    }
-  });
-});
-
 describe("the guard's rule for `specty wait` in the foreground", () => {
   it("AC1: rejects `specty wait` the tool runs in the foreground and asks for the background", () => {
     for (const current of [undefined, change(true), change(false)]) {
@@ -131,7 +93,7 @@ describe("the guard's rule for `specty wait` in the foreground", () => {
 
 describe("the guard's rule for `sleep`", () => {
   it("AC2: rejects `sleep` while the change waits for the person and asks for `specty wait`", () => {
-    const denied = decideGuard(shell({ sleeps: true }), ctx({ change: change(true) }));
+    const denied = decideGuard(shell({ waits: ["sleep"] }), ctx({ change: change(true) }));
     expect(denied).toEqual({
       allow: false,
       rule: "wait",
@@ -140,7 +102,7 @@ describe("the guard's rule for `sleep`", () => {
     });
     // In the way of each tool, and in the foreground without one.
     const codex = decideGuard(
-      shell({ sleeps: true }),
+      shell({ waits: ["sleep"] }),
       ctx({ tool: "codex", change: change(true) }),
     );
     expect(codex).toMatchObject({
@@ -148,7 +110,7 @@ describe("the guard's rule for `sleep`", () => {
       next: "ejecuta `specty wait` para esperar su decisión. Si sigue en marcha, consulta su salida hasta que termine, y vuelve a ejecutarlo cada vez que se agote o se corte.",
     });
     const { tool: _, ...unknown } = ctx({ change: change(true) });
-    expect(decideGuard(shell({ sleeps: true }), unknown)).toMatchObject({
+    expect(decideGuard(shell({ waits: ["sleep"] }), unknown)).toMatchObject({
       allow: false,
       next: "ejecuta `specty wait` para esperar su decisión. Ejecútalo en primer plano y vuelve a ejecutarlo cada vez que se agote o se corte.",
     });
@@ -156,7 +118,7 @@ describe("the guard's rule for `sleep`", () => {
 
   it("AC2: in delegated mode, asks for `specty next` instead", () => {
     const delegated = ctx({ change: change(true), delegated: true });
-    expect(decideGuard(shell({ sleeps: true }), delegated)).toEqual({
+    expect(decideGuard(shell({ waits: ["sleep"] }), delegated)).toEqual({
       allow: false,
       rule: "wait",
       reason: `El cambio ${ID} espera la decisión de la persona: no se espera con \`sleep\`.`,
@@ -165,17 +127,19 @@ describe("the guard's rule for `sleep`", () => {
   });
 
   it("AC2: lets `sleep` through when nothing waits for the person, and `status` or `next` while it waits", () => {
-    expect(decideGuard(shell({ sleeps: true }), ctx()).allow).toBe(true);
-    expect(decideGuard(shell({ sleeps: true }), ctx({ change: change(false) })).allow).toBe(true);
+    expect(decideGuard(shell({ waits: ["sleep"] }), ctx()).allow).toBe(true);
+    expect(decideGuard(shell({ waits: ["sleep"] }), ctx({ change: change(false) })).allow).toBe(
+      true,
+    );
     const waiting = ctx({ change: change(true) });
     for (const specty of [["status"], ["next"]]) {
-      expect(decideGuard(shell({ specty, sleeps: false }), waiting).allow, specty[0]).toBe(true);
+      expect(decideGuard(shell({ specty, waits: [] }), waiting).allow, specty[0]).toBe(true);
     }
   });
 
   it("AC4: says it in English too", () => {
     const en = (extra: Partial<GuardContext>) =>
-      decideGuard(shell({ sleeps: true }), ctx({ lang: "en", change: change(true), ...extra }));
+      decideGuard(shell({ waits: ["sleep"] }), ctx({ lang: "en", change: change(true), ...extra }));
     expect(en({})).toEqual({
       allow: false,
       rule: "wait",
@@ -186,5 +150,64 @@ describe("the guard's rule for `sleep`", () => {
       allow: false,
       next: "run `specty next`, which tells you whether you decide or wait for the person.",
     });
+  });
+});
+
+describe("the guard's rule for the other commands that only wait", () => {
+  const reason = (program: string) =>
+    `El cambio ${ID} espera la decisión de la persona: no se espera con \`${program}\`.`;
+
+  it("AC1: rejects each of them while the change waits for the person, naming its program", () => {
+    for (const program of ["caffeinate", "wait", "pwait", "pidwait", "tail"]) {
+      const denied = decideGuard(shell({ waits: [program] }), ctx({ change: change(true) }));
+      expect(denied, program).toEqual({
+        allow: false,
+        rule: "wait",
+        reason: reason(program),
+        next: `ejecuta \`specty wait\` para esperar su decisión. ${BACKGROUND_ES}`,
+      });
+    }
+    // From the shell's analysis, naming the first program that waits.
+    const facts = { waits: analyzeShell("caffeinate -w 4242; sleep 1").waits };
+    expect(decideGuard(shell(facts), ctx({ change: change(true) }))).toMatchObject({
+      allow: false,
+      reason: reason("caffeinate"),
+    });
+  });
+
+  it("AC1: in delegated mode asks for `specty next`, and says it in English too", () => {
+    const delegated = ctx({ change: change(true), delegated: true });
+    expect(decideGuard(shell({ waits: ["caffeinate"] }), delegated)).toEqual({
+      allow: false,
+      rule: "wait",
+      reason: reason("caffeinate"),
+      next: "ejecuta `specty next`, que te dice si decides tú o esperas a la persona.",
+    });
+    const en = ctx({ lang: "en", change: change(true) });
+    expect(decideGuard(shell({ waits: ["caffeinate"] }), en)).toEqual({
+      allow: false,
+      rule: "wait",
+      reason: `Change ${ID} is waiting for the person's decision: do not wait with \`caffeinate\`.`,
+      next: `run \`specty wait\` to wait for their decision. ${BACKGROUND_EN}`,
+    });
+  });
+
+  it("AC1: lets them through when nothing waits for the person", () => {
+    for (const current of [undefined, change(false)]) {
+      const context = ctx(current === undefined ? {} : { change: current });
+      expect(decideGuard(shell({ waits: ["caffeinate"] }), context).allow).toBe(true);
+    }
+  });
+
+  it("AC2: lets a command that only names them through while the change waits for the person", () => {
+    const waiting = ctx({ change: change(true) });
+    for (const command of [
+      "caffeinate -i pnpm test",
+      "pnpm test & pnpm lint & wait",
+      "echo wait",
+    ]) {
+      const facts = { waits: analyzeShell(command).waits };
+      expect(decideGuard(shell(facts), waiting).allow, command).toBe(true);
+    }
   });
 });

@@ -26,7 +26,10 @@ export interface GuardChange {
   readonly locked?: readonly string[];
   /** A pending incorporation of the main branch: it alone decides about code, in any phase. */
   readonly integration?: GuardIntegration;
-  /** The change waits for the person's decision, as `specty wait` reads it. */
+  /**
+   * The change waits for the person's decision, as `specty wait` reads it, and no live Specty
+   * command holds its lock: while one does, whoever waits waits for that command.
+   */
   readonly waiting?: boolean;
 }
 
@@ -61,8 +64,8 @@ export interface ShellFacts {
   readonly elsewhere?: Elsewhere;
   /** The folders of open changes its `git worktree remove` commands would remove. */
   readonly removedFolders?: readonly OpenFolder[];
-  /** One of its simple commands waits with `sleep`. */
-  readonly sleeps?: boolean;
+  /** The program of each of its simple commands that only waits (`analyzeShell`). */
+  readonly waits?: readonly string[];
   /**
    * Whether the tool runs it in the background, for a tool whose shell says so (Claude Code's
    * `run_in_background`); undefined for the others.

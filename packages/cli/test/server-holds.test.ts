@@ -95,3 +95,27 @@ describe("the server's records of the changes no conversation holds", () => {
     expect(record).not.toHaveProperty("away");
   });
 });
+
+describe("the server's records of who holds each open change", () => {
+  it("AC8: say which agent's conversation stepped last in its folder, and how many minutes ago", async () => {
+    const { root, folder } = await inWorktree();
+    await conversation(root, { bound: folder, folder, minutes: 2 });
+    expect(await served(root)).toMatchObject({ holder: { tool: "claude-code", ago: 2 } });
+  });
+
+  it("AC8: still say who stepped last in an orphan's folder, however long ago", async () => {
+    const { root, folder } = await inWorktree();
+    await conversation(root, { folder, minutes: 120, tool: "codex" });
+    await stateWritten(folder, 120);
+    expect(await served(root)).toMatchObject({
+      orphan: true,
+      holder: { tool: "codex", ago: 120 },
+    });
+  });
+
+  it("AC8: give no holder to a change no conversation stepped in", async () => {
+    const { root, folder } = await inWorktree();
+    await stateWritten(folder, 120);
+    expect(await served(root)).not.toHaveProperty("holder");
+  });
+});

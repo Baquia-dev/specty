@@ -9,6 +9,7 @@ import {
   pathProblem,
   UNLOCK_LIMITS,
   type UnlockEvidence,
+  type UnlockPatchRefusal,
   type UnlockRefusal,
 } from "@baquia-dev/specty-core";
 import { readText } from "../io/files";
@@ -51,7 +52,7 @@ export async function unlockProposal(
   if (patch === undefined) {
     return { ok: false, refusal: { reason: "patch-unreadable", file: options.patch } };
   }
-  const patchRefusal = await checkPatch(session, state, locked, patch);
+  const patchRefusal = await checkUnlockPatch(session, state, locked, patch);
   if (patchRefusal !== undefined) return { ok: false, refusal: patchRefusal };
   const evidence = await readEvidence(session, options.evidence);
   return "reason" in evidence
@@ -72,14 +73,14 @@ async function readPatch(
 /**
  * Why `patch` does not do: too long, no diff, touching other files than the `locked` tests, or not
  * applying to their locked version. `--recount` reads each hunk by its lines, not by the counts of
- * its header, which an agent writes by hand.
+ * its header, which an agent writes by hand. `scope add` checks it, and the approval again.
  */
-async function checkPatch(
+export async function checkUnlockPatch(
   session: Session,
   state: ChangeState,
   locked: readonly string[],
   patch: string,
-): Promise<UnlockRefusal | undefined> {
+): Promise<UnlockPatchRefusal | undefined> {
   const lines = linesOf(patch).length;
   if (lines > UNLOCK_LIMITS.patchLines) return { reason: "patch-too-long", lines };
   const { git } = session;

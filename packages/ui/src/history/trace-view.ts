@@ -13,9 +13,9 @@ import { Badge } from "../components/badge";
 import { ItemTooltips } from "../components/item-tooltip";
 import { Select, type SelectOption } from "../components/select";
 import { Skeleton } from "../components/skeleton";
-import type { DiffFile, DiffLine } from "../data/diff";
+import { contextFile } from "../data/diff";
 import { ActionError, SpectyData } from "../data/records";
-import type { TraceBlock, TraceRecord } from "../data/trace";
+import type { TraceBlock } from "../data/trace";
 import { HIGHLIGHT, type LineSpan, spansOf } from "../highlight/highlight";
 import { Preferences } from "../theme/preferences";
 import { TraceDiff } from "./trace-diff";
@@ -24,27 +24,6 @@ import { TraceDiff } from "./trace-diff";
 interface ShownBlock {
   readonly block: TraceBlock;
   readonly lines: readonly { readonly number: number; readonly spans: readonly LineSpan[] }[];
-}
-
-/** The file as one section of context lines, numbered as in the file. */
-function diffOf(trace: TraceRecord): DiffFile {
-  const lines = trace.lines.map(
-    (text, index): DiffLine => ({
-      kind: "context",
-      text,
-      oldNumber: index + 1,
-      newNumber: index + 1,
-    }),
-  );
-  const count = lines.length;
-  return {
-    path: trace.path,
-    status: "modified",
-    binary: false,
-    additions: 0,
-    deletions: 0,
-    hunks: [{ oldStart: 1, oldLines: count, newStart: 1, newLines: count, section: "", lines }],
-  };
 }
 
 /**
@@ -159,10 +138,12 @@ export class TraceView {
     loader: ({ params }) => this.source.trace(params.change, params.path),
   });
 
-  /** The traced file as one section of context lines: what the diff viewer's colors read. */
-  private readonly asDiff = computed(() =>
-    this.trace.hasValue() ? diffOf(this.trace.value()) : undefined,
-  );
+  /** The traced file as one section of context lines, numbered as in the file: what the diff viewer's colors read. */
+  private readonly asDiff = computed(() => {
+    if (!this.trace.hasValue()) return undefined;
+    const { path, lines } = this.trace.value();
+    return contextFile(path, lines);
+  });
 
   private readonly colors = resource({
     params: () => this.asDiff(),

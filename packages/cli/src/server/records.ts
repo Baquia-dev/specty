@@ -17,6 +17,7 @@ import { isRecord, parseJson, readText } from "../io/files";
 import type { Session } from "../session";
 import { listDir, loadState, readRevision } from "../store/changes";
 import { type ChangeFiles, changeFiles, repoPaths } from "../store/paths";
+import { type Unattended, unattendedById } from "./unattended";
 
 /**
  * A change as the UI reads it (`ChangeRecord` in packages/ui/src/data/records.ts): its files as
@@ -31,10 +32,14 @@ export interface ChangeRecord {
   readonly folder?: string;
   /** An open change whose folder is gone: its files come from its branch (`specty restore`). */
   readonly lost?: boolean;
+  /** The agent of the conversation that stepped last in its folder, and how many minutes ago (`status`). */
+  readonly holder?: { readonly tool: string; readonly ago: number };
   /** It waits for the agent and no conversation stepped in it nor wrote to it lately (`status`). */
   readonly orphan?: boolean;
   /** It waits for the agent and its conversation stepped last in another folder (`status`). */
   readonly away?: { readonly tool: string; readonly ago: number };
+  /** It waits for the agent and nobody picks up the person's last decision (`unattended.ts`). */
+  readonly unattended?: Unattended;
   /** `comments.json` (formats.md §5). */
   readonly comments?: readonly unknown[];
   /** The revision the person approved, `revisions/r<N>.md`. */
@@ -141,7 +146,7 @@ function issueLine({ path, message }: ConfigIssue): string {
  */
 async function completed(session: Session, { records, sessions }: Read): Promise<ChangeRecord[]> {
   const commits = await taskCommits(session);
-  const holds = await holdsById(session);
+  const holds = await holdsById(session, records);
   return Promise.all(
     records.map((record) => {
       const tasks = commits.get(record.state.id);
@@ -212,19 +217,31 @@ export async function changeRecord(
   return (await changeRecords(session)).find((record) => record.state.id === id);
 }
 
+/** What the records say of who holds an open change. */
+type Holds = Pick<ChangeRecord, "holder" | "orphan" | "away" | "unattended">;
+
 /**
- * The open changes that wait for the agent with no conversation in their folder, by id, as
- * `status` marks them: orphans, and those whose conversation stepped last in another folder.
+ * Who holds each open change, by id, as `status` marks it: the agent that stepped last in its
+ * folder, whatever it waits for; of those that wait for the agent with no conversation in their
+ * folder, the orphans and those whose conversation stepped last in another folder; and those
+ * where nobody picks up the person's last decision (`unattendedById`).
  */
 async function holdsById(
   session: Session,
-): Promise<ReadonlyMap<string, Pick<ChangeRecord, "orphan" | "away">>> {
-  const holds = new Map<string, Pick<ChangeRecord, "orphan" | "away">>();
-  for (const { id, orphan, away } of await openChanges(session)) {
-    if (orphan !== true && away === undefined) continue;
+  records: readonly ChangeRecord[],
+): Promise<ReadonlyMap<string, Holds>> {
+  const entries = await openChanges(session);
+  const nobody = await unattendedById(session, entries, records);
+  const holds = new Map<string, Holds>();
+  for (const { id, holder, orphan, away } of entries) {
+    const unattended = nobody.get(id);
+    if (holder === undefined && orphan !== true && away === undefined && unattended === undefined)
+      continue;
     holds.set(id, {
+      ...(holder !== undefined ? { holder } : {}),
       ...(orphan === true ? { orphan } : {}),
       ...(away !== undefined ? { away } : {}),
+      ...(unattended !== undefined ? { unattended } : {}),
     });
   }
   return holds;

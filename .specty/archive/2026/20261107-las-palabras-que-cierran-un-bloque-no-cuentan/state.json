@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261107-las-palabras-que-cierran-un-bloque-no-cuentan",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261107-las-palabras-que-cierran-un-bloque-no-cuentan",
+  "baseCommit": "5260b2d96c9a77897edf03a15b8d679828108832",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2e125d37c0befc13be6bca5540c9e2aaed35ba8f80fcbb00b15ca48a067b811d",
+    "at": "2026-11-06T16:31:20.483Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4cd68249ecc3fa83ae75b7b3ce39247cbe306d14",
+      "attempts": 1,
+      "startedAt": "2026-11-06T16:32:11.607Z",
+      "doneAt": "2026-11-06T16:37:50.572Z",
+      "summary": "analyzeShell deja fuera de runsIn un comando simple de solo palabras que cierran un bloque (}, fi, done, esac), con o sin redirecciones (closesOnly); lo de después del cierre sigue contando y las redirecciones del cierre siguen escribiendo; documentado en ARCHITECTURE",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/core/test/guard/control-words.test.ts": "sha256:47d2f91fd525346190ac31e3b3d8873e66533d092270197e3d6ea18797e2c78f"
+  }
+}

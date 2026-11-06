@@ -46,6 +46,43 @@ describe("lockedOf", () => {
     ]);
   });
 
+  it("AC3, AC4: each unlock carries the agent's reason, its approved patch and its evidence, from the audit", () => {
+    const patch = `--- a/${SESSION}\n+++ b/${SESSION}\n@@ -1 +1 @@\n-expect(aviso);\n+expect(otroAviso);\n`;
+    const evidence = [{ path: "lib/sesion.dart", from: 2, to: 3, text: "aviso();\notroAviso();" }];
+    const requested = (id: string, reason: string): AuditRecord => ({
+      ts: "2026-10-28T09:00:00.000Z",
+      actor: "agent",
+      event: "scope.requested",
+      data: { id, task: "T2", paths: [SESSION], reason },
+    });
+    const withDetail = (record: AuditRecord, extra: Record<string, unknown>): AuditRecord => ({
+      ...record,
+      data: { ...record.data, ...extra },
+    });
+    const audit = [
+      requested("S1", "Un motivo de un CLI anterior."),
+      decided("S1", "T1", [SESSION]),
+      requested("S2", "El aviso cambió de texto."),
+      withDetail(decided("S2", "T2", [SESSION]), {
+        patch,
+        // A piece without its lines or its text is not shown.
+        evidence: [...evidence, { path: "lib/otro.dart", from: 1 }, "no es una evidencia"],
+      }),
+      decided("S3", "T2", [LOGIN]),
+    ];
+    expect(lockedOf(state(), audit)).toEqual([
+      { path: LOGIN, unlocks: [{ request: "S3", task: "T2" }] },
+      {
+        path: SESSION,
+        unlockedFor: "T2",
+        unlocks: [
+          { request: "S1", task: "T1", reason: "Un motivo de un CLI anterior." },
+          { request: "S2", task: "T2", reason: "El aviso cambió de texto.", patch, evidence },
+        ],
+      },
+    ]);
+  });
+
   it("is nothing without locked tests", () => {
     const { lockedTests: _locked, ...none } = state();
     expect(lockedOf(none, [])).toEqual([]);
