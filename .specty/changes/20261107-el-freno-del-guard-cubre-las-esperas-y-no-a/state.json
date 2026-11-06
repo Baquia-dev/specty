@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261107-el-freno-del-guard-cubre-las-esperas-y-no-a",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-freno-del-guard-cubre-las-esperas-y-no-a",
+  "baseCommit": "0ee3cb079729fe1571746a0e0f095ddf996a4993",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:13fcb246f429bfab2660a0bf81993bb7f33ed84f2064bfa7e19173ea9f78a986",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:2a75b7eee85b3f4ec6647f1163b1851e8466a4eb3d7513888c83780c1d313ae9",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:88ab81319a21a00fa0ef0c74fd58197d60e10727ac124ac5cc99d6f5ffc58f6a",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:150d7d3f32aeee9a072a01335589412bf3212bd6653293882de1c618eabc607c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:04983e3fe1d9916d3c6b21eda355ced072eb4e704f5cc70e02753b8579c24656",
+    "at": "2026-11-06T16:05:48.163Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
