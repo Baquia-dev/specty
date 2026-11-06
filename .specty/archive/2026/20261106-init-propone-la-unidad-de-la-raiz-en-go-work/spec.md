@@ -64,3 +64,23 @@ Desde 6bfc989, `specty init` propone una unidad para la raíz de un workspace de
 ## Riesgos
 
 - R1: A1 no se puede comprobar con Go en esta máquina — si `go test ./...` también recogiera los módulos miembros, la unidad de la raíz correría de más, pero no dejaría tests sin correr; es una propuesta que la persona revisa.
+
+## Cierre
+
+### Resumen
+
+`specty init` propone ahora una unidad para la raíz que también es un paquete en los workspaces de `go.work`, Gradle y pub o melos (P195), como ya hacía en Cargo y uv: con `use .`, el módulo de la raíz se prueba con `go test ./...`, que salta las carpetas con su propio `go.mod`; con `src/test` en la raíz, el proyecto raíz de Gradle con su tarea `:test`, llamado como `rootProject.name` (o `root`), y `project(":")` lo nombra; con `test` en la raíz, el paquete de pub o melos con `dart test` o `flutter test` sin `cd`. Su unidad tiene por `paths` las entradas de la raíz fuera de las carpetas de los miembros (`rootPackagePaths`). `docs/formats.md` lo cuenta. Los criterios tienen sus tests en `packages/cli/test/units-go.test.ts`, `units-gradle.test.ts` y `units-dart.test.ts`. La primera aceptación falló por el E2E de OpenCode, que empezó a correr al instalarse OpenCode 2.2.5 y no era compatible; se adaptó en un cambio aparte (P197, 1917f17), y la aceptación pasó después con main incorporado.
+
+### Desviaciones
+
+- En los tests que ya existían salieron los casos de la raíz que es un paquete, que esperaban que no hubiera propuesta (los de «propone nada» de Go, Gradle y Dart), y se ajustaron sus títulos: es el comportamiento que P195 pide cambiar, y lo cubren los tests nuevos.
+- En pub o melos, una raíz con `test` pero sin `name` en su `pubspec.yaml` sigue sin propuesta, porque ninguna unidad ejecutaría sus tests.
+
+### Decisiones
+
+- Solo entra la raíz en el caso que antes se descartaba (`use .`, `src/test` o `test` en la raíz), para que no cambien las propuestas de los workspaces que ya funcionaban.
+- Go no está instalado en esta máquina: que `go test ./...` desde la raíz pruebe solo el módulo de la raíz se apoya en el comportamiento conocido de `go` con `go.work`, que salta los subdirectorios con su propio `go.mod`.
+
+### Pendientes
+
+- Ninguno.
