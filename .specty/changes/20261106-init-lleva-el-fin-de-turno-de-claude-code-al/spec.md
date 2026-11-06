@@ -17,7 +17,7 @@ Resuelve P221. En Claude Code, `init` pone el guard en `.claude/settings.local.j
 
 ## Tareas
 
-- [ ] T1: init lleva el fin de turno de Claude Code al archivo de ajustes nuevo, con su check
+- [x] T1: init lleva el fin de turno de Claude Code al archivo de ajustes nuevo, con su check
   - files: packages/cli/src/install/agents.ts, packages/cli/src/agents/claude-code.ts, packages/cli/test/init-agent-stop-move.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-agent-stop-move.test.ts test/init-agent-stop.test.ts test/init-agents.test.ts test/check-agent-stop.test.ts && pnpm typecheck && pnpm lint
   - type: fix
