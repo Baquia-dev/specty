@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-init-instala-el-fin-de-turno-de-cada-agente-sin",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-init-instala-el-fin-de-turno-de-cada-agente-sin",
   "baseCommit": "23afc82bb2278d4b7687512b7b3a56bc10852115",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:3188fefac20922ec862fb66ee89ca1fb2375916adb20e1432b2c1126a350a672",
@@ -80,12 +80,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cf3ce98f18a3a04cc14fb922404951c792e9b2a7",
+      "attempts": 1,
       "startedAt": "2026-11-06T13:34:46.189Z",
       "doneAt": "2026-11-06T13:35:19.578Z",
-      "summary": "formats.md y ARCHITECTURE.md cuentan que init instala el fin de turno con --no-check, que check --install le quita la marca (CHECK en OpenCode) y que uninstall quita también el de init"
+      "summary": "formats.md y ARCHITECTURE.md cuentan que init instala el fin de turno con --no-check, que check --install le quita la marca (CHECK en OpenCode) y que uninstall quita también el de init",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -99,6 +99,7 @@
     "R": 2,
     "S": 1
   },
+  "closingSubmittedAt": "2026-11-06T13:40:32.971Z",
   "lockedTests": {
     "packages/cli/test/agent-stop-wait.test.ts": "sha256:db5a1fccc669c5698dc90a3f4db3eaa83b8febb4e6e2f352374a7134c5b147dd",
     "packages/cli/test/antigravity.test.ts": "sha256:ae306788dddc5697b34e5a978f03b8300e0b647683dbbd617750d6f303be095e",

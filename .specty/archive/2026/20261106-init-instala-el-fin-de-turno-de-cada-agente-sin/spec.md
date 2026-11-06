@@ -98,3 +98,25 @@ Hoy el fin de turno (`specty hook agent-stop <agente>`), que con C4 devuelve al 
 
 - R1: Ahora cada fin de turno de cada agente ejecuta un proceso de Specty, también sin `check --install`. Con `--no-check` solo lee el estado del cambio y la marca de `wait`, y fuera de un repositorio de Specty no hace nada.
 - R2: Un proyecto que ya usa Specty recibe el fin de turno en su próximo `init`, y Claude Code y Codex lo muestran como un hook nuevo. Su `check --changed` sigue apagado si no lo activó, y `doctor` lo contará en C6.
+
+## Cierre
+
+### Resumen
+
+`specty init` escribe ahora el fin de turno de cada agente que lo tiene: `<specty> hook agent-stop <agente> --no-check`, junto a su guard, con su mismo comando y el tiempo límite de `verify.timeoutSec`. Lo hace `installAgentStops` (`install/hooks.ts`) con el `stop.plan` de cada agente. Con la marca, `hook agent-stop` solo aplica la regla de `wait` y no ejecuta `check --changed` (`NO_CHECK` en `agents/adapter.ts`; `enforce/entry.ts` pasa los argumentos que siguen al agente y el comando oculto `hook` la acepta). `check --install` le quita la marca en la misma entrada y con el mismo tiempo (`jsonStop` con `check`), y un fin de turno que ya está sin la marca sigue como estaba. En OpenCode el plugin lleva `CHECK`: `init` pone `STOP` (`planOpencodeTurn`) y llama al hook con `--no-check`, y `check --install` enciende `CHECK` (`planOpencodeStop`). Un plugin anterior con `STOP` y sin `CHECK` conserva su check. `uninstall` y el hook de la memoria no cambian. `docs/formats.md` y `docs/ARCHITECTURE.md` lo cuentan.
+
+### Desviaciones (respecto al plan)
+
+- El test AC5 del plugin de OpenCode (`check-agent-stop.test.ts`) llamaba a `specty new` con `src/app.ts` y `opencode.json` sin commit, y `new` se negaba por los cambios sin spec. La persona lo desbloqueó (S1) y solo cambió su preparación: `opencode.json` va en el repositorio inicial, el TODO se deshace antes de `new`, y el test comprueba antes que el fin de turno de `check --install` sí lo devolvería.
+
+### Decisiones
+
+- `check --install` quita la marca sin mover la entrada ni cambiar su tiempo, así que `init` escribe ya el `verify.timeoutSec` de la configuración que había (o el de `DEFAULT_CONFIG`).
+- El fin de turno de `init` va en una función propia, `installAgentStops`, que `install.ts` llama después de `installHooks`, sin cambiar la firma de esta.
+- En OpenCode, `STOP` en `null` sigue significando apagado (un plugin que solo escribió `installOpencode`), y `CHECK` falta en los plugins anteriores: se lee como encendido si su `STOP` lo está.
+- T2 quedó con 9 archivos (el aviso lo recomendaba en 5) para que los tests que cuentan los `Stop` de `init` cambiaran en la misma tarea que el código que los cambia.
+
+### Pendientes
+
+- Que la limpieza del otro archivo de ajustes de Claude Code al cambiar de comando quite también su `hook agent-stop` sin perder su check (P221).
+- Comprobar con Claude Code real el `Stop` que escribe `init` con `--no-check` y que `check --install` le quita la marca (P222).
