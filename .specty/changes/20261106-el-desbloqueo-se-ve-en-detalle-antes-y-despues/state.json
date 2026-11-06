@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-el-desbloqueo-se-ve-en-detalle-antes-y-despues",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-el-desbloqueo-se-ve-en-detalle-antes-y-despues",
   "baseCommit": "72be6161cea686781eb41c05136ed361093aeae0",
   "revision": 2,
@@ -59,6 +59,10 @@
     "T": 5,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T15:16:28.893Z"
+  "lockedTests": {
+    "packages/ui/src/data/locks.test.ts": "sha256:038fd3a362364a7967229fd067978e07fefa2eb0d50b9fd57ee00af1c89a1b92",
+    "packages/ui/src/data/progress.test.ts": "sha256:04508e6b8fd82a9be86b257a462561fc2d8da382911811e03e56f9024925f272",
+    "packages/ui/src/progress/locked-tests.test.ts": "sha256:255a16a115536eb3975ed01e0fb7109f1f3c325d53a9882fe8696571e63efb23",
+    "packages/ui/src/progress/scope-request.test.ts": "sha256:d2ee3dd2ef660017497c8c083ddace9ad993ac3bbdee81fd502e0321633a20e6"
+  }
 }
