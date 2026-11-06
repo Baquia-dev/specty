@@ -88,8 +88,10 @@ export function entersOnItsOwn(tool: GuardTool, event: Record<string, unknown>):
 }
 
 /**
- * The session that answers the event, with the event's conversation (`Session.conversation`), so
- * that the cards it brings, like `next`'s, know who asks.
+ * The session that answers the event, with the hook's tool (`--tool`) and the event's
+ * conversation (`Session.conversation`), so that the cards it brings, like `next`'s, know who
+ * asks. The tool is the hook's, though its environment may not say so (P256): the hook is in that
+ * tool's settings, and a tool that runs another's hooks has already answered (`borrowed`).
  */
 export async function enteredSession(
   tool: GuardTool,
@@ -97,9 +99,9 @@ export async function enteredSession(
   event: Record<string, unknown>,
 ): Promise<{ readonly session: Session; readonly bound?: string }> {
   const entered = await enteredFolder(tool, session, event);
+  const ours: Session = { ...entered.session, tool, cards: { ...entered.session.cards, tool } };
   const id = conversationOf(event);
-  if (id === undefined) return entered;
-  return { ...entered, session: { ...entered.session, conversation: { tool, id } } };
+  return { ...entered, session: id === undefined ? ours : { ...ours, conversation: { tool, id } } };
 }
 
 /**

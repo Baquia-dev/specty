@@ -158,6 +158,6 @@ describe("Specty's card after a /clear", () => {
     });
     expect(card.code).toBe(0);
     expect(card.out).toContain("TAREA T1: Saludar por nombre");
-    expect(card.out).toBe((await cli(root, ["next"])).out);
+    expect(card.out).toBe((await cli(root, ["next"], { env: { CLAUDECODE: "1" } })).out);
   });
 });
