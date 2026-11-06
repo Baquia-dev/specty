@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261106-la-pagina-no-da-por-perdido-un-cambio-que-ya",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261106-la-pagina-no-da-por-perdido-un-cambio-que-ya",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:e7f295fe8a6091e54ff269bada991ee05b0af1969d382d76227cfbc83f8d5d28",
@@ -52,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "50c3a739622f97b243ea572600a4d865b22eeed6",
+      "attempts": 1,
       "startedAt": "2026-11-06T07:49:52.711Z",
       "doneAt": "2026-11-06T07:51:30.567Z",
-      "summary": "ChangesStore guarda lo último derivado en un linkedSignal (listed lo da y ready dice si se leyó alguna vez) y byId conserva la última vista del mismo id, con missing solo para un id nunca encontrado; la Bandeja muestra el aviso de error sobre la lista en lugar de sustituirla."
+      "summary": "ChangesStore guarda lo último derivado en un linkedSignal (listed lo da y ready dice si se leyó alguna vez) y byId conserva la última vista del mismo id, con missing solo para un id nunca encontrado; la Bandeja muestra el aviso de error sobre la lista en lugar de sustituirla.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,6 +70,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-06T08:47:47.064Z",
   "lockedTests": {
     "packages/ui/src/change/change-page.unloaded.test.ts": "sha256:5e7f4deac9a25c7c48e8f46b7b5a5cd25a9740fac390fd28469f844ee548486a",
     "packages/ui/src/data/changes-store.test.ts": "sha256:92c796f7e5bdcd03890f26eb4b2513179cb7b3d5fed59dc68afe45bf03709204",

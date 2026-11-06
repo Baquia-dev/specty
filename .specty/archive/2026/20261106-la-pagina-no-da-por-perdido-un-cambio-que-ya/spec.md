@@ -71,3 +71,24 @@ Hoy, mientras un cambio se archiva o su worktree se borra, la página de ese cam
 
 - R1: Conservar lo último leído puede dejar en pantalla un cambio viejo si el servidor se cae — el aviso de error de la Bandeja sigue saliendo, y el siguiente evento `changes` lo corrige.
 - R2: `loadChange` deja de lanzar para un `state.json` que desaparece, y algún comando podría esperar ese error — solo pasaba en una carrera, porque `locateChange` ya devuelve `undefined` si no existe; los tests de la CLI lo cubren en la verificación completa.
+
+## Cierre
+
+### Resumen
+
+El servidor ya no responde 500 cuando la carpeta de un cambio desaparece a mitad de una lectura: `loadChange` da por no encontrado un cambio cuyo `state.json` se va entre encontrarlo y leerlo, y `readRecord` lo deja fuera si la carpeta se va antes de fechar su fase. En la UI, `ChangesStore` conserva la última lista derivada y, en `byId`, la última vista de cada id, así que una lectura fallida o vacía ya no hace decir «No existe ese cambio» a una página que lo mostraba; ese mensaje queda para un id que nunca se encontró. La Bandeja pone el aviso de error encima de la lista en lugar de sustituirla.
+
+### Desviaciones
+
+- El arreglo del servidor va en `store/changes.ts` (`loadChange`) y en el `stat` de `readRecord`, y no en un `catch` por cambio en `openOnes`, como proponía el diseño de la épica: `loadState` era quien lanzaba (A1). El efecto es el mismo y además vale para todos los comandos que usan `loadChange` (A2).
+- La Bandeja también cambió (A4): sin eso, la lista conservada no se veía, porque el aviso de error la sustituía.
+- La aceptación esperó al arreglo del E2E de OpenCode en main (`20261106-el-e2e-de-opencode-funciona-con-opencode-2-2-5`): con OpenCode 2.2.5 en el PATH, sus 7 tests fallaban también en main. La primera incorporación de main se abortó para rehacerla con ese arreglo.
+
+### Decisiones
+
+- Lo último leído es por id: si la página pasa a otro cambio, empieza sin vista, para no mostrar un cambio por otro.
+- Un `state.json` que existe pero no se puede leer sigue lanzando: solo se salta el que desaparece.
+
+### Pendientes
+
+- Ninguno
