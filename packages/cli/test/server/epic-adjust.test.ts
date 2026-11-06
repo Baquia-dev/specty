@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // The person asks the local server to adjust an epic while its slices are implemented: the
-// server runs `specty adjust`, which admits it for an epic only.
+// server runs `specty adjust`, which admits it, as for any change while its tasks are implemented.
 import { describe, expect, it } from "vitest";
 import { CHANGE, cli, person, read, writeFiles } from "../support";
 import { call, path, serving, state } from "./support";
@@ -41,20 +41,19 @@ El estudiante ve su progreso de un vistazo.
 `;
 
 describe("the person's adjustment of an epic in the local server", () => {
-  it("AC7: adjusts an epic in implementation in its folder, and refuses a feature in implementation", async () => {
+  it("AC7 AC1: adjusts an epic in implementation in its folder, and a feature in implementation", async () => {
     const { root, server, headers } = await serving();
     try {
-      // A feature in implementation, in the main folder: its adjustments wait for acceptance.
+      // A feature in implementation, in the main folder: adjusted to correct its pending tasks.
       await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
       await cli(root, ["next"]);
       expect((await state(root)).phase).toBe("implementing");
-      const refused = await call(server.port, path("adjust"), headers, { request: REQUEST });
-      expect([refused.status, refused.body]).toEqual([
-        409,
-        expect.stringContaining("Los ajustes se piden cuando el resultado está en aceptación."),
-      ]);
-      expect((await state(root)).phase).toBe("implementing");
-      expect((await state(root)).pending.adjustment ?? null).toBeNull();
+      const feature = await call(server.port, path("adjust"), headers, { request: REQUEST });
+      expect(feature.status, feature.body).toBe(200);
+      expect(await state(root)).toMatchObject({
+        phase: "adjusting",
+        pending: { adjustment: { request: REQUEST } },
+      });
 
       // An epic in implementation, in its own folder.
       const created = await cli(root, [

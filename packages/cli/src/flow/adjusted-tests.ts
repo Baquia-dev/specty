@@ -24,7 +24,9 @@ interface AdjustedTests {
 /**
  * The cycle of tests an approval sends the change to, and the approved tests still locked. An
  * adjustment that modifies a criterion unlocks the tests that carry its id, and its tests wait
- * for the person again, whatever its tasks' type; otherwise the tasks still to do decide.
+ * for the person again, whatever its tasks' type; otherwise the tasks it brings decide. The tasks
+ * an earlier approval brought had their tests then: an adjustment asked for while they are
+ * implemented, which only corrects them, goes back to them with no tests phase.
  */
 export async function adjustedTests(
   session: Session,
@@ -34,18 +36,23 @@ export async function adjustedTests(
 ): Promise<AdjustedTests> {
   const { state, files } = active;
   const policy = session.config.policy.tests;
-  const before = await readRevision(files, state.approved?.revision);
+  const text = await readRevision(files, state.approved?.revision);
+  const before = text === undefined ? undefined : parseSpec(text).spec;
   const modified =
     before === undefined
       ? []
-      : specDelta(parseSpec(before).spec, spec)
+      : specDelta(before, spec)
           .entries.filter((entry) => entry.kind === "criterion" && entry.change === "modified")
           .map((entry) => entry.key);
-  const pending = (spec.sections.tasks?.items ?? []).some((task) => !done.has(task.id));
+  const tested = new Set([
+    ...done,
+    ...(before?.sections.tasks?.items ?? []).map((task) => task.id),
+  ]);
+  const pending = (spec.sections.tasks?.items ?? []).some((task) => !tested.has(task.id));
   const cycle =
     policy === "contract" && modified.length > 0 && pending
       ? "feature"
-      : testCycle(spec, policy, done);
+      : testCycle(spec, policy, tested);
   if (state.lockedTests === undefined) return { cycle, lockedTests: undefined };
   const unlocked = new Set(await carrying(session, Object.keys(state.lockedTests), modified));
   const lockedTests = Object.fromEntries(

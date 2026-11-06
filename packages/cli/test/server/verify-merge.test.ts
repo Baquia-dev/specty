@@ -14,6 +14,7 @@ import {
   inWorktree,
   person,
   read,
+  SPEC_PATH,
   stateIn,
   toAcceptance,
   tryGit,
@@ -279,5 +280,47 @@ describe("«Verificar» of the UI when the incorporation stops without moving an
       server.runs.close();
     }
     expect(merging(folder)).toBe(true);
+  });
+});
+
+/** The glossary of a project in Spanish, where a closing adds the terms it introduced. */
+const GLOSSARY = "docs/dominio.md";
+const TERMS = "# Dominio\n\n- Saludo: lo que dice la app al abrirse.\n";
+const NAME = "\n- Nombre: cómo se llama quien abre la app.\n";
+const CLOSING = "\n## Cierre\n\n### Resumen\n\nSaludo listo.\n";
+
+/** The first parent of the last merge in `folder`'s branch, the one that brought main in: its subject. */
+const beforeMerge = (folder: string) =>
+  git(folder, "log", "-1", "--format=%s", `${git(folder, "rev-list", "--merges", "-1", "HEAD")}^1`);
+
+describe("«Verificar» of the UI with the closing sent when main changed the glossary it edits", () => {
+  it("commits the closing first, merges main and verifies the merged code, without stopping", async () => {
+    const { root, folder } = await inWorktree({ ...COUNTING, [GLOSSARY]: TERMS });
+    await toAcceptance(folder);
+    const on = await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    expect(on.code).toBe(0);
+    const spec = `${await read(folder, SPEC_PATH)}${CLOSING}`;
+    await writeFiles(folder, { [SPEC_PATH]: spec, [GLOSSARY]: `${TERMS}${NAME}` });
+    expect((await cli(folder, ["propose"])).out).toContain("Cierre válido.");
+    const main = TERMS.replace("# Dominio", "# Dominio de la app");
+    await writeFiles(root, { [GLOSSARY]: main });
+    git(root, "commit", "-q", "-am", "main cambia el glosario");
+    const server = await serverOf(root);
+    try {
+      await server.runs.start(CHANGE);
+      // It ends, or it stops and is kept.
+      await until(() => {
+        const last = server.heard.at(-1);
+        return server.heard.length > 1 && (last === undefined || last.stopped === true);
+      });
+    } finally {
+      server.runs.close();
+    }
+    expect(server.heard.some((run) => run?.stopped === true)).toBe(false);
+    expect(server.lines().some((line) => MERGED.test(line))).toBe(true);
+    expect(await counted(root)).toBe(1);
+    expect(merging(folder)).toBe(false);
+    expect(beforeMerge(folder)).toBe("docs(spec): cierre de Saludo personalizado");
+    expect(await read(folder, GLOSSARY)).toBe(`${main}${NAME}`);
   });
 });

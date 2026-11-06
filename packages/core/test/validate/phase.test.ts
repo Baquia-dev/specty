@@ -36,6 +36,62 @@ describe("adjusting", () => {
   });
 });
 
+describe("an adjustment asked for while the tasks are implemented", () => {
+  // T2 is still to do: the change was in implementing, not in acceptance.
+  const ctx = { phase: "adjusting" as const, approved, doneTasks: new Set(["T1"]) };
+  const outside = (text: string) =>
+    check(text, ctx).filter((found) => found.startsWith("pending-tasks-only:"));
+
+  it("AC2: admits a corrected verify of a pending task", () => {
+    const text = STANDARD.replace(
+      "  - verify: flutter test test/features/analytics\n",
+      "  - verify: flutter test test/features/analytics/evolucion_card_test.dart\n",
+    );
+    expect(text).not.toBe(STANDARD);
+    const diagnostics = check(text, ctx);
+    expect(diagnostics.filter((found) => found.startsWith("pending-tasks-only:"))).toEqual([]);
+    expect(diagnostics).not.toContain("done-task-changed:T2");
+  });
+
+  it("AC2: rejects a task added or removed, and a criterion added, modified or removed", () => {
+    const added = STANDARD.replace(
+      "\n## Riesgos",
+      "- [ ] T3: Corregir el filtro anual\n  - files: lib/features/home/home_estudiante_provider.dart\n  - ac: AC1\n  - type: fix\n  - verify: flutter test\n\n## Riesgos",
+    );
+    expect(outside(added)).toEqual(["pending-tasks-only:T3"]);
+    const removed = STANDARD.replace(
+      /- \[ \] T2:[\s\S]*?verify: flutter test test\/features\/analytics\n/,
+      "",
+    );
+    expect(outside(removed)).toEqual(["pending-tasks-only:T2"]);
+    const modified = STANDARD.replace("esa serie se oculta", "esa serie se atenúa");
+    expect(outside(modified)).toEqual(["pending-tasks-only:AC2"]);
+    const criterion = STANDARD.replace(
+      "\n## Archivos",
+      "- AC3: CUANDO el estudiante no tiene notas ENTONCES ve un mensaje vacío.\n\n## Archivos",
+    );
+    expect(outside(criterion)).toEqual(["pending-tasks-only:AC3"]);
+    const [message] = analyzeSpec(added, { ...ctx, config: DEFAULT_CONFIG }).diagnostics.filter(
+      (found) => found.code === "pending-tasks-only",
+    );
+    expect(message?.severity).toBe("error");
+    expect(message?.message).toContain("T3");
+  });
+
+  it("AC2: warns when a pending task gains a file outside the approved ones", () => {
+    const text = STANDARD.replace(
+      "\n## Tareas",
+      "- crear lib/features/analytics/insight.dart — mensaje\n\n## Tareas",
+    ).replace(
+      "  - files: lib/features/analytics/analytics_estudiante_dashboard_cards.dart, test/features/analytics/evolucion_card_test.dart\n",
+      "  - files: lib/features/analytics/analytics_estudiante_dashboard_cards.dart, lib/features/analytics/insight.dart, test/features/analytics/evolucion_card_test.dart\n",
+    );
+    const diagnostics = check(text, ctx);
+    expect(diagnostics).toContain("possible-new-scope:T2");
+    expect(diagnostics.filter((found) => found.startsWith("pending-tasks-only:"))).toEqual([]);
+  });
+});
+
 describe("closing", () => {
   const ctx = { phase: "closing" as const, approved };
 

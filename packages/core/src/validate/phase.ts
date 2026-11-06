@@ -1,18 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
+import type { Lang } from "../i18n";
 import { parseItemId } from "../ids";
 import { itemHashes } from "../spec/canonical";
+import { specDelta } from "../spec/delta";
 import type { Diagnostic } from "../spec/diagnostics";
 import type { Spec } from "../spec/model";
-import { itemLine, type Rule, report } from "./context";
+import { itemLine, type Rule, report, type ValidationContext } from "./context";
 import { declaredPaths, isDeclared } from "./references";
 
-/** Adjustments add work: done tasks are immutable, new files may be new scope. */
+/**
+ * Adjustments add work: done tasks are immutable, new files may be new scope. One asked for while
+ * the tasks are implemented only corrects the pending ones (ARCHITECTURE §12).
+ */
 export const checkAdjusting: Rule = (spec, ctx, lang) => {
   const approved = ctx.approved;
   if (ctx.phase !== "adjusting" || approved === undefined) return [];
+  const done = ctx.doneTasks ?? new Set<string>();
   const before = itemHashes(approved);
   const after = itemHashes(spec);
-  const changed = [...(ctx.doneTasks ?? [])]
+  const changed = [...done]
     .filter((id) => before.has(id) && before.get(id) !== after.get(id))
     .map((id) =>
       report(lang, {
@@ -22,10 +28,49 @@ export const checkAdjusting: Rule = (spec, ctx, lang) => {
         target: id,
       }),
     );
-  const approvedIds = new Set((approved.sections.tasks?.items ?? []).map((task) => task.id));
+  const outside =
+    ctx.doneTasks !== undefined && adjustsPendingTasks(approved, ctx.doneTasks)
+      ? outsidePendingTasks(approved, spec).map((id) =>
+          report(lang, {
+            code: "pending-tasks-only",
+            params: { id },
+            line: itemLine(ctx, id),
+            target: id,
+          }),
+        )
+      : [];
+  return [...changed, ...outside, ...newScope(approved, spec, done, ctx, lang)];
+};
+
+/**
+ * An adjustment asked for while the tasks are implemented: the approved revision still has tasks
+ * to do. In acceptance every one is done, and an epic has none.
+ */
+function adjustsPendingTasks(approved: Spec, done: ReadonlySet<string>): boolean {
+  return (approved.sections.tasks?.items ?? []).some((task) => !done.has(task.id));
+}
+
+/** The tasks added or removed and the criteria changed since the approved revision. */
+function outsidePendingTasks(approved: Spec, spec: Spec): string[] {
+  return specDelta(approved, spec)
+    .entries.filter(
+      (entry) =>
+        (entry.kind === "task" && entry.change !== "modified") || entry.kind === "criterion",
+    )
+    .map((entry) => entry.key);
+}
+
+/** The files of the tasks still to do that were not in the approved scope: possibly new scope. */
+function newScope(
+  approved: Spec,
+  spec: Spec,
+  done: ReadonlySet<string>,
+  ctx: ValidationContext,
+  lang: Lang,
+): Diagnostic[] {
   const approvedFiles = declaredPaths(approved);
-  const newScope = (spec.sections.tasks?.items ?? [])
-    .filter((task) => !approvedIds.has(task.id))
+  return (spec.sections.tasks?.items ?? [])
+    .filter((task) => !done.has(task.id))
     .flatMap((task) =>
       task.files
         .filter((path) => !isDeclared(path, approvedFiles))
@@ -38,8 +83,7 @@ export const checkAdjusting: Rule = (spec, ctx, lang) => {
           }),
         ),
     );
-  return [...changed, ...newScope];
-};
+}
 
 /** The phases where an adjustment is proposed: once proposed, it goes on in its review. */
 const ADJUSTMENT_PHASES: ReadonlySet<string> = new Set(["adjusting", "review"]);

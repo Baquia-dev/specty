@@ -198,11 +198,13 @@ function endOutcome(
 }
 
 /**
- * Only an epic is adjusted before its result, to split a slice: while it is implemented, any
- * other change changes its plan with `scope add`.
+ * Before its result, an epic is adjusted to split a slice, and any other change to correct its
+ * pending tasks, such as a `verify` that runs no test. A retro has no implementation.
  */
 function adjustOutcome(phase: Phase, kind: ChangeKind): TransitionResult {
-  return phase === "implementing" && kind !== "epic" ? reject("kind-not-allowed") : to("adjusting");
+  return phase === "implementing" && kind === "retro"
+    ? reject("kind-not-allowed")
+    : to("adjusting");
 }
 
 function to(phase: Phase): TransitionResult {
