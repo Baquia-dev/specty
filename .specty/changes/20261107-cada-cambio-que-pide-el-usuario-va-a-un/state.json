@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8d0845caae6def9affbb03aef314c5914c90918f",
+      "attempts": 1,
       "startedAt": "2026-11-06T20:13:31.385Z",
       "doneAt": "2026-11-06T20:14:11.018Z",
-      "summary": "Las piezas compartidas de los encargos (toSubagents, launchedWith, inItsFolder, numbered) salen de cards/epic.ts a cards/subagents.ts sin cambiar textos"
+      "summary": "Las piezas compartidas de los encargos (toSubagents, launchedWith, inItsFolder, numbered) salen de cards/epic.ts a cards/subagents.ts sin cambiar textos",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "036a5b0c83cd14a81b7b80048f9f890eada2abd9",
+      "startedAt": "2026-11-06T20:14:11.403Z",
+      "doneAt": "2026-11-06T20:16:51.676Z",
+      "summary": "Sin cambio activo y con una herramienta que reparte en subagentes, la tarjeta trae el encargo de un cambio (de new --subagent a su cierre) y pide un subagente por cambio en paralelo; rejoin.test.ts sigue el nuevo SIGUIENTE con Claude Code"
     }
   },
   "pending": {

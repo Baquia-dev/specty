@@ -67,7 +67,7 @@ Hoy solo los cortes de una épica van a subagentes. Una feature suelta se hace e
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts test/cards/rejoin.test.ts && pnpm lint
   - type: refactor
-- [ ] T2: Sin cambio activo, la tarjeta pide un subagente por cada cambio con su encargo
+- [x] T2: Sin cambio activo, la tarjeta pide un subagente por cada cambio con su encargo
   - files: packages/core/src/cards/idle.ts, packages/core/src/cards/subagents.ts, packages/core/test/cards/idle-subagents.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/idle-subagents.test.ts test/cards/bootstrap.test.ts test/cards.test.ts test/cards/epic.test.ts test/cards/rejoin.test.ts && pnpm typecheck && pnpm lint

@@ -6,7 +6,8 @@ import { waitStep } from "./wait";
 
 /**
  * The pieces of the briefs a card hands to subagents, each one the text a subagent gets as is to
- * carry a change in its folder: an epic's slices (`epic.ts`).
+ * carry a change in its folder: an epic's slices (`epic.ts`) and, with no change active, each
+ * change the user asks for (`idle.ts`).
  */
 
 /** The tool hands work to subagents (ARCHITECTURE §10), and `subagents` lets it. */
@@ -17,21 +18,29 @@ export function toSubagents(ctx: CardContext): boolean {
 
 /**
  * How the tool launches each brief's subagent, when it needs saying: Antigravity's subagent works
- * in its slice's folder only with the workspace of the conversation that launches it.
+ * in the folder of its slice, or of its change, only with the workspace of the conversation that
+ * launches it.
  */
-export function launchedWith(ctx: CardContext): string {
+export function launchedWith(ctx: CardContext, of: "slice" | "change" = "slice"): string {
   if (ctx.tool !== "antigravity") return "";
-  return translator(ctx.lang)(
-    ' (en Antigravity, `invoke_subagent` con `Workspace: "inherit"`, no `branch`, que le daría una carpeta que no es la de su corte)',
-    ' (in Antigravity, `invoke_subagent` with `Workspace: "inherit"`, not `branch`, which would give it a folder other than its slice\'s)',
+  const t = translator(ctx.lang);
+  const its = of === "slice" ? t("su corte", "its slice's") : t("su cambio", "its change's");
+  return t(
+    ` (en Antigravity, \`invoke_subagent\` con \`Workspace: "inherit"\`, no \`branch\`, que le daría una carpeta que no es la de ${its})`,
+    ` (in Antigravity, \`invoke_subagent\` with \`Workspace: "inherit"\`, not \`branch\`, which would give it a folder other than ${its})`,
   );
 }
 
 /**
  * A brief's steps once the change is entered: its commands in its folder, quoted as the guard
- * quotes it, so the command asked for is the one it takes; then `next` to the end, and the answer.
+ * quotes it, so the command asked for is the one it takes; then `next` to the end, the brief's
+ * own steps (`more`), and the answer.
  */
-export function inItsFolder(folder: string, ctx: CardContext): string[] {
+export function inItsFolder(
+  folder: string,
+  ctx: CardContext,
+  more: readonly string[] = [],
+): string[] {
   const t = translator(ctx.lang);
   const cd = `cd '${folder.replaceAll("'", `'\\''`)}' &&`;
   return [
@@ -43,6 +52,7 @@ export function inItsFolder(folder: string, ctx: CardContext): string[] {
       `Sigue \`${ctx.command} next\` hasta cerrarlo; cuando espere a la persona, ${waitStep(ctx)}.`,
       `Follow \`${ctx.command} next\` until it is closed; when it waits for the person, ${waitStep(ctx)}.`,
     ),
+    ...more,
     t(
       "Responde en tres líneas: el cambio, su fase y lo que falta.",
       "Answer in three lines: the change, its phase and what is left.",
