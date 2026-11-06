@@ -81,7 +81,7 @@ Hoy, mientras una aceptación o un cierre lanzados desde la UI esperan, la cabec
   - files: packages/ui/src/acceptance/acceptance-actions.ts, packages/ui/src/acceptance/acceptance-actions.test.ts, packages/ui/src/acceptance/closing-actions.ts, packages/ui/src/acceptance/closing-actions.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/acceptance-actions.test.ts --include src/acceptance/closing-actions.test.ts --include src/acceptance/acceptance-tab.test.ts --include src/acceptance/epic-adjust.test.ts --include src/change/change-page.closing.test.ts && pnpm typecheck && pnpm lint
-- [ ] T4: ui.md y ARCHITECTURE.md cuentan la línea del servidor y los eventos `action`
+- [x] T4: ui.md y ARCHITECTURE.md cuentan la línea del servidor y los eventos `action`
   - files: docs/ui.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: grep -q "watchActions" docs/ARCHITECTURE.md && grep -q "evento \`action\`" docs/ui.md

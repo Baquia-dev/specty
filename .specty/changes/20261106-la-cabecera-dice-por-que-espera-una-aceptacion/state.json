@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-la-cabecera-dice-por-que-espera-una-aceptacion",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261106-la-cabecera-dice-por-que-espera-una-aceptacion",
   "baseCommit": "288e88cbf522a73c14ab890101f8b1cb626ee433",
   "revision": 2,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b9452b2b94fed54453fa1360c537fa0d7ea2327a",
+      "attempts": 1,
       "startedAt": "2026-11-06T09:48:05.215Z",
       "doneAt": "2026-11-06T09:48:52.466Z",
-      "summary": "AcceptanceActions y ClosingActions leen la acción en curso de InFlight: bajo los botones de la cabecera, la línea del servidor o, sin ella, «Aceptando…» o «Cerrando…»; el motivo de «Pedir ajustes…» sigue siendo «Aceptando…»"
+      "summary": "AcceptanceActions y ClosingActions leen la acción en curso de InFlight: bajo los botones de la cabecera, la línea del servidor o, sin ella, «Aceptando…» o «Cerrando…»; el motivo de «Pedir ajustes…» sigue siendo «Aceptando…»",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "065da1993f23e663790d8005bee9b0e42e716e63",
+      "startedAt": "2026-11-06T09:48:52.816Z",
+      "doneAt": "2026-11-06T09:49:18.557Z",
+      "summary": "ui.md cuenta que la cabecera muestra la línea del servidor de una aceptación o un cierre en curso; ARCHITECTURE.md, los eventos action del servidor y watchActions de ServerData con InFlight"
     }
   },
   "pending": {
