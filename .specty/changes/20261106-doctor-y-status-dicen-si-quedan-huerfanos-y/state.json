@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261106-doctor-y-status-dicen-si-quedan-huerfanos-y",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-doctor-y-status-dicen-si-quedan-huerfanos-y",
+  "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d20e4e5ef9f857cb4e0eed4e7b5311268e78875a020aafb01dcf2d94c090c96b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:34cf4cb31d0fdcc89b89e8bd42627cb9c3f76ca1a5adaa05ba0b94021eb72594",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7b38951d2e0fc8a0a50c53ac3858511dacaed9f67b557b62bcf5fd026554cc20",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d42e0ec042241cc317999994bf9248cf9c862ac0e6f20ae2347de4b379b7f4ab",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:ca96a02f9f13684a9b0614909b808b6299ff6c30b26cadb4542ff63b23f6564f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 11,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e26cb9c26a9fb4d5f1b7b299b746d11bd0b08de5eec2d00221eafb494cbc01aa",
+    "at": "2026-11-06T10:34:19.423Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
