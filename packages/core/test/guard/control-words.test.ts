@@ -102,11 +102,31 @@ describe("analyzeShell after the words that open a compound command or one of it
     expect(analyzeShell("if true; then cd /tmp/other; fi; touch f").writes).toEqual([
       "/tmp/other/f",
     ]);
-    expect(analyzeShell("while true; do cd /w/x && pnpm test; done").runsIn).toEqual([
-      "",
-      "/w/x",
-      "/w/x",
+    expect(analyzeShell("while true; do cd /w/x && pnpm test; done").runsIn).toEqual(["", "/w/x"]);
+  });
+
+  it("does not take the words that close a block for a command that runs somewhere", () => {
+    expect(analyzeShell("{ cd /fuera; }").runsIn).toEqual([]);
+    expect(analyzeShell("if true; then cd /fuera; fi").runsIn).toEqual([""]);
+    expect(analyzeShell("for x in a b; do cd /fuera; done").runsIn).toEqual([""]);
+    expect(analyzeShell("while true; do { cd /fuera; }; done").runsIn).toEqual([""]);
+    expect(analyzeShell("case x in a) cd /fuera;; esac").runsIn).toEqual([""]);
+    expect(analyzeShell("{ cd /fuera; } 2>/dev/null").runsIn).toEqual([]);
+  });
+
+  it("still counts a real command after the word that closes a block", () => {
+    expect(analyzeShell("if true; then cd /fuera; fi; pnpm test").runsIn).toEqual(["", "/fuera"]);
+    expect(analyzeShell("{ cd /fuera; } && ls").runsIn).toEqual(["/fuera"]);
+    expect(analyzeShell("for x in a; do cd /fuera; done | tee log").runsIn).toEqual(["", "/fuera"]);
+    expect(analyzeShell("echo fi").runsIn).toEqual([""]);
+    expect(analyzeShell("cd /fuera; fi_tool").runsIn).toEqual(["/fuera"]);
+  });
+
+  it("still reads the redirections of the word that closes a block", () => {
+    expect(analyzeShell("{ echo x; } > .git/hooks/pre-commit").writes).toEqual([
+      ".git/hooks/pre-commit",
     ]);
+    expect(analyzeShell("if true; then echo x; fi >> .git/config").writes).toEqual([".git/config"]);
   });
 
   it("does not take those words for control words when they are arguments", () => {
