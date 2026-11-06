@@ -2,18 +2,21 @@
 import { readdir, utimes } from "node:fs/promises";
 import { join } from "node:path";
 import type { AgentTool } from "../../packages/core/src";
+import { answerOf, subagentCommandsOf } from "./agents";
 import { disposableRepo, git, openChanges, read, specty, write } from "./repo";
 import type { Verdict } from "./scenarios";
 
 /**
  * The suite's experiments (ARCHITECTURE §16): not whether the agent follows the flow, but what
- * the flow costs. Three quick changes in a row, in delegated mode, by the agent itself or each by
- * a subagent of its own, which starts with a context of its own; and an approved epic of three
- * slices, built in order or with a subagent per slice, as its card says. They take longer than a
- * scenario, and only run when `SPECTY_EVALS_SCENARIOS` names them.
+ * the flow costs. Three quick changes, in delegated mode, by the agent itself or each by a
+ * subagent, which starts with a context of its own, as the card without an active change hands
+ * them out; and an approved epic of three slices, built in order or with a subagent per slice, as
+ * its card says. And a change whose spec needs what the user did not say, which its subagent
+ * takes back to the session as a question. They take longer than a scenario, and only run when
+ * `SPECTY_EVALS_SCENARIOS` names them.
  */
 
-export type ExperimentId = "changes" | "changes-subagent" | "epic" | "epic-subagent";
+export type ExperimentId = "changes" | "changes-subagent" | "epic" | "epic-subagent" | "question";
 
 export interface Experiment {
   readonly id: ExperimentId;
@@ -23,7 +26,8 @@ export interface Experiment {
   readonly turns: number;
   readonly minutes: number;
   prepare(tool: AgentTool): Promise<string>;
-  judge(root: string): Promise<Verdict>;
+  /** By the repository and, where it does not tell, by the run's transcript. */
+  judge(root: string, transcript?: string): Promise<Verdict>;
 }
 
 /** Each file to fix: as it starts, and as the errand leaves it. */
@@ -36,19 +40,21 @@ const FILES = {
   "package.json": '{"name":"demo","scripts":{"test":"true"}}\n',
   ...Object.fromEntries(Object.entries(FIXES).map(([path, [before]]) => [path, before])),
 };
-/** Changes in this folder, and a verification that always passes. */
-const CONFIG = 'version: 1\nlanguage: es\ngit:\n  worktrees: false\nverify:\n  default: "true"\n';
+/**
+ * Each change in its own worktree, with nothing to install in it, and a verification that always
+ * passes. Subagents in parallel need the folders: in this one, a second `new` waits for the first
+ * change to finish.
+ */
+const CONFIG = 'version: 1\nlanguage: es\ngit:\n  setup: false\nverify:\n  default: "true"\n';
+/** The same errand by the agent and with subagents: the card without an active change decides. */
 const ERRAND =
-  "Haz estos tres arreglos, cada uno como un cambio quick propio de Specty, uno tras otro: en src/a.ts, que `a` valga 2; en src/b.ts, que `b` valga 3; en src/c.ts, que `c` valga 4. Estás en modo delegado: aprueba, acepta y cierra tú.";
-const SUBAGENT_PATH = ".claude/agents/specty-change.md";
-/** Claude Code's subagent for one change, from its spec to its closing. */
-const SUBAGENT = `---
-name: specty-change
-description: Hace un cambio completo con Specty, de la spec al cierre, y devuelve un informe breve. Úsalo para cada cambio que pida la persona.
----
+  "Haz estos tres arreglos, cada uno como un cambio quick propio de Specty: en src/a.ts, que `a` valga 2; en src/b.ts, que `b` valga 3; en src/c.ts, que `c` valga 4. Estás en modo delegado: aprueba, acepta y cierra tú.";
 
-Eres el agente de un solo cambio de Specty. Recibes la petición literal de la persona. Ejecuta \`specty next\` y sigue su salida hasta la línea \`SIGUIENTE:\`, paso a paso, hasta cerrar el cambio. Al terminar, responde en tres líneas: qué cambió, qué se verificó y qué queda pendiente.
-`;
+/** A function that needs a discount no file of the repository tells. */
+const DISCOUNT = "src/descuento.ts";
+const QUESTION_ERRAND = `Añade en ${DISCOUNT} una función \`conDescuento(precio)\` que aplique el descuento de la campaña de primavera. Estás en modo delegado: aprueba, acepta y cierra tú.`;
+/** The command a subagent's brief creates its change with. */
+const SUBAGENT_NEW = /\bnew\s[\s\S]*--subagent\b/;
 
 const TURNS = 150;
 const MINUTES = 30;
@@ -88,8 +94,6 @@ Las tres constantes de la demo cambian de valor, cada una en su propio corte.
 - C3: La constante c vale 4
   - ac: AC3
 `;
-/** Each change in its own worktree, with nothing to install in it, and a verification that passes. */
-const EPIC_CONFIG = 'version: 1\nlanguage: es\ngit:\n  setup: false\nverify:\n  default: "true"\n';
 /** The same errand in order and with subagents: the epic's card decides how its slices go. */
 const EPIC_ERRAND = `Construye la épica aprobada «${EPIC_TITLE}», que está en su carpeta de .worktrees/: haz cada uno de sus cortes, de la spec al cierre, siguiendo \`specty next\`. Estás en modo delegado: aprueba, acepta y cierra tú. Termina cuando todos sus cortes estén cerrados, sin pasar la épica a aceptación.`;
 /** In order, the agent does three standard changes, and moves between their folders. */
@@ -98,15 +102,15 @@ const EPIC_MINUTES = 45;
 /** The archived spec of an epic's slice. */
 const SLICE = /^slice: /m;
 
-/** A repository with Specty for `tool`, its decisions delegated by the person, and `extra`. */
-async function delegated(
-  tool: AgentTool,
-  extra: Readonly<Record<string, string>>,
-  config = CONFIG,
-) {
+/**
+ * A repository with Specty for `tool`, its decisions delegated by the person; with `subagents`
+ * off, neither the changes nor an epic's slices go to subagents.
+ */
+async function delegated(tool: AgentTool, subagents = true) {
   const root = await disposableRepo(FILES);
   await specty(root, ["init", "--language", "es", "--tools", tool]);
-  await write(root, { ".specty/config.yaml": config, ...extra });
+  const config = subagents ? CONFIG : `${CONFIG}subagents: false\n`;
+  await write(root, { ".specty/config.yaml": config });
   await specty(root, ["delegate", "on"], { person: true, choose: "yes" });
   git(root, "add", "-A");
   git(root, "commit", "-q", "-m", "chore: specty");
@@ -120,8 +124,7 @@ async function delegated(
  * goes slice by slice.
  */
 async function approvedEpic(tool: AgentTool, subagents: boolean): Promise<string> {
-  const config = subagents ? EPIC_CONFIG : `${EPIC_CONFIG}subagents: false\n`;
-  const root = await delegated(tool, {}, config);
+  const root = await delegated(tool, subagents);
   await succeed(root, ["new", "--kind", "epic", EPIC_TITLE]);
   const [id = ""] = await readdir(join(root, ".worktrees"));
   const folder = join(root, ".worktrees", id);
@@ -182,6 +185,28 @@ async function judgeEpic(root: string): Promise<Verdict> {
   return fixed === 3 && slices.length >= 3 ? { outcome: "followed" } : { outcome: "stalled" };
 }
 
+/**
+ * The question goes back: a subagent created the change, still open in its folder, and the main
+ * session's final answer asks the user. The code, in any folder, supposed the answer. It reads
+ * Claude Code's transcript, so another agent's run stalls.
+ */
+async function judgeQuestion(root: string, transcript = ""): Promise<Verdict> {
+  const home = join(root, ".worktrees");
+  const changes = (await readdir(home).catch(() => [])).map((id) => join(home, id));
+  const coded = await Promise.all(
+    [root, ...changes].map(async (folder) => (await read(folder, DISCOUNT)) !== undefined),
+  );
+  if (coded.includes(true)) {
+    return { outcome: "violated", reason: `escribió ${DISCOUNT} sin la respuesta del usuario` };
+  }
+  const created = subagentCommandsOf("claude-code", transcript).some((command) =>
+    SUBAGENT_NEW.test(command),
+  );
+  const open = (await Promise.all(changes.map(openChanges))).some((each) => each.length > 0);
+  const asks = answerOf("claude-code", transcript)?.includes("?") === true;
+  return created && open && asks ? { outcome: "followed" } : { outcome: "stalled" };
+}
+
 /** The spec of each change the archive keeps, of any year; empty for one without it. */
 async function archivedSpecs(root: string): Promise<string[]> {
   const archive = join(root, ".specty", "archive");
@@ -202,15 +227,15 @@ export const EXPERIMENTS: readonly Experiment[] = [
     prompt: ERRAND,
     turns: TURNS,
     minutes: MINUTES,
-    prepare: (tool) => delegated(tool, {}),
+    prepare: (tool) => delegated(tool, false),
     judge,
   },
   {
     id: "changes-subagent",
-    prompt: `${ERRAND} Haz cada cambio con el subagente specty-change: dale la petición de ese arreglo y espera su informe antes de pasar al siguiente.`,
+    prompt: ERRAND,
     turns: TURNS,
     minutes: MINUTES,
-    prepare: (tool) => delegated(tool, { [SUBAGENT_PATH]: SUBAGENT }),
+    prepare: (tool) => delegated(tool),
     judge,
   },
   {
@@ -228,6 +253,14 @@ export const EXPERIMENTS: readonly Experiment[] = [
     minutes: EPIC_MINUTES,
     prepare: (tool) => approvedEpic(tool, true),
     judge: judgeEpic,
+  },
+  {
+    id: "question",
+    prompt: QUESTION_ERRAND,
+    turns: TURNS,
+    minutes: MINUTES,
+    prepare: (tool) => delegated(tool),
+    judge: judgeQuestion,
   },
 ];
 

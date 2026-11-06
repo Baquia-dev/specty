@@ -43,6 +43,7 @@ describe("the experiments of the suite", () => {
       "changes-subagent",
       "epic",
       "epic-subagent",
+      "question",
     ]);
     for (const each of CHANGES) {
       const root = await each.prepare("claude-code");
@@ -53,14 +54,6 @@ describe("the experiments of the suite", () => {
       expect(existsSync(join(root, delegation))).toBe(true);
       expect(each.prompt).toContain("src/c.ts");
     }
-    // Only the second one has the subagent, and asks for it.
-    const subagent = ".claude/agents/specty-change.md";
-    expect(await read(await experiment("changes").prepare("claude-code"), subagent)).toBe(
-      undefined,
-    );
-    const delegating = experiment("changes-subagent");
-    expect(await read(await delegating.prepare("claude-code"), subagent)).toContain("specty next");
-    expect(delegating.prompt).toContain("specty-change");
   });
 
   it("AC2, AC3: three fixes with three closed changes comply; code without any change violates", async () => {
