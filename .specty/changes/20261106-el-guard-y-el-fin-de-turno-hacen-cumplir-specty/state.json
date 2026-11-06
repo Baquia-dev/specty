@@ -52,12 +52,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e80bbd0967b874fea3aaaf422f7facdbf2f6c540",
+      "attempts": 1,
       "startedAt": "2026-11-06T12:51:19.139Z",
       "doneAt": "2026-11-06T12:54:14.003Z",
-      "summary": "La regla wait de core rechaza specty wait con background false y sleep con el cambio esperando; analyzeShell da sleeps; cards/wait.ts da foregroundWaitDenial y sleepDenial (es/en) y waitStep acepta solo lang, command y tool; npx y bypass pasan a toolingDenial por complejidad"
+      "summary": "La regla wait de core rechaza specty wait con background false y sleep con el cambio esperando; analyzeShell da sleeps; cards/wait.ts da foregroundWaitDenial y sleepDenial (es/en) y waitStep acepta solo lang, command y tool; npx y bypass pasan a toolingDenial por complejidad",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "db07b5920b44726023dd1732c74f75b91344799e",
+      "startedAt": "2026-11-06T12:54:14.336Z",
+      "doneAt": "2026-11-06T12:54:33.495Z",
+      "summary": "humanDenial arma su siguiente paso con waitStep y la herramienta del contexto (HumanContext.tool), así pide specty wait con la frase común en la forma de cada herramienta"
     }
   },
   "pending": {

@@ -74,7 +74,7 @@ Hoy el guard deja que el agente de Claude Code ejecute `specty wait` en primer p
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/wait.test.ts
   - type: feat
-- [ ] T2: La negativa de los comandos de la persona pide `specty wait` con la frase común
+- [x] T2: La negativa de los comandos de la persona pide `specty wait` con la frase común
   - files: packages/core/src/guard/human.ts, packages/core/test/guard/decide.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts
