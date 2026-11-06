@@ -63,7 +63,7 @@ Hoy, si la persona aprueba, decide el alcance, pide cambios, acepta, ajusta o ci
 
 ## Tareas
 
-- [ ] T1: El cambio que lee la UI dice cuándo nadie retoma la decisión de la persona
+- [x] T1: El cambio que lee la UI dice cuándo nadie retoma la decisión de la persona
   - files: packages/cli/src/server/unattended.ts, packages/cli/src/server/records.ts, packages/cli/test/server-unattended.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-unattended.test.ts test/server-actions.test.ts

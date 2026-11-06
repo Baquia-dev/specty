@@ -49,7 +49,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "364f09c0e0ea7af63c574f304513c1df8b67fc3c",
+      "startedAt": "2026-11-06T14:41:48.402Z",
+      "doneAt": "2026-11-06T14:49:29.877Z",
+      "summary": "server/unattended.ts dice si nadie retoma la última decisión de la persona (sin línea del agente, wait vivo o decided, ni paso en su carpeta) y qué pasó; records.ts lo añade junto a orphan y away. Pedir cambios cuenta como turno del agente."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
