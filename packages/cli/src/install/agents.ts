@@ -158,18 +158,22 @@ export function withMemoryStop(value: Entry, tool: GuardTool, command: string | 
   return { ...value, hooks: stop.length > 0 ? { ...others, Stop: stop } : others };
 }
 
+/** Specty's hooks at the end of an agent's turn: its own, and the memory's net (ADR 0016). */
+type StopHook = "agent-stop" | "memory-stop";
+
 /**
- * The line of `doctor` when the guard of `tool` is in one of its hooks files (`texts`) and its end
- * of turn lacks the memory's net there; none otherwise.
+ * The line of `doctor` for each of `hooks` that the hooks files of `tool` (`texts`) lack, when its
+ * guard is in one of them; none otherwise. Any `hook agent-stop` counts: with `--no-check`, as
+ * `init` writes it, or without the mark, as `check --install` leaves it.
  */
-export function memoryStopLines(
+export function stopLines(
   texts: readonly (string | undefined)[],
   tool: GuardTool,
-): { readonly code: "memory-stop"; readonly tool: GuardTool }[] {
+  hooks: readonly StopHook[],
+): { readonly code: StopHook; readonly tool: GuardTool }[] {
   const has = (marker: string) => texts.some((text) => text?.includes(marker) === true);
-  return has(` guard --tool ${tool}`) && !has(` hook memory-stop ${tool}`)
-    ? [{ code: "memory-stop", tool }]
-    : [];
+  if (!has(` guard --tool ${tool}`)) return [];
+  return hooks.filter((hook) => !has(` hook ${hook} ${tool}`)).map((code) => ({ code, tool }));
 }
 
 /** Takes each agent's end of turn out of the repository, for `uninstall`. */

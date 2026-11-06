@@ -30,6 +30,24 @@ const TaskStateSchema = z.strictObject({
   scopeExtra: z.array(z.string().min(1)),
 });
 
+/**
+ * What an unlock of an approved test may carry (ADR 0014): the lines of its patch, how many pieces
+ * of evidence, and the lines of each.
+ */
+export const UNLOCK_LIMITS = { patchLines: 500, evidence: 5, evidenceLines: 40 } as const;
+
+/** Lines of a file git tracks that justify an unlock, as they were when it was asked. */
+const UnlockEvidenceSchema = z.strictObject({
+  path: z.string().min(1),
+  /** The first line, counted from 1. */
+  from: z.number().int().min(1),
+  /** The last line, included. */
+  to: z.number().int().min(1),
+  text: z.string(),
+});
+
+export type UnlockEvidence = z.infer<typeof UnlockEvidenceSchema>;
+
 const ScopeRequestSchema = z.strictObject({
   id: z.string().regex(/^S[1-9]\d*$/),
   task: z.string().regex(/^T[1-9]\d*$/),
@@ -37,6 +55,10 @@ const ScopeRequestSchema = z.strictObject({
   reason: z.string().min(1),
   /** Made by `retro --into`: the print of the staged code it documents (ARCHITECTURE §9). */
   retro: z.string().min(1).optional(),
+  /** An unlock of approved tests: the exact change to them, as a unified diff (ADR 0014). */
+  patch: z.string().min(1).optional(),
+  /** An unlock of approved tests: the lines that justify it. */
+  evidence: z.array(UnlockEvidenceSchema).min(1).max(UNLOCK_LIMITS.evidence).optional(),
 });
 
 /**

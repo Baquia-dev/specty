@@ -8,7 +8,13 @@ import {
 } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
-import { ANTIGRAVITY_HOOKS, excludeLocally, guardMatcher, removeFromJson } from "../install/agents";
+import {
+  ANTIGRAVITY_HOOKS,
+  excludeLocally,
+  guardMatcher,
+  removeFromJson,
+  stopLines,
+} from "../install/agents";
 import { allowSpecty, cliRule } from "../install/antigravity-cli";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
@@ -179,7 +185,8 @@ export const antigravity: AgentAdapter = {
 
 /** Specty's hooks in `.agents/hooks.json`: whether every event has one, and from which `init`. */
 async function hooksDoctor(root: string): Promise<DoctorLines> {
-  const value: unknown = parse((await readText(join(root, ANTIGRAVITY_HOOKS))) ?? "null");
+  const text = await readText(join(root, ANTIGRAVITY_HOOKS));
+  const value: unknown = parse(text ?? "null");
   const ours = isRecord(value) && isRecord(value[HOOK]) ? value[HOOK] : {};
   const missing = Object.keys(EVENTS).filter(
     (event) => !JSON.stringify(ours[event] ?? null).includes(`--event ${event}`),
@@ -188,13 +195,17 @@ async function hooksDoctor(root: string): Promise<DoctorLines> {
   if (missing.includes("PreToolUse")) {
     return { ok: [], problems: [{ code: "no-antigravity-guard", file }] };
   }
+  const stop = stopLines([text], "antigravity", ["agent-stop"]);
   if (missing.length > 0) {
     return {
       ok: [],
-      problems: [{ code: "antigravity-hooks", file, events: missing.join(", ") }],
+      problems: [{ code: "antigravity-hooks", file, events: missing.join(", ") }, ...stop],
     };
   }
-  return { ok: [{ code: "antigravity-guard", file }], problems: outdatedMatcher(ours, file) };
+  return {
+    ok: [{ code: "antigravity-guard", file }],
+    problems: [...outdatedMatcher(ours, file), ...stop],
+  };
 }
 
 /**
