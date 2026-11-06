@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "id": "20261106-el-guard-no-deja-quitar-la-carpeta-de-un-cambio",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-el-guard-no-deja-quitar-la-carpeta-de-un-cambio",
+  "baseCommit": "98153584ec94f57f6b6990a486a76b18bead7ff8",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:2826003fe86eea8566832094a0c5587c97e390f9b6d9c11acc26826b46682630",
+    "at": "2026-11-06T09:58:13.344Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9459f7d639e56f7c4ccc37af3f6462627f31dc8c5c19ddab3786f0f48a06150f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6eadc163b69ef03de8fe5db98a37043a03051647a0d09328fac68b4c8ecbdf07",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:81909242030169d365b9bc17ebfd09d8a711b9f04af39ff455c8d1a981a889de",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:32584a6a3d33bdb8c642c6c9895eec1d7384ab70315ee04f3efe906306e7b171",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d5c97dc4a710289b0c778727ba5dfebb04dc277659394fcd681a29dcb2052a98",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ace816dda1ae3d2d653a318c21c5c4fc2a4eb83d",
+      "attempts": 1,
+      "startedAt": "2026-11-06T10:02:19.088Z",
+      "doneAt": "2026-11-06T10:03:51.523Z",
+      "summary": "analyzeGit lee el argumento de cada git worktree remove con sus -C (removes), y analyzeShell lo sitúa como los commits en worktreeRemovals: nombre tal cual y ruta si sabe dónde corre; sin variables ni ~",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "d318a7935d2932233c911d29faad8803dcd625da",
+      "attempts": 1,
+      "startedAt": "2026-11-06T10:03:51.853Z",
+      "doneAt": "2026-11-06T10:05:52.505Z",
+      "summary": "La regla change-folder niega quitar la carpeta de un cambio abierto (ShellFacts.removedFolders y la acción remove-worktree), tras la de la persona; OpenFolder exportado y texto en cards/change-folder.ts; decideRead y decideEnter salen de decideGuard",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "cd227eaafb28427d0756835b9c9b5becda76d9c7",
+      "attempts": 1,
+      "startedAt": "2026-11-06T10:05:52.964Z",
+      "doneAt": "2026-11-06T10:08:22.976Z",
+      "summary": "enforce/removals.ts busca, entre las worktrees de git que nombra cada git worktree remove (por ruta real o por final de ruta), las de un cambio abierto; place.ts las da al guard como removedFolders y sitúa la acción remove-worktree",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "9be9222e205ce922774fe9e8a47b4ffe04b25b22",
+      "attempts": 1,
+      "startedAt": "2026-11-06T10:08:23.340Z",
+      "doneAt": "2026-11-06T10:09:52.182Z",
+      "summary": "OpenCode: opencode_worktree_remove con directory se lee como la acción remove-worktree, que el guard juzga como git worktree remove; ARCHITECTURE cuenta las carpetas de cambios abiertos y la fila de OpenCode",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T10:15:19.812Z",
+  "lockedTests": {
+    "packages/core/test/guard/shell.test.ts": "sha256:829103abbef6dec80baadfa50ef2bacf5489bf2ff2a60808ca88c0525dc85b7c",
+    "packages/cli/test/opencode-worktree-remove.test.ts": "sha256:1f77a81441738274fc0fa9ac0512792c04cb8b167964faa071b43c73d3b035b0",
+    "packages/cli/test/remove-change-folder.test.ts": "sha256:4fc29e82d0599b86d4857958d82f32f92c0345d6c8c001c5e6ca117d7a733ba0",
+    "packages/core/test/guard/change-folder.test.ts": "sha256:9c11eb5a8cdce583b6960a8c28deab29c7f035739c6a90dcdd72ee2a83d62ab6"
+  }
+}

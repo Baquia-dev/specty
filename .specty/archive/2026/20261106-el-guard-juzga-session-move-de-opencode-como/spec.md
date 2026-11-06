@@ -1,0 +1,63 @@
+---
+kind: standard
+---
+
+# El guard juzga session_move de OpenCode como una entrada
+
+## Objetivo
+
+OpenCode 2.2.5 trae `execute` (Code Mode): ejecuta JavaScript que llama a ocho herramientas de OpenCode, entre ellas `session_move`, que muda la sesión a otra carpeta, y `worktree_create` y `worktree_remove` (P200). Comprobado con OpenCode 2.2.5 aislado: cada llamada de dentro de `execute` pasa por el hook del plugin de Specty con su propio nombre (`opencode_session_move`, `opencode_worktree_list`…) y su entrada, y un bloqueo del guard la detiene y le da el motivo al modelo; las herramientas de archivos y de shell no están en Code Mode. Hoy el guard deja pasar esas llamadas sin juzgarlas, así que `session_move` permite a una conversación que trabaja en un cambio mudarse a la carpeta de otro, saltándose la regla de un cambio a la vez. Con este cambio, el guard juzga `opencode_session_move` como una entrada en su carpeta, igual que `EnterWorktree` de Claude Code.
+
+## Fuera de alcance
+
+- `worktree_create` y `worktree_remove`: quedan como `git worktree add` y `git worktree remove` desde el shell, que el guard tampoco juzga hoy; proteger la carpeta de un cambio abierto de ambos caminos queda como pendiente.
+- El resto de herramientas de Code Mode (`session_rename`, `worktree_list`, `models` y los recursos MCP): no cambian carpetas ni archivos del proyecto.
+- `execute` en sí: sus llamadas se juzgan una a una.
+
+## Supuestos
+
+- A1: `opencode_session_move` con `directory` es una entrada en esa carpeta, resuelta desde la carpeta del evento como el `path` de `EnterWorktree`: la deniega mientras la conversación trabaja en otra carpeta cuyo cambio sigue abierto, y si la deja pasar liga la conversación a ella. Sin `directory`, no se juzga.
+  - impacto: alto
+- A2: Se juzga igual aunque traiga el `sessionID` de otra sesión: el guard solo conoce la conversación del evento, y bloquear de más es más seguro que mudar sin regla.
+
+## Criterios de aceptación
+
+- AC1: CUANDO una conversación de OpenCode trabaja en la carpeta de un cambio abierto y `session_move` la mudaría a otra carpeta ENTONCES el guard lo bloquea con el motivo de que la sesión trabaja un solo cambio a la vez, como a `EnterWorktree`; mudarla a su propia carpeta pasa.
+- AC2: CUANDO una conversación de OpenCode que no trabaja en ningún cambio abierto se muda con `session_move` a la carpeta de un cambio, también con una ruta relativa ENTONCES el guard lo deja pasar y la conversación queda ligada a esa carpeta.
+
+## Diseño
+
+- `agents/opencode.ts`: `action` lee `opencode_session_move` como `{ kind: "enter", request: { path: directory } }`, la acción que el guard ya juzga para `EnterWorktree` (`enterAction`, `sessionDenial`, `bindSession`).
+
+## Archivos
+
+- modificar packages/cli/src/agents/opencode.ts — `session_move` de Code Mode como una entrada
+- crear packages/cli/test/opencode-session-move.test.ts — los criterios con los eventos del plugin
+- modificar docs/ARCHITECTURE.md — OpenCode: el guard juzga las llamadas de Code Mode, y `session_move` como una entrada
+
+## Tareas
+
+- [x] T1: session_move de OpenCode se juzga como una entrada
+  - files: packages/cli/src/agents/opencode.ts, packages/cli/test/opencode-session-move.test.ts, docs/ARCHITECTURE.md
+  - ac: AC1, AC2
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-session-move.test.ts test/opencode.test.ts test/enter.test.ts && pnpm typecheck && pnpm lint && pnpm knip
+  - type: feat
+
+## Cierre
+
+### Resumen
+
+El guard juzga ahora `session_move` de Code Mode (OpenCode 2.2) como una entrada en la carpeta a la que muda la sesión, con la misma regla que `EnterWorktree` de Claude Code (P200): una conversación que trabaja en un cambio abierto no puede mudarse a otra carpeta, puede hacerlo a la suya, y una conversación libre que se muda queda ligada a esa carpeta. Antes de diseñarlo se comprobó con OpenCode 2.2.5 aislado (proveedor simulado y `--standalone`) que cada llamada del JavaScript de `execute` pasa por el plugin por separado, como `opencode_<herramienta>` y con su entrada, y que un bloqueo del guard la detiene y le da el motivo al modelo; las herramientas de archivos y de shell no están en Code Mode. En `agents/opencode.ts`, `action` lee `opencode_session_move` como `enter`, y las herramientas que juzga pasaron a una tabla. ARCHITECTURE lo cuenta en la fila de OpenCode. Los criterios tienen sus tests en `packages/cli/test/opencode-session-move.test.ts`; la verificación completa pasó en la aceptación.
+
+### Desviaciones
+
+- `action` pasó de un `switch` a una tabla de herramientas (`ACTIONS`): con el caso nuevo superaba la complejidad máxima (13 de 10).
+
+### Decisiones
+
+- `worktree_create` y `worktree_remove` de Code Mode pasan sin juzgarse, como `git worktree add` y `git worktree remove` desde el shell: tratarlos distinto dejaría abierto el otro camino.
+- `session_move` se juzga aunque traiga el `sessionID` de otra sesión: el guard solo conoce la conversación del evento, y bloquear de más es más seguro que mudar sin regla.
+
+### Pendientes
+
+- Proteger la carpeta de un cambio abierto de que la quiten fuera de `specty close` y `specty cancel`: `git worktree remove` desde el shell y `opencode_worktree_remove` de Code Mode (OpenCode 2.2) la quitan hoy sin que el guard lo juzgue, y con `--force` (o `force: true`) se pierde lo que tenía sin commit.

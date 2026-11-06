@@ -43,18 +43,25 @@ class Paged extends SpectyData {
   listFailing = false;
   /** A change the source does not have a moment, as one whose folder is being archived. */
   hidden: string | undefined;
+  /** What every title ends with, as after a decision that changed them. */
+  mark = "";
+  /** While set, every read waits for it, as a server that takes its time. */
+  private gate: Promise<void> | undefined;
   private readonly listeners = new Set<() => void>();
 
-  changes(): Promise<readonly ChangeRecord[]> {
-    if (this.listFailing) return Promise.reject(new Error("El servidor no responde (simulado)."));
-    return Promise.resolve(RECORDS.slice(0, 1));
+  async changes(): Promise<readonly ChangeRecord[]> {
+    await this.gate;
+    if (this.listFailing) throw new Error("El servidor no responde (simulado).");
+    return RECORDS.slice(0, 1).map((record) => marked(record, this.mark));
   }
 
-  override change(id: string): Promise<ChangeRecord | undefined> {
+  override async change(id: string): Promise<ChangeRecord | undefined> {
     this.asked.push(id);
-    if (this.failing) return Promise.reject(new Error("El servidor no responde (simulado)."));
-    if (id === this.hidden) return Promise.resolve(undefined);
-    return Promise.resolve(RECORDS.find((record) => record.state.id === id));
+    await this.gate;
+    if (this.failing) throw new Error("El servidor no responde (simulado).");
+    if (id === this.hidden) return undefined;
+    const record = RECORDS.find((one) => one.state.id === id);
+    return record === undefined ? undefined : marked(record, this.mark);
   }
 
   subscribe(listener: () => void): () => void {
@@ -66,6 +73,28 @@ class Paged extends SpectyData {
   tell(): void {
     for (const listener of this.listeners) listener();
   }
+
+  /** Says something changed, as after a decision: it ends once every listener has read again. */
+  told(): Promise<unknown> {
+    return Promise.all([...this.listeners].map((listener) => listener()));
+  }
+
+  /** Holds every read until the function it gives back is called. */
+  hold(): () => void {
+    let release: () => void = () => undefined;
+    this.gate = new Promise((done) => {
+      release = done;
+    });
+    return () => {
+      this.gate = undefined;
+      release();
+    };
+  }
+}
+
+/** `record` with `mark` after the title of its spec. */
+function marked(record: ChangeRecord, mark: string): ChangeRecord {
+  return { ...record, spec: record.spec.replace(/^(# .*)$/m, `$1${mark}`) };
 }
 
 function setup() {
@@ -174,5 +203,34 @@ describe("what the store keeps when a read fails", () => {
     id.set(UNKNOWN);
     await settle();
     expect([found.view(), found.missing()]).toEqual([undefined, true]);
+  });
+});
+
+describe("what the store hears after a decision", () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  it("AC1: ends only once the list and the change asked by its id show what was read again", async () => {
+    const { source, store, find } = setup();
+    const listed = find(EPIC);
+    const asked = find(SLICE);
+    await settle();
+    const release = source.hold();
+    source.mark = " (otra vez)";
+    let shown: readonly (string | undefined)[] = [];
+    const heard = source.told().then(() => {
+      shown = [store.listed()[0]?.title, listed.view()?.title, asked.view()?.title];
+    });
+    await settle();
+    // The reads are under way: the decision is not over, and the page still shows what it had.
+    expect(shown).toEqual([]);
+    expect(listed.view()?.title).toBe("La Bandeja por páginas");
+    release();
+    await settle();
+    await heard;
+    expect(shown).toEqual([
+      "La Bandeja por páginas (otra vez)",
+      "La Bandeja por páginas (otra vez)",
+      "Un cambio sin cargar (otra vez)",
+    ]);
   });
 });

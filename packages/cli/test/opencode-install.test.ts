@@ -46,6 +46,23 @@ describe("installing the plugin in OpenCode", () => {
     );
   });
 
+  it("AC1: tells doctor when the plugin predates OpenCode 2.2's end of turn, and not with init's", async () => {
+    const root = await tempRepo({ ...PACKAGE, "opencode.json": "{}\n" });
+    await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
+    const warning =
+      "OpenCode: el plugin del guard es de antes del fin de turno de OpenCode 2.2 (`session.execution.succeeded`)";
+    expect((await cli(root, ["doctor"])).out).not.toContain(warning);
+    const text = await read(root, PLUGIN);
+    await writeFiles(root, {
+      [PLUGIN]: text.replaceAll("session.execution.succeeded", "session.other"),
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      `${warning}, así que con OpenCode 2.2 su fin de turno no se dispara nunca; ejecuta \`specty init --tools opencode\`.`,
+    );
+  });
+
   it("writes it to the project's .opencode/plugins/ and leaves the global configuration alone (AC2, AC9)", async () => {
     const { env, config } = await opencodeConfig();
     const root = await tempRepo({ "src/app.ts": "x\n", ".specty/config.yaml": CONFIG() });

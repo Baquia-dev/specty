@@ -163,6 +163,7 @@ export {
   type ForeignPath,
   type GhostPath,
   nativeEnterDenial,
+  type OpenFolder,
   subagentEnterDenial,
   subagentNewDenial,
   type Unreachable,

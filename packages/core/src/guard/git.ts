@@ -9,9 +9,19 @@ export interface GitCommit {
   readonly moves: readonly string[];
 }
 
+/** A `git worktree remove`, before placing where it runs. */
+export interface GitRemoval {
+  /** The worktree it names, as typed: a path, or the end of one, as git also takes it. */
+  readonly worktree: string;
+  /** The folders of its `-C` options, in order. */
+  readonly moves: readonly string[];
+}
+
 /** What a `git` invocation means for the flow. */
 export interface GitEffects {
   readonly commits: readonly GitCommit[];
+  /** The worktree a `git worktree remove` removes. */
+  readonly removes: readonly GitRemoval[];
   /** Skips or disables hooks: `--no-verify`, or setting `core.hooksPath`. */
   readonly bypass: boolean;
   /** The branches it writes, deletes, pushes or checks out (`writtenRefs`). */
@@ -68,11 +78,29 @@ export function analyzeGit(args: readonly string[]): GitEffects {
     const short = rest.filter((arg) => /^-[a-zA-Z]+$/.test(arg));
     const skip = rest.includes("--no-verify") || short.some((flag) => flag.includes("n"));
     const all = rest.includes("--all") || short.some((flag) => flag.includes("a"));
-    return { commits: [{ all, moves: options.moves }], bypass: bypassOption || skip, refs: [] };
+    const commits = [{ all, moves: options.moves }];
+    return { commits, removes: [], bypass: bypassOption || skip, refs: [] };
   }
   const configures =
     command === "config" && rest.some((arg) => HOOKS_PATH.test(arg)) && !onlyReads(rest);
-  return { commits: [], bypass: bypassOption || configures, refs: writtenRefs(command, rest) };
+  return {
+    commits: [],
+    removes: removedWorktree(command, rest, options.moves),
+    bypass: bypassOption || configures,
+    refs: writtenRefs(command, rest),
+  };
+}
+
+/** What `git worktree remove` removes: the worktree its first argument that is no option names. */
+function removedWorktree(
+  command: string | undefined,
+  rest: readonly string[],
+  moves: readonly string[],
+): GitRemoval[] {
+  if (command !== "worktree" || rest[0] !== "remove") return [];
+  // Its only options are `-f` and `--force`, which may come twice.
+  const worktree = rest.slice(1).find((arg) => !arg.startsWith("-"));
+  return worktree === undefined ? [] : [{ worktree, moves }];
 }
 
 /** The options before the git command that take the next argument as their value. */

@@ -43,8 +43,8 @@ import { type FullState, fullLine, fullStateOf, ResultDialogs } from "./result-d
         <p class="m-0 flex items-center gap-1.5 text-xs" style="color: var(--color-phase-review)" data-blocked>
           <svg [lucideIcon]="warningIcon" size="13" aria-hidden="true"></svg>{{ reason }}
         </p>
-      } @else if (accepting(); as accepting) {
-        <p class="m-0 text-xs text-text-muted" data-in-flight>{{ accepting }}</p>
+      } @else if (inFlightLine(); as line) {
+        <p class="m-0 text-xs text-text-muted" data-in-flight>{{ line }}</p>
       } @else if (full(); as state) {
         <p class="m-0 text-xs" [style.color]="said(state).tone" data-full-hint>{{ said(state).text }}</p>
       }
@@ -63,12 +63,17 @@ export class AcceptanceActions {
   private readonly preferences = inject(Preferences);
   private readonly inFlight = inject(InFlight);
   protected readonly t = this.preferences.t;
-  /** «Aceptando…» while an acceptance this tab sent waits for the server; empty otherwise. */
+  /** The acceptance this tab sent that the server has not answered yet. */
+  private readonly running = computed(() => {
+    const action = this.inFlight.of(this.change().id);
+    return action?.kind === "accept" ? action : undefined;
+  });
+  /** «Aceptando…» while that acceptance waits for the server; empty otherwise. */
   protected readonly accepting = computed(() =>
-    this.inFlight.of(this.change().id)?.kind === "accept"
-      ? this.t()("Aceptando…", "Accepting…")
-      : "",
+    this.running() === undefined ? "" : this.t()("Aceptando…", "Accepting…"),
   );
+  /** Under the header buttons: why the server makes it wait, once it says, or «Aceptando…». */
+  protected readonly inFlightLine = computed(() => this.running()?.note ?? this.accepting());
   /** The run streaming in this change: one with no task is the full verification. */
   private readonly streaming = signal<RunRecord | undefined>(undefined);
   protected readonly full = computed(() => fullStateOf(this.change(), this.streaming()));

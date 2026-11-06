@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { Component, computed, Injectable, inject, input } from "@angular/core";
+import { Component, computed, Injectable, inject, input, type Provider } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { Toasts } from "../components/toast";
 import { ChangesStore, DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
+import { InFlight } from "../data/in-flight";
 import { ActionError, type Bilingual, type ChangeRecord, SpectyData } from "../data/records";
 import { deriveViews } from "../data/views";
 import { Preferences } from "../theme/preferences";
@@ -70,7 +71,23 @@ class Waiting extends FixtureData {
   }
 }
 
-async function render(source: typeof FixtureData = FixtureData, compact = false) {
+/** The line the server said while a closing waits for another session's turn. */
+const WAIT =
+  "Otra sesión está haciendo una verificación completa (`pnpm check` en /otra/carpeta, desde las 08:00 UTC); espero a que termine para no correr dos a la vez…";
+
+/** The tab's actions in flight once the server said why the closing of REMINDERS waits. */
+@Injectable()
+class Said {
+  of(change: string) {
+    return change === REMINDERS ? { kind: "close", note: WAIT } : undefined;
+  }
+}
+
+async function render(
+  source: typeof FixtureData = FixtureData,
+  compact = false,
+  providers: readonly Provider[] = [],
+) {
   localStorage.setItem("specty.lang", "es");
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
@@ -80,6 +97,7 @@ async function render(source: typeof FixtureData = FixtureData, compact = false)
         provide: DERIVER,
         useValue: (records: readonly ChangeRecord[]) => Promise.resolve(deriveViews(records)),
       },
+      ...providers,
     ],
   });
   const fixture = TestBed.createComponent(Host);
@@ -230,6 +248,19 @@ describe("Closing while the server has not answered", () => {
     server().answers();
     await page.settle();
     expect(groups()[0]?.querySelector("[data-in-flight]")).toBeNull();
+  });
+
+  it("AC3: says the server's line under the header button instead of «Cerrando…», not in the bar", async () => {
+    const page = await render(FixtureData, false, [{ provide: InFlight, useClass: Said }]);
+    page.fixture.componentRef.setInput("bar", true);
+    await page.settle();
+    const groups = () => [...page.element.querySelectorAll("sp-closing-actions")];
+    expect(text(groups()[0]?.querySelector("[data-in-flight]"))).toBe(WAIT);
+    expect(groups()[1]?.querySelector("[data-in-flight]")).toBeNull();
+    for (const button of page.buttons()) {
+      expect(button.getAttribute("aria-busy")).toBe("true");
+    }
+    expect(page.buttons()).toHaveLength(2);
   });
 
   it("AC4: still shows it closing after leaving the page and coming back", async () => {

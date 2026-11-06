@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-import { Component, computed, Injectable, inject, input } from "@angular/core";
+import { Component, computed, Injectable, inject, input, type Provider } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { Toasts } from "../components/toast";
 import type { ResultDecision } from "../data/acceptance";
 import { ChangesStore, DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
+import { InFlight } from "../data/in-flight";
 import { ActionError, type Bilingual, type ChangeRecord, SpectyData } from "../data/records";
 import { STEP_MS } from "../data/sample-run";
 import { deriveViews } from "../data/views";
@@ -80,7 +81,24 @@ class Waiting extends FixtureData {
   }
 }
 
-async function render(source: typeof FixtureData = FixtureData, compact = false, bare = false) {
+/** The line the server said while an acceptance waits for another session's turn. */
+const WAIT =
+  "Otra sesión está haciendo una verificación completa (`pnpm check` en /otra/carpeta, desde las 08:00 UTC); espero a que termine para no correr dos a la vez…";
+
+/** The tab's actions in flight once the server said why the acceptance of ASISTENCIA waits. */
+@Injectable()
+class Said {
+  of(change: string) {
+    return change === ASISTENCIA ? { kind: "accept", note: WAIT } : undefined;
+  }
+}
+
+async function render(
+  source: typeof FixtureData = FixtureData,
+  compact = false,
+  bare = false,
+  providers: readonly Provider[] = [],
+) {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
@@ -94,6 +112,7 @@ async function render(source: typeof FixtureData = FixtureData, compact = false,
         provide: DERIVER,
         useValue: (records: readonly ChangeRecord[]) => Promise.resolve(deriveViews(records)),
       },
+      ...providers,
     ],
   });
   const fixture = TestBed.createComponent(Host);
@@ -310,6 +329,23 @@ describe("Accepting while the server has not answered", () => {
     server().answers();
     await page.settle();
     expect(groups()[0]?.querySelector("[data-in-flight]")).toBeNull();
+  });
+
+  it("AC3: says the server's line under the header buttons instead of «Aceptando…», not in the bar", async () => {
+    const page = await render(FixtureData, false, false, [{ provide: InFlight, useClass: Said }]);
+    page.fixture.componentRef.setInput("bar", true);
+    await page.settle();
+    const groups = () => [...page.element.querySelectorAll("sp-acceptance-actions")];
+    expect(text(groups()[0]?.querySelector("[data-in-flight]"))).toBe(WAIT);
+    expect(groups()[0]?.querySelector("[data-full-hint]")).toBeNull();
+    expect(groups()[1]?.querySelector("[data-in-flight]")).toBeNull();
+    const [adjust, accepting, barAdjust, barAccepting] = page.buttons();
+    for (const button of [accepting, barAccepting]) {
+      expect(button?.getAttribute("aria-busy")).toBe("true");
+    }
+    for (const button of [adjust, barAdjust]) {
+      expect(reason(button)).toBe("Aceptando…");
+    }
   });
 
   it("AC4: still shows it accepting after leaving the page and coming back", async () => {

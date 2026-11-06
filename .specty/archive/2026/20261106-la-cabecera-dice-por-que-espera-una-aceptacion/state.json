@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "id": "20261106-la-cabecera-dice-por-que-espera-una-aceptacion",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-la-cabecera-dice-por-que-espera-una-aceptacion",
+  "baseCommit": "288e88cbf522a73c14ab890101f8b1cb626ee433",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a2a6eec96fcdf0ebb9a601d4f02f2a13447438d8170aae38598f52d14e55ed36",
+    "at": "2026-11-06T09:41:53.706Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b5a1f4611afd6084f3e61887c190bcfff23aa75023b8a51803b97a47dec18069",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:72d9e0ee09d7afaf64a9acda8d5c9e3e6b8620c6f1fe2baa98ee4ce32cd328af",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:23a08a800dbce28cd25793d37d7e16f4ac46eef37e7fd348cccaf6ef51f5fae1",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c57d006f61500b0eaf9e86ce3604875482acd5c5db473a691dcba01d21986757",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:0ffe997b6c91b4238652c56c291b8335fcee57fe058ebe3c062511fe46c86065",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "9f9593126d47c4a07d7ba52ac370995e92daaf16",
+      "attempts": 1,
+      "startedAt": "2026-11-06T09:45:42.240Z",
+      "doneAt": "2026-11-06T09:46:23.231Z",
+      "summary": "runAction pasa a said lo que el comando dice por io.err, y act emite los eventos action de cada acción de un cambio: al empezar, con cada línea (note) y con done al terminar",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "1aeb00dd70e6ad2cfd725631cc620a27000a4e0f",
+      "attempts": 1,
+      "startedAt": "2026-11-06T09:46:23.543Z",
+      "doneAt": "2026-11-06T09:48:04.860Z",
+      "summary": "SpectyData.watchActions (por defecto, nada) y ActionNote; ServerData la sigue sobre los eventos action con actionEvent, que quita el prefijo specty: y pone la mayúscula; follow() comparte los oyentes del flujo; InFlight guarda la última línea de su acción mientras sigue",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "b9452b2b94fed54453fa1360c537fa0d7ea2327a",
+      "attempts": 1,
+      "startedAt": "2026-11-06T09:48:05.215Z",
+      "doneAt": "2026-11-06T09:48:52.466Z",
+      "summary": "AcceptanceActions y ClosingActions leen la acción en curso de InFlight: bajo los botones de la cabecera, la línea del servidor o, sin ella, «Aceptando…» o «Cerrando…»; el motivo de «Pedir ajustes…» sigue siendo «Aceptando…»",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "065da1993f23e663790d8005bee9b0e42e716e63",
+      "attempts": 1,
+      "startedAt": "2026-11-06T09:48:52.816Z",
+      "doneAt": "2026-11-06T09:49:18.557Z",
+      "summary": "ui.md cuenta que la cabecera muestra la línea del servidor de una aceptación o un cierre en curso; ARCHITECTURE.md, los eventos action del servidor y watchActions de ServerData con InFlight",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T09:54:43.159Z",
+  "lockedTests": {
+    "packages/ui/src/acceptance/acceptance-actions.test.ts": "sha256:2f7bc3220da2639423d4471d7d23c3fc28c09d1f20f4e22391f68d0bf334e3b8",
+    "packages/ui/src/acceptance/closing-actions.test.ts": "sha256:326d24cad4b4c3697a0de659047f32554ddea67c701121d79382021993764e48",
+    "packages/cli/test/server/action-notes.test.ts": "sha256:80348e4bcc5d4b2d88a7bb0e1b0d6220a0650d93ebc19be86623e18501765600",
+    "packages/ui/src/data/in-flight.test.ts": "sha256:6f8df577f088ddf926ff4959e9ddf425967d0f45c4e62008167754eacfe2390e"
+  }
+}

@@ -2,13 +2,16 @@
 import {
   computed,
   DestroyRef,
+  effect,
   Injectable,
   InjectionToken,
+  Injector,
   inject,
   linkedSignal,
   PendingTasks,
   resource,
   type Signal,
+  untracked,
 } from "@angular/core";
 import { FinishedPages } from "./finished-pages";
 import {
@@ -75,16 +78,56 @@ function startWorker(): Worker | undefined {
 /** Derives in the main thread: where a worker cannot start, as in an MCP App (ADR 0015). */
 export const inThread: Deriver = async (records) => (await import("./views")).deriveViews(records);
 
+/** What `reread` needs of a resource. */
+interface Rereadable {
+  readonly isLoading: Signal<boolean>;
+  reload(): boolean;
+}
+
+/**
+ * Reads `read` again and ends once it is done: a read already under way may have started before
+ * what changed, so it waits for it and reads again. An idle one (no params: `reload` does nothing)
+ * ends at once.
+ */
+async function reread(read: Rereadable, injector: Injector): Promise<void> {
+  if (untracked(read.isLoading)) await loaded(read, injector);
+  if (read.reload()) await loaded(read, injector);
+}
+
+/**
+ * Ends once `read` stops loading, or once `injector` is destroyed: a page that went does not keep
+ * an action waiting.
+ */
+function loaded(read: Rereadable, injector: Injector): Promise<void> {
+  return new Promise((done) => {
+    const watch = effect(
+      () => {
+        if (read.isLoading()) return;
+        watch.destroy();
+        forget();
+        done();
+      },
+      { injector, manualCleanup: true },
+    );
+    const forget = injector.get(DestroyRef).onDestroy(() => {
+      watch.destroy();
+      done();
+    });
+  });
+}
+
 /**
  * The changes as the screens see them. It reads from whatever `SpectyData` is provided, derives
  * the views with the `DERIVER` and reloads when the source says something changed, keeping the
- * previous views on screen meanwhile. The finished changes the Inbox shows come in pages, apart,
- * and the store keeps only their summary.
+ * previous views on screen meanwhile; what it gives back to the source ends once that read is
+ * done, so an action ends once its result is on screen. The finished changes the Inbox shows come
+ * in pages, apart, and the store keeps only their summary.
  */
 @Injectable({ providedIn: "root" })
 export class ChangesStore {
   private readonly data = inject(SpectyData);
   private readonly derive = inject(DERIVER);
+  private readonly injector = inject(Injector);
 
   readonly views = resource({ loader: async () => this.derive(await this.data.changes()) });
   /** The pages of finished changes the Inbox asked for (`data/finished-pages.ts`). */
@@ -148,10 +191,9 @@ export class ChangesStore {
   );
 
   constructor() {
-    const stop = this.data.subscribe(() => {
-      this.views.reload();
-      void this.pages.reload();
-    });
+    const stop = this.data.subscribe(() =>
+      Promise.all([reread(this.views, this.injector), this.pages.reload()]),
+    );
     inject(DestroyRef).onDestroy(stop);
   }
 
@@ -160,7 +202,8 @@ export class ChangesStore {
    * finished change, even one a page of the Inbox brought), asked to the source by its id, and
    * again whenever the source says something changed. Once found, a read that fails or misses it
    * (its folder archived, or its worktree removed) keeps the last view of that id: a change shown
-   * does not go. Called in an injection context, as `resource`: it lasts as long as its caller.
+   * does not go. What it gives back to the source ends once it is read again. Called in an
+   * injection context, as `resource`: it lasts as long as its caller.
    */
   byId(id: Signal<string>): FoundChange {
     const loaded = computed(() => this.listed().find((view) => view.id === id()));
@@ -171,7 +214,8 @@ export class ChangesStore {
         return record === undefined ? undefined : (await this.derive([record]))[0];
       },
     });
-    const stop = this.data.subscribe(() => asked.reload());
+    const injector = inject(Injector);
+    const stop = this.data.subscribe(() => reread(asked, injector));
     inject(DestroyRef).onDestroy(stop);
     const found = computed(() => {
       const view = asked.hasValue() ? asked.value() : undefined;

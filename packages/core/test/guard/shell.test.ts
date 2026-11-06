@@ -332,3 +332,46 @@ describe("analyzeShell", () => {
     expect([absolute.deletes, absolute.unresolved]).toEqual([["/repo/a"], []]);
   });
 });
+
+describe("analyzeShell on `git worktree remove`", () => {
+  const removals = (command: string) => analyzeShell(command).worktreeRemovals;
+
+  it("AC1: names the worktree each one removes, placed where the command runs", () => {
+    expect(removals("git worktree remove .worktrees/a")).toEqual([
+      { name: ".worktrees/a", path: ".worktrees/a" },
+    ]);
+    expect(removals("git worktree remove --force -f /p/app/.worktrees/a")).toEqual([
+      { name: "/p/app/.worktrees/a", path: "/p/app/.worktrees/a" },
+    ]);
+    expect(removals("cd .worktrees && git worktree remove -f a")).toEqual([
+      { name: "a", path: ".worktrees/a" },
+    ]);
+    expect(removals("git -C .worktrees worktree remove a")).toEqual([
+      { name: "a", path: ".worktrees/a" },
+    ]);
+    expect(removals("git worktree remove a; git worktree remove --force b")).toEqual([
+      { name: "a", path: "a" },
+      { name: "b", path: "b" },
+    ]);
+  });
+
+  it("AC1: keeps only the name after a `cd` it cannot follow, and leaves out what it cannot read", () => {
+    expect(removals('cd "$D" && git worktree remove a')).toEqual([{ name: "a" }]);
+    expect(removals('git worktree remove "$W"')).toEqual([]);
+    expect(removals("git worktree remove ~/a")).toEqual([]);
+  });
+
+  it("AC1: names none for the other commands", () => {
+    for (const command of [
+      "git worktree list",
+      "git worktree add .worktrees/a",
+      "git worktree prune",
+      "git worktree move .worktrees/a .worktrees/b",
+      "git worktree remove",
+      "echo git worktree remove a",
+      "git status",
+    ]) {
+      expect(removals(command)).toEqual([]);
+    }
+  });
+});
