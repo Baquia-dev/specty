@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261106-el-guard-no-deja-quitar-la-carpeta-de-un-cambio",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-el-guard-no-deja-quitar-la-carpeta-de-un-cambio",
+  "baseCommit": "98153584ec94f57f6b6990a486a76b18bead7ff8",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9459f7d639e56f7c4ccc37af3f6462627f31dc8c5c19ddab3786f0f48a06150f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6eadc163b69ef03de8fe5db98a37043a03051647a0d09328fac68b4c8ecbdf07",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:81909242030169d365b9bc17ebfd09d8a711b9f04af39ff455c8d1a981a889de",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:32584a6a3d33bdb8c642c6c9895eec1d7384ab70315ee04f3efe906306e7b171",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d5c97dc4a710289b0c778727ba5dfebb04dc277659394fcd681a29dcb2052a98",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:2826003fe86eea8566832094a0c5587c97e390f9b6d9c11acc26826b46682630",
+    "at": "2026-11-06T09:58:13.344Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
