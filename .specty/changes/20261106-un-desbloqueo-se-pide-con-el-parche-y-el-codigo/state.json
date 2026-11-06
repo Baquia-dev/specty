@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261106-un-desbloqueo-se-pide-con-el-parche-y-el-codigo",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261106-un-desbloqueo-se-pide-con-el-parche-y-el-codigo",
   "baseCommit": "c9302e17c20e3feb39fa5553e127e6a7e75671f0",
   "revision": 2,
@@ -68,6 +68,9 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-06T11:06:46.310Z"
+  "lockedTests": {
+    "packages/cli/test/test-locks.test.ts": "sha256:95771e895bf1e7fcb48b628f62cbf0ee35220ce4e397bd4357c9d8124b0e7478",
+    "packages/cli/test/unlock-request.test.ts": "sha256:8cf02f491a2d7b5e081be8943ca12a95a38e494f4d6f4d989f9723bfad617986",
+    "packages/core/test/cards/unlock.test.ts": "sha256:7571743054036425697ff6768178f24a4692fc5c7a8647eb1766dddaa4bdd628"
+  }
 }
