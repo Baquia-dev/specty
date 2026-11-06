@@ -54,3 +54,23 @@ Cuando el agente termina con `specty integrate` la incorporación de main que de
   - ac: —
   - verify: grep -q 'terminar esa incorporación con `specty integrate`' docs/formats.md && grep -q 'deja su verificación anotada como `change.verified`' docs/ARCHITECTURE.md
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`specty integrate`, cuando la verificación completa del merge resuelto corre y pasa, la anota como `change.verified` con `recordFullVerification`: el comando de `verify.full` (o `verify.default`), el inicio y la duración desde su turno, la salida, lo que hizo cada unidad y el `tree` de `codeTree` tomado tras verificar (`recordPassed` en `commands/integrate.ts`). Así `passedOnThisCode` la reconoce y el `accept` siguiente sobre ese código no la repite, también sin `verify.units`; si main avanza otra vez, la incorporación de `accept` verifica el código nuevo. `docs/formats.md` §4 y ARCHITECTURE §6 y §9 lo cuentan.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El `tree` se toma después de verificar, como en `verifyMerged`, porque es el árbol de trabajo que entra en el commit del merge y el que `accept` calculará después.
+- Se anota el comando completo configurado, no el de la última unidad que corrió, porque es el que compara `passedOnThisCode`.
+- No se anota la verificación que falla: el merge sigue en curso para el agente y nada la reutiliza.
+
+### Pendientes
+
+- Ninguno.

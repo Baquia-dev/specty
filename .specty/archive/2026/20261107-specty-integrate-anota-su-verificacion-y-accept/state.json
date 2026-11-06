@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-specty-integrate-anota-su-verificacion-y-accept",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-specty-integrate-anota-su-verificacion-y-accept",
   "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:fef210f436975516aed0b6737b7195224daf65102a445c8f221ff2f794e2aa96",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2d2b442170d750aa8902f40bc91b6de87959d956",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:51:46.184Z",
       "doneAt": "2026-11-06T18:52:13.827Z",
-      "summary": "formats.md §4 (change.verified) y ARCHITECTURE §6 y §9 cuentan que specty integrate anota su verificación y accept no la repite"
+      "summary": "formats.md §4 (change.verified) y ARCHITECTURE §6 y §9 cuentan que specty integrate anota su verificación y accept no la repite",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,6 +68,7 @@
     "AC": 2,
     "T": 2
   },
+  "closingSubmittedAt": "2026-11-06T18:57:16.007Z",
   "lockedTests": {
     "packages/cli/test/integrate-units.test.ts": "sha256:3b9e3949fd7f8f6bf0e5e74ea1961fd21dabc38b618c7b84efabb2053e336367",
     "packages/cli/test/integrate.test.ts": "sha256:11593d81b0bf5b00ab46427ee4b7cc189b7aec01d76ab91cdf322c4428982b2a"
