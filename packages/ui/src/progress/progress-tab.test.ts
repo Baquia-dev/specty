@@ -103,7 +103,7 @@ describe("Progress tab", () => {
   it("lists the tasks in order as document rows, with a summary and a bar per task (AC1)", async () => {
     const { element, rows, row } = await render();
     expect(text(element.querySelector("[data-summary]"))).toMatch(
-      /^2 de 3 tareas hechas · \d+ min de trabajo · 1 decisión te espera$/,
+      /^2 de 3 tareas hechas · \d+ min de trabajo · 2 decisiones te esperan$/,
     );
     expect(element.querySelectorAll("[data-bar] span")).toHaveLength(3);
     expect(rows("tasks")).toEqual(["T1", "T2"]);
@@ -148,17 +148,28 @@ describe("Progress tab", () => {
   it("puts the task waiting for a decision at the top, and back in its place once approved (AC3, AC4)", async () => {
     const { element, settle, rows, row, toasts } = await render();
     expect(rows("waiting")).toEqual(["T3"]);
-    const request = row("T3")?.querySelector("[data-scope-request]");
-    expect(text(request)).toContain(
+    const requests = () => [...(row("T3")?.querySelectorAll("[data-scope-request]") ?? [])];
+    const approve = (request: Element | undefined) =>
+      request?.querySelector<HTMLButtonElement>("sp-button button")?.click();
+    expect(text(requests()[0])).toContain(
       "T3 pide lib/shared/pdf/layout.dart: «La firma necesita el maquetador compartido.»",
     );
-    expect(text(request)).toContain("Si la apruebas, T3 podrá tocarlo y entra en su alcance.");
-    request?.querySelector<HTMLButtonElement>("sp-button button")?.click();
+    expect(text(requests()[0])).toContain(
+      "Si la apruebas, T3 podrá tocarlo y entra en su alcance.",
+    );
+    approve(requests()[0]);
+    await settle();
+    // The unlock of its approved test still waits.
+    expect(rows("waiting")).toEqual(["T3"]);
+    expect(requests().map((request) => text(request.querySelector("[data-heading]")))).toEqual([
+      "S2 · Desbloquear un test aprobado",
+    ]);
+    approve(requests()[0]);
     await settle();
     expect(element.querySelector("[data-waiting]")).toBeNull();
     expect(rows("tasks")).toEqual(["T1", "T2", "T3"]);
-    expect(text(element.querySelector("[data-summary]"))).not.toContain("decisión");
-    expect(toasts()).toContain("Aprobaste S1: T3 vuelve a su lugar.");
+    expect(text(element.querySelector("[data-summary]"))).not.toContain("decisi");
+    expect(toasts()).toContain("Aprobaste S2: T3 vuelve a su lugar.");
   });
 
   it("asks for the reason before rejecting, and the task goes back too (AC3)", async () => {
@@ -181,8 +192,45 @@ describe("Progress tab", () => {
     confirm()?.click();
     await settle();
     expect(document.querySelector("[role=dialog]")).toBeNull();
-    expect(rows("tasks")).toEqual(["T1", "T2", "T3"]);
+    // Rejecting S1 leaves T3 waiting for S2, the unlock of its approved test.
+    expect(rows("waiting")).toEqual(["T3"]);
+    expect(rows("tasks")).toEqual(["T1", "T2"]);
     expect(toasts()).toContain("Rechazaste S1.");
+  });
+
+  it("AC3, AC4: shows the sample unlocks: the one waiting, and the one approved under «Ver el desbloqueo»", async () => {
+    const pdf = await render();
+    const waiting = [...(pdf.row("T3")?.querySelectorAll("[data-scope-request]") ?? [])][1];
+    expect(waiting?.querySelector("[data-unlock-patch] sp-diff-file")).not.toBeNull();
+    expect(text(waiting?.querySelector("[data-evidence-where]"))).toBe(
+      "lib/school/school_profile.dart:12-13",
+    );
+    const login = await render("20261021-login-google");
+    const locked = login.element.querySelector("[data-locked]");
+    const toggle = locked?.querySelector<HTMLButtonElement>("[data-unlock-toggle]");
+    expect(text(toggle)).toBe("Ver el desbloqueo S1");
+    toggle?.click();
+    await login.settle();
+    expect(text(locked?.querySelector("[data-unlock-reason]"))).toContain("signOut()");
+    expect(locked?.querySelector("[data-unlock-of=S1] [data-unlock-patch]")).not.toBeNull();
+    expect(text(locked?.querySelector("[data-unlock-of=S1] [data-evidence-where]"))).toBe(
+      "lib/auth/auth_provider.dart:6-10",
+    );
+  });
+
+  it("AC1: opens the code of a sample test with «Ver código»", async () => {
+    const { element, settle } = await render("20261021-login-google");
+    const locked = element.querySelector("[data-locked]");
+    locked?.querySelector<HTMLButtonElement>("[data-test-code-toggle]")?.click();
+    await settle();
+    await new Promise((resolve) => setTimeout(resolve));
+    await settle();
+    expect(locked?.querySelector("[data-test-code-message]")).toBeNull();
+    const lines = [...(locked?.querySelectorAll("[data-test-code] [data-line]") ?? [])];
+    expect(lines.map((line) => line.querySelector("[data-code]")?.textContent).at(-2)).toBe(
+      "  });",
+    );
+    expect(lines).toHaveLength(18);
   });
 
   it("cannot decide a scope request on a read-only server (AC3)", async () => {
@@ -190,7 +238,7 @@ describe("Progress tab", () => {
     const buttons = row("T3")?.querySelectorAll<HTMLButtonElement>(
       "[data-scope-request] sp-button button",
     );
-    expect([...(buttons ?? [])].map((button) => button.disabled)).toEqual([true, true]);
+    expect([...(buttons ?? [])].map((button) => button.disabled)).toEqual([true, true, true, true]);
   });
 
   it("explains it when the source cannot decide (AC4)", async () => {
@@ -271,7 +319,7 @@ describe("Progress tab", () => {
       await settle();
       const end = element.querySelector<HTMLElement>("[data-tabs-end]");
       expect(text(end?.querySelector("[data-compact-summary]"))).toMatch(
-        /^2 de 3 tareas hechas · \d+ min de trabajo · 1 decisión te espera$/,
+        /^2 de 3 tareas hechas · \d+ min de trabajo · 2 decisiones te esperan$/,
       );
       expect(end?.querySelectorAll("[data-compact-bar] span")).toHaveLength(3);
 

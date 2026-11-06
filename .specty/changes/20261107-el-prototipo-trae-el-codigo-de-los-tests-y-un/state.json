@@ -6,6 +6,13 @@
   "branch": "specty/20261107-el-prototipo-trae-el-codigo-de-los-tests-y-un",
   "baseCommit": "a8161215e5a2ea20a8290339b229e360756142a8",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:1d73bdc9126cfdda1be2cb0949cf591d23c6802dfadbaa79c7a085338887d9f5",
+    "at": "2026-11-06T17:28:04.098Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -43,12 +50,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:1d73bdc9126cfdda1be2cb0949cf591d23c6802dfadbaa79c7a085338887d9f5",
-    "at": "2026-11-06T17:28:04.098Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T17:30:34.014Z"
 }
