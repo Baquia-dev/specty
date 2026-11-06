@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "36c219d918b5d7d7af0faae5388e87ef1e398284",
+      "attempts": 1,
       "startedAt": "2026-11-06T16:58:35.603Z",
       "doneAt": "2026-11-06T16:59:26.694Z",
-      "summary": "phaseFacts pone requested solo en review con changeWaitsFor = agent (changesRequestedAt), y requested lee los comentarios sin la auditoría"
+      "summary": "phaseFacts pone requested solo en review con changeWaitsFor = agent (changesRequestedAt), y requested lee los comentarios sin la auditoría",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "30821226c8ad9a3b7faad1326bc08ebb85db3792",
+      "startedAt": "2026-11-06T16:59:27.058Z",
+      "doneAt": "2026-11-06T17:05:10.429Z",
+      "summary": "decisionOf y changesRequestedOf leen el estado (changeWaitsFor y changesRequestedAt), no la auditoría; el prototipo pone changesRequestedAt al pedir cambios y lo quita al aprobar"
     }
   },
   "pending": {

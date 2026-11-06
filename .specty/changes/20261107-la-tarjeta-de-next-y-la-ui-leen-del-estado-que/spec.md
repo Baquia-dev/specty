@@ -71,7 +71,7 @@ Desde P225, `changesRequestedAt` en `state.json` dice que la persona devolvió l
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/changes-requested-card.test.ts test/changes-requested-turn.test.ts test/comments.test.ts && pnpm lint
   - type: fix
-- [ ] T3: La UI lee del estado los cambios pedidos y la decisión
+- [x] T3: La UI lee del estado los cambios pedidos y la decisión
   - files: packages/ui/src/data/views.ts, packages/ui/src/data/sample-records.ts, packages/ui/src/data/sample-review.ts, packages/ui/src/data/views.test.ts, packages/ui/src/data/fixtures.test.ts
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts --include src/data/fixtures.test.ts && pnpm typecheck && pnpm lint

@@ -64,11 +64,13 @@ export function approveIn(record: ChangeRecord, revision: number, now: number): 
   // In testing, the approval is the tests' (the gate 2), as on the server.
   if (record.state.phase === "testing") return approveTestsIn(record, now, HASH);
   const at = new Date(now).toISOString();
+  // Approving clears the review sent back, as on the server.
+  const { changesRequestedAt: _requested, ...state } = record.state;
   return {
     ...record,
     phaseSince: at,
     state: {
-      ...record.state,
+      ...state,
       phase: "implementing",
       approved: { revision, hash: HASH, at, by: REVIEWER, channel: "ui" },
     },
