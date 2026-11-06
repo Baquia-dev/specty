@@ -1,20 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
 import { openFolderDenial } from "../cards/change-folder";
 import { ghostFolderDenial } from "../cards/ghost-folder";
-import type { Phase } from "../flow/phases";
-import type { Lang } from "../i18n";
-import type { ResolvedConfig } from "../schema/config";
+import { foregroundWaitDenial, sleepDenial } from "../cards/wait";
 import { isGoverned } from "../scope/governed";
 import { classifyPath, scopeRulesFrom } from "../scope/scope";
-import type { ChangeKind } from "../spec/model";
+import type {
+  GuardAction,
+  GuardChange,
+  GuardContext,
+  GuardDecision,
+  GuardRule,
+  ShellFacts,
+} from "./action";
 import { EVERY_BRANCH } from "./git-refs";
 import { humanDenial } from "./human";
-import { commitNext, type GuardIntegration, integrationDenial } from "./integration";
-import { type BoundSession, sessionDenial } from "./session";
+import { commitNext, integrationDenial } from "./integration";
+import { sessionDenial } from "./session";
 import { protectedDenial, specDenial } from "./spec";
 import { lockedDenial, testingDenial } from "./testing";
 import {
-  type Elsewhere,
   elsewhereDenial,
   type ForeignPath,
   foreignDenial,
@@ -23,124 +27,6 @@ import {
 } from "./worktrees";
 
 export { HUMAN_COMMANDS } from "./human";
-
-export interface GuardChange {
-  readonly id: string;
-  readonly kind: ChangeKind;
-  readonly phase: Phase;
-  readonly closingSubmitted: boolean;
-  /** Repository-relative path of the change's `spec.md`. */
-  readonly specPath: string;
-  readonly task?: {
-    readonly id: string;
-    readonly files: readonly string[];
-    readonly extras: readonly string[];
-  };
-  /** In the testing phase, the files of the approved spec: only their tests may be written. */
-  readonly files?: readonly string[];
-  /** The tests the person approved: nobody writes or deletes them (ADR 0014). */
-  readonly locked?: readonly string[];
-  /** A pending incorporation of the main branch: it alone decides about code, in any phase. */
-  readonly integration?: GuardIntegration;
-}
-
-export interface GuardContext {
-  readonly config: ResolvedConfig;
-  readonly lang: Lang;
-  readonly change?: GuardChange;
-  /** How messages tell the agent to call Specty, for example `specty`. */
-  readonly command: string;
-  /** The person delegated their decisions to the agent (ADR 0010): their commands are open. */
-  readonly delegated?: boolean;
-}
-
-/** Facts about a shell command, with paths already relative to the repository root. */
-export interface ShellFacts {
-  readonly specty: readonly string[];
-  readonly unscopedNpx: boolean;
-  readonly bypass: boolean;
-  /** The branches its git commands write, delete, push or check out; `*` for all or unknown. */
-  readonly refs?: readonly string[];
-  /** Governed files that a `git commit` in the command would include. */
-  readonly committedGoverned: readonly string[];
-  readonly writes: readonly string[];
-  readonly deletes: readonly string[];
-  /** What the command would change inside another worktree of the repository. */
-  readonly foreign?: readonly ForeignPath[];
-  /** What the command would write or delete in a ghost folder, which git no longer knows. */
-  readonly ghosts?: readonly GhostPath[];
-  /** The command would run outside the change's folder the conversation entered. */
-  readonly elsewhere?: Elsewhere;
-  /** The folders of open changes its `git worktree remove` commands would remove. */
-  readonly removedFolders?: readonly OpenFolder[];
-}
-
-export type GuardAction =
-  | {
-      readonly kind: "write" | "delete";
-      readonly paths: readonly string[];
-      /** Paths inside another worktree of the repository, kept apart from `paths`. */
-      readonly foreign?: readonly ForeignPath[];
-      /** Paths inside a ghost folder, kept apart from `paths` too. */
-      readonly ghosts?: readonly GhostPath[];
-    }
-  /**
-   * What a tool reads or searches. Reading is free; only a conversation that entered a change's
-   * folder reads that folder's files (`ForeignPath.instead`).
-   */
-  | {
-      readonly kind: "read";
-      readonly paths: readonly string[];
-      readonly foreign?: readonly ForeignPath[];
-    }
-  | { readonly kind: "shell"; readonly facts: ShellFacts }
-  /** An edit that writes and deletes files at once, such as a patch (Codex, OpenCode). */
-  | ({ readonly kind: "files" } & Pick<ShellFacts, "writes" | "deletes" | "foreign" | "ghosts">)
-  /**
-   * The session moves into the worktree `target`, bound or not to another one. `epic` is the epic
-   * of the open change in `target`, when that change is one of its slices.
-   */
-  | {
-      readonly kind: "enter";
-      readonly target: string;
-      readonly bound?: BoundSession;
-      readonly epic?: string;
-    }
-  /**
-   * A tool of the agent's own removes a worktree (OpenCode's `worktree_remove`): `folders` are
-   * the open changes' folders among what it removes.
-   */
-  | { readonly kind: "remove-worktree"; readonly folders: readonly OpenFolder[] }
-  | { readonly kind: "other" };
-
-/** The rule behind a denial, so a caller can pick the next step (`scope add` only for `scope`). */
-export type GuardRule =
-  | "human"
-  | "package"
-  | "bypass"
-  | "memory"
-  | "commit"
-  | "protected"
-  | "spec"
-  | "no-change"
-  | "phase"
-  | "no-task"
-  | "scope"
-  | "worktree"
-  | "ghost"
-  | "change-folder"
-  | "integration"
-  | "session"
-  | "locked";
-
-export type GuardDecision =
-  | { readonly allow: true }
-  | {
-      readonly allow: false;
-      readonly rule: GuardRule;
-      readonly reason: string;
-      readonly next: string;
-    };
 
 const ALLOW: GuardDecision = { allow: true };
 
@@ -228,26 +114,10 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
     const denial = elsewhereDenial(facts.elsewhere, ctx.lang);
     return deny("worktree", denial.reason, denial.next);
   }
-  if (facts.unscopedNpx) {
-    return deny(
-      "package",
-      t(
-        "`npx specty` instala otro paquete de npm, no Specty.",
-        "`npx specty` installs an unrelated npm package, not Specty.",
-      ),
-      t("usa `npx -y @baquia-dev/specty <comando>`.", "use `npx -y @baquia-dev/specty <command>`."),
-    );
-  }
-  if (facts.bypass) {
-    return deny(
-      "bypass",
-      t(
-        "No se permite saltarse los hooks (`--no-verify`, `core.hooksPath`, `HUSKY=0`…).",
-        "Skipping hooks is not allowed (`--no-verify`, `core.hooksPath`, `HUSKY=0`…).",
-      ),
-      t(`sigue el flujo: \`${ctx.command} next\`.`, `follow the flow: \`${ctx.command} next\`.`),
-    );
-  }
+  const tooling = toolingDenial(facts, ctx);
+  if (tooling !== undefined) return tooling;
+  const waiting = waitDenial(facts, ctx);
+  if (waiting !== undefined) return waiting;
   const memory = memoryDenial(facts.refs ?? [], ctx);
   if (memory !== undefined) return memory;
   if (facts.committedGoverned.length > 0) {
@@ -261,6 +131,45 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
     );
   }
   return decideFiles(facts, ctx);
+}
+
+/** A command that runs the unrelated `specty` package of npm, or that skips the hooks. */
+function toolingDenial(facts: ShellFacts, ctx: GuardContext): GuardDecision | undefined {
+  const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
+  if (facts.unscopedNpx) {
+    return deny(
+      "package",
+      t(
+        "`npx specty` instala otro paquete de npm, no Specty.",
+        "`npx specty` installs an unrelated npm package, not Specty.",
+      ),
+      t("usa `npx -y @baquia-dev/specty <comando>`.", "use `npx -y @baquia-dev/specty <command>`."),
+    );
+  }
+  if (!facts.bypass) return undefined;
+  return deny(
+    "bypass",
+    t(
+      "No se permite saltarse los hooks (`--no-verify`, `core.hooksPath`, `HUSKY=0`…).",
+      "Skipping hooks is not allowed (`--no-verify`, `core.hooksPath`, `HUSKY=0`…).",
+    ),
+    t(`sigue el flujo: \`${ctx.command} next\`.`, `follow the flow: \`${ctx.command} next\`.`),
+  );
+}
+
+/**
+ * The ways of waiting for the person that do not hold: `specty wait` in the foreground of a tool
+ * that can run it in the background, and `sleep` while the change waits for the person.
+ */
+function waitDenial(facts: ShellFacts, ctx: GuardContext): GuardDecision | undefined {
+  if (facts.background === false && facts.specty.includes("wait")) {
+    const denial = foregroundWaitDenial(ctx);
+    return deny("wait", denial.reason, denial.next);
+  }
+  const { change } = ctx;
+  if (facts.sleeps !== true || change?.waiting !== true) return undefined;
+  const denial = sleepDenial(change.id, ctx);
+  return deny("wait", denial.reason, denial.next);
 }
 
 /**

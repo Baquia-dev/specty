@@ -128,6 +128,7 @@ export {
   blockedCommitMessage,
   checkChangedFailedLine,
   checkStagedFailedLine,
+  noWaitLine,
   type WorktreeHookRefusal,
   worktreeHookRefusal,
 } from "./hooks";
@@ -452,7 +453,7 @@ export type {
   SliceView,
   TaskView,
 } from "./view";
-export { waitTimeoutCard } from "./wait";
+export { waitHeartbeat, waitTimeoutCard } from "./wait";
 export {
   type WhyCommit,
   type WhyRefusal,

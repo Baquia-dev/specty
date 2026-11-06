@@ -137,6 +137,14 @@ export {
   parseGlossary,
   termsIn,
 } from "./glossary";
+export type {
+  GuardAction,
+  GuardChange,
+  GuardContext,
+  GuardDecision,
+  GuardRule,
+  ShellFacts,
+} from "./guard/action";
 export {
   DELETED,
   decideAfterShell,
@@ -144,16 +152,7 @@ export {
   type ShellSnapshot,
   shellChanges,
 } from "./guard/after";
-export {
-  decideGuard,
-  type GuardAction,
-  type GuardChange,
-  type GuardContext,
-  type GuardDecision,
-  type GuardRule,
-  HUMAN_COMMANDS,
-  type ShellFacts,
-} from "./guard/decide";
+export { decideGuard, HUMAN_COMMANDS } from "./guard/decide";
 export type { GuardIntegration } from "./guard/integration";
 export { movePatch, type PatchPaths, patchPaths } from "./guard/patch";
 export type { BoundSession } from "./guard/session";

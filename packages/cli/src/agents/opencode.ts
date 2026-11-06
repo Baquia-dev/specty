@@ -8,6 +8,7 @@ import {
   installOpencode,
   opencodePluginFile,
   planOpencodeStop,
+  planOpencodeTurn,
 } from "../install/opencode";
 import { isRecord, readText } from "../io/files";
 import {
@@ -43,10 +44,12 @@ export const opencode: AgentAdapter = {
       : exitReply(verdict),
   failed: exitFailed,
   card: textCard,
-  // `check --install` turns it on in the plugin, which keeps it once a turn went back to work.
+  // `init` turns it on in the plugin and `check --install` its check; the plugin keeps the turn
+  // it sent back to work.
   stop: {
     ...blockingStop([]),
-    plan: ({ root, files, timeout }) => planOpencodeStop(root, files, timeout),
+    plan: ({ root, files, timeout, check }) =>
+      (check ? planOpencodeStop : planOpencodeTurn)(root, files, timeout),
   },
   install: async ({ root, git, invocation, files, lang }) => {
     const { file, local } = await installOpencode(root, git, invocation, files);

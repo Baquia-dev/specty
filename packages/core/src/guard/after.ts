@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { lookup } from "../lookup";
-import { decideGuard, type GuardContext, type GuardDecision, type GuardRule } from "./decide";
+import type { GuardContext, GuardDecision, GuardRule } from "./action";
+import { decideGuard } from "./decide";
 
 /**
  * The files that differ from `HEAD` around a shell command, each with a fingerprint of what is on

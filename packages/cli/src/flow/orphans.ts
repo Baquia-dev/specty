@@ -1,22 +1,116 @@
 // SPDX-License-Identifier: Apache-2.0
 import { readdir, readFile, stat } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
+import { type Lang, notInTargetFolderLine, workingFolderLine } from "@baquia-dev/specty-core";
 import { exists } from "../io/files";
-import type { Git } from "../io/git";
+import { type Git, resolved } from "../io/git";
 import type { Session } from "../session";
+import type { StoredChange } from "../store/changes";
+import { readBindings } from "../store/local";
 import { repoPaths } from "../store/paths";
+import { isFinished } from "./active";
+import { locateChanges } from "./changes";
+import { integrationOf, isIncorporated } from "./integrate";
+import { within } from "./land";
 import { lostChanges } from "./lost";
 import { formerWorktreesHome, ghostFolders, worktreesHome } from "./worktree";
 
 // The orphans the clean-up removes (ARCHITECTURE §9), one finder for each kind: records of
-// worktrees whose folder is gone, ghost folders, and folders of `.specty/changes/` with no file.
+// worktrees whose folder is gone, folders of finished changes, ghost folders, and folders of
+// `.specty/changes/` with no file. Finding them touches nothing: `doctor` and `status` count them.
 
-/** How many records of worktrees git keeps whose folder no longer exists, locked ones too. */
+/**
+ * A session's record stops counting a day after it was made, or once its tool said the
+ * conversation ended (`ended`): nothing deletes it at the end.
+ */
+const SESSION_DAY = 24 * 60 * 60 * 1000;
+
+/** How many orphans of each kind the clean-up would remove, run from the same folder. */
+export interface OrphanCounts {
+  readonly records: number;
+  readonly finished: number;
+  readonly ghosts: number;
+  readonly empty: number;
+}
+
+/** Counts the orphans of each kind that `cleanUp` would remove from this folder, touching none. */
+export async function countOrphans(session: Session): Promise<OrphanCounts> {
+  const { git } = session;
+  const finished = (await finishedFolders(session)).filter(({ kept }) => kept === undefined);
+  const ghosts = await sweepableGhosts(session);
+  // The clean-up spares the one this process runs in.
+  const inside = await Promise.all(ghosts.map((folder) => within(session.environment.cwd, folder)));
+  return {
+    records: await staleRecords(git),
+    finished: finished.length,
+    ghosts: inside.filter((here) => !here).length,
+    empty: (await emptyChangeFolders(git)).length,
+  };
+}
+
+/**
+ * How many records of worktrees git keeps whose folder no longer exists, but the locked ones,
+ * which `git worktree prune` keeps.
+ */
 export async function staleRecords(git: Git): Promise<number> {
   // The main one comes first, and it is where git runs.
   const [, ...others] = await git.worktrees();
-  const present = await Promise.all(others.map(({ folder }) => exists(folder)));
+  const unlocked = others.filter(({ locked }) => locked !== true);
+  const present = await Promise.all(unlocked.map(({ folder }) => exists(folder)));
   return present.filter((here) => !here).length;
+}
+
+/** The worktree of a finished change, and why it stays, when it does. */
+export interface FinishedFolder {
+  readonly there: Session;
+  readonly kept?: string;
+}
+
+/**
+ * The worktrees of finished changes, closed or cancelled, but the main folder and the one this
+ * process runs in: each with why it stays (`keptBecause`), or none when the clean-up removes it.
+ */
+export async function finishedFolders(session: Session): Promise<FinishedFolder[]> {
+  const main = (await session.git.worktrees())[0]?.folder ?? session.root;
+  const working = await workingFolders(session);
+  const found: FinishedFolder[] = [];
+  for (const { change, session: there } of await locateChanges(session)) {
+    const { state } = change;
+    if (!isFinished(state) || there.root === main) continue;
+    if (await within(session.environment.cwd, there.root)) continue;
+    const kept = await keptBecause(there, state, working, session.lang);
+    found.push(kept === undefined ? { there } : { there, kept });
+  }
+  return found;
+}
+
+/**
+ * The folders agent sessions work in, as the guard recorded them in the last day, resolved; not
+ * those of conversations their tool said ended.
+ */
+export async function workingFolders(session: Session): Promise<string[]> {
+  const now = session.environment.now().getTime();
+  return Promise.all(
+    (await readBindings(session.git))
+      .filter(({ at, ended }) => ended === undefined && now - Date.parse(at) < SESSION_DAY)
+      .map(({ folder }) => resolved(folder)),
+  );
+}
+
+/** Why a finished change's folder stays: an agent session works in it, or it is not in its target. */
+async function keptBecause(
+  there: Session,
+  state: StoredChange["state"],
+  working: readonly string[],
+  lang: Lang,
+): Promise<string | undefined> {
+  // Such as the session that closed its change from inside, in delegated mode.
+  if (working.includes(await resolved(there.root))) return workingFolderLine(there.root, lang);
+  const plan = state.phase === "done" ? await integrationOf(there, state) : undefined;
+  if (plan !== undefined && !(await isIncorporated(there, plan))) {
+    return notInTargetFolderLine(there.root, state.id, plan.target, lang);
+  }
+  return undefined;
 }
 
 /**

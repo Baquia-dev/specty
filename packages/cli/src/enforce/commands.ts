@@ -18,6 +18,8 @@ export function enforcementCommands(
     .command("hook", { hidden: true })
     .argument("<name>")
     .argument("[args...]")
+    // The end of turn's own marks (`--no-check`) are its arguments.
+    .allowUnknownOption()
     .action(async (name: string, args: string[]) =>
       exit(await hookCommand(environment, name, args)),
     );

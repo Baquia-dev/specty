@@ -7,6 +7,7 @@ import { pathEntriesBlock } from "./memory-paths";
 import { reviewRemarkLines } from "./review-remarks";
 import { effortLabel, progressOf, translator } from "./text";
 import type { CardContext, ChangeView, TaskView } from "./view";
+import { waitStep } from "./wait";
 
 // Cards while the change is being built: tasks, acceptance, adjustments and closing.
 
@@ -223,8 +224,8 @@ function closingSubmittedCard(change: ChangeView, ctx: CardContext): Output {
           `delegated mode: confirm the closing yourself with \`${ctx.command} close\` and follow its output.`,
         )
       : t(
-          `pide al usuario que lo confirme con \`${ctx.command} close\` (o en la UI) y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
-          `ask the user to confirm it with \`${ctx.command} close\` (or in the UI) and run \`${ctx.command} wait\` to wait for their decision.`,
+          `pide al usuario que lo confirme con \`${ctx.command} close\` (o en la UI) y ${waitStep(ctx)}.`,
+          `ask the user to confirm it with \`${ctx.command} close\` (or in the UI) and ${waitStep(ctx)}.`,
         ),
   };
 }

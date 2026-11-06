@@ -124,6 +124,23 @@ async function createRef(session: Session, name: string, commit: string): Promis
   }
 }
 
+/**
+ * The rescue refs, the latest first: by the time in their last level (`<YYYYMMDDHHMMSS>`, maybe
+ * with `-2`, `-3`…), then by their whole name.
+ */
+export async function rescueRefs(git: Git): Promise<string[]> {
+  const listed = await git.output(["for-each-ref", "--format=%(refname)", `${RESCUE_REFS}/`]);
+  return (
+    listed
+      .split("\n")
+      .filter((ref) => ref.length > 0)
+      .map((ref) => ({ ref, key: `${ref.slice(ref.lastIndexOf("/") + 1)}\0${ref}` }))
+      // Each key holds its whole ref, so no two are equal.
+      .sort((a, b) => (a.key < b.key ? 1 : -1))
+      .map(({ ref }) => ref)
+  );
+}
+
 /** `name` as a level of a ref: `-` instead of what git does not take there. */
 function refName(name: string): string {
   const safe = name

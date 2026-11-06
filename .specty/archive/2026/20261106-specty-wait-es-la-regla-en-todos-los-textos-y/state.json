@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "id": "20261106-specty-wait-es-la-regla-en-todos-los-textos-y",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-specty-wait-es-la-regla-en-todos-los-textos-y",
+  "baseCommit": "36170f0d131f950b7eac367a27c7b3253d3de393",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:942b1a914ffb2068e9b4b388baa9a8574c6e8dfd6aecca729c84d62bf876296f",
+    "at": "2026-11-06T11:57:05.647Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "16 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:943f514b8f9b03bb732f3f585ff286d8fd18762753c55aabc3e540aa835abb5e",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0f00c5788b215d55d0ea61f972e61f6c0b44b7a7124077b1c7bdb4183cb51929",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:885baa5bc799f6f945e1ee879aa3ab20c0ae438d69106f4ae2b4ca9c58aa238f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c2e1bb96c20bdc879a080322afcfe3fedb052b2e33338446c642b0741246c71e",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:7aa750f378340f572de5857f0f9e44f2619419b612e1e211e6e6f997f1348680",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0867e7ccba6f750cb0ee0575710f2aa78f91a549",
+      "attempts": 1,
+      "startedAt": "2026-11-06T12:01:23.373Z",
+      "doneAt": "2026-11-06T12:02:28.041Z",
+      "summary": "cards/wait.ts reúne la tabla de cómo espera cada herramienta, la frase común waitStep y la tarjeta de tiempo agotado, que pide recordar la decisión y volver a ejecutar wait ya; ya no importa blockedCard de flow.ts para evitar un ciclo",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "668b4cb2a8414665f83371f9a1ea397e281a596d",
+      "attempts": 1,
+      "startedAt": "2026-11-06T12:02:28.338Z",
+      "doneAt": "2026-11-06T12:03:56.743Z",
+      "summary": "Las tarjetas de flow, next, acceptance, work, integration, testing y epic piden wait con waitStep(ctx) en lugar del texto a mano, y review.ts lo añade tras pedir aprobar o aceptar fuera del modo delegado",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "48f0ce3fb92ca86b20b469f1059eb1b3d54ac4b5",
+      "attempts": 1,
+      "startedAt": "2026-11-06T12:03:57.049Z",
+      "doneAt": "2026-11-06T12:04:39.042Z",
+      "summary": "La regla de AGENTS.md pide esperar siempre con specty wait (en Claude Code, en segundo plano), repetirlo si se agota o se corta y no esperar terminando el turno, con sleep ni con status; formats.md y ARCHITECTURE.md cuentan la frase común",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T12:10:35.185Z",
+  "lockedTests": {
+    "packages/core/test/agents-md.test.ts": "sha256:31d75fdbb4d189c80f0f2dde05ea7ff6c34ae673f47d41f4b69a20a9132a9481",
+    "packages/core/test/cards/delegated.test.ts": "sha256:7322750b97490eed703a85740c40f07ace9ae29b5af1899221c26e0b8853e728",
+    "packages/core/test/cards/epic.test.ts": "sha256:b1239690b56c49321c9679cd53de957075139d62ff6b678c6a12af5e1d07df9f",
+    "packages/core/test/cards/incorporation.test.ts": "sha256:4fa02a6c73b52fa88e877cd6252f84c4e111b8b643516e69dffb741d82873d1f",
+    "packages/core/test/cards/review.test.ts": "sha256:869ecda247d5a390e5fc45f6898912fe5085353537cfd802d5840deacd9c9779",
+    "packages/core/test/cards/wait.test.ts": "sha256:38802c929a08bc30717e377ef3ed8d9eb7107bd00b5a59349935f12651b11176"
+  }
+}
