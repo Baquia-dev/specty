@@ -57,6 +57,8 @@ const TABLE: Readonly<Record<FlowEventType, Row>> = {
       draft: "review",
       review: "review",
       testing: "testing",
+      // In delegated mode, the closing is sent ahead of the acceptance (ARCHITECTURE §4).
+      acceptance: "acceptance",
       adjusting: "review",
       closing: "closing",
     },

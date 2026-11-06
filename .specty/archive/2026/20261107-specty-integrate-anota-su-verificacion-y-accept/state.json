@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "id": "20261107-specty-integrate-anota-su-verificacion-y-accept",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-specty-integrate-anota-su-verificacion-y-accept",
+  "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fef210f436975516aed0b6737b7195224daf65102a445c8f221ff2f794e2aa96",
+    "at": "2026-11-06T18:47:43.263Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1241870ee3110c5709c482bffc1b6b91ee166200a8b06bd7f86c8b1fadba9259",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:cd1a4dfe2f50c895622540c0216003c56d5bff1c48f269f0c71696d937f804d5",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:84085b4073cb4acbd05423104c6f597880c0e792ea1134333a5e32bd20c96e55",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b5d605b23bd76fbc3594ec0e40104ae85d11495bbad68fe105088f4a4d5670f4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "87cbd0cc37128532d7654309da226347f79a9f44",
+      "attempts": 1,
+      "startedAt": "2026-11-06T18:50:10.750Z",
+      "doneAt": "2026-11-06T18:51:45.842Z",
+      "summary": "integrate anota con recordFullVerification y codeTree la verificación completa que pasa sobre el merge resuelto, con su tiempo desde el turno; accept la reutiliza",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2d2b442170d750aa8902f40bc91b6de87959d956",
+      "attempts": 1,
+      "startedAt": "2026-11-06T18:51:46.184Z",
+      "doneAt": "2026-11-06T18:52:13.827Z",
+      "summary": "formats.md §4 (change.verified) y ARCHITECTURE §6 y §9 cuentan que specty integrate anota su verificación y accept no la repite",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-11-06T18:57:16.007Z",
+  "lockedTests": {
+    "packages/cli/test/integrate-units.test.ts": "sha256:3b9e3949fd7f8f6bf0e5e74ea1961fd21dabc38b618c7b84efabb2053e336367",
+    "packages/cli/test/integrate.test.ts": "sha256:11593d81b0bf5b00ab46427ee4b7cc189b7aec01d76ab91cdf322c4428982b2a"
+  }
+}

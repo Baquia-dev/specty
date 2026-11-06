@@ -2,6 +2,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
 import { Button } from "../components/button";
 import { Toasts } from "../components/toast";
+import { agentName } from "../data/agent-name";
 import type { ChangeView, Unattended } from "../data/records";
 import { Preferences } from "../theme/preferences";
 
@@ -87,16 +88,17 @@ export class ResumeHints {
       );
     }
     const when = minutesAgo(away.ago);
+    const agent = agentName(away.tool);
     return this.t()(
-      `Su conversación (${away.tool}) salió de su carpeta ${when.es}.`,
-      `Its conversation (${away.tool}) left its folder ${when.en}.`,
+      `Su conversación (${agent}) salió de su carpeta ${when.es}.`,
+      `Its conversation (${agent}) left its folder ${when.en}.`,
     );
   });
 
   /** What happened to the person's decision: the agent's `wait` ended, or no agent waited. */
   private unattendedWhy({ wait, holder }: Unattended): string {
     if (wait !== undefined) {
-      const tool = wait.tool === undefined ? "" : ` (${wait.tool})`;
+      const tool = wait.tool === undefined ? "" : ` (${agentName(wait.tool)})`;
       const when = minutesAgo(wait.ago);
       return wait.ended === "timeout"
         ? this.t()(
@@ -115,9 +117,10 @@ export class ResumeHints {
       );
     }
     const when = minutesAgo(holder.ago);
+    const agent = agentName(holder.tool);
     return this.t()(
-      `Ningún agente esperaba tu decisión; la última conversación en su carpeta (${holder.tool}) dio un paso ${when.es}.`,
-      `No agent was waiting for your decision; the last conversation in its folder (${holder.tool}) took a step ${when.en}.`,
+      `Ningún agente esperaba tu decisión; la última conversación en su carpeta (${agent}) dio un paso ${when.es}.`,
+      `No agent was waiting for your decision; the last conversation in its folder (${agent}) took a step ${when.en}.`,
     );
   }
 

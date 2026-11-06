@@ -38,6 +38,17 @@ describe("the full verification started from the UI", () => {
       `${HEADER}\nVerificación completa en marcha: \`pnpm check\`.\nSIGUIENTE: sigue su salida en la UI.`,
     );
   });
+
+  it("AC5: says, in both languages, that main is merged in before verifying", () => {
+    const es = runStartedCard(HEADER, "pnpm check", ES, "main");
+    expect(es.status).toBe("ok");
+    expect(renderText(es, "es")).toBe(
+      `${HEADER}\nmain avanzó: se incorpora a la rama del cambio y la verificación completa corre sobre el código incorporado: \`pnpm check\`.\nSIGUIENTE: sigue su salida en la UI.`,
+    );
+    expect(renderText(runStartedCard(HEADER, "pnpm check", EN, "trunk"), "en")).toBe(
+      `${HEADER}\ntrunk moved on: it is merged into the change's branch and the full verification runs on the merged code: \`pnpm check\`.\nNEXT: follow its output in the UI.`,
+    );
+  });
 });
 
 describe("an approval from the UI", () => {

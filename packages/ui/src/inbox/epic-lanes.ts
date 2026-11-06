@@ -11,6 +11,7 @@ import {
   type SliceChangeRecord,
 } from "../data/records";
 import { loadedSliceChanges } from "../data/slice-changes";
+import { type LaneHolds, laneHolds, saysSomething } from "./lane-holds";
 
 /** The headers of a line's four stretches. */
 export const LANE_STEPS: readonly Bilingual[] = [
@@ -69,6 +70,11 @@ export interface EpicLane {
   /** The change it links to, with the tab it opens on when it is loaded. */
   readonly change?: { readonly id: string; readonly tab?: ChangeTab };
   readonly state: LaneState;
+  /**
+   * Who holds its change and what it warns of: only a line whose change is open and loaded, and
+   * when there is something to say.
+   */
+  readonly holds?: LaneHolds;
 }
 
 /** A slice as its line reads it. */
@@ -92,7 +98,8 @@ export function asksForSlices(phase: Phase): boolean {
  * The lines of `epic`'s card: each slice of its Cortes section, in its order, and then each change
  * of the epic among `loaded`, not cancelled, whose slice the section does not name. In acceptance,
  * closing or done, every slice is finished; otherwise each one stands where its change does, and a
- * slice without one has not started, unless the source has not said so yet (`answer`).
+ * slice without one has not started, unless the source has not said so yet (`answer`). A line
+ * whose change is open and loaded says who holds it and what it warns of, if anything (`laneHolds`).
  */
 export function epicLanes(
   epic: ListedChange,
@@ -122,7 +129,10 @@ export function epicLanes(
         : stateOf(change);
     return { key: slice.id, slice: slice.id, title: slice.title, ...linkOf(change), state };
   });
-  return [...named, ...strays(epic.id, loaded, slices)];
+  return [...named, ...strays(epic.id, loaded, slices)].map((lane) => {
+    const holds = laneHolds(lane.change?.id, loaded);
+    return holds !== undefined && saysSomething(holds) ? { ...lane, holds } : lane;
+  });
 }
 
 /** How the slices of an epic in implementation go, by the lines of its card: what its head says. */

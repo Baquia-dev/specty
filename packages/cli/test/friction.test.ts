@@ -54,7 +54,8 @@ function standard(root: string, trips: boolean): Script {
         proposals += 1;
         await writeFiles(root, { [SPEC_PATH]: trips && proposals === 1 ? INVALID : STANDARD });
       }
-      if (verb === "propose" && phaseOf(output) === "closing") {
+      // In delegated mode, the closing is written in acceptance, before `accept` closes it.
+      if (verb === "propose" && ["acceptance", "closing"].includes(phaseOf(output) ?? "")) {
         await writeFiles(root, { [SPEC_PATH]: `${await read(root, SPEC_PATH)}${CLOSING}` });
       }
       if (verb === "scope") {
@@ -257,9 +258,10 @@ describe("following every SIGUIENTE", () => {
     expect(on.code).toBe(0);
     const result = await walk(root, standard(root, false), true);
     expect(result.done, transcript(result)).toBe(true);
-    // Each decision the agent takes brings the next card: no `next` after approve and accept.
+    // Each decision the agent takes brings the next card: no `next` after approve and accept. The
+    // closing is sent in acceptance, and `accept` closes the change: no `close`.
     expect(result.friction).toEqual({
-      agent: 9,
+      agent: 8,
       person: 0,
       blockedTools: 0,
       blocks: 0,

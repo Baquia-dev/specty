@@ -56,6 +56,8 @@ export interface ChangeRecord {
   readonly folder?: string;
   /** An open change whose folder is gone: its files come from its branch (`specty restore`). */
   readonly lost?: boolean;
+  /** The agent of the conversation that stepped last in its folder, and how many minutes ago. */
+  readonly holder?: { readonly tool: string; readonly ago: number };
   /** It waits for the agent and no conversation stepped in it nor wrote to it lately. */
   readonly orphan?: boolean;
   /** It waits for the agent and its conversation stepped last in another folder, minutes ago. */
@@ -357,6 +359,8 @@ export interface ChangeView {
   readonly folder?: string;
   /** Its folder is gone and it is still on its branch: the page offers to bring it back. */
   readonly lost?: boolean;
+  /** The agent of the conversation that stepped last in its folder, and how many minutes ago. */
+  readonly holder?: { readonly tool: string; readonly ago: number };
   /** No conversation holds it: the page says how to resume it. */
   readonly orphan?: boolean;
   /** Its conversation left its folder: which agent, and how many minutes ago. */

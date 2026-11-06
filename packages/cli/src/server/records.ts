@@ -32,6 +32,8 @@ export interface ChangeRecord {
   readonly folder?: string;
   /** An open change whose folder is gone: its files come from its branch (`specty restore`). */
   readonly lost?: boolean;
+  /** The agent of the conversation that stepped last in its folder, and how many minutes ago (`status`). */
+  readonly holder?: { readonly tool: string; readonly ago: number };
   /** It waits for the agent and no conversation stepped in it nor wrote to it lately (`status`). */
   readonly orphan?: boolean;
   /** It waits for the agent and its conversation stepped last in another folder (`status`). */
@@ -215,13 +217,14 @@ export async function changeRecord(
   return (await changeRecords(session)).find((record) => record.state.id === id);
 }
 
-/** What the records say of who holds a change that waits for the agent. */
-type Holds = Pick<ChangeRecord, "orphan" | "away" | "unattended">;
+/** What the records say of who holds an open change. */
+type Holds = Pick<ChangeRecord, "holder" | "orphan" | "away" | "unattended">;
 
 /**
- * The open changes that wait for the agent with no conversation in their folder, by id, as
- * `status` marks them: orphans, and those whose conversation stepped last in another folder;
- * and those where nobody picks up the person's last decision (`unattendedById`).
+ * Who holds each open change, by id, as `status` marks it: the agent that stepped last in its
+ * folder, whatever it waits for; of those that wait for the agent with no conversation in their
+ * folder, the orphans and those whose conversation stepped last in another folder; and those
+ * where nobody picks up the person's last decision (`unattendedById`).
  */
 async function holdsById(
   session: Session,
@@ -230,10 +233,12 @@ async function holdsById(
   const entries = await openChanges(session);
   const nobody = await unattendedById(session, entries, records);
   const holds = new Map<string, Holds>();
-  for (const { id, orphan, away } of entries) {
+  for (const { id, holder, orphan, away } of entries) {
     const unattended = nobody.get(id);
-    if (orphan !== true && away === undefined && unattended === undefined) continue;
+    if (holder === undefined && orphan !== true && away === undefined && unattended === undefined)
+      continue;
     holds.set(id, {
+      ...(holder !== undefined ? { holder } : {}),
       ...(orphan === true ? { orphan } : {}),
       ...(away !== undefined ? { away } : {}),
       ...(unattended !== undefined ? { unattended } : {}),

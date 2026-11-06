@@ -55,17 +55,31 @@ export function runRefusalCard(refusal: RunRefusal, header: string, ctx: CardCon
   }
 }
 
-export function runStartedCard(header: string, command: string, ctx: CardContext): Output {
+/**
+ * The full verification started from the UI. With `target`, that branch moved on since the
+ * change's: it is merged in first, as `specty accept` does, and the merged code is verified.
+ */
+export function runStartedCard(
+  header: string,
+  command: string,
+  ctx: CardContext,
+  target?: string,
+): Output {
   const t = translator(ctx.lang);
+  const started =
+    target === undefined
+      ? t(
+          `Verificación completa en marcha: \`${command}\`.`,
+          `Full verification running: \`${command}\`.`,
+        )
+      : t(
+          `${target} avanzó: se incorpora a la rama del cambio y la verificación completa corre sobre el código incorporado: \`${command}\`.`,
+          `${target} moved on: it is merged into the change's branch and the full verification runs on the merged code: \`${command}\`.`,
+        );
   return {
     status: "ok",
     header,
-    blocks: section(undefined, [
-      t(
-        `Verificación completa en marcha: \`${command}\`.`,
-        `Full verification running: \`${command}\`.`,
-      ),
-    ]),
+    blocks: section(undefined, [started]),
     next: t("sigue su salida en la UI.", "follow its output in the UI."),
   };
 }

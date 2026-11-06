@@ -3,12 +3,14 @@ import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  CHANGE,
   CONFIG,
   cli,
   APP as FILES,
   git,
   inWorktree,
   person,
+  read,
   toClosing,
   tryGit,
   writeFiles,
@@ -58,6 +60,15 @@ async function conflictForAgent() {
 const merging = (folder: string) =>
   tryGit(folder, "rev-parse", "-q", "--verify", "MERGE_HEAD").status === 0;
 
+/** The `data` of each `change.verified` of SPEC's change in `folder`, oldest first. */
+const verifications = async (folder: string): Promise<Record<string, unknown>[]> =>
+  (await read(folder, `.specty/changes/${CHANGE}/audit.jsonl`))
+    .trim()
+    .split("\n")
+    .map((line): { event: string; data: Record<string, unknown> } => JSON.parse(line))
+    .filter(({ event }) => event === "change.verified")
+    .map(({ data }) => data);
+
 describe("`specty integrate` with verify.units", () => {
   it("AC4: runs only the units that have not passed, and commits the merge only when they pass", async () => {
     const { root, folder } = await conflictForAgent();
@@ -84,5 +95,19 @@ describe("`specty integrate` with verify.units", () => {
     expect(integrated.err).toMatch(/Ejecutadas y correctas: a \(\d+ s\)\./);
     expect(await recorded(root)).toHaveLength(3);
     expect(merging(folder)).toBe(false);
+  });
+
+  it("AC1: records the units it ran as the change's verification, with the code's tree", async () => {
+    const { folder } = await conflictForAgent();
+    const before = await verifications(folder);
+    await writeFiles(folder, { "src/app.ts": "resuelto\n" });
+    expect((await cli(folder, ["integrate"])).code).toBe(0);
+    const after = await verifications(folder);
+    expect(after).toHaveLength(before.length + 1);
+    expect(after.at(-1)).toMatchObject({
+      exit: 0,
+      tree: expect.any(String),
+      units: { reused: ["b"], passed: [{ name: "a" }] },
+    });
   });
 });

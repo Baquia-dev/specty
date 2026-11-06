@@ -217,7 +217,8 @@ function decideFiles(
 function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): GuardDecision {
   const { change } = ctx;
   if (change !== undefined && path === change.specPath) {
-    const denial = specDenial(change, mode, ctx.lang, ctx.command);
+    const { lang, command } = ctx;
+    const denial = specDenial(change, mode, { lang, command, delegated: ctx.delegated === true });
     return denial === undefined ? ALLOW : deny("spec", denial.reason, denial.next);
   }
   const managed = protectedDenial(path, ctx.lang, ctx.command);

@@ -41,6 +41,63 @@ async function mainMoves(root: string): Promise<void> {
   git(root, "commit", "-q", "-m", "otro trabajo en main");
 }
 
+/** The `data` of each `change.verified` of SPEC's change in `folder`, oldest first. */
+const verifications = async (folder: string): Promise<Record<string, unknown>[]> =>
+  (await read(folder, `.specty/changes/${CHANGE}/audit.jsonl`))
+    .trim()
+    .split("\n")
+    .map((line): { event: string; data: Record<string, unknown> } => JSON.parse(line))
+    .filter(({ event }) => event === "change.verified")
+    .map(({ data }) => data);
+
+/** SPEC's change in acceptance, whose merge of a main that changed its greeting waits for the agent. */
+async function conflictOnAcceptance() {
+  const { root, folder } = await inWorktree(COUNTING);
+  await toAcceptance(folder);
+  await writeFiles(root, { "src/app.ts": "main\n" });
+  git(root, "commit", "-q", "-am", "main cambia el saludo");
+  const refused = await cli(folder, ["accept"], { terminal: person() });
+  expect(refused.out).toContain("el merge queda en esta carpeta para que lo resuelva el agente");
+  expect(await exists(join(root, ".git", "runs"))).toBe(false);
+  return { root, folder };
+}
+
+describe("`specty integrate` records its verification for `accept`", () => {
+  it("AC1: `accept` does not run again the verification `specty integrate` passed on this code", async () => {
+    const { root, folder } = await conflictOnAcceptance();
+    await writeFiles(folder, { "src/app.ts": "resuelto\n" });
+    expect((await cli(folder, ["integrate"])).code).toBe(0);
+    expect(await runs(root)).toBe(1);
+    expect((await verifications(folder)).at(-1)).toMatchObject({
+      cmd: COUNTED,
+      exit: 0,
+      tree: expect.any(String),
+    });
+    const terminal = person();
+    const accepted = await cli(folder, ["accept"], { terminal });
+    expect(accepted.code).toBe(0);
+    expect(terminal.notes.join("\n")).toContain(
+      "ya pasó con este mismo código en una verificación anterior: no se repite.",
+    );
+    expect(await runs(root)).toBe(1);
+    expect(await stateIn(folder)).toMatchObject({ phase: "closing" });
+  });
+
+  it("AC2: `accept` verifies the new code when main moved after `specty integrate`", async () => {
+    const { root, folder } = await conflictOnAcceptance();
+    await writeFiles(folder, { "src/app.ts": "resuelto\n" });
+    expect((await cli(folder, ["integrate"])).code).toBe(0);
+    await mainMoves(root);
+    const accepted = await cli(folder, ["accept"], { terminal: person() });
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toMatch(MERGED);
+    expect(await runs(root)).toBe(2);
+    const [integrated, merged] = await verifications(folder);
+    expect(merged?.tree).toEqual(expect.any(String));
+    expect(merged?.tree).not.toBe(integrated?.tree);
+  });
+});
+
 describe("closing incorporates the change into the main branch", () => {
   it("fast-forwards main where it is checked out and removes the change's worktree (AC1, AC5)", async () => {
     const { root, folder } = await inWorktree();

@@ -18,6 +18,15 @@ const WAITING: EpicLane = {
   state: { kind: "open", phase: "testing", decision: "tests" },
 };
 
+/** C3, whose change is in progress and waits for nobody. */
+const HELD: EpicLane = {
+  key: "C3",
+  slice: "C3",
+  title: "Acceso con Google",
+  change: { id: "20261021-login-google", tab: "progress" },
+  state: { kind: "open", phase: "implementing" },
+};
+
 @Component({
   imports: [InboxLane],
   template: `<div class="grid grid-cols-4"><sp-inbox-lane [lane]="lane()" [current]="current()" /></div>`,
@@ -194,5 +203,91 @@ describe("InboxLane", () => {
     host.current.set(true);
     await fixture.whenStable();
     expect(lane()?.getAttribute("aria-current")).toBe("true");
+  });
+
+  it("AC5: says on the right the agent that holds its open change, with no notices under its title", async () => {
+    const { lane, show } = await render();
+    await show({ ...HELD, holds: { agent: "Codex", orphan: false } });
+    expect(text(lane()?.querySelector("[data-holder]"))).toBe("Codex");
+    expect(lane()?.querySelector("sp-button")).toBeNull();
+    expect(lane()?.querySelector("[data-unheld]")).toBeNull();
+    expect(lane()?.querySelector("[data-shared]")).toBeNull();
+    // Its title keeps its link: the notices go under it, in the same column.
+    expect(text(lane()?.querySelector("a"))).toBe("Acceso con Google");
+  });
+
+  it("AC5: keeps the decision's button on the right when its change waits for one", async () => {
+    const { lane, show } = await render();
+    await show({ ...WAITING, holds: { agent: "Claude Code", orphan: false } });
+    expect(text(lane()?.querySelector("sp-button"))).toBe("Aprobar tests");
+    expect(lane()?.querySelector("[data-holder]")).toBeNull();
+  });
+
+  it("AC5: says an orphan has no conversation, on the right and under its title", async () => {
+    const { lane, show } = await render();
+    await show({ ...HELD, holds: { orphan: true } });
+    const holder = lane()?.querySelector<HTMLElement>("[data-holder]");
+    expect(text(holder)).toBe("Sin conversación");
+    expect(holder?.style.color).toContain("--color-phase-review");
+    const unheld = lane()?.querySelector<HTMLElement>("[data-unheld]");
+    expect(text(unheld)).toBe("Ninguna conversación lo lleva");
+    expect(unheld?.style.color).toContain("--color-phase-review");
+  });
+
+  it("AC5: carries a row's notice when its conversation left its folder, ahead of the orphan's", async () => {
+    const { lane, show } = await render();
+    await show({ ...HELD, holds: { agent: "Claude Code", orphan: false, away: "Claude Code" } });
+    expect(text(lane()?.querySelector("[data-holder]"))).toBe("Claude Code");
+    expect(text(lane()?.querySelector("[data-unheld]"))).toBe(
+      "Su conversación (Claude Code) salió de su carpeta",
+    );
+    await show({ ...HELD, holds: { orphan: true, away: "Codex" } });
+    const notices = lane()?.querySelectorAll("[data-unheld]") ?? [];
+    expect([...notices].map(text)).toEqual(["Su conversación (Codex) salió de su carpeta"]);
+    expect(text(lane()?.querySelector("[data-holder]"))).toBe("Sin conversación");
+  });
+
+  it("AC5: says the files it shares and with whom: a slice by its id, another change by its title", async () => {
+    const { lane, show } = await render();
+    await show({
+      ...HELD,
+      holds: {
+        agent: "Codex",
+        orphan: false,
+        shared: { paths: ["src/audio/buffer.ts", "src/room.ts"], with: ["C5", "«Corregir eco»"] },
+      },
+    });
+    const shared = lane()?.querySelector<HTMLElement>("[data-shared]");
+    expect(text(shared)).toBe("Comparte src/audio/buffer.ts, src/room.ts con C5, «Corregir eco»");
+    expect([...(shared?.querySelectorAll("code") ?? [])].map(text)).toEqual([
+      "src/audio/buffer.ts",
+      "src/room.ts",
+    ]);
+    expect(shared?.style.color).toContain("--color-phase-review");
+  });
+
+  it("AC5: says who holds it and its notices in English too", async () => {
+    const { lane, show } = await render("en");
+    await show({ ...HELD, holds: { orphan: true, shared: { paths: ["a.ts"], with: ["C5"] } } });
+    expect(text(lane()?.querySelector("[data-holder]"))).toBe("No conversation");
+    expect(text(lane()?.querySelector("[data-unheld]"))).toBe("No conversation holds it");
+    expect(text(lane()?.querySelector("[data-shared]"))).toBe("Shares a.ts with C5");
+    await show({ ...HELD, holds: { agent: "Codex", orphan: false, away: "Codex" } });
+    expect(text(lane()?.querySelector("[data-holder]"))).toBe("Codex");
+    expect(text(lane()?.querySelector("[data-unheld]"))).toBe(
+      "Its conversation (Codex) left its folder",
+    );
+  });
+
+  it("AC5: says nothing of who holds a line without an open change", async () => {
+    const { lane, show } = await render();
+    await show({
+      key: "C4",
+      slice: "C4",
+      title: "Chat",
+      state: { kind: "planned", waitsFor: [], beforeApproval: false },
+    });
+    expect(lane()?.querySelector("[data-holder]")).toBeNull();
+    expect(lane()?.querySelector("[data-unheld]")).toBeNull();
   });
 });

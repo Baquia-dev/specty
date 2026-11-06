@@ -93,6 +93,66 @@ describe("spansOf", () => {
   });
 });
 
+/** The character with this code point. */
+const char = (code: number) => String.fromCodePoint(code);
+
+describe("spansOf, the characters of text direction", () => {
+  const RLO = char(0x202e);
+
+  it("AC1, AC2: shows each one as its code, marked, in a piece of its own", () => {
+    expect(spansOf({ kind: "context", text: `a${RLO}b` })).toEqual([
+      { text: "a", changed: false },
+      { text: "\\u202e", changed: false, direction: true },
+      { text: "b", changed: false },
+    ]);
+    // The nine the terminal shows as their code: embeddings, overrides and isolates.
+    const codes = [0x202a, 0x202b, 0x202c, 0x202d, 0x202e, 0x2066, 0x2067, 0x2068, 0x2069];
+    expect(spansOf({ kind: "added", text: codes.map(char).join("") })).toEqual(
+      codes.map((code) => ({ text: `\\u${code.toString(16)}`, changed: false, direction: true })),
+    );
+  });
+
+  it("AC1: keeps the colors and the changed words of the rest of the line", () => {
+    const string = "var(--color-code-string)";
+    const changed: DiffLine = {
+      kind: "added",
+      text: `s = "a${RLO}b";`,
+      changed: [{ start: 5, end: 8 }],
+    };
+    const tokens: readonly CodeToken[] = [
+      { text: "s" },
+      { text: " = " },
+      { text: `"a${RLO}b"`, color: string },
+      { text: ";" },
+    ];
+    expect(spansOf(changed, tokens)).toEqual([
+      { text: "s", changed: false },
+      { text: " = ", changed: false },
+      { text: '"', changed: false, color: string },
+      { text: "a", changed: true, color: string },
+      { text: "\\u202e", changed: true, direction: true },
+      { text: "b", changed: true, color: string },
+      { text: '"', changed: false, color: string },
+      { text: ";", changed: false },
+    ]);
+    // In a comment, the character takes neither its color nor its italics.
+    const comment = "var(--color-code-comment)";
+    const commented: DiffLine = { kind: "context", text: `// a${RLO}` };
+    expect(spansOf(commented, [{ text: `// a${RLO}`, color: comment, italic: true }])).toEqual([
+      { text: "// a", changed: false, color: comment, italic: true },
+      { text: "\\u202e", changed: false, direction: true },
+    ]);
+  });
+
+  it("AC4: leaves as today a line with none, also with right-to-left text or a direction mark", () => {
+    // Hebrew, the marks of direction (LRM, RLM, ALM) and the neighbours of the nine.
+    const marks = [0x200e, 0x200f, 0x061c, 0x2029, 0x202f, 0x2065, 0x206a].map(char).join("");
+    for (const text of ['const greeting = "שלום";', `a${marks}b`]) {
+      expect(spansOf({ kind: "context", text })).toEqual([{ text, changed: false }]);
+    }
+  });
+});
+
 describe("highlightFile", () => {
   it("colors each line with the system's code colors (AC1)", async () => {
     const colors = await highlightFile(REPOSITORY ?? newFile("a.dart", []));

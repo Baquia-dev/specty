@@ -93,7 +93,7 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
                   <sp-live-output [task]="task.id" [run]="liveOn(task.id)" [verification]="task.verification" />
                 }
                 @for (request of task.scopeRequests; track request.id) {
-                  <sp-scope-request class="mt-1" [change]="change().id" [task]="task.id" [request]="request" />
+                  <sp-scope-request class="mt-1" [change]="change().id" [task]="task.id" [request]="request" [pending]="task.scopeRequests" />
                 }
               </sp-task-row>
             }

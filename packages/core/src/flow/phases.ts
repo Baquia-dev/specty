@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import type { ChangeKind } from "../spec/model";
 
 export type Phase =
   | "draft"
@@ -56,14 +57,25 @@ const PERMISSIONS: Readonly<Record<Exclude<Phase, "closing">, PhasePermissions>>
 };
 
 /**
+ * In delegated mode the agent writes the closing in acceptance and sends it before accepting, so
+ * that its `accept` also closes the change (ARCHITECTURE §4): a change with a closing of its own,
+ * neither a quick one, whose closing is its tasks' summaries, nor an epic.
+ */
+export function closingInAcceptance(kind: ChangeKind, delegated: boolean): boolean {
+  return delegated && kind !== "quick" && kind !== "epic";
+}
+
+/**
  * What each phase allows (ARCHITECTURE §4). Once the agent sent the closing or the tests
  * (`submitted`), the phase waits for the person. A pending incorporation (`integrating`) keeps
  * the phase and its spec access, opens the files it brings together and waits for the agent.
+ * With `delegated`, as `closingInAcceptance` says, the acceptance opens the Closing section.
  */
 export function phasePermissions(
   phase: Phase,
   submitted = false,
   integrating = false,
+  delegated = false,
 ): PhasePermissions {
   const waitingFor = submitted ? "human" : "agent";
   const permissions: PhasePermissions =
@@ -71,6 +83,8 @@ export function phasePermissions(
       ? { code: "blocked", spec: "closing-only", waitingFor }
       : phase === "testing"
         ? { ...PERMISSIONS.testing, waitingFor }
-        : PERMISSIONS[phase];
+        : phase === "acceptance" && delegated
+          ? { ...PERMISSIONS.acceptance, spec: "closing-only" }
+          : PERMISSIONS[phase];
   return integrating ? { ...permissions, code: "integration", waitingFor: "agent" } : permissions;
 }

@@ -3,6 +3,7 @@ import {
   type Analysis,
   blockedCard,
   type ChangeState,
+  closingInAcceptance,
   duplicateApproveNext,
   duplicateFilesBlock,
   type EffortRecommendation,
@@ -12,6 +13,7 @@ import {
   invalidSpecCard,
   itemHashes,
   type Lang,
+  nextCard,
   noActiveChangeCard,
   notProposableCard,
   type Output,
@@ -34,6 +36,7 @@ import { analyzeChange } from "../flow/analysis";
 import { dataOf, readAudit } from "../flow/carried";
 import { impactBlock, impactedFiles } from "../flow/impact";
 import { duplicatedBy, foreignFronts, listed, sharedBlock, sharedFiles } from "../flow/shared";
+import { changeView } from "../flow/views";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
 import { readRevision, type StoredChange } from "../store/changes";
@@ -50,27 +53,46 @@ export async function propose(session: Session): Promise<Output> {
   const { state, files } = active;
   // In the testing phase, what is sent is the tests, not the spec (ADR 0014).
   if (state.phase === "testing") return proposeTests(session, active);
-  const phase = PROPOSE_PHASES.find((candidate) => candidate === state.phase);
+  const phase = proposalOf(session, state);
   if (phase === undefined) return notProposableCard(state.id, state.phase, cards);
   const analysis = await analyzeChange(session, active, phase);
   if (!analysis.valid) {
     const specPath = session.paths.relative(files.spec);
-    return invalidSpecCard(headerOf(state.id, phase), specPath, analysis.diagnostics, cards);
+    return invalidSpecCard(headerOf(state.id, state.phase), specPath, analysis.diagnostics, cards);
   }
   const moved = transition({
-    phase,
+    phase: state.phase,
     kind: state.kind,
     actor: session.actor,
     event: { type: "propose", validationErrors: 0 },
   });
-  if (!moved.ok) return blockedCard(headerOf(state.id, phase), moved.code, runNext(cards));
-  const revision = await recordProposal(session, active, analysis, phase, moved.phase);
-  return proposalCard(session, active, analysis, { phase, moved: moved.phase, revision });
+  if (!moved.ok) return blockedCard(headerOf(state.id, state.phase), moved.code, runNext(cards));
+  const proposed = await recordProposal(session, active, analysis, phase, moved.phase);
+  const { revision } = proposed.state;
+  const card = await proposalCard(session, active, analysis, {
+    phase,
+    moved: moved.phase,
+    revision,
+  });
+  // The closing sent in acceptance goes on as the acceptance says: its `accept` closes the change.
+  if (state.phase !== "acceptance") return card;
+  const view = await changeView(session, proposed);
+  return { ...card, next: nextCard({ change: view, dirty: [] }, cards).next };
+}
+
+/**
+ * What the change's phase proposes: its spec, or its closing; in acceptance, in delegated mode,
+ * the closing sent ahead of the acceptance (`closingInAcceptance`), checked as a closing.
+ */
+function proposalOf(session: Session, state: ChangeState): ProposePhase | undefined {
+  if (state.phase === "acceptance")
+    return closingInAcceptance(state.kind, session.delegated) ? "closing" : undefined;
+  return PROPOSE_PHASES.find((candidate) => candidate === state.phase);
 }
 
 /**
  * Writes the spec in its canonical form and, when it changed, a new revision that answers the
- * comments still open; the state records it. Returns the revision.
+ * comments still open; the state records it. Returns the change as it is now.
  */
 async function recordProposal(
   session: Session,
@@ -78,7 +100,7 @@ async function recordProposal(
   analysis: Analysis,
   phase: ProposePhase,
   moved: Phase,
-): Promise<number> {
+): Promise<StoredChange> {
   const { state, files } = active;
   const lastText = await readRevision(files, state.revision);
   const unchanged =
@@ -94,8 +116,9 @@ async function recordProposal(
   }
   const now = session.environment.now().toISOString();
   const size = keptSize(state, analysis.size, phase, session.lang);
-  // A new proposal hands the review back to the person (`changeWaitsFor`).
-  const { changesRequestedAt: _requested, ...rest } = state;
+  // A new proposal hands the review back to the person (`changeWaitsFor`). Only a closing keeps
+  // one sent: an adjustment's proposal drops the one sent ahead of the acceptance.
+  const { changesRequestedAt: _requested, closingSubmittedAt: _sent, ...rest } = state;
   const nextState: ChangeState = {
     ...rest,
     phase: moved,
@@ -105,13 +128,12 @@ async function recordProposal(
     size,
     ...(phase === "closing" ? { closingSubmittedAt: now } : {}),
   };
-  await commitState(session, active, nextState, "spec.proposed", {
+  return commitState(session, active, nextState, "spec.proposed", {
     revision,
     hash: analysis.hash,
     size: size.level,
     warnings: analysis.diagnostics.length,
   });
-  return revision;
 }
 
 /** The proposal's card: size, effort, the changes since the approval, warnings and shared files. */
