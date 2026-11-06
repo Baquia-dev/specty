@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "id": "20261106-el-guard-frena-memory-resolve-de-una-entrada",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261106-el-guard-frena-memory-resolve-de-una-entrada",
+  "baseCommit": "f92005015cb9041aed1f70734b853552986457e4",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d124df0a241cb3e65b5452ab8a94f641cf1eae8638caed1c1782d181195ebf9c",
+    "at": "2026-11-06T07:48:01.868Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:62551a03e9f7a9fd609fc9d16a7c5191e81e3f142b5a50deab49bbe2dab60efe",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:dc4ab2954a9392be36fcd42c5a753fbbce0d7389a5db13ec21510c2f7e967b2f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:3f4ebde73145c815aeb4fa374dee0db396c51d19e64de8d3a24741e6bfe90ba5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "cf5f36b2363a92950195603c244c6c3fd7abaa60",
+      "attempts": 1,
+      "startedAt": "2026-11-06T07:48:51.882Z",
+      "doneAt": "2026-11-06T07:49:19.550Z",
+      "summary": "SpectyCalls.memoryResolves: los ids de specty memory resolve (memoryResolvedIds), juntados entre segmentos en shell.ts.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b24120e56144161e86ef5cbc8ca2a3f6d4af62b6",
+      "attempts": 1,
+      "startedAt": "2026-11-06T07:49:19.916Z",
+      "doneAt": "2026-11-06T07:49:36.800Z",
+      "summary": "frontResolvesDenial recibe via (new|memory); para memory resolve propone repetirlo sin la entrada o que la persona libere el frente (es/en).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "38260bfae64370bc1e989ab0bd8102fc4dbadb36",
+      "attempts": 1,
+      "startedAt": "2026-11-06T07:49:37.163Z",
+      "doneAt": "2026-11-06T07:50:25.849Z",
+      "summary": "judgeFronts mira también memoryResolves; takenDenial recibe cada id con el comando que lo pide y pasa via a la negativa.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "a76583c8e06a11dba526f0cb9871902a444efccd",
+      "attempts": 1,
+      "startedAt": "2026-11-06T07:50:26.180Z",
+      "doneAt": "2026-11-06T07:51:10.267Z",
+      "summary": "formats.md (Frenos de los frentes) y ARCHITECTURE: el guard frena también memory resolve, con sus ids y su siguiente paso.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-06T08:19:37.202Z",
+  "lockedTests": {
+    "packages/cli/test/front-brakes.test.ts": "sha256:c3111c27353a6a9d61a770fb683df62a9cc9b2798a5d0fea1b5b906657debc7e",
+    "packages/core/test/cards/front-brakes.test.ts": "sha256:9f5d86f640ad344e3db816d46c196b2b9d4ee53724641a89edd7dfe5a4507789",
+    "packages/core/test/guard/shell.test.ts": "sha256:5d6024ed6487ba1b3230c5abd62145e6ae163d7bfe719a87c893c287f6d308fc"
+  }
+}

@@ -21,9 +21,10 @@ interface FrontCall {
 }
 
 /**
- * A command with `specty front take|free <front>` or `specty new --resolves <id>…` that the guard
- * would let through (ADR 0016): the conversation may not take or free a front that another
- * conversation holds, nor create the change of one of its entries, while that one keeps stepping
+ * A command with `specty front take|free <front>`, `specty new --resolves <id>…` or
+ * `specty memory resolve <id>…` that the guard would let through (ADR 0016): the conversation may
+ * not take or free a front that another conversation holds, nor take one of its entries for a
+ * change, while that one keeps stepping
  * (`memory.orphanAfterMin`); otherwise it holds the last front it takes, and no other. Only the
  * guard knows the conversation, so it records the owner before the command runs, as with
  * `specty enter`. A front that does not exist is left to the command, which says so.
@@ -34,7 +35,11 @@ export async function judgeFronts(
   decision: GuardDecision,
   ctx: GuardContext,
 ): Promise<GuardDecision> {
-  const { fronts: requests, resolves } = analyzeShell(command);
+  const { fronts: requests, resolves: created, memoryResolves } = analyzeShell(command);
+  const resolves = [
+    ...created.map((id) => ({ id, via: "new" as const })),
+    ...memoryResolves.map((id) => ({ id, via: "memory" as const })),
+  ];
   const conversation = conversationOf(call.event);
   const asks = requests.length > 0 || resolves.length > 0;
   if (!decision.allow || !asks || conversation === undefined) return decision;
@@ -65,16 +70,17 @@ export async function judgeFronts(
 }
 
 /**
- * The denial for the first entry `specty new --resolves` names that is in a front another
- * conversation holds (`others`); undefined when none is.
+ * The denial for the first entry `specty new --resolves` or `specty memory resolve` names that is
+ * in a front another conversation holds (`others`), with the next step of the command that names
+ * it; undefined when none is.
  */
 function takenDenial(
   fronts: readonly Front[],
   others: readonly LiveHold[],
-  ids: readonly string[],
+  ids: readonly { readonly id: string; readonly via: "new" | "memory" }[],
   ctx: GuardContext,
 ): GuardDecision | undefined {
-  for (const id of ids) {
+  for (const { id, via } of ids) {
     const wanted = id.toLowerCase();
     const front = fronts.find(({ items }) => items.some((item) => item.toLowerCase() === wanted));
     const owner = others.find((hold) => hold.front === front?.name);
@@ -83,7 +89,7 @@ function takenDenial(
       return {
         allow: false,
         rule: "memory",
-        ...frontResolvesDenial(owner, entry, ctx.lang, ctx.command),
+        ...frontResolvesDenial(owner, entry, ctx.lang, ctx.command, via),
       };
     }
   }

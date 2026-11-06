@@ -79,6 +79,23 @@ describe("analyzeShell", () => {
     ]);
   });
 
+  it("AC3: names the entries each `specty memory resolve` takes, in order and in any segment", () => {
+    expect(analyzeShell("specty memory resolve P12 p3").memoryResolves).toEqual(["P12", "p3"]);
+    expect(
+      analyzeShell("specty memory resolve P4 && npx -y @baquia-dev/specty memory resolve P5")
+        .memoryResolves,
+    ).toEqual(["P4", "P5"]);
+    expect(analyzeShell("specty memory resolve P12").resolves).toEqual([]);
+  });
+
+  it("AC3: names none for other `memory` subcommands, `new --resolves` or an echo", () => {
+    expect(analyzeShell('specty memory add "resolve P1"').memoryResolves).toEqual([]);
+    expect(analyzeShell("specty memory done P1").memoryResolves).toEqual([]);
+    expect(analyzeShell("specty memory").memoryResolves).toEqual([]);
+    expect(analyzeShell('specty new "X" --resolves P1').memoryResolves).toEqual([]);
+    expect(analyzeShell("echo specty memory resolve P1").memoryResolves).toEqual([]);
+  });
+
   it("AC5: names the entries each `specty new --resolves` takes, in order", () => {
     expect(analyzeShell('specty new "Saludo" --resolves P12 p3 --follows 2026-a').resolves).toEqual(
       ["P12", "p3"],
