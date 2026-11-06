@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261106-specty-wait-deja-su-marca-y-aguanta-en-cada",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-specty-wait-deja-su-marca-y-aguanta-en-cada",
+  "baseCommit": "94877ac9e202cac41073cc8413224ae8fbeb3456",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a7f7fa82e193abc3769995be5c00e8435bf7cf355af9e566cf1903e52b7c2220",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8265e951e301ecc9ac06d65ef555803acba4a979ff50a169dea73d5eb47647db",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f3d770378ab84283c39cdf3804a0e42fe7141480751d9f7c8fe6c2c6c1d9fbc5",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e88c9af89fe0b77b4c4e4d9e2812507b0326541df9a16447f0f31f596dcc26bd",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:9cade388cb051a0b2038a3d35d71f2faf6c3ad1ce6cf5f13477ce9f3dad7742a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:279c05767596278f73688fa968c64cd4859c1e8944ddd92b3d36494886d58022",
+    "at": "2026-11-06T12:20:52.960Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
