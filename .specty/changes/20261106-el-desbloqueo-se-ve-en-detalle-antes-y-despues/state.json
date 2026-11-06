@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261106-el-desbloqueo-se-ve-en-detalle-antes-y-despues",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261106-el-desbloqueo-se-ve-en-detalle-antes-y-despues",
+  "baseCommit": "72be6161cea686781eb41c05136ed361093aeae0",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bbb2fa89fc5d7e0b5887b1918dd36894a07f3ba65ebea3b455daa862e0e8e4ea",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:919291dd0db32584c68d174dc9d19fd7e6952fafa45fe5b9002faa7d6f571aaf",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f0b2665c8740dbfa56e66a5bd7cbb2ff7caf58232af1ca4f969ea97baa5fb928",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c0617060dd1d93ed0abab5631a3a1e7559517a45951e1fd3909950f69bcf3b29",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:e74e0c474fc926c12b7bdbeae012de397d16cb3cb81a185be0e6e37579d5cdaa",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:789a47d104d65bc00dc5f23cb3dd1158b58100ee22e5f06d2495bd6eb9a6bb83",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 5,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:67f25a727de8c0e97571d40ebe77140f285bed726c0cb56a1d48857802dada3c",
+    "at": "2026-11-06T15:07:40.718Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
