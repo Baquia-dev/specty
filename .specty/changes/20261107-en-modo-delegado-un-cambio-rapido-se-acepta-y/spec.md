@@ -52,7 +52,7 @@ Cuando el agente acepta un cambio `quick` en modo delegado, hoy la verificación
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-quick-turn.test.ts test/accept-turn-time.test.ts test/close-turn.test.ts test/integrate.test.ts && pnpm typecheck && pnpm lint
   - type: fix
-- [ ] T2: ARCHITECTURE y formats.md cuentan el turno del `accept` rápido en modo delegado
+- [x] T2: ARCHITECTURE y formats.md cuentan el turno del `accept` rápido en modo delegado
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: grep -q 'el `accept` de un cambio rápido toma el turno antes de incorporar main' docs/ARCHITECTURE.md && grep -q 'en modo delegado, el `accept` de un cambio rápido lo tiene desde antes de incorporar main' docs/formats.md

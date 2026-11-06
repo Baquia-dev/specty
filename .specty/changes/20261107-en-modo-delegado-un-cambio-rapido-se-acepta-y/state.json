@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-en-modo-delegado-un-cambio-rapido-se-acepta-y",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-en-modo-delegado-un-cambio-rapido-se-acepta-y",
   "baseCommit": "5581984147b6cfc0208516fdcb04fa4c31c92b1a",
   "revision": 1,
@@ -50,12 +50,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "825b153a705a6bd8458d9b3809c5b7df3cd4b36a",
+      "attempts": 1,
       "startedAt": "2026-11-06T18:57:38.162Z",
       "doneAt": "2026-11-06T18:58:55.193Z",
-      "summary": "En modo delegado, el accept de un cambio rápido corre en el turno de aterrizaje desde antes de incorporar main hasta aterrizar (closingTurn); con la persona, como antes"
+      "summary": "En modo delegado, el accept de un cambio rápido corre en el turno de aterrizaje desde antes de incorporar main hasta aterrizar (closingTurn); con la persona, como antes",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "25a5c8698d1e45a021d7142052f87c97966521d4",
+      "startedAt": "2026-11-06T18:58:55.584Z",
+      "doneAt": "2026-11-06T18:59:13.743Z",
+      "summary": "ARCHITECTURE §9 y formats.md §1 cuentan que, en modo delegado, el accept de un cambio rápido tiene el turno desde antes de incorporar main hasta aterrizar"
     }
   },
   "pending": {
