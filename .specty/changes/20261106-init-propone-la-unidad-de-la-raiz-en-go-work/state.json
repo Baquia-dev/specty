@@ -6,6 +6,13 @@
   "branch": "specty/20261106-init-propone-la-unidad-de-la-raiz-en-go-work",
   "baseCommit": "1f6819b053e908a60e3220e0627e22c26894f49c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bcbb806eda14f9f4bc61855c6ef77cbed2a82ae5bd5ab332a7f7816995e193e6",
+    "at": "2026-11-06T03:56:19.482Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -43,12 +50,6 @@
     "T": 3,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:bcbb806eda14f9f4bc61855c6ef77cbed2a82ae5bd5ab332a7f7816995e193e6",
-    "at": "2026-11-06T03:56:19.482Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-06T03:58:09.930Z"
 }
