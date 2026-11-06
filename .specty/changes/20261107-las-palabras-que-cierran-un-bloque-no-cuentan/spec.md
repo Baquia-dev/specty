@@ -16,7 +16,7 @@ En el análisis del shell del guard, un comando simple formado solo por las pala
 
 ## Tareas
 
-- [ ] T1: Las palabras que cierran un bloque no cuentan como un comando que corre
+- [x] T1: Las palabras que cierran un bloque no cuentan como un comando que corre
   - files: packages/core/src/guard/shell.ts, packages/core/test/guard/control-words.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/control-words.test.ts && pnpm typecheck && pnpm lint
   - type: fix
