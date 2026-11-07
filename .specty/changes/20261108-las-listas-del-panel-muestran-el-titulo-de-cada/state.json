@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-las-listas-del-panel-muestran-el-titulo-de-cada",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-las-listas-del-panel-muestran-el-titulo-de-cada",
   "baseCommit": "89ef4fe4ce5725e9021aa923aa57cdbce41eabc2",
   "revision": 2,
@@ -47,6 +47,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T17:12:28.807Z"
+  "lockedTests": {
+    "packages/cli/test/server/stats.test.ts": "sha256:28f2a3a5681df6f5dadbc05def0207d4ae17ec2c9b277a85563d481d76dc127a",
+    "packages/core/test/stats/titles.test.ts": "sha256:c82117f7ffaf09206830ea22860cf709a233437ea323ab69707be1519ba01a5d",
+    "packages/ui/src/dashboard/dashboard-titles.test.ts": "sha256:1935217c489bb6e2c374e1b4e1a1ddc9b629c2c5e4c955229772753ba145c13e"
+  }
 }
