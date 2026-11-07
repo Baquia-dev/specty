@@ -822,7 +822,7 @@ BLOQUEADO: archivos fuera del alcance de T2:
 SIGUIENTE: revierte ese archivo o pide ampliar el alcance con `specty scope add lib/core/theme/ca_colors.dart --task T2 --reason "<motivo>"`.
 ```
 
-`specty stats` (ARCHITECTURE §6), el resumen del panel de `specty ui` para el corte pedido, con una tabla por persona, agente y modelo; con `--json`, el mismo `StatsView` que `GET /api/stats`:
+`specty stats` (ARCHITECTURE §6), el resumen del panel de `specty ui` para el corte pedido, con una tabla por persona, agente y modelo, el tiempo por fase y los cambios más caros; con `--json`, el mismo `StatsView` que `GET /api/stats`:
 
 ```text
 SPECTY · stats · últimos 30 días · 2026-10-09 – 2026-11-07
@@ -845,10 +845,19 @@ POR MODELO:
   Nombre      Cambios  Tareas    Ciclo  Pasan  Sesiones      Coste
   m-1              30      98  1 d 1 h   94 %        40  12,30 USD
   (sin dato)       12      33      9 h   90 %        11          —
+TIEMPO POR FASE (MEDIANA):
+  Redactar la spec: 25 min · en 40 cambios
+  Revisión hasta aprobar: 2 h · en 40 cambios
+  Implementación: 1 h 30 min · en 38 cambios
+  Aceptación y cierre: 40 min · en 40 cambios
+LOS CAMBIOS MÁS CAROS:
+  Cambio                       Carril  Tareas    Ciclo  Sesiones     Coste
+  20261105-guard-y-alcance   standard       6  1 d 3 h         3  9,80 USD
+  20261106-aviso-de-acentos     quick       1   40 min         1  2,50 USD
 SIGUIENTE: el panel completo, con sus gráficas, está en `specty ui` (Panel); para otro corte, `--period 7d|30d|90d|all`, `--who person:<nombre>|agent:<herramienta>|model:<modelo>` o `--kind <carril>`.
 ```
 
-Sin ningún cambio del corte en el periodo, la tarjeta solo dice «No hay ningún cambio en este corte en el periodo.». Un `--period`, un `--who` o un `--kind` que no entiende se rechaza con código 1 y los valores válidos, en lugar de tomar el de por defecto como el servidor.
+«TIEMPO POR FASE (MEDIANA)» da la mediana de cada fase de los cambios cerrados en el periodo y en cuántos se mide, con «—» en una fase por la que no pasó ninguno; «LOS CAMBIOS MÁS CAROS», hasta cinco, de más a menos coste en el periodo, con las tareas, el ciclo y las sesiones de todo el cambio. Cada bloque sale solo si hay algo que contar. Sin ningún cambio del corte en el periodo, la tarjeta solo dice «No hay ningún cambio en este corte en el periodo.». Un `--period`, un `--who` o un `--kind` que no entiende se rechaza con código 1 y los valores válidos, en lugar de tomar el de por defecto como el servidor.
 
 ## 10. Exportadores
 

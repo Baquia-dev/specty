@@ -5,6 +5,7 @@ import { CHANGE_KINDS } from "../spec/model";
 import type { StatsPeriod, StatsQuery, StatsWho, StatsWhoKind } from "../stats/period";
 import type { StatsFigure, StatsSummary, StatsView } from "../stats/summary";
 import { blockedCard } from "./flow";
+import { aligned, share, span, usd } from "./stats-format";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
@@ -62,6 +63,8 @@ export function statsCard(view: StatsView, ctx: CardContext): Output {
         figureLines(view.summary, t),
       ),
       ...WHO_KINDS.flatMap((kind) => peopleBlock(view, kind, t)),
+      ...phasesBlock(view, t),
+      ...costliestBlock(view, t),
     ],
     next: t(
       `el panel completo, con sus gráficas, está en \`${command} ui\` (Panel); para otro corte, \`--period 7d|30d|90d|all\`, \`--who person:<nombre>|agent:<herramienta>|model:<modelo>\` o \`--kind <carril>\`.`,
@@ -255,49 +258,53 @@ function peopleBlock(view: StatsView, kind: StatsWhoKind, t: Translate) {
   return section(title, aligned([head, ...cells]));
 }
 
-/** The rows of a table, their columns apart: the first to the left, the others to the right. */
-function aligned(rows: readonly (readonly string[])[]): string[] {
-  const widths = (rows[0] ?? []).map((_, column) =>
-    Math.max(...rows.map((row) => (row[column] ?? "").length)),
-  );
-  return rows.map((row) =>
-    row
-      .map((cell, column) =>
-        column === 0 ? cell.padEnd(widths[column] ?? 0) : cell.padStart(widths[column] ?? 0),
-      )
-      .join("  "),
-  );
+/** The phases, in the order of the flow, as the panel names them. */
+const PHASES: Readonly<
+  Record<
+    NonNullable<StatsView["flow"]>["phases"][number]["phase"],
+    { readonly es: string; readonly en: string }
+  >
+> = {
+  spec: { es: "Redactar la spec", en: "Write the spec" },
+  review: { es: "Revisión hasta aprobar", en: "Review until approved" },
+  implementation: { es: "Implementación", en: "Implementation" },
+  closing: { es: "Aceptación y cierre", en: "Acceptance and closing" },
+};
+
+/** The median time of each phase and on how many changes: none when no phase measures any. */
+function phasesBlock(view: StatsView, t: Translate) {
+  const phases = view.flow?.phases ?? [];
+  if (phases.every((one) => one.changes === 0)) return [];
+  const lines = phases.map(({ phase, median, changes }) => {
+    const name = t(PHASES[phase].es, PHASES[phase].en);
+    if (median === null || changes === 0) return `${name}: —`;
+    return `${name}: ${span(median, t)} · ${t(
+      `en ${counted(changes, "cambio", "cambios")}`,
+      `in ${counted(changes, "change", "changes")}`,
+    )}`;
+  });
+  return section(t("TIEMPO POR FASE (MEDIANA)", "TIME PER PHASE (MEDIAN)"), lines);
 }
 
-/** A share from 0 to 1, with a decimal when it has one: `92,5 %` or `92.5%`. */
-function share(value: number, t: Translate): string {
-  const tenths = Math.round(value * 1000) / 10;
-  const number = Number.isInteger(tenths) ? String(tenths) : decimal(tenths, 1, t);
-  return t(`${number} %`, `${number}%`);
-}
-
-/** US dollars, with two decimals: `12,30 USD` or `12.30 USD`. */
-function usd(value: number, t: Translate): string {
-  return `${decimal(value, 2, t)} USD`;
-}
-
-function decimal(value: number, digits: number, t: Translate): string {
-  return value.toFixed(digits).replace(".", t(",", "."));
-}
-
-/** Milliseconds as the panel says them: seconds, minutes, hours and minutes, or days and hours. */
-function span(ms: number, t: Translate): string {
-  if (ms < 1_000) return t("menos de 1 s", "under 1 s");
-  if (ms < 60_000) return `${Math.round(ms / 1_000)} s`;
-  const minutes = Math.round(ms / 60_000);
-  if (minutes < 60) return `${minutes} min`;
-  if (minutes < 1_440) {
-    const rest = minutes % 60;
-    return rest === 0
-      ? `${Math.floor(minutes / 60)} h`
-      : `${Math.floor(minutes / 60)} h ${rest} min`;
-  }
-  const hours = Math.round(ms / 3_600_000);
-  const rest = hours % 24;
-  return rest === 0 ? `${Math.floor(hours / 24)} d` : `${Math.floor(hours / 24)} d ${rest} h`;
+/** The changes that cost the most in the period, in a table: none when none has a cost. */
+function costliestBlock(view: StatsView, t: Translate) {
+  const top = view.cost?.top ?? [];
+  if (top.length === 0) return [];
+  const head = [
+    t("Cambio", "Change"),
+    t("Carril", "Lane"),
+    t("Tareas", "Tasks"),
+    t("Ciclo", "Cycle"),
+    t("Sesiones", "Sessions"),
+    t("Coste", "Cost"),
+  ];
+  const cells = top.map((change) => [
+    change.id,
+    change.kind,
+    String(change.tasks),
+    change.cycle === null ? "—" : span(change.cycle, t),
+    String(change.sessions),
+    usd(change.cost, t),
+  ]);
+  return section(t("LOS CAMBIOS MÁS CAROS", "THE COSTLIEST CHANGES"), aligned([head, ...cells]));
 }

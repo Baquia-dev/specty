@@ -55,12 +55,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "089e7cf6dbe2d0c2c10a4d8835b595eae915d011",
+      "attempts": 1,
       "startedAt": "2026-11-07T12:34:58.795Z",
       "doneAt": "2026-11-07T12:36:30.138Z",
-      "summary": "StatsRow guarda el consumo (change.usage), las decisiones de alcance, las incorporaciones de main que pararon y los ajustes; stats/cost.ts, scope.ts y memory.ts calculan las tres secciones y statsView las añade a StatsView como cost, scope y memory."
+      "summary": "StatsRow guarda el consumo (change.usage), las decisiones de alcance, las incorporaciones de main que pararon y los ajustes; stats/cost.ts, scope.ts y memory.ts calculan las tres secciones y statsView las añade a StatsView como cost, scope y memory.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2ee904ab91c12e825208935e07bb72740e71f9cf",
+      "startedAt": "2026-11-07T12:36:30.444Z",
+      "doneAt": "2026-11-07T12:37:44.931Z",
+      "summary": "statsCard añade «TIEMPO POR FASE (MEDIANA)» (de flow) y «LOS CAMBIOS MÁS CAROS» (de cost), cada uno solo si hay algo que contar; los formatos pasan a cards/stats-format.ts; formats.md §9 y ARCHITECTURE §6 y §15 lo documentan (P340)."
     }
   },
   "pending": {
