@@ -53,3 +53,21 @@ En el core del panel, `people.ts` (`rowOf`) repite cómo `summary.ts` (`countsOf
 ## Riesgos
 
 - R1: C2 de la épica toca a la vez el core del panel (`cost.ts`, `quality.ts` y quizá `summary.ts`) para los títulos. Mitigación: aquí solo cambia el conteo y el orden de `summary.ts` y `people.ts` y, al incorporar main, se conservan las partes de los dos.
+
+## Cierre
+
+### Resumen
+
+«Personas y agentes» y el resumen del panel cuentan el periodo y ordenan por cambios con el mismo código (P328). El módulo nuevo `packages/core/src/stats/counts.ts` da `periodCounts`, lo que unos cambios hicieron en un periodo (cerrados, tareas, ciclo, verificaciones, parte que pasa, coste y en cuántos cambios se midió), y `perWho`, que agrupa los cambios por persona, agente y modelo y los ordena como «Ver por». `summary.ts` cuenta con él cada periodo (`countsOf` le suma los pendientes) y sus opciones de «Ver por»; `people.ts`, sus filas, y solo cuenta aparte las sesiones. `period.ts` exporta `WHO_KINDS`, que antes tenía tres copias. Los tests del panel y de `specty stats` pasan sin cambios.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- **A1 a A3, como estaban al aprobar:** un solo módulo con el conteo y el orden; el coste de una fila de «Personas y agentes» se suma por cambio y luego entre cambios, como el del resumen, con el mismo total salvo el redondeo de coma flotante en las últimas cifras decimales, que no se muestra; y una sola lista de tipos de «Ver por».
+
+### Pendientes
+
+Ninguno.
