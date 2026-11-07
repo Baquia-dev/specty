@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e25f8074a4ff12034a128eb7e19cb68582233848",
+      "attempts": 1,
       "startedAt": "2026-11-07T02:50:12.855Z",
       "doneAt": "2026-11-07T02:56:23.416Z",
-      "summary": "Bloque internal (internal-waits.ts) en el schema y ResolvedConfig con sus límites y valores de hoy; sección Interno del catálogo con los tres ajustes nuevos y las cuatro garantías (marca guarantee, fixed, unidad h); textos es/en; formats.md §6"
+      "summary": "Bloque internal (internal-waits.ts) en el schema y ResolvedConfig con sus límites y valores de hoy; sección Interno del catálogo con los tres ajustes nuevos y las cuatro garantías (marca guarantee, fixed, unidad h); textos es/en; formats.md §6",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ac210b72d848019e845f19f5521a76337ff61e4f",
+      "startedAt": "2026-11-07T02:56:23.746Z",
+      "doneAt": "2026-11-07T02:57:33.025Z",
+      "summary": "specty wait toma su espera sin --timeout y su latido de session.config.internal.waits, y close sus reintentos de aterrizaje de internal.retries.landing; ARCHITECTURE §… apunta a las claves"
     }
   },
   "pending": {

@@ -76,7 +76,7 @@ Hoy cuánto espera `specty wait`, cada cuánto escribe su línea de latido y cu�
   - files: packages/core/src/schema/internal-waits.ts, packages/core/src/schema/config.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/schema/schema.test.ts, packages/core/test/settings/catalog.test.ts, docs/formats.md
   - ac: AC4, AC5, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts test/settings/catalog.test.ts
-- [ ] T2: `specty wait` y `close` leen su espera, su latido y sus reintentos de la configuración
+- [x] T2: `specty wait` y `close` leen su espera, su latido y sus reintentos de la configuración
   - files: packages/cli/src/commands/wait.ts, packages/cli/src/flow/land.ts, packages/cli/test/wait.test.ts, packages/cli/test/close-moved.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait.test.ts test/close-moved.test.ts

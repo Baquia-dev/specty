@@ -25,20 +25,14 @@ interface WaitLimits {
 }
 
 /**
- * How long `wait` waits without `--timeout`: every tool measured on 2026-11-06 holds an hour, in
- * the background or polling its output (`cards/wait.ts`).
+ * Parses timeout and polling interval options safely. Without `--timeout`, `wait` waits
+ * `internal.waits.waitTimeoutSec` (an hour by default, what every tool measured holds).
  */
-const TIMEOUT_SEC = 3600;
-
-/** Gemini CLI cuts a command that writes nothing for 300 s: a heartbeat line at most a minute apart. */
-const BEAT_MS = 60_000;
-
-/** Parses timeout and polling interval options safely. */
-function parseWaitLimits(options: WaitOptions): WaitLimits {
+function parseWaitLimits(options: WaitOptions, timeoutSec: number): WaitLimits {
   const timeout = Number(options.timeout);
   const interval = Number(options.interval);
   return {
-    timeoutSec: Number.isFinite(timeout) && timeout > 0 ? timeout : TIMEOUT_SEC,
+    timeoutSec: Number.isFinite(timeout) && timeout > 0 ? timeout : timeoutSec,
     intervalMs: Number.isFinite(interval) && interval > 0 ? interval : 500,
   };
 }
@@ -63,7 +57,8 @@ export async function wait(session: Session, options: WaitOptions = {}): Promise
     return withChangeLock(session, "next", () => next(session));
   }
   const { id } = current.state;
-  const limits = parseWaitLimits(options);
+  const { waitTimeoutSec, heartbeatSec } = session.config.internal.waits;
+  const limits = parseWaitLimits(options, waitTimeoutSec);
   const started = Date.now();
   const mark = await markWait(session.git, id, {
     pid: process.pid,
@@ -71,7 +66,8 @@ export async function wait(session: Session, options: WaitOptions = {}): Promise
     since: new Date(started).toISOString(),
     ...limits,
   });
-  const beat = heartbeat(session, id, limits, started, options.beatMs ?? BEAT_MS);
+  // Gemini CLI cuts a command that writes nothing for 300 s: `heartbeatSec` is a minute by default.
+  const beat = heartbeat(session, id, limits, started, options.beatMs ?? heartbeatSec * 1000);
   while (true) {
     await sleep(limits.intervalMs);
     await mark.renew();
