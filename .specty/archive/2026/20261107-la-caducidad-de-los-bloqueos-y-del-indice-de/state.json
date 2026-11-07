@@ -1,0 +1,164 @@
+{
+  "schema": 1,
+  "id": "20261107-la-caducidad-de-los-bloqueos-y-del-indice-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-la-caducidad-de-los-bloqueos-y-del-indice-de",
+  "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
+  "revision": 5,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:fdf264345bcf8243dd5a0b3afe04b9da196e5c397bd6386498e46f7e7f355aba",
+    "at": "2026-11-07T05:13:36.056Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ac954550b832f2130c93eb17b6f1cc3b8f048dae6e5c40230105180aa7d669fc",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7f917f24c8a23654e87d114cd6428225b107f64d0b06b5850215b475b1408e50",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:be1616e67053a6e7f330e04d3c30f302b33723688a5b0a50ba911b035c7ed988",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:2746ea2ff7eb6135029d48c807494158794bb1e9067e467ba43c80adfc5a9cef",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:bee71ff3c472e309191cced6c7b23dedf73833b0effb44ded9d79a11da7fe267",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:692f61052886e08852a643d70b84279b0667388b3180368c9dc7c9b9a9f765dc",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "15da01f183072a3e6c67ea9c579f2aa81384d152",
+      "attempts": 1,
+      "startedAt": "2026-11-07T05:22:51.718Z",
+      "doneAt": "2026-11-07T05:31:20.507Z",
+      "summary": "Las claves internal.waits.queueStaleSec (30, de 10 a 600) e internal.retention.indexHours (1, de 1 a 168) en schema/internal-waits.ts; sus ajustes nuevos en «Interno» y la garantía guarantee.waitMarks (30 s) en el catálogo; nombres y descripciones en español e inglés",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "794fea384758e00fbd3876a371b9d7e3cfe38577",
+      "attempts": 1,
+      "startedAt": "2026-11-07T05:31:21.028Z",
+      "doneAt": "2026-11-07T05:40:48.650Z",
+      "summary": "La tarjeta de prune dice las horas de los índices («de más de una hora» con 1, «de más de N horas» con más, en los dos idiomas); formats.md §1 y §6 documentan queueStaleSec, indexHours y la garantía de la marca de wait, y ui.md las cinco garantías",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "5cd031ac72939b97b0b48be0a71e83d6935de790",
+      "attempts": 1,
+      "startedAt": "2026-11-07T05:40:49.451Z",
+      "doneAt": "2026-11-07T05:48:50.177Z",
+      "summary": "joinQueue y joinTurnQueue reciben la caducidad de los puestos (staleSec) en lugar de STALE_MS; la cola del turno de la verificación completa y la de las plazas pasan internal.waits.queueStaleSec; ARCHITECTURE remite a la clave",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "35cbcfa7cb550d3a0e77c0f22372830fb4232d9f",
+      "attempts": 1,
+      "startedAt": "2026-11-07T05:48:50.984Z",
+      "doneAt": "2026-11-07T05:57:38.347Z",
+      "summary": "removeLeftovers recibe las horas de vida de los índices temporales (internal.retention.indexHours) en lugar de INDEX_LIFE y las devuelve; specty prune las pasa a su tarjeta, que dice esas horas",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T09:17:35.048Z",
+  "lockedTests": {
+    "packages/cli/test/prune-leftovers.test.ts": "sha256:4e8f2d15cb2c1a3f5c0c08a385f66475a9036c344a42dc1a7574d7e8a9a0c934",
+    "packages/core/test/cards/prune-leftovers.test.ts": "sha256:b57664ff19c56d1f35c1c33ed1416906d159a7a3ec81e6638a7518ee92c0b334",
+    "packages/core/test/settings/catalog.test.ts": "sha256:36b77f05697db75759aaef8053af64d24b33c5c5d201ed90d808f21d10d1177a",
+    "packages/cli/src/store/turn-queue.test.ts": "sha256:004eb5a16f23b264b5dfd3dfb7fc063d0d69abe1b2e4d4619a1c64744a5eee26",
+    "packages/core/test/settings/internal-life.test.ts": "sha256:a9d2bc2c0a7e8a284f0ccbc239f609d1b737cf8e7dc2c01a61cd0dc44d6eafcd"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "a491c1c0346190390d4f4344e1b40cf32aa3d417",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/core/test/settings/catalog.test.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/agents/adapter.ts",
+      "packages/cli/src/agents/antigravity.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/commands/prune.ts",
+      "packages/cli/src/flow/full-verification.ts",
+      "packages/cli/src/install/hooks.ts",
+      "packages/cli/src/install/install.ts",
+      "packages/cli/src/store/leftovers.ts",
+      "packages/cli/src/store/turn-queue.test.ts",
+      "packages/cli/src/store/turn-queue.ts",
+      "packages/cli/src/store/verify-slots.ts",
+      "packages/cli/test/antigravity-timeout.test.ts",
+      "packages/cli/test/prune-leftovers.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/cards/parallel.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/test/cards/doctor-antigravity-timeout.test.ts",
+      "packages/core/test/cards/prune-leftovers.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/internal-hooks.test.ts",
+      "packages/core/test/settings/internal-life.test.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/data/server-config.test.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/settings/save-dialog.ts",
+      "packages/ui/src/settings/setting-row.ts",
+      "packages/ui/src/settings/settings-controls.test.ts",
+      "packages/ui/src/settings/settings-edit.test.ts",
+      "packages/ui/src/settings/settings-edit.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts",
+      "packages/ui/src/settings/settings-save.test.ts",
+      "packages/ui/src/settings/settings-view.ts"
+    ],
+    "at": "2026-11-07T09:09:18.180Z",
+    "resolved": {
+      "commit": "ec8e5ac",
+      "at": "2026-11-07T09:17:17.851Z"
+    }
+  }
+}

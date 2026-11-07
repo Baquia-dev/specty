@@ -60,4 +60,20 @@ describe("what `specty prune` says of what dead processes left", () => {
     const some = pruneCard({ ...NOTHING, leftovers: { writes: 1, runs: 0, indexes: 0 } }, ES);
     expect(renderText(some, "es")).not.toContain("No había nada que limpiar.");
   });
+
+  it("AC2, AC5: says the hours of the old git indexes it used, in Spanish and in English, and an hour as today", () => {
+    const hours = (count: number) => ({ writes: 0, runs: 0, indexes: 2, hours: count });
+    expect(renderText(pruneCard({ ...NOTHING, leftovers: hours(3) }, ES), "es")).toContain(
+      "RESTOS DE PROCESOS QUE MURIERON:\n  Índices temporales de git de más de 3 horas: 2.\n",
+    );
+    expect(renderText(pruneCard({ ...NOTHING, leftovers: hours(3) }, EN), "en")).toContain(
+      "LEFTOVERS OF PROCESSES THAT DIED:\n  Temporary git indexes over 3 hours old: 2.\n",
+    );
+    expect(renderText(pruneCard({ ...NOTHING, leftovers: hours(1) }, ES), "es")).toContain(
+      "  Índices temporales de git de más de una hora: 2.\n",
+    );
+    expect(renderText(pruneCard({ ...NOTHING, leftovers: hours(1) }, EN), "en")).toContain(
+      "  Temporary git indexes over an hour old: 2.\n",
+    );
+  });
 });

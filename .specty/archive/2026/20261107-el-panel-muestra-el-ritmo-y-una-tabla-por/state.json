@@ -1,0 +1,194 @@
+{
+  "schema": 1,
+  "id": "20261107-el-panel-muestra-el-ritmo-y-una-tabla-por",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-el-panel-muestra-el-ritmo-y-una-tabla-por",
+  "baseCommit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:00cf5aaa7c25e777db867159f704bb5859d916b47d705d853f4e8fba2967685f",
+    "at": "2026-11-07T08:29:54.059Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "16 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:25ac2cad3ea9c0186c0c59b30bb53a61cad96fc3a8a8d787e2ba34841e781643",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7d3167e0c2086e9b7e3e9b66fc7d253e9feb02a713a73a8b9c58a2e19a87c564",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:ae13a65e827125d880b0da7a4ef99ddf20a1c640534146ae25df1bb79d10d569",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:3d73b6cc0714af791a9d18a4944dd07135695a077eb3cc0e46be8cc441e8ed5e",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:de61022fe539f90316b8f5b1ccd8db147a087db8fe6fc728cbd8b2c8c777103d",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:8372f2d53a086ff3c75c110e824da63b552c806c2f67b6e1579b796571ee0ccc",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:f86dc67589852003e8e995bd5f0276f472e141dfb5019184ea18db1a7bc24849",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "f0e58e5dc3a1142beb9a9bbc2dbd58965de22a65",
+      "attempts": 1,
+      "startedAt": "2026-11-07T08:55:17.846Z",
+      "doneAt": "2026-11-07T09:02:02.576Z",
+      "summary": "statsView da «Ritmo» (stats/rhythm.ts, por día o por semana) y «Personas y agentes» (stats/people.ts, sin el filtro «Ver por»); las filas guardan sus sesiones por día, y sum, median y addDays pasan a period.ts.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "a8d4e539ff32990ec7e3d2b66a80d8057276b9ff",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:02:03.153Z",
+      "doneAt": "2026-11-07T09:09:20.133Z",
+      "summary": "Tokens --color-series-1..3, --color-chart-grid y --color-chart-axis en los dos temas y en el inventario; sp-column-chart (columnas apiladas en SVG, puntero, teclado itinerante) con sp-chart-frame (título, leyenda, Ver tabla) y sp-chart-tip.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "68e595df5340577486eb38e94c9a297da6073e23",
+      "attempts": 2,
+      "startedAt": "2026-11-07T09:09:20.640Z",
+      "doneAt": "2026-11-07T09:33:25.031Z",
+      "summary": "sp-dashboard-rhythm y sp-dashboard-people bajo los indicadores (elegir una fila filtra el panel por ella), docs/ui.md al día; visto en el navegador, la gráfica ya no deja una columna activa que otro periodo quitó.",
+      "scopeExtra": [
+        "packages/ui/src/components/charts/column-chart.ts",
+        "packages/ui/src/components/charts/chart-frame.ts",
+        "packages/core/src/stats/rhythm.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 8,
+    "T": 3,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-07T09:34:11.691Z",
+  "lockedTests": {
+    "packages/ui/src/theme/tokens.test.ts": "sha256:bab59d5df6a03f263c5466e77de968888c3928fb0bfc273c93cd1c70284d4efc",
+    "packages/core/test/stats/sections.test.ts": "sha256:787d573f16d8fc5e5c7b3716b8b37b09073676a189e1a5fcff1a017cd0a9ec3d",
+    "packages/ui/src/components/charts/charts.test.ts": "sha256:f581f3b55c8d9ea3f566ce176c0cc57f134a5bbec909ac4f26f5409f9e6f1b9c",
+    "packages/ui/src/dashboard/dashboard-sections.test.ts": "sha256:7aec96a7f0193c5b1c8557ea683c15b04c6926e42cf5f8d2afcd82e13a5c6611"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "7ba359df7f50a56f45c6146db433bf67f33b5e5b",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ui.md",
+      "packages/ui/src/dashboard/dashboard-page.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/agents/adapter.ts",
+      "packages/cli/src/agents/antigravity.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/commands/prune.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/flow/full-verification.test.ts",
+      "packages/cli/src/flow/full-verification.ts",
+      "packages/cli/src/install/hooks.ts",
+      "packages/cli/src/install/install.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/src/server/stats-changes.ts",
+      "packages/cli/src/store/leftovers.ts",
+      "packages/cli/src/store/turn-queue.test.ts",
+      "packages/cli/src/store/turn-queue.ts",
+      "packages/cli/src/store/verify-slots.test.ts",
+      "packages/cli/src/store/verify-slots.ts",
+      "packages/cli/test/antigravity-timeout.test.ts",
+      "packages/cli/test/prune-leftovers.test.ts",
+      "packages/cli/test/server/stats-changes.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/cards/parallel.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/stats/people.ts",
+      "packages/core/src/stats/period.ts",
+      "packages/core/src/stats/rhythm.ts",
+      "packages/core/src/stats/rows.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/core/src/stats/table.ts",
+      "packages/core/test/cards/doctor-antigravity-timeout.test.ts",
+      "packages/core/test/cards/prune-leftovers.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/internal-hooks.test.ts",
+      "packages/core/test/settings/internal-life.test.ts",
+      "packages/core/test/stats/sections.test.ts",
+      "packages/core/test/stats/table.test.ts",
+      "packages/ui/src/components/charts/chart-frame.ts",
+      "packages/ui/src/components/charts/charts.test.ts",
+      "packages/ui/src/components/charts/column-chart.ts",
+      "packages/ui/src/dashboard/dashboard-changes.test.ts",
+      "packages/ui/src/dashboard/dashboard-changes.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts",
+      "packages/ui/src/dashboard/dashboard-people.ts",
+      "packages/ui/src/dashboard/dashboard-rhythm.ts",
+      "packages/ui/src/dashboard/dashboard-sections.test.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/data/server-config.test.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/data/stats-source.test.ts",
+      "packages/ui/src/settings/save-dialog.ts",
+      "packages/ui/src/settings/setting-row.ts",
+      "packages/ui/src/settings/settings-controls.test.ts",
+      "packages/ui/src/settings/settings-edit.test.ts",
+      "packages/ui/src/settings/settings-edit.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts",
+      "packages/ui/src/settings/settings-save.test.ts",
+      "packages/ui/src/settings/settings-view.ts",
+      "packages/ui/src/styles.css",
+      "packages/ui/src/theme/tokens.test.ts",
+      "packages/ui/src/theme/tokens.ts"
+    ],
+    "at": "2026-11-07T09:41:05.887Z",
+    "resolved": {
+      "commit": "bfe68db",
+      "at": "2026-11-07T09:54:33.707Z"
+    }
+  }
+}

@@ -86,6 +86,15 @@ const CODE_COLORS: readonly Token[] = CODE_KINDS.map((kind) =>
   token(`--color-code-${kind}`, "color", CODE_LABELS[kind].es, CODE_LABELS[kind].en),
 );
 
+/** The panel's charts: their series, only on the marks, and their grid and baseline. */
+const CHART_COLORS: readonly Token[] = [
+  token("--color-series-1", "color", "Gráficas: serie 1, azul", "Charts: series 1, blue"),
+  token("--color-series-2", "color", "Gráficas: serie 2, naranja", "Charts: series 2, orange"),
+  token("--color-series-3", "color", "Gráficas: serie 3, aguamarina", "Charts: series 3, aqua"),
+  token("--color-chart-grid", "color", "Gráficas: rejilla", "Charts: grid"),
+  token("--color-chart-axis", "color", "Gráficas: línea base", "Charts: baseline"),
+];
+
 const PHASE_COLORS: readonly Token[] = PHASES.flatMap((phase) => [
   token(
     `--color-phase-${phase}`,
@@ -146,6 +155,7 @@ export const TOKENS: readonly Token[] = [
   ...COLORS,
   ...DIFF_COLORS,
   ...CODE_COLORS,
+  ...CHART_COLORS,
   ...PHASE_COLORS,
   ...TYPOGRAPHY,
   ...FOUNDATIONS,

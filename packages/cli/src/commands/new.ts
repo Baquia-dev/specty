@@ -156,7 +156,7 @@ async function newInFolder(session: Session, options: NewOptions, title: string)
   if (dirty.length > 0) return nextCard({ dirty }, cards);
 
   const changeTitle = options.slug?.trim() ? options.slug : title;
-  const id = await uniqueId(session, makeChangeId(session.environment.now(), changeTitle));
+  const id = await uniqueId(session, changeIdOf(session, changeTitle));
   const branch = settings.branchPerChange ? await branchFor(session, options, id) : undefined;
   if (branch !== undefined) {
     await session.git.output(["switch", "-q", "-c", branch]);
@@ -197,7 +197,7 @@ async function newInWorktree(
   const swept = await cleanUp(session);
   const home = await worktreesHome(git);
   const changeTitle = options.slug?.trim() ? options.slug : title;
-  const id = await uniqueId(session, makeChangeId(session.environment.now(), changeTitle), home);
+  const id = await uniqueId(session, changeIdOf(session, changeTitle), home);
   const branch = await branchFor(session, options, id);
   const folder = join(home, id);
   const { hooks, workspace } = await addWorktree(git, { folder, branch, base: base.commit });
@@ -290,8 +290,16 @@ async function branchFor(session: Session, options: NewOptions, id: string): Pro
   const { kind, type } = options;
   const title = (options.slug?.trim() ? options.slug : options.title).trim();
   const pattern = branchPattern !== undefined ? { pattern: branchPattern } : {};
-  return freeBranch(session.git, branchName({ flow, kind, type, id, title, ...pattern }));
+  const { slugChars } = session.config.internal.cards;
+  return freeBranch(
+    session.git,
+    branchName({ flow, kind, type, id, title, slugChars, ...pattern }),
+  );
 }
+
+/** A new change's id, today's, its slug of `internal.cards.slugChars` at most. */
+const changeIdOf = (session: Session, title: string) =>
+  makeChangeId(session.environment.now(), title, session.config.internal.cards.slugChars);
 
 /** Writes the spec skeleton and the initial state of a new change in `target.dir`. */
 async function createChange(

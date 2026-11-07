@@ -185,15 +185,15 @@ describe("resolveConfig and `internal`'s waits and retries", () => {
     return resolved.ok ? "ok" : resolved.issues.map((issue) => issue.path);
   };
 
-  it("AC4: without the keys, Specty waits an hour, beats each minute and retries landing twice", () => {
+  it("AC4, AC6: without the keys, Specty waits 55 min, inside the prompt cache's hour, beats each minute and retries landing twice", () => {
     expect(DEFAULT_CONFIG.internal).toMatchObject({
-      waits: { waitTimeoutSec: 3600, heartbeatSec: 60 },
+      waits: { waitTimeoutSec: 3300, heartbeatSec: 60 },
       retries: { landing: 2 },
     });
     expect(resolveConfig({ version: 1 })).toMatchObject({
       ok: true,
       config: {
-        internal: { waits: { waitTimeoutSec: 3600, heartbeatSec: 60 }, retries: { landing: 2 } },
+        internal: { waits: { waitTimeoutSec: 3300, heartbeatSec: 60 }, retries: { landing: 2 } },
       },
     });
   });
@@ -209,6 +209,7 @@ describe("resolveConfig and `internal`'s waits and retries", () => {
         internal: { waits: { waitTimeoutSec: 60, heartbeatSec: 60 }, retries: { landing: 0 } },
       },
     });
+    // AC6: an hour still fits, as the most every tool measured holds.
     expect(paths({ waits: { waitTimeoutSec: 3600, heartbeatSec: 1 } })).toBe("ok");
     expect(paths({ waits: { heartbeatSec: 240 }, retries: { landing: 10 } })).toBe("ok");
   });
@@ -325,7 +326,7 @@ describe("resolveConfig and `internal`'s polling intervals", () => {
       config: {
         internal: {
           waits: {
-            waitTimeoutSec: 3600,
+            waitTimeoutSec: 3300,
             heartbeatSec: 60,
             verifyIntervalMs: 100,
             waitIntervalMs: 500,

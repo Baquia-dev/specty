@@ -130,7 +130,7 @@ export {
   type SpecAccess,
   type WaitingFor,
 } from "./flow/phases";
-export { changeWaitsFor } from "./flow/waiting";
+export { changeWaitsFor, unlocksApprovedTest, waitsForPerson } from "./flow/waiting";
 export { globBase, isGlob, matchesAny, matchesPattern } from "./glob";
 export {
   defaultGlossary,
@@ -352,6 +352,15 @@ export {
   type StatsView,
   statsView,
 } from "./stats/summary";
+export {
+  type StatsChange,
+  type StatsChangeSort,
+  type StatsChangesPage,
+  type StatsListed,
+  type StatsTableQuery,
+  statsChanges,
+  statsTableQuery,
+} from "./stats/table";
 export {
   type ChangeSummary,
   type ChangeTab,

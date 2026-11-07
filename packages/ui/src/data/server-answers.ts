@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // What the local server answers, as ServerData reads it: the checks of its data and what each
 // refusal means, in both languages. Pure.
+import type { StatsChangesPage } from "@baquia-dev/specty-core";
 import type { SessionView } from "@baquia-dev/specty-core/light";
 import type { RunRecord } from "./progress";
 import type {
@@ -338,6 +339,26 @@ export function isFinishedPage(value: unknown): value is FinishedPage {
     typeof value.finished === "number" &&
     typeof counts.done === "number" &&
     typeof counts.cancelled === "number"
+  );
+}
+
+/**
+ * `GET /api/stats/changes`' answer: its cut, period and table values, how many match, and each
+ * change of the page with the texts and numbers its row needs.
+ */
+export function isStatsChangesPage(value: unknown): value is StatsChangesPage {
+  if (!isObject(value) || !isObject(value.query) || !isObject(value.range)) return false;
+  return (
+    isObject(value.table) &&
+    typeof value.total === "number" &&
+    Array.isArray(value.changes) &&
+    value.changes.every(
+      (change) =>
+        isObject(change) &&
+        ["id", "title", "kind"].every((key) => isText(change[key])) &&
+        typeof change.tasks === "number" &&
+        typeof change.failed === "number",
+    )
   );
 }
 
