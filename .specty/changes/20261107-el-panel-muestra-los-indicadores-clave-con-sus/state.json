@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261107-el-panel-muestra-los-indicadores-clave-con-sus",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-panel-muestra-los-indicadores-clave-con-sus",
+  "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9db860e8a9ca07c0d379a3866c455b7f33836ecbca249cf7600053a5d841f838",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8c47139b32b1de1ec28ef4ae3aaa242d2f399bcff72bff5ca24470deea94a33e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:507bd374e2aa17c7206eb522b367f2628386d7093b08450d7ebedb2929e34bb3",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:214b73391b740dd03defb837851b4a3f9f874c60ee3810910e71cfac10890379",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f6d25e0e3f421d6f1934b7b07c39f8a94a24e01f366ec6c63bd45bc979e5a16c",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:ae9dfb6ee83da7d8f979c32e59deabca151cf610dfc7a57061429bf225354a45",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:c05b518c6ee18b233e083929f4602a067b6467e107e94a953b23d2a92f9a4dd4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 8,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bddcbb7eab38c4fd3d013632b9589d60adee177c16b198768917a4c5e34dc9d5",
+    "at": "2026-11-07T04:23:54.718Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
