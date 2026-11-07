@@ -70,8 +70,9 @@ async function onTurn<T>(
     folder: session.root,
     at: session.environment.now().toISOString(),
   };
-  const place = await joinTurnQueue(session.git, holder);
   const pollMs = options.pollMs ?? session.config.internal.waits.verifyIntervalMs;
+  const { queueStaleSec } = session.config.internal.waits;
+  const place = await joinTurnQueue(session.git, holder, { staleSec: queueStaleSec, pollMs });
   let said = false;
   try {
     for (;;) {

@@ -97,12 +97,26 @@ export async function openRecords(session: Session): Promise<ChangeRecord[]> {
  * the main branch still shows from its own worktree.
  */
 export async function changeRecords(session: Session): Promise<ChangeRecord[]> {
+  return completed(session, await everyChange(session));
+}
+
+/**
+ * Every change of the repository, once, as `changeRecords` finds them but as their files are:
+ * without the commits of their tasks nor who holds them. The archived ones are the very records
+ * the session keeps, so what is kept with them lasts. What the panel's table counts.
+ */
+export async function plainRecords(session: Session): Promise<readonly ChangeRecord[]> {
+  return (await everyChange(session)).records;
+}
+
+/** The open changes, as `openOnes` reads them, then the archived ones that are not among them. */
+async function everyChange(session: Session): Promise<Read> {
   const { records, sessions } = await openOnes(session);
   const all = [...records];
   for (const record of await archivedRecords(session)) {
     if (!all.some((seen) => seen.state.id === record.state.id)) all.push(record);
   }
-  return completed(session, { records: all, sessions });
+  return { records: all, sessions };
 }
 
 /** The changes read, each id once, and the session of each open one, in its folder. */

@@ -99,9 +99,11 @@ export async function install(setup: InitSetup, fresh: boolean): Promise<Install
   const mcp = await mcpServer(setup, tools, files);
   const project = await writeProjectFiles(setup, fresh, files, flow.flow, mcp.served);
   const noFlow = noFlowWarnings(flow, project.product !== undefined, lang);
-  const hooks = await installHooks({ environment, root, git, tools, lang, files });
+  // The guard's hooks take their settings from the configuration there was, or the defaults.
+  const config = setup.config ?? DEFAULT_CONFIG;
+  const hooks = await installHooks({ environment, root, git, tools, lang, files, config });
   // Each agent's end of turn goes next to its guard, with the time the configuration gives checks.
-  const timeout = setup.config?.verify.timeoutSec ?? DEFAULT_CONFIG.verify.timeoutSec;
+  const timeout = config.verify.timeoutSec;
   await installAgentStops({ root, files, tools, timeout });
   // Last: ccusage, so that closing measures each change's consumption.
   const steps = [hooks, mcp, await usageTool(setup)];
