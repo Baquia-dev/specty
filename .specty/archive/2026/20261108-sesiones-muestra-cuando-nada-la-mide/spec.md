@@ -71,3 +71,22 @@ Hoy «Sesiones» muestra 0 en «Personas y agentes» y en «Los cambios más car
 ## Riesgos
 
 - R1: C2 cambia a la vez `stats/cost.ts` y `dashboard-cost.ts` para el título. Mitigación: aquí solo se tocan las líneas de las sesiones y, al incorporar main, se conservan las partes de los dos.
+
+## Cierre
+
+### Resumen
+
+«Sesiones» muestra «—» cuando nada la mide, en «Personas y agentes» y en «Los cambios más caros», en el panel de `specty ui` y en `specty stats` (P329). El core da `null` en `StatsPeopleRow.sessions` cuando ninguna línea de los cambios de la fila trae `session`, y en las sesiones de cada cambio de `StatsCost.top` cuando ninguna línea del cambio la trae; con alguna, sigue contando, también 0. `cards/stats.ts` escribe «—» con `null` en sus dos tablas y `dashboard-cost.ts` en su celda «Sesiones»; la tabla de «Personas y agentes» ya lo hacía con cualquier cifra `null`. `docs/formats.md` §9 y `docs/ui.md` lo explican.
+
+### Desviaciones
+
+- **Dos desbloqueos del test de AC1 del core** (`packages/core/test/stats/sections.test.ts`), aprobados por la persona: S1 (T1) añadió al cambio de Fede una verificación en el periodo, sin sesión, porque su única línea era de hace 48 días y el cambio no vivía en el periodo; S2 (T3) solo dejó en una línea el array que el parche de S1 partía en cuatro, porque Biome lo quería así y `pnpm lint` fallaba.
+
+### Decisiones
+
+- **A1 a A4, como estaban al aprobar:** `null` solo si ninguna línea de los cambios trae `session` en ningún día; 0 si alguna la trae pero ninguna en el periodo; la misma regla para «Los cambios más caros», y «—» también en inglés.
+- **En `cost.ts` y `dashboard-cost.ts` solo cambiaron las líneas de las sesiones** (R1), para que C2 de la épica pueda tocar esos archivos a la vez.
+
+### Pendientes
+
+Ninguno.
