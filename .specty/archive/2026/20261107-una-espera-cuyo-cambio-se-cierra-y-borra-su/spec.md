@@ -23,3 +23,9 @@ Un `specty wait` que corre en la carpeta de un cambio (`.worktrees/<id>`) termin
   - files: packages/cli/src/commands/wait.ts, packages/core/src/cards/wait.ts, packages/core/src/cards/index.ts, packages/cli/test/wait-folder.test.ts, packages/core/test/cards/wait.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait-folder.test.ts test/wait.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/wait.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+wait anota la carpeta principal al empezar y, si la carpeta del cambio ya no existe cuando la persona decide, lee la fase del cambio en la punta de su rama desde la principal y da waitFolderGoneCard (cerrado, cancelado o perdido) con código 0 en vez de la tarjeta de next; ARCHITECTURE §6 lo cuenta

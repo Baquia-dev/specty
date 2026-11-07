@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-una-espera-cuyo-cambio-se-cierra-y-borra-su",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-una-espera-cuyo-cambio-se-cierra-y-borra-su",
   "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
   "revision": 1,
@@ -26,12 +26,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2d72ac2f31476c817673ba2741537c2e98dba066",
+      "attempts": 1,
       "startedAt": "2026-11-07T05:22:21.584Z",
       "doneAt": "2026-11-07T05:31:54.511Z",
-      "summary": "wait anota la carpeta principal al empezar y, si la carpeta del cambio ya no existe cuando la persona decide, lee la fase del cambio en la punta de su rama desde la principal y da waitFolderGoneCard (cerrado, cancelado o perdido) con código 0 en vez de la tarjeta de next; ARCHITECTURE §6 lo cuenta"
+      "summary": "wait anota la carpeta principal al empezar y, si la carpeta del cambio ya no existe cuando la persona decide, lee la fase del cambio en la punta de su rama desde la principal y da waitFolderGoneCard (cerrado, cancelado o perdido) con código 0 en vez de la tarjeta de next; ARCHITECTURE §6 lo cuenta",
+      "scopeExtra": []
     }
   },
   "pending": {
