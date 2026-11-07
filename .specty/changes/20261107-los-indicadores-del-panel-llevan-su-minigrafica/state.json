@@ -6,6 +6,13 @@
   "branch": "specty/20261107-los-indicadores-del-panel-llevan-su-minigrafica",
   "baseCommit": "bbc77876ac9692c275f8142a0c75b30b956c6ded",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c76a0c758def8e3d34fdc6f97ed9601c459acc75f1f1755d3514156dadcd129c",
+    "at": "2026-11-07T16:05:32.808Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c76a0c758def8e3d34fdc6f97ed9601c459acc75f1f1755d3514156dadcd129c",
-    "at": "2026-11-07T16:05:32.808Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T16:15:17.752Z"
 }
