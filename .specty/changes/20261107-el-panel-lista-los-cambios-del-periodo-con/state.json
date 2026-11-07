@@ -6,6 +6,13 @@
   "branch": "specty/20261107-el-panel-lista-los-cambios-del-periodo-con",
   "baseCommit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:6425346ec78df2a7763eabcfa307f38c9db337abb0284387bc2a1097b5b853a4",
+    "at": "2026-11-07T08:29:03.976Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -56,12 +63,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:6425346ec78df2a7763eabcfa307f38c9db337abb0284387bc2a1097b5b853a4",
-    "at": "2026-11-07T08:29:03.976Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T08:35:58.461Z"
 }
