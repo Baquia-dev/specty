@@ -62,3 +62,23 @@ Sin cambio activo, la tarjeta de `specty next` en la carpeta principal lista los
 
 - R1: La sesión principal puede entrar ella misma en el huérfano en lugar de lanzar el subagente, o crear un cambio nuevo. Mitigación: el juicio lo deja sin avance, no como cumplido, y se anota.
 - R2: El texto del bloque de huérfanos cambia en paralelo. Mitigación: ni el experimento ni sus tests dependen de él, solo del id.
+
+## Cierre
+
+### Resumen
+
+Las evals tienen un experimento nuevo, `orphan`, que mide la vuelta a un cambio que ninguna conversación lleva. Prepara un cambio quick aprobado en su carpeta de `.worktrees/`, con su `state.json` de hace dos horas (`leftApproved`, que ahora comparte con la épica), y anota su id en `evals.orphan`. El encargo pide seguirlo por su título. Cumple si un subagente ejecutó `specty enter` con ese id, el cambio quedó archivado y el arreglo llegó a la carpeta principal. Una ejecución real con Claude Code 2.1.318, el 2026-11-07, cumplió en 113 s, con 16 rondas, 1 bloqueo, 0,47 USD y 30.253 tokens de contexto máximo en el hilo principal: la sesión le pasó el huérfano a un subagente, que entró con `specty enter <id>` y lo cerró. ARCHITECTURE §16 lo cuenta, y `pnpm test:evals` pasa (30 tests).
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El id del huérfano va en la configuración local de git del repositorio desechable (A2): un cambio cerrado ya no tiene carpeta, y el juicio sigue leyendo solo el repositorio y la transcripción.
+- `leftApproved` reúne la preparación de un cambio aprobado y huérfano, que ya hacía `approvedEpic`, para la épica y para el quick.
+- El experimento no depende del texto del bloque de huérfanos, que otro cambio toca en paralelo: solo de que `next` nombre el id y de que un subagente entre con él.
+
+### Pendientes
+
+- Ninguno nuevo.
