@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261108-los-formatos-del-panel-y-las-piezas-comunes-de",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261108-los-formatos-del-panel-y-las-piezas-comunes-de",
+  "baseCommit": "16ad77ec06157affaa0e9c6529ae3db9d19cbb4c",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d53d33bc31f7de77686d8cabf79e7512a0cd04f49f19a8b5dd479a9ff2daebad",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:2a61c3ebc57c346c9ce07efe2e6805909da7a032eef09655d030236a21c9e51e",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:846ac6966c441c75e497095f23c416b7c42f29a87dfe465017f834f2404b5c67",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:44192f77b2dba79638b3188137ccf94c285527560cdaa78dc728f40ea32ac506",
+    "at": "2026-11-07T16:54:58.006Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
