@@ -69,7 +69,7 @@ Hoy cuatro límites de lo que Specty le muestra al agente están fijos en el có
 
 ## Tareas
 
-- [ ] T1: Las funciones de core reciben los límites de lo que muestran, con el valor de hoy por defecto
+- [x] T1: Las funciones de core reciben los límites de lo que muestran, con el valor de hoy por defecto
   - files: packages/core/src/cards/impact.ts, packages/core/src/cards/review.ts, packages/core/src/cards/task.ts, packages/core/src/ids.ts, packages/core/src/branches.ts, packages/core/test/settings/card-limits.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/card-limits.test.ts -t "as parameters"

@@ -33,7 +33,10 @@ export function parseItemId(raw: string): ItemId | undefined {
   return { prefix, number, id: `${prefix}${number}` };
 }
 
-export function slugify(title: string, maxLength = 48): string {
+/** The longest slug of a change's id and branch by default (`internal.cards.slugChars`). */
+export const SLUG_CHARS = 48;
+
+export function slugify(title: string, maxLength = SLUG_CHARS): string {
   const folded = fold(title)
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
@@ -47,10 +50,10 @@ export function slugify(title: string, maxLength = 48): string {
   return slug.length > 0 ? slug : "change";
 }
 
-/** Builds a change id from a local date and a title. */
-export function makeChangeId(date: Date, title: string): string {
+/** Builds a change id from a local date and a title, its slug of `slugChars` at most. */
+export function makeChangeId(date: Date, title: string, slugChars = SLUG_CHARS): string {
   const year = String(date.getFullYear()).padStart(4, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
-  return `${year}${month}${day}-${slugify(title)}`;
+  return `${year}${month}${day}-${slugify(title, slugChars)}`;
 }

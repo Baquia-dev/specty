@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5348d1aa0941b572ccb310cfc354ca0e08405602",
+      "startedAt": "2026-11-07T08:36:19.674Z",
+      "doneAt": "2026-11-07T08:42:01.336Z",
+      "summary": "impactLine, reviewedCard, makeChangeId y branchName reciben su límite con el de hoy por defecto (IMPORTERS_SHOWN, REVIEW_LINES, SLUG_CHARS exportadas); la negativa too-long lleva max, NOTE_MAX sin él."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
