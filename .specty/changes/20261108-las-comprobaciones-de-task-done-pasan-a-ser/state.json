@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-las-comprobaciones-de-task-done-pasan-a-ser",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-las-comprobaciones-de-task-done-pasan-a-ser",
   "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
   "revision": 2,
@@ -59,6 +59,10 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T16:16:53.217Z"
+  "lockedTests": {
+    "packages/cli/test/task-check.test.ts": "sha256:0aea82314d3ac30c9834eb0854a03549d68a2081e0d031a1f9822c17cf7949e5",
+    "packages/core/test/settings/catalog.test.ts": "sha256:088a1af8e38925d357c1b096247980ee1450cd1a7493ffc0817d91ffd1e15918",
+    "packages/core/test/schema/task-done.test.ts": "sha256:8f76127c4c97480bb02bf892694b57c1baa0b13f70415742597c10ae83b11510",
+    "packages/core/test/settings/task-done.test.ts": "sha256:983977f937c06341ec453c16195ce6194adc88ac9403a8a0da4e5bda489d20f9"
+  }
 }
