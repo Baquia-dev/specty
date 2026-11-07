@@ -150,7 +150,17 @@ describe("specty stats", () => {
       "2",
       expect.stringMatching(/^(1 d|1 d 1 h|23 h)$/),
       "100 %",
-      "0",
+      // AC1: codex does not tell its session, so nothing measures them.
+      "—",
+      "1,50 USD",
+    ]);
+    // AC2: nor in the costliest changes.
+    expect(block(run.out, "LOS CAMBIOS MÁS CAROS")[1]?.split(/\s{2,}/)).toEqual([
+      "20261001-de-bea",
+      "quick",
+      "2",
+      expect.stringMatching(/^(1 d|1 d 1 h|23 h)$/),
+      "—",
       "1,50 USD",
     ]);
   });

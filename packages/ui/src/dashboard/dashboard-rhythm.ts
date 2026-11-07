@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
 import type { ChangeKind, StatsView } from "@baquia-dev/specty-core";
-import type { Lang } from "@baquia-dev/specty-core/light";
 import { type ChartSeries, ColumnChart } from "../components/charts/column-chart";
 import { SectionDivider } from "../components/document";
 import { Preferences } from "../theme/preferences";
+import { shortDay } from "./dashboard-format";
 
 /**
  * The lanes the closed changes stack in: one per color of the palette, so epics, spikes and
@@ -100,12 +100,4 @@ export class DashboardRhythm {
       values: this.rhythm().buckets.map((bucket) => bucket.tasks),
     },
   ]);
-}
-
-/** A local day, YYYY-MM-DD, as «9 oct» or «Oct 9». */
-function shortDay(day: string, lang: Lang): string {
-  const [year = 0, month = 1, date = 1] = day.split("-").map(Number);
-  return new Intl.DateTimeFormat(lang, { day: "numeric", month: "short" }).format(
-    new Date(year, month - 1, date),
-  );
 }

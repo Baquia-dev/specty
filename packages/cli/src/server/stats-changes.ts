@@ -83,7 +83,7 @@ function cutOf(params: URLSearchParams): StatsQuery {
 }
 
 /** Every change's row, open or archived, with its title and size. */
-async function listedRows(session: Session): Promise<readonly StatsListed[]> {
+export async function listedRows(session: Session): Promise<readonly StatsListed[]> {
   return (await plainRecords(session)).flatMap((record) => listedOf(record) ?? []);
 }
 

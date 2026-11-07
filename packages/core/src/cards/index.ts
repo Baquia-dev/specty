@@ -226,6 +226,7 @@ export {
   markersLeftLine,
   mergeAbortedLine,
   mergeByHandNext,
+  mergedAgainLine,
   mergedConfigInvalidLine,
   mergedConfigNext,
   mergedVerifyFailsLine,
@@ -326,6 +327,7 @@ export {
   workingFolderLine,
 } from "./parallel";
 export { withDevPorts } from "./ports";
+export { type ProcessBudgetView, processBudgetNote } from "./processes";
 export {
   type Asker,
   checkStatus,
@@ -443,6 +445,8 @@ export {
   unlockRefusalCard,
 } from "./unlock";
 export {
+  type IncorporationLocked,
+  lockedIncorporationProblem,
   type UnlockMismatch,
   unlockMismatchCard,
   unlockStaleCard,

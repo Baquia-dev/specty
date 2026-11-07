@@ -30,6 +30,8 @@ export interface StatsQuality {
   /** The changes with most task verifications failed, the most first: how many of how many. */
   readonly worst: readonly {
     readonly id: string;
+    /** The title of its row, when it brings one. */
+    readonly title?: string;
     readonly failed: number;
     readonly total: number;
   }[];
@@ -96,7 +98,12 @@ function worstOf(
   return rows
     .map((row) => {
       const own = within(row.verifications);
-      return { id: row.id, failed: own.filter((one) => !one.passed).length, total: own.length };
+      return {
+        id: row.id,
+        ...(row.title === undefined ? {} : { title: row.title }),
+        failed: own.filter((one) => !one.passed).length,
+        total: own.length,
+      };
     })
     .filter((one) => one.failed > 0)
     .toSorted(

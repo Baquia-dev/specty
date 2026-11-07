@@ -27,6 +27,7 @@ describe("the units of the full verification in the configuration", () => {
       full: "pnpm check",
       timeoutSec: 600,
       slots: 2,
+      processes: { env: [], memoryMiB: 512 },
     });
   });
 

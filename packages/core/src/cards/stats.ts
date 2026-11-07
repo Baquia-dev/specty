@@ -252,7 +252,7 @@ function peopleBlock(view: StatsView, kind: StatsWhoKind, t: Translate) {
     String(row.tasks),
     row.cycle === null ? "—" : span(row.cycle, t),
     row.verifications === null ? "—" : share(row.verifications, t),
-    String(row.sessions),
+    row.sessions === null ? "—" : String(row.sessions),
     row.cost === null ? "—" : usd(row.cost, t),
   ]);
   return section(title, aligned([head, ...cells]));
@@ -303,7 +303,7 @@ function costliestBlock(view: StatsView, t: Translate) {
     change.kind,
     String(change.tasks),
     change.cycle === null ? "—" : span(change.cycle, t),
-    String(change.sessions),
+    change.sessions === null ? "—" : String(change.sessions),
     usd(change.cost, t),
   ]);
   return section(t("LOS CAMBIOS MÁS CAROS", "THE COSTLIEST CHANGES"), aligned([head, ...cells]));

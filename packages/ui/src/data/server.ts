@@ -16,7 +16,6 @@ import {
   SpectyData,
 } from "./records";
 import {
-  actionEvent,
   answered,
   configReason,
   configRefusal,
@@ -29,18 +28,23 @@ import {
   isMemoryRecord,
   isObject,
   isRecords,
-  isRun,
   isSessionList,
   isSliceChanges,
-  isStatsChangesPage,
   NO_DIFF,
   NO_SESSION,
   READ_ONLY,
   refusal,
-  runEvent,
   tooLarge,
   UNEXPECTED,
 } from "./server-answers";
+import { ServerEvents } from "./server-events";
+import {
+  fetchStats,
+  fetchStatsChanges,
+  fetchStatsExport,
+  type StatsExportParams,
+} from "./server-stats";
+import { fetchTestCode, fetchTrace, fetchTraceFiles } from "./server-trace";
 import type {
   ActionNote,
   ConfigCheck,
@@ -52,36 +56,16 @@ import type {
   StatsChangesParams,
   StatsParams,
 } from "./source";
-import { fetchStatsExport, type StatsExportParams } from "./stats-export";
-import { isStrings, isTrace, type TraceRecord } from "./trace";
+import type { TraceRecord } from "./trace";
 
 /** The mark `specty ui` puts in the page it serves (ARCHITECTURE §15). */
 const MARK = 'meta[name="specty-data"][content="server"]';
-
-const NO_TRACE_YET: Bilingual = {
-  es: "Este cambio aún no tiene commits, o ese archivo no es suyo.",
-  en: "This change has no commits yet, or that file is not its own.",
-};
-const NOT_A_TEST: Bilingual = {
-  es: "No se puede mostrar el código de este test: no es un test del cambio o no se pudo leer.",
-  en: "This test's code cannot be shown: it is not a test of the change, or it could not be read.",
-};
-const TRACE_TOO_LARGE: Bilingual = {
-  es: "Este archivo es demasiado grande para trazarlo aquí: usa `specty why <archivo>:<línea>` en la terminal.",
-  en: "This file is too large to trace here: use `specty why <file>:<line>` in the terminal.",
-};
 
 /** What `GET /api/session` says: whether the person may decide here, and the CSRF token. */
 interface ServerSession {
   readonly actions: boolean;
   readonly csrf?: string;
 }
-
-type RunListener = (change: string, run: RunRecord | undefined) => void;
-type ActionListener = (told: ActionNote) => void;
-
-/** How long an action waits for the screens to read again before it ends anyway. */
-const REREAD_MS = 10_000;
 
 /**
  * The local server's data (`specty ui`): the changes of every worktree through `fetch`, read
@@ -92,10 +76,7 @@ const REREAD_MS = 10_000;
 export class ServerData extends SpectyData {
   private session: Promise<ServerSession> | undefined;
   /** One event stream for every subscriber: the Inbox, delegated mode, the runs and the actions. */
-  private events: EventSource | undefined;
-  private readonly listeners = new Set<() => unknown>();
-  private readonly runListeners = new Set<RunListener>();
-  private readonly actionListeners = new Set<ActionListener>();
+  private readonly events = new ServerEvents();
 
   override async changes(): Promise<readonly ChangeRecord[]> {
     const response = await fetch("/api/changes");
@@ -136,16 +117,8 @@ export class ServerData extends SpectyData {
   }
 
   /** A page of the panel's table of changes, found, sorted and cut by the server. */
-  override async statsChanges(params: StatsChangesParams): Promise<StatsChangesPage> {
-    const query = new URLSearchParams();
-    for (const [key, value] of Object.entries(params)) {
-      if (value !== undefined) query.set(key, String(value));
-    }
-    const response = await fetch(`/api/stats/changes?${query}`);
-    if (response.status === 403) throw new ActionError(NO_SESSION);
-    const body: unknown = await response.json().catch(() => undefined);
-    if (!response.ok || !isStatsChangesPage(body)) throw new ActionError(UNEXPECTED);
-    return body;
+  override statsChanges(params: StatsChangesParams): Promise<StatsChangesPage> {
+    return fetchStatsChanges(params);
   }
 
   /** The panel's changes of the cut as the file the server writes. */
@@ -154,30 +127,17 @@ export class ServerData extends SpectyData {
   }
 
   override subscribe(listener: () => unknown): () => void {
-    return this.follow(this.listeners, listener);
+    return this.events.subscribe(listener);
   }
 
-  /**
-   * The full verification running in `change`: what it has so far, asked to the server, then
-   * every `run` event. An event that arrives before that answer is newer, so it wins.
-   */
+  /** What `/run` says of the verification running in `change`, then every `run` event. */
   override watchRun(change: string, listener: (run: RunRecord | undefined) => void): () => void {
-    let heard = false;
-    const told: RunListener = (id, run) => {
-      if (id !== change) return;
-      heard = true;
-      listener(run);
-    };
-    const stop = this.follow(this.runListeners, told);
-    void readRun(change).then((run) => {
-      if (!heard && this.runListeners.has(told)) listener(run);
-    });
-    return stop;
+    return this.events.watchRun(change, listener);
   }
 
   /** Every `action` event: what the server says of the person's actions as they go on. */
-  override watchActions(listener: ActionListener): () => void {
-    return this.follow(this.actionListeners, listener);
+  override watchActions(listener: (told: ActionNote) => void): () => void {
+    return this.events.watchActions(listener);
   }
 
   /** Read only when the agent started the server; without a session, why it has none. */
@@ -226,18 +186,8 @@ export class ServerData extends SpectyData {
   }
 
   /** The panel of the cut, with only the parameters the page's URL has. */
-  override async stats(params: StatsParams): Promise<StatsView> {
-    const query = new URLSearchParams();
-    for (const key of ["period", "who", "kind"] as const) {
-      const value = params[key];
-      if (value !== undefined) query.set(key, value);
-    }
-    const search = query.size === 0 ? "" : `?${query}`;
-    const response = await fetch(`/api/stats${search}`);
-    if (response.status === 403) throw new ActionError(NO_SESSION);
-    const body: unknown = await response.json().catch(() => undefined);
-    if (!response.ok || !isStatsView(body)) throw new ActionError(UNEXPECTED);
-    return body;
+  override stats(params: StatsParams): Promise<StatsView> {
+    return fetchStats(params);
   }
 
   /** The configuration, with why it cannot be saved now in words. */
@@ -267,7 +217,7 @@ export class ServerData extends SpectyData {
     if (!response.ok) throw new ActionError(await refusal(response));
     const body: unknown = await response.json().catch(() => undefined);
     if (!isConfigSaved(body)) throw new ActionError(UNEXPECTED);
-    await this.reread();
+    await this.events.reread();
     return body;
   }
 
@@ -353,75 +303,18 @@ export class ServerData extends SpectyData {
   }
 
   /** The files the change left; a read, so even an agent's server gives them. */
-  override async traceFiles(change: string): Promise<readonly string[]> {
-    const body = await this.traced(`/api/changes/${encodeURIComponent(change)}/trace`);
-    if (isObject(body) && isStrings(body.files)) return body.files;
-    throw new ActionError(UNEXPECTED);
+  override traceFiles(change: string): Promise<readonly string[]> {
+    return fetchTraceFiles(change);
   }
 
   /** `path` as the change left it, in blocks with what `specty why` tells of each. */
-  override async trace(change: string, path: string): Promise<TraceRecord> {
-    const query = `?path=${encodeURIComponent(path)}`;
-    const body = await this.traced(`/api/changes/${encodeURIComponent(change)}/trace${query}`);
-    if (isTrace(body)) return body;
-    throw new ActionError(UNEXPECTED);
+  override trace(change: string, path: string): Promise<TraceRecord> {
+    return fetchTrace(change, path);
   }
 
   /** A test of the change as its branch has it; a read, so even an agent's server gives it. */
-  override async testCode(change: string, path: string): Promise<string> {
-    const query = `?path=${encodeURIComponent(path)}`;
-    const response = await fetch(`/api/changes/${encodeURIComponent(change)}/test${query}`);
-    if (response.ok) return response.text();
-    if (response.status === 403) throw new ActionError(NO_SESSION);
-    if (response.status === 404) throw new ActionError(NOT_A_TEST);
-    throw new ActionError(answered(response.status));
-  }
-
-  /** A read of the traceability, or why there is none. */
-  private async traced(url: string): Promise<unknown> {
-    const response = await fetch(url);
-    if (response.ok) return response.json().catch(() => undefined);
-    if (response.status === 403) throw new ActionError(NO_SESSION);
-    if (response.status === 404) throw new ActionError(NO_TRACE_YET);
-    if (response.status === 413) throw new ActionError(TRACE_TOO_LARGE);
-    throw new ActionError(answered(response.status));
-  }
-
-  /** Opens the event stream, once, for everyone who listens to it. */
-  private listen(): void {
-    if (this.events !== undefined) return;
-    this.events = new EventSource("/api/events");
-    this.events.addEventListener("changes", () => {
-      for (const heard of this.listeners) void heard();
-    });
-    this.events.addEventListener("run", (event: MessageEvent) => {
-      const told = runEvent(event.data);
-      if (told === undefined) return;
-      for (const heard of this.runListeners) heard(told.change, told.run);
-    });
-    this.events.addEventListener("action", (event: MessageEvent) => {
-      const told = actionEvent(event.data);
-      if (told === undefined) return;
-      for (const heard of this.actionListeners) heard(told);
-    });
-  }
-
-  /** Adds `listener` to `set` with the event stream open; its stop closes the stream if idle. */
-  private follow<T>(set: Set<T>, listener: T): () => void {
-    set.add(listener);
-    this.listen();
-    return () => {
-      set.delete(listener);
-      this.closeIfIdle();
-    };
-  }
-
-  /** Closes the event stream once nobody listens to it. */
-  private closeIfIdle(): void {
-    const listening = this.listeners.size + this.runListeners.size + this.actionListeners.size;
-    if (listening > 0) return;
-    this.events?.close();
-    this.events = undefined;
+  override testCode(change: string, path: string): Promise<string> {
+    return fetchTestCode(change, path);
   }
 
   /** One of the person's actions on a change. */
@@ -436,7 +329,7 @@ export class ServerData extends SpectyData {
   private async post(path: string, body: object): Promise<void> {
     const response = await this.send(path, body);
     if (!response.ok) throw new ActionError(await refusal(response));
-    await this.reread();
+    await this.events.reread();
   }
 
   /** A request of the person's, with the CSRF token; refused as read only where they cannot decide. */
@@ -448,20 +341,6 @@ export class ServerData extends SpectyData {
       headers: { "Content-Type": "application/json", "X-Specty-CSRF": csrf },
       body: JSON.stringify(body),
     });
-  }
-
-  /**
-   * Has every listener read again and waits for them, `REREAD_MS` at most: past that, the next
-   * `changes` event brings the rest. One that fails does not undo what the server already did.
-   */
-  private async reread(): Promise<void> {
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const late = new Promise<void>((done) => {
-      timer = setTimeout(done, REREAD_MS);
-    });
-    const heard = Promise.allSettled([...this.listeners].map(async (listener) => listener()));
-    await Promise.race([heard, late]);
-    clearTimeout(timer);
   }
 
   /** The server's session, asked once; a failed ask is asked again next time. */
@@ -483,16 +362,6 @@ async function readSession(): Promise<ServerSession> {
   return { actions: body.actions, ...(typeof body.csrf === "string" ? { csrf: body.csrf } : {}) };
 }
 
-/** The run going on in `change`, as the server has it; none if it cannot tell. */
-async function readRun(change: string): Promise<RunRecord | undefined> {
-  const response = await fetch(`/api/changes/${encodeURIComponent(change)}/run`).catch(
-    () => undefined,
-  );
-  if (response === undefined || !response.ok) return undefined;
-  const run: unknown = await response.json().catch(() => undefined);
-  return isRun(run) ? run : undefined;
-}
-
 /**
  * The data source for this page: the local server's when it served the page, the sample data
  * otherwise. Only the chosen one loads.
@@ -500,24 +369,4 @@ async function readRun(change: string): Promise<RunRecord | undefined> {
 export async function dataSource(page: Document): Promise<Type<SpectyData>> {
   if (page.querySelector(MARK) !== null) return ServerData;
   return (await import("./fixtures")).FixtureData;
-}
-
-/** The figures the panel shows first (`StatsSummary`). */
-const FIGURES = ["closed", "tasks", "cycle", "verifications", "cost", "pending"] as const;
-
-/**
- * `GET /api/stats`' answer: its cut and period, how many changes, who can be chosen, and each of
- * the six figures with a number or nothing for its value.
- */
-function isStatsView(value: unknown): value is StatsView {
-  if (!isObject(value) || !isObject(value.query) || !isObject(value.range)) return false;
-  const { summary } = value;
-  const figure = (item: unknown) =>
-    isObject(item) && (item.value === null || typeof item.value === "number");
-  return (
-    typeof value.changes === "number" &&
-    Array.isArray(value.options) &&
-    isObject(summary) &&
-    FIGURES.every((key) => figure(summary[key]))
-  );
 }

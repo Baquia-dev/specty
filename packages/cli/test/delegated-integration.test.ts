@@ -15,11 +15,11 @@ async function delegatedConflict() {
 }
 
 const RESOLVE =
-  "SIGUIENTE: modo delegado: resuélvela tú (`specty next` te dice qué falta), termínala con `specty integrate` y vuelve a ejecutar `specty close`.";
+  "SIGUIENTE: modo delegado: resuélvela tú (`specty next` te dice qué falta) y termínala con `specty integrate`, que sigue con `specty close`.";
 
 describe("the incorporation in delegated mode", () => {
-  it("asks the agent itself to resolve it and close again (AC1, AC2)", async () => {
-    const { folder } = await delegatedConflict();
+  it("AC3: asks the agent itself to resolve it, and `specty integrate` closes it on the same turn", async () => {
+    const { root, folder } = await delegatedConflict();
     // The agent closes for the person: no terminal, delegated mode.
     const closed = await cli(folder, ["close"]);
     expect(closed.code).toBe(2);
@@ -32,10 +32,12 @@ describe("the incorporation in delegated mode", () => {
     await writeFiles(folder, { "src/app.ts": "resuelto\n" });
     const integrated = await cli(folder, ["integrate"]);
     expect(integrated.code).toBe(0);
-    expect(integrated.out).toContain(
-      "SIGUIENTE: modo delegado: vuelve a ejecutar tú `specty close` y sigue su salida.",
-    );
+    expect(integrated.out).toContain("Incorporación de main resuelta (merge ");
+    expect(integrated.out).toContain("Incorporado a main.");
+    expect(integrated.out).not.toContain("vuelve a ejecutar tú `specty close`");
     expect(integrated.out).not.toContain("pide al usuario");
+    expect(git(root, "rev-parse", "main")).toBe(git(root, "rev-parse", `specty/${CHANGE}`));
+    expect(await exists(folder)).toBe(false);
   });
 
   it("removes the folder an agent closes from inside once merged, and tells it to leave", async () => {

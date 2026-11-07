@@ -39,7 +39,8 @@ export function testingDenial(
 /**
  * Why an approved test may not be written or deleted: the tests the person approved are the
  * contract (ADR 0014), and the implementation's own tests go in new files. The way out is an
- * unlock request for `task`, with its patch and its evidence, which only the person decides.
+ * unlock request for `task` (none during an incorporation), with its patch and its evidence,
+ * which only the person decides.
  */
 export function lockedDenial(
   path: string,
@@ -48,7 +49,7 @@ export function lockedDenial(
   command: string,
 ): { readonly reason: string; readonly next: string } {
   const t = (es: string, en: string) => (lang === "es" ? es : en);
-  const how = unlockHow([path], task ?? "<T>", lang, command);
+  const how = unlockHow([path], task, lang, command);
   return {
     reason: t(
       `\`${path}\` es un test aprobado y está bloqueado: los tests que aprobó la persona son el contrato.`,

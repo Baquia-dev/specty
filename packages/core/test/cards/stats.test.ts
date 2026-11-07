@@ -59,7 +59,8 @@ const VIEW: StatsView = {
       sessions: 3,
       cost: 12.3,
     }),
-    person("person", ""),
+    // AC1: no line of their changes tells its session.
+    person("person", "", { sessions: null }),
     person("agent", "claude-code", { changes: 3, tasks: 9, sessions: 3 }),
     person("model", "m-1", { changes: 3, tasks: 9, cycle: 45 * MINUTE, verifications: 1 }),
   ],
@@ -102,7 +103,8 @@ describe("the summary of `specty stats`", () => {
       "Coste",
     ]);
     expect(cells(people[1])).toEqual(["Bea", "2", "9", "2 h 30 min", "90 %", "3", "12,30 USD"]);
-    expect(cells(people[2])).toEqual(["(sin dato)", "1", "0", "—", "—", "0", "—"]);
+    // AC1: «—» when nothing measures the sessions; 0 when they were measured and none was in it.
+    expect(cells(people[2])).toEqual(["(sin dato)", "1", "0", "—", "—", "—", "—"]);
     // The columns line up: every row as long as the header.
     expect(new Set(people.map((line) => line.length)).size).toBe(1);
     expect(cells(block(text, "POR AGENTE")[1])).toEqual([
@@ -227,7 +229,8 @@ describe("the summary of `specty stats`", () => {
       "Cost",
     ]);
     expect(cells(people[1])).toEqual(["Bea", "2", "9", "2 h 30 min", "90%", "3", "12.30 USD"]);
-    expect(cells(people[2])).toEqual(["(no data)", "1", "0", "—", "—", "0", "—"]);
+    // AC1: in English too.
+    expect(cells(people[2])).toEqual(["(no data)", "1", "0", "—", "—", "—", "—"]);
     expect(block(text, "BY AGENT")).toHaveLength(2);
     expect(block(text, "BY MODEL")).toHaveLength(2);
     expect(
@@ -282,7 +285,8 @@ const COST: NonNullable<StatsView["cost"]> = {
       cycle: 27 * HOUR,
       sessions: 2,
     },
-    { id: "20261106-abierto", kind: "quick", cost: 0.5, tasks: 0, cycle: null, sessions: 0 },
+    // AC2: no line of it tells its session.
+    { id: "20261106-abierto", kind: "quick", cost: 0.5, tasks: 0, cycle: null, sessions: null },
   ],
 };
 
@@ -308,7 +312,8 @@ describe("the phases and the costliest changes of `specty stats`", () => {
       "2",
       "12,30 USD",
     ]);
-    expect(cells(top[2])).toEqual(["20261106-abierto", "quick", "0", "—", "0", "0,50 USD"]);
+    // AC2: «—» when no line of the change tells its session.
+    expect(cells(top[2])).toEqual(["20261106-abierto", "quick", "0", "—", "—", "0,50 USD"]);
     // The columns line up: every row as long as the header.
     expect(new Set(top.map((line) => line.length)).size).toBe(1);
     // In the panel's order: the tables, the phases, then the costliest.
@@ -356,5 +361,7 @@ describe("the phases and the costliest changes of `specty stats`", () => {
       "2",
       "12.30 USD",
     ]);
+    // AC2: in English too.
+    expect(cells(top[2])).toEqual(["20261106-abierto", "quick", "0", "—", "—", "0.50 USD"]);
   });
 });

@@ -73,7 +73,8 @@ const PEOPLE: NonNullable<StatsView["people"]> = [
     tasks: 0,
     cycle: null,
     verifications: null,
-    sessions: 0,
+    // AC1: no line of their changes tells its session.
+    sessions: null,
     cost: null,
   },
   {
@@ -336,6 +337,8 @@ describe("the «Panel» page's rhythm and people", () => {
     expect(cell("person:", "cycle")).toBe("—");
     expect(cell("person:", "verifications")).toBe("—");
     expect(cell("person:", "cost")).toBe("—");
+    // AC1: «Sesiones» too, when no line of their changes tells its session.
+    expect(cell("person:", "sessions")).toBe("—");
     expect(cell("agent:claude-code", "who")).toBe("Agente claude-code");
     expect(cell("model:claude-opus-4", "who")).toBe("Modelo claude-opus-4");
     expect(cell("model:claude-opus-4", "verifications")).toBe(percent(1, "es"));

@@ -185,7 +185,8 @@ describe("the panel's cost and tokens", () => {
         cycle: span(at(20), at(10, 13)),
         sessions: 2,
       },
-      { id: "e", kind: "standard", cost: 0.5, tasks: 0, cycle: null, sessions: 0 },
+      // AC2: no line of «e» tells its session, so nothing measures them.
+      { id: "e", kind: "standard", cost: 0.5, tasks: 0, cycle: null, sessions: null },
       { id: "b", kind: "quick", cost: 0.25, tasks: 1, cycle: span(at(3), at(2, 13)), sessions: 1 },
     ]);
   });

@@ -347,4 +347,35 @@ describe("the panel's people, agents and models", () => {
       "model:",
     ]);
   });
+
+  it("AC1: «Sesiones» is none when no line of their changes tells its session, and 0 when one does but not in the period", () => {
+    const quiet = [
+      // Eva with codex, which does not tell its session.
+      row(
+        "20261105-sin-sesion",
+        "standard",
+        [
+          line(at(2, 8), "change.created", { tool: "codex", model: "m-2" }),
+          line(at(2, 9), "task.completed", { tool: "codex", model: "m-2" }),
+        ],
+        "Eva",
+      ),
+      // Fede with claude-code, still open: its only session is before the period, and a
+      // verification in it, which tells none, makes the change live in the period.
+      row(
+        "20260920-antes",
+        "standard",
+        [line(at(48), "change.created", agent("claude-code", "s8", "m-3")), verified(at(1), 0)],
+        "Fede",
+      ),
+    ];
+    const sessions = (kind: string, name: string) =>
+      panel(quiet).people?.find((one) => one.who.kind === kind && one.who.name === name)?.sessions;
+    expect(sessions("person", "Eva")).toBeNull();
+    expect(sessions("agent", "codex")).toBeNull();
+    expect(sessions("model", "m-2")).toBeNull();
+    expect(sessions("person", "Fede")).toBe(0);
+    expect(sessions("agent", "claude-code")).toBe(0);
+    expect(sessions("model", "m-3")).toBe(0);
+  });
 });

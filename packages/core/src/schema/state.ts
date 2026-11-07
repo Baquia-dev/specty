@@ -74,6 +74,8 @@ const IntegrationSchema = z.strictObject({
   conflicts: z.array(z.string().min(1)),
   /** What either side changed since their common base: the only files the agent may touch. */
   paths: z.array(z.string().min(1)),
+  /** The approved tests the person unlocked for this incorporation (ADR 0014). */
+  unlocked: z.array(z.string().min(1)).optional(),
   at: Timestamp,
   /** Kept once resolved, so the person sees what the agent did when closing. */
   resolved: z.strictObject({ commit: Commit, at: Timestamp }).optional(),

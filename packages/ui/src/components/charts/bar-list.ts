@@ -11,6 +11,7 @@ import {
   viewChildren,
 } from "@angular/core";
 import { ChartFrame, type ChartKey, type ChartTable, ChartTip, type TipLine } from "./chart-frame";
+import { moveFocus } from "./chart-parts";
 
 /** A row: its name, its value, how the value reads and, maybe, one more figure for the tooltip. */
 export interface BarRow {
@@ -173,20 +174,12 @@ export class BarList {
 
   /** The arrows go to the next or the previous row, Home to the first and End to the last. */
   protected move(event: KeyboardEvent): void {
-    const last = this.rows().length - 1;
-    const current = this.stop();
-    const targets: Readonly<Record<string, number>> = {
-      ArrowDown: current + 1,
-      ArrowRight: current + 1,
-      ArrowUp: current - 1,
-      ArrowLeft: current - 1,
-      Home: 0,
-      End: last,
-    };
-    const target = targets[event.key];
-    if (target === undefined) return;
-    event.preventDefault();
-    this.buttons()[Math.min(last, Math.max(0, target))]?.nativeElement.focus();
+    moveFocus(event, {
+      count: this.rows().length,
+      current: this.stop(),
+      buttons: this.buttons(),
+      vertical: true,
+    });
   }
 }
 

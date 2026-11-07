@@ -13,6 +13,7 @@ import {
 } from "@angular/core";
 import { Preferences } from "../../theme/preferences";
 import { ChartFrame, type ChartKey, type ChartTable, ChartTip } from "./chart-frame";
+import { linePath, moveFocus, plain, roundScale, stretchesOf } from "./chart-parts";
 
 /** The drawing, in SVG units: its size and the margins of the plot. */
 const WIDTH = 560;
@@ -172,7 +173,8 @@ export class LineChart {
 
   private readonly scale = computed(() => {
     const present = this.values().filter((value) => value !== null);
-    return lineScale(this.min(), this.max() ?? Math.max(this.min() + 1, ...present), this.max());
+    const highest = this.max() ?? Math.max(this.min() + 1, ...present);
+    return roundScale(this.min(), highest, { fixed: this.max() });
   });
 
   protected readonly ticks = computed(() => {
@@ -200,7 +202,7 @@ export class LineChart {
   protected readonly runs = computed(() => {
     const base = HEIGHT - BOTTOM;
     return stretchesOf(this.points()).map((run) => {
-      const line = run.map(({ x, y }, index) => `${index === 0 ? "M" : "L"}${x},${y}`).join("");
+      const line = linePath(run);
       const first = run[0];
       const last = run.at(-1);
       const area =
@@ -257,57 +259,15 @@ export class LineChart {
 
   /** The arrows go to the next or the previous label, Home to the first and End to the last. */
   protected move(event: KeyboardEvent): void {
-    const last = this.labels().length - 1;
-    const current = this.stop();
-    const targets: Readonly<Record<string, number>> = {
-      ArrowRight: current + 1,
-      ArrowLeft: current - 1,
-      Home: 0,
-      End: last,
-    };
-    const target = targets[event.key];
-    if (target === undefined) return;
-    event.preventDefault();
-    this.buttons()[Math.min(last, Math.max(0, target))]?.nativeElement.focus();
+    moveFocus(event, {
+      count: this.labels().length,
+      current: this.stop(),
+      buttons: this.buttons(),
+    });
   }
 }
 
 /** The height of `value` on an axis from `low` to `high`. */
 function yOf(value: number, low: number, high: number): number {
   return TOP + (HEIGHT - TOP - BOTTOM) * (1 - (value - low) / (high - low || 1));
-}
-
-/**
- * About four round steps (1, 2 or 5 × 10ⁿ) from `low`: up to `fixed` when it is given, or to the
- * first step at or past `highest`.
- */
-function lineScale(low: number, highest: number, fixed: number | undefined) {
-  const raw = (highest - low) / 4 || 1;
-  const power = 10 ** Math.floor(Math.log10(raw));
-  const step = [1, 2, 5, 10].map((times) => times * power).find((one) => one >= raw) ?? raw;
-  const high = fixed ?? low + Math.ceil((highest - low) / step) * step;
-  const ticks: number[] = [];
-  for (let value = low; value <= high + step / 1e6; value += step) {
-    ticks.push(Math.round(value * 1e6) / 1e6);
-  }
-  return { low, high, ticks };
-}
-
-/** `text` with plain spaces: `Intl` puts a no-break one before «%». */
-function plain(text: string): string {
-  return text.replace(/\s/g, " ");
-}
-
-/** The stretches of points that have a value, in order. */
-function stretchesOf(points: readonly Point[]): { readonly x: number; readonly y: number }[][] {
-  const runs: { readonly x: number; readonly y: number }[][] = [];
-  let current: { readonly x: number; readonly y: number }[] = [];
-  for (const { x, y } of points) {
-    if (y === null) {
-      if (current.length > 0) runs.push(current);
-      current = [];
-    } else current.push({ x, y });
-  }
-  if (current.length > 0) runs.push(current);
-  return runs;
 }

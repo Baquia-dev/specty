@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "id": "20261108-las-listas-del-panel-muestran-el-titulo-de-cada",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-las-listas-del-panel-muestran-el-titulo-de-cada",
+  "baseCommit": "89ef4fe4ce5725e9021aa923aa57cdbce41eabc2",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7dee0f1c8983736669d4befa956b9ee0138b36859c7f8357fdd24fcb362a10e8",
+    "at": "2026-11-07T17:05:55.030Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d81c9902ad442f7366026ef0cf2fc8c70b9e81ec38a8be8ca4a4ee8c8d5b6ce9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e085ab6e288c66702f51e12e1991b18bec6218dad1973132d27c30b12eeab508",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9f43011e4d51bf753489f254950b32c7b62d0fd6dce0537b1ed609f2e5b1dc63",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "770534b8ecc4c39f09d4107dc63a061bfad030fc",
+      "attempts": 1,
+      "startedAt": "2026-11-07T17:12:46.037Z",
+      "doneAt": "2026-11-07T17:18:12.819Z",
+      "summary": "StatsRow gana title? (statsRow no lo pone) y cost.top y quality.worst lo copian de la fila cuando lo trae, sin cambiar orden ni cifras",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "18f19bfea02482b7b488650be07e0f112c0c8b88",
+      "attempts": 2,
+      "startedAt": "2026-11-07T17:18:13.291Z",
+      "doneAt": "2026-11-07T17:25:42.277Z",
+      "summary": "GET /api/stats y specty stats leen las filas con el título de su spec (listedRows de server/stats-changes.ts, ahora exportada), así que --json sigue dando lo mismo que la API; la tabla de la terminal sigue con el id; ARCHITECTURE §15 al día",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "b94bc07a113542cdcafdb4d05cc75d7ef8ad8547",
+      "attempts": 1,
+      "startedAt": "2026-11-07T17:25:42.855Z",
+      "doneAt": "2026-11-07T17:27:06.245Z",
+      "summary": "«Los cambios más caros» y «Cambios con más verificaciones fallidas» muestran el título enlazado (sp-text) y el id debajo en monoespaciada pequeña y atenuada; sin título, el id enlazado como antes; docs/ui.md al día",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T17:27:25.806Z",
+  "lockedTests": {
+    "packages/cli/test/server/stats.test.ts": "sha256:28f2a3a5681df6f5dadbc05def0207d4ae17ec2c9b277a85563d481d76dc127a",
+    "packages/core/test/stats/titles.test.ts": "sha256:c82117f7ffaf09206830ea22860cf709a233437ea323ab69707be1519ba01a5d",
+    "packages/ui/src/dashboard/dashboard-titles.test.ts": "sha256:1935217c489bb6e2c374e1b4e1a1ddc9b629c2c5e4c955229772753ba145c13e"
+  }
+}

@@ -76,7 +76,8 @@ function costOf(period: StatsQuery["period"]): Cost {
         cycle: 27 * HOUR,
         sessions: 3,
       },
-      { id: "20261106-abierto", kind: "quick", cost: 2.25, tasks: 0, cycle: null, sessions: 0 },
+      // AC2: no line of it tells its session.
+      { id: "20261106-abierto", kind: "quick", cost: 2.25, tasks: 0, cycle: null, sessions: null },
     ],
   };
 }
@@ -403,12 +404,13 @@ describe("the «Panel» page's cost, scope and memory", () => {
       "3",
       usd(41.5, "es"),
     ]);
+    // AC2: «—» in «Sesiones» when no line of the change tells its session.
     expect(texts(rows[1]?.children)).toEqual([
       "20261106-abierto",
       "Quick",
       "0",
       "—",
-      "0",
+      "—",
       usd(2.25, "es"),
     ]);
     expect(cost?.querySelector("[data-top-none]")).toBeNull();
