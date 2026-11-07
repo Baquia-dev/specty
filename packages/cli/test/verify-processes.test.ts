@@ -114,3 +114,56 @@ describe("the processes each verification command may start", () => {
     expect(await read(root, ".git/procesos-completa")).toBe(both(1));
   });
 });
+
+/** `count` processes, in the singular for 1. */
+const processesOf = (count: number) => `${count} ${count === 1 ? "proceso" : "procesos"}`;
+
+/** The line of a command with `count` processes in both variables that holds `places` of 2. */
+const lineOf = (count: number, places: number) =>
+  new RegExp(
+    `specty: ${processesOf(count)} en PROCESOS_A y PROCESOS_B \\(\\d+,\\d GB de memoria disponible, ${CORES} núcleos, ${places} de 2 plazas\\)`,
+  );
+
+describe("the line each verification command says as it starts", () => {
+  it("AC1: task done says a task's number on the error output, and verify --fresh the full one's", async () => {
+    const root = await approved(WITH);
+    await writeFiles(root, { "src/app.ts": "1\n" });
+    const done = await cli(root, ["task", "done", "T1", "--summary", "Uno"]);
+    expect(done.code).toBe(0);
+    expect(done.err).toMatch(lineOf(TASK, 1));
+    const fresh = await cli(root, ["verify", "--fresh"]);
+    expect(fresh.code).toBe(0);
+    expect(fresh.err).toMatch(lineOf(CORES, 2));
+  });
+
+  it("AC1: verify --fresh says it in English when Specty speaks English", async () => {
+    const config = WITH.replace("language: es", "language: en");
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
+    const fresh = await cli(root, ["verify", "--fresh"]);
+    expect(fresh.code).toBe(0);
+    expect(fresh.err).toMatch(
+      new RegExp(
+        `specty: ${CORES} processes in PROCESOS_A and PROCESOS_B \\(\\d+\\.\\d GB of memory available, ${CORES} cores, 2 of 2 places\\)`,
+      ),
+    );
+  });
+
+  it("AC2: names apart a variable that keeps the smaller number of its environment", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": WITH });
+    const fresh = await cli(root, ["verify", "--fresh"], { env: { PROCESOS_A: "1" } });
+    expect(fresh.code).toBe(0);
+    expect(fresh.err).toContain(
+      `specty: ${CORES} procesos en PROCESOS_B; se queda con el de su entorno: PROCESOS_A=1 (`,
+    );
+  });
+
+  it("AC3: without variables in verify.processes.env, no verification command says the line", async () => {
+    const root = await approved(BASE);
+    await writeFiles(root, { "src/app.ts": "1\n" });
+    const done = await cli(root, ["task", "done", "T1", "--summary", "Uno"]);
+    expect(done.code).toBe(0);
+    const fresh = await cli(root, ["verify", "--fresh"]);
+    expect(fresh.code).toBe(0);
+    for (const { err } of [done, fresh]) expect(err).not.toMatch(/specty: \d+ procesos? /);
+  });
+});

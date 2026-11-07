@@ -6,6 +6,13 @@
   "branch": "specty/20261108-la-verificacion-dice-cuantos-procesos-usa-y-por",
   "baseCommit": "6765424511a13d97a89c76156111aecadd5f9a98",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ec1812044dd844af027472f27f1a1f61dd9ae8d5af08f85e2779872e47e255a7",
+    "at": "2026-11-07T19:20:14.001Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:ec1812044dd844af027472f27f1a1f61dd9ae8d5af08f85e2779872e47e255a7",
-    "at": "2026-11-07T19:20:14.001Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T19:42:54.994Z"
 }

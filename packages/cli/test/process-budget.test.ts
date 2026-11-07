@@ -60,6 +60,16 @@ async function sevenGiB(): Promise<Record<string, string>> {
   return { PATH: `${bin}${delimiter}${process.env.PATH ?? ""}` };
 }
 
+/** `session`, whose error output goes to `heard` instead. */
+function hearing(session: Session): { readonly session: Session; readonly heard: string[] } {
+  const heard: string[] = [];
+  const io = { ...session.environment.io, err: (text: string) => void heard.push(text) };
+  return { session: { ...session, environment: { ...session.environment, io } }, heard };
+}
+
+/** `count` and its noun, in the singular for 1. */
+const many = (count: number, one: string, other: string) => `${count} ${count === 1 ? one : other}`;
+
 afterEach(() => {
   vi.restoreAllMocks();
 });
@@ -149,6 +159,51 @@ describe("the processes a verification command may start", () => {
     for (const places of [1, Number.POSITIVE_INFINITY]) {
       const env = await budgetedEnv(session, places);
       expect([env.PROCESOS_A, env.PROCESOS_B]).toEqual(["1", "1"]);
+    }
+  });
+});
+
+describe("the line a verification's command says as it starts", () => {
+  it("AC1: tells on the error output the number, the variables, the memory, the cores and the places of a task and of the full one", async () => {
+    const { session, heard } = hearing(await sessionWith(processes(1024), await sevenGiB()));
+    // 7.25 GiB: 3 processes of 1 GiB for a task's place, 7 for the full one.
+    await budgetedEnv(session, 1);
+    await budgetedEnv(session, Number.POSITIVE_INFINITY);
+    const task = many(Math.min(TASK, 3), "proceso", "procesos");
+    const full = many(Math.min(CORES, 7), "proceso", "procesos");
+    const cores = many(CORES, "núcleo", "núcleos");
+    expect(heard).toEqual([
+      `specty: ${task} en PROCESOS_A y PROCESOS_B (7,3 GB de memoria disponible, ${cores}, 1 de 2 plazas)`,
+      `specty: ${full} en PROCESOS_A y PROCESOS_B (7,3 GB de memoria disponible, ${cores}, 2 de 2 plazas)`,
+    ]);
+  });
+
+  it("AC1: tells it in English when Specty speaks English", async () => {
+    const config = processes(1024).replace("language: es", "language: en");
+    const { session, heard } = hearing(await sessionWith(config, await sevenGiB()));
+    await budgetedEnv(session, Number.POSITIVE_INFINITY);
+    const full = many(Math.min(CORES, 7), "process", "processes");
+    const cores = many(CORES, "core", "cores");
+    expect(heard).toEqual([
+      `specty: ${full} in PROCESOS_A and PROCESOS_B (7.3 GB of memory available, ${cores}, 2 of 2 places)`,
+    ]);
+  });
+
+  it("AC2: names apart a variable that keeps the smaller positive whole number of its environment", async () => {
+    const { session, heard } = hearing(await sessionWith(WITH, { PROCESOS_A: "1" }));
+    await budgetedEnv(session, Number.POSITIVE_INFINITY);
+    expect(heard).toHaveLength(1);
+    expect(heard[0]).toContain(
+      `specty: ${CORES} procesos en PROCESOS_B; se queda con el de su entorno: PROCESOS_A=1 (`,
+    );
+    expect(heard[0]).toMatch(/ \(\d+,\d GB de memoria disponible, /);
+  });
+
+  it("AC3: says nothing without variables in verify.processes.env", async () => {
+    for (const config of [CONFIG(), `${CONFIG()}  processes:\n    env: []\n`]) {
+      const { session, heard } = hearing(await sessionWith(config, { PROCESOS_A: "999" }));
+      for (const places of [1, Number.POSITIVE_INFINITY]) await budgetedEnv(session, places);
+      expect(heard).toEqual([]);
     }
   });
 });
