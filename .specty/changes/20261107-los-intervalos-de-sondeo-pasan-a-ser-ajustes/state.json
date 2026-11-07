@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-intervalos-de-sondeo-pasan-a-ser-ajustes",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-los-intervalos-de-sondeo-pasan-a-ser-ajustes",
   "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
   "revision": 2,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f2d8f16c8d0ec9205ea5c764736a2d5febab33b0",
+      "attempts": 1,
       "startedAt": "2026-11-07T05:31:20.123Z",
       "doneAt": "2026-11-07T05:41:00.056Z",
-      "summary": "inSlots y el turno de la verificación completa miran de nuevo cada internal.waits.verifyIntervalMs (pollMs sigue para los tests); sin POLL_MS; ARCHITECTURE remite a la clave en el turno y en las plazas"
+      "summary": "inSlots y el turno de la verificación completa miran de nuevo cada internal.waits.verifyIntervalMs (pollMs sigue para los tests); sin POLL_MS; ARCHITECTURE remite a la clave en el turno y en las plazas",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ad4316f75a114c23f86abf6edf4f31636690543d",
+      "startedAt": "2026-11-07T05:41:00.584Z",
+      "doneAt": "2026-11-07T05:49:41.568Z",
+      "summary": "specty wait toma su intervalo de internal.waits.waitIntervalMs sin --interval (la opción sigue mandando; commander ya no pone 500); formats §6 documenta las dos claves con sus límites y ARCHITECTURE remite a ellas en la fila de wait"
     }
   },
   "pending": {

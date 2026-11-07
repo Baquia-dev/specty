@@ -80,7 +80,7 @@ Hoy cada cuánto mira de nuevo una verificación que espera su turno o sus plaza
   - files: packages/cli/src/flow/full-verification.ts, packages/cli/src/store/verify-slots.ts, packages/cli/src/flow/full-verification.test.ts, packages/cli/src/store/verify-slots.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/flow/full-verification.test.ts src/store/verify-slots.test.ts
-- [ ] T3: `specty wait` mira según la configuración sin `--interval`, y las claves en la documentación
+- [x] T3: `specty wait` mira según la configuración sin `--interval`, y las claves en la documentación
   - files: packages/cli/src/commands/wait.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/wait.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait.test.ts && pnpm typecheck
