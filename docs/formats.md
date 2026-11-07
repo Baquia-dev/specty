@@ -490,6 +490,8 @@ dev:
 subagents: true                   # false: ni los cortes de una épica ni los cambios que pide el usuario van a subagentes, aunque su herramienta pueda
 ```
 
+La persona también cambia `config.yaml` desde la página «Configuración» de `specty ui`, si arrancó el servidor en su terminal (`POST /api/config`, ARCHITECTURE §15). Specty escribe solo las claves que cambian, cada una localizada con el `Document` de `yaml` (`io/yaml-edit.ts`). Lo demás queda igual byte a byte: comentarios, comillas y listas de varias líneas. Un valor nuevo va en una línea, con las listas y los mapas en flujo, salvo un texto de varias líneas, que va como bloque literal. Una clave nueva va al final de su mapa, y una que se restablece sale con su mapa si este queda vacío. Después valida el resultado y hace un commit solo de ese archivo, con el asunto `chore(config): <claves>`, el trailer `Specty-Config: true` (§7) y un recibo de tipo `config`, que el hook acepta como el de `init`. No guarda si la carpeta tiene un cambio en curso, si `config.yaml` tiene cambios sin commit o no es YAML, ni mientras otra sesión tiene el turno de aterrizaje.
+
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
 
 Si `config.yaml` no es válida, ningún comando se ejecuta y la salida da el error. A una persona le pide corregirla; a un agente (sin terminal interactiva) le dice que la corrige el usuario, porque el guard no le deja editarla, y que se lo pida con ese error. `accept` y `close` la validan justo después de incorporar la rama principal y, si no es válida, deshacen el merge (ARCHITECTURE §9). El guard, que tampoco puede leerla, juzga esa carpeta con una configuración válida del mismo repositorio: la de la carpeta en la que trabaja la herramienta, si la conversación entró con `specty enter`, y si no la de la carpeta principal; así sigue reconociendo la carpeta del cambio, aplica las reglas de su fase y no deja al agente editar `.specty/config.yaml` (ARCHITECTURE §10). Si la principal tampoco tiene una válida, deja pasar.
@@ -652,6 +654,7 @@ Specty-Agent: claude-code
 | Retro | `Specty-Change` (del cambio retro o del activo), `Specty-Retro: true` |
 | Spike | Además, `Specty-Kind: spike`; el CI impide fusionarlo a la rama principal |
 | Instalación (`init`) | Solo `Specty-Init: true`: no pertenece a ningún cambio |
+| Configuración guardada desde la UI (`chore(config): <claves>`, §6) | Solo `Specty-Config: true`: no pertenece a ningún cambio |
 | Memoria (`memoria: anota P3`, `memoria: P3 hecha`), en su rama (§1) | `Specty-Memory: <id>`; además, `Specty-Change` si la carpeta tenía un cambio abierto y `Specty-Agent` si la escribió un agente |
 | Frente de la memoria (`memoria: frente B`, `memoria: P12, P3 al frente B`), en su rama (§1) | `Specty-Front: <nombre>`; además, `Specty-Change` y `Specty-Agent` como en la memoria |
 

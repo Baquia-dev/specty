@@ -65,12 +65,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3351d6cf8dbae1a374f39addd5b15607e9542a79",
+      "attempts": 1,
       "startedAt": "2026-11-07T03:42:31.422Z",
       "doneAt": "2026-11-07T03:50:12.815Z",
-      "summary": "io/yaml-edit.ts: editYaml cambia, añade y quita claves por ruta tocando solo su texto (localizado con parseDocument), con listas y mapas nuevos en flujo y textos de varias líneas en bloque literal"
+      "summary": "io/yaml-edit.ts: editYaml cambia, añade y quita claves por ruta tocando solo su texto (localizado con parseDocument), con listas y mapas nuevos en flujo y textos de varias líneas en bloque literal",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9d38fb4b0d6ba3b3c2d250bf3fd4eb188096401d",
+      "startedAt": "2026-11-07T03:50:13.160Z",
+      "doneAt": "2026-11-07T03:54:06.550Z",
+      "summary": "flow/config-save.ts: configBlocked, checkConfig y saveConfig (turno sin esperar, commit solo de config.yaml con Specty-Config y recibo config, que vuelve atrás si git falla); recibo config en store/local.ts, hook que deja su mensaje y formats.md §6 y §7"
     }
   },
   "pending": {

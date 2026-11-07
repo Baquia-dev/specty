@@ -81,7 +81,7 @@ Hoy la página «Configuración» de `specty ui` solo muestra los ajustes: para 
   - files: packages/cli/src/io/yaml-edit.ts, packages/cli/test/yaml-edit.test.ts
   - ac: AC2, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/yaml-edit.test.ts
-- [ ] T3: Guardar la configuración valida, toma el turno y hace su commit con recibo `config`
+- [x] T3: Guardar la configuración valida, toma el turno y hace su commit con recibo `config`
   - files: packages/cli/src/flow/config-save.ts, packages/cli/src/store/local.ts, packages/cli/src/enforce/hook.ts, packages/cli/test/config-save.test.ts, docs/formats.md
   - ac: AC2, AC3, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/config-save.test.ts
