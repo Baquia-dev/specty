@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": "20261107-las-evals-mantienen-viva-la-sesion-de-claude",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-las-evals-mantienen-viva-la-sesion-de-claude",
+  "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3f05409b4eaf88f02d431dafe9af6a7f8ee36cb36e32b6b12dced483dbc796c3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8d2e7b448aaf9d990c8c374428010cb2cf28ad83377b4e87bab47787cbb7c683",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:939ff07066f7eb984b213e56bc787a6eb96f6f58d2614868057a531183239a90",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:abddbf28043bb241c45dc1de4ea34c7c8bce7e6e41901bcbd0c5cae465a64f77",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:aa8658bc0541b274bb54b989421f62f67d81370b560311e348e879d9cba8797d",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:9e09e41ee13531d39a8dbc2f22ff1ba1e3b1c9b78f83898c20c3a96231249035",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:327b17f4e314bd7cef94f29155d83ac92aa43849f88391a69cfe779a70d88a48",
+    "at": "2026-11-07T04:08:29.776Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
