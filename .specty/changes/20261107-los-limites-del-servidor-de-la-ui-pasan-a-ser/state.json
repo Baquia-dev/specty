@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261107-los-limites-del-servidor-de-la-ui-pasan-a-ser",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-los-limites-del-servidor-de-la-ui-pasan-a-ser",
+  "baseCommit": "122b0f87b0dd21aa992fe015859351574e4588ec",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6ae5798547f1917027ea86027c53dad9ae41a23b9856616f6a83172db44e6536",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:84bc2cbcb7c2c5f473ed9721b68e987f27fca2aecb9fd557bd40f93c8abab241",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:341144056b5dcbc836dc74d24abf36de9ed6d59af8fe26ae4e76c9f88bf23294",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:12a66f50f5831d2004703dfbcf131e18684a08c1b8b574465674fc48f80212a9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 9,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a4b79a80ce2893f6a65c7b52ef5ed21b5313564607b647c00b1c0d04314bd291",
+    "at": "2026-11-07T05:33:46.115Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
