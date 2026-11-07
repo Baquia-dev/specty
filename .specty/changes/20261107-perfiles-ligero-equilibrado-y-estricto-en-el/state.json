@@ -6,6 +6,13 @@
   "branch": "specty/20261107-perfiles-ligero-equilibrado-y-estricto-en-el",
   "baseCommit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7d15d0b8306de9724a556a24f263cfcf0c5cf95fa210522f20cc8d8ca3ac5c25",
+    "at": "2026-11-07T10:47:44.035Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -60,12 +67,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:7d15d0b8306de9724a556a24f263cfcf0c5cf95fa210522f20cc8d8ca3ac5c25",
-    "at": "2026-11-07T10:47:44.035Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T10:55:42.206Z"
 }
