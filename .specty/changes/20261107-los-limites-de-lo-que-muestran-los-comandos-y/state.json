@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-limites-de-lo-que-muestran-los-comandos-y",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-los-limites-de-lo-que-muestran-los-comandos-y",
   "baseCommit": "8eeee6ad95b5f08a27940976d72cc0c13a1e460c",
   "revision": 2,
@@ -62,12 +62,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a7fcbedfe3a869e6e148a921eca93ed285f99622",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:09:30.789Z",
       "doneAt": "2026-11-07T09:17:25.470Z",
-      "summary": "specty check pasa session.config.internal.findings a findingsInOutput; formats.md §6 documenta internal.findings e internal.commands en el ejemplo y en su párrafo, y la sección de specty check remite a ellas"
+      "summary": "specty check pasa session.config.internal.findings a findingsInOutput; formats.md §6 documenta internal.findings e internal.commands en el ejemplo y en su párrafo, y la sección de specty check remite a ellas",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/test/settings/internal-shown.test.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "830f4b5cc347a9081e53fccf4bfb84dee2af225f",
+      "startedAt": "2026-11-07T09:17:26.097Z",
+      "doneAt": "2026-11-07T09:41:18.964Z",
+      "summary": "specty verify --fresh muestra las últimas internal.commands.verifyLines líneas de un fallo y specty why lista hasta internal.commands.whyEntries entradas, sin SHOWN ni MAX_ENTRIES; ARCHITECTURE remite a las claves; el test de AC7 usa findIndex según el desbloqueo S1"
     }
   },
   "pending": {
@@ -78,7 +89,8 @@
     "A": 4,
     "AC": 9,
     "T": 4,
-    "R": 2
+    "R": 2,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/check-commands.test.ts": "sha256:798ea91d41a5959bda25e6fd2e35a2e2bb5878e1474bc96becfe1f1b19bcd512",
@@ -87,6 +99,6 @@
     "packages/core/test/checks/output.test.ts": "sha256:b0b826e26cf815c62ed1ba5da7e5a3609e13968a873da016b064f5da48315372",
     "packages/core/test/settings/catalog.test.ts": "sha256:b3d323431c6f91531a6f27ab23e4916fab2ca4efd48355e37ecfb7b5fbe4e3ba",
     "packages/core/test/schema/internal-shown.test.ts": "sha256:36a930b6e49ff8421c9e65e47620f989282cc9faf4f5100173ca394b5649ccf9",
-    "packages/core/test/settings/internal-shown.test.ts": "sha256:e7df4c765a81ca18bc5b3d7f75f662747023ec67564d592be6bff3a013d68feb"
+    "packages/core/test/settings/internal-shown.test.ts": "sha256:493d091a8be6f525899734e51cf8992cf2c384043e765f71798902ebce6d9782"
   }
 }

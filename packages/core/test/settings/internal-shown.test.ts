@@ -18,7 +18,7 @@ describe("the settings of what commands and checks show", () => {
     const internal = SETTINGS.filter((setting) => setting.section === "internal");
     expect(SETTINGS.slice(-internal.length)).toEqual(internal);
     const keys = internal.map((setting) => setting.key);
-    const first = keys.indexOf(KEYS[0]);
+    const first = keys.findIndex((key) => key === KEYS[0]);
     expect(first).toBeGreaterThanOrEqual(0);
     expect(keys.slice(first, first + KEYS.length)).toEqual(KEYS);
     for (const key of KEYS) {

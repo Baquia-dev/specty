@@ -85,7 +85,7 @@ Hoy cinco límites de lo que Specty muestra están fijos en el código: los hall
   - files: packages/cli/src/check/commands.ts, packages/cli/test/check-commands.test.ts, docs/formats.md
   - ac: AC1, AC2, AC3, AC9
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-commands.test.ts
-- [ ] T4: `specty verify --fresh` y `specty why` muestran según la configuración
+- [x] T4: `specty verify --fresh` y `specty why` muestran según la configuración
   - files: packages/cli/src/commands/verify.ts, packages/cli/src/commands/why.ts, packages/cli/test/verify-fresh.test.ts, packages/cli/test/why.test.ts, docs/ARCHITECTURE.md
   - ac: AC4, AC5, AC9
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-fresh.test.ts test/why.test.ts && pnpm typecheck

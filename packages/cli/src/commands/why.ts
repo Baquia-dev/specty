@@ -3,9 +3,6 @@ import { type Output, whyCard, whyRefusalCard } from "@baquia-dev/specty-core";
 import { ChangeSpecs, logged } from "../flow/traced";
 import type { Session } from "../session";
 
-/** How many entries `why` lists for a file: one per change, the most recent ones. */
-const MAX_ENTRIES = 10;
-
 /**
  * `specty why <path>[:<line>]` (ARCHITECTURE §13): blame, commit, trailers, and the change, task
  * and criteria behind a line; for a file, the changes that touched it, newest first. It only
@@ -50,8 +47,8 @@ export async function why(session: Session, target: string): Promise<Output> {
     seen.add(key);
     return true;
   });
-  const commits = await Promise.all(
-    entries.slice(0, MAX_ENTRIES).map((commit) => changes.of(commit)),
-  );
+  // The most recent ones, as many as `internal.commands.whyEntries` says.
+  const shown = entries.slice(0, session.config.internal.commands.whyEntries);
+  const commits = await Promise.all(shown.map((commit) => changes.of(commit)));
   return whyCard({ target, commits }, session.cards);
 }
