@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-las-listas-del-panel-muestran-el-titulo-de-cada",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-las-listas-del-panel-muestran-el-titulo-de-cada",
   "baseCommit": "89ef4fe4ce5725e9021aa923aa57cdbce41eabc2",
   "revision": 2,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "18f19bfea02482b7b488650be07e0f112c0c8b88",
+      "attempts": 2,
       "startedAt": "2026-11-07T17:18:13.291Z",
       "doneAt": "2026-11-07T17:25:42.277Z",
-      "summary": "GET /api/stats y specty stats leen las filas con el título de su spec (listedRows de server/stats-changes.ts, ahora exportada), así que --json sigue dando lo mismo que la API; la tabla de la terminal sigue con el id; ARCHITECTURE §15 al día"
+      "summary": "GET /api/stats y specty stats leen las filas con el título de su spec (listedRows de server/stats-changes.ts, ahora exportada), así que --json sigue dando lo mismo que la API; la tabla de la terminal sigue con el id; ARCHITECTURE §15 al día",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b94bc07a113542cdcafdb4d05cc75d7ef8ad8547",
+      "startedAt": "2026-11-07T17:25:42.855Z",
+      "doneAt": "2026-11-07T17:27:06.245Z",
+      "summary": "«Los cambios más caros» y «Cambios con más verificaciones fallidas» muestran el título enlazado (sp-text) y el id debajo en monoespaciada pequeña y atenuada; sin título, el id enlazado como antes; docs/ui.md al día"
     }
   },
   "pending": {

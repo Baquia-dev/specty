@@ -7,6 +7,7 @@ import { LucideDynamicIcon } from "@lucide/angular";
 import { LineChart } from "../components/charts/line-chart";
 import { SectionDivider } from "../components/document";
 import { LucideCircleX } from "../components/icons";
+import { ShownText } from "../components/shown-text";
 import { Preferences } from "../theme/preferences";
 
 type Quality = NonNullable<StatsView["quality"]>;
@@ -21,7 +22,7 @@ const FLOOR = 0.8;
  */
 @Component({
   selector: "sp-dashboard-quality",
-  imports: [LineChart, LucideDynamicIcon, RouterLink, SectionDivider],
+  imports: [LineChart, LucideDynamicIcon, RouterLink, SectionDivider, ShownText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "flex flex-col gap-4",
@@ -58,7 +59,14 @@ const FLOOR = 0.8;
             <tbody>
               @for (row of worst(); track row.id) {
                 <tr [attr.data-change]="row.id">
-                  <td class="max-w-0 truncate px-2 py-1"><a class="font-mono text-xs text-text" [routerLink]="['/changes', row.id]" [attr.title]="row.id">{{ row.id }}</a></td>
+                  <td class="max-w-0 px-2 py-1">
+                    @if (row.title === undefined) {
+                      <a class="block truncate font-mono text-xs text-text" [routerLink]="['/changes', row.id]" [attr.title]="row.id">{{ row.id }}</a>
+                    } @else {
+                      <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', row.id]"><sp-text [text]="row.title" /></a>
+                      <span class="block truncate font-mono text-[11px] text-text-muted" data-id [attr.title]="row.id">{{ row.id }}</span>
+                    }
+                  </td>
                   <td class="px-2 py-1 text-right whitespace-nowrap">
                     <span class="inline-flex items-center gap-1 text-phase-cancelled tabular-nums" data-failed><svg [lucideIcon]="failedIcon" size="12" aria-hidden="true"></svg>{{ row.text }}</span>
                   </td>
@@ -171,8 +179,9 @@ export class DashboardQuality {
   /** The changes that failed the most: «3 de 5». */
   protected readonly worst = computed(() => {
     const t = this.t();
-    return this.quality().worst.map(({ id, failed, total }) => ({
+    return this.quality().worst.map(({ id, title, failed, total }) => ({
       id,
+      title,
       text: t(`${failed} de ${total}`, `${failed} of ${total}`),
     }));
   });

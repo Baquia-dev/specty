@@ -64,7 +64,7 @@ En el «Panel» de `specty ui`, «Los cambios más caros» y «Cambios con más 
   - files: packages/cli/src/server/stats-changes.ts, packages/cli/src/server/stats.ts, packages/cli/test/server/stats.test.ts, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/stats.test.ts test/server/stats-changes.test.ts test/stats.test.ts && pnpm lint && pnpm knip
-- [ ] T3: Las dos listas del panel muestran el título enlazado y el id debajo
+- [x] T3: Las dos listas del panel muestran el título enlazado y el id debajo
   - files: packages/ui/src/dashboard/dashboard-cost.ts, packages/ui/src/dashboard/dashboard-quality.ts, packages/ui/src/dashboard/dashboard-titles.test.ts, docs/ui.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-titles.test.ts --include src/dashboard/dashboard-cost-scope-memory.test.ts --include src/dashboard/dashboard-flow-quality.test.ts && pnpm typecheck && pnpm lint
