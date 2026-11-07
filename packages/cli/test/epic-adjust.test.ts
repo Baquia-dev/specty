@@ -10,6 +10,7 @@ import {
   SPEC,
   SPEC_PATH,
   tempRepo,
+  toAcceptance,
   writeFiles,
 } from "./support";
 
@@ -236,5 +237,45 @@ describe("an adjustment of a change with tasks while it is implemented", () => {
     const done = await cli(root, ["task", "done", "T1", "--summary", "Saluda"]);
     expect(done.code, done.out).toBe(0);
     expect((await stateOf(root)).tasks.T1.status).toBe("done");
+  });
+});
+
+describe("the adjusting card of a change with tasks", () => {
+  const repo = () => tempRepo({ "src/app.ts": "x\n", ".specty/config.yaml": CONFIG() });
+
+  it("AC1: asks to correct the pending tasks when adjusted right after the approval, before `next`", async () => {
+    const root = await repo();
+    await cli(root, ["new", "Saludo personalizado"]);
+    await writeFiles(root, { [SPEC_PATH]: SPEC });
+    expect((await cli(root, ["propose"])).code).toBe(0);
+    const approved = await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    expect(approved.code, approved.out).toBe(0);
+    const before = await stateOf(root);
+    expect(before.phase).toBe("implementing");
+    expect(
+      Object.values(before.tasks).map((task) => (task as { status: string }).status),
+    ).not.toContain("active");
+
+    const asked = await cli(root, ["adjust", "La verify de T1 no carga sus tests"]);
+    expect(asked.code, asked.out).toBe(0);
+    expect(asked.out).toContain("CÓMO CORREGIRLAS:");
+    expect(asked.out).not.toContain("CÓMO CLASIFICARLA:");
+  });
+
+  it("AC2: classifies a request of the acceptance, also once the spec adds a task still to do", async () => {
+    const root = await repo();
+    await cli(root, ["new", "Saludo personalizado"]);
+    await toAcceptance(root);
+    expect((await stateOf(root)).phase).toBe("acceptance");
+    const asked = await cli(root, ["adjust", "Que el saludo use mayúsculas"]);
+    expect(asked.code, asked.out).toBe(0);
+    expect(asked.out).toContain("CÓMO CLASIFICARLA:");
+    const spec = await read(root, SPEC_PATH);
+    await writeFiles(root, {
+      [SPEC_PATH]: `${spec}- [ ] T3: Mayúsculas\n  - files: src/app.ts\n  - ac: AC1\n  - type: fix\n`,
+    });
+    const next = await cli(root, ["next"]);
+    expect(next.out).toContain("CÓMO CLASIFICARLA:");
+    expect(next.out).not.toContain("CÓMO CORREGIRLAS:");
   });
 });

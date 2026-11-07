@@ -133,7 +133,7 @@ export function adjustingCard(change: ChangeView, ctx: CardContext): Output {
       ),
       ...(change.kind === "epic"
         ? section(t("CÓMO AJUSTAR LA ÉPICA", "HOW TO ADJUST THE EPIC"), epicAdjustingLines(ctx))
-        : change.tasks.some((task) => task.status === "active")
+        : change.pendingTasksOnly === true
           ? correctingBlocks(ctx)
           : classifyingBlocks(ctx)),
     ],
@@ -189,7 +189,7 @@ function classifyingBlocks(ctx: CardContext) {
 }
 
 /**
- * While its tasks are implemented, one of them active, a change is adjusted only to correct the
+ * While its tasks are implemented, active or not yet, a change is adjusted only to correct the
  * pending ones: what it adds or changes in its criteria waits for the acceptance.
  */
 function correctingBlocks(ctx: CardContext) {
