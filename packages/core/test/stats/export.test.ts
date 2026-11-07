@@ -17,9 +17,11 @@ import {
 const TODAY = "2026-11-07";
 const at = (days: number, hour = 12) => new Date(2026, 10, 7 - days, hour).toISOString();
 
-/** The hours from `from` to `to`, with two decimals, as the CSV writes the cycle. */
-const hours = (from: string, to: string) =>
-  ((Date.parse(to) - Date.parse(from)) / 3_600_000).toFixed(2);
+/** The hours from `from` to `to`, with two decimals, as the CSV in `lang` writes the cycle. */
+const hours = (from: string, to: string, lang: "es" | "en" = "es") => {
+  const fixed = ((Date.parse(to) - Date.parse(from)) / 3_600_000).toFixed(2);
+  return lang === "es" ? fixed.replace(".", ",") : fixed;
+};
 
 type Line = Readonly<Record<string, unknown>>;
 
@@ -143,7 +145,7 @@ const OLD = listed({
 const ROWS = [OLD, OPEN, EPIC, SEARCH, ACCENTS];
 
 const HEADER_ES =
-  "Cambio,Título,Carril,Tamaño,Persona,Agente,Modelo,Creado,Cerrado,Tareas,Ciclo (horas),Verificaciones,Verificaciones fallidas,Coste (USD)";
+  "Cambio;Título;Carril;Tamaño;Persona;Agente;Modelo;Creado;Cerrado;Tareas;Ciclo (horas);Verificaciones;Verificaciones fallidas;Coste (USD)";
 const HEADER_EN =
   "Change,Title,Lane,Size,Person,Agent,Model,Created,Closed,Tasks,Cycle (hours),Verifications,Failed verifications,Cost (USD)";
 
@@ -171,10 +173,10 @@ describe("the panel's export", () => {
     expect(file.type).toBe("text/csv; charset=utf-8");
     expect(csvLines(file.content)).toEqual([
       HEADER_ES,
-      `20261105-aviso-de-acentos,"Aviso, ""acentos"" y más",Feature,M,Ana,Claude Code,claude-opus-4-5,2026-11-04 09:00,2026-11-05 11:00,3,${hours(at(3, 9), at(2, 11))},3,2,1.25`,
-      `20261101-busqueda-rapida,Búsqueda rápida,Quick,S,Bea,Codex,,2026-11-01 09:00,2026-11-01 11:00,1,${hours(at(6, 9), at(6, 11))},0,0,0.50`,
-      `20261020-epica-del-panel,Épica del panel,Épica,,Carla,,,2026-10-20 09:00,2026-10-28 11:00,0,${hours(at(18, 9), at(10, 11))},0,0,`,
-      "20261106-tabla-abierta,Tabla abierta,Feature,L,,Claude Code,,2026-11-06 09:00,,2,,0,0,",
+      `20261105-aviso-de-acentos;"Aviso, ""acentos"" y más";Feature;M;Ana;Claude Code;claude-opus-4-5;2026-11-04 09:00;2026-11-05 11:00;3;${hours(at(3, 9), at(2, 11))};3;2;1,25`,
+      `20261101-busqueda-rapida;Búsqueda rápida;Quick;S;Bea;Codex;;2026-11-01 09:00;2026-11-01 11:00;1;${hours(at(6, 9), at(6, 11))};0;0;0,50`,
+      `20261020-epica-del-panel;Épica del panel;Épica;;Carla;;;2026-10-20 09:00;2026-10-28 11:00;0;${hours(at(18, 9), at(10, 11))};0;0;`,
+      "20261106-tabla-abierta;Tabla abierta;Feature;L;;Claude Code;;2026-11-06 09:00;;2;;0;0;",
     ]);
   });
 
@@ -182,7 +184,7 @@ describe("the panel's export", () => {
     const ids = (query: StatsQuery) =>
       csvLines(exported(query, "csv").content)
         .slice(1)
-        .map((row) => row.split(",")[0]);
+        .map((row) => row.split(";")[0]);
     expect(ids(statsQuery({ period: "7d" }))).toEqual([ACCENTS.id, SEARCH.id, OPEN.id]);
     expect(ids(statsQuery({ period: "90d", who: "person:Ana" }))).toEqual([ACCENTS.id, OLD.id]);
     expect(ids(statsQuery({ period: "all", who: "agent:codex", kind: "quick" }))).toEqual([
@@ -205,7 +207,12 @@ describe("the panel's export", () => {
     const named = (lang: "es" | "en") =>
       csvLines(exported(statsQuery({}), "csv", lang, rows).content)
         .slice(1)
-        .map((row) => row.split(",").slice(1, 3).join(":"));
+        .map((row) =>
+          row
+            .split(lang === "es" ? ";" : ",")
+            .slice(1, 3)
+            .join(":"),
+        );
     expect(named("es").toSorted()).toEqual([
       "epic:Épica",
       "quick:Quick",
@@ -229,12 +236,30 @@ describe("the panel's export", () => {
     );
     const cells = csvLines(exported(statsQuery({}), "csv", "es", rows).content)
       .slice(1)
-      .map((row) => row.split(",")[1]);
+      .map((row) => row.split(";")[1]);
     expect(cells.toSorted()).toEqual([
       "'+34 600 000 000",
       "'-1 día de ciclo",
       "'=2+3 en la tabla",
       "'@ana revisa",
+    ]);
+  });
+
+  it("separates the cells with semicolons and writes the decimals with a comma in Spanish, as Excel in Spanish reads them, and with commas and points in English", () => {
+    const rows = [
+      listed({ id: "20261102-coma", title: "Uno, dos", created: 5, closed: 5, cost: 12.5 }),
+      listed({ id: "20261103-punto-y-coma", title: "Tres; cuatro", created: 4, closed: 4 }),
+    ];
+    const lines = (lang: "es" | "en") =>
+      csvLines(exported(statsQuery({}), "csv", lang, rows).content).slice(1);
+    // A cell goes between quotes when it has the separator of its language, and only then.
+    expect(lines("es")).toEqual([
+      `20261103-punto-y-coma;"Tres; cuatro";Feature;;;;;2026-11-03 09:00;2026-11-03 11:00;0;${hours(at(4, 9), at(4, 11))};0;0;`,
+      `20261102-coma;Uno, dos;Feature;;;;;2026-11-02 09:00;2026-11-02 11:00;0;${hours(at(5, 9), at(5, 11))};0;0;12,50`,
+    ]);
+    expect(lines("en")).toEqual([
+      `20261103-punto-y-coma,Tres; cuatro,Feature,,,,,2026-11-03 09:00,2026-11-03 11:00,0,${hours(at(4, 9), at(4, 11), "en")},0,0,`,
+      `20261102-coma,"Uno, dos",Feature,,,,,2026-11-02 09:00,2026-11-02 11:00,0,${hours(at(5, 9), at(5, 11), "en")},0,0,12.50`,
     ]);
   });
 
@@ -330,7 +355,7 @@ describe("the panel's export", () => {
     const lines = csvLines(exported(statsQuery({}), "csv", "en").content);
     expect(lines[0]).toBe(HEADER_EN);
     expect(lines[3]).toBe(
-      `20261020-epica-del-panel,Épica del panel,Epic,,Carla,,,2026-10-20 09:00,2026-10-28 11:00,0,${hours(at(18, 9), at(10, 11))},0,0,`,
+      `20261020-epica-del-panel,Épica del panel,Epic,,Carla,,,2026-10-20 09:00,2026-10-28 11:00,0,${hours(at(18, 9), at(10, 11), "en")},0,0,`,
     );
   });
 

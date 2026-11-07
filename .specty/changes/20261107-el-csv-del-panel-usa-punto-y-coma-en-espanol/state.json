@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-el-csv-del-panel-usa-punto-y-coma-en-espanol",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-csv-del-panel-usa-punto-y-coma-en-espanol",
   "baseCommit": "bbc77876ac9692c275f8142a0c75b30b956c6ded",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c16c6e9a71651cdb17d0552f5315fa0aaa7b28d5f379b995fec1f7ab6fbe0c81",
+    "at": "2026-11-07T16:01:18.053Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:c16c6e9a71651cdb17d0552f5315fa0aaa7b28d5f379b995fec1f7ab6fbe0c81",
-    "at": "2026-11-07T16:01:18.053Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/core/test/stats/export.test.ts": "sha256:b608d1e73b22fb63c9cb1906f66d1e97de39d81e38cb5c150e11f7351625c236"
+  }
 }
