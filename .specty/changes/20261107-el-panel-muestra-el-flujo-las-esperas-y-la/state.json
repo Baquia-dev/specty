@@ -56,7 +56,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "64cf2254f5243952ebeaa631d3ec9f3f2a14fb93",
+      "startedAt": "2026-11-07T10:49:36.296Z",
+      "doneAt": "2026-11-07T10:55:29.568Z",
+      "summary": "statsRow guarda las fechas de las fases, cada aprobación (canal, propuestas, revisión) y las señales de calidad; flow.ts y quality.ts calculan las dos secciones y statsView las añade como flow y quality"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -29,6 +29,39 @@ export interface StatsRow {
   readonly costs: readonly { readonly day: string; readonly cost: number }[];
   /** Each agent session that worked on it (the `session` of its lines), once per day it did. */
   readonly sessions: readonly { readonly id: string; readonly day: string }[];
+  /** ISO time of its first `spec.proposed`. */
+  readonly proposed?: string;
+  /** ISO time of its last `task.completed`. */
+  readonly completed?: string;
+  /**
+   * Each `spec.approved`: its ISO time; who gave it, the agent in delegated mode, the terminal or
+   * the UI (a pull request counts with it); the `spec.proposed` since the approval before, and
+   * its review, the milliseconds from the first of them to it, none without any.
+   */
+  readonly approvals: readonly {
+    readonly at: string;
+    readonly channel: "delegated" | "tty" | "ui";
+    readonly proposals: number;
+    readonly review: number | null;
+  }[];
+  /** Each `change.verified`: its day and whether it passed (`exit: 0`; a timeout has none). */
+  readonly full: readonly { readonly day: string; readonly passed: boolean }[];
+  /** Each `tests.proposed` and `tests.locked`: its day, which one, and its files. */
+  readonly contract: readonly {
+    readonly day: string;
+    readonly locked: boolean;
+    readonly files: readonly string[];
+  }[];
+  /**
+   * Each `task.completed` that left something to note: its day, its risk findings, its long
+   * files and the assertions it removed from tests that existed.
+   */
+  readonly findings: readonly {
+    readonly day: string;
+    readonly risks: number;
+    readonly longFiles: number;
+    readonly removed: number;
+  }[];
 }
 
 /** An audit line, with what the panel reads of it. */
@@ -78,7 +111,87 @@ export function statsRow(
         : [];
     }),
     sessions: sessionsOf(lines),
+    ...flowOf(lines),
+    ...qualityOf(lines),
   };
+}
+
+/** When the phases of the change ended, and each approval of its spec. */
+function flowOf(lines: readonly Line[]): Pick<StatsRow, "proposed" | "completed" | "approvals"> {
+  const proposed = lines.find((line) => line.event === "spec.proposed")?.ts;
+  const completed = lines.findLast((line) => line.event === "task.completed")?.ts;
+  const approvals: StatsRow["approvals"][number][] = [];
+  let first: string | undefined;
+  let proposals = 0;
+  for (const line of lines) {
+    if (line.event === "spec.proposed") {
+      first ??= line.ts;
+      proposals += 1;
+    } else if (line.event === "spec.approved") {
+      const review = first === undefined ? null : Date.parse(line.ts) - Date.parse(first);
+      approvals.push({ at: line.ts, channel: channelOf(line.data), proposals, review });
+      first = undefined;
+      proposals = 0;
+    }
+  }
+  return {
+    ...(proposed === undefined ? {} : { proposed }),
+    ...(completed === undefined ? {} : { completed }),
+    approvals,
+  };
+}
+
+/** Who approved: the agent in delegated mode, the terminal, or the UI, a pull request too. */
+function channelOf(data: Line["data"]): StatsRow["approvals"][number]["channel"] {
+  if (data.delegated === true || data.channel === "delegated") return "delegated";
+  return data.channel === "tty" ? "tty" : "ui";
+}
+
+/** What Specty checked: the full verifications, the contract tests and what the tasks left. */
+function qualityOf(lines: readonly Line[]): Pick<StatsRow, "full" | "contract" | "findings"> {
+  return {
+    full: lines
+      .filter((line) => line.event === "change.verified")
+      .map((line) => ({ day: dayOf(line.ts), passed: line.data.exit === 0 })),
+    contract: lines.flatMap((line) =>
+      line.event === "tests.proposed" || line.event === "tests.locked"
+        ? [
+            {
+              day: dayOf(line.ts),
+              locked: line.event === "tests.locked",
+              files: textsOf(line.data.files),
+            },
+          ]
+        : [],
+    ),
+    findings: lines.flatMap((line) => {
+      if (line.event !== "task.completed") return [];
+      const { risks, longFiles, removedAssertions } = line.data;
+      const found = {
+        day: dayOf(line.ts),
+        risks: Array.isArray(risks) ? risks.length : 0,
+        longFiles: Array.isArray(longFiles) ? longFiles.length : 0,
+        removed: removedOf(removedAssertions),
+      };
+      return found.risks + found.longFiles + found.removed === 0 ? [] : [found];
+    }),
+  };
+}
+
+/** The texts of a list; none of what is not one. */
+function textsOf(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter(isText) : [];
+}
+
+/** The assertions removed, summed over the files of `removedAssertions`. */
+function removedOf(value: unknown): number {
+  if (!Array.isArray(value)) return 0;
+  let removed = 0;
+  for (const entry of value) {
+    if (typeof entry !== "object" || entry === null || !("removed" in entry)) continue;
+    if (typeof entry.removed === "number") removed += entry.removed;
+  }
+  return removed;
 }
 
 /** Each session of `lines` with each day it has a line on, once. */

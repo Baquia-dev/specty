@@ -85,7 +85,7 @@ El «Panel» de `specty ui` muestra hoy los indicadores, «Ritmo», «Personas y
 
 ## Tareas
 
-- [ ] T1: El core calcula el flujo, las esperas y la calidad
+- [x] T1: El core calcula el flujo, las esperas y la calidad
   - files: packages/core/src/stats/rows.ts, packages/core/src/stats/flow.ts, packages/core/src/stats/quality.ts, packages/core/src/stats/summary.ts, packages/core/test/stats/flow-quality.test.ts
   - ac: AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/flow-quality.test.ts test/stats/sections.test.ts test/stats/summary.test.ts test/stats/table.test.ts && pnpm lint

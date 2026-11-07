@@ -3,6 +3,7 @@
 // period before, and what the page needs around them. The local server answers it as
 // `GET /api/stats`; the other sections of the panel join `StatsView` as they come.
 import type { MemoryEntry } from "../memory/entries";
+import { type StatsFlow, statsFlow } from "./flow";
 import { type StatsPeopleRow, statsPeople } from "./people";
 import {
   compared,
@@ -17,6 +18,7 @@ import {
   statsRanges,
   sum,
 } from "./period";
+import { type StatsQuality, statsQuality } from "./quality";
 import { type StatsRhythm, statsRhythm } from "./rhythm";
 import type { StatsRow } from "./rows";
 
@@ -71,6 +73,10 @@ export interface StatsView {
   readonly rhythm?: StatsRhythm;
   /** «Personas y agentes»: a row per person, agent and model of the lane, whoever the cut is for. */
   readonly people?: readonly StatsPeopleRow[];
+  /** «Flujo y esperas»: the time of each phase, who approved, the wait and the sessions. */
+  readonly flow?: StatsFlow;
+  /** «Calidad»: the task verifications by the rhythm's days or weeks, and what Specty checked. */
+  readonly quality?: StatsQuality;
 }
 
 /** What the panel is made of: every change's row, the memory's entries and the local today. */
@@ -95,6 +101,7 @@ export function statsView({ rows, memory, today, query }: StatsInput): StatsView
   const filtered = query.who !== undefined || query.kind !== undefined;
   const entries = filtered ? memory.filter((entry) => ids.has(entry.origin.change ?? "")) : memory;
   const lived = cut.filter((row) => row.lived.from <= current.to && row.lived.to >= current.from);
+  const rhythm = statsRhythm(cut, current);
   return {
     query,
     range: current,
@@ -102,8 +109,10 @@ export function statsView({ rows, memory, today, query }: StatsInput): StatsView
     changes: lived.length,
     options: optionsOf(rows),
     summary: summaryOf(cut, entries, current, previous),
-    rhythm: statsRhythm(cut, current),
+    rhythm,
     people: statsPeople(lane, current),
+    flow: statsFlow(cut, current),
+    quality: statsQuality(cut, current, rhythm),
   };
 }
 
