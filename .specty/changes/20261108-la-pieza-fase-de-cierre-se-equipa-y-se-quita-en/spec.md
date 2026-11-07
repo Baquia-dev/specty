@@ -81,7 +81,7 @@ En la vista Flujo de «Configuración», la pieza «Fase de cierre» deja de ser
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts
-- [ ] T5: El diálogo «Aceptar» y su aviso dicen que un cambio sin fase de cierre se cierra al aceptarlo
+- [x] T5: El diálogo «Aceptar» y su aviso dicen que un cambio sin fase de cierre se cierra al aceptarlo
   - files: packages/ui/src/acceptance/result-dialogs.ts, packages/ui/src/acceptance/acceptance-actions.test.ts, docs/ui.md
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/acceptance-actions.test.ts && pnpm typecheck
