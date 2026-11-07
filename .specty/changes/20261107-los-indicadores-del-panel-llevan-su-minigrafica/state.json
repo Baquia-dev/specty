@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9c30727b36965a10ccbf2e346fe55ce7dea70c46",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:16:53.856Z",
       "doneAt": "2026-11-07T16:17:36.441Z",
-      "summary": "StatsView gana trend: los seis indicadores en cada día o semana de «Ritmo», con countsOf por tramo (trendOf en stats/summary.ts); ARCHITECTURE.md lo documenta en GET /api/stats."
+      "summary": "StatsView gana trend: los seis indicadores en cada día o semana de «Ritmo», con countsOf por tramo (trendOf en stats/summary.ts); ARCHITECTURE.md lo documenta en GET /api/stats.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ae00442ab25a9e9f315b5f9ccdbff8be308a65b0",
+      "startedAt": "2026-11-07T16:17:37.246Z",
+      "doneAt": "2026-11-07T16:19:08.449Z",
+      "summary": "sp-stat-tile (components/charts/stat-tile.ts): el indicador con su minigráfica de 2 px, cortada en los huecos, con el último valor y los sueltos marcados, cursor, información emergente y teclado; el catálogo «Gráficas» añade sus cuatro estados."
     }
   },
   "pending": {

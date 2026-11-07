@@ -65,7 +65,7 @@ Los seis indicadores del «Panel» de `specty ui` dan hoy su valor y su variaci�
   - files: packages/core/src/stats/summary.ts, packages/core/test/stats/trend.test.ts, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/trend.test.ts test/stats/summary.test.ts test/stats/sections.test.ts test/stats/flow-quality.test.ts test/stats/cost-scope-memory.test.ts && pnpm lint
-- [ ] T2: El indicador con minigráfica y su sección del catálogo
+- [x] T2: El indicador con minigráfica y su sección del catálogo
   - files: packages/ui/src/components/charts/stat-tile.ts, packages/ui/src/components/charts/stat-tile.test.ts, packages/ui/src/catalog/charts.ts, packages/ui/src/catalog/catalog.test.ts
   - ac: AC2, AC3, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/charts/stat-tile.test.ts --include src/catalog/catalog.test.ts && pnpm lint
