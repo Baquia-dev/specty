@@ -99,3 +99,29 @@ Hoy están fijos en el código del core los pesos con los que Specty puntúa el 
 - R1: Main ya tiene C8, y C4, C5, C7 y C9 tocan también `config.ts`, el catálogo, sus textos, sus tests y `docs/formats.md` §6 — las claves van en su módulo y en su bloque del catálogo, la forma se reúne con un spread, y al incorporar main `specty integrate` conserva lo de los dos.
 - R2: Unos pesos a 0 o una tabla de esfuerzo baja dejan pasar cambios grandes como pequeños — lo decide la persona en su `config.yaml`, con su commit; el modelo sigue sin poder bajar el tamaño ni el esfuerzo, y `split` sigue partiendo por tareas, archivos y módulos sea cual sea la puntuación.
 - R3: Un `config.yaml` con un `effort` del formato anterior deja de validar — nada lo escribía ni lo leía, el error dice su clave y `docs/formats.md` da la forma nueva.
+
+## Cierre
+
+### Resumen
+
+- Core: `schema/sizing.ts` define `sizing` (`weights`, `tasksWithoutWeight`, `highFanIn`, `nearRatio`) y `effort` (`S`, `M`, `L` y `XL` con `plan` e `implement`, y `task` con `lowMaxFiles` y `highMinFiles`), con sus límites y los valores de hoy; `config.ts` los reúne con `...SIZING_SHAPE` en lugar del `effort` libre, y `ResolvedConfig` siempre trae los valores resueltos.
+- El tamaño puntúa cada señal por su peso (`scoreOf` en `sizing/size.ts`), el aviso de cerca de partir usa `sizing.nearRatio` y el esfuerzo lee la tabla y la regla de la tarea de la configuración; el modelo sigue solo pudiendo subir.
+- CLI: `propose` y `approve` pasan `session.config.effort` a `recommendEffort`; la tarjeta de la tarea ya pasaba la configuración.
+- Catálogo: los cuatro ajustes de `sizing` tras `split` y los cinco de `effort` (la sección se llama «Esfuerzo recomendado»), todos con «Nuevo» y `sizing.highFanIn` también con «Próximamente»; sus textos, con los de `size`, `lanes.quick.maxFiles` y `split`, pasan a `cards/settings-size.ts`.
+- Documentación: formats.md §6, ARCHITECTURE §11 y ui.md.
+
+### Desviaciones
+
+- La página de la UI no necesitó cambios de código: muestra los ajustes nuevos desde el catálogo, y T4 solo llevó su test y la documentación.
+
+### Decisiones
+
+- El error de `lowMaxFiles` no menor que `highMinFiles` sale en `effort.task.lowMaxFiles`, y compara con el valor por defecto de la clave que falta.
+- `weightsOf` toma cada peso con un acceso por nombre para no pasar del límite de complejidad, que cuenta cada `??`.
+
+### Pendientes
+
+- AC8 se comprueba a mano: formats.md §6, ARCHITECTURE §11 y ui.md.
+- Al incorporar main (C8), chocan `schema/config.ts`, `catalog.test.ts` (las marcas `new` y las secciones), `settings-page.test.ts`, `docs/ui.md` y `docs/formats.md` §6: hay que conservar lo de los dos.
+- La CLI no mide el fan-in ni los módulos sin tests, así que `sizing.highFanIn` y los pesos `fanIn` y `noTests` no tienen efecto hasta que lo haga.
+- El esfuerzo de la cabecera de un cambio en la UI, oculto hoy (`SHOW_EFFORT_HINT`), sigue con la tabla por defecto.
