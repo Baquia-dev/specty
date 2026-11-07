@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261108-las-aceptaciones-en-paralelo-no-repiten-la",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261108-las-aceptaciones-en-paralelo-no-repiten-la",
+  "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:36d567839281ef6c6f08c884a2dfd431c9f7b9194f687831178fe50967005bb8",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:cc90627e3999815b4b6e7eec19fb043bf8ba57271fe47efeeef056c89937581a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:1720c284828e0b1c7ed489821a1f355961c65b854d18e4cfcae1a492ac75b3d1",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:8a78a8a270bd28cbdcd860d101119125cff8d812cbaec830b06ad92360da297f",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:8d1ad757ee978186fb372229ede5701a8c65f19dd44d587ba86a8e2d42c114b0",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:0f20e50631894793ce1dcb1636f6154f9da02c903bdb5fc7739bbe9f744632f0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ec7ac451d545354e480495ddaf848a6bfc4df1f8a8241802ebae40642310c35f",
+    "at": "2026-11-07T17:24:11.313Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
