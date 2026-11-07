@@ -7,10 +7,13 @@ import { UNLOCK_LIMITS } from "../schema/state";
 import { translator } from "./text";
 import type { CardContext } from "./view";
 
-/** The full command that asks to unlock `paths` for `task`, and what its options are. */
+/**
+ * The full command that asks to unlock `paths` for `task`, and what its options are; without a
+ * task, as during an incorporation of the main branch, it goes without `--task`.
+ */
 export function unlockHow(
   paths: readonly string[],
-  task: string,
+  task: string | undefined,
   lang: Lang,
   command: string,
 ): { readonly command: string; readonly options: string } {
@@ -28,14 +31,20 @@ export function unlockHow(
   };
 }
 
-/** `scope add` of `paths` for `task`, with its reason to fill. */
-function scopeAdd(paths: readonly string[], task: string, command: string, reason: string) {
-  return `${command} scope add ${paths.join(" ")} --task ${task} --reason "<${reason}>"`;
+/** `scope add` of `paths` for `task`, if any, with its reason to fill. */
+function scopeAdd(
+  paths: readonly string[],
+  task: string | undefined,
+  command: string,
+  reason: string,
+) {
+  const of = task === undefined ? "" : ` --task ${task}`;
+  return `${command} scope add ${paths.join(" ")}${of} --reason "<${reason}>"`;
 }
 
-/** The request `scope add` refuses: its task and every path the command named. */
+/** The request `scope add` refuses: its task, none during an incorporation, and every path. */
 export interface UnlockAsked {
-  readonly task: string;
+  readonly task: string | undefined;
   readonly paths: readonly string[];
 }
 

@@ -226,6 +226,7 @@ export {
   markersLeftLine,
   mergeAbortedLine,
   mergeByHandNext,
+  mergedAgainLine,
   mergedConfigInvalidLine,
   mergedConfigNext,
   mergedVerifyFailsLine,
@@ -444,6 +445,8 @@ export {
   unlockRefusalCard,
 } from "./unlock";
 export {
+  type IncorporationLocked,
+  lockedIncorporationProblem,
   type UnlockMismatch,
   unlockMismatchCard,
   unlockStaleCard,

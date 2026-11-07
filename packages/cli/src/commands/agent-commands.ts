@@ -13,8 +13,10 @@ import type { ReportOutput } from "../check/provider";
 import { withChangeLock } from "../flow/active";
 import type { CliEnvironment } from "../program";
 import { bareCards, type Session } from "../session";
+import { accept } from "./accept";
 import { adjust } from "./adjust";
 import { enter } from "./enter";
+import { close } from "./finish";
 import { importCommand } from "./import";
 import { integrate } from "./integrate";
 import { messageCommand } from "./message";
@@ -65,10 +67,7 @@ export function agentCommands(
     .description("an independent review of the spec, by the command the person set up")
     .action(locked(run, "review")(review));
   taskCommands(program, run, environment.stdin);
-  program
-    .command("integrate")
-    .description("finish the merge of the main branch a closing left here")
-    .action(locked(run, "integrate")(integrate));
+  integrateCommand(program, run);
   verifyCommand(program, run);
   program
     .command("adjust")
@@ -91,6 +90,19 @@ export function agentCommands(
           : retroInto(session, options.into, options.reason ?? "", options.minimal === true),
       )(),
     );
+}
+
+/**
+ * `specty integrate`: in delegated mode, the command that left the incorporation, `accept` or
+ * `close`, follows on its landing turn.
+ */
+function integrateCommand(program: Command, run: Run): void {
+  const resumed = (session: Session) =>
+    integrate(session, (again) => (again === "accept" ? accept(session) : close(session)));
+  program
+    .command("integrate")
+    .description("finish the merge of the main branch a closing left here")
+    .action(locked(run, "integrate")(resumed));
 }
 
 /** `specty wait`, which polls until human action completes. */

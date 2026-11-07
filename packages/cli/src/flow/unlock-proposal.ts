@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 // What an unlock of approved tests carries (ADR 0014): the exact change to them, checked against
 // their locked version, and the lines that justify it, kept as they were when it was asked.
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import {
   type ChangeState,
   hashText,
+  isIntegrating,
   normalizePath,
   pathProblem,
   UNLOCK_LIMITS,
@@ -12,6 +15,7 @@ import {
   type UnlockPatchRefusal,
   type UnlockRefusal,
 } from "@baquia-dev/specty-core";
+import type { ExecResult } from "../io/exec";
 import { readText } from "../io/files";
 import type { Session } from "../session";
 
@@ -73,7 +77,9 @@ async function readPatch(
 /**
  * Why `patch` does not do: too long, no diff, touching other files than the `locked` tests, or not
  * applying to their locked version. `--recount` reads each hunk by its lines, not by the counts of
- * its header, which an agent writes by hand. `scope add` checks it, and the approval again.
+ * its header, which an agent writes by hand. `scope add` checks it, and the approval again. During
+ * an incorporation, the locked version is the last commit's: the folder may have main's version
+ * of the test, or conflict markers.
  */
 export async function checkUnlockPatch(
   session: Session,
@@ -95,25 +101,59 @@ export async function checkUnlockPatch(
   if (others.length > 0) return { reason: "patch-other-files", paths: others };
   const changed = await changedSinceLocked(session, state, locked);
   if (changed.length > 0) return { reason: "patch-changed", paths: changed };
-  const applies = await git.run(["apply", "--check", "--recount", "-"], { input: patch });
+  const applies = await patchApplies(session, state, patch);
   if (applies.code !== 0)
     return { reason: "patch-not-applying", detail: firstLine(applies.stderr) };
   return undefined;
 }
 
-/** The `locked` tests that are not, on disk, the version their hash locked. */
+/**
+ * The `locked` tests that are not the version their hash locked: on disk or, during an
+ * incorporation, in the last commit.
+ */
 async function changedSinceLocked(
   session: Session,
   state: ChangeState,
   locked: readonly string[],
 ): Promise<string[]> {
+  const inHead = isIntegrating(state);
   const versions = await Promise.all(
     locked.map(async (path) => {
-      const text = await readText(join(session.root, path));
+      const text = inHead
+        ? await headText(session, path)
+        : await readText(join(session.root, path));
       return text !== undefined && hashText(text) === state.lockedTests?.[path] ? [] : [path];
     }),
   );
   return versions.flat();
+}
+
+/** The text of `path` in the last commit, or undefined when it has none. */
+async function headText(session: Session, path: string): Promise<string | undefined> {
+  const shown = await session.git.run(["--literal-pathspecs", "show", `HEAD:${path}`]);
+  return shown.code === 0 ? shown.stdout : undefined;
+}
+
+/**
+ * `git apply --check` of `patch` on the folder or, during an incorporation, on the last commit's
+ * tree in an index of its own: neither the folder nor its index, with the merge, change.
+ */
+async function patchApplies(
+  session: Session,
+  state: ChangeState,
+  patch: string,
+): Promise<ExecResult> {
+  const { git } = session;
+  if (!isIntegrating(state))
+    return git.run(["apply", "--check", "--recount", "-"], { input: patch });
+  const folder = await mkdtemp(join(tmpdir(), "specty-unlock-"));
+  try {
+    const env = { GIT_INDEX_FILE: join(folder, "index") };
+    await git.output(["read-tree", "HEAD"], { env });
+    return await git.run(["apply", "--check", "--cached", "--recount", "-"], { env, input: patch });
+  } finally {
+    await rm(folder, { recursive: true, force: true });
+  }
 }
 
 /** The pieces of evidence `specs` name, as their lines are now; or why one does not do. */
