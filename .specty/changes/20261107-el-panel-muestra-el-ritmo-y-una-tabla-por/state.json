@@ -6,6 +6,13 @@
   "branch": "specty/20261107-el-panel-muestra-el-ritmo-y-una-tabla-por",
   "baseCommit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:00cf5aaa7c25e777db867159f704bb5859d916b47d705d853f4e8fba2967685f",
+    "at": "2026-11-07T08:29:54.059Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -56,12 +63,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:00cf5aaa7c25e777db867159f704bb5859d916b47d705d853f4e8fba2967685f",
-    "at": "2026-11-07T08:29:54.059Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T08:54:42.671Z"
 }
