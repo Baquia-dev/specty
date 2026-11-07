@@ -40,12 +40,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "66379ef03831e373de65fd624f04a232707c1c80",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:16:53.896Z",
       "doneAt": "2026-11-07T16:17:13.884Z",
-      "summary": "La pieza closing se ajusta con flow.closing (toggle de sí o no, sin soon), con su descripción nueva y la frase del modo Básico cuando flow.closing es false"
+      "summary": "La pieza closing se ajusta con flow.closing (toggle de sí o no, sin soon), con su descripción nueva y la frase del modo Básico cuando flow.closing es false",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a550f1a73e98f8e4d273b67cd06df4feb2c7e0a2",
+      "startedAt": "2026-11-07T16:17:14.429Z",
+      "doneAt": "2026-11-07T16:17:46.279Z",
+      "summary": "Tests de la vista Flujo con la pieza Fase de cierre equipable (Básico y Avanzado), y docs/ui.md describe la pieza y su frase"
     }
   },
   "pending": {

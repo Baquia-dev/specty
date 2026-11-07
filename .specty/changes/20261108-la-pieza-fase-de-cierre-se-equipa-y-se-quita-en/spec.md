@@ -69,7 +69,7 @@ En la vista Flujo de «Configuración», la pieza «Fase de cierre» deja de ser
   - files: packages/core/src/settings/pieces.ts, packages/core/src/cards/settings-pieces.ts, packages/core/test/settings/pieces.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/pieces.test.ts
-- [ ] T2: La vista Flujo quita y equipa la pieza, y `docs/ui.md` lo describe
+- [x] T2: La vista Flujo quita y equipa la pieza, y `docs/ui.md` lo describe
   - files: packages/ui/src/settings/settings-flow.test.ts, packages/ui/src/settings/flow-piece.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-flow.test.ts --include src/settings/flow-piece.test.ts
