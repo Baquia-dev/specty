@@ -73,7 +73,7 @@ Hoy cuatro límites de lo que Specty le muestra al agente están fijos en el có
   - files: packages/core/src/cards/impact.ts, packages/core/src/cards/review.ts, packages/core/src/cards/task.ts, packages/core/src/ids.ts, packages/core/src/branches.ts, packages/core/test/settings/card-limits.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/card-limits.test.ts -t "as parameters"
-- [ ] T2: El bloque `internal.cards` en el schema y sus ajustes en el catálogo, con sus textos
+- [x] T2: El bloque `internal.cards` en el schema y sus ajustes en el catálogo, con sus textos
   - files: packages/core/src/schema/internal-cards.ts, packages/core/src/schema/config.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/settings/card-limits.test.ts, packages/core/test/settings/catalog.test.ts, docs/formats.md
   - ac: AC5, AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/card-limits.test.ts test/settings/catalog.test.ts

@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5348d1aa0941b572ccb310cfc354ca0e08405602",
+      "attempts": 1,
       "startedAt": "2026-11-07T08:36:19.674Z",
       "doneAt": "2026-11-07T08:42:01.336Z",
-      "summary": "impactLine, reviewedCard, makeChangeId y branchName reciben su límite con el de hoy por defecto (IMPORTERS_SHOWN, REVIEW_LINES, SLUG_CHARS exportadas); la negativa too-long lleva max, NOTE_MAX sin él."
+      "summary": "impactLine, reviewedCard, makeChangeId y branchName reciben su límite con el de hoy por defecto (IMPORTERS_SHOWN, REVIEW_LINES, SLUG_CHARS exportadas); la negativa too-long lleva max, NOTE_MAX sin él.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d43f4a7ce80a3c3ca6da3a8ef5047ced53029c64",
+      "startedAt": "2026-11-07T08:42:01.863Z",
+      "doneAt": "2026-11-07T08:48:43.036Z",
+      "summary": "Bloque internal.cards (importersShown, reviewLines, noteChars, slugChars) en schema/internal-cards.ts con mínimos y máximos, reunido en el único internal de config.ts; cuatro ajustes «Nuevo» en «Interno» con textos es/en; formats.md §6."
     }
   },
   "pending": {
