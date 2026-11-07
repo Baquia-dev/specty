@@ -64,6 +64,34 @@ describe("quick lane", () => {
     expect(check(text)).toEqual(["quick-limits"]);
   });
 
+  /** The quick example with `count` tasks, all on its file. */
+  const withTasks = (count: number) =>
+    QUICK +
+    Array.from(
+      { length: count - 1 },
+      (_, index) =>
+        `- [ ] T${index + 2}: Another task\n  - files: src/components/sign-in-button.tsx\n  - verify: pnpm test\n`,
+    ).join("");
+  /** The message of the quick lane's diagnostic, if any. */
+  const quickMessage = (text: string, config = DEFAULT_CONFIG) =>
+    validateSpec(parseSpec(text).spec, { phase: "draft", config }).find(
+      (entry) => entry.code === "quick-limits",
+    )?.message;
+
+  it("AC1: allows one task without lanes.quick.maxTasks, and says so as today", () => {
+    expect(DEFAULT_CONFIG.lanes.quick.maxTasks).toBe(1);
+    expect(check(withTasks(1))).toEqual([]);
+    expect(check(withTasks(2))).toEqual(["quick-limits"]);
+    expect(quickMessage(withTasks(2))).toContain("(2 tasks; quick allows one)");
+  });
+
+  it("AC2: allows the tasks of lanes.quick.maxTasks, and names its maximum past them", () => {
+    const config = withConfig({ lanes: { quick: { maxFiles: 3, maxTasks: 2 } } });
+    expect(check(withTasks(2), { config })).toEqual([]);
+    expect(check(withTasks(3), { config })).toEqual(["quick-limits"]);
+    expect(quickMessage(withTasks(3), config)).toContain("(3 tasks; quick allows 2)");
+  });
+
   it("lets an adjustment add tasks, but not files, once approved (AC1, AC2)", () => {
     const approved = parseSpec(QUICK).spec;
     const fix = `${QUICK}- [ ] T2: Format the label\n  - files: src/components/sign-in-button.tsx\n  - verify: pnpm test\n`;
@@ -83,7 +111,9 @@ describe("quick lane", () => {
       "- modify src/components/sign-in-button.tsx — fix the label\n- modify src/a.ts — a\n- modify src/b.ts — b\n- modify src/c.ts — c",
     );
     expect(check(text)).toEqual(["quick-limits"]);
-    expect(check(text, { config: withConfig({ lanes: { quick: { maxFiles: 4 } } }) })).toEqual([]);
+    expect(
+      check(text, { config: withConfig({ lanes: { quick: { maxFiles: 4, maxTasks: 1 } } }) }),
+    ).toEqual([]);
   });
 
   it("counts only code files, with the matches of a glob", () => {

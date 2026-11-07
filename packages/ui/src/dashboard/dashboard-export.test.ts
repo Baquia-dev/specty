@@ -14,8 +14,8 @@ import type { Download } from "../data/export";
 import { FixtureData } from "../data/fixtures";
 import { ActionError, type ChangeRecord, SpectyData } from "../data/records";
 import { NO_SESSION } from "../data/server-answers";
+import type { StatsExportParams } from "../data/server-stats";
 import type { StatsParams } from "../data/source";
-import type { StatsExportParams } from "../data/stats-export";
 import { deriveViews } from "../data/views";
 
 /** jsdom has no Worker: derive in the same thread, as the worker would. */

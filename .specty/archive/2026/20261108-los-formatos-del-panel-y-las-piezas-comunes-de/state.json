@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "20261108-los-formatos-del-panel-y-las-piezas-comunes-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-los-formatos-del-panel-y-las-piezas-comunes-de",
+  "baseCommit": "16ad77ec06157affaa0e9c6529ae3db9d19cbb4c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:44192f77b2dba79638b3188137ccf94c285527560cdaa78dc728f40ea32ac506",
+    "at": "2026-11-07T16:54:58.006Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d53d33bc31f7de77686d8cabf79e7512a0cd04f49f19a8b5dd479a9ff2daebad",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:2a61c3ebc57c346c9ce07efe2e6805909da7a032eef09655d030236a21c9e51e",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:846ac6966c441c75e497095f23c416b7c42f29a87dfe465017f834f2404b5c67",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "daf3459dc8421d592594662acca5b1650c75a537",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:54:58.844Z",
+      "doneAt": "2026-11-07T16:56:35.171Z",
+      "summary": "dashboard/dashboard-format.ts reúne shortDay, percent y usd; page, summary, rhythm, quality y cost usan su shortDay, y summary, people y quality su porcentaje y sus dólares, sin cambiar lo que muestran",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "368f05ddd85dc143d960ebdc06aa05ed6cc80472",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:56:36.460Z",
+      "doneAt": "2026-11-07T16:59:39.124Z",
+      "summary": "components/charts/chart-parts.ts reúne roundScale (escala de columnas y línea), moveFocus (teclado de las cinco gráficas, con ↓ y ↑ en la lista de barras), plain, stretchesOf y linePath (de line-chart y stat-tile), sin cambiar lo que dibujan ni cómo responden",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-07T16:59:59.274Z"
+}
