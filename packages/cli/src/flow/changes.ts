@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { ConfigIssue } from "@baquia-dev/specty-core";
-import { createGit, resolved } from "../io/git";
+import { resolved } from "../io/git";
 import { type Session, sessionFrom } from "../session";
 import { listOpenChanges, type StoredChange } from "../store/changes";
 import { loadConfig } from "../store/config";
@@ -114,7 +114,7 @@ async function sessionIn(session: Session, folder: string): Promise<Session | un
   const paths = repoPaths(folder);
   const loaded = await loadConfig(paths);
   if (loaded.kind !== "ok") return undefined;
-  const git = createGit(folder, session.environment.env);
+  const git = session.git.inWorktree(folder);
   const delegated = (await readDelegation(git)) !== undefined;
   return sessionFrom(session.environment, folder, paths, git, loaded.config, delegated);
 }
