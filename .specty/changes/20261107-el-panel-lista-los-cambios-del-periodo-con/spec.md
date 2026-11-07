@@ -78,7 +78,7 @@ El «Panel» de `specty ui` resume el periodo en indicadores, pero no dice qué 
   - files: packages/core/src/stats/table.ts, packages/core/src/index.ts, packages/core/test/stats/table.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/table.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: `GET /api/stats/changes` responde la página de la tabla que pide la UI
+- [x] T2: `GET /api/stats/changes` responde la página de la tabla que pide la UI
   - files: packages/cli/src/server/stats-changes.ts, packages/cli/src/server/records.ts, packages/cli/src/server/api.ts, packages/cli/test/server/stats-changes.test.ts, docs/ARCHITECTURE.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/stats-changes.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
