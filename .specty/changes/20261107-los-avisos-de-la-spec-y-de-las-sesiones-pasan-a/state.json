@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261107-los-avisos-de-la-spec-y-de-las-sesiones-pasan-a",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-los-avisos-de-la-spec-y-de-las-sesiones-pasan-a",
+  "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:774dd4908a96466def49d311fa90d7643d5209cf1fb5e969cf1e981e0c0151b0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a93dd3d7fcf06a87350d162286407a640edf6e6fa27026a50b60f2990ad0a216",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:1319f1ddde01b4727c630deca1ff2abe03f0ccda5bfc97c434ac3554fef89c8e",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b58416d72a33b4a547dc1cfc2ef0d8e66c67d57400957e92f1633a06b62f1148",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:efa331ca9e6062956a4027c43b04e638e773046ad6bc1f8126216e7f62f6f289",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:85200f7957d24b608f5a86ff1ffa9915f139925631723ffdcf994e974ca528e6",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:20eaa5fe4436ff4c2b6a01cf4a3dc8d08b90c72eeafc5e6e29c5f5bec970532b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 8,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:67dc4b31a8d0b3461b9d6b92544dc93b633be58e7c77256c1df669c58524988c",
+    "at": "2026-11-07T04:10:04.899Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
