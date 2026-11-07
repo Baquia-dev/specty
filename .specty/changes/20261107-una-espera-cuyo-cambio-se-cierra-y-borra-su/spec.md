@@ -19,7 +19,7 @@ Un `specty wait` que corre en la carpeta de un cambio (`.worktrees/<id>`) termin
 
 ## Tareas
 
-- [ ] T1: Una espera cuya carpeta se borra al cerrar o cancelar el cambio dice qué pasó y cómo seguir
+- [x] T1: Una espera cuya carpeta se borra al cerrar o cancelar el cambio dice qué pasó y cómo seguir
   - files: packages/cli/src/commands/wait.ts, packages/core/src/cards/wait.ts, packages/core/src/cards/index.ts, packages/cli/test/wait-folder.test.ts, packages/core/test/cards/wait.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait-folder.test.ts test/wait.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/wait.test.ts && pnpm typecheck && pnpm lint
   - type: fix

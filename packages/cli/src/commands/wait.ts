@@ -1,14 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type ChangeState,
   changeWaitsFor,
   type Output,
+  type Phase,
+  parseChangeState,
+  waitFolderGoneCard,
   waitHeartbeat,
   waitTimeoutCard,
 } from "@baquia-dev/specty-core";
 import { resolveActive, withChangeLock } from "../flow/active";
+import { exists, parseJson } from "../io/files";
+import { createGit, type Git } from "../io/git";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { liveHolder } from "../store/lock";
+import { SPECTY_DIR } from "../store/paths";
 import { markWait, type WaitMark } from "../store/waits";
 import { next } from "./next";
 
@@ -57,6 +64,8 @@ export async function wait(session: Session, options: WaitOptions = {}): Promise
     return withChangeLock(session, "next", () => next(session));
   }
   const { id } = current.state;
+  // Asked while the change's folder is there: closing the change removes it from under `wait`.
+  const main = (await session.git.worktrees())[0]?.folder ?? session.root;
   const { waitTimeoutSec, heartbeatSec } = session.config.internal.waits;
   const limits = parseWaitLimits(options, waitTimeoutSec);
   const started = Date.now();
@@ -76,10 +85,33 @@ export async function wait(session: Session, options: WaitOptions = {}): Promise
       return waitTimeoutCard(id, limits.timeoutSec, session.cards);
     }
     beat();
-    if (await decided(session, id, mark)) {
-      return withChangeLock(session, "next", () => next(session));
-    }
+    if (await decided(session, id, mark)) return afterDecision(session, current.state, main);
   }
+}
+
+/**
+ * The card once the person decided: `next`'s, or, when the change's folder went meanwhile, as
+ * closing it does, what happened. Git no longer runs there, so the change's end is read in the
+ * main folder, at the tip of its branch.
+ */
+async function afterDecision(session: Session, state: ChangeState, main: string): Promise<Output> {
+  if (await exists(session.root)) return withChangeLock(session, "next", () => next(session));
+  const git = createGit(main, session.environment.env);
+  const phase = state.branch === undefined ? undefined : await phaseAt(git, state.id, state.branch);
+  const gone = { id: state.id, folder: session.root, main };
+  return waitFolderGoneCard(phase === undefined ? gone : { ...gone, phase }, session.cards);
+}
+
+/** The phase of change `id` at the tip of `branch`: archived once closed or cancelled, or open. */
+async function phaseAt(git: Git, id: string, branch: string): Promise<Phase | undefined> {
+  const ref = `refs/heads/${branch}`;
+  // `ls-tree` takes no wildcards, and the archive's year is the closing's: it lists them all.
+  const where = [`${SPECTY_DIR}/archive`, `${SPECTY_DIR}/changes`];
+  const listed = await git.run(["ls-tree", "-r", "--name-only", ref, "--", ...where]);
+  const path = listed.stdout.split("\n").find((line) => line.endsWith(`/${id}/state.json`));
+  if (path === undefined) return undefined;
+  const parsed = parseChangeState(parseJson((await git.run(["show", `${ref}:${path}`])).stdout));
+  return parsed.ok ? parsed.state.phase : undefined;
 }
 
 /** Whether the person decided on change `id`, ending its mark if so; not while a command changes it. */

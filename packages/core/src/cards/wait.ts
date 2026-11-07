@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { AgentTool } from "../agents";
+import type { Phase } from "../flow/phases";
 import { headerOf, type Output, section } from "../output";
-import { translator } from "./text";
+import { leaveFolderNext } from "./land";
+import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
 // How the agent waits for the person's decision with `specty wait`, in each tool. `flow.ts` uses
@@ -110,6 +112,60 @@ export function waitTimeoutCard(id: string, timeoutSec: number, ctx: CardContext
       `remind the person of the pending decision and ${again}.`,
     ),
   };
+}
+
+/** What `specty wait` read of a change whose folder went while it waited. */
+interface GoneFolder {
+  readonly id: string;
+  /** The change's folder, which no longer exists. */
+  readonly folder: string;
+  /** The main folder, where the agent carries on. */
+  readonly main: string;
+  /** Its phase at the tip of its branch, when it could be read: `done` or `cancelled` once archived. */
+  readonly phase?: Phase;
+}
+
+/**
+ * `specty wait` whose change's folder went while it waited: the person closed the change (also
+ * with the `accept` of a quick one) or cancelled it, and the agent leaves the folder as after a
+ * closing from inside it; or the folder went with the change still open, and `restore` brings it
+ * back from the main folder.
+ */
+export function waitFolderGoneCard(gone: GoneFolder, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  const { id, folder, main, phase } = gone;
+  const ended = phase === "done" || phase === "cancelled";
+  return {
+    status: "ok",
+    header: headerOf(id, phase),
+    blocks: section(undefined, [goneLine(gone, t)]),
+    next: ended
+      ? leaveFolderNext({ folder, main, removed: true }, ctx)
+      : t(
+          `${folder} ya no existe: sal de ella (en Claude Code, \`ExitWorktree\`) y, en ${main}, recupera la carpeta con \`${ctx.command} restore ${id}\` y sigue su salida, que dice cómo volver a ella.`,
+          `${folder} no longer exists: leave it (in Claude Code, \`ExitWorktree\`) and, in ${main}, bring the folder back with \`${ctx.command} restore ${id}\` and follow its output, which tells how to go back to it.`,
+        ),
+  };
+}
+
+/** What happened to the change whose folder went: closed, cancelled, or still open on its branch. */
+function goneLine({ id, folder, phase }: GoneFolder, t: Translate): string {
+  if (phase === "done") {
+    return t(
+      `La persona cerró ${id} mientras esperabas, y su carpeta ${folder} se eliminó.`,
+      `The person closed ${id} while you waited, and its folder ${folder} was removed.`,
+    );
+  }
+  if (phase === "cancelled") {
+    return t(
+      `La persona canceló ${id} mientras esperabas, y su carpeta ${folder} se eliminó.`,
+      `The person cancelled ${id} while you waited, and its folder ${folder} was removed.`,
+    );
+  }
+  return t(
+    `La carpeta ${folder} de ${id} se eliminó mientras esperabas, sin cerrar ni cancelar el cambio, que sigue en su rama.`,
+    `Folder ${folder} of ${id} was removed while you waited, without closing or cancelling the change, which is still on its branch.`,
+  );
 }
 
 /**
