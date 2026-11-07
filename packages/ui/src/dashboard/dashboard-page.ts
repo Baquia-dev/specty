@@ -28,6 +28,8 @@ import type { StatsParams } from "../data/source";
 import { Preferences } from "../theme/preferences";
 import { DashboardChanges } from "./dashboard-changes";
 import { DashboardExport } from "./dashboard-export";
+import { DashboardPeople } from "./dashboard-people";
+import { DashboardRhythm } from "./dashboard-rhythm";
 import { DashboardSummary } from "./dashboard-summary";
 
 type Translate = (es: string, en: string) => string;
@@ -63,6 +65,8 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
   imports: [
     DashboardChanges,
     DashboardExport,
+    DashboardPeople,
+    DashboardRhythm,
     DashboardSummary,
     EmptyState,
     Segmented,
@@ -97,6 +101,12 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
           </sp-empty-state>
         } @else {
           <sp-dashboard-summary [view]="view" />
+          @if (view.rhythm; as rhythm) {
+            <sp-dashboard-rhythm class="mt-4" [rhythm]="rhythm" [kind]="view.query.kind" />
+          }
+          @if (view.people; as people) {
+            <sp-dashboard-people class="mt-4" [people]="people" [who]="view.query.who" (pick)="choose({ who: $event })" />
+          }
           <sp-dashboard-changes [query]="view.query" />
         }
       } @else if (read.isLoading()) {

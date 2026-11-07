@@ -39,6 +39,8 @@ import {
   resetDraft,
   withDraft,
 } from "./settings-edit";
+import { SettingsFlow } from "./settings-flow";
+import { SettingsBasicMore, SettingsMode, SettingsViews } from "./settings-mode";
 import {
   looseIssues,
   passes,
@@ -72,7 +74,8 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
  * setting the UI saves has its controls and «Restablecer»; the edits are checked by the server as
  * they are written, and «Descartar» and «Revisar y guardar» wait in the header and in the compact
  * bar. Elsewhere it is read only and says why. «Interno», the last, shows its warning and folds its
- * settings; it opens by itself while a search or a filter is on.
+ * settings; it opens by itself while a search or a filter is on. Under the header, the view (General
+ * or Flujo) and the mode: in Básico, General shows only the basic settings, with no search.
  */
 @Component({
   selector: "sp-settings-page",
@@ -86,6 +89,9 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
     Collapsible,
     Button,
     SettingRowView,
+    SettingsViews,
+    SettingsBasicMore,
+    SettingsFlow,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -124,6 +130,7 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
             <ng-container *ngTemplateOutlet="actionsOf; context: { $implicit: 'header' }" />
           }
         </header>
+        <sp-settings-views />
         @if (read.error(); as error) {
           <div role="alert" class="rounded-xl border border-border bg-surface p-4 text-sm">
             {{ t()('No se pudo leer la configuración', 'Could not read the settings') }}: {{ message(error) }}
@@ -150,31 +157,40 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
               }
             </div>
           }
-          <div class="flex flex-wrap items-center gap-3" data-toolbar>
-            <label class="flex h-10 min-w-0 flex-1 items-center gap-2 rounded-lg border border-border bg-surface px-3 text-text-muted focus-within:border-focus sm:max-w-md">
-              <svg [lucideIcon]="searchIcon" size="15" aria-hidden="true"></svg>
-              <span class="sr-only">{{ t()('Buscar un ajuste', 'Search a setting') }}</span>
-              <input type="search" class="min-w-0 flex-1 border-0 bg-transparent font-sans text-sm text-text outline-none placeholder:text-text-muted" [placeholder]="t()('Buscar un ajuste o su clave, como verify.timeoutSec', 'Search a setting or its key, such as verify.timeoutSec')" [value]="query()" (input)="type($event)" (keydown.escape)="query.set('')" />
-            </label>
-            <sp-segmented [label]="t()('Filtro', 'Filter')" [hideLabel]="true" [options]="filterOptions()" [(value)]="filter" />
-          </div>
-          @if (sections().length === 0) {
-            <p class="m-0 text-sm text-text-muted" role="status" data-no-match>{{ t()('Nada coincide con el filtro.', 'Nothing matches the filter.') }}</p>
-          }
-          @for (section of sections(); track section.key) {
-            <section [attr.aria-labelledby]="'settings-' + section.key" [attr.data-section]="section.key">
-              <sp-section-divider [heading]="section.name" [headingId]="'settings-' + section.key" [meta]="section.rows.length" [level]="2" />
-              @if (section.key === 'internal') {
-                <p class="m-0 mt-2 text-sm text-text-muted" data-internal-warning>
-                  {{ t()('Estos ajustes pueden dejar Specty sin funcionar. Si algo falla tras cambiar uno, quita su clave y vuelve a su valor.', 'These settings can make Specty stop working. If something fails after changing one, remove its key and it goes back to its value.') }}
-                </p>
-                <sp-collapsible class="mt-2" [label]="t()('Ajustes internos', 'Internal settings')" [open]="internalOpen()" (openChange)="unfolded.set($event)">
+          @if (mode.flow() && record(); as current) {
+            <sp-settings-flow [record]="current" [edits]="edits()" [delegated]="delegated()" [editable]="editable()" [rows]="rows()" [fields]="fields()" [pending]="pending()" (edit)="write($event)" />
+          } @else {
+            @if (!mode.basic()) {
+              <div class="flex flex-wrap items-center gap-3" data-toolbar>
+                <label class="flex h-10 min-w-0 flex-1 items-center gap-2 rounded-lg border border-border bg-surface px-3 text-text-muted focus-within:border-focus sm:max-w-md">
+                  <svg [lucideIcon]="searchIcon" size="15" aria-hidden="true"></svg>
+                  <span class="sr-only">{{ t()('Buscar un ajuste', 'Search a setting') }}</span>
+                  <input type="search" class="min-w-0 flex-1 border-0 bg-transparent font-sans text-sm text-text outline-none placeholder:text-text-muted" [placeholder]="t()('Buscar un ajuste o su clave, como verify.timeoutSec', 'Search a setting or its key, such as verify.timeoutSec')" [value]="query()" (input)="type($event)" (keydown.escape)="query.set('')" />
+                </label>
+                <sp-segmented [label]="t()('Filtro', 'Filter')" [hideLabel]="true" [options]="filterOptions()" [(value)]="filter" />
+              </div>
+            }
+            @if (sections().length === 0) {
+              <p class="m-0 text-sm text-text-muted" role="status" data-no-match>{{ t()('Nada coincide con el filtro.', 'Nothing matches the filter.') }}</p>
+            }
+            @for (section of sections(); track section.key) {
+              <section [attr.aria-labelledby]="'settings-' + section.key" [attr.data-section]="section.key">
+                <sp-section-divider [heading]="section.name" [headingId]="'settings-' + section.key" [meta]="section.rows.length" [level]="2" />
+                @if (section.key === 'internal') {
+                  <p class="m-0 mt-2 text-sm text-text-muted" data-internal-warning>
+                    {{ t()('Estos ajustes pueden dejar Specty sin funcionar. Si algo falla tras cambiar uno, quita su clave y vuelve a su valor.', 'These settings can make Specty stop working. If something fails after changing one, remove its key and it goes back to its value.') }}
+                  </p>
+                  <sp-collapsible class="mt-2" [label]="t()('Ajustes internos', 'Internal settings')" [open]="internalOpen()" (openChange)="unfolded.set($event)">
+                    <ng-container *ngTemplateOutlet="rowsOf; context: { $implicit: section.rows }" />
+                  </sp-collapsible>
+                } @else {
                   <ng-container *ngTemplateOutlet="rowsOf; context: { $implicit: section.rows }" />
-                </sp-collapsible>
-              } @else {
-                <ng-container *ngTemplateOutlet="rowsOf; context: { $implicit: section.rows }" />
-              }
-            </section>
+                }
+              </section>
+            }
+            @if (mode.basic()) {
+              <sp-settings-basic-more />
+            }
           }
         }
       </div>
@@ -203,6 +219,7 @@ export class SettingsPage {
   private readonly decisions = inject(Decisions);
   private readonly dialogs = inject(Dialogs);
   private readonly toasts = inject(Toasts);
+  protected readonly mode = inject(SettingsMode);
   protected readonly t = this.preferences.t;
   protected readonly read = resource({ loader: () => this.data.config() });
   private readonly delegation = resource({ loader: () => this.data.delegation() });
@@ -221,7 +238,14 @@ export class SettingsPage {
   protected readonly drafts = signal<Drafts>(new Map());
   private readonly hero = viewChild<ElementRef<HTMLElement>>("hero");
 
-  private readonly record = computed(() => (this.read.hasValue() ? this.read.value() : undefined));
+  protected readonly record = computed(() =>
+    this.read.hasValue() ? this.read.value() : undefined,
+  );
+
+  /** Delegated mode in the clone; undefined while it loads or when the source cannot tell. */
+  protected readonly delegated = computed(() =>
+    this.delegation.hasValue() ? this.delegation.value()?.on : undefined,
+  );
 
   /** Why the person cannot change the settings here, in their language; empty when they can. */
   protected readonly readOnly = computed(() => {
@@ -232,7 +256,7 @@ export class SettingsPage {
 
   protected readonly editable = computed(() => this.record() !== undefined && !this.readOnly());
 
-  private readonly edits = computed(() => editsOf(this.drafts()));
+  protected readonly edits = computed(() => editsOf(this.drafts()));
 
   /** The changes of the edits by setting, as the server counts them. */
   protected readonly changes = computed(() => {
@@ -264,12 +288,15 @@ export class SettingsPage {
   protected readonly rows = computed(() => {
     const record = this.record();
     if (record === undefined) return [];
-    const delegated = this.delegation.hasValue() ? this.delegation.value()?.on : undefined;
-    return settingRows({ ...record, issues: this.issues() }, delegated, this.preferences.lang());
+    return settingRows(
+      { ...record, issues: this.issues() },
+      this.delegated(),
+      this.preferences.lang(),
+    );
   });
 
   /** Each setting's controls with their text; none where the person cannot change it. */
-  private readonly fields = computed(() => {
+  protected readonly fields = computed(() => {
     const record = this.record();
     const drafts = this.drafts();
     const editable = this.editable();
@@ -301,9 +328,13 @@ export class SettingsPage {
     (): SettingFilter => SETTING_FILTERS.find((value) => value === this.filter()) ?? "all",
   );
 
-  protected readonly sections = computed((): readonly SettingsSection[] =>
-    settingSections(this.rows(), this.chosen(), this.query(), this.preferences.lang()),
-  );
+  /** In Básico, the basic settings, with no search nor filter. */
+  protected readonly sections = computed((): readonly SettingsSection[] => {
+    const lang = this.preferences.lang();
+    if (!this.mode.basic()) return settingSections(this.rows(), this.chosen(), this.query(), lang);
+    const basic = this.rows().filter((row) => row.setting.basic === true);
+    return settingSections(basic, "all", "", lang);
+  });
 
   /** «Interno» unfolded by the person, or by itself while a search or a filter is on. */
   protected readonly internalOpen = computed(

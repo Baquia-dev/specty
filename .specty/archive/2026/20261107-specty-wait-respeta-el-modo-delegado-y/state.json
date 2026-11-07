@@ -1,0 +1,176 @@
+{
+  "schema": 1,
+  "id": "20261107-specty-wait-respeta-el-modo-delegado-y",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-specty-wait-respeta-el-modo-delegado-y",
+  "baseCommit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bd8c9a199b96f50bb68007231e8f64d35352983d9a73a6988ac9b722d73560ef",
+    "at": "2026-11-07T08:40:13.837Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:aec406c210041465d3dd0e6a86091b96cc1fbb28f5cec3ed77b43a074b5d120b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d86ccf4f83b6d0ddbb01496b21dbd26e41e83d04f9013c7e19823670d783fab1",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:91f47bec903be0433ac37a9723b35cc86de1ff86e15e6f879bcd8f9fbc6c10cc",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:8d99e8a61cd106c30fcbf3e738691ee56d49a699c8042e9467f92cc4eef9f3e7",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:8675cec4bf0479621d2012554fec7cd69d353a648d12bf8257d66c75d8a5a387",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "15b3a40fd1b328253d706d8452cc9f51d0365c51",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:10:00.682Z",
+      "doneAt": "2026-11-07T09:17:39.834Z",
+      "summary": "wait ya no espera en modo delegado las decisiones del agente (waitsForPerson en core), relee el modo en cada vuelta, da la tarjeta de next o la de la solicitud delegada y su tiempo agotado tiene rama delegada; ARCHITECTURE §6",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "e69e5dface9279a6540650c9ac29b28e582829bb",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:17:40.230Z",
+      "doneAt": "2026-11-07T09:25:36.051Z",
+      "summary": "El paso de seguir next del encargo de un subagente, en modo delegado, le pide hacer lo que diga «modo delegado» y esperar con specty wait solo una decisión que no le delega (followNext en cards/subagents.ts).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "ddfb7c29e591312fdb6e085de470787bb3027a35",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:25:36.436Z",
+      "doneAt": "2026-11-07T09:33:53.483Z",
+      "summary": "internal.waits.waitTimeoutSec pasa a 3300 s por defecto (máximo 3600) para despertar con la caché de prompts viva; ayuda de --timeout, formats.md §6 y tests a 3300.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T09:34:28.947Z",
+  "lockedTests": {
+    "packages/core/test/cards/idle-subagents.test.ts": "sha256:8c36a06d135b234941e14fbe9059aeb5e095c9491c932edf12c2b96ba005253b",
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:c47510f028d4b65344cb2fd3f31bbffe9196741d2217fa1134c095e69e7b6a8b",
+    "packages/cli/test/wait-delegated.test.ts": "sha256:87e4b7256cd3fbbeeac0ea8a25ef4de616cf0a5233b0c0311cd5acc9972cb8b5"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "7ba359df7f50a56f45c6146db433bf67f33b5e5b",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/core/src/schema/internal-waits.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/agents/adapter.ts",
+      "packages/cli/src/agents/antigravity.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/commands/prune.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/flow/full-verification.test.ts",
+      "packages/cli/src/flow/full-verification.ts",
+      "packages/cli/src/install/hooks.ts",
+      "packages/cli/src/install/install.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/src/server/stats-changes.ts",
+      "packages/cli/src/store/leftovers.ts",
+      "packages/cli/src/store/turn-queue.test.ts",
+      "packages/cli/src/store/turn-queue.ts",
+      "packages/cli/src/store/verify-slots.test.ts",
+      "packages/cli/src/store/verify-slots.ts",
+      "packages/cli/test/antigravity-timeout.test.ts",
+      "packages/cli/test/prune-leftovers.test.ts",
+      "packages/cli/test/server/stats-changes.test.ts",
+      "packages/cli/test/wait-delegated.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/cards/parallel.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/cards/subagents.ts",
+      "packages/core/src/cards/wait.ts",
+      "packages/core/src/flow/waiting.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/stats/table.ts",
+      "packages/core/test/cards/doctor-antigravity-timeout.test.ts",
+      "packages/core/test/cards/idle-subagents.test.ts",
+      "packages/core/test/cards/prune-leftovers.test.ts",
+      "packages/core/test/cards/wait.test.ts",
+      "packages/core/test/flow/waiting.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/internal-hooks.test.ts",
+      "packages/core/test/settings/internal-life.test.ts",
+      "packages/core/test/stats/table.test.ts",
+      "packages/ui/src/dashboard/dashboard-changes.test.ts",
+      "packages/ui/src/dashboard/dashboard-changes.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/data/server-config.test.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/data/stats-source.test.ts",
+      "packages/ui/src/settings/save-dialog.ts",
+      "packages/ui/src/settings/setting-row.ts",
+      "packages/ui/src/settings/settings-controls.test.ts",
+      "packages/ui/src/settings/settings-edit.test.ts",
+      "packages/ui/src/settings/settings-edit.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts",
+      "packages/ui/src/settings/settings-save.test.ts",
+      "packages/ui/src/settings/settings-view.ts"
+    ],
+    "at": "2026-11-07T09:41:07.030Z",
+    "resolved": {
+      "commit": "5e4be5f",
+      "at": "2026-11-07T10:00:57.689Z"
+    }
+  }
+}

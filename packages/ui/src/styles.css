@@ -53,6 +53,16 @@
   --color-code-function: #1d4ed8;
   --color-code-constant: #115e59;
 
+  /*
+   * The panel's charts, and only their marks: blue, orange and aqua, apart with color blindness
+   * (theme/tokens.test.ts). The text around them stays in ink. A faint grid and a firmer baseline.
+   */
+  --color-series-1: #2a78d6;
+  --color-series-2: #eb6834;
+  --color-series-3: #1baf7a;
+  --color-chart-grid: #ececee;
+  --color-chart-axis: #d4d4d8;
+
   --font-*: initial;
   --font-sans: "Geist Variable", system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
@@ -174,6 +184,13 @@
   --color-code-comment: #bababa;
   --color-code-function: #a2bbe7;
   --color-code-constant: #86c9c0;
+
+  /* The chart series, stepped for the dark surfaces, not flipped from the light ones. */
+  --color-series-1: #3987e5;
+  --color-series-2: #d95926;
+  --color-series-3: #199e70;
+  --color-chart-grid: #2f2f2f;
+  --color-chart-axis: #4a4a4a;
 
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 12px rgb(0 0 0 / 0.35);

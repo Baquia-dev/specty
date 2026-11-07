@@ -62,12 +62,15 @@ export interface Setting {
   readonly guarantee?: true;
   /** A guarantee's fixed value, in its `unit`. */
   readonly fixed?: number;
+  /** One of the settings the view General shows in the basic mode. */
+  readonly basic?: true;
 }
 
 /**
  * Section «Interno», execution, server and hooks: the priority of the verifications, the most
- * Specty reads of a command's output, the ports `specty ui` tries and the time of Antigravity's
- * hooks, which Specty kept fixed in its code, as keys of `internal` (formats.md §6).
+ * Specty reads of a command's output, the ports `specty ui` tries, the time of Antigravity's hooks
+ * and the limits of the UI's server, which Specty kept fixed in its code, as keys of `internal`
+ * (formats.md §6).
  */
 const INTERNAL_RUN: readonly Setting[] = [
   { key: "internal.exec.priority", section: "internal", kind: "number", new: true },
@@ -80,7 +83,44 @@ const INTERNAL_RUN: readonly Setting[] = [
     unit: "s",
     new: true,
   },
+  ...["changesEveryMs", "tasksEveryMs"].map(
+    (key): Setting => ({
+      key: `internal.server.${key}`,
+      section: "internal",
+      kind: "number",
+      unit: "ms",
+      new: true,
+    }),
+  ),
+  { key: "internal.server.runLines", section: "internal", kind: "number", new: true },
+  {
+    key: "internal.server.runEveryMs",
+    section: "internal",
+    kind: "number",
+    unit: "ms",
+    new: true,
+  },
+  { key: "internal.server.maxBodyKiB", section: "internal", kind: "number", new: true },
 ];
+
+/**
+ * Section «Interno», what the cards show: the importers `propose` names, the lines of the review,
+ * the characters of a task's notes and of a new change's slug, which Specty kept fixed in its
+ * code, as keys of `internal.cards` (formats.md §6).
+ */
+const INTERNAL_CARDS: readonly Setting[] = [
+  "importersShown",
+  "reviewLines",
+  "noteChars",
+  "slugChars",
+].map(
+  (limit): Setting => ({
+    key: `internal.cards.${limit}`,
+    section: "internal",
+    kind: "number",
+    new: true,
+  }),
+);
 
 /**
  * Section «Interno»: the parameters Specty kept fixed in its code, as keys of `internal`, and the
@@ -135,6 +175,7 @@ const INTERNAL: readonly Setting[] = [
     new: true,
   },
   ...INTERNAL_RUN,
+  ...INTERNAL_CARDS,
   ...["receipts", "guardPending", "shellSnapshots", "sessions"].map(
     (life): Setting => ({
       key: `guarantee.${life}`,
@@ -189,32 +230,39 @@ const EFFORT: readonly Setting[] = ["S", "M", "L", "XL", "task"].map(
 
 /** Each setting, in the page's order: by section, then as the section reads. */
 export const SETTINGS: readonly Setting[] = [
-  { key: "language", section: "flow", kind: "choice", options: LANGS },
-  { key: "mode", section: "flow", kind: "choice", options: ["individual", "team"] },
+  { key: "language", section: "flow", kind: "choice", options: LANGS, basic: true },
+  { key: "mode", section: "flow", kind: "choice", options: ["individual", "team"], basic: true },
   {
     key: "policy.tests",
     section: "flow",
     kind: "choice",
     options: TESTS_POLICIES,
     permissions: true,
+    basic: true,
   },
-  { key: "subagents", section: "flow", kind: "toggle" },
-  { key: "retro.mode", section: "flow", kind: "choice", options: ["agent", "minimal"] },
+  { key: "subagents", section: "flow", kind: "toggle", basic: true },
+  {
+    key: "retro.mode",
+    section: "flow",
+    kind: "choice",
+    options: ["agent", "minimal"],
+    basic: true,
+  },
   { key: "specty delegate", section: "flow", kind: "toggle", clone: true, permissions: true },
-  { key: "verify.default", section: "verify", kind: "command", command: true },
-  { key: "verify.full", section: "verify", kind: "command", command: true },
+  { key: "verify.default", section: "verify", kind: "command", command: true, basic: true },
+  { key: "verify.full", section: "verify", kind: "command", command: true, basic: true },
   { key: "verify.quick", section: "verify", kind: "command", command: true },
-  { key: "verify.timeoutSec", section: "verify", kind: "number", unit: "s" },
+  { key: "verify.timeoutSec", section: "verify", kind: "number", unit: "s", basic: true },
   { key: "verify.slots", section: "verify", kind: "number" },
   { key: "verify.units", section: "verify", kind: "list", command: true, fileOnly: true },
   { key: "git.branchPerChange", section: "git", kind: "toggle" },
-  { key: "git.worktrees", section: "git", kind: "toggle" },
-  { key: "git.flow", section: "git", kind: "choice", options: GIT_FLOWS },
+  { key: "git.worktrees", section: "git", kind: "toggle", basic: true },
+  { key: "git.flow", section: "git", kind: "choice", options: GIT_FLOWS, basic: true },
   { key: "git.branchPattern", section: "git", kind: "text" },
   { key: "git.target", section: "git", kind: "text" },
   { key: "git.setup", section: "git", kind: "command", command: true },
-  { key: "git.afterLanding", section: "git", kind: "command", command: true },
-  { key: "review.command", section: "review", kind: "command", command: true },
+  { key: "git.afterLanding", section: "git", kind: "command", command: true, basic: true },
+  { key: "review.command", section: "review", kind: "command", command: true, basic: true },
   { key: "review.timeoutSec", section: "review", kind: "number", unit: "s" },
   { key: "governed", section: "scope", kind: "list", permissions: true },
   { key: "ignored", section: "scope", kind: "list", permissions: true },

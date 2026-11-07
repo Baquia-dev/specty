@@ -6,7 +6,6 @@ import {
   isGoverned,
   type LongFile,
   longFileCard,
-  NOTE_MAX,
   nextCard,
   type Output,
   outOfScopeCard,
@@ -106,7 +105,7 @@ async function taskToComplete(
   if (state.tasks[id]?.status !== "active") {
     return { card: taskDoneRefusalCard({ reason: "not-active", task: id }, header, cards) };
   }
-  const refusal = notesRefusal(id, summary, findings);
+  const refusal = notesRefusal(id, summary, findings, session.config.internal.cards.noteChars);
   if (refusal !== undefined) return { card: taskDoneRefusalCard(refusal, header, cards) };
   const spec = parseSpec(await readSpec(active.files), { language: session.lang }).spec;
   const task = spec.sections.tasks?.items.find((item) => item.id === id);
@@ -120,17 +119,21 @@ async function taskToComplete(
   return { active, spec, task, header };
 }
 
-/** Every next task card repeats the notes: one or two sentences each, refused before verifying. */
+/**
+ * Every next task card repeats the notes: one or two sentences each, of `max` characters at most
+ * (`internal.cards.noteChars`), refused before verifying.
+ */
 function notesRefusal(
   task: string,
   summary: string,
   findings: readonly string[],
+  max: number,
 ): TaskDoneRefusal | undefined {
   const length = summary.trim().length;
-  if (length > NOTE_MAX) return { reason: "too-long", note: "summary", length };
-  const longFinding = findings.map((finding) => finding.trim().length).find((n) => n > NOTE_MAX);
+  if (length > max) return { reason: "too-long", note: "summary", length, max };
+  const longFinding = findings.map((finding) => finding.trim().length).find((n) => n > max);
   if (longFinding !== undefined)
-    return { reason: "too-long", note: "finding", length: longFinding };
+    return { reason: "too-long", note: "finding", length: longFinding, max };
   const emptyFinding = findings.some((finding) => finding.trim().length === 0);
   if (length > 0 && !emptyFinding) return undefined;
   return { reason: "empty", note: emptyFinding ? "finding" : "summary", task };

@@ -19,7 +19,7 @@ import { lowerPriority } from "../io/exec";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { mergedVerification } from "./merged-run";
-import { type Going, KEPT, type LiveRun, liveRun } from "./run-output";
+import { type Going, type LiveRun, liveRun } from "./run-output";
 import { taskRuns } from "./watched-runs";
 
 /**
@@ -79,6 +79,7 @@ export function changeRuns(
   };
   const target: RunTarget = {
     going,
+    limits: session.config.internal.server,
     stops,
     heard,
     closing: () => closing,
@@ -131,6 +132,8 @@ async function started(session: Session, target: RunTarget, id: string): Promise
 /** Where a full verification reports: the runs going on, the listener, and whether the server closes. */
 interface RunTarget {
   readonly going: Going;
+  /** The lines a run keeps and how often it is heard: the server's `internal.server`. */
+  readonly limits: { readonly runLines: number; readonly runEveryMs: number };
   /** The last run of each change whose incorporation stopped without moving anything. */
   readonly stops: Map<string, Run>;
   readonly heard: (id: string, run: Run | undefined) => void;
@@ -301,7 +304,8 @@ function spawned(
   const output: string[] = [];
   const add = (lines: readonly string[]) => {
     output.push(...lines.filter((line) => line.length > 0));
-    if (output.length > KEPT) output.splice(0, output.length - KEPT);
+    const kept = target.limits.runLines;
+    if (output.length > kept) output.splice(0, output.length - kept);
     live.add(lines);
   };
   const rests = streamed(child, add);

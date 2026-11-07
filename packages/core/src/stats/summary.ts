@@ -3,17 +3,21 @@
 // period before, and what the page needs around them. The local server answers it as
 // `GET /api/stats`; the other sections of the panel join `StatsView` as they come.
 import type { MemoryEntry } from "../memory/entries";
+import { type StatsPeopleRow, statsPeople } from "./people";
 import {
   compared,
   dayOf,
   inCut,
   inRange,
+  median,
   type StatsQuery,
   type StatsRange,
   type StatsWho,
   type StatsWhoKind,
   statsRanges,
+  sum,
 } from "./period";
+import { type StatsRhythm, statsRhythm } from "./rhythm";
 import type { StatsRow } from "./rows";
 
 /**
@@ -60,6 +64,13 @@ export interface StatsView {
   /** Each person, agent and model, «(sin dato)» too, the ones with most changes first. */
   readonly options: readonly StatsOption[];
   readonly summary: StatsSummary;
+  /**
+   * «Ritmo»: the changes of the cut closed by lane, and its tasks, by day or by week. Like the
+   * other sections, optional: a source that does not give it yet shows the rest of the panel.
+   */
+  readonly rhythm?: StatsRhythm;
+  /** «Personas y agentes»: a row per person, agent and model of the lane, whoever the cut is for. */
+  readonly people?: readonly StatsPeopleRow[];
 }
 
 /** What the panel is made of: every change's row, the memory's entries and the local today. */
@@ -79,6 +90,7 @@ export function statsView({ rows, memory, today, query }: StatsInput): StatsView
   const first = rows.reduce((day, row) => (row.lived.from < day ? row.lived.from : day), today);
   const { current, previous } = statsRanges(query.period, today, first);
   const cut = rows.filter((row) => inCut(row, query));
+  const lane = rows.filter((row) => query.kind === undefined || row.kind === query.kind);
   const ids = new Set(cut.map((row) => row.id));
   const filtered = query.who !== undefined || query.kind !== undefined;
   const entries = filtered ? memory.filter((entry) => ids.has(entry.origin.change ?? "")) : memory;
@@ -90,6 +102,8 @@ export function statsView({ rows, memory, today, query }: StatsInput): StatsView
     changes: lived.length,
     options: optionsOf(rows),
     summary: summaryOf(cut, entries, current, previous),
+    rhythm: statsRhythm(cut, current),
+    people: statsPeople(lane, current),
   };
 }
 
@@ -167,18 +181,6 @@ function openAt(entry: MemoryEntry, day: string): boolean {
   if (entry.status !== "done" && entry.status !== "dropped") return true;
   // Done or dropped with no date: closed since it was created.
   return entry.closed !== undefined && dayOf(entry.closed.at) > day;
-}
-
-function sum(values: readonly number[]): number {
-  return values.reduce((total, value) => total + value, 0);
-}
-
-function median(values: readonly number[]): number | null {
-  const sorted = values.toSorted((a, b) => a - b);
-  const middle = Math.floor(sorted.length / 2);
-  const upper = sorted[middle];
-  if (upper === undefined) return null;
-  return sorted.length % 2 === 1 ? upper : ((sorted[middle - 1] ?? upper) + upper) / 2;
 }
 
 const WHO_KINDS: readonly StatsWhoKind[] = ["person", "agent", "model"];
