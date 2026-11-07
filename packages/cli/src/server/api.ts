@@ -179,7 +179,7 @@ export async function act(
 ) {
   const refused = actionRefusal(request, context);
   if (refused !== undefined) return send(response, 403, JSON_TYPE, refused);
-  const body = await readBody(request);
+  const body = await readBody(request, context.session.config.internal.server.maxBodyKiB * 1024);
   const bad = () => send(response, 400, JSON_TYPE, '{"error":"bad request"}');
   const done = (output: Output) =>
     send(response, output.status === "ok" ? 200 : 409, JSON_TYPE, JSON.stringify(output));
@@ -262,14 +262,14 @@ function actionRefusal(request: IncomingMessage, context: Context): string | und
   return undefined;
 }
 
-/** A JSON body of at most 64 KiB; anything else reads as nothing. */
-async function readBody(request: IncomingMessage): Promise<unknown> {
+/** A JSON body of at most `max` bytes (`internal.server.maxBodyKiB`); anything else is none. */
+async function readBody(request: IncomingMessage, max: number): Promise<unknown> {
   const parts: Buffer[] = [];
   let size = 0;
   for await (const chunk of request) {
     const part = Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk));
     size += part.length;
-    if (size > 65_536) return undefined;
+    if (size > max) return undefined;
     parts.push(part);
   }
   return parseJson(Buffer.concat(parts).toString("utf8"));

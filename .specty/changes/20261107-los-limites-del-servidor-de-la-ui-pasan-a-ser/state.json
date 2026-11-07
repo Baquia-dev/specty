@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "45ab4aa94ee1fbadcf5c9b0174258b9838d0b2c1",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:09:22.667Z",
       "doneAt": "2026-11-07T09:17:30.567Z",
-      "summary": "liveRun, las líneas de cada unidad de runs.ts y el archivo en vivo de runLive guardan las últimas internal.server.runLines líneas y se avisan o reescriben como mucho cada runEveryMs."
+      "summary": "liveRun, las líneas de cada unidad de runs.ts y el archivo en vivo de runLive guardan las últimas internal.server.runLines líneas y se avisan o reescriben como mucho cada runEveryMs.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "96d23ee593e00db2192faf85ebda4a1014834131",
+      "startedAt": "2026-11-07T09:17:31.286Z",
+      "doneAt": "2026-11-07T09:25:54.129Z",
+      "summary": "El servidor mira los cambios cada internal.server.changesEveryMs (salvo interval), lee las verificaciones de otros procesos cada tasksEveryMs y el cuerpo de una acción hasta maxBodyKiB."
     }
   },
   "pending": {

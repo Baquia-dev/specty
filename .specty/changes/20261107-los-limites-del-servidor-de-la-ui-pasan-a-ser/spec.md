@@ -79,7 +79,7 @@ Hoy el servidor de `specty ui` tiene sus límites fijos en el código: mira los 
   - files: packages/cli/src/server/run-output.ts, packages/cli/src/server/runs.ts, packages/cli/src/flow/live-run.ts, packages/cli/test/server/run-output.test.ts, packages/cli/test/live-run.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/run-output.test.ts test/live-run.test.ts
-- [ ] T3: El servidor mira los cambios y las verificaciones de otros procesos, y lee el cuerpo de una acción, con los límites de la configuración
+- [x] T3: El servidor mira los cambios y las verificaciones de otros procesos, y lee el cuerpo de una acción, con los límites de la configuración
   - files: packages/cli/src/server/http.ts, packages/cli/src/server/watched-runs.ts, packages/cli/src/server/api.ts, packages/cli/test/server/internal-server.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/internal-server.test.ts && pnpm typecheck
