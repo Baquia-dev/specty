@@ -78,7 +78,7 @@ Hoy cuánto conserva su puesto en la cola de las verificaciones un proceso que d
   - files: packages/core/src/schema/internal-waits.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/settings/internal-life.test.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/internal-life.test.ts test/settings/catalog.test.ts
-- [ ] T2: La tarjeta de `prune` dice las horas de los índices, y los documentos, las claves y la garantía
+- [x] T2: La tarjeta de `prune` dice las horas de los índices, y los documentos, las claves y la garantía
   - files: packages/core/src/cards/parallel.ts, packages/core/test/cards/prune-leftovers.test.ts, docs/formats.md, docs/ui.md
   - ac: AC2, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/prune-leftovers.test.ts
