@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-los-huerfanos-que-son-epicas-los-retoma-la",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-los-huerfanos-que-son-epicas-los-retoma-la",
   "baseCommit": "9471f99e1616c92f3cce99674a3c812c73d4d0be",
-  "revision": 2,
+  "revision": 4,
   "approved": {
     "revision": 2,
     "hash": "sha256:82d8e41e4dc1628fad0086cd64461148359b798a754dfac3b96ec1369bcfe693",
@@ -56,14 +56,14 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/next-orphan-epic.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "93caec394fb3c1df4cd2d50f2c06f3cd0e90ad6b",
+      "attempts": 1,
       "startedAt": "2026-11-07T00:12:23.587Z",
       "doneAt": "2026-11-07T02:32:21.523Z",
-      "summary": "orphanChanges pasa el kind de openChanges, así que next marca la épica huérfana y la deja a la sesión; ARCHITECTURE §7 y formats §6 lo cuentan; el test confirma los hooks con el repositorio (desbloqueo S1)"
+      "summary": "orphanChanges pasa el kind de openChanges, así que next marca la épica huérfana y la deja a la sesión; ARCHITECTURE §7 y formats §6 lo cuentan; el test confirma los hooks con el repositorio (desbloqueo S1)",
+      "scopeExtra": [
+        "packages/cli/test/next-orphan-epic.test.ts"
+      ]
     }
   },
   "pending": {
@@ -77,6 +77,7 @@
     "R": 1,
     "S": 1
   },
+  "closingSubmittedAt": "2026-11-07T02:37:52.012Z",
   "lockedTests": {
     "packages/core/test/cards/orphans-subagents.test.ts": "sha256:199a6e22944e93d7a7234f23eb8be4f5550a7539fd359e6b4fb4cb4654a52b5d",
     "packages/cli/test/next-orphan-epic.test.ts": "sha256:a176f5520a002e3025fd4c7d1ec708b21d96696aa76793ee80a501dbfeab63c6",
