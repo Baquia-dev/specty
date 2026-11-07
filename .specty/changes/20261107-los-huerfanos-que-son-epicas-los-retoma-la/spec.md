@@ -59,7 +59,7 @@ Con una herramienta que reparte en subagentes, la tarjeta sin cambio activo pide
   - files: packages/core/src/cards/subagents.ts, packages/core/src/cards/idle.ts, packages/core/src/cards/rejoin.ts, packages/core/test/cards/orphans-epic.test.ts, packages/core/test/cards/orphans-subagents.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/orphans-epic.test.ts test/cards/orphans-subagents.test.ts test/cards/rejoin.test.ts test/cards/idle-subagents.test.ts test/cards/idle-epic-size.test.ts && pnpm lint
-- [ ] T2: `next` sabe qué huérfano es una épica, y la documentación lo cuenta
+- [x] T2: `next` sabe qué huérfano es una épica, y la documentación lo cuenta
   - files: packages/cli/src/commands/next.ts, packages/cli/test/next-orphan-epic.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/next-orphan-epic.test.ts test/session-return.test.ts && grep -q 'épica huérfana' docs/ARCHITECTURE.md && grep -q 'épica huérfana' docs/formats.md && pnpm typecheck && pnpm lint

@@ -57,8 +57,8 @@ async function orphanEpic(root: string): Promise<string> {
 
 describe("an approved epic no conversation holds", () => {
   it("AC1: Claude Code's `next` in the main folder marks it and leaves it to the session", async () => {
-    const root = await tempRepo(APP);
-    await writeFiles(root, { ".claude/settings.local.json": WORKTREE_HOOKS });
+    // Committed with the repository: a hooks file not yet committed is code changed without a spec.
+    const root = await tempRepo({ ...APP, ".claude/settings.local.json": WORKTREE_HOOKS });
     await orphanEpic(root);
     const next = await cli(root, ["next"], {
       env: { CLAUDECODE: "1", CLAUDE_CODE_SESSION_ID: "s1" },
