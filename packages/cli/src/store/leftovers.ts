@@ -11,26 +11,31 @@ import type { Git } from "../io/git";
 import { alive } from "./lock";
 import { clearRun, readRuns } from "./runs";
 
-/** A temporary index older than this is no process's: `treeWith` uses one for seconds. */
-const INDEX_LIFE = 60 * 60 * 1000;
-
 /** A half-done write, `<file>.<pid>.tmp`, and the process writing it. */
 const HALF_WRITE = /\.(\d+)\.tmp$/;
 
 /**
  * Removes what processes that no longer exist left: their live runs and half-done writes in
- * Specty's common folder, and the temporary indexes over an hour old (by `now`) in the `specty/`
- * folder of every worktree's git folder, also of one whose folder is gone. Says how many of each.
+ * Specty's common folder, and the temporary indexes over `hours` old (by `now`;
+ * `internal.retention.indexHours`) in the `specty/` folder of every worktree's git folder, also of
+ * one whose folder is gone: `treeWith` uses one for seconds, so an older one is no process's. Says
+ * how many of each, and after how many hours.
  */
 export async function removeLeftovers(
   git: Git,
   now: Date,
-): Promise<{ readonly writes: number; readonly runs: number; readonly indexes: number }> {
+  hours: number,
+): Promise<{
+  readonly writes: number;
+  readonly runs: number;
+  readonly indexes: number;
+  readonly hours: number;
+}> {
   const runs = await removeDeadRuns(git);
   const writes = await removeHalfWrites(await git.gitPath("common/specty"));
   const common = dirname(await git.gitPath("common"));
-  const indexes = await removeOldIndexes(common, now.getTime() - INDEX_LIFE);
-  return { writes, runs, indexes };
+  const indexes = await removeOldIndexes(common, now.getTime() - hours * 60 * 60 * 1000);
+  return { writes, runs, indexes, hours };
 }
 
 /** The live runs of processes that no longer exist, as the UI's server already drops them. */
