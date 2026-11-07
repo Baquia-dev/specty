@@ -2,24 +2,24 @@
   "schema": 1,
   "id": "20261107-la-pagina-guarda-los-ajustes-con-el-dialogo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261107-la-pagina-guarda-los-ajustes-con-el-dialogo",
   "baseCommit": "9183447eaa311a331341561a5c135a75de5a6508",
-  "revision": 2,
+  "revision": 4,
   "approved": {
-    "revision": 2,
-    "hash": "sha256:442e25bafd680b9478d9932df69b54a4d57163201273d4deb696c6609e537585",
-    "at": "2026-11-07T04:29:33.955Z",
+    "revision": 4,
+    "hash": "sha256:1b0bbce9c529aa4813b07c8a63a6f35ebe4d25efcaf0aff1e744ec32834ec25a",
+    "at": "2026-11-07T05:06:15.109Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "L",
-    "score": 14,
+    "score": 15,
     "adjust": 0,
     "reasons": [
       "13 archivos",
-      "4 tareas"
+      "5 tareas"
     ]
   },
   "items": {
@@ -82,12 +82,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e822b0c6118b5fc52c57f55e7e1c87b1b95824a0",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:50:36.796Z",
       "doneAt": "2026-11-07T04:53:04.944Z",
-      "summary": "«Revisar y guardar» abre save-dialog.ts con cada cambio de la comprobación, «Antes» solo si se quita algo, avisos de comando y permisos con confirmación aparte, y guarda; docs/ui.md describe la edición"
+      "summary": "«Revisar y guardar» abre save-dialog.ts con cada cambio de la comprobación, «Antes» solo si se quita algo, avisos de comando y permisos con confirmación aparte, y guarda; docs/ui.md describe la edición",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -97,7 +97,7 @@
   "maxIds": {
     "A": 7,
     "AC": 11,
-    "T": 4,
+    "T": 5,
     "R": 4
   },
   "lockedTests": {
