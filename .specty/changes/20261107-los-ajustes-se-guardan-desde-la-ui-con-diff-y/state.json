@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "20261107-los-ajustes-se-guardan-desde-la-ui-con-diff-y",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-los-ajustes-se-guardan-desde-la-ui-con-diff-y",
+  "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:65ae78564d6d30b787441ee540e41474295ebe558a25bfd61b9a1d93d5e250df",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f1983d8314b71e7ff167bac4f5de4f70f9293538f1aab6cf32ca0a83a2b6fdf1",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:ccf89af425a4a8f372b2abd825a1ca218de4063039393775d0fa52b076401a05",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:7c72d6c4958ec15508197735deb933ace2a9eca41acfa6484585d63a8e691131",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:dd1ee899a6aa634c3e70d65f30c495bc29f152851f78388749071554f6b3ad6a",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:7f009e36bf12342e7cb276005eb0c6a4cefd39f80eabfe57a21eca718e27ab04",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:11700cbc7c553b4032b3c0c496c257d66c0ef73aba989f3d334bd51826431949",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 6,
+    "T": 4,
+    "R": 4
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c37e995d7f3f4735a57ae52b845a463d87665ebd98ad0e102081d860d272d1ba",
+    "at": "2026-11-07T03:37:39.107Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
