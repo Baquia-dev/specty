@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable, type Type } from "@angular/core";
-import type { StatsView } from "@baquia-dev/specty-core";
-import type { SessionView } from "@baquia-dev/specty-core/light";
+import type { StatsChangesPage, StatsView } from "@baquia-dev/specty-core";
+import type { ConfigEdit, SessionView } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
 import {
@@ -17,7 +17,12 @@ import {
 import {
   actionEvent,
   answered,
+  configReason,
+  configRefusal,
   isChangeRecord,
+  isConfigCheck,
+  isConfigRecord,
+  isConfigSaved,
   isDelegation,
   isFinishedPage,
   isMemoryRecord,
@@ -26,6 +31,7 @@ import {
   isRun,
   isSessionList,
   isSliceChanges,
+  isStatsChangesPage,
   NO_DIFF,
   NO_SESSION,
   READ_ONLY,
@@ -36,10 +42,13 @@ import {
 } from "./server-answers";
 import type {
   ActionNote,
+  ConfigCheck,
   ConfigRecord,
+  ConfigSaved,
   FinishedPage,
   FinishedRequest,
   MemoryVerb,
+  StatsChangesParams,
   StatsParams,
 } from "./source";
 import { isStrings, isTrace, type TraceRecord } from "./trace";
@@ -122,6 +131,19 @@ export class ServerData extends SpectyData {
     const page: unknown = await response.json().catch(() => undefined);
     if (!isFinishedPage(page)) throw new ActionError(UNEXPECTED);
     return page;
+  }
+
+  /** A page of the panel's table of changes, found, sorted and cut by the server. */
+  override async statsChanges(params: StatsChangesParams): Promise<StatsChangesPage> {
+    const query = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) query.set(key, String(value));
+    }
+    const response = await fetch(`/api/stats/changes?${query}`);
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isStatsChangesPage(body)) throw new ActionError(UNEXPECTED);
+    return body;
   }
 
   override subscribe(listener: () => unknown): () => void {
@@ -211,11 +233,34 @@ export class ServerData extends SpectyData {
     return body;
   }
 
+  /** The configuration, with why it cannot be saved now in words. */
   override async config(): Promise<ConfigRecord> {
     const response = await fetch("/api/config");
     if (response.status === 403) throw new ActionError(NO_SESSION);
     const body: unknown = await response.json().catch(() => undefined);
     if (!response.ok || !isConfigRecord(body)) throw new ActionError(UNEXPECTED);
+    const { blocked, ...record } = body;
+    if (blocked === undefined) return record;
+    return { ...record, blocked: configReason(blocked.kind, blocked) ?? UNEXPECTED };
+  }
+
+  /** What the person's edits would leave: the server checks them and writes nothing. */
+  override async checkConfig(edits: readonly ConfigEdit[]): Promise<ConfigCheck> {
+    const response = await this.send("/api/config/check", { edits });
+    if (!response.ok) throw new ActionError(await refusal(response));
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!isConfigCheck(body)) throw new ActionError(UNEXPECTED);
+    return body;
+  }
+
+  /** The person's edits saved in a commit of their own, read again as after any decision. */
+  override async saveConfig(edits: readonly ConfigEdit[]): Promise<ConfigSaved> {
+    const response = await this.send("/api/config", { edits });
+    if (response.status === 409) throw new ActionError(await configRefusal(response));
+    if (!response.ok) throw new ActionError(await refusal(response));
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!isConfigSaved(body)) throw new ActionError(UNEXPECTED);
+    await this.reread();
     return body;
   }
 
@@ -382,15 +427,20 @@ export class ServerData extends SpectyData {
    * read again as on a `changes` event.
    */
   private async post(path: string, body: object): Promise<void> {
+    const response = await this.send(path, body);
+    if (!response.ok) throw new ActionError(await refusal(response));
+    await this.reread();
+  }
+
+  /** A request of the person's, with the CSRF token; refused as read only where they cannot decide. */
+  private async send(path: string, body: object): Promise<Response> {
     const { actions, csrf } = await this.serverSession();
     if (!actions || csrf === undefined) throw new ActionError(READ_ONLY);
-    const response = await fetch(path, {
+    return fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json", "X-Specty-CSRF": csrf },
       body: JSON.stringify(body),
     });
-    if (!response.ok) throw new ActionError(await refusal(response));
-    await this.reread();
   }
 
   /**
@@ -443,19 +493,6 @@ async function readRun(change: string): Promise<RunRecord | undefined> {
 export async function dataSource(page: Document): Promise<Type<SpectyData>> {
   if (page.querySelector(MARK) !== null) return ServerData;
   return (await import("./fixtures")).FixtureData;
-}
-
-/** `GET /api/config`'s answer: its defaults, its issues with their key and, if valid, its values. */
-function isConfigRecord(value: unknown): value is ConfigRecord {
-  const issue = (item: unknown) =>
-    isObject(item) && typeof item.path === "string" && typeof item.message === "string";
-  return (
-    isObject(value) &&
-    isObject(value.defaults) &&
-    (value.config === undefined || isObject(value.config)) &&
-    Array.isArray(value.issues) &&
-    value.issues.every(issue)
-  );
 }
 
 /** The figures the panel shows first (`StatsSummary`). */

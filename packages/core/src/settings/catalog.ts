@@ -42,8 +42,8 @@ export interface Setting {
   readonly kind: SettingKind;
   /** The values of a choice, in order. */
   readonly options?: readonly string[];
-  /** The unit of a number: seconds, minutes, hours or days. */
-  readonly unit?: "s" | "min" | "h" | "d";
+  /** The unit of a number: milliseconds, seconds, minutes, hours or days. */
+  readonly unit?: "ms" | "s" | "min" | "h" | "d";
   /** It changes what the agent may do without the person. */
   readonly permissions?: true;
   /** It runs a command of the project. */
@@ -65,19 +65,27 @@ export interface Setting {
 }
 
 /**
- * Section «Interno», execution and server: the priority of the verifications, the most Specty
- * reads of a command's output and the ports `specty ui` tries, which Specty kept fixed in its
- * code, as keys of `internal` (formats.md §6).
+ * Section «Interno», execution, server and hooks: the priority of the verifications, the most
+ * Specty reads of a command's output, the ports `specty ui` tries and the time of Antigravity's
+ * hooks, which Specty kept fixed in its code, as keys of `internal` (formats.md §6).
  */
 const INTERNAL_RUN: readonly Setting[] = [
   { key: "internal.exec.priority", section: "internal", kind: "number", new: true },
   { key: "internal.exec.maxOutputKiB", section: "internal", kind: "number", new: true },
   { key: "internal.server.portsTried", section: "internal", kind: "number", new: true },
+  {
+    key: "internal.hooks.antigravityTimeoutSec",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    new: true,
+  },
 ];
 
 /**
  * Section «Interno»: the parameters Specty kept fixed in its code, as keys of `internal`, and the
- * four lives of compliance, which stay fixed at 24 h with no key (formats.md §6).
+ * lives of compliance, fixed with no key: four at 24 h and the mark of `specty wait` at 30 s
+ * (formats.md §6).
  */
 const INTERNAL: readonly Setting[] = [
   {
@@ -88,6 +96,27 @@ const INTERNAL: readonly Setting[] = [
     new: true,
   },
   { key: "internal.waits.heartbeatSec", section: "internal", kind: "number", unit: "s", new: true },
+  {
+    key: "internal.waits.verifyIntervalMs",
+    section: "internal",
+    kind: "number",
+    unit: "ms",
+    new: true,
+  },
+  {
+    key: "internal.waits.waitIntervalMs",
+    section: "internal",
+    kind: "number",
+    unit: "ms",
+    new: true,
+  },
+  {
+    key: "internal.waits.queueStaleSec",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    new: true,
+  },
   { key: "internal.retries.landing", section: "internal", kind: "number", new: true },
   { key: "internal.retries.memory", section: "internal", kind: "number", new: true },
   { key: "internal.retries.gitConfig", section: "internal", kind: "number", new: true },
@@ -96,6 +125,13 @@ const INTERNAL: readonly Setting[] = [
     section: "internal",
     kind: "number",
     unit: "d",
+    new: true,
+  },
+  {
+    key: "internal.retention.indexHours",
+    section: "internal",
+    kind: "number",
+    unit: "h",
     new: true,
   },
   ...INTERNAL_RUN,
@@ -109,6 +145,14 @@ const INTERNAL: readonly Setting[] = [
       guarantee: true,
     }),
   ),
+  {
+    key: "guarantee.waitMarks",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    fixed: 30,
+    guarantee: true,
+  },
 ];
 
 /**
