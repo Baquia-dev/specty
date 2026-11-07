@@ -2,13 +2,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import type { StatsView } from "@baquia-dev/specty-core";
-import type { Lang } from "@baquia-dev/specty-core/light";
 import { LucideDynamicIcon } from "@lucide/angular";
 import { LineChart } from "../components/charts/line-chart";
 import { SectionDivider } from "../components/document";
 import { LucideCircleX } from "../components/icons";
 import { ShownText } from "../components/shown-text";
 import { Preferences } from "../theme/preferences";
+import { percent, shortDay } from "./dashboard-format";
 
 type Quality = NonNullable<StatsView["quality"]>;
 
@@ -124,11 +124,8 @@ export class DashboardQuality {
   });
 
   protected readonly percent = computed(() => {
-    const format = new Intl.NumberFormat(this.preferences.lang(), {
-      style: "percent",
-      maximumFractionDigits: 1,
-    });
-    return (value: number) => format.format(value);
+    const lang = this.preferences.lang();
+    return (value: number) => percent(value, lang, 1);
   });
 
   protected readonly figures = computed(() => {
@@ -185,12 +182,4 @@ export class DashboardQuality {
       text: t(`${failed} de ${total}`, `${failed} of ${total}`),
     }));
   });
-}
-
-/** A local day, YYYY-MM-DD, as «9 oct» or «Oct 9». */
-function shortDay(day: string, lang: Lang): string {
-  const [year = 0, month = 1, date = 1] = day.split("-").map(Number);
-  return new Intl.DateTimeFormat(lang, { day: "numeric", month: "short" }).format(
-    new Date(year, month - 1, date),
-  );
 }

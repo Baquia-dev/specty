@@ -5,6 +5,7 @@ import type { Lang } from "@baquia-dev/specty-core/light";
 import { type StatDelta, StatTile, type StatTrend } from "../components/charts/stat-tile";
 import { formatDuration } from "../data/progress";
 import { Preferences } from "../theme/preferences";
+import { percent, shortDay, usd } from "./dashboard-format";
 
 type Translate = (es: string, en: string) => string;
 
@@ -202,7 +203,7 @@ function shownValue(value: number, shape: Shape, lang: Lang): string {
     case "share":
       return percent(value, lang, 1);
     case "usd":
-      return new Intl.NumberFormat(lang, { style: "currency", currency: "USD" }).format(value);
+      return usd(value, lang);
     default:
       return new Intl.NumberFormat(lang).format(value);
   }
@@ -237,20 +238,6 @@ function noteOf(
     default:
       return undefined;
   }
-}
-
-function percent(value: number, lang: Lang, digits: number): string {
-  return new Intl.NumberFormat(lang, { style: "percent", maximumFractionDigits: digits }).format(
-    value,
-  );
-}
-
-/** A local day, YYYY-MM-DD, as «9 oct» or «Oct 9». */
-function shortDay(day: string, lang: Lang): string {
-  const [year = 0, month = 1, date = 1] = day.split("-").map(Number);
-  return new Intl.DateTimeFormat(lang, { day: "numeric", month: "short" }).format(
-    new Date(year, month - 1, date),
-  );
 }
 
 /**
