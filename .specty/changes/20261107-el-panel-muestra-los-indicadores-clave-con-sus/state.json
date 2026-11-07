@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-panel-muestra-los-indicadores-clave-con-sus",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-panel-muestra-los-indicadores-clave-con-sus",
   "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
   "revision": 1,
@@ -63,6 +63,10 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T04:35:23.397Z"
+  "lockedTests": {
+    "packages/ui/src/app/shell.test.ts": "sha256:77e3646ea710ca9648159c1d1428e27ebe8ab530babe4283fd279b1eda8e8488",
+    "packages/cli/test/server/stats.test.ts": "sha256:7b2a9ee66207174e188c3b7d8467e0dcde3c4d2a070db7863884ca281266bf9f",
+    "packages/core/test/stats/summary.test.ts": "sha256:a58de01d800a62978c4e6f3ccb24eb89ecb0e2eded3f571f8116147b6692fca9",
+    "packages/ui/src/dashboard/dashboard-page.test.ts": "sha256:b721618cb10172197f1939122d7f1a3787b7e7945e4b7f177b467066c1203377"
+  }
 }
