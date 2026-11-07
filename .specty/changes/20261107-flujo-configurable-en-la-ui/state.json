@@ -5,7 +5,14 @@
   "phase": "implementing",
   "branch": "specty/20261107-flujo-configurable-en-la-ui",
   "baseCommit": "101bef5b635c071e131ed1d20def1e680b80c254",
-  "revision": 2,
+  "revision": 3,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:4583327dfe50df38ceed7d65e5e47c7ea45da59c4edbdc8bb3bc69fc1e3c708f",
+    "at": "2026-11-07T03:36:47.886Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -40,8 +47,8 @@
       "decision": "confirmed"
     },
     "A7": {
-      "hash": "sha256:411c4f45f5804f44880361fbf22a6f9261f997e383a988c29c26abd463fc3296",
-      "decision": "confirmed"
+      "hash": "sha256:cf2d91dad91b0fcd51666b0057d4368b543a7f80c1557c6f2c3fd178499f1586",
+      "decision": "implicit"
     },
     "A8": {
       "hash": "sha256:386c6cd2680abeb037d7134318e96bc8c510242b1086881da16eaa2184ce0a32",
@@ -76,14 +83,7 @@
   "maxIds": {
     "A": 13,
     "AC": 26,
-    "C": 9,
+    "C": 11,
     "R": 5
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:88c01fc3dd0c495efb857f3958785ea7105e1d37e3de90eec8bfa30aa84c44d8",
-    "at": "2026-11-06T22:02:17.647Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
