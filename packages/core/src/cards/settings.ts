@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import type { SettingSection } from "../settings/catalog";
+import { WARNINGS_TEXTS } from "./settings-warnings";
 
 // What the page «Configuración» of `specty ui` says of each setting of the catalog
 // (`settings/catalog.ts`): its name and what it does, its section's name and its options' names.
@@ -23,8 +24,10 @@ const SECTIONS: Readonly<Record<SettingSection, Readonly<Record<Lang, string>>>>
   size: { es: "Tamaño y cortes", en: "Size and splitting" },
   lines: { es: "Líneas de código", en: "Lines of code" },
   checks: { es: "Verificaciones de calidad", en: "Quality checks" },
+  warnings: { es: "Avisos", en: "Warnings" },
   team: { es: "Equipo", en: "Team" },
   memory: { es: "Memoria", en: "Memory" },
+  usage: { es: "Consumo y sesiones", en: "Usage and sessions" },
   dev: { es: "Desarrollo", en: "Development" },
   ui: { es: "Interfaz", en: "Interface" },
   effort: { es: "Esfuerzo por herramienta", en: "Effort per tool" },
@@ -386,6 +389,7 @@ const TEXTS: Readonly<Record<string, Texts>> = {
     es: ["Glosario del dominio", "El archivo con los términos del proyecto."],
     en: ["Domain glossary", "The file with the project's terms."],
   },
+  ...WARNINGS_TEXTS,
   ...INTERNAL_TEXTS,
   ...INTERNAL_RUN_TEXTS,
 };

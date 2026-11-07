@@ -52,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "36f112b5ce273bd1f1818ba36477b8ec33b0433b",
+      "startedAt": "2026-11-07T04:25:05.385Z",
+      "doneAt": "2026-11-07T04:35:03.971Z",
+      "summary": "Claves usage y warnings en schema/warnings.ts reunidas por spread en config.ts; quality.ts suma los términos vagos y capas de la persona a los de Specty; secciones «Avisos» y «Consumo y sesiones» con cinco ajustes nuevos en el catálogo y sus textos en cards/settings-warnings.ts; formats.md §6"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

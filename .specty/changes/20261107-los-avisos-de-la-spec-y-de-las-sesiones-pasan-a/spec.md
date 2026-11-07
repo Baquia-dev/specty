@@ -80,7 +80,7 @@ Hoy el umbral del aviso de sesión nueva, el tiempo que Specty espera a ccusage,
 
 ## Tareas
 
-- [ ] T1: Las claves `usage` y `warnings` en el schema, los avisos de la spec que las usan y sus ajustes en el catálogo, con sus textos
+- [x] T1: Las claves `usage` y `warnings` en el schema, los avisos de la spec que las usan y sus ajustes en el catálogo, con sus textos
   - files: packages/core/src/schema/warnings.ts, packages/core/src/schema/config.ts, packages/core/src/validate/quality.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-warnings.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/catalog.test.ts, packages/core/test/validate/quality.test.ts, docs/formats.md
   - ac: AC4, AC5, AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts test/validate/quality.test.ts
