@@ -2,8 +2,8 @@
 import type { Lang } from "../i18n";
 
 // What the page «Configuración» says of the settings of sections «Avisos» and «Consumo y
-// sesiones» (`settings/catalog.ts`): the warnings of the spec and of the sessions. `settings.ts`
-// gathers them with the rest.
+// sesiones» (`settings/catalog.ts`): the warnings of the spec, of the content a task adds and of
+// the sessions. `settings.ts` gathers them with the rest.
 
 /** Each setting's `[name, description]` in each language, by its key. */
 export const WARNINGS_TEXTS: Readonly<
@@ -27,6 +27,16 @@ export const WARNINGS_TEXTS: Readonly<
     en: [
       "Horizontal layers",
       "Words or phrases that make a slice a technical layer, added to Specty's: an epic with a slice that has one in its title is not approved.",
+    ],
+  },
+  "warnings.risks": {
+    es: [
+      "Reglas de riesgo",
+      "Patrones que specty task done busca en las líneas que añade cada tarea, sumados a los de Specty, que siguen: cada regla con su texto (label), su expresión regular (pattern) y, si quieres, su CWE y las extensiones que mira. Se cambian en el archivo.",
+    ],
+    en: [
+      "Risk rules",
+      "Patterns specty task done looks for in the lines each task adds, added to Specty's, which stay: each rule with its text (label), its regular expression (pattern) and, optionally, its CWE and the extensions it looks at. They change in the file.",
     ],
   },
   "usage.freshSessionTokens": {

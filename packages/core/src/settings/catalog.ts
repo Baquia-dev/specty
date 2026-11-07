@@ -68,8 +68,9 @@ export interface Setting {
 
 /**
  * Section «Interno», execution, server and hooks: the priority of the verifications, the most
- * Specty reads of a command's output, the ports `specty ui` tries and the time of Antigravity's
- * hooks, which Specty kept fixed in its code, as keys of `internal` (formats.md §6).
+ * Specty reads of a command's output, the ports `specty ui` tries, the time of Antigravity's hooks
+ * and the limits of the UI's server, which Specty kept fixed in its code, as keys of `internal`
+ * (formats.md §6).
  */
 const INTERNAL_RUN: readonly Setting[] = [
   { key: "internal.exec.priority", section: "internal", kind: "number", new: true },
@@ -82,6 +83,24 @@ const INTERNAL_RUN: readonly Setting[] = [
     unit: "s",
     new: true,
   },
+  ...["changesEveryMs", "tasksEveryMs"].map(
+    (key): Setting => ({
+      key: `internal.server.${key}`,
+      section: "internal",
+      kind: "number",
+      unit: "ms",
+      new: true,
+    }),
+  ),
+  { key: "internal.server.runLines", section: "internal", kind: "number", new: true },
+  {
+    key: "internal.server.runEveryMs",
+    section: "internal",
+    kind: "number",
+    unit: "ms",
+    new: true,
+  },
+  { key: "internal.server.maxBodyKiB", section: "internal", kind: "number", new: true },
 ];
 
 /**
@@ -178,12 +197,14 @@ const INTERNAL: readonly Setting[] = [
 ];
 
 /**
- * Sections «Avisos» and «Consumo y sesiones»: the warnings of the spec and of the sessions, which
- * Specty kept fixed in its code, as keys of `warnings` and `usage` (formats.md §6).
+ * Sections «Avisos» and «Consumo y sesiones»: the warnings of the spec, of the content a task adds
+ * and of the sessions, which Specty kept fixed in its code, as keys of `warnings` and `usage`
+ * (formats.md §6). The person's risk rules are objects, so they change only in the file.
  */
 const WARNINGS: readonly Setting[] = [
   { key: "warnings.vagueTerms", section: "warnings", kind: "list", new: true },
   { key: "warnings.horizontalLayers", section: "warnings", kind: "list", new: true },
+  { key: "warnings.risks", section: "warnings", kind: "list", fileOnly: true, new: true },
 ];
 const USAGE: readonly Setting[] = [
   { key: "usage.freshSessionTokens", section: "usage", kind: "number", new: true },
