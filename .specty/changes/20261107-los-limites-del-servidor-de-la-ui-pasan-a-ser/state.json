@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-limites-del-servidor-de-la-ui-pasan-a-ser",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-los-limites-del-servidor-de-la-ui-pasan-a-ser",
   "baseCommit": "122b0f87b0dd21aa992fe015859351574e4588ec",
   "revision": 2,
@@ -64,12 +64,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "96d23ee593e00db2192faf85ebda4a1014834131",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:17:31.286Z",
       "doneAt": "2026-11-07T09:25:54.129Z",
-      "summary": "El servidor mira los cambios cada internal.server.changesEveryMs (salvo interval), lee las verificaciones de otros procesos cada tasksEveryMs y el cuerpo de una acción hasta maxBodyKiB."
+      "summary": "El servidor mira los cambios cada internal.server.changesEveryMs (salvo interval), lee las verificaciones de otros procesos cada tasksEveryMs y el cuerpo de una acción hasta maxBodyKiB.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b736df23b59ed212bc5bfd7e909d8eca2665f81e",
+      "startedAt": "2026-11-07T09:25:54.537Z",
+      "doneAt": "2026-11-07T09:32:58.394Z",
+      "summary": "formats.md §6 documenta las cinco claves de internal.server con su valor, sus límites y dónde rigen; ARCHITECTURE las nombra en los eventos, las verificaciones en vivo y las acciones."
     }
   },
   "pending": {

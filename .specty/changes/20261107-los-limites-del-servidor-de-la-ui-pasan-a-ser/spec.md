@@ -83,7 +83,7 @@ Hoy el servidor de `specty ui` tiene sus límites fijos en el código: mira los 
   - files: packages/cli/src/server/http.ts, packages/cli/src/server/watched-runs.ts, packages/cli/src/server/api.ts, packages/cli/test/server/internal-server.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/internal-server.test.ts && pnpm typecheck
-- [ ] T4: formats.md y ARCHITECTURE documentan las claves de `internal.server`
+- [x] T4: formats.md y ARCHITECTURE documentan las claves de `internal.server`
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC9
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/internal-server.test.ts
