@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "id": "20261107-las-reglas-de-riesgo-propias-se-suman-a-las-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-las-reglas-de-riesgo-propias-se-suman-a-las-de",
+  "baseCommit": "a491c1c0346190390d4f4344e1b40cf32aa3d417",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:703b6a857140808995e87552590e7f6fa9f93886f09c976d88f0234ddbbd271b",
+    "at": "2026-11-07T09:22:29.395Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cb7e0a1b193a480cb84e3816d9f505eea9b05313ff8f7f48d7f4f3616491c938",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f9ac37ff77e042c6a5266bb7e0ebb2686a73643de43967bb25ab168474681687",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:7f18c5863f08d6fecbb3e21e305ae451638216d79d1c1841a6db37aca6d802b8",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:be8919dd4a12bdaa9c2a3ec55af2deeecdf49b9081db0145de0d2dc0ae0fea28",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f398f4c14182ec2ebc0c44eb801f35024fb7579c9b796eec9b53eb6159119251",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "8717da8f08ae258a702ff6b77a6fda8fa57aa927",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:34:06.612Z",
+      "doneAt": "2026-11-07T09:41:08.499Z",
+      "summary": "warnings.risks en el schema; contentRisks suma las reglas de la persona como custom con su texto, que riskLabel da en la aceptación y las lecciones; el ajuste va en «Avisos» con «Nuevo», solo en el archivo; formats.md §6",
+      "scopeExtra": [
+        "packages/core/test/validate/quality.test.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "75e1a6d51954937924f1a199278af75a9dd649bf",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:41:09.020Z",
+      "doneAt": "2026-11-07T09:48:17.928Z",
+      "summary": "riskFindings pasa warnings.risks a contentRisks y task-views conserva el label de cada hallazgo, así que la tarjeta de aceptación, la nota de accept y las lecciones de la memoria dicen el texto de la persona; ARCHITECTURE §7",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "2d2249eb51be34a7d123d488d9472382e656a36b",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:48:18.310Z",
+      "doneAt": "2026-11-07T09:54:50.741Z",
+      "summary": "La vista de avisos de la aceptación en la UI pasa el label de la auditoría a riskLabel, así que muestra el texto de la regla de la persona en los dos idiomas; ui.md",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T09:55:22.241Z",
+  "lockedTests": {
+    "packages/cli/test/risk.test.ts": "sha256:6ca9a8f8d101c0c1f2c89bcb4cbc0f990fec7ed78bcdc0b903798658e3cd1f5d",
+    "packages/core/test/scope/risk.test.ts": "sha256:2c6049c47a2f0b86b9bf5c3743463f59fe241ac6d84a23438ca41b5d8449fb46",
+    "packages/core/test/settings/catalog.test.ts": "sha256:9f8e66afaaf4f48bfbd9b1e6e0cc5cd720a2362e3dd9292eea84021854ab282b",
+    "packages/ui/src/data/warnings.test.ts": "sha256:c4431711be37ba0d38d48a0d30ed9b5fbbd3f5407299bb6543c71e8ebd409c76"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ui.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/flow/risk.ts",
+      "packages/cli/src/flow/task-views.ts",
+      "packages/cli/test/risk.test.ts",
+      "packages/cli/test/wait-delegated.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/core/src/cards/acceptance.ts",
+      "packages/core/src/cards/risk-lessons.ts",
+      "packages/core/src/cards/settings-pieces.ts",
+      "packages/core/src/cards/settings-warnings.ts",
+      "packages/core/src/cards/subagents.ts",
+      "packages/core/src/cards/wait.ts",
+      "packages/core/src/flow/waiting.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/light.ts",
+      "packages/core/src/schema/checks.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/schema/warnings.ts",
+      "packages/core/src/scope/risk.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/settings/pieces.ts",
+      "packages/core/test/cards/idle-subagents.test.ts",
+      "packages/core/test/cards/wait.test.ts",
+      "packages/core/test/flow/waiting.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/scope/risk.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/pieces.test.ts",
+      "packages/core/test/validate/quality.test.ts",
+      "packages/ui/src/data/warnings.test.ts",
+      "packages/ui/src/data/warnings.ts",
+      "packages/ui/src/settings/flow-piece.test.ts",
+      "packages/ui/src/settings/flow-piece.ts",
+      "packages/ui/src/settings/settings-flow.test.ts",
+      "packages/ui/src/settings/settings-flow.ts",
+      "packages/ui/src/settings/settings-mode.test.ts",
+      "packages/ui/src/settings/settings-mode.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts"
+    ],
+    "at": "2026-11-07T10:49:13.226Z",
+    "resolved": {
+      "commit": "3a9974b",
+      "at": "2026-11-07T11:03:06.782Z"
+    }
+  }
+}

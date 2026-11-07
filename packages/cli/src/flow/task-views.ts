@@ -125,6 +125,7 @@ function findingsByTask(audit: Audit): ReadonlyMap<string, TaskFindings> {
                   rule: risk.rule,
                   ...(typeof risk.cwe === "string" ? { cwe: risk.cwe } : {}),
                   ...(typeof risk.line === "number" ? { line: risk.line } : {}),
+                  ...(typeof risk.label === "string" ? { label: risk.label } : {}),
                 },
               ]
             : [],

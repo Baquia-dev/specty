@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
+import type { CustomRiskRule } from "../schema/warnings";
 import { isTestFile } from "./tests";
 
 /**
  * Known risky content in what a task adds: a small catalog of one-line patterns, tagged with
  * their CWE, plus files that become executable and paths of payments, webhooks or security.
+ * The person's rules (`warnings.risks`) are added to them as `custom`, with their own text.
  * They are warnings for the person, so a pattern errs on the side of warning.
  */
 
@@ -20,7 +22,8 @@ export type RiskRule =
   | "secret"
   | "html-unescaped"
   | "executable"
-  | "risky-path";
+  | "risky-path"
+  | "custom";
 
 export interface RiskFinding {
   readonly path: string;
@@ -28,14 +31,19 @@ export interface RiskFinding {
   readonly cwe?: string;
   /** The line in the new version of the file, for content rules. */
   readonly line?: number;
+  /** What a rule of the person says, as the person wrote it. */
+  readonly label?: string;
 }
 
 interface ContentRule {
   readonly rule: RiskRule;
-  readonly cwe: string;
+  /** Every rule of Specty's catalog has one; a rule of the person, only if it says so. */
+  readonly cwe?: string;
   readonly pattern: RegExp;
-  /** File extensions it applies to; all, when absent. */
+  /** File extensions it applies to, in lowercase; all, when absent. */
   readonly extensions?: readonly string[];
+  /** What a rule of the person says. */
+  readonly label?: string;
 }
 
 const CONTENT: readonly ContentRule[] = [
@@ -108,6 +116,7 @@ const LABELS: Readonly<Record<RiskRule, readonly [string, string]>> = {
     "está en una ruta de pagos, webhooks o seguridad",
     "is in a payments, webhooks or security path",
   ],
+  custom: ["coincide con una regla de riesgo del proyecto", "matches a risk rule of the project"],
 };
 
 /** True for a rule of the catalog, such as one read back from the audit. */
@@ -115,7 +124,9 @@ export function isRiskRule(value: unknown): value is RiskRule {
   return typeof value === "string" && Object.hasOwn(LABELS, value);
 }
 
-export function riskLabel(rule: RiskRule, lang: Lang): string {
+/** What a rule says in `lang`; for a rule of the person, its `label`, the same in both. */
+export function riskLabel(rule: RiskRule, lang: Lang, label?: string): string {
+  if (label !== undefined) return label;
   const [es, en] = LABELS[rule];
   return lang === "es" ? es : en;
 }
@@ -126,20 +137,48 @@ interface FileDiff {
   readonly added: readonly { readonly line: number; readonly text: string }[];
 }
 
-/** The risks in what a unified `git diff -U0` adds, sorted by file and line; tests are skipped. */
-export function contentRisks(diff: string): readonly RiskFinding[] {
+/**
+ * The risks in what a unified `git diff -U0` adds, sorted by file and line; tests are skipped.
+ * On each line, Specty's come first and then those of the person's rules, `custom`.
+ */
+export function contentRisks(
+  diff: string,
+  custom: readonly CustomRiskRule[] = [],
+): readonly RiskFinding[] {
+  const rules = [...CONTENT, ...custom.map(compiled)];
   return filesOf(diff)
     .filter((file) => !isTestFile(file.path))
     .flatMap((file) => [
       ...(file.executable ? [{ path: file.path, rule: "executable" as const }] : []),
       ...(isRiskyPath(file.path) ? [{ path: file.path, rule: "risky-path" as const }] : []),
       ...file.added.flatMap(({ line, text }) =>
-        CONTENT.filter((rule) => applies(rule, file.path) && rule.pattern.test(text)).map(
-          (rule): RiskFinding => ({ path: file.path, line, rule: rule.rule, cwe: rule.cwe }),
-        ),
+        rules
+          .filter((rule) => applies(rule, file.path) && rule.pattern.test(text))
+          .map(
+            (rule): RiskFinding => ({
+              path: file.path,
+              line,
+              rule: rule.rule,
+              ...(rule.cwe === undefined ? {} : { cwe: rule.cwe }),
+              ...(rule.label === undefined ? {} : { label: rule.label }),
+            }),
+          ),
       ),
     ])
     .toSorted((a, b) => a.path.localeCompare(b.path) || (a.line ?? 0) - (b.line ?? 0));
+}
+
+/** A rule of the person as one of the catalog: its pattern compiled, extensions in lowercase. */
+function compiled(rule: CustomRiskRule): ContentRule {
+  return {
+    rule: "custom",
+    pattern: new RegExp(rule.pattern),
+    label: rule.label,
+    ...(rule.cwe === undefined ? {} : { cwe: rule.cwe }),
+    ...(rule.extensions === undefined
+      ? {}
+      : { extensions: rule.extensions.map((extension) => extension.toLowerCase()) }),
+  };
 }
 
 function filesOf(diff: string): FileDiff[] {

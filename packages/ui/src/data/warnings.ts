@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // What `specty task done` warned about each task, as `task.completed` keeps it: risky patterns in
-// what the task added, and assertions it removed from tests that already existed. Pure; it runs
-// in the worker, so the screens get each text in both languages.
+// what the task added, Specty's and the person's (`warnings.risks`, with their own text), and
+// assertions it removed from tests that already existed. Pure; it runs in the worker, so the
+// screens get each text in both languages.
 import { isRiskRule, riskLabel } from "@baquia-dev/specty-core";
 import type { AuditRecord } from "./progress";
 import type { WarningView } from "./records";
@@ -17,6 +18,7 @@ export function warningsOf(audit: readonly AuditRecord[]): readonly WarningView[
     ...listOf(entry.data.risks).flatMap((risk): WarningView[] => {
       const { path, rule, cwe, line } = risk;
       if (typeof path !== "string" || !isRiskRule(rule)) return [];
+      const label = typeof risk.label === "string" ? risk.label : undefined;
       return [
         {
           task,
@@ -24,7 +26,7 @@ export function warningsOf(audit: readonly AuditRecord[]): readonly WarningView[
           path,
           ...(typeof line === "number" ? { line } : {}),
           ...(typeof cwe === "string" ? { cwe } : {}),
-          text: { es: riskLabel(rule, "es"), en: riskLabel(rule, "en") },
+          text: { es: riskLabel(rule, "es", label), en: riskLabel(rule, "en", label) },
         },
       ];
     }),
