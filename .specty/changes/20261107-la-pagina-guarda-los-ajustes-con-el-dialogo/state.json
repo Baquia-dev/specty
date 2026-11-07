@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-pagina-guarda-los-ajustes-con-el-dialogo",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-la-pagina-guarda-los-ajustes-con-el-dialogo",
   "baseCommit": "9183447eaa311a331341561a5c135a75de5a6508",
   "revision": 2,
@@ -63,6 +63,11 @@
     "T": 4,
     "R": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T04:39:13.567Z"
+  "lockedTests": {
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:859c05b53232d31f3617f018f81413d37fa2d907311fd88300bc8ce509941fb1",
+    "packages/ui/src/data/server-config.test.ts": "sha256:e501715fa11183ccb15f625de642e17bc754b5c43e282e2c6feb567fb7fed863",
+    "packages/ui/src/settings/settings-controls.test.ts": "sha256:09b641dea5e4086ab63188bb064130f197360a1110ef27d0c6cce0fd44088067",
+    "packages/ui/src/settings/settings-edit.test.ts": "sha256:656150e1cf52d00d835b881a5f71540a519d29dd66f156339144ec72176b4437",
+    "packages/ui/src/settings/settings-save.test.ts": "sha256:806b85d62d0869c53f39371d1672f765b3234777b7f0a7c41ccf1936146e003a"
+  }
 }
