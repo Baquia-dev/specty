@@ -78,3 +78,24 @@ Los seis indicadores del «Panel» de `specty ui` dan hoy su valor y su variaci�
 
 - R1: jsdom no calcula la geometría. Mitigación: los tests miran la estructura, las posiciones calculadas, el foco, la información emergente y los nombres accesibles, y antes de aceptar se mira el panel en el navegador con los datos de este repositorio.
 - R2: Con 45 días, cada tramo de la minigráfica mide unos 4 px de ancho con el puntero. Mitigación: el teclado recorre cada tramo, y la tabla de la fila da todos los valores.
+
+## Cierre
+
+### Resumen
+
+Los seis indicadores del «Panel» llevan su minigráfica (P350, A8 de la épica `20261107-panel-de-specty`). El core añade `trend` a `StatsView`: los seis indicadores en cada día o semana de «Ritmo», contados con la misma función que el periodo (`countsOf`), así que `GET /api/stats` y `specty stats --json` lo llevan sin tocar el servidor. La UI tiene el componente `sp-stat-tile` (`components/charts/stat-tile.ts`), con la etiqueta, el valor, la variación y la nota de antes. Debajo lleva una línea de 2 px que se corta en los huecos y marca el último valor y los sueltos. Tiene cursor, información emergente encima y teclado como `sp-line-chart`. «Ver tabla», bajo la fila, abre los seis indicadores por día o semana. El catálogo «Gráficas» muestra sus cuatro estados. Se comprobó en el navegador con la UI y el CLI construidos desde esta carpeta y los datos de este repositorio (30 días, en claro, en oscuro y a 390 px): las seis minigráficas, la información emergente y la tabla.
+
+### Desviaciones
+
+- Ninguna en el alcance ni en los archivos. El título inglés de la sección del catálogo es «Figure with sparkline», el término habitual en inglés.
+
+### Decisiones
+
+- El tipo de `trend` va escrito dentro de `StatsView`, sin exportarse del índice, como las demás secciones que la UI toma de `StatsView`.
+- La minigráfica dibuja en SVG con `preserveAspectRatio="none"` y trazos `non-scaling-stroke` para ocupar el ancho del indicador con 36 px fijos de alto. Los puntos son `span` situados en %, para que no se deformen.
+- Sin ningún valor, la minigráfica deja su espacio vacío y no ofrece tramos que recorrer. Con todos los valores iguales, la línea va por el medio.
+- `dashboard-summary.ts` copia `shortDay` una vez más; su limpieza sigue en P327 y P342, fuera de alcance.
+
+### Pendientes
+
+- Ninguno nuevo.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-los-indicadores-del-panel-llevan-su-minigrafica",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-los-indicadores-del-panel-llevan-su-minigrafica",
   "baseCommit": "bbc77876ac9692c275f8142a0c75b30b956c6ded",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c76a0c758def8e3d34fdc6f97ed9601c459acc75f1f1755d3514156dadcd129c",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8344c8bf20adbccdb5cd770ed56117d48f10cd75",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:19:09.036Z",
       "doneAt": "2026-11-07T16:20:18.071Z",
-      "summary": "dashboard-summary pinta cada indicador con sp-stat-tile y su serie de trend (por día o semana), y «Ver tabla» bajo la fila abre los seis indicadores por tramo; docs/ui.md lo cuenta."
+      "summary": "dashboard-summary pinta cada indicador con sp-stat-tile y su serie de trend (por día o semana), y «Ver tabla» bajo la fila abre los seis indicadores por tramo; docs/ui.md lo cuenta.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,10 +83,72 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-07T16:25:27.773Z",
   "lockedTests": {
     "packages/ui/src/catalog/catalog.test.ts": "sha256:add69e66eae85fb9fb41a10c41ebaf8a9854f1da0ab02db550030801b1ae5e0a",
     "packages/core/test/stats/trend.test.ts": "sha256:00c98ad01e8baf83817f6017d4e24d70671ff077a529ca89aa597011846a8fc3",
     "packages/ui/src/components/charts/stat-tile.test.ts": "sha256:4fc2328226eaa67771f488dae6ec5be86269aed36e504ce08068c86ebd1957d5",
     "packages/ui/src/dashboard/dashboard-summary.test.ts": "sha256:daf45a78bcfc8082e577998aa8b4524483afe37a4f21d4be96af9c697e1c5c3c"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ui.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/checks.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/check.ts",
+      "packages/cli/src/flow/closing-turn.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/test/closing-ahead.test.ts",
+      "packages/cli/test/server/records.test.ts",
+      "packages/cli/test/server/stats-export.test.ts",
+      "packages/cli/test/task-check.test.ts",
+      "packages/core/src/cards/acceptance.ts",
+      "packages/core/src/cards/settings-pieces.ts",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/flow/machine.ts",
+      "packages/core/src/schema/checks.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/flow.ts",
+      "packages/core/src/schema/task-done.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/settings/pieces.ts",
+      "packages/core/src/stats/export.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/core/test/closing-ahead.test.ts",
+      "packages/core/test/schema/task-done.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/pieces.test.ts",
+      "packages/core/test/settings/task-done.test.ts",
+      "packages/core/test/stats/export.test.ts",
+      "packages/core/test/stats/trend.test.ts",
+      "packages/ui/src/acceptance/acceptance-actions.test.ts",
+      "packages/ui/src/acceptance/result-dialogs.ts",
+      "packages/ui/src/catalog/catalog.test.ts",
+      "packages/ui/src/catalog/charts.ts",
+      "packages/ui/src/components/charts/stat-tile.test.ts",
+      "packages/ui/src/components/charts/stat-tile.ts",
+      "packages/ui/src/dashboard/dashboard-summary.test.ts",
+      "packages/ui/src/dashboard/dashboard-summary.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/views.test.ts",
+      "packages/ui/src/data/views.ts",
+      "packages/ui/src/settings/flow-piece.test.ts",
+      "packages/ui/src/settings/settings-flow.test.ts"
+    ],
+    "at": "2026-11-07T16:35:28.225Z",
+    "resolved": {
+      "commit": "3f5d2fa",
+      "at": "2026-11-07T16:44:27.719Z"
+    }
   }
 }
