@@ -57,7 +57,7 @@ Desde P258, `specty adjust` también se pide mientras se implementa, para correg
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/adjust.test.ts test/validate/phase.test.ts
   - type: fix
-- [ ] T2: La CLI pasa a la tarjeta el ajuste de las tareas pendientes, y la descripción MCP nombra las dos fases
+- [x] T2: La CLI pasa a la tarjeta el ajuste de las tareas pendientes, y la descripción MCP nombra las dos fases
   - files: packages/cli/src/flow/views.ts, packages/cli/src/mcp/tools.ts, packages/cli/test/epic-adjust.test.ts, packages/cli/test/mcp.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-adjust.test.ts test/mcp.test.ts && pnpm typecheck && pnpm lint
