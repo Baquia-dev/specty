@@ -240,6 +240,7 @@ describe("the settings' catalog", () => {
       }),
       expect.objectContaining({ key: "internal.retries.landing", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.exec.priority", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.exec.maxOutputKiB", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.server.portsTried", kind: "number", new: true }),
     ]);
     expect(
@@ -271,7 +272,7 @@ describe("the settings' catalog", () => {
 
   it("AC5, AC7: says why each guarantee does not change, and names the internal settings in Spanish and in English", () => {
     const internal = SETTINGS.filter((setting) => setting.section === "internal");
-    expect(internal).toHaveLength(9);
+    expect(internal).toHaveLength(10);
     for (const setting of internal) {
       const es = settingText(setting.key, "es");
       const en = settingText(setting.key, "en");
@@ -352,6 +353,57 @@ describe("the internal keys of execution and of the server", () => {
     }
     expect(issuesOf({ exec: { nice: 5 } })).toEqual(["internal.exec"]);
     expect(issuesOf({ server: { port: 5 } })).toEqual(["internal.server"]);
+  });
+});
+
+describe("the most of a command's output Specty reads", () => {
+  const KEY = "internal.exec.maxOutputKiB";
+  const issuesOf = (maxOutputKiB: unknown) => {
+    const result = resolveConfig({ version: 1, internal: { exec: { maxOutputKiB } } });
+    return result.ok ? [] : result.issues.map((issue) => issue.path);
+  };
+
+  it("AC4: is 512 KiB without the key, takes a whole number from 64 to 16384 and refuses anything else by its key", () => {
+    expect(DEFAULT_CONFIG.internal.exec.maxOutputKiB).toBe(512);
+    expect(resolveConfig({ version: 1 })).toMatchObject({
+      ok: true,
+      config: { internal: { exec: { maxOutputKiB: 512, priority: 10 } } },
+    });
+    expect(resolveConfig({ version: 1, internal: { exec: { maxOutputKiB: 64 } } })).toMatchObject({
+      ok: true,
+      config: { internal: { exec: { maxOutputKiB: 64, priority: 10 } } },
+    });
+    for (const valid of [64, 1024, 16384]) expect(issuesOf(valid), String(valid)).toEqual([]);
+    for (const invalid of [63, 0, -1, 16385, 100.5, "512"]) {
+      expect(issuesOf(invalid), String(invalid)).toEqual([KEY]);
+    }
+  });
+
+  it("AC5: shows in «Interno», the last section, as a new number after the verifications' priority", () => {
+    expect(SETTING_SECTIONS.at(-1)).toBe("internal");
+    const internal = SETTINGS.filter((setting) => setting.section === "internal");
+    expect(SETTINGS.slice(-internal.length)).toEqual(internal);
+    expect(internal.find((setting) => setting.key === KEY)).toEqual({
+      key: KEY,
+      section: "internal",
+      kind: "number",
+      new: true,
+    });
+    const keys = internal.map((setting) => setting.key);
+    expect(keys.indexOf(KEY)).toBe(keys.indexOf("internal.exec.priority") + 1);
+    expect(schemaAt(KEY)).toBeDefined();
+  });
+
+  it("AC6: names it and says what it does in Spanish and in English", () => {
+    const es = settingText(KEY, "es");
+    const en = settingText(KEY, "en");
+    for (const text of [es, en]) {
+      expect(text.name).not.toBe(KEY);
+      expect(text.description).toContain("KiB");
+      expect(text.description).toMatch(/64.*16384/);
+    }
+    expect(es.name).not.toBe(en.name);
+    expect(es.description).not.toBe(en.description);
   });
 });
 

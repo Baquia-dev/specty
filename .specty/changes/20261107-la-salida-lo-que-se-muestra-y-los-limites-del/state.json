@@ -6,6 +6,13 @@
   "branch": "specty/20261107-la-salida-lo-que-se-muestra-y-los-limites-del",
   "baseCommit": "b86197436485e8d85b86ad14e6a72becfa16bb2e",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:86cb4c2dba8816c0df54626fd5800a0e2fa6f9f86507ba52155436a74a63b344",
+    "at": "2026-11-07T04:38:29.101Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -44,12 +51,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:86cb4c2dba8816c0df54626fd5800a0e2fa6f9f86507ba52155436a74a63b344",
-    "at": "2026-11-07T04:38:29.101Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T04:41:57.461Z"
 }
