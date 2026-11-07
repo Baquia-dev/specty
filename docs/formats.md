@@ -488,6 +488,12 @@ memory:                           # la memoria de Specty (ADR 0016)
 dev:
   ports: [4200, 5173]             # los puertos de desarrollo del proyecto en la carpeta principal; cada carpeta de cambio usa estos más su posición (§1, `ports.json`), y `new` y `next` se los dicen al agente; sin la clave: ninguno
 subagents: true                   # false: ni los cortes de una épica ni los cambios que pide el usuario van a subagentes, aunque su herramienta pueda
+internal:                         # ajustes internos: pueden dejar Specty sin funcionar; sin la clave, el valor de hoy
+  waits:
+    waitTimeoutSec: 3600          # cuánto espera `specty wait` sin `--timeout` (entre 60 y 3600 s); `--timeout` manda
+    heartbeatSec: 60              # separación máxima de su línea de latido donde la herramienta la necesita (entre 1 y 240 s)
+  retries:
+    landing: 2                    # veces más que `close` incorpora main y aterriza si main avanzó mientras aterrizaba (entre 0 y 10)
 ```
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
@@ -537,6 +543,10 @@ No las escribe: las añade la persona tras comprobar que entre todas ejecutan lo
 `specty init` escribe `verify.default` y `verify.full` con los comandos que detecta. Si el archivo ya existe, solo añade los que falten y la detección encuentre ahora (por ejemplo, tras el primer cambio de un repositorio vacío), insertando sus líneas al final de `verify` (o un bloque `verify` nuevo al final del archivo); nunca cambia un valor que ya está, y el resto del archivo, con sus comentarios, queda igual.
 
 La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y se puede sobrescribir con una clave `effort:` en este archivo.
+
+`internal` reúne parámetros que Specty tenía fijos en su código; son opcionales, con el valor de hoy por defecto, y quitar una clave lo devuelve. `internal.waits.waitTimeoutSec` (3600 por defecto, entre 60 y 3600) es cuánto espera `specty wait` sin `--timeout`, y su marca lo dice; no pasa de una hora porque es lo que aguantan todas las herramientas medidas. `internal.waits.heartbeatSec` (60, entre 1 y 240) es la separación máxima de la línea de latido que `specty wait` escribe en Gemini CLI; no pasa de 240 s porque Gemini CLI corta un comando callado a los 300 s. `internal.retries.landing` (2, entre 0 y 10) es cuántas veces más `close` incorpora main y aterriza cuando main avanzó mientras aterrizaba; con 0 no lo reintenta y dice que main no avanzó. Una clave fuera de sus límites, o una que no existe bajo `internal`, es un error de `config.yaml`.
+
+Las cuatro vidas que forman parte del cumplimiento no tienen clave: el validador rechaza cualquiera que se escriba para ellas, como clave desconocida, y siguen fijas en 24 h. Un recibo que viviera más dejaría colar un commit con un recibo viejo; un pendiente del guard que viviera más dejaría pasar un fin de turno con una marca vieja; una instantánea de shell que viviera menos se borraría antes del segundo hook de un comando largo, y el guard no sabría qué cambió; y una vinculación de sesión que viviera menos dejaría que la limpieza borrara la carpeta en la que trabaja una sesión. La página «Configuración» las muestra en «Interno» como garantías ([ui.md](ui.md)).
 
 La guía de las verificaciones, con lo que comprueba cada una, cómo se configura y cómo se desactiva, está en [checks.md](checks.md) y, en inglés, en [checks.en.md](checks.en.md). Lo que sigue es el detalle.
 

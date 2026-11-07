@@ -72,7 +72,7 @@ Hoy cuánto espera `specty wait`, cada cuánto escribe su línea de latido y cu�
 
 ## Tareas
 
-- [ ] T1: El bloque `internal` del schema y los ajustes internos del catálogo, con sus textos
+- [x] T1: El bloque `internal` del schema y los ajustes internos del catálogo, con sus textos
   - files: packages/core/src/schema/internal-waits.ts, packages/core/src/schema/config.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/schema/schema.test.ts, packages/core/test/settings/catalog.test.ts, docs/formats.md
   - ac: AC4, AC5, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts test/settings/catalog.test.ts
