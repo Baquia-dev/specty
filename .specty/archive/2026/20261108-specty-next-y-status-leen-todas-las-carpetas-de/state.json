@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-specty-next-y-status-leen-todas-las-carpetas-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-specty-next-y-status-leen-todas-las-carpetas-de",
   "baseCommit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:baa3d3dc267fc3a6b45a1903172e5d009dd224a29694d6a6f6c3a680b8dad931",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8313fb9bca4167874f3d460cf84588f9816de04e",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:18:24.281Z",
       "doneAt": "2026-11-07T17:19:05.518Z",
-      "summary": "ARCHITECTURE §10: Git.inWorktree, lo recordado compartido por generaciones y las cifras medidas (status 60 → 10 procesos en este repo; sintético 12/24/36 → 6 y next desde la principal 10/16/22 → 7)."
+      "summary": "ARCHITECTURE §10: Git.inWorktree, lo recordado compartido por generaciones y las cifras medidas (status 60 → 10 procesos en este repo; sintético 12/24/36 → 6 y next desde la principal 10/16/22 → 7).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,5 +68,6 @@
     "AC": 4,
     "T": 2,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-11-07T17:19:26.571Z"
 }

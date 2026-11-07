@@ -66,3 +66,24 @@ kind: standard
 
 - R1: Una carpeta cuyo archivo `.git` no sigue la forma habitual daría una ruta de `specty/` equivocada. Mitigación: AC2 compara con lo que responde git en la carpeta principal y en una worktree, y si el archivo no se lee se pregunta a git.
 - R2: Compartir lo recordado hace que un comando que escribe en una carpeta olvide también lo de las demás, y vuelvan a preguntar. Mitigación: es lo que pide el resultado con varias sesiones, y cuesta un `worktree list`, no uno por carpeta.
+
+## Cierre
+
+### Resumen
+
+`locateChanges` ya no abre un `Git` nuevo por carpeta: `Git.inWorktree(folder)` da uno que toma HEAD y la rama del `git worktree list --porcelain` del `Git` de la sesión, usa su misma lista de worktrees y su `common/`, y busca `specty/` en la carpeta de git que nombra el archivo `.git`. Comparte lo recordado con el de la sesión: `recall` olvida por generaciones, así que un comando que escribe en cualquiera de ellos, o `forget`, los olvida todos. Medido con `GIT_TRACE` en este repositorio (9 worktrees), `status` desde la carpeta de un cambio pasó de 60 procesos de git a 10 y de 1,35–1,76 s a 0,34–0,57 s, con la misma salida; `next` desde un cambio normal en `implementing` sigue en 5, porque no lee las demás carpetas. En el repositorio de los tests con 1, 3 y 5 carpetas de cambio, `status` pasó de 12, 24 y 36 procesos a 6, y `next` desde la carpeta principal, de 10, 16 y 22 a 7.
+
+### Desviaciones
+
+- `status` pide el listado de worktrees dos veces: la segunda, de nuevo, la pide `sweepableGhosts` para contar las carpetas fantasma, como ya hacía. AC1 se cumple en la lectura de las carpetas, y su test lo dice.
+- La medición en la carpeta principal de este repositorio no se hizo: el guard ata esta conversación a la carpeta del cambio. Se midió `next` desde la carpeta principal en el repositorio de los tests.
+- El `Git` de otra carpeta usa también la lista de worktrees del de la sesión, no solo su HEAD y su rama: sin eso, cada uno volvía a ejecutar `worktree list`.
+
+### Decisiones
+
+- Las respuestas que dependen de la carpeta (HEAD, la rama, la configuración, los `log`) siguen recordándose por `Git`; solo se comparte cuándo se olvidan. Compartir las respuestas mezclaría las de carpetas distintas.
+
+### Pendientes
+
+- `packages/cli/src/io/git.ts` tiene 375 líneas de código (aviso a partir de 300). Propuesta: sacar a un módulo propio las consultas que no arman el `Git` (`changeQueries`, `commitOperations`, `fileQueries`, `parseNameStatus` y `pathsOf`), y dejar en `git.ts` la apertura, el runner, `gitPaths` y el `Git` de otra carpeta.
+- Medir con `GIT_TRACE` `specty next` desde la carpeta principal de este repositorio con sus carpetas abiertas, que esta sesión no pudo.
