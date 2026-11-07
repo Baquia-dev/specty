@@ -31,7 +31,7 @@ Hoy solo se configura Specty editando `.specty/config.yaml` a mano: ninguna pant
   - impacto: medio
 - A6: Los perfiles son tres conjuntos de claves en core. Equilibrado son los valores por defecto. Ligero y Estricto cambian solo políticas y límites (`policy.tests`, niveles y umbrales de `checks`, `lines`, `split`), nunca comandos ni rutas. Su contenido exacto lo fija la spec de C4. La página marca el perfil cuyas claves coinciden con la configuración, o Propio si no coincide ninguno.
   - impacto: medio
-- A7: Las claves nuevas (C5 a C9, C11 y C12) van en módulos de schema propios, como `checks.ts` o `git.ts`, para que `schema/config.ts` (315 líneas) no crezca. Todas son opcionales. Sin ellas, Specty se comporta igual que hoy, con los mismos valores. Los internos van bajo una clave `internal`. Los nombres exactos los fijan la spec de cada corte y `docs/formats.md` §6.
+- A7: Las claves nuevas (C5 a C9 y C11 a C16) van en módulos de schema propios, como `checks.ts` o `git.ts`, para que `schema/config.ts` (315 líneas) no crezca. Todas son opcionales. Sin ellas, Specty se comporta igual que hoy, con los mismos valores. Los internos van bajo una clave `internal`. Los nombres exactos los fijan la spec de cada corte y `docs/formats.md` §6.
   - impacto: medio
 - A8: La clave `effort`, que hoy el schema acepta y nada lee, pasa a ser la tabla de esfuerzo por tamaño (`BY_LEVEL` de `sizing/effort.ts`) y la regla del esfuerzo de una tarea (C6). El modelo puede seguir subiéndolo, nunca bajarlo.
   - impacto: medio
@@ -80,7 +80,7 @@ Hoy solo se configura Specty editando `.specty/config.yaml` a mano: ninguna pant
 - Core: carpeta nueva `packages/core/src/settings/`, con `catalog.ts` (los ajustes y sus marcas), `pieces.ts` (las piezas de cada fase y las claves que las definen, garantías incluidas), `presets.ts` (C4) y `diff.ts` (los cambios entre dos configuraciones, para el diálogo). Los textos van en `packages/core/src/cards/settings*.ts`. Todo esto se exporta desde `light.ts` y desde `index.ts`. Las claves nuevas van en módulos de `packages/core/src/schema/`, como `flow.ts`, `sizing.ts`, `usage.ts`, `warnings.ts` e `internal.ts`.
 - CLI: `packages/cli/src/server/config.ts` sirve tres rutas. `GET /api/config` devuelve la entrada del archivo, los valores efectivos, los de por defecto, los errores, si se puede guardar y, si no, por qué. `POST /api/config/check` toma una entrada candidata y devuelve sus errores y su diff. `POST /api/config` guarda. El guardado va en `packages/cli/src/flow/config-save.ts`, que reutiliza el editor de `install/project-files.ts` y `commitWithReceipt`. `enforce/hook.ts` acepta el recibo `config`. Cada ruta va en `api.ts` (GET) y `actions.ts` (POST), con la puerta de las acciones de la persona.
 - UI: carpeta nueva `packages/ui/src/settings/`, con la estructura de `memory/`: página, barra de herramientas, estado en la URL y en el navegador, y sus tests junto a cada fuente. Tiene la ruta `/settings` («Specty · Configuración»), un enlace «Configuración» en el encabezado y el diálogo «Revisar y guardar», con el estilo de los diffs de la revisión. El hilo principal importa de `@baquia-dev/specty-core/light`.
-- C5 a C9, C11 y C12: cada parámetro fijo pasa a leer su valor de la configuración resuelta. Las funciones de core que hoy usan una constante lo reciben como parámetro, con el valor de hoy por defecto. Cada corte añade sus claves al catálogo con la marca «Nuevo».
+- C5 a C9 y C11 a C16: cada parámetro fijo pasa a leer su valor de la configuración resuelta. Las funciones de core que hoy usan una constante lo reciben como parámetro, con el valor de hoy por defecto. Cada corte añade sus claves al catálogo con la marca «Nuevo».
 
 ## Cortes
 
@@ -116,14 +116,26 @@ Hoy solo se configura Specty editando `.specty/config.yaml` a mano: ninguna pant
 - C11: El resto de esperas, bloqueos y retención pasan a ser ajustes internos
   - ac: AC22, AC25, AC26
   - depends: C8
-- C12: La salida, lo que se muestra y los límites del servidor pasan a ser ajustes internos
+- C12: La salida máxima de un comando pasa a ser un ajuste interno
   - ac: AC23, AC25, AC26
   - depends: C9
+- C13: Los límites del servidor de la UI pasan a ser ajustes internos
+  - ac: AC23, AC25, AC26
+  - depends: C12
+- C14: Los límites de lo que muestran las tarjetas pasan a ser ajustes internos
+  - ac: AC23, AC25, AC26
+  - depends: C12
+- C15: Los límites de lo que muestran los comandos y los checks pasan a ser ajustes internos
+  - ac: AC23, AC25, AC26
+  - depends: C12
+- C16: El tiempo del hook de Antigravity pasa a ser un ajuste interno
+  - ac: AC23, AC25, AC26
+  - depends: C12
 
 ## Riesgos
 
 - R1: Guardar desde la UI es una vía nueva para cambiar permisos, como `scope.autoApprove` o `policy.tests`. Mitigación: la misma puerta que aprobar (A4), una confirmación aparte para esos cambios y un commit con trailer que queda en el historial.
 - R2: Los ajustes internos permiten dejar Specty inservible, por ejemplo con esperas a cero o salidas mínimas. Mitigación: el schema pone mínimos, la sección «Interno» va plegada con un aviso y cada ajuste tiene «Restablecer».
 - R3: Los cambios en curso siguen con la configuración de su rama hasta que incorporan main. Mitigación: el diálogo lo dice al guardar, y `accept` ya valida `config.yaml` después de incorporar main.
-- R4: C8 y C9 tocan muchos archivos de la CLI. Si uno de esos cortes sale demasiado grande al proponerlo, se estrecha y se ajusta la épica antes de aprobarlo, como C4 de `20261107-verificacion-sin-repetir`. Así se dividió C2, que salió XL, en el servidor (C2) y la página (C10), lo que quedó fuera de C8 pasó a C11, y lo que quedó fuera de C9 pasó a C12.
+- R4: C8 y C9 tocan muchos archivos de la CLI. Si uno de esos cortes sale demasiado grande al proponerlo, se estrecha y se ajusta la épica antes de aprobarlo, como C4 de `20261107-verificacion-sin-repetir`. Así se dividió C2, que salió XL, en el servidor (C2) y la página (C10), lo que quedó fuera de C8 pasó a C11, lo que quedó fuera de C9 pasó a C12, y lo que quedó fuera de C12, que también salió XL, pasó a C13 a C16.
 - R5: Las piezas de C3 tienen que corresponder a claves reales. Si una pieza no tiene clave hasta C5, se muestra sin control hasta que ese corte la añada.
