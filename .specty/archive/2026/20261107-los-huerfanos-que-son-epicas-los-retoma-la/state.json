@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "id": "20261107-los-huerfanos-que-son-epicas-los-retoma-la",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-los-huerfanos-que-son-epicas-los-retoma-la",
+  "baseCommit": "9471f99e1616c92f3cce99674a3c812c73d4d0be",
+  "revision": 4,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:82d8e41e4dc1628fad0086cd64461148359b798a754dfac3b96ec1369bcfe693",
+    "at": "2026-11-07T00:08:59.747Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:955dd5f4b1e943ecf652380c11ea4e2b510ab88594b2b9d9b9c5654f71c231bd",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a281d337efec2b6bf9ddd294206c4887f0780f76562396c6ba1a07f7b149ee1b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b70a6c6513d06657a1efd280e21593c80cf3ee8c7ef6c480368bc3adb295cc81",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:af1e119550b6d95f5e828ea978679807f86d4c352cba27673c23eba064a366f5",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d8d3f64db60b971c484177fa732ff0df7d1ef3873be7569803c201411d86df83",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4c78b94b7daf14264375ecafea0a3b24b96dfea4",
+      "attempts": 1,
+      "startedAt": "2026-11-07T00:10:56.836Z",
+      "doneAt": "2026-11-07T00:12:23.217Z",
+      "summary": "tooLargeStep en cards/subagents.ts lo usan el encargo de un cambio nuevo y el de retomar; OrphanView gana kind, la épica huérfana sale marcada y, con subagentes, la retoma la sesión; el subagente y su encargo quedan para los demás",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "93caec394fb3c1df4cd2d50f2c06f3cd0e90ad6b",
+      "attempts": 1,
+      "startedAt": "2026-11-07T00:12:23.587Z",
+      "doneAt": "2026-11-07T02:32:21.523Z",
+      "summary": "orphanChanges pasa el kind de openChanges, así que next marca la épica huérfana y la deja a la sesión; ARCHITECTURE §7 y formats §6 lo cuentan; el test confirma los hooks con el repositorio (desbloqueo S1)",
+      "scopeExtra": [
+        "packages/cli/test/next-orphan-epic.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 2,
+    "R": 1,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-07T02:37:52.012Z",
+  "lockedTests": {
+    "packages/core/test/cards/orphans-subagents.test.ts": "sha256:199a6e22944e93d7a7234f23eb8be4f5550a7539fd359e6b4fb4cb4654a52b5d",
+    "packages/cli/test/next-orphan-epic.test.ts": "sha256:a176f5520a002e3025fd4c7d1ec708b21d96696aa76793ee80a501dbfeab63c6",
+    "packages/core/test/cards/orphans-epic.test.ts": "sha256:2b45c80f236b96f26d6ae5874b5edf3951bc2f125f1208b74d0518a3240c5a77"
+  }
+}

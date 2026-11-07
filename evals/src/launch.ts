@@ -6,7 +6,7 @@ import { spawn } from "node:child_process";
  * person can decide meanwhile, and gathers its output when it ends or its limit stops it.
  */
 
-export interface Finished {
+interface Finished {
   /** Its exit code; none when a signal ended it, as its limit does. */
   readonly status: number | null;
   readonly stdout: string;

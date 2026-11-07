@@ -1,0 +1,157 @@
+{
+  "schema": 1,
+  "id": "20261107-las-esperas-los-reintentos-y-la-retencion-pasan",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-las-esperas-los-reintentos-y-la-retencion-pasan",
+  "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9e195ddd52a017a4a294a46d6867fe76c0b0b9538893792126521864598a5eac",
+    "at": "2026-11-07T00:52:18.577Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2b7d5109c7fa5c77baf5349cc3f9c3e585eb1fe3a24ea62c652a48aea4db5f6f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4c0409404e30ca45929aab3db592649fd84c6f22fb32b7d5be820da5388e3545",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:2a5b36093f18c29a8567a121a50c022cb6a8ad9f7811ddd2a5f22ff1f6182a17",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:b8bf408b8346d2542b57a053fe6f110b064d997e41d3d3e0816d9951c9572660",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:6c0c2277610b959cfbd6b33b83a35ee30e7df1b4218cf3da2aea8bd1f45a804b",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:a10a3a9faf7c7ec2adddc9f35bd6cb57a2fa1c828c518dd71e0f9832699b2d91",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e25f8074a4ff12034a128eb7e19cb68582233848",
+      "attempts": 1,
+      "startedAt": "2026-11-07T02:50:12.855Z",
+      "doneAt": "2026-11-07T02:56:23.416Z",
+      "summary": "Bloque internal (internal-waits.ts) en el schema y ResolvedConfig con sus límites y valores de hoy; sección Interno del catálogo con los tres ajustes nuevos y las cuatro garantías (marca guarantee, fixed, unidad h); textos es/en; formats.md §6",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ac210b72d848019e845f19f5521a76337ff61e4f",
+      "attempts": 1,
+      "startedAt": "2026-11-07T02:56:23.746Z",
+      "doneAt": "2026-11-07T02:57:33.025Z",
+      "summary": "specty wait toma su espera sin --timeout y su latido de session.config.internal.waits, y close sus reintentos de aterrizaje de internal.retries.landing; ARCHITECTURE §… apunta a las claves",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "dc4b5f9f84577cd0cd68fecb77c67a51eeef8543",
+      "attempts": 1,
+      "startedAt": "2026-11-07T02:57:33.346Z",
+      "doneAt": "2026-11-07T02:59:52.713Z",
+      "summary": "Página Configuración: sección Interno la última con su aviso fuera del pliegue y sus filas en un sp-collapsible que se abre solo con búsqueda o filtro; marca Garantía (tono de cierre) y garantías con candado y 24 h, sin clave; docs/ui.md",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 8,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T03:00:15.012Z",
+  "lockedTests": {
+    "packages/cli/test/close-moved.test.ts": "sha256:0119f7e2e752e9eeddc98360af213f19f732bf23713e7dca23b37996c98d9dad",
+    "packages/cli/test/wait.test.ts": "sha256:053033a1e1d182695040d544d51add1be5773846c435693f0f53048230fc0441",
+    "packages/core/test/schema/schema.test.ts": "sha256:1e17ba6f6cc9a26287ccffb9fd95bfe89e84a2a791c77ad2df4c7eba3988ebf7",
+    "packages/core/test/settings/catalog.test.ts": "sha256:26a79ba0da013f736b5fcf21e4530c717dc9ce85286957c1b8cf8776972230af",
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:702b85e23852426bb2d58084259598f643f4fa19d3ae0a2495e3c1cf608da841"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "a57c033e5fa65a61ae2ab9912bcfb7003146869a",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/formats.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "evals/src/experiments.ts",
+      "evals/test/experiments.test.ts",
+      "evals/test/orphan.test.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/next.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/flow/duplicates.ts",
+      "packages/cli/src/flow/land.ts",
+      "packages/cli/src/flow/usage.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/mcp/tools.ts",
+      "packages/cli/src/session.ts",
+      "packages/cli/test/close-moved.test.ts",
+      "packages/cli/test/duplicates-subagent.test.ts",
+      "packages/cli/test/epic-adjust.test.ts",
+      "packages/cli/test/fresh-session.test.ts",
+      "packages/cli/test/front-start-codex.test.ts",
+      "packages/cli/test/front-start.test.ts",
+      "packages/cli/test/mcp.test.ts",
+      "packages/cli/test/next-orphan-epic.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/core/src/cards/idle.ts",
+      "packages/core/src/cards/rejoin.ts",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/cards/subagents.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/validate/phase.ts",
+      "packages/core/test/cards/adjust.test.ts",
+      "packages/core/test/cards/idle-subagents.test.ts",
+      "packages/core/test/cards/orphans-epic.test.ts",
+      "packages/core/test/cards/orphans-subagents.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/validate/phase.test.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts"
+    ],
+    "at": "2026-11-07T03:00:30.907Z",
+    "resolved": {
+      "commit": "36dd509",
+      "at": "2026-11-07T03:06:59.684Z"
+    }
+  }
+}

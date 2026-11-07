@@ -39,14 +39,19 @@ if (left > 0) {
 }
 `;
 
-/** A change ready to close whose full verification moves main `times` times once armed. */
-async function closingWhileMainMoves(times: number) {
+/**
+ * A change ready to close whose full verification moves main `times` times once armed, with
+ * `internal.retries.landing` set to `retries` when given.
+ */
+async function closingWhileMainMoves(times: number, retries?: number) {
   const script = join(await mkdtemp(join(tmpdir(), "specty-mover-")), "mover.js");
   await writeFile(script, MOVER);
   const full = `node "${script}" "$(git rev-parse --git-common-dir)"`;
   const { root, folder } = await inWorktree({
     ...FILES,
-    ".specty/config.yaml": `${CONFIG()}  full: ${JSON.stringify(full)}\n`,
+    ".specty/config.yaml": `${CONFIG()}  full: ${JSON.stringify(full)}\n${
+      retries === undefined ? "" : `internal:\n  retries:\n    landing: ${retries}\n`
+    }`,
   });
   await toClosing(folder);
   // Main moves on before the closing, so that it incorporates main and verifies it.
@@ -77,5 +82,22 @@ describe("closing while main moves", () => {
     expect(closed.out).toContain("main no avanzó");
     expect(closed.out).toContain("vuelve a ejecutar `specty close` para incorporarlo");
     expect(await read(root, ".git/arm")).toBe("7");
+  });
+
+  it("AC3: with `internal.retries.landing`, tries that many more times at most while main keeps moving, then says so", async () => {
+    const { root } = await closingWhileMainMoves(10, 1);
+    const closed = await cli(root, ["close", CHANGE], { terminal: person() });
+    expect(closed.out).toContain("main no avanzó");
+    expect(closed.out).toContain("vuelve a ejecutar `specty close` para incorporarlo");
+    expect(await read(root, ".git/arm")).toBe("8");
+  });
+
+  it("AC3: with `internal.retries.landing: 0`, does not incorporate main again when it moved, and says so", async () => {
+    const { root } = await closingWhileMainMoves(1, 0);
+    const closed = await cli(root, ["close", CHANGE], { terminal: person() });
+    expect(closed.out).toContain("main no avanzó");
+    expect(closed.out).toContain("vuelve a ejecutar `specty close` para incorporarlo");
+    expect(await read(root, ".git/arm")).toBe("0");
+    expect(git(root, "rev-parse", "main")).not.toBe(git(root, "rev-parse", BRANCH));
   });
 });

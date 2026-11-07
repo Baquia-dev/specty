@@ -3,8 +3,8 @@ import { GIT_FLOWS } from "../branches";
 import { LANGS } from "../i18n";
 
 // The settings the page «Configuración» of `specty ui` shows: each key of `.specty/config.yaml`
-// (formats.md §6) and delegated mode, which lives in the clone. Pure, for the UI's main thread;
-// their names and descriptions are in `cards/settings.ts`.
+// (formats.md §6), delegated mode, which lives in the clone, and Specty's guarantees, fixed with no
+// key. Pure, for the UI's main thread; their names and descriptions are in `cards/settings.ts`.
 
 /** The sections of the page, in its order. */
 export const SETTING_SECTIONS = [
@@ -22,6 +22,7 @@ export const SETTING_SECTIONS = [
   "ui",
   "effort",
   "glossary",
+  "internal",
 ] as const;
 
 export type SettingSection = (typeof SETTING_SECTIONS)[number];
@@ -39,8 +40,8 @@ export interface Setting {
   readonly kind: SettingKind;
   /** The values of a choice, in order. */
   readonly options?: readonly string[];
-  /** The unit of a number: seconds or minutes. */
-  readonly unit?: "s" | "min";
+  /** The unit of a number: seconds, minutes or hours. */
+  readonly unit?: "s" | "min" | "h";
   /** It changes what the agent may do without the person. */
   readonly permissions?: true;
   /** It runs a command of the project. */
@@ -51,7 +52,37 @@ export interface Setting {
   readonly soon?: true;
   /** A parameter Specty kept fixed in its code until it became a setting. */
   readonly new?: true;
+  /** A guarantee of Specty: fixed, with no key; its id is not a key of `config.yaml`. */
+  readonly guarantee?: true;
+  /** A guarantee's fixed value, in its `unit`. */
+  readonly fixed?: number;
 }
+
+/**
+ * Section «Interno»: the parameters Specty kept fixed in its code, as keys of `internal`, and the
+ * four lives of compliance, which stay fixed at 24 h with no key (formats.md §6).
+ */
+const INTERNAL: readonly Setting[] = [
+  {
+    key: "internal.waits.waitTimeoutSec",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    new: true,
+  },
+  { key: "internal.waits.heartbeatSec", section: "internal", kind: "number", unit: "s", new: true },
+  { key: "internal.retries.landing", section: "internal", kind: "number", new: true },
+  ...["receipts", "guardPending", "shellSnapshots", "sessions"].map(
+    (life): Setting => ({
+      key: `guarantee.${life}`,
+      section: "internal",
+      kind: "number",
+      unit: "h",
+      fixed: 24,
+      guarantee: true,
+    }),
+  ),
+];
 
 const TESTS_POLICIES = ["contract", "required", "recommended", "off"];
 
@@ -123,4 +154,5 @@ export const SETTINGS: readonly Setting[] = [
   { key: "ui.requireUserPresence", section: "ui", kind: "toggle", soon: true },
   { key: "effort", section: "effort", kind: "map", soon: true },
   { key: "glossary", section: "glossary", kind: "text" },
+  ...INTERNAL,
 ];
