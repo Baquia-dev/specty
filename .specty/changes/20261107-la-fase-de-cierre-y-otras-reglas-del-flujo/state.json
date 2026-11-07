@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261107-la-fase-de-cierre-y-otras-reglas-del-flujo",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-la-fase-de-cierre-y-otras-reglas-del-flujo",
+  "baseCommit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ddd7f35295be349785f15db7a3d7afc2718ded2e760fbd81ee362983ceda37f1",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:bcfebc66976fb3841c489592600744631e097d82db0b1f0165eeb99e833cf2b1",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:a4f32aa8371a47a88ff525d260ff345d87c394d0ec003b5e2f4bd695528444fa",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:28240d067cdd4eaa83a6226fc72233915c09ea1273822993a0fce654013382bd",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:8f12f33e83e03442dd82a2248744ebc730a42070cf40af195b8ec362f0e597e5",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:9b3600647f81873919f9cf60cf9f8489766b8c1f1f86f0baff4d3f0ddd7d10e1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 7,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:3a661febefa2f4412617eaafdf83c89a4f78f22277c21ffcbd4a414b79f8c603",
+    "at": "2026-11-07T10:51:47.707Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
