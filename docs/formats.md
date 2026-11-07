@@ -470,7 +470,7 @@ retro:
   mode: agent                     # agent | minimal
 git:
   branchPerChange: true
-  worktrees: true                 # cada cambio en su propia worktree (necesita branchPerChange)
+  worktrees: true                 # cada cambio en su propia worktree (necesita branchPerChange); sin ella, los cambios que pide el usuario no van a subagentes
   setup: "pnpm install --prefer-offline"  # prepara cada worktree nueva; false: nada; sin la clave: el comando del stack
   target: develop                 # rama de la que parten los cambios y a la que se incorporan; sin la clave: la principal
   flow: gitflow                   # specty | github | trunk | gitflow: cómo se nombran las ramas; sin la clave: specty/<id>
@@ -487,7 +487,7 @@ memory:                           # la memoria de Specty (ADR 0016)
   branch: specty-memory           # la rama de las entradas (§1): un nombre de rama válido fuera de `specty/`, donde van las de los cambios
 dev:
   ports: [4200, 5173]             # los puertos de desarrollo del proyecto en la carpeta principal; cada carpeta de cambio usa estos más su posición (§1, `ports.json`), y `new` y `next` se los dicen al agente; sin la clave: ninguno
-subagents: true                   # false: ni los cortes de una épica ni los cambios que pide el usuario van a subagentes, aunque su herramienta pueda
+subagents: true                   # false: ni los cortes de una épica ni los cambios que pide el usuario van a subagentes, aunque su herramienta pueda; sin una carpeta por cambio (git.worktrees o git.branchPerChange en false), los cambios que pide el usuario tampoco
 ```
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.

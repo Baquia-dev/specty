@@ -30,6 +30,12 @@ export interface CardContext {
    * the user asks for, out of subagents, even with a tool that can take them.
    */
   readonly subagents?: boolean;
+  /**
+   * `false`: `new` creates each change in the folder it runs in (`git.worktrees: false` or
+   * `git.branchPerChange: false`), so the changes the user asks for are not handed to subagents,
+   * whose change would have no folder to enter.
+   */
+  readonly changeFolders?: boolean;
 }
 
 export interface CriterionView {
