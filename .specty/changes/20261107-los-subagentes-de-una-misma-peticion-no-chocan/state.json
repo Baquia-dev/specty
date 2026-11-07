@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-los-subagentes-de-una-misma-peticion-no-chocan",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-los-subagentes-de-una-misma-peticion-no-chocan",
   "baseCommit": "6f9ec2b4b5622d9c8195f1e8ee7142ed12303fd1",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:53d3fa39b1c19c364b04d5a3cc3fa097406dd8645d00db64424bf33e01b351ca",
+    "at": "2026-11-07T00:50:02.588Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:53d3fa39b1c19c364b04d5a3cc3fa097406dd8645d00db64424bf33e01b351ca",
-    "at": "2026-11-07T00:50:02.588Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/duplicates-subagent.test.ts": "sha256:b858a2946e5da3d674dbe5ac03b04ec2cba6958e0ce5e1dc0312e25913c16591"
+  }
 }
