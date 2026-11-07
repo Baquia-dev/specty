@@ -16,7 +16,6 @@ import {
   SpectyData,
 } from "./records";
 import {
-  actionEvent,
   answered,
   configReason,
   configRefusal,
@@ -29,17 +28,16 @@ import {
   isMemoryRecord,
   isObject,
   isRecords,
-  isRun,
   isSessionList,
   isSliceChanges,
   NO_DIFF,
   NO_SESSION,
   READ_ONLY,
   refusal,
-  runEvent,
   tooLarge,
   UNEXPECTED,
 } from "./server-answers";
+import { ServerEvents } from "./server-events";
 import {
   fetchStats,
   fetchStatsChanges,
@@ -69,12 +67,6 @@ interface ServerSession {
   readonly csrf?: string;
 }
 
-type RunListener = (change: string, run: RunRecord | undefined) => void;
-type ActionListener = (told: ActionNote) => void;
-
-/** How long an action waits for the screens to read again before it ends anyway. */
-const REREAD_MS = 10_000;
-
 /**
  * The local server's data (`specty ui`): the changes of every worktree through `fetch`, read
  * again on each `changes` event, and the person's decisions as POSTs with the CSRF token. Page
@@ -84,10 +76,7 @@ const REREAD_MS = 10_000;
 export class ServerData extends SpectyData {
   private session: Promise<ServerSession> | undefined;
   /** One event stream for every subscriber: the Inbox, delegated mode, the runs and the actions. */
-  private events: EventSource | undefined;
-  private readonly listeners = new Set<() => unknown>();
-  private readonly runListeners = new Set<RunListener>();
-  private readonly actionListeners = new Set<ActionListener>();
+  private readonly events = new ServerEvents();
 
   override async changes(): Promise<readonly ChangeRecord[]> {
     const response = await fetch("/api/changes");
@@ -138,30 +127,17 @@ export class ServerData extends SpectyData {
   }
 
   override subscribe(listener: () => unknown): () => void {
-    return this.follow(this.listeners, listener);
+    return this.events.subscribe(listener);
   }
 
-  /**
-   * The full verification running in `change`: what it has so far, asked to the server, then
-   * every `run` event. An event that arrives before that answer is newer, so it wins.
-   */
+  /** What `/run` says of the verification running in `change`, then every `run` event. */
   override watchRun(change: string, listener: (run: RunRecord | undefined) => void): () => void {
-    let heard = false;
-    const told: RunListener = (id, run) => {
-      if (id !== change) return;
-      heard = true;
-      listener(run);
-    };
-    const stop = this.follow(this.runListeners, told);
-    void readRun(change).then((run) => {
-      if (!heard && this.runListeners.has(told)) listener(run);
-    });
-    return stop;
+    return this.events.watchRun(change, listener);
   }
 
   /** Every `action` event: what the server says of the person's actions as they go on. */
-  override watchActions(listener: ActionListener): () => void {
-    return this.follow(this.actionListeners, listener);
+  override watchActions(listener: (told: ActionNote) => void): () => void {
+    return this.events.watchActions(listener);
   }
 
   /** Read only when the agent started the server; without a session, why it has none. */
@@ -241,7 +217,7 @@ export class ServerData extends SpectyData {
     if (!response.ok) throw new ActionError(await refusal(response));
     const body: unknown = await response.json().catch(() => undefined);
     if (!isConfigSaved(body)) throw new ActionError(UNEXPECTED);
-    await this.reread();
+    await this.events.reread();
     return body;
   }
 
@@ -341,43 +317,6 @@ export class ServerData extends SpectyData {
     return fetchTestCode(change, path);
   }
 
-  /** Opens the event stream, once, for everyone who listens to it. */
-  private listen(): void {
-    if (this.events !== undefined) return;
-    this.events = new EventSource("/api/events");
-    this.events.addEventListener("changes", () => {
-      for (const heard of this.listeners) void heard();
-    });
-    this.events.addEventListener("run", (event: MessageEvent) => {
-      const told = runEvent(event.data);
-      if (told === undefined) return;
-      for (const heard of this.runListeners) heard(told.change, told.run);
-    });
-    this.events.addEventListener("action", (event: MessageEvent) => {
-      const told = actionEvent(event.data);
-      if (told === undefined) return;
-      for (const heard of this.actionListeners) heard(told);
-    });
-  }
-
-  /** Adds `listener` to `set` with the event stream open; its stop closes the stream if idle. */
-  private follow<T>(set: Set<T>, listener: T): () => void {
-    set.add(listener);
-    this.listen();
-    return () => {
-      set.delete(listener);
-      this.closeIfIdle();
-    };
-  }
-
-  /** Closes the event stream once nobody listens to it. */
-  private closeIfIdle(): void {
-    const listening = this.listeners.size + this.runListeners.size + this.actionListeners.size;
-    if (listening > 0) return;
-    this.events?.close();
-    this.events = undefined;
-  }
-
   /** One of the person's actions on a change. */
   private act(change: string, verb: string, body: object): Promise<void> {
     return this.post(`/api/changes/${encodeURIComponent(change)}/${verb}`, body);
@@ -390,7 +329,7 @@ export class ServerData extends SpectyData {
   private async post(path: string, body: object): Promise<void> {
     const response = await this.send(path, body);
     if (!response.ok) throw new ActionError(await refusal(response));
-    await this.reread();
+    await this.events.reread();
   }
 
   /** A request of the person's, with the CSRF token; refused as read only where they cannot decide. */
@@ -402,20 +341,6 @@ export class ServerData extends SpectyData {
       headers: { "Content-Type": "application/json", "X-Specty-CSRF": csrf },
       body: JSON.stringify(body),
     });
-  }
-
-  /**
-   * Has every listener read again and waits for them, `REREAD_MS` at most: past that, the next
-   * `changes` event brings the rest. One that fails does not undo what the server already did.
-   */
-  private async reread(): Promise<void> {
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const late = new Promise<void>((done) => {
-      timer = setTimeout(done, REREAD_MS);
-    });
-    const heard = Promise.allSettled([...this.listeners].map(async (listener) => listener()));
-    await Promise.race([heard, late]);
-    clearTimeout(timer);
   }
 
   /** The server's session, asked once; a failed ask is asked again next time. */
@@ -435,16 +360,6 @@ async function readSession(): Promise<ServerSession> {
   if (!response.ok || !isObject(body) || typeof body.actions !== "boolean")
     throw new ActionError(UNEXPECTED);
   return { actions: body.actions, ...(typeof body.csrf === "string" ? { csrf: body.csrf } : {}) };
-}
-
-/** The run going on in `change`, as the server has it; none if it cannot tell. */
-async function readRun(change: string): Promise<RunRecord | undefined> {
-  const response = await fetch(`/api/changes/${encodeURIComponent(change)}/run`).catch(
-    () => undefined,
-  );
-  if (response === undefined || !response.ok) return undefined;
-  const run: unknown = await response.json().catch(() => undefined);
-  return isRun(run) ? run : undefined;
 }
 
 /**

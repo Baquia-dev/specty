@@ -62,7 +62,7 @@ Limpieza de código de la UI sin cambios de comportamiento (P360). `data/server.
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server-trace.test.ts --include src/progress/tests-sent.test.ts --include src/progress/locked-tests.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: refactor
-- [ ] T3: El flujo de eventos pasa a `data/server-events.ts`
+- [x] T3: El flujo de eventos pasa a `data/server-events.ts`
   - files: packages/ui/src/data/server-events.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server-runs.test.ts --include src/data/in-flight.test.ts --include src/data/server.test.ts --include src/data/server-actions.test.ts --include src/data/server-config.test.ts && pnpm typecheck && pnpm lint && pnpm knip
