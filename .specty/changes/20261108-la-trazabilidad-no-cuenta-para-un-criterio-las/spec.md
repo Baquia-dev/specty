@@ -17,7 +17,7 @@ En aceptación, «CRITERIOS Y TESTS» (y `criteriaTests` del servidor, que es la
 
 ## Tareas
 
-- [ ] T1: La matriz de aceptación no cuenta las líneas de test que el cambio deja como estaban en main
+- [x] T1: La matriz de aceptación no cuenta las líneas de test que el cambio deja como estaban en main
   - files: packages/cli/src/check/files.ts, packages/cli/src/flow/criteria-tests.ts, packages/cli/test/criteria-tests.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/criteria-tests.test.ts test/contract-matrix.test.ts test/server/records.test.ts && pnpm typecheck && pnpm lint
   - type: fix

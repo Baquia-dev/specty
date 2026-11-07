@@ -9,6 +9,7 @@ import {
   type TestsPolicy,
   testRules,
 } from "@baquia-dev/specty-core";
+import { linesAddedSinceTarget } from "../check/files";
 import type { LoadedPlan } from "../check/plan";
 import type { CheckContext } from "../check/provider";
 import { readText } from "../io/files";
@@ -94,8 +95,9 @@ type Sources = readonly (readonly [string, string])[];
 /**
  * In acceptance, each criterion of `spec` with the test lines that carry its id: in the test
  * files the commits of the tasks (`commits`, by task) or the change's tests commits touched,
- * only the lines one of those commits added, by `git blame`; a line from the main branch or by
- * hand does not count.
+ * only the lines one of those commits added, by `git blame`, and that the change leaves different
+ * from where it started (the merge-base with the target branch); a line from the main branch, by
+ * hand, or that one commit deleted and another put back as it was does not count.
  */
 export async function criteriaTests(
   session: Session,
@@ -153,10 +155,14 @@ async function taskTestLines(
   ]);
   if (shown.code !== 0) return [];
   const files = new Set(shown.stdout.split("\n").filter((path) => path !== "" && isTestFile(path)));
-  const found = await Promise.all(
-    [...files].toSorted().map((path) => fileTestLines(session, path, ids, commits)),
-  );
-  return found.flat();
+  const [found, added] = await Promise.all([
+    Promise.all([...files].toSorted().map((path) => fileTestLines(session, path, ids, commits))),
+    linesAddedSinceTarget(session),
+  ]);
+  // A line a commit deleted and another put back as it was is the latter's to blame, not the change's.
+  return found
+    .flat()
+    .filter((line) => added === undefined || added.get(line.path)?.has(line.line) === true);
 }
 
 /** Blames `path` only when it has an id, once (R1). */

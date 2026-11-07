@@ -87,6 +87,19 @@ async function baseOf(session: Session): Promise<string | undefined> {
   return git.head();
 }
 
+/**
+ * The lines each file on disk adds against the merge-base with the target branch, as `--changed`
+ * sees them: what the change leaves different from where it started. Undefined when HEAD is that
+ * merge-base, as on the target branch itself, where the diff says nothing of the change.
+ */
+export async function linesAddedSinceTarget(
+  session: Session,
+): Promise<ReadonlyMap<string, ReadonlySet<number>> | undefined> {
+  const base = await baseOf(session);
+  if (base === undefined || base === (await session.git.head())) return undefined;
+  return addedLines(session, "changed", base);
+}
+
 /** The text of a blob, `:path` staged or `rev:path` in a commit; undefined when there is none. */
 async function blob(session: Session, object: string): Promise<string | undefined> {
   const shown = await session.git.run(["cat-file", "blob", object]);
