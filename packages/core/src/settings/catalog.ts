@@ -73,7 +73,8 @@ const INTERNAL_RUN: readonly Setting[] = [
 
 /**
  * Section «Interno»: the parameters Specty kept fixed in its code, as keys of `internal`, and the
- * four lives of compliance, which stay fixed at 24 h with no key (formats.md §6).
+ * lives of compliance, fixed with no key: four at 24 h and the mark of `specty wait` at 30 s
+ * (formats.md §6).
  */
 const INTERNAL: readonly Setting[] = [
   {
@@ -84,6 +85,13 @@ const INTERNAL: readonly Setting[] = [
     new: true,
   },
   { key: "internal.waits.heartbeatSec", section: "internal", kind: "number", unit: "s", new: true },
+  {
+    key: "internal.waits.queueStaleSec",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    new: true,
+  },
   { key: "internal.retries.landing", section: "internal", kind: "number", new: true },
   { key: "internal.retries.memory", section: "internal", kind: "number", new: true },
   { key: "internal.retries.gitConfig", section: "internal", kind: "number", new: true },
@@ -92,6 +100,13 @@ const INTERNAL: readonly Setting[] = [
     section: "internal",
     kind: "number",
     unit: "d",
+    new: true,
+  },
+  {
+    key: "internal.retention.indexHours",
+    section: "internal",
+    kind: "number",
+    unit: "h",
     new: true,
   },
   ...INTERNAL_RUN,
@@ -105,6 +120,14 @@ const INTERNAL: readonly Setting[] = [
       guarantee: true,
     }),
   ),
+  {
+    key: "guarantee.waitMarks",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    fixed: 30,
+    guarantee: true,
+  },
 ];
 
 const TESTS_POLICIES = ["contract", "required", "recommended", "off"];

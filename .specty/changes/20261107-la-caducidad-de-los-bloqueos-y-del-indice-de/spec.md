@@ -74,7 +74,7 @@ Hoy cuánto conserva su puesto en la cola de las verificaciones un proceso que d
 
 ## Tareas
 
-- [ ] T1: Las claves de la cola y de los índices, y sus ajustes y la garantía de la marca de `wait` en «Interno»
+- [x] T1: Las claves de la cola y de los índices, y sus ajustes y la garantía de la marca de `wait` en «Interno»
   - files: packages/core/src/schema/internal-waits.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/settings/internal-life.test.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/internal-life.test.ts test/settings/catalog.test.ts
