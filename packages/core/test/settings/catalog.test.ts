@@ -155,6 +155,8 @@ describe("the settings' catalog", () => {
       ...EFFORT_KEYS,
       "internal.waits.waitTimeoutSec",
       "internal.waits.heartbeatSec",
+      "internal.waits.verifyIntervalMs",
+      "internal.waits.waitIntervalMs",
       "internal.waits.queueStaleSec",
       "internal.retries.landing",
       "internal.retries.memory",
@@ -254,6 +256,18 @@ describe("the settings' catalog", () => {
         new: true,
       }),
       expect.objectContaining({
+        key: "internal.waits.verifyIntervalMs",
+        kind: "number",
+        unit: "ms",
+        new: true,
+      }),
+      expect.objectContaining({
+        key: "internal.waits.waitIntervalMs",
+        kind: "number",
+        unit: "ms",
+        new: true,
+      }),
+      expect.objectContaining({
         key: "internal.waits.queueStaleSec",
         kind: "number",
         unit: "s",
@@ -310,7 +324,7 @@ describe("the settings' catalog", () => {
 
   it("AC5, AC7: says why each guarantee does not change, and names the internal settings in Spanish and in English", () => {
     const internal = SETTINGS.filter((setting) => setting.section === "internal");
-    expect(internal).toHaveLength(16);
+    expect(internal).toHaveLength(18);
     for (const setting of internal) {
       const es = settingText(setting.key, "es");
       const en = settingText(setting.key, "en");
@@ -407,6 +421,40 @@ describe("the internal settings of locks and retention", () => {
     );
     expect(settingText("internal.retries.gitConfig", "es").description).toContain("50 ms");
     expect(settingText("internal.retries.gitConfig", "en").description).toContain("50 ms");
+  });
+});
+
+describe("the internal settings of polling intervals", () => {
+  const KEYS_OF_INTERVALS = ["internal.waits.verifyIntervalMs", "internal.waits.waitIntervalMs"];
+
+  it("AC5: puts the verification's and `specty wait`'s intervals in «Interno», after the heartbeat, as new numbers in ms", () => {
+    const keys = SETTINGS.map((setting) => setting.key);
+    const heartbeat = keys.indexOf("internal.waits.heartbeatSec");
+    expect(keys.slice(heartbeat + 1, heartbeat + 3)).toEqual(KEYS_OF_INTERVALS);
+    for (const key of KEYS_OF_INTERVALS) {
+      expect(
+        SETTINGS.find((setting) => setting.key === key),
+        key,
+      ).toEqual({ key, section: "internal", kind: "number", unit: "ms", new: true });
+      expect(settingOf(key.split("."))?.key, key).toBe(key);
+      expect(schemaAt(key), key).toBeInstanceOf(z.ZodNumber);
+    }
+    expect(keysWith("new")).toEqual(expect.arrayContaining(KEYS_OF_INTERVALS));
+  });
+
+  it("AC6: names and describes each of them in Spanish and in English", () => {
+    for (const key of KEYS_OF_INTERVALS) {
+      const es = settingText(key, "es");
+      const en = settingText(key, "en");
+      expect(es.name, key).not.toBe(key);
+      expect(en.name, key).not.toBe(key);
+      expect(es.name, key).not.toBe(en.name);
+      expect(es.description, key).not.toBe("");
+      expect(en.description, key).not.toBe("");
+      expect(es.description, key).not.toBe(en.description);
+    }
+    expect(settingText("internal.waits.waitIntervalMs", "es").description).toContain("--interval");
+    expect(settingText("internal.waits.waitIntervalMs", "en").description).toContain("--interval");
   });
 });
 

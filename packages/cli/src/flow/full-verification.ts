@@ -15,9 +15,6 @@ import { joinTurnQueue } from "../store/turn-queue";
 import { inSlots } from "../store/verify-slots";
 import type { Integration } from "./integrate";
 
-/** How often a full verification waiting for its turn looks again. */
-const POLL_MS = 2000;
-
 /** The id under which `liveHolder` finds the full verification's turn. */
 const FULL_VERIFICATION = "full-verification";
 
@@ -54,7 +51,8 @@ export function oneAtATime<T>(
  * Runs `run` on this session's turn of the full verification: one at a time in the clone, in
  * order of arrival. It waits in the turn's queue while another session's live process holds the
  * turn or arrived first, says once who holds it and how many wait ahead, and never runs without
- * the turn: the holder's own command ends by `verify.timeoutSec`. What runs inside the holder
+ * the turn: the holder's own command ends by `verify.timeoutSec`. It looks again every
+ * `internal.waits.verifyIntervalMs` (`pollMs`, in tests). What runs inside the holder
  * runs at once; another part of the same process, as an action of the UI's server while it
  * verifies another change, waits as another session would. The turn is freed when it ends, also
  * on failure.
@@ -72,11 +70,9 @@ async function onTurn<T>(
     folder: session.root,
     at: session.environment.now().toISOString(),
   };
-  const place = await joinTurnQueue(
-    session.git,
-    holder,
-    session.config.internal.waits.queueStaleSec,
-  );
+  const pollMs = options.pollMs ?? session.config.internal.waits.verifyIntervalMs;
+  const { queueStaleSec } = session.config.internal.waits;
+  const place = await joinTurnQueue(session.git, holder, { staleSec: queueStaleSec, pollMs });
   let said = false;
   try {
     for (;;) {
@@ -95,7 +91,7 @@ async function onTurn<T>(
         session.environment.io.err(fullVerificationWaitNote(current, session.lang, ahead));
         said = true;
       }
-      await new Promise((done) => setTimeout(done, options.pollMs ?? POLL_MS));
+      await new Promise((done) => setTimeout(done, pollMs));
     }
   } finally {
     await place.leave();

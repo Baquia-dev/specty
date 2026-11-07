@@ -11,6 +11,15 @@ import { alive, type LockHolder } from "./lock";
  */
 const QUEUE = "common/specty/locks/full-verification.queue";
 
+/**
+ * How long a place lasts without renewing: `staleSec` (`internal.waits.queueStaleSec`), and never
+ * less than three looks of `pollMs`, so a live process does not lose it between two.
+ */
+interface QueueLife {
+  readonly staleSec: number;
+  readonly pollMs: number;
+}
+
 /** A place in the queue: how many wait before it, and leaving it. */
 export interface QueuePlace {
   /** Renews this place and counts the live places before it, removing the ones that ended. */
@@ -23,24 +32,24 @@ let taken = 0;
 
 /**
  * Joins the queue of the full verification's turn for `holder`, after everyone already in it.
- * A waiter renews its file at each look; one `staleSec` seconds without it stopped waiting
- * (`internal.waits.queueStaleSec`).
+ * A waiter renews its file at each look; one that went its `life` without it stopped waiting.
  */
-export function joinTurnQueue(git: Git, holder: LockHolder, staleSec: number): Promise<QueuePlace> {
-  return joinQueue(git, QUEUE, holder, staleSec);
+export function joinTurnQueue(git: Git, holder: LockHolder, life: QueueLife): Promise<QueuePlace> {
+  return joinQueue(git, QUEUE, holder, life);
 }
 
 /**
  * Joins the queue whose folder is git's path `name` for `holder`, after everyone already in it:
  * the full verification's turn, or the clone's verification places (`verify-slots.ts`). A place
- * that went `staleSec` seconds without renewing stopped waiting.
+ * that went its `life` without renewing stopped waiting.
  */
 export async function joinQueue(
   git: Git,
   name: string,
   holder: LockHolder,
-  staleSec: number,
+  life: QueueLife,
 ): Promise<QueuePlace> {
+  const staleMs = Math.max(life.staleSec * 1000, 3 * life.pollMs);
   const folder = await git.gitPath(name);
   await mkdir(folder, { recursive: true });
   taken += 1;
@@ -55,7 +64,7 @@ export async function joinQueue(
         (name) => name.endsWith(".json") && name < own,
       );
       const live = await Promise.all(
-        names.map((name) => waiting(join(folder, name), now, staleSec * 1000)),
+        names.map((name) => waiting(join(folder, name), now, staleMs)),
       );
       return live.filter(Boolean).length;
     },

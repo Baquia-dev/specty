@@ -14,8 +14,6 @@ import { joinQueue } from "./turn-queue";
 const RUNNING = "common/specty/locks/verify-slots";
 const QUEUE = "common/specty/locks/verify-slots.queue";
 
-const POLL_MS = 2000;
-
 /** A verification that runs, with the places it takes. */
 interface Running {
   readonly holder: LockHolder;
@@ -28,9 +26,10 @@ let written = 0;
 /**
  * Runs `run`, the verification `command`, once `weight` of the clone's `verify.slots` places are
  * free; a weight above them takes them all, once nothing else runs. Those that wait go in order
- * of arrival: none overtakes the first, even when it waits for more places than are free. The
- * places are given back when `run` ends, also after a failure; a process that ended gives them
- * back to whoever looks next.
+ * of arrival: none overtakes the first, even when it waits for more places than are free, and
+ * each looks again every `internal.waits.verifyIntervalMs` (`pollMs`, in tests). The places are
+ * given back when `run` ends, also after a failure; a process that ended gives them back to
+ * whoever looks next.
  */
 export async function inSlots<T>(
   session: Session,
@@ -41,10 +40,12 @@ export async function inSlots<T>(
 ): Promise<T> {
   const { git, lang } = session;
   const { slots } = session.config.verify;
+  const pollMs = options.pollMs ?? session.config.internal.waits.verifyIntervalMs;
   const need = Math.min(Math.max(weight, 1), slots);
   const holder = { pid: process.pid, command, folder: session.root, at: now(session) };
   const folder = await git.gitPath(RUNNING);
-  const place = await joinQueue(git, QUEUE, holder, session.config.internal.waits.queueStaleSec);
+  const staleSec = session.config.internal.waits.queueStaleSec;
+  const place = await joinQueue(git, QUEUE, holder, { staleSec, pollMs });
   let said = false;
   try {
     for (;;) {
@@ -65,7 +66,7 @@ export async function inSlots<T>(
         session.environment.io.err(verifySlotsWaitNote(views, slots, lang, ahead));
         said = true;
       }
-      await new Promise((done) => setTimeout(done, options.pollMs ?? POLL_MS));
+      await new Promise((done) => setTimeout(done, pollMs));
     }
   } finally {
     await place.leave();

@@ -48,7 +48,7 @@ describe("the queue's and the temporary indexes' lives as internal settings", ()
 
   it("AC4: puts the two settings in «Interno», new, the queue's in s after the heartbeat and the indexes' in h after the record's days", () => {
     const keys = SETTINGS.map((setting) => setting.key);
-    expect(keys[keys.indexOf("internal.waits.heartbeatSec") + 1]).toBe(QUEUE);
+    expect(keys[keys.indexOf("internal.waits.waitIntervalMs") + 1]).toBe(QUEUE);
     expect(keys[keys.indexOf("internal.retention.verifiedDays") + 1]).toBe(INDEXES);
     expect(SETTINGS.find((setting) => setting.key === QUEUE)).toEqual({
       key: QUEUE,

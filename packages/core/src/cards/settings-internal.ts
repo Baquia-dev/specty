@@ -24,14 +24,34 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
       "How often it writes a line where the tool cuts a silent command.",
     ],
   },
+  "internal.waits.verifyIntervalMs": {
+    es: [
+      "Intervalo de una verificación que espera",
+      "Cada cuánto mira de nuevo una verificación que espera el turno de la completa o una plaza del clon, de 100 a 10000 ms.",
+    ],
+    en: [
+      "Interval of a waiting verification",
+      "How often a verification waiting for the full verification's turn or a place of the clone looks again, from 100 to 10000 ms.",
+    ],
+  },
+  "internal.waits.waitIntervalMs": {
+    es: [
+      "Intervalo de specty wait",
+      "Cada cuánto mira specty wait si la persona decidió, cuando no se le pasa --interval; de 100 a 10000 ms.",
+    ],
+    en: [
+      "specty wait's interval",
+      "How often specty wait looks whether the person decided, when --interval is not given; from 100 to 10000 ms.",
+    ],
+  },
   "internal.waits.queueStaleSec": {
     es: [
       "Caducidad de un puesto en la cola",
-      "Cuánto cuenta el puesto de un proceso en la cola de las verificaciones sin renovarlo, de 10 a 600; pasado ese tiempo, el siguiente que mira lo quita.",
+      "Cuánto cuenta el puesto de un proceso en la cola de las verificaciones sin renovarlo, de 10 a 600 y nunca menos de tres vueltas de una verificación que espera; pasado ese tiempo, el siguiente que mira lo quita.",
     ],
     en: [
       "Life of a place in the queue",
-      "How long a process's place in the verifications' queue counts without renewing it, from 10 to 600; after that, the next one that looks removes it.",
+      "How long a process's place in the verifications' queue counts without renewing it, from 10 to 600 and never less than three looks of a waiting verification; after that, the next one that looks removes it.",
     ],
   },
   "internal.retries.landing": {
