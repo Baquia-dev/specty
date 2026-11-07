@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-las-evals-mantienen-viva-la-sesion-de-claude",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-las-evals-mantienen-viva-la-sesion-de-claude",
   "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:327b17f4e314bd7cef94f29155d83ac92aa43849f88391a69cfe779a70d88a48",
@@ -70,12 +70,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5a5247eb8f8cce38f5139bece939ba22abc00397",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:13:19.698Z",
       "doneAt": "2026-11-07T04:23:56.651Z",
-      "summary": "ARCHITECTURE §16 cuenta la sesión viva de Claude Code en las ejecuciones con persona y la ejecución real de wait: cumplió en 122 s, 15 rondas, 0 bloqueos, 0,49 USD y 30.377 tokens de contexto"
+      "summary": "ARCHITECTURE §16 cuenta la sesión viva de Claude Code en las ejecuciones con persona y la ejecución real de wait: cumplió en 122 s, 15 rondas, 0 bloqueos, 0,49 USD y 30.377 tokens de contexto",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,6 +88,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-07T04:25:05.270Z",
   "lockedTests": {
     "evals/test/conversation.test.ts": "sha256:a6f4d3a8582b1ff83d184929683320687130bf74e30462f58e59d4ccd06a8af3",
     "evals/test/session.test.ts": "sha256:8f70b0fe45ce96258ce192e3b71d7bd311fec3b43c6d5cc05ec32666776cf8a3"

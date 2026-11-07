@@ -75,3 +75,24 @@ El experimento `wait` no llega a medir la espera con `specty wait` (P272): en `c
 
 - R1: Una versión de Claude Code que no dé `background_tasks_changed` terminaría la sesión con su primer `result`, como hoy. Mitigación: la ejecución real lo dice, y ARCHITECTURE §16 anota la versión.
 - R2: Una sesión que no queda nunca inactiva, como un subagente que repite `specty wait` sin que nadie decida, dura hasta el límite del experimento (30 minutos). Mitigación: la persona decide toda fase que la espera, y el límite acota el coste.
+
+## Cierre
+
+### Resumen
+
+En las ejecuciones con una persona que decide (el experimento `wait`), Claude Code corre ya con la sesión viva: `--input-format stream-json`, el encargo como mensaje del usuario por la entrada, y la entrada abierta hasta un `result` del hilo principal sin tareas en segundo plano (`conversation` e `invocation` en `evals/src/agents.ts`, `Session` en `evals/src/launch.ts`). Los escenarios y los demás experimentos siguen con el prompt en la línea de comandos y la entrada cerrada. `pnpm test:evals` pasa (47 tests). La ejecución real con Claude Code 2.1.318, el 2026-11-07, cumplió: 122 s, 15 rondas, 0 bloqueos, 0,49 USD y 30.377 tokens de contexto máximo en el hilo principal. El subagente esperó con `specty wait` en segundo plano la aprobación y la aceptación, siguió solo tras cada decisión, y el proceso salió por sí solo con el cambio cerrado. ARCHITECTURE §16 lo cuenta en lugar de la ejecución sin avance.
+
+### Desviaciones
+
+- T2 necesitó `evals/src/launch.ts` (ampliación de alcance): con la entrada condicional de T1, tsc ve `stdout` y `stderr` como posibles `null`, y la verificación de T1 no traía `typecheck` porque los tests de T2 aún no compilaban.
+- Ningún test que ya existía cambió: sin sesión, `launch` y la línea de comandos de cada agente siguen igual.
+
+### Decisiones
+
+- La sesión termina por la salida de Claude Code (un `result` con la lista de `background_tasks_changed` vacía) y no por el estado del cambio, para no cortar la respuesta final ni el coste (A2).
+- La suite no le escribe al agente cuando la persona decide: el aviso de la tarea en segundo plano despierta la sesión solo, como comprobé con el Claude Code real contra un modelo guionizado (A1, A4).
+- Solo las ejecuciones con persona llevan la sesión viva (A3).
+
+### Pendientes
+
+- P283: el segundo `specty wait` del subagente acabó con «Git falló… spawn git ENOENT», porque el cierre de la persona borró la carpeta del cambio mientras la espera corría en ella; debería decir que el cambio se cerró.
