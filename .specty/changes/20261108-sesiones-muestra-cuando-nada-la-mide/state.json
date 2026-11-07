@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261108-sesiones-muestra-cuando-nada-la-mide",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261108-sesiones-muestra-cuando-nada-la-mide",
+  "baseCommit": "89ef4fe4ce5725e9021aa923aa57cdbce41eabc2",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:04278d0c22a4db39b397c2526a3be6582584d95cea2c2ac3ac12bd3f261c462a",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:e71dde448e31e4acf7c4762c230244c6abf1e07a8e815782eeffe1487446fadf",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:720bd4f8aaa6f58d77ba115e5929489190fc051f9155c3e5563a4678b90f8ca9",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:dd9389cf43b57505027f7d88f6d98ff196c9304c6ea91012350e7dc4a6076c1c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:581fb4ddaa9134dac2a0f5286248e215321ab2d27f26fbcbf04ed67b19389c87",
+    "at": "2026-11-07T17:03:21.537Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
