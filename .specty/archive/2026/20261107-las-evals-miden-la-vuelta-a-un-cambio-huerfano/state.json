@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "id": "20261107-las-evals-miden-la-vuelta-a-un-cambio-huerfano",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-las-evals-miden-la-vuelta-a-un-cambio-huerfano",
+  "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:424c057ec3658b78f6563c3679d89a445a5ce39d8063254dff61f3ccc1df2862",
+    "at": "2026-11-07T00:11:22.328Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:05798131d9ba701a1ac8843d08d676b2325ebebdd4469cabf5b137955734dea2",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c66ca8d67ce21155a1c0b123838ad00bafc692bada0840bf428c6904c1198593",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:c1de0f546325855288df89b47b9c9929cba2849f900934c0b85bf58605360f9f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:6464c00deef1152a15661bfec2af6026d48b7ed3e4f53d937ebb204739ddcf80",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c5bf0310718ee814283edf08332251098c48dffe",
+      "attempts": 1,
+      "startedAt": "2026-11-07T00:12:44.939Z",
+      "doneAt": "2026-11-07T00:15:00.346Z",
+      "summary": "Experimento orphan: un cambio quick aprobado y huérfano en .worktrees/ (state.json de hace dos horas, id en evals.orphan) y su juicio por el enter del subagente, el archivo y el cierre; leftApproved comparte la preparación con la épica.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "02ae05e1ef32ae85b956845ec89a37742ea0e3a7",
+      "attempts": 1,
+      "startedAt": "2026-11-07T00:15:00.694Z",
+      "doneAt": "2026-11-07T00:30:44.308Z",
+      "summary": "ARCHITECTURE §16 describe el experimento orphan y su ejecución real del 2026-11-07 (cumplió, 113 s, 16 rondas, 1 bloqueo, 0,47 USD, 30.253 de contexto).",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T00:35:15.324Z",
+  "lockedTests": {
+    "evals/test/experiments.test.ts": "sha256:91fb86d65a256878b8be4c72a312dc205f9c90a86d2423418cfdffa01fed2c95",
+    "evals/test/orphan.test.ts": "sha256:8ae994d96853479dd2a144ca0870dd2c4992558732d60c17dc784f9f7ae2cbdc"
+  }
+}
