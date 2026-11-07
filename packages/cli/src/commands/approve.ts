@@ -115,7 +115,7 @@ async function noteApprovalSummary(
         specPath: session.paths.relative(files.spec),
         revision: state.revision,
         size: analysis.size,
-        effort: recommendEffort(analysis.size.level, analysis.spec),
+        effort: recommendEffort(analysis.size.level, analysis.spec, session.config.effort),
         delta,
         diagnostics: analysis.diagnostics,
         shared: sharedLines(session, shared),

@@ -39,6 +39,15 @@ function schemaAt(key: string): Schema | undefined {
 }
 
 const KEYS = leaves(ConfigSchema).filter((key) => key !== "version");
+/** The size's parameters that were fixed in core's code, in the page's order. */
+const SIZING_KEYS = [
+  "sizing.weights",
+  "sizing.tasksWithoutWeight",
+  "sizing.highFanIn",
+  "sizing.nearRatio",
+];
+/** The effort recommended for each size and for a task. */
+const EFFORT_KEYS = ["effort.S", "effort.M", "effort.L", "effort.XL", "effort.task"];
 /** The settings with a key of `config.yaml`: neither delegated mode nor Specty's guarantees. */
 const inFile = SETTINGS.filter((setting) => setting.clone !== true && setting.guarantee !== true);
 const covers = (setting: { readonly key: string }, key: string) =>
@@ -129,12 +138,14 @@ describe("the settings' catalog", () => {
     ]);
     expect(keysWith("clone")).toEqual(["specty delegate"]);
     expect(keysWith("soon")).toEqual([
+      "sizing.highFanIn",
       "team.approvers",
       "team.requirePrReview",
       "ui.requireUserPresence",
-      "effort",
     ]);
     expect(keysWith("new")).toEqual([
+      ...SIZING_KEYS,
+      ...EFFORT_KEYS,
       "internal.waits.waitTimeoutSec",
       "internal.waits.heartbeatSec",
       "internal.retries.landing",
@@ -175,13 +186,43 @@ describe("the settings' catalog", () => {
       "Memoria",
       "Desarrollo",
       "Interfaz",
-      "Esfuerzo por herramienta",
+      "Esfuerzo recomendado",
       "Glosario",
       "Interno",
     ]);
     expect(sectionName("verify", "en")).toBe("Verification");
     expect(optionName("policy.tests", "contract", "es")).toBe("Contrato");
     expect(optionName("policy.tests", "contract", "en")).toBe("Contract");
+  });
+
+  it("AC6: shows the size's weights, tasks, fan-in and ratio after the splitting limits, and the effort of each size and of a task in its section, marked new", () => {
+    const keys = SETTINGS.map((setting) => setting.key);
+    const at = keys.indexOf("split");
+    expect(keys.slice(at + 1, at + 1 + SIZING_KEYS.length)).toEqual(SIZING_KEYS);
+    expect(
+      SETTINGS.filter((setting) => setting.section === "effort").map((setting) => setting.key),
+    ).toEqual(EFFORT_KEYS);
+    for (const key of [...SIZING_KEYS, ...EFFORT_KEYS]) {
+      const setting = SETTINGS.find((found) => found.key === key);
+      const kind = key === "sizing.weights" || key.startsWith("effort.") ? "group" : "number";
+      expect(setting, key).toMatchObject({ kind, new: true });
+      expect(setting?.section, key).toBe(key.startsWith("effort.") ? "effort" : "size");
+    }
+    expect(SETTINGS.find((setting) => setting.key === "sizing.highFanIn")?.soon).toBe(true);
+    expect(keys).not.toContain("effort");
+  });
+
+  it("AC7: names and describes the new settings and the effort's section in Spanish and in English", () => {
+    for (const key of [...SIZING_KEYS, ...EFFORT_KEYS]) {
+      const es = settingText(key, "es");
+      const en = settingText(key, "en");
+      expect(es.name, key).not.toBe(key);
+      expect(en.name, key).not.toBe(key);
+      expect(es.name, key).not.toBe(en.name);
+      expect(es.description, key).not.toBe(en.description);
+    }
+    expect(sectionName("effort", "es")).toBe("Esfuerzo recomendado");
+    expect(sectionName("effort", "en")).toBe("Recommended effort");
   });
 
   it("AC6: puts the internal settings last, in section «Interno», as numbers with their units, marked new", () => {

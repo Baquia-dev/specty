@@ -3,7 +3,7 @@ import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { expect, inject, it } from "vitest";
-import { AGENTS, type Agent, consumptionOf, countsOf } from "../src/agents";
+import { AGENTS, type Agent, consumptionOf, countsOf, invocation } from "../src/agents";
 import { type Experiment, namedExperiments } from "../src/experiments";
 import { launch } from "../src/launch";
 import { attend } from "../src/person";
@@ -57,7 +57,8 @@ function agentEnv(bin: string): NodeJS.ProcessEnv {
  * One run of a scenario or an experiment by `agent`, or why the agent has to be left out. An
  * experiment brings its own turns and minutes; each run keeps its wall-clock seconds, and one
  * that tells its consumption keeps it too. The agent runs without blocking the suite, so an
- * experiment's person decides meanwhile; the suite waits for them before judging.
+ * experiment's person decides meanwhile, and with its conversation kept open while it has work
+ * going on, if it has one; the suite waits for them before judging.
  */
 async function runOnce(
   agent: Agent,
@@ -67,14 +68,16 @@ async function runOnce(
 ): Promise<Run | Omitted> {
   const root = await scenario.prepare(agent.id);
   const turns = "turns" in scenario ? scenario.turns : undefined;
-  const [command = binary, ...args] = agent.command(binary, scenario.prompt, turns);
+  const person = "person" in scenario && scenario.person === true;
+  const { command: line, session } = invocation(agent, binary, scenario.prompt, { turns, person });
+  const [command = binary, ...args] = line;
   const started = performance.now();
   const run = launch(command, args, {
     cwd: root,
     env: agentEnv(bin),
     timeoutMs: "minutes" in scenario ? scenario.minutes * 60 * 1000 : TIMEOUT_MS,
+    session,
   });
-  const person = "person" in scenario && scenario.person === true;
   const attending = person ? attend(root, run.running) : Promise.resolve();
   const result = await run.finished;
   await attending;

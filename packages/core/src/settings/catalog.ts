@@ -109,6 +109,22 @@ const INTERNAL: readonly Setting[] = [
 
 const TESTS_POLICIES = ["contract", "required", "recommended", "off"];
 
+/**
+ * Section «Tamaño y cortes», after the splitting limits: how the size is scored and from when a
+ * change is close to splitting. The CLI does not measure fan-in yet (formats.md §6).
+ */
+const SIZING: readonly Setting[] = [
+  { key: "sizing.weights", section: "size", kind: "group", new: true },
+  { key: "sizing.tasksWithoutWeight", section: "size", kind: "number", new: true },
+  { key: "sizing.highFanIn", section: "size", kind: "number", soon: true, new: true },
+  { key: "sizing.nearRatio", section: "size", kind: "number", new: true },
+];
+
+/** Section «Esfuerzo recomendado»: the effort of each size, and the rule for a task's. */
+const EFFORT: readonly Setting[] = ["S", "M", "L", "XL", "task"].map(
+  (part): Setting => ({ key: `effort.${part}`, section: "effort", kind: "group", new: true }),
+);
+
 /** Each setting, in the page's order: by section, then as the section reads. */
 export const SETTINGS: readonly Setting[] = [
   { key: "language", section: "flow", kind: "choice", options: LANGS },
@@ -153,6 +169,7 @@ export const SETTINGS: readonly Setting[] = [
   { key: "size", section: "size", kind: "group" },
   { key: "lanes.quick.maxFiles", section: "size", kind: "number" },
   { key: "split", section: "size", kind: "group" },
+  ...SIZING,
   { key: "lines.warn", section: "lines", kind: "number" },
   { key: "lines.fail", section: "lines", kind: "number" },
   { key: "lines.tests", section: "lines", kind: "group" },
@@ -175,7 +192,7 @@ export const SETTINGS: readonly Setting[] = [
   { key: "dev.ports", section: "dev", kind: "list", items: "number" },
   { key: "ui.port", section: "ui", kind: "number" },
   { key: "ui.requireUserPresence", section: "ui", kind: "toggle", soon: true },
-  { key: "effort", section: "effort", kind: "map", soon: true },
+  ...EFFORT,
   { key: "glossary", section: "glossary", kind: "text" },
   ...INTERNAL,
 ];
