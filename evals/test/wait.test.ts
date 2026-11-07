@@ -42,7 +42,7 @@ La constante a vale 2.
 
 - [ ] T1: La constante a vale 2
   - files: src/a.ts
-  - type: fix
+  - type: chore
 `;
 
 describe("the experiment of a person who decides while the agent waits", () => {
@@ -83,6 +83,8 @@ describe("the experiment of a person who decides while the agent waits", () => {
     expect(await at.look(1)).toEqual([]);
     expect(await at.look(1001)).toEqual([["approve", id]]);
     expect((await openChanges(folder))[0]?.state.phase).toBe("implementing");
+    // The agent goes on with `next`, as `specty wait` gives it, which starts T1.
+    expect((await specty(folder, ["next"])).code).toBe(0);
     await write(folder, { "src/a.ts": FIXED });
     const done = await specty(folder, ["task", "done", "T1", "--summary", "a vale 2"]);
     expect(done.code, done.out).toBe(0);

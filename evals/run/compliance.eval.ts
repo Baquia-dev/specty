@@ -6,6 +6,7 @@ import { expect, inject, it } from "vitest";
 import { AGENTS, type Agent, consumptionOf, countsOf } from "../src/agents";
 import { type Experiment, namedExperiments } from "../src/experiments";
 import { launch } from "../src/launch";
+import { attend } from "../src/person";
 import { DIST } from "../src/repo";
 import { type Omitted, type Run, reportJson, reportMarkdown, summarize } from "../src/report";
 import { SCENARIOS, type Scenario } from "../src/scenarios";
@@ -55,7 +56,8 @@ function agentEnv(bin: string): NodeJS.ProcessEnv {
 /**
  * One run of a scenario or an experiment by `agent`, or why the agent has to be left out. An
  * experiment brings its own turns and minutes; each run keeps its wall-clock seconds, and one
- * that tells its consumption keeps it too. The agent runs without blocking the suite.
+ * that tells its consumption keeps it too. The agent runs without blocking the suite, so an
+ * experiment's person decides meanwhile; the suite waits for them before judging.
  */
 async function runOnce(
   agent: Agent,
@@ -72,7 +74,10 @@ async function runOnce(
     env: agentEnv(bin),
     timeoutMs: "minutes" in scenario ? scenario.minutes * 60 * 1000 : TIMEOUT_MS,
   });
+  const person = "person" in scenario && scenario.person === true;
+  const attending = person ? attend(root, run.running) : Promise.resolve();
   const result = await run.finished;
+  await attending;
   const seconds = Math.round((performance.now() - started) / 1000);
   const transcript = result.stdout;
   const counts = countsOf(agent.id, transcript);

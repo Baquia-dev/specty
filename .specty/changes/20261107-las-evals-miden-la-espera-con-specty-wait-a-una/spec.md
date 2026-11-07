@@ -63,7 +63,7 @@ Las evals no miden la espera con `specty wait` a una persona real (P264, parte d
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/launch.test.ts && pnpm lint
   - type: feat
-- [ ] T2: Una persona decide mientras el subagente espera con specty wait
+- [x] T2: Una persona decide mientras el subagente espera con specty wait
   - files: evals/src/person.ts, evals/src/experiments.ts, evals/run/compliance.eval.ts, evals/test/wait.test.ts, evals/test/experiments.test.ts
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/wait.test.ts test/experiments.test.ts test/orphan.test.ts test/question.test.ts test/changes-card.test.ts && pnpm typecheck && pnpm lint

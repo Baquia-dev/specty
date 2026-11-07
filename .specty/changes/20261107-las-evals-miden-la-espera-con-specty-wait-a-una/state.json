@@ -46,12 +46,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "294f0244159de0e8595b591e165ae316a7846476",
+      "attempts": 1,
       "startedAt": "2026-11-07T01:52:06.642Z",
       "doneAt": "2026-11-07T01:52:40.071Z",
-      "summary": "launch.ts lanza el agente con spawn (entrada cerrada, límite con señal) y da running() y finished; runOnce lo usa en lugar de spawnSync."
+      "summary": "launch.ts lanza el agente con spawn (entrada cerrada, límite con señal) y da running() y finished; runOnce lo usa en lugar de spawnSync.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "evals/test/wait.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "903bd1b49906a5bf6fb57ef86ffcaca4098a9f76",
+      "startedAt": "2026-11-07T01:52:40.368Z",
+      "doneAt": "2026-11-07T03:11:18.213Z",
+      "summary": "person.ts: persona simulada que, desde la carpeta principal, aprueba, acepta y cierra lo que la espera tras 20 s; experimento wait sin modo delegado, juzgado por el specty wait de un subagente; runOnce la deja mirar mientras corre el agente."
     }
   },
   "pending": {
@@ -62,11 +73,12 @@
     "A": 5,
     "AC": 6,
     "T": 3,
-    "R": 2
+    "R": 2,
+    "S": 1
   },
   "lockedTests": {
     "evals/test/experiments.test.ts": "sha256:f8770769effdbfa30beea81c879de9588f15336db7cb638617a0af59f94640b7",
     "evals/test/launch.test.ts": "sha256:350e59a49fc4ab2e993b56e3fe78d47d3d77e724a1270cc59a2da9eb28dfc6a3",
-    "evals/test/wait.test.ts": "sha256:6de17493a46390bc87467fcfc37f419bf797f4dba7f9bb55211a554bd18144cb"
+    "evals/test/wait.test.ts": "sha256:75f68cb49d6c689de22e816b4ffc90863a2dd10e6a9de3582fb0b7baff2ce746"
   }
 }

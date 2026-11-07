@@ -12,9 +12,10 @@ import type { Verdict } from "./scenarios";
  * subagent, which starts with a context of its own, as the card without an active change hands
  * them out; and an approved epic of three slices, built in order or with a subagent per slice, as
  * its card says. And a change whose spec needs what the user did not say, which its subagent
- * takes back to the session as a question; and an approved change that no conversation holds,
- * which the session hands to a subagent to resume. They take longer than a scenario, and only run
- * when `SPECTY_EVALS_SCENARIOS` names them.
+ * takes back to the session as a question; an approved change that no conversation holds,
+ * which the session hands to a subagent to resume; and a fix without delegated mode, whose
+ * subagent waits with `specty wait` for a person who decides while it runs. They take longer than
+ * a scenario, and only run when `SPECTY_EVALS_SCENARIOS` names them.
  */
 
 export type ExperimentId =
@@ -23,7 +24,8 @@ export type ExperimentId =
   | "epic"
   | "epic-subagent"
   | "question"
-  | "orphan";
+  | "orphan"
+  | "wait";
 
 export interface Experiment {
   readonly id: ExperimentId;
@@ -32,6 +34,8 @@ export interface Experiment {
   /** The model's turns and the minutes a run may take. */
   readonly turns: number;
   readonly minutes: number;
+  /** A person decides while the agent runs (`person.ts`); without it, nobody does. */
+  readonly person?: true;
   prepare(tool: AgentTool): Promise<string>;
   /** By the repository and, where it does not tell, by the run's transcript. */
   judge(root: string, transcript?: string): Promise<Verdict>;
@@ -109,8 +113,9 @@ const EPIC_MINUTES = 45;
 /** The archived spec of an epic's slice. */
 const SLICE = /^slice: /m;
 
-/** The orphan: an approved quick change that fixes the first file of FIXES. */
-const ORPHAN_FILE = "src/a.ts";
+/** The file of the experiments of a single fix: the first of FIXES. */
+const SINGLE_FIX = "src/a.ts";
+/** The orphan: an approved quick change that fixes it. */
 const ORPHAN_TITLE = "La constante a vale 2";
 const ORPHAN_SPEC = `---
 kind: quick
@@ -124,12 +129,12 @@ La constante \`a\` de la demo pasa a valer 2.
 
 ## Archivos
 
-- modificar ${ORPHAN_FILE} — el valor de la constante
+- modificar ${SINGLE_FIX} — el valor de la constante
 
 ## Tareas
 
 - [ ] T1: ${ORPHAN_TITLE}
-  - files: ${ORPHAN_FILE}
+  - files: ${SINGLE_FIX}
   - type: fix
 `;
 /** The errand names the change: how to resume it is up to the card. */
@@ -137,16 +142,26 @@ const ORPHAN_ERRAND = `Sigue con el cambio «${ORPHAN_TITLE}», que dejé aproba
 /** Where the preparation notes the orphan's id: the throwaway repository's own git configuration. */
 const ORPHAN_KEY = "evals.orphan";
 
+/** The single fix, as the user would ask it, who decides at their terminal. */
+const WAIT_ERRAND = `Haz este arreglo como un cambio quick de Specty: en ${SINGLE_FIX}, que \`a\` valga 2.`;
+/** The command a subagent waits for the person with. */
+const WAITED = /\bspecty\s+wait\b/;
+
 /**
  * A repository with Specty for `tool`, its decisions delegated by the person; with `subagents`
  * off, neither the changes nor an epic's slices go to subagents.
  */
 async function delegated(tool: AgentTool, subagents = true) {
+  const root = await withSpecty(tool, subagents ? CONFIG : `${CONFIG}subagents: false\n`);
+  await specty(root, ["delegate", "on"], { person: true, choose: "yes" });
+  return root;
+}
+
+/** A repository with Specty for `tool` and `config`, committed; the person keeps their decisions. */
+async function withSpecty(tool: AgentTool, config: string): Promise<string> {
   const root = await disposableRepo(FILES);
   await specty(root, ["init", "--language", "es", "--tools", tool]);
-  const config = subagents ? CONFIG : `${CONFIG}subagents: false\n`;
   await write(root, { ".specty/config.yaml": config });
-  await specty(root, ["delegate", "on"], { person: true, choose: "yes" });
   git(root, "add", "-A");
   git(root, "commit", "-q", "-m", "chore: specty");
   return root;
@@ -266,20 +281,41 @@ async function judgeQuestion(root: string, transcript = ""): Promise<Verdict> {
  * without a change of Specty; the main thread stepping in, or another change closed, stalls.
  */
 async function judgeOrphan(root: string, transcript = ""): Promise<Verdict> {
-  const { changed } = await fixesIn(root);
   const closed = (await archivedFolders(root)).map((folder) => basename(folder));
-  if (changed.length > 0 && closed.length === 0) {
-    return { outcome: "violated", reason: `código sin un cambio de Specty: ${changed.join(", ")}` };
-  }
+  const loose = await codeWithoutChange(root, closed.length);
+  if (loose !== undefined) return loose;
   const id = orphanId(root);
   const enters = new RegExp(String.raw`\benter\s+["']?${id}\b`);
   const entered = subagentCommandsOf("claude-code", transcript).some((command) =>
     enters.test(command),
   );
-  const fixed = (await read(root, ORPHAN_FILE)) === FIXES[ORPHAN_FILE]?.[1];
+  const fixed = (await read(root, SINGLE_FIX)) === FIXES[SINGLE_FIX]?.[1];
   return id !== "" && entered && closed.includes(id) && fixed
     ? { outcome: "followed" }
     : { outcome: "stalled" };
+}
+
+/**
+ * The fix closed while a subagent waited for the person with `specty wait`, whose decisions closed
+ * it: the agent cannot take them without delegated mode. Only the main thread waiting stalls.
+ */
+async function judgeWait(root: string, transcript = ""): Promise<Verdict> {
+  const closed = (await archivedFolders(root)).length;
+  const loose = await codeWithoutChange(root, closed);
+  if (loose !== undefined) return loose;
+  const waited = subagentCommandsOf("claude-code", transcript).some((command) =>
+    WAITED.test(command),
+  );
+  const fixed = (await read(root, SINGLE_FIX)) === FIXES[SINGLE_FIX]?.[1];
+  return waited && closed > 0 && fixed ? { outcome: "followed" } : { outcome: "stalled" };
+}
+
+/** A file of FIXES changed in the main folder with no change `closed`: code without Specty. */
+async function codeWithoutChange(root: string, closed: number): Promise<Verdict | undefined> {
+  const { changed } = await fixesIn(root);
+  return changed.length > 0 && closed === 0
+    ? { outcome: "violated", reason: `código sin un cambio de Specty: ${changed.join(", ")}` }
+    : undefined;
 }
 
 /** The orphan's id, as the preparation noted it; empty in a repository it did not prepare. */
@@ -361,6 +397,15 @@ export const EXPERIMENTS: readonly Experiment[] = [
     minutes: MINUTES,
     prepare: orphanChange,
     judge: judgeOrphan,
+  },
+  {
+    id: "wait",
+    prompt: WAIT_ERRAND,
+    turns: TURNS,
+    minutes: MINUTES,
+    person: true,
+    prepare: (tool) => withSpecty(tool, CONFIG),
+    judge: judgeWait,
   },
 ];
 
