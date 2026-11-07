@@ -9,7 +9,8 @@ import type { StatsRow } from "./rows";
 export const STATS_PERIODS = ["7d", "30d", "90d", "all"] as const;
 export type StatsPeriod = (typeof STATS_PERIODS)[number];
 
-const WHO_KINDS = ["person", "agent", "model"] as const;
+/** The kinds of «Ver por», in its order. */
+export const WHO_KINDS = ["person", "agent", "model"] as const;
 export type StatsWhoKind = (typeof WHO_KINDS)[number];
 
 /** One person, agent or model; an empty name is «(sin dato)»: the changes that do not say. */

@@ -44,7 +44,7 @@ En el core del panel, `people.ts` (`rowOf`) repite cómo `summary.ts` (`countsOf
 
 ## Tareas
 
-- [ ] T1: «Personas y agentes» y el resumen cuentan el periodo y ordenan por cambios con `stats/counts.ts`
+- [x] T1: «Personas y agentes» y el resumen cuentan el periodo y ordenan por cambios con `stats/counts.ts`
   - files: packages/core/src/stats/counts.ts, packages/core/src/stats/summary.ts, packages/core/src/stats/people.ts, packages/core/src/stats/period.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats && pnpm --filter @baquia-dev/specty exec vitest run test/stats.test.ts && pnpm typecheck && pnpm lint

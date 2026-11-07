@@ -4,6 +4,7 @@
 // `GET /api/stats`; the other sections of the panel join `StatsView` as they come.
 import type { MemoryEntry } from "../memory/entries";
 import { type StatsCost, statsCost } from "./cost";
+import { type PeriodCounts, periodCounts, perWho } from "./counts";
 import { type StatsFlow, statsFlow } from "./flow";
 import { type StatsMemory, statsMemory } from "./memory";
 import { type StatsPeopleRow, statsPeople } from "./people";
@@ -11,14 +12,10 @@ import {
   compared,
   dayOf,
   inCut,
-  inRange,
-  median,
   type StatsQuery,
   type StatsRange,
   type StatsWho,
-  type StatsWhoKind,
   statsRanges,
-  sum,
 } from "./period";
 import { type StatsQuality, statsQuality } from "./quality";
 import { type StatsRhythm, statsRhythm } from "./rhythm";
@@ -145,7 +142,7 @@ export function statsView({ rows, memory, today, query }: StatsInput): StatsView
     range: current,
     ...(previous === undefined ? {} : { previous }),
     changes: lived.length,
-    options: optionsOf(rows),
+    options: perWho(rows, (who, own) => ({ who, changes: own.length })),
     summary: summaryOf(cut, entries, current, previous),
     rhythm,
     people: statsPeople(lane, current),
@@ -205,15 +202,8 @@ function summaryOf(
   };
 }
 
-/** What a period counts, before it is compared. */
-interface Counts {
-  readonly closed: number;
-  readonly tasks: number;
-  readonly cycle: number | null;
-  readonly verifications: number;
-  readonly passing: number | null;
-  readonly cost: number | null;
-  readonly measured: number;
+/** What a period counts, before it is compared: what its changes did and the pending entries. */
+interface Counts extends PeriodCounts {
   readonly pending: number;
 }
 
@@ -222,27 +212,8 @@ function countsOf(
   memory: readonly MemoryEntry[],
   range: StatsRange,
 ): Counts {
-  const closed = rows.flatMap((row) =>
-    row.closed !== undefined && inRange(dayOf(row.closed), range)
-      ? [Date.parse(row.closed) - Date.parse(row.created)]
-      : [],
-  );
-  const verified = rows.flatMap((row) =>
-    row.verifications.filter((one) => inRange(one.day, range)),
-  );
-  const costs = rows.flatMap((row) => {
-    const own = row.costs.filter((one) => inRange(one.day, range));
-    return own.length === 0 ? [] : [sum(own.map((one) => one.cost))];
-  });
-  const passed = verified.filter((one) => one.passed).length;
   return {
-    closed: closed.length,
-    tasks: sum(rows.map((row) => row.tasks.filter((day) => inRange(day, range)).length)),
-    cycle: median(closed),
-    verifications: verified.length,
-    passing: verified.length === 0 ? null : passed / verified.length,
-    cost: costs.length === 0 ? null : sum(costs),
-    measured: costs.length,
+    ...periodCounts(rows, range),
     pending: memory.filter((entry) => openAt(entry, range.to)).length,
   };
 }
@@ -256,26 +227,4 @@ function openAt(entry: MemoryEntry, day: string): boolean {
   if (entry.status !== "done" && entry.status !== "dropped") return true;
   // Done or dropped with no date: closed since it was created.
   return entry.closed !== undefined && dayOf(entry.closed.at) > day;
-}
-
-const WHO_KINDS: readonly StatsWhoKind[] = ["person", "agent", "model"];
-
-/**
- * Each person, agent and model of `rows`, with how many changes count for each: by kind, the most
- * changes first, then by name, and «(sin dato)», an empty name, last of its kind.
- */
-function optionsOf(rows: readonly StatsRow[]): StatsOption[] {
-  return WHO_KINDS.flatMap((kind) => {
-    const counts = new Map<string, number>();
-    for (const row of rows) {
-      const name = row[kind] ?? "";
-      counts.set(name, (counts.get(name) ?? 0) + 1);
-    }
-    return [...counts]
-      .toSorted(
-        ([one, many], [other, more]) =>
-          Number(one === "") - Number(other === "") || more - many || one.localeCompare(other),
-      )
-      .map(([name, changes]) => ({ who: { kind, name }, changes }));
-  });
 }

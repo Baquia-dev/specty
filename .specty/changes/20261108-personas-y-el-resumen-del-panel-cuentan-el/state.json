@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261108-personas-y-el-resumen-del-panel-cuentan-el",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-personas-y-el-resumen-del-panel-cuentan-el",
   "baseCommit": "46518cfc71473855c39a55f2b2cc740689059e0c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eed4654ec2fcdb9927098cb2e28a49cc4ed86675cf5f712a36621e283028592a",
+    "at": "2026-11-07T22:43:03.929Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "3657e8116cb6172560259e715c46e40e1600e081",
+      "startedAt": "2026-11-07T22:43:04.346Z",
+      "doneAt": "2026-11-07T22:44:33.272Z",
+      "summary": "Nuevo stats/counts.ts (periodCounts y perWho) que comparten summary.ts y people.ts para contar el periodo y ordenar por cambios; period.ts exporta WHO_KINDS. Sin tocar tests."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "AC": 1,
     "T": 1,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:eed4654ec2fcdb9927098cb2e28a49cc4ed86675cf5f712a36621e283028592a",
-    "at": "2026-11-07T22:43:03.929Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
