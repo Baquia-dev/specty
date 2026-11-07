@@ -6,6 +6,13 @@
   "branch": "specty/20261107-la-caducidad-de-los-bloqueos-y-del-indice-de",
   "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:fdf264345bcf8243dd5a0b3afe04b9da196e5c397bd6386498e46f7e7f355aba",
+    "at": "2026-11-07T05:13:36.056Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -53,12 +60,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:fdf264345bcf8243dd5a0b3afe04b9da196e5c397bd6386498e46f7e7f355aba",
-    "at": "2026-11-07T05:13:36.056Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T05:22:31.637Z"
 }
