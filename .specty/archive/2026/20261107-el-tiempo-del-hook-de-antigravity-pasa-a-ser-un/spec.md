@@ -92,3 +92,27 @@ Hoy `specty init` escribe en `.agents/hooks.json` los hooks del guard de Antigra
 - R1: Un tiempo bajo corta el guard en una máquina cargada, y Antigravity bloquea la herramienta. Mitigación: el schema no baja de 10 s, la sección «Interno» va plegada con su aviso (C8) y quitar la clave la devuelve a 30 al volver a ejecutar `init`.
 - R2: Cambiar la clave no cambia los hooks ya escritos, y la persona puede creer que ya rige. Mitigación: `doctor` lo dice y pide `init` (A2), y la descripción del ajuste dice que rige al ejecutar `init`.
 - R3: C13, C17 y C18 trabajan en paralelo y también tocan `catalog.ts`, `cards/settings-internal.ts`, `catalog.test.ts`, `formats.md` y quizá `internal-run.ts`. Mitigación: cada corte añade sus entradas a su bloque, y el conflicto al incorporar main se resuelve con `specty integrate`, conservando lo de todos.
+
+## Cierre
+
+### Resumen
+
+- Core: `internal.hooks.antigravityTimeoutSec` (30 por defecto, un entero entre 10 y 300) en un bloque `hooks` nuevo de `schema/internal-run.ts`, junto a `exec` y `server`, así que `config.ts` no cambió. En el catálogo va en «Interno», tras los puertos de la UI, con la unidad `s` y la marca `new`, y su nombre y su descripción están en español y en inglés. `doctor` tiene la línea `antigravity-timeout`, con el archivo y los segundos, en los dos idiomas.
+- CLI: la instalación de cada agente (`InstallContext`) y su `doctor` reciben la configuración resuelta. `init` le da la que había o la de por defecto, y Antigravity escribe ese tiempo en los tres hooks del guard; al volver a ejecutarse los reescribe y conserva el `Stop` y los hooks de la persona. `doctor` da un problema si algún hook del guard tiene otro tiempo o no tiene, y pide `specty init --tools antigravity`.
+- Documentación: formats.md §6 y la fila de Antigravity de la tabla de hooks de ARCHITECTURE.
+
+### Desviaciones
+
+- `docs/formats.md` pasó de T1 a T2 antes de aprobar, para dejar T1 en 5 archivos, y T4 añadió `pnpm typecheck` a su `verify`, como pidió `propose`.
+- `install/install.ts` usa ya la misma configuración resuelta para el tiempo del fin de turno (`verify.timeoutSec`), en vez de repetir el `?? DEFAULT_CONFIG`.
+
+### Decisiones
+
+- Las instalaciones ya hechas no cambian solas: solo `init` reescribe `.agents/hooks.json` (D2, «Specty detecta, el agente corrige»), y `doctor` lo detecta como un problema, igual que un hook de un `init` anterior.
+- Los tests nuevos van en archivos propios (`internal-hooks.test.ts`, `doctor-antigravity-timeout.test.ts` y `antigravity-timeout.test.ts`), y `catalog.test.ts` solo suma la clave a sus listas exactas, para no alargarlo más.
+- `installHooks` toma la configuración opcional, con `DEFAULT_CONFIG`, para que los tests de Codex y OpenCode que la llaman sin ella sigan igual.
+
+### Pendientes
+
+- Al guardar `internal.hooks.antigravityTimeoutSec` desde «Configuración», el diálogo «Revisar y guardar» no dice que hay que volver a ejecutar `specty init --tools antigravity` para que rija; hasta entonces solo lo dice `doctor`.
+- AC7 se comprueba a mano: formats.md §6 y la fila de Antigravity de ARCHITECTURE.
