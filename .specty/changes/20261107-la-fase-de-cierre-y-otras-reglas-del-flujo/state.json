@@ -6,6 +6,13 @@
   "branch": "specty/20261107-la-fase-de-cierre-y-otras-reglas-del-flujo",
   "baseCommit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:3a661febefa2f4412617eaafdf83c89a4f78f22277c21ffcbd4a414b79f8c603",
+    "at": "2026-11-07T10:51:47.707Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:3a661febefa2f4412617eaafdf83c89a4f78f22277c21ffcbd4a414b79f8c603",
-    "at": "2026-11-07T10:51:47.707Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T11:10:59.162Z"
 }
