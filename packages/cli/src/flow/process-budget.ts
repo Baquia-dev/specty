@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { availableParallelism } from "node:os";
+import { processBudgetNote } from "@baquia-dev/specty-core";
 import { availableMemory } from "../io/memory";
 import type { Session } from "../session";
 
@@ -17,13 +18,16 @@ interface Share {
 
 const MIB = 1024 * 1024;
 
+/** The places of the clone's `slots` a command holds: at least 1 and at most all of them. */
+const heldOf = (places: number, slots: number): number => Math.min(Math.max(places, 1), slots);
+
 /**
  * How many processes a verification's command may start: of its share of the clone's places, the
  * fewest of its cores and of the processes of `memoryMiB` that fit in its memory, rounded down and
  * never fewer than 1. With 2 places, a task's counts on half, the full one on all.
  */
 export function processBudget({ cores, memory, memoryMiB, places, slots }: Share): number {
-  const held = Math.min(Math.max(places, 1), slots);
+  const held = heldOf(places, slots);
   const byCores = Math.floor((cores * held) / slots);
   const byMemory = Math.floor((memory * held) / slots / (memoryMiB * MIB));
   return Math.max(1, Math.min(byCores, byMemory));
@@ -37,9 +41,10 @@ const WHOLE = /^[1-9]\d*$/;
  * the clone's `verify.slots` (`inSlots`): the session's, with each variable of
  * `verify.processes.env` set to its `processBudget` from the machine's cores and the memory
  * available then, unless it already holds a smaller positive whole number, the person's choice.
- * Without variables, the session's as it is, and the memory is not measured. Each command asks
- * again, so the number is the one of the moment it starts, when the verifications already running
- * hold their memory.
+ * It says on the error output the number and what it comes from (`processBudgetNote`). Without
+ * variables, the session's as it is, the memory is not measured and it says nothing. Each command
+ * asks again, so the number is the one of the moment it starts, when the verifications already
+ * running hold their memory.
  */
 export async function budgetedEnv(session: Session, places: number): Promise<NodeJS.ProcessEnv> {
   const { env } = session.environment;
@@ -51,8 +56,11 @@ export async function budgetedEnv(session: Session, places: number): Promise<Nod
   const budget = processBudget({ cores, memory, memoryMiB, places, slots });
   const told = (value: string | undefined) =>
     value !== undefined && WHOLE.test(value) ? Math.min(Number(value), budget) : budget;
+  const variables = processes.env.map((name) => ({ name, value: told(env[name]) }));
+  const view = { budget, variables, memory, cores, places: heldOf(places, slots), slots };
+  session.environment.io.err(processBudgetNote(view, session.lang));
   return {
     ...env,
-    ...Object.fromEntries(processes.env.map((name) => [name, String(told(env[name]))])),
+    ...Object.fromEntries(variables.map(({ name, value }) => [name, String(value)])),
   };
 }

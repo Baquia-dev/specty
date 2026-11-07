@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-la-verificacion-dice-cuantos-procesos-usa-y-por",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-la-verificacion-dice-cuantos-procesos-usa-y-por",
   "baseCommit": "6765424511a13d97a89c76156111aecadd5f9a98",
   "revision": 2,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8d3610f62c91a24a591584376c5c37f21fd89fba",
+      "attempts": 1,
       "startedAt": "2026-11-07T19:43:22.676Z",
       "doneAt": "2026-11-07T19:44:20.098Z",
-      "summary": "processBudgetNote en core/cards/processes.ts: la línea con el número, las variables (aparte las que se quedan con el valor de su entorno), la memoria en GB, los núcleos y las plazas, en es/en; exportada en cards/index.ts"
+      "summary": "processBudgetNote en core/cards/processes.ts: la línea con el número, las variables (aparte las que se quedan con el valor de su entorno), la memoria en GB, los núcleos y las plazas, en es/en; exportada en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8c0e21506b1aa954e71c6da2274ac06a55f30246",
+      "startedAt": "2026-11-07T19:44:20.394Z",
+      "doneAt": "2026-11-07T19:45:38.554Z",
+      "summary": "budgetedEnv dice por la salida de error la línea de processBudgetNote (número, variables con las que se quedan con lo suyo aparte, memoria, núcleos y plazas que ocupa) y no dice nada sin variables; formats.md §6 lo documenta"
     }
   },
   "pending": {

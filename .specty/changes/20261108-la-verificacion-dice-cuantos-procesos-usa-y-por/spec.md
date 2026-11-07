@@ -53,7 +53,7 @@ Desde C1 y C2, cada comando de una verificación recibe en las variables de `ver
   - files: packages/core/src/cards/processes.ts, packages/core/src/cards/index.ts, packages/core/test/cards/processes.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/processes.test.ts && pnpm lint
-- [ ] T2: Cada comando de verificación dice la línea al calcular su número, y la documentación lo explica
+- [x] T2: Cada comando de verificación dice la línea al calcular su número, y la documentación lo explica
   - files: packages/cli/src/flow/process-budget.ts, packages/cli/test/process-budget.test.ts, packages/cli/test/verify-processes.test.ts, docs/formats.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/process-budget.test.ts test/verify-processes.test.ts && pnpm typecheck && pnpm lint && pnpm knip
