@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-tiempo-del-hook-de-antigravity-pasa-a-ser-un",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-tiempo-del-hook-de-antigravity-pasa-a-ser-un",
   "baseCommit": "122b0f87b0dd21aa992fe015859351574e4588ec",
   "revision": 2,
@@ -52,6 +52,10 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T05:49:16.702Z"
+  "lockedTests": {
+    "packages/core/test/settings/catalog.test.ts": "sha256:5f909615010743b8fc1fe79d7c951416a6610f66812267c5c0972ef50820008d",
+    "packages/cli/test/antigravity-timeout.test.ts": "sha256:ab940d62abc003e5c0f20040e81cb5a4b1718363b6ed05e573c74d6020059237",
+    "packages/core/test/cards/doctor-antigravity-timeout.test.ts": "sha256:ab29d624e36d3595a9291833b0b7ff93067ce08505067efb36843b718dce3442",
+    "packages/core/test/settings/internal-hooks.test.ts": "sha256:327f6631ef1bfcb3304a7a4ad6e8658f4c9f67428da5690feea36c03c9fab890"
+  }
 }
