@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-intervalos-de-sondeo-pasan-a-ser-ajustes",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-los-intervalos-de-sondeo-pasan-a-ser-ajustes",
   "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
   "revision": 2,
@@ -59,6 +59,11 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T05:22:25.181Z"
+  "lockedTests": {
+    "packages/cli/src/flow/full-verification.test.ts": "sha256:3f88ea7374f3473d4dc3036811fea44ca0878abe39014fe2533f367be719a1a0",
+    "packages/cli/src/store/verify-slots.test.ts": "sha256:35d7bcd9268c906dbbc446a8290fe7ffdf1f5f4b7cb7b58c5425903ae883a9c1",
+    "packages/cli/test/wait.test.ts": "sha256:3e919b60d0347104a17523d3242838b11599e90a1e019f41f87c063a172e4887",
+    "packages/core/test/schema/schema.test.ts": "sha256:a7c9d47a086b9ef38230e836353787caa011ff24f86dcf0b0eedf2ad02a55774",
+    "packages/core/test/settings/catalog.test.ts": "sha256:b56b3a2134324bfeee7f00f64c0bd05a9c1c65b706a4d71d474df8959073a605"
+  }
 }
