@@ -77,7 +77,7 @@ Hoy cuatro límites de lo que Specty le muestra al agente están fijos en el có
   - files: packages/core/src/schema/internal-cards.ts, packages/core/src/schema/config.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/settings/card-limits.test.ts, packages/core/test/settings/catalog.test.ts, docs/formats.md
   - ac: AC5, AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/card-limits.test.ts test/settings/catalog.test.ts
-- [ ] T3: `propose`, `review`, `task done` y `new` usan los límites de la configuración
+- [x] T3: `propose`, `review`, `task done` y `new` usan los límites de la configuración
   - files: packages/cli/src/flow/impact.ts, packages/cli/src/commands/review.ts, packages/cli/src/commands/task.ts, packages/cli/src/commands/new.ts, packages/cli/test/card-limits.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/card-limits.test.ts && pnpm typecheck

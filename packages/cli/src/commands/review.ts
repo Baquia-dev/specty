@@ -97,7 +97,7 @@ async function runReview(session: Session, active: StoredChange, run: ReviewRun)
       session.cards,
     );
   const view = { header, target, command, path: session.paths.relative(path), text } as const;
-  return reviewedCard(view, session.cards);
+  return reviewedCard(view, session.cards, session.config.internal.cards.reviewLines);
 }
 
 type Input =
