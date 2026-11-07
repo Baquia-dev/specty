@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4c78b94b7daf14264375ecafea0a3b24b96dfea4",
+      "startedAt": "2026-11-07T00:10:56.836Z",
+      "doneAt": "2026-11-07T00:12:23.217Z",
+      "summary": "tooLargeStep en cards/subagents.ts lo usan el encargo de un cambio nuevo y el de retomar; OrphanView gana kind, la épica huérfana sale marcada y, con subagentes, la retoma la sesión; el subagente y su encargo quedan para los demás"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

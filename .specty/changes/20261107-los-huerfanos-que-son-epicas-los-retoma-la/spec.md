@@ -55,7 +55,7 @@ Con una herramienta que reparte en subagentes, la tarjeta sin cambio activo pide
 
 ## Tareas
 
-- [ ] T1: El encargo para retomar se para ante una épica, y el bloque deja las épicas huérfanas a la sesión
+- [x] T1: El encargo para retomar se para ante una épica, y el bloque deja las épicas huérfanas a la sesión
   - files: packages/core/src/cards/subagents.ts, packages/core/src/cards/idle.ts, packages/core/src/cards/rejoin.ts, packages/core/test/cards/orphans-epic.test.ts, packages/core/test/cards/orphans-subagents.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/orphans-epic.test.ts test/cards/orphans-subagents.test.ts test/cards/rejoin.test.ts test/cards/idle-subagents.test.ts test/cards/idle-epic-size.test.ts && pnpm lint
