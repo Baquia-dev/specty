@@ -45,3 +45,24 @@ En el «Panel» de `specty ui`, «Los cambios más caros» y «Cambios con más 
 - C3: Personas y el resumen del panel cuentan el periodo con el mismo código
   - ac: AC7
   - depends: C1
+
+## Cierre
+
+### Resumen
+
+Las listas del «Panel» muestran el título de cada cambio y «Sesiones» muestra «—» cuando nada la mide, en tres cortes cerrados en main. C1 (46518cf, P329): el core da `null` en «Sesiones» de «Personas y agentes» y de «Los cambios más caros» cuando ninguna línea de sus cambios trae sesión, y el panel y `specty stats` escriben «—»; con alguna sesión pero ninguna en el periodo sigue siendo 0. C2 (6455915, P349): `StatsRow` gana un `title` opcional, `cost.top` y `quality.worst` lo copian, el servidor lee las filas con `listedRows` y las dos listas muestran el título enlazado con el id debajo, como la tabla «Cambios». C3 (df8af8c, P328): `stats/counts.ts` reúne el conteo del periodo y el orden por cambios que repetían `people.ts` y `summary.ts`, sin cambiar ninguna cifra.
+
+### Desviaciones
+
+- La épica nació de un cambio estándar que salió XL (`20261107-las-listas-del-panel-muestran-el-titulo-y`). Al ponerle `kind: epic` en su sitio, Specty lo aprobó como estándar vacío, porque ningún comando cambia el tipo del estado (P354). Con el permiso del usuario se canceló y se rehízo como esta épica, que añadió C3 para la limpieza P328.
+- `specty stats` también lee las filas con título (C2), en contra de A1: un test aprobado exige que `specty stats --json` dé lo mismo que `GET /api/stats`. La tabla de la terminal sigue con el id y el tiempo medido no cambia.
+- C1 necesitó dos desbloqueos del test de AC1 del core, aprobados por la persona: uno de datos (S1) y otro solo de formato (S2), porque el parche de S1 no pasaba por Biome.
+- C1 y C3 los terminó otra sesión del usuario, en paralelo con los subagentes de esta.
+
+### Decisiones
+
+- Tres cortes independientes salvo C3, que esperó a C1 porque los dos tocan `people.ts`; C1 y C2 limitaron sus cambios en `cost.ts` y `dashboard-cost.ts` a su parte, y el conflicto de `docs/ui.md` se resolvió al incorporar main conservando las dos.
+
+### Pendientes
+
+- Ninguno.

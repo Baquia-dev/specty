@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261108-panel-titulos-y-sesiones",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261108-panel-titulos-y-sesiones",
   "baseCommit": "89ef4fe4ce5725e9021aa923aa57cdbce41eabc2",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5e0422222247615ab217d4805406d4d1aa4361265ae56d06175e2d392570a673",
+    "at": "2026-11-07T16:57:28.185Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -50,11 +57,5 @@
     "AC": 7,
     "C": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5e0422222247615ab217d4805406d4d1aa4361265ae56d06175e2d392570a673",
-    "at": "2026-11-07T16:57:28.185Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-07T22:53:40.989Z"
 }
