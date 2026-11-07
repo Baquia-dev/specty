@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-salida-lo-que-se-muestra-y-los-limites-del",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-la-salida-lo-que-se-muestra-y-los-limites-del",
   "baseCommit": "b86197436485e8d85b86ad14e6a72becfa16bb2e",
   "revision": 2,
@@ -51,6 +51,10 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T04:41:57.461Z"
+  "lockedTests": {
+    "packages/cli/test/check-commands.test.ts": "sha256:fd730e89982d9bc35ead03639d18c7bed860823012275fe9b91184aade65200a",
+    "packages/cli/test/review.test.ts": "sha256:e242ce2c8ab15a7d6adc9a029e93710fb32cd5ef4e28837c98851e57afabce10",
+    "packages/core/test/settings/catalog.test.ts": "sha256:48166b08ab8d4261668a9c97a16d0104a02eefd5f815c653e3262c7ad1197d0a",
+    "packages/cli/test/server/output-limit.test.ts": "sha256:906a151b4ee2a6854f6ae92ea654c3797add2a9ed5a17061e42ec802c3086b33"
+  }
 }
