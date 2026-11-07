@@ -144,6 +144,7 @@ const SECTIONS = [
   "ui",
   "effort",
   "glossary",
+  "internal",
 ];
 
 describe("the settings page", () => {
@@ -173,6 +174,7 @@ describe("the settings page", () => {
       "Interfaz",
       "Esfuerzo por herramienta",
       "Glosario",
+      "Interno",
     ]);
     expect(keys()).toEqual(SETTINGS.map((setting) => setting.key));
     const timeout = settingText("verify.timeoutSec", "es");
@@ -223,7 +225,6 @@ describe("the settings page", () => {
     for (const key of [
       "team.approvers",
       "team.requirePrReview",
-      "ui.port",
       "ui.requireUserPresence",
       "effort",
     ]) {
@@ -252,14 +253,14 @@ describe("the settings page", () => {
 
   it("AC3: filters by mark, with how many settings each filter has, and the search narrows the filter", async () => {
     const { page, keys, filters, choose, search } = await open(valid(INPUT));
-    const count = (flag: "permissions" | "command") =>
+    const count = (flag: "permissions" | "command" | "new") =>
       SETTINGS.filter((setting) => setting[flag] === true).map((setting) => setting.key);
     expect(filters()).toEqual([
       `Todos · ${SETTINGS.length}`,
       "Modificados · 4",
       `Afectan permisos · ${count("permissions").length}`,
       `Ejecutan comandos · ${count("command").length}`,
-      "Nuevos · 0",
+      `Nuevos · ${count("new").length}`,
     ]);
     await choose("modified");
     expect(keys()).toEqual(["language", "policy.tests", "verify.default", "verify.timeoutSec"]);
@@ -271,8 +272,10 @@ describe("the settings page", () => {
     await choose("command");
     expect(keys()).toEqual(count("command"));
     await choose("new");
-    expect(keys()).toEqual([]);
+    expect(keys()).toEqual(count("new"));
+    await search("nada de esto existe");
     expect(text(page()?.querySelector("[data-no-match]"))).toBe("Nada coincide con el filtro.");
+    await search("");
     await choose("all");
     expect(keys()).toHaveLength(SETTINGS.length);
   });
@@ -314,7 +317,8 @@ describe("the settings page", () => {
     expect(mark("policy.tests", "permissions")).toBe("Affects permissions");
     expect(mark("verify.default", "command")).toBe("Runs a command");
     expect(mark("specty delegate", "clone")).toBe("This clone");
-    expect(mark("ui.port", "soon")).toBe("Coming soon");
+    expect(mark("ui.port", "soon")).toBe("");
+    expect(mark("team.approvers", "soon")).toBe("Coming soon");
     expect(filters().map((label) => label.replace(/ · \d+$/, ""))).toEqual([
       "All",
       "Modified",
@@ -323,5 +327,46 @@ describe("the settings page", () => {
       "New",
     ]);
     expect(text(page()?.querySelector("[data-read-only]"))).toContain("Read-only");
+  });
+
+  /** The settings of execution and of the server that were fixed in Specty's code until C9. */
+  const RUN = ["internal.exec.priority", "internal.server.portsTried"];
+
+  it("AC5: shows the verifications' priority and the ports the UI tries in «Interno», the last section, marked «Nuevo», and ui.port is no longer «Próximamente»", async () => {
+    const { sections, headings, row, part, marks, mark } = await open(valid(INPUT));
+    expect(sections().at(-1)).toBe("internal");
+    expect(headings().at(-1)).toBe("Interno");
+    for (const key of RUN) {
+      expect(row(key)?.closest('section[data-section="internal"]'), key).not.toBeNull();
+      expect(mark(key, "new"), key).toBe("Nuevo");
+      expect(part(key, "key"), key).toBe(key);
+      expect(part(key, "name"), key).toBe(settingText(key, "es").name);
+    }
+    expect(part("internal.exec.priority", "value")).toBe("10");
+    expect(part("internal.server.portsTried", "value")).toBe("20");
+    expect(marks("ui.port")).not.toContain("soon");
+    expect(part("ui.port", "value")).toBe("auto");
+  });
+
+  it("AC5: shows a configured internal setting as modified, with today's value as its default", async () => {
+    const { part, mark } = await open(
+      valid({ ...INPUT, internal: { exec: { priority: 15 }, server: { portsTried: 5 } } }),
+    );
+    expect(part("internal.exec.priority", "value")).toBe("15");
+    expect(mark("internal.exec.priority", "modified")).toBe("Modificado");
+    expect(part("internal.exec.priority", "default")).toBe("Por defecto: 10");
+    expect(part("internal.server.portsTried", "value")).toBe("5");
+    expect(part("internal.server.portsTried", "default")).toBe("Por defecto: 20");
+  });
+
+  it("AC6: names the section «Interno» and its settings in English", async () => {
+    const { headings, part, mark } = await open(valid(INPUT), "en");
+    expect(headings().at(-1)).toBe("Internal");
+    for (const key of RUN) {
+      expect(mark(key, "new"), key).toBe("New");
+      expect(part(key, "name"), key).toBe(settingText(key, "en").name);
+      expect(part(key, "description"), key).toBe(settingText(key, "en").description);
+      expect(settingText(key, "en").name, key).not.toBe(settingText(key, "es").name);
+    }
   });
 });
