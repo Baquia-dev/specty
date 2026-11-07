@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-specty-stats-da-el-resumen-del-panel-en-la",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-specty-stats-da-el-resumen-del-panel-en-la",
   "baseCommit": "a4e6321c4130771efd5b22d9cc3115e691c6cc6c",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:ea740ea7aa0481c4f565d15d9f856323c3dbcd3478674af36687ba63c4fb07d2",
@@ -60,12 +60,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "11d28ffafc38601f560c37339325767ed51e043e",
+      "attempts": 1,
       "startedAt": "2026-11-07T10:44:00.597Z",
       "doneAt": "2026-11-07T10:49:26.203Z",
-      "summary": "specty stats imprime el resumen del panel o, con --json, el mismo StatsView que /api/stats: ambos leen con statsOf en server/stats.ts, que pasa a plainRecords (P322); rechaza con código 1 lo que no entiende"
+      "summary": "specty stats imprime el resumen del panel o, con --json, el mismo StatsView que /api/stats: ambos leen con statsOf en server/stats.ts, que pasa a plainRecords (P322); rechaza con código 1 lo que no entiende",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,6 +78,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-07T10:49:55.976Z",
   "lockedTests": {
     "packages/cli/test/stats.test.ts": "sha256:caebe622bfc8d839a60457712e37959f5d5dd2ebdb426ffc0bc9088242a3290d",
     "packages/core/test/cards/stats.test.ts": "sha256:98081f43a7e0e845f02a1b2b5797659ade85d74f14e8f4ec8cc9428a175a42a2"

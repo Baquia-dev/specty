@@ -75,3 +75,23 @@ Hoy el resumen de lo que se hizo con Specty solo se ve en el «Panel» de `spect
 
 - R1: C3 y C7 tocan a la vez `server/api.ts` y el tipo de la respuesta. Mitigación: aquí solo se mueve la lectura de `statsAnswer` a su módulo, sin cambiar lo que responde, y el comando lee `StatsView` sin tocarlo.
 - R2: Las cifras del texto se calculan aparte de las del panel y podrían no coincidir. Mitigación: el texto solo formatea el `StatsView` que da `statsView`, y un test compara `--json` con `/api/stats`.
+
+## Cierre
+
+### Resumen
+
+`specty stats [--period 7d|30d|90d|all] [--who person:<nombre>|agent:<herramienta>|model:<modelo>] [--kind <carril>]` imprime en la terminal el resumen del «Panel» de `specty ui`, 30 días por defecto. La cabecera lleva el periodo, sus fechas y el corte. Debajo van los seis indicadores, con su variación frente al periodo anterior salvo con `all`, y una tabla alineada por persona, agente y modelo, con sus cambios, tareas, ciclo, verificaciones que pasan, sesiones y coste. Sin ningún cambio del corte en el periodo, lo dice. Rechaza con código 1 el valor de una opción que no entiende. Con `--json` da tal cual el `StatsView` de `GET /api/stats`, porque los dos leen con la misma función, `statsOf` en `server/stats.ts`, que ahora usa `plainRecords` (P322). Los textos están en `cards/stats.ts`, en español y en inglés, y la documentación, en `docs/ARCHITECTURE.md` §6 y §15 y en `docs/formats.md` §9.
+
+### Desviaciones
+
+- El ejemplo de `docs/formats.md` §9 va en T1, con la tarjeta, y no en T2: así T2 no pasa de 6 archivos y cada tarea lleva sus tests, como pide la política `contract`.
+
+### Decisiones
+
+- El texto es una tarjeta normal (`statsCard`, con `renderText`). El comando responde un `ReportOutput`, como `specty audit`, para que `--json` dé los datos del panel y no la tarjeta.
+- La tabla de personas, agentes y modelos lleva todas las filas del carril, sea cual sea el `--who`, como la sección del panel desde la que se elige otro corte.
+- Las duraciones siguen el formato de la UI (`formatDuration`): s, min, h y min, y d y h. El coste va en USD con dos decimales, como en el cierre de cada cambio.
+
+### Pendientes
+
+- Añadir a `specty stats` el tiempo por fase y los cambios más caros (A10 de la épica) cuando C3 (`stats/flow.ts`) y C4 (`stats/cost.ts`) estén en main: hoy la tarjeta solo imprime los indicadores y las tablas por persona, agente y modelo.
