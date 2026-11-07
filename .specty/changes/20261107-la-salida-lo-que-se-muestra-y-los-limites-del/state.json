@@ -40,7 +40,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/test/settings/catalog.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "9fae0d0096054131f7fb380679a5780861276173",
+      "startedAt": "2026-11-07T04:42:12.091Z",
+      "doneAt": "2026-11-07T05:00:03.359Z",
+      "summary": "internal.exec.maxOutputKiB (512, entero de 64 a 16384) en el bloque exec de schema/internal-run.ts; su ajuste en «Interno» tras la prioridad, con la marca new y sus textos en es/en; formats.md §6 lo documenta. Desbloqueo S1 aprobado: la lista de ajustes «Nuevo» suma la clave."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -49,12 +61,13 @@
     "A": 4,
     "AC": 7,
     "T": 3,
-    "R": 2
+    "R": 2,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/check-commands.test.ts": "sha256:fd730e89982d9bc35ead03639d18c7bed860823012275fe9b91184aade65200a",
     "packages/cli/test/review.test.ts": "sha256:e242ce2c8ab15a7d6adc9a029e93710fb32cd5ef4e28837c98851e57afabce10",
-    "packages/core/test/settings/catalog.test.ts": "sha256:48166b08ab8d4261668a9c97a16d0104a02eefd5f815c653e3262c7ad1197d0a",
+    "packages/core/test/settings/catalog.test.ts": "sha256:cc2aa85b130d6f7154377314d65bb444072f78219a1a5872025d69035727f932",
     "packages/cli/test/server/output-limit.test.ts": "sha256:906a151b4ee2a6854f6ae92ea654c3797add2a9ed5a17061e42ec802c3086b33"
   }
 }

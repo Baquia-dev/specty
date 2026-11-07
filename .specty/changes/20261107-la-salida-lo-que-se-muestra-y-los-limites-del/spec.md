@@ -71,7 +71,7 @@ Hoy Specty lee como mucho 512 KiB de la salida de cada comando que ejecuta, y la
 
 ## Tareas
 
-- [ ] T1: La clave `internal.exec.maxOutputKiB` en el schema y su ajuste en el catálogo, con sus textos
+- [x] T1: La clave `internal.exec.maxOutputKiB` en el schema y su ajuste en el catálogo, con sus textos
   - files: packages/core/src/schema/internal-run.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/catalog.test.ts, docs/formats.md
   - ac: AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts

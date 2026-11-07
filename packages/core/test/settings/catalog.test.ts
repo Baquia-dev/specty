@@ -150,6 +150,7 @@ describe("the settings' catalog", () => {
       "internal.waits.heartbeatSec",
       "internal.retries.landing",
       "internal.exec.priority",
+      "internal.exec.maxOutputKiB",
       "internal.server.portsTried",
     ]);
   });
