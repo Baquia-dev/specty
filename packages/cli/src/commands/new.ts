@@ -20,7 +20,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { bindNew } from "../enforce/sessions";
 import { commitState, isFinished, resolveActive } from "../flow/active";
-import { freeBranch, markBranch } from "../flow/branches";
+import { freeBranch, lockWaits, markBranch } from "../flow/branches";
 import { duplicatesOf } from "../flow/duplicates";
 import { sliceRefusal } from "../flow/epic";
 import { cleanUp, type Swept, withCleanup } from "../flow/prune";
@@ -160,7 +160,7 @@ async function newInFolder(session: Session, options: NewOptions, title: string)
   const branch = settings.branchPerChange ? await branchFor(session, options, id) : undefined;
   if (branch !== undefined) {
     await session.git.output(["switch", "-q", "-c", branch]);
-    await markBranch(session.git, branch, id);
+    await markBranch(session.git, branch, id, branchWaits(session));
   } else await writePointer(session.git, "active", id);
   const created = await createChange(session, options, {
     id,
@@ -252,6 +252,9 @@ async function withSweptAndPorts(
   return withDevPorts(cleaned, await portsOf(session, folder), session.lang);
 }
 
+/** The waits of `markBranch` while another process holds git's configuration, as configured. */
+const branchWaits = (session: Session) => lockWaits(session.config.internal.retries.gitConfig);
+
 /**
  * Ties the new worktree's branch to its change; `markBranch` already tries again while another
  * process holds git's configuration. If git still cannot, the folder and the branch `new` has just
@@ -264,7 +267,7 @@ async function markOrUndo(
 ): Promise<Output | undefined> {
   const { git } = session;
   try {
-    await markBranch(git, made.branch, made.id);
+    await markBranch(git, made.branch, made.id, branchWaits(session));
     return undefined;
   } catch (error) {
     if (!(error instanceof GitError)) throw error;

@@ -43,10 +43,13 @@ export async function freeBranch(git: Git, name: string, attempt = 1): Promise<s
 }
 
 /**
- * The waits, in milliseconds, between tries of `markBranch`: another process of the clone holds
- * git's configuration (`.git/config.lock`) only while it writes, so a moment later it is free.
+ * The waits, in milliseconds, between the `retries` more tries of `markBranch`
+ * (`internal.retries.gitConfig`), each twice the last from 50 ms: another process of the clone
+ * holds git's configuration (`.git/config.lock`) only while it writes, so a moment later it is free.
  */
-const LOCK_WAITS: readonly number[] = [50, 100, 200, 400, 800];
+export function lockWaits(retries: number): readonly number[] {
+  return Array.from({ length: retries }, (_, index) => 50 * 2 ** index);
+}
 
 /**
  * Ties `branch` to the change `id` in git's common configuration (`branch.<branch>.specty`), so
@@ -58,7 +61,7 @@ export async function markBranch(
   git: Pick<Git, "run">,
   branch: string,
   id: string,
-  waits: readonly number[] = LOCK_WAITS,
+  waits: readonly number[],
 ): Promise<void> {
   const args = ["config", `branch.${branch}.specty`, id];
   let result = await git.run(args);

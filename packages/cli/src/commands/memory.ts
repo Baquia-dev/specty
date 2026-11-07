@@ -279,11 +279,15 @@ export function authorOf(session: Session): string {
   return session.actor === "human" ? "person" : (session.tool ?? "agent");
 }
 
-/** The memory's branch, and the trailers of Specty's commits that apply (formats.md §7). */
+/**
+ * The memory's branch, the trailers of Specty's commits that apply (formats.md §7) and how many
+ * more times a write is tried when another session wrote first (`internal.retries.memory`).
+ */
 export function targetOf(session: Session, change: string | undefined): MemoryTarget {
   return {
     branch: session.config.memory.branch,
     lang: session.lang,
+    retries: session.config.internal.retries.memory,
     trailers: {
       ...(change !== undefined ? { "Specty-Change": change } : {}),
       ...(session.actor === "agent" && session.tool !== undefined
