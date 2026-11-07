@@ -84,7 +84,7 @@ Hoy el umbral del aviso de sesión nueva, el tiempo que Specty espera a ccusage,
   - files: packages/core/src/schema/warnings.ts, packages/core/src/schema/config.ts, packages/core/src/validate/quality.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-warnings.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/catalog.test.ts, packages/core/test/validate/quality.test.ts, docs/formats.md
   - ac: AC4, AC5, AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts test/validate/quality.test.ts
-- [ ] T2: La página «Configuración» muestra las secciones «Avisos» y «Consumo y sesiones»
+- [x] T2: La página «Configuración» muestra las secciones «Avisos» y «Consumo y sesiones»
   - files: packages/ui/src/settings/settings-page.test.ts, docs/ui.md
   - ac: AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts

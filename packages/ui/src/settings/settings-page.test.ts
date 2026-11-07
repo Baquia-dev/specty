@@ -382,7 +382,8 @@ describe("the settings page", () => {
     await search("");
     expect(internal.folded()).toBe(true);
     await choose("new");
-    expect(keys()).toEqual([
+    // Other sections have new settings too: «Interno» opens for its own.
+    expect(keys().filter((key) => key?.startsWith("internal."))).toEqual([
       "internal.waits.waitTimeoutSec",
       "internal.waits.heartbeatSec",
       "internal.retries.landing",

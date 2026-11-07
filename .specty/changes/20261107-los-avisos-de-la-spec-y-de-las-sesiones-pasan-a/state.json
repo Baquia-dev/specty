@@ -55,12 +55,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "36f112b5ce273bd1f1818ba36477b8ec33b0433b",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:25:05.385Z",
       "doneAt": "2026-11-07T04:35:03.971Z",
-      "summary": "Claves usage y warnings en schema/warnings.ts reunidas por spread en config.ts; quality.ts suma los términos vagos y capas de la persona a los de Specty; secciones «Avisos» y «Consumo y sesiones» con cinco ajustes nuevos en el catálogo y sus textos en cards/settings-warnings.ts; formats.md §6"
+      "summary": "Claves usage y warnings en schema/warnings.ts reunidas por spread en config.ts; quality.ts suma los términos vagos y capas de la persona a los de Specty; secciones «Avisos» y «Consumo y sesiones» con cinco ajustes nuevos en el catálogo y sus textos en cards/settings-warnings.ts; formats.md §6",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/settings/settings-page.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "7afe1a427a95527146c3ba2d55b265260dffcf94",
+      "startedAt": "2026-11-07T04:35:04.631Z",
+      "doneAt": "2026-11-07T05:00:14.541Z",
+      "summary": "La página muestra «Avisos» y «Consumo y sesiones» desde el catálogo; ui.md las documenta; el test de C8 del filtro Nuevos compara solo las claves internal.* (desbloqueo S1, aprobado por la persona)"
     }
   },
   "pending": {
@@ -71,7 +82,8 @@
     "A": 7,
     "AC": 8,
     "T": 3,
-    "R": 3
+    "R": 3,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/fresh-session.test.ts": "sha256:830e5a61768191901e67978f70c468f2391a9a4a0791382d5bda4f038abd3419",
@@ -79,6 +91,6 @@
     "packages/cli/test/usage.test.ts": "sha256:b0578e525f6b014177631d1a551197615ea0ac2b2e71f9db95cb9bc0f45d1885",
     "packages/core/test/settings/catalog.test.ts": "sha256:500905365f6b922ee002109ecaa8b495407ad18246a60cf483b1808102f6d9c5",
     "packages/core/test/validate/quality.test.ts": "sha256:b5374c14a0d47ec4d4efb6cdbc58af7d94c1f17491a0678dd50f455351e7fcc7",
-    "packages/ui/src/settings/settings-page.test.ts": "sha256:44a9f32694238aecc7eb80c373c3f449b8242c08da3c475c9a3ebc07082d3f89"
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:a0917b67bad07d4cdc6b26c83a7a2a4d190f4cb76c0476223cce394b91478725"
   }
 }
