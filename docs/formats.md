@@ -357,7 +357,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `tests.locked` | en el ciclo de un bug, Specty bloqueó los tests en rojo sin esperar a la persona: `count` y `files` |
 | `task.started` | tarea, commit base |
 | `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló, y `tree`: el código sobre el que corrió, un hash de las rutas y los contenidos de los archivos de código del árbol de trabajo (los de fuera de `.specty/` y de `ignored`), tomado antes de verificar |
-| `task.completed` | tarea, commit, resumen (300 caracteres como máximo, o los de `internal.cards.noteChars`) y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden, de 300 caracteres como máximo cada uno (o los de `internal.cards.noteChars`); si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |
+| `task.completed` | tarea, commit, resumen (300 caracteres como máximo, o los de `internal.cards.noteChars`) y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line?, label? }` por hallazgo, con `rule: "custom"` y el `label` de la persona en los de sus reglas (`warnings.risks`, §6); con `--finding`, `findings`: los textos del agente, en orden, de 300 caracteres como máximo cada uno (o los de `internal.cards.noteChars`); si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |
 | `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban); si la persona aprueba el desbloqueo de tests aprobados, `unlock` (sus rutas), `task` y, si la solicitud los lleva, su `patch` y su `evidence`; la solicitud de un desbloqueo lleva `patch` y `evidence`, como en `state.json`, y si al aprobarla su parche ya no vale (el test no está como se bloqueó o el parche no se aplica), Specty la rechaza (actor `specty`) con el motivo; la solicitud de `retro --into` lleva `retro` (la huella de lo preparado), y si lo preparado cambió antes de aprobarla, Specty la rechaza (actor `specty`) con el motivo |
 | `epic.slicesDone` | todos los cortes de una épica tienen un cambio cerrado, y `specty next` la pasa a aceptación (actor `specty`): `slices`, el cambio de cada corte |
 | `adjust.requested` | petición literal |
@@ -474,9 +474,14 @@ checks:                           # specty check (ADR 0012)
   testTime:                       # opcional: la verificación test-time y los tests que fallaron en `specty verify --fresh`; sin la clave, ninguna lee informes JUnit
     reports: ["reports/junit.xml", "*/*/reports/junit.xml"]  # dónde dejan los tests sus informes JUnit XML, con * dentro de un tramo; obligatorio, sin valor por defecto
     maxMs: 2000                   # obligatorio: avisa de cada test que tarda más de estos milisegundos (un entero positivo)
-warnings:                         # avisos de la spec: se suman a los de Specty, que siguen; sin la clave, ninguno propio
+warnings:                         # avisos de la spec y del contenido: se suman a los de Specty, que siguen; sin la clave, ninguno propio
   vagueTerms: ["pulcro", "sin fricción"]  # palabras o frases que un criterio no debe usar (aviso)
   horizontalLayers: ["capa de servicios"]  # palabras o frases que hacen de un corte de una épica una capa horizontal (error)
+  risks:                          # reglas de riesgo propias: task done avisa de cada línea añadida que cumple el patrón
+    - label: "deja un console.log"  # obligatorio: el texto del aviso, tal como sale
+      pattern: 'console\.log\('   # obligatorio: una expresión regular de JavaScript, sin opciones
+      cwe: CWE-532                # opcional: CWE-<número>
+      extensions: [ts, tsx]       # opcional: solo los archivos con estas extensiones, sin punto; sin la clave, todos
 policy:
   tests: contract                 # contract | required | recommended | off; contract: los tests de una feature, antes del código (ARCHITECTURE §4). init escribe contract en un proyecto nuevo; sin la clave, recommended
 glossary: docs/dominio.md         # el glosario del dominio; sin la clave: docs/dominio.md (es) o docs/domain.md (en)
@@ -608,6 +613,8 @@ Las cuatro vidas que forman parte del cumplimiento no tienen clave: el validador
 La vida de la marca de `specty wait` (§1, `waits/`) tampoco tiene clave: sigue fija en 30 s, o en tres vueltas de su intervalo si son más. El fin de turno del agente lo deja terminar mientras un `wait` del cambio sigue vivo, y una marca que viviera más dejaría terminar el turno con un `wait` colgado, o con su número de proceso ya en otro programa, sin que nadie espere a la persona. «Interno» la muestra como una garantía más.
 
 `warnings.vagueTerms` y `warnings.horizontalLayers` son listas de palabras o frases, vacías por defecto, que se suman a las de Specty: las de Specty siguen y no se pueden quitar. Se buscan como palabras enteras, sin mirar acentos, mayúsculas ni signos, y un término solo de signos no encuentra nada. Un criterio que contiene un término vago recibe el aviso `criterion-vague`, que nombra los de Specty y los de la persona tal como los escribió. El corte de una épica cuyo título contiene una capa recibe el error `slice-horizontal`, que impide aprobar la épica, con la capa de Specty que encuentre o, si no hay, la primera de la persona. Un término vacío es un error de `config.yaml`.
+
+`warnings.risks` es una lista de reglas de riesgo propias, vacía por defecto, que se suman a las de Specty (ARCHITECTURE §7): las de Specty siguen y no se pueden quitar ni cambiar. `specty task done` prueba cada `pattern`, una expresión regular de JavaScript sin opciones (para no mirar mayúsculas, escribe las dos: `[Pp]rint`), en cada línea que la tarea añade a un archivo gobernado que no es test, como las de Specty. Si la regla tiene `extensions`, solo en los archivos con esas extensiones, sin mirar mayúsculas. Cada línea que la cumple da un aviso con la ruta, la línea, `label` tal como lo escribió la persona, en los dos idiomas, y su `cwe` si lo tiene; en `task.completed`, el hallazgo es `{ path, line, rule: "custom", label, cwe? }`. La aceptación lo muestra y, al aceptar, la memoria anota una lección por archivo y regla, como con las de Specty. Cambiar las reglas no cambia los avisos ya guardados. Son errores de `config.yaml` un `label` vacío o que falta, un `pattern` vacío, que falta o que no es una expresión regular, un `cwe` sin la forma `CWE-<número>`, una extensión vacía o con algo que no sea letras y números (sin punto), y otra clave en una regla. La página «Configuración» las muestra sin control: se cambian en el archivo.
 
 `usage.freshSessionTokens` (150000 por defecto, un entero positivo) es el contexto por encima del cual el cierre aconseja una sesión nueva para el siguiente cambio (ARCHITECTURE §13). `usage.ccusage.timeoutSec` (60, un entero entre 1 y 600) es cuánto espera Specty cada informe de ccusage, el del consumo del cierre y el de cada sesión en la UI; al vencer, sigue como cuando ccusage no responde, sin consumo. `usage.ccusage.version` (`20.0.45`, con la forma `x.y.z` y una etiqueta opcional como `-beta.1`, porque va en un comando que se copia en la shell) es la versión que da el aviso de `specty doctor` cuando falta ccusage; `init` ofrece la de por defecto, porque solo añade ccusage al crear la configuración, y Specty ejecuta el ccusage que haya instalado, sea cual sea su versión. Una clave que no existe bajo `usage`, `usage.ccusage` o `warnings` es un error de `config.yaml`.
 
@@ -814,6 +821,34 @@ BLOQUEADO: archivos fuera del alcance de T2:
   lib/core/theme/ca_colors.dart
 SIGUIENTE: revierte ese archivo o pide ampliar el alcance con `specty scope add lib/core/theme/ca_colors.dart --task T2 --reason "<motivo>"`.
 ```
+
+`specty stats` (ARCHITECTURE §6), el resumen del panel de `specty ui` para el corte pedido, con una tabla por persona, agente y modelo; con `--json`, el mismo `StatsView` que `GET /api/stats`:
+
+```text
+SPECTY · stats · últimos 30 días · 2026-10-09 – 2026-11-07
+INDICADORES, FRENTE A LOS 30 DÍAS ANTERIORES:
+  Cambios cerrados: 42 · ▲ 17 %
+  Tareas completadas: 131 · ▼ 4 %
+  Ciclo (mediana): 1 d 3 h · sin cambios
+  Verificaciones que pasan: 92,5 % de 400 verificaciones de tarea · ▲ 2 %
+  Coste medido: 12,30 USD en 5 de 42 cambios cerrados · sin datos antes
+  Pendientes abiertos: 20 · ▼ 9 %
+POR PERSONA:
+  Nombre      Cambios  Tareas    Ciclo  Pasan  Sesiones      Coste
+  Jorge            40     127  1 d 2 h   93 %        51  12,30 USD
+  (sin dato)        2       4      5 h   75 %         0          —
+POR AGENTE:
+  Nombre       Cambios  Tareas    Ciclo  Pasan  Sesiones      Coste
+  claude-code       38     120  1 d 2 h   93 %        51  12,30 USD
+  codex              4      11      8 h   88 %         0          —
+POR MODELO:
+  Nombre      Cambios  Tareas    Ciclo  Pasan  Sesiones      Coste
+  m-1              30      98  1 d 1 h   94 %        40  12,30 USD
+  (sin dato)       12      33      9 h   90 %        11          —
+SIGUIENTE: el panel completo, con sus gráficas, está en `specty ui` (Panel); para otro corte, `--period 7d|30d|90d|all`, `--who person:<nombre>|agent:<herramienta>|model:<modelo>` o `--kind <carril>`.
+```
+
+Sin ningún cambio del corte en el periodo, la tarjeta solo dice «No hay ningún cambio en este corte en el periodo.». Un `--period`, un `--who` o un `--kind` que no entiende se rechaza con código 1 y los valores válidos, en lugar de tomar el de por defecto como el servidor.
 
 ## 10. Exportadores
 

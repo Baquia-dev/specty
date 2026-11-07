@@ -23,6 +23,7 @@ import { mcpCommand } from "./commands/mcp";
 import { memoryCommand } from "./commands/memory";
 import { personCommands } from "./commands/person-commands";
 import { prune } from "./commands/prune";
+import { statsCommand } from "./commands/stats";
 import { status } from "./commands/status";
 import { ui } from "./commands/ui";
 import { uninstallCommand } from "./commands/uninstall";
@@ -141,7 +142,7 @@ function sessionRunner(environment: CliEnvironment, emit: Emit): Run {
   };
 }
 
-/** Reading the state and setting up: status, doctor, init, prune, why and ui. */
+/** Reading the state and setting up: status, doctor, stats, init, prune, why and ui. */
 function readingCommands(
   program: Command,
   run: Run,
@@ -150,6 +151,7 @@ function readingCommands(
 ): void {
   program.command("status").description("open changes and pending decisions").action(run(status));
   program.command("doctor").description("check configuration and hooks").action(run(doctor));
+  statsCommand(program, run);
   program
     .command("init")
     .description("set up Specty in this repository")

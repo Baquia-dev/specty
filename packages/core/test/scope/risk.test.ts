@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { contentRisks, riskLabel } from "../../src";
+import { contentRisks, isRiskRule, riskLabel } from "../../src";
 
 /** A `git diff -U0` block for `path`: its headers, then one hunk from line `start`. */
 function block(path: string, start: number, lines: readonly string[], headers: string[] = []) {
@@ -94,5 +94,67 @@ describe("contentRisks", () => {
   it("names each rule in both languages", () => {
     expect(riskLabel("tls-disabled", "es")).toBe("desactiva la verificación TLS");
     expect(riskLabel("risky-path", "en")).toBe("is in a payments, webhooks or security path");
+  });
+});
+
+describe("the person's risk rules (warnings.risks)", () => {
+  /** A `console.log` left in the code, with its CWE, in any file. */
+  const CONSOLE = { label: "deja un console.log", pattern: "console\\.log\\(", cwe: "CWE-532" };
+  /** A `print` call, only in Python files, with no CWE. */
+  const PRINT = { label: "llama a print", pattern: "\\bprint\\(", extensions: ["PY"] };
+  const named = (diff: string) =>
+    contentRisks(diff, [CONSOLE, PRINT]).map(
+      (risk) => `${risk.path}:${risk.line ?? "-"} ${risk.label ?? risk.rule}`,
+    );
+
+  it("AC1: adds a finding with the person's text and CWE for each added line that matches, after Specty's", () => {
+    const diff = block("src/api.ts", 3, [
+      "+const value = eval(input); console.log(value);",
+      "+console.log('hola');",
+      "+const fine = 1;",
+      "-console.log('old');",
+    ]);
+    expect(contentRisks(diff, [CONSOLE])).toEqual([
+      { path: "src/api.ts", line: 3, rule: "eval", cwe: "CWE-95" },
+      { path: "src/api.ts", line: 3, rule: "custom", label: "deja un console.log", cwe: "CWE-532" },
+      { path: "src/api.ts", line: 4, rule: "custom", label: "deja un console.log", cwe: "CWE-532" },
+    ]);
+    const withoutCwe = contentRisks(block("tools/run.py", 1, ["+print(value)"]), [PRINT]);
+    expect(withoutCwe).toEqual([
+      { path: "tools/run.py", line: 1, rule: "custom", label: "llama a print" },
+    ]);
+    expect(withoutCwe[0]).not.toHaveProperty("cwe");
+  });
+
+  it("AC1: without rules of the person, finds what it found before", () => {
+    const diff = block("src/api.ts", 1, ["+console.log(eval(x));"]);
+    expect(contentRisks(diff, [])).toEqual(contentRisks(diff));
+    expect(contentRisks(diff)).toEqual([
+      { path: "src/api.ts", line: 1, rule: "eval", cwe: "CWE-95" },
+    ]);
+  });
+
+  it("AC2: a rule with extensions looks only at those files, ignoring capitals; one without, at every file; none at tests", () => {
+    const diff = [
+      block("tools/run.py", 1, ["+print(value)"]),
+      block("tools/build.PY", 2, ["+print(value)"]),
+      block("src/view.ts", 1, ["+print(value); console.log(1);"]),
+      block("src/api.test.ts", 1, ["+console.log(1); print(2)"]),
+      block("tools/test_run.py", 1, ["+print(value); console.log(1)"]),
+    ].join("\n");
+    expect(named(diff)).toEqual([
+      "src/view.ts:1 deja un console.log",
+      "tools/build.PY:2 llama a print",
+      "tools/run.py:1 llama a print",
+    ]);
+  });
+
+  it("AC4: names a rule of the person by its text in both languages, and one with no text by a generic one", () => {
+    expect(isRiskRule("custom")).toBe(true);
+    expect(riskLabel("custom", "es", "deja un console.log")).toBe("deja un console.log");
+    expect(riskLabel("custom", "en", "deja un console.log")).toBe("deja un console.log");
+    expect(riskLabel("custom", "es")).toBe("coincide con una regla de riesgo del proyecto");
+    expect(riskLabel("custom", "en")).toBe("matches a risk rule of the project");
+    expect(riskLabel("eval", "es", undefined)).toBe("ejecuta código construido al vuelo (eval)");
   });
 });

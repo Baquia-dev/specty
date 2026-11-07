@@ -1,13 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { IncomingMessage, ServerResponse } from "node:http";
-import {
-  localDay,
-  type Output,
-  type StatsView,
-  statsQuery,
-  statsRow,
-  statsView,
-} from "@baquia-dev/specty-core";
+import type { Output } from "@baquia-dev/specty-core";
 import { restore } from "../commands/restore";
 import { openChanges } from "../commands/status";
 import { isRecord, parseJson } from "../io/files";
@@ -26,9 +19,10 @@ import { type Context, hasSession, isLocal, JSON_TYPE, same, send, TEXT } from "
 import { changeDiff, type DiffAnswer } from "./diff";
 import { finishedPage } from "./finished";
 import { memoryOrigins } from "./origins";
-import { changeRecord, changeRecords, openRecords } from "./records";
+import { changeRecord, openRecords } from "./records";
 import { sessionsView } from "./sessions";
 import { epicSliceChanges } from "./slices";
+import { statsAnswer } from "./stats";
 import { statsChangesPage } from "./stats-changes";
 import { testCode } from "./test-code";
 import { changeTrace, traceReply } from "./trace";
@@ -89,24 +83,6 @@ async function memoryView(session: Session) {
     changes: await openChanges(session),
     origins: await memoryOrigins(session, entries),
   };
-}
-
-/**
- * `GET /api/stats` (ARCHITECTURE §15): the panel's figures for the cut that `period`, `who` and
- * `kind` ask for, from every change, open or archived, and the memory's entries, with today as
- * the server's local day. It only reads.
- */
-async function statsAnswer(session: Session, params: URLSearchParams): Promise<StatsView> {
-  const rows = (await changeRecords(session)).flatMap(
-    (record) => statsRow(record.state, record.audit ?? []) ?? [],
-  );
-  const { entries } = await readMemory(session.git, session.config.memory.branch);
-  const query = statsQuery({
-    period: params.get("period"),
-    who: params.get("who"),
-    kind: params.get("kind"),
-  });
-  return statsView({ rows, memory: entries, today: localDay(session.environment.now()), query });
 }
 
 /** A change by its id, open or archived, as `changeRecords` gives it; 404 when there is none. */
