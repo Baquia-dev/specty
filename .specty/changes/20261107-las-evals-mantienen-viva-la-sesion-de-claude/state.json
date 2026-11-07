@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-evals-mantienen-viva-la-sesion-de-claude",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-las-evals-mantienen-viva-la-sesion-de-claude",
   "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
   "revision": 1,
@@ -58,6 +58,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T04:09:54.522Z"
+  "lockedTests": {
+    "evals/test/conversation.test.ts": "sha256:a6f4d3a8582b1ff83d184929683320687130bf74e30462f58e59d4ccd06a8af3",
+    "evals/test/session.test.ts": "sha256:8f70b0fe45ce96258ce192e3b71d7bd311fec3b43c6d5cc05ec32666776cf8a3"
+  }
 }
