@@ -6,6 +6,7 @@ import {
   agentChoices,
   agentQuestion,
   claudePointerLine,
+  DEFAULT_CONFIG,
   detectAgentTool,
   gitHooksLine,
   gitHooksManualWarning,
@@ -14,6 +15,7 @@ import {
   noAgentWarning,
   noHooksWarning,
   notOnPathWarning,
+  type ResolvedConfig,
 } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
 import type { Git } from "../io/git";
@@ -72,8 +74,11 @@ export async function installHooks(options: {
   readonly tools: readonly AgentTool[];
   readonly lang: Lang;
   readonly files: InstallFiles;
+  /** The configuration each agent installs with; Specty's defaults when not given. */
+  readonly config?: ResolvedConfig;
 }): Promise<HooksInstall> {
   const { environment, root, git, tools, lang, files } = options;
+  const config = options.config ?? DEFAULT_CONFIG;
   const { invocation } = environment;
   const done: string[] = [];
   const warnings: string[] = [];
@@ -92,6 +97,7 @@ export async function installHooks(options: {
       files,
       lang,
       env: environment.env,
+      config,
     });
     done.push(...installed.done);
     warnings.push(...installed.warnings);

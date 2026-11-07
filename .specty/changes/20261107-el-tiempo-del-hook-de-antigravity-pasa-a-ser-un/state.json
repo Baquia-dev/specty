@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1d5f602f36f572e73c0d4b16c80cf5b89dce3ba7",
+      "attempts": 1,
       "startedAt": "2026-11-07T05:57:25.369Z",
       "doneAt": "2026-11-07T06:04:22.854Z",
-      "summary": "La línea antigravity-timeout de doctor (archivo y segundos) con su texto en español y en inglés, junto a antigravity-acp y antigravity-cli; formats.md §6 documenta internal.hooks.antigravityTimeoutSec, sus límites, que rige al ejecutar init y el aviso de doctor"
+      "summary": "La línea antigravity-timeout de doctor (archivo y segundos) con su texto en español y en inglés, junto a antigravity-acp y antigravity-cli; formats.md §6 documenta internal.hooks.antigravityTimeoutSec, sus límites, que rige al ejecutar init y el aviso de doctor",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "549b661d2b757dff4effb2a45f2fa7fa388e2aaa",
+      "startedAt": "2026-11-07T06:04:23.463Z",
+      "doneAt": "2026-11-07T08:23:45.477Z",
+      "summary": "La instalación de cada agente recibe la configuración resuelta (init le da la que había o la de por defecto), y Antigravity escribe internal.hooks.antigravityTimeoutSec en los tres hooks del guard; al reejecutar init los reescribe y conserva Stop y los de la persona"
     }
   },
   "pending": {

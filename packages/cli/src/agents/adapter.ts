@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
-import type { DoctorLine, Lang } from "@baquia-dev/specty-core";
+import type { DoctorLine, Lang, ResolvedConfig } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import type { GuardReply, GuardTool, RawAction } from "../enforce/actions";
 import { type InstallFiles, rewriteJson } from "../install/files";
@@ -162,6 +162,11 @@ interface InstallContext {
   readonly lang: Lang;
   /** Where the person's folder is, for the one rule Specty writes there (Antigravity's CLI). */
   readonly env: NodeJS.ProcessEnv;
+  /**
+   * The configuration `init` works with: the repository's when it was valid, otherwise Specty's
+   * defaults. Antigravity takes the time of its guard's hooks from it.
+   */
+  readonly config: ResolvedConfig;
 }
 
 /** What an agent's install says in `init`'s output, and the files git tracks that it wrote. */

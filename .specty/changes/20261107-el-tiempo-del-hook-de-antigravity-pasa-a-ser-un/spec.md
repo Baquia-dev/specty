@@ -78,7 +78,7 @@ Hoy `specty init` escribe en `.agents/hooks.json` los hooks del guard de Antigra
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/test/cards/doctor-antigravity-timeout.test.ts, docs/formats.md
   - ac: AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-antigravity-timeout.test.ts
-- [ ] T3: `init` escribe en los hooks del guard de Antigravity el tiempo de la configuración
+- [x] T3: `init` escribe en los hooks del guard de Antigravity el tiempo de la configuración
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/antigravity.ts, packages/cli/src/install/hooks.ts, packages/cli/src/install/install.ts, packages/cli/test/antigravity-timeout.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-timeout.test.ts -t "the time init writes"
