@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261107-el-panel-muestra-el-ritmo-y-una-tabla-por",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-panel-muestra-el-ritmo-y-una-tabla-por",
+  "baseCommit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "16 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:25ac2cad3ea9c0186c0c59b30bb53a61cad96fc3a8a8d787e2ba34841e781643",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7d3167e0c2086e9b7e3e9b66fc7d253e9feb02a713a73a8b9c58a2e19a87c564",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:ae13a65e827125d880b0da7a4ef99ddf20a1c640534146ae25df1bb79d10d569",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:3d73b6cc0714af791a9d18a4944dd07135695a077eb3cc0e46be8cc441e8ed5e",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:de61022fe539f90316b8f5b1ccd8db147a087db8fe6fc728cbd8b2c8c777103d",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:8372f2d53a086ff3c75c110e824da63b552c806c2f67b6e1579b796571ee0ccc",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:f86dc67589852003e8e995bd5f0276f472e141dfb5019184ea18db1a7bc24849",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 8,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:00cf5aaa7c25e777db867159f704bb5859d916b47d705d853f4e8fba2967685f",
+    "at": "2026-11-07T08:29:54.059Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
