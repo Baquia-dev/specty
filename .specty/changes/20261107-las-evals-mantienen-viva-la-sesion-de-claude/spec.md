@@ -60,7 +60,7 @@ El experimento `wait` no llega a medir la espera con `specty wait` (P272): en `c
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/session.test.ts test/launch.test.ts && pnpm lint
   - type: feat
-- [ ] T2: Claude Code mantiene viva su sesión en las ejecuciones con persona
+- [x] T2: Claude Code mantiene viva su sesión en las ejecuciones con persona
   - files: evals/src/agents.ts, evals/run/compliance.eval.ts, evals/test/conversation.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/conversation.test.ts test/report.test.ts test/consumption.test.ts test/question.test.ts && pnpm typecheck && pnpm lint && pnpm knip

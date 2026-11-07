@@ -53,8 +53,8 @@ export function launch(
   let done = false;
   const stdout: string[] = [];
   const stderr: string[] = [];
-  child.stdout.setEncoding("utf8").on("data", (chunk: string) => stdout.push(chunk));
-  child.stderr.setEncoding("utf8").on("data", (chunk: string) => stderr.push(chunk));
+  child.stdout?.setEncoding("utf8").on("data", (chunk: string) => stdout.push(chunk));
+  child.stderr?.setEncoding("utf8").on("data", (chunk: string) => stderr.push(chunk));
   if (session !== undefined && child.stdin !== null) {
     const input = child.stdin;
     // An agent that already left can't read it: its end is what counts.
@@ -64,7 +64,7 @@ export function launch(
       (line) => session.done(line),
       () => input.end(),
     );
-    child.stdout.on("data", read);
+    child.stdout?.on("data", read);
   }
   const finished = new Promise<Finished>((resolve) => {
     const end = (status: number | null) => {

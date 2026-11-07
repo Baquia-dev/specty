@@ -50,12 +50,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 3,
       "baseCommit": "be84e469edcf75cadca2a08220085c15f5ba603f",
+      "attempts": 3,
       "startedAt": "2026-11-07T04:10:01.442Z",
       "doneAt": "2026-11-07T04:10:59.005Z",
-      "summary": "launch acepta una sesión: escribe su mensaje en la entrada, la deja abierta y la cierra con la primera línea completa de la salida que la sesión da por terminada"
+      "summary": "launch acepta una sesión: escribe su mensaje en la entrada, la deja abierta y la cierra con la primera línea completa de la salida que la sesión da por terminada",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "evals/src/launch.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "b11caf3268c40856d13a6f142178042cf788130d",
+      "startedAt": "2026-11-07T04:10:59.343Z",
+      "doneAt": "2026-11-07T04:13:19.336Z",
+      "summary": "Claude Code tiene una conversación (entrada en stream-json, el prompt como mensaje del usuario, que termina con un result sin tareas en segundo plano) e invocation la elige cuando decide una persona; runOnce le pasa la sesión a launch, cuyos streams se tipan como posibles null"
     }
   },
   "pending": {
