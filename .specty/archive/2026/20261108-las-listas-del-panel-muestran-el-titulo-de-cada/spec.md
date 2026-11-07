@@ -73,3 +73,24 @@ En el «Panel» de `specty ui`, «Los cambios más caros» y «Cambios con más 
 
 - R1: `GET /api/stats` lee ahora cada spec (`summaryOf`). Mitigación: el resumen y la fila de cada archivado quedan guardados con su registro, como ya en `GET /api/stats/changes`, así que solo se leen una vez.
 - R2: C1 toca a la vez `stats/cost.ts` y `dashboard/dashboard-cost.ts` (la columna «Sesiones»). Mitigación: aquí solo cambian la línea del título de `top` y la celda del cambio, y los tests van en archivos propios.
+
+## Cierre
+
+### Resumen
+
+En el «Panel» de `specty ui`, «Los cambios más caros» y «Cambios con más verificaciones fallidas» muestran el título de cada cambio, enlazado a su cambio, y debajo su id en monoespaciada pequeña y atenuada, como la tabla «Cambios». Si la fuente no da el título, muestran el id enlazado, como antes. En el core, `StatsRow` gana un `title` opcional, que `statsRow` no rellena, y `cost.top` y `quality.worst` lo copian de la fila cuando lo trae, sin cambiar ningún orden ni ninguna cifra. El servidor lee las filas con su título con `listedRows` de `server/stats-changes.ts`, la misma lectura de la tabla «Cambios», que guarda la fila de cada registro. La documentación está al día en `docs/ui.md` (Panel, «Calidad» y «Coste y tokens») y en `docs/ARCHITECTURE.md` §15.
+
+### Desviaciones
+
+- `specty stats` también lee las filas con su título, en contra de A1 y de «Fuera de alcance», que lo dejaban con `statsRow`. Un test aprobado de antes (`cli/test/stats.test.ts`, «--json gives the same data as GET /api/stats») exige que `specty stats --json` dé lo mismo que `GET /api/stats`. Por eso `statsOf` lee con `listedRows` para los dos, y su `--json` trae los títulos. La tabla de la terminal sigue con el id, porque `statsCard` no usa el título. Medido con el repositorio real (662 cambios archivados), `specty stats --period all` tarda lo mismo: 2,4–2,6 s con el CLI de este cambio y 3,0–5,0 s con el de main, y su salida es idéntica.
+- Por eso, `server/stats.ts` no separa la lectura de `GET /api/stats` y la de `specty stats` (el diseño hablaba de una función interna compartida): los dos llaman a `statsOf`, como antes.
+
+### Decisiones
+
+- El título se copia en línea en `cost.ts` y en `quality.ts` (`...(row.title === undefined ? {} : { title: row.title })`), sin un módulo nuevo. Los comentarios de `top` y `worst` no cambian y el título lleva su propio comentario, para chocar poco con C1, que toca a la vez `cost.ts` y `dashboard-cost.ts`.
+- En las listas, el título se parte en varias líneas en lugar de recortarse, y el id sí se recorta, con el id completo en su `title`.
+- Los tests de este corte van en archivos propios (`core/test/stats/titles.test.ts` y `ui/src/dashboard/dashboard-titles.test.ts`, que pinta las dos secciones sueltas), y el del servidor da un título propio a la spec del cambio de Bea.
+
+### Pendientes
+
+- Ninguno.

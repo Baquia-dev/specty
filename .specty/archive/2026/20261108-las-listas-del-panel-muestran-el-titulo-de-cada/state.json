@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-las-listas-del-panel-muestran-el-titulo-de-cada",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-las-listas-del-panel-muestran-el-titulo-de-cada",
   "baseCommit": "89ef4fe4ce5725e9021aa923aa57cdbce41eabc2",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:7dee0f1c8983736669d4befa956b9ee0138b36859c7f8357fdd24fcb362a10e8",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b94bc07a113542cdcafdb4d05cc75d7ef8ad8547",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:25:42.855Z",
       "doneAt": "2026-11-07T17:27:06.245Z",
-      "summary": "«Los cambios más caros» y «Cambios con más verificaciones fallidas» muestran el título enlazado (sp-text) y el id debajo en monoespaciada pequeña y atenuada; sin título, el id enlazado como antes; docs/ui.md al día"
+      "summary": "«Los cambios más caros» y «Cambios con más verificaciones fallidas» muestran el título enlazado (sp-text) y el id debajo en monoespaciada pequeña y atenuada; sin título, el id enlazado como antes; docs/ui.md al día",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -75,6 +75,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-07T17:27:25.806Z",
   "lockedTests": {
     "packages/cli/test/server/stats.test.ts": "sha256:28f2a3a5681df6f5dadbc05def0207d4ae17ec2c9b277a85563d481d76dc127a",
     "packages/core/test/stats/titles.test.ts": "sha256:c82117f7ffaf09206830ea22860cf709a233437ea323ab69707be1519ba01a5d",
