@@ -81,7 +81,7 @@ Hoy cinco límites de lo que Specty muestra están fijos en el código: los hall
   - files: packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/settings/internal-shown.test.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/internal-shown.test.ts test/settings/catalog.test.ts
-- [ ] T3: `specty check` toma de la configuración los límites de los hallazgos de sus comandos
+- [x] T3: `specty check` toma de la configuración los límites de los hallazgos de sus comandos
   - files: packages/cli/src/check/commands.ts, packages/cli/test/check-commands.test.ts, docs/formats.md
   - ac: AC1, AC2, AC3, AC9
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-commands.test.ts

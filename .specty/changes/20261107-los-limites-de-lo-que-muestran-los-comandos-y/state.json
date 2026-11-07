@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dfc5d09c1bd11116cc2e88de287e7ddc4d621d2b",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:09:01.787Z",
       "doneAt": "2026-11-07T09:09:30.434Z",
-      "summary": "Bloque INTERNAL_SHOWN en el catálogo (cinco números con new, tras INTERNAL_RUN) y sus nombres y descripciones en español y en inglés en INTERNAL_SHOWN_TEXTS"
+      "summary": "Bloque INTERNAL_SHOWN en el catálogo (cinco números con new, tras INTERNAL_RUN) y sus nombres y descripciones en español y en inglés en INTERNAL_SHOWN_TEXTS",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a7fcbedfe3a869e6e148a921eca93ed285f99622",
+      "startedAt": "2026-11-07T09:09:30.789Z",
+      "doneAt": "2026-11-07T09:17:25.470Z",
+      "summary": "specty check pasa session.config.internal.findings a findingsInOutput; formats.md §6 documenta internal.findings e internal.commands en el ejemplo y en su párrafo, y la sección de specty check remite a ellas"
     }
   },
   "pending": {
