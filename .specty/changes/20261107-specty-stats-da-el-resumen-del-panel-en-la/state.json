@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261107-specty-stats-da-el-resumen-del-panel-en-la",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-specty-stats-da-el-resumen-del-panel-en-la",
+  "baseCommit": "a4e6321c4130771efd5b22d9cc3115e691c6cc6c",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:62bbc577819a48b2bd96f0305f7caab9f679385f6102d7b9f040dbd84c5a3cf4",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:38437870e873f1b33c36602517991522f07cd13c4dbded10d16a602be8b2bbd0",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:fd553e495afbe94616afe36a3e2f5ff85f1f5abaf5b5ccf6cd5c11c6f907a419",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c32f718dd29c67e90b088621c4fd09c3f4d7e4be1f266c01c7bee03fc8405c0e",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:74e1b59aee8431fac4ee3aa460585c64df9990eda630914335cac5dbb4ae58e8",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:d9f98bb33f5bf9a4f2091385c41f35ca814fa6564c9883cee6dcaf708355fbed",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 6,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ea740ea7aa0481c4f565d15d9f856323c3dbcd3478674af36687ba63c4fb07d2",
+    "at": "2026-11-07T10:28:51.652Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
