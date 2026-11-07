@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-cada-comando-de-verificacion-recibe-en-las",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-cada-comando-de-verificacion-recibe-en-las",
   "baseCommit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
   "revision": 2,
@@ -60,6 +60,12 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T16:55:49.480Z"
+  "lockedTests": {
+    "packages/cli/test/server/config.test.ts": "sha256:f0fd67328141ea424257abea271ff1518fb55c7c296114525e2a8c75a9ab2754",
+    "packages/core/test/schema/units.test.ts": "sha256:53d27a55322a2fee5cb53edbb4cb365f257c4debdb4973131d6b7bd8fe61a0fe",
+    "packages/cli/test/process-budget.test.ts": "sha256:229e5836a19b6dadf320624a9c6af92830cf0161120963d5340a385fec94393e",
+    "packages/cli/test/verify-processes.test.ts": "sha256:7993752f805a8446b322ccddd6f9b901488986fd1ceb3fec8dfa0037af362caa",
+    "packages/core/test/schema/processes.test.ts": "sha256:06f45393cca55aa5341c644b3f2fab74ce6cf35b1070bfc5f6deb60e4eb769aa",
+    "packages/core/test/settings/processes.test.ts": "sha256:c5acf406284e372d6433dcb92212c003143a114a2875d42eb71cf780e0e4dc72"
+  }
 }
