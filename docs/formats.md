@@ -369,7 +369,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `change.usage` | lo que consumió el cambio, medido con ccusage al cerrarlo, o al aceptar uno quick, justo antes de archivarlo (actor `specty`): `calls`, las llamadas al modelo de las sesiones que nombran sus líneas (`session`) desde `change.created`; `input`, `output`, `cacheWrite` y `cacheRead`, sus tokens de cada tipo, y `cost`, en USD, si cada modelo de esas llamadas tiene precios, ninguno negativo, que expliquen al céntimo el coste de nueve de cada diez de sus sesiones en el informe de ccusage, y de al menos cuatro. Sin ccusage, sin una respuesta válida o sin sesiones, no hay evento |
 | `change.closed` / `change.cancelled` | motivo, al cancelar; `lane: quick` al aceptar un quick, y `closing: false` al aceptar un cambio sin fase de cierre (`flow.closing`, §6) |
 | `integration.started` | incorporar la rama principal al aceptar, al cerrar o al verificar desde la UI dejó el merge para el agente: rama destino, su commit, motivo (`conflicts` o `verify`) y archivos en conflicto |
-| `integration.resolved` | `specty integrate` hizo el commit de merge: commit |
+| `integration.resolved` | `specty integrate` hizo el commit de merge: commit. Si la rama principal avanzó mientras el agente resolvía, el commit va sin verificar y le sigue, en el mismo turno, la nueva incorporación: su `change.verified` o un `integration.started` (ARCHITECTURE §9) |
 | `integration.abandoned` | el merge ya no estaba en curso y la incorporación pendiente se descartó: rama destino |
 
 ```jsonl

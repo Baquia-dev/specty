@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-las-aceptaciones-en-paralelo-no-repiten-la",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-las-aceptaciones-en-paralelo-no-repiten-la",
   "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
   "revision": 2,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "66f166833752c680ff4f3a844bc7706ec0639b05",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:28:33.763Z",
       "doneAt": "2026-11-07T17:32:45.168Z",
-      "summary": "specty integrate verifica en el turno de aterrizaje: si main avanzó, hace el commit de lo resuelto e incorpora main otra vez antes de verificar; en modo delegado sigue en ese turno con accept o close"
+      "summary": "specty integrate verifica en el turno de aterrizaje: si main avanzó, hace el commit de lo resuelto e incorpora main otra vez antes de verificar; en modo delegado sigue en ese turno con accept o close",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e7c2d61dbbf87af6c2fe04b021bf3530bbffbff7",
+      "startedAt": "2026-11-07T17:32:45.647Z",
+      "doneAt": "2026-11-07T17:33:12.554Z",
+      "summary": "ARCHITECTURE (incorporación, turno y unidades) y formats.md (integration.resolved) explican integrate en el turno de aterrizaje, la nueva incorporación si main avanzó y el comando que sigue en modo delegado"
     }
   },
   "pending": {

@@ -75,7 +75,7 @@ Opción elegida: ordenar los aterrizajes con el turno que ya existe, en lugar de
   - files: packages/cli/src/commands/integrate.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/integrate-landing.test.ts, packages/cli/test/delegated-integration.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate-landing.test.ts test/delegated-integration.test.ts test/integrate.test.ts test/integrate-turn.test.ts test/integrate-units.test.ts test/close-shared-file.test.ts && pnpm typecheck
-- [ ] T3: La documentación de la incorporación en el turno de aterrizaje
+- [x] T3: La documentación de la incorporación en el turno de aterrizaje
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
