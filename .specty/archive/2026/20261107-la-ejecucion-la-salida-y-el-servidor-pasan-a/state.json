@@ -1,0 +1,172 @@
+{
+  "schema": 1,
+  "id": "20261107-la-ejecucion-la-salida-y-el-servidor-pasan-a",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-la-ejecucion-la-salida-y-el-servidor-pasan-a",
+  "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:1c15d227cde31eefb328fc6371c42a10e728c28a19c118b1c37a9710e4cf4c3e",
+    "at": "2026-11-07T00:33:53.929Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bd6c997e41163272d3a94af206dea94a2268a7457bab736cf3793b58c8cd088f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e8bdb8c9c63af25c6bf81152e6d7d3590a98c46d14524ae1c4fe674f3e76a0df",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:baa2ef126d4836fd503427c1284882ed07b074ea28027371216528ee1a6c67db",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d81467480b3c9b7e793cb786f7c2a5090f9ef428a317478afb99fcf33fc6ee04",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:b833163523d9a71015dd8048a19dc3623f006c461ffacbcca431875e8bdbc811",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7edaef1d33f69cf40ccdef6a35dcb1f5f030faab",
+      "attempts": 1,
+      "startedAt": "2026-11-07T03:37:06.698Z",
+      "doneAt": "2026-11-07T03:39:32.220Z",
+      "summary": "Módulo schema/internal-run.ts con internal.exec.priority (10, 0–19) e internal.server.portsTried (20, 1–100), reunido bajo internal en config.ts; sección «Interno» con los dos ajustes «Nuevo» en el catálogo y sus textos es/en; ui.port sin «Próximamente»; formats.md §6 y ui.md",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "d1d01e029498b6d0288ba24dc399ec43dc07dfe8",
+      "attempts": 1,
+      "startedAt": "2026-11-07T03:39:32.557Z",
+      "doneAt": "2026-11-07T03:40:32.434Z",
+      "summary": "ExecOptions gana priority, que aplica lowPriority; lowerPriority toma por defecto la de DEFAULT_CONFIG; verify.ts, live-run.ts y server/runs.ts pasan internal.exec.priority; ARCHITECTURE explica la prioridad configurable",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "5dcd2566456b70db632ed5b7dffb3137b7c0bddf",
+      "attempts": 1,
+      "startedAt": "2026-11-07T03:40:32.727Z",
+      "doneAt": "2026-11-07T03:42:13.502Z",
+      "summary": "specty ui sin --port arranca en ui.port (4173 con auto) y --port manda; listen prueba internal.server.portsTried puertos desde el primero sin pasar de 65535; ARCHITECTURE explica el puerto y los puertos probados",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T03:42:32.998Z",
+  "lockedTests": {
+    "packages/cli/test/server.test.ts": "sha256:fb056d455385660a9ae37fb94ceb8938a074ea822127e7a10fd2a73b68b97f08",
+    "packages/cli/test/verify-priority.test.ts": "sha256:5c3722be168b27c4187b532c4278d3de4548f3e65182894307508dd89f7bd771",
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:fd55ee02ab9fee3b009b36753c75f1b4642ab3fee2ef43d42ac12a959375da58"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "45fa0d1e879ec036e0694554dd2e8f3eb16db39d",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/ui/src/settings/settings-page.test.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "evals/run/compliance.eval.ts",
+      "evals/src/experiments.ts",
+      "evals/src/launch.ts",
+      "evals/src/person.ts",
+      "evals/test/experiments.test.ts",
+      "evals/test/launch.test.ts",
+      "evals/test/orphan.test.ts",
+      "evals/test/wait.test.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/next.ts",
+      "packages/cli/src/commands/ui.ts",
+      "packages/cli/src/commands/verify.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/flow/duplicates.ts",
+      "packages/cli/src/flow/land.ts",
+      "packages/cli/src/flow/live-run.ts",
+      "packages/cli/src/flow/usage.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/io/exec.ts",
+      "packages/cli/src/mcp/tools.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/src/session.ts",
+      "packages/cli/test/close-moved.test.ts",
+      "packages/cli/test/duplicates-subagent.test.ts",
+      "packages/cli/test/epic-adjust.test.ts",
+      "packages/cli/test/fresh-session.test.ts",
+      "packages/cli/test/front-start-codex.test.ts",
+      "packages/cli/test/front-start.test.ts",
+      "packages/cli/test/mcp.test.ts",
+      "packages/cli/test/next-orphan-epic.test.ts",
+      "packages/cli/test/server.test.ts",
+      "packages/cli/test/verify-priority.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/core/src/cards/idle.ts",
+      "packages/core/src/cards/rejoin.ts",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/cards/subagents.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/validate/phase.ts",
+      "packages/core/test/cards/adjust.test.ts",
+      "packages/core/test/cards/idle-subagents.test.ts",
+      "packages/core/test/cards/orphans-epic.test.ts",
+      "packages/core/test/cards/orphans-subagents.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/validate/phase.test.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts"
+    ],
+    "at": "2026-11-07T03:42:47.295Z",
+    "resolved": {
+      "commit": "07b2bff",
+      "at": "2026-11-07T03:50:11.767Z"
+    }
+  }
+}

@@ -92,3 +92,27 @@ Hoy la prioridad con que corren las verificaciones y cuántos puertos prueba `sp
 
 - R1: Una prioridad de 19 deja las verificaciones muy lentas en una máquina ocupada. Mitigación: el schema la limita a 19, la sección «Interno» va plegada con su aviso (C8) y quitar la clave la devuelve a 10.
 - R2: C8 crea a la vez la clave `internal`, la sección «Interno» y sus tests en `config.ts`, `catalog.ts`, `cards/settings.ts` y `catalog.test.ts`. Mitigación: cada corte tiene su módulo de schema y su bloque en el catálogo, y el conflicto al incorporar main se resuelve con `specty integrate` conservando lo de los dos.
+
+## Cierre
+
+### Resumen
+
+- Core: `schema/internal-run.ts` define `internal.exec.priority` (10, un entero entre 0 y 19) e `internal.server.portsTried` (20, entre 1 y 100) con `INTERNAL_RUN_SHAPE`, `DEFAULT_INTERNAL_RUN` y `resolveInternalRun`; `config.ts` los reúne bajo `internal` (`strictObject`) y `ResolvedConfig.internal` siempre trae los valores resueltos.
+- Catálogo: la sección `internal` al final, con los dos ajustes nuevos (`new`) en su bloque (`INTERNAL_RUN`) y sus nombres y descripciones en español y en inglés; `ui.port` pierde `soon` y su descripción dice que vale sin `--port`.
+- CLI: `ExecOptions.priority` es la que aplica `lowPriority`, y `lowerPriority` toma por defecto la de `DEFAULT_CONFIG`; la verificación de cada tarea, la de `specty verify` sin cambio y la completa que lanza la UI corren con `internal.exec.priority`. `specty ui` sin `--port` empieza en `ui.port` (4173 con `auto`) y prueba `internal.server.portsTried` puertos sin pasar del 65535.
+- Documentación: formats.md §6, ui.md y ARCHITECTURE (la prioridad y el puerto de `specty ui`).
+
+### Desviaciones
+
+- El test de AC4 está en `packages/cli/test/server.test.ts`, al abrir la sesión (`openSession` da `invalid` con la clave, o los valores resueltos), y los de AC4, AC5 y AC6 del catálogo del core se escribieron en T1, antes de su código, en vez de ir con la propuesta de tests: la verificación de T1 encadena con `&&` el test del core y el de la UI, y con el del core en rojo el de la UI no llegaba a correr, así que `specty propose` no veía nombrado `settings-page.test.ts` (P190). En la fase de tests la spec no se puede ajustar.
+- Los tests nuevos del catálogo y de la página comprueban cada ajuste por su clave (`find`, `toMatchObject`) y no la lista exacta de «Interno», para seguir valiendo cuando entre C8 con los suyos.
+
+### Decisiones
+
+- Al incorporar main con C8, `internal` queda en un solo `z.strictObject` con `{ ...INTERNAL_WAITS_SHAPE, ...INTERNAL_RUN_SHAPE }`, su tipo es `InternalWaitsConfig & InternalRunConfig` y sus valores reúnen los dos `DEFAULT_*` y los dos `resolve*`; «Interno» es una sola sección, con los ajustes de los dos cortes y las garantías de C8. Los tests de C8 que cuentan los ajustes nuevos o los de «Interno» suman los dos de este corte.
+
+### Pendientes
+
+- `packages/core/src/cards/settings.ts` pasa de 300 líneas de código (321 aquí, más con los textos de C8): conviene llevar los textos de «Interno» a un módulo propio de textos.
+- La ayuda de `--port` en `packages/cli/src/program.ts` sigue diciendo «default: 4173»; con `ui.port` numérico, el primero es ese.
+- AC7 se comprueba a mano: formats.md §6, ARCHITECTURE y ui.md.
