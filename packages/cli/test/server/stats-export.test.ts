@@ -13,12 +13,14 @@ const at = (days: number) => noon(days).toISOString();
 const day = (days: number) => localDay(noon(days));
 const local = (days: number) => `${day(days)} 12:00`;
 
-/** The hours from `from` to `to`, with two decimals, as the CSV writes the cycle. */
-const hours = (from: string, to: string) =>
-  ((Date.parse(to) - Date.parse(from)) / 3_600_000).toFixed(2);
+/** The hours from `from` to `to`, with two decimals, as the CSV in `lang` writes the cycle. */
+const hours = (from: string, to: string, lang: "es" | "en" = "es") => {
+  const fixed = ((Date.parse(to) - Date.parse(from)) / 3_600_000).toFixed(2);
+  return lang === "es" ? fixed.replace(".", ",") : fixed;
+};
 
 const HEADER_ES =
-  "Cambio,Título,Carril,Tamaño,Persona,Agente,Modelo,Creado,Cerrado,Tareas,Ciclo (horas),Verificaciones,Verificaciones fallidas,Coste (USD)";
+  "Cambio;Título;Carril;Tamaño;Persona;Agente;Modelo;Creado;Cerrado;Tareas;Ciclo (horas);Verificaciones;Verificaciones fallidas;Coste (USD)";
 const HEADER_EN =
   "Change,Title,Lane,Size,Person,Agent,Model,Created,Closed,Tasks,Cycle (hours),Verifications,Failed verifications,Cost (USD)";
 
@@ -158,9 +160,9 @@ describe("the panel's export in the local server", () => {
       expect(lines).toHaveLength(3);
       expect(lines[0]).toBe(HEADER_ES);
       expect(lines[1]).toBe(
-        `${BEA.id},Informe de Bea,Quick,M,Bea,Codex,,${local(3)},${local(2)},2,${hours(at(3), at(2))},3,2,1.50`,
+        `${BEA.id};Informe de Bea;Quick;M;Bea;Codex;;${local(3)};${local(2)};2;${hours(at(3), at(2))};3;2;1,50`,
       );
-      expect(lines[2]?.startsWith(`${CHANGE},Saludo personalizado,Feature,`)).toBe(true);
+      expect(lines[2]?.startsWith(`${CHANGE};Saludo personalizado;Feature;`)).toBe(true);
       expect((await call(server.port, "/api/stats/export")).status).toBe(403);
     } finally {
       await server.close();
@@ -218,12 +220,12 @@ describe("the panel's export in the local server", () => {
       );
       const lines = csvLines(odd.body);
       expect(lines[0]).toBe(HEADER_ES);
-      expect(lines.slice(1).map((line) => line.split(",")[0])).toEqual([BEA.id, CHANGE]);
+      expect(lines.slice(1).map((line) => line.split(";")[0])).toEqual([BEA.id, CHANGE]);
 
       const english = csvLines((await exported(server.port, headers, "?lang=en&kind=quick")).body);
       expect(english).toEqual([
         HEADER_EN,
-        `${BEA.id},Informe de Bea,Quick,M,Bea,Codex,,${local(3)},${local(2)},2,${hours(at(3), at(2))},3,2,1.50`,
+        `${BEA.id},Informe de Bea,Quick,M,Bea,Codex,,${local(3)},${local(2)},2,${hours(at(3), at(2), "en")},3,2,1.50`,
       ]);
     } finally {
       await server.close();

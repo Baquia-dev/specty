@@ -100,15 +100,21 @@ const TASK_DONE_CHECKS = ["scope", "max-lines"];
 
 /**
  * The run of `task done` (ADR 0012): what changed, with the plan of `change`. It leaves out what
- * `task done` checks itself and, when the task has a verification, the project's own commands:
- * that verification is how the person runs them at each task, so the tests never run twice.
+ * `task done` checks itself, the checks `checks.taskDone.skip` names (never the plan's nor
+ * `tests-locked`, which the schema refuses) and, when the task has a verification, the project's
+ * own commands: that verification is how the person runs them at each task, so the tests never
+ * run twice.
  */
 export function taskChecks(
   session: Session,
   change: string,
   verified: boolean,
 ): Promise<ReportOutput> {
-  const skip = new Set([...TASK_DONE_CHECKS, ...(verified ? COMMAND_CHECKS : [])]);
+  const skip = new Set([
+    ...TASK_DONE_CHECKS,
+    ...session.config.checks.taskDone.skip,
+    ...(verified ? COMMAND_CHECKS : []),
+  ]);
   return check(session, "changed", false, { id: change }, skip);
 }
 

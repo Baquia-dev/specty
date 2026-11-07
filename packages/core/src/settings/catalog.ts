@@ -257,6 +257,7 @@ export const SETTINGS: readonly Setting[] = [
     basic: true,
   },
   { key: "subagents", section: "flow", kind: "toggle", basic: true },
+  { key: "flow.closing", section: "flow", kind: "toggle", new: true },
   {
     key: "retro.mode",
     section: "flow",
@@ -301,6 +302,7 @@ export const SETTINGS: readonly Setting[] = [
   { key: "lines.tests", section: "lines", kind: "group" },
   { key: "lines.exclude", section: "lines", kind: "list" },
   { key: "checks.levels", section: "checks", kind: "map", permissions: true },
+  { key: "checks.taskDone.skip", section: "checks", kind: "list", permissions: true, new: true },
   { key: "checks.maxFindings", section: "checks", kind: "number" },
   { key: "checks.exclude", section: "checks", kind: "list" },
   { key: "checks.todo", section: "checks", kind: "group" },

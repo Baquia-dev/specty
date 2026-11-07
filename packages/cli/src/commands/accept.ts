@@ -46,8 +46,9 @@ import { pendingIntegration } from "./integrate";
 import { thenNext } from "./next";
 
 /**
- * `specty accept`: a person accepts the result; quick changes close right away, and so does, in
- * delegated mode, one whose closing the agent sent first. `verify` answers beforehand whether to
+ * `specty accept`: a person accepts the result; a quick change, or one without its closing phase
+ * (`flow.closing: false`), closes right away, and so does, in delegated mode, one whose closing the
+ * agent sent first. `verify` answers beforehand whether to
  * run the full verification first (the UI runs it on its own).
  */
 export async function accept(session: Session, verify?: boolean): Promise<Output> {
@@ -214,7 +215,8 @@ async function slowTestNote(session: Session, started: number): Promise<string[]
 }
 
 /**
- * The person accepted: a quick change closes; any other goes on to its closing, and closes too
+ * The person accepted: a quick change, or one without its closing phase, closes as the quick lane
+ * does (`closeQuick`); any other goes on to its closing, and closes too
  * when the agent sent it first, in delegated mode. `merged` says how the main branch came in
  * before the verification, if it did.
  */
@@ -230,7 +232,7 @@ async function accepted(
     phase: "acceptance",
     kind: state.kind,
     actor: "human",
-    event: { type: "accept" },
+    event: { type: "accept", withoutClosing: view.withoutClosing === true },
   });
   if (!moved.ok)
     return blockedCard(headerOf(state.id, state.phase), moved.code, checkStatus(cards));

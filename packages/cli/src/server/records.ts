@@ -13,6 +13,7 @@ import { isFinished } from "../flow/active";
 import { locateChanges, unreadableChanges } from "../flow/changes";
 import { criteriaTests } from "../flow/criteria-tests";
 import { type LostChange, lostChanges } from "../flow/lost";
+import { withoutClosing } from "../flow/views";
 import { isRecord, parseJson, readText } from "../io/files";
 import type { Session } from "../session";
 import { listDir, loadState, readRevision } from "../store/changes";
@@ -52,6 +53,8 @@ export interface ChangeRecord {
   readonly reviews?: readonly ReviewRecord[];
   /** In acceptance, each criterion with the tests that carry its id (ADR 0014). */
   readonly criteriaTests?: NonNullable<ChangeView["criteriaTests"]>;
+  /** In acceptance, accepting closes it without its closing phase (`withoutClosing`). */
+  readonly withoutClosing?: true;
   /**
    * Its folder's `.specty/config.yaml` cannot be read: each issue, as the CLI prints it. No command
    * runs there; a server older than the Specty that wrote it sees this (ARCHITECTURE §15).
@@ -156,7 +159,7 @@ function issueLine({ path, message }: ConfigIssue): string {
 
 /**
  * The records read, completed: the commit of each task done, the marks of who holds each and, in
- * acceptance, the tests of each criterion.
+ * acceptance, the tests of each criterion and whether accepting closes it.
  */
 async function completed(session: Session, { records, sessions }: Read): Promise<ChangeRecord[]> {
   const commits = await taskCommits(session);
@@ -166,7 +169,7 @@ async function completed(session: Session, { records, sessions }: Read): Promise
       const tasks = commits.get(record.state.id);
       const there = sessions.get(record.state.id);
       const withTasks = { ...withCommits(record, tasks), ...holds.get(record.state.id) };
-      return there === undefined ? withTasks : withCriteriaTests(there, withTasks, tasks);
+      return there === undefined ? withTasks : inAcceptance(there, withTasks, tasks);
     }),
   );
 }
@@ -263,9 +266,10 @@ async function holdsById(
 
 /**
  * In acceptance, each criterion with the tests that carry its id, as the acceptance card reads
- * them (`flow/criteria-tests.ts`); an epic's criteria are checked by its slices.
+ * them (`flow/criteria-tests.ts`), and whether accepting closes it without its closing phase
+ * (`withoutClosing`, with its folder's `flow.closing`); an epic's criteria are checked by its slices.
  */
-async function withCriteriaTests(
+async function inAcceptance(
   there: Session,
   record: ChangeRecord,
   commits: ReadonlyMap<string, string> | undefined,
@@ -276,6 +280,7 @@ async function withCriteriaTests(
   return {
     ...record,
     criteriaTests: await criteriaTests(there, spec, commits ?? new Map(), state.id),
+    ...(withoutClosing(there, state, spec) ? { withoutClosing: true } : {}),
   };
 }
 

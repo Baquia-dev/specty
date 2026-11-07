@@ -126,6 +126,7 @@ describe("the settings' catalog", () => {
       "scope.generated",
       "scope.autoApprove",
       "checks.levels",
+      "checks.taskDone.skip",
     ]);
     expect(keysWith("command")).toEqual([
       "verify.default",
@@ -146,7 +147,9 @@ describe("the settings' catalog", () => {
       "ui.requireUserPresence",
     ]);
     expect(keysWith("new")).toEqual([
+      "flow.closing",
       ...SIZING_KEYS,
+      "checks.taskDone.skip",
       "warnings.vagueTerms",
       "warnings.horizontalLayers",
       "warnings.risks",
@@ -760,6 +763,62 @@ describe("the most of a command's output Specty reads", () => {
     }
     expect(es.name).not.toBe(en.name);
     expect(es.description).not.toBe(en.description);
+  });
+});
+
+describe("the closing phase as a setting", () => {
+  const issuesOf = (flow: unknown) => {
+    const result = resolveConfig({ version: 1, flow });
+    return result.ok ? [] : result.issues.map((issue) => issue.path);
+  };
+
+  it("AC5: is true without flow, takes true or false, and refuses anything else and an unknown key by its key", () => {
+    expect(DEFAULT_CONFIG.flow).toEqual({ closing: true });
+    for (const input of [{ version: 1 }, { version: 1, flow: {} }]) {
+      expect(resolveConfig(input)).toMatchObject({ ok: true, config: { flow: { closing: true } } });
+    }
+    for (const closing of [true, false]) {
+      expect(resolveConfig({ version: 1, flow: { closing } })).toMatchObject({
+        ok: true,
+        config: { flow: { closing } },
+      });
+    }
+    for (const closing of ["false", 0, null, "no"]) {
+      expect(issuesOf({ closing }), String(closing)).toEqual(["flow.closing"]);
+    }
+    expect(issuesOf({ retro: false })).toEqual(["flow"]);
+    expect(issuesOf(false)).toEqual(["flow"]);
+  });
+
+  it("AC6: shows in section «Flujo», before the retro, as a new toggle with no mark of permissions, named in Spanish and in English", () => {
+    expect(
+      SETTINGS.filter((setting) => setting.section === "flow").map((setting) => setting.key),
+    ).toEqual([
+      "language",
+      "mode",
+      "policy.tests",
+      "subagents",
+      "flow.closing",
+      "retro.mode",
+      "specty delegate",
+    ]);
+    expect(SETTINGS.find((setting) => setting.key === "flow.closing")).toEqual({
+      key: "flow.closing",
+      section: "flow",
+      kind: "toggle",
+      new: true,
+    });
+    expect(settingOf(["flow", "closing"])?.key).toBe("flow.closing");
+    expect(settingChanges({ version: 1 }, { version: 1, flow: { closing: false } })).toEqual([
+      { key: "flow.closing", after: false },
+    ]);
+    expect(settingText("flow.closing", "es").name).toBe("Fase de cierre");
+    expect(settingText("flow.closing", "en").name).toBe("Closing phase");
+    const es = settingText("flow.closing", "es").description;
+    const en = settingText("flow.closing", "en").description;
+    expect(es).not.toBe("");
+    expect(en).not.toBe("");
+    expect(es).not.toBe(en);
   });
 });
 

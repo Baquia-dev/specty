@@ -180,3 +180,49 @@ describe("the closing written in acceptance, in delegated mode", () => {
     expect(card(view({ closingSubmitted: true }), delegated(EN)).next).toBe(SENT_EN);
   });
 });
+
+const ACCEPT_ES =
+  'modo delegado: acepta tú el resultado con `specty accept` y sigue su salida. Si el usuario pide ajustes, ejecuta `specty adjust "<petición literal>"`.';
+const ACCEPT_EN =
+  'delegated mode: accept the result yourself with `specty accept` and follow its output. If the user asks for adjustments, run `specty adjust "<literal request>"`.';
+
+describe("a standard change without its closing phase (flow.closing: false)", () => {
+  /** The person accepts a change of `kind`, with or without its closing phase. */
+  const accepted = (kind: ChangeKind, withoutClosing?: boolean) =>
+    transition({
+      phase: "acceptance",
+      kind,
+      actor: "human",
+      event: { type: "accept", ...(withoutClosing === undefined ? {} : { withoutClosing }) },
+    });
+
+  it("AC1: with its closing phase, accepting a standard change takes it to closing, and the delegated card asks for the closing first", () => {
+    expect(accepted("standard")).toEqual({ ok: true, phase: "closing" });
+    expect(accepted("standard", false)).toEqual({ ok: true, phase: "closing" });
+    const output = card(view({ withoutClosing: false }), delegated(ES));
+    expect(output.next).toBe(WRITE_ES);
+    expect(renderText(output, "es")).toContain(HOW_ES);
+  });
+
+  it("AC3: without it, accepting a standard change leaves it done, and the delegated card asks to accept with no closing first", () => {
+    expect(accepted("standard", true)).toEqual({ ok: true, phase: "done" });
+    const output = card(view({ withoutClosing: true }), delegated(ES));
+    expect(output.next).toBe(ACCEPT_ES);
+    expect(renderText(output, "es")).not.toContain("CÓMO CERRAR");
+    const english = card(view({ withoutClosing: true }), delegated(EN));
+    expect(english.next).toBe(ACCEPT_EN);
+    expect(renderText(english, "en")).not.toContain("HOW TO CLOSE");
+    // The person's card is as before.
+    expect(card(view({ withoutClosing: true }), ES).next).toContain(
+      "pide al usuario que revise el resultado",
+    );
+  });
+
+  it("AC4: a spike and an epic still go to closing, and a quick change to done, with or without it", () => {
+    for (const kind of ["spike", "epic"] as const) {
+      expect(accepted(kind, true), kind).toEqual({ ok: true, phase: "closing" });
+    }
+    expect(accepted("quick", true)).toEqual({ ok: true, phase: "done" });
+    expect(accepted("quick")).toEqual({ ok: true, phase: "done" });
+  });
+});
