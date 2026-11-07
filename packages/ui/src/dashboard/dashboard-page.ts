@@ -26,6 +26,7 @@ import { Skeleton } from "../components/skeleton";
 import { ActionError, SpectyData } from "../data/records";
 import type { StatsParams } from "../data/source";
 import { Preferences } from "../theme/preferences";
+import { DashboardChanges } from "./dashboard-changes";
 import { DashboardPeople } from "./dashboard-people";
 import { DashboardRhythm } from "./dashboard-rhythm";
 import { DashboardSummary } from "./dashboard-summary";
@@ -61,6 +62,7 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
 @Component({
   selector: "sp-dashboard-page",
   imports: [
+    DashboardChanges,
     DashboardPeople,
     DashboardRhythm,
     DashboardSummary,
@@ -100,6 +102,7 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
           @if (view.people; as people) {
             <sp-dashboard-people class="mt-4" [people]="people" [who]="view.query.who" (pick)="choose({ who: $event })" />
           }
+          <sp-dashboard-changes [query]="view.query" />
         }
       } @else if (read.isLoading()) {
         <sp-skeleton height="5rem" />

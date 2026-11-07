@@ -29,6 +29,7 @@ import { memoryOrigins } from "./origins";
 import { changeRecord, changeRecords, openRecords } from "./records";
 import { sessionsView } from "./sessions";
 import { epicSliceChanges } from "./slices";
+import { statsChangesPage } from "./stats-changes";
 import { testCode } from "./test-code";
 import { changeTrace, traceReply } from "./trace";
 
@@ -73,6 +74,7 @@ const VIEWS: ReadonlyMap<string, View> = new Map<string, View>([
   ["/api/memory", memoryView],
   ["/api/sessions", sessionsView],
   ["/api/stats", statsAnswer],
+  ["/api/stats/changes", statsChangesPage],
 ]);
 
 /**
