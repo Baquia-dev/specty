@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-avisos-de-la-spec-y-de-las-sesiones-pasan-a",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-los-avisos-de-la-spec-y-de-las-sesiones-pasan-a",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 2,
@@ -64,14 +64,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/settings/settings-page.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "7afe1a427a95527146c3ba2d55b265260dffcf94",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:35:04.631Z",
       "doneAt": "2026-11-07T05:00:14.541Z",
-      "summary": "La página muestra «Avisos» y «Consumo y sesiones» desde el catálogo; ui.md las documenta; el test de C8 del filtro Nuevos compara solo las claves internal.* (desbloqueo S1, aprobado por la persona)"
+      "summary": "La página muestra «Avisos» y «Consumo y sesiones» desde el catálogo; ui.md las documenta; el test de C8 del filtro Nuevos compara solo las claves internal.* (desbloqueo S1, aprobado por la persona)",
+      "scopeExtra": [
+        "packages/ui/src/settings/settings-page.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e9ff3d7348541c8336936e293be92f4e900d5b9f",
+      "startedAt": "2026-11-07T05:00:14.894Z",
+      "doneAt": "2026-11-07T05:02:58.975Z",
+      "summary": "flow/usage.ts compara el contexto con usage.freshSessionTokens y espera cada informe de ccusage usage.ccusage.timeoutSec; install/usage.ts recibe la versión (init, la de DEFAULT_CONFIG; doctor, la de session.config); ARCHITECTURE §13 y §14"
     }
   },
   "pending": {

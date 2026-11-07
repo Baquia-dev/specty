@@ -88,7 +88,7 @@ Hoy el umbral del aviso de sesión nueva, el tiempo que Specty espera a ccusage,
   - files: packages/ui/src/settings/settings-page.test.ts, docs/ui.md
   - ac: AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts
-- [ ] T3: El aviso de sesión nueva y ccusage usan el umbral, el tiempo y la versión de la configuración
+- [x] T3: El aviso de sesión nueva y ccusage usan el umbral, el tiempo y la versión de la configuración
   - files: packages/cli/src/flow/usage.ts, packages/cli/src/install/usage.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/fresh-session.test.ts, packages/cli/test/usage.test.ts, packages/cli/test/init-usage.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/fresh-session.test.ts test/usage.test.ts test/init-usage.test.ts && pnpm typecheck
