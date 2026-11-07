@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-ajustes-se-guardan-desde-la-ui-con-diff-y",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-los-ajustes-se-guardan-desde-la-ui-con-diff-y",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 2,
@@ -64,6 +64,10 @@
     "T": 4,
     "R": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T03:41:48.848Z"
+  "lockedTests": {
+    "packages/cli/test/server/config.test.ts": "sha256:2d4ca557a187941d642067e2a2cbaae88865c0ca93588a2f01a7543af3a12025",
+    "packages/core/test/settings/catalog.test.ts": "sha256:71862b4b89392e636250efd5d58c831b4d135c5aed05623adf645bbb3e8adc85",
+    "packages/cli/test/config-save.test.ts": "sha256:d7984b294229d97ea51ddb77fc6a4570c435e5e81095da40c43515c2e9e935ed",
+    "packages/cli/test/yaml-edit.test.ts": "sha256:e1a14397bedc8550c0384286bf00912222dcd48dcae9ec93315f0612d085f7ae"
+  }
 }
