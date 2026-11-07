@@ -105,7 +105,7 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
 
 /**
  * Section «Interno», execution and server: the priority of the verifications, the most Specty
- * reads of a command's output and the UI's ports.
+ * reads of a command's output, and the UI's ports and the limits of its server.
  */
 const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
   "internal.exec.priority": {
@@ -136,6 +136,56 @@ const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
     en: [
       "Ports the UI tries",
       "How many ports specty ui tries from the first if it is taken, from 1 to 100.",
+    ],
+  },
+  "internal.server.changesEveryMs": {
+    es: [
+      "Cada cuánto mira la UI los cambios",
+      "Los ms entre dos miradas del servidor de specty ui a si los cambios se movieron, mientras alguien lo escucha; de 100 a 60000.",
+    ],
+    en: [
+      "How often the UI looks at the changes",
+      "The ms between two looks of specty ui's server at whether the changes moved, while someone listens; from 100 to 60000.",
+    ],
+  },
+  "internal.server.tasksEveryMs": {
+    es: [
+      "Cada cuánto mira la UI las verificaciones",
+      "Los ms entre dos lecturas de las verificaciones que corren en otros procesos, como la de specty task done; de 100 a 60000.",
+    ],
+    en: [
+      "How often the UI looks at the verifications",
+      "The ms between two reads of the verifications running in other processes, such as specty task done's; from 100 to 60000.",
+    ],
+  },
+  "internal.server.runLines": {
+    es: [
+      "Líneas de una verificación en curso",
+      "Las últimas líneas que guarda una verificación mientras corre, en la UI y en su archivo en vivo; de 100 a 10000.",
+    ],
+    en: [
+      "Lines of a verification going on",
+      "The last lines a verification keeps while it runs, in the UI and in its live file; from 100 to 10000.",
+    ],
+  },
+  "internal.server.runEveryMs": {
+    es: [
+      "Avisos de una verificación en curso",
+      "Cada cuántos ms, como mucho, la UI oye una verificación que avanza y se reescribe su archivo en vivo; de 50 a 10000.",
+    ],
+    en: [
+      "Notices of a verification going on",
+      "At most how often, in ms, the UI hears a verification that moves and its live file is written again; from 50 to 10000.",
+    ],
+  },
+  "internal.server.maxBodyKiB": {
+    es: [
+      "Cuerpo máximo de una acción",
+      "Los KiB que lee el servidor del cuerpo de una acción de la persona; uno mayor se lee como ninguno. De 64 a 1024.",
+    ],
+    en: [
+      "Largest body of an action",
+      "The KiB the server reads of the body of an action of the person; a larger one reads as none. From 64 to 1024.",
     ],
   },
 };
