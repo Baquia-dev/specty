@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-ejecucion-la-salida-y-el-servidor-pasan-a",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-ejecucion-la-salida-y-el-servidor-pasan-a",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 2,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d1d01e029498b6d0288ba24dc399ec43dc07dfe8",
+      "attempts": 1,
       "startedAt": "2026-11-07T03:39:32.557Z",
       "doneAt": "2026-11-07T03:40:32.434Z",
-      "summary": "ExecOptions gana priority, que aplica lowPriority; lowerPriority toma por defecto la de DEFAULT_CONFIG; verify.ts, live-run.ts y server/runs.ts pasan internal.exec.priority; ARCHITECTURE explica la prioridad configurable"
+      "summary": "ExecOptions gana priority, que aplica lowPriority; lowerPriority toma por defecto la de DEFAULT_CONFIG; verify.ts, live-run.ts y server/runs.ts pasan internal.exec.priority; ARCHITECTURE explica la prioridad configurable",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5dcd2566456b70db632ed5b7dffb3137b7c0bddf",
+      "startedAt": "2026-11-07T03:40:32.727Z",
+      "doneAt": "2026-11-07T03:42:13.502Z",
+      "summary": "specty ui sin --port arranca en ui.port (4173 con auto) y --port manda; listen prueba internal.server.portsTried puertos desde el primero sin pasar de 65535; ARCHITECTURE explica el puerto y los puertos probados"
     }
   },
   "pending": {

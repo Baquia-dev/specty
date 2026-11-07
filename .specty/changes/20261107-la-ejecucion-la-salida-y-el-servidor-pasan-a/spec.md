@@ -83,7 +83,7 @@ Hoy la prioridad con que corren las verificaciones y cuántos puertos prueba `sp
   - files: packages/cli/src/io/exec.ts, packages/cli/src/commands/verify.ts, packages/cli/src/flow/live-run.ts, packages/cli/src/server/runs.ts, packages/cli/test/verify-priority.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-priority.test.ts test/exec.test.ts
-- [ ] T3: `specty ui` arranca en `ui.port` y prueba los puertos de la configuración
+- [x] T3: `specty ui` arranca en `ui.port` y prueba los puertos de la configuración
   - files: packages/cli/src/commands/ui.ts, packages/cli/src/server/http.ts, packages/cli/test/server.test.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts && pnpm typecheck
