@@ -62,7 +62,7 @@ Hoy el resumen de lo que se hizo con Specty solo se ve en el «Panel» de `spect
 
 ## Tareas
 
-- [ ] T1: El core escribe el resumen del panel y los rechazos de `specty stats` en español y en inglés
+- [x] T1: El core escribe el resumen del panel y los rechazos de `specty stats` en español y en inglés
   - files: packages/core/src/cards/stats.ts, packages/core/src/cards/index.ts, packages/core/test/cards/stats.test.ts, docs/formats.md
   - ac: AC1, AC2, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/stats.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

@@ -801,6 +801,34 @@ BLOQUEADO: archivos fuera del alcance de T2:
 SIGUIENTE: revierte ese archivo o pide ampliar el alcance con `specty scope add lib/core/theme/ca_colors.dart --task T2 --reason "<motivo>"`.
 ```
 
+`specty stats` (ARCHITECTURE §6), el resumen del panel de `specty ui` para el corte pedido, con una tabla por persona, agente y modelo; con `--json`, el mismo `StatsView` que `GET /api/stats`:
+
+```text
+SPECTY · stats · últimos 30 días · 2026-10-09 – 2026-11-07
+INDICADORES, FRENTE A LOS 30 DÍAS ANTERIORES:
+  Cambios cerrados: 42 · ▲ 17 %
+  Tareas completadas: 131 · ▼ 4 %
+  Ciclo (mediana): 1 d 3 h · sin cambios
+  Verificaciones que pasan: 92,5 % de 400 verificaciones de tarea · ▲ 2 %
+  Coste medido: 12,30 USD en 5 de 42 cambios cerrados · sin datos antes
+  Pendientes abiertos: 20 · ▼ 9 %
+POR PERSONA:
+  Nombre      Cambios  Tareas    Ciclo  Pasan  Sesiones      Coste
+  Jorge            40     127  1 d 2 h   93 %        51  12,30 USD
+  (sin dato)        2       4      5 h   75 %         0          —
+POR AGENTE:
+  Nombre       Cambios  Tareas    Ciclo  Pasan  Sesiones      Coste
+  claude-code       38     120  1 d 2 h   93 %        51  12,30 USD
+  codex              4      11      8 h   88 %         0          —
+POR MODELO:
+  Nombre      Cambios  Tareas    Ciclo  Pasan  Sesiones      Coste
+  m-1              30      98  1 d 1 h   94 %        40  12,30 USD
+  (sin dato)       12      33      9 h   90 %        11          —
+SIGUIENTE: el panel completo, con sus gráficas, está en `specty ui` (Panel); para otro corte, `--period 7d|30d|90d|all`, `--who person:<nombre>|agent:<herramienta>|model:<modelo>` o `--kind <carril>`.
+```
+
+Sin ningún cambio del corte en el periodo, la tarjeta solo dice «No hay ningún cambio en este corte en el periodo.». Un `--period`, un `--who` o un `--kind` que no entiende se rechaza con código 1 y los valores válidos, en lugar de tomar el de por defecto como el servidor.
+
 ## 10. Exportadores
 
 | Specty | OpenSpec | Spec Kit | Kiro |

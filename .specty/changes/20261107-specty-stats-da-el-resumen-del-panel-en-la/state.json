@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "0b9983cfd1059b9f687ff030783250215f99d41c",
+      "startedAt": "2026-11-07T10:32:47.416Z",
+      "doneAt": "2026-11-07T10:44:00.240Z",
+      "summary": "cards/stats.ts escribe el resumen de specty stats (cabecera con el corte, los seis indicadores con su variación, una tabla alineada por persona, agente y modelo, el estado vacío) y sus rechazos, en español y en inglés; formats.md §9 lleva un ejemplo"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
