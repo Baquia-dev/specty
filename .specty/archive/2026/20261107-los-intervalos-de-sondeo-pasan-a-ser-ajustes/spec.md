@@ -90,3 +90,30 @@ Hoy cada cuánto mira de nuevo una verificación que espera su turno o sus plaza
 - R1: C18 hará configurable la caducidad de los archivos de la cola (`STALE_MS`, 30 s), que cada vuelta renueva. Si la dejara por debajo de unas tres vueltas de `verifyIntervalMs` (10 s como mucho), una verificación que espera perdería su sitio. Mitigación: el máximo de 10 s deja tres vueltas en los 30 s de hoy, y C18 debe poner su mínimo en 30 s o más, o comprobar las dos claves juntas; se anota en la memoria.
 - R2: C18 trabaja en paralelo y también toca el catálogo, `internal-waits.ts`, `settings-internal.ts` y `docs/formats.md` §6. Mitigación: las claves nuevas van en el bloque `waits`, en su sitio, y al incorporar main `specty integrate` conserva lo de los dos.
 - R3: Un espía sobre `setTimeout` también ve los de otras partes del proceso. Mitigación: los tests miran que aparezca el intervalo configurado (un valor que nada más usa), no que falte otro.
+
+## Cierre
+
+### Resumen
+
+- Core: `schema/internal-waits.ts` añade al bloque `waits` `internal.waits.verifyIntervalMs` (2000) e `internal.waits.waitIntervalMs` (500), enteros entre 100 y 10000; `ResolvedConfig.internal` los trae sin tocar `config.ts`.
+- Catálogo: la unidad nueva `ms` y los dos ajustes en «Interno», tras `internal.waits.heartbeatSec`, con la marca `new`; sus nombres y descripciones en español y en inglés en `cards/settings-internal.ts`.
+- CLI: `inSlots` y el turno de la verificación completa (`onTurn`) miran de nuevo cada `internal.waits.verifyIntervalMs`, sin `POLL_MS`; `specty wait` sin `--interval` mira cada `internal.waits.waitIntervalMs`, y su marca lo dice en `intervalMs`.
+- Documentación: formats.md §6 documenta las dos claves con sus límites y por qué; ARCHITECTURE remite a ellas en el turno, en las plazas y en la fila de `specty wait`.
+
+### Desviaciones
+
+- `docs/formats.md` pasó de T1 a T3 al proponer la spec, para que T1 no tocara seis archivos, y la verificación de T3 suma `pnpm typecheck`, como pidió el aviso de `propose`.
+- Los tests de la página no cambiaron: ya sacan sus listas del catálogo (A7 de C11), así que los dos ajustes nuevos salen en «Interno» y en el filtro de nuevos sin tocarlos. Las listas exactas del catálogo (los nuevos, los de «Interno» y su número, ahora 14) entraron en el contrato.
+
+### Decisiones
+
+- Una sola clave rige las dos esperas de una verificación, la del turno y la de las plazas, porque `oneAtATime` ya les pasaba el mismo intervalo.
+- La opción `pollMs` de `inSlots` y `oneAtATime` se queda para los tests, como `beatMs` de `wait`; sin ella manda la clave.
+- `--interval` pierde su valor por defecto en commander (`"500"`), que si no siempre llegaba y tapaba la clave; si se pasa, sigue mandando y no tiene los límites del schema.
+- Los tests de la CLI ven el intervalo con un espía sobre `setTimeout`, y los de `wait`, en el `intervalMs` de la marca, sin depender del tiempo.
+
+### Pendientes
+
+- C18 debe dejar la caducidad de los archivos de la cola en 30 s o más, o validarla junto a `internal.waits.verifyIntervalMs` (P307).
+- `packages/core/test/settings/catalog.test.ts` tiene 531 líneas (aviso desde 400, fallo a 600): conviene llevar los tests de «Interno» a su propio archivo (P303).
+- AC7 se comprueba a mano: formats.md §6 y las tres menciones de ARCHITECTURE.
