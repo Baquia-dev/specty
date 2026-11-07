@@ -5,6 +5,18 @@ import type { Lang } from "../i18n";
 import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
 import { DEFAULT_DEV, type DevConfig, DevSchema, resolveDev } from "./dev";
 import { DEFAULT_GIT, type GitConfig, GitSchema, resolveGit } from "./git";
+import {
+  DEFAULT_INTERNAL_RUN,
+  INTERNAL_RUN_SHAPE,
+  type InternalRunConfig,
+  resolveInternalRun,
+} from "./internal-run";
+import {
+  DEFAULT_INTERNAL_WAITS,
+  INTERNAL_WAITS_SHAPE,
+  type InternalWaitsConfig,
+  resolveInternalWaits,
+} from "./internal-waits";
 import { DEFAULT_MEMORY, type MemoryConfig, MemorySchema, resolveMemory } from "./memory";
 import {
   DEFAULT_EFFORT,
@@ -84,6 +96,11 @@ export interface ResolvedConfig {
    * review on its standard input. Unset, Specty neither recommends nor runs a review.
    */
   readonly review?: { readonly command: string; readonly timeoutSec: number };
+  /**
+   * Specty's internal settings (formats.md §6): values that can leave Specty not working, with
+   * today's behaviour as their defaults. Removing a key gives it back its default.
+   */
+  readonly internal: InternalWaitsConfig & InternalRunConfig;
 }
 
 export const DEFAULT_CONFIG: ResolvedConfig = {
@@ -128,6 +145,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   memory: DEFAULT_MEMORY,
   dev: DEFAULT_DEV,
   subagents: true,
+  internal: { ...DEFAULT_INTERNAL_WAITS, ...DEFAULT_INTERNAL_RUN },
 };
 
 const Globs = z.array(z.string().min(1));
@@ -199,6 +217,7 @@ export const ConfigSchema = z.strictObject({
   memory: MemorySchema.optional(),
   dev: DevSchema.optional(),
   subagents: z.boolean().optional(),
+  internal: z.strictObject({ ...INTERNAL_WAITS_SHAPE, ...INTERNAL_RUN_SHAPE }).optional(),
 });
 
 export type ConfigInput = z.infer<typeof ConfigSchema>;
@@ -255,6 +274,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     memory: resolveMemory(input.memory),
     dev: resolveDev(input.dev),
     subagents: input.subagents ?? base.subagents,
+    internal: { ...resolveInternalWaits(input.internal), ...resolveInternalRun(input.internal) },
     ...(review !== undefined ? { review } : {}),
   };
 }

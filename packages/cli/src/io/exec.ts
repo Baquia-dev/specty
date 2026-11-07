@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { execFile, spawn } from "node:child_process";
 import { setPriority } from "node:os";
+import { DEFAULT_CONFIG } from "@baquia-dev/specty-core";
 
 export interface ExecOptions {
   readonly cwd: string;
@@ -14,14 +15,13 @@ export interface ExecOptions {
   /** Keep all of the output, as for git, whose output is data rather than a log. */
   readonly whole?: boolean;
   /**
-   * Run it below the rest of the machine (priority 10), as verifications do: the processes it
+   * Run it below the rest of the machine, at `priority`, as verifications do: the processes it
    * starts afterwards inherit it. Best effort: where the system refuses, it runs as it is.
    */
   readonly lowPriority?: boolean;
+  /** The priority `lowPriority` runs it at: `internal.exec.priority`, 10 by default. */
+  readonly priority?: number;
 }
-
-/** The priority of a command that yields the CPU to the rest of the machine, as `nice -n 10`. */
-const LOW_PRIORITY = 10;
 
 export interface ExecResult {
   /** Exit code, or undefined when the process was killed (timeout or signal). */
@@ -35,12 +35,16 @@ export interface ExecResult {
 export const MAX_OUTPUT = 512 * 1024;
 
 /**
- * Lowers the priority of process `pid`, as `lowPriority` does, for a command not launched by
- * `execute`; a system that refuses leaves it as it is.
+ * Lowers the priority of process `pid` to `priority`, as `lowPriority` does, for a command not
+ * launched by `execute`. A system that refuses leaves it as it is: so does one already running
+ * lower, since a process without privileges cannot raise its priority.
  */
-export function lowerPriority(pid: number): void {
+export function lowerPriority(
+  pid: number,
+  priority: number = DEFAULT_CONFIG.internal.exec.priority,
+): void {
   try {
-    setPriority(pid, LOW_PRIORITY);
+    setPriority(pid, priority);
   } catch {
     // Best effort: the command runs all the same.
   }
@@ -59,7 +63,8 @@ export function execute(
       shell: options.shell ?? false,
       stdio: ["pipe", "pipe", "pipe"],
     });
-    if (options.lowPriority === true && child.pid !== undefined) lowerPriority(child.pid);
+    if (options.lowPriority === true && child.pid !== undefined)
+      lowerPriority(child.pid, options.priority);
     let stdout = "";
     let stderr = "";
     let timedOut = false;

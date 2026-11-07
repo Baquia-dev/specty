@@ -83,6 +83,14 @@ describe("the card with no change active, when the tool hands changes to subagen
     for (const tool of without) expect(idle({ ...ES, tool }), tool).toBe(today);
   });
 
+  it("is today's card when `new` gives no change a folder of its own (P263)", () => {
+    // `git.worktrees: false` or `git.branchPerChange: false`: a subagent's change would have no
+    // folder to enter, and a second `new` would be refused while the first is open.
+    expect(idle({ ...CLAUDE, changeFolders: false })).toBe(idle(ES));
+    expect(idle({ ...CLAUDE, lang: "en", changeFolders: false })).toBe(idle(EN));
+    expect(idle({ ...CLAUDE, changeFolders: true })).toContain("ENCARGO:");
+  });
+
   it("AC3: names the commit type in the brief's new when git.flow names branches by type", () => {
     const text = idle({ ...CLAUDE, branchTypes: true });
     expect(text).toContain(

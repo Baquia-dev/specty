@@ -246,8 +246,8 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - Hay una tarea sin `files`, o con archivos que no están en la sección Archivos.
 - Se referencia un criterio inexistente, o hay un criterio que ninguna tarea cubre.
 - Hay una tarea sin `verify` y no existe una verificación por defecto.
-- En `adjusting`: se modifica o elimina una tarea completada.
-- En `adjusting`, con un ajuste pedido mientras se implementa (la revisión aprobada aún tiene tareas sin completar): se añade o se elimina una tarea, o se añade, modifica o elimina un criterio (`pending-tasks-only`). Ese ajuste solo corrige las tareas pendientes: su `verify`, sus `files` o su texto.
+- En un ajuste, en `adjusting` o en su revisión (`review` con una revisión aprobada, también tras pedir cambios la persona): se modifica o elimina una tarea completada (`done-task-changed`).
+- En un ajuste, en `adjusting` o en su revisión, con un ajuste pedido mientras se implementa (la revisión aprobada aún tiene tareas sin completar): se añade o se elimina una tarea, o se añade, modifica o elimina un criterio (`pending-tasks-only`). Ese ajuste solo corrige las tareas pendientes: su `verify`, sus `files` o su texto.
 - En el ajuste de una épica, en `adjusting` o en su revisión (`review` con una revisión aprobada): se modifica (título, `ac` o `depends`) o se elimina un corte cuyo cambio está cerrado (`closed-slice-changed`). Un corte está cerrado cuando su cambio está en `done`; uno cancelado no lo cierra. Un corte cerrado se acepta tal como estaba en la revisión aprobada o en la última propuesta, por si el ajuste lo estrechó mientras su cambio seguía abierto. Core no lee el disco: la CLI le pasa esos cortes, de los cambios que nombran la épica, abiertos o archivados.
 - En `closing`: hay cambios fuera de la sección Cierre.
 - Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. La tarea única de `quick` solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección. El corte de una épica (con `epic` en el frontmatter) no se divide en otra épica: su error pide estrecharlo y llevar el resto a cortes nuevos de su épica, que se ajusta también mientras se implementa.
@@ -481,7 +481,7 @@ retro:
   mode: agent                     # agent | minimal
 git:
   branchPerChange: true
-  worktrees: true                 # cada cambio en su propia worktree (necesita branchPerChange)
+  worktrees: true                 # cada cambio en su propia worktree (necesita branchPerChange); sin ella, los cambios que pide el usuario no van a subagentes
   setup: "pnpm install --prefer-offline"  # prepara cada worktree nueva; false: nada; sin la clave: el comando del stack
   target: develop                 # rama de la que parten los cambios y a la que se incorporan; sin la clave: la principal
   flow: gitflow                   # specty | github | trunk | gitflow: cómo se nombran las ramas; sin la clave: specty/<id>
@@ -491,21 +491,33 @@ team:                             # solo con mode: team
   approvers: []
   requirePrReview: true
 ui:
-  port: auto
+  port: auto                      # el puerto desde el que escucha `specty ui` sin `--port`; auto: el 4173; `--port` manda
   requireUserPresence: false      # WebAuthn (fase 4)
 memory:                           # la memoria de Specty (ADR 0016)
   orphanAfterMin: 60              # minutos sin pasos ni cambios de estado tras los que un cambio que espera al agente es huérfano
   branch: specty-memory           # la rama de las entradas (§1): un nombre de rama válido fuera de `specty/`, donde van las de los cambios
 dev:
   ports: [4200, 5173]             # los puertos de desarrollo del proyecto en la carpeta principal; cada carpeta de cambio usa estos más su posición (§1, `ports.json`), y `new` y `next` se los dicen al agente; sin la clave: ninguno
-subagents: true                   # false: ni los cortes de una épica ni los cambios que pide el usuario van a subagentes, aunque su herramienta pueda
+subagents: true                   # false: ni los cortes de una épica ni los cambios que pide el usuario van a subagentes, aunque su herramienta pueda; sin una carpeta por cambio (git.worktrees o git.branchPerChange en false), los cambios que pide el usuario tampoco
+internal:                         # ajustes internos: pueden dejar Specty sin funcionar; sin la clave, el valor de hoy
+  waits:
+    waitTimeoutSec: 3600          # cuánto espera `specty wait` sin `--timeout` (entre 60 y 3600 s); `--timeout` manda
+    heartbeatSec: 60              # separación máxima de su línea de latido donde la herramienta la necesita (entre 1 y 240 s)
+  retries:
+    landing: 2                    # veces más que `close` incorpora main y aterriza si main avanzó mientras aterrizaba (entre 0 y 10)
+  exec:
+    priority: 10                  # el `nice` de la verificación de cada tarea y de la completa (entre 0 y 19); si Specty ya corre más bajo, la suya
+  server:
+    portsTried: 20                # cuántos puertos prueba `specty ui` desde el primero si está ocupado (entre 1 y 100)
 ```
+
+La persona también cambia `config.yaml` desde la página «Configuración» de `specty ui`, si arrancó el servidor en su terminal (`POST /api/config`, ARCHITECTURE §15). Specty escribe solo las claves que cambian, cada una localizada con el `Document` de `yaml` (`io/yaml-edit.ts`). Lo demás queda igual byte a byte: comentarios, comillas y listas de varias líneas. Un valor nuevo va en una línea, con las listas y los mapas en flujo, salvo un texto de varias líneas, que va como bloque literal. Una clave nueva va al final de su mapa, y una que se restablece sale con su mapa si este queda vacío. Después valida el resultado y hace un commit solo de ese archivo, con el asunto `chore(config): <claves>`, el trailer `Specty-Config: true` (§7) y un recibo de tipo `config`, que el hook acepta como el de `init`. No guarda si la carpeta tiene un cambio en curso, si `config.yaml` tiene cambios sin commit o no es YAML, ni mientras otra sesión tiene el turno de aterrizaje.
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
 
 Si `config.yaml` no es válida, ningún comando se ejecuta y la salida da el error. A una persona le pide corregirla; a un agente (sin terminal interactiva) le dice que la corrige el usuario, porque el guard no le deja editarla, y que se lo pida con ese error. `accept` y `close` la validan justo después de incorporar la rama principal y, si no es válida, deshacen el merge (ARCHITECTURE §9). El guard, que tampoco puede leerla, juzga esa carpeta con una configuración válida del mismo repositorio: la de la carpeta en la que trabaja la herramienta, si la conversación entró con `specty enter`, y si no la de la carpeta principal; así sigue reconociendo la carpeta del cambio, aplica las reglas de su fase y no deja al agente editar `.specty/config.yaml` (ARCHITECTURE §10). Si la principal tampoco tiene una válida, deja pasar.
 
-`subagents` (por defecto `true`) deja que la tarjeta de una épica aprobada reparta sus cortes listos, y los huérfanos, entre subagentes, con un encargo por corte, cuando la herramienta detectada puede (columna «Cortes en subagentes» de [ARCHITECTURE §10](ARCHITECTURE.md#10-cumplimiento-por-capas); el encargo, en [§7](ARCHITECTURE.md#7-contexto-para-el-agente)). También deja que, sin cambio activo, la tarjeta de `next` pida un subagente por cada cambio que pide el usuario, con un encargo que lo lleva de su spec a su cierre (§7 de ARCHITECTURE, «Tarjeta sin cambio activo»), y uno para retomar cualquiera de los huérfanos de la tarjeta sin cambio activo, con un encargo que entra en él con `specty enter <id>` (§7, «Fuera de la carpeta de su cambio»); la épica, el esqueleto de un proyecto nuevo y la retro siguen en la propia sesión. Con los cambios en subagentes, el cierre no aconseja una sesión nueva, porque el siguiente cambio ya arranca en un subagente limpio (ARCHITECTURE §13). Con `false`, la tarjeta de la épica propone los cortes de uno en uno, la de sin cambio activo pide `specty new` en la propia sesión y retomar los huérfanos en su carpeta, como con una herramienta sin subagentes, y el cierre vuelve a aconsejar una sesión nueva cuando la de Claude Code lleva mucho contexto. El corte de una épica, o el cambio de un subagente, nunca pide otros subagentes.
+`subagents` (por defecto `true`) deja que la tarjeta de una épica aprobada reparta sus cortes listos, y los huérfanos, entre subagentes, con un encargo por corte, cuando la herramienta detectada puede (columna «Cortes en subagentes» de [ARCHITECTURE §10](ARCHITECTURE.md#10-cumplimiento-por-capas); el encargo, en [§7](ARCHITECTURE.md#7-contexto-para-el-agente)). También deja que, sin cambio activo, la tarjeta de `next` pida un subagente por cada cambio que pide el usuario, con un encargo que lo lleva de su spec a su cierre (§7 de ARCHITECTURE, «Tarjeta sin cambio activo»), y uno para retomar cualquiera de los huérfanos de la tarjeta sin cambio activo que no es una épica, con un encargo que entra en él con `specty enter <id>` (§7, «Fuera de la carpeta de su cambio»); la épica, también la épica huérfana, el esqueleto de un proyecto nuevo y la retro siguen en la propia sesión. Con los cambios en subagentes, el cierre no aconseja una sesión nueva, porque el siguiente cambio ya arranca en un subagente limpio (ARCHITECTURE §13). Con `false`, la tarjeta de la épica propone los cortes de uno en uno, la de sin cambio activo pide `specty new` en la propia sesión y retomar los huérfanos en su carpeta, como con una herramienta sin subagentes, y el cierre vuelve a aconsejar una sesión nueva cuando la de Claude Code lleva mucho contexto. El corte de una épica, o el cambio de un subagente, nunca pide otros subagentes.
 
 `review` activa la revisión independiente (ADR 0011), que solo configura la persona:
 
@@ -550,6 +562,14 @@ No las escribe: las añade la persona tras comprobar que entre todas ejecutan lo
 `sizing` y `effort` son parámetros que Specty tenía fijos en el core (ARCHITECTURE §11); son opcionales, cada clave por separado, con el valor de hoy por defecto. `sizing.weights` da los puntos de cada señal del tamaño: cada archivo escrito a mano que el cambio crea (`create`), modifica (`modify`), borra (`delete`) o renombra (`rename`), cada módulo más allá del primero (`module`), cada ruta sensible (`sensitive`), una vez si cambia un manifiesto de dependencias (`dependencies`), cada tarea más allá de `sizing.tasksWithoutWeight` (`task`), cada archivo que importan al menos `sizing.highFanIn` archivos (`fanIn`) y cada módulo sin tests (`noTests`). Los pesos y `tasksWithoutWeight` son enteros de 0 en adelante, y 0 apaga una señal; `highFanIn` es un entero positivo. La CLI aún no mide cuántos archivos importan cada uno ni qué módulos no tienen tests, así que `fanIn`, `noTests` y `highFanIn` solo cuentan cuando esas señales se conocen, y la página «Configuración» marca `sizing.highFanIn` como «Próximamente». `sizing.nearRatio` (0,8, mayor que 0 y como mucho 1) es la fracción de `split.maxTasks` y de `split.maxFiles` desde la que `propose` avisa de que el cambio está cerca de partirse sin pasarlos.
 
 `effort` es la tabla del esfuerzo recomendado: para cada tamaño (`S`, `M`, `L` y `XL`), el de revisar la spec y el alcance (`plan`) y el de implementar (`implement`), cada uno `low`, `medium`, `high` o `max`; `propose` y `approve` la usan. `effort.task` es la regla del esfuerzo que sugiere la tarjeta de cada tarea: `high` con `highMinFiles` archivos o más (4, un entero positivo) o con una ruta sensible, `low` con `lowMaxFiles` o menos (1, de 0 en adelante) y `medium` entre ambos; `lowMaxFiles` tiene que ser menor que `highMinFiles`, también con una de las dos sin escribir. El `effort` del modelo, el de la revisión en el frontmatter y el de cada tarea (§2), puede subir esas recomendaciones, nunca bajarlas. La clave `effort` ya no es la tabla por herramienta de antes, que nada leía: un `effort` con otra forma es un error de `config.yaml` con su clave. Una clave que no existe dentro de `sizing` o de `effort` también lo es.
+
+`internal` reúne parámetros que Specty tenía fijos en su código; son opcionales, con el valor de hoy por defecto, y quitar una clave lo devuelve. `internal.waits.waitTimeoutSec` (3600 por defecto, entre 60 y 3600) es cuánto espera `specty wait` sin `--timeout`, y su marca lo dice; no pasa de una hora porque es lo que aguantan todas las herramientas medidas. `internal.waits.heartbeatSec` (60, entre 1 y 240) es la separación máxima de la línea de latido que `specty wait` escribe en Gemini CLI; no pasa de 240 s porque Gemini CLI corta un comando callado a los 300 s. `internal.retries.landing` (2, entre 0 y 10) es cuántas veces más `close` incorpora main y aterriza cuando main avanzó mientras aterrizaba; con 0 no lo reintenta y dice que main no avanzó. Una clave fuera de sus límites, o una que no existe bajo `internal`, es un error de `config.yaml`.
+
+`internal.exec.priority` (10 por defecto, un entero entre 0 y 19) es la prioridad (`nice`) con que corren la verificación de cada tarea, la completa de `accept` y la que lanza la UI: va de 0 a 19 porque es el rango en el que un proceso sin permisos puede bajarse; con 0 no se baja, y si Specty ya corre con una prioridad más baja, el comando se queda en la suya, porque una más alta no se puede pedir. `internal.server.portsTried` (20, un entero entre 1 y 100) es cuántos puertos prueba `specty ui` desde el primero, sin pasar del 65535, cuando ese está ocupado; si ninguno está libre, no arranca y dice desde cuál hasta cuál probó.
+
+Las cuatro vidas que forman parte del cumplimiento no tienen clave: el validador rechaza cualquiera que se escriba para ellas, como clave desconocida, y siguen fijas en 24 h. Un recibo que viviera más dejaría colar un commit con un recibo viejo; un pendiente del guard que viviera más dejaría pasar un fin de turno con una marca vieja; una instantánea de shell que viviera menos se borraría antes del segundo hook de un comando largo, y el guard no sabría qué cambió; y una vinculación de sesión que viviera menos dejaría que la limpieza borrara la carpeta en la que trabaja una sesión. La página «Configuración» las muestra en «Interno» como garantías ([ui.md](ui.md)).
+
+`ui.port` es el puerto desde el que `specty ui` escucha cuando se arranca sin `--port`; con `auto` (el valor por defecto) empieza en el 4173. Si está ocupado, prueba los siguientes, como con `--port`, que manda sobre la clave.
 
 La guía de las verificaciones, con lo que comprueba cada una, cómo se configura y cómo se desactiva, está en [checks.md](checks.md) y, en inglés, en [checks.en.md](checks.en.md). Lo que sigue es el detalle.
 
@@ -665,6 +685,7 @@ Specty-Agent: claude-code
 | Retro | `Specty-Change` (del cambio retro o del activo), `Specty-Retro: true` |
 | Spike | Además, `Specty-Kind: spike`; el CI impide fusionarlo a la rama principal |
 | Instalación (`init`) | Solo `Specty-Init: true`: no pertenece a ningún cambio |
+| Configuración guardada desde la UI (`chore(config): <claves>`, §6) | Solo `Specty-Config: true`: no pertenece a ningún cambio |
 | Memoria (`memoria: anota P3`, `memoria: P3 hecha`), en su rama (§1) | `Specty-Memory: <id>`; además, `Specty-Change` si la carpeta tenía un cambio abierto y `Specty-Agent` si la escribió un agente |
 | Frente de la memoria (`memoria: frente B`, `memoria: P12, P3 al frente B`), en su rama (§1) | `Specty-Front: <nombre>`; además, `Specty-Change` y `Specty-Agent` como en la memoria |
 

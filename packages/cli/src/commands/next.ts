@@ -91,11 +91,20 @@ async function ownEpic(
   return changeView(opened.session, epic);
 }
 
-/** The open changes no conversation holds, as `status` tells its orphans, with their folders. */
+/**
+ * The open changes no conversation holds, as `status` tells its orphans, with their folders and
+ * kinds: an epic goes to the session itself, never to a subagent.
+ */
 async function orphanChanges(session: Session) {
   return (await openChanges(session))
     .filter((entry) => entry.orphan === true)
-    .map(({ id, title, phase, folder }) => ({ id, title, phase, folder: folder ?? "." }));
+    .map(({ id, kind, title, phase, folder }) => ({
+      id,
+      kind,
+      title,
+      phase,
+      folder: folder ?? ".",
+    }));
 }
 
 /**

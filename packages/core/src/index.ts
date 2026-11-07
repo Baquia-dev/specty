@@ -365,4 +365,5 @@ export {
   type UsageEntry,
 } from "./usage";
 export { type ProposePhase, type ValidationContext, validateSpec } from "./validate";
+export { adjustsPendingTasks } from "./validate/phase";
 export { type TestCycle, type TestRules, testCycle, testRules } from "./validate/quality";
