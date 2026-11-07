@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261107-el-panel-lista-los-cambios-del-periodo-con",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-panel-lista-los-cambios-del-periodo-con",
+  "baseCommit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8581ed12063354cec7ebbcafb81aed3c7d5a8075a401e37e9b7e7a42e19af283",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:fb0d8fbf8c31da140a61f953848025fa6f42fb31d63811c17dda8e24ca933eb8",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:8ce0e19f5daef294029ae357c10d7ec83ba1837929d20edd36ab72671b569580",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:c0ca94e0f4c55375e622001d15e3b3757b31d4f2305c1ed31b5366252157c757",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:c39da857abb4fdc80baa41e68706991b67bb19a1f95b9df0335a05017ec0618d",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:06cbaa0c03f8f3535aab22e56bc1d400b87a7e7fd8d010ad59ebc37eff6b489c",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:67d2442a32ccc125923bd9ee3f7a200b1cf9edda4784959245f589f4e20b26a3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 7,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:6425346ec78df2a7763eabcfa307f38c9db337abb0284387bc2a1097b5b853a4",
+    "at": "2026-11-07T08:29:03.976Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
