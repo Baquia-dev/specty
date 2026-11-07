@@ -62,7 +62,7 @@ Desde P258, `specty adjust` también se pide mientras se implementa, para correg
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-adjust.test.ts test/mcp.test.ts && pnpm typecheck && pnpm lint
   - type: fix
-- [ ] T3: La documentación de cómo se reconoce el ajuste de las tareas pendientes
+- [x] T3: La documentación de cómo se reconoce el ajuste de las tareas pendientes
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: grep -q 'pendingTasksOnly' docs/ARCHITECTURE.md

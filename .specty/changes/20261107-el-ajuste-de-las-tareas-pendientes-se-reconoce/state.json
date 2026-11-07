@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-ajuste-de-las-tareas-pendientes-se-reconoce",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-ajuste-de-las-tareas-pendientes-se-reconoce",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0d5553538b0a6a1a4a7dea1e63e09c84f623bacc",
+      "attempts": 1,
       "startedAt": "2026-11-07T00:16:34.098Z",
       "doneAt": "2026-11-07T00:30:59.290Z",
-      "summary": "views.ts calcula pendingTasksOnly en adjusting con la revisión aprobada y las tareas hechas; la descripción MCP de specty_adjust nombra la aceptación y la corrección de las tareas pendientes"
+      "summary": "views.ts calcula pendingTasksOnly en adjusting con la revisión aprobada y las tareas hechas; la descripción MCP de specty_adjust nombra la aceptación y la corrección de las tareas pendientes",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3039f496cd0f07286b63a2f06cd4f2e0c8879836",
+      "startedAt": "2026-11-07T00:30:59.635Z",
+      "doneAt": "2026-11-07T00:31:19.175Z",
+      "summary": "ARCHITECTURE §12 cuenta cómo reconoce la tarjeta el ajuste de las tareas pendientes (pendingTasksOnly con la revisión aprobada)"
     }
   },
   "pending": {
