@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-tamano-y-el-esfuerzo-pasan-a-ser-ajustes",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-tamano-y-el-esfuerzo-pasan-a-ser-ajustes",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 2,
@@ -74,12 +74,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5ee6afa4e507dd4ed89958694d31d5812011e1ec",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:05:59.850Z",
       "doneAt": "2026-11-07T04:07:34.061Z",
-      "summary": "Catálogo: los cuatro ajustes de sizing tras split y los cinco de effort, marcados new (highFanIn también soon); sus textos pasan a cards/settings-size.ts y la sección se llama Esfuerzo recomendado."
+      "summary": "Catálogo: los cuatro ajustes de sizing tras split y los cinco de effort, marcados new (highFanIn también soon); sus textos pasan a cards/settings-size.ts y la sección se llama Esfuerzo recomendado.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e2a0993d6abc6089269e524118fb5db23afbe021",
+      "startedAt": "2026-11-07T04:07:34.438Z",
+      "doneAt": "2026-11-07T04:08:59.138Z",
+      "summary": "La página muestra los ajustes nuevos con su marca en los dos idiomas sin cambios en la UI; formats.md §6, ARCHITECTURE §11 y ui.md documentan sizing y effort."
     }
   },
   "pending": {

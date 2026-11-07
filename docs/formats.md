@@ -433,6 +433,17 @@ lanes:
   quick: { maxFiles: 3 }          # archivos de código: gobernados, sin contar tests
 split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 }  # maxFiles, como en quick
 size: { S: 4, M: 10, L: 18 }      # puntuación máxima de cada nivel; por encima de L es XL
+sizing:                           # opcional: cómo se puntúa el tamaño y desde cuándo está cerca de partirse; sin la clave, los valores de hoy
+  weights: { create: 1, modify: 1, delete: 2, rename: 2, module: 2, sensitive: 3, dependencies: 2, task: 1, fanIn: 1, noTests: 2 }  # puntos de cada señal; 0 la apaga
+  tasksWithoutWeight: 3           # tareas que no suman puntos; cada una más suma weights.task
+  highFanIn: 10                   # archivos que tienen que importar uno para que cuente como muy importado
+  nearRatio: 0.8                  # fracción de split.maxTasks y split.maxFiles desde la que propose avisa (mayor que 0 y como mucho 1)
+effort:                           # opcional: el esfuerzo recomendado; sin la clave, el de hoy
+  S: { plan: medium, implement: low }      # low | medium | high | max: revisar la spec y el alcance, e implementar
+  M: { plan: high, implement: medium }
+  L: { plan: high, implement: medium }
+  XL: { plan: max, implement: high }
+  task: { lowMaxFiles: 1, highMinFiles: 4 }  # una tarea es low hasta lowMaxFiles archivos, high desde highMinFiles o con una ruta sensible, y medium entre ambos
 lines:                            # líneas de código de los archivos que toca una tarea, sin blancos ni comentarios
   warn: 300                       # avisa si la tarea deja un archivo por encima y lo hizo crecer
   fail: 500                       # bloquea si la tarea lo lleva por encima; false: nunca
@@ -536,7 +547,9 @@ No las escribe: las añade la persona tras comprobar que entre todas ejecutan lo
 
 `specty init` escribe `verify.default` y `verify.full` con los comandos que detecta. Si el archivo ya existe, solo añade los que falten y la detección encuentre ahora (por ejemplo, tras el primer cambio de un repositorio vacío), insertando sus líneas al final de `verify` (o un bloque `verify` nuevo al final del archivo); nunca cambia un valor que ya está, y el resto del archivo, con sus comentarios, queda igual.
 
-La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y se puede sobrescribir con una clave `effort:` en este archivo.
+`sizing` y `effort` son parámetros que Specty tenía fijos en el core (ARCHITECTURE §11); son opcionales, cada clave por separado, con el valor de hoy por defecto. `sizing.weights` da los puntos de cada señal del tamaño: cada archivo escrito a mano que el cambio crea (`create`), modifica (`modify`), borra (`delete`) o renombra (`rename`), cada módulo más allá del primero (`module`), cada ruta sensible (`sensitive`), una vez si cambia un manifiesto de dependencias (`dependencies`), cada tarea más allá de `sizing.tasksWithoutWeight` (`task`), cada archivo que importan al menos `sizing.highFanIn` archivos (`fanIn`) y cada módulo sin tests (`noTests`). Los pesos y `tasksWithoutWeight` son enteros de 0 en adelante, y 0 apaga una señal; `highFanIn` es un entero positivo. La CLI aún no mide cuántos archivos importan cada uno ni qué módulos no tienen tests, así que `fanIn`, `noTests` y `highFanIn` solo cuentan cuando esas señales se conocen, y la página «Configuración» marca `sizing.highFanIn` como «Próximamente». `sizing.nearRatio` (0,8, mayor que 0 y como mucho 1) es la fracción de `split.maxTasks` y de `split.maxFiles` desde la que `propose` avisa de que el cambio está cerca de partirse sin pasarlos.
+
+`effort` es la tabla del esfuerzo recomendado: para cada tamaño (`S`, `M`, `L` y `XL`), el de revisar la spec y el alcance (`plan`) y el de implementar (`implement`), cada uno `low`, `medium`, `high` o `max`; `propose` y `approve` la usan. `effort.task` es la regla del esfuerzo que sugiere la tarjeta de cada tarea: `high` con `highMinFiles` archivos o más (4, un entero positivo) o con una ruta sensible, `low` con `lowMaxFiles` o menos (1, de 0 en adelante) y `medium` entre ambos; `lowMaxFiles` tiene que ser menor que `highMinFiles`, también con una de las dos sin escribir. El `effort` del modelo, el de la revisión en el frontmatter y el de cada tarea (§2), puede subir esas recomendaciones, nunca bajarlas. La clave `effort` ya no es la tabla por herramienta de antes, que nada leía: un `effort` con otra forma es un error de `config.yaml` con su clave. Una clave que no existe dentro de `sizing` o de `effort` también lo es.
 
 La guía de las verificaciones, con lo que comprueba cada una, cómo se configura y cómo se desactiva, está en [checks.md](checks.md) y, en inglés, en [checks.en.md](checks.en.md). Lo que sigue es el detalle.
 

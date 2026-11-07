@@ -89,7 +89,7 @@ Hoy están fijos en el código del core los pesos con los que Specty puntúa el 
   - files: packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/src/cards/settings-size.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts && pnpm lint && pnpm knip
-- [ ] T4: La página «Configuración» muestra los ajustes nuevos, y la documentación los describe
+- [x] T4: La página «Configuración» muestra los ajustes nuevos, y la documentación los describe
   - files: packages/ui/src/settings/settings-page.test.ts, docs/formats.md, docs/ARCHITECTURE.md, docs/ui.md
   - ac: AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts && pnpm typecheck && pnpm lint
