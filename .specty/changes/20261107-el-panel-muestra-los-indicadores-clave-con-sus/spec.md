@@ -78,7 +78,7 @@ Hoy lo que pasó con Specty solo se ve cambio a cambio. Con este corte, `specty 
 
 ## Tareas
 
-- [ ] T1: El core calcula los indicadores del panel de los cambios y la memoria
+- [x] T1: El core calcula los indicadores del panel de los cambios y la memoria
   - files: packages/core/src/stats/period.ts, packages/core/src/stats/rows.ts, packages/core/src/stats/summary.ts, packages/core/src/index.ts, packages/core/test/stats/summary.test.ts
   - ac: AC1, AC3, AC6, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/summary.test.ts && pnpm lint
