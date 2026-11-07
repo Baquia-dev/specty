@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261107-los-intervalos-de-sondeo-pasan-a-ser-ajustes",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-los-intervalos-de-sondeo-pasan-a-ser-ajustes",
+  "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:25b1440150261ffc294f0eb91be21cddf8c98de250711e3136a1a14abad0b788",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:6fcb1e0a1d4b301a1ad53a0efa18d6af50f09910e16cc02cc059c3d6f34ef228",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f220f5e660484d5cb95ed87eb96bb56f24a9af1d4595fba74705b328a0af3cf0",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:6dcfbcde12d539ba8b3e8dad258c674f60fe095b2669d004ca8d94873c8039bc",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:a72cc176e7e437d060b3e8708f0e27327fe37b332b1598a59441692d79858752",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:5705b5b0d3ba08bda63ef98566335933aa52942390b2c9cc828a8a4bce9d714f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 7,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:bbf0e00312151aede9a332949c1cbad250521391252ddf47f8686db4636d4586",
+    "at": "2026-11-07T05:09:01.685Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
