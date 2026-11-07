@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-tamano-y-el-esfuerzo-pasan-a-ser-ajustes",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-tamano-y-el-esfuerzo-pasan-a-ser-ajustes",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 2,
@@ -64,6 +64,10 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T03:54:52.200Z"
+  "lockedTests": {
+    "packages/core/test/settings/catalog.test.ts": "sha256:8e544157e93b01c2d684db7f4f5dd6cf2fc0f2d762bd99e66ea942fe78719ed4",
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:971d58395a108199c0e1c65d3cf08c2c8de2b383bf13750c1453d4eb9988f039",
+    "packages/cli/test/effort-config.test.ts": "sha256:265ef518114392aeb7d1174b8ded913a060f93e35ce8da6dbb3700f8b1d9f84f",
+    "packages/core/test/sizing/configured.test.ts": "sha256:9d21db671673cdabc9d44a5ccfe01832ad4e724bf5532b4ced14011a50c82272"
+  }
 }
