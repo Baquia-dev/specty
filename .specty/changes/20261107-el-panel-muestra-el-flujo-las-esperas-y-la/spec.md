@@ -89,7 +89,7 @@ El «Panel» de `specty ui` muestra hoy los indicadores, «Ritmo», «Personas y
   - files: packages/core/src/stats/rows.ts, packages/core/src/stats/flow.ts, packages/core/src/stats/quality.ts, packages/core/src/stats/summary.ts, packages/core/test/stats/flow-quality.test.ts
   - ac: AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/flow-quality.test.ts test/stats/sections.test.ts test/stats/summary.test.ts test/stats/table.test.ts && pnpm lint
-- [ ] T2: La línea, las barras horizontales y la barra segmentada, y la página «Gráficas» del catálogo
+- [x] T2: La línea, las barras horizontales y la barra segmentada, y la página «Gráficas» del catálogo
   - files: packages/ui/src/components/charts/line-chart.ts, packages/ui/src/components/charts/bar-list.ts, packages/ui/src/components/charts/segmented-bar.ts, packages/ui/src/catalog/charts.ts, packages/ui/src/catalog/catalog.ts, packages/ui/src/components/icons.ts, packages/ui/src/catalog/catalog.test.ts
   - ac: AC5, AC6, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/catalog/catalog.test.ts --include src/components/charts/charts.test.ts && pnpm lint

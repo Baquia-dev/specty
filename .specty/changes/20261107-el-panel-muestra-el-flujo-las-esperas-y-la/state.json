@@ -59,12 +59,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "64cf2254f5243952ebeaa631d3ec9f3f2a14fb93",
+      "attempts": 1,
       "startedAt": "2026-11-07T10:49:36.296Z",
       "doneAt": "2026-11-07T10:55:29.568Z",
-      "summary": "statsRow guarda las fechas de las fases, cada aprobación (canal, propuestas, revisión) y las señales de calidad; flow.ts y quality.ts calculan las dos secciones y statsView las añade como flow y quality"
+      "summary": "statsRow guarda las fechas de las fases, cada aprobación (canal, propuestas, revisión) y las señales de calidad; flow.ts y quality.ts calculan las dos secciones y statsView las añade como flow y quality",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0dcc84240751433fb378624b26ce8f04dbea8519",
+      "startedAt": "2026-11-07T10:55:30.277Z",
+      "doneAt": "2026-11-07T11:03:20.297Z",
+      "summary": "sp-line-chart, sp-bar-list y sp-segmented-bar sobre el marco común, con tabla, teclado e información emergente, y la página «Gráficas» del catálogo con cada gráfica y sus estados"
     }
   },
   "pending": {
