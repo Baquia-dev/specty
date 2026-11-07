@@ -75,7 +75,7 @@ Limpieza de código de la UI sin cambios de comportamiento. `data/server.ts` tie
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-export.test.ts --include src/history/history-export.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: refactor
-- [ ] T4: Las columnas y las filas de la tabla «Cambios» pasan a `dashboard/dashboard-table.ts`
+- [x] T4: Las columnas y las filas de la tabla «Cambios» pasan a `dashboard/dashboard-table.ts`
   - files: packages/ui/src/dashboard/dashboard-table.ts, packages/ui/src/dashboard/dashboard-changes.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-changes.test.ts --include src/dashboard/dashboard-page.test.ts && pnpm typecheck && pnpm lint && pnpm knip

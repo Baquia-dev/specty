@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-las-peticiones-del-panel-y-la-descarga-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-las-peticiones-del-panel-y-la-descarga-de",
   "baseCommit": "16ad77ec06157affaa0e9c6529ae3db9d19cbb4c",
   "revision": 1,
@@ -65,12 +65,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "51bbbaf4b7e9d598e7e13c7e487fa2fcad308ddc",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:03:30.984Z",
       "doneAt": "2026-11-07T17:04:47.132Z",
-      "summary": "save pasa a data/download.ts y la usan las exportaciones de Historial y del Panel"
+      "summary": "save pasa a data/download.ts y la usan las exportaciones de Historial y del Panel",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ee4c157bb9c22f3d7e287102d0648712c9366a82",
+      "startedAt": "2026-11-07T17:04:47.585Z",
+      "doneAt": "2026-11-07T17:05:47.361Z",
+      "summary": "Las columnas (Column, COLUMNS, Direction), la fila (Row) y rowsOf de la tabla «Cambios» pasan al módulo puro dashboard/dashboard-table.ts; el componente conserva la búsqueda, el orden, las páginas y la plantilla"
     }
   },
   "pending": {
