@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-perfiles-ligero-equilibrado-y-estricto-en-el",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-perfiles-ligero-equilibrado-y-estricto-en-el",
   "baseCommit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
   "revision": 2,
@@ -67,6 +67,10 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T10:55:42.206Z"
+  "lockedTests": {
+    "packages/core/test/settings/pieces.test.ts": "sha256:df61789bc658daf28d84e5e8f555ce21bf457bb36aa757e14d2716a0f1377740",
+    "packages/ui/src/settings/settings-flow.test.ts": "sha256:aad584e35e5e007da9011d34236a2b29c8b1fc2cec8190fae95e2aa5d3b7de9d",
+    "packages/core/test/settings/presets.test.ts": "sha256:355a991e622f0a52a87d1df6b78c38f82d920e8f96bf706e7104e2de3aad196c",
+    "packages/ui/src/settings/settings-presets.test.ts": "sha256:efbb4f3f08663a2d436fe4aa786af9ddf923b466e925c46665d4ba340e498d13"
+  }
 }
