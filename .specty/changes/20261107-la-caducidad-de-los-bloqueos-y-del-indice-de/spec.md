@@ -86,7 +86,7 @@ Hoy cuánto conserva su puesto en la cola de las verificaciones un proceso que d
   - files: packages/cli/src/store/turn-queue.ts, packages/cli/src/flow/full-verification.ts, packages/cli/src/store/verify-slots.ts, packages/cli/src/store/turn-queue.test.ts, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/store/turn-queue.test.ts
-- [ ] T4: `specty prune` borra los índices temporales según la configuración
+- [x] T4: `specty prune` borra los índices temporales según la configuración
   - files: packages/cli/src/store/leftovers.ts, packages/cli/src/commands/prune.ts, packages/cli/test/prune-leftovers.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-leftovers.test.ts && pnpm typecheck

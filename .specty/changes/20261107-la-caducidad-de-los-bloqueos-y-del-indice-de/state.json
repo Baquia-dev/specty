@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-caducidad-de-los-bloqueos-y-del-indice-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-caducidad-de-los-bloqueos-y-del-indice-de",
   "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
   "revision": 2,
@@ -70,12 +70,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5cd031ac72939b97b0b48be0a71e83d6935de790",
+      "attempts": 1,
       "startedAt": "2026-11-07T05:40:49.451Z",
       "doneAt": "2026-11-07T05:48:50.177Z",
-      "summary": "joinQueue y joinTurnQueue reciben la caducidad de los puestos (staleSec) en lugar de STALE_MS; la cola del turno de la verificación completa y la de las plazas pasan internal.waits.queueStaleSec; ARCHITECTURE remite a la clave"
+      "summary": "joinQueue y joinTurnQueue reciben la caducidad de los puestos (staleSec) en lugar de STALE_MS; la cola del turno de la verificación completa y la de las plazas pasan internal.waits.queueStaleSec; ARCHITECTURE remite a la clave",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "35cbcfa7cb550d3a0e77c0f22372830fb4232d9f",
+      "startedAt": "2026-11-07T05:48:50.984Z",
+      "doneAt": "2026-11-07T05:57:38.347Z",
+      "summary": "removeLeftovers recibe las horas de vida de los índices temporales (internal.retention.indexHours) en lugar de INDEX_LIFE y las devuelve; specty prune las pasa a su tarjeta, que dice esas horas"
     }
   },
   "pending": {
