@@ -78,3 +78,24 @@ Las evals no miden la espera con `specty wait` a una persona real (P264, parte d
 
 - R1: Claude Code sin interfaz podría no despertar a un subagente cuando acaba su `specty wait` en segundo plano, y el subagente volvería sin cerrar el cambio. Mitigación: es justo lo que mide el experimento; esa ejecución queda sin avance y se anota.
 - R2: La persona decide en el mismo proceso que la suite mientras el agente cambia el repositorio. Mitigación: cada decisión toma el cerrojo del cambio como en la terminal, y `specty wait` no da por decidida una espera mientras un comando cambia el cambio.
+
+## Cierre
+
+### Resumen
+
+La suite lanza ya el agente sin bloquearse (`evals/src/launch.ts`, con `spawn`, la entrada cerrada y el mismo límite), así que un experimento puede traer una persona que decide mientras corre. `evals/src/person.ts` mira cada 2 s desde la carpeta principal con `specty --json status` y, cuando un paso lleva 20 s esperándola, aprueba, acepta o cierra con el id del cambio. El experimento nuevo `wait` pide un solo arreglo sin modo delegado y cumple si un subagente esperó con `specty wait` y el cambio quedó cerrado con el arreglo. `pnpm test:evals` pasa (38 tests). La ejecución real con Claude Code 2.1.318, el 2026-11-07, quedó sin avance: 40 s, 7 rondas, 0 bloqueos, 0,34 USD y 27.718 tokens de contexto máximo en el hilo principal. El subagente siguió el flujo y dejó `specty wait` en segundo plano, pero en `claude -p` eso termina su turno, el hilo principal responde y el proceso sale antes de que decida la persona. ARCHITECTURE §16 lo cuenta.
+
+### Desviaciones
+
+- El test de AC2 se corrigió con el desbloqueo S1, que aprobó la persona: le faltaba el `specty next` que activa T1 tras la aprobación, y su spec de ejemplo era un `fix` sin test, que `fix-tests` rechaza; ahora es `chore`.
+- La ejecución real no cumplió, y no se repitió: la causa es el modo sin interfaz de Claude Code, no el flujo de Specty, y otra ejecución igual daría lo mismo.
+
+### Decisiones
+
+- La persona decide desde la carpeta principal con `specty --json status`, que ya lista los cambios de todas las carpetas con su fase y a quién esperan (A1), en lugar de leer los `state.json` de cada carpeta.
+- Un retraso de 20 s por paso (A2), para que la decisión llegue mientras el agente espera y no antes.
+- `withSpecty` reúne la preparación de un repositorio con Specty, que `delegated` completa con `delegate on` y `wait` usa tal cual; `codeWithoutChange` reúne la violación que comparten `orphan` y `wait`.
+
+### Pendientes
+
+- P272: en `claude -p`, un subagente que deja `specty wait` en segundo plano termina su turno y el proceso sale; para medir la espera entera, la suite tendría que mantener viva la sesión, por ejemplo con `--input-format stream-json` y la entrada abierta.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-las-evals-miden-la-espera-con-specty-wait-a-una",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-las-evals-miden-la-espera-con-specty-wait-a-una",
   "baseCommit": "abb0d3e277d90768dee5c6d4d4de185f4796f8bf",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:4d127654ebe3942f31b6285ef0f2970c356b29f9024dfb0927979427215b2e39",
@@ -66,12 +66,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d160883845a70529e3a96494446c9556921d8164",
+      "attempts": 1,
       "startedAt": "2026-11-07T03:11:18.583Z",
       "doneAt": "2026-11-07T03:11:43.770Z",
-      "summary": "ARCHITECTURE §16: la suite lanza el agente sin bloquearse, la persona simulada y el experimento wait, con su ejecución real (sin avance en 40 s: claude -p sale cuando el subagente deja specty wait en segundo plano, P272)."
+      "summary": "ARCHITECTURE §16: la suite lanza el agente sin bloquearse, la persona simulada y el experimento wait, con su ejecución real (sin avance en 40 s: claude -p sale cuando el subagente deja specty wait en segundo plano, P272).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -85,9 +85,55 @@
     "R": 2,
     "S": 1
   },
+  "closingSubmittedAt": "2026-11-07T03:24:20.398Z",
   "lockedTests": {
     "evals/test/experiments.test.ts": "sha256:f8770769effdbfa30beea81c879de9588f15336db7cb638617a0af59f94640b7",
     "evals/test/launch.test.ts": "sha256:350e59a49fc4ab2e993b56e3fe78d47d3d77e724a1270cc59a2da9eb28dfc6a3",
     "evals/test/wait.test.ts": "sha256:75f68cb49d6c689de22e816b4ffc90863a2dd10e6a9de3582fb0b7baff2ce746"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "396ec14a59cc3e7a6f12fc276cc0404d824a7938",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "evals/run/compliance.eval.ts",
+      "evals/src/experiments.ts",
+      "evals/src/launch.ts",
+      "evals/src/person.ts",
+      "evals/test/experiments.test.ts",
+      "evals/test/launch.test.ts",
+      "evals/test/wait.test.ts",
+      "packages/cli/src/commands/next.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/flow/land.ts",
+      "packages/cli/test/close-moved.test.ts",
+      "packages/cli/test/next-orphan-epic.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/core/src/cards/idle.ts",
+      "packages/core/src/cards/rejoin.ts",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/cards/subagents.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/validate/phase.ts",
+      "packages/core/test/cards/orphans-epic.test.ts",
+      "packages/core/test/cards/orphans-subagents.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/validate/phase.test.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts"
+    ],
+    "at": "2026-11-07T03:24:42.543Z",
+    "resolved": {
+      "commit": "8fee6a2",
+      "at": "2026-11-07T03:30:38.314Z"
+    }
   }
 }
