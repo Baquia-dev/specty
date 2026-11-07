@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "20261108-la-pieza-fase-de-cierre-se-equipa-y-se-quita-en",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261108-la-pieza-fase-de-cierre-se-equipa-y-se-quita-en",
+  "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "3 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:83a1c6452b6f9ea4dee5d179a3404bdb382f12fcf764b123912ea899e7089004",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:46511b97bb6fd852fbe4f569aa02b9c9bfe3ff5cca0daa6c46e626b4ede71fc8",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e7225772e57df63ed7bb220197b9515a145e02be00ac827eedc2d53792662ad3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 7,
+    "T": 5,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:903687a0eaa0d7a565bc40821a2c0eea3c16ab23881bbc475ed8dfe34dbfa29b",
+    "at": "2026-11-07T16:14:08.644Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
