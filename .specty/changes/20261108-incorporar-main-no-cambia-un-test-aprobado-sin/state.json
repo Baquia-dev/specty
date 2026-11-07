@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "019e803014a7b5ac5aac41ec27e000ac2aebdb5f",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:33:22.447Z",
       "doneAt": "2026-11-07T17:34:10.424Z",
-      "summary": "El guard mira los tests aprobados antes que la incorporación pendiente: solo abre los que git dejó en conflicto, y el SIGUIENTE da el desbloqueo sin --task"
+      "summary": "El guard mira los tests aprobados antes que la incorporación pendiente: solo abre los que git dejó en conflicto, y el SIGUIENTE da el desbloqueo sin --task",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "517a8f0e1257d8553b26425fb60094a7a0df5f1a",
+      "startedAt": "2026-11-07T17:34:10.745Z",
+      "doneAt": "2026-11-07T17:36:04.664Z",
+      "summary": "Con la incorporación pendiente, scope add pide el desbloqueo de tests aprobados (parche comprobado sobre el último commit) y approve --scope lo decide fuera de implementing, abriendo el test en integration.unlocked"
     }
   },
   "pending": {

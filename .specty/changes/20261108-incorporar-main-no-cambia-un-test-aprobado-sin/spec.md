@@ -65,7 +65,7 @@ Mientras el agente resuelve una incorporación de main, un test aprobado (`locke
   - files: packages/core/src/guard/decide.ts, packages/core/src/guard/testing.ts, packages/core/src/cards/unlock.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/integrate-locked.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate-locked.test.ts -t "AC[12]:" && pnpm lint
-- [ ] T2: Con la incorporación pendiente, el agente pide el desbloqueo y la persona lo aprueba
+- [x] T2: Con la incorporación pendiente, el agente pide el desbloqueo y la persona lo aprueba
   - files: packages/core/src/schema/state.ts, packages/cli/src/commands/scope.ts, packages/cli/src/commands/scope-decision.ts, packages/cli/src/flow/unlock-proposal.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/integrate-locked.test.ts, docs/formats.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate-locked.test.ts -t "AC[34]:" && pnpm lint

@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   blockedCard,
+  type ChangeState,
   checkStatus,
   decisionCard,
   headerOf,
+  isIntegrating,
   noActiveChangeCard,
   noScopeRequestCard,
   nothingChangedCard,
@@ -57,9 +59,8 @@ export async function decideScope(
   const { cards } = session;
   const { state } = active;
   const { terminal } = session.environment;
-  if (state.phase !== "implementing")
-    return nothingPendingCard(state.id, state.phase, decision, cards);
-  const header = headerOf(state.id, "implementing");
+  if (nothingToDecide(state)) return nothingPendingCard(state.id, state.phase, decision, cards);
+  const header = headerOf(state.id, state.phase);
   const request = state.pending.scopeRequests.find(
     (entry) => entry.id === scope.trim().toUpperCase(),
   );
@@ -81,7 +82,10 @@ export async function decideScope(
   return recordScopeDecision(session, active, request, { decision, header, why, unlocks });
 }
 
-/** The decision taken: the request leaves the queue and, approved, widens its task's scope. */
+/**
+ * The decision taken: the request leaves the queue and, approved, widens its task's scope or,
+ * during an incorporation, opens its tests for it. Outside implementing, the phase stays.
+ */
 async function recordScopeDecision(
   session: Session,
   active: StoredChange,
@@ -97,16 +101,11 @@ async function recordScopeDecision(
   const { state } = active;
   const { decision, header, why, unlocks } = taken;
   const { cards } = session;
-  const moved = transition({
-    phase: "implementing",
-    kind: state.kind,
-    actor: "human",
-    event: { type: "decideScope" },
-  });
-  if (!moved.ok) return blockedCard(header, moved.code, checkStatus(cards));
+  const refused = transitionRefused(state, header, session);
+  if (refused !== undefined) return refused;
   const remaining = state.pending.scopeRequests.filter((entry) => entry !== request);
   const base = { ...state, pending: { ...state.pending, scopeRequests: remaining } };
-  const next = decision === "approve" ? withExtras(base, request.task, request.paths) : base;
+  const next = decision === "approve" ? widened(base, request) : base;
   const updated = await commitState(
     session,
     active,
@@ -129,6 +128,39 @@ async function recordScopeDecision(
     session,
     decisionCard(header, [scopeDecidedLine(decision, request, session.lang)], cards),
   );
+}
+
+/** Outside implementing, only an incorporation leaves requests: unlocks of approved tests. */
+function nothingToDecide(state: ChangeState): boolean {
+  return state.phase !== "implementing" && state.pending.scopeRequests.length === 0;
+}
+
+/** Implementing, the decision is the person's transition; outside it, the phase stays. */
+function transitionRefused(
+  state: ChangeState,
+  header: string,
+  session: Session,
+): Output | undefined {
+  if (state.phase !== "implementing") return undefined;
+  const moved = transition({
+    phase: "implementing",
+    kind: state.kind,
+    actor: "human",
+    event: { type: "decideScope" },
+  });
+  return moved.ok ? undefined : blockedCard(header, moved.code, checkStatus(session.cards));
+}
+
+/**
+ * `state` once `request` is approved: its paths join its task's scope or, during an incorporation,
+ * its approved tests are open for it, and only for it (ADR 0014).
+ */
+function widened(state: ChangeState, request: ScopeRequest): ChangeState {
+  const { integration } = state;
+  if (integration === undefined || !isIntegrating(state))
+    return withExtras(state, request.task, request.paths);
+  const unlocked = [...new Set([...(integration.unlocked ?? []), ...request.paths])];
+  return { ...state, integration: { ...integration, unlocked } };
 }
 
 /**
