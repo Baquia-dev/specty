@@ -61,7 +61,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d365f4ec8e6aeac9358ac0d7e6a082050eaadf2c",
+      "startedAt": "2026-11-07T09:41:41.865Z",
+      "doneAt": "2026-11-07T09:48:13.158Z",
+      "summary": "pieces.ts con las fases del flujo, las 22 piezas (4 garantías), cuándo están equipadas y sus ediciones; settings-pieces.ts con nombres, descripciones, por qué de las garantías y las frases del flujo en es/en; marca basic en 12 ajustes del catálogo; exportado desde light.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

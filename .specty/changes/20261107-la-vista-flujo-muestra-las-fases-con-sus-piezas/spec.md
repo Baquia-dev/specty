@@ -78,7 +78,7 @@ La página «Configuración» gana la vista Flujo de la propuesta B: las fases d
 
 ## Tareas
 
-- [ ] T1: El core define las fases del flujo y sus piezas, con las garantías, sus ediciones, sus textos y los ajustes básicos
+- [x] T1: El core define las fases del flujo y sus piezas, con las garantías, sus ediciones, sus textos y los ajustes básicos
   - files: packages/core/src/settings/pieces.ts, packages/core/src/cards/settings-pieces.ts, packages/core/src/settings/catalog.ts, packages/core/src/light.ts, packages/core/test/settings/pieces.test.ts
   - ac: AC1, AC2, AC3, AC4, AC6, AC7, AC9, AC12
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/pieces.test.ts
