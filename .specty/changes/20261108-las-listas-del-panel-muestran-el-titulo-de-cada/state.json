@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "770534b8ecc4c39f09d4107dc63a061bfad030fc",
+      "startedAt": "2026-11-07T17:12:46.037Z",
+      "doneAt": "2026-11-07T17:18:12.819Z",
+      "summary": "StatsRow gana title? (statsRow no lo pone) y cost.top y quality.worst lo copian de la fila cuando lo trae, sin cambiar orden ni cifras"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

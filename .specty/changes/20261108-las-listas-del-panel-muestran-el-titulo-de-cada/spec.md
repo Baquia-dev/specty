@@ -56,7 +56,7 @@ En el «Panel» de `specty ui`, «Los cambios más caros» y «Cambios con más 
 
 ## Tareas
 
-- [ ] T1: El core copia el título de la fila en los cambios más caros y en los que más fallaron
+- [x] T1: El core copia el título de la fila en los cambios más caros y en los que más fallaron
   - files: packages/core/src/stats/rows.ts, packages/core/src/stats/cost.ts, packages/core/src/stats/quality.ts, packages/core/test/stats/titles.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/titles.test.ts test/stats/cost-scope-memory.test.ts test/stats/flow-quality.test.ts && pnpm lint
