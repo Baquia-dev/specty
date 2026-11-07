@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-ejecucion-la-salida-y-el-servidor-pasan-a",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-la-ejecucion-la-salida-y-el-servidor-pasan-a",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 2,
@@ -55,6 +55,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T03:36:52.096Z"
+  "lockedTests": {
+    "packages/cli/test/server.test.ts": "sha256:fb056d455385660a9ae37fb94ceb8938a074ea822127e7a10fd2a73b68b97f08",
+    "packages/cli/test/verify-priority.test.ts": "sha256:5c3722be168b27c4187b532c4278d3de4548f3e65182894307508dd89f7bd771",
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:fd55ee02ab9fee3b009b36753c75f1b4642ab3fee2ef43d42ac12a959375da58"
+  }
 }
