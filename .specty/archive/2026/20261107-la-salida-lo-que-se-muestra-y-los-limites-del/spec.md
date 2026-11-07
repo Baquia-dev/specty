@@ -88,3 +88,28 @@ Hoy Specty lee como mucho 512 KiB de la salida de cada comando que ejecuta, y la
 
 - R1: Un límite bajo pierde los hallazgos del principio de una salida larga de `specty check`, o el principio de una revisión larga. Mitigación: el schema no baja de 64 KiB, la sección «Interno» va plegada con su aviso (C8) y quitar la clave la devuelve a 512.
 - R2: C11 trabaja en paralelo y también toca las listas de «Interno» de `catalog.test.ts` y `cards/settings.ts`. Mitigación: cada corte añade sus entradas a su bloque, y el conflicto al incorporar main se resuelve con `specty integrate`, conservando lo de los dos.
+
+## Cierre
+
+### Resumen
+
+- Core: `internal.exec.maxOutputKiB` (512 por defecto, un entero entre 64 y 16384) en el bloque `exec` de `schema/internal-run.ts`, con la prioridad de C9, así que `config.ts` no cambió. En el catálogo va en «Interno», tras la prioridad, con la marca `new`, y su nombre y su descripción están en español y en inglés.
+- CLI: `ExecOptions.maxOutput` es lo que `execute` guarda de cada flujo; `MAX_OUTPUT` sale ya de `DEFAULT_CONFIG`, y `maxOutputOf(config)` da la clave en caracteres. Los comandos de `checks.commands` y la revisión independiente la pasan. El diff, la traza y el código de un test que sirve la UI se comparan con ella: por encima, 413 al diff y a la traza, y 404 al código.
+- Documentación: formats.md §6 y ARCHITECTURE (`specty check`, `specty review` y los tres endpoints).
+
+### Desviaciones
+
+- El corte se estrechó respecto al C12 de la épica (A1): la épica se ajustó (r5) con C13 a C16 para el resto de parámetros.
+- `docs/ui.md` salió de la spec antes de aprobarla para dejar cada tarea en 5 archivos: nombra los ajustes de «Interno» con «entre ellas», así que sigue siendo cierto.
+- El test AC2 de C1 en `catalog.test.ts`, la lista exacta de ajustes «Nuevo», tenía que sumar la clave y se me pasó en el envío de tests. Se desbloqueó con la solicitud S1 y su parche, que aprobó la persona.
+
+### Decisiones
+
+- La clave rige donde Specty usa entero el texto de un comando (`checks.commands` y `review.command`) y en lo que sirve la UI. Las verificaciones, de las que solo muestra las últimas líneas, y las herramientas de `specty check` siguen con 512 KiB fijos.
+- Al incorporar main con C11, que movió los textos de «Interno» a `cards/settings-internal.ts`, el nombre y la descripción del ajuste nuevo van allí, con los de la prioridad.
+
+### Pendientes
+
+- Las herramientas de `specty check` (tsc, Opengrep, gitleaks, OSV) siguen leyendo 512 KiB fijos: una salida JSON más larga pierde su principio y no se puede leer. Hay que decidir si les llega `internal.exec.maxOutputKiB`.
+- `packages/core/test/settings/catalog.test.ts` pasa de 400 líneas de código (434): conviene llevar los tests de «Interno» a su propio archivo de tests.
+- AC7 se comprueba a mano: formats.md §6 y ARCHITECTURE.

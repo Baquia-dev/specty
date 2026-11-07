@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-la-salida-lo-que-se-muestra-y-los-limites-del",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-la-salida-lo-que-se-muestra-y-los-limites-del",
   "baseCommit": "b86197436485e8d85b86ad14e6a72becfa16bb2e",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:86cb4c2dba8816c0df54626fd5800a0e2fa6f9f86507ba52155436a74a63b344",
@@ -63,12 +63,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d3161292c6d0a6925431568f353616c42051d686",
+      "attempts": 1,
       "startedAt": "2026-11-07T05:00:58.603Z",
       "doneAt": "2026-11-07T05:02:43.711Z",
-      "summary": "diff.ts, trace.ts y test-code.ts comparan con maxOutputOf(session.config): por encima de internal.exec.maxOutputKiB, 413 al diff y a la traza y 404 al código del test; ARCHITECTURE lo dice ahí y en specty check y specty review."
+      "summary": "diff.ts, trace.ts y test-code.ts comparan con maxOutputOf(session.config): por encima de internal.exec.maxOutputKiB, 413 al diff y a la traza y 404 al código del test; ARCHITECTURE lo dice ahí y en specty check y specty review.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,10 +82,61 @@
     "R": 2,
     "S": 1
   },
+  "closingSubmittedAt": "2026-11-07T05:03:23.209Z",
   "lockedTests": {
     "packages/cli/test/check-commands.test.ts": "sha256:fd730e89982d9bc35ead03639d18c7bed860823012275fe9b91184aade65200a",
     "packages/cli/test/review.test.ts": "sha256:e242ce2c8ab15a7d6adc9a029e93710fb32cd5ef4e28837c98851e57afabce10",
     "packages/core/test/settings/catalog.test.ts": "sha256:cc2aa85b130d6f7154377314d65bb444072f78219a1a5872025d69035727f932",
     "packages/cli/test/server/output-limit.test.ts": "sha256:906a151b4ee2a6854f6ae92ea654c3797add2a9ed5a17061e42ec802c3086b33"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/core/src/cards/settings.ts",
+      "packages/core/test/settings/catalog.test.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "evals/run/compliance.eval.ts",
+      "evals/src/agents.ts",
+      "evals/src/launch.ts",
+      "evals/test/conversation.test.ts",
+      "evals/test/session.test.ts",
+      "packages/cli/src/check/commands.ts",
+      "packages/cli/src/commands/memory.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/prune.ts",
+      "packages/cli/src/commands/review.ts",
+      "packages/cli/src/flow/branches.ts",
+      "packages/cli/src/flow/units.ts",
+      "packages/cli/src/io/exec.ts",
+      "packages/cli/src/server/diff.ts",
+      "packages/cli/src/server/test-code.ts",
+      "packages/cli/src/server/trace.ts",
+      "packages/cli/src/store/memory.ts",
+      "packages/cli/test/check-commands.test.ts",
+      "packages/cli/test/memory.test.ts",
+      "packages/cli/test/new-locked-config.test.ts",
+      "packages/cli/test/prune-units.test.ts",
+      "packages/cli/test/review.test.ts",
+      "packages/cli/test/server/output-limit.test.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/ui/src/settings/settings-page.test.ts"
+    ],
+    "at": "2026-11-07T05:03:41.335Z",
+    "resolved": {
+      "commit": "d371fd6",
+      "at": "2026-11-07T05:12:50.686Z"
+    }
   }
 }
