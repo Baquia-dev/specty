@@ -64,12 +64,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d365f4ec8e6aeac9358ac0d7e6a082050eaadf2c",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:41:41.865Z",
       "doneAt": "2026-11-07T09:48:13.158Z",
-      "summary": "pieces.ts con las fases del flujo, las 22 piezas (4 garantías), cuándo están equipadas y sus ediciones; settings-pieces.ts con nombres, descripciones, por qué de las garantías y las frases del flujo en es/en; marca basic en 12 ajustes del catálogo; exportado desde light.ts"
+      "summary": "pieces.ts con las fases del flujo, las 22 piezas (4 garantías), cuándo están equipadas y sus ediciones; settings-pieces.ts con nombres, descripciones, por qué de las garantías y las frases del flujo en es/en; marca basic en 12 ajustes del catálogo; exportado desde light.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/settings/settings-flow.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "2771c797b3ea2cc2f9c813947215242a8e46aa56",
+      "startedAt": "2026-11-07T09:48:13.678Z",
+      "doneAt": "2026-11-07T09:54:45.752Z",
+      "summary": "Vista y modo recordados en el navegador con sus selectores; General en Básico muestra los 12 ajustes básicos sin buscador y dice cuántos hay en Avanzado; Flujo monta sp-settings-flow (vacío)."
     }
   },
   "pending": {
