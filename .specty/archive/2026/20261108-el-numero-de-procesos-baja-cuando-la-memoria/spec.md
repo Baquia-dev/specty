@@ -66,3 +66,26 @@ Desde C1, cada comando de una verificación recibe en las variables de `verify.p
 - R1: `vm_stat` tarda o falla en una máquina — es una lectura instantánea del kernel; si falla, el número sale de `process.availableMemory()`, y sin variables en `verify.processes.env` no se ejecuta.
 - R2: Con la máquina en swap, la verificación de una tarea baja a 1 o 2 procesos y tarda más — es lo que pide la épica; C3 dirá el número y la memoria, y `memoryMiB` lo ajusta.
 - R3: Otro subagente cambia en paralelo `specty next`, `status` e `io/git*.ts` — este cambio no los toca, y al incorporar main `specty integrate` conserva lo de los dos.
+
+## Cierre
+
+### Resumen
+
+`cli/io/memory.ts` mide la memoria disponible: `vmStatMemory` lee de la salida de `vm_stat` las páginas libres, las de archivos y las purgables por el tamaño de página de su cabecera (`undefined` si falta una cifra), y `availableMemory(cwd, env, platform)` ejecuta `vm_stat` en macOS y, si falla, no da esas cifras o es otro sistema, usa `process.availableMemory()`. `processBudget` recibe además `memory` (bytes) y `memoryMiB`, y da el menor entre los núcleos de la parte de plazas del comando y los procesos de `memoryMiB` que caben en esa parte de la memoria, hacia abajo y nunca menos de 1. `budgetedEnv` mide la memoria al arrancar cada comando, solo si `verify.processes.env` nombra variables, y deja `cores` y `memory` en sus constantes para la línea de C3. Medido en esta máquina: 4,66–7,25 GiB por `vm_stat` frente a 7,37 GiB de `process.availableMemory()` y 1,97 GiB de `os.freemem()`. `docs/formats.md` §6 y `docs/dominio.md` lo documentan.
+
+### Desviaciones
+
+- Los tests de AC2 se escribieron por error en `packages/cli/test/memory.test.ts`, que ya existía en main con los 16 casos de `specty memory`, y lo sobrescribieron en la fase de tests. La persona aprobó desbloquearlo (S1) con el parche que lo devuelve tal cual a su versión de main, y los tests de AC2 pasaron, sin cambios en lo que comprueban, al archivo nuevo `packages/cli/test/available-memory.test.ts`. La `verify` de T2 sigue nombrando `test/memory.test.ts`, que ahora ejecuta los tests de `specty memory`.
+- En `available-memory.test.ts`, el `vm_stat` real se lee con `execute` de `io/exec.ts` y no con `execFileSync`: knip marcaba `vm_stat` como binario sin declarar.
+
+### Decisiones
+
+- `availableMemory` ejecuta `vm_stat` en la raíz del repositorio y con el entorno de la sesión, para que los tests le pongan delante un `vm_stat` falso en el `PATH` en cualquier sistema salvo Windows.
+- Los tests de C1 que esperan los núcleos (`process-budget.test.ts` y `verify-processes.test.ts`) dan `memoryMiB: 1`, para que la memoria de quien los ejecuta no cambie su número.
+- 1 MiB son 1.048.576 bytes: con 6,73 GiB disponibles y 14 núcleos, 13 procesos para la completa y 6 para la de una tarea, como decía A2 de la épica.
+
+### Pendientes
+
+- C3 dice la línea con el número, las variables, la memoria disponible en GB, los núcleos y las plazas: `budgetedEnv` ya tiene `cores` y `memory` a mano.
+- La entrada `verify.processes.env: ["VITEST_MAX_WORKERS"]` en `.specty/config.yaml` de este repo la añade la persona.
+- Specty atribuye a AC1 de este cambio los tests de `memory.test.ts` que llevan «AC1» en su nombre de otro cambio, porque el archivo se desbloqueó y tocó en T2: la trazabilidad cuenta el id por archivo tocado, no por línea añadida.

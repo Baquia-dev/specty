@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-el-numero-de-procesos-baja-cuando-la-memoria",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-el-numero-de-procesos-baja-cuando-la-memoria",
   "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:08caf93fa6c2e34554186892251f8d0bd118a39de8ffd369e1229a1069cf10f6",
@@ -51,14 +51,14 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/memory.test.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "7167c6e7c3ac5c16e370b0b6fdc03eda3ffb7a24",
+      "attempts": 2,
       "startedAt": "2026-11-07T17:25:35.716Z",
       "doneAt": "2026-11-07T18:45:30.944Z",
-      "summary": "processBudget baja el número a los procesos de memoryMiB que caben en la memoria disponible de sus plazas, medida por budgetedEnv al arrancar cada comando; memory.test.ts vuelve a main (S1) y los tests de AC2 pasan a available-memory.test.ts"
+      "summary": "processBudget baja el número a los procesos de memoryMiB que caben en la memoria disponible de sus plazas, medida por budgetedEnv al arrancar cada comando; memory.test.ts vuelve a main (S1) y los tests de AC2 pasan a available-memory.test.ts",
+      "scopeExtra": [
+        "packages/cli/test/memory.test.ts"
+      ]
     }
   },
   "pending": {
@@ -72,6 +72,7 @@
     "R": 3,
     "S": 1
   },
+  "closingSubmittedAt": "2026-11-07T18:45:50.425Z",
   "lockedTests": {
     "packages/cli/test/memory.test.ts": "sha256:493436ea7ecd2198feeb156ef3406739dc91c9e72a17b96f70d6709f9979952d",
     "packages/cli/test/process-budget.test.ts": "sha256:4f7c1d0ec561cadf5e43d94078908e3ae34792b48fa1b3621ed53782bc8cef3b",
