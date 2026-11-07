@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-panel-muestra-el-coste-el-alcance-las",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-panel-muestra-el-coste-el-alcance-las",
   "baseCommit": "2fb77e84f14790f5728193d155fce12d104768ec",
   "revision": 1,
@@ -63,6 +63,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T12:34:44.785Z"
+  "lockedTests": {
+    "packages/core/test/cards/stats.test.ts": "sha256:46cc863f202694393266fe472dd780d08ffc0c52c6f1c5e7bd5c3e962ed1f0c1",
+    "packages/core/test/stats/cost-scope-memory.test.ts": "sha256:79b114bc14a64d4c797b95ac47875339aef60465ebba65b49eec2ba42a41e821",
+    "packages/ui/src/dashboard/dashboard-cost-scope-memory.test.ts": "sha256:6028fe457045682b214a2075240502b47f8f3f52220fe2ef46d9b81615a211de"
+  }
 }
