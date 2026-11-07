@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261108-las-verificaciones-limitan-sus-procesos-segun-2",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261108-las-verificaciones-limitan-sus-procesos-segun-2",
   "baseCommit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3499ca90d27e3b80d0553d23ace022a2462f314a45ab035d520c0fb58ab3bcce",
+    "at": "2026-11-07T16:37:57.380Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -51,11 +58,5 @@
     "C": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:3499ca90d27e3b80d0553d23ace022a2462f314a45ab035d520c0fb58ab3bcce",
-    "at": "2026-11-07T16:37:57.380Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-07T21:37:30.476Z"
 }

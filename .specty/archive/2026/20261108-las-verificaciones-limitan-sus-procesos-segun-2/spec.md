@@ -62,3 +62,31 @@ Las herramientas de tests arrancan un proceso por núcleo sin mirar la memoria: 
 - R1: Con menos procesos, una suite tarda más y puede rozar `verify.timeoutSec` — la línea de AC6 dice el número, y `memoryMiB` lo ajusta; la suite de la UI con 2 procesos tardó 90–115 s frente a 108 s con 13.
 - R2: Una medida que sobrestime la memoria en otro sistema deja el número como hoy — en Linux `MemAvailable` es la medida del propio kernel, y en el resto `process.availableMemory()` nunca da más que la memoria libre.
 - R3: Dos verificaciones que arrancan a la vez miden la misma memoria — cada una toma solo la parte de sus plazas.
+
+## Cierre
+
+### Resumen
+
+Cada comando de una verificación recibe en las variables de `verify.processes.env` cuántos procesos puede lanzar, y lo dice. Se aplica a la verificación de una tarea, la de los tests en rojo, la completa y cada una de sus unidades, `specty verify --fresh` y la completa de la UI.
+
+- C1 (cbc8a05) añadió `verify.processes` (`env` y `memoryMiB`, 512 por defecto) y el número por núcleos × plazas / `verify.slots`. Una variable que ya trae un entero menor se queda con el suyo.
+- C2 (6765424) lo baja a los procesos de `memoryMiB` que caben en la parte de la memoria disponible que le toca. La memoria se mide en macOS con `vm_stat` (libres + archivos + purgables) y en el resto con `process.availableMemory()`.
+- C3 (a60cdc0) lo dice en una línea por la salida de error, en es/en, con el número, las variables, la memoria en GB, los núcleos y las plazas.
+
+La persona añadió `verify.processes.env: ["VITEST_MAX_WORKERS"]` a este repo (350f004). Medido aquí: con `VITEST_MAX_WORKERS=2`, la suite de la UI bajó de 5,38 GB a 2,93 GB de pico y siguió en verde. Siguen abiertos en la memoria P358 (`settings/catalog.ts` y `cards/settings.ts` pasan del aviso de 300 líneas) y P364 (la trazabilidad de C2 cuenta para su AC1 los tests de `memory.test.ts`).
+
+### Desviaciones
+
+- La épica empezó como un cambio normal. Se canceló y se volvió a crear con `specty new --kind epic`, con la misma spec.
+- C3 se hizo después de C2, no en paralelo: su línea dice la memoria que mide C2.
+- C2 escribió por error sus tests en `packages/cli/test/memory.test.ts`, que ya tenía los de `specty memory`. Con el desbloqueo S1 de la persona, ese archivo volvió a su versión de main, y los tests de C2 están en `available-memory.test.ts`.
+
+### Decisiones
+
+- La completa que lanza la UI (`server/runs.ts`) también recibe el número, aunque el Diseño no la nombraba: es «la completa».
+- La línea la dice `budgetedEnv`, no cada sitio que arranca un comando: sale una vez por comando en todos.
+- Los tests usan variables propias (`PROCESOS_A`, `PROCESOS_B`) y `memoryMiB: 1` donde esperan los núcleos, para no depender de la memoria ni de las variables de quien los ejecuta.
+
+### Pendientes
+
+- Ninguno nuevo.
