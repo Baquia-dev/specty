@@ -171,6 +171,13 @@ const TEXTS: Readonly<Record<string, Texts>> = {
     es: ["Tiempo máximo de la revisión", "Sin valor, el de la verificación."],
     en: ["Review time limit", "Unset, the verification's."],
   },
+  "flow.reviewFrom": {
+    es: [
+      "Revisar desde el tamaño",
+      "Desde él se pide revisar la spec y el resultado; sin valor, L.",
+    ],
+    en: ["Review from size", "From it, a review of the spec and the result is asked; unset, L."],
+  },
   governed: {
     es: ["Rutas gobernadas", "Donde rige el flujo: código que necesita una spec aprobada."],
     en: ["Governed paths", "Where the flow rules: code that needs an approved spec."],

@@ -8,7 +8,7 @@ export type Breach =
   | { readonly metric: "level"; readonly value: SizeLevel };
 
 export type QuickProblem =
-  | { readonly kind: "tasks"; readonly value: number }
+  | { readonly kind: "tasks"; readonly value: number; readonly max: number }
   | { readonly kind: "files"; readonly value: number; readonly max: number }
   | { readonly kind: "sensitive" };
 
@@ -50,10 +50,12 @@ export function formatBreach(breach: Breach, lang: Lang): string {
 export function formatQuickProblem(problem: QuickProblem, lang: Lang): string {
   const es = lang === "es";
   switch (problem.kind) {
-    case "tasks":
+    case "tasks": {
+      const one = problem.max === 1;
       return es
-        ? `${problem.value} tareas; quick admite una`
-        : `${problem.value} tasks; quick allows one`;
+        ? `${problem.value} tareas; quick admite ${one ? "una" : problem.max}`
+        : `${problem.value} tasks; quick allows ${one ? "one" : problem.max}`;
+    }
     case "files":
       return es
         ? `${problem.value} archivos de código, máximo ${problem.max}`

@@ -33,6 +33,10 @@ export const SIZE_TEXTS: Readonly<Record<string, Texts>> = {
     es: ["Archivos de un cambio rápido", "Archivos de código, sin tests, de un cambio quick."],
     en: ["Files of a quick change", "Code files, tests aside, of a quick change."],
   },
+  "lanes.quick.maxTasks": {
+    es: ["Tareas de un cambio rápido", "Las que admite su primera spec; sin valor, una."],
+    en: ["Tasks of a quick change", "Those its first spec allows; unset, one."],
+  },
   split: {
     es: ["Cuándo partir un cambio", "Tareas, archivos y módulos de más, y archivos por tarea."],
     en: ["When to split a change", "Too many tasks, files or modules, and files per task."],
