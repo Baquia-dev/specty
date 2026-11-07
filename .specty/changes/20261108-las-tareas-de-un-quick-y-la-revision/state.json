@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-las-tareas-de-un-quick-y-la-revision",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-las-tareas-de-un-quick-y-la-revision",
   "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
   "revision": 1,
@@ -55,6 +55,11 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T16:19:21.452Z"
+  "lockedTests": {
+    "packages/cli/test/review.test.ts": "sha256:41979bc2aef4817837901f7df955729abf5b5c92bd4c55d5103728c2bf5c10e4",
+    "packages/core/test/settings/catalog.test.ts": "sha256:52184f058e658410965dc49f17c2d05b36257de3024a5e4436c20ee9fd6c74e4",
+    "packages/core/test/spec/messages.test.ts": "sha256:6396d8b6399d7ce6abe78fa0d040c8373183a4d082fc384aa90c910165d68102",
+    "packages/core/test/validate/structure.test.ts": "sha256:3c28a1881bf35275ea3e536199036489ae170ef7c0d61e8afdc9b7f7ad416ee5",
+    "packages/core/test/settings/quick-and-review.test.ts": "sha256:b7bbe40d181d05a65846e63d39bc193a11821a229ea5d2a145afaa473c9b92e4"
+  }
 }
