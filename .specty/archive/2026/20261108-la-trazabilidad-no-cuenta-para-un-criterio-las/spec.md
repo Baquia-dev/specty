@@ -21,3 +21,9 @@ En aceptación, «CRITERIOS Y TESTS» (y `criteriaTests` del servidor, que es la
   - files: packages/cli/src/check/files.ts, packages/cli/src/flow/criteria-tests.ts, packages/cli/test/criteria-tests.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/criteria-tests.test.ts test/contract-matrix.test.ts test/server/records.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+criteriaTests solo cuenta las líneas con id que, además del blame, añade el diff desde el merge-base con la rama destino (linesAddedSinceTarget en check/files.ts); con HEAD en ese merge-base (branchPerChange: false) cuenta solo el blame. ARCHITECTURE §13 lo cuenta.

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-la-trazabilidad-no-cuenta-para-un-criterio-las",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-la-trazabilidad-no-cuenta-para-un-criterio-las",
   "baseCommit": "46518cfc71473855c39a55f2b2cc740689059e0c",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ac22969611d267fdcb01b4672ae2a95dbdea583d",
+      "attempts": 1,
       "startedAt": "2026-11-07T22:52:14.972Z",
       "doneAt": "2026-11-07T22:53:34.424Z",
-      "summary": "criteriaTests solo cuenta las líneas con id que, además del blame, añade el diff desde el merge-base con la rama destino (linesAddedSinceTarget en check/files.ts); con HEAD en ese merge-base (branchPerChange: false) cuenta solo el blame. ARCHITECTURE §13 lo cuenta."
+      "summary": "criteriaTests solo cuenta las líneas con id que, además del blame, añade el diff desde el merge-base con la rama destino (linesAddedSinceTarget en check/files.ts); con HEAD en ese merge-base (branchPerChange: false) cuenta solo el blame. ARCHITECTURE §13 lo cuenta.",
+      "scopeExtra": []
     }
   },
   "pending": {
