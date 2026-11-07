@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-el-resto-de-esperas-bloqueos-y-retencion-pasan",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-el-resto-de-esperas-bloqueos-y-retencion-pasan",
   "baseCommit": "9183447eaa311a331341561a5c135a75de5a6508",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:1b5c968248ae217beae232ec944296c3effb9f44267c72d0ecf776d4207d65d4",
@@ -73,12 +73,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "69e0ff20fe0a554f9099e3116ecd5aaa5db455a9",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:43:51.654Z",
       "doneAt": "2026-11-07T04:50:06.089Z",
-      "summary": "pruneRecord usa internal.retention.verifiedDays y devuelve lo borrado con los días, que prune pasa a su tarjeta; dominio.md remite a la clave."
+      "summary": "pruneRecord usa internal.retention.verifiedDays y devuelve lo borrado con los días, que prune pasa a su tarjeta; dominio.md remite a la clave.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -91,11 +91,63 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-07T04:51:04.016Z",
   "lockedTests": {
     "packages/cli/test/memory.test.ts": "sha256:493436ea7ecd2198feeb156ef3406739dc91c9e72a17b96f70d6709f9979952d",
     "packages/cli/test/new-locked-config.test.ts": "sha256:148f87e0b87b9c99b7944754311e5c439e7846a06225cc4d8ad36d06dc1bc653",
     "packages/cli/test/prune-units.test.ts": "sha256:2d72655295c86cc48a347b0e105b652f8bf4ba60778c2d4f50c40bb37cc9a1ac",
     "packages/core/test/schema/schema.test.ts": "sha256:935885ec466e126c7c9a72a4c1b09dff4bd1de39d2b983efd78b64f113632b7c",
     "packages/core/test/settings/catalog.test.ts": "sha256:27c4e1c4aef9e295ea7f5a4d907eb063a43c0e2d2e0207f62a9d3807481f533e"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "5b1ee21cf2e3b09286886a69b87a7c3e14cb70ef",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/core/src/cards/settings.ts",
+      "packages/ui/src/settings/settings-page.test.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "evals/run/compliance.eval.ts",
+      "evals/src/agents.ts",
+      "evals/src/launch.ts",
+      "evals/test/conversation.test.ts",
+      "evals/test/session.test.ts",
+      "packages/cli/src/commands/approve.ts",
+      "packages/cli/src/commands/memory.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/propose.ts",
+      "packages/cli/src/commands/prune.ts",
+      "packages/cli/src/flow/branches.ts",
+      "packages/cli/src/flow/units.ts",
+      "packages/cli/src/store/memory.ts",
+      "packages/cli/test/effort-config.test.ts",
+      "packages/cli/test/memory.test.ts",
+      "packages/cli/test/new-locked-config.test.ts",
+      "packages/cli/test/prune-units.test.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/cards/settings-size.ts",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/schema/sizing.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/sizing/effort.ts",
+      "packages/core/src/sizing/size.ts",
+      "packages/core/src/validate/limits.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/sizing/configured.test.ts",
+      "packages/ui/src/settings/settings-page.test.ts"
+    ],
+    "at": "2026-11-07T04:51:20.166Z",
+    "resolved": {
+      "commit": "6d60741",
+      "at": "2026-11-07T05:00:02.219Z"
+    }
   }
 }

@@ -97,3 +97,30 @@ Hoy cuántas veces reintenta Specty escribir en su memoria cuando otra sesión e
 
 - R1: C12 añadirá sus textos de «Interno» y también toca el catálogo, `docs/formats.md` §6 y, quizá, `cards/settings.ts`, de donde este cambio saca los de «Interno». Mitigación: los textos pasan a `cards/settings-internal.ts` en un solo movimiento, las claves nuevas van en su propio bloque, y al incorporar main `specty integrate` conserva lo de los dos.
 - R2: El test de la memoria bloquea su rama con el archivo `.lock` de git, que solo existe con el almacén de refs en archivos. Mitigación: es el almacén por defecto de los repositorios de los tests, y el test cuenta los `update-ref` con `GIT_TRACE`, sin depender del mensaje de git.
+
+## Cierre
+
+### Resumen
+
+- Core: `schema/internal-waits.ts` añade `internal.retries.memory` (9, entre 1 y 50), `internal.retries.gitConfig` (5, entre 1 y 10) y el bloque `internal.retention` con `verifiedDays` (30, entre 1 y 365); `ResolvedConfig.internal` los trae sin tocar `config.ts`.
+- Catálogo: los tres ajustes en «Interno», tras `internal.retries.landing`, con la marca `new`; la unidad nueva `d` para los días.
+- Textos: los de «Interno» (C8, C9 y los nuevos) pasan a `cards/settings-internal.ts` (`INTERNAL_SETTING_TEXTS`), que `cards/settings.ts` reúne; este baja de 406 a 318 líneas.
+- CLI: `editMemory` intenta `retries + 1` veces (`MemoryTarget.retries`, que pone `targetOf`); `markBranch` recibe las esperas de `lockWaits(internal.retries.gitConfig)`, que doblan desde 50 ms; `pruneRecord` borra según `internal.retention.verifiedDays` y devuelve los días, que dice la tarjeta de `prune`.
+- Documentación: formats.md §1, la memoria y §6; ARCHITECTURE (`markBranch` y el registro de unidades) y dominio.md remiten a las claves.
+
+### Desviaciones
+
+- Los tests de la página (`settings-page.test.ts`) no entraron en el contrato: el verify de T1 encadena con `&&` vitest del core y `ng test` de la UI, y el rojo de `propose` se cortaba en el primero sin llegar al segundo (P190). Se enviaron solo los del core y la CLI, y los de la página se escribieron en T1, como planeaba la spec (A7): las dos listas de «Interno» salen del catálogo y hay dos tests nuevos de AC5 y AC6.
+- Los tests del catálogo de C8 que enumeraban los ajustes internos (la lista de `new`, la de «Interno» y su número) se ampliaron con los tres nuevos.
+
+### Decisiones
+
+- Los reintentos cuentan las veces más tras el primer intento, como `internal.retries.landing`, así que la memoria tiene 9 por defecto (10 intentos, como hoy); los dos empiezan en 1 para que un choque suelto no haga fallar el comando.
+- `MemoryTarget.retries` es opcional, con el valor por defecto de core, para que quien arme un destino a mano (un test del servidor) no tenga que darlo.
+- Los tests de la CLI cuentan los intentos con `GIT_TRACE` (`update-ref` de la memoria y `git config branch.<rama>.specty`), sin depender del tiempo.
+
+### Pendientes
+
+- El resto del inventario de C8 (`POLL_MS`, `STALE_MS`, el `--interval` de `specty wait` e `INDEX_LIFE`) va a un corte nuevo de la épica, o a dos, porque juntos salen XL.
+- `packages/ui/src/settings/settings-page.test.ts` tiene 469 líneas de código (aviso desde 400): conviene llevar los tests de «Interno» a su propio archivo.
+- AC7 se comprueba a mano: formats.md §1, la memoria y §6.
