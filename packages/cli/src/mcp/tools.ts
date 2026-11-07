@@ -177,7 +177,8 @@ const TOOLS: readonly Tool[] = [
   },
   {
     name: "specty_adjust",
-    description: "Record the user's adjustment request in acceptance and get how to classify it.",
+    description:
+      "Record an adjustment request and get how to make it: the user's request about the result in acceptance, or, while the tasks are implemented, a correction of the pending tasks (such as a `verify` that does not run its tests) or a split of an epic's slice.",
     properties: { request: text("The user's literal request.") },
     required: ["request"],
     argv: (args) => ["adjust", "--", operand(args, "request")],

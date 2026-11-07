@@ -72,7 +72,8 @@ function idleCard(ctx: CardContext): Output {
       "Reading, explaining or exploring code does not need Specty.",
     ),
   ]);
-  if (toSubagents(ctx)) {
+  // Without a folder per change, a subagent's `new` would leave its change in this folder.
+  if (toSubagents(ctx) && ctx.changeFolders !== false) {
     return {
       status: "ok",
       header: headerOf(),

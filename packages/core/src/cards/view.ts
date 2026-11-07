@@ -30,6 +30,12 @@ export interface CardContext {
    * the user asks for, out of subagents, even with a tool that can take them.
    */
   readonly subagents?: boolean;
+  /**
+   * `false`: `new` creates each change in the folder it runs in (`git.worktrees: false` or
+   * `git.branchPerChange: false`), so the changes the user asks for are not handed to subagents,
+   * whose change would have no folder to enter.
+   */
+  readonly changeFolders?: boolean;
 }
 
 export interface CriterionView {
@@ -181,6 +187,11 @@ export interface ChangeView {
   readonly requested?: readonly CommentView[];
   /** The user's literal adjustment request, while adjusting. */
   readonly adjustment?: string;
+  /**
+   * While adjusting, the adjustment was asked for while the tasks are implemented, so it only
+   * corrects the pending ones: the approved revision still has tasks to do (`adjustsPendingTasks`).
+   */
+  readonly pendingTasksOnly?: boolean;
   /** The user's literal request the change was created for (`new --request`), while drafting. */
   readonly request?: string;
   /** While drafting, what each change in `follows` left for this one. */

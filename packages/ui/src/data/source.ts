@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // The data source the screens run on, apart from the data it gives (records.ts, which re-exports
 // it): reading is required, every action is optional.
+import type { ConfigIssue, ResolvedConfig } from "@baquia-dev/specty-core";
 import {
   type ChangeSort,
   type Lang,
@@ -78,6 +79,18 @@ export interface ActionNote {
   readonly action: string;
   /** What its command said, as the page shows it; none as the action starts and as it ends. */
   readonly note?: string;
+}
+
+/**
+ * `GET /api/config`: `.specty/config.yaml` as YAML reads it (none when it is not YAML), what
+ * Specty uses with every default when it is valid, the defaults, and the validator's issues, each
+ * at its key (empty at the file's root).
+ */
+export interface ConfigRecord {
+  readonly input?: unknown;
+  readonly config?: ResolvedConfig;
+  readonly defaults: ResolvedConfig;
+  readonly issues: readonly ConfigIssue[];
 }
 
 /** What the person decides on an entry of Specty's memory (ADR 0016). */
@@ -247,6 +260,11 @@ export abstract class SpectyData {
 
   /** Specty's memory and who holds each open change (ADR 0016); nothing when it cannot tell. */
   memory(): Promise<MemoryRecord | undefined> {
+    return Promise.resolve(undefined);
+  }
+
+  /** The project's configuration (`.specty/config.yaml`); nothing when the source cannot tell. */
+  config(): Promise<ConfigRecord | undefined> {
     return Promise.resolve(undefined);
   }
 

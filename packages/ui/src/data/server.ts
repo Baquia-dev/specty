@@ -33,7 +33,7 @@ import {
   tooLarge,
   UNEXPECTED,
 } from "./server-answers";
-import type { ActionNote, FinishedPage, FinishedRequest, MemoryVerb } from "./source";
+import type { ActionNote, ConfigRecord, FinishedPage, FinishedRequest, MemoryVerb } from "./source";
 import { isStrings, isTrace, type TraceRecord } from "./trace";
 
 /** The mark `specty ui` puts in the page it serves (ARCHITECTURE §15). */
@@ -185,6 +185,14 @@ export class ServerData extends SpectyData {
     if (response.status === 403) throw new ActionError(NO_SESSION);
     const body: unknown = await response.json().catch(() => undefined);
     if (!response.ok || !isSessionList(body)) throw new ActionError(UNEXPECTED);
+    return body;
+  }
+
+  override async config(): Promise<ConfigRecord> {
+    const response = await fetch("/api/config");
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isConfigRecord(body)) throw new ActionError(UNEXPECTED);
     return body;
   }
 
@@ -412,4 +420,17 @@ async function readRun(change: string): Promise<RunRecord | undefined> {
 export async function dataSource(page: Document): Promise<Type<SpectyData>> {
   if (page.querySelector(MARK) !== null) return ServerData;
   return (await import("./fixtures")).FixtureData;
+}
+
+/** `GET /api/config`'s answer: its defaults, its issues with their key and, if valid, its values. */
+function isConfigRecord(value: unknown): value is ConfigRecord {
+  const issue = (item: unknown) =>
+    isObject(item) && typeof item.path === "string" && typeof item.message === "string";
+  return (
+    isObject(value) &&
+    isObject(value.defaults) &&
+    (value.config === undefined || isObject(value.config)) &&
+    Array.isArray(value.issues) &&
+    value.issues.every(issue)
+  );
 }

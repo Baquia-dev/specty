@@ -246,8 +246,8 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - Hay una tarea sin `files`, o con archivos que no están en la sección Archivos.
 - Se referencia un criterio inexistente, o hay un criterio que ninguna tarea cubre.
 - Hay una tarea sin `verify` y no existe una verificación por defecto.
-- En `adjusting`: se modifica o elimina una tarea completada.
-- En `adjusting`, con un ajuste pedido mientras se implementa (la revisión aprobada aún tiene tareas sin completar): se añade o se elimina una tarea, o se añade, modifica o elimina un criterio (`pending-tasks-only`). Ese ajuste solo corrige las tareas pendientes: su `verify`, sus `files` o su texto.
+- En un ajuste, en `adjusting` o en su revisión (`review` con una revisión aprobada, también tras pedir cambios la persona): se modifica o elimina una tarea completada (`done-task-changed`).
+- En un ajuste, en `adjusting` o en su revisión, con un ajuste pedido mientras se implementa (la revisión aprobada aún tiene tareas sin completar): se añade o se elimina una tarea, o se añade, modifica o elimina un criterio (`pending-tasks-only`). Ese ajuste solo corrige las tareas pendientes: su `verify`, sus `files` o su texto.
 - En el ajuste de una épica, en `adjusting` o en su revisión (`review` con una revisión aprobada): se modifica (título, `ac` o `depends`) o se elimina un corte cuyo cambio está cerrado (`closed-slice-changed`). Un corte está cerrado cuando su cambio está en `done`; uno cancelado no lo cierra. Un corte cerrado se acepta tal como estaba en la revisión aprobada o en la última propuesta, por si el ajuste lo estrechó mientras su cambio seguía abierto. Core no lee el disco: la CLI le pasa esos cortes, de los cambios que nombran la épica, abiertos o archivados.
 - En `closing`: hay cambios fuera de la sección Cierre.
 - Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. La tarea única de `quick` solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección. El corte de una épica (con `epic` en el frontmatter) no se divide en otra épica: su error pide estrecharlo y llevar el resto a cortes nuevos de su épica, que se ajusta también mientras se implementa.
@@ -470,7 +470,7 @@ retro:
   mode: agent                     # agent | minimal
 git:
   branchPerChange: true
-  worktrees: true                 # cada cambio en su propia worktree (necesita branchPerChange)
+  worktrees: true                 # cada cambio en su propia worktree (necesita branchPerChange); sin ella, los cambios que pide el usuario no van a subagentes
   setup: "pnpm install --prefer-offline"  # prepara cada worktree nueva; false: nada; sin la clave: el comando del stack
   target: develop                 # rama de la que parten los cambios y a la que se incorporan; sin la clave: la principal
   flow: gitflow                   # specty | github | trunk | gitflow: cómo se nombran las ramas; sin la clave: specty/<id>
@@ -487,7 +487,7 @@ memory:                           # la memoria de Specty (ADR 0016)
   branch: specty-memory           # la rama de las entradas (§1): un nombre de rama válido fuera de `specty/`, donde van las de los cambios
 dev:
   ports: [4200, 5173]             # los puertos de desarrollo del proyecto en la carpeta principal; cada carpeta de cambio usa estos más su posición (§1, `ports.json`), y `new` y `next` se los dicen al agente; sin la clave: ninguno
-subagents: true                   # false: ni los cortes de una épica ni los cambios que pide el usuario van a subagentes, aunque su herramienta pueda
+subagents: true                   # false: ni los cortes de una épica ni los cambios que pide el usuario van a subagentes, aunque su herramienta pueda; sin una carpeta por cambio (git.worktrees o git.branchPerChange en false), los cambios que pide el usuario tampoco
 ```
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.

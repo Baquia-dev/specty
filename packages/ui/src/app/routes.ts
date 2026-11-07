@@ -28,6 +28,11 @@ export function appRoutes(devTools: boolean): Routes {
       title: "Specty · Sesiones",
     },
     {
+      path: "settings",
+      loadComponent: () => import("../settings/settings-page").then((page) => page.SettingsPage),
+      title: "Specty · Configuración",
+    },
+    {
       path: "changes/:id",
       loadComponent: () => import("../change/change-page").then((page) => page.ChangePage),
       title: "Specty · Cambio",

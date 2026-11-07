@@ -18,13 +18,19 @@ export interface DuplicateQuery {
   readonly epic?: string;
   /** Open changes the user said it does not duplicate (`--distinct-from`). */
   readonly distinctFrom: readonly string[];
+  /**
+   * A subagent creates it (`--subagent`): the session hands each change of one user's message to
+   * a subagent of its own, all with that same literal request.
+   */
+  readonly subagent?: boolean;
 }
 
 /**
  * The open changes of every worktree a new change may duplicate (ADR 0016), as `status` sees
  * them, each with why: the same `follows`, a similar title or a similar request. Those it follows,
  * their epics, its own epic, the other slices of its epic and those of `--distinct-from` do not
- * count, nor does the request of a slice that is its epic's own.
+ * count, nor does the request of a slice that is its epic's own, nor, for a subagent's change, the
+ * request of an open change that is the very same: another change of the same user's message.
  */
 export async function duplicatesOf(
   session: Session,
@@ -50,7 +56,7 @@ export async function duplicatesOf(
       const theirs = await requestOf(change.files);
       const other = {
         title: spec.title,
-        ...(theirs !== undefined ? { request: theirs } : {}),
+        ...(theirs !== undefined && !sameErrand(query, request, theirs) ? { request: theirs } : {}),
         follows: spec.frontmatter.follows,
       };
       const reason = duplicateReason(candidate, other);
@@ -73,6 +79,15 @@ async function comparedRequest(
   const change = await findChange(session, epic);
   const own = change === undefined ? undefined : await requestOf(change.files);
   return own?.trim() === request.trim() ? undefined : request;
+}
+
+/**
+ * A subagent's change and an open one of the same user's message (`request`, the very same
+ * literal request without the spaces at its ends): each subagent carries a change of its own,
+ * which its title, still compared, tells apart.
+ */
+function sameErrand(query: DuplicateQuery, request: string | undefined, theirs: string): boolean {
+  return query.subagent === true && request !== undefined && request.trim() === theirs.trim();
 }
 
 /** The user's literal request a change was created with, as its audit keeps it. */
