@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261108-la-trazabilidad-no-cuenta-para-un-criterio-las",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261108-la-trazabilidad-no-cuenta-para-un-criterio-las",
+  "baseCommit": "46518cfc71473855c39a55f2b2cc740689059e0c",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e1cef05254b17a973419e9ea034d2ffb9ae8f9581b3e65f2b16248820cc10240",
+    "at": "2026-11-07T22:44:29.935Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ac22969611d267fdcb01b4672ae2a95dbdea583d",
+      "attempts": 1,
+      "startedAt": "2026-11-07T22:52:14.972Z",
+      "doneAt": "2026-11-07T22:53:34.424Z",
+      "summary": "criteriaTests solo cuenta las líneas con id que, además del blame, añade el diff desde el merge-base con la rama destino (linesAddedSinceTarget en check/files.ts); con HEAD en ese merge-base (branchPerChange: false) cuenta solo el blame. ARCHITECTURE §13 lo cuenta.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/cli/test/criteria-tests.test.ts": "sha256:e39b3c5ac4cb238fd6c67f6a7f86c703dfd41f5561ef1a79191b98954d524f67"
+  }
+}
