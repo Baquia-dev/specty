@@ -81,7 +81,7 @@ Hoy cada comando de una verificación arranca con el entorno de Specty tal cual,
   - files: packages/cli/src/flow/process-budget.ts, packages/cli/test/process-budget.test.ts, packages/cli/test/server/config.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/process-budget.test.ts test/server/config.test.ts && pnpm lint
-- [ ] T4: Cada verificación arranca sus comandos con ese entorno, y la documentación lo explica
+- [x] T4: Cada verificación arranca sus comandos con ese entorno, y la documentación lo explica
   - files: packages/cli/src/flow/live-run.ts, packages/cli/src/commands/verify.ts, packages/cli/src/server/runs.ts, packages/cli/test/verify-processes.test.ts, docs/formats.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-processes.test.ts test/live-run.test.ts test/verify-fresh.test.ts test/server/verify.test.ts && pnpm typecheck && pnpm lint && pnpm knip

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-cada-comando-de-verificacion-recibe-en-las",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-cada-comando-de-verificacion-recibe-en-las",
   "baseCommit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
   "revision": 2,
@@ -70,12 +70,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6a4e8acbef3649046e28934b42912979947425b1",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:57:20.137Z",
       "doneAt": "2026-11-07T16:58:05.386Z",
-      "summary": "flow/process-budget.ts: processBudget (núcleos × plazas / verify.slots, hacia abajo, mínimo 1) y budgetedEnv (las variables de verify.processes.env con el número o su valor menor; sin ellas, el entorno tal cual)"
+      "summary": "flow/process-budget.ts: processBudget (núcleos × plazas / verify.slots, hacia abajo, mínimo 1) y budgetedEnv (las variables de verify.processes.env con el número o su valor menor; sin ellas, el entorno tal cual)",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/schema/verify.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "299216ed136f08005658b8247be5b602df3ecd1e",
+      "startedAt": "2026-11-07T16:58:06.540Z",
+      "doneAt": "2026-11-07T17:04:39.430Z",
+      "summary": "La verificación de una tarea (1 plaza), la completa y sus unidades (runLive), los intentos de verify --fresh fuera de un cambio y la completa de la UI (spawned, ahora asíncrona) arrancan con budgetedEnv; docs/formats.md §6 documenta verify.processes; VerifyProcesses sin export (knip)"
     }
   },
   "pending": {

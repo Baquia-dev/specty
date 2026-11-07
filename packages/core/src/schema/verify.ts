@@ -13,7 +13,7 @@ export interface VerifyUnit {
  * `verify.processes`: how many processes each command of a verification may start, told in the
  * environment variables the person names, since Specty does not know which one each tool reads.
  */
-export interface VerifyProcesses {
+interface VerifyProcesses {
   /** The variables that get the number, such as Vitest's `VITEST_MAX_WORKERS`: none, no change. */
   readonly env: readonly string[];
   /** The memory each process takes, in MiB. */

@@ -418,6 +418,9 @@ verify:
   quick: dart format --output=none --set-exit-if-changed .  # antes de la verificación de cada tarea
   timeoutSec: 600                 # al vencer, se corta el comando con todos los procesos que lanzó
   slots: 2                        # verificaciones a la vez en el clon: la de una tarea ocupa 1, la completa todas (ARCHITECTURE §9)
+  processes:                      # opcional: cuántos procesos puede lanzar cada comando de una verificación
+    env: ["VITEST_MAX_WORKERS"]   # variables que reciben el número; sin ellas, el entorno no cambia
+    memoryMiB: 512                # lo que ocupa cada proceso, en MiB (un entero de 1 o más)
   units:                          # opcional: la verificación completa de accept por partes, en orden y en lugar de full
     - name: analyze
       command: flutter analyze
@@ -599,6 +602,8 @@ Sin `verify.units`, `specty init` las propone en su tarjeta, listas para pegar, 
 No las escribe: las añade la persona tras comprobar que entre todas ejecutan lo mismo que `verify.full`. Ver ARCHITECTURE §9.
 
 `verify.timeoutSec` es el tiempo que puede tardar cada comando de una verificación: al cumplirse, se corta con todos los procesos que lanzó. Si corta la verificación completa, o una de sus unidades, en `accept`, en la incorporación de main o en `specty integrate`, su salida acaba en una línea que dice que se agotó el tiempo y a cuántos segundos, porque sin ella parece un fallo de los tests, y que con la máquina cargada reintentar con menos carga puede bastar (`timedOutLine` en `cards/units.ts`).
+
+`verify.processes` le dice a cada comando de una verificación cuántos procesos puede lanzar, en las variables de entorno que nombra `env`: nombres de letras, cifras y `_`, sin empezar por cifra, porque Specty no sabe cuál lee cada herramienta (Vitest lee `VITEST_MAX_WORKERS`, también bajo `ng test`). Sin `env`, o con la lista vacía, los comandos reciben el entorno tal cual. El número son los núcleos de la máquina (`os.availableParallelism()`) que le tocan por las plazas de `verify.slots` que ocupa: una la de una tarea, también la que comprueba los tests en rojo, y todas la completa (la de `accept`, la de la incorporación de main, la de `specty integrate` y la de la UI), cada una de sus unidades y los intentos de `specty verify --fresh`. Se redondea hacia abajo y nunca baja de 1: con 14 núcleos y 2 plazas, 7 para la de una tarea y 14 para la completa. Cada variable recibe el mismo número, salvo la que ya trae en el entorno un entero positivo menor, que se queda con el suyo. Se calcula al arrancar cada comando (`budgetedEnv`, en `cli/src/flow/process-budget.ts`). Los comandos de `specty check`, `review.command`, `git.setup` y `git.afterLanding` no son verificaciones y no lo reciben. `memoryMiB` (512 por defecto) es la memoria que ocupa cada proceso; por ahora no cambia el número.
 
 `specty init` escribe `verify.default` y `verify.full` con los comandos que detecta. Si el archivo ya existe, solo añade los que falten y la detección encuentre ahora (por ejemplo, tras el primer cambio de un repositorio vacío), insertando sus líneas al final de `verify` (o un bloque `verify` nuevo al final del archivo); nunca cambia un valor que ya está, y el resto del archivo, con sus comentarios, queda igual.
 

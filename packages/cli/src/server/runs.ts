@@ -13,6 +13,7 @@ import { pendingIntegration } from "../commands/integrate";
 import { locateChanges } from "../flow/changes";
 import { fullCommand, oneAtATime } from "../flow/full-verification";
 import { contains, type Integration, integrationOf } from "../flow/integrate";
+import { budgetedEnv } from "../flow/process-budget";
 import { fullPlan, runUnits } from "../flow/units";
 import { codeTree, recordFullVerification } from "../flow/verified";
 import { lowerPriority } from "../io/exec";
@@ -278,18 +279,22 @@ async function verified(
   await ended(target, job, live, { ...ran, started, tree });
 }
 
-/** Runs `command` in the change's folder, live, unless the server is closing. */
-function spawned(
+/**
+ * Runs `command` in the change's folder, live, unless the server is closing, with the environment
+ * of every place (`budgetedEnv`), as the full verification holds them.
+ */
+async function spawned(
   target: RunTarget,
   there: Session,
   command: string,
   live: LiveRun,
   stoppable: (stop: () => void) => void,
 ): Promise<Ran> {
-  if (target.closing()) return Promise.resolve({ code: undefined, output: [] });
+  const env = await budgetedEnv(there, Number.POSITIVE_INFINITY);
+  if (target.closing()) return { code: undefined, output: [] };
   const child = spawn(command, {
     cwd: there.root,
-    env: there.environment.env,
+    env,
     shell: true,
     stdio: ["ignore", "pipe", "pipe"],
   });

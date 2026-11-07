@@ -15,6 +15,7 @@ import { isFinished, resolveActive } from "../flow/active";
 import { type Harvest, rememberEntries } from "../flow/archive-memory";
 import { fullCommand, oneAtATime } from "../flow/full-verification";
 import { runLive } from "../flow/live-run";
+import { budgetedEnv } from "../flow/process-budget";
 import { type Printed, printsOf, record } from "../flow/units";
 import { execute, tail } from "../io/exec";
 import type { Session } from "../session";
@@ -109,7 +110,8 @@ async function runAll(
 }
 
 /**
- * Runs `target` once, as a verification runs: through the shell, by its time and below the rest.
+ * Runs `target` once, as a verification runs: through the shell, by its time, below the rest and
+ * with the environment of every place (`budgetedEnv`).
  * In the folder of open change `change`, it is that change's full verification going on, live
  * for the UI and the MCP App; it already holds the turn and every place. When it fails, it reads
  * the JUnit reports it wrote before the next attempt overwrites them.
@@ -127,7 +129,7 @@ async function attempt(
       ? await execute(target.command, [], {
           cwd: session.root,
           shell: true,
-          env: session.environment.env,
+          env: await budgetedEnv(session, Number.POSITIVE_INFINITY),
           timeoutMs: session.config.verify.timeoutSec * 1000,
           lowPriority: true,
           priority: session.config.internal.exec.priority,
