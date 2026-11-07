@@ -847,11 +847,11 @@ INDICADORES, FRENTE A LOS 30 DÍAS ANTERIORES:
 POR PERSONA:
   Nombre      Cambios  Tareas    Ciclo  Pasan  Sesiones      Coste
   Jorge            40     127  1 d 2 h   93 %        51  12,30 USD
-  (sin dato)        2       4      5 h   75 %         0          —
+  (sin dato)        2       4      5 h   75 %         —          —
 POR AGENTE:
   Nombre       Cambios  Tareas    Ciclo  Pasan  Sesiones      Coste
   claude-code       38     120  1 d 2 h   93 %        51  12,30 USD
-  codex              4      11      8 h   88 %         0          —
+  codex              4      11      8 h   88 %         —          —
 POR MODELO:
   Nombre      Cambios  Tareas    Ciclo  Pasan  Sesiones      Coste
   m-1              30      98  1 d 1 h   94 %        40  12,30 USD
@@ -868,7 +868,7 @@ LOS CAMBIOS MÁS CAROS:
 SIGUIENTE: el panel completo, con sus gráficas, está en `specty ui` (Panel); para otro corte, `--period 7d|30d|90d|all`, `--who person:<nombre>|agent:<herramienta>|model:<modelo>` o `--kind <carril>`.
 ```
 
-«TIEMPO POR FASE (MEDIANA)» da la mediana de cada fase de los cambios cerrados en el periodo y en cuántos se mide, con «—» en una fase por la que no pasó ninguno; «LOS CAMBIOS MÁS CAROS», hasta cinco, de más a menos coste en el periodo, con las tareas, el ciclo y las sesiones de todo el cambio. Cada bloque sale solo si hay algo que contar. Sin ningún cambio del corte en el periodo, la tarjeta solo dice «No hay ningún cambio en este corte en el periodo.». Un `--period`, un `--who` o un `--kind` que no entiende se rechaza con código 1 y los valores válidos, en lugar de tomar el de por defecto como el servidor.
+«TIEMPO POR FASE (MEDIANA)» da la mediana de cada fase de los cambios cerrados en el periodo y en cuántos se mide, con «—» en una fase por la que no pasó ninguno; «LOS CAMBIOS MÁS CAROS», hasta cinco, de más a menos coste en el periodo, con las tareas, el ciclo y las sesiones de todo el cambio. «Sesiones» es «—» cuando ninguna línea de los cambios de la fila trae `session` (hoy solo la informa Claude Code), y 0 cuando alguna la trae pero ninguna en el periodo; en `--json`, ese «—» es `null`. Cada bloque sale solo si hay algo que contar. Sin ningún cambio del corte en el periodo, la tarjeta solo dice «No hay ningún cambio en este corte en el periodo.». Un `--period`, un `--who` o un `--kind` que no entiende se rechaza con código 1 y los valores válidos, en lugar de tomar el de por defecto como el servidor.
 
 ## 10. Exportadores
 

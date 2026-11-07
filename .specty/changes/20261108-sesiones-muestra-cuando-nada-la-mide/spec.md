@@ -57,7 +57,7 @@ Hoy «Sesiones» muestra 0 en «Personas y agentes» y en «Los cambios más car
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/sections.test.ts test/stats/cost-scope-memory.test.ts
   - type: fix
-- [ ] T2: `specty stats` escribe «—» en «Sesiones» sin ninguna sesión, y `docs/formats.md` lo dice
+- [x] T2: `specty stats` escribe «—» en «Sesiones» sin ninguna sesión, y `docs/formats.md` lo dice
   - files: packages/core/src/cards/stats.ts, packages/core/test/cards/stats.test.ts, packages/cli/test/stats.test.ts, docs/formats.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/stats.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/stats.test.ts

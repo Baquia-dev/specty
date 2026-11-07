@@ -43,14 +43,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/test/stats/sections.test.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "8dd87a3aa9ebae99fe1b66d5471af82af4b0fffe",
+      "attempts": 2,
       "startedAt": "2026-11-07T17:05:14.986Z",
       "doneAt": "2026-11-07T17:18:08.941Z",
-      "summary": "people.ts y cost.ts dan sessions null cuando ninguna línea de sus cambios trae session (con alguna, siguen contando, también 0); aplicado el parche aprobado en S1 al test de AC1"
+      "summary": "people.ts y cost.ts dan sessions null cuando ninguna línea de sus cambios trae session (con alguna, siguen contando, también 0); aplicado el parche aprobado en S1 al test de AC1",
+      "scopeExtra": [
+        "packages/core/test/stats/sections.test.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bc2fe5f764fd3ce9fa62d5a3782cab257484c22a",
+      "startedAt": "2026-11-07T17:18:09.452Z",
+      "doneAt": "2026-11-07T17:18:42.702Z",
+      "summary": "cards/stats.ts escribe «—» en las dos columnas «Sesiones» con null; formats.md §9 lo dice y su ejemplo muestra «—» para codex y (sin dato)"
     }
   },
   "pending": {
