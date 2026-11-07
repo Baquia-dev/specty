@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-el-panel-lista-los-cambios-del-periodo-con",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-el-panel-lista-los-cambios-del-periodo-con",
   "baseCommit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:6425346ec78df2a7763eabcfa307f38c9db337abb0284387bc2a1097b5b853a4",
@@ -73,12 +73,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c986c9bc52440f98633d5dec556751f92d3fe4f3",
+      "attempts": 1,
       "startedAt": "2026-11-07T08:48:40.410Z",
       "doneAt": "2026-11-07T08:55:11.061Z",
-      "summary": "Sección «Cambios» del panel (dashboard-changes.ts): tabla por páginas de 25 con búsqueda, orden por columna con aria-sort, paginador y filas que abren su cambio; la fuente la pide a /api/stats/changes y comprueba la respuesta; docs/ui.md."
+      "summary": "Sección «Cambios» del panel (dashboard-changes.ts): tabla por páginas de 25 con búsqueda, orden por columna con aria-sort, paginador y filas que abren su cambio; la fuente la pide a /api/stats/changes y comprueba la respuesta; docs/ui.md.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -91,10 +91,76 @@
     "T": 3,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-07T08:55:36.443Z",
   "lockedTests": {
     "packages/cli/test/server/stats-changes.test.ts": "sha256:440629d12a23819ad3d1720db2b12db221495b2fda144e8073da145670a99c49",
     "packages/core/test/stats/table.test.ts": "sha256:c46bf45aaaafc8b75443d836ddd6fc024c79740870df609dc3a94b264c9b438c",
     "packages/ui/src/dashboard/dashboard-changes.test.ts": "sha256:70f94a2824f5d00fe5ec9415293137b7b5984ddcadf97c36f64ca1f35b51696a",
     "packages/ui/src/data/stats-source.test.ts": "sha256:5cd8e5cbeb62ab8667d3eeec6c64dfdb92766c716c2f4310cd11049a080433ac"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "a491c1c0346190390d4f4344e1b40cf32aa3d417",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/ui/src/data/server.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/agents/adapter.ts",
+      "packages/cli/src/agents/antigravity.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/flow/full-verification.test.ts",
+      "packages/cli/src/flow/full-verification.ts",
+      "packages/cli/src/install/hooks.ts",
+      "packages/cli/src/install/install.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/src/server/stats-changes.ts",
+      "packages/cli/src/store/verify-slots.test.ts",
+      "packages/cli/src/store/verify-slots.ts",
+      "packages/cli/test/antigravity-timeout.test.ts",
+      "packages/cli/test/server/stats-changes.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/stats/table.ts",
+      "packages/core/test/cards/doctor-antigravity-timeout.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/internal-hooks.test.ts",
+      "packages/core/test/stats/table.test.ts",
+      "packages/ui/src/dashboard/dashboard-changes.test.ts",
+      "packages/ui/src/dashboard/dashboard-changes.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/data/server-config.test.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/data/stats-source.test.ts",
+      "packages/ui/src/settings/save-dialog.ts",
+      "packages/ui/src/settings/setting-row.ts",
+      "packages/ui/src/settings/settings-controls.test.ts",
+      "packages/ui/src/settings/settings-edit.test.ts",
+      "packages/ui/src/settings/settings-edit.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts",
+      "packages/ui/src/settings/settings-save.test.ts",
+      "packages/ui/src/settings/settings-view.ts"
+    ],
+    "at": "2026-11-07T09:09:21.666Z",
+    "resolved": {
+      "commit": "1a83674",
+      "at": "2026-11-07T09:25:14.895Z"
+    }
   }
 }

@@ -92,3 +92,28 @@ El «Panel» de `specty ui` resume el periodo en indicadores, pero no dice qué 
 - R1: Cada búsqueda pide una página al servidor, que lee todos los cambios. Mitigación: la lectura no completa los registros, y la fila y el resumen de cada archivado quedan en memoria con su registro, así que una petición no vuelve a analizar los archivados.
 - R2: `data/server.ts` ya pasa de 300 líneas de código. Mitigación: la comprobación de la respuesta va en `data/server-answers.ts`, y `server.ts` solo suma el método.
 - R3: C2 toca a la vez `dashboard-page.ts`, `data/source.ts`, `data/server.ts` y `server/api.ts`. Mitigación: aquí solo se enlaza la sección, el método y la ruta, y lo demás va en archivos propios.
+
+## Cierre
+
+### Resumen
+
+El «Panel» de `specty ui` tiene su última sección, «Cambios» (`dashboard/dashboard-changes.ts`). Es una tabla con los cambios del corte cuya vida toca el periodo, por páginas de 25, que se pide a la fuente (`SpectyData.statsChanges`). Cada fila lleva su fecha de cierre, su título enlazado y su id, su carril, su tamaño, su agente, sus tareas, su ciclo, sus verificaciones fallidas (con icono en el tono de riesgo) y su coste. Tiene una búsqueda por título o id, con 250 ms de espera como la Bandeja, un botón de orden en cada encabezado con `aria-sort` y «Página N de M» con «Anterior» y «Siguiente». Pulsar el título o la fila abre el cambio. El core arma la página (`stats/table.ts`: `statsTableQuery` y `statsChanges`), y el servidor la da en `GET /api/stats/changes` (`server/stats-changes.ts`). Para eso lee los cambios sin completar sus registros (`plainRecords`) y guarda con cada archivado su fila con título y tamaño. Los textos están en español y en inglés, y la documentación, en `docs/ui.md` (Panel, «Cambios») y `docs/ARCHITECTURE.md` §15.
+
+### Desviaciones
+
+- La fuente de datos y la sección van en una sola tarea (T3, con 8 archivos), en lugar de dos: con una tarea más, el corte pasaba a tamaño XL.
+- `ServerData.statsChanges` tiene su propio test (`data/stats-source.test.ts`), que no estaba en el primer borrador de la spec.
+
+### Decisiones
+
+- Cada fila da las cifras de todo el cambio (sus tareas, verificaciones fallidas y coste), no solo las del periodo. Los cambios que lista son los mismos que cuenta la cabecera: los del corte cuya vida toca el periodo.
+- El título y el tamaño salen de `summaryOf`, el resumen de la Bandeja, que se guarda con el registro archivado. Por eso el endpoint usa una lectura que no completa los registros, porque completarlos crea objetos nuevos y pierde lo guardado. `changeRecords` usa ahora la misma lectura (`everyChange`) y después la completa.
+- Los valores que faltan (cierre, ciclo, coste, tamaño o agente) se omiten en la respuesta en lugar de ir como `null`, y la UI muestra «—».
+- Sin dirección, cada columna empieza en su sentido natural. Los cambios sin el dato van al final en los dos sentidos, y los empates se ordenan por id, el más reciente primero. El carril sigue el orden del filtro.
+- La página, «Página N de M» y los botones se calculan con la página que respondió la fuente, no con la que se pidió, así que mientras llega la nueva no se contradicen.
+- `limit` va de 1 a 100; un valor fuera de ese rango toma el de por defecto, 25.
+
+### Pendientes
+
+- `GET /api/stats` (`statsAnswer` en `server/api.ts`) sigue leyendo `changeRecords`, que completa los registros en cada petición. Puede pasar a `plainRecords` cuando C2 lleve la lectura a `server/stats.ts`.
+- `packages/ui/src/data/server.ts` tiene 392 líneas de código y `dashboard/dashboard-changes.ts`, 309. En la sección, la forma de escribir cada fila (`rowsOf` y las columnas) podría ir a un módulo puro propio si crece.
