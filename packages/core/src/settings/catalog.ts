@@ -83,6 +83,25 @@ const INTERNAL_RUN: readonly Setting[] = [
 ];
 
 /**
+ * Section «Interno», what the cards show: the importers `propose` names, the lines of the review,
+ * the characters of a task's notes and of a new change's slug, which Specty kept fixed in its
+ * code, as keys of `internal.cards` (formats.md §6).
+ */
+const INTERNAL_CARDS: readonly Setting[] = [
+  "importersShown",
+  "reviewLines",
+  "noteChars",
+  "slugChars",
+].map(
+  (limit): Setting => ({
+    key: `internal.cards.${limit}`,
+    section: "internal",
+    kind: "number",
+    new: true,
+  }),
+);
+
+/**
  * Section «Interno»: the parameters Specty kept fixed in its code, as keys of `internal`, and the
  * lives of compliance, fixed with no key: four at 24 h and the mark of `specty wait` at 30 s
  * (formats.md §6).
@@ -135,6 +154,7 @@ const INTERNAL: readonly Setting[] = [
     new: true,
   },
   ...INTERNAL_RUN,
+  ...INTERNAL_CARDS,
   ...["receipts", "guardPending", "shellSnapshots", "sessions"].map(
     (life): Setting => ({
       key: `guarantee.${life}`,

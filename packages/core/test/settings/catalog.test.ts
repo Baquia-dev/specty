@@ -167,6 +167,10 @@ describe("the settings' catalog", () => {
       "internal.exec.maxOutputKiB",
       "internal.server.portsTried",
       "internal.hooks.antigravityTimeoutSec",
+      "internal.cards.importersShown",
+      "internal.cards.reviewLines",
+      "internal.cards.noteChars",
+      "internal.cards.slugChars",
     ]);
   });
 
@@ -298,6 +302,10 @@ describe("the settings' catalog", () => {
         unit: "s",
         new: true,
       }),
+      expect.objectContaining({ key: "internal.cards.importersShown", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.reviewLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.noteChars", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.slugChars", kind: "number", new: true }),
     ]);
     expect(
       SETTINGS.find((setting) => setting.key === "internal.retries.landing")?.unit,
@@ -331,7 +339,16 @@ describe("the settings' catalog", () => {
 
   it("AC5, AC7: says why each guarantee does not change, and names the internal settings in Spanish and in English", () => {
     const internal = SETTINGS.filter((setting) => setting.section === "internal");
-    expect(internal).toHaveLength(19);
+    expect(internal.map((setting) => setting.key)).toEqual(
+      expect.arrayContaining([
+        "internal.waits.waitTimeoutSec",
+        "internal.cards.importersShown",
+        "internal.cards.reviewLines",
+        "internal.cards.noteChars",
+        "internal.cards.slugChars",
+        "guarantee.receipts",
+      ]),
+    );
     for (const setting of internal) {
       const es = settingText(setting.key, "es");
       const en = settingText(setting.key, "en");

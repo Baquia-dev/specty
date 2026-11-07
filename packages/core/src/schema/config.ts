@@ -6,6 +6,12 @@ import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "
 import { DEFAULT_DEV, type DevConfig, DevSchema, resolveDev } from "./dev";
 import { DEFAULT_GIT, type GitConfig, GitSchema, resolveGit } from "./git";
 import {
+  DEFAULT_INTERNAL_CARDS,
+  INTERNAL_CARDS_SHAPE,
+  type InternalCardsConfig,
+  resolveInternalCards,
+} from "./internal-cards";
+import {
   DEFAULT_INTERNAL_RUN,
   INTERNAL_RUN_SHAPE,
   type InternalRunConfig,
@@ -101,7 +107,7 @@ export interface ResolvedConfig extends WarningsConfig {
    * Specty's internal settings (formats.md §6): values that can leave Specty not working, with
    * today's behaviour as their defaults. Removing a key gives it back its default.
    */
-  readonly internal: InternalWaitsConfig & InternalRunConfig;
+  readonly internal: InternalWaitsConfig & InternalRunConfig & InternalCardsConfig;
 }
 
 export const DEFAULT_CONFIG: ResolvedConfig = {
@@ -146,7 +152,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   memory: DEFAULT_MEMORY,
   dev: DEFAULT_DEV,
   subagents: true,
-  internal: { ...DEFAULT_INTERNAL_WAITS, ...DEFAULT_INTERNAL_RUN },
+  internal: { ...DEFAULT_INTERNAL_WAITS, ...DEFAULT_INTERNAL_RUN, ...DEFAULT_INTERNAL_CARDS },
   ...DEFAULT_WARNINGS,
 };
 
@@ -219,7 +225,9 @@ export const ConfigSchema = z.strictObject({
   memory: MemorySchema.optional(),
   dev: DevSchema.optional(),
   subagents: z.boolean().optional(),
-  internal: z.strictObject({ ...INTERNAL_WAITS_SHAPE, ...INTERNAL_RUN_SHAPE }).optional(),
+  internal: z
+    .strictObject({ ...INTERNAL_WAITS_SHAPE, ...INTERNAL_RUN_SHAPE, ...INTERNAL_CARDS_SHAPE })
+    .optional(),
   ...WARNINGS_SHAPE,
 });
 
@@ -277,7 +285,11 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     memory: resolveMemory(input.memory),
     dev: resolveDev(input.dev),
     subagents: input.subagents ?? base.subagents,
-    internal: { ...resolveInternalWaits(input.internal), ...resolveInternalRun(input.internal) },
+    internal: {
+      ...resolveInternalWaits(input.internal),
+      ...resolveInternalRun(input.internal),
+      ...resolveInternalCards(input.internal),
+    },
     ...resolveWarnings(input),
     ...(review !== undefined ? { review } : {}),
   };
