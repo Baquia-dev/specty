@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-ajustes-se-guardan-desde-la-ui-con-diff-y",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-los-ajustes-se-guardan-desde-la-ui-con-diff-y",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 2,
@@ -74,12 +74,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9d38fb4b0d6ba3b3c2d250bf3fd4eb188096401d",
+      "attempts": 1,
       "startedAt": "2026-11-07T03:50:13.160Z",
       "doneAt": "2026-11-07T03:54:06.550Z",
-      "summary": "flow/config-save.ts: configBlocked, checkConfig y saveConfig (turno sin esperar, commit solo de config.yaml con Specty-Config y recibo config, que vuelve atrás si git falla); recibo config en store/local.ts, hook que deja su mensaje y formats.md §6 y §7"
+      "summary": "flow/config-save.ts: configBlocked, checkConfig y saveConfig (turno sin esperar, commit solo de config.yaml con Specty-Config y recibo config, que vuelve atrás si git falla); recibo config en store/local.ts, hook que deja su mensaje y formats.md §6 y §7",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "52e5a0ec280c856f516cd46a0a15b9df2417aee7",
+      "startedAt": "2026-11-07T03:54:06.921Z",
+      "doneAt": "2026-11-07T03:56:59.950Z",
+      "summary": "server/config.ts: configView pasa desde api.ts y añade blocked; configPost atiende POST /api/config/check y POST /api/config tras la puerta de las acciones, con 400 fuera del catálogo y 409 con el motivo; act delega las acciones de un cambio en changeAction"
     }
   },
   "pending": {

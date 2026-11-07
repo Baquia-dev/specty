@@ -85,7 +85,7 @@ Hoy la página «Configuración» de `specty ui` solo muestra los ajustes: para 
   - files: packages/cli/src/flow/config-save.ts, packages/cli/src/store/local.ts, packages/cli/src/enforce/hook.ts, packages/cli/test/config-save.test.ts, docs/formats.md
   - ac: AC2, AC3, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/config-save.test.ts
-- [ ] T4: El servidor comprueba y guarda la configuración tras la puerta de la persona
+- [x] T4: El servidor comprueba y guarda la configuración tras la puerta de la persona
   - files: packages/cli/src/server/config.ts, packages/cli/src/server/api.ts, packages/cli/test/server/config.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/config.test.ts && pnpm typecheck && pnpm lint && pnpm knip
