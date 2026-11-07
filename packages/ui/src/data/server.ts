@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable, type Type } from "@angular/core";
+import type { StatsView } from "@baquia-dev/specty-core";
 import type { ConfigEdit, SessionView } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
@@ -46,6 +47,7 @@ import type {
   FinishedPage,
   FinishedRequest,
   MemoryVerb,
+  StatsParams,
 } from "./source";
 import { isStrings, isTrace, type TraceRecord } from "./trace";
 
@@ -198,6 +200,21 @@ export class ServerData extends SpectyData {
     if (response.status === 403) throw new ActionError(NO_SESSION);
     const body: unknown = await response.json().catch(() => undefined);
     if (!response.ok || !isSessionList(body)) throw new ActionError(UNEXPECTED);
+    return body;
+  }
+
+  /** The panel of the cut, with only the parameters the page's URL has. */
+  override async stats(params: StatsParams): Promise<StatsView> {
+    const query = new URLSearchParams();
+    for (const key of ["period", "who", "kind"] as const) {
+      const value = params[key];
+      if (value !== undefined) query.set(key, value);
+    }
+    const search = query.size === 0 ? "" : `?${query}`;
+    const response = await fetch(`/api/stats${search}`);
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isStatsView(body)) throw new ActionError(UNEXPECTED);
     return body;
   }
 
@@ -461,4 +478,24 @@ async function readRun(change: string): Promise<RunRecord | undefined> {
 export async function dataSource(page: Document): Promise<Type<SpectyData>> {
   if (page.querySelector(MARK) !== null) return ServerData;
   return (await import("./fixtures")).FixtureData;
+}
+
+/** The figures the panel shows first (`StatsSummary`). */
+const FIGURES = ["closed", "tasks", "cycle", "verifications", "cost", "pending"] as const;
+
+/**
+ * `GET /api/stats`' answer: its cut and period, how many changes, who can be chosen, and each of
+ * the six figures with a number or nothing for its value.
+ */
+function isStatsView(value: unknown): value is StatsView {
+  if (!isObject(value) || !isObject(value.query) || !isObject(value.range)) return false;
+  const { summary } = value;
+  const figure = (item: unknown) =>
+    isObject(item) && (item.value === null || typeof item.value === "number");
+  return (
+    typeof value.changes === "number" &&
+    Array.isArray(value.options) &&
+    isObject(summary) &&
+    FIGURES.every((key) => figure(summary[key]))
+  );
 }

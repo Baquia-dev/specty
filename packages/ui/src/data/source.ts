@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // The data source the screens run on, apart from the data it gives (records.ts, which re-exports
 // it): reading is required, every action is optional.
-import type { ConfigIssue, ResolvedConfig } from "@baquia-dev/specty-core";
+import type { ConfigIssue, ResolvedConfig, StatsView } from "@baquia-dev/specty-core";
 import {
   type ChangeSort,
   type ConfigEdit,
@@ -110,6 +110,16 @@ export interface ConfigSaved {
 
 /** What the person decides on an entry of Specty's memory (ADR 0016). */
 export type MemoryVerb = "drop" | "keep" | "done";
+
+/**
+ * The cut the panel asks for, as its URL has them (docs/ui.md, «Panel»): each parameter only when
+ * the URL has it; the server understands them or takes their defaults.
+ */
+export interface StatsParams {
+  readonly period?: string;
+  readonly who?: string;
+  readonly kind?: string;
+}
 
 /**
  * Any data source the UI can run on: fetch + SSE from the local server, `postMessage` in an
@@ -285,6 +295,11 @@ export abstract class SpectyData {
 
   /** The agents' sessions in the repository, newest first (ADR 0016); nothing when it cannot tell. */
   sessions(): Promise<readonly SessionView[] | undefined> {
+    return Promise.resolve(undefined);
+  }
+
+  /** The panel of the cut `params` ask for (docs/ui.md, «Panel»); nothing when it cannot tell. */
+  stats(_params: StatsParams): Promise<StatsView | undefined> {
     return Promise.resolve(undefined);
   }
 
