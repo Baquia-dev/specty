@@ -81,7 +81,7 @@ Hoy están fijos en el código del core los pesos con los que Specty puntúa el 
   - files: packages/core/src/schema/sizing.ts, packages/core/src/schema/config.ts, packages/core/src/sizing/size.ts, packages/core/src/sizing/effort.ts, packages/core/src/validate/limits.ts, packages/core/test/sizing/configured.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/sizing/configured.test.ts && pnpm lint && pnpm knip
-- [ ] T2: `propose`, `approve` y la tarjeta de la tarea recomiendan el esfuerzo de la configuración
+- [x] T2: `propose`, `approve` y la tarjeta de la tarea recomiendan el esfuerzo de la configuración
   - files: packages/cli/src/commands/propose.ts, packages/cli/src/commands/approve.ts, packages/cli/test/effort-config.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/effort-config.test.ts && pnpm lint
