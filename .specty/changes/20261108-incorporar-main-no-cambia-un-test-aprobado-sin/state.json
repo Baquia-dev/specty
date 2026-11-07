@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261108-incorporar-main-no-cambia-un-test-aprobado-sin",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261108-incorporar-main-no-cambia-un-test-aprobado-sin",
+  "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9fc7067684cfd9cdf047964b80259a62f653d923a37210a4f428f6b96976b038",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:05426b402014bed30ffe685cf143d18981a1e9a9a1b2e2afa630cbab7e885f41",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:ad8351a86596b089c910cfe6a0d0a506a5c130aea0ef24f2ba4d7acb1b49abb4",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d7c37bacc35b04dbce7669b7ff477d33c4b18ee5b5c44d311c5130846c866013",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d59a3836f3b0aba10bd02e0430644615686df3cde6aae71b574b51388b74bdd2",
+    "at": "2026-11-07T17:28:57.026Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
