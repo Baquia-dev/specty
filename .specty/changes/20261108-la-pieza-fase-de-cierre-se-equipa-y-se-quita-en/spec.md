@@ -65,7 +65,7 @@ En la vista Flujo de «Configuración», la pieza «Fase de cierre» deja de ser
 
 ## Tareas
 
-- [ ] T1: La pieza «Fase de cierre» se ajusta con `flow.closing`, con sus textos y la frase del modo Básico
+- [x] T1: La pieza «Fase de cierre» se ajusta con `flow.closing`, con sus textos y la frase del modo Básico
   - files: packages/core/src/settings/pieces.ts, packages/core/src/cards/settings-pieces.ts, packages/core/test/settings/pieces.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/pieces.test.ts
