@@ -249,3 +249,112 @@ describe("the summary of `specty stats`", () => {
     ]);
   });
 });
+
+/** Where the time of the changes went: the median of each phase, and on how many changes. */
+const FLOW: NonNullable<StatsView["flow"]> = {
+  phases: [
+    { phase: "spec", median: 25 * MINUTE, changes: 40 },
+    { phase: "review", median: 2 * HOUR, changes: 40 },
+    { phase: "implementation", median: 90 * MINUTE, changes: 1 },
+    { phase: "closing", median: null, changes: 0 },
+  ],
+  approvals: { delegated: 3, tty: 1, ui: 0 },
+  wait: { median: HOUR, approvals: 1 },
+  revisions: 1.5,
+  sessions: { mean: 1, changes: 3 },
+};
+
+/** What the changes cost: the costliest first, one still open. */
+const COST: NonNullable<StatsView["cost"]> = {
+  unit: "day",
+  buckets: [],
+  tokens: { input: 10, output: 20, cacheWrite: 30, cacheRead: 40, calls: 5, changes: 2 },
+  lanes: [
+    { kind: "standard", cost: 12.3, changes: 1 },
+    { kind: "quick", cost: 0.5, changes: 1 },
+  ],
+  top: [
+    {
+      id: "20261105-guard-y-alcance",
+      kind: "standard",
+      cost: 12.3,
+      tasks: 4,
+      cycle: 27 * HOUR,
+      sessions: 2,
+    },
+    { id: "20261106-abierto", kind: "quick", cost: 0.5, tasks: 0, cycle: null, sessions: 0 },
+  ],
+};
+
+/** The sections `specty stats` adds, on the summary of the last 30 days. */
+const SPENT: StatsView = { ...VIEW, flow: FLOW, cost: COST };
+
+describe("the phases and the costliest changes of `specty stats`", () => {
+  it("AC7: after the tables, the median time of each phase and the costliest changes", () => {
+    const text = renderText(statsCard(SPENT, ES), "es");
+    expect(block(text, "TIEMPO POR FASE (MEDIANA)")).toEqual([
+      "Redactar la spec: 25 min · en 40 cambios",
+      "Revisión hasta aprobar: 2 h · en 40 cambios",
+      "Implementación: 1 h 30 min · en 1 cambio",
+      "Aceptación y cierre: —",
+    ]);
+    const top = block(text, "LOS CAMBIOS MÁS CAROS");
+    expect(cells(top[0])).toEqual(["Cambio", "Carril", "Tareas", "Ciclo", "Sesiones", "Coste"]);
+    expect(cells(top[1])).toEqual([
+      "20261105-guard-y-alcance",
+      "standard",
+      "4",
+      "1 d 3 h",
+      "2",
+      "12,30 USD",
+    ]);
+    expect(cells(top[2])).toEqual(["20261106-abierto", "quick", "0", "—", "0", "0,50 USD"]);
+    // The columns line up: every row as long as the header.
+    expect(new Set(top.map((line) => line.length)).size).toBe(1);
+    // In the panel's order: the tables, the phases, then the costliest.
+    expect(text.indexOf("POR MODELO:")).toBeLessThan(text.indexOf("TIEMPO POR FASE (MEDIANA):"));
+    expect(text.indexOf("TIEMPO POR FASE (MEDIANA):")).toBeLessThan(
+      text.indexOf("LOS CAMBIOS MÁS CAROS:"),
+    );
+  });
+
+  it("AC7: without anything to tell, neither block", () => {
+    const quiet: StatsView = {
+      ...SPENT,
+      flow: {
+        ...FLOW,
+        phases: FLOW.phases.map((phase) => ({ ...phase, median: null, changes: 0 })),
+      },
+      cost: { ...COST, lanes: [], top: [] },
+    };
+    for (const view of [VIEW, quiet]) {
+      const text = renderText(statsCard(view, ES), "es");
+      expect(text).toContain("POR PERSONA:");
+      expect(text).not.toContain("TIEMPO POR FASE");
+      expect(text).not.toContain("LOS CAMBIOS MÁS CAROS");
+    }
+    const empty = renderText(statsCard({ ...SPENT, changes: 0 }, ES), "es");
+    expect(empty).not.toContain("TIEMPO POR FASE");
+    expect(empty).not.toContain("LOS CAMBIOS MÁS CAROS");
+  });
+
+  it("AC8: the phases and the costliest changes in English", () => {
+    const text = renderText(statsCard(SPENT, EN), "en");
+    expect(block(text, "TIME PER PHASE (MEDIAN)")).toEqual([
+      "Write the spec: 25 min · in 40 changes",
+      "Review until approved: 2 h · in 40 changes",
+      "Implementation: 1 h 30 min · in 1 change",
+      "Acceptance and closing: —",
+    ]);
+    const top = block(text, "THE COSTLIEST CHANGES");
+    expect(cells(top[0])).toEqual(["Change", "Lane", "Tasks", "Cycle", "Sessions", "Cost"]);
+    expect(cells(top[1])).toEqual([
+      "20261105-guard-y-alcance",
+      "standard",
+      "4",
+      "1 d 3 h",
+      "2",
+      "12.30 USD",
+    ]);
+  });
+});

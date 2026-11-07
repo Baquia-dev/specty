@@ -6,6 +6,13 @@
   "branch": "specty/20261107-el-panel-muestra-el-coste-el-alcance-las",
   "baseCommit": "2fb77e84f14790f5728193d155fce12d104768ec",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:087ab5078e231e6b72ae7ccdb5e3d29352b57126e88fe771e187c7ef70e96a08",
+    "at": "2026-11-07T12:28:40.537Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -56,12 +63,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:087ab5078e231e6b72ae7ccdb5e3d29352b57126e88fe771e187c7ef70e96a08",
-    "at": "2026-11-07T12:28:40.537Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T12:34:44.785Z"
 }
