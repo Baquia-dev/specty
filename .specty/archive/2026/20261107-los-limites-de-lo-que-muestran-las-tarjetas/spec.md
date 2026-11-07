@@ -86,3 +86,28 @@ Hoy cuatro límites de lo que Specty le muestra al agente están fijos en el có
 
 - R1: Un `noteChars` alto infla cada tarjeta de tarea, que repite los resúmenes y los hallazgos, y un `slugChars` alto alarga las rutas de `.worktrees/<id>`; uno bajo hace los ids menos claros. Mitigación: el schema pone mínimos y máximos, la sección «Interno» va plegada con su aviso (C8) y quitar la clave devuelve el valor de hoy.
 - R2: C13, C16, C17 y C18 trabajan en paralelo y también tocan `config.ts`, el catálogo, `cards/settings-internal.ts`, `catalog.test.ts` y formats.md §6. Mitigación: cada corte añade su propio bloque, el test no fija el número de ajustes de «Interno» y el conflicto al incorporar main se resuelve con `specty integrate`, conservando lo de los dos.
+
+## Cierre
+
+### Resumen
+
+- Core: `impactLine`, `reviewedCard`, `makeChangeId` y `branchName` reciben su límite como parámetro, con el valor de hoy por defecto (`IMPORTERS_SHOWN`, `REVIEW_LINES` y `SLUG_CHARS`, exportadas desde su módulo). La negativa `too-long` de `task done` lleva `max`, que dice su tarjeta, y `NOTE_MAX` sin él.
+- Core: el bloque `internal.cards` (`importersShown` 5, de 1 a 50; `reviewLines` 200, de 20 a 2000; `noteChars` 300, de 100 a 1000; `slugChars` 48, de 16 a 100) va en `schema/internal-cards.ts`, que toma esas constantes como valores por defecto, y `config.ts` lo reúne en el único `z.strictObject` de `internal`. En el catálogo son cuatro números de «Interno» con la marca `new`, tras los de ejecución y servidor, con su nombre y su descripción en español y en inglés.
+- CLI: `propose`, `specty review`, `task done` y `new` (en el id y en la rama) leen sus límites de la configuración resuelta.
+- Documentación: formats.md §6 (el bloque, sus límites y que el slug no cambia los ids ni las ramas que ya existen), sus identificadores y `task.completed`, y ARCHITECTURE (`task done`, el presupuesto de las tarjetas, los importadores de `propose` y las ramas).
+
+### Desviaciones
+
+- `newInWorktree` pasó de 50 líneas al pasar el largo del slug; el helper `changeIdOf` de `commands/new.ts` forma el id con la fecha y ese largo en los dos sitios donde `new` lo crea.
+- La `verify` de T3 encadena `pnpm typecheck` tras vitest, como pidió `propose` para la última tarea de código: no es un segundo runner de tests, así que la comprobación en rojo no esconde ninguno (P190).
+
+### Decisiones
+
+- El slug va en `internal.cards` con los demás límites, porque el id encabeza cada tarjeta; solo rige para los cambios que se crean desde entonces.
+- Los valores por defecto viven en el módulo que los usa y el schema los importa: `ids.ts` no importa zod, porque la entrada ligera lo alcanza por `settings/catalog.ts` y `branches.ts`. No hay ciclos con `schema/config.ts`.
+- El test «AC5, AC7» de `catalog.test.ts` ya no fija el número de ajustes de «Interno»: comprueba que están los de este corte, para no chocar con los cortes paralelos.
+
+### Pendientes
+
+- `packages/core/src/schema/config.ts` (315 líneas de código) y `packages/cli/src/commands/new.ts` (304) pasan del aviso de 300: conviene proponer cómo dividirlos por responsabilidad.
+- AC8 se comprueba a mano: formats.md §6 y ARCHITECTURE.
