@@ -58,7 +58,7 @@ El panel repite sus formatos: `shortDay` está copiado en cinco secciones (`dash
 
 ## Tareas
 
-- [ ] T1: Los formatos del panel, en su propio módulo
+- [x] T1: Los formatos del panel, en su propio módulo
   - files: packages/ui/src/dashboard/dashboard-format.ts, packages/ui/src/dashboard/dashboard-page.ts, packages/ui/src/dashboard/dashboard-summary.ts, packages/ui/src/dashboard/dashboard-rhythm.ts, packages/ui/src/dashboard/dashboard-people.ts, packages/ui/src/dashboard/dashboard-quality.ts, packages/ui/src/dashboard/dashboard-cost.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-page.test.ts --include src/dashboard/dashboard-summary.test.ts --include src/dashboard/dashboard-sections.test.ts --include src/dashboard/dashboard-flow-quality.test.ts --include src/dashboard/dashboard-cost-scope-memory.test.ts && pnpm lint && pnpm sources

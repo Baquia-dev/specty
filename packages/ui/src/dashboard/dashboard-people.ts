@@ -5,6 +5,7 @@ import type { Lang } from "@baquia-dev/specty-core/light";
 import { SectionDivider } from "../components/document";
 import { formatDuration } from "../data/progress";
 import { Preferences } from "../theme/preferences";
+import { percent, usd } from "./dashboard-format";
 
 type Row = NonNullable<StatsView["people"]>[number];
 
@@ -120,11 +121,9 @@ function shown(row: Row, id: (typeof COLUMNS)[number]["id"], lang: Lang): string
     case "cycle":
       return formatDuration(value, lang);
     case "verifications":
-      return new Intl.NumberFormat(lang, { style: "percent", maximumFractionDigits: 1 }).format(
-        value,
-      );
+      return percent(value, lang, 1);
     case "cost":
-      return new Intl.NumberFormat(lang, { style: "currency", currency: "USD" }).format(value);
+      return usd(value, lang);
     default:
       return new Intl.NumberFormat(lang).format(value);
   }

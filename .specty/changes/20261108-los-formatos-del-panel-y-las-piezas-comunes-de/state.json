@@ -6,6 +6,13 @@
   "branch": "specty/20261108-los-formatos-del-panel-y-las-piezas-comunes-de",
   "baseCommit": "16ad77ec06157affaa0e9c6529ae3db9d19cbb4c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:44192f77b2dba79638b3188137ccf94c285527560cdaa78dc728f40ea32ac506",
+    "at": "2026-11-07T16:54:58.006Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "daf3459dc8421d592594662acca5b1650c75a537",
+      "startedAt": "2026-11-07T16:54:58.844Z",
+      "doneAt": "2026-11-07T16:56:35.171Z",
+      "summary": "dashboard/dashboard-format.ts reúne shortDay, percent y usd; page, summary, rhythm, quality y cost usan su shortDay, y summary, people y quality su porcentaje y sus dólares, sin cambiar lo que muestran"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "AC": 3,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:44192f77b2dba79638b3188137ccf94c285527560cdaa78dc728f40ea32ac506",
-    "at": "2026-11-07T16:54:58.006Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
