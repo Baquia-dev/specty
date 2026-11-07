@@ -72,7 +72,11 @@ async function onTurn<T>(
     folder: session.root,
     at: session.environment.now().toISOString(),
   };
-  const place = await joinTurnQueue(session.git, holder);
+  const place = await joinTurnQueue(
+    session.git,
+    holder,
+    session.config.internal.waits.queueStaleSec,
+  );
   let said = false;
   try {
     for (;;) {

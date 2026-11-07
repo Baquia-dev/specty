@@ -82,7 +82,7 @@ Hoy cuánto conserva su puesto en la cola de las verificaciones un proceso que d
   - files: packages/core/src/cards/parallel.ts, packages/core/test/cards/prune-leftovers.test.ts, docs/formats.md, docs/ui.md
   - ac: AC2, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/prune-leftovers.test.ts
-- [ ] T3: Las colas de las verificaciones caducan los puestos según la configuración
+- [x] T3: Las colas de las verificaciones caducan los puestos según la configuración
   - files: packages/cli/src/store/turn-queue.ts, packages/cli/src/flow/full-verification.ts, packages/cli/src/store/verify-slots.ts, packages/cli/src/store/turn-queue.test.ts, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/store/turn-queue.test.ts
