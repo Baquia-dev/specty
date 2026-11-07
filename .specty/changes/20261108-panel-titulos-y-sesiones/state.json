@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261108-panel-titulos-y-sesiones",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261108-panel-titulos-y-sesiones",
+  "baseCommit": "89ef4fe4ce5725e9021aa923aa57cdbce41eabc2",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f43a5abfc66764cbdad59c81a9cd55bc60005bb4e72a7862654b71754e0c45ee",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a934ddc3cb2c3a28f3ab337c68c62f52e77c9d705eee537d03d9f7d7d3449563",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7387c1294788b4ec9d62d472d98af48da68c430122be074ed9e58f3c1622802f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:62d51275dcbb27e2af0e8c8534f8182a302ef4935d6c31998618305cfd938ecf",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:170aae1b890e7d83a600fe7e3558ca35eb0944fb09d8cdcf1460ee3438a59235",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:da89e4b75a03892bdfd0474da258f6b2568715fbdbc67d9dd5e69ce1226b7ac9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 7,
+    "C": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5e0422222247615ab217d4805406d4d1aa4361265ae56d06175e2d392570a673",
+    "at": "2026-11-07T16:57:28.185Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
