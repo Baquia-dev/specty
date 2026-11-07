@@ -6,6 +6,13 @@
   "branch": "specty/20261107-el-panel-exporta-los-cambios-del-corte-a-csv-o",
   "baseCommit": "7ba359df7f50a56f45c6146db433bf67f33b5e5b",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c59b5c0552b5d589a50eb99da22e8741f28cffdc0633ac17177ebb7833ab61bc",
+    "at": "2026-11-07T09:55:11.757Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -56,12 +63,6 @@
     "T": 3,
     "R": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c59b5c0552b5d589a50eb99da22e8741f28cffdc0633ac17177ebb7833ab61bc",
-    "at": "2026-11-07T09:55:11.757Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T10:07:29.588Z"
 }
