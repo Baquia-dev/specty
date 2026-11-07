@@ -59,12 +59,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5e951ab00cdecf1f80fac3d72f1676f11d94caca",
+      "attempts": 1,
       "startedAt": "2026-11-07T10:56:06.022Z",
       "doneAt": "2026-11-07T11:03:08.024Z",
-      "summary": "settings/presets.ts define PRESETS, PRESET_KEYS (9 claves), presetValue, presetOf y presetEdits; cards/settings-presets.ts da presetText con los valores de cada perfil; light.ts los exporta; dominio.md añade «Perfil»"
+      "summary": "settings/presets.ts define PRESETS, PRESET_KEYS (9 claves), presetValue, presetOf y presetEdits; cards/settings-presets.ts da presetText con los valores de cada perfil; light.ts los exporta; dominio.md añade «Perfil»",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "998d9a05f33e1ee7cb01fba7c1c16933d1c39683",
+      "startedAt": "2026-11-07T11:03:08.498Z",
+      "doneAt": "2026-11-07T11:10:48.605Z",
+      "summary": "cards/settings-presets.ts añade limitSentences (líneas por archivo, funciones y cobertura del diff, con fail false y con error); flowSentences las añade al final"
     }
   },
   "pending": {

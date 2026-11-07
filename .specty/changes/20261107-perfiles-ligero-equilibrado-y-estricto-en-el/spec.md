@@ -77,7 +77,7 @@ En la vista Flujo, en Básico, la persona ve los perfiles Ligero, Equilibrado, E
   - files: packages/core/src/settings/presets.ts, packages/core/src/cards/settings-presets.ts, packages/core/src/light.ts, packages/core/test/settings/presets.test.ts, docs/dominio.md
   - ac: AC1, AC2, AC5, AC6, AC7, AC9
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/presets.test.ts
-- [ ] T2: Las frases del flujo dicen los límites de líneas, funciones y cobertura
+- [x] T2: Las frases del flujo dicen los límites de líneas, funciones y cobertura
   - files: packages/core/src/cards/settings-presets.ts, packages/core/src/cards/settings-pieces.ts, packages/core/test/settings/pieces.test.ts
   - ac: AC4, AC9
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/pieces.test.ts test/settings/presets.test.ts && pnpm --filter @baquia-dev/specty-core typecheck

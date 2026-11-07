@@ -5,7 +5,8 @@ import { type Preset, presetValue } from "../settings/presets";
 import { translator } from "./text";
 
 // What the profiles of the basic mode say (`settings/presets.ts`): each one's name and what it
-// fixes, with its values, and Propio's.
+// fixes, with its values, and Propio's; and the sentences of the limits they change, which end the
+// flow's (`flowSentences`), so choosing a profile shows in them.
 
 /** A profile's name and what it fixes. */
 interface PresetText {
@@ -66,4 +67,42 @@ export function presetText(
   const description =
     preset === "custom" ? CUSTOM : fixes(preset, (key) => presetValue(preset, key, fallback));
   return { name: t(...NAMES[preset]), description: t(...description) };
+}
+
+/**
+ * The limits the profiles change, in sentences, with the values `value` gives: the lines of code
+ * of a file, which may never block; those of a function and its complexity, which `specty check`
+ * points out; and the diff coverage, which may also fail.
+ */
+export function limitSentences(value: SettingValue): readonly Sentence[] {
+  const warn = String(value("lines.warn"));
+  const fail = value("lines.fail");
+  const lines = String(value("checks.functions.maxLines"));
+  const complexity = String(value("checks.functions.complexity"));
+  const covered = String(value("checks.coverage.warn"));
+  const floor = value("checks.coverage.error");
+  return [
+    fail === false
+      ? [
+          `Specty avisa de un archivo con más de ${warn} líneas de código, sin bloquear la tarea.`,
+          `Specty warns of a file with more than ${warn} lines of code, without blocking the task.`,
+        ]
+      : [
+          `Una tarea no puede dejar un archivo con más de ${String(fail)} líneas de código, y Specty avisa por encima de ${warn}.`,
+          `A task cannot leave a file with more than ${String(fail)} lines of code, and Specty warns above ${warn}.`,
+        ],
+    [
+      `\`specty check\` señala cada función de más de ${lines} líneas o con complejidad mayor que ${complexity}.`,
+      `\`specty check\` points out each function of more than ${lines} lines or with a complexity above ${complexity}.`,
+    ],
+    floor === undefined
+      ? [
+          `La cobertura del diff avisa si los tests ejecutan menos del ${covered} % de las líneas que añade el cambio.`,
+          `Diff coverage warns when the tests run less than ${covered}% of the lines the change adds.`,
+        ]
+      : [
+          `La cobertura del diff falla si los tests ejecutan menos del ${String(floor)} % de las líneas que añade el cambio, y avisa por debajo del ${covered} %.`,
+          `Diff coverage fails when the tests run less than ${String(floor)}% of the lines the change adds, and warns below ${covered}%.`,
+        ],
+  ];
 }

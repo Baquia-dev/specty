@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import type { SettingValue } from "../settings/pieces";
+import { limitSentences } from "./settings-presets";
 import { translator } from "./text";
 
 // What the view Flujo of the page «Configuración» says of each piece (`settings/pieces.ts`): its
@@ -261,7 +262,7 @@ const filled = (value: unknown): value is string =>
 /**
  * What the configured flow does, in sentences: its tests, each task's verification, the full one,
  * the independent review, the files of a quick change and delegated mode, unsaid when the source
- * cannot tell. Commands go between backticks.
+ * cannot tell; last, the limits the profiles change. Commands go between backticks.
  */
 export function flowSentences(value: SettingValue, lang: Lang): readonly string[] {
   const task = value("verify.default");
@@ -288,6 +289,7 @@ export function flowSentences(value: SettingValue, lang: Lang): readonly string[
       `A quick change touches at most ${files} code files.`,
     ],
     typeof delegated === "boolean" ? DELEGATED[delegated ? "on" : "off"] : undefined,
+    ...limitSentences(value),
   ];
   const t = translator(lang);
   return sentences.flatMap((sentence) => (sentence === undefined ? [] : [t(...sentence)]));
