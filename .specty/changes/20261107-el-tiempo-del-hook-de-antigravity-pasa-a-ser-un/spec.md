@@ -74,7 +74,7 @@ Hoy `specty init` escribe en `.agents/hooks.json` los hooks del guard de Antigra
   - files: packages/core/src/schema/internal-run.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/settings/catalog.test.ts, packages/core/test/settings/internal-hooks.test.ts
   - ac: AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/internal-hooks.test.ts test/settings/catalog.test.ts
-- [ ] T2: La línea de `doctor` para un tiempo de los hooks de Antigravity distinto del configurado, y la clave en formats.md
+- [x] T2: La línea de `doctor` para un tiempo de los hooks de Antigravity distinto del configurado, y la clave en formats.md
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/test/cards/doctor-antigravity-timeout.test.ts, docs/formats.md
   - ac: AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-antigravity-timeout.test.ts

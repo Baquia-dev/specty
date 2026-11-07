@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8b30aefcf51d4b0723d65d08a10294673a64da11",
+      "attempts": 1,
       "startedAt": "2026-11-07T05:49:37.539Z",
       "doneAt": "2026-11-07T05:57:24.546Z",
-      "summary": "internal.hooks.antigravityTimeoutSec (30 por defecto, entero entre 10 y 300) en un bloque hooks de schema/internal-run.ts; su ajuste en «Interno» tras los puertos, con unidad s y la marca Nuevo, y su nombre y descripción en español y en inglés"
+      "summary": "internal.hooks.antigravityTimeoutSec (30 por defecto, entero entre 10 y 300) en un bloque hooks de schema/internal-run.ts; su ajuste en «Interno» tras los puertos, con unidad s y la marca Nuevo, y su nombre y descripción en español y en inglés",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1d5f602f36f572e73c0d4b16c80cf5b89dce3ba7",
+      "startedAt": "2026-11-07T05:57:25.369Z",
+      "doneAt": "2026-11-07T06:04:22.854Z",
+      "summary": "La línea antigravity-timeout de doctor (archivo y segundos) con su texto en español y en inglés, junto a antigravity-acp y antigravity-cli; formats.md §6 documenta internal.hooks.antigravityTimeoutSec, sus límites, que rige al ejecutar init y el aviso de doctor"
     }
   },
   "pending": {
