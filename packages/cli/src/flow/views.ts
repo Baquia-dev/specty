@@ -51,6 +51,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
     rejected: rejectedAssumptions(spec, state),
     ...(await phaseFacts(session, change, spec, { tasks, audit, commits })),
     closingSubmitted: state.closingSubmittedAt !== undefined,
+    ...(withoutClosing(session, state, spec) ? { withoutClosing: true } : {}),
     ...(state.testsSubmittedAt !== undefined ? { testsSubmitted: true } : {}),
     specChanged:
       state.phase === "implementing" &&
@@ -123,7 +124,7 @@ async function phaseFacts(
     ...(await pendingTasksOnly(session, change)),
     ...(state.phase === "draft" ? await draftFacts(session, spec, audit) : {}),
     ...(state.phase === "acceptance" ? await acceptanceFacts(session, change, spec, read) : {}),
-    ...(writesClosing(session, state) ? await closingRemarks(change.files, spec) : {}),
+    ...(writesClosing(session, state, spec) ? await closingRemarks(change.files, spec) : {}),
   };
 }
 
@@ -143,10 +144,32 @@ async function pendingTasksOnly(
   return adjustsPendingTasks(approved, doneOf(state)) ? { pendingTasksOnly: true } : {};
 }
 
-/** The agent writes the change's closing: in `closing` or, in delegated mode, in acceptance. */
-function writesClosing(session: Session, state: ChangeState): boolean {
+/**
+ * The agent writes the change's closing: in `closing` or, in delegated mode, in acceptance, unless
+ * the change goes without its closing phase.
+ */
+function writesClosing(session: Session, state: ChangeState, spec: Spec): boolean {
   if (state.phase === "closing") return true;
-  return state.phase === "acceptance" && closingInAcceptance(state.kind, session.delegated);
+  return (
+    state.phase === "acceptance" &&
+    !withoutClosing(session, state, spec) &&
+    closingInAcceptance(state.kind, session.delegated)
+  );
+}
+
+/**
+ * With `flow.closing: false`, a standard change outside an epic goes without its closing phase:
+ * accepting closes it, as a quick one (formats.md §6). The slices of an epic keep theirs, because
+ * the next slice takes its follow-ups from it.
+ */
+export function withoutClosing(
+  session: Session,
+  state: Pick<ChangeState, "kind">,
+  spec: Spec,
+): boolean {
+  return (
+    !session.config.flow.closing && state.kind === "standard" && spec.frontmatter.epic === undefined
+  );
 }
 
 /** The incorporation of the target branch the agent is resolving, if any. */

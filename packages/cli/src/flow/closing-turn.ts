@@ -26,25 +26,34 @@ import { absorbTarget, type Integration, integrationOf } from "./integrate";
 import { type Landed, landRetrying, withIntegration } from "./land";
 import { withCleanupFrom } from "./prune";
 import { measureUsage, withUsage } from "./usage";
+import { withoutClosing } from "./views";
 
 // Closing on the landing turn (ARCHITECTURE §9): what `close` and the `accept` that closes do
 // with the turn taken, so that no other session lands in between.
 
 /**
- * In delegated mode, accepting a change that closes on it, a quick one or one whose closing the
- * agent sent first (`closingSent`), runs on the landing turn from before main comes in until the
+ * In delegated mode, accepting a change that closes on it, a quick one, one without its closing
+ * phase or one whose closing the agent sent first (`closingSent`), runs on the landing turn from before main comes in until the
  * change lands (`landingTurn`): no other session lands between its verification and its landing,
  * so it verifies once and the closing has nothing left to merge. The person's acceptance, at the
  * terminal or on the UI, takes the turn only to verify and to land, never while they answer.
  */
-export function closingTurn(
+export async function closingTurn(
   session: Session,
   change: StoredChange,
   plan: Integration | undefined,
   run: () => Promise<Output>,
 ): Promise<Output> {
-  const quick = session.actor === "agent" && change.state.kind === "quick";
-  return quick || closingSent(session, change) ? landingTurn(session, plan, run) : run();
+  const closes = session.actor === "agent" && (await closesOnAccept(session, change));
+  return closes || closingSent(session, change) ? landingTurn(session, plan, run) : run();
+}
+
+/** Accepting closes a quick change, and one without its closing phase (`withoutClosing`). */
+async function closesOnAccept(session: Session, change: StoredChange): Promise<boolean> {
+  if (change.state.kind === "quick") return true;
+  if (session.config.flow.closing) return false;
+  const { spec } = parseSpec(await readSpec(change.files), { language: session.lang });
+  return withoutClosing(session, change.state, spec);
 }
 
 /**
@@ -139,7 +148,8 @@ export async function closeOnTurn(
 }
 
 /**
- * Quick lane: accepting closes the change, with the task summary as its closing. As when closing,
+ * Quick lane, and a change without its closing phase: accepting closes the change, with its tasks'
+ * summaries as its closing. As when closing,
  * it lands on the full verification's turn, so that no other session lands in between; in
  * delegated mode, this process holds it already (`closingTurn`), and it does not wait.
  */
@@ -182,7 +192,7 @@ async function closeQuickOnTurn(
     change,
     { ...change.state, phase: "done" },
     "change.closed",
-    { lane: "quick" },
+    change.state.kind === "quick" ? { lane: "quick" } : { closing: false },
   );
   const commit = await commitArchive(
     session,

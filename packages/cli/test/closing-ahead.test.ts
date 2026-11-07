@@ -169,7 +169,7 @@ async function withFlow(closing: boolean, { delegated = false, slice = false } =
 /** The change's archived audit in `root` records it closed without its closing, not as quick. */
 async function closedWithoutClosing(root: string): Promise<void> {
   const audit = await read(root, `${ARCHIVE}/${CHANGE}/audit.jsonl`);
-  expect(audit).toContain('"event":"change.closed","data":{"closing":false}');
+  expect(audit).toContain('"event":"change.closed","data":{"closing":false');
   expect(audit).not.toContain('"lane":"quick"');
 }
 

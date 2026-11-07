@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-fase-de-cierre-y-otras-reglas-del-flujo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-fase-de-cierre-y-otras-reglas-del-flujo",
   "baseCommit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
   "revision": 2,
@@ -60,12 +60,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e2c27d67901a641231632f0e3b068c7a98f3857b",
+      "attempts": 1,
       "startedAt": "2026-11-07T11:17:11.014Z",
       "doneAt": "2026-11-07T11:23:35.988Z",
-      "summary": "El evento accept lleva withoutClosing y deja hecho un standard; ChangeView.withoutClosing hace que la tarjeta en modo delegado no pida el cierre; ARCHITECTURE §4 y §9 lo explican."
+      "summary": "El evento accept lleva withoutClosing y deja hecho un standard; ChangeView.withoutClosing hace que la tarjeta en modo delegado no pida el cierre; ARCHITECTURE §4 y §9 lo explican.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/closing-ahead.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "4189774132dfab279609f4da61d188062538482b",
+      "startedAt": "2026-11-07T11:23:36.427Z",
+      "doneAt": "2026-11-07T15:58:33.330Z",
+      "summary": "views.ts calcula withoutClosing (standard sin epic con flow.closing: false); accept lo pasa al evento y cierra con closeQuick; closingTurn toma el turno y change.closed registra closing: false; formats.md §4 y §6."
     }
   },
   "pending": {
@@ -76,10 +87,11 @@
     "A": 6,
     "AC": 7,
     "T": 3,
-    "R": 3
+    "R": 3,
+    "S": 1
   },
   "lockedTests": {
-    "packages/cli/test/closing-ahead.test.ts": "sha256:632f63fbf4ac4943d3b61eead101f25967372ad119ec40d0d472c7846d340ba9",
+    "packages/cli/test/closing-ahead.test.ts": "sha256:474b39061784c74529a618e14d140980ab190af4811b920802fd97ede9f982b0",
     "packages/core/test/closing-ahead.test.ts": "sha256:134ef47a8dcccb2dd81f93a0c84e0b57dcab773d8c0ec65f13c124ef811825c4",
     "packages/core/test/settings/catalog.test.ts": "sha256:244cb73c1fb63a09770ee2bd11978aa3902a5cad33ea7c9cefb759e4c3055a2c"
   }

@@ -81,7 +81,7 @@ Hoy, aceptar un cambio estándar siempre lo lleva a la fase de cierre: el agente
   - files: packages/core/src/flow/machine.ts, packages/core/src/cards/view.ts, packages/core/src/cards/acceptance.ts, packages/core/test/closing-ahead.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC3, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/closing-ahead.test.ts
-- [ ] T3: `accept` cierra y aterriza un cambio estándar sin fase de cierre, y `formats.md` documenta la clave
+- [x] T3: `accept` cierra y aterriza un cambio estándar sin fase de cierre, y `formats.md` documenta la clave
   - files: packages/cli/src/flow/views.ts, packages/cli/src/commands/accept.ts, packages/cli/src/flow/closing-turn.ts, packages/cli/test/closing-ahead.test.ts, docs/formats.md
   - ac: AC1, AC2, AC3, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/closing-ahead.test.ts && pnpm typecheck
