@@ -68,5 +68,16 @@ export function questionStep(ctx: CardContext): string {
   );
 }
 
+/**
+ * A brief's step for a change that may come out too large for one: an epic's card asks to launch
+ * subagents, which the brief forbids, so the main session makes the epic in the change.
+ */
+export function tooLargeStep(ctx: CardContext): string {
+  return translator(ctx.lang)(
+    "Si `propose` dice que el cambio es demasiado grande y pide dividirlo en una épica, no lo conviertas tú: detente y responde con eso, que la épica la hace la sesión principal en tu cambio.",
+    "If `propose` says the change is too large and asks to split it into an epic, do not turn it into one yourself: stop and answer with that, since the main session makes the epic in your change.",
+  );
+}
+
 export const numbered = (steps: readonly string[]): string[] =>
   steps.map((step, index) => `${index + 1}. ${step}`);

@@ -178,6 +178,75 @@ describe("resolveConfig", () => {
   });
 });
 
+describe("resolveConfig and `internal`'s waits and retries", () => {
+  /** The keys of the issues of `internal`, or `ok` when it is valid. */
+  const paths = (internal: unknown) => {
+    const resolved = resolveConfig({ version: 1, internal });
+    return resolved.ok ? "ok" : resolved.issues.map((issue) => issue.path);
+  };
+
+  it("AC4: without the keys, Specty waits an hour, beats each minute and retries landing twice", () => {
+    expect(DEFAULT_CONFIG.internal).toMatchObject({
+      waits: { waitTimeoutSec: 3600, heartbeatSec: 60 },
+      retries: { landing: 2 },
+    });
+    expect(resolveConfig({ version: 1 })).toMatchObject({
+      ok: true,
+      config: {
+        internal: { waits: { waitTimeoutSec: 3600, heartbeatSec: 60 }, retries: { landing: 2 } },
+      },
+    });
+  });
+
+  it("AC4: takes each key within its limits, the others with their defaults", () => {
+    const resolved = resolveConfig({
+      version: 1,
+      internal: { waits: { waitTimeoutSec: 60 }, retries: { landing: 0 } },
+    });
+    expect(resolved).toMatchObject({
+      ok: true,
+      config: {
+        internal: { waits: { waitTimeoutSec: 60, heartbeatSec: 60 }, retries: { landing: 0 } },
+      },
+    });
+    expect(paths({ waits: { waitTimeoutSec: 3600, heartbeatSec: 1 } })).toBe("ok");
+    expect(paths({ waits: { heartbeatSec: 240 }, retries: { landing: 10 } })).toBe("ok");
+  });
+
+  it("AC4: refuses each key outside its limits, or not a whole number, with its key", () => {
+    expect(paths({ waits: { waitTimeoutSec: 0 } })).toEqual(["internal.waits.waitTimeoutSec"]);
+    expect(paths({ waits: { waitTimeoutSec: 59 } })).toEqual(["internal.waits.waitTimeoutSec"]);
+    expect(paths({ waits: { waitTimeoutSec: 3601 } })).toEqual(["internal.waits.waitTimeoutSec"]);
+    expect(paths({ waits: { heartbeatSec: 0 } })).toEqual(["internal.waits.heartbeatSec"]);
+    expect(paths({ waits: { heartbeatSec: 241 } })).toEqual(["internal.waits.heartbeatSec"]);
+    expect(paths({ waits: { heartbeatSec: 1.5 } })).toEqual(["internal.waits.heartbeatSec"]);
+    expect(paths({ retries: { landing: -1 } })).toEqual(["internal.retries.landing"]);
+    expect(paths({ retries: { landing: 11 } })).toEqual(["internal.retries.landing"]);
+    expect(paths({ retries: { landing: "dos" } })).toEqual(["internal.retries.landing"]);
+  });
+
+  it("AC4: refuses a key of `internal` that does not exist", () => {
+    expect(resolveConfig({ version: 1, internal: { waits: { forever: true } } })).toMatchObject({
+      ok: false,
+    });
+    expect(paths({ waits: { forever: true } })).toEqual(["internal.waits"]);
+    expect(paths({ naps: { short: 1 } })).toEqual(["internal"]);
+  });
+
+  it("AC5: has no key for the lives that are part of compliance: receipts, guard pending, shell snapshots and sessions", () => {
+    for (const internal of [
+      { retention: { receiptHours: 48 } },
+      { receipts: { lifeHours: 48 } },
+      { guard: { pendingHours: 1 } },
+      { retention: { shellSnapshotHours: 1 } },
+      { retention: { sessionHours: 1 } },
+      { waits: { receiptHours: 48 } },
+    ]) {
+      expect(resolveConfig({ version: 1, internal }).ok, JSON.stringify(internal)).toBe(false);
+    }
+  });
+});
+
 describe("parseChangeState", () => {
   const state = {
     schema: 1,

@@ -50,6 +50,7 @@ export async function runLive(
       env: session.environment.env,
       timeoutMs: session.config.verify.timeoutSec * 1000,
       lowPriority: true,
+      priority: session.config.internal.exec.priority,
       onOutput: (stream, text) => {
         const lines = `${rests[stream]}${text}`.split("\n");
         rests[stream] = lines.pop() ?? "";

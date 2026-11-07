@@ -105,9 +105,9 @@ describe("specty wait", () => {
   });
 });
 
-/** A repository whose change waits for the person to approve its spec. */
-async function proposed(): Promise<string> {
-  const root = await tempRepo(APP);
+/** A repository whose change waits for the person to approve its spec, with `config` as its configuration. */
+async function proposed(config = CONFIG()): Promise<string> {
+  const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
   await cli(root, ["new", "Saludo personalizado"]);
   await writeFiles(root, { [SPEC_PATH]: SPEC });
   await cli(root, ["propose"]);
@@ -208,6 +208,41 @@ describe("the mark of `specty wait`", () => {
     expect((await markOf(root)).timeoutSec).toBe(3600);
     await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
     expect((await waiting).out).toContain("TAREA T1");
+  });
+});
+
+/** The configuration of the tests with `internal.waits` set to `waits`. */
+const withWaits = (waits: string) => `${CONFIG()}internal:\n  waits:\n${waits}`;
+
+describe("`specty wait` with `internal.waits`", () => {
+  it("AC1: without `--timeout`, waits the seconds of `internal.waits.waitTimeoutSec`, and the option still rules", async () => {
+    const root = await proposed(withWaits("    waitTimeoutSec: 120\n"));
+    const flagged = await cli(root, ["wait", "--interval", "50", "--timeout", "1"]);
+    expect(flagged.out).toContain("Tiempo de espera agotado");
+    expect((await markOf(root)).timeoutSec).toBe(1);
+
+    const waiting = cli(root, ["wait", "--interval", "100"]);
+    // The new `wait` writes its own mark over the one that timed out: 5 s at most.
+    for (let look = 0; look < 100 && (await markOf(root)).ended !== undefined; look += 1) {
+      await pause(50);
+    }
+    expect((await markOf(root)).ended).toBeUndefined();
+    expect((await markOf(root)).timeoutSec).toBe(120);
+    await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    expect((await waiting).out).toContain("TAREA T1");
+  });
+
+  it("AC2: in Gemini CLI, writes its heartbeat line at most `internal.waits.heartbeatSec` apart", async () => {
+    const options: WaitOptions = { interval: 50, timeout: 2 };
+    const beats = (err: readonly string[]) =>
+      err.filter((line) => line.includes(`sigue esperando la decisión de la persona en ${CHANGE}`));
+    const configured = await proposed(withWaits("    heartbeatSec: 1\n"));
+    expect(
+      beats(await waitAs(configured, { GEMINI_CLI: "1" }, options)).length,
+    ).toBeGreaterThanOrEqual(1);
+    // Without the key, a minute apart: none in two seconds.
+    const usual = await proposed();
+    expect(beats(await waitAs(usual, { GEMINI_CLI: "1" }, options))).toEqual([]);
   });
 });
 

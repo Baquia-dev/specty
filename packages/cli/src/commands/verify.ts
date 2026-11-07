@@ -133,6 +133,7 @@ async function attempt(
           env: session.environment.env,
           timeoutMs: session.config.verify.timeoutSec * 1000,
           lowPriority: true,
+          priority: session.config.internal.exec.priority,
         })
       : await runLive(session, change, undefined, target.command, { held: true });
   const ms = Date.now() - started;

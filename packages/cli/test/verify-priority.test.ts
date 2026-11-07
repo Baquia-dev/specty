@@ -12,9 +12,12 @@ const CONFIG = `version: 1\nlanguage: es\ngit:\n  worktrees: false\nverify:\n  d
 /** The priority of a command run with less priority, from this process. */
 const LOW = String(Math.max(getPriority(), 10));
 
-/** SPEC's change, approved, with T1 active. */
-async function approved(): Promise<string> {
-  const root = await tempRepo({ ...APP, ".specty/config.yaml": CONFIG });
+/** The priority of a command run at `internal.exec.priority: 15`, from this process. */
+const CONFIGURED = String(Math.max(getPriority(), 15));
+
+/** SPEC's change, approved, with T1 active; `config`, its configuration. */
+async function approved(config = CONFIG): Promise<string> {
+  const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
   await cli(root, ["new", "Saludo personalizado"]);
   await writeFiles(root, { [SPEC_PATH]: SPEC });
   await cli(root, ["propose"]);
@@ -39,5 +42,16 @@ describe("the verifications Specty runs", () => {
     await cli(root, ["task", "done", "T2", "--summary", "Dos"]);
     expect((await cli(root, ["accept"], { terminal: person() })).code).toBe(0);
     expect(await read(root, ".git/priority-completa")).toBe(LOW);
+  });
+
+  it("AC1: run a task's and accept's at the priority of internal.exec.priority", async () => {
+    const root = await approved(`${CONFIG}internal:\n  exec:\n    priority: 15\n`);
+    await writeFiles(root, { "src/app.ts": "1\n" });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Uno"])).code).toBe(0);
+    expect(await read(root, ".git/priority-tarea")).toBe(CONFIGURED);
+    await writeFiles(root, { "src/app.ts": "2\n" });
+    await cli(root, ["task", "done", "T2", "--summary", "Dos"]);
+    expect((await cli(root, ["accept"], { terminal: person() })).code).toBe(0);
+    expect(await read(root, ".git/priority-completa")).toBe(CONFIGURED);
   });
 });

@@ -119,6 +119,7 @@ const MIDWAY: ChangeView = {
   closingSubmitted: false,
   specChanged: false,
   adjustment: "La verify de T2 usa vitest, pero la UI carga sus tests con ng test",
+  pendingTasksOnly: true,
 };
 
 describe("the cards of an adjustment while the tasks are implemented", () => {
@@ -152,10 +153,36 @@ describe("the cards of an adjustment while the tasks are implemented", () => {
       ].join("\n"),
     );
     // With every task done, the request came in acceptance: it is classified as always.
-    const accepted = { ...MIDWAY, tasks: [task("T1", "done"), task("T2", "done")] };
+    const accepted = {
+      ...MIDWAY,
+      pendingTasksOnly: false,
+      tasks: [task("T1", "done"), task("T2", "done")],
+    };
     const classified = adjusting(ES, accepted);
     expect(classified).toContain("CÓMO CLASIFICARLA:");
     expect(classified).not.toContain("CÓMO CORREGIRLAS:");
+  });
+
+  it("AC1: ask to correct the pending tasks before `next` activates one, right after the approval", () => {
+    const unstarted = {
+      ...MIDWAY,
+      tasks: [task("T1", "done"), task("T2", "pending"), task("T3", "pending")],
+    };
+    const es = adjusting(ES, unstarted);
+    expect(es).toContain("CÓMO CORREGIRLAS:");
+    expect(es).not.toContain("CÓMO CLASIFICARLA:");
+    expect(adjusting(EN, unstarted)).toContain("HOW TO CORRECT THEM:");
+  });
+
+  it("AC2: classify a request of the acceptance, also once the spec adds a task still to do", () => {
+    const accepted = {
+      ...MIDWAY,
+      pendingTasksOnly: false,
+      tasks: [task("T1", "done"), task("T2", "done"), task("T3", "pending")],
+    };
+    const es = adjusting(ES, accepted);
+    expect(es).toContain("CÓMO CLASIFICARLA:");
+    expect(es).not.toContain("CÓMO CORREGIRLAS:");
   });
 
   it("AC4: the failed verification of `task done` names the adjustment of a wrong `verify`", () => {

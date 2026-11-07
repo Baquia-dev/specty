@@ -126,7 +126,12 @@ describe("saving the configuration through the local server", () => {
       });
       expect(await read(root, CONFIG_PATH)).toBe(CONFIG());
       expect(git(root, "rev-parse", "HEAD")).toBe(head);
-      for (const path of [["version"], ["verify", "units"], ["ui", "port"], ["specty delegate"]]) {
+      for (const path of [
+        ["version"],
+        ["verify", "units"],
+        ["ui", "requireUserPresence"],
+        ["specty delegate"],
+      ]) {
         const bad = await call(server.port, "/api/config/check", headers, {
           edits: [{ path, value: 1 }],
         });

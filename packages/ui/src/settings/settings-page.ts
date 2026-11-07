@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { NgTemplateOutlet } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,9 +10,10 @@ import {
   signal,
 } from "@angular/core";
 import { LucideDynamicIcon } from "@lucide/angular";
+import { Collapsible } from "../components/collapsible";
 import { LIST, PAGE, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
-import { LucideSearch } from "../components/icons";
+import { LucideLock, LucideSearch } from "../components/icons";
 import { Segmented } from "../components/segmented";
 import { Skeleton } from "../components/skeleton";
 import { ActionError, type Bilingual, SpectyData } from "../data/records";
@@ -29,7 +31,7 @@ import {
 } from "./settings-view";
 
 /** A mark of a row: its value changed, or what the catalog says of the setting. */
-type Mark = "modified" | "permissions" | "command" | "clone" | "soon" | "new";
+type Mark = "modified" | "permissions" | "command" | "clone" | "soon" | "new" | "guarantee";
 
 /** Each mark's words and the phase whose tone it takes, in the order the rows show them. */
 const MARKS: readonly { readonly mark: Mark; readonly label: Bilingual; readonly tone: string }[] =
@@ -48,6 +50,7 @@ const MARKS: readonly { readonly mark: Mark; readonly label: Bilingual; readonly
     { mark: "clone", label: { es: "Este clon", en: "This clone" }, tone: "done" },
     { mark: "soon", label: { es: "Próximamente", en: "Coming soon" }, tone: "draft" },
     { mark: "new", label: { es: "Nuevo", en: "New" }, tone: "testing" },
+    { mark: "guarantee", label: { es: "Garantía", en: "Guarantee" }, tone: "closing" },
   ];
 
 const FILTER_LABELS: Readonly<Record<SettingFilter, Bilingual>> = {
@@ -71,11 +74,21 @@ const PILL = "inline-flex h-5 items-center rounded-full px-2 text-[11px] font-me
 /**
  * The page «Configuración» of `specty ui`: every setting of `.specty/config.yaml` and delegated
  * mode by section, with its value and, when it changed, its default, its marks, a search and a
- * filter; read only for now, and read again with every event the data source hears.
+ * filter; read only for now, and read again with every event the data source hears. «Interno», the
+ * last, shows its warning and folds its settings, Specty's guarantees with a lock and no key;
+ * it opens by itself while a search or a filter is on.
  */
 @Component({
   selector: "sp-settings-page",
-  imports: [LucideDynamicIcon, SectionDivider, EmptyState, Skeleton, Segmented],
+  imports: [
+    LucideDynamicIcon,
+    NgTemplateOutlet,
+    SectionDivider,
+    EmptyState,
+    Skeleton,
+    Segmented,
+    Collapsible,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div [class]="page + ' flex flex-col gap-8 pt-10 pb-16'">
@@ -129,42 +142,61 @@ const PILL = "inline-flex h-5 items-center rounded-full px-2 text-[11px] font-me
         @for (section of sections(); track section.key) {
           <section [attr.aria-labelledby]="'settings-' + section.key" [attr.data-section]="section.key">
             <sp-section-divider [heading]="section.name" [headingId]="'settings-' + section.key" [meta]="section.rows.length" [level]="2" />
-            <div role="list" [class]="list + ' mt-2'">
-              @for (row of section.rows; track row.setting.key) {
-                <div role="listitem" [class]="row_" [attr.data-setting]="row.setting.key">
-                  <div class="flex min-w-0 flex-col gap-1">
-                    <span class="flex flex-wrap items-center gap-1.5">
-                      <span class="text-sm font-semibold" data-name>{{ row.name }}</span>
-                      @for (mark of marksOf(row); track mark.mark) {
-                        <span [class]="pill" [style.color]="'var(--color-phase-' + mark.tone + ')'" [style.background]="'var(--color-phase-' + mark.tone + '-bg)'" [attr.data-mark]="mark.mark">{{ t()(mark.label.es, mark.label.en) }}</span>
-                      }
-                    </span>
-                    <span class="text-sm text-text-muted" data-description>{{ row.description }}</span>
-                    <span class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-xs text-text-muted">
-                      <code class="font-mono" data-key>{{ row.setting.key }}</code>
-                      @if (row.default; as fallback) {
-                        <span data-default>{{ t()('Por defecto', 'Default') }}: {{ inLine(fallback) }}</span>
-                      }
-                    </span>
-                    @for (issue of row.issues; track $index) {
-                      <span class="font-mono text-xs break-words" [style.color]="'var(--color-phase-cancelled)'" data-issue>{{ issue }}</span>
-                    }
-                  </div>
-                  <div class="flex min-w-0 flex-wrap content-start items-center gap-1.5 sm:justify-end" data-value>
-                    @for (item of row.value.items; track $index) {
-                      <span [class]="itemClass(row)" data-item>{{ item }}</span>
-                    }
-                    @if (row.value.more > 0) {
-                      <span class="text-xs text-text-muted" data-more>{{ more(row.value.more) }}</span>
-                    }
-                  </div>
-                </div>
-              }
-            </div>
+            @if (section.key === 'internal') {
+              <p class="m-0 mt-2 text-sm text-text-muted" data-internal-warning>
+                {{ t()('Estos ajustes pueden dejar Specty sin funcionar. Si algo falla tras cambiar uno, quita su clave y vuelve a su valor.', 'These settings can make Specty stop working. If something fails after changing one, remove its key and it goes back to its value.') }}
+              </p>
+              <sp-collapsible class="mt-2" [label]="t()('Ajustes internos', 'Internal settings')" [open]="internalOpen()" (openChange)="unfolded.set($event)">
+                <ng-container *ngTemplateOutlet="rowsOf; context: { $implicit: section.rows }" />
+              </sp-collapsible>
+            } @else {
+              <ng-container *ngTemplateOutlet="rowsOf; context: { $implicit: section.rows }" />
+            }
           </section>
         }
       }
     </div>
+    <ng-template #rowsOf let-rows>
+      <div role="list" [class]="list + ' mt-2'">
+        @for (row of asRows(rows); track row.setting.key) {
+          <div role="listitem" [class]="row_" [attr.data-setting]="row.setting.key">
+            <div class="flex min-w-0 flex-col gap-1">
+              <span class="flex flex-wrap items-center gap-1.5">
+                <span class="text-sm font-semibold" data-name>{{ row.name }}</span>
+                @for (mark of marksOf(row); track mark.mark) {
+                  <span [class]="pill" [style.color]="'var(--color-phase-' + mark.tone + ')'" [style.background]="'var(--color-phase-' + mark.tone + '-bg)'" [attr.data-mark]="mark.mark">{{ t()(mark.label.es, mark.label.en) }}</span>
+                }
+              </span>
+              <span class="text-sm text-text-muted" data-description>{{ row.description }}</span>
+              @if (row.setting.guarantee !== true) {
+                <span class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-xs text-text-muted">
+                  <code class="font-mono" data-key>{{ row.setting.key }}</code>
+                  @if (row.default; as fallback) {
+                    <span data-default>{{ t()('Por defecto', 'Default') }}: {{ inLine(fallback) }}</span>
+                  }
+                </span>
+              }
+              @for (issue of row.issues; track $index) {
+                <span class="font-mono text-xs break-words" [style.color]="'var(--color-phase-cancelled)'" data-issue>{{ issue }}</span>
+              }
+            </div>
+            <div class="flex min-w-0 flex-wrap content-start items-center gap-1.5 sm:justify-end" data-value>
+              @if (row.setting.guarantee === true) {
+                <svg class="text-text-muted" [lucideIcon]="lockIcon" size="14" role="img" [attr.aria-label]="t()('Fijo', 'Fixed')" data-lock></svg>
+                <span class="text-sm" data-item>{{ row.setting.fixed }} {{ row.setting.unit }}</span>
+              } @else {
+                @for (item of row.value.items; track $index) {
+                  <span [class]="itemClass(row)" data-item>{{ item }}</span>
+                }
+                @if (row.value.more > 0) {
+                  <span class="text-xs text-text-muted" data-more>{{ more(row.value.more) }}</span>
+                }
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </ng-template>
   `,
 })
 export class SettingsPage {
@@ -178,8 +210,11 @@ export class SettingsPage {
   protected readonly row_ = ROW;
   protected readonly pill = PILL;
   protected readonly searchIcon = LucideSearch;
+  protected readonly lockIcon = LucideLock;
   protected readonly query = signal("");
   protected readonly filter = signal<string>("all");
+  /** Whether the person unfolded «Interno». */
+  protected readonly unfolded = signal(false);
 
   private readonly record = computed(() => (this.read.hasValue() ? this.read.value() : undefined));
 
@@ -209,6 +244,11 @@ export class SettingsPage {
     settingSections(this.rows(), this.chosen(), this.query(), this.preferences.lang()),
   );
 
+  /** «Interno» unfolded by the person, or by itself while a search or a filter is on. */
+  protected readonly internalOpen = computed(
+    () => this.unfolded() || this.query() !== "" || this.chosen() !== "all",
+  );
+
   /** Each filter with how many settings it has. */
   protected readonly filterOptions = computed(() =>
     SETTING_FILTERS.map((value) => {
@@ -234,6 +274,11 @@ export class SettingsPage {
       this.delegation.reload();
     });
     inject(DestroyRef).onDestroy(stop);
+  }
+
+  /** The rows a section's template receives, typed again. */
+  protected asRows(rows: readonly SettingRow[]): readonly SettingRow[] {
+    return rows;
   }
 
   protected type(event: Event): void {

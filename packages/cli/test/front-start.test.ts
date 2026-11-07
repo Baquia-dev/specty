@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { APP, cli, NOW, tempRepo, writeFiles } from "./support";
+import { APP, CONFIG, cli, NOW, tempRepo, writeFiles } from "./support";
+
+/** A repository whose changes each get a folder of their own, as `new` makes them by default. */
+const IN_FOLDERS = {
+  ...APP,
+  ".specty/config.yaml": CONFIG().replace("worktrees: false", "worktrees: true"),
+};
 
 /** An agent that Specty recognizes: Claude Code. */
 const CLAUDE = { env: { CLAUDECODE: "1" } };
@@ -64,12 +70,24 @@ const memoryOf = (text: string) => sectionOf(text, "MEMORIA DE SPECTY");
 
 describe("the card of Claude Code's guard with no mark of Claude Code in its environment", () => {
   it("AC1: is the card of `next` in Claude Code, with its brief, at the start and after a compaction", async () => {
-    const root = await tempRepo(APP);
+    const root = await tempRepo(IN_FOLDERS);
     const next = (await cli(root, ["next"], inConversation("s4"))).out;
     expect(next).toContain("ENCARGO:");
     expect((await cli(root, ["next"])).out).not.toBe(next);
     expect((await started(root, "s4")).out).toBe(next);
     expect((await started(root, "s4", "compact")).out).toBe(next);
+  });
+
+  it("asks for `specty new` in the session when `new` gives no change a folder of its own (P263)", async () => {
+    const root = await tempRepo(APP);
+    for (const git of ["worktrees: false", "branchPerChange: false"]) {
+      const config = CONFIG().replace("worktrees: false", git);
+      await writeFiles(root, { ".specty/config.yaml": config });
+      const next = (await cli(root, ["next"], inConversation("s4"))).out;
+      expect(next, git).not.toContain("ENCARGO:");
+      expect(next, git).toContain('SIGUIENTE: ejecuta `specty new "<título>" --request');
+      expect((await started(root, "s4")).out, git).toBe(next);
+    }
   });
 });
 

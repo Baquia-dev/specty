@@ -43,7 +43,11 @@ const MARKER = '<meta name="specty-data" content="server" />';
 /** Starts the local server on `127.0.0.1` (ARCHITECTURE §15). */
 export async function startServer(options: ServerOptions): Promise<UiServer> {
   const server = createServer();
-  const port = await listen(server, options.port);
+  const port = await listen(
+    server,
+    options.port,
+    options.session.config.internal.server.portsTried,
+  );
   const token = randomBytes(32).toString("base64url");
   const csrf = randomBytes(32).toString("base64url");
   const events = changeEvents(options.session, options.interval ?? 1000, SAFE);
@@ -77,8 +81,9 @@ export async function startServer(options: ServerOptions): Promise<UiServer> {
   };
 }
 
-async function listen(server: Server, first: number): Promise<number> {
-  const last = first === 0 ? 0 : first + 19;
+/** Listens on the first free port of `tried` from `first`, up to 65535; 0, any free one. */
+async function listen(server: Server, first: number, tried: number): Promise<number> {
+  const last = first === 0 ? 0 : Math.min(first + tried - 1, 65_535);
   for (let port = first; port <= last; port++) {
     const bound = await new Promise<number | undefined>((done) => {
       const busy = () => done(undefined);
