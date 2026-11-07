@@ -52,7 +52,7 @@ Desde P258, `specty adjust` también se pide mientras se implementa, para correg
 
 ## Tareas
 
-- [ ] T1: La tarjeta de `adjusting` reconoce el ajuste de las tareas pendientes sin tarea activa
+- [x] T1: La tarjeta de `adjusting` reconoce el ajuste de las tareas pendientes sin tarea activa
   - files: packages/core/src/validate/phase.ts, packages/core/src/index.ts, packages/core/src/cards/view.ts, packages/core/src/cards/work.ts, packages/core/test/cards/adjust.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/adjust.test.ts test/validate/phase.test.ts

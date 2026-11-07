@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "47e6de6ebc742e723aa3a5451fc899a76ee1dbaf",
+      "startedAt": "2026-11-07T00:16:10.328Z",
+      "doneAt": "2026-11-07T00:16:33.696Z",
+      "summary": "core exporta adjustsPendingTasks, ChangeView gana pendingTasksOnly y la tarjeta de adjusting lo usa en lugar de la tarea activa"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
