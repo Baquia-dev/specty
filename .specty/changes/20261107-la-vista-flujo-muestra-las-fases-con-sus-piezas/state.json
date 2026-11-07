@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-vista-flujo-muestra-las-fases-con-sus-piezas",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-vista-flujo-muestra-las-fases-con-sus-piezas",
   "baseCommit": "723f6f6c21ab4821589f3fc140d25950b2c1f5a7",
   "revision": 1,
@@ -84,12 +84,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0b11b5bc33ebfb07e63f4bce059ea736876489d1",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:54:46.160Z",
       "doneAt": "2026-11-07T10:01:09.864Z",
-      "summary": "sp-settings-flow dibuja la línea de fases con sus piezas equipadas (con las ediciones), las garantías con candado y su porqué, la fase de cierre como Próximamente, las frases en Básico y cada fase como botón en Avanzado."
+      "summary": "sp-settings-flow dibuja la línea de fases con sus piezas equipadas (con las ediciones), las garantías con candado y su porqué, la fase de cierre como Próximamente, las frases en Básico y cada fase como botón en Avanzado.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4d6dab0f5a5fcbe7413777fcaca331d6ebed8ba4",
+      "startedAt": "2026-11-07T10:01:10.201Z",
+      "doneAt": "2026-11-07T10:07:44.023Z",
+      "summary": "En Avanzado, sp-settings-flow muestra la fase elegida con sus piezas equipadas (sp-flow-piece con sus ajustes, Quitar, garantías con candado y porqué, modo delegado con su control) y las que se pueden equipar; docs/ui.md."
     }
   },
   "pending": {

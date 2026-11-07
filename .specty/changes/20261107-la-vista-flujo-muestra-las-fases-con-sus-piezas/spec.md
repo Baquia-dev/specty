@@ -90,7 +90,7 @@ La página «Configuración» gana la vista Flujo de la propuesta B: las fases d
   - files: packages/ui/src/settings/settings-flow.ts, packages/ui/src/settings/settings-flow.test.ts, packages/ui/src/settings/settings-page.ts
   - ac: AC1, AC2, AC3, AC9, AC12
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-flow.test.ts
-- [ ] T4: En Avanzado, cada fase muestra sus piezas con sus ajustes y deja equiparlas, quitarlas y encender el modo delegado
+- [x] T4: En Avanzado, cada fase muestra sus piezas con sus ajustes y deja equiparlas, quitarlas y encender el modo delegado
   - files: packages/ui/src/settings/flow-piece.ts, packages/ui/src/settings/flow-piece.test.ts, packages/ui/src/settings/settings-flow.ts, docs/ui.md
   - ac: AC2, AC5, AC6, AC7, AC8, AC10, AC12
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/flow-piece.test.ts && pnpm typecheck && pnpm lint && pnpm sources && pnpm knip

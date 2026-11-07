@@ -17,14 +17,18 @@ import {
   type Lang,
   PIECES,
   type Piece,
+  pieceEdits,
   pieceText,
   type SettingValue,
 } from "@baquia-dev/specty-core/light";
 import { LucideDynamicIcon } from "@lucide/angular";
 import { PhaseBadge } from "../components/badge";
+import { LIST, SectionDivider } from "../components/document";
 import { LucideLock } from "../components/icons";
 import type { ConfigRecord } from "../data/source";
 import { Preferences } from "../theme/preferences";
+import { PHASE_LABELS } from "../theme/tokens";
+import { FlowPiece } from "./flow-piece";
 import type { FieldView } from "./setting-row";
 import { applyEdits, type Draft } from "./settings-edit";
 import { SettingsMode } from "./settings-mode";
@@ -56,11 +60,12 @@ const HEAD =
  * The view Flujo of the page «Configuración»: the phases of a change in line, each with the pieces
  * the configuration equips with the page's edits, Specty's guarantees with a lock. In Básico, the
  * line has no controls and sentences say what the flow does; in Avanzado, each phase is a button
- * that chooses it.
+ * that chooses it, and under the line go the chosen phase's equipped pieces, with their settings,
+ * and those to equip. Equipping and removing a piece are edits of the page, as its settings' are.
  */
 @Component({
   selector: "sp-settings-flow",
-  imports: [LucideDynamicIcon, PhaseBadge],
+  imports: [LucideDynamicIcon, PhaseBadge, SectionDivider, FlowPiece],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-8" },
   template: `
@@ -97,9 +102,31 @@ const HEAD =
     @if (basic()) {
       <ul class="m-0 flex list-none flex-col gap-1.5 p-0 pl-6 text-sm" data-sentences>
         @for (sentence of sentences(); track $index) {
-          <li class="before:mr-2 before:text-text-muted before:content-['→']">@for (part of sentence; track $index) {@if (part.code) {<code class="font-mono text-[0.9em]">{{ part.text }}</code>} @else {{{ part.text }}}}</li>
+          <li class="before:mr-2 before:text-text-muted before:content-['→']">@for (part of sentence; track $index) {@if (part.code) {<code class="font-mono text-[0.9em]">{{ part.text }}</code>} @else {<span>{{ part.text }}</span>}}</li>
         }
       </ul>
+    } @else {
+      <div class="grid gap-x-10 gap-y-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+        <section class="min-w-0" data-equipped>
+          <sp-section-divider [heading]="t()('Equipado en ' + phaseName(), 'Equipped in ' + phaseName())" [meta]="equipped().length" />
+          <div role="list" [class]="list + ' mt-2'">
+            @for (piece of equipped(); track piece.id) {
+              <sp-flow-piece [piece]="piece" [equipped]="true" [editable]="editable()" [rows]="rowsOf(piece)" [fields]="fields()" [pending]="pending()" [resettable]="resettable()" (toggle)="toggle(piece, $event)" (edit)="edit.emit($event)" />
+            }
+          </div>
+        </section>
+        <section class="min-w-0" data-library>
+          <sp-section-divider [heading]="t()('Para equipar', 'To equip')" [meta]="library().length" />
+          @if (library().length === 0) {
+            <p class="m-0 mt-2 pl-6 text-sm text-text-muted">{{ t()('Esta fase no tiene más piezas.', 'This phase has no more pieces.') }}</p>
+          }
+          <div role="list" [class]="list + ' mt-2'">
+            @for (piece of library(); track piece.id) {
+              <sp-flow-piece [piece]="piece" [editable]="editable()" (toggle)="toggle(piece, $event)" />
+            }
+          </div>
+        </section>
+      </div>
     }
   `,
 })
@@ -128,8 +155,11 @@ export class SettingsFlow {
   protected readonly slotOn = SLOT_ON;
   protected readonly slotFixed = SLOT_FIXED;
   protected readonly head = HEAD;
+  protected readonly list = LIST;
   /** The phase chosen in Avanzado. */
   protected readonly selected = signal<FlowPhase>("implementing");
+  /** The pieces of a command the person equipped, whose command is not written yet. */
+  private readonly opened = signal<ReadonlySet<string>>(new Set());
 
   /** Each setting's value with the page's edits, or else its default; delegated mode, the clone's. */
   protected readonly value = computed((): SettingValue => {
@@ -163,6 +193,62 @@ export class SettingsFlow {
   protected readonly sentences = computed(() =>
     flowSentences(this.value(), this.preferences.lang()).map(partsOf),
   );
+
+  protected readonly phaseName = computed(
+    () => PHASE_LABELS[this.current()][this.preferences.lang()],
+  );
+
+  /** The chosen phase's equipped pieces, and those of a command waiting for theirs. */
+  protected readonly equipped = computed(() => {
+    const value = this.value();
+    const opened = this.opened();
+    return PIECES.filter(
+      (piece) =>
+        piece.phase === this.current() && (isEquipped(piece, value) || opened.has(piece.id)),
+    );
+  });
+
+  /** The chosen phase's pieces the person can equip. */
+  protected readonly library = computed(() => {
+    const shown = new Set(this.equipped().map(({ id }) => id));
+    return PIECES.filter((piece) => piece.phase === this.current() && !shown.has(piece.id));
+  });
+
+  /** The settings of the pieces whose key is in the file with the edits: «Restablecer» takes it out. */
+  protected readonly resettable = computed((): ReadonlySet<string> => {
+    if (!this.editable()) return new Set();
+    const edited = applyEdits(this.record().input, this.edits());
+    const fields = this.fields();
+    return new Set(
+      PIECES.flatMap((piece) => piece.keys).filter(
+        (key) => (fields.get(key)?.length ?? 0) > 0 && valueAt(edited, key) !== undefined,
+      ),
+    );
+  });
+
+  /** A piece's settings, in its order; none for delegated mode, which has its own control. */
+  protected rowsOf(piece: Piece): readonly SettingRow[] {
+    if (piece.clone === true) return [];
+    const rows = this.rows();
+    return piece.keys.flatMap((key) => rows.filter((row) => row.setting.key === key));
+  }
+
+  /**
+   * Equips or removes a piece with its edits. One of a command, equipped, waits among the equipped
+   * ones for the person to write its command.
+   */
+  protected toggle(piece: Piece, equip: boolean): void {
+    const defaults = this.record().defaults;
+    this.opened.update((opened) => {
+      const next = new Set(opened);
+      if (equip && piece.command !== undefined) next.add(piece.id);
+      else next.delete(piece.id);
+      return next;
+    });
+    for (const edit of pieceEdits(piece, equip, (key) => valueAt(defaults, key))) {
+      this.edit.emit({ edit });
+    }
+  }
 }
 
 function slotOf(piece: Piece, lang: Lang): Slot {
