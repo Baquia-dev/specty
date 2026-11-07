@@ -6,6 +6,13 @@
   "branch": "specty/20261107-la-vista-flujo-muestra-las-fases-con-sus-piezas",
   "baseCommit": "723f6f6c21ab4821589f3fc140d25950b2c1f5a7",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ff1016b9bfe940eda74e80a032b7a4df581ff2e82dfd161c18802d100261e2b1",
+    "at": "2026-11-07T09:16:04.834Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -65,12 +72,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ff1016b9bfe940eda74e80a032b7a4df581ff2e82dfd161c18802d100261e2b1",
-    "at": "2026-11-07T09:16:04.834Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T09:41:22.721Z"
 }
