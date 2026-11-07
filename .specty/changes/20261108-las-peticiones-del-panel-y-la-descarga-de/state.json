@@ -6,6 +6,13 @@
   "branch": "specty/20261108-las-peticiones-del-panel-y-la-descarga-de",
   "baseCommit": "16ad77ec06157affaa0e9c6529ae3db9d19cbb4c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fdfefa907526c14a96ec19ffb81e28fafb7f0310f570c7e487d8436b4f8a8586",
+    "at": "2026-11-07T16:58:04.854Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -37,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "73a905b25780d094fd7ab4c0aae1bcfdad3f83d4",
+      "startedAt": "2026-11-07T16:58:07.474Z",
+      "doneAt": "2026-11-07T16:59:36.682Z",
+      "summary": "Test de ServerData.stats (GET /api/stats): parámetros del corte, sin query cuando no hay ninguno, errores sin sesión o con respuesta inesperada, y una fuente sin panel"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -47,12 +64,5 @@
     "AC": 3,
     "T": 4,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:fdfefa907526c14a96ec19ffb81e28fafb7f0310f570c7e487d8436b4f8a8586",
-    "at": "2026-11-07T16:58:04.854Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

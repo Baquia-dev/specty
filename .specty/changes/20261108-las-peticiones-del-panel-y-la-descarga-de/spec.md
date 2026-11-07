@@ -60,7 +60,7 @@ Limpieza de código de la UI sin cambios de comportamiento. `data/server.ts` tie
 
 ## Tareas
 
-- [ ] T1: Test de la petición de las cifras del panel al servidor local
+- [x] T1: Test de la petición de las cifras del panel al servidor local
   - files: packages/ui/src/data/stats-source.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/stats-source.test.ts && pnpm lint
