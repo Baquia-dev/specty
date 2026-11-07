@@ -74,7 +74,7 @@ El «Panel» de `specty ui` resume el periodo en indicadores, pero no dice qué 
 
 ## Tareas
 
-- [ ] T1: El core arma la tabla de cambios del corte, con búsqueda, orden y páginas
+- [x] T1: El core arma la tabla de cambios del corte, con búsqueda, orden y páginas
   - files: packages/core/src/stats/table.ts, packages/core/src/index.ts, packages/core/test/stats/table.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/table.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

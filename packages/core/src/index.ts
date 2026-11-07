@@ -353,6 +353,15 @@ export {
   statsView,
 } from "./stats/summary";
 export {
+  type StatsChange,
+  type StatsChangeSort,
+  type StatsChangesPage,
+  type StatsListed,
+  type StatsTableQuery,
+  statsChanges,
+  statsTableQuery,
+} from "./stats/table";
+export {
   type ChangeSummary,
   type ChangeTab,
   initialTab,

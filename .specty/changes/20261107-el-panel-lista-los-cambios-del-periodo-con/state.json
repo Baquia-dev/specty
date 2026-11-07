@@ -52,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dd156bb3abfe6c0162dd5cbc4b76a0cbc745427c",
+      "startedAt": "2026-11-07T08:36:13.742Z",
+      "doneAt": "2026-11-07T08:42:04.071Z",
+      "summary": "core/stats/table.ts: statsTableQuery entiende búsqueda, columna, sentido, página e idioma; statsChanges lista los cambios del corte que vivieron en el periodo con sus cifras, busca con matchesQuery, ordena con los vacíos al final y corta páginas de 25; exportado en el índice."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
