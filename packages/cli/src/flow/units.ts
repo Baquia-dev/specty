@@ -23,9 +23,6 @@ import { workingFiles } from "./verified";
  */
 const RECORD = "common/specty/verified";
 
-/** How long a unit stays in the record: `specty prune` removes those recorded before. */
-export const RECORD_DAYS = 30;
-
 /** A unit with the fingerprint of the code it reads; none when git cannot tell, and then it runs. */
 export interface Printed {
   readonly unit: VerifyUnit;
@@ -192,13 +189,17 @@ const recordPath = (session: Session, print: string) =>
   session.git.gitPath(`${RECORD}/${print.replace(/^sha256:/, "")}.json`);
 
 /**
- * Removes from the clone's record the units recorded more than `RECORD_DAYS` ago, and those that
- * do not say when, and says how many it removed: one that passes again is recorded again.
+ * Removes from the clone's record the units recorded more than `internal.retention.verifiedDays`
+ * days ago, and those that do not say when, and says how many it removed and after how many days:
+ * one that passes again is recorded again.
  */
-export async function pruneRecord(session: Session): Promise<number> {
+export async function pruneRecord(
+  session: Session,
+): Promise<{ readonly removed: number; readonly days: number }> {
+  const days = session.config.internal.retention.verifiedDays;
   const folder = await session.git.gitPath(RECORD);
   const names = await readdir(folder).catch((): string[] => []);
-  const limit = session.environment.now().getTime() - RECORD_DAYS * 24 * 60 * 60 * 1000;
+  const limit = session.environment.now().getTime() - days * 24 * 60 * 60 * 1000;
   const old = await Promise.all(
     names
       .filter((name) => name.endsWith(".json"))
@@ -210,5 +211,5 @@ export async function pruneRecord(session: Session): Promise<number> {
   );
   const gone = old.flat();
   await Promise.all(gone.map((name) => remove(join(folder, name))));
-  return gone.length;
+  return { removed: gone.length, days };
 }

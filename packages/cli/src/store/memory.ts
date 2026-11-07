@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  DEFAULT_CONFIG,
   type Front,
   type Lang,
   type MemoryEntry,
@@ -43,6 +44,11 @@ export interface MemoryTarget {
   readonly lang: Lang;
   /** `Specty-Change` and `Specty-Agent`, when they apply; `Specty-Memory` goes on its own. */
   readonly trailers: Readonly<Record<string, string>>;
+  /**
+   * How many more times a write is tried when another session wrote first
+   * (`internal.retries.memory`); without it, the default of the configuration.
+   */
+  readonly retries?: number;
 }
 
 /** The memory's tip, what it can read, and the blob of each file of `entries/` and `fronts/`. */
@@ -52,9 +58,6 @@ interface Snapshot extends Memory {
   /** By the front's name, as its file says. */
   readonly frontBlobs: ReadonlyMap<string, string>;
 }
-
-/** Another session that wrote first makes `update-ref` fail: read again and retry. */
-const ATTEMPTS = 10;
 
 const ENTRY_FILE = /^entries\/([^/]+)\.md$/;
 const FRONT_FILE = /^fronts\/([^/]+)\.md$/;
@@ -67,18 +70,20 @@ export async function readMemory(git: Git, branch: string): Promise<Memory> {
 
 /**
  * Applies `edit` to the memory as it is, and commits the entry it returns, if any. When another
- * session wrote first, it applies `edit` again to what that session left: nothing is lost.
+ * session wrote first (`update-ref` fails), it applies `edit` again to what that session left,
+ * `target.retries` more times at most: nothing is lost.
  */
 export async function editMemory<T>(
   git: Git,
   target: MemoryTarget,
   edit: (memory: Memory) => { readonly write?: MemoryWrite; readonly result: T },
 ): Promise<T> {
+  const attempts = (target.retries ?? DEFAULT_CONFIG.internal.retries.memory) + 1;
   for (let attempt = 1; ; attempt++) {
     const before = await snapshot(git, target.branch);
     const { write, result } = edit(before);
     if (write === undefined || (await commitWrite(git, target, before, write))) return result;
-    if (attempt >= ATTEMPTS) throw new Error(`${target.branch}: other sessions kept writing it`);
+    if (attempt >= attempts) throw new Error(`${target.branch}: other sessions kept writing it`);
   }
 }
 

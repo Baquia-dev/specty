@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { ChangeState } from "@baquia-dev/specty-core";
 import { targetBranch } from "../flow/worktree";
-import { MAX_OUTPUT } from "../io/exec";
+import { maxOutputOf } from "../io/exec";
 import { isRecord } from "../io/files";
 import type { Session } from "../session";
 import { type ChangeRecord, changeRecord } from "./records";
@@ -28,8 +28,8 @@ export async function testCode(
   const ref = await refOf(session, record.state);
   if (ref === undefined) return MISSING;
   const shown = await session.git.run(["show", `${ref}:${path}`]);
-  // `execute` keeps the end of a longer output: the file would start in the middle.
-  if (shown.code !== 0 || shown.stdout.length >= MAX_OUTPUT) return MISSING;
+  // Git is read whole; past `internal.exec.maxOutputKiB`, the browser is not given it either.
+  if (shown.code !== 0 || shown.stdout.length >= maxOutputOf(session.config)) return MISSING;
   return { kind: "code", text: shown.stdout };
 }
 

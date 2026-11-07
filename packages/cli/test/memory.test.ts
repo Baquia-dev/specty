@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
+import { existsSync } from "node:fs";
+import { mkdtemp, readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   APP,
@@ -11,6 +15,7 @@ import {
   person,
   tempRepo,
   tryGit,
+  writeFiles,
 } from "./support";
 
 /** An agent that Specty recognizes: Claude Code. */
@@ -133,6 +138,38 @@ describe("several sessions at once", () => {
     expect(
       git(root, "ls-tree", "--name-only", "specty-memory", "entries/").split("\n"),
     ).toHaveLength(4);
+  });
+});
+
+describe("a memory's branch that never lets itself move", () => {
+  /** The `update-ref` git ran, as a `GIT_TRACE` file says; none when git wrote none. */
+  const updates = async (trace: string) =>
+    existsSync(trace)
+      ? (await readFile(trace, "utf8"))
+          .split("\n")
+          .filter((line) => line.includes("trace: built-in: git update-ref"))
+      : [];
+
+  /** `memory add` in a repository whose `config.yaml` ends with `extra`, with the branch locked. */
+  const lockedAdd = async (extra: string) => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}${extra}` });
+    // Another process holds the branch's ref: every `update-ref` of it fails.
+    await writeFiles(root, { ".git/refs/heads/specty-memory.lock": "" });
+    const trace = join(await mkdtemp(join(tmpdir(), "specty-trace-")), "git.log");
+    const added = cli(root, ["memory", "add", "Uno"], {
+      env: { ...CLAUDE.env, GIT_TRACE: trace },
+    });
+    await expect(added).rejects.toThrow("other sessions kept writing it");
+    return updates(trace);
+  };
+
+  it("AC1: tries internal.retries.memory more times after the first, and then fails", async () => {
+    expect(await lockedAdd("internal:\n  retries:\n    memory: 2\n")).toHaveLength(3);
+    expect(await lockedAdd("internal:\n  retries:\n    memory: 1\n")).toHaveLength(2);
+  });
+
+  it("AC1: without the key, tries 10 times in all, as before", async () => {
+    expect(await lockedAdd("")).toHaveLength(10);
   });
 });
 

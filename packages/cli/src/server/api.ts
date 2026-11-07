@@ -1,23 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { IncomingMessage, ServerResponse } from "node:http";
 import {
-  type ConfigIssue,
-  DEFAULT_CONFIG,
-  defaultGlossary,
-  LANGS,
   localDay,
   type Output,
-  type ResolvedConfig,
-  resolveConfig,
   type StatsView,
   statsQuery,
   statsRow,
   statsView,
 } from "@baquia-dev/specty-core";
-import { parse } from "yaml";
 import { restore } from "../commands/restore";
 import { openChanges } from "../commands/status";
-import { isRecord, parseJson, readText } from "../io/files";
+import { isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
 import { readMemory } from "../store/memory";
 import {
@@ -28,6 +21,7 @@ import {
   runAction,
   setDelegation,
 } from "./actions";
+import { configPost, configView } from "./config";
 import { type Context, hasSession, isLocal, JSON_TYPE, same, send, TEXT } from "./context";
 import { changeDiff, type DiffAnswer } from "./diff";
 import { finishedPage } from "./finished";
@@ -111,38 +105,6 @@ async function statsAnswer(session: Session, params: URLSearchParams): Promise<S
     kind: params.get("kind"),
   });
   return statsView({ rows, memory: entries, today: localDay(session.environment.now()), query });
-}
-
-/**
- * `GET /api/config`: `.specty/config.yaml` as YAML reads it (`input`, none when it is not YAML),
- * what Specty uses with every default when it is valid (`config`), the defaults, with the glossary
- * of the file's language, and the validator's issues, each at its key. It reads the file again on
- * each request: the person may have changed it since the server started.
- */
-async function configView(session: Session) {
-  const text = (await readText(session.paths.config)) ?? "";
-  let input: unknown;
-  try {
-    input = parse(text);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    return { defaults: DEFAULT_CONFIG, issues: [{ path: "", message }] };
-  }
-  const result = resolveConfig(input);
-  const issues: readonly ConfigIssue[] = result.ok ? [] : result.issues;
-  return {
-    input,
-    ...(result.ok ? { config: result.config } : {}),
-    defaults: defaultsIn(input),
-    issues,
-  };
-}
-
-/** The defaults of a configuration: those of `DEFAULT_CONFIG`, with the glossary of its language. */
-function defaultsIn(input: unknown): ResolvedConfig {
-  const language = isRecord(input) ? input.language : undefined;
-  const lang = LANGS.find((known) => known === language) ?? DEFAULT_CONFIG.language;
-  return { ...DEFAULT_CONFIG, glossary: defaultGlossary(lang) };
 }
 
 /** A change by its id, open or archived, as `changeRecords` gives it; 404 when there is none. */
@@ -247,6 +209,9 @@ export async function act(
   const bad = () => send(response, 400, JSON_TYPE, '{"error":"bad request"}');
   const done = (output: Output) =>
     send(response, output.status === "ok" ? 200 : 409, JSON_TYPE, JSON.stringify(output));
+  const config = await configPost(context, pathname, body);
+  if (config !== undefined)
+    return send(response, config.status, JSON_TYPE, JSON.stringify(config.body));
   if (pathname === "/api/delegation") {
     const on = isRecord(body) ? body.on : undefined;
     if (typeof on !== "boolean") return bad();
@@ -256,25 +221,36 @@ export async function act(
   if (memory === "bad") return bad();
   if (memory !== undefined)
     return done(await context.serial(() => memoryAction(context.session, memory)));
+  const output = await changeAction(context, pathname, body);
+  return output === undefined ? bad() : done(output);
+}
+
+/**
+ * An action on a change: its verification, the restore of its lost folder, or the person's
+ * decision on it; none when the path names no such action.
+ */
+async function changeAction(
+  context: Context,
+  pathname: string,
+  body: unknown,
+): Promise<Output | undefined> {
   const verify = /^\/api\/changes\/([^/]+)\/verify$/.exec(pathname)?.[1];
   // Outside the queue: it takes minutes and changes no state, so the other actions go on.
-  if (verify !== undefined) return done(await context.runs.start(decodeURIComponent(verify)));
+  if (verify !== undefined) return context.runs.start(decodeURIComponent(verify));
   // A lost folder has no change folder to act in: `restore` finds the change from its branch.
   const lost = /^\/api\/changes\/([^/]+)\/restore$/.exec(pathname)?.[1];
   if (lost !== undefined) {
     const id = decodeURIComponent(lost);
-    return done(await context.serial(() => restore(context.session, id)));
+    return context.serial(() => restore(context.session, id));
   }
   const parsed = parseAction(
     pathname.split("/").filter((part) => part !== ""),
     body,
   );
-  if (parsed === undefined) return bad();
+  if (parsed === undefined) return undefined;
   const { id, action } = parsed;
-  return done(
-    await followed(context, id, action.kind, (said) =>
-      context.serial(() => runAction(context.session, id, action, said)),
-    ),
+  return followed(context, id, action.kind, (said) =>
+    context.serial(() => runAction(context.session, id, action, said)),
   );
 }
 

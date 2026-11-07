@@ -108,6 +108,35 @@ describe("the project's commands in specty check", () => {
     expect(run.out).toContain("FAIL lint\n  `node tools/slow.js` ran past the time limit (1 s)");
   });
 
+  it("AC1: looks for findings only in the last internal.exec.maxOutputKiB of a command's output, 512 without the key", async () => {
+    const checks = [
+      "checks:",
+      "  levels: { secrets: off }",
+      "  commands:",
+      '    tests: "node tools/long.js"',
+      "",
+    ].join("\n");
+    // A finding, then some 80 KiB without one: past 64 KiB, short of 512. `exitCode`, so that
+    // the whole output reaches the pipe before the process ends.
+    const long = [
+      'console.log("src/app.ts:7:1 - error primero");',
+      'for (let line = 0; line < 1000; line++) console.log("relleno ".repeat(10));',
+      "process.exitCode = 1;",
+      "",
+    ].join("\n");
+    const root = await repo({ "tools/long.js": long }, checks);
+    const whole = await cli(root, ["check"]);
+    expect(whole.code).toBe(1);
+    expect(whole.out).toContain("  src/app.ts:7 error primero");
+    await writeFiles(root, {
+      ".specty/config.yaml": `${CONFIG()}${checks}internal:\n  exec:\n    maxOutputKiB: 64\n`,
+    });
+    const cut = await cli(root, ["check"]);
+    expect(cut.code).toBe(1);
+    expect(cut.out).toContain("FALLA tests\n  `node tools/long.js` salió con 1");
+    expect(cut.out).not.toContain("primero");
+  });
+
   it("runs nothing for a repository with no commands", async () => {
     const root = await repo({});
     expect((await cli(root, ["check"])).out).toBe("OK 4/4");

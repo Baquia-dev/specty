@@ -1,0 +1,206 @@
+{
+  "schema": 1,
+  "id": "20261107-el-tamano-y-el-esfuerzo-pasan-a-ser-ajustes",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-el-tamano-y-el-esfuerzo-pasan-a-ser-ajustes",
+  "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:bcf02e3fad7d3e64ebbd01dfe66bff0f1304c212da19e7365eb0d045bb3b33d1",
+    "at": "2026-11-07T03:43:37.404Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4371443545022b0b1c812ed925145f569bb565df14c171f306cf9f9248257f12",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3c6c90a0d739df27be0253407b51be5259d886ea0f6127b9eb83cab25dae7ced",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:592d5f03a622dbf5aceb54e1beaf2deb5a439f1950c5836a9fe393a53cd8ed6d",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:9d26a779fbe55cb2bbb4f975e794000efeef80f923582cb65349f9b19bdbafa1",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:efe74c8e0d175924d31ba3550835eed609ef3e68cd1987972329f18d2860ab0f",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:e42232a3cec2afb030cb93e56152b00069e82469ec3f8d01408d4034c6cade4d",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:0919905b7845e4222132f2e74b1da228bdc66b3a0d443de661b7c72b7455c8b4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ea66485be01f72de3c0f9392b294303908c47882",
+      "attempts": 1,
+      "startedAt": "2026-11-07T03:55:08.332Z",
+      "doneAt": "2026-11-07T04:05:30.875Z",
+      "summary": "schema/sizing.ts define sizing y effort con sus límites y los valores de hoy; config.ts los reúne con un spread, y el tamaño, el aviso de cerca de partir y el esfuerzo los leen de la configuración.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "07eaab057532cf247afa67638d82bf9d039c5d43",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:05:31.216Z",
+      "doneAt": "2026-11-07T04:05:59.496Z",
+      "summary": "propose y approve pasan session.config.effort a recommendEffort; la tarjeta de la tarea ya leía la configuración.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "5ee6afa4e507dd4ed89958694d31d5812011e1ec",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:05:59.850Z",
+      "doneAt": "2026-11-07T04:07:34.061Z",
+      "summary": "Catálogo: los cuatro ajustes de sizing tras split y los cinco de effort, marcados new (highFanIn también soon); sus textos pasan a cards/settings-size.ts y la sección se llama Esfuerzo recomendado.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "e2a0993d6abc6089269e524118fb5db23afbe021",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:07:34.438Z",
+      "doneAt": "2026-11-07T04:08:59.138Z",
+      "summary": "La página muestra los ajustes nuevos con su marca en los dos idiomas sin cambios en la UI; formats.md §6, ARCHITECTURE §11 y ui.md documentan sizing y effort.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 8,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-07T04:09:23.651Z",
+  "lockedTests": {
+    "packages/core/test/settings/catalog.test.ts": "sha256:8e544157e93b01c2d684db7f4f5dd6cf2fc0f2d762bd99e66ea942fe78719ed4",
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:971d58395a108199c0e1c65d3cf08c2c8de2b383bf13750c1453d4eb9988f039",
+    "packages/cli/test/effort-config.test.ts": "sha256:265ef518114392aeb7d1174b8ded913a060f93e35ce8da6dbb3700f8b1d9f84f",
+    "packages/core/test/sizing/configured.test.ts": "sha256:9d21db671673cdabc9d44a5ccfe01832ad4e724bf5532b4ced14011a50c82272"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "9183447eaa311a331341561a5c135a75de5a6508",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ui.md",
+      "packages/core/src/schema/config.ts",
+      "packages/core/test/settings/catalog.test.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "evals/run/compliance.eval.ts",
+      "evals/src/experiments.ts",
+      "evals/src/launch.ts",
+      "evals/src/person.ts",
+      "evals/test/experiments.test.ts",
+      "evals/test/launch.test.ts",
+      "evals/test/orphan.test.ts",
+      "evals/test/wait.test.ts",
+      "packages/cli/src/commands/approve.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/next.ts",
+      "packages/cli/src/commands/propose.ts",
+      "packages/cli/src/commands/ui.ts",
+      "packages/cli/src/commands/verify.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/enforce/hook.ts",
+      "packages/cli/src/flow/config-save.ts",
+      "packages/cli/src/flow/duplicates.ts",
+      "packages/cli/src/flow/land.ts",
+      "packages/cli/src/flow/live-run.ts",
+      "packages/cli/src/flow/usage.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/io/exec.ts",
+      "packages/cli/src/io/yaml-edit.ts",
+      "packages/cli/src/mcp/tools.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/config.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/src/session.ts",
+      "packages/cli/src/store/local.ts",
+      "packages/cli/test/close-moved.test.ts",
+      "packages/cli/test/config-save.test.ts",
+      "packages/cli/test/duplicates-subagent.test.ts",
+      "packages/cli/test/effort-config.test.ts",
+      "packages/cli/test/epic-adjust.test.ts",
+      "packages/cli/test/fresh-session.test.ts",
+      "packages/cli/test/front-start-codex.test.ts",
+      "packages/cli/test/front-start.test.ts",
+      "packages/cli/test/mcp.test.ts",
+      "packages/cli/test/next-orphan-epic.test.ts",
+      "packages/cli/test/server.test.ts",
+      "packages/cli/test/server/config.test.ts",
+      "packages/cli/test/verify-priority.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/cli/test/yaml-edit.test.ts",
+      "packages/core/src/cards/idle.ts",
+      "packages/core/src/cards/rejoin.ts",
+      "packages/core/src/cards/settings-size.ts",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/cards/subagents.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/light.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/schema/sizing.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/sizing/effort.ts",
+      "packages/core/src/sizing/size.ts",
+      "packages/core/src/validate/limits.ts",
+      "packages/core/src/validate/phase.ts",
+      "packages/core/test/cards/adjust.test.ts",
+      "packages/core/test/cards/idle-subagents.test.ts",
+      "packages/core/test/cards/orphans-epic.test.ts",
+      "packages/core/test/cards/orphans-subagents.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/sizing/configured.test.ts",
+      "packages/core/test/validate/phase.test.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts"
+    ],
+    "at": "2026-11-07T04:09:39.755Z",
+    "resolved": {
+      "commit": "79f1bc6",
+      "at": "2026-11-07T04:23:56.057Z"
+    }
+  }
+}
