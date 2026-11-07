@@ -42,7 +42,7 @@ export interface InternalWaitsConfig {
 
 export const DEFAULT_INTERNAL_WAITS: InternalWaitsConfig = {
   waits: {
-    waitTimeoutSec: 3600,
+    waitTimeoutSec: 3300,
     heartbeatSec: 60,
     verifyIntervalMs: 2000,
     waitIntervalMs: 500,
@@ -54,14 +54,16 @@ export const DEFAULT_INTERNAL_WAITS: InternalWaitsConfig = {
 
 /**
  * The blocks of `internal` this module owns, for `config.ts` to gather under `internal`. The wait
- * holds an hour at most, what every tool measured holds (`cards/wait.ts`); the heartbeat, 240 s at
- * most, because Gemini CLI cuts a command that writes nothing for 300 s. The intervals go from
- * 100 ms, below which a look spins for nothing, to 10 s, so a waiting verification renews its file
- * of the queue three times at least before it goes stale (30 s). A place in a queue lasts 10 s at
- * least, and never less than three of the queue's looks (`turn-queue.ts`), so a live process does
- * not lose it between two. The memory and git's configuration are tried once more at least, so
- * one clash with another session does not make a command fail. A temporary index lives an hour at
- * least, as today: `treeWith` uses one for seconds, and a younger one may be a live process's.
+ * holds an hour at most, what every tool measured holds (`cards/wait.ts`), and 55 min by default,
+ * so that the agent wakes up while its prompt cache, which lasts an hour since its last use, is
+ * still alive; the heartbeat, 240 s at most, because Gemini CLI cuts a command that writes nothing
+ * for 300 s. The intervals go from 100 ms, below which a look spins for nothing, to 10 s, so a
+ * waiting verification renews its file of the queue three times at least before it goes stale
+ * (30 s). A place in a queue lasts 10 s at least, and never less than three of the queue's looks
+ * (`turn-queue.ts`), so a live process does not lose it between two. The memory and git's
+ * configuration are tried once more at least, so one clash with another session does not make a
+ * command fail. A temporary index lives an hour at least, as today: `treeWith` uses one for
+ * seconds, and a younger one may be a live process's.
  */
 export const INTERNAL_WAITS_SHAPE = {
   waits: z
