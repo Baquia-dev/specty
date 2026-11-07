@@ -52,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f0e58e5dc3a1142beb9a9bbc2dbd58965de22a65",
+      "startedAt": "2026-11-07T08:55:17.846Z",
+      "doneAt": "2026-11-07T09:02:02.576Z",
+      "summary": "statsView da «Ritmo» (stats/rhythm.ts, por día o por semana) y «Personas y agentes» (stats/people.ts, sin el filtro «Ver por»); las filas guardan sus sesiones por día, y sum, median y addDays pasan a period.ts."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

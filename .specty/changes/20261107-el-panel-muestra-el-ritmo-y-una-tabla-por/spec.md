@@ -82,7 +82,7 @@ El «Panel» de `specty ui` solo tiene hoy la fila de indicadores. Con este cort
 
 ## Tareas
 
-- [ ] T1: El core calcula el ritmo y una fila por persona, agente y modelo
+- [x] T1: El core calcula el ritmo y una fila por persona, agente y modelo
   - files: packages/core/src/stats/period.ts, packages/core/src/stats/rows.ts, packages/core/src/stats/rhythm.ts, packages/core/src/stats/people.ts, packages/core/src/stats/summary.ts, packages/core/test/stats/sections.test.ts
   - ac: AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/sections.test.ts test/stats/summary.test.ts && pnpm lint
