@@ -73,7 +73,7 @@ Hoy cinco límites de lo que Specty muestra están fijos en el código: los hall
 
 ## Tareas
 
-- [ ] T1: `findingsInOutput` recibe los límites de los hallazgos, y las claves de `internal.findings` e `internal.commands` en el schema
+- [x] T1: `findingsInOutput` recibe los límites de los hallazgos, y las claves de `internal.findings` e `internal.commands` en el schema
   - files: packages/core/src/checks/output.ts, packages/core/test/checks/output.test.ts, packages/core/src/schema/internal-shown.ts, packages/core/src/schema/config.ts, packages/core/test/schema/internal-shown.test.ts
   - ac: AC1, AC2, AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/output.test.ts test/schema/internal-shown.test.ts

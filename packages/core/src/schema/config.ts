@@ -12,6 +12,12 @@ import {
   resolveInternalRun,
 } from "./internal-run";
 import {
+  DEFAULT_INTERNAL_SHOWN,
+  INTERNAL_SHOWN_SHAPE,
+  type InternalShownConfig,
+  resolveInternalShown,
+} from "./internal-shown";
+import {
   DEFAULT_INTERNAL_WAITS,
   INTERNAL_WAITS_SHAPE,
   type InternalWaitsConfig,
@@ -101,7 +107,7 @@ export interface ResolvedConfig extends WarningsConfig {
    * Specty's internal settings (formats.md §6): values that can leave Specty not working, with
    * today's behaviour as their defaults. Removing a key gives it back its default.
    */
-  readonly internal: InternalWaitsConfig & InternalRunConfig;
+  readonly internal: InternalWaitsConfig & InternalRunConfig & InternalShownConfig;
 }
 
 export const DEFAULT_CONFIG: ResolvedConfig = {
@@ -146,7 +152,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   memory: DEFAULT_MEMORY,
   dev: DEFAULT_DEV,
   subagents: true,
-  internal: { ...DEFAULT_INTERNAL_WAITS, ...DEFAULT_INTERNAL_RUN },
+  internal: { ...DEFAULT_INTERNAL_WAITS, ...DEFAULT_INTERNAL_RUN, ...DEFAULT_INTERNAL_SHOWN },
   ...DEFAULT_WARNINGS,
 };
 
@@ -219,7 +225,9 @@ export const ConfigSchema = z.strictObject({
   memory: MemorySchema.optional(),
   dev: DevSchema.optional(),
   subagents: z.boolean().optional(),
-  internal: z.strictObject({ ...INTERNAL_WAITS_SHAPE, ...INTERNAL_RUN_SHAPE }).optional(),
+  internal: z
+    .strictObject({ ...INTERNAL_WAITS_SHAPE, ...INTERNAL_RUN_SHAPE, ...INTERNAL_SHOWN_SHAPE })
+    .optional(),
   ...WARNINGS_SHAPE,
 });
 
@@ -277,7 +285,11 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     memory: resolveMemory(input.memory),
     dev: resolveDev(input.dev),
     subagents: input.subagents ?? base.subagents,
-    internal: { ...resolveInternalWaits(input.internal), ...resolveInternalRun(input.internal) },
+    internal: {
+      ...resolveInternalWaits(input.internal),
+      ...resolveInternalRun(input.internal),
+      ...resolveInternalShown(input.internal),
+    },
     ...resolveWarnings(input),
     ...(review !== undefined ? { review } : {}),
   };
