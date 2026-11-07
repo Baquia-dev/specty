@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "id": "20261108-las-verificaciones-limitan-sus-procesos-segun-2",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261108-las-verificaciones-limitan-sus-procesos-segun-2",
+  "baseCommit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:091ad42bfc19d77345ceca8ef14957cdf581ae939e1c62ff98fe389ffc291da9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:360b25f4bb4868e631c10f7bdea32ea674a43ab60cd0a01bdb199199c05731e4",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:251f784016aa7a6d5eb31b4b6c90b292cfc45b07176026258ee24838c965de22",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:371d1aafde02cac53ea69dd29dc0a40f96bfdb9b322c1c079b70189ce0539c99",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:39309c6c3fff9a646ee905f505a5d5e85e0093c9301070f3ef11ebfd8b456da0",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:af2e6b8ca098ef0172f37f3c632daf8cf45eb0615ad401c50c4d29283b994969",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 7,
+    "C": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3499ca90d27e3b80d0553d23ace022a2462f314a45ab035d520c0fb58ab3bcce",
+    "at": "2026-11-07T16:37:57.380Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
