@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-panel-muestra-el-flujo-las-esperas-y-la",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-panel-muestra-el-flujo-las-esperas-y-la",
   "baseCommit": "a4e6321c4130771efd5b22d9cc3115e691c6cc6c",
   "revision": 1,
@@ -67,6 +67,9 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T10:49:18.351Z"
+  "lockedTests": {
+    "packages/ui/src/catalog/catalog.test.ts": "sha256:f6c1ea28a6dbf79907a47982351658a3f09e770a3b5b1cff0ea11f893592e433",
+    "packages/core/test/stats/flow-quality.test.ts": "sha256:5db4ea378d3a106c4e2bf093ac629243ad6ab3a937b751537e373f446edda0a3",
+    "packages/ui/src/dashboard/dashboard-flow-quality.test.ts": "sha256:60dce88313bc4155c398f5994519e6cbb55808815b114995a42d1ddea7101d78"
+  }
 }
