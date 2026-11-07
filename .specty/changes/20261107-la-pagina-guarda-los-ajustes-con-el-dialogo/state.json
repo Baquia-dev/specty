@@ -6,6 +6,13 @@
   "branch": "specty/20261107-la-pagina-guarda-los-ajustes-con-el-dialogo",
   "baseCommit": "9183447eaa311a331341561a5c135a75de5a6508",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:442e25bafd680b9478d9932df69b54a4d57163201273d4deb696c6609e537585",
+    "at": "2026-11-07T04:29:33.955Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -56,12 +63,6 @@
     "T": 4,
     "R": 4
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:442e25bafd680b9478d9932df69b54a4d57163201273d4deb696c6609e537585",
-    "at": "2026-11-07T04:29:33.955Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T04:39:13.567Z"
 }

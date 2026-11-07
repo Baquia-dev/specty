@@ -8,7 +8,7 @@ import { APP_ROUTES } from "../app/routes";
 import { Shell } from "../app/shell";
 import { DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
-import { type ChangeRecord, SpectyData } from "../data/records";
+import { type Bilingual, type ChangeRecord, SpectyData } from "../data/records";
 import type { ConfigRecord } from "../data/source";
 import { deriveViews } from "../data/views";
 
@@ -58,11 +58,21 @@ const INVALID: ConfigRecord = {
 
 let served: ConfigRecord = valid(INPUT);
 
-/** The prototype, with the configuration the test serves. */
+/**
+ * The prototype, with the configuration the test serves, as a server the agent started: these
+ * tests read each setting's value, which the page shows without controls when it is read only.
+ */
 @Injectable()
 class Configured extends FixtureData {
   override config(): Promise<ConfigRecord> {
     return Promise.resolve(served);
+  }
+
+  override readOnly(): Promise<Bilingual | undefined> {
+    return Promise.resolve({
+      es: "Este servidor es de solo lectura porque lo arrancó el agente.",
+      en: "This server is read only because the agent started it.",
+    });
   }
 }
 
