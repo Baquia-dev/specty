@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8d3610f62c91a24a591584376c5c37f21fd89fba",
+      "startedAt": "2026-11-07T19:43:22.676Z",
+      "doneAt": "2026-11-07T19:44:20.098Z",
+      "summary": "processBudgetNote en core/cards/processes.ts: la línea con el número, las variables (aparte las que se quedan con el valor de su entorno), la memoria en GB, los núcleos y las plazas, en es/en; exportada en cards/index.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

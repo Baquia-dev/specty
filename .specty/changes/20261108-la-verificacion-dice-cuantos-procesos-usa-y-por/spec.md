@@ -49,7 +49,7 @@ Desde C1 y C2, cada comando de una verificación recibe en las variables de `ver
 
 ## Tareas
 
-- [ ] T1: La línea de los procesos, en español y en inglés
+- [x] T1: La línea de los procesos, en español y en inglés
   - files: packages/core/src/cards/processes.ts, packages/core/src/cards/index.ts, packages/core/test/cards/processes.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/processes.test.ts && pnpm lint
