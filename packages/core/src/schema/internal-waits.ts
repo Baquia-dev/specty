@@ -31,15 +31,17 @@ export interface InternalWaitsConfig {
 }
 
 export const DEFAULT_INTERNAL_WAITS: InternalWaitsConfig = {
-  waits: { waitTimeoutSec: 3600, heartbeatSec: 60 },
+  waits: { waitTimeoutSec: 3300, heartbeatSec: 60 },
   retries: { landing: 2, memory: 9, gitConfig: 5 },
   retention: { verifiedDays: 30 },
 };
 
 /**
  * The blocks of `internal` this module owns, for `config.ts` to gather under `internal`. The wait
- * holds an hour at most, what every tool measured holds (`cards/wait.ts`); the heartbeat, 240 s at
- * most, because Gemini CLI cuts a command that writes nothing for 300 s. The memory and git's
+ * holds an hour at most, what every tool measured holds (`cards/wait.ts`), and 55 min by default,
+ * so that the agent wakes up while its prompt cache, which lasts an hour since its last use, is
+ * still alive; the heartbeat, 240 s at most, because Gemini CLI cuts a command that writes nothing
+ * for 300 s. The memory and git's
  * configuration are tried once more at least, so one clash with another session does not make a
  * command fail.
  */

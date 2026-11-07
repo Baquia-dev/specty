@@ -201,11 +201,11 @@ describe("the mark of `specty wait`", () => {
     expect(await hasMark(root)).toBe(false);
   });
 
-  it("AC3: without `--timeout`, it waits an hour", async () => {
+  it("AC3, AC6: without `--timeout`, it waits 55 min, so it wakes up inside the prompt cache's hour", async () => {
     const root = await proposed();
     const waiting = cli(root, ["wait", "--interval", "100"]);
     await marked(root);
-    expect((await markOf(root)).timeoutSec).toBe(3600);
+    expect((await markOf(root)).timeoutSec).toBe(3300);
     await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
     expect((await waiting).out).toContain("TAREA T1");
   });

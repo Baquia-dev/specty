@@ -76,7 +76,7 @@ Con el modo delegado activo, `specty wait` hoy espera hasta una hora a una perso
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/idle-subagents.test.ts test/cards/epic.test.ts test/cards/orphans-subagents.test.ts && pnpm lint
   - type: fix
-- [ ] T3: `specty wait` espera 55 min por defecto
+- [x] T3: `specty wait` espera 55 min por defecto
   - files: packages/core/src/schema/internal-waits.ts, packages/cli/src/commands/agent-commands.ts, packages/core/test/schema/schema.test.ts, packages/cli/test/wait.test.ts, packages/ui/src/settings/settings-page.test.ts, docs/formats.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/wait.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts && pnpm typecheck && pnpm lint

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-specty-wait-respeta-el-modo-delegado-y",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-specty-wait-respeta-el-modo-delegado-y",
   "baseCommit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e69e5dface9279a6540650c9ac29b28e582829bb",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:17:40.230Z",
       "doneAt": "2026-11-07T09:25:36.051Z",
-      "summary": "El paso de seguir next del encargo de un subagente, en modo delegado, le pide hacer lo que diga «modo delegado» y esperar con specty wait solo una decisión que no le delega (followNext en cards/subagents.ts)."
+      "summary": "El paso de seguir next del encargo de un subagente, en modo delegado, le pide hacer lo que diga «modo delegado» y esperar con specty wait solo una decisión que no le delega (followNext en cards/subagents.ts).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ddfb7c29e591312fdb6e085de470787bb3027a35",
+      "startedAt": "2026-11-07T09:25:36.436Z",
+      "doneAt": "2026-11-07T09:33:53.483Z",
+      "summary": "internal.waits.waitTimeoutSec pasa a 3300 s por defecto (máximo 3600) para despertar con la caché de prompts viva; ayuda de --timeout, formats.md §6 y tests a 3300."
     }
   },
   "pending": {
