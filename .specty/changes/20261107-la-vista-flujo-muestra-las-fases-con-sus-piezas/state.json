@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-vista-flujo-muestra-las-fases-con-sus-piezas",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-la-vista-flujo-muestra-las-fases-con-sus-piezas",
   "baseCommit": "723f6f6c21ab4821589f3fc140d25950b2c1f5a7",
   "revision": 1,
@@ -72,6 +72,10 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T09:41:22.721Z"
+  "lockedTests": {
+    "packages/core/test/settings/pieces.test.ts": "sha256:6fbd363df29bdf6033fa23cca118d443737037378bc65a47885084493b08231a",
+    "packages/ui/src/settings/flow-piece.test.ts": "sha256:6f74a2a0014974fca11ce27d2ef7d256c0fa05da5a163daec3d8701a756067f7",
+    "packages/ui/src/settings/settings-flow.test.ts": "sha256:7ed3d9726201baf37ae1cbed164ec18c92abfdb21dae28377903a3e2cbf6a335",
+    "packages/ui/src/settings/settings-mode.test.ts": "sha256:ca4c6134e45dd5a97f1759d927c93f08aac4c5d30a3e6637aa7baf5253ade7ac"
+  }
 }
