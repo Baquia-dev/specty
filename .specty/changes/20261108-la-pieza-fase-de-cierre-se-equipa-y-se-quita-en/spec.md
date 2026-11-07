@@ -77,7 +77,7 @@ En la vista Flujo de «Configuración», la pieza «Fase de cierre» deja de ser
   - files: packages/cli/src/server/records.ts, packages/cli/test/server/records.test.ts, docs/ARCHITECTURE.md
   - ac: AC5, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/records.test.ts
-- [ ] T4: La vista de un cambio en la UI lleva `withoutClosing` del registro
+- [x] T4: La vista de un cambio en la UI lleva `withoutClosing` del registro
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts

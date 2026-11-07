@@ -199,6 +199,7 @@ function auditExtrasOf(
     ...(tests === undefined ? {} : { tests }),
     ...(locked.length === 0 ? {} : { lockedTests: locked }),
     ...(record.criteriaTests === undefined ? {} : { criteriaTests: record.criteriaTests }),
+    ...(record.withoutClosing === true ? { withoutClosing: true } : {}),
     ...(warnings.length === 0 ? {} : { warnings }),
     ...(findings.length === 0 ? {} : { findings }),
     ...reviewsIn(record),
