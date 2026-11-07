@@ -64,6 +64,11 @@ export type DoctorLine =
   | { readonly code: "antigravity-acp"; readonly file: string }
   /** Antigravity's guard from before the tools of its CLI (`agy`): it does not see them. */
   | { readonly code: "antigravity-cli"; readonly file: string }
+  /**
+   * Antigravity's guard has hooks without the time of `internal.hooks.antigravityTimeoutSec`
+   * (`seconds`): `init` wrote them with another one, or someone edited them.
+   */
+  | { readonly code: "antigravity-timeout"; readonly file: string; readonly seconds: number }
   /** The rule for Specty's commands in the settings of Antigravity's CLI, in the user's folder. */
   | { readonly code: "antigravity-cli-rule" | "no-antigravity-cli-rule"; readonly file: string }
   /** Devin's guard in `file`, its standalone hooks. */

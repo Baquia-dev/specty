@@ -300,6 +300,54 @@ describe("resolveConfig and `internal`'s locks and retention", () => {
   });
 });
 
+describe("resolveConfig and `internal`'s polling intervals", () => {
+  /** The keys of the issues of `internal`, or `ok` when it is valid. */
+  const paths = (internal: unknown) => {
+    const resolved = resolveConfig({ version: 1, internal });
+    return resolved.ok ? "ok" : resolved.issues.map((issue) => issue.path);
+  };
+  const today = { waits: { verifyIntervalMs: 2000, waitIntervalMs: 500 } };
+
+  it("AC4: without the keys, a verification looks again every 2000 ms and `specty wait` every 500 ms", () => {
+    expect(DEFAULT_CONFIG.internal).toMatchObject(today);
+    expect(resolveConfig({ version: 1 })).toMatchObject({ ok: true, config: { internal: today } });
+    expect(resolveConfig({ version: 1, internal: { waits: {} } })).toMatchObject({
+      ok: true,
+      config: { internal: today },
+    });
+  });
+
+  it("AC4: takes each key from 100 to 10000, the others with their defaults", () => {
+    expect(
+      resolveConfig({ version: 1, internal: { waits: { verifyIntervalMs: 100 } } }),
+    ).toMatchObject({
+      ok: true,
+      config: {
+        internal: {
+          waits: {
+            waitTimeoutSec: 3600,
+            heartbeatSec: 60,
+            verifyIntervalMs: 100,
+            waitIntervalMs: 500,
+          },
+        },
+      },
+    });
+    expect(paths({ waits: { verifyIntervalMs: 10000, waitIntervalMs: 100 } })).toBe("ok");
+    expect(paths({ waits: { waitIntervalMs: 10000 } })).toBe("ok");
+  });
+
+  it("AC4: refuses each key outside 100 to 10000, or not a whole number, with its key", () => {
+    for (const key of ["verifyIntervalMs", "waitIntervalMs"]) {
+      for (const value of [0, 99, 10001, 250.5, "medio segundo"]) {
+        expect(paths({ waits: { [key]: value } }), `${key}: ${value}`).toEqual([
+          `internal.waits.${key}`,
+        ]);
+      }
+    }
+  });
+});
+
 describe("parseChangeState", () => {
   const state = {
     schema: 1,

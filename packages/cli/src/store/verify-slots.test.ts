@@ -2,9 +2,9 @@
 import { spawn } from "node:child_process";
 import { mkdir, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { sessionAt } from "../../test/server/support";
-import { AGENT, APP, tempRepo } from "../../test/support";
+import { AGENT, APP, CONFIG, tempRepo } from "../../test/support";
 import { inSlots } from "./verify-slots";
 
 const RUNNING = ".git/common/specty/locks/verify-slots";
@@ -110,5 +110,27 @@ describe("the clone's verification places", () => {
     });
     await Promise.all([full, later, task.ended]);
     expect(events).toEqual(["completa empieza", "completa acaba", "tarea"]);
+  });
+});
+
+describe("the clone's verification places with `internal.waits.verifyIntervalMs`", () => {
+  it("AC2: a task's verification that waits for a place looks again every configured milliseconds", async () => {
+    const config = `${CONFIG()}internal:\n  waits:\n    verifyIntervalMs: 120\n`;
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
+    const { session, errors } = await watched(root);
+    const other = living(700);
+    // The other session's verification takes both places of `verify.slots`.
+    await runningBy(root, other.pid, 2);
+    const timer = vi.spyOn(globalThis, "setTimeout");
+    let delays: readonly unknown[] = [];
+    try {
+      expect(await inSlots(session, 1, "pnpm test", async () => "hecho")).toBe("hecho");
+      delays = timer.mock.calls.map((call) => call[1]);
+    } finally {
+      timer.mockRestore();
+    }
+    await other.ended;
+    expect(errors).toHaveLength(1);
+    expect(delays).toContain(120);
   });
 });

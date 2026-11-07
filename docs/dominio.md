@@ -7,6 +7,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Subagente** (`agent_id`; en OpenCode, una sesión hija): un agente que lanza la sesión para hacer parte de su trabajo; para el guard es una conversación propia, que entra con `specty enter` en la carpeta de un cambio y queda atada a ella.
 - **Encargo** (`briefOf`, `changeBrief`, `resumeBrief`): el texto que la tarjeta de una épica da para un corte listo o huérfano, o la tarjeta sin cambio activo para cada cambio que pide el usuario y para retomar un cambio huérfano, y que la sesión pasa tal cual a un subagente para que cree o retome su cambio y lo cierre.
 - **Carril** (`ChangeKind`): el tipo de cambio: quick, standard, spike, retro o epic.
+- **Panel** (`StatsView`, `GET /api/stats`, `/dashboard`): lo que se hizo con Specty en un periodo, calculado de la auditoría de los cambios y de la memoria; su filtro (`StatsQuery`: periodo, persona, agente o modelo, y carril) no es un corte de una épica.
 - **Ampliación** (`ScopeRequest`): pedir tocar un archivo fuera del alcance de la tarea.
 - **Incorporación** (`IntegrationState`): traer la rama destino al cambio al cerrarlo.
 - **Recibo** (`Receipt`): lo que deja Specty para que el pre-commit acepte su commit.

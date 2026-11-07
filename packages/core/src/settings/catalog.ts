@@ -42,8 +42,8 @@ export interface Setting {
   readonly kind: SettingKind;
   /** The values of a choice, in order. */
   readonly options?: readonly string[];
-  /** The unit of a number: seconds, minutes, hours or days. */
-  readonly unit?: "s" | "min" | "h" | "d";
+  /** The unit of a number: milliseconds, seconds, minutes, hours or days. */
+  readonly unit?: "ms" | "s" | "min" | "h" | "d";
   /** It changes what the agent may do without the person. */
   readonly permissions?: true;
   /** It runs a command of the project. */
@@ -65,14 +65,21 @@ export interface Setting {
 }
 
 /**
- * Section «Interno», execution and server: the priority of the verifications, the most Specty
- * reads of a command's output and the ports `specty ui` tries, which Specty kept fixed in its
- * code, as keys of `internal` (formats.md §6).
+ * Section «Interno», execution, server and hooks: the priority of the verifications, the most
+ * Specty reads of a command's output, the ports `specty ui` tries and the time of Antigravity's
+ * hooks, which Specty kept fixed in its code, as keys of `internal` (formats.md §6).
  */
 const INTERNAL_RUN: readonly Setting[] = [
   { key: "internal.exec.priority", section: "internal", kind: "number", new: true },
   { key: "internal.exec.maxOutputKiB", section: "internal", kind: "number", new: true },
   { key: "internal.server.portsTried", section: "internal", kind: "number", new: true },
+  {
+    key: "internal.hooks.antigravityTimeoutSec",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    new: true,
+  },
 ];
 
 /**
@@ -107,6 +114,20 @@ const INTERNAL: readonly Setting[] = [
     new: true,
   },
   { key: "internal.waits.heartbeatSec", section: "internal", kind: "number", unit: "s", new: true },
+  {
+    key: "internal.waits.verifyIntervalMs",
+    section: "internal",
+    kind: "number",
+    unit: "ms",
+    new: true,
+  },
+  {
+    key: "internal.waits.waitIntervalMs",
+    section: "internal",
+    kind: "number",
+    unit: "ms",
+    new: true,
+  },
   { key: "internal.retries.landing", section: "internal", kind: "number", new: true },
   { key: "internal.retries.memory", section: "internal", kind: "number", new: true },
   { key: "internal.retries.gitConfig", section: "internal", kind: "number", new: true },
