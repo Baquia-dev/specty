@@ -75,7 +75,7 @@ interface Column {
               data-column
               class="min-w-0 flex-1 cursor-default rounded-sm border-0 bg-transparent p-0 data-active:bg-text/4 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus"
               [attr.data-active]="active() === $index ? '' : null"
-              [tabIndex]="$index === cursor() ? 0 : -1"
+              [tabIndex]="$index === stop() ? 0 : -1"
               [attr.aria-label]="names()[$index]"
               (pointerenter)="active.set($index)"
               (pointerleave)="active.set(undefined)"
@@ -109,8 +109,12 @@ export class ColumnChart {
 
   /** The column under the pointer or the focus. */
   protected readonly active = signal<number | undefined>(undefined);
-  /** The column the tab key comes back to: the last one with the focus. */
-  protected readonly cursor = signal(0);
+  /** The last column with the focus. */
+  private readonly cursor = signal(0);
+  /** The column the tab key comes back to: the last one with the focus, or the last one left. */
+  protected readonly stop = computed(() =>
+    Math.min(this.cursor(), Math.max(0, this.labels().length - 1)),
+  );
   private readonly buttons = viewChildren<ElementRef<HTMLButtonElement>>("column");
 
   private readonly format = computed(() => {
@@ -193,7 +197,8 @@ export class ColumnChart {
 
   protected readonly tip = computed(() => {
     const index = this.active();
-    if (index === undefined) return undefined;
+    // A column gone with other labels (another period) shows nothing.
+    if (index === undefined || index >= this.labels().length) return undefined;
     const x = ((this.columns()[index]?.x ?? 0) / WIDTH) * 100;
     return {
       title: this.labels()[index] ?? "",
@@ -212,7 +217,7 @@ export class ColumnChart {
   /** The arrows go to the next or the previous column, Home to the first and End to the last. */
   protected move(event: KeyboardEvent): void {
     const last = this.labels().length - 1;
-    const current = this.cursor();
+    const current = this.stop();
     const targets: Readonly<Record<string, number>> = {
       ArrowRight: current + 1,
       ArrowLeft: current - 1,

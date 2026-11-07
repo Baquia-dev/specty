@@ -90,7 +90,7 @@ El «Panel» de `specty ui` solo tiene hoy la fila de indicadores. Con este cort
   - files: packages/ui/src/styles.css, packages/ui/src/theme/tokens.ts, packages/ui/src/theme/tokens.test.ts, packages/ui/src/components/charts/chart-frame.ts, packages/ui/src/components/charts/column-chart.ts, packages/ui/src/components/charts/charts.test.ts
   - ac: AC1, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/theme/tokens.test.ts --include src/components/charts/charts.test.ts --include src/catalog/catalog.test.ts && pnpm lint
-- [ ] T3: Las secciones «Ritmo» y «Personas y agentes» en el panel
+- [x] T3: Las secciones «Ritmo» y «Personas y agentes» en el panel
   - files: packages/ui/src/dashboard/dashboard-rhythm.ts, packages/ui/src/dashboard/dashboard-people.ts, packages/ui/src/dashboard/dashboard-page.ts, packages/ui/src/dashboard/dashboard-sections.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-sections.test.ts --include src/dashboard/dashboard-page.test.ts && pnpm typecheck && pnpm lint && pnpm knip

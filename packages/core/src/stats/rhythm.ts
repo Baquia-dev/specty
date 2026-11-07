@@ -9,20 +9,18 @@ import type { StatsRow } from "./rows";
 const MAX_DAYS = 45;
 const DAY_MS = 86_400_000;
 
-/** A day or a week of the period, both ends included, and what happened in it. */
-export interface StatsBucket {
-  readonly from: string;
-  readonly to: string;
-  /** The changes closed in it, by lane. */
-  readonly closed: Readonly<Record<ChangeKind, number>>;
-  /** The tasks completed in it. */
-  readonly tasks: number;
-}
-
 /** The rhythm of a period: its days, or its weeks, each with what happened in it. */
 export interface StatsRhythm {
   readonly unit: "day" | "week";
-  readonly buckets: readonly StatsBucket[];
+  /** Each day or week of the period, both ends included. */
+  readonly buckets: readonly {
+    readonly from: string;
+    readonly to: string;
+    /** The changes closed in it, by lane. */
+    readonly closed: Readonly<Record<ChangeKind, number>>;
+    /** The tasks completed in it. */
+    readonly tasks: number;
+  }[];
 }
 
 /**

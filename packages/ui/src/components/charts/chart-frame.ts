@@ -111,7 +111,7 @@ export class ChartFrame {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class:
-      "pointer-events-none absolute top-2 z-10 min-w-32 rounded-md border border-(--color-tooltip-border) bg-(--color-tooltip-bg) px-2.5 py-2 text-xs text-(--color-tooltip-text) shadow-md",
+      "pointer-events-none absolute top-2 z-10 w-max min-w-32 whitespace-nowrap rounded-md border border-(--color-tooltip-border) bg-(--color-tooltip-bg) px-2.5 py-2 text-xs text-(--color-tooltip-text) shadow-md",
     "aria-hidden": "true",
     "data-chart-tip": "",
   },
