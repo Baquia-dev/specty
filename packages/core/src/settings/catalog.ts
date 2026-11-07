@@ -63,14 +63,21 @@ export interface Setting {
 }
 
 /**
- * Section «Interno», execution and server: the priority of the verifications, the most Specty
- * reads of a command's output and the ports `specty ui` tries, which Specty kept fixed in its
- * code, as keys of `internal` (formats.md §6).
+ * Section «Interno», execution, server and hooks: the priority of the verifications, the most
+ * Specty reads of a command's output, the ports `specty ui` tries and the time of Antigravity's
+ * hooks, which Specty kept fixed in its code, as keys of `internal` (formats.md §6).
  */
 const INTERNAL_RUN: readonly Setting[] = [
   { key: "internal.exec.priority", section: "internal", kind: "number", new: true },
   { key: "internal.exec.maxOutputKiB", section: "internal", kind: "number", new: true },
   { key: "internal.server.portsTried", section: "internal", kind: "number", new: true },
+  {
+    key: "internal.hooks.antigravityTimeoutSec",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    new: true,
+  },
 ];
 
 /**

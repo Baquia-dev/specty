@@ -104,8 +104,8 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
 };
 
 /**
- * Section «Interno», execution and server: the priority of the verifications, the most Specty
- * reads of a command's output and the UI's ports.
+ * Section «Interno», execution, server and hooks: the priority of the verifications, the most
+ * Specty reads of a command's output, the UI's ports and the time of Antigravity's hooks.
  */
 const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
   "internal.exec.priority": {
@@ -136,6 +136,16 @@ const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
     en: [
       "Ports the UI tries",
       "How many ports specty ui tries from the first if it is taken, from 1 to 100.",
+    ],
+  },
+  "internal.hooks.antigravityTimeoutSec": {
+    es: [
+      "Tiempo del hook de Antigravity",
+      "Cuántos segundos deja Antigravity correr cada hook del guard antes de cortarlo y bloquear la herramienta, de 10 a 300; rige cuando specty init escribe .agents/hooks.json, y specty doctor avisa si el archivo tiene otro.",
+    ],
+    en: [
+      "Antigravity's hook time",
+      "How many seconds Antigravity lets each hook of the guard run before cutting it and blocking the tool, from 10 to 300; it applies when specty init writes .agents/hooks.json, and specty doctor warns if the file has another.",
     ],
   },
 };

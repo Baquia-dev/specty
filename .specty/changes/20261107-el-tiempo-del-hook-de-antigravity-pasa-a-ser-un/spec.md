@@ -70,7 +70,7 @@ Hoy `specty init` escribe en `.agents/hooks.json` los hooks del guard de Antigra
 
 ## Tareas
 
-- [ ] T1: La clave `internal.hooks.antigravityTimeoutSec` en el schema y su ajuste en el catálogo, con sus textos
+- [x] T1: La clave `internal.hooks.antigravityTimeoutSec` en el schema y su ajuste en el catálogo, con sus textos
   - files: packages/core/src/schema/internal-run.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/settings/catalog.test.ts, packages/core/test/settings/internal-hooks.test.ts
   - ac: AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/internal-hooks.test.ts test/settings/catalog.test.ts
