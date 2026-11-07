@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-panel-de-specty",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261107-panel-de-specty",
   "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6e1d955f2a769b4ba89e974deb17fca78bc834bc579cbbf4ad25b48cb227fdac",
+    "at": "2026-11-07T04:02:42.552Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -71,11 +78,5 @@
     "C": 7,
     "R": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6e1d955f2a769b4ba89e974deb17fca78bc834bc579cbbf4ad25b48cb227fdac",
-    "at": "2026-11-07T04:02:42.552Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-11-07T12:55:46.119Z"
 }

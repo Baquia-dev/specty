@@ -98,3 +98,44 @@ Specty guarda en el estado y la auditoría de cada cambio, y en su memoria, todo
 - R2: Cifras engañosas: coste parcial, modelos sin dato o eventos antiguos sin `by`. Mitigación: cada cifra parcial dice sobre cuántos cambios se calcula, y «(sin dato)» aparece como una opción más, sin repartirse.
 - R3: El color de las gráficas rompe la regla de que solo tienen color las fases y los riesgos. Mitigación: queda limitado a las marcas de las gráficas, con una paleta validada y un test de tokens. El texto y la interfaz siguen en tinta.
 - R4: Varios cortes tocan la misma página y el mismo tipo de respuesta. Mitigación: cada sección es su propio componente y su propio módulo de core, y la página y la respuesta solo las enlazan.
+
+## Cierre
+
+### Resumen
+
+La página «Panel» de `specty ui` (`/dashboard`) resume lo que se hizo con Specty en 7, 30 o 90 días o en todo, en total o por persona, agente, modelo y carril, comparado con el periodo anterior. `specty stats` da el mismo resumen en la terminal, y el panel exporta sus cambios a CSV o JSON. Los siete cortes están cerrados en main.
+- C1 (`20261107-el-panel-muestra-los-indicadores-clave-con-sus`, f54c2d5): los seis indicadores con su variación, los filtros en la URL, el estado vacío, `GET /api/stats` y las filas de cada cambio en `core/stats/` (`rows.ts`, `period.ts`, `summary.ts`).
+- C2 (`20261107-el-panel-muestra-el-ritmo-y-una-tabla-por`, a4e6321): «Ritmo», con los cambios cerrados apilados por carril y las tareas por día o por semana, y «Personas y agentes», cuyas filas filtran el panel. Añade las columnas (`sp-column-chart`), el marco común de las gráficas (`sp-chart-frame`, con leyenda, «Ver tabla» y teclado), la información emergente (`sp-chart-tip`) y los tokens `--color-series-1..3`, `--color-chart-grid` y `--color-chart-axis`, con su test de daltonismo y contraste.
+- C3 (`20261107-el-panel-muestra-el-flujo-las-esperas-y-la`, 2fb77e8): «Flujo y esperas» y «Calidad», las gráficas de línea, barras horizontales y barra segmentada, y la página «Gráficas» del catálogo.
+- C4 (`20261107-el-panel-muestra-el-coste-el-alcance-las`, 9cec4e2): «Coste y tokens», «Alcance e integraciones» y «Memoria»; `specty stats` imprime además el tiempo por fase y los cambios más caros.
+- C5 (`20261107-el-panel-lista-los-cambios-del-periodo-con`, 7ba359d): «Cambios», con búsqueda, orden por columna y páginas de 25 desde `GET /api/stats/changes`; cada fila abre su cambio.
+- C6 (`20261107-specty-stats-da-el-resumen-del-panel-en-la`, d718352): `specty stats [--period] [--who] [--kind] [--json]`. Su `--json` y `/api/stats` salen de la misma función (`statsOf`, en `server/stats.ts`).
+- C7 (`20261107-el-panel-exporta-los-cambios-del-corte-a-csv-o`, 57e2a11): «Exportar» descarga en CSV (UTF-8 con BOM) o en JSON una fila por cambio del corte que se ve, desde `GET /api/stats/export`.
+
+### Desviaciones
+
+- C1 y C7 necesitaron que la persona desbloqueara un test aprobado, con parches que no cambian lo que comprueban. En C1, el enlace «Panel» movía el del catálogo de la posición 4 a la 5 en `shell.test.ts`, y faltaba anotar el tipo `StatsQuery["who"]`. En C7, los bytes esperados se crean con `Uint8Array.from`, porque el `TextEncoder` de jsdom da un `Uint8Array` de otro reino.
+- La página «Gráficas» del catálogo no cabía en C2 y la hizo C3.
+- C3 subió de 54 a 55 la cuenta de `components/icons.test.ts` por el icono de «Gráficas».
+- C6 llevó `statsAnswer` de `server/api.ts` a `server/stats.ts` para compartirla con el comando, y `/api/stats` lee ahora con `plainRecords`.
+- Para no pasar de L, C7 puso `GET /api/stats/export` en `server/stats-changes.ts` en lugar de en un archivo propio y copió `save` de `history/history-export.ts` (P344).
+- C4 añadió a `specty stats` el tiempo por fase y los cambios más caros, que había dejado C6 (P340). En cambio, no puso los títulos en las listas de `/api/stats`, que lo llevaban de L a XL (P349).
+- Ningún corte hizo las minigráficas de los indicadores (`stat-tile`, A8) (P350).
+
+### Decisiones
+
+- El servidor agrega y la UI solo recibe agregados. El panel y `specty stats --json` dan las mismas cifras porque salen de la misma función.
+- Cada cambio cuenta para una sola persona, un agente y un modelo, y «(sin dato)» es una opción más que se puede elegir, sin repartirse entre las demás (A2).
+- El color de las series solo se usa en las marcas de las gráficas, con la paleta validada para daltonismo y contraste y un test de los tokens. El texto sigue en tinta.
+- Las gráficas son componentes SVG propios que comparten marco, información emergente, teclado y vista en tabla.
+- El CSV usa comas y punto decimal (RFC 4180), con BOM para que la hoja de cálculo lo lea como UTF-8.
+
+### Pendientes
+
+- `packages/ui/src/data/server.ts` tiene 414 líneas de código y `dashboard/dashboard-changes.ts` 309 (aviso a partir de 300) (P345, P323).
+- Los formatos del panel (`shortDay`, porcentajes, dólares) y algunas cuentas del core (`people.ts` y `summary.ts`) están repetidos (P327, P328).
+- La escala y el teclado se repiten entre las gráficas (P342), y `save` se repite entre la exportación del historial y la del panel (P344).
+- «Sesiones» muestra 0 en lugar de «—» para los agentes que no dan su sesión (P329).
+- Excel con configuración regional española espera punto y coma en el CSV (P346).
+- Las listas «Los cambios más caros» y «Cambios con más verificaciones fallidas» muestran el id y no el título (P349).
+- Faltan las minigráficas de los indicadores (P350).
