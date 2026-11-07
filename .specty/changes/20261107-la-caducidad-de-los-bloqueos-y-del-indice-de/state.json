@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "id": "20261107-la-caducidad-de-los-bloqueos-y-del-indice-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-la-caducidad-de-los-bloqueos-y-del-indice-de",
+  "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ac954550b832f2130c93eb17b6f1cc3b8f048dae6e5c40230105180aa7d669fc",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7f917f24c8a23654e87d114cd6428225b107f64d0b06b5850215b475b1408e50",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:be1616e67053a6e7f330e04d3c30f302b33723688a5b0a50ba911b035c7ed988",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:2746ea2ff7eb6135029d48c807494158794bb1e9067e467ba43c80adfc5a9cef",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:bee71ff3c472e309191cced6c7b23dedf73833b0effb44ded9d79a11da7fe267",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:692f61052886e08852a643d70b84279b0667388b3180368c9dc7c9b9a9f765dc",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:fdf264345bcf8243dd5a0b3afe04b9da196e5c397bd6386498e46f7e7f355aba",
+    "at": "2026-11-07T05:13:36.056Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
