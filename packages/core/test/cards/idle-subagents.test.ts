@@ -44,6 +44,23 @@ const launch = (markers: string, how = "") =>
 
 const MARKERS = "`<título>` y `<petición literal del usuario>`";
 
+/** An approved epic whose first slice is ready to hand out. */
+const EPIC: ChangeView = {
+  id: "20261024-panel",
+  kind: "epic",
+  phase: "implementing",
+  title: "Panel",
+  specPath: ".specty/changes/20261024-panel/spec.md",
+  revision: 1,
+  tasks: [],
+  conventions: [],
+  pendingScope: [],
+  rejected: [],
+  closingSubmitted: false,
+  specChanged: false,
+  slices: [{ id: "C1", title: "Corte C1", depends: [], status: "ready" }],
+};
+
 describe("the card with no change active, when the tool hands changes to subagents", () => {
   it("AC1: brings a change's brief and asks for one subagent per change the user asked for", () => {
     const text = idle(CLAUDE);
@@ -143,27 +160,42 @@ describe("the card with no change active, when the tool hands changes to subagen
   });
 
   it("AC6: leaves the card of an epic that hands out its slices as it was", () => {
-    const epic: ChangeView = {
-      id: "20261024-panel",
-      kind: "epic",
-      phase: "implementing",
-      title: "Panel",
-      specPath: ".specty/changes/20261024-panel/spec.md",
-      revision: 1,
-      tasks: [],
-      conventions: [],
-      pendingScope: [],
-      rejected: [],
-      closingSubmitted: false,
-      specChanged: false,
-      slices: [{ id: "C1", title: "Corte C1", depends: [], status: "ready" }],
-    };
-    const text = card({ change: epic, dirty: [] }, CLAUDE);
+    const text = card({ change: EPIC, dirty: [] }, CLAUDE);
     expect(text).toContain(
       "ENCARGO C1:\n  Haz el corte C1 con sus tareas en orden y sin lanzar otros subagentes:",
     );
     expect(text).toContain("  5. Responde en tres líneas: el cambio, su fase y lo que falta.");
     expect(text).not.toContain("Haz el cambio que pidió el usuario");
     expect(text).not.toContain("detente y responde con la pregunta");
+  });
+});
+
+/** The brief's step of `next` in delegated mode, as Claude Code waits for the person. */
+const DELEGATED_STEP = `Sigue \`specty next\` hasta cerrarlo. Cuando su \`SIGUIENTE:\` diga «modo delegado: …», hazlo tú; cuando espere a la persona en una decisión que no te delega (como desbloquear un test aprobado), ${WAIT}`;
+
+describe("a subagent's brief in delegated mode", () => {
+  const DELEGATED: CardContext = { ...CLAUDE, delegated: true };
+
+  it("AC5: tells it to decide when `next` says delegated mode, and to wait only for what the person did not delegate", () => {
+    const text = idle(DELEGATED);
+    expect(text).toContain(`  4. ${DELEGATED_STEP}`);
+    expect(text).not.toContain("hasta cerrarlo; cuando espere a la persona");
+    // Without delegated mode, the step stays as it was.
+    expect(idle(CLAUDE)).toContain(brief());
+  });
+
+  it("AC5: in the brief of an epic's slice too", () => {
+    const text = card({ change: EPIC, dirty: [] }, DELEGATED);
+    expect(text).toContain(`  4. ${DELEGATED_STEP}`);
+    expect(card({ change: EPIC, dirty: [] }, CLAUDE)).toContain(
+      `  4. Sigue \`specty next\` hasta cerrarlo; cuando espere a la persona, ${WAIT}`,
+    );
+  });
+
+  it("AC5: in English", () => {
+    const text = idle({ ...EN, tool: "claude-code", delegated: true });
+    expect(text).toContain(
+      '  4. Follow `specty next` until it is closed. When its `NEXT:` says "delegated mode: …", do it yourself; when it waits for the person on a decision not delegated to you (such as unlocking an approved test), run `specty wait` to wait for their decision. Run it in the background (`run_in_background: true`), which tells you when it ends, and run it again each time it times out or is cut off.',
+    );
   });
 });

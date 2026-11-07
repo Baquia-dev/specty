@@ -5,6 +5,7 @@
 
 export { AGENT_NAMES } from "./agents";
 export { optionName, sectionName, settingText } from "./cards/settings";
+export { flowSentences, pieceText } from "./cards/settings-pieces";
 export { translator } from "./cards/text";
 export { usageOf, usageWords } from "./cards/usage";
 export { PHASES, type Phase } from "./flow/phases";
@@ -22,3 +23,13 @@ export {
   settingChanges,
   settingOf,
 } from "./settings/catalog";
+export {
+  FLOW_PHASES,
+  type FlowPhase,
+  flowPhases,
+  isEquipped,
+  PIECES,
+  type Piece,
+  pieceEdits,
+  type SettingValue,
+} from "./settings/pieces";
