@@ -40,7 +40,7 @@ export interface StatsCost {
   /**
    * The changes that cost the most in the period, the most first: the cost of the period, and
    * the tasks completed, the milliseconds from created to closed (none while open) and the
-   * distinct agent sessions of the whole change.
+   * distinct agent sessions of the whole change (none when no line of it tells its session).
    */
   readonly top: readonly {
     readonly id: string;
@@ -48,7 +48,7 @@ export interface StatsCost {
     readonly cost: number;
     readonly tasks: number;
     readonly cycle: number | null;
-    readonly sessions: number;
+    readonly sessions: number | null;
   }[];
 }
 
@@ -79,7 +79,10 @@ export function statsCost(
         cost,
         tasks: row.tasks.length,
         cycle: row.closed === undefined ? null : Date.parse(row.closed) - Date.parse(row.created),
-        sessions: new Set(row.sessions.map((session) => session.id)).size,
+        sessions:
+          row.sessions.length === 0
+            ? null
+            : new Set(row.sessions.map((session) => session.id)).size,
       })),
   };
 }

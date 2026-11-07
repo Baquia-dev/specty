@@ -52,7 +52,7 @@ Hoy «Sesiones» muestra 0 en «Personas y agentes» y en «Los cambios más car
 
 ## Tareas
 
-- [ ] T1: El core da `null` en «Sesiones» cuando nada la mide
+- [x] T1: El core da `null` en «Sesiones» cuando nada la mide
   - files: packages/core/src/stats/people.ts, packages/core/src/stats/cost.ts, packages/core/test/stats/sections.test.ts, packages/core/test/stats/cost-scope-memory.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/sections.test.ts test/stats/cost-scope-memory.test.ts

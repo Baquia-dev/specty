@@ -23,8 +23,11 @@ export interface StatsPeopleRow {
   readonly cycle: number | null;
   /** The share of their task verifications in it that passed, from 0 to 1; none without any. */
   readonly verifications: number | null;
-  /** The agent sessions, each once, that worked on them in it. */
-  readonly sessions: number;
+  /**
+   * The agent sessions, each once, that worked on them in it; none when no line of their changes
+   * tells its session, on any day.
+   */
+  readonly sessions: number | null;
   /** The US dollars measured in it; none when nothing was. */
   readonly cost: number | null;
 }
@@ -80,7 +83,7 @@ function rowOf(who: StatsWho, rows: readonly StatsRow[], range: StatsRange): Sta
     cycle: median(cycles),
     verifications:
       verified.length === 0 ? null : verified.filter((one) => one.passed).length / verified.length,
-    sessions: new Set(sessions).size,
+    sessions: rows.every((row) => row.sessions.length === 0) ? null : new Set(sessions).size,
     cost: costs.length === 0 ? null : sum(costs.map((one) => one.cost)),
   };
 }

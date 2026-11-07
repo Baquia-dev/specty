@@ -40,7 +40,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/test/stats/sections.test.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "8dd87a3aa9ebae99fe1b66d5471af82af4b0fffe",
+      "startedAt": "2026-11-07T17:05:14.986Z",
+      "doneAt": "2026-11-07T17:18:08.941Z",
+      "summary": "people.ts y cost.ts dan sessions null cuando ninguna línea de sus cambios trae session (con alguna, siguen contando, también 0); aplicado el parche aprobado en S1 al test de AC1"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -49,13 +61,14 @@
     "A": 4,
     "AC": 2,
     "T": 3,
-    "R": 1
+    "R": 1,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/stats.test.ts": "sha256:a702bd84bb4d6f2ace775f2e9773ee4d63b2b13917dab9bdac06055325fd3ec9",
     "packages/core/test/cards/stats.test.ts": "sha256:443625c9877d536202a25721f0aafcb2ff0d56118b8c7c4914df6f0850bd9ad0",
     "packages/core/test/stats/cost-scope-memory.test.ts": "sha256:54011ebeb4fd14e10f9963c2af3d3745a0be3f04118da16bb4814af039c369e4",
-    "packages/core/test/stats/sections.test.ts": "sha256:5c3aa105a503c3421371bdba4fcea8920d803320703e1af503fd95c63875b910",
+    "packages/core/test/stats/sections.test.ts": "sha256:2b765fcf7ede590b6dae0bd67e814655757660fdd41c924a7f178c35043d7765",
     "packages/ui/src/dashboard/dashboard-cost-scope-memory.test.ts": "sha256:f0ea6b38b46ffc96a134bc54de4ac005bf5189f23d2092e0bb1914e22af39e37",
     "packages/ui/src/dashboard/dashboard-sections.test.ts": "sha256:16b3ff1c78a3061b2647e1ea8099f3540de4c4c524a771a9a37b0812d41b6167"
   }

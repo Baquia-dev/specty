@@ -360,11 +360,15 @@ describe("the panel's people, agents and models", () => {
         ],
         "Eva",
       ),
-      // Fede with claude-code, still open: its only session is before the period.
+      // Fede with claude-code, still open: its only session is before the period, and a
+      // verification in it, which tells none, makes the change live in the period.
       row(
         "20260920-antes",
         "standard",
-        [line(at(48), "change.created", agent("claude-code", "s8", "m-3"))],
+        [
+          line(at(48), "change.created", agent("claude-code", "s8", "m-3")),
+          verified(at(1), 0),
+        ],
         "Fede",
       ),
     ];
