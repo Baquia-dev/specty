@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-limites-de-lo-que-muestran-las-tarjetas",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-los-limites-de-lo-que-muestran-las-tarjetas",
   "baseCommit": "0d670cd5ecc67d21d161bf1e7d956a89bdbfe72b",
   "revision": 1,
@@ -47,6 +47,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T08:35:08.893Z"
+  "lockedTests": {
+    "packages/core/test/settings/catalog.test.ts": "sha256:347cdb06a5e1314ba1ffd322ef73144b33a15f4dadb5642f6a1738a47b48910a",
+    "packages/cli/test/card-limits.test.ts": "sha256:971452f0b640b6775dd61fabf6662083af018abcefe60d2d64bcbf9c229b8428",
+    "packages/core/test/settings/card-limits.test.ts": "sha256:b3cdd458a84723612a69eec3721e0071837cd1ad1dd1b1e964cc12189f6ceaaf"
+  }
 }
