@@ -79,7 +79,7 @@ async function toolLines(session: Session): Promise<{
   const tools = (await detectProject(root, "")).tools;
   for (const agent of Object.values(ADAPTERS)) {
     if (!tools.includes(agent.tool)) continue;
-    const lines = await agent.doctor(root, git, session.environment.env);
+    const lines = await agent.doctor(root, git, session.environment.env, session.config);
     ok.push(...lines.ok);
     problems.push(...lines.problems);
   }
@@ -127,7 +127,7 @@ async function doctorWarnings(session: Session, agents: string | undefined): Pro
     ...(unfilled.length === 0 ? [] : [{ code: "unfilled-sections", sections: unfilled } as const]),
     ...bloated,
     ...(emptyGlossary ? [{ code: "empty-glossary", path: session.config.glossary } as const] : []),
-    ...(await usageDoctor(root, session.environment.env)),
+    ...(await usageDoctor(root, session.environment.env, session.config.usage.ccusage.version)),
     ...(delegation === undefined
       ? []
       : [{ code: "delegated", since: delegation.at.slice(0, 10), by: delegation.by } as const]),

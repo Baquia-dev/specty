@@ -16,8 +16,10 @@ export const SETTING_SECTIONS = [
   "size",
   "lines",
   "checks",
+  "warnings",
   "team",
   "memory",
+  "usage",
   "dev",
   "ui",
   "effort",
@@ -63,14 +65,22 @@ export interface Setting {
 }
 
 /**
- * Section «Interno», execution and server: the priority of the verifications, the most Specty
- * reads of a command's output, and the ports `specty ui` tries and the limits of its server,
- * which Specty kept fixed in its code, as keys of `internal` (formats.md §6).
+ * Section «Interno», execution, server and hooks: the priority of the verifications, the most
+ * Specty reads of a command's output, the ports `specty ui` tries, the time of Antigravity's hooks
+ * and the limits of the UI's server, which Specty kept fixed in its code, as keys of `internal`
+ * (formats.md §6).
  */
 const INTERNAL_RUN: readonly Setting[] = [
   { key: "internal.exec.priority", section: "internal", kind: "number", new: true },
   { key: "internal.exec.maxOutputKiB", section: "internal", kind: "number", new: true },
   { key: "internal.server.portsTried", section: "internal", kind: "number", new: true },
+  {
+    key: "internal.hooks.antigravityTimeoutSec",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    new: true,
+  },
   ...["changesEveryMs", "tasksEveryMs"].map(
     (key): Setting => ({
       key: `internal.server.${key}`,
@@ -93,7 +103,8 @@ const INTERNAL_RUN: readonly Setting[] = [
 
 /**
  * Section «Interno»: the parameters Specty kept fixed in its code, as keys of `internal`, and the
- * four lives of compliance, which stay fixed at 24 h with no key (formats.md §6).
+ * lives of compliance, fixed with no key: four at 24 h and the mark of `specty wait` at 30 s
+ * (formats.md §6).
  */
 const INTERNAL: readonly Setting[] = [
   {
@@ -104,6 +115,27 @@ const INTERNAL: readonly Setting[] = [
     new: true,
   },
   { key: "internal.waits.heartbeatSec", section: "internal", kind: "number", unit: "s", new: true },
+  {
+    key: "internal.waits.verifyIntervalMs",
+    section: "internal",
+    kind: "number",
+    unit: "ms",
+    new: true,
+  },
+  {
+    key: "internal.waits.waitIntervalMs",
+    section: "internal",
+    kind: "number",
+    unit: "ms",
+    new: true,
+  },
+  {
+    key: "internal.waits.queueStaleSec",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    new: true,
+  },
   { key: "internal.retries.landing", section: "internal", kind: "number", new: true },
   { key: "internal.retries.memory", section: "internal", kind: "number", new: true },
   { key: "internal.retries.gitConfig", section: "internal", kind: "number", new: true },
@@ -112,6 +144,13 @@ const INTERNAL: readonly Setting[] = [
     section: "internal",
     kind: "number",
     unit: "d",
+    new: true,
+  },
+  {
+    key: "internal.retention.indexHours",
+    section: "internal",
+    kind: "number",
+    unit: "h",
     new: true,
   },
   ...INTERNAL_RUN,
@@ -125,6 +164,28 @@ const INTERNAL: readonly Setting[] = [
       guarantee: true,
     }),
   ),
+  {
+    key: "guarantee.waitMarks",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    fixed: 30,
+    guarantee: true,
+  },
+];
+
+/**
+ * Sections «Avisos» and «Consumo y sesiones»: the warnings of the spec and of the sessions, which
+ * Specty kept fixed in its code, as keys of `warnings` and `usage` (formats.md §6).
+ */
+const WARNINGS: readonly Setting[] = [
+  { key: "warnings.vagueTerms", section: "warnings", kind: "list", new: true },
+  { key: "warnings.horizontalLayers", section: "warnings", kind: "list", new: true },
+];
+const USAGE: readonly Setting[] = [
+  { key: "usage.freshSessionTokens", section: "usage", kind: "number", new: true },
+  { key: "usage.ccusage.timeoutSec", section: "usage", kind: "number", unit: "s", new: true },
+  { key: "usage.ccusage.version", section: "usage", kind: "text", new: true },
 ];
 
 const TESTS_POLICIES = ["contract", "required", "recommended", "off"];
@@ -205,10 +266,12 @@ export const SETTINGS: readonly Setting[] = [
   { key: "checks.commands", section: "checks", kind: "group", command: true },
   { key: "checks.coverage", section: "checks", kind: "group" },
   { key: "checks.testTime", section: "checks", kind: "group", fileOnly: true },
+  ...WARNINGS,
   { key: "team.approvers", section: "team", kind: "list", soon: true },
   { key: "team.requirePrReview", section: "team", kind: "toggle", soon: true },
   { key: "memory.orphanAfterMin", section: "memory", kind: "number", unit: "min" },
   { key: "memory.branch", section: "memory", kind: "text" },
+  ...USAGE,
   { key: "dev.ports", section: "dev", kind: "list", items: "number" },
   { key: "ui.port", section: "ui", kind: "number" },
   { key: "ui.requireUserPresence", section: "ui", kind: "toggle", soon: true },

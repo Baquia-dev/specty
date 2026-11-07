@@ -61,10 +61,11 @@ describe("Shell", () => {
       "/",
       "/memory",
       "/sessions",
+      "/dashboard",
       "/settings",
       "/catalog",
     ]);
-    expect(main[4]?.getAttribute("aria-current")).toBe("page");
+    expect(main[5]?.getAttribute("aria-current")).toBe("page");
     expect(element.querySelector("header sp-kbd")).not.toBeNull();
     expect(element.querySelectorAll("header input[name=theme]")).toHaveLength(3);
     expect(element.querySelectorAll("header input[name=lang]")).toHaveLength(2);
@@ -79,6 +80,7 @@ describe("Shell", () => {
       "/",
       "/memory",
       "/sessions",
+      "/dashboard",
       "/settings",
     ]);
     expect(element.querySelector("sp-catalog")).toBeNull();

@@ -24,6 +24,36 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
       "How often it writes a line where the tool cuts a silent command.",
     ],
   },
+  "internal.waits.verifyIntervalMs": {
+    es: [
+      "Intervalo de una verificación que espera",
+      "Cada cuánto mira de nuevo una verificación que espera el turno de la completa o una plaza del clon, de 100 a 10000 ms.",
+    ],
+    en: [
+      "Interval of a waiting verification",
+      "How often a verification waiting for the full verification's turn or a place of the clone looks again, from 100 to 10000 ms.",
+    ],
+  },
+  "internal.waits.waitIntervalMs": {
+    es: [
+      "Intervalo de specty wait",
+      "Cada cuánto mira specty wait si la persona decidió, cuando no se le pasa --interval; de 100 a 10000 ms.",
+    ],
+    en: [
+      "specty wait's interval",
+      "How often specty wait looks whether the person decided, when --interval is not given; from 100 to 10000 ms.",
+    ],
+  },
+  "internal.waits.queueStaleSec": {
+    es: [
+      "Caducidad de un puesto en la cola",
+      "Cuánto cuenta el puesto de un proceso en la cola de las verificaciones sin renovarlo, de 10 a 600 y nunca menos de tres vueltas de una verificación que espera; pasado ese tiempo, el siguiente que mira lo quita.",
+    ],
+    en: [
+      "Life of a place in the queue",
+      "How long a process's place in the verifications' queue counts without renewing it, from 10 to 600 and never less than three looks of a waiting verification; after that, the next one that looks removes it.",
+    ],
+  },
   "internal.retries.landing": {
     es: [
       "Reintentos al aterrizar",
@@ -59,6 +89,16 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
     en: [
       "Days of the record of units",
       "How many days the record keeps the units that passed before specty prune removes them; a removed one only runs again.",
+    ],
+  },
+  "internal.retention.indexHours": {
+    es: [
+      "Vida de los índices temporales",
+      "Cuántas horas deja specty prune un índice temporal de git antes de borrarlo, de 1 a 168; una lectura lo usa unos segundos.",
+    ],
+    en: [
+      "Life of the temporary indexes",
+      "How many hours specty prune leaves a temporary git index before removing it, from 1 to 168; a reading uses it for seconds.",
     ],
   },
   "guarantee.receipts": {
@@ -101,11 +141,22 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
       "Fixed at 24 h: one that lived less would let the cleanup delete the folder a session works in.",
     ],
   },
+  "guarantee.waitMarks": {
+    es: [
+      "Vida de la marca de specty wait",
+      "Fija en 30 s, o tres vueltas de su intervalo si son más: una que viviera más dejaría terminar el turno del agente sin que nadie espere a la persona.",
+    ],
+    en: [
+      "Life of specty wait's mark",
+      "Fixed at 30 s, or three of its intervals if longer: one that lived longer would let the agent's turn end with nobody waiting for the person.",
+    ],
+  },
 };
 
 /**
- * Section «Interno», execution and server: the priority of the verifications, the most Specty
- * reads of a command's output, and the UI's ports and the limits of its server.
+ * Section «Interno», execution, server and hooks: the priority of the verifications, the most
+ * Specty reads of a command's output, the UI's ports, the time of Antigravity's hooks and the
+ * limits of the UI's server.
  */
 const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
   "internal.exec.priority": {
@@ -136,6 +187,16 @@ const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
     en: [
       "Ports the UI tries",
       "How many ports specty ui tries from the first if it is taken, from 1 to 100.",
+    ],
+  },
+  "internal.hooks.antigravityTimeoutSec": {
+    es: [
+      "Tiempo del hook de Antigravity",
+      "Cuántos segundos deja Antigravity correr cada hook del guard antes de cortarlo y bloquear la herramienta, de 10 a 300; rige cuando specty init escribe .agents/hooks.json, y specty doctor avisa si el archivo tiene otro.",
+    ],
+    en: [
+      "Antigravity's hook time",
+      "How many seconds Antigravity lets each hook of the guard run before cutting it and blocking the tool, from 10 to 300; it applies when specty init writes .agents/hooks.json, and specty doctor warns if the file has another.",
     ],
   },
   "internal.server.changesEveryMs": {

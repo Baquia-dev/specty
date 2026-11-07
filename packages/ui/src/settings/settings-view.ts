@@ -61,26 +61,25 @@ export function settingRows(
   delegated: boolean | undefined,
   lang: Lang,
 ): readonly SettingRow[] {
-  const t = translator(lang);
   return SETTINGS.map((setting) => {
     const value =
       setting.clone === true
         ? delegated
-        : (at(record.config, setting.key) ??
-          at(record.input, setting.key) ??
-          at(record.defaults, setting.key));
+        : (valueAt(record.config, setting.key) ??
+          valueAt(record.input, setting.key) ??
+          valueAt(record.defaults, setting.key));
     const fallback =
       setting.clone === true
         ? delegated === undefined
           ? undefined
           : false
-        : at(record.defaults, setting.key);
+        : valueAt(record.defaults, setting.key);
     const modified = JSON.stringify(value) !== JSON.stringify(fallback);
     return {
       setting,
       ...settingText(setting.key, lang),
-      value: words(value, setting, t, lang),
-      ...(modified ? { default: words(fallback, setting, t, lang) } : {}),
+      value: words(value, setting, lang),
+      ...(modified ? { default: words(fallback, setting, lang) } : {}),
       issues: issuesAt(setting, record.issues),
     };
   });
@@ -134,25 +133,35 @@ function issuesAt(setting: Setting, issues: readonly ConfigIssue[]): readonly st
 }
 
 /** The value at the key `key`, with dots, of a configuration as JSON gives it. */
-function at(source: unknown, key: string): unknown {
+export function valueAt(source: unknown, key: string): unknown {
   let value = source;
   for (const part of key.split(".")) value = isObject(value) ? value[part] : undefined;
   return value;
 }
 
-function isObject(value: unknown): value is Readonly<Record<string, unknown>> {
+/** Whether `value` is a map of keys, not a list. */
+export function isObject(value: unknown): value is Readonly<Record<string, unknown>> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-/** A value in words: a list's or a map's elements, a group's keys, or the value itself. */
-function words(value: unknown, setting: Setting, t: Translate, lang: Lang): ValueWords {
+/** A value in words, the first elements of a long list and how many more there are. */
+function words(value: unknown, setting: Setting, lang: Lang): ValueWords {
+  const items = valueItems(value, setting, lang);
+  return { items: items.slice(0, SHOWN), more: Math.max(0, items.length - SHOWN) };
+}
+
+/**
+ * Every element of a value in words: a list's or a map's elements, a group's keys, or the value
+ * itself; «Sin elementos» for an empty one.
+ */
+export function valueItems(value: unknown, setting: Setting, lang: Lang): readonly string[] {
+  const t = translator(lang);
   const items = Array.isArray(value)
     ? value.map((item) => brief(item, t))
     : isObject(value)
       ? Object.entries(value).map(([key, item]) => `${key}: ${brief(item, t)}`)
       : [single(value, setting, t, lang)];
-  if (items.length === 0) return { items: [t("Sin elementos", "None")], more: 0 };
-  return { items: items.slice(0, SHOWN), more: Math.max(0, items.length - SHOWN) };
+  return items.length === 0 ? [t("Sin elementos", "None")] : items;
 }
 
 /** A single value: an option by its name, yes or no, a number with its unit, or the text. */

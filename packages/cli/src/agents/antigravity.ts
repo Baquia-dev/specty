@@ -136,14 +136,15 @@ export const antigravity: AgentAdapter = {
       return { ...value, [HOOK]: { ...ours, Stop: [{ type: "command", command, timeout }] } };
     }),
   },
-  install: async ({ root, git, invocation, files, lang, env }) => {
+  install: async ({ root, git, invocation, files, lang, env, config }) => {
     const local = !invocation.portable;
     const command = `${invocation.command} guard --tool antigravity`;
+    const timeout = config.internal.hooks.antigravityTimeoutSec;
     const update = (value: Record<string, unknown>) => {
       const ours = isRecord(value[HOOK]) ? value[HOOK] : {};
       // `check --install` puts the end of turn in the same hook: rewriting the guard keeps it.
       const turn = ours.Stop === undefined ? {} : { Stop: ours.Stop };
-      return { ...value, [HOOK]: { ...hookOf(command), ...turn } };
+      return { ...value, [HOOK]: { ...hookOf(command, timeout), ...turn } };
     };
     await rewriteJson(join(root, ANTIGRAVITY_HOOKS), update, true, files);
     if (local) await excludeLocally(git, ANTIGRAVITY_HOOKS, files);
@@ -162,8 +163,8 @@ export const antigravity: AgentAdapter = {
       ({ [HOOK]: _, ...rest }: Record<string, unknown>) => rest,
       files,
     ),
-  doctor: async (root, _git, env) => {
-    const hooks = await hooksDoctor(root);
+  doctor: async (root, _git, env, config) => {
+    const hooks = await hooksDoctor(root, config.internal.hooks.antigravityTimeoutSec);
     // The rule of its CLI, in the person's folder, only when the person uses its CLI.
     const rule = await cliRule(env);
     if (rule === undefined) return hooks;
@@ -183,8 +184,11 @@ export const antigravity: AgentAdapter = {
   },
 };
 
-/** Specty's hooks in `.agents/hooks.json`: whether every event has one, and from which `init`. */
-async function hooksDoctor(root: string): Promise<DoctorLines> {
+/**
+ * Specty's hooks in `.agents/hooks.json`: whether every event has one, from which `init`, and
+ * whether the guard's have the configured time (`timeout`).
+ */
+async function hooksDoctor(root: string, timeout: number): Promise<DoctorLines> {
   const text = await readText(join(root, ANTIGRAVITY_HOOKS));
   const value: unknown = parse(text ?? "null");
   const ours = isRecord(value) && isRecord(value[HOOK]) ? value[HOOK] : {};
@@ -204,8 +208,36 @@ async function hooksDoctor(root: string): Promise<DoctorLines> {
   }
   return {
     ok: [{ code: "antigravity-guard", file }],
-    problems: [...outdatedMatcher(ours, file), ...stop],
+    problems: [...outdatedMatcher(ours, file), ...outdatedTimeout(ours, file, timeout), ...stop],
   };
+}
+
+/**
+ * A guard whose hooks do not all have the time of `internal.hooks.antigravityTimeoutSec`: an
+ * `init` with another one wrote them, or someone edited them. Only `init` rewrites them (D2).
+ */
+function outdatedTimeout(
+  ours: Record<string, unknown>,
+  file: string,
+  seconds: number,
+): DoctorLine[] {
+  const handlers = Object.keys(EVENTS).flatMap((event) => guardHandlers(ours[event], event));
+  return handlers.every((handler) => handler.timeout === seconds)
+    ? []
+    : [{ code: "antigravity-timeout", file, seconds }];
+}
+
+/** The handlers of `event` that call the guard: inside a matcher's `hooks`, or the entry itself. */
+function guardHandlers(entries: unknown, event: string): Record<string, unknown>[] {
+  const list: readonly unknown[] = Array.isArray(entries) ? entries : [];
+  return list
+    .flatMap((entry): readonly unknown[] =>
+      isRecord(entry) && Array.isArray(entry.hooks) ? entry.hooks : [entry],
+    )
+    .filter(
+      (handler): handler is Record<string, unknown> =>
+        isRecord(handler) && String(handler.command).includes(`--event ${event}`),
+    );
 }
 
 /**
@@ -223,11 +255,14 @@ function outdatedMatcher(ours: Record<string, unknown>, file: string): DoctorLin
     : [{ code: "enter-outdated", tool: "antigravity", file }];
 }
 
-/** Specty's hook: each event calls the guard with its name. */
-function hookOf(command: string): Record<string, unknown[]> {
+/**
+ * Specty's hook: each event calls the guard with its name, and Antigravity lets it run `timeout`
+ * seconds (`internal.hooks.antigravityTimeoutSec`).
+ */
+function hookOf(command: string, timeout: number): Record<string, unknown[]> {
   return Object.fromEntries(
     Object.entries(EVENTS).map(([event, matcher]) => {
-      const handler = { type: "command", command: `${command} --event ${event}`, timeout: 30 };
+      const handler = { type: "command", command: `${command} --event ${event}`, timeout };
       return [event, matcher === undefined ? [handler] : [{ matcher, hooks: [handler] }]];
     }),
   );

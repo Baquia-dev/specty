@@ -2,9 +2,9 @@
 import * as z from "zod";
 
 /**
- * `internal.exec` and `internal.server` in `.specty/config.yaml`: the priority Specty's
- * verifications run at, the most it reads of a command's output, and the limits of `specty ui`'s
- * server (formats.md §6).
+ * `internal.exec`, `internal.server` and `internal.hooks` in `.specty/config.yaml`: the priority
+ * Specty's verifications run at, the most it reads of a command's output, the limits of `specty
+ * ui`'s server and how long Antigravity lets the guard's hooks run (formats.md §6).
  */
 export interface InternalRunConfig {
   readonly exec: {
@@ -31,6 +31,13 @@ export interface InternalRunConfig {
     /** The largest body of an action of the person, in KiB; a larger one reads as none. */
     readonly maxBodyKiB: number;
   };
+  readonly hooks: {
+    /**
+     * How long Antigravity lets each hook of Specty's guard run before it cuts it and blocks the
+     * tool, in seconds: what `init` writes in `.agents/hooks.json`.
+     */
+    readonly antigravityTimeoutSec: number;
+  };
 }
 
 export const DEFAULT_INTERNAL_RUN: InternalRunConfig = {
@@ -43,6 +50,7 @@ export const DEFAULT_INTERNAL_RUN: InternalRunConfig = {
     runEveryMs: 250,
     maxBodyKiB: 64,
   },
+  hooks: { antigravityTimeoutSec: 30 },
 };
 
 /**
@@ -53,6 +61,8 @@ export const DEFAULT_INTERNAL_RUN: InternalRunConfig = {
  * 100 ms (50 for a run's notices), so that it does not spin, to a minute (10 s for a run's), so
  * that the UI still hears what moves; a run keeps from 100 lines, enough to see why it failed, to
  * 10000; and an action's body, from today's 64 KiB, which every action fits, to 1 MiB.
+ * Antigravity's hooks, from 10 s, which lets Node start and the guard answer on a busy machine, to
+ * 300 s, which bounds how long Antigravity stands still if the guard hangs.
  */
 export const INTERNAL_RUN_SHAPE = {
   exec: z
@@ -71,15 +81,19 @@ export const INTERNAL_RUN_SHAPE = {
       maxBodyKiB: z.number().int().min(64).max(1024).optional(),
     })
     .optional(),
+  hooks: z
+    .strictObject({ antigravityTimeoutSec: z.number().int().min(10).max(300).optional() })
+    .optional(),
 };
 
 /** What `config.yaml` may hold of these blocks under `internal`. */
 interface InternalRunInput {
   readonly exec?: z.infer<typeof INTERNAL_RUN_SHAPE.exec>;
   readonly server?: z.infer<typeof INTERNAL_RUN_SHAPE.server>;
+  readonly hooks?: z.infer<typeof INTERNAL_RUN_SHAPE.hooks>;
 }
 
-/** The `internal.exec` and `internal.server` blocks with their defaults applied. */
+/** The `internal.exec`, `internal.server` and `internal.hooks` blocks with their defaults applied. */
 export function resolveInternalRun(input: InternalRunInput | undefined): InternalRunConfig {
   const base = DEFAULT_INTERNAL_RUN;
   return {
@@ -88,6 +102,10 @@ export function resolveInternalRun(input: InternalRunInput | undefined): Interna
       maxOutputKiB: input?.exec?.maxOutputKiB ?? base.exec.maxOutputKiB,
     },
     server: resolveServer(input?.server),
+    hooks: {
+      antigravityTimeoutSec:
+        input?.hooks?.antigravityTimeoutSec ?? base.hooks.antigravityTimeoutSec,
+    },
   };
 }
 
