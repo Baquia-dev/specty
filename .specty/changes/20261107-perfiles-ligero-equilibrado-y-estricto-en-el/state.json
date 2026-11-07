@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "id": "20261107-perfiles-ligero-equilibrado-y-estricto-en-el",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-perfiles-ligero-equilibrado-y-estricto-en-el",
+  "baseCommit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e51ed02398c504af921a2ecf56deb6ad66e5b2cdeedcdbcc6fa8bbd9e89dcb2d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:546053b9df577fbf19897b6e25cb7041891f79a7060d833cc01f765c510d0c99",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:6a434f7e870be35e3f71765017ff600336433783c6c8e0a758f0008c65b741ad",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:30c81161a9405bd4b42a268619536276f73ad413a2c40b5e86c143039618d402",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:077aaf98b604559c66788fd2bd6188ce65e8b917770ef8b895fa0a91b9894069",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:c819a57f672a98974245e4433d57029541504cf5a40232a594084efbbcf0c043",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:d999bdab64efbd844b15858213509c0d5c806fc2e6e6b2b94e03c2c0091cdb6a",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:9206c44461391973627a1102a1387dd0297e141c141d47ba3a82066c356a1074",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 8,
+    "AC": 9,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7d15d0b8306de9724a556a24f263cfcf0c5cf95fa210522f20cc8d8ca3ac5c25",
+    "at": "2026-11-07T10:47:44.035Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
