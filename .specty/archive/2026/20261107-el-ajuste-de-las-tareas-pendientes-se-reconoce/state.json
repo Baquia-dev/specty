@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "id": "20261107-el-ajuste-de-las-tareas-pendientes-se-reconoce",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-el-ajuste-de-las-tareas-pendientes-se-reconoce",
+  "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:dd319eb5484db0c6f009e41c2a8c741046f2e0a6720659cad05db9567fad75d3",
+    "at": "2026-11-07T00:14:35.577Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fd9ac46af783f0884dbbd19c7a88e173b7957777711905f25cec9fa35a1c00ba",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ce4600cc8b10587b5b0334037a2ec74fc5423a9db371774d0d55f65056766a8c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:3f327b3c0f1920255b1cae148e3e91ea6fca797120a01d68475439e62cb675e8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "47e6de6ebc742e723aa3a5451fc899a76ee1dbaf",
+      "attempts": 1,
+      "startedAt": "2026-11-07T00:16:10.328Z",
+      "doneAt": "2026-11-07T00:16:33.696Z",
+      "summary": "core exporta adjustsPendingTasks, ChangeView gana pendingTasksOnly y la tarjeta de adjusting lo usa en lugar de la tarea activa",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "0d5553538b0a6a1a4a7dea1e63e09c84f623bacc",
+      "attempts": 1,
+      "startedAt": "2026-11-07T00:16:34.098Z",
+      "doneAt": "2026-11-07T00:30:59.290Z",
+      "summary": "views.ts calcula pendingTasksOnly en adjusting con la revisión aprobada y las tareas hechas; la descripción MCP de specty_adjust nombra la aceptación y la corrección de las tareas pendientes",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "3039f496cd0f07286b63a2f06cd4f2e0c8879836",
+      "attempts": 1,
+      "startedAt": "2026-11-07T00:30:59.635Z",
+      "doneAt": "2026-11-07T00:31:19.175Z",
+      "summary": "ARCHITECTURE §12 cuenta cómo reconoce la tarjeta el ajuste de las tareas pendientes (pendingTasksOnly con la revisión aprobada)",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-07T00:31:26.995Z",
+  "lockedTests": {
+    "packages/cli/test/epic-adjust.test.ts": "sha256:6fcef7da9317a968cf72e3fce13bf57c2626f8e2ad98bcbe5dd3208d07dccbc2",
+    "packages/cli/test/mcp.test.ts": "sha256:b3811b23ad18746c500a29caaceabfbd9fe73e03f463323f31deef6ee6748452",
+    "packages/core/test/cards/adjust.test.ts": "sha256:4980009e83c5bcf74b71a5190d38432309583ab615a0713f335a7328b2cb0fa0"
+  }
+}

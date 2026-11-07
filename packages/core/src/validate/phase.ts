@@ -44,9 +44,10 @@ export const checkAdjusting: Rule = (spec, ctx, lang) => {
 
 /**
  * An adjustment asked for while the tasks are implemented: the approved revision still has tasks
- * to do. In acceptance every one is done, and an epic has none.
+ * to do. In acceptance every one is done, and an epic has none. The adjusting card asks the same
+ * (`ChangeView.pendingTasksOnly`).
  */
-function adjustsPendingTasks(approved: Spec, done: ReadonlySet<string>): boolean {
+export function adjustsPendingTasks(approved: Spec, done: ReadonlySet<string>): boolean {
   return (approved.sections.tasks?.items ?? []).some((task) => !done.has(task.id));
 }
 
