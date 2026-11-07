@@ -13,6 +13,8 @@ verify:
   default: "pnpm test"
   full: "pnpm check"
   timeoutSec: 2000
+  processes:
+    env: ["VITEST_MAX_WORKERS"]
   units:
     - name: estático
       command: "pnpm lint && pnpm typecheck && pnpm sources && pnpm knip"
@@ -104,5 +106,3 @@ split:
   maxModules: 3
 lines:
   exclude: ["packages/core/src/index.ts", "packages/core/src/cards/index.ts"]
-processes:
-  env: ["VITEST_MAX_WORKERS"]
