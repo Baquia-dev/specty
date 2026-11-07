@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261107-tras-pedir-cambios-la-propuesta-del-ajuste",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261107-tras-pedir-cambios-la-propuesta-del-ajuste",
+  "baseCommit": "cbea4acf4df0cfc97e79baa2b56b95fa178c578f",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4cf35436f207465bfca365b59b1e8d094c5337cb3d08f2bab6d12c27f40e7948",
+    "at": "2026-11-07T01:29:04.401Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
