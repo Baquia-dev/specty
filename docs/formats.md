@@ -250,7 +250,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - En un ajuste, en `adjusting` o en su revisión, con un ajuste pedido mientras se implementa (la revisión aprobada aún tiene tareas sin completar): se añade o se elimina una tarea, o se añade, modifica o elimina un criterio (`pending-tasks-only`). Ese ajuste solo corrige las tareas pendientes: su `verify`, sus `files` o su texto.
 - En el ajuste de una épica, en `adjusting` o en su revisión (`review` con una revisión aprobada): se modifica (título, `ac` o `depends`) o se elimina un corte cuyo cambio está cerrado (`closed-slice-changed`). Un corte está cerrado cuando su cambio está en `done`; uno cancelado no lo cierra. Un corte cerrado se acepta tal como estaba en la revisión aprobada o en la última propuesta, por si el ajuste lo estrechó mientras su cambio seguía abierto. Core no lee el disco: la CLI le pasa esos cortes, de los cambios que nombran la épica, abiertos o archivados.
 - En `closing`: hay cambios fuera de la sección Cierre.
-- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. La tarea única de `quick` solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección. El corte de una épica (con `epic` en el frontmatter) no se divide en otra épica: su error pide estrecharlo y llevar el resto a cortes nuevos de su épica, que se ajusta también mientras se implementa.
+- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. El límite de tareas de `quick` (una, o las de `lanes.quick.maxTasks`, un entero positivo) solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección. El corte de una épica (con `epic` en el frontmatter) no se divide en otra épica: su error pide estrecharlo y llevar el resto a cortes nuevos de su épica, que se ajusta también mientras se implementa.
 - Una tarea de código de un cambio `standard` no lista ningún test en sus archivos, si la política es `required` o `contract`. Con `contract`, un `refactor` o un `perf` no lo necesita: su contrato son los tests que ya existen, y `task done` no lo completa si les quita aserciones.
 
 **Avisos**, que se muestran en la salida y en la UI:
@@ -433,7 +433,7 @@ scope:
   generated: ["**/*.g.dart", "**/*.freezed.dart"]
   autoApprove: tests-and-generated  # none | tests-and-generated: tests, generados y lo que ya está en Archivos
 lanes:
-  quick: { maxFiles: 3 }          # archivos de código: gobernados, sin contar tests
+  quick: { maxFiles: 3, maxTasks: 1 }  # archivos de código (gobernados, sin contar tests) y tareas de la primera spec
 split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 }  # maxFiles, como en quick
 size: { S: 4, M: 10, L: 18 }      # puntuación máxima de cada nivel; por encima de L es XL
 sizing:                           # opcional: cómo se puntúa el tamaño y desde cuándo está cerca de partirse; sin la clave, los valores de hoy
@@ -492,6 +492,7 @@ policy:
 glossary: docs/dominio.md         # el glosario del dominio; sin la clave: docs/dominio.md (es) o docs/domain.md (en)
 flow:
   closing: true                   # false: aceptar un cambio standard que no es corte de una épica lo archiva y lo incorpora sin fase de cierre, con el resumen de sus tareas como cierre; sin la clave, true
+  reviewFrom: L                   # S | M | L | XL: tamaño desde el que se pide la revisión independiente (con review); sin la clave, L
 retro:
   mode: agent                     # agent | minimal
 git:
@@ -574,6 +575,8 @@ review:
 ```
 
 `specty review` le pasa a `command` por la entrada estándar las instrucciones y la spec, y guarda su salida en `reviews/spec-r<revisión>.md`. En aceptación le pasa también el diff de todo el cambio, y la salida va a `reviews/diff-<n>.md`, con `n` el número de la revisión del resultado. Sin `review`, Specty no recomienda ni ejecuta revisiones.
+
+`flow.reviewFrom` (`L` por defecto; `S`, `M`, `L` o `XL`) es el tamaño desde el que se recomienda la revisión: `propose` la pide antes de aprobar una spec de ese tamaño o mayor, y la tarjeta de aceptación antes de aceptar un cambio de ese tamaño o mayor, una vez tras su última tarea. Las demás razones no cambian: una spec que toca rutas sensibles o cuyo esfuerzo de revisión es `max`, y un cambio con tareas que quitaron aserciones o añadieron riesgos. Solo cuenta con `review`, y va en `flow` porque `review` exige `command`.
 
 Una observación de la revisión es una viñeta de primer nivel (`-`, `*`, `•` o un número) de su respuesta, con el texto de su línea; su referencia es `<archivo>#<número>`, como `diff-2.md#3`, con su posición entre todas las viñetas de primer nivel del archivo. Su gravedad es la primera palabra de gravedad de la viñeta, entera y sin distinguir mayúsculas: alta o crítica (high, critical), media (medium) o baja (low); si no tiene ninguna, la del último encabezado markdown (`#`) que hay por encima. Solo cuenta la última revisión del resultado, el `diff-<n>.md` con el `n` más alto; las de la spec no. Mientras el agente escribe el cierre, en `closing` o, en modo delegado, en la aceptación de un cambio `standard` o `spike`, su tarjeta muestra en «OBSERVACIONES DE LA REVISIÓN» las altas y medias que el cierre aún no cita, con su referencia; el cierre cita una cuando contiene su referencia sin una cifra detrás (`diff-2.md#30` no cita `diff-2.md#3`). Al cerrarse el cambio (`close`, el `accept` de un cambio rápido, cuyo cierre no cita nada, o el del agente en modo delegado con el cierre enviado), las que no cita pasan a la memoria de Specty como pendientes (§1); uno cancelado no deja nada.
 

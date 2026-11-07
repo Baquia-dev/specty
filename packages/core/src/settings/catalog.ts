@@ -228,6 +228,9 @@ const USAGE: readonly Setting[] = [
 
 const TESTS_POLICIES = ["contract", "required", "recommended", "off"];
 
+/** The size levels, as `sizing/size.ts` has them, which the light entry does not load. */
+const SIZE_LEVELS = ["S", "M", "L", "XL"];
+
 /**
  * Section «Tamaño y cortes», after the splitting limits: how the size is scored and from when a
  * change is close to splitting. The CLI does not measure fan-in yet (formats.md §6).
@@ -283,6 +286,13 @@ export const SETTINGS: readonly Setting[] = [
   { key: "git.afterLanding", section: "git", kind: "command", command: true, basic: true },
   { key: "review.command", section: "review", kind: "command", command: true, basic: true },
   { key: "review.timeoutSec", section: "review", kind: "number", unit: "s" },
+  {
+    key: "flow.reviewFrom",
+    section: "review",
+    kind: "choice",
+    options: SIZE_LEVELS,
+    new: true,
+  },
   { key: "governed", section: "scope", kind: "list", permissions: true },
   { key: "ignored", section: "scope", kind: "list", permissions: true },
   { key: "sensitive", section: "scope", kind: "list", permissions: true },
@@ -297,6 +307,7 @@ export const SETTINGS: readonly Setting[] = [
   },
   { key: "size", section: "size", kind: "group" },
   { key: "lanes.quick.maxFiles", section: "size", kind: "number" },
+  { key: "lanes.quick.maxTasks", section: "size", kind: "number", new: true },
   { key: "split", section: "size", kind: "group" },
   ...SIZING,
   { key: "lines.warn", section: "lines", kind: "number" },

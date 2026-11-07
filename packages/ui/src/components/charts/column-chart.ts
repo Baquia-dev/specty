@@ -13,6 +13,7 @@ import {
 } from "@angular/core";
 import { Preferences } from "../../theme/preferences";
 import { ChartFrame, type ChartKey, type ChartTable, ChartTip, type TipLine } from "./chart-frame";
+import { moveFocus, roundScale } from "./chart-parts";
 
 /** A series: its name, the token of its color and a value per label. */
 export interface ChartSeries extends ChartKey {
@@ -169,7 +170,8 @@ export class ColumnChart {
       series.reduce((all, one) => all + (one.values[index] ?? 0), 0),
     );
     const whole = series.every((one) => one.values.every(Number.isInteger));
-    return niceScale(Math.max(1, ...totals), whole);
+    const { high, ticks } = roundScale(0, Math.max(1, ...totals), { whole });
+    return { top: high, ticks };
   });
 
   protected readonly ticks = computed(() => {
@@ -216,38 +218,17 @@ export class ColumnChart {
 
   /** The arrows go to the next or the previous column, Home to the first and End to the last. */
   protected move(event: KeyboardEvent): void {
-    const last = this.labels().length - 1;
-    const current = this.stop();
-    const targets: Readonly<Record<string, number>> = {
-      ArrowRight: current + 1,
-      ArrowLeft: current - 1,
-      Home: 0,
-      End: last,
-    };
-    const target = targets[event.key];
-    if (target === undefined) return;
-    event.preventDefault();
-    this.buttons()[Math.min(last, Math.max(0, target))]?.nativeElement.focus();
+    moveFocus(event, {
+      count: this.labels().length,
+      current: this.stop(),
+      buttons: this.buttons(),
+    });
   }
 }
 
 /** The height of `value` on an axis that reaches `top`. */
 function yOf(value: number, top: number): number {
   return TOP + (HEIGHT - TOP - BOTTOM) * (1 - value / top);
-}
-
-/** About four round steps (1, 2 or 5 × 10ⁿ) from zero to `max` or past it; whole if `whole`. */
-function niceScale(max: number, whole: boolean): { top: number; ticks: readonly number[] } {
-  const raw = max / 4;
-  const power = 10 ** Math.floor(Math.log10(raw));
-  const round = [1, 2, 5, 10].map((times) => times * power).find((step) => step >= raw) ?? raw;
-  const step = whole ? Math.max(1, round) : round;
-  const top = Math.ceil(max / step) * step;
-  const ticks = Array.from(
-    { length: Math.round(top / step) + 1 },
-    (_, index) => Math.round(index * step * 1e6) / 1e6,
-  );
-  return { top, ticks };
 }
 
 /**

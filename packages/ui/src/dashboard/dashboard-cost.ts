@@ -2,7 +2,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import type { ChangeKind, StatsView } from "@baquia-dev/specty-core";
-import type { Lang } from "@baquia-dev/specty-core/light";
 import { KindBadge } from "../components/badge";
 import { BarList, type BarRow } from "../components/charts/bar-list";
 import { type ChartSeries, ColumnChart } from "../components/charts/column-chart";
@@ -10,6 +9,7 @@ import { type ChartPart, SegmentedBar } from "../components/charts/segmented-bar
 import { SectionDivider } from "../components/document";
 import { formatDuration } from "../data/progress";
 import { Preferences } from "../theme/preferences";
+import { shortDay } from "./dashboard-format";
 
 type Cost = NonNullable<StatsView["cost"]>;
 
@@ -226,12 +226,4 @@ export class DashboardCost {
       cost: usd.format(change.cost),
     }));
   });
-}
-
-/** A local day, YYYY-MM-DD, as «9 oct» or «Oct 9». */
-function shortDay(day: string, lang: Lang): string {
-  const [year = 0, month = 1, date = 1] = day.split("-").map(Number);
-  return new Intl.DateTimeFormat(lang, { day: "numeric", month: "short" }).format(
-    new Date(year, month - 1, date),
-  );
 }

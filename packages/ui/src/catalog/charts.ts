@@ -5,6 +5,7 @@ import { BarList } from "../components/charts/bar-list";
 import { type ChartSeries, ColumnChart } from "../components/charts/column-chart";
 import { LineChart } from "../components/charts/line-chart";
 import { type ChartPart, SegmentedBar } from "../components/charts/segmented-bar";
+import { type StatDelta, StatTile, type StatTrend } from "../components/charts/stat-tile";
 import { formatDuration } from "../data/progress";
 import { Preferences } from "../theme/preferences";
 
@@ -16,7 +17,7 @@ const MINUTE = 60_000;
  */
 @Component({
   selector: "sp-catalog-charts",
-  imports: [BarList, ColumnChart, LineChart, SegmentedBar],
+  imports: [BarList, ColumnChart, LineChart, SegmentedBar, StatTile],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h1 class="mt-0 mb-2 text-xl font-semibold">{{ t()('Gráficas', 'Charts') }}</h1>
@@ -55,12 +56,23 @@ const MINUTE = 60_000;
       </div>
     </section>
 
-    <section aria-labelledby="chart-segmented">
+    <section class="mb-10" aria-labelledby="chart-segmented">
       <h2 id="chart-segmented" class="mb-1 text-lg font-semibold">{{ t()('Barra segmentada', 'Segmented bar') }}</h2>
       <p class="mt-0 mb-4 max-w-[64ch] text-sm text-text-muted">{{ t()('Un todo en hasta tres partes, con su clave; una parte a 0 solo sale en la clave.', 'A whole in up to three parts, with its key; a part at 0 is only in the key.') }}</p>
       <div class="grid gap-x-10 gap-y-8 rounded-xl border border-border bg-bg p-6 lg:grid-cols-2" data-example="segmented">
         <sp-segmented-bar [heading]="t()('Quién aprueba la spec', 'Who approves the spec')" [category]="t()('Canal', 'Channel')" [label]="t()('Aprobaciones', 'Approvals')" [parts]="approvals()" />
         <sp-segmented-bar [heading]="t()('Sin datos', 'No data')" [category]="t()('Canal', 'Channel')" [label]="t()('Aprobaciones', 'Approvals')" [parts]="none()" />
+      </div>
+    </section>
+
+    <section aria-labelledby="chart-stat-tile">
+      <h2 id="chart-stat-tile" class="mb-1 text-lg font-semibold">{{ t()('Indicador con minigráfica', 'Figure with sparkline') }}</h2>
+      <p class="mt-0 mb-4 max-w-[64ch] text-sm text-text-muted">{{ t()('Una cifra con su variación y, debajo, su valor en cada día: la línea se corta donde un día no tiene valor y marca el último; sin ninguno, no dibuja nada.', 'A figure with its change and, under them, its value in each day: the line breaks where a day has no value and marks the last one; with none, it draws nothing.') }}</p>
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-6 rounded-xl border border-border bg-bg p-6" data-example="stat-tile">
+        <sp-stat-tile [label]="t()('Cambios cerrados', 'Changes closed')" value="12" [delta]="better()" [trend]="closed()" />
+        <sp-stat-tile [label]="t()('Ciclo (mediana)', 'Cycle (median)')" [value]="cycleValue()" [delta]="worse()" [note]="t()('de crear a cerrar', 'from created to closed')" [trend]="cycle()" />
+        <sp-stat-tile [label]="t()('Coste medido', 'Measured cost')" value="—" [trend]="unmeasured()" />
+        <sp-stat-tile [label]="t()('Pendientes abiertos', 'Open pending items')" value="7" [note]="t()('en la memoria', 'in the memory')" />
       </div>
     </section>
   `,
@@ -142,5 +154,61 @@ export class CatalogCharts {
 
   protected readonly none = computed((): readonly ChartPart[] =>
     this.approvals().map((part) => ({ ...part, value: 0 })),
+  );
+
+  /** A change for the better and one for the worse, against the 7 days before. */
+  protected readonly better = computed(
+    (): StatDelta => ({
+      tone: "good",
+      mark: "▲ 25 %",
+      text: this.t()("frente a los 7 días anteriores", "vs. the previous 7 days"),
+    }),
+  );
+  protected readonly worse = computed(
+    (): StatDelta => ({ ...this.better(), tone: "bad", mark: "▲ 10 %" }),
+  );
+
+  protected readonly cycleValue = computed(() =>
+    formatDuration(150 * MINUTE, this.preferences.lang()),
+  );
+
+  /** A trend of the catalog's days, read with `format`. */
+  private trendOf(
+    es: string,
+    en: string,
+    values: readonly (number | null)[],
+    format: (value: number) => string,
+  ): StatTrend {
+    return { heading: this.t()(es, en), labels: this.days(), values, format };
+  }
+
+  protected readonly closed = computed(() =>
+    this.trendOf(
+      "Cambios cerrados por día",
+      "Changes closed per day",
+      [1, 0, 2, 3, 1, 2, 3],
+      String,
+    ),
+  );
+
+  /** Two days in a row, a value alone and the last one alone too. */
+  protected readonly cycle = computed(() => {
+    const lang = this.preferences.lang();
+    const hours = [null, 2, 3, null, 1.5, null, 2.5];
+    return this.trendOf(
+      "Ciclo (mediana) por día",
+      "Cycle (median) per day",
+      hours.map((hour) => (hour === null ? null : hour * 60 * MINUTE)),
+      (value) => formatDuration(value, lang),
+    );
+  });
+
+  protected readonly unmeasured = computed(() =>
+    this.trendOf(
+      "Coste medido por día",
+      "Measured cost per day",
+      this.days().map(() => null),
+      String,
+    ),
   );
 }

@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "id": "20261107-los-indicadores-del-panel-llevan-su-minigrafica",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-los-indicadores-del-panel-llevan-su-minigrafica",
+  "baseCommit": "bbc77876ac9692c275f8142a0c75b30b956c6ded",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c76a0c758def8e3d34fdc6f97ed9601c459acc75f1f1755d3514156dadcd129c",
+    "at": "2026-11-07T16:05:32.808Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:632cf57b059f8c430313d05e50443c462d4f27db403841abe16b8401a1ee7b91",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6ea7c7e7203e8dbe5075212173c40748a0a6056a151ca0f2bd77506d2968806e",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:41b94101532bbc4cc3ee5f4201c8e29f8ee52f1b8375dd4073bb5f31b6e3e924",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ad992e7a4ea7281e793dc93e45ab5436130d9251dd23fe903ee138b5de0d8a92",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:68068c6ed9f53ee549b5eefd60dc1e48f3570d8173e0e43ecdef8a502d5f757d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "9c30727b36965a10ccbf2e346fe55ce7dea70c46",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:16:53.856Z",
+      "doneAt": "2026-11-07T16:17:36.441Z",
+      "summary": "StatsView gana trend: los seis indicadores en cada día o semana de «Ritmo», con countsOf por tramo (trendOf en stats/summary.ts); ARCHITECTURE.md lo documenta en GET /api/stats.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ae00442ab25a9e9f315b5f9ccdbff8be308a65b0",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:17:37.246Z",
+      "doneAt": "2026-11-07T16:19:08.449Z",
+      "summary": "sp-stat-tile (components/charts/stat-tile.ts): el indicador con su minigráfica de 2 px, cortada en los huecos, con el último valor y los sueltos marcados, cursor, información emergente y teclado; el catálogo «Gráficas» añade sus cuatro estados.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "8344c8bf20adbccdb5cd770ed56117d48f10cd75",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:19:09.036Z",
+      "doneAt": "2026-11-07T16:20:18.071Z",
+      "summary": "dashboard-summary pinta cada indicador con sp-stat-tile y su serie de trend (por día o semana), y «Ver tabla» bajo la fila abre los seis indicadores por tramo; docs/ui.md lo cuenta.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T16:25:27.773Z",
+  "lockedTests": {
+    "packages/ui/src/catalog/catalog.test.ts": "sha256:add69e66eae85fb9fb41a10c41ebaf8a9854f1da0ab02db550030801b1ae5e0a",
+    "packages/core/test/stats/trend.test.ts": "sha256:00c98ad01e8baf83817f6017d4e24d70671ff077a529ca89aa597011846a8fc3",
+    "packages/ui/src/components/charts/stat-tile.test.ts": "sha256:4fc2328226eaa67771f488dae6ec5be86269aed36e504ce08068c86ebd1957d5",
+    "packages/ui/src/dashboard/dashboard-summary.test.ts": "sha256:daf45a78bcfc8082e577998aa8b4524483afe37a4f21d4be96af9c697e1c5c3c"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ui.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/checks.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/check.ts",
+      "packages/cli/src/flow/closing-turn.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/test/closing-ahead.test.ts",
+      "packages/cli/test/server/records.test.ts",
+      "packages/cli/test/server/stats-export.test.ts",
+      "packages/cli/test/task-check.test.ts",
+      "packages/core/src/cards/acceptance.ts",
+      "packages/core/src/cards/settings-pieces.ts",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/flow/machine.ts",
+      "packages/core/src/schema/checks.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/flow.ts",
+      "packages/core/src/schema/task-done.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/settings/pieces.ts",
+      "packages/core/src/stats/export.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/core/test/closing-ahead.test.ts",
+      "packages/core/test/schema/task-done.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/pieces.test.ts",
+      "packages/core/test/settings/task-done.test.ts",
+      "packages/core/test/stats/export.test.ts",
+      "packages/core/test/stats/trend.test.ts",
+      "packages/ui/src/acceptance/acceptance-actions.test.ts",
+      "packages/ui/src/acceptance/result-dialogs.ts",
+      "packages/ui/src/catalog/catalog.test.ts",
+      "packages/ui/src/catalog/charts.ts",
+      "packages/ui/src/components/charts/stat-tile.test.ts",
+      "packages/ui/src/components/charts/stat-tile.ts",
+      "packages/ui/src/dashboard/dashboard-summary.test.ts",
+      "packages/ui/src/dashboard/dashboard-summary.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/views.test.ts",
+      "packages/ui/src/data/views.ts",
+      "packages/ui/src/settings/flow-piece.test.ts",
+      "packages/ui/src/settings/settings-flow.test.ts"
+    ],
+    "at": "2026-11-07T16:35:28.225Z",
+    "resolved": {
+      "commit": "3f5d2fa",
+      "at": "2026-11-07T16:44:27.719Z"
+    }
+  }
+}
