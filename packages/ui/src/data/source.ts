@@ -19,6 +19,7 @@ import {
   sortChanges,
 } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
+import type { Download } from "./export";
 import type { RunRecord } from "./progress";
 import type {
   Bilingual,
@@ -30,6 +31,7 @@ import type {
   MemoryRecord,
   SliceChangeRecord,
 } from "./records";
+import type { StatsExportParams } from "./stats-export";
 import type { TraceRecord } from "./trace";
 
 /** An action the source could not do, explained in both languages. */
@@ -192,6 +194,11 @@ export abstract class SpectyData {
 
   /** A page of the panel's table of changes (docs/ui.md, «Panel»); nothing when it cannot tell. */
   statsChanges(_params: StatsChangesParams): Promise<StatsChangesPage | undefined> {
+    return Promise.resolve(undefined);
+  }
+
+  /** The panel's changes of the cut as a CSV or JSON file (docs/ui.md, «Panel»); or nothing. */
+  statsExport(_params: StatsExportParams): Promise<Download | undefined> {
     return Promise.resolve(undefined);
   }
 
