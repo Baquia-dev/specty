@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261107-las-evals-miden-la-espera-con-specty-wait-a-una",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-las-evals-miden-la-espera-con-specty-wait-a-una",
+  "baseCommit": "abb0d3e277d90768dee5c6d4d4de185f4796f8bf",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:44491a9a8edc144c8f751a9ad96817ed1da84c30db148b1b57e59bbf2d878b4c",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a373cacbf2390f8719aa8d72b72d8ff885404567f2fad64f7db70469f100c9bc",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:21ba8a8d52def38987c16888bc583e71a99c876efd18eef00db952dc3820afb6",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:61a43618afa3d37a8daee7bf08f9846dfaa72d5cefee69cf0151b959d7a21020",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:2f009a1e1dd21ab6911bad9dc70581382cad8ba14965b3d952645d89b3a17dcb",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:4d127654ebe3942f31b6285ef0f2970c356b29f9024dfb0927979427215b2e39",
+    "at": "2026-11-07T01:36:37.183Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
