@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261108-las-comprobaciones-de-task-done-pasan-a-ser",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261108-las-comprobaciones-de-task-done-pasan-a-ser",
+  "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1250c72bcb34d58f63ab852cb1ef1ac1d82512c12c3101368d3754e3035f63bb",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:895ffe13888cee541916a61d31b7a44070d65a8a6f48937ff9cffb93d5cf7d87",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:a03839342f0cbf80be225c4dedae2eaf447398345ce8fac5ee45a716dd6eb5ee",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1fc241a0dd2f6fb633e986acb4f7cc9aaab242f56b015b2e5e2cf6ce2f147ed9",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:b2bf693d9ac0eef3e85668333cff60af98bd410e4917f6b3b5cd5d8d80a26712",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:d58f3531ffd59c4fc63c9267174e7ea7181aa9ce8ed6c3e36a6085a8c6ca565d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:cf062da8b6cea16a21739984bb850e3454b3efb49aa40c2b2bcec70b6b16a408",
+    "at": "2026-11-07T16:14:30.716Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
