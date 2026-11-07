@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-huerfanos-que-son-epicas-los-retoma-la",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-los-huerfanos-que-son-epicas-los-retoma-la",
   "baseCommit": "9471f99e1616c92f3cce99674a3c812c73d4d0be",
   "revision": 2,
@@ -55,6 +55,9 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T00:10:43.685Z"
+  "lockedTests": {
+    "packages/core/test/cards/orphans-subagents.test.ts": "sha256:199a6e22944e93d7a7234f23eb8be4f5550a7539fd359e6b4fb4cb4654a52b5d",
+    "packages/cli/test/next-orphan-epic.test.ts": "sha256:18175d13e22ef3c5d60f42e66e44df337e436bca6a56b49334eb5cd89ac51eb9",
+    "packages/core/test/cards/orphans-epic.test.ts": "sha256:2b45c80f236b96f26d6ae5874b5edf3951bc2f125f1208b74d0518a3240c5a77"
+  }
 }
