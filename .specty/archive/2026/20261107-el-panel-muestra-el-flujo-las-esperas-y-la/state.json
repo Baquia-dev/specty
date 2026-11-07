@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-el-panel-muestra-el-flujo-las-esperas-y-la",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-el-panel-muestra-el-flujo-las-esperas-y-la",
   "baseCommit": "a4e6321c4130771efd5b22d9cc3115e691c6cc6c",
-  "revision": 1,
+  "revision": 3,
   "approved": {
     "revision": 1,
     "hash": "sha256:2636bf99da7d567ab5aa9cc6fb97d6031eeb17e1201a383da68c45484e8fe774",
@@ -77,14 +77,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/stats/summary.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "05fbacaaa867648e1aaee32d158ddb69dfb568a2",
+      "attempts": 1,
       "startedAt": "2026-11-07T11:03:20.649Z",
       "doneAt": "2026-11-07T11:11:14.881Z",
-      "summary": "Las secciones «Flujo y esperas» y «Calidad» en el panel, tras «Ritmo», con sus gráficas, cifras y la lista de cambios con más verificaciones fallidas; flow y quality admiten undefined explícito; docs/ui.md"
+      "summary": "Las secciones «Flujo y esperas» y «Calidad» en el panel, tras «Ritmo», con sus gráficas, cifras y la lista de cambios con más verificaciones fallidas; flow y quality admiten undefined explícito; docs/ui.md",
+      "scopeExtra": [
+        "packages/core/src/stats/summary.ts"
+      ]
     }
   },
   "pending": {
@@ -97,9 +97,57 @@
     "T": 3,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-07T11:39:11.126Z",
   "lockedTests": {
     "packages/ui/src/catalog/catalog.test.ts": "sha256:f6c1ea28a6dbf79907a47982351658a3f09e770a3b5b1cff0ea11f893592e433",
     "packages/core/test/stats/flow-quality.test.ts": "sha256:5db4ea378d3a106c4e2bf093ac629243ad6ab3a937b751537e373f446edda0a3",
     "packages/ui/src/dashboard/dashboard-flow-quality.test.ts": "sha256:60dce88313bc4155c398f5994519e6cbb55808815b114995a42d1ddea7101d78"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "57e2a1170e0d37969046c8b29fc3f774c871afc9",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/ui/src/dashboard/dashboard-page.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/ui.md",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/stats-changes.ts",
+      "packages/cli/test/server/stats-export.test.ts",
+      "packages/core/src/cards/stats-export.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/stats/export.ts",
+      "packages/core/src/stats/flow.ts",
+      "packages/core/src/stats/quality.ts",
+      "packages/core/src/stats/rows.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/core/test/stats/export.test.ts",
+      "packages/core/test/stats/flow-quality.test.ts",
+      "packages/ui/src/catalog/catalog.test.ts",
+      "packages/ui/src/catalog/catalog.ts",
+      "packages/ui/src/catalog/charts.ts",
+      "packages/ui/src/components/charts/bar-list.ts",
+      "packages/ui/src/components/charts/line-chart.ts",
+      "packages/ui/src/components/charts/segmented-bar.ts",
+      "packages/ui/src/components/icons.test.ts",
+      "packages/ui/src/components/icons.ts",
+      "packages/ui/src/dashboard/dashboard-export.test.ts",
+      "packages/ui/src/dashboard/dashboard-export.ts",
+      "packages/ui/src/dashboard/dashboard-flow-quality.test.ts",
+      "packages/ui/src/dashboard/dashboard-flow.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts",
+      "packages/ui/src/dashboard/dashboard-quality.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/data/stats-export.test.ts",
+      "packages/ui/src/data/stats-export.ts"
+    ],
+    "at": "2026-11-07T11:54:59.767Z",
+    "resolved": {
+      "commit": "645c157",
+      "at": "2026-11-07T12:10:46.278Z"
+    }
   }
 }

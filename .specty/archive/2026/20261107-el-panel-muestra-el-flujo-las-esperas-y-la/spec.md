@@ -103,3 +103,31 @@ El «Panel» de `specty ui` muestra hoy los indicadores, «Ritmo», «Personas y
 - R1: El corte queda en el límite del tamaño L. Mitigación: los tests de las gráficas nuevas van con los del catálogo, el servidor y la fuente de datos no cambian, y lo que no cabe queda fuera de alcance y como pendiente.
 - R2: C6 y C7 se hacen en paralelo y leen `StatsView` y `StatsRow`. Mitigación: los campos nuevos solo se añaden, sin cambiar los que ya hay, y la página solo coloca las dos secciones.
 - R3: jsdom no calcula la geometría. Mitigación: los tests miran la estructura, los textos, el foco y los atributos de cada marca, y antes de aceptar se mira el panel en el navegador, en claro y en oscuro.
+
+## Cierre
+
+### Resumen
+
+El «Panel» de `specty ui` tiene dos secciones más tras «Ritmo». «Flujo y esperas» muestra en barras horizontales la mediana de cada fase de los cambios cerrados en el periodo (redactar la spec, revisión, implementación, aceptación y cierre) con en cuántos se mide. Muestra en una barra segmentada quién aprobó las specs (el agente en modo delegado, la terminal o la UI), con su número y su porcentaje, y tres cifras: la espera a la persona, las revisiones por spec y las sesiones por cambio, con «—» si nada las mide. «Calidad» dibuja en una línea la parte de las verificaciones de tarea que pasan por día o por semana, con «sin datos» donde no hubo ninguna. Da las verificaciones completas fallidas de cuántas, los tests de contrato enviados y bloqueados, los riesgos, los archivos largos y las aserciones quitadas, y hasta cinco cambios con más verificaciones fallidas, enlazados. El core lo calcula en `stats/flow.ts` y `stats/quality.ts` con lo que `statsRow` ahora guarda de la auditoría, y `statsView` lo añade a `GET /api/stats` sin tocar el servidor. Llegan `sp-line-chart`, `sp-bar-list` y `sp-segmented-bar` sobre el marco común, con tabla, teclado e información emergente, y la página «Gráficas» del catálogo con cada gráfica y sus estados. Todo en español y en inglés, documentado en `docs/ui.md`, y visto en el navegador con los datos de este repositorio, en claro y en oscuro, a 30 y 90 días.
+
+### Desviaciones
+
+- La página pone las dos secciones entre «Ritmo» y «Personas y agentes», en el orden que eligió la persona (A9 de la épica), y no tras «Personas y agentes» como decía el diseño.
+- T3 amplió su alcance a `core/src/stats/summary.ts` (aprobado solo, porque estaba en Archivos): `flow` y `quality` admiten `undefined` explícito. El test aprobado de T3 construye una `StatsView` con `quality: StatsView["quality"]` y, con `exactOptionalPropertyTypes`, `pnpm typecheck` fallaba.
+- Los nombres accesibles de las marcas de las tres gráficas nuevas usan espacios normales: `Intl` pone uno duro antes de «%», y los tests aprobados los comparan con espacios normales.
+- `sp-bar-list` tiene, además de lo previsto, `detailLabel`: el nombre de la cifra de cada fila en la información emergente y la columna de la tabla.
+- Al incorporar main para aceptar, falló `components/icons.test.ts`, que cuenta los iconos: el de «Gráficas» los deja en 55. El merge sube la cuenta de 54 a 55, como hicieron los cambios anteriores que añadieron iconos; el archivo no estaba en Archivos.
+
+### Decisiones
+
+- Un `spec.approved` es del agente con `data.delegated` o el canal `delegated`; de la terminal con `tty`, y de la UI con cualquier otro canal (`ui`, y `pr`, que hoy no anota ningún comando).
+- Los puntos de la línea van centrados en tramos iguales, como las columnas, así que sus botones cubren el área de la gráfica igual que en `sp-column-chart`.
+- La barra segmentada no lleva texto dentro (el blanco no contrasta con el naranja ni el aguamarina): su clave en tinta da el valor y el porcentaje de cada parte, también las que están a 0, que no se dibujan.
+- El eje de las verificaciones va de 80 % a 100 % cuando todas las del periodo pasan del 80 %, y de 0 % a 100 % si no.
+- La lista de cambios con más verificaciones fallidas da el id, recortado con su valor completo al pasar el puntero, porque `GET /api/stats` no lee las specs.
+
+### Pendientes
+
+- La lista de cambios con más verificaciones fallidas mostraría el título si `GET /api/stats` leyera las filas con título (`listedOf` de `server/stats-changes.ts`), como harán falta también los cambios más caros de C4.
+- `niceScale` de `column-chart.ts` y `lineScale` de `line-chart.ts` se parecen, y el teclado (`move`) se repite en las cuatro gráficas: conviene llevarlos a un módulo común de `components/charts/`. `shortDay` suma una tercera copia en `dashboard-quality.ts` (P327).
+- P329 sigue abierto: «Sesiones» de «Personas y agentes» da 0 en lugar de «—» cuando ningún cambio informa su sesión.
