@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-las-reglas-de-riesgo-propias-se-suman-a-las-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-las-reglas-de-riesgo-propias-se-suman-a-las-de",
   "baseCommit": "a491c1c0346190390d4f4344e1b40cf32aa3d417",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:703b6a857140808995e87552590e7f6fa9f93886f09c976d88f0234ddbbd271b",
@@ -67,12 +67,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2d2249eb51be34a7d123d488d9472382e656a36b",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:48:18.310Z",
       "doneAt": "2026-11-07T09:54:50.741Z",
-      "summary": "La vista de avisos de la aceptación en la UI pasa el label de la auditoría a riskLabel, así que muestra el texto de la regla de la persona en los dos idiomas; ui.md"
+      "summary": "La vista de avisos de la aceptación en la UI pasa el label de la auditoría a riskLabel, así que muestra el texto de la regla de la persona en los dos idiomas; ui.md",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -85,10 +85,70 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-07T09:55:22.241Z",
   "lockedTests": {
     "packages/cli/test/risk.test.ts": "sha256:6ca9a8f8d101c0c1f2c89bcb4cbc0f990fec7ed78bcdc0b903798658e3cd1f5d",
     "packages/core/test/scope/risk.test.ts": "sha256:2c6049c47a2f0b86b9bf5c3743463f59fe241ac6d84a23438ca41b5d8449fb46",
     "packages/core/test/settings/catalog.test.ts": "sha256:9f8e66afaaf4f48bfbd9b1e6e0cc5cd720a2362e3dd9292eea84021854ab282b",
     "packages/ui/src/data/warnings.test.ts": "sha256:c4431711be37ba0d38d48a0d30ed9b5fbbd3f5407299bb6543c71e8ebd409c76"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ui.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/flow/risk.ts",
+      "packages/cli/src/flow/task-views.ts",
+      "packages/cli/test/risk.test.ts",
+      "packages/cli/test/wait-delegated.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/core/src/cards/acceptance.ts",
+      "packages/core/src/cards/risk-lessons.ts",
+      "packages/core/src/cards/settings-pieces.ts",
+      "packages/core/src/cards/settings-warnings.ts",
+      "packages/core/src/cards/subagents.ts",
+      "packages/core/src/cards/wait.ts",
+      "packages/core/src/flow/waiting.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/light.ts",
+      "packages/core/src/schema/checks.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/schema/warnings.ts",
+      "packages/core/src/scope/risk.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/settings/pieces.ts",
+      "packages/core/test/cards/idle-subagents.test.ts",
+      "packages/core/test/cards/wait.test.ts",
+      "packages/core/test/flow/waiting.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/scope/risk.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/pieces.test.ts",
+      "packages/core/test/validate/quality.test.ts",
+      "packages/ui/src/data/warnings.test.ts",
+      "packages/ui/src/data/warnings.ts",
+      "packages/ui/src/settings/flow-piece.test.ts",
+      "packages/ui/src/settings/flow-piece.ts",
+      "packages/ui/src/settings/settings-flow.test.ts",
+      "packages/ui/src/settings/settings-flow.ts",
+      "packages/ui/src/settings/settings-mode.test.ts",
+      "packages/ui/src/settings/settings-mode.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts"
+    ],
+    "at": "2026-11-07T10:49:13.226Z",
+    "resolved": {
+      "commit": "3a9974b",
+      "at": "2026-11-07T11:03:06.782Z"
+    }
   }
 }

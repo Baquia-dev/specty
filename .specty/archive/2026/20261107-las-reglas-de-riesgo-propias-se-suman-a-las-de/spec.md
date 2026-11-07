@@ -93,3 +93,29 @@ Hoy `specty task done` avisa de los riesgos del contenido solo con el catálogo 
 
 - R1: Un patrón de la persona muy amplio llena de avisos cada tarea, y uno con mucho retroceso tarda en cada línea. Mitigación: son avisos y no bloquean, el aviso nombra la regla por su texto, quitarla de la lista lo apaga y las de Specty no cambian. Además, el patrón solo se prueba en las líneas que añade la tarea.
 - R2: C13, C14, C15 y C18 tocan a la vez `catalog.ts` y `catalog.test.ts`, y su lista de ajustes nuevos. Mitigación: el conflicto al incorporar main se resuelve conservando lo de los dos.
+
+## Cierre
+
+### Resumen
+
+- Core: `schema/warnings.ts` define `warnings.risks`, una lista vacía por defecto de reglas con `label` y `pattern` no vacíos, `cwe` opcional (`CWE-<número>`) y `extensions` opcional (letras y números, sin punto). El patrón se valida con `isRegex`, que `schema/checks.ts` ahora exporta.
+- Análisis: `contentRisks(diff, custom)` prueba las reglas de la persona en las mismas líneas añadidas que las de Specty, detrás de ellas, sin mirar tests y, con `extensions`, sin mirar mayúsculas en la extensión. Cada hallazgo lleva la regla `custom`, el `label` y su CWE. `riskLabel(rule, lang, label?)` da ese texto, y la tarjeta de aceptación y las lecciones de la memoria lo usan; las lecciones cuentan cada regla de la persona por su texto.
+- CLI: `riskFindings` pasa `session.config.warnings.risks`, y `task-views` conserva el `label` al leer `task.completed`.
+- UI: la vista de avisos de la aceptación muestra el texto de la persona, igual en los dos idiomas, y uno genérico si falta.
+- Catálogo: `warnings.risks` en «Avisos», detrás de las capas horizontales, con «Nuevo» y solo en el archivo, y sus textos en español y en inglés.
+- Documentación: formats.md §6 y el formato de `task.completed`, ARCHITECTURE §7 y ui.md. AC7 se comprueba a mano.
+
+### Desviaciones
+
+- `packages/core/test/validate/quality.test.ts` (de C7) dejó de compilar: su ayudante `validated()` pasaba a `withConfig` un `warnings` sin `risks`, que ahora es obligatorio en la configuración resuelta. Se amplió el alcance de T1 (aprobado por la política de tests) y el ayudante completa `warnings` con los valores por defecto; ninguna aserción cambió.
+- La última tarea (T3) suma `pnpm typecheck` a su verificación, como pidió `propose`.
+
+### Decisiones
+
+- El texto de una regla de la persona se guarda en cada hallazgo, así que los avisos ya guardados no cambian aunque cambien las reglas, y nada fuera del análisis lee la configuración para mostrarlos.
+- En una misma línea salen primero los avisos de Specty y después los de la persona, en el orden de su lista.
+- La página «Configuración» no cambió: pinta lo que dice el catálogo, y sus tests calculan desde él las listas de ajustes y de nuevos.
+
+### Pendientes
+
+- Ninguno.
