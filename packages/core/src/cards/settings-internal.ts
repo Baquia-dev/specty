@@ -44,6 +44,16 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
       "How often specty wait looks whether the person decided, when --interval is not given; from 100 to 10000 ms.",
     ],
   },
+  "internal.waits.queueStaleSec": {
+    es: [
+      "Caducidad de un puesto en la cola",
+      "Cuánto cuenta el puesto de un proceso en la cola de las verificaciones sin renovarlo, de 10 a 600 y nunca menos de tres vueltas de una verificación que espera; pasado ese tiempo, el siguiente que mira lo quita.",
+    ],
+    en: [
+      "Life of a place in the queue",
+      "How long a process's place in the verifications' queue counts without renewing it, from 10 to 600 and never less than three looks of a waiting verification; after that, the next one that looks removes it.",
+    ],
+  },
   "internal.retries.landing": {
     es: [
       "Reintentos al aterrizar",
@@ -79,6 +89,16 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
     en: [
       "Days of the record of units",
       "How many days the record keeps the units that passed before specty prune removes them; a removed one only runs again.",
+    ],
+  },
+  "internal.retention.indexHours": {
+    es: [
+      "Vida de los índices temporales",
+      "Cuántas horas deja specty prune un índice temporal de git antes de borrarlo, de 1 a 168; una lectura lo usa unos segundos.",
+    ],
+    en: [
+      "Life of the temporary indexes",
+      "How many hours specty prune leaves a temporary git index before removing it, from 1 to 168; a reading uses it for seconds.",
     ],
   },
   "guarantee.receipts": {
@@ -119,6 +139,16 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
     en: [
       "Sessions' binding",
       "Fixed at 24 h: one that lived less would let the cleanup delete the folder a session works in.",
+    ],
+  },
+  "guarantee.waitMarks": {
+    es: [
+      "Vida de la marca de specty wait",
+      "Fija en 30 s, o tres vueltas de su intervalo si son más: una que viviera más dejaría terminar el turno del agente sin que nadie espere a la persona.",
+    ],
+    en: [
+      "Life of specty wait's mark",
+      "Fixed at 30 s, or three of its intervals if longer: one that lived longer would let the agent's turn end with nobody waiting for the person.",
     ],
   },
 };
@@ -170,8 +200,56 @@ const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
   },
 };
 
+/**
+ * Section «Interno», what the cards show: the importers `propose` names, the lines of the review,
+ * the characters of a task's notes and of a new change's slug.
+ */
+const INTERNAL_CARDS_TEXTS: Readonly<Record<string, Texts>> = {
+  "internal.cards.importersShown": {
+    es: [
+      "Importadores que nombra propose",
+      "Cuántos archivos de fuera de la spec que importan lo que cambia nombra propose por archivo; los demás los cuenta; de 1 a 50.",
+    ],
+    en: [
+      "Importers propose names",
+      "How many files outside the spec that import what it changes propose names for each file; it counts the rest; from 1 to 50.",
+    ],
+  },
+  "internal.cards.reviewLines": {
+    es: [
+      "Líneas de la revisión en la tarjeta",
+      "Cuántas líneas de la respuesta del revisor independiente repite la tarjeta de specty review; reviews/ la guarda entera; de 20 a 2000.",
+    ],
+    en: [
+      "Review lines in the card",
+      "How many lines of the independent reviewer's answer specty review's card repeats; reviews/ keeps it whole; from 20 to 2000.",
+    ],
+  },
+  "internal.cards.noteChars": {
+    es: [
+      "Largo de las notas de una tarea",
+      "Los caracteres que admite task done en el resumen y en cada hallazgo, que repiten las tarjetas de las tareas siguientes; de 100 a 1000.",
+    ],
+    en: [
+      "Length of a task's notes",
+      "The characters task done takes in the summary and in each finding, which the next task cards repeat; from 100 to 1000.",
+    ],
+  },
+  "internal.cards.slugChars": {
+    es: [
+      "Largo del slug de un cambio",
+      "Los caracteres del slug con que specty new forma el id de un cambio y su rama; los que ya existen no cambian; de 16 a 100.",
+    ],
+    en: [
+      "Length of a change's slug",
+      "The characters of the slug specty new builds a change's id and branch with; those that exist do not change; from 16 to 100.",
+    ],
+  },
+};
+
 /** The names and descriptions of section «Interno», for `cards/settings.ts` to gather. */
 export const INTERNAL_SETTING_TEXTS: Readonly<Record<string, Texts>> = {
   ...INTERNAL_TEXTS,
   ...INTERNAL_RUN_TEXTS,
+  ...INTERNAL_CARDS_TEXTS,
 };

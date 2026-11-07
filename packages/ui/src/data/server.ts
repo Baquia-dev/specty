@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable, type Type } from "@angular/core";
-import type { StatsView } from "@baquia-dev/specty-core";
+import type { StatsChangesPage, StatsView } from "@baquia-dev/specty-core";
 import type { ConfigEdit, SessionView } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
@@ -31,6 +31,7 @@ import {
   isRun,
   isSessionList,
   isSliceChanges,
+  isStatsChangesPage,
   NO_DIFF,
   NO_SESSION,
   READ_ONLY,
@@ -47,6 +48,7 @@ import type {
   FinishedPage,
   FinishedRequest,
   MemoryVerb,
+  StatsChangesParams,
   StatsParams,
 } from "./source";
 import { isStrings, isTrace, type TraceRecord } from "./trace";
@@ -129,6 +131,19 @@ export class ServerData extends SpectyData {
     const page: unknown = await response.json().catch(() => undefined);
     if (!isFinishedPage(page)) throw new ActionError(UNEXPECTED);
     return page;
+  }
+
+  /** A page of the panel's table of changes, found, sorted and cut by the server. */
+  override async statsChanges(params: StatsChangesParams): Promise<StatsChangesPage> {
+    const query = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) query.set(key, String(value));
+    }
+    const response = await fetch(`/api/stats/changes?${query}`);
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isStatsChangesPage(body)) throw new ActionError(UNEXPECTED);
+    return body;
   }
 
   override subscribe(listener: () => unknown): () => void {

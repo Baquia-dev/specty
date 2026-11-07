@@ -27,6 +27,8 @@ export interface StatsRow {
   readonly verifications: readonly { readonly day: string; readonly passed: boolean }[];
   /** Each `change.usage` with a `cost`: its day and the cost, in US dollars. */
   readonly costs: readonly { readonly day: string; readonly cost: number }[];
+  /** Each agent session that worked on it (the `session` of its lines), once per day it did. */
+  readonly sessions: readonly { readonly id: string; readonly day: string }[];
 }
 
 /** An audit line, with what the panel reads of it. */
@@ -37,6 +39,7 @@ interface Line {
   readonly tool?: unknown;
   readonly by?: unknown;
   readonly model?: unknown;
+  readonly session?: unknown;
   readonly data: Readonly<Record<string, unknown>>;
 }
 
@@ -74,7 +77,19 @@ export function statsRow(
         ? [{ day: dayOf(line.ts), cost }]
         : [];
     }),
+    sessions: sessionsOf(lines),
   };
+}
+
+/** Each session of `lines` with each day it has a line on, once. */
+function sessionsOf(lines: readonly Line[]): { readonly id: string; readonly day: string }[] {
+  const found = new Map<string, { readonly id: string; readonly day: string }>();
+  for (const line of lines) {
+    if (!isText(line.session)) continue;
+    const day = dayOf(line.ts);
+    found.set(`${line.session} ${day}`, { id: line.session, day });
+  }
+  return [...found.values()];
 }
 
 /** An entry of `audit.jsonl` with a valid time and an event; anything else, none. */

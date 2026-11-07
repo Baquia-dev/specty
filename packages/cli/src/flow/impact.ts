@@ -48,7 +48,8 @@ export async function impactedFiles(session: Session, spec: Spec): Promise<Impac
 
 /** The "used outside the spec" block of an output, or nothing when nothing is. */
 export function impactBlock(session: Session, impacts: readonly Impact[]): OutputBlock[] {
-  const lines = impacts.map((each) => impactLine(each.path, each.importers, session.lang));
+  const shown = session.config.internal.cards.importersShown;
+  const lines = impacts.map((each) => impactLine(each.path, each.importers, session.lang, shown));
   return section(impactTitle(session.lang), lines);
 }
 

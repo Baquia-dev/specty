@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { utimes } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, CHANGE, cli, git, inWorktree, NOW, tempRepo, writeFiles } from "./support";
+import { APP, CHANGE, CONFIG, cli, git, inWorktree, NOW, tempRepo, writeFiles } from "./support";
 
 /** An agent that Specty recognizes: Claude Code. */
 const CLAUDE = { env: { CLAUDECODE: "1" } };
@@ -94,5 +94,23 @@ describe("`specty prune` and what dead processes left", () => {
     expect(pruned.out).not.toContain("RESTOS DE PROCESOS QUE MURIERON");
     expect(pruned.out).toContain("No había nada que limpiar.");
     expect(kept.map((path) => existsSync(join(root, path)))).toEqual([true, true, true, true]);
+  });
+
+  it("AC2: with internal.retention.indexHours removes only the git indexes older than those hours, and says them", async () => {
+    const root = await tempRepo({
+      ...APP,
+      ".specty/config.yaml": `${CONFIG()}internal:\n  retention:\n    indexHours: 3\n`,
+      ".git/specty/index-4-viejo": "",
+      ".git/specty/index-5-joven": "",
+    });
+    await age(join(root, ".git/specty/index-4-viejo"), 181);
+    await age(join(root, ".git/specty/index-5-joven"), 179);
+    const pruned = await cli(root, ["prune"], CLAUDE);
+    expect(pruned.code).toBe(0);
+    expect(pruned.out).toContain(
+      "RESTOS DE PROCESOS QUE MURIERON:\n  Índices temporales de git de más de 3 horas: 1.",
+    );
+    expect(existsSync(join(root, ".git/specty/index-4-viejo"))).toBe(false);
+    expect(existsSync(join(root, ".git/specty/index-5-joven"))).toBe(true);
   });
 });

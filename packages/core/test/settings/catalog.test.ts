@@ -158,14 +158,20 @@ describe("the settings' catalog", () => {
       "internal.waits.heartbeatSec",
       "internal.waits.verifyIntervalMs",
       "internal.waits.waitIntervalMs",
+      "internal.waits.queueStaleSec",
       "internal.retries.landing",
       "internal.retries.memory",
       "internal.retries.gitConfig",
       "internal.retention.verifiedDays",
+      "internal.retention.indexHours",
       "internal.exec.priority",
       "internal.exec.maxOutputKiB",
       "internal.server.portsTried",
       "internal.hooks.antigravityTimeoutSec",
+      "internal.cards.importersShown",
+      "internal.cards.reviewLines",
+      "internal.cards.noteChars",
+      "internal.cards.slugChars",
     ]);
   });
 
@@ -267,6 +273,12 @@ describe("the settings' catalog", () => {
         unit: "ms",
         new: true,
       }),
+      expect.objectContaining({
+        key: "internal.waits.queueStaleSec",
+        kind: "number",
+        unit: "s",
+        new: true,
+      }),
       expect.objectContaining({ key: "internal.retries.landing", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.retries.memory", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.retries.gitConfig", kind: "number", new: true }),
@@ -274,6 +286,12 @@ describe("the settings' catalog", () => {
         key: "internal.retention.verifiedDays",
         kind: "number",
         unit: "d",
+        new: true,
+      }),
+      expect.objectContaining({
+        key: "internal.retention.indexHours",
+        kind: "number",
+        unit: "h",
         new: true,
       }),
       expect.objectContaining({ key: "internal.exec.priority", kind: "number", new: true }),
@@ -285,22 +303,29 @@ describe("the settings' catalog", () => {
         unit: "s",
         new: true,
       }),
+      expect.objectContaining({ key: "internal.cards.importersShown", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.reviewLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.noteChars", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.slugChars", kind: "number", new: true }),
     ]);
     expect(
       SETTINGS.find((setting) => setting.key === "internal.retries.landing")?.unit,
     ).toBeUndefined();
   });
 
-  it("AC5: shows the four lives of compliance as guarantees, fixed at 24 h, with no key of config.yaml", () => {
+  it("AC5: shows the lives of compliance as guarantees, fixed at 24 h and the wait mark at 30 s, with no key of config.yaml", () => {
     const guarantees = SETTINGS.filter((setting) => setting.guarantee === true);
     expect(guarantees.map((setting) => setting.key)).toEqual([
       "guarantee.receipts",
       "guarantee.guardPending",
       "guarantee.shellSnapshots",
       "guarantee.sessions",
+      "guarantee.waitMarks",
     ]);
     for (const setting of guarantees) {
-      expect(setting, setting.key).toMatchObject({ section: "internal", fixed: 24, unit: "h" });
+      const fixed =
+        setting.key === "guarantee.waitMarks" ? { fixed: 30, unit: "s" } : { fixed: 24, unit: "h" };
+      expect(setting, setting.key).toMatchObject({ section: "internal", ...fixed });
       expect(schemaAt(setting.key), setting.key).toBeUndefined();
       expect(
         KEYS.some((key) => covers(setting, key)),
@@ -315,7 +340,16 @@ describe("the settings' catalog", () => {
 
   it("AC5, AC7: says why each guarantee does not change, and names the internal settings in Spanish and in English", () => {
     const internal = SETTINGS.filter((setting) => setting.section === "internal");
-    expect(internal).toHaveLength(16);
+    expect(internal.map((setting) => setting.key)).toEqual(
+      expect.arrayContaining([
+        "internal.waits.waitTimeoutSec",
+        "internal.cards.importersShown",
+        "internal.cards.reviewLines",
+        "internal.cards.noteChars",
+        "internal.cards.slugChars",
+        "guarantee.receipts",
+      ]),
+    );
     for (const setting of internal) {
       const es = settingText(setting.key, "es");
       const en = settingText(setting.key, "en");

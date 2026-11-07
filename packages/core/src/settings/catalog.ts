@@ -83,8 +83,28 @@ const INTERNAL_RUN: readonly Setting[] = [
 ];
 
 /**
+ * Section «Interno», what the cards show: the importers `propose` names, the lines of the review,
+ * the characters of a task's notes and of a new change's slug, which Specty kept fixed in its
+ * code, as keys of `internal.cards` (formats.md §6).
+ */
+const INTERNAL_CARDS: readonly Setting[] = [
+  "importersShown",
+  "reviewLines",
+  "noteChars",
+  "slugChars",
+].map(
+  (limit): Setting => ({
+    key: `internal.cards.${limit}`,
+    section: "internal",
+    kind: "number",
+    new: true,
+  }),
+);
+
+/**
  * Section «Interno»: the parameters Specty kept fixed in its code, as keys of `internal`, and the
- * four lives of compliance, which stay fixed at 24 h with no key (formats.md §6).
+ * lives of compliance, fixed with no key: four at 24 h and the mark of `specty wait` at 30 s
+ * (formats.md §6).
  */
 const INTERNAL: readonly Setting[] = [
   {
@@ -109,6 +129,13 @@ const INTERNAL: readonly Setting[] = [
     unit: "ms",
     new: true,
   },
+  {
+    key: "internal.waits.queueStaleSec",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    new: true,
+  },
   { key: "internal.retries.landing", section: "internal", kind: "number", new: true },
   { key: "internal.retries.memory", section: "internal", kind: "number", new: true },
   { key: "internal.retries.gitConfig", section: "internal", kind: "number", new: true },
@@ -119,7 +146,15 @@ const INTERNAL: readonly Setting[] = [
     unit: "d",
     new: true,
   },
+  {
+    key: "internal.retention.indexHours",
+    section: "internal",
+    kind: "number",
+    unit: "h",
+    new: true,
+  },
   ...INTERNAL_RUN,
+  ...INTERNAL_CARDS,
   ...["receipts", "guardPending", "shellSnapshots", "sessions"].map(
     (life): Setting => ({
       key: `guarantee.${life}`,
@@ -130,6 +165,14 @@ const INTERNAL: readonly Setting[] = [
       guarantee: true,
     }),
   ),
+  {
+    key: "guarantee.waitMarks",
+    section: "internal",
+    kind: "number",
+    unit: "s",
+    fixed: 30,
+    guarantee: true,
+  },
 ];
 
 /**

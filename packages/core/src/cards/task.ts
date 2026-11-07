@@ -15,8 +15,16 @@ import { NOTE_MAX } from "./work";
 export type TaskDoneRefusal =
   | { readonly reason: "not-implementing" }
   | { readonly reason: "not-active"; readonly task: string }
-  /** Every next task card repeats a summary or a finding, so neither may pass NOTE_MAX. */
-  | { readonly reason: "too-long"; readonly note: "summary" | "finding"; readonly length: number }
+  /**
+   * Every next task card repeats a summary or a finding, so neither may pass `max`
+   * (`internal.cards.noteChars`; NOTE_MAX without it).
+   */
+  | {
+      readonly reason: "too-long";
+      readonly note: "summary" | "finding";
+      readonly length: number;
+      readonly max?: number;
+    }
   | { readonly reason: "empty"; readonly note: "summary" | "finding"; readonly task: string }
   | { readonly reason: "scope-pending"; readonly task: string; readonly request: string }
   /** Under `policy.tests: contract`, a refactor or a perf keeps the tests that existed (ADR 0014). */
@@ -113,6 +121,7 @@ function noteRefusalCard(
       ),
     );
   }
+  const max = refusal.max ?? NOTE_MAX;
   const [es, en] =
     refusal.note === "summary"
       ? [`El resumen tiene ${refusal.length}`, `The summary has ${refusal.length}`]
@@ -120,8 +129,8 @@ function noteRefusalCard(
   return blockedCard(
     header,
     t(
-      `${es} caracteres; el máximo es ${NOTE_MAX}, porque las tarjetas de las tareas siguientes lo repiten.`,
-      `${en} characters; the most is ${NOTE_MAX}, since the next task cards repeat it.`,
+      `${es} caracteres; el máximo es ${max}, porque las tarjetas de las tareas siguientes lo repiten.`,
+      `${en} characters; the most is ${max}, since the next task cards repeat it.`,
     ),
     t(
       "dilo en una o dos frases (el detalle ya está en el commit) y vuelve a ejecutar `task done`.",

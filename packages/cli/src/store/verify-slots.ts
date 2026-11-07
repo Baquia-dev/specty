@@ -44,7 +44,8 @@ export async function inSlots<T>(
   const need = Math.min(Math.max(weight, 1), slots);
   const holder = { pid: process.pid, command, folder: session.root, at: now(session) };
   const folder = await git.gitPath(RUNNING);
-  const place = await joinQueue(git, QUEUE, holder);
+  const staleSec = session.config.internal.waits.queueStaleSec;
+  const place = await joinQueue(git, QUEUE, holder, { staleSec, pollMs });
   let said = false;
   try {
     for (;;) {
