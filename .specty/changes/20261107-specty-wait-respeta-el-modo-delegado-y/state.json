@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "15b3a40fd1b328253d706d8452cc9f51d0365c51",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:10:00.682Z",
       "doneAt": "2026-11-07T09:17:39.834Z",
-      "summary": "wait ya no espera en modo delegado las decisiones del agente (waitsForPerson en core), relee el modo en cada vuelta, da la tarjeta de next o la de la solicitud delegada y su tiempo agotado tiene rama delegada; ARCHITECTURE §6"
+      "summary": "wait ya no espera en modo delegado las decisiones del agente (waitsForPerson en core), relee el modo en cada vuelta, da la tarjeta de next o la de la solicitud delegada y su tiempo agotado tiene rama delegada; ARCHITECTURE §6",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e69e5dface9279a6540650c9ac29b28e582829bb",
+      "startedAt": "2026-11-07T09:17:40.230Z",
+      "doneAt": "2026-11-07T09:25:36.051Z",
+      "summary": "El paso de seguir next del encargo de un subagente, en modo delegado, le pide hacer lo que diga «modo delegado» y esperar con specty wait solo una decisión que no le delega (followNext en cards/subagents.ts)."
     }
   },
   "pending": {

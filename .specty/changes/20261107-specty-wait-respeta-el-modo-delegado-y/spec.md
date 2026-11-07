@@ -71,7 +71,7 @@ Con el modo delegado activo, `specty wait` hoy espera hasta una hora a una perso
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow/waiting.test.ts test/cards/wait.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/wait-delegated.test.ts test/wait-folder.test.ts test/wait-guard.test.ts && pnpm lint
   - type: fix
-- [ ] T2: El encargo de los subagentes decide en modo delegado
+- [x] T2: El encargo de los subagentes decide en modo delegado
   - files: packages/core/src/cards/subagents.ts, packages/core/test/cards/idle-subagents.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/idle-subagents.test.ts test/cards/epic.test.ts test/cards/orphans-subagents.test.ts && pnpm lint
