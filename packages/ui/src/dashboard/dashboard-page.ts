@@ -26,6 +26,7 @@ import { Skeleton } from "../components/skeleton";
 import { ActionError, SpectyData } from "../data/records";
 import type { StatsParams } from "../data/source";
 import { Preferences } from "../theme/preferences";
+import { DashboardChanges } from "./dashboard-changes";
 import { DashboardSummary } from "./dashboard-summary";
 
 type Translate = (es: string, en: string) => string;
@@ -58,7 +59,7 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
  */
 @Component({
   selector: "sp-dashboard-page",
-  imports: [DashboardSummary, EmptyState, Segmented, Select, Skeleton],
+  imports: [DashboardChanges, DashboardSummary, EmptyState, Segmented, Select, Skeleton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div [class]="page + ' flex flex-col gap-6 pt-10 pb-16'">
@@ -84,6 +85,7 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
           </sp-empty-state>
         } @else {
           <sp-dashboard-summary [view]="view" />
+          <sp-dashboard-changes [query]="view.query" />
         }
       } @else if (read.isLoading()) {
         <sp-skeleton height="5rem" />

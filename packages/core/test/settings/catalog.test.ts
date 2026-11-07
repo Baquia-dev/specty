@@ -157,10 +157,12 @@ describe("the settings' catalog", () => {
       "internal.waits.heartbeatSec",
       "internal.waits.verifyIntervalMs",
       "internal.waits.waitIntervalMs",
+      "internal.waits.queueStaleSec",
       "internal.retries.landing",
       "internal.retries.memory",
       "internal.retries.gitConfig",
       "internal.retention.verifiedDays",
+      "internal.retention.indexHours",
       "internal.exec.priority",
       "internal.exec.maxOutputKiB",
       "internal.server.portsTried",
@@ -270,6 +272,12 @@ describe("the settings' catalog", () => {
         unit: "ms",
         new: true,
       }),
+      expect.objectContaining({
+        key: "internal.waits.queueStaleSec",
+        kind: "number",
+        unit: "s",
+        new: true,
+      }),
       expect.objectContaining({ key: "internal.retries.landing", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.retries.memory", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.retries.gitConfig", kind: "number", new: true }),
@@ -277,6 +285,12 @@ describe("the settings' catalog", () => {
         key: "internal.retention.verifiedDays",
         kind: "number",
         unit: "d",
+        new: true,
+      }),
+      expect.objectContaining({
+        key: "internal.retention.indexHours",
+        kind: "number",
+        unit: "h",
         new: true,
       }),
       expect.objectContaining({ key: "internal.exec.priority", kind: "number", new: true }),
@@ -298,16 +312,19 @@ describe("the settings' catalog", () => {
     ).toBeUndefined();
   });
 
-  it("AC5: shows the four lives of compliance as guarantees, fixed at 24 h, with no key of config.yaml", () => {
+  it("AC5: shows the lives of compliance as guarantees, fixed at 24 h and the wait mark at 30 s, with no key of config.yaml", () => {
     const guarantees = SETTINGS.filter((setting) => setting.guarantee === true);
     expect(guarantees.map((setting) => setting.key)).toEqual([
       "guarantee.receipts",
       "guarantee.guardPending",
       "guarantee.shellSnapshots",
       "guarantee.sessions",
+      "guarantee.waitMarks",
     ]);
     for (const setting of guarantees) {
-      expect(setting, setting.key).toMatchObject({ section: "internal", fixed: 24, unit: "h" });
+      const fixed =
+        setting.key === "guarantee.waitMarks" ? { fixed: 30, unit: "s" } : { fixed: 24, unit: "h" };
+      expect(setting, setting.key).toMatchObject({ section: "internal", ...fixed });
       expect(schemaAt(setting.key), setting.key).toBeUndefined();
       expect(
         KEYS.some((key) => covers(setting, key)),

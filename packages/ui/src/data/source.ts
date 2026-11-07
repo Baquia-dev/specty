@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 // The data source the screens run on, apart from the data it gives (records.ts, which re-exports
 // it): reading is required, every action is optional.
-import type { ConfigIssue, ResolvedConfig, StatsView } from "@baquia-dev/specty-core";
+import type {
+  ConfigIssue,
+  ResolvedConfig,
+  StatsChangeSort,
+  StatsChangesPage,
+  StatsView,
+} from "@baquia-dev/specty-core";
 import {
   type ChangeSort,
   type ConfigEdit,
@@ -69,6 +75,23 @@ export interface FinishedPage {
   readonly counts: { readonly done: number; readonly cancelled: number };
   /** How many finished changes there are, with no search nor phase. */
   readonly finished: number;
+}
+
+/**
+ * A page of the panel's table of changes (docs/ui.md, «Panel», «Cambios»): the cut, as
+ * `StatsParams`, the search, the column it is sorted by and its direction, where the page starts
+ * and how many it has, and the language its texts sort in.
+ */
+export interface StatsChangesParams {
+  readonly period?: string;
+  readonly who?: string;
+  readonly kind?: string;
+  readonly q: string;
+  readonly sort: StatsChangeSort;
+  readonly dir: "asc" | "desc";
+  readonly offset: number;
+  readonly limit: number;
+  readonly lang: Lang;
 }
 
 /**
@@ -165,6 +188,11 @@ export abstract class SpectyData {
       counts: { done: count("done"), cancelled: count("cancelled") },
       finished: finished.length,
     };
+  }
+
+  /** A page of the panel's table of changes (docs/ui.md, «Panel»); nothing when it cannot tell. */
+  statsChanges(_params: StatsChangesParams): Promise<StatsChangesPage | undefined> {
+    return Promise.resolve(undefined);
   }
 
   /** Why the person cannot decide from this source, or nothing when they can. */

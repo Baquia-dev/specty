@@ -44,6 +44,16 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
       "How often specty wait looks whether the person decided, when --interval is not given; from 100 to 10000 ms.",
     ],
   },
+  "internal.waits.queueStaleSec": {
+    es: [
+      "Caducidad de un puesto en la cola",
+      "Cuánto cuenta el puesto de un proceso en la cola de las verificaciones sin renovarlo, de 10 a 600 y nunca menos de tres vueltas de una verificación que espera; pasado ese tiempo, el siguiente que mira lo quita.",
+    ],
+    en: [
+      "Life of a place in the queue",
+      "How long a process's place in the verifications' queue counts without renewing it, from 10 to 600 and never less than three looks of a waiting verification; after that, the next one that looks removes it.",
+    ],
+  },
   "internal.retries.landing": {
     es: [
       "Reintentos al aterrizar",
@@ -79,6 +89,16 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
     en: [
       "Days of the record of units",
       "How many days the record keeps the units that passed before specty prune removes them; a removed one only runs again.",
+    ],
+  },
+  "internal.retention.indexHours": {
+    es: [
+      "Vida de los índices temporales",
+      "Cuántas horas deja specty prune un índice temporal de git antes de borrarlo, de 1 a 168; una lectura lo usa unos segundos.",
+    ],
+    en: [
+      "Life of the temporary indexes",
+      "How many hours specty prune leaves a temporary git index before removing it, from 1 to 168; a reading uses it for seconds.",
     ],
   },
   "guarantee.receipts": {
@@ -119,6 +139,16 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
     en: [
       "Sessions' binding",
       "Fixed at 24 h: one that lived less would let the cleanup delete the folder a session works in.",
+    ],
+  },
+  "guarantee.waitMarks": {
+    es: [
+      "Vida de la marca de specty wait",
+      "Fija en 30 s, o tres vueltas de su intervalo si son más: una que viviera más dejaría terminar el turno del agente sin que nadie espere a la persona.",
+    ],
+    en: [
+      "Life of specty wait's mark",
+      "Fixed at 30 s, or three of its intervals if longer: one that lived longer would let the agent's turn end with nobody waiting for the person.",
     ],
   },
 };
