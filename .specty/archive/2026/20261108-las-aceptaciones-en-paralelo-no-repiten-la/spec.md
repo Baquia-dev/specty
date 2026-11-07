@@ -86,3 +86,24 @@ Opción elegida: ordenar los aterrizajes con el turno que ya existe, en lugar de
 - R1: En modo delegado, integrate tiene el turno también mientras archiva y aterriza (segundos, más `git.afterLanding`), y las demás sesiones esperan eso — es lo mismo que ya esperan con el `accept` delegado que cierra, y mucho menos que una verificación repetida.
 - R2: Con todas las unidades ya pasadas, integrate antes no pedía el turno y ahora sí, así que espera a la verificación de otra sesión — es raro, porque el merge resuelto suele traer código que ninguna unidad pasó; se documenta.
 - R3: Si integrate deja una incorporación nueva (AC2), lo resuelto ya tiene su commit en la rama, y abortar el merge nuevo no lo deshace — es lo que se quiere: el agente no vuelve a resolver lo mismo, y la incorporación descartada se intenta de nuevo, como hoy.
+
+## Cierre
+
+### Resumen
+
+`specty integrate` comprueba sin turno los marcadores y lo cambiado fuera de la incorporación, y verifica y hace el commit en el turno de aterrizaje. Si la rama principal avanzó mientras el agente resolvía, hace sin verificar el commit de lo resuelto e incorpora otra vez la rama principal (`mergeTarget`): verifica una sola vez, con todo, o deja la nueva incorporación para el agente sin verificar. En modo delegado sigue en ese mismo turno con el `accept` o el `close` que dejó la incorporación, así que el cambio aterriza sin que otro aterrice entre medias ni verificar otra vez. La salida delegada que pide resolver la incorporación ya no pide repetir el comando, y una línea nueva (`mergedAgainLine`) dice que la rama principal avanzó y se incorporó otra vez. ARCHITECTURE §9 y formats.md lo documentan.
+
+### Desviaciones
+
+- `agentCommands` pasaba de 50 líneas con el `resume` de integrate: su registro va en una función propia, `integrateCommand`, como `waitCommand`.
+- El test de AC4 ya pasaba antes del código, porque fuera del modo delegado integrate sigue terminando como antes; queda como test de regresión.
+
+### Decisiones
+
+- Se ordenan los aterrizajes con el turno que ya existe, en lugar de verificar solo las unidades que tocan los commits nuevos: en la épica cada aterrizaje tocaba el core y la UI, de los que dependen todas las unidades.
+- El commit de lo resuelto va sin verificar cuando la rama principal avanzó: queda en la rama del cambio, y la rama principal solo avanza hasta el merge siguiente, verificado.
+- `integrate` recibe el comando que sigue desde `agent-commands.ts`, para no importar `accept` y `close`, que importan `pendingIntegration` de `commands/integrate.ts`.
+
+### Pendientes
+
+- Ninguno.

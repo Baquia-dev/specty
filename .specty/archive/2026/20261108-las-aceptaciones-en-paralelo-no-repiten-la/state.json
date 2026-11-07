@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-las-aceptaciones-en-paralelo-no-repiten-la",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-las-aceptaciones-en-paralelo-no-repiten-la",
   "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:ec7ac451d545354e480495ddaf848a6bfc4df1f8a8241802ebae40642310c35f",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e7c2d61dbbf87af6c2fe04b021bf3530bbffbff7",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:32:45.647Z",
       "doneAt": "2026-11-07T17:33:12.554Z",
-      "summary": "ARCHITECTURE (incorporación, turno y unidades) y formats.md (integration.resolved) explican integrate en el turno de aterrizaje, la nueva incorporación si main avanzó y el comando que sigue en modo delegado"
+      "summary": "ARCHITECTURE (incorporación, turno y unidades) y formats.md (integration.resolved) explican integrate en el turno de aterrizaje, la nueva incorporación si main avanzó y el comando que sigue en modo delegado",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,6 +87,7 @@
     "T": 3,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-07T17:33:26.796Z",
   "lockedTests": {
     "packages/cli/test/delegated-integration.test.ts": "sha256:b69f843ab4bcf95c28ddcd21dff86d035521d498bea1b7669869e137f459bc88",
     "packages/core/test/cards/incorporation.test.ts": "sha256:48dc40d412bf8375b7e2c09f502b4c35c2f814f2fd6ca85dd47e764c5b1d9dc0",
