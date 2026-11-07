@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261107-el-panel-muestra-el-coste-el-alcance-las",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-panel-muestra-el-coste-el-alcance-las",
+  "baseCommit": "2fb77e84f14790f5728193d155fce12d104768ec",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2d575ae2515d2249f8478a6fe6c28fdb318c1075af7ee11d1c697243d7b85f45",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:8c95124852ff213978ba9b1fe0ae89d8c39a61dcb2f4519ecd70beae8a9e17fd",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:9aa8facffaecc2768e21963ebff28849e761ded29ee6d5b1eb398afdebc7c60b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:519eaca09b31a7893ddf4f5d13a879d3f33d5959207336399307ec4c66b53977",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:d2534e17515a8e77add32090d85d82e1518bf4c6ce56b08d37358e7fb6a8aa71",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:d61790a2b5e800a6eb16b70d3473996468f43d84d39ac6b2822b4516f95ec6e8",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:722ce52a34f23bcead2fd9c6bc5d52f2c80d340b296e7c3e71f7ad17bbe6db90",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 8,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:087ab5078e231e6b72ae7ccdb5e3d29352b57126e88fe771e187c7ef70e96a08",
+    "at": "2026-11-07T12:28:40.537Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
