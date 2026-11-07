@@ -43,14 +43,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/test/settings/catalog.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "9fae0d0096054131f7fb380679a5780861276173",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:42:12.091Z",
       "doneAt": "2026-11-07T05:00:03.359Z",
-      "summary": "internal.exec.maxOutputKiB (512, entero de 64 a 16384) en el bloque exec de schema/internal-run.ts; su ajuste en «Interno» tras la prioridad, con la marca new y sus textos en es/en; formats.md §6 lo documenta. Desbloqueo S1 aprobado: la lista de ajustes «Nuevo» suma la clave."
+      "summary": "internal.exec.maxOutputKiB (512, entero de 64 a 16384) en el bloque exec de schema/internal-run.ts; su ajuste en «Interno» tras la prioridad, con la marca new y sus textos en es/en; formats.md §6 lo documenta. Desbloqueo S1 aprobado: la lista de ajustes «Nuevo» suma la clave.",
+      "scopeExtra": [
+        "packages/core/test/settings/catalog.test.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e8f9b86f5d7cd46a2210232a384cc2574e4f5799",
+      "startedAt": "2026-11-07T05:00:03.790Z",
+      "doneAt": "2026-11-07T05:00:58.075Z",
+      "summary": "execute acepta maxOutput (lo que guarda de cada flujo; MAX_OUTPUT sale de DEFAULT_CONFIG) y maxOutputOf(config) da internal.exec.maxOutputKiB en caracteres; los comandos de checks.commands y la revisión independiente lo pasan."
     }
   },
   "pending": {

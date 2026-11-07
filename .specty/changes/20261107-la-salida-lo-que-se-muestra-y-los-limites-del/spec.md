@@ -75,7 +75,7 @@ Hoy Specty lee como mucho 512 KiB de la salida de cada comando que ejecuta, y la
   - files: packages/core/src/schema/internal-run.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/catalog.test.ts, docs/formats.md
   - ac: AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts
-- [ ] T2: `specty check` y la revisión independiente leen la salida que dice la configuración
+- [x] T2: `specty check` y la revisión independiente leen la salida que dice la configuración
   - files: packages/cli/src/io/exec.ts, packages/cli/src/check/commands.ts, packages/cli/src/commands/review.ts, packages/cli/test/check-commands.test.ts, packages/cli/test/review.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-commands.test.ts test/review.test.ts
