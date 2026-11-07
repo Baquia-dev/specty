@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "id": "20261108-la-trazabilidad-y-el-flujo-de-eventos-de-la-ui",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-la-trazabilidad-y-el-flujo-de-eventos-de-la-ui",
+  "baseCommit": "f95e90911a803eec91ba8681e1964b2ce2e434bb",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:dae554d651162043766e5057094a93037b96da04e49c56f4e3875e9a20943a6b",
+    "at": "2026-11-07T17:22:14.437Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8a1fc0bc99451974427af65972942db4d296666a7b4ff420f2a2653fa80e12da",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:894303b541856d73230a15b96911ef562e212e3256ad13a30ead2ee28ab3c585",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:428c8d0578d4f9d6db492eee0729039c4f7e92c2a6b0d7b242dd60d20b162cfa",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:4a0eddebd4b3e544cfd552a42a85dc28e139225ca4879cf70f60053a378ff7d1",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:80eb73c893c12a0fbee96b34a077355931a05182bbcf3967ab18c042acb8896a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "736130deb622b44d1c9fa3d34ad29a8019284b5d",
+      "attempts": 1,
+      "startedAt": "2026-11-07T17:22:16.476Z",
+      "doneAt": "2026-11-07T17:25:47.458Z",
+      "summary": "Test de ServerData.testCode en server-trace.test.ts: lee el código como texto con su URL, y explica la falta de sesión (403), un archivo que no es su test (404) y un error (500).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "453f9cf7581629c91c5801119691bc6152d638ad",
+      "attempts": 1,
+      "startedAt": "2026-11-07T17:25:47.807Z",
+      "doneAt": "2026-11-07T17:27:02.435Z",
+      "summary": "Las lecturas de la trazabilidad (fetchTraceFiles, fetchTrace, fetchTestCode y traced, con NO_TRACE_YET, NOT_A_TEST y TRACE_TOO_LARGE) pasan a data/server-trace.ts; traceFiles, trace y testCode de ServerData solo las llaman.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "07be0e423f95963aea4447b718221f2bc2ecefeb",
+      "attempts": 1,
+      "startedAt": "2026-11-07T17:27:02.832Z",
+      "doneAt": "2026-11-07T17:28:44.927Z",
+      "summary": "El flujo de eventos (ServerEvents, readRun y la lectura de los eventos run y action, que sale de server-answers.ts) pasa a data/server-events.ts; ServerData le delega. ARCHITECTURE nombra los dos módulos nuevos.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-07T17:32:10.411Z"
+}

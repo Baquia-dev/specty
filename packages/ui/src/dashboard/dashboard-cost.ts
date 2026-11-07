@@ -2,14 +2,15 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import type { ChangeKind, StatsView } from "@baquia-dev/specty-core";
-import type { Lang } from "@baquia-dev/specty-core/light";
 import { KindBadge } from "../components/badge";
 import { BarList, type BarRow } from "../components/charts/bar-list";
 import { type ChartSeries, ColumnChart } from "../components/charts/column-chart";
 import { type ChartPart, SegmentedBar } from "../components/charts/segmented-bar";
 import { SectionDivider } from "../components/document";
+import { ShownText } from "../components/shown-text";
 import { formatDuration } from "../data/progress";
 import { Preferences } from "../theme/preferences";
+import { shortDay } from "./dashboard-format";
 
 type Cost = NonNullable<StatsView["cost"]>;
 
@@ -32,7 +33,7 @@ const FIGURE = "px-2 py-1 text-right whitespace-nowrap tabular-nums";
  */
 @Component({
   selector: "sp-dashboard-cost",
-  imports: [BarList, ColumnChart, KindBadge, RouterLink, SectionDivider, SegmentedBar],
+  imports: [BarList, ColumnChart, KindBadge, RouterLink, SectionDivider, SegmentedBar, ShownText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "flex flex-col gap-4",
@@ -75,7 +76,14 @@ const FIGURE = "px-2 py-1 text-right whitespace-nowrap tabular-nums";
               <tbody>
                 @for (row of top(); track row.id) {
                   <tr [attr.data-change]="row.id">
-                    <td data-cell="change" class="max-w-0 truncate px-2 py-1"><a class="font-mono text-xs text-text" [routerLink]="['/changes', row.id]" [attr.title]="row.id">{{ row.id }}</a></td>
+                    <td data-cell="change" class="max-w-0 px-2 py-1">
+                      @if (row.title === undefined) {
+                        <a class="block truncate font-mono text-xs text-text" [routerLink]="['/changes', row.id]" [attr.title]="row.id">{{ row.id }}</a>
+                      } @else {
+                        <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', row.id]"><sp-text [text]="row.title" /></a>
+                        <span class="block truncate font-mono text-[11px] text-text-muted" data-id [attr.title]="row.id">{{ row.id }}</span>
+                      }
+                    </td>
                     <td data-cell="kind" class="px-2 py-1"><sp-kind-badge [kind]="row.kind" /></td>
                     <td data-cell="tasks" [class]="FIGURE">{{ row.tasks }}</td>
                     <td data-cell="cycle" [class]="FIGURE">{{ row.cycle }}</td>
@@ -219,6 +227,7 @@ export class DashboardCost {
     const { count, usd } = this.formats();
     return this.cost().top.map((change) => ({
       id: change.id,
+      title: change.title,
       kind: change.kind,
       tasks: count.format(change.tasks),
       cycle: change.cycle === null ? "—" : formatDuration(change.cycle, lang),
@@ -226,12 +235,4 @@ export class DashboardCost {
       cost: usd.format(change.cost),
     }));
   });
-}
-
-/** A local day, YYYY-MM-DD, as «9 oct» or «Oct 9». */
-function shortDay(day: string, lang: Lang): string {
-  const [year = 0, month = 1, date = 1] = day.split("-").map(Number);
-  return new Intl.DateTimeFormat(lang, { day: "numeric", month: "short" }).format(
-    new Date(year, month - 1, date),
-  );
 }

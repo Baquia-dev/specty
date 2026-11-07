@@ -12,71 +12,22 @@ import {
   signal,
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
-import type {
-  ChangeKind,
-  StatsChange,
-  StatsChangeSort,
-  StatsChangesPage,
-  StatsQuery,
-} from "@baquia-dev/specty-core";
-import type { Lang } from "@baquia-dev/specty-core/light";
+import type { StatsChangeSort, StatsChangesPage, StatsQuery } from "@baquia-dev/specty-core";
 import { LucideDynamicIcon } from "@lucide/angular";
 import { KindBadge } from "../components/badge";
 import { Button } from "../components/button";
 import { SectionDivider } from "../components/document";
 import { LucideCircleX, LucideSearch } from "../components/icons";
 import { ShownText } from "../components/shown-text";
-import { agentName } from "../data/agent-name";
-import { formatDuration } from "../data/progress";
 import { ActionError, SpectyData } from "../data/records";
 import type { StatsChangesParams } from "../data/source";
 import { Preferences } from "../theme/preferences";
-
-type Direction = StatsChangesParams["dir"];
+import { COLUMNS, type Column, type Direction, rowsOf } from "./dashboard-table";
 
 /** How many changes a page has, as the server gives them by default. */
 const PAGE_SIZE = 25;
 /** How long the search waits for the person to stop typing, as the Inbox's. */
 const TYPING_MS = 250;
-/** What a cell shows when the change lacks its value. */
-const NONE = "—";
-
-/** A column: what it sorts by, its header, whether it holds figures, and where it starts. */
-interface Column {
-  readonly key: StatsChangeSort;
-  readonly es: string;
-  readonly en: string;
-  readonly figure: boolean;
-  /** Texts from A to Z, dates and figures from the most. */
-  readonly natural: Direction;
-}
-
-const COLUMNS: readonly Column[] = [
-  { key: "closed", es: "Cerrado", en: "Closed", figure: false, natural: "desc" },
-  { key: "title", es: "Cambio", en: "Change", figure: false, natural: "asc" },
-  { key: "kind", es: "Carril", en: "Lane", figure: false, natural: "asc" },
-  { key: "size", es: "Tamaño", en: "Size", figure: false, natural: "desc" },
-  { key: "agent", es: "Agente", en: "Agent", figure: false, natural: "asc" },
-  { key: "tasks", es: "Tareas", en: "Tasks", figure: true, natural: "desc" },
-  { key: "cycle", es: "Ciclo", en: "Cycle", figure: true, natural: "desc" },
-  { key: "failed", es: "Fallidas", en: "Failed", figure: true, natural: "desc" },
-  { key: "cost", es: "Coste", en: "Cost", figure: true, natural: "desc" },
-];
-
-/** A change as its row shows it, each value written in the page's language. */
-interface Row {
-  readonly id: string;
-  readonly title: string;
-  readonly kind: ChangeKind;
-  readonly closed: string;
-  readonly size: string;
-  readonly agent: string;
-  readonly tasks: string;
-  readonly cycle: string;
-  readonly failed: number;
-  readonly failedText: string;
-  readonly cost: string;
-}
 
 const CELL = "px-2 py-1.5";
 const FIGURE = `${CELL} text-right whitespace-nowrap tabular-nums`;
@@ -331,34 +282,4 @@ export class DashboardChanges {
     this.waiting?.();
     this.waiting = undefined;
   }
-}
-
-/** The rows of a page, each value written in `lang`; a date of another year says its year. */
-function rowsOf(page: StatsChangesPage, lang: Lang): readonly Row[] {
-  const year = Number(page.range.to.slice(0, 4));
-  const count = new Intl.NumberFormat(lang);
-  const usd = new Intl.NumberFormat(lang, { style: "currency", currency: "USD" });
-  const day = (iso: string) => {
-    const date = new Date(iso);
-    const options: Intl.DateTimeFormatOptions =
-      date.getFullYear() === year
-        ? { day: "numeric", month: "short" }
-        : { day: "numeric", month: "short", year: "numeric" };
-    return new Intl.DateTimeFormat(lang, options).format(date);
-  };
-  return page.changes.map(
-    (change: StatsChange): Row => ({
-      id: change.id,
-      title: change.title,
-      kind: change.kind,
-      closed: change.closed === undefined ? NONE : day(change.closed),
-      size: change.size ?? NONE,
-      agent: change.agent === undefined ? NONE : agentName(change.agent),
-      tasks: count.format(change.tasks),
-      cycle: change.cycle === undefined ? NONE : formatDuration(change.cycle, lang),
-      failed: change.failed,
-      failedText: count.format(change.failed),
-      cost: change.cost === undefined ? NONE : usd.format(change.cost),
-    }),
-  );
 }

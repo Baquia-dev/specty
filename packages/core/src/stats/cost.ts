@@ -44,6 +44,8 @@ export interface StatsCost {
    */
   readonly top: readonly {
     readonly id: string;
+    /** The title of its row, when it brings one. */
+    readonly title?: string;
     readonly kind: ChangeKind;
     readonly cost: number;
     readonly tasks: number;
@@ -75,6 +77,7 @@ export function statsCost(
       .slice(0, TOP)
       .map(({ row, cost }) => ({
         id: row.id,
+        ...(row.title === undefined ? {} : { title: row.title }),
         kind: row.kind,
         cost,
         tasks: row.tasks.length,

@@ -1,11 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import { randomUUID } from "node:crypto";
 import { mkdir, realpath } from "node:fs/promises";
-import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
+import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import type { ChangedFile } from "@baquia-dev/specty-core";
 import { type ExecResult, execute } from "./exec";
-import { exists, remove } from "./files";
-import { type OpenedHead, type Recalling, recalling, rememberHead } from "./git-memo";
+import { exists, isDirectory, readText, remove } from "./files";
+import {
+  headAnswer,
+  type OpenedHead,
+  type Recall,
+  type Recalling,
+  recall,
+  recalling,
+  rememberHead,
+} from "./git-memo";
 
 /** Hash of git's empty tree, used to diff against a repository without commits. */
 const EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
@@ -66,6 +74,13 @@ export interface Git {
    * on. Whoever keeps one `Git` for long, as the server of `specty ui`, calls it before each turn.
    */
   forget(): void;
+  /**
+   * Git in `folder`, another worktree of the repository as `worktrees` lists it. It asks git
+   * neither for that folder's HEAD and branch, which the listing gives, nor for where its git
+   * folder keeps `specty/` and `common/`; and it shares what this one recalls, so whatever either
+   * changes, both forget.
+   */
+  inWorktree(folder: string): Git;
 }
 
 export interface Worktree {
@@ -74,6 +89,8 @@ export interface Worktree {
   readonly branch?: string;
   /** Locked (`git worktree lock`): `git worktree prune` keeps its record, also with no folder. */
   readonly locked?: boolean;
+  /** HEAD's commit, unless its branch has no commits yet. */
+  readonly head?: string;
 }
 
 /** Root of the repository that contains `cwd`, or undefined outside git. */
@@ -121,17 +138,36 @@ export function createGit(
   known: Readonly<Record<string, string>> = {},
   head?: OpenedHead,
 ): Git {
-  const git = runner(root, baseEnv);
+  const memory = recall();
+  const git = runner(root, baseEnv, memory);
   if (head !== undefined) rememberHead(git, head);
-  const gitPath = gitPaths(git, known);
+  return assemble(git, gitPaths(git, known), { baseEnv, memory });
+}
+
+/** What every `Git` of one repository shares: the environment git runs with and what they recall. */
+interface Shared {
+  readonly baseEnv: NodeJS.ProcessEnv;
+  readonly memory: Recall;
+}
+
+/**
+ * A `Git` from its runner and where its git folder keeps each path; with `listing`, its worktrees
+ * are the ones that one lists, as git lists the same from every worktree.
+ */
+function assemble(
+  git: Runner & Recalling,
+  gitPath: (name: string) => Promise<string>,
+  shared: Shared,
+  listing?: Pick<Git, "worktrees">,
+): Git {
   const repository: Repository = {
     ...git,
     head: () => git.optional(["rev-parse", "--verify", "-q", "HEAD"]),
     gitPath,
-    ...worktreeQueries(git),
+    ...worktreeQueries(git, listing),
   };
-  return {
-    root,
+  const assembled: Git = {
+    root: git.root,
     run: git.run,
     output: git.output,
     head: repository.head,
@@ -144,7 +180,44 @@ export function createGit(
     worktrees: repository.worktrees,
     nestedWorktrees: repository.nestedWorktrees,
     forget: git.forget,
+    inWorktree: (folder) => worktreeGit(assembled, folder, shared),
   };
+  return assembled;
+}
+
+/**
+ * Git in `folder`, a worktree `listing` lists (`Git.inWorktree`): HEAD and its branch come from
+ * that listing, which `listing` recalls like any read, `common/` is where `listing` has it, as git
+ * keeps one for the whole repository, and `specty/` goes in the git folder of `folder`.
+ */
+function worktreeGit(listing: Git, folder: string, shared: Shared): Git {
+  const listed = async (): Promise<OpenedHead | undefined> => {
+    const found = (await listing.worktrees()).find((worktree) => worktree.folder === folder);
+    return found?.head === undefined
+      ? undefined
+      : { commit: found.head, branch: found.branch ?? "HEAD" };
+  };
+  const git = runner(folder, shared.baseEnv, shared.memory, (args) => headAnswer(args, listed));
+  const gitPath = gitPaths(git, {
+    common: () => listing.gitPath("common"),
+    specty: async () => {
+      const dir = await gitDirOf(folder);
+      return dir === undefined ? undefined : join(dir, "specty");
+    },
+  });
+  return assemble(git, gitPath, shared, listing);
+}
+
+/**
+ * The git folder of the worktree in `folder`, as git finds it: its `.git` folder, or the one its
+ * `.git` file names (`gitdir: …`, relative to `folder` when it is not absolute). Undefined when
+ * neither is there.
+ */
+async function gitDirOf(folder: string): Promise<string | undefined> {
+  const dotGit = join(folder, ".git");
+  if (await isDirectory(dotGit)) return dotGit;
+  const named = /^gitdir:\s*(.+)$/m.exec((await readText(dotGit)) ?? "")?.[1]?.trim();
+  return named === undefined ? undefined : resolve(folder, named);
 }
 
 /**
@@ -153,22 +226,29 @@ export function createGit(
  */
 const ONE_FOLDER: ReadonlySet<string> = new Set(["specty", "common"]);
 
+/** Where git keeps a path of its folder, known without asking git: undefined asks it after all. */
+type KnownPath = string | (() => Promise<string | undefined>);
+
 /**
- * Where git keeps each path of its folder (`git rev-parse --git-path`), asking git once per path:
- * a path under `specty/` or `common/` comes from the answer for that segment, so one question
- * serves them all. A question that fails is not kept.
+ * Where git keeps each path of its folder (`git rev-parse --git-path`), asking git once per path
+ * that `known` does not give: a path under `specty/` or `common/` comes from the answer for that
+ * segment, so one question serves them all. A question that fails is not kept.
  */
 function gitPaths(
   git: Runner,
-  known: Readonly<Record<string, string>>,
+  known: Readonly<Record<string, KnownPath>>,
 ): (name: string) => Promise<string> {
-  const answers = new Map<string, Promise<string>>(
-    Object.entries(known).map(([name, path]) => [name, Promise.resolve(path)]),
-  );
+  const given = new Map(Object.entries(known));
+  const lookUp = async (name: string): Promise<string> => {
+    const source = given.get(name);
+    const path = typeof source === "function" ? await source().catch(() => undefined) : source;
+    return path ?? git.output(["rev-parse", "--git-path", name]);
+  };
+  const answers = new Map<string, Promise<string>>();
   const ask = (name: string): Promise<string> => {
-    const known = answers.get(name);
-    if (known !== undefined) return known;
-    const answer = git.output(["rev-parse", "--git-path", name]);
+    const kept = answers.get(name);
+    if (kept !== undefined) return kept;
+    const answer = lookUp(name);
     answers.set(name, answer);
     answer.catch(() => answers.delete(name));
     return answer;
@@ -192,16 +272,31 @@ interface Runner extends Pick<Git, "root" | "run" | "output"> {
 /** A runner that also knows HEAD, the git directory and the worktrees. */
 type Repository = Runner & Pick<Git, "head" | "gitPath" | "worktrees" | "nestedWorktrees">;
 
-function runner(root: string, baseEnv: NodeJS.ProcessEnv): Runner & Recalling {
-  const { run, remember, forget } = recalling((args, options: RunOptions) =>
-    execute("git", args, {
-      cwd: root,
-      env: { ...baseEnv, ...options.env },
-      // A diff or a file is read whole: cut, it would lose its beginning.
-      whole: true,
-      ...(options.input !== undefined ? { input: options.input } : {}),
-    }),
-  );
+/**
+ * Runs git in `root`, through `memory`. `answered` gives what git would answer to some arguments
+ * without asking it; it is not asked with an environment or an input of their own.
+ */
+function runner(
+  root: string,
+  baseEnv: NodeJS.ProcessEnv,
+  memory: Recall,
+  answered: (args: readonly string[]) => Promise<ExecResult | undefined> = async () => undefined,
+): Runner & Recalling {
+  const ask = async (args: readonly string[], options: RunOptions) => {
+    const known =
+      options.env === undefined && options.input === undefined ? await answered(args) : undefined;
+    return (
+      known ??
+      execute("git", args, {
+        cwd: root,
+        env: { ...baseEnv, ...options.env },
+        // A diff or a file is read whole: cut, it would lose its beginning.
+        whole: true,
+        ...(options.input !== undefined ? { input: options.input } : {}),
+      })
+    );
+  };
+  const { run, remember, forget } = recalling(ask, memory);
   const output = async (args: readonly string[], options: RunOptions = {}) => {
     const result = await run(args, options);
     if (result.code !== 0) throw new GitError(args, result);
@@ -215,22 +310,34 @@ function runner(root: string, baseEnv: NodeJS.ProcessEnv): Runner & Recalling {
   return { root, run, output, optional, remember, forget };
 }
 
-function worktreeQueries(git: Runner): Pick<Git, "worktrees" | "nestedWorktrees"> {
-  // `--porcelain` prints one block per worktree: `worktree <folder>`, then `branch refs/heads/…`
-  // unless it is detached, and `locked`, with its reason or not, when it is locked.
-  const worktrees = async () =>
+function worktreeQueries(
+  git: Runner,
+  listing?: Pick<Git, "worktrees">,
+): Pick<Git, "worktrees" | "nestedWorktrees"> {
+  // `--porcelain` prints one block per worktree: `worktree <folder>`, `HEAD <commit>`, then
+  // `branch refs/heads/…` unless it is detached, and `locked`, with its reason or not, when it is
+  // locked.
+  const listed = async () =>
     (await git.output(["worktree", "list", "--porcelain"])).split("\n\n").flatMap((block) => {
       const lines = block.split("\n");
       const value = (prefix: string) =>
         lines.find((line) => line.startsWith(prefix))?.slice(prefix.length);
       const folder = value("worktree ");
       const branch = value("branch refs/heads/");
+      // A branch without commits yet has a HEAD of zeros.
+      const head = value("HEAD ");
       if (folder === undefined) return [];
       const locked = lines.some((line) => line === "locked" || line.startsWith("locked "));
       return [
-        { folder, ...(branch === undefined ? {} : { branch }), ...(locked ? { locked } : {}) },
+        {
+          folder,
+          ...(branch === undefined ? {} : { branch }),
+          ...(locked ? { locked } : {}),
+          ...(head === undefined || /^0+$/.test(head) ? {} : { head }),
+        },
       ];
     });
+  const worktrees = listing?.worktrees ?? listed;
   const nestedWorktrees = async () => {
     const own = await resolved(git.root);
     const folders = await Promise.all(

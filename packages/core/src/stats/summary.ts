@@ -92,6 +92,29 @@ export interface StatsView {
   readonly scope?: StatsScope | undefined;
   /** «Memoria»: the entries of the cut noted in the period, by status and by kind. */
   readonly memory?: StatsMemory | undefined;
+  /**
+   * The six figures in each day or week of «Ritmo», for the minigraphs of the first row: each
+   * counted as the period counts it, none where nothing in that day or week measures it.
+   */
+  readonly trend?:
+    | {
+        readonly unit: StatsRhythm["unit"];
+        readonly buckets: readonly {
+          readonly from: string;
+          readonly to: string;
+          readonly closed: number;
+          readonly tasks: number;
+          /** The median milliseconds from created to closed of the changes closed in it. */
+          readonly cycle: number | null;
+          /** The share of task verifications that passed in it, from 0 to 1. */
+          readonly verifications: number | null;
+          /** The US dollars measured in it. */
+          readonly cost: number | null;
+          /** Pending items, improvements and reminders open at its end. */
+          readonly pending: number;
+        }[];
+      }
+    | undefined;
 }
 
 /** What the panel is made of: every change's row, the memory's entries and the local today. */
@@ -131,6 +154,31 @@ export function statsView({ rows, memory, today, query }: StatsInput): StatsView
     cost: statsCost(cut, current, rhythm),
     scope: statsScope(cut, current),
     memory: statsMemory(entries, current),
+    trend: trendOf(cut, entries, rhythm),
+  };
+}
+
+/** The figures of `rows` and `memory` in each day or week of `rhythm`. */
+function trendOf(
+  rows: readonly StatsRow[],
+  memory: readonly MemoryEntry[],
+  rhythm: StatsRhythm,
+): NonNullable<StatsView["trend"]> {
+  return {
+    unit: rhythm.unit,
+    buckets: rhythm.buckets.map(({ from, to }) => {
+      const counts = countsOf(rows, memory, { from, to });
+      return {
+        from,
+        to,
+        closed: counts.closed,
+        tasks: counts.tasks,
+        cycle: counts.cycle,
+        verifications: counts.passing,
+        cost: counts.cost,
+        pending: counts.pending,
+      };
+    }),
   };
 }
 

@@ -17,7 +17,6 @@ import type {
   StatsView,
   StatsWho,
 } from "@baquia-dev/specty-core";
-import type { Lang } from "@baquia-dev/specty-core/light";
 import { PAGE } from "../components/document";
 import { EmptyState } from "../components/empty-state";
 import { Segmented } from "../components/segmented";
@@ -30,6 +29,7 @@ import { DashboardChanges } from "./dashboard-changes";
 import { DashboardCost } from "./dashboard-cost";
 import { DashboardExport } from "./dashboard-export";
 import { DashboardFlow } from "./dashboard-flow";
+import { shortDay } from "./dashboard-format";
 import { DashboardMemory } from "./dashboard-memory";
 import { DashboardPeople } from "./dashboard-people";
 import { DashboardQuality } from "./dashboard-quality";
@@ -267,12 +267,4 @@ function whoLabel(who: StatsWho, t: Translate): string {
     model: t("Modelo", "Model"),
   };
   return `${kinds[who.kind]}: ${who.name === "" ? t("(sin dato)", "(no data)") : who.name}`;
-}
-
-/** A local day, YYYY-MM-DD, as «9 oct» or «Oct 9». */
-function shortDay(day: string, lang: Lang): string {
-  const [year = 0, month = 1, date = 1] = day.split("-").map(Number);
-  return new Intl.DateTimeFormat(lang, { day: "numeric", month: "short" }).format(
-    new Date(year, month - 1, date),
-  );
 }

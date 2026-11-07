@@ -51,7 +51,7 @@ export interface LineLimits {
   readonly fail: number | false;
 }
 
-/** `.specty/config.yaml` with every default; `usage`, `warnings` and `flow` from their modules. */
+/** `.specty/config.yaml` with every default; `usage`, `warnings`, `flow` and `lanes` apart. */
 export interface ResolvedConfig extends WarningsConfig, FlowConfig {
   readonly version: 1;
   readonly language: Lang;
@@ -65,7 +65,6 @@ export interface ResolvedConfig extends WarningsConfig, FlowConfig {
     readonly generated: readonly string[];
     readonly autoApprove: "none" | "tests-and-generated";
   };
-  readonly lanes: { readonly quick: { readonly maxFiles: number } };
   readonly split: {
     readonly maxTasks: number;
     readonly maxFiles: number;
@@ -129,7 +128,6 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   sensitive: ["**/migrations/**", "**/auth/**", ".github/**", "**/.env*", "**/infra/**"],
   verify: DEFAULT_VERIFY,
   scope: { implicitTests: true, generated: [], autoApprove: "tests-and-generated" },
-  lanes: { quick: { maxFiles: 3 } },
   split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 },
   size: { S: 4, M: 10, L: 18 },
   sizing: DEFAULT_SIZING,
@@ -193,9 +191,6 @@ export const ConfigSchema = z.strictObject({
       generated: Globs.optional(),
       autoApprove: z.enum(["none", "tests-and-generated"]).optional(),
     })
-    .optional(),
-  lanes: z
-    .strictObject({ quick: z.strictObject({ maxFiles: Positive.optional() }).optional() })
     .optional(),
   split: z
     .strictObject({
@@ -332,11 +327,10 @@ function scopeOf(input: ConfigInput): ResolvedConfig["scope"] {
   };
 }
 
-/** The limits of a change: the quick lane's, when it must be split, and its size levels. */
-function limitsOf(input: ConfigInput): Pick<ResolvedConfig, "lanes" | "split" | "size"> {
+/** The limits of a change: when it must be split, and its size levels. */
+function limitsOf(input: ConfigInput): Pick<ResolvedConfig, "split" | "size"> {
   const base = DEFAULT_CONFIG;
   return {
-    lanes: { quick: { maxFiles: input.lanes?.quick?.maxFiles ?? base.lanes.quick.maxFiles } },
     split: {
       maxTasks: input.split?.maxTasks ?? base.split.maxTasks,
       maxFiles: input.split?.maxFiles ?? base.split.maxFiles,

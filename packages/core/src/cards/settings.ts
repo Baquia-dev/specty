@@ -128,6 +128,20 @@ const TEXTS: Readonly<Record<string, Texts>> = {
     es: ["Verificaciones a la vez", "La de una tarea ocupa una; la completa, todas."],
     en: ["Verifications at once", "A task's takes one; the full one, all of them."],
   },
+  "verify.processes.env": {
+    es: [
+      "Variables de procesos",
+      "Reciben cuántos procesos lanza cada comando de verificación, por sus núcleos y sus plazas.",
+    ],
+    en: [
+      "Process variables",
+      "They get how many processes each verification command starts, by its cores and places.",
+    ],
+  },
+  "verify.processes.memoryMiB": {
+    es: ["Memoria por proceso (MiB)", "La que ocupa cada proceso de un comando de verificación."],
+    en: ["Memory per process (MiB)", "What each process of a verification command takes."],
+  },
   "verify.units": {
     es: ["Unidades", "La completa por partes; cada una se repite si cambian sus rutas."],
     en: ["Units", "The full one in parts; each runs again when its paths change."],
@@ -170,6 +184,13 @@ const TEXTS: Readonly<Record<string, Texts>> = {
   "review.timeoutSec": {
     es: ["Tiempo máximo de la revisión", "Sin valor, el de la verificación."],
     en: ["Review time limit", "Unset, the verification's."],
+  },
+  "flow.reviewFrom": {
+    es: [
+      "Revisar desde el tamaño",
+      "Desde él se pide revisar la spec y el resultado; sin valor, L.",
+    ],
+    en: ["Review from size", "From it, a review of the spec and the result is asked; unset, L."],
   },
   governed: {
     es: ["Rutas gobernadas", "Donde rige el flujo: código que necesita una spec aprobada."],

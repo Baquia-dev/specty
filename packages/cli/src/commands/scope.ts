@@ -7,6 +7,7 @@ import {
   decideScopeRequest,
   headerOf,
   inScopeLead,
+  isIntegrating,
   matchesAny,
   nextCard,
   normalizePath,
@@ -42,14 +43,29 @@ export interface ScopeAsk extends UnlockOptions {
   readonly task: string | undefined;
 }
 
-/** `specty scope add`: extends the active task's scope, by policy or on a person's approval. */
+/**
+ * `specty scope add`: extends the active task's scope, by policy or on a person's approval; during
+ * an incorporation of the main branch, it only asks to unlock approved tests for it.
+ */
 export async function scopeAdd(
   session: Session,
   rawPaths: readonly string[],
   ask: ScopeAsk,
 ): Promise<Output> {
-  const { cards } = session;
   const active = await resolveActive(session);
+  if (active !== undefined && isIntegrating(active.state))
+    return incorporationUnlock(session, active, rawPaths.map(normalizePath), ask);
+  return taskScopeAdd(session, active, rawPaths, ask);
+}
+
+/** `scope add` for a task of a change being implemented. */
+async function taskScopeAdd(
+  session: Session,
+  active: StoredChange | undefined,
+  rawPaths: readonly string[],
+  ask: ScopeAsk,
+): Promise<Output> {
+  const { cards } = session;
   if (active === undefined || active.state.phase !== "implementing") {
     return scopeAddRefusalCard({ reason: "not-implementing" }, headerOf(), cards);
   }
@@ -92,6 +108,40 @@ export async function scopeAdd(
       ? await approveByPolicy(session, active, spec, wanted, planned)
       : await requestApproval(session, active, header, wanted, unlock.proposal);
   return { ...card, blocks: [...card.blocks, ...shared] };
+}
+
+/**
+ * During an incorporation, only the unlock of approved tests, with its patch and its evidence:
+ * the rest of what the merge brings together is already open, and nothing else may change
+ * (ADR 0014). The request goes with the last task that lists one of them, or the last task.
+ */
+async function incorporationUnlock(
+  session: Session,
+  active: StoredChange,
+  paths: readonly string[],
+  ask: ScopeAsk,
+): Promise<Output> {
+  const { cards } = session;
+  const { state } = active;
+  const header = headerOf(state.id, state.phase);
+  const spec = parseSpec(await readSpec(active.files), { language: session.lang }).spec;
+  const task = ownerTask(spec, paths);
+  const refusal = requestRefusal(paths, ask.reason, task);
+  if (refusal !== undefined) return scopeAddRefusalCard(refusal, header, cards);
+  if (!paths.every((path) => Object.hasOwn(state.lockedTests ?? {}, path)))
+    return scopeAddRefusalCard({ reason: "not-implementing" }, header, cards);
+  const unlock = await unlockProposal(session, state, paths, ask);
+  if (!unlock.ok)
+    return unlockRefusalCard(unlock.refusal, { task: undefined, paths }, header, cards);
+  const wanted = { task, paths, reason: ask.reason.trim() };
+  return requestApproval(session, active, header, wanted, unlock.proposal);
+}
+
+/** The last task of `spec` that lists one of `paths`, or its last task. */
+function ownerTask(spec: Spec, paths: readonly string[]): string {
+  const tasks = spec.sections.tasks?.items ?? [];
+  const owner = tasks.findLast((task) => paths.some((path) => matchesAny(path, task.files)));
+  return (owner ?? tasks.at(-1))?.id ?? "T1";
 }
 
 /**

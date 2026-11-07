@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "id": "20261108-la-verificacion-dice-cuantos-procesos-usa-y-por",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-la-verificacion-dice-cuantos-procesos-usa-y-por",
+  "baseCommit": "6765424511a13d97a89c76156111aecadd5f9a98",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ec1812044dd844af027472f27f1a1f61dd9ae8d5af08f85e2779872e47e255a7",
+    "at": "2026-11-07T19:20:14.001Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2292e6e9592055c392d310ef014ab1eed4e8aa348053c19cd780bd0067fb1df5",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:9efce1de066b7b2e920c17e669831c0fe122d5ef95c542d740905acd887e97ff",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:02f74f75e48c1923be1a5c1e227389dc2485a9fffca109e5de7b9421ff2bc8f1",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:6370632c77b97f38807dfbf48228061c449c504235387078630f78075b3a292b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "8d3610f62c91a24a591584376c5c37f21fd89fba",
+      "attempts": 1,
+      "startedAt": "2026-11-07T19:43:22.676Z",
+      "doneAt": "2026-11-07T19:44:20.098Z",
+      "summary": "processBudgetNote en core/cards/processes.ts: la línea con el número, las variables (aparte las que se quedan con el valor de su entorno), la memoria en GB, los núcleos y las plazas, en es/en; exportada en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "8c0e21506b1aa954e71c6da2274ac06a55f30246",
+      "attempts": 1,
+      "startedAt": "2026-11-07T19:44:20.394Z",
+      "doneAt": "2026-11-07T19:45:38.554Z",
+      "summary": "budgetedEnv dice por la salida de error la línea de processBudgetNote (número, variables con las que se quedan con lo suyo aparte, memoria, núcleos y plazas que ocupa) y no dice nada sin variables; formats.md §6 lo documenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T21:30:11.143Z",
+  "lockedTests": {
+    "packages/cli/test/process-budget.test.ts": "sha256:a852a55663ede739ce5bd74eeecb549f147540f6b2e6313d5d326eea2c6d5574",
+    "packages/cli/test/verify-processes.test.ts": "sha256:a0ac1b448a77136530702ec7809b140494471d54ac3b770c8098e2a6560de69e",
+    "packages/core/test/cards/processes.test.ts": "sha256:4cc20cba692a58580650e2767bd2a49517de4f7e338bb18b61cab72fd77eecd9"
+  }
+}

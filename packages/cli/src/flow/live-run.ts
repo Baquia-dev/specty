@@ -4,6 +4,7 @@ import type { Session } from "../session";
 import { clearRun, writeRun } from "../store/runs";
 import { inSlots } from "../store/verify-slots";
 import { oneAtATime } from "./full-verification";
+import { budgetedEnv } from "./process-budget";
 
 /** How a live run starts. */
 interface LiveOptions {
@@ -18,7 +19,8 @@ interface LiveOptions {
  * live for the local server and the MCP App (`store/runs.ts`): the file keeps the last
  * `internal.server.runLines` lines, since their end is what matters, is written as lines come, at
  * most every `internal.server.runEveryMs`, and is removed once the command ends, whether it passed
- * or not.
+ * or not. The command starts with the environment of its places (`budgetedEnv`): a task's holds
+ * one, the full one and each of its units all.
  */
 export async function runLive(
   session: Session,
@@ -40,12 +42,13 @@ export async function runLive(
     writing = writing.then(() => writeRun(session.git, change, run)).catch(() => undefined);
   };
   write();
-  const go = () => {
+  const go = async () => {
     onStart?.();
+    const env = await budgetedEnv(session, task === undefined ? Number.POSITIVE_INFINITY : 1);
     return execute(command, [], {
       cwd: session.root,
       shell: true,
-      env: session.environment.env,
+      env,
       timeoutMs: session.config.verify.timeoutSec * 1000,
       lowPriority: true,
       priority: session.config.internal.exec.priority,

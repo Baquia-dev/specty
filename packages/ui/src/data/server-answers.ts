@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // What the local server answers, as ServerData reads it: the checks of its data and what each
 // refusal means, in both languages. Pure.
-import type { StatsChangesPage } from "@baquia-dev/specty-core";
 import type { SessionView } from "@baquia-dev/specty-core/light";
 import type { RunRecord } from "./progress";
 import type {
@@ -12,7 +11,7 @@ import type {
   MemoryRecord,
   SliceChangeRecord,
 } from "./records";
-import type { ActionNote, ConfigCheck, ConfigRecord, ConfigSaved, FinishedPage } from "./source";
+import type { ConfigCheck, ConfigRecord, ConfigSaved, FinishedPage } from "./source";
 
 export const NO_SESSION: Bilingual = {
   es: "Esta pestaña no tiene sesión: abre el enlace que imprime `specty ui`.",
@@ -271,45 +270,12 @@ export function isRun(value: unknown): value is RunRecord {
   );
 }
 
-/** A `run` event: the change, and its run, or nothing when it ended; unreadable, undefined. */
-export function runEvent(
-  data: unknown,
-): { readonly change: string; readonly run: RunRecord | undefined } | undefined {
-  const told = eventData(data);
-  if (!isObject(told) || typeof told.change !== "string") return undefined;
-  if (told.run === null) return { change: told.change, run: undefined };
-  return isRun(told.run) ? { change: told.change, run: told.run } : undefined;
-}
-
-/**
- * An `action` event: the change, the action and the line its command said, without the `specty:`
- * that marks it in the terminal and with a capital; the start and the end bring none. Unreadable,
- * undefined.
- */
-export function actionEvent(data: unknown): ActionNote | undefined {
-  const told = eventData(data);
-  if (!isObject(told) || typeof told.change !== "string" || typeof told.action !== "string")
-    return undefined;
-  const said = typeof told.note === "string" ? told.note.replace(/^specty:\s*/, "").trim() : "";
-  const note = `${said.charAt(0).toUpperCase()}${said.slice(1)}`;
-  return { change: told.change, action: told.action, ...(note === "" ? {} : { note }) };
-}
-
-/** The JSON of an event's data; anything else, undefined. */
-function eventData(data: unknown): unknown {
-  if (typeof data !== "string") return undefined;
-  try {
-    return JSON.parse(data);
-  } catch {
-    return undefined;
-  }
-}
-
 export function isObject(value: unknown): value is Readonly<Record<string, unknown>> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function isText(value: unknown): value is string {
+/** A text, as the checks of the answers want it. */
+export function isText(value: unknown): value is string {
   return typeof value === "string";
 }
 
@@ -339,26 +305,6 @@ export function isFinishedPage(value: unknown): value is FinishedPage {
     typeof value.finished === "number" &&
     typeof counts.done === "number" &&
     typeof counts.cancelled === "number"
-  );
-}
-
-/**
- * `GET /api/stats/changes`' answer: its cut, period and table values, how many match, and each
- * change of the page with the texts and numbers its row needs.
- */
-export function isStatsChangesPage(value: unknown): value is StatsChangesPage {
-  if (!isObject(value) || !isObject(value.query) || !isObject(value.range)) return false;
-  return (
-    isObject(value.table) &&
-    typeof value.total === "number" &&
-    Array.isArray(value.changes) &&
-    value.changes.every(
-      (change) =>
-        isObject(change) &&
-        ["id", "title", "kind"].every((key) => isText(change[key])) &&
-        typeof change.tasks === "number" &&
-        typeof change.failed === "number",
-    )
   );
 }
 

@@ -250,7 +250,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - En un ajuste, en `adjusting` o en su revisión, con un ajuste pedido mientras se implementa (la revisión aprobada aún tiene tareas sin completar): se añade o se elimina una tarea, o se añade, modifica o elimina un criterio (`pending-tasks-only`). Ese ajuste solo corrige las tareas pendientes: su `verify`, sus `files` o su texto.
 - En el ajuste de una épica, en `adjusting` o en su revisión (`review` con una revisión aprobada): se modifica (título, `ac` o `depends`) o se elimina un corte cuyo cambio está cerrado (`closed-slice-changed`). Un corte está cerrado cuando su cambio está en `done`; uno cancelado no lo cierra. Un corte cerrado se acepta tal como estaba en la revisión aprobada o en la última propuesta, por si el ajuste lo estrechó mientras su cambio seguía abierto. Core no lee el disco: la CLI le pasa esos cortes, de los cambios que nombran la épica, abiertos o archivados.
 - En `closing`: hay cambios fuera de la sección Cierre.
-- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. La tarea única de `quick` solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección. El corte de una épica (con `epic` en el frontmatter) no se divide en otra épica: su error pide estrecharlo y llevar el resto a cortes nuevos de su épica, que se ajusta también mientras se implementa.
+- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. El límite de tareas de `quick` (una, o las de `lanes.quick.maxTasks`, un entero positivo) solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección. El corte de una épica (con `epic` en el frontmatter) no se divide en otra épica: su error pide estrecharlo y llevar el resto a cortes nuevos de su épica, que se ajusta también mientras se implementa.
 - Una tarea de código de un cambio `standard` no lista ningún test en sus archivos, si la política es `required` o `contract`. Con `contract`, un `refactor` o un `perf` no lo necesita: su contrato son los tests que ya existen, y `task done` no lo completa si les quita aserciones.
 
 **Avisos**, que se muestran en la salida y en la UI:
@@ -314,7 +314,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - `tasks[].baseCommit` es el commit desde el que empezó la tarea. `tasks[].commit` (opcional) es el commit de la tarea, pero la CLI no lo guarda: es el commit que contiene el propio `state.json`. Se encuentra por su trailer `Specty-Task`, y el servidor local lo añade a lo que sirve a la UI (ARCHITECTURE §15).
 - `items[].comment` (opcional) guarda por qué la persona rechazó un supuesto; el agente lo lee en `specty next`.
 - `pending.scopeRequests[].retro` (opcional): la creó `specty retro --into` y guarda la huella de lo preparado que documenta (un hash de la ruta, el modo y el blob de cada archivo gobernado preparado). Si al aprobarla la huella ya no coincide, Specty la rechaza (ARCHITECTURE §9).
-- `pending.scopeRequests[].patch` y `pending.scopeRequests[].evidence` (opcionales): los lleva la solicitud que desbloquea tests aprobados (ARCHITECTURE §8, [ADR 0014](decisions/0014-los-tests-como-contrato.md)). `patch` es el cambio exacto que el agente hará a esos tests, un diff unificado tal como lo dio `scope add --patch`, de 500 líneas como máximo. Specty comprobó al pedirlo que solo toca tests que la solicitud desbloquea, que cada uno seguía con su hash de `lockedTests` y que se aplica con `git apply --check --recount` (que lee cada bloque por sus líneas y no por las cuentas de su cabecera). `evidence` son de 1 a 5 fragmentos que lo justifican, cada uno `{ "path": "src/app.ts", "from": 12, "to": 18, "text": "…" }`: la ruta de un archivo que git sigue, su primera y su última línea (40 como máximo) y su texto tal como estaba al pedirlo. Una solicitud de una versión anterior no los lleva. Al completar la tarea, `task done` exige que cada test quede como lo deja el parche del último desbloqueo aprobado para ella, aplicado a su versión bloqueada (ARCHITECTURE §8); el de una solicitud sin parche no se compara.
+- `pending.scopeRequests[].patch` y `pending.scopeRequests[].evidence` (opcionales): los lleva la solicitud que desbloquea tests aprobados (ARCHITECTURE §8, [ADR 0014](decisions/0014-los-tests-como-contrato.md)). `patch` es el cambio exacto que el agente hará a esos tests, un diff unificado tal como lo dio `scope add --patch`, de 500 líneas como máximo. Specty comprobó al pedirlo que solo toca tests que la solicitud desbloquea, que cada uno seguía con su hash de `lockedTests` y que se aplica con `git apply --check --recount` (que lee cada bloque por sus líneas y no por las cuentas de su cabecera). `evidence` son de 1 a 5 fragmentos que lo justifican, cada uno `{ "path": "src/app.ts", "from": 12, "to": 18, "text": "…" }`: la ruta de un archivo que git sigue, su primera y su última línea (40 como máximo) y su texto tal como estaba al pedirlo. Una solicitud de una versión anterior no los lleva. Al completar la tarea, `task done` exige que cada test quede como lo deja el parche del último desbloqueo aprobado para ella, aplicado a su versión bloqueada (ARCHITECTURE §8); el de una solicitud sin parche no se compara. Con una incorporación pendiente (`integration` sin `resolved`), `scope add` solo crea solicitudes que desbloquean tests aprobados, con su `patch` y su `evidence`: el parche se comprueba sobre la versión del último commit, no sobre el disco, y la solicitud lleva la última tarea que lista alguno de esos tests, o la última del cambio. Fuera de `implementing`, solo una incorporación deja solicitudes, y la persona las decide igual.
 - `maxIds` guarda el número más alto usado por cada prefijo (también `S`, las solicitudes de alcance), para que un id borrado nunca se reutilice con otro significado.
 - `closingSubmittedAt` (opcional) indica que el cierre ya se envió y espera la confirmación de la persona. También se anota en aceptación, en modo delegado: el agente envía el cierre de un cambio `standard` o `spike` antes de aceptarlo, y su `accept` lo acepta y lo cierra en un paso (ARCHITECTURE §4). La propuesta de un ajuste lo borra; el `accept` de la persona lo conserva al pasar a `closing`.
 - `testsSubmittedAt` (opcional), en la fase `testing`, indica que el agente envió los tests y esperan la aprobación de la persona; se borra al aprobarlos.
@@ -330,6 +330,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
     "reason": "conflicts",
     "conflicts": ["lib/features/home/home_page.dart"],
     "paths": ["lib/features/home/home_page.dart", "lib/core/theme/ca_colors.dart"],
+    "unlocked": ["test/home_page_test.dart"],
     "at": "2026-10-20T16:02:11Z",
     "resolved": { "commit": "c7d8e9f", "at": "2026-10-20T16:10:40Z" }
   }
@@ -337,7 +338,8 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 
   - `target` es la rama destino, y `commit`, el commit suyo que se incorpora.
   - `reason` es `conflicts` o `verify`. `conflicts` lista los archivos en conflicto; con `verify`, puede ir vacío.
-  - `paths` son los archivos que cambió cualquiera de los dos lados desde su base común. Sus tests implícitos y los archivos generados también se pueden tocar.
+  - `paths` son los archivos que cambió cualquiera de los dos lados desde su base común. Sus tests implícitos y los archivos generados también se pueden tocar, salvo los tests aprobados (`lockedTests`): de ellos, solo los que git dejó en `conflicts` y los de `unlocked`.
+  - `unlocked` (opcional) son los tests aprobados que la persona desbloqueó para esta incorporación, al aprobar su solicitud (ADR 0014). Se van con ella si se descarta.
   - `resolved` (opcional) guarda el commit de merge y la fecha. El campo se conserva para que la persona vea al cerrar qué resolvió el agente.
 
 ## 4. `audit.jsonl`
@@ -369,7 +371,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `change.usage` | lo que consumió el cambio, medido con ccusage al cerrarlo, o al aceptar uno quick, justo antes de archivarlo (actor `specty`): `calls`, las llamadas al modelo de las sesiones que nombran sus líneas (`session`) desde `change.created`; `input`, `output`, `cacheWrite` y `cacheRead`, sus tokens de cada tipo, y `cost`, en USD, si cada modelo de esas llamadas tiene precios, ninguno negativo, que expliquen al céntimo el coste de nueve de cada diez de sus sesiones en el informe de ccusage, y de al menos cuatro. Sin ccusage, sin una respuesta válida o sin sesiones, no hay evento |
 | `change.closed` / `change.cancelled` | motivo, al cancelar; `lane: quick` al aceptar un quick, y `closing: false` al aceptar un cambio sin fase de cierre (`flow.closing`, §6) |
 | `integration.started` | incorporar la rama principal al aceptar, al cerrar o al verificar desde la UI dejó el merge para el agente: rama destino, su commit, motivo (`conflicts` o `verify`) y archivos en conflicto |
-| `integration.resolved` | `specty integrate` hizo el commit de merge: commit |
+| `integration.resolved` | `specty integrate` hizo el commit de merge: commit. Si la rama principal avanzó mientras el agente resolvía, el commit va sin verificar y le sigue, en el mismo turno, la nueva incorporación: su `change.verified` o un `integration.started` (ARCHITECTURE §9) |
 | `integration.abandoned` | el merge ya no estaba en curso y la incorporación pendiente se descartó: rama destino |
 
 ```jsonl
@@ -418,6 +420,9 @@ verify:
   quick: dart format --output=none --set-exit-if-changed .  # antes de la verificación de cada tarea
   timeoutSec: 600                 # al vencer, se corta el comando con todos los procesos que lanzó
   slots: 2                        # verificaciones a la vez en el clon: la de una tarea ocupa 1, la completa todas (ARCHITECTURE §9)
+  processes:                      # opcional: cuántos procesos puede lanzar cada comando de una verificación
+    env: ["VITEST_MAX_WORKERS"]   # variables que reciben el número; sin ellas, el entorno no cambia
+    memoryMiB: 512                # lo que ocupa cada proceso, en MiB (un entero de 1 o más)
   units:                          # opcional: la verificación completa de accept por partes, en orden y en lugar de full
     - name: analyze
       command: flutter analyze
@@ -430,7 +435,7 @@ scope:
   generated: ["**/*.g.dart", "**/*.freezed.dart"]
   autoApprove: tests-and-generated  # none | tests-and-generated: tests, generados y lo que ya está en Archivos
 lanes:
-  quick: { maxFiles: 3 }          # archivos de código: gobernados, sin contar tests
+  quick: { maxFiles: 3, maxTasks: 1 }  # archivos de código (gobernados, sin contar tests) y tareas de la primera spec
 split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 }  # maxFiles, como en quick
 size: { S: 4, M: 10, L: 18 }      # puntuación máxima de cada nivel; por encima de L es XL
 sizing:                           # opcional: cómo se puntúa el tamaño y desde cuándo está cerca de partirse; sin la clave, los valores de hoy
@@ -489,6 +494,7 @@ policy:
 glossary: docs/dominio.md         # el glosario del dominio; sin la clave: docs/dominio.md (es) o docs/domain.md (en)
 flow:
   closing: true                   # false: aceptar un cambio standard que no es corte de una épica lo archiva y lo incorpora sin fase de cierre, con el resumen de sus tareas como cierre; sin la clave, true
+  reviewFrom: L                   # S | M | L | XL: tamaño desde el que se pide la revisión independiente (con review); sin la clave, L
 retro:
   mode: agent                     # agent | minimal
 git:
@@ -572,6 +578,8 @@ review:
 
 `specty review` le pasa a `command` por la entrada estándar las instrucciones y la spec, y guarda su salida en `reviews/spec-r<revisión>.md`. En aceptación le pasa también el diff de todo el cambio, y la salida va a `reviews/diff-<n>.md`, con `n` el número de la revisión del resultado. Sin `review`, Specty no recomienda ni ejecuta revisiones.
 
+`flow.reviewFrom` (`L` por defecto; `S`, `M`, `L` o `XL`) es el tamaño desde el que se recomienda la revisión: `propose` la pide antes de aprobar una spec de ese tamaño o mayor, y la tarjeta de aceptación antes de aceptar un cambio de ese tamaño o mayor, una vez tras su última tarea. Las demás razones no cambian: una spec que toca rutas sensibles o cuyo esfuerzo de revisión es `max`, y un cambio con tareas que quitaron aserciones o añadieron riesgos. Solo cuenta con `review`, y va en `flow` porque `review` exige `command`.
+
 Una observación de la revisión es una viñeta de primer nivel (`-`, `*`, `•` o un número) de su respuesta, con el texto de su línea; su referencia es `<archivo>#<número>`, como `diff-2.md#3`, con su posición entre todas las viñetas de primer nivel del archivo. Su gravedad es la primera palabra de gravedad de la viñeta, entera y sin distinguir mayúsculas: alta o crítica (high, critical), media (medium) o baja (low); si no tiene ninguna, la del último encabezado markdown (`#`) que hay por encima. Solo cuenta la última revisión del resultado, el `diff-<n>.md` con el `n` más alto; las de la spec no. Mientras el agente escribe el cierre, en `closing` o, en modo delegado, en la aceptación de un cambio `standard` o `spike`, su tarjeta muestra en «OBSERVACIONES DE LA REVISIÓN» las altas y medias que el cierre aún no cita, con su referencia; el cierre cita una cuando contiene su referencia sin una cifra detrás (`diff-2.md#30` no cita `diff-2.md#3`). Al cerrarse el cambio (`close`, el `accept` de un cambio rápido, cuyo cierre no cita nada, o el del agente en modo delegado con el cierre enviado), las que no cita pasan a la memoria de Specty como pendientes (§1); uno cancelado no deja nada.
 
 `glossary` es la ruta del glosario del dominio (ADR 0014), un archivo del proyecto con una línea por término:
@@ -599,6 +607,8 @@ Sin `verify.units`, `specty init` las propone en su tarjeta, listas para pegar, 
 No las escribe: las añade la persona tras comprobar que entre todas ejecutan lo mismo que `verify.full`. Ver ARCHITECTURE §9.
 
 `verify.timeoutSec` es el tiempo que puede tardar cada comando de una verificación: al cumplirse, se corta con todos los procesos que lanzó. Si corta la verificación completa, o una de sus unidades, en `accept`, en la incorporación de main o en `specty integrate`, su salida acaba en una línea que dice que se agotó el tiempo y a cuántos segundos, porque sin ella parece un fallo de los tests, y que con la máquina cargada reintentar con menos carga puede bastar (`timedOutLine` en `cards/units.ts`).
+
+`verify.processes` le dice a cada comando de una verificación cuántos procesos puede lanzar, en las variables de entorno que nombra `env`: nombres de letras, cifras y `_`, sin empezar por cifra, porque Specty no sabe cuál lee cada herramienta (Vitest lee `VITEST_MAX_WORKERS`, también bajo `ng test`). Sin `env`, o con la lista vacía, los comandos reciben el entorno tal cual. El número son los núcleos de la máquina (`os.availableParallelism()`) que le tocan por las plazas de `verify.slots` que ocupa: una la de una tarea, también la que comprueba los tests en rojo, y todas la completa (la de `accept`, la de la incorporación de main, la de `specty integrate` y la de la UI), cada una de sus unidades y los intentos de `specty verify --fresh`. Si la memoria disponible no da para tantos, baja a los procesos de `memoryMiB` (512 por defecto, lo que ocupa cada uno) que caben en la parte de la memoria que le toca por esas mismas plazas. Se redondea hacia abajo y nunca baja de 1: con 14 núcleos, 2 plazas y 7,25 GiB disponibles, 7 para la de una tarea y 14 para la completa; con 2 GiB, 2 y 4. La memoria disponible se mide al arrancar cada comando, así que ya descuenta lo que ocupan las verificaciones en curso (`availableMemory`, en `cli/src/io/memory.ts`): en macOS, las páginas libres, las de archivos y las purgables de `vm_stat` por su tamaño de página, la que el Monitor de Actividad no cuenta como usada; en los demás sistemas, o si `vm_stat` falla o no da esas cifras, `process.availableMemory()`, que en Linux es `MemAvailable` y respeta el límite del cgroup. Sin variables en `env`, no se mide. Cada variable recibe el mismo número, salvo la que ya trae en el entorno un entero positivo menor, que se queda con el suyo. Se calcula al arrancar cada comando (`budgetedEnv`, en `cli/src/flow/process-budget.ts`). Al calcularlo, cada comando lo dice en una línea por la salida de error, para que se sepa por qué una suite tarda más: el número, las variables que lo reciben (aparte, con su valor, las que se quedan con el de su entorno), la memoria disponible en GB de 1024³ bytes con un decimal, los núcleos y las plazas que ocupa; por ejemplo, `specty: 6 procesos en VITEST_MAX_WORKERS (6,7 GB de memoria disponible, 14 núcleos, 1 de 2 plazas)`. Sin variables en `env`, no dice nada. Los comandos de `specty check`, `review.command`, `git.setup` y `git.afterLanding` no son verificaciones y no lo reciben.
 
 `specty init` escribe `verify.default` y `verify.full` con los comandos que detecta. Si el archivo ya existe, solo añade los que falten y la detección encuentre ahora (por ejemplo, tras el primer cambio de un repositorio vacío), insertando sus líneas al final de `verify` (o un bloque `verify` nuevo al final del archivo); nunca cambia un valor que ya está, y el resto del archivo, con sus comentarios, queda igual.
 
