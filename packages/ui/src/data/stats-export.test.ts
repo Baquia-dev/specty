@@ -4,7 +4,7 @@
 import { ActionError, type ChangeRecord, SpectyData } from "./records";
 import { ServerData } from "./server";
 import { answered, NO_SESSION } from "./server-answers";
-import type { StatsExportParams } from "./stats-export";
+import type { StatsExportParams } from "./server-stats";
 
 const ASKED: StatsExportParams = {
   period: "7d",

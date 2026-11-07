@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "id": "20261108-incorporar-main-no-cambia-un-test-aprobado-sin",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-incorporar-main-no-cambia-un-test-aprobado-sin",
+  "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d59a3836f3b0aba10bd02e0430644615686df3cde6aae71b574b51388b74bdd2",
+    "at": "2026-11-07T17:28:57.026Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9fc7067684cfd9cdf047964b80259a62f653d923a37210a4f428f6b96976b038",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:05426b402014bed30ffe685cf143d18981a1e9a9a1b2e2afa630cbab7e885f41",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:ad8351a86596b089c910cfe6a0d0a506a5c130aea0ef24f2ba4d7acb1b49abb4",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d7c37bacc35b04dbce7669b7ff477d33c4b18ee5b5c44d311c5130846c866013",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "019e803014a7b5ac5aac41ec27e000ac2aebdb5f",
+      "attempts": 1,
+      "startedAt": "2026-11-07T17:33:22.447Z",
+      "doneAt": "2026-11-07T17:34:10.424Z",
+      "summary": "El guard mira los tests aprobados antes que la incorporación pendiente: solo abre los que git dejó en conflicto, y el SIGUIENTE da el desbloqueo sin --task",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "517a8f0e1257d8553b26425fb60094a7a0df5f1a",
+      "attempts": 1,
+      "startedAt": "2026-11-07T17:34:10.745Z",
+      "doneAt": "2026-11-07T17:36:04.664Z",
+      "summary": "Con la incorporación pendiente, scope add pide el desbloqueo de tests aprobados (parche comprobado sobre el último commit) y approve --scope lo decide fuera de implementing, abriendo el test en integration.unlocked",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "1c945d97d28b7a256801d326e48da3e543e117fd",
+      "attempts": 1,
+      "startedAt": "2026-11-07T17:36:05.037Z",
+      "doneAt": "2026-11-07T17:39:23.439Z",
+      "summary": "specty integrate solo hace el commit con cada test aprobado como se aprobó, como lo funde git con main (git merge-file ours/theirs/union) o como el parche del desbloqueo de la incorporación, y lo vuelve a bloquear con su hash; documentado en ARCHITECTURE, formats y ADR 0014",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T17:39:41.149Z",
+  "lockedTests": {
+    "packages/cli/test/integrate-locked.test.ts": "sha256:7f46cb94a8af394c047714255cd55c516b6371729c1ac6771052ad33c9faf6ba"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "4b39050136541ab15ab42d65699ea43f09d0387f",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/commands/integrate.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/decisions/0014-los-tests-como-contrato.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/integrate.ts",
+      "packages/cli/src/commands/scope-decision.ts",
+      "packages/cli/src/commands/scope.ts",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/flow/changes.ts",
+      "packages/cli/src/flow/process-budget.ts",
+      "packages/cli/src/flow/unlock-check.ts",
+      "packages/cli/src/flow/unlock-proposal.ts",
+      "packages/cli/src/io/git-memo.ts",
+      "packages/cli/src/io/git.ts",
+      "packages/cli/src/io/memory.ts",
+      "packages/cli/src/server/stats-changes.ts",
+      "packages/cli/src/server/stats.ts",
+      "packages/cli/test/available-memory.test.ts",
+      "packages/cli/test/delegated-integration.test.ts",
+      "packages/cli/test/integrate-landing.test.ts",
+      "packages/cli/test/integrate-locked.test.ts",
+      "packages/cli/test/process-budget.test.ts",
+      "packages/cli/test/server/stats.test.ts",
+      "packages/cli/test/verify-processes.test.ts",
+      "packages/cli/test/worktree-reads.test.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/integration.ts",
+      "packages/core/src/cards/unlock-check.ts",
+      "packages/core/src/cards/unlock.ts",
+      "packages/core/src/guard/decide.ts",
+      "packages/core/src/guard/testing.ts",
+      "packages/core/src/schema/state.ts",
+      "packages/core/src/stats/cost.ts",
+      "packages/core/src/stats/quality.ts",
+      "packages/core/src/stats/rows.ts",
+      "packages/core/test/cards/incorporation.test.ts",
+      "packages/core/test/stats/titles.test.ts",
+      "packages/ui/src/dashboard/dashboard-changes.ts",
+      "packages/ui/src/dashboard/dashboard-cost.ts",
+      "packages/ui/src/dashboard/dashboard-export.test.ts",
+      "packages/ui/src/dashboard/dashboard-export.ts",
+      "packages/ui/src/dashboard/dashboard-quality.ts",
+      "packages/ui/src/dashboard/dashboard-table.ts",
+      "packages/ui/src/dashboard/dashboard-titles.test.ts",
+      "packages/ui/src/data/download.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/data/server-events.ts",
+      "packages/ui/src/data/server-stats.ts",
+      "packages/ui/src/data/server-trace.test.ts",
+      "packages/ui/src/data/server-trace.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/data/stats-export.test.ts",
+      "packages/ui/src/data/stats-export.ts",
+      "packages/ui/src/data/stats-source.test.ts",
+      "packages/ui/src/history/history-export.ts"
+    ],
+    "at": "2026-11-07T19:13:15.423Z",
+    "resolved": {
+      "commit": "c97c74f",
+      "at": "2026-11-07T19:25:34.287Z"
+    }
+  }
+}

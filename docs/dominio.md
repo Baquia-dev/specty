@@ -17,6 +17,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Bloqueo** (`LockHolder`): qué comando está cambiando un cambio; uno a la vez.
 - **Marca de espera** (`.git/common/specty/waits/<id>.json`, `readWait`): el `specty wait` que espera la decisión de la persona en un cambio; viva mientras su proceso la renueva, y al terminar dice por qué: `decided`, `timeout` o, si se cortó, `stopped`.
 - **Plaza de verificación** (`verify.slots`, `inSlots`): una de las verificaciones que corren a la vez en el clon; la de una tarea ocupa una, y la completa, todas.
+- **Procesos de una verificación** (`verify.processes`, `budgetedEnv`): cuántos procesos puede lanzar cada comando de una verificación: los núcleos que le tocan por sus plazas, o menos si su parte de la memoria disponible (`availableMemory`) no da para tantos procesos de `verify.processes.memoryMiB`, y nunca menos de 1; lo recibe en las variables de entorno de `verify.processes.env`.
 - **Unidad de verificación** (`verify.units`, `VerifyUnit`): una parte de la verificación completa, con su comando y los archivos de los que depende; no se repite si ya pasó con la misma huella en el clon.
 - **Registro de unidades** (`.git/common/specty/verified/`, `fullPlan`): las unidades que pasaron, una por huella, en cualquier cambio y worktree del clon; la verificación completa de `accept`, la incorporación, `specty integrate` y la UI no repiten las que están en él; `specty prune` borra las anotadas hace más de `internal.retention.verifiedDays` días, 30 por defecto (`pruneRecord`).
 - **Test lento** (`checks.testTime`, `test-time`): un test que, según el informe JUnit que dejó la misma ejecución, tardó más de `maxMs`; `specty check` avisa de él y la nota de la verificación de `accept` muestra los cinco primeros.
@@ -34,7 +35,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Bitácora** (`specty note`): las notas de un cambio en su audit (`change.noted`); la tarjeta de `next` muestra las tres últimas.
 - **Mensaje** (`MessageView`, `specty message`): lo que una sesión o la persona deja para la sesión de un cambio abierto; le llega una vez, tras su siguiente comando.
 - **Test aprobado** (`lockedTests`): un test que aprobó la persona, o el rojo de un bug; solo cambia con un desbloqueo.
-- **Desbloqueo** (`scope add --patch --evidence`): la solicitud de cambiar un test aprobado para una tarea, con el parche exacto y las líneas que lo justifican; lo decide solo la persona, y `task done` exige que el test quede como lo deja el parche. Otro desbloqueo del mismo test sustituye al anterior.
+- **Desbloqueo** (`scope add --patch --evidence`): la solicitud de cambiar un test aprobado para una tarea o para una incorporación pendiente, con el parche exacto y las líneas que lo justifican; lo decide solo la persona, y `task done` (o `integrate`) exige que el test quede como lo deja el parche. Otro desbloqueo del mismo test sustituye al anterior.
 - **Ciclo de tests** (`TestCycle`): con `contract`, el de una feature (gate 2) o el de un bug (su rojo se bloquea solo).
 - **Modo delegado** (`Delegation`): el agente aprueba, acepta y cierra por la persona.
 - **Retro-spec**: la spec que documenta después cambios hechos sin spec.

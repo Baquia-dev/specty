@@ -9,6 +9,17 @@ export interface VerifyUnit {
   readonly paths: readonly string[];
 }
 
+/**
+ * `verify.processes`: how many processes each command of a verification may start, told in the
+ * environment variables the person names, since Specty does not know which one each tool reads.
+ */
+interface VerifyProcesses {
+  /** The variables that get the number, such as Vitest's `VITEST_MAX_WORKERS`: none, no change. */
+  readonly env: readonly string[];
+  /** The memory each process takes, in MiB. */
+  readonly memoryMiB: number;
+}
+
 /** `verify` in `.specty/config.yaml`: how a task's verification and the full one run. */
 export interface VerifyConfig {
   readonly default?: string;
@@ -23,11 +34,30 @@ export interface VerifyConfig {
    * its command or the files of its `paths` change.
    */
   readonly units?: readonly VerifyUnit[];
+  readonly processes: VerifyProcesses;
 }
 
-export const DEFAULT_VERIFY: VerifyConfig = { timeoutSec: 600, slots: 2 };
+export const DEFAULT_VERIFY: VerifyConfig = {
+  timeoutSec: 600,
+  slots: 2,
+  processes: { env: [], memoryMiB: 512 },
+};
 
 const Positive = z.number().int().positive();
+
+/** The name of an environment variable: letters, digits and `_`, not starting with a digit. */
+const VARIABLE = /^[A-Za-z_][A-Za-z0-9_]*$/;
+
+const ProcessesSchema = z.strictObject({
+  env: z
+    .array(
+      z
+        .string()
+        .regex(VARIABLE, "A variable's name has letters, digits and _, and starts with no digit."),
+    )
+    .optional(),
+  memoryMiB: Positive.optional(),
+});
 
 /** The units of the full verification: at least one, each with a name no other has. */
 const UnitsSchema = z
@@ -57,6 +87,7 @@ export const VerifySchema = z.strictObject({
   timeoutSec: Positive.optional(),
   slots: Positive.optional(),
   units: UnitsSchema.optional(),
+  processes: ProcessesSchema.optional(),
 });
 
 /** The `verify` section with its defaults applied. */
@@ -68,5 +99,12 @@ export function resolveVerify(verify: z.infer<typeof VerifySchema> | undefined):
     timeoutSec: verify?.timeoutSec ?? DEFAULT_VERIFY.timeoutSec,
     slots: verify?.slots ?? DEFAULT_VERIFY.slots,
     ...(verify?.units !== undefined ? { units: verify.units } : {}),
+    processes: resolveProcesses(verify?.processes),
   };
+}
+
+/** The `verify.processes` section with its defaults applied. */
+function resolveProcesses(processes: z.infer<typeof ProcessesSchema> | undefined): VerifyProcesses {
+  const { env, memoryMiB } = DEFAULT_VERIFY.processes;
+  return { env: processes?.env ?? env, memoryMiB: processes?.memoryMiB ?? memoryMiB };
 }

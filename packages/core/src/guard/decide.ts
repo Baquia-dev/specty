@@ -240,13 +240,14 @@ function decideGoverned(path: string, ctx: GuardContext): GuardDecision {
       t(`ejecuta \`${ctx.command} next\`.`, `run \`${ctx.command} next\`.`),
     );
   }
+  // An approved test stays locked during an incorporation too.
+  if (change.locked?.includes(path) === true) {
+    const denial = lockedDenial(path, unlockTask(change), ctx.lang, ctx.command);
+    return deny("locked", denial.reason, denial.next);
+  }
   if (change.integration !== undefined) {
     const denial = integrationDenial(path, change.integration, ctx.config, ctx.lang, ctx.command);
     return denial === undefined ? ALLOW : deny("integration", denial.reason, denial.next);
-  }
-  if (change.locked?.includes(path) === true) {
-    const denial = lockedDenial(path, change.task?.id, ctx.lang, ctx.command);
-    return deny("locked", denial.reason, denial.next);
   }
   if (change.phase === "testing") {
     const denial = testingDenial(path, change.files ?? [], ctx.config, ctx.lang, ctx.command);
@@ -263,6 +264,11 @@ function decideGoverned(path: string, ctx: GuardContext): GuardDecision {
     );
   }
   return decideTaskScope(path, change, ctx);
+}
+
+/** The task an approved test's unlock is for: none during an incorporation (ADR 0014). */
+function unlockTask(change: GuardChange): string | undefined {
+  return change.integration === undefined ? (change.task?.id ?? "<T>") : undefined;
 }
 
 /** While implementing: within the active task's scope, or a request to widen it. */

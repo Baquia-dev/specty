@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "id": "20261108-cada-comando-de-verificacion-recibe-en-las",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-cada-comando-de-verificacion-recibe-en-las",
+  "baseCommit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:eb5b005610dfcac164fb9f983aeed887fda44130c3bd50f74e1420bb090d7fc5",
+    "at": "2026-11-07T16:48:09.265Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:45092f91dcbea93e66db7da038a0fe53ef2b19920ce479c69aea0e7f24aa848f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:57d649d6186593b75994ebbd488131a39a48b3fece4bdbd3abab529bfd2e72da",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:805e01709203160c10b087398c2b7891293eaeba889e2d3d14c9ccc04d1d3def",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:deedb387b13af9afccfac83bf4cb314c144263879d7151cad868deabecca1fd5",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:0b136e59e26df678ecf939d5257ec3a89fbbe4c23a373e550190c3b7a943260f",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:eb683f9a5d19eff55b6f7deb8ec76b57189b1e6a12461b394bb9488832b8cc3a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c11e93d3c552d19bac6b1b7d167a35cf1d662e37",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:56:11.596Z",
+      "doneAt": "2026-11-07T16:56:41.423Z",
+      "summary": "verify.processes en el schema: env (nombres de variable) y memoryMiB (entero ≥ 1), estricto, resuelto siempre con { env: [], memoryMiB: 512 }",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "e9676e8a3dd61750a277e4195d1d70af908222f6",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:56:42.058Z",
+      "doneAt": "2026-11-07T16:57:19.599Z",
+      "summary": "verify.processes.env (lista) y verify.processes.memoryMiB (número) en Verificación tras verify.slots, con nombre y descripción en es/en",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "6a4e8acbef3649046e28934b42912979947425b1",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:57:20.137Z",
+      "doneAt": "2026-11-07T16:58:05.386Z",
+      "summary": "flow/process-budget.ts: processBudget (núcleos × plazas / verify.slots, hacia abajo, mínimo 1) y budgetedEnv (las variables de verify.processes.env con el número o su valor menor; sin ellas, el entorno tal cual)",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "299216ed136f08005658b8247be5b602df3ecd1e",
+      "attempts": 2,
+      "startedAt": "2026-11-07T16:58:06.540Z",
+      "doneAt": "2026-11-07T17:04:39.430Z",
+      "summary": "La verificación de una tarea (1 plaza), la completa y sus unidades (runLive), los intentos de verify --fresh fuera de un cambio y la completa de la UI (spawned, ahora asíncrona) arrancan con budgetedEnv; docs/formats.md §6 documenta verify.processes; VerifyProcesses sin export (knip)",
+      "scopeExtra": [
+        "packages/core/src/schema/verify.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-07T17:05:05.970Z",
+  "lockedTests": {
+    "packages/cli/test/server/config.test.ts": "sha256:f0fd67328141ea424257abea271ff1518fb55c7c296114525e2a8c75a9ab2754",
+    "packages/core/test/schema/units.test.ts": "sha256:53d27a55322a2fee5cb53edbb4cb365f257c4debdb4973131d6b7bd8fe61a0fe",
+    "packages/cli/test/process-budget.test.ts": "sha256:229e5836a19b6dadf320624a9c6af92830cf0161120963d5340a385fec94393e",
+    "packages/cli/test/verify-processes.test.ts": "sha256:7993752f805a8446b322ccddd6f9b901488986fd1ceb3fec8dfa0037af362caa",
+    "packages/core/test/schema/processes.test.ts": "sha256:06f45393cca55aa5341c644b3f2fab74ce6cf35b1070bfc5f6deb60e4eb769aa",
+    "packages/core/test/settings/processes.test.ts": "sha256:c5acf406284e372d6433dcb92212c003143a114a2875d42eb71cf780e0e4dc72"
+  }
+}
