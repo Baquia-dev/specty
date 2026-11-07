@@ -71,3 +71,22 @@ Desde P258, `specty adjust` también se pide mientras se implementa, para correg
 ## Riesgos
 
 - R1: Leer la revisión aprobada en cada `next` en `adjusting` — es un archivo pequeño, y solo en esa fase y fuera de una épica.
+
+## Cierre
+
+### Resumen
+
+La tarjeta de `adjusting` reconoce el ajuste de las tareas pendientes con el criterio de `propose`, no por una tarea activa (P267). Core exporta `adjustsPendingTasks` (`validate/phase.ts`), y la CLI, en `adjusting` y fuera de una épica, lee la revisión aprobada y pasa `ChangeView.pendingTasksOnly` si aún tiene tareas sin completar (`flow/views.ts`). Así, un ajuste pedido justo tras aprobar la spec, antes de que `next` active una tarea, da «CÓMO CORREGIRLAS», y uno de aceptación sigue dando la clasificación aunque la spec ya añada tareas nuevas. La descripción MCP de `specty_adjust` nombra la aceptación, la corrección de las tareas pendientes y la división de un corte de una épica (P266). ARCHITECTURE §12 lo cuenta.
+
+### Desviaciones
+
+- Ninguna respecto al plan aprobado.
+
+### Decisiones
+
+- La tarea activa deja de decidir la tarjeta: siempre está en la revisión aprobada y sin completar, así que `pendingTasksOnly` la incluye.
+- `pendingTasksOnly` solo se escribe cuando es cierto, como los demás campos opcionales de `ChangeView`.
+
+### Pendientes
+
+- Ninguno nuevo. P191 va en el cambio siguiente.

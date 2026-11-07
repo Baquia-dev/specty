@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-el-ajuste-de-las-tareas-pendientes-se-reconoce",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-el-ajuste-de-las-tareas-pendientes-se-reconoce",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:dd319eb5484db0c6f009e41c2a8c741046f2e0a6720659cad05db9567fad75d3",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3039f496cd0f07286b63a2f06cd4f2e0c8879836",
+      "attempts": 1,
       "startedAt": "2026-11-07T00:30:59.635Z",
       "doneAt": "2026-11-07T00:31:19.175Z",
-      "summary": "ARCHITECTURE §12 cuenta cómo reconoce la tarjeta el ajuste de las tareas pendientes (pendingTasksOnly con la revisión aprobada)"
+      "summary": "ARCHITECTURE §12 cuenta cómo reconoce la tarjeta el ajuste de las tareas pendientes (pendingTasksOnly con la revisión aprobada)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -75,6 +75,7 @@
     "T": 3,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-07T00:31:26.995Z",
   "lockedTests": {
     "packages/cli/test/epic-adjust.test.ts": "sha256:6fcef7da9317a968cf72e3fce13bf57c2626f8e2ad98bcbe5dd3208d07dccbc2",
     "packages/cli/test/mcp.test.ts": "sha256:b3811b23ad18746c500a29caaceabfbd9fe73e03f463323f31deef6ee6748452",
