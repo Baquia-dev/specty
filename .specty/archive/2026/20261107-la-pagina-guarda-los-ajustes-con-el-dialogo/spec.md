@@ -108,3 +108,29 @@ Hoy la página «Configuración» de `specty ui` solo muestra los ajustes, aunqu
 - R2: El número de cambios de la página y los del diálogo podrían no coincidir. Mitigación: los dos salen de `settingChanges` del core, y el diálogo usa los de la comprobación, que son los que guarda el servidor.
 - R3: Una comprobación por cada tecla. Mitigación: el servidor es local y no escribe nada al comprobar, y `resource` descarta la respuesta de una comprobación ya superada por otra.
 - R4: C6, C7 y C11 corren a la vez y añaden ajustes, quizá con tests en `settings-page.test.ts`. Mitigación: los tests de este corte van en archivos nuevos, y en ese archivo solo cambia su fuente de datos.
+
+## Cierre
+
+### Resumen
+
+La página «Configuración» ya guarda los ajustes. Donde la persona puede decidir, cada ajuste que la UI guarda tiene su control en su fila (`settings/setting-row.ts`), con «Restablecer» si su clave está en el archivo y la marca «Sin guardar» si cambia. Cada edición se comprueba en el servidor (`POST /api/config/check`), y sus errores salen junto al control. «Descartar» y «Revisar y guardar», con el número de cambios, van en el encabezado y en una barra compacta. El diálogo (`settings/save-dialog.ts`) muestra cada cambio de la comprobación con lo añadido resaltado y «Antes» solo si se quitó algo. También lleva los avisos de comando y de permisos, una casilla aparte para los de permisos y el pie con el commit propio. Guarda con `POST /api/config`, y si el servidor lo rechaza, el motivo sale en palabras. Sin la puerta de la persona o con `blocked`, la página es de solo lectura y dice por qué. La lógica pura va en `settings/settings-edit.ts`, y `isConfigRecord` pasó a `data/server-answers.ts` (P278).
+
+### Desviaciones
+
+- Las opciones se eligen con `sp-segmented` y no con `sp-select`, como un sí o no: ninguna opción del catálogo tiene más de cuatro valores, y así sale como en la maqueta.
+- `settings-view.ts` exporta también `valueAt` e `isObject`, que usa `settings-edit.ts`.
+- El diálogo define sus dos marcas con aviso (comando y permisos) en vez de reutilizar las de `setting-row.ts`, porque ese archivo no estaba entre los de T4.
+- Al aceptar, incorporar main falló: C6 había sustituido el ajuste «Próximamente» `effort` por `effort.S…effort.task`, y el test aprobado de `settings-edit.test.ts` lo listaba entre los ajustes sin campo. Un ajuste añadió T5, y con el desbloqueo S1 que aprobó la persona el test usa `sizing.highFanIn`, el «Próximamente» de C6. Ese ajuste solo existe tras incorporar main, así que T5 verifica tipos y lint, y el test corre en la verificación de `accept`.
+- Tras guardar, la página vuelve a leer la configuración ella misma, además de lo que relee la fuente del servidor, para no depender de que la fuente avise.
+
+### Decisiones
+
+- Un campo de número o de texto vacío quita la clave, y una lista vacía se guarda como `[]`. En un número, `true` y `false` pasan a sí o no (para `lines.fail: false`), y otro texto se envía tal cual para que el validador lo rechace.
+- «Restablecer» sale si la clave está en el archivo con las ediciones aplicadas. «Descartar» se puede pulsar mientras haya ediciones, aunque ninguna cambie nada.
+- `applyEdits` conserva el orden de las claves, así que volver a escribir el valor del archivo no cuenta como cambio.
+- Un `blocked` de un tipo que la UI no conoce da como motivo «El servidor devolvió datos inesperados», y un 409 desconocido, «El servidor respondió 409». El aviso del guardado da los siete primeros caracteres del commit.
+
+### Pendientes
+
+- P292: `settings-page.ts` (380 líneas de código), `data/server.ts` (368) y `data/server-answers.ts` (306) pasan del aviso. La propuesta es separar por responsabilidad: las acciones y la barra compacta a `settings/settings-actions.ts`, y las respuestas de la configuración a `data/config-answers.ts`.
+- P293: comprobar a mano, en un `specty ui` real, los controles en la columna de 18rem, la barra compacta, el diálogo con un cambio de permisos y el commit que deja.

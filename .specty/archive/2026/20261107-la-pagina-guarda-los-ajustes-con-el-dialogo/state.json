@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-la-pagina-guarda-los-ajustes-con-el-dialogo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-la-pagina-guarda-los-ajustes-con-el-dialogo",
   "baseCommit": "9183447eaa311a331341561a5c135a75de5a6508",
-  "revision": 4,
+  "revision": 5,
   "approved": {
     "revision": 4,
     "hash": "sha256:1b0bbce9c529aa4813b07c8a63a6f35ebe4d25efcaf0aff1e744ec32834ec25a",
@@ -91,14 +91,14 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/settings/settings-edit.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "e572a1776dd7df997406428c84a9e1818cd1ec2e",
+      "attempts": 1,
       "startedAt": "2026-11-07T05:06:17.710Z",
       "doneAt": "2026-11-07T05:21:57.699Z",
-      "summary": "El test del modelo de edición lista sizing.highFanIn en lugar de effort entre los ajustes sin campo, con el parche aprobado en S1"
+      "summary": "El test del modelo de edición lista sizing.highFanIn en lugar de effort entre los ajustes sin campo, con el parche aprobado en S1",
+      "scopeExtra": [
+        "packages/ui/src/settings/settings-edit.test.ts"
+      ]
     }
   },
   "pending": {
@@ -112,11 +112,57 @@
     "R": 4,
     "S": 1
   },
+  "closingSubmittedAt": "2026-11-07T05:22:10.435Z",
   "lockedTests": {
     "packages/ui/src/settings/settings-page.test.ts": "sha256:859c05b53232d31f3617f018f81413d37fa2d907311fd88300bc8ce509941fb1",
     "packages/ui/src/data/server-config.test.ts": "sha256:e501715fa11183ccb15f625de642e17bc754b5c43e282e2c6feb567fb7fed863",
     "packages/ui/src/settings/settings-controls.test.ts": "sha256:09b641dea5e4086ab63188bb064130f197360a1110ef27d0c6cce0fd44088067",
     "packages/ui/src/settings/settings-edit.test.ts": "sha256:38cdabf2706a0ac2617caa5a677c6ded3c0737807c1ee212bc1b6ffce5ca067d",
     "packages/ui/src/settings/settings-save.test.ts": "sha256:806b85d62d0869c53f39371d1672f765b3234777b7f0a7c41ccf1936146e003a"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ui.md",
+      "packages/ui/src/data/server.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/ui.md",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/test/server/stats.test.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/stats/period.ts",
+      "packages/core/src/stats/rows.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/core/test/stats/summary.test.ts",
+      "packages/ui/src/app/routes.ts",
+      "packages/ui/src/app/shell.test.ts",
+      "packages/ui/src/app/shell.ts",
+      "packages/ui/src/dashboard/dashboard-page.test.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts",
+      "packages/ui/src/dashboard/dashboard-summary.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/data/server-config.test.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/settings/save-dialog.ts",
+      "packages/ui/src/settings/setting-row.ts",
+      "packages/ui/src/settings/settings-controls.test.ts",
+      "packages/ui/src/settings/settings-edit.test.ts",
+      "packages/ui/src/settings/settings-edit.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts",
+      "packages/ui/src/settings/settings-save.test.ts",
+      "packages/ui/src/settings/settings-view.ts"
+    ],
+    "at": "2026-11-07T08:35:02.295Z",
+    "resolved": {
+      "commit": "9715429",
+      "at": "2026-11-07T08:42:00.906Z"
+    }
   }
 }
