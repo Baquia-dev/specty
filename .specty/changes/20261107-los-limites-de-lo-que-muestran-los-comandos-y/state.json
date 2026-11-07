@@ -6,6 +6,13 @@
   "branch": "specty/20261107-los-limites-de-lo-que-muestran-los-comandos-y",
   "baseCommit": "8eeee6ad95b5f08a27940976d72cc0c13a1e460c",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:f520aed23e547d9b8a86da6a0ef56e42f6953b66b93ffd8284b21742f3abda1b",
+    "at": "2026-11-07T08:44:45.249Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -45,12 +52,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:f520aed23e547d9b8a86da6a0ef56e42f6953b66b93ffd8284b21742f3abda1b",
-    "at": "2026-11-07T08:44:45.249Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T09:02:20.891Z"
 }

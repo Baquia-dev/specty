@@ -164,6 +164,11 @@ describe("the settings' catalog", () => {
       "internal.exec.priority",
       "internal.exec.maxOutputKiB",
       "internal.server.portsTried",
+      "internal.findings.perCommand",
+      "internal.findings.lastLines",
+      "internal.findings.messageChars",
+      "internal.commands.verifyLines",
+      "internal.commands.whyEntries",
     ]);
   });
 
@@ -277,6 +282,11 @@ describe("the settings' catalog", () => {
       expect.objectContaining({ key: "internal.exec.priority", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.exec.maxOutputKiB", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.server.portsTried", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.perCommand", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.lastLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.messageChars", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.commands.verifyLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.commands.whyEntries", kind: "number", new: true }),
     ]);
     expect(
       SETTINGS.find((setting) => setting.key === "internal.retries.landing")?.unit,
@@ -307,7 +317,17 @@ describe("the settings' catalog", () => {
 
   it("AC5, AC7: says why each guarantee does not change, and names the internal settings in Spanish and in English", () => {
     const internal = SETTINGS.filter((setting) => setting.section === "internal");
-    expect(internal).toHaveLength(15);
+    expect(internal.map((setting) => setting.key)).toEqual(
+      expect.arrayContaining([
+        "internal.waits.waitTimeoutSec",
+        "internal.findings.perCommand",
+        "internal.findings.lastLines",
+        "internal.findings.messageChars",
+        "internal.commands.verifyLines",
+        "internal.commands.whyEntries",
+        "guarantee.receipts",
+      ]),
+    );
     for (const setting of internal) {
       const es = settingText(setting.key, "es");
       const en = settingText(setting.key, "en");
