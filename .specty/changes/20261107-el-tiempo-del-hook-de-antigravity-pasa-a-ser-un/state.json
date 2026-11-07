@@ -6,6 +6,13 @@
   "branch": "specty/20261107-el-tiempo-del-hook-de-antigravity-pasa-a-ser-un",
   "baseCommit": "122b0f87b0dd21aa992fe015859351574e4588ec",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:1915ed41884d7f9c2df084391b828ad981b3d308d6b737790710322d83e6a0be",
+    "at": "2026-11-07T05:30:31.125Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -45,12 +52,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:1915ed41884d7f9c2df084391b828ad981b3d308d6b737790710322d83e6a0be",
-    "at": "2026-11-07T05:30:31.125Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T05:49:16.702Z"
 }
