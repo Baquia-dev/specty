@@ -91,3 +91,27 @@ Hoy, aceptar un cambio estándar siempre lo lleva a la fase de cierre: el agente
 - R1: Apagar la fase de cierre quita el cierre que redacta el agente, con sus decisiones, desviaciones y pendientes, y la retro, de los cambios estándar. Mitigación: lo decide la persona en su `config.yaml`, con su commit. El resumen de las tareas queda como cierre, y los cortes de una épica conservan el suyo, del que el siguiente toma los pendientes.
 - R2: La aprobación de la spec, la del contrato de tests, la aceptación de la persona y el guard son garantías con candado (A2 de la épica). Mitigación: este cambio no toca el guard ni los permisos de cada fase, y sin fase de cierre el cambio solo aterriza al aceptarlo la persona, o su agente en modo delegado.
 - R3: C4, C13, C15 y C19 tocan en paralelo `config.ts`, el catálogo, sus textos, sus tests y `docs/formats.md` §6. Mitigación: la clave va en su módulo y en su línea del catálogo, y al incorporar main `specty integrate` conserva lo de los dos.
+
+## Cierre
+
+### Resumen
+
+`flow.closing` es una clave nueva de `.specty/config.yaml`, en su propio módulo `schema/flow.ts`, con `true` por defecto. Con `false`, aceptar un cambio `standard` que no es corte de una épica lo cierra como uno `quick`. Escribe el resumen de sus tareas como sección Cierre, lo archiva y lo incorpora en el turno de aterrizaje, y el registro `change.closed` lleva `closing: false`. Las épicas, sus cortes y los spikes conservan su fase de cierre.
+
+La máquina recibe `withoutClosing` en el evento `accept`. La vista del cambio también lo lleva, para que en modo delegado la tarjeta de aceptación no pida el cierre, y el `accept` del agente toma el turno desde el principio. La página «Configuración» muestra el ajuste en la sección Flujo, con la marca «Nuevo» y sus textos en español y en inglés. `docs/formats.md` (§4 y §6) y `docs/ARCHITECTURE.md` (§4 y §9) lo documentan.
+
+### Desviaciones
+
+- El corte se estrechó antes de aprobarlo, porque con AC19 y la pieza de la vista Flujo salía XL. La épica pasó a la revisión 8: la pieza va en C20, y las reglas de AC19 en C21 y C22.
+- El test aprobado de AC3 en `packages/cli/test/closing-ahead.test.ts` exigía que los datos de `change.closed` fueran exactamente `{"closing":false}`. En modo delegado, `flow/active.ts` añade `delegated: true` a esos datos. La persona aprobó el desbloqueo S1, con un parche de una línea que solo deja de exigir que `closing` sea la única clave.
+
+### Decisiones
+
+- `flow.closing` no lleva la marca «Afectan permisos»: el cambio solo aterriza con la aceptación, de la persona o de su agente en modo delegado, como hoy uno `quick`. La sesión principal lo confirmó (A5).
+- `closingInAcceptance` y el guard no cambian. La tarjeta, `writesClosing` y `closingTurn` comprueban `withoutClosing` aparte, así que el guard, que es una garantía con candado, sigue igual.
+- Que un cambio es corte de una épica se sabe por el `epic` del frontmatter de su spec, porque `state.json` no lo guarda.
+
+### Pendientes
+
+- P333: el diálogo «Aceptar» de la UI y su aviso siguen diciendo que el agente redactará el cierre, también en un cambio estándar que ya se cierra al aceptarlo.
+- `packages/core/src/schema/config.ts` llega a 319 líneas de código, por encima del aviso de 300. Las claves nuevas de C21 y C22 deberían ir en `schema/flow.ts`.

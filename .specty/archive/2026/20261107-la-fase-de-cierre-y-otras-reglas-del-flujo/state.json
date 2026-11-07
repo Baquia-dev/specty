@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-la-fase-de-cierre-y-otras-reglas-del-flujo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-la-fase-de-cierre-y-otras-reglas-del-flujo",
   "baseCommit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:3a661febefa2f4412617eaafdf83c89a4f78f22277c21ffcbd4a414b79f8c603",
@@ -69,14 +69,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/closing-ahead.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "4189774132dfab279609f4da61d188062538482b",
+      "attempts": 1,
       "startedAt": "2026-11-07T11:23:36.427Z",
       "doneAt": "2026-11-07T15:58:33.330Z",
-      "summary": "views.ts calcula withoutClosing (standard sin epic con flow.closing: false); accept lo pasa al evento y cierra con closeQuick; closingTurn toma el turno y change.closed registra closing: false; formats.md §4 y §6."
+      "summary": "views.ts calcula withoutClosing (standard sin epic con flow.closing: false); accept lo pasa al evento y cierra con closeQuick; closingTurn toma el turno y change.closed registra closing: false; formats.md §4 y §6.",
+      "scopeExtra": [
+        "packages/cli/test/closing-ahead.test.ts"
+      ]
     }
   },
   "pending": {
@@ -90,6 +90,7 @@
     "R": 3,
     "S": 1
   },
+  "closingSubmittedAt": "2026-11-07T15:59:24.336Z",
   "lockedTests": {
     "packages/cli/test/closing-ahead.test.ts": "sha256:474b39061784c74529a618e14d140980ab190af4811b920802fd97ede9f982b0",
     "packages/core/test/closing-ahead.test.ts": "sha256:134ef47a8dcccb2dd81f93a0c84e0b57dcab773d8c0ec65f13c124ef811825c4",
