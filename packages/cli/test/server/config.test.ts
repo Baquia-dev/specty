@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DEFAULT_CONFIG, defaultGlossary } from "@baquia-dev/specty-core";
 import { describe, expect, it } from "vitest";
-import { writeFiles } from "../support";
-import { call, serving } from "./support";
+import { startServer, type UiServer } from "../../src/server/http";
+import { AGENT, CHANGE, CONFIG, cli, git, person, read, tempRepo, writeFiles } from "../support";
+import { call, serving, sessionAt } from "./support";
 
 const CONFIG_PATH = ".specty/config.yaml";
 
@@ -75,6 +76,150 @@ describe("the configuration in the local server", () => {
       expect(body.issues).toHaveLength(1);
       expect(body.issues[0].path).toBe("");
       expect(body.issues[0].message).not.toBe("");
+    } finally {
+      await server.close();
+    }
+  });
+});
+
+/** A server in a repository with no change open: the person's, or the agent's (read only). */
+async function servingConfig(actions: boolean) {
+  const root = await tempRepo({ [CONFIG_PATH]: CONFIG() });
+  const server = await startServer({
+    session: await sessionAt(root, AGENT),
+    port: 0,
+    ui: undefined,
+    actions,
+  });
+  return { root, server, headers: await entered(server) };
+}
+
+/** Opens the server's link and reads its session: the headers every action needs. */
+async function entered(server: UiServer): Promise<Record<string, string>> {
+  const { pathname, search } = new URL(server.link);
+  const cookie = (await call(server.port, `${pathname}${search}`)).headers["set-cookie"]?.[0];
+  const headers = {
+    cookie: cookie?.split(";")[0] ?? "",
+    origin: `http://localhost:${server.port}`,
+  };
+  const session = JSON.parse((await call(server.port, "/api/session", headers)).body);
+  return { ...headers, "x-specty-csrf": session.csrf ?? "" };
+}
+
+const TIMEOUT = [{ path: ["verify", "timeoutSec"], value: 900 }];
+
+describe("saving the configuration through the local server", () => {
+  it("AC1: checks some edits without writing, with the issues and the changes by setting", async () => {
+    const { root, server, headers } = await servingConfig(true);
+    try {
+      const head = git(root, "rev-parse", "HEAD");
+      const checked = await call(server.port, "/api/config/check", headers, {
+        edits: [{ path: ["size", "M"], value: 12 }, { path: ["verify", "default"] }],
+      });
+      expect(checked.status).toBe(200);
+      expect(JSON.parse(checked.body)).toEqual({
+        issues: [],
+        changes: [
+          { key: "verify.default", before: "true" },
+          { key: "size", after: { M: 12 } },
+        ],
+      });
+      expect(await read(root, CONFIG_PATH)).toBe(CONFIG());
+      expect(git(root, "rev-parse", "HEAD")).toBe(head);
+      for (const path of [["version"], ["verify", "units"], ["ui", "port"], ["specty delegate"]]) {
+        const bad = await call(server.port, "/api/config/check", headers, {
+          edits: [{ path, value: 1 }],
+        });
+        expect(bad.status, path.join(".")).toBe(400);
+      }
+      expect((await call(server.port, "/api/config/check", headers, { edits: "x" })).status).toBe(
+        400,
+      );
+    } finally {
+      await server.close();
+    }
+  });
+
+  it("AC2: saves only the changed keys in a commit of their own and answers it", async () => {
+    const { root, server, headers } = await servingConfig(true);
+    try {
+      const saved = await call(server.port, "/api/config", headers, { edits: TIMEOUT });
+      expect(saved.status).toBe(200);
+      const body = JSON.parse(saved.body);
+      expect(body.commit).toMatch(/^[0-9a-f]{7}$/);
+      expect(body.changes).toEqual([{ key: "verify.timeoutSec", after: 900 }]);
+      expect(await read(root, CONFIG_PATH)).toBe(
+        CONFIG().replace('default: "true"\n', 'default: "true"\n  timeoutSec: 900\n'),
+      );
+      expect(git(root, "log", "-1", "--format=%h%n%s%n%n%b")).toBe(
+        `${body.commit}\nchore(config): verify.timeoutSec\n\nSpecty-Config: true`,
+      );
+      const again = JSON.parse((await call(server.port, "/api/config", headers)).body);
+      expect(again.config.verify.timeoutSec).toBe(900);
+      expect(again).not.toHaveProperty("blocked");
+    } finally {
+      await server.close();
+    }
+  });
+
+  it("AC3: refuses to save a configuration the validator rejects, with its issues", async () => {
+    const { root, server, headers } = await servingConfig(true);
+    try {
+      const edits = [{ path: ["size", "M"], value: 20 }];
+      const checked = JSON.parse(
+        (await call(server.port, "/api/config/check", headers, { edits })).body,
+      );
+      expect(checked.issues.map((issue: { path: string }) => issue.path)).toContain("size");
+      const saved = await call(server.port, "/api/config", headers, { edits });
+      expect(saved.status).toBe(409);
+      const body = JSON.parse(saved.body);
+      expect(body.error).toBe("invalid");
+      expect(body.issues.map((issue: { path: string }) => issue.path)).toContain("size");
+      expect(await read(root, CONFIG_PATH)).toBe(CONFIG());
+    } finally {
+      await server.close();
+    }
+  });
+
+  it("AC4: an agent's server refuses to check and to save, also in delegated mode", async () => {
+    const { root, server, headers } = await servingConfig(false);
+    try {
+      const on = await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+      expect(on.code).toBe(0);
+      for (const path of ["/api/config/check", "/api/config"]) {
+        const refused = await call(server.port, path, headers, { edits: TIMEOUT });
+        expect(refused.status, path).toBe(403);
+        expect(JSON.parse(refused.body), path).toEqual({ error: "read-only" });
+      }
+      expect(await read(root, CONFIG_PATH)).toBe(CONFIG());
+    } finally {
+      await server.close();
+    }
+  });
+
+  it("AC5: says it is blocked by the change in progress, and refuses to save", async () => {
+    const { root, server, headers } = await serving(true);
+    try {
+      const body = JSON.parse((await call(server.port, "/api/config", headers)).body);
+      expect(body.blocked).toEqual({ kind: "change", id: CHANGE });
+      const saved = await call(server.port, "/api/config", headers, { edits: TIMEOUT });
+      expect(saved.status).toBe(409);
+      expect(JSON.parse(saved.body)).toEqual({ error: "change", id: CHANGE });
+      expect(await read(root, CONFIG_PATH)).toBe(CONFIG());
+    } finally {
+      await server.close();
+    }
+  });
+
+  it("AC5: says it is blocked by uncommitted changes of the file", async () => {
+    const { root, server, headers } = await servingConfig(true);
+    try {
+      await writeFiles(root, { [CONFIG_PATH]: `${CONFIG()}# a medias\n` });
+      const body = JSON.parse((await call(server.port, "/api/config", headers)).body);
+      expect(body.blocked).toEqual({ kind: "uncommitted" });
+      const saved = await call(server.port, "/api/config", headers, { edits: TIMEOUT });
+      expect(saved.status).toBe(409);
+      expect(JSON.parse(saved.body)).toEqual({ error: "uncommitted" });
     } finally {
       await server.close();
     }

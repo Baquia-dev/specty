@@ -1,7 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import * as z from "zod";
-import { optionName, SETTING_SECTIONS, SETTINGS, sectionName, settingText } from "../../src/light";
+import {
+  optionName,
+  SETTING_SECTIONS,
+  SETTINGS,
+  sectionName,
+  settingChanges,
+  settingOf,
+  settingText,
+} from "../../src/light";
 import { ConfigSchema } from "../../src/schema/config";
 
 type Schema = z.core.$ZodType;
@@ -163,5 +171,62 @@ describe("the settings' catalog", () => {
     expect(sectionName("verify", "en")).toBe("Verification");
     expect(optionName("policy.tests", "contract", "es")).toBe("Contrato");
     expect(optionName("policy.tests", "contract", "en")).toBe("Contract");
+  });
+});
+
+describe("the settings' edits", () => {
+  it("AC1: finds the setting an edit's path falls in, only among those the UI saves", () => {
+    expect(settingOf(["verify", "timeoutSec"])?.key).toBe("verify.timeoutSec");
+    expect(settingOf(["size", "M"])?.key).toBe("size");
+    expect(settingOf(["checks", "levels", "max-lines"])?.key).toBe("checks.levels");
+    expect(settingOf(["language"])?.key).toBe("language");
+    expect(settingOf(["dev", "ports"])?.items).toBe("number");
+    for (const path of [
+      ["version"],
+      ["verify"],
+      ["verify", "units"],
+      ["checks", "generators"],
+      ["checks", "layers", "core"],
+      ["checks", "testTime", "maxMs"],
+      ["team", "approvers"],
+      ["ui", "port"],
+      ["effort"],
+      ["specty delegate"],
+      ["unknown", "key"],
+      [],
+    ]) {
+      expect(settingOf(path), path.join(".")).toBeUndefined();
+    }
+    expect(
+      SETTINGS.filter((setting) => setting.fileOnly === true).map((setting) => setting.key),
+    ).toEqual(["verify.units", "checks.layers", "checks.generators", "checks.testTime"]);
+    expect(
+      SETTINGS.filter((setting) => setting.items !== undefined).map((setting) => setting.key),
+    ).toEqual(["dev.ports"]);
+  });
+
+  it("AC1: gives, by setting and in the page's order, its value in the file before and after", () => {
+    const before = {
+      version: 1,
+      verify: { default: "pnpm test", timeoutSec: 10 },
+      size: { S: 4, M: 10 },
+      governed: ["**"],
+    };
+    const after = {
+      version: 1,
+      verify: { default: "pnpm test" },
+      size: { S: 4, M: 12 },
+      governed: ["**"],
+      git: { target: "develop" },
+    };
+    expect(settingChanges(before, after)).toEqual([
+      { key: "verify.timeoutSec", before: 10 },
+      { key: "git.target", after: "develop" },
+      { key: "size", before: { S: 4, M: 10 }, after: { S: 4, M: 12 } },
+    ]);
+    expect(settingChanges(before, before)).toEqual([]);
+    expect(settingChanges(undefined, { language: "en" })).toEqual([
+      { key: "language", after: "en" },
+    ]);
   });
 });

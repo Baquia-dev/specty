@@ -6,6 +6,13 @@
   "branch": "specty/20261107-los-ajustes-se-guardan-desde-la-ui-con-diff-y",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c37e995d7f3f4735a57ae52b845a463d87665ebd98ad0e102081d860d272d1ba",
+    "at": "2026-11-07T03:37:39.107Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -57,12 +64,6 @@
     "T": 4,
     "R": 4
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:c37e995d7f3f4735a57ae52b845a463d87665ebd98ad0e102081d860d272d1ba",
-    "at": "2026-11-07T03:37:39.107Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T03:41:48.848Z"
 }
