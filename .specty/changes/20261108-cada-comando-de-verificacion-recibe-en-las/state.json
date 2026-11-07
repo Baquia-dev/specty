@@ -6,6 +6,13 @@
   "branch": "specty/20261108-cada-comando-de-verificacion-recibe-en-las",
   "baseCommit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:eb5b005610dfcac164fb9f983aeed887fda44130c3bd50f74e1420bb090d7fc5",
+    "at": "2026-11-07T16:48:09.265Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -53,12 +60,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:eb5b005610dfcac164fb9f983aeed887fda44130c3bd50f74e1420bb090d7fc5",
-    "at": "2026-11-07T16:48:09.265Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T16:55:49.480Z"
 }
