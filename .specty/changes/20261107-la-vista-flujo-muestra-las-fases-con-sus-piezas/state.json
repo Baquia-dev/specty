@@ -73,14 +73,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/settings/settings-flow.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "2771c797b3ea2cc2f9c813947215242a8e46aa56",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:48:13.678Z",
       "doneAt": "2026-11-07T09:54:45.752Z",
-      "summary": "Vista y modo recordados en el navegador con sus selectores; General en Básico muestra los 12 ajustes básicos sin buscador y dice cuántos hay en Avanzado; Flujo monta sp-settings-flow (vacío)."
+      "summary": "Vista y modo recordados en el navegador con sus selectores; General en Básico muestra los 12 ajustes básicos sin buscador y dice cuántos hay en Avanzado; Flujo monta sp-settings-flow (vacío).",
+      "scopeExtra": [
+        "packages/ui/src/settings/settings-flow.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0b11b5bc33ebfb07e63f4bce059ea736876489d1",
+      "startedAt": "2026-11-07T09:54:46.160Z",
+      "doneAt": "2026-11-07T10:01:09.864Z",
+      "summary": "sp-settings-flow dibuja la línea de fases con sus piezas equipadas (con las ediciones), las garantías con candado y su porqué, la fase de cierre como Próximamente, las frases en Básico y cada fase como botón en Avanzado."
     }
   },
   "pending": {

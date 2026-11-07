@@ -86,7 +86,7 @@ La página «Configuración» gana la vista Flujo de la propuesta B: las fases d
   - files: packages/ui/src/settings/settings-mode.ts, packages/ui/src/settings/settings-mode.test.ts, packages/ui/src/settings/settings-page.ts
   - ac: AC4, AC11
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-mode.test.ts
-- [ ] T3: La vista Flujo muestra la línea de fases con sus piezas, las garantías con candado y, en Básico, sus frases
+- [x] T3: La vista Flujo muestra la línea de fases con sus piezas, las garantías con candado y, en Básico, sus frases
   - files: packages/ui/src/settings/settings-flow.ts, packages/ui/src/settings/settings-flow.test.ts, packages/ui/src/settings/settings-page.ts
   - ac: AC1, AC2, AC3, AC9, AC12
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-flow.test.ts
