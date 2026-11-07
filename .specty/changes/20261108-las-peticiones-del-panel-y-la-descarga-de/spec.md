@@ -70,7 +70,7 @@ Limpieza de código de la UI sin cambios de comportamiento. `data/server.ts` tie
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/stats-source.test.ts --include src/data/stats-export.test.ts --include src/data/server.test.ts --include src/dashboard/dashboard-export.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: refactor
-- [ ] T3: `save` pasa a `data/download.ts`
+- [x] T3: `save` pasa a `data/download.ts`
   - files: packages/ui/src/data/download.ts, packages/ui/src/dashboard/dashboard-export.ts, packages/ui/src/history/history-export.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-export.test.ts --include src/history/history-export.test.ts && pnpm typecheck && pnpm lint && pnpm knip

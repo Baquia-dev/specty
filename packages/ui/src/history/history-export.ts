@@ -3,7 +3,8 @@ import { ChangeDetectionStrategy, Component, inject, input } from "@angular/core
 import { LucideDownload } from "../components/icons";
 import { Menu, type MenuEntry } from "../components/menu";
 import { Toasts } from "../components/toast";
-import { type Download, type ExportChoice, exportOf } from "../data/export";
+import { save } from "../data/download";
+import { type ExportChoice, exportOf } from "../data/export";
 import { SpectyData } from "../data/records";
 import { ActionError } from "../data/source";
 import { Preferences } from "../theme/preferences";
@@ -70,15 +71,4 @@ export class HistoryExport {
       );
     }
   }
-}
-
-/** Hands the file to the browser, which saves it as a download. */
-function save(download: Download): void {
-  const url = URL.createObjectURL(new Blob([download.content], { type: download.type }));
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = download.name;
-  link.click();
-  // The download starts from the link; the URL can go once it did.
-  setTimeout(() => URL.revokeObjectURL(url));
 }

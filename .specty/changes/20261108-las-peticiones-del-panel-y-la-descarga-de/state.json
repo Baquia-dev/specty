@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "87ff32285b263823254b265473405a5fe5077206",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:59:37.706Z",
       "doneAt": "2026-11-07T17:03:30.192Z",
-      "summary": "Las tres peticiones del panel (fetchStats, fetchStatsChanges, fetchStatsExport) y sus comprobaciones (isStatsView, isStatsChangesPage) pasan a data/server-stats.ts, que sustituye a stats-export.ts; ServerData solo las llama; server-answers exporta isText; ARCHITECTURE lo cuenta"
+      "summary": "Las tres peticiones del panel (fetchStats, fetchStatsChanges, fetchStatsExport) y sus comprobaciones (isStatsView, isStatsChangesPage) pasan a data/server-stats.ts, que sustituye a stats-export.ts; ServerData solo las llama; server-answers exporta isText; ARCHITECTURE lo cuenta",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "51bbbaf4b7e9d598e7e13c7e487fa2fcad308ddc",
+      "startedAt": "2026-11-07T17:03:30.984Z",
+      "doneAt": "2026-11-07T17:04:47.132Z",
+      "summary": "save pasa a data/download.ts y la usan las exportaciones de Historial y del Panel"
     }
   },
   "pending": {
