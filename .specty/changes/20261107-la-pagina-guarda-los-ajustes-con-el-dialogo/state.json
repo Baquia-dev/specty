@@ -64,12 +64,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "324bbc4f4dddf02d1984391d355d10351a9bd115",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:41:27.618Z",
       "doneAt": "2026-11-07T04:46:01.420Z",
-      "summary": "settings-edit.ts da los campos de cada ajuste, lee y escribe sus textos, lleva las ediciones con Restablecer, las aplica a la entrada del archivo y da cada cambio para el diálogo; settings-view.ts exporta valueItems, valueAt e isObject"
+      "summary": "settings-edit.ts da los campos de cada ajuste, lee y escribe sus textos, lleva las ediciones con Restablecer, las aplica a la entrada del archivo y da cada cambio para el diálogo; settings-view.ts exporta valueItems, valueAt e isObject",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "453dfbe82ad209dd5e51950973a04165ff698194",
+      "startedAt": "2026-11-07T04:46:01.933Z",
+      "doneAt": "2026-11-07T04:50:36.084Z",
+      "summary": "La fila de cada ajuste pasa a setting-row.ts con sus controles, «Restablecer» y «Sin guardar»; la página lleva las ediciones, las comprueba con el servidor, cuenta los cambios en el encabezado y la barra compacta, y en solo lectura dice por qué"
     }
   },
   "pending": {

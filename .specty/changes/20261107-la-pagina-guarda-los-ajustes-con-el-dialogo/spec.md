@@ -88,7 +88,7 @@ Hoy la página «Configuración» de `specty ui` solo muestra los ajustes, aunqu
   - files: packages/ui/src/settings/settings-edit.ts, packages/ui/src/settings/settings-edit.test.ts, packages/ui/src/settings/settings-view.ts
   - ac: AC1, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-edit.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
-- [ ] T3: Cada ajuste tiene su control, «Restablecer» y su error, y la página dice por qué es de solo lectura
+- [x] T3: Cada ajuste tiene su control, «Restablecer» y su error, y la página dice por qué es de solo lectura
   - files: packages/ui/src/settings/setting-row.ts, packages/ui/src/settings/settings-page.ts, packages/ui/src/settings/settings-page.test.ts, packages/ui/src/settings/settings-controls.test.ts
   - ac: AC1, AC2, AC3, AC7, AC8, AC9
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-controls.test.ts --include src/settings/settings-page.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
