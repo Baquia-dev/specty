@@ -62,3 +62,21 @@ Desde C1 y C2, cada comando de una verificación recibe en las variables de `ver
 
 - R1: Una verificación completa con varias unidades dice una línea por unidad — es una por comando, como pide AC6 de la épica, y cada una dice la memoria del momento en que arranca.
 - R2: Un test que compare entera la salida de error de una verificación con `verify.processes.env` — solo los de C1, C2 y este cambio configuran esas variables, y comprueban la salida con `toContain` o la ignoran.
+
+## Cierre
+
+### Resumen
+
+Cada comando de verificación dice al calcular su número, por la salida de error, una línea con el número, las variables que lo reciben, la memoria disponible en GB, los núcleos y las plazas que ocupa: `specty: 6 procesos en VITEST_MAX_WORKERS (6,7 GB de memoria disponible, 14 núcleos, 1 de 2 plazas)`. La da `processBudgetNote` (core, `cards/processes.ts`, en es/en). `budgetedEnv` la dice con las mismas plazas con que calcula el número, que pasan a `heldOf`. Las variables que se quedan con el entero menor de su entorno van aparte, con su valor. Sin variables en `verify.processes.env`, ni mide ni dice nada. `docs/formats.md` §6 lo explica.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- La línea sale desde `budgetedEnv` y no desde cada llamador (`runLive`, `verify --fresh`, la completa de la UI): así sale en todos los comandos de verificación y una sola vez por comando.
+
+### Pendientes
+
+- Ninguno nuevo.
