@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-reglas-de-riesgo-propias-se-suman-a-las-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-las-reglas-de-riesgo-propias-se-suman-a-las-de",
   "baseCommit": "a491c1c0346190390d4f4344e1b40cf32aa3d417",
   "revision": 2,
@@ -58,12 +58,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "75e1a6d51954937924f1a199278af75a9dd649bf",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:41:09.020Z",
       "doneAt": "2026-11-07T09:48:17.928Z",
-      "summary": "riskFindings pasa warnings.risks a contentRisks y task-views conserva el label de cada hallazgo, así que la tarjeta de aceptación, la nota de accept y las lecciones de la memoria dicen el texto de la persona; ARCHITECTURE §7"
+      "summary": "riskFindings pasa warnings.risks a contentRisks y task-views conserva el label de cada hallazgo, así que la tarjeta de aceptación, la nota de accept y las lecciones de la memoria dicen el texto de la persona; ARCHITECTURE §7",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2d2249eb51be34a7d123d488d9472382e656a36b",
+      "startedAt": "2026-11-07T09:48:18.310Z",
+      "doneAt": "2026-11-07T09:54:50.741Z",
+      "summary": "La vista de avisos de la aceptación en la UI pasa el label de la auditoría a riskLabel, así que muestra el texto de la regla de la persona en los dos idiomas; ui.md"
     }
   },
   "pending": {

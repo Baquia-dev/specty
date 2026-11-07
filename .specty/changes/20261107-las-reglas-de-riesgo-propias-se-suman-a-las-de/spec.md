@@ -84,7 +84,7 @@ Hoy `specty task done` avisa de los riesgos del contenido solo con el catálogo 
   - files: packages/cli/src/flow/risk.ts, packages/cli/src/flow/task-views.ts, packages/cli/test/risk.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/risk.test.ts
-- [ ] T3: La vista de aceptación de la UI muestra el texto de la persona
+- [x] T3: La vista de aceptación de la UI muestra el texto de la persona
   - files: packages/ui/src/data/warnings.ts, packages/ui/src/data/warnings.test.ts, docs/ui.md
   - ac: AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/warnings.test.ts && pnpm typecheck
