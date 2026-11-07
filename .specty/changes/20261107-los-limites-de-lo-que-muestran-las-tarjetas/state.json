@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261107-los-limites-de-lo-que-muestran-las-tarjetas",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-los-limites-de-lo-que-muestran-las-tarjetas",
+  "baseCommit": "0d670cd5ecc67d21d161bf1e7d956a89bdbfe72b",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "16 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a2de6253f82bb42fb9363f08db9ff2be3fb18a3d35e30468bb6113384457829d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:14b5bb7016dc48be1942f639b0eeee9ba2876ae55d5743b7fb196fed48a25d16",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:20e0c82e55a533c68928c5e53b4fd28d088a32fdea9d536167f453796e247e96",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 8,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:05da830b29787f4000297f43d456cdca30a17f6f042d30a56f83a5dfd486c59f",
+    "at": "2026-11-07T08:19:05.736Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
