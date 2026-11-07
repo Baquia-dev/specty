@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-limites-del-servidor-de-la-ui-pasan-a-ser",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-los-limites-del-servidor-de-la-ui-pasan-a-ser",
   "baseCommit": "122b0f87b0dd21aa992fe015859351574e4588ec",
   "revision": 2,
@@ -52,6 +52,11 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T05:49:07.657Z"
+  "lockedTests": {
+    "packages/cli/test/live-run.test.ts": "sha256:b1d7106954465cc01e82cae6ffc18df4c77a0f378a7fa571273c1b06c2bfd855",
+    "packages/core/test/settings/catalog.test.ts": "sha256:b86f205505bc4a483df2e479a789713a19fa890760ce530fad5bc1770cd2eb4d",
+    "packages/cli/test/server/internal-server.test.ts": "sha256:0e8e3a0e816d478c0e13a0aa05c1409ad6498a4d48800ba29bb6041fce9d8bbc",
+    "packages/cli/test/server/run-output.test.ts": "sha256:c26691eb1b2626cf1e45344789128e7bf9c81efd4d9cfd64c77a33db266382fc",
+    "packages/core/test/settings/internal-server.test.ts": "sha256:40837143093d6afcd4c58c2dfb6031d61c243ff00fe0f3a538349d2486b369a4"
+  }
 }
