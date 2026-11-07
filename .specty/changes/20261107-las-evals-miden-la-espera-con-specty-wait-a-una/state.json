@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-evals-miden-la-espera-con-specty-wait-a-una",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-las-evals-miden-la-espera-con-specty-wait-a-una",
   "baseCommit": "abb0d3e277d90768dee5c6d4d4de185f4796f8bf",
   "revision": 2,
@@ -54,6 +54,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T01:51:58.615Z"
+  "lockedTests": {
+    "evals/test/experiments.test.ts": "sha256:f8770769effdbfa30beea81c879de9588f15336db7cb638617a0af59f94640b7",
+    "evals/test/launch.test.ts": "sha256:350e59a49fc4ab2e993b56e3fe78d47d3d77e724a1270cc59a2da9eb28dfc6a3",
+    "evals/test/wait.test.ts": "sha256:6de17493a46390bc87467fcfc37f419bf797f4dba7f9bb55211a554bd18144cb"
+  }
 }
