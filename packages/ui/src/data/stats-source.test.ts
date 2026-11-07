@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-// The panel's table of changes, as each source gives it: the local server answers
-// `GET /api/stats/changes`; a source that does not page the panel gives none.
+// The panel and its table of changes, as each source gives them: the local server answers
+// `GET /api/stats` and `GET /api/stats/changes`; a source that does not give them gives none.
 import { ActionError, type ChangeRecord, SpectyData } from "./records";
 import { ServerData } from "./server";
 import { NO_SESSION, UNEXPECTED } from "./server-answers";
-import type { StatsChangesParams } from "./source";
+import type { StatsChangesParams, StatsParams } from "./source";
 
 const ASKED: StatsChangesParams = {
   period: "7d",
@@ -123,5 +123,75 @@ describe("the panel's table of changes from each source", () => {
 
   it("AC6: a source that does not page the panel gives no table", async () => {
     expect(await new Bare().statsChanges(ASKED)).toBeUndefined();
+  });
+});
+
+/** The panel of a cut, as the local server answers it: the six figures, each with its value. */
+const VIEW = {
+  query: { period: "7d", who: { kind: "person", name: "Ana" }, kind: "quick" },
+  range: { from: "2026-11-01", to: "2026-11-07" },
+  changes: 3,
+  options: [{ who: { kind: "person", name: "Ana" }, changes: 3 }],
+  summary: {
+    closed: { value: 2, previous: 1, delta: 1 },
+    tasks: { value: 9, previous: null, delta: null },
+    cycle: { value: 3_600_000, previous: null, delta: null },
+    verifications: { value: 0.9, previous: null, delta: null, count: 10 },
+    cost: { value: null, previous: null, delta: null, measured: 0, of: 3 },
+    pending: { value: 4, previous: 4, delta: 0 },
+  },
+};
+
+/** Why `stats` failed, in Spanish. */
+async function statsFailure(): Promise<string> {
+  const error: unknown = await new ServerData()
+    .stats({ period: "7d" })
+    .catch((caught: unknown) => caught);
+  return error instanceof ActionError ? error.text.es : "no falló con su motivo";
+}
+
+describe("the panel of a cut from each source", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("AC1: asks the local server for the cut with only the parameters the page has, and gives its answer", async () => {
+    const fetched = answering(200, VIEW);
+    const cut: StatsParams = { period: "7d", who: "person:Ana", kind: "quick" };
+    expect(await new ServerData().stats(cut)).toEqual(VIEW);
+    const url = askedUrl(fetched);
+    expect(url.pathname).toBe("/api/stats");
+    expect(Object.fromEntries(url.searchParams)).toEqual({
+      period: "7d",
+      who: "person:Ana",
+      kind: "quick",
+    });
+    await new ServerData().stats({ who: "agent:codex" });
+    expect(Object.fromEntries(askedUrl(fetched, 1).searchParams)).toEqual({ who: "agent:codex" });
+  });
+
+  it("AC1: asks without a query when the page has no part of the cut", async () => {
+    const fetched = answering(200, VIEW);
+    await new ServerData().stats({});
+    expect(String(fetched.mock.calls[0]?.[0])).toBe("/api/stats");
+  });
+
+  it("AC1: says why when the tab has no session or the answer is not a panel", async () => {
+    answering(403, { error: "forbidden" });
+    expect(await statsFailure()).toBe(NO_SESSION.es);
+    answering(500, { error: "boom" });
+    expect(await statsFailure()).toBe(UNEXPECTED.es);
+    answering(200, { ...VIEW, changes: "3" });
+    expect(await statsFailure()).toBe(UNEXPECTED.es);
+    answering(200, { ...VIEW, options: "nadie" });
+    expect(await statsFailure()).toBe(UNEXPECTED.es);
+    answering(200, { ...VIEW, range: undefined });
+    expect(await statsFailure()).toBe(UNEXPECTED.es);
+    answering(200, { ...VIEW, summary: { ...VIEW.summary, pending: { value: "4" } } });
+    expect(await statsFailure()).toBe(UNEXPECTED.es);
+    answering(200, { ...VIEW, summary: { ...VIEW.summary, cost: undefined } });
+    expect(await statsFailure()).toBe(UNEXPECTED.es);
+  });
+
+  it("AC1: a source that does not give the panel gives none", async () => {
+    expect(await new Bare().stats({ period: "7d" })).toBeUndefined();
   });
 });

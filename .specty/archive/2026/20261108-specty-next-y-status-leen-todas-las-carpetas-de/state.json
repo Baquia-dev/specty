@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "20261108-specty-next-y-status-leen-todas-las-carpetas-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-specty-next-y-status-leen-todas-las-carpetas-de",
+  "baseCommit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:baa3d3dc267fc3a6b45a1903172e5d009dd224a29694d6a6f6c3a680b8dad931",
+    "at": "2026-11-07T16:48:44.686Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3fe2c0f1dc83070192e5784aa72328049f4c88bfbae05bd77a1edca792886f53",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:94e44cf7e6771df29e4fc639db9902372890c339814ea90a27f5dd9ed4eb00a0",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:85f9020858c29d6fb3fc187e01fc79021b2af4bbb3b017dfad5f79427247736a",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:2229f96ad73ed17a7b4584e77bca6b022703c32276c052e921d44bf7b2b8c7ea",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "04a0df33c18f9643cdda75df55dc76c1603efac0",
+      "attempts": 2,
+      "startedAt": "2026-11-07T16:48:45.302Z",
+      "doneAt": "2026-11-07T17:18:23.890Z",
+      "summary": "Git.inWorktree da el Git de otra carpeta: HEAD y rama del worktree list del de la sesión, specty/ por su .git y common/ del de la sesión, con lo recordado compartido (recall por generaciones); locateChanges lo usa. status en este repo: 60 → 10 procesos git.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "8313fb9bca4167874f3d460cf84588f9816de04e",
+      "attempts": 1,
+      "startedAt": "2026-11-07T17:18:24.281Z",
+      "doneAt": "2026-11-07T17:19:05.518Z",
+      "summary": "ARCHITECTURE §10: Git.inWorktree, lo recordado compartido por generaciones y las cifras medidas (status 60 → 10 procesos en este repo; sintético 12/24/36 → 6 y next desde la principal 10/16/22 → 7).",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T17:19:26.571Z"
+}

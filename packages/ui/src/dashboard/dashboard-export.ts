@@ -4,7 +4,7 @@ import type { StatsExportFormat, StatsQuery } from "@baquia-dev/specty-core";
 import { LucideDownload } from "../components/icons";
 import { Menu, type MenuEntry } from "../components/menu";
 import { Toasts } from "../components/toast";
-import type { Download } from "../data/export";
+import { save } from "../data/download";
 import { ActionError, SpectyData } from "../data/records";
 import { Preferences } from "../theme/preferences";
 
@@ -71,15 +71,4 @@ export class DashboardExport {
       );
     }
   }
-}
-
-/** Hands the file to the browser, which saves it as a download, as History's export does. */
-function save(download: Download): void {
-  const url = URL.createObjectURL(new Blob([download.content], { type: download.type }));
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = download.name;
-  link.click();
-  // The download starts from the link; the URL can go once it did.
-  setTimeout(() => URL.revokeObjectURL(url));
 }
