@@ -21,3 +21,9 @@ La tarjeta sin cambio activo pide un subagente por cada cambio que pide el usuar
   - files: packages/cli/src/flow/duplicates.ts, packages/cli/src/commands/new.ts, packages/cli/test/duplicates-subagent.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/duplicates-subagent.test.ts test/duplicates.test.ts test/duplicates-slice.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+duplicatesOf recibe subagent desde new --subagent: la petición idéntica (sin espacios de los extremos) de un cambio abierto no se compara (sameErrand); título y follows sí; petición parecida distinta y new sin --subagent siguen avisando; ARCHITECTURE §6 (fila de new) y §16 (eval)
