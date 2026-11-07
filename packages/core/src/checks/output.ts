@@ -8,11 +8,22 @@ import type { Finding } from "./report";
  * nothing on its own; without any location at all, the last lines are what is left to show.
  */
 
-/** At most this many findings from one output, so a broken build does not flood the report. */
-const MAX_FINDINGS = 100;
-/** Lines shown when the output has no location. */
-const LAST_LINES = 5;
-const MAX_MESSAGE = 200;
+/** How much of an output becomes findings: `internal.findings` (formats.md §6). */
+export interface FindingLimits {
+  /** At most this many findings from one output, so a broken build does not flood the report. */
+  readonly perCommand: number;
+  /** Lines shown when the output has no location. */
+  readonly lastLines: number;
+  /** The characters of each finding's message. */
+  readonly messageChars: number;
+}
+
+/** Today's limits, the defaults of `internal.findings`. */
+export const DEFAULT_FINDING_LIMITS: FindingLimits = {
+  perCommand: 100,
+  lastLines: 5,
+  messageChars: 200,
+};
 
 // A path with an extension, not inside a URL (`https://host.com:8080`) or a longer word.
 const PATH = String.raw`(?:\.{1,2}\/|\/)?(?:[\w@.\-]+\/)*[\w@\-][\w@.\-]*\.[A-Za-z]\w*`;
@@ -28,7 +39,12 @@ const ANSI = new RegExp(String.raw`${ESC}\[[0-9;]*[A-Za-z]`, "g");
 const SEPARATORS = /^[\s:\-–•·|›>❯]+|[\s:\-–•·|›>❯]+$/g;
 const RULES = /[━─│┃]+/g;
 
-export function findingsInOutput(output: string, root: string): Finding[] {
+export function findingsInOutput(
+  output: string,
+  root: string,
+  limits: FindingLimits = DEFAULT_FINDING_LIMITS,
+): Finding[] {
+  const max = limits.messageChars;
   const lines = output.replace(ANSI, "").split(/\r?\n/);
   const found: Finding[] = [];
   let file: string | undefined;
@@ -37,7 +53,7 @@ export function findingsInOutput(output: string, root: string): Finding[] {
       file = undefined;
       return;
     }
-    const located = locate(line, lines, index, root);
+    const located = locate(line, lines, index, root, max);
     if (located !== undefined) {
       found.push(located);
       return;
@@ -49,7 +65,7 @@ export function findingsInOutput(output: string, root: string): Finding[] {
     }
     const entry = ESLINT_ENTRY.exec(line)?.groups;
     if (file !== undefined && entry?.line !== undefined && entry.message !== undefined) {
-      found.push({ path: file, line: Number(entry.line), message: oneLine(entry.message) });
+      found.push({ path: file, line: Number(entry.line), message: oneLine(entry.message, max) });
     }
   });
   const unique = found.filter(
@@ -61,28 +77,32 @@ export function findingsInOutput(output: string, root: string): Finding[] {
           other.message === finding.message,
       ) === index,
   );
-  if (unique.length > 0) return unique.slice(0, MAX_FINDINGS);
+  if (unique.length > 0) return unique.slice(0, limits.perCommand);
   return lines
-    .map((line) => oneLine(line))
+    .map((line) => oneLine(line, max))
     .filter((line) => line.length > 0)
-    .slice(-LAST_LINES)
+    .slice(-limits.lastLines)
     .map((message) => ({ message }));
 }
 
-/** The finding of a line with a location; its message, the rest of the line or the line before. */
+/**
+ * The finding of a line with a location; its message, the rest of the line or the line before,
+ * of `max` characters at most.
+ */
 function locate(
   line: string,
   lines: readonly string[],
   index: number,
   root: string,
+  max: number,
 ): Finding | undefined {
   const match = LOCATION.exec(line);
   const path = match?.groups?.path;
   const number = match?.groups?.line ?? match?.groups?.paren;
   if (match === null || path === undefined || number === undefined) return undefined;
-  const after = clean(line.slice(match.index + match[0].length));
-  const before = clean(line.slice(0, match.index));
-  const message = after || before || clean(previous(lines, index));
+  const after = clean(line.slice(match.index + match[0].length), max);
+  const before = clean(line.slice(0, match.index), max);
+  const message = after || before || clean(previous(lines, index), max);
   return { path: relativeTo(path, root), line: Number(number), message };
 }
 
@@ -95,12 +115,12 @@ function previous(lines: readonly string[], index: number): string {
   );
 }
 
-function clean(text: string): string {
-  return oneLine(text.replace(RULES, " ")).replace(SEPARATORS, "");
+function clean(text: string, max: number): string {
+  return oneLine(text.replace(RULES, " "), max).replace(SEPARATORS, "");
 }
 
-function oneLine(text: string): string {
-  return text.replace(/\s+/g, " ").trim().slice(0, MAX_MESSAGE);
+function oneLine(text: string, max: number): string {
+  return text.replace(/\s+/g, " ").trim().slice(0, max);
 }
 
 /** Repository-relative, with `/`, when the tool printed it under `root` or with `./`. */

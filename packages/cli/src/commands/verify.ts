@@ -21,9 +21,6 @@ import type { Session } from "../session";
 
 type Run = (handler: (session: Session) => Promise<Output>) => () => Promise<void>;
 
-/** The lines of a failed attempt's output that the card shows: its end is what matters. */
-const SHOWN = 20;
-
 /** A unit to run fresh: with `verify.units`, its fingerprint; `verify.full` has none. */
 interface Fresh {
   readonly target: FreshTarget;
@@ -133,11 +130,14 @@ async function attempt(
           env: session.environment.env,
           timeoutMs: session.config.verify.timeoutSec * 1000,
           lowPriority: true,
+          priority: session.config.internal.exec.priority,
         })
       : await runLive(session, change, undefined, target.command, { held: true });
   const ms = Date.now() - started;
   const failedTests = result.code === 0 ? [] : await failedTestsSince(session, started);
-  return { code: result.code, ms, output: tail(result, SHOWN), failedTests };
+  // The card shows the end of a failed attempt's output, what matters (`internal.commands`).
+  const output = tail(result, session.config.internal.commands.verifyLines);
+  return { code: result.code, ms, output, failedTests };
 }
 
 /** What became of `target`: passed at the first attempt, flaky, or failed twice. */

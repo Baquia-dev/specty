@@ -3,13 +3,11 @@ import type { Session } from "../session";
 import { clearRun, readRuns } from "../store/runs";
 import type { Run } from "./runs";
 
-/** How often, in milliseconds, the server looks at the tasks' verifications in other processes. */
-const TASKS_EVERY = 500;
-
 /**
  * The tasks' verifications that `specty task done` keeps live in other processes, and the full
- * one of `specty accept` (`store/runs.ts`), looked at every half second: `heard` gets each one that moves, and
- * `undefined` once its file is gone. A file whose process no longer exists is removed unseen.
+ * one of `specty accept` (`store/runs.ts`), looked at every `internal.server.tasksEveryMs`, half a
+ * second by default: `heard` gets each one that moves, and `undefined` once its file is gone. A
+ * file whose process no longer exists is removed unseen.
  * `forget` drops what it saw of a change, so that it does not end that change's run again.
  */
 export function taskRuns(
@@ -49,11 +47,14 @@ export function taskRuns(
       .finally(() => {
         looking = false;
       });
-  }, TASKS_EVERY);
+  }, session.config.internal.server.tasksEveryMs);
   timer.unref();
   return {
     current: (id) => runs.get(id),
-    forget: (id) => said.delete(id),
+    forget(id) {
+      said.delete(id);
+      runs.delete(id);
+    },
     close: () => clearInterval(timer),
   };
 }

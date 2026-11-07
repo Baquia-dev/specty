@@ -25,7 +25,11 @@ export type FlowEvent =
   | { readonly type: "scopeRequest" }
   | { readonly type: "decideScope" }
   | { readonly type: "adjust" }
-  | { readonly type: "accept" }
+  /**
+   * `withoutClosing`: with `flow.closing: false`, a standard change outside an epic, which its
+   * acceptance closes with no closing phase, as a quick one (formats.md §6).
+   */
+  | { readonly type: "accept"; readonly withoutClosing?: boolean }
   | { readonly type: "confirmClose"; readonly closingSubmitted: boolean }
   | { readonly type: "childrenDone" }
   | { readonly type: "cancel" };
@@ -187,7 +191,7 @@ function endOutcome(
     case "adjust":
       return adjustOutcome(phase, kind);
     case "accept":
-      return to(kind === "quick" ? "done" : "closing");
+      return to(closesOnAccept(kind, event.withoutClosing === true) ? "done" : "closing");
     case "confirmClose":
       return event.closingSubmitted ? to("done") : reject("closing-not-submitted");
     case "childrenDone":
@@ -198,11 +202,21 @@ function endOutcome(
 }
 
 /**
- * Only an epic is adjusted before its result, to split a slice: while it is implemented, any
- * other change changes its plan with `scope add`.
+ * Accepting closes a quick change, whose closing is its tasks' summaries, and a standard one
+ * without its closing phase; any other goes on to its closing.
+ */
+function closesOnAccept(kind: ChangeKind, withoutClosing: boolean): boolean {
+  return kind === "quick" || (withoutClosing && kind === "standard");
+}
+
+/**
+ * Before its result, an epic is adjusted to split a slice, and any other change to correct its
+ * pending tasks, such as a `verify` that runs no test. A retro has no implementation.
  */
 function adjustOutcome(phase: Phase, kind: ChangeKind): TransitionResult {
-  return phase === "implementing" && kind !== "epic" ? reject("kind-not-allowed") : to("adjusting");
+  return phase === "implementing" && kind === "retro"
+    ? reject("kind-not-allowed")
+    : to("adjusting");
 }
 
 function to(phase: Phase): TransitionResult {

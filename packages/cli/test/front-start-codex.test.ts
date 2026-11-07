@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { APP, cli, tempRepo } from "./support";
+import { APP, CONFIG, cli, tempRepo } from "./support";
+
+/** A repository whose changes each get a folder of their own, as `new` makes them by default. */
+const IN_FOLDERS = {
+  ...APP,
+  ".specty/config.yaml": CONFIG().replace("worktrees: false", "worktrees: true"),
+};
 
 /** An agent that Specty recognizes, to write the memory. */
 const CLAUDE = { env: { CLAUDECODE: "1" } };
@@ -20,8 +26,11 @@ const bash = (cwd: string, session: string, command: string) =>
     }),
   });
 
-/** Codex's `SessionStart` when the thread `session` starts in `cwd`. */
-const started = (cwd: string, session: string) =>
+/**
+ * Codex's `SessionStart` when the thread `session` starts in `cwd`, with no mark of Codex in the
+ * hook's environment and, if any, the marks of `env`.
+ */
+const started = (cwd: string, session: string, env: Record<string, string> = {}) =>
   cli(cwd, ["guard", "--tool", "codex"], {
     stdin: JSON.stringify({
       session_id: session,
@@ -29,6 +38,7 @@ const started = (cwd: string, session: string) =>
       hook_event_name: "SessionStart",
       source: "startup",
     }),
+    env,
   });
 
 /** A repository whose memory has P1 to P5, and front B with P4 and P2 in that order. */
@@ -65,9 +75,9 @@ describe("the card with no active change in a Codex thread that holds a front", 
     ]);
     for (const outside of ["P1", "P3", "P5"]) expect(next.out).not.toContain(`${outside} ·`);
     expect(next.out).not.toContain("`specty memory`");
-    // The guard knows the thread by its event, as when the session starts: the same entries. The
-    // rest of its card follows the tool its environment tells, none here (ARCHITECTURE §7).
-    expect(memoryOf((await started(root, "t1")).out)).toEqual(memoryOf(next.out));
+    // The guard knows the thread by its event, as when the session starts, and its tool by its
+    // `--tool`, though the hook's environment does not say it (ARCHITECTURE §7).
+    expect((await started(root, "t1")).out).toBe(next.out);
   });
 
   it("AC1: gives another Codex thread no entry", async () => {
@@ -76,6 +86,24 @@ describe("the card with no active change in a Codex thread that holds a front", 
     const other = await cli(root, ["next"], inThread("t2"));
     expect(memoryOf(other.out)).toEqual([]);
     for (const id of ["P1", "P2", "P3", "P4", "P5"]) expect(other.out).not.toContain(`${id} ·`);
-    expect((await started(root, "t2")).out).toBe((await cli(root, ["next"])).out);
+    expect((await started(root, "t2")).out).toBe(other.out);
+  });
+});
+
+describe("the card of Codex's guard, whatever the hook's environment says", () => {
+  it("AC2: is the card of `next` in Codex, with its brief, with no mark of Codex", async () => {
+    const root = await tempRepo(IN_FOLDERS);
+    const next = (await cli(root, ["next"], inThread("t3"))).out;
+    expect(next).toContain("ENCARGO:");
+    expect((await cli(root, ["next"])).out).not.toBe(next);
+    expect((await started(root, "t3")).out).toBe(next);
+  });
+
+  it("AC3: is the card of its `--tool` with the mark of another tool in the environment", async () => {
+    const root = await tempRepo(IN_FOLDERS);
+    const gemini = { GEMINI_CLI: "1" };
+    const next = (await cli(root, ["next"], inThread("t4"))).out;
+    expect((await cli(root, ["next"], { env: gemini })).out).not.toBe(next);
+    expect((await started(root, "t4", gemini)).out).toBe(next);
   });
 });

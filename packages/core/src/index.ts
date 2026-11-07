@@ -130,7 +130,7 @@ export {
   type SpecAccess,
   type WaitingFor,
 } from "./flow/phases";
-export { changeWaitsFor } from "./flow/waiting";
+export { changeWaitsFor, unlocksApprovedTest, waitsForPerson } from "./flow/waiting";
 export { globBase, isGlob, matchesAny, matchesPattern } from "./glob";
 export {
   defaultGlossary,
@@ -336,6 +336,40 @@ export { type ParseOptions, type ParseResult, parseSpec } from "./spec/parse";
 export { hashUnits, serializeSpec } from "./spec/serialize";
 export { KIND_RULES, SECTION_TITLES } from "./spec/vocabulary";
 export {
+  type StatsExportFile,
+  type StatsExportFormat,
+  type StatsExportQuery,
+  type StatsExportRow,
+  statsExport,
+  statsExportQuery,
+} from "./stats/export";
+export {
+  STATS_PERIODS,
+  type StatsPeriod,
+  type StatsQuery,
+  type StatsRange,
+  type StatsWho,
+  type StatsWhoKind,
+  statsQuery,
+} from "./stats/period";
+export { type StatsRow, statsRow } from "./stats/rows";
+export {
+  type StatsFigure,
+  type StatsOption,
+  type StatsSummary,
+  type StatsView,
+  statsView,
+} from "./stats/summary";
+export {
+  type StatsChange,
+  type StatsChangeSort,
+  type StatsChangesPage,
+  type StatsListed,
+  type StatsTableQuery,
+  statsChanges,
+  statsTableQuery,
+} from "./stats/table";
+export {
   type ChangeSummary,
   type ChangeTab,
   initialTab,
@@ -365,4 +399,5 @@ export {
   type UsageEntry,
 } from "./usage";
 export { type ProposePhase, type ValidationContext, validateSpec } from "./validate";
+export { adjustsPendingTasks } from "./validate/phase";
 export { type TestCycle, type TestRules, testCycle, testRules } from "./validate/quality";

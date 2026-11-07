@@ -20,7 +20,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { bindNew } from "../enforce/sessions";
 import { commitState, isFinished, resolveActive } from "../flow/active";
-import { freeBranch, markBranch } from "../flow/branches";
+import { freeBranch, lockWaits, markBranch } from "../flow/branches";
 import { duplicatesOf } from "../flow/duplicates";
 import { sliceRefusal } from "../flow/epic";
 import { cleanUp, type Swept, withCleanup } from "../flow/prune";
@@ -130,6 +130,7 @@ async function claimed(
     follows: options.follows,
     ...(options.epic !== undefined ? { epic: options.epic } : {}),
     distinctFrom: options.distinctFrom ?? [],
+    ...(options.subagent === true ? { subagent: true } : {}),
   });
   if (duplicates.length > 0) return { refusal: duplicateCard(duplicates, session.cards) };
   return { options: claim.entries.length > 0 ? { ...options, claimed: claim.entries } : options };
@@ -155,11 +156,11 @@ async function newInFolder(session: Session, options: NewOptions, title: string)
   if (dirty.length > 0) return nextCard({ dirty }, cards);
 
   const changeTitle = options.slug?.trim() ? options.slug : title;
-  const id = await uniqueId(session, makeChangeId(session.environment.now(), changeTitle));
+  const id = await uniqueId(session, changeIdOf(session, changeTitle));
   const branch = settings.branchPerChange ? await branchFor(session, options, id) : undefined;
   if (branch !== undefined) {
     await session.git.output(["switch", "-q", "-c", branch]);
-    await markBranch(session.git, branch, id);
+    await markBranch(session.git, branch, id, branchWaits(session));
   } else await writePointer(session.git, "active", id);
   const created = await createChange(session, options, {
     id,
@@ -196,7 +197,7 @@ async function newInWorktree(
   const swept = await cleanUp(session);
   const home = await worktreesHome(git);
   const changeTitle = options.slug?.trim() ? options.slug : title;
-  const id = await uniqueId(session, makeChangeId(session.environment.now(), changeTitle), home);
+  const id = await uniqueId(session, changeIdOf(session, changeTitle), home);
   const branch = await branchFor(session, options, id);
   const folder = join(home, id);
   const { hooks, workspace } = await addWorktree(git, { folder, branch, base: base.commit });
@@ -251,6 +252,9 @@ async function withSweptAndPorts(
   return withDevPorts(cleaned, await portsOf(session, folder), session.lang);
 }
 
+/** The waits of `markBranch` while another process holds git's configuration, as configured. */
+const branchWaits = (session: Session) => lockWaits(session.config.internal.retries.gitConfig);
+
 /**
  * Ties the new worktree's branch to its change; `markBranch` already tries again while another
  * process holds git's configuration. If git still cannot, the folder and the branch `new` has just
@@ -263,7 +267,7 @@ async function markOrUndo(
 ): Promise<Output | undefined> {
   const { git } = session;
   try {
-    await markBranch(git, made.branch, made.id);
+    await markBranch(git, made.branch, made.id, branchWaits(session));
     return undefined;
   } catch (error) {
     if (!(error instanceof GitError)) throw error;
@@ -286,8 +290,16 @@ async function branchFor(session: Session, options: NewOptions, id: string): Pro
   const { kind, type } = options;
   const title = (options.slug?.trim() ? options.slug : options.title).trim();
   const pattern = branchPattern !== undefined ? { pattern: branchPattern } : {};
-  return freeBranch(session.git, branchName({ flow, kind, type, id, title, ...pattern }));
+  const { slugChars } = session.config.internal.cards;
+  return freeBranch(
+    session.git,
+    branchName({ flow, kind, type, id, title, slugChars, ...pattern }),
+  );
 }
+
+/** A new change's id, today's, its slug of `internal.cards.slugChars` at most. */
+const changeIdOf = (session: Session, title: string) =>
+  makeChangeId(session.environment.now(), title, session.config.internal.cards.slugChars);
 
 /** Writes the spec skeleton and the initial state of a new change in `target.dir`. */
 async function createChange(

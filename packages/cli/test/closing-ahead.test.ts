@@ -1,11 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  APP,
+  ARCHIVE,
+  CHANGE,
+  CONFIG,
   cli,
+  git,
   inWorktree,
   person,
   read,
+  SPEC,
   SPEC_PATH,
   stateIn,
   toAcceptance,
@@ -119,5 +126,103 @@ describe("the closing sent in acceptance, in delegated mode", () => {
     const next = await cli(folder, ["next"]);
     expect(next.out).toContain("CÓMO CERRAR:");
     expect(next.out).toContain(WRITE_FIRST);
+  });
+});
+
+const ACCEPT_ONLY =
+  "SIGUIENTE: modo delegado: acepta tú el resultado con `specty accept` y sigue su salida.";
+const CLOSED = "Cambio aceptado, cerrado y archivado";
+
+const SLICE = SPEC.replace(
+  "kind: standard\n",
+  "kind: standard\nepic: 20261101-una-epica\nslice: C1\n",
+);
+
+/**
+ * SPEC's change in acceptance in its own folder, with `flow.closing` in `config.yaml` and
+ * delegated mode on or off; with `slice`, as the slice of an epic.
+ */
+async function withFlow(closing: boolean, { delegated = false, slice = false } = {}) {
+  const config = `${CONFIG()}flow:\n  closing: ${closing}\n`;
+  const { root, folder } = await inWorktree({ ...APP, ".specty/config.yaml": config });
+  if (slice) {
+    await writeFiles(folder, { [SPEC_PATH]: SLICE });
+    expect((await cli(folder, ["propose"])).code).toBe(0);
+    const approved = await cli(folder, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    expect(approved.code).toBe(0);
+    await cli(folder, ["next"]);
+    await writeFiles(folder, { "src/app.ts": "1\n" });
+    await cli(folder, ["task", "done", "T1", "--summary", "Uno"]);
+    await writeFiles(folder, { "src/app.ts": "2\n" });
+    await cli(folder, ["task", "done", "T2", "--summary", "Dos"]);
+  } else {
+    await toAcceptance(folder);
+  }
+  expect((await stateIn(folder)).phase).toBe("acceptance");
+  if (delegated) {
+    const on = await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    expect(on.code).toBe(0);
+  }
+  return { root, folder };
+}
+
+/** The change's archived audit in `root` records it closed without its closing, not as quick. */
+async function closedWithoutClosing(root: string): Promise<void> {
+  const audit = await read(root, `${ARCHIVE}/${CHANGE}/audit.jsonl`);
+  expect(audit).toContain('"event":"change.closed","data":{"closing":false');
+  expect(audit).not.toContain('"lane":"quick"');
+}
+
+describe("a standard change without its closing phase (flow.closing: false)", () => {
+  it("AC1: with flow.closing: true, the person's acceptance leaves it in closing, and in delegated mode the card asks for the closing first", async () => {
+    const { root, folder } = await withFlow(true);
+    const accepted = await cli(folder, ["accept"], { terminal: person() });
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toContain("Resultado aceptado; el agente redactará el cierre.");
+    expect((await stateIn(folder)).phase).toBe("closing");
+    expect(existsSync(join(root, ARCHIVE, CHANGE))).toBe(false);
+    const ahead = await withFlow(true, { delegated: true });
+    const next = await cli(ahead.folder, ["next"]);
+    expect(next.out).toContain("CÓMO CERRAR:");
+    expect(next.out).toContain(WRITE_FIRST);
+  });
+
+  it("AC2: the person's acceptance leaves it done, archived with its tasks' summaries as its closing, and landed", async () => {
+    const { root, folder } = await withFlow(false);
+    const branch = git(folder, "branch", "--show-current");
+    const accepted = await cli(folder, ["accept"], { terminal: person() });
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toContain(CLOSED);
+    expect(accepted.out).toContain("Incorporado a main.");
+    expect(accepted.out).not.toContain("el agente redactará el cierre");
+    const archived = await read(root, `${ARCHIVE}/${CHANGE}/spec.md`);
+    expect(archived).toContain("## Cierre");
+    expect(archived).toMatch(/### Resumen\s+Uno\s+Dos/);
+    expect(JSON.parse(await read(root, `${ARCHIVE}/${CHANGE}/state.json`)).phase).toBe("done");
+    await closedWithoutClosing(root);
+    expect(git(root, "rev-parse", "main")).toBe(git(root, "rev-parse", branch));
+  });
+
+  it("AC3: in delegated mode, the card asks to accept with no closing first, and the agent's accept leaves it done and archived", async () => {
+    const { root, folder } = await withFlow(false, { delegated: true });
+    const next = await cli(folder, ["next"]);
+    expect(next.out).toContain(ACCEPT_ONLY);
+    expect(next.out).not.toContain("CÓMO CERRAR");
+    const accepted = await cli(folder, ["accept"]);
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toContain(CLOSED);
+    expect(JSON.parse(await read(root, `${ARCHIVE}/${CHANGE}/state.json`)).phase).toBe("done");
+    await closedWithoutClosing(root);
+  });
+
+  it("AC4: the slice of an epic keeps its closing phase, and in delegated mode the card still asks for it", async () => {
+    const { root, folder } = await withFlow(false, { slice: true });
+    const accepted = await cli(folder, ["accept"], { terminal: person() });
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toContain("Resultado aceptado; el agente redactará el cierre.");
+    expect((await stateIn(folder)).phase).toBe("closing");
+    expect(existsSync(join(root, ARCHIVE, CHANGE))).toBe(false);
+    const ahead = await withFlow(false, { delegated: true, slice: true });
+    expect((await cli(ahead.folder, ["next"])).out).toContain(WRITE_FIRST);
   });
 });

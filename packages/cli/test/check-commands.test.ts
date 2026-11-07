@@ -108,6 +108,96 @@ describe("the project's commands in specty check", () => {
     expect(run.out).toContain("FAIL lint\n  `node tools/slow.js` ran past the time limit (1 s)");
   });
 
+  it("AC1: looks for findings only in the last internal.exec.maxOutputKiB of a command's output, 512 without the key", async () => {
+    const checks = [
+      "checks:",
+      "  levels: { secrets: off }",
+      "  commands:",
+      '    tests: "node tools/long.js"',
+      "",
+    ].join("\n");
+    // A finding, then some 80 KiB without one: past 64 KiB, short of 512. `exitCode`, so that
+    // the whole output reaches the pipe before the process ends.
+    const long = [
+      'console.log("src/app.ts:7:1 - error primero");',
+      'for (let line = 0; line < 1000; line++) console.log("relleno ".repeat(10));',
+      "process.exitCode = 1;",
+      "",
+    ].join("\n");
+    const root = await repo({ "tools/long.js": long }, checks);
+    const whole = await cli(root, ["check"]);
+    expect(whole.code).toBe(1);
+    expect(whole.out).toContain("  src/app.ts:7 error primero");
+    await writeFiles(root, {
+      ".specty/config.yaml": `${CONFIG()}${checks}internal:\n  exec:\n    maxOutputKiB: 64\n`,
+    });
+    const cut = await cli(root, ["check"]);
+    expect(cut.code).toBe(1);
+    expect(cut.out).toContain("FALLA tests\n  `node tools/long.js` salió con 1");
+    expect(cut.out).not.toContain("primero");
+  });
+
+  describe("with the limits of internal.findings", () => {
+    /** `checks.commands` with a single `lint`, the script `tools/lint.js`. */
+    const LINT = [
+      "checks:",
+      "  levels: { secrets: off }",
+      "  commands:",
+      '    lint: "node tools/lint.js"',
+      "",
+    ].join("\n");
+    /** A script that prints `lines` and fails; `exitCode`, so the whole output reaches the pipe. */
+    const failing = (...lines: string[]) =>
+      `${lines.map((line) => `console.log(${JSON.stringify(line)});`).join("\n")}\nprocess.exitCode = 1;\n`;
+    /** A repository whose lint prints `lines` and fails, with today's limits. */
+    const linted = (...lines: string[]) => repo({ "tools/lint.js": failing(...lines) }, LINT);
+    /** The same configuration with `findings` under `internal`. */
+    const limited = (root: string, findings: string) =>
+      writeFiles(root, {
+        ".specty/config.yaml": `${CONFIG()}${LINT}internal:\n  findings:\n    ${findings}\n`,
+      });
+    const HEAD = "FALLA lint\n  `node tools/lint.js` salió con 1";
+
+    it("AC1: gives with --verbose only internal.findings.perCommand findings of a failing command, and up to 100 without the key", async () => {
+      const many = Array.from({ length: 120 }, (_, index) => `src/a${index}.ts:1:1 - error x`);
+      const root = await linted(...many);
+      const located = (out: string) =>
+        out.split("\n").filter((line) => /^ {2}src\/a\d+\.ts:1 /.test(line));
+      const today = await cli(root, ["check", "--verbose"]);
+      expect(today.code).toBe(1);
+      expect(located(today.out)).toHaveLength(100);
+      await limited(root, "perCommand: 10");
+      const cut = await cli(root, ["check", "--verbose"]);
+      expect(cut.code).toBe(1);
+      expect(cut.out).toContain(`${HEAD}\n  src/a0.ts:1 error x\n`);
+      expect(located(cut.out)).toEqual(
+        Array.from({ length: 10 }, (_, index) => `  src/a${index}.ts:1 error x`),
+      );
+    });
+
+    it("AC2: gives only the last internal.findings.lastLines lines of a failing output with no location, and the last 5 without the key", async () => {
+      const root = await linted(...Array.from({ length: 8 }, (_, index) => `paso ${index + 1}`));
+      const today = await cli(root, ["check"]);
+      expect(today.code).toBe(1);
+      expect(today.out).toContain(`${HEAD}\n  paso 4\n  paso 5\n  paso 6\n  paso 7\n  paso 8\nOK `);
+      await limited(root, "lastLines: 2");
+      const cut = await cli(root, ["check"]);
+      expect(cut.code).toBe(1);
+      expect(cut.out).toContain(`${HEAD}\n  paso 7\n  paso 8\nOK `);
+    });
+
+    it("AC3: cuts each finding's message at internal.findings.messageChars characters, and at 200 without the key", async () => {
+      const root = await linted(`src/app.ts:3:1 ${"x".repeat(300)}`);
+      const today = await cli(root, ["check"]);
+      expect(today.code).toBe(1);
+      expect(today.out).toContain(`${HEAD}\n  src/app.ts:3 ${"x".repeat(200)}\n`);
+      await limited(root, "messageChars: 60");
+      const cut = await cli(root, ["check"]);
+      expect(cut.code).toBe(1);
+      expect(cut.out).toContain(`${HEAD}\n  src/app.ts:3 ${"x".repeat(60)}\n`);
+    });
+  });
+
   it("runs nothing for a repository with no commands", async () => {
     const root = await repo({});
     expect((await cli(root, ["check"])).out).toBe("OK 4/4");

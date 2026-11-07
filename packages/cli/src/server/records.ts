@@ -13,6 +13,7 @@ import { isFinished } from "../flow/active";
 import { locateChanges, unreadableChanges } from "../flow/changes";
 import { criteriaTests } from "../flow/criteria-tests";
 import { type LostChange, lostChanges } from "../flow/lost";
+import { withoutClosing } from "../flow/views";
 import { isRecord, parseJson, readText } from "../io/files";
 import type { Session } from "../session";
 import { listDir, loadState, readRevision } from "../store/changes";
@@ -52,6 +53,8 @@ export interface ChangeRecord {
   readonly reviews?: readonly ReviewRecord[];
   /** In acceptance, each criterion with the tests that carry its id (ADR 0014). */
   readonly criteriaTests?: NonNullable<ChangeView["criteriaTests"]>;
+  /** In acceptance, accepting closes it without its closing phase (`withoutClosing`). */
+  readonly withoutClosing?: true;
   /**
    * Its folder's `.specty/config.yaml` cannot be read: each issue, as the CLI prints it. No command
    * runs there; a server older than the Specty that wrote it sees this (ARCHITECTURE §15).
@@ -97,12 +100,26 @@ export async function openRecords(session: Session): Promise<ChangeRecord[]> {
  * the main branch still shows from its own worktree.
  */
 export async function changeRecords(session: Session): Promise<ChangeRecord[]> {
+  return completed(session, await everyChange(session));
+}
+
+/**
+ * Every change of the repository, once, as `changeRecords` finds them but as their files are:
+ * without the commits of their tasks nor who holds them. The archived ones are the very records
+ * the session keeps, so what is kept with them lasts. What the panel's table counts.
+ */
+export async function plainRecords(session: Session): Promise<readonly ChangeRecord[]> {
+  return (await everyChange(session)).records;
+}
+
+/** The open changes, as `openOnes` reads them, then the archived ones that are not among them. */
+async function everyChange(session: Session): Promise<Read> {
   const { records, sessions } = await openOnes(session);
   const all = [...records];
   for (const record of await archivedRecords(session)) {
     if (!all.some((seen) => seen.state.id === record.state.id)) all.push(record);
   }
-  return completed(session, { records: all, sessions });
+  return { records: all, sessions };
 }
 
 /** The changes read, each id once, and the session of each open one, in its folder. */
@@ -142,7 +159,7 @@ function issueLine({ path, message }: ConfigIssue): string {
 
 /**
  * The records read, completed: the commit of each task done, the marks of who holds each and, in
- * acceptance, the tests of each criterion.
+ * acceptance, the tests of each criterion and whether accepting closes it.
  */
 async function completed(session: Session, { records, sessions }: Read): Promise<ChangeRecord[]> {
   const commits = await taskCommits(session);
@@ -152,7 +169,7 @@ async function completed(session: Session, { records, sessions }: Read): Promise
       const tasks = commits.get(record.state.id);
       const there = sessions.get(record.state.id);
       const withTasks = { ...withCommits(record, tasks), ...holds.get(record.state.id) };
-      return there === undefined ? withTasks : withCriteriaTests(there, withTasks, tasks);
+      return there === undefined ? withTasks : inAcceptance(there, withTasks, tasks);
     }),
   );
 }
@@ -249,9 +266,10 @@ async function holdsById(
 
 /**
  * In acceptance, each criterion with the tests that carry its id, as the acceptance card reads
- * them (`flow/criteria-tests.ts`); an epic's criteria are checked by its slices.
+ * them (`flow/criteria-tests.ts`), and whether accepting closes it without its closing phase
+ * (`withoutClosing`, with its folder's `flow.closing`); an epic's criteria are checked by its slices.
  */
-async function withCriteriaTests(
+async function inAcceptance(
   there: Session,
   record: ChangeRecord,
   commits: ReadonlyMap<string, string> | undefined,
@@ -262,6 +280,7 @@ async function withCriteriaTests(
   return {
     ...record,
     criteriaTests: await criteriaTests(there, spec, commits ?? new Map(), state.id),
+    ...(withoutClosing(there, state, spec) ? { withoutClosing: true } : {}),
   };
 }
 

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import {
+  adjustsPendingTasks,
   type ChangeState,
   type ChangeView,
   changeWaitsFor,
@@ -16,10 +17,11 @@ import {
 } from "@baquia-dev/specty-core";
 import { exists, readText } from "../io/files";
 import type { Session } from "../session";
-import { readSpec, type StoredChange } from "../store/changes";
+import { readRevision, readSpec, type StoredChange } from "../store/changes";
 import { readComments } from "../store/comments";
 import { readMemory } from "../store/memory";
 import { acceptanceFacts } from "./acceptance";
+import { doneOf } from "./adjusted-tests";
 import { type Audit, carriedOf, dataOf, readAudit } from "./carried";
 import { epicSlices } from "./epic";
 import { closingRemarks } from "./review-remarks";
@@ -49,6 +51,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
     rejected: rejectedAssumptions(spec, state),
     ...(await phaseFacts(session, change, spec, { tasks, audit, commits })),
     closingSubmitted: state.closingSubmittedAt !== undefined,
+    ...(withoutClosing(session, state, spec) ? { withoutClosing: true } : {}),
     ...(state.testsSubmittedAt !== undefined ? { testsSubmitted: true } : {}),
     specChanged:
       state.phase === "implementing" &&
@@ -95,8 +98,9 @@ function rejectedAssumptions(spec: Spec, state: ChangeState): ChangeView["reject
 }
 
 /**
- * What the change's phase brings: the comments to answer in review, the adjustment asked for,
- * the draft's request and what it carries over, in acceptance, a review recommended first and
+ * What the change's phase brings: the comments to answer in review, the adjustment asked for and
+ * whether it only corrects the pending tasks, the draft's request and what it carries over, in
+ * acceptance, a review recommended first and
  * each criterion with its tests (an epic's criteria are its slices'), and, while the closing is
  * written (in delegated mode, also in acceptance), the review's remarks it does not cite yet.
  */
@@ -117,16 +121,55 @@ async function phaseFacts(
       ? { requested: await requested(change) }
       : {}),
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
+    ...(await pendingTasksOnly(session, change)),
     ...(state.phase === "draft" ? await draftFacts(session, spec, audit) : {}),
     ...(state.phase === "acceptance" ? await acceptanceFacts(session, change, spec, read) : {}),
-    ...(writesClosing(session, state) ? await closingRemarks(change.files, spec) : {}),
+    ...(writesClosing(session, state, spec) ? await closingRemarks(change.files, spec) : {}),
   };
 }
 
-/** The agent writes the change's closing: in `closing` or, in delegated mode, in acceptance. */
-function writesClosing(session: Session, state: ChangeState): boolean {
+/**
+ * While a change with tasks is adjusted, whether the adjustment was asked for while they are
+ * implemented, active or not yet: the approved revision still has tasks to do, as `propose` sees it.
+ */
+async function pendingTasksOnly(
+  session: Session,
+  change: StoredChange,
+): Promise<Pick<ChangeView, "pendingTasksOnly">> {
+  const { state, files } = change;
+  if (state.phase !== "adjusting" || state.kind === "epic") return {};
+  const text = await readRevision(files, state.approved?.revision);
+  if (text === undefined) return {};
+  const approved = parseSpec(text, { language: session.lang }).spec;
+  return adjustsPendingTasks(approved, doneOf(state)) ? { pendingTasksOnly: true } : {};
+}
+
+/**
+ * The agent writes the change's closing: in `closing` or, in delegated mode, in acceptance, unless
+ * the change goes without its closing phase.
+ */
+function writesClosing(session: Session, state: ChangeState, spec: Spec): boolean {
   if (state.phase === "closing") return true;
-  return state.phase === "acceptance" && closingInAcceptance(state.kind, session.delegated);
+  return (
+    state.phase === "acceptance" &&
+    !withoutClosing(session, state, spec) &&
+    closingInAcceptance(state.kind, session.delegated)
+  );
+}
+
+/**
+ * With `flow.closing: false`, a standard change outside an epic goes without its closing phase:
+ * accepting closes it, as a quick one (formats.md §6). The slices of an epic keep theirs, because
+ * the next slice takes its follow-ups from it.
+ */
+export function withoutClosing(
+  session: Session,
+  state: Pick<ChangeState, "kind">,
+  spec: Spec,
+): boolean {
+  return (
+    !session.config.flow.closing && state.kind === "standard" && spec.frontmatter.epic === undefined
+  );
 }
 
 /** The incorporation of the target branch the agent is resolving, if any. */

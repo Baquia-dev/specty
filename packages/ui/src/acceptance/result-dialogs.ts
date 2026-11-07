@@ -29,7 +29,8 @@ export type FullState = "not-run" | "running" | "passed" | "failed";
 export function fullStateOf(change: ChangeView, run: RunRecord | undefined): FullState | undefined {
   const full = change.progress.full;
   if (full === undefined) return undefined;
-  if (run !== undefined && run.task === undefined) return "running";
+  // One that stopped without a result leaves the last one standing.
+  if (run !== undefined && run.task === undefined && run.stopped !== true) return "running";
   if (full.last === undefined) return "not-run";
   return full.last.passed ? "passed" : "failed";
 }
@@ -277,22 +278,29 @@ class AcceptResult {
   protected readonly t = this.preferences.t;
   protected readonly change = this.data.change;
   protected readonly quick = this.change.kind === "quick";
+  /** Accepting closes it: a quick change, or one without its closing phase (`flow.closing`). */
+  private readonly closes = this.quick || this.change.withoutClosing === true;
   protected readonly done = this.change.progress.tasks.filter((task) => task.status === "done");
   /** Followed while the dialog is open: a run that ends here changes what it says. */
   protected readonly full = computed(() => this.data.full?.());
   protected readonly said = (state: FullState) => fullLine(state, this.preferences.lang(), true);
 
-  protected readonly after = computed(() =>
-    this.quick
+  protected readonly after = computed(() => {
+    if (this.quick)
+      return this.t()(
+        "Es un cambio rápido: se cierra al aceptarlo, con el resumen de sus tareas.",
+        "It is a quick change: accepting closes it, with the summary of its tasks.",
+      );
+    return this.closes
       ? this.t()(
-          "Es un cambio rápido: se cierra al aceptarlo, con el resumen de sus tareas.",
-          "It is a quick change: accepting closes it, with the summary of its tasks.",
+          "No tiene fase de cierre: se cierra al aceptarlo, con el resumen de sus tareas.",
+          "It has no closing phase: accepting closes it, with the summary of its tasks.",
         )
       : this.t()(
           "Después, el agente redacta el cierre (resumen, desviaciones, decisiones y pendientes) y tú lo confirmas.",
           "Then the agent writes the closing (summary, deviations, decisions and follow-ups) and you confirm it.",
-        ),
-  );
+        );
+  });
 
   /**
    * Accepting can wait minutes for the full verification: the dialog closes at once, and the
@@ -303,7 +311,7 @@ class AcceptResult {
     const accepting = this.source.decideResult(this.change.id, { kind: "accept" });
     this.inFlight.run(this.change.id, "accept", accepting).then(() => {
       this.toasts.show(
-        this.quick
+        this.closes
           ? this.t()(
               "Aceptaste el resultado: el cambio está cerrado.",
               "You accepted the result: the change is closed.",

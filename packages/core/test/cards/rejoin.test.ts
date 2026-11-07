@@ -13,6 +13,8 @@ const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, impli
 const EN: CardContext = { ...ES, lang: "en" };
 const CLAUDE: CardContext = { ...ES, tool: "claude-code" };
 const CURSOR: CardContext = { ...ES, tool: "cursor" };
+/** Claude Code without subagents: the orphans are resumed in their folders. */
+const NO_SUBAGENTS: CardContext = { ...CLAUDE, subagents: false };
 
 const ID = "20261104-saludo";
 const FOLDER = `/repo/.worktrees/${ID}`;
@@ -87,7 +89,7 @@ describe("the changes no conversation holds", () => {
     expect(text).toContain(
       "  20261103-panel · implementing — Panel · en .worktrees/20261103-panel",
     );
-    expect(text).toContain(
+    expect(card({ orphans: [ORPHAN], byName: true }, NO_SUBAGENTS)).toContain(
       'Si el usuario pide seguir uno de ellos, retómalo en su carpeta en lugar de crear otro cambio: en Claude Code, `EnterWorktree` con `name: "<id>"`.',
     );
     // Claude Code hands each change to a subagent, whose brief starts with `specty new`.
@@ -106,13 +108,13 @@ describe("the changes no conversation holds", () => {
   });
 
   it("AC3: an agent that enters with `specty enter` resumes it with that command", () => {
-    expect(card({ orphans: [ORPHAN], byName: false }, CURSOR)).toContain(
+    expect(card({ orphans: [ORPHAN], byName: false }, { ...CURSOR, subagents: false })).toContain(
       "retómalo en su carpeta en lugar de crear otro cambio: `specty enter <id>`.",
     );
   });
 
   it("AC3: without the worktree hooks, the session switches its folder or opens an agent there", () => {
-    expect(card({ orphans: [ORPHAN], byName: false })).toContain(
+    expect(card({ orphans: [ORPHAN], byName: false }, NO_SUBAGENTS)).toContain(
       "retómalo en su carpeta en lugar de crear otro cambio: cambia allí la carpeta de trabajo de tu sesión o abre allí un agente.",
     );
   });
@@ -122,7 +124,10 @@ describe("the changes no conversation holds", () => {
   });
 
   it("AC3: in English", () => {
-    const text = card({ orphans: [ORPHAN], byName: true }, { ...EN, tool: "claude-code" });
+    const text = card(
+      { orphans: [ORPHAN], byName: true },
+      { ...EN, tool: "claude-code", subagents: false },
+    );
     expect(text).toContain("CHANGES NO CONVERSATION HOLDS:");
     expect(text).toContain(
       "  20261103-panel · implementing — Panel · in .worktrees/20261103-panel",

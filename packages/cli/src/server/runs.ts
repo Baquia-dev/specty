@@ -19,6 +19,7 @@ import { lowerPriority } from "../io/exec";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { mergedVerification } from "./merged-run";
+import { type Going, type LiveRun, liveRun } from "./run-output";
 import { taskRuns } from "./watched-runs";
 
 /**
@@ -31,6 +32,11 @@ export interface Run {
   readonly startedAt: string;
   /** Its last lines, oldest first. */
   readonly output: readonly string[];
+  /**
+   * The incorporation of «Verificar» stopped without moving anything: its output says why. The
+   * server keeps it until the change's next run starts.
+   */
+  readonly stopped?: true;
 }
 
 export interface Runs {
@@ -45,11 +51,6 @@ export interface Runs {
   close(): void;
 }
 
-/** What a run keeps of its output: its end is what matters. */
-const KEPT = 1000;
-/** At most this often, in milliseconds, the listener hears a run that moves. */
-const EVERY = 250;
-
 /**
  * The full verifications the person starts from the UI, one per change: `verify.full`, or the
  * units of `verify.units` that have not passed, run with the shell in the change's folder, `heard` gets the run as it goes and `undefined` once it ends
@@ -63,6 +64,7 @@ export function changeRuns(
   queued: (task: () => Promise<void>) => Promise<void> = (task) => task(),
 ): Runs {
   const going: Going = new Map();
+  const stops = new Map<string, Run>();
   let closing = false;
   const tasks = taskRuns(session, (id, run) => {
     const mine = going.get(id);
@@ -77,6 +79,8 @@ export function changeRuns(
   };
   const target: RunTarget = {
     going,
+    limits: session.config.internal.server,
+    stops,
     heard,
     closing: () => closing,
     inTurn,
@@ -84,7 +88,7 @@ export function changeRuns(
     forget: (id) => tasks.forget(id),
   };
   return {
-    current: (id) => going.get(id)?.run ?? tasks.current(id),
+    current: (id) => going.get(id)?.run ?? tasks.current(id) ?? stops.get(id),
     start: (id) => started(session, target, id),
     close() {
       closing = true;
@@ -115,6 +119,7 @@ async function started(session: Session, target: RunTarget, id: string): Promise
   if (pending?.kind === "wait") return pending.output;
   // Its tasks' runs are over: only the full one ends it, once its result is in the audit.
   target.forget(id);
+  target.stops.delete(id);
   const job = { id, there, change, command };
   if (plan === undefined) {
     runFull(target, job);
@@ -124,15 +129,13 @@ async function started(session: Session, target: RunTarget, id: string): Promise
   return runStartedCard(header, command, cards, plan.target);
 }
 
-/**
- * The full verifications going on, by change, each with how to stop it and, for an
- * incorporation's, how it shows the verification that `runLive` keeps.
- */
-type Going = Map<string, { run: Run; stop: () => void; follow?: (run: Run) => void }>;
-
 /** Where a full verification reports: the runs going on, the listener, and whether the server closes. */
 interface RunTarget {
   readonly going: Going;
+  /** The lines a run keeps and how often it is heard: the server's `internal.server`. */
+  readonly limits: { readonly runLines: number; readonly runEveryMs: number };
+  /** The last run of each change whose incorporation stopped without moving anything. */
+  readonly stops: Map<string, Run>;
   readonly heard: (id: string, run: Run | undefined) => void;
   readonly closing: () => boolean;
   /** Runs `run` after the server's full verifications before it. */
@@ -190,7 +193,9 @@ async function behind(there: Session, change: StoredChange): Promise<Integration
  * in the queue of the person's actions, since it changes the change, merges main and verifies
  * the merged code (`mergedVerification`). Its notes go to its output, then the lines of the
  * verification that `runLive` keeps, and last what the incorporation said; its end is heard
- * once its result is recorded. Nothing stops it: `runLive` ends by `verify.timeoutSec`.
+ * once its result is recorded. If the incorporation stopped without moving anything, its end is
+ * the run itself, `stopped`, kept until the change's next run. Nothing stops it: `runLive` ends
+ * by `verify.timeoutSec`.
  */
 function runMerged(target: RunTarget, job: FullRun, plan: Integration): void {
   const { id, there, command } = job;
@@ -202,20 +207,42 @@ function runMerged(target: RunTarget, job: FullRun, plan: Integration): void {
   const merging = { ...there, environment: { ...there.environment, io } };
   target.inTurn(() =>
     target.queued(async () => {
+      let stopped = false;
       try {
-        if (!target.closing()) live.add(await mergedVerification(merging, id, plan));
+        if (target.closing()) return;
+        const said = await mergedVerification(merging, id, plan);
+        live.add(said.lines);
+        stopped = said.stopped;
       } finally {
         const pending = live.settle();
         target.going.delete(id);
         // The watcher saw the verification's file: its end is this run's, heard here.
         target.forget(id);
-        if (!target.closing()) {
-          if (pending) target.heard(id, live.current());
-          target.heard(id, undefined);
-        }
+        if (!target.closing()) mergedEnd(target, id, live.current(), { stopped, pending });
       }
     }),
   );
+}
+
+/**
+ * The end of an incorporation's run: the run itself, `stopped`, kept among the stops, when it
+ * stopped without moving anything; otherwise its last lines, if due, and then nothing.
+ */
+function mergedEnd(
+  target: RunTarget,
+  id: string,
+  last: Run,
+  end: { readonly stopped: boolean; readonly pending: boolean },
+): void {
+  if (end.stopped) {
+    const run: Run = { ...last, stopped: true };
+    target.stops.set(id, run);
+    target.heard(id, run);
+    return;
+  }
+  // The last lines first, so whoever follows it sees them before it ends.
+  if (end.pending) target.heard(id, last);
+  target.heard(id, undefined);
 }
 
 /** What the full verification's command, or one of its units, did. */
@@ -267,7 +294,7 @@ function spawned(
     stdio: ["ignore", "pipe", "pipe"],
   });
   // Below the rest of the machine, as every verification.
-  if (child.pid !== undefined) lowerPriority(child.pid);
+  if (child.pid !== undefined) lowerPriority(child.pid, there.config.internal.exec.priority);
   const stop = () => {
     child.kill("SIGTERM");
     setTimeout(() => child.kill("SIGKILL"), 2000).unref();
@@ -277,7 +304,8 @@ function spawned(
   const output: string[] = [];
   const add = (lines: readonly string[]) => {
     output.push(...lines.filter((line) => line.length > 0));
-    if (output.length > KEPT) output.splice(0, output.length - KEPT);
+    const kept = target.limits.runLines;
+    if (output.length > kept) output.splice(0, output.length - kept);
     live.add(lines);
   };
   const rests = streamed(child, add);
@@ -310,72 +338,6 @@ function streamed(
     });
   }
   return rests;
-}
-
-/** A run's output as it comes: kept among the runs going on, and heard at most every `EVERY` ms. */
-interface LiveRun {
-  add(lines: readonly string[]): void;
-  /** The run as it is now. */
-  current(): Run;
-  /** Cancels the notice that was due; whether there was one. */
-  settle(): boolean;
-}
-
-/** Part of a run's output: its own lines or, with `from`, those of a run `runLive` keeps. */
-interface Part {
-  readonly from?: string;
-  readonly lines: readonly string[];
-}
-
-/**
- * With `follows`, the run also shows, after its own lines, those of each verification that
- * `runLive` keeps for the change (`follow`), one part per run: an incorporation's units, in turn.
- */
-function liveRun(
-  target: RunTarget,
-  id: string,
-  first: Run,
-  stop: () => void,
-  follows = false,
-): LiveRun {
-  let current = first;
-  let parts: readonly Part[] = [{ lines: first.output }];
-  let tell: NodeJS.Timeout | undefined;
-  const keep = () => target.going.set(id, { run: current, stop, ...(follows ? { follow } : {}) });
-  const show = (next: readonly Part[]) => {
-    parts = next;
-    current = { ...current, output: parts.flatMap(({ lines }) => lines).slice(-KEPT) };
-    keep();
-    tell ??= setTimeout(() => {
-      tell = undefined;
-      target.heard(id, current);
-    }, EVERY);
-  };
-  const follow = (run: Run) => {
-    const from = `${run.startedAt} ${run.command}`;
-    const part = { from, lines: run.output };
-    const known = parts.some((each) => each.from === from);
-    show(known ? parts.map((each) => (each.from === from ? part : each)) : [...parts, part]);
-  };
-  keep();
-  return {
-    add(lines) {
-      if (lines.length === 0) return;
-      const last = parts.at(-1);
-      const own = last !== undefined && last.from === undefined;
-      show(
-        own
-          ? [...parts.slice(0, -1), { lines: [...last.lines, ...lines].slice(-KEPT) }]
-          : [...parts, { lines }],
-      );
-    },
-    current: () => current,
-    settle() {
-      const pending = tell !== undefined;
-      clearTimeout(tell);
-      return pending;
-    },
-  };
 }
 
 /** The run ended: it leaves the runs going on and, unless the server is closing, goes to the audit. */

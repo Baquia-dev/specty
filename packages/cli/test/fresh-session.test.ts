@@ -57,6 +57,9 @@ async function claudeFolder(context?: number): Promise<string> {
 /** The changes stay in the session itself: the next one gets its context (ARCHITECTURE §13). */
 const IN_SESSION = `${CONFIG()}subagents: false\n`;
 
+/** Each change gets a folder of its own, as `new` makes it by default, so it can go to a subagent. */
+const IN_FOLDERS = CONFIG().replace("worktrees: false", "worktrees: true");
+
 /**
  * A quick change made by `agent`'s session, accepted by the person with `env`: what the
  * acceptance says. Its ccusage fails, so that its consumption does not get in the way.
@@ -136,7 +139,33 @@ describe("the advice of a fresh session at the closing", () => {
   it("does not come when Claude Code hands the next change to a clean subagent", async () => {
     // The session the audit names is the main one, which only coordinates: its context is big.
     const folder = await claudeFolder(620_002);
+    const out = await acceptedQuick(claudeCode(folder), { CLAUDE_CONFIG_DIR: folder }, IN_FOLDERS);
+    expect(out).not.toContain("sesión nueva");
+  });
+
+  it("comes when the next change gets no folder of its own, so it stays in the session (P263)", async () => {
+    const folder = await claudeFolder(620_002);
     const out = await acceptedQuick(claudeCode(folder), { CLAUDE_CONFIG_DIR: folder }, CONFIG());
+    expect(out).toContain("sesión nueva");
+  });
+});
+
+describe("the threshold of a fresh session, from the configuration", () => {
+  /** In the session itself, with `tokens` as `usage.freshSessionTokens`. */
+  const threshold = (tokens: number) => `${IN_SESSION}usage:\n  freshSessionTokens: ${tokens}\n`;
+
+  it("AC1: comes when the session read more than usage.freshSessionTokens, below 150,000", async () => {
+    const folder = await claudeFolder(120_002);
+    const env = { CLAUDE_CONFIG_DIR: folder };
+    const out = await acceptedQuick(claudeCode(folder), env, threshold(100_000));
+    expect(out).toContain("sesión nueva");
+    expect(out).toContain("unos 120.000 tokens de contexto");
+  });
+
+  it("AC1: does not come with usage.freshSessionTokens or fewer, above 150,000", async () => {
+    const folder = await claudeFolder(620_002);
+    const env = { CLAUDE_CONFIG_DIR: folder };
+    const out = await acceptedQuick(claudeCode(folder), env, threshold(620_002));
     expect(out).not.toContain("sesión nueva");
   });
 });
@@ -158,6 +187,6 @@ describe("Specty's card after a /clear", () => {
     });
     expect(card.code).toBe(0);
     expect(card.out).toContain("TAREA T1: Saludar por nombre");
-    expect(card.out).toBe((await cli(root, ["next"])).out);
+    expect(card.out).toBe((await cli(root, ["next"], { env: { CLAUDECODE: "1" } })).out);
   });
 });

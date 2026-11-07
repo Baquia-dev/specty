@@ -1,0 +1,94 @@
+---
+kind: standard
+epic: 20261107-panel-de-specty
+slice: C5
+---
+
+# El panel lista los cambios del periodo con búsqueda, orden y páginas
+
+## Objetivo
+
+El «Panel» de `specty ui` resume el periodo en indicadores, pero no dice qué cambios hay detrás de esas cifras. Con este cambio, su última sección, «Cambios», los lista en una tabla con su fecha de cierre, título e id, carril, tamaño, agente, tareas, ciclo, verificaciones fallidas y coste. La tabla se puede buscar, ordenar por cada columna y recorrer por páginas de 25, y cada fila abre su cambio, como en la maqueta que eligió la persona.
+
+## Fuera de alcance
+
+- La exportación a CSV o JSON (C7) y las demás secciones del panel (C2 a C4).
+- Los datos de ejemplo del prototipo (`data/sample-stats.ts`): con `ng serve` sin servidor, la página sigue diciendo que su fuente no da el panel.
+- Pasar `GET /api/stats` a la lectura ligera o a `server/stats.ts`: lo toca C2, que trabaja a la vez en el panel.
+- Guardar la búsqueda, el orden o la página en la URL, filtrar la tabla por fase y elegir sus columnas.
+
+## Supuestos
+
+- A1: La tabla lista los mismos cambios que cuenta la cabecera del panel: los del corte cuya vida, de su primera a su última línea de auditoría, toca el periodo, estén abiertos o cerrados. Cada fila da las cifras de todo el cambio, no solo las del periodo: sus tareas completadas, su ciclo (de crear a cerrar), sus verificaciones de tarea fallidas (`task.verified` con salida distinta de 0) y la suma de su coste medido.
+  - impacto: medio
+- A2: El título y el tamaño salen del resumen que el servidor ya hace para la Bandeja (`summaryOf` en `server/finished.ts`): el título de la spec, o su id, y el nivel de `state.size` o, sin él, el calculado con la configuración por defecto. El agente es el de la fila del panel (`statsRow`), con su nombre visible (`agentName`). La fecha de cierre es su `change.closed` (en una retro, `retro.confirmed`), y un cambio abierto muestra «—».
+  - impacto: medio
+- A3: `GET /api/stats/changes` recibe el corte (`period`, `who` y `kind`, como `/api/stats`), `q`, `sort`, `dir`, `offset`, `limit` y `lang`. `sort` puede ser `closed` (por defecto), `title`, `kind`, `size`, `agent`, `tasks`, `cycle`, `failed` o `cost`. `dir` es `asc` o `desc`, y sin él se usa el sentido natural de la columna. `offset` empieza en 0 y `limit` va de 1 a 100, con 25 por defecto. `lang` es el idioma para ordenar textos y, por defecto, es el del repositorio. Lo que no entiende toma su valor por defecto. Responde `{ query, range, table, changes, total }`: el corte y sus fechas, los valores de la tabla que usó, las filas de la página y cuántas coinciden con la búsqueda.
+  - impacto: alto
+- A4: La búsqueda es la de la Bandeja (`matchesQuery`): por título o id, sin distinguir mayúsculas, acentos ni espacios, y se pide 250 ms después de dejar de escribir. Una columna nueva empieza en su sentido natural: de más a menos en fechas y cifras (cerrado, tamaño, tareas, ciclo, fallidas y coste) y alfabético en los textos (cambio, carril y agente). El carril sigue el orden del filtro: Feature, Quick, Épica, Spike y Manual. Un cambio sin ese dato (abierto, sin tamaño, sin agente o sin coste) va al final en los dos sentidos, y los empates se ordenan por id, el más reciente primero.
+  - impacto: medio
+- A5: La búsqueda, el orden y la página no van en la URL: viven en la sección. Cambiar el corte, la búsqueda o el orden vuelve a la primera página, y un aviso de la fuente vuelve a pedir la página que se ve.
+  - impacto: bajo
+- A6: Para chocar poco con C2, que trabaja a la vez en el panel, la sección es un componente propio (`dashboard/dashboard-changes.ts`) y va al final de la página, como en la maqueta. El endpoint va en su propio archivo (`server/stats-changes.ts`), con una lectura que no completa los registros (`plainRecords` en `server/records.ts`) y que guarda en memoria la fila de cada archivado. La página y `server/api.ts` solo lo enlazan.
+  - impacto: bajo
+- A7: Las verificaciones fallidas, si hay alguna, llevan un icono de círculo con aspa y el número en el tono de riesgo (`--color-phase-cancelled`); un 0 va en tinta. El coste va en dólares con `Intl` y el ciclo, con `formatDuration`. La fecha de cierre se ve como «9 oct», con el año si no es el del final del periodo.
+  - impacto: bajo
+
+## Criterios de aceptación
+
+- AC1: CUANDO la persona mira la sección «Cambios» del panel ENTONCES ve, en una tabla, los cambios del corte cuya vida toca el periodo, 25 por página y los cerrados más recientes primero. Cada uno lleva su fecha de cierre («—» si sigue abierto), su título y su id, su carril, su tamaño, su agente, sus tareas completadas, su ciclo, sus verificaciones de tarea fallidas, marcadas con icono en el tono de riesgo, y su coste medido («—» sin medida).
+- AC2: CUANDO escribe en la búsqueda ENTONCES la tabla muestra, desde la primera página, solo los cambios cuyo título o id contienen el texto, sin distinguir mayúsculas ni acentos, y si ninguno coincide lo dice.
+- AC3: CUANDO pulsa el encabezado de una columna ENTONCES la tabla se ordena por ella y, al pulsarlo otra vez, en el sentido contrario. Los cambios sin ese dato quedan al final, y el encabezado dice el orden también a los lectores de pantalla.
+- AC4: CUANDO el corte tiene más de 25 cambios ENTONCES la tabla dice «Página 1 de N» y deja pasar a la siguiente y volver a la anterior; cambiar el corte, la búsqueda o el orden la devuelve a la primera.
+- AC5: CUANDO pulsa una fila o su título ENTONCES se abre la página de ese cambio.
+- AC6: CUANDO la UI pide `GET /api/stats/changes` con el corte, la búsqueda, el orden y la página ENTONCES el servidor responde esa página de los cambios abiertos y archivados con su título y su tamaño, cuántos coinciden y los valores que usó. Lo que no entiende toma su valor por defecto, y sin la sesión responde 403.
+- AC7: CUANDO la UI está en inglés ENTONCES el título de la sección, la búsqueda, los encabezados, la paginación y los estados salen en inglés.
+
+## Diseño
+
+- Core, `stats/table.ts`: `StatsListed` es la fila del panel (`StatsRow`) con su `title` y su `size?`. `StatsChange` es una fila de la tabla: `id`, `title`, `kind`, `size?`, `agent?`, `closed?` (ISO), `tasks`, `cycle?` (ms), `failed` y `cost?`. `statsTableQuery(params, lang)` entiende `q`, `sort`, `dir`, `offset`, `limit` y `lang`, o pone los de por defecto (`StatsTableQuery`). `statsChanges({ rows, today, query, table })` da `StatsChangesPage`, con `query`, `range`, `table`, `changes` y `total`: filtra por el corte y la vida en el periodo (con los mismos rangos de `statsRanges`), busca con `matchesQuery`, ordena y corta la página. El índice exporta las funciones y los tipos; la UI solo importa tipos.
+- CLI: `server/records.ts` añade `plainRecords(session)`, los mismos cambios que `changeRecords` pero sin completarlos (sin commits de tareas ni marcas de quién los lleva), así que los archivados son los registros que el servidor guarda en memoria. `server/stats-changes.ts` (`statsChangesPage`) hace la `StatsListed` de cada registro con `statsRow` y `summaryOf`, la guarda junto al registro (`WeakMap`) y llama a `statsChanges` con hoy como `localDay(session.environment.now())`. `server/api.ts` lo registra en `VIEWS` como `/api/stats/changes`.
+- UI, `data/source.ts`: `StatsChangesParams` (el corte, más `q`, `sort`, `dir`, `offset`, `limit` y `lang`) y `statsChanges(params)`, que por defecto no da nada. `data/server.ts` lo pide a `/api/stats/changes` y `data/server-answers.ts` comprueba la forma de la respuesta (`isStatsChangesPage`).
+- UI, `dashboard/dashboard-changes.ts` (`sp-dashboard-changes`, con la entrada `query`, el corte que respondió el panel): un divisor «Cambios» con el número de cambios que coinciden, la búsqueda (como la de la Bandeja, con 250 ms de espera como tarea pendiente) y una tabla con un botón de orden en cada encabezado (`aria-sort` en su `th`). Cada fila lleva el título enlazado a `/changes/<id>` (`sp-text`), el id debajo en monoespaciada y la insignia de su carril (`sp-kind-badge`), y pulsar la fila también la abre. Debajo, «Página N de M» con «Anterior» y «Siguiente» (`sp-button`). Un `resource` pide la página, y la última pedida sigue a la vista hasta que llega la nueva. Con una fuente que no da la tabla, la sección no aparece. `dashboard-page.ts` la pone tras los indicadores con `[query]="view.query"`.
+- Lo que miran los tests: `[data-changes]`, `[data-search]`, `[data-sort="<columna>"]`, `[data-change="<id>"]` con una celda `[data-cell="<columna>"]` por columna, `[data-none]`, `[data-page]`, `[data-previous]` y `[data-next]`.
+- Tests: `core/test/stats/table.test.ts` (AC1 a AC4), `cli/test/server/stats-changes.test.ts` y `ui/src/data/stats-source.test.ts` (AC6), y `ui/src/dashboard/dashboard-changes.test.ts` (AC1 a AC5 y AC7, con una fuente de prueba que da el panel y las páginas según los parámetros).
+
+## Archivos
+
+- crear packages/core/src/stats/table.ts — las filas de la tabla, su búsqueda, su orden y sus páginas
+- modificar packages/core/src/index.ts — exporta la función y los tipos de la tabla
+- crear packages/core/test/stats/table.test.ts — qué cambios lista, sus cifras, la búsqueda, el orden y las páginas
+- crear packages/cli/src/server/stats-changes.ts — `GET /api/stats/changes`
+- modificar packages/cli/src/server/records.ts — `plainRecords`, la lectura sin completar los registros
+- modificar packages/cli/src/server/api.ts — registra `/api/stats/changes`
+- crear packages/cli/test/server/stats-changes.test.ts — la página de la tabla con su corte, búsqueda, orden y página
+- modificar docs/ARCHITECTURE.md — `GET /api/stats/changes` en §15
+- modificar packages/ui/src/data/source.ts — `statsChanges()` de la fuente de datos
+- modificar packages/ui/src/data/server.ts — `statsChanges()` del servidor
+- modificar packages/ui/src/data/server-answers.ts — la comprobación de la respuesta
+- crear packages/ui/src/data/stats-source.test.ts — lo que pide el servidor y cómo lee su respuesta
+- crear packages/ui/src/dashboard/dashboard-changes.ts — la sección «Cambios» del panel
+- crear packages/ui/src/dashboard/dashboard-changes.test.ts — la tabla en español y en inglés, con búsqueda, orden, páginas y enlaces
+- modificar packages/ui/src/dashboard/dashboard-page.ts — pone la sección tras los indicadores
+- modificar docs/ui.md — la sección «Cambios» del panel
+
+## Tareas
+
+- [ ] T1: El core arma la tabla de cambios del corte, con búsqueda, orden y páginas
+  - files: packages/core/src/stats/table.ts, packages/core/src/index.ts, packages/core/test/stats/table.test.ts
+  - ac: AC1, AC2, AC3, AC4
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/table.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
+- [ ] T2: `GET /api/stats/changes` responde la página de la tabla que pide la UI
+  - files: packages/cli/src/server/stats-changes.ts, packages/cli/src/server/records.ts, packages/cli/src/server/api.ts, packages/cli/test/server/stats-changes.test.ts, docs/ARCHITECTURE.md
+  - ac: AC6
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/stats-changes.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
+- [ ] T3: La sección «Cambios» del panel pide sus páginas a la fuente, con búsqueda, orden por columna, páginas y enlace a cada cambio
+  - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/stats-source.test.ts, packages/ui/src/dashboard/dashboard-changes.ts, packages/ui/src/dashboard/dashboard-changes.test.ts, packages/ui/src/dashboard/dashboard-page.ts, docs/ui.md
+  - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC7
+  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/stats-source.test.ts --include src/dashboard/dashboard-changes.test.ts --include src/dashboard/dashboard-page.test.ts && pnpm typecheck && pnpm lint && pnpm knip
+
+## Riesgos
+
+- R1: Cada búsqueda pide una página al servidor, que lee todos los cambios. Mitigación: la lectura no completa los registros, y la fila y el resumen de cada archivado quedan en memoria con su registro, así que una petición no vuelve a analizar los archivados.
+- R2: `data/server.ts` ya pasa de 300 líneas de código. Mitigación: la comprobación de la respuesta va en `data/server-answers.ts`, y `server.ts` solo suma el método.
+- R3: C2 toca a la vez `dashboard-page.ts`, `data/source.ts`, `data/server.ts` y `server/api.ts`. Mitigación: aquí solo se enlaza la sección, el método y la ruta, y lo demás va en archivos propios.

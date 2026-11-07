@@ -54,12 +54,14 @@ export function notInTargetBranchLine(branch: string, target: string, lang: Lang
 
 /**
  * What processes that died left in git's folders, by kind: half-done writes (`<file>.<pid>.tmp`),
- * the live runs of verifications cut off, and temporary git indexes over an hour old.
+ * the live runs of verifications cut off, and temporary git indexes over `hours` old (an hour,
+ * without it: `internal.retention.indexHours`).
  */
 interface Leftovers {
   readonly writes: number;
   readonly runs: number;
   readonly indexes: number;
+  readonly hours?: number;
 }
 
 /** A folder whose work the clean-up saved in a rescue ref before removing it. */
@@ -184,7 +186,7 @@ export function pruneCard(
   const activity = pruned.activity ?? 0;
   const messages = pruned.messages ?? [];
   const { removed = 0, days = 0 } = pruned.units ?? {};
-  const { writes = 0, runs = 0, indexes = 0 } = pruned.leftovers ?? {};
+  const { writes = 0, runs = 0, indexes = 0, hours = 1 } = pruned.leftovers ?? {};
   const { ghosts = [], rescued = [], unsaved = [], records = 0, empty = [] } = pruned;
   const counts = [pruned.folders.length, pruned.branches.length, activity, messages.length];
   const orphans = [ghosts.length, rescued.length, records, empty.length];
@@ -204,7 +206,7 @@ export function pruneCard(
       ...section(t("RAMAS BORRADAS", "BRANCHES DELETED"), pruned.branches),
       ...orphanSections(records, empty, t),
       ...recordSections(activity, messages, { removed, days }, t),
-      ...leftoverSection({ writes, runs, indexes }, t),
+      ...leftoverSection({ writes, runs, indexes, hours }, t),
       ...section(t("QUEDAN", "KEPT"), [
         ...pruned.kept,
         ...unsaved.map((folder) => unsavedLine(folder, t)),
@@ -264,16 +266,24 @@ function recordSections(
 }
 
 /** The leftovers of processes that died that `prune` removed: a line for each kind with some. */
-function leftoverSection({ writes, runs, indexes }: Leftovers, t: Translate): OutputBlock[] {
+function leftoverSection(
+  { writes, runs, indexes, hours }: Required<Leftovers>,
+  t: Translate,
+): OutputBlock[] {
   const lines: readonly (readonly [number, string])[] = [
     [writes, t(`Escrituras a medias: ${writes}.`, `Half-done writes: ${writes}.`)],
     [runs, t(`Verificaciones cortadas: ${runs}.`, `Cut-off verifications: ${runs}.`)],
     [
       indexes,
-      t(
-        `Índices temporales de git de más de una hora: ${indexes}.`,
-        `Temporary git indexes over an hour old: ${indexes}.`,
-      ),
+      hours === 1
+        ? t(
+            `Índices temporales de git de más de una hora: ${indexes}.`,
+            `Temporary git indexes over an hour old: ${indexes}.`,
+          )
+        : t(
+            `Índices temporales de git de más de ${hours} horas: ${indexes}.`,
+            `Temporary git indexes over ${hours} hours old: ${indexes}.`,
+          ),
     ],
   ];
   return section(

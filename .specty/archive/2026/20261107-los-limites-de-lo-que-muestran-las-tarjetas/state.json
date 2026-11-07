@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "id": "20261107-los-limites-de-lo-que-muestran-las-tarjetas",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-los-limites-de-lo-que-muestran-las-tarjetas",
+  "baseCommit": "0d670cd5ecc67d21d161bf1e7d956a89bdbfe72b",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:05da830b29787f4000297f43d456cdca30a17f6f042d30a56f83a5dfd486c59f",
+    "at": "2026-11-07T08:19:05.736Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "16 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a2de6253f82bb42fb9363f08db9ff2be3fb18a3d35e30468bb6113384457829d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:14b5bb7016dc48be1942f639b0eeee9ba2876ae55d5743b7fb196fed48a25d16",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:20e0c82e55a533c68928c5e53b4fd28d088a32fdea9d536167f453796e247e96",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "5348d1aa0941b572ccb310cfc354ca0e08405602",
+      "attempts": 1,
+      "startedAt": "2026-11-07T08:36:19.674Z",
+      "doneAt": "2026-11-07T08:42:01.336Z",
+      "summary": "impactLine, reviewedCard, makeChangeId y branchName reciben su límite con el de hoy por defecto (IMPORTERS_SHOWN, REVIEW_LINES, SLUG_CHARS exportadas); la negativa too-long lleva max, NOTE_MAX sin él.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "d43f4a7ce80a3c3ca6da3a8ef5047ced53029c64",
+      "attempts": 1,
+      "startedAt": "2026-11-07T08:42:01.863Z",
+      "doneAt": "2026-11-07T08:48:43.036Z",
+      "summary": "Bloque internal.cards (importersShown, reviewLines, noteChars, slugChars) en schema/internal-cards.ts con mínimos y máximos, reunido en el único internal de config.ts; cuatro ajustes «Nuevo» en «Interno» con textos es/en; formats.md §6.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "2e01374072280b56a8f3ff52f7d219279f4789b1",
+      "attempts": 1,
+      "startedAt": "2026-11-07T08:48:43.519Z",
+      "doneAt": "2026-11-07T08:54:58.192Z",
+      "summary": "propose, review, task done y new leen importersShown, reviewLines, noteChars y slugChars de internal.cards (new en el id y en la rama); ARCHITECTURE dice los límites configurables.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 8,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T08:55:17.631Z",
+  "lockedTests": {
+    "packages/core/test/settings/catalog.test.ts": "sha256:347cdb06a5e1314ba1ffd322ef73144b33a15f4dadb5642f6a1738a47b48910a",
+    "packages/cli/test/card-limits.test.ts": "sha256:971452f0b640b6775dd61fabf6662083af018abcefe60d2d64bcbf9c229b8428",
+    "packages/core/test/settings/card-limits.test.ts": "sha256:b3cdd458a84723612a69eec3721e0071837cd1ad1dd1b1e964cc12189f6ceaaf"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "7ba359df7f50a56f45c6146db433bf67f33b5e5b",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/core/test/settings/catalog.test.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/prune.ts",
+      "packages/cli/src/commands/review.ts",
+      "packages/cli/src/commands/task.ts",
+      "packages/cli/src/flow/full-verification.ts",
+      "packages/cli/src/flow/impact.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/records.ts",
+      "packages/cli/src/server/stats-changes.ts",
+      "packages/cli/src/store/leftovers.ts",
+      "packages/cli/src/store/turn-queue.test.ts",
+      "packages/cli/src/store/turn-queue.ts",
+      "packages/cli/src/store/verify-slots.ts",
+      "packages/cli/test/card-limits.test.ts",
+      "packages/cli/test/prune-leftovers.test.ts",
+      "packages/cli/test/server/stats-changes.test.ts",
+      "packages/core/src/branches.ts",
+      "packages/core/src/cards/impact.ts",
+      "packages/core/src/cards/parallel.ts",
+      "packages/core/src/cards/review.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/cards/task.ts",
+      "packages/core/src/ids.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-cards.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/stats/table.ts",
+      "packages/core/test/cards/prune-leftovers.test.ts",
+      "packages/core/test/settings/card-limits.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/internal-life.test.ts",
+      "packages/core/test/stats/table.test.ts",
+      "packages/ui/src/dashboard/dashboard-changes.test.ts",
+      "packages/ui/src/dashboard/dashboard-changes.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/data/stats-source.test.ts"
+    ],
+    "at": "2026-11-07T09:41:03.713Z",
+    "resolved": {
+      "commit": "278edbf",
+      "at": "2026-11-07T09:48:09.830Z"
+    }
+  }
+}

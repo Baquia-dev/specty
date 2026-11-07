@@ -1,7 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { headerOf, type Output, type OutputBlock, section } from "../output";
 import { COMMIT_TYPES } from "../spec/model";
-import { inItsFolder, launchedWith, numbered, toSubagents } from "./subagents";
+import {
+  inItsFolder,
+  launchedWith,
+  numbered,
+  questionStep,
+  tooLargeStep,
+  toSubagents,
+} from "./subagents";
 import { translator } from "./text";
 import type { CardContext } from "./view";
 
@@ -65,7 +72,8 @@ function idleCard(ctx: CardContext): Output {
       "Reading, explaining or exploring code does not need Specty.",
     ),
   ]);
-  if (toSubagents(ctx)) {
+  // Without a folder per change, a subagent's `new` would leave its change in this folder.
+  if (toSubagents(ctx) && ctx.changeFolders !== false) {
     return {
       status: "ok",
       header: headerOf(),
@@ -104,15 +112,8 @@ function changeBrief(ctx: CardContext): OutputBlock[] {
         `\`${command} enter <id>\`, with the id \`new\` gives you.`,
       ),
       ...inItsFolder(t("<carpeta del cambio>", "<change folder>"), ctx, [
-        t(
-          "Si para la spec te falta una respuesta del usuario, no la supongas: detente y responde con la pregunta.",
-          "If the spec needs an answer from the user, do not assume it: stop and answer with the question.",
-        ),
-        // An epic's card asks to launch subagents, which this brief forbids: the session makes it.
-        t(
-          "Si `propose` dice que el cambio es demasiado grande y pide dividirlo en una épica, no lo conviertas tú: detente y responde con eso, que la épica la hace la sesión principal en tu cambio.",
-          "If `propose` says the change is too large and asks to split it into an epic, do not turn it into one yourself: stop and answer with that, since the main session makes the epic in your change.",
-        ),
+        questionStep(ctx),
+        tooLargeStep(ctx),
       ]),
     ]),
   ]);

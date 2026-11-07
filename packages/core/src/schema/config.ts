@@ -4,21 +4,55 @@ import { defaultGlossary } from "../glossary";
 import type { Lang } from "../i18n";
 import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
 import { DEFAULT_DEV, type DevConfig, DevSchema, resolveDev } from "./dev";
+import { DEFAULT_FLOW, FLOW_SHAPE, type FlowConfig, resolveFlow } from "./flow";
 import { DEFAULT_GIT, type GitConfig, GitSchema, resolveGit } from "./git";
+import {
+  DEFAULT_INTERNAL_CARDS,
+  INTERNAL_CARDS_SHAPE,
+  type InternalCardsConfig,
+  resolveInternalCards,
+} from "./internal-cards";
+import {
+  DEFAULT_INTERNAL_RUN,
+  INTERNAL_RUN_SHAPE,
+  type InternalRunConfig,
+  resolveInternalRun,
+} from "./internal-run";
+import {
+  DEFAULT_INTERNAL_SHOWN,
+  INTERNAL_SHOWN_SHAPE,
+  type InternalShownConfig,
+  resolveInternalShown,
+} from "./internal-shown";
+import {
+  DEFAULT_INTERNAL_WAITS,
+  INTERNAL_WAITS_SHAPE,
+  type InternalWaitsConfig,
+  resolveInternalWaits,
+} from "./internal-waits";
 import { DEFAULT_MEMORY, type MemoryConfig, MemorySchema, resolveMemory } from "./memory";
+import {
+  DEFAULT_EFFORT,
+  DEFAULT_SIZING,
+  type EffortConfig,
+  resolveSizing,
+  SIZING_SHAPE,
+  type SizingConfig,
+} from "./sizing";
 import { DEFAULT_VERIFY, resolveVerify, type VerifyConfig, VerifySchema } from "./verify";
+import { DEFAULT_WARNINGS, resolveWarnings, WARNINGS_SHAPE, type WarningsConfig } from "./warnings";
 
 /** `contract`, above `required`: a feature's tests are written and approved before its code (ADR 0014). */
 export type TestsPolicy = "contract" | "required" | "recommended" | "off";
 
-/** `.specty/config.yaml` with every default applied. */
 /** Lines of code: a warning past `warn`, a block past `fail`, or never with `false`. */
 export interface LineLimits {
   readonly warn: number;
   readonly fail: number | false;
 }
 
-export interface ResolvedConfig {
+/** `.specty/config.yaml` with every default; `usage`, `warnings`, `flow` and `lanes` apart. */
+export interface ResolvedConfig extends WarningsConfig, FlowConfig {
   readonly version: 1;
   readonly language: Lang;
   readonly mode: "individual" | "team";
@@ -31,7 +65,6 @@ export interface ResolvedConfig {
     readonly generated: readonly string[];
     readonly autoApprove: "none" | "tests-and-generated";
   };
-  readonly lanes: { readonly quick: { readonly maxFiles: number } };
   readonly split: {
     readonly maxTasks: number;
     readonly maxFiles: number;
@@ -40,6 +73,10 @@ export interface ResolvedConfig {
   };
   /** Highest score of each size level; anything above `L` is `XL`. */
   readonly size: { readonly S: number; readonly M: number; readonly L: number };
+  /** How the size is scored, and from when a change is close to splitting (formats.md §6). */
+  readonly sizing: SizingConfig;
+  /** The effort recommended for each size and for a task; the model may only raise it. */
+  readonly effort: EffortConfig;
   /**
    * Lines of code of the files a task touches: a warning past `warn`, a block past `fail` (or
    * never, with `false`). Tests have their own; `exclude` lists paths not sized, the person's
@@ -72,6 +109,14 @@ export interface ResolvedConfig {
    * review on its standard input. Unset, Specty neither recommends nor runs a review.
    */
   readonly review?: { readonly command: string; readonly timeoutSec: number };
+  /**
+   * Specty's internal settings (formats.md §6): values that can leave Specty not working, with
+   * today's behaviour as their defaults. Removing a key gives it back its default.
+   */
+  readonly internal: InternalWaitsConfig &
+    InternalRunConfig &
+    InternalCardsConfig &
+    InternalShownConfig;
 }
 
 export const DEFAULT_CONFIG: ResolvedConfig = {
@@ -83,9 +128,10 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   sensitive: ["**/migrations/**", "**/auth/**", ".github/**", "**/.env*", "**/infra/**"],
   verify: DEFAULT_VERIFY,
   scope: { implicitTests: true, generated: [], autoApprove: "tests-and-generated" },
-  lanes: { quick: { maxFiles: 3 } },
   split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 },
   size: { S: 4, M: 10, L: 18 },
+  sizing: DEFAULT_SIZING,
+  effort: DEFAULT_EFFORT,
   lines: {
     warn: 300,
     fail: 500,
@@ -114,6 +160,14 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   memory: DEFAULT_MEMORY,
   dev: DEFAULT_DEV,
   subagents: true,
+  internal: {
+    ...DEFAULT_INTERNAL_WAITS,
+    ...DEFAULT_INTERNAL_RUN,
+    ...DEFAULT_INTERNAL_CARDS,
+    ...DEFAULT_INTERNAL_SHOWN,
+  },
+  ...DEFAULT_WARNINGS,
+  ...DEFAULT_FLOW,
 };
 
 const Globs = z.array(z.string().min(1));
@@ -138,9 +192,6 @@ export const ConfigSchema = z.strictObject({
       autoApprove: z.enum(["none", "tests-and-generated"]).optional(),
     })
     .optional(),
-  lanes: z
-    .strictObject({ quick: z.strictObject({ maxFiles: Positive.optional() }).optional() })
-    .optional(),
   split: z
     .strictObject({
       maxTasks: Positive.optional(),
@@ -152,6 +203,7 @@ export const ConfigSchema = z.strictObject({
   size: z
     .strictObject({ S: Positive.optional(), M: Positive.optional(), L: Positive.optional() })
     .optional(),
+  ...SIZING_SHAPE,
   lines: z
     .strictObject({
       ...LineLimitsSchema.shape,
@@ -184,8 +236,16 @@ export const ConfigSchema = z.strictObject({
   memory: MemorySchema.optional(),
   dev: DevSchema.optional(),
   subagents: z.boolean().optional(),
-  /** Per-tool effort table overrides; interpreted by the CLI. */
-  effort: z.record(z.string(), z.unknown()).optional(),
+  internal: z
+    .strictObject({
+      ...INTERNAL_WAITS_SHAPE,
+      ...INTERNAL_RUN_SHAPE,
+      ...INTERNAL_CARDS_SHAPE,
+      ...INTERNAL_SHOWN_SHAPE,
+    })
+    .optional(),
+  ...WARNINGS_SHAPE,
+  ...FLOW_SHAPE,
 });
 
 export type ConfigInput = z.infer<typeof ConfigSchema>;
@@ -230,6 +290,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     verify: resolveVerify(input.verify),
     scope: scopeOf(input),
     ...limitsOf(input),
+    ...resolveSizing(input),
     lines: linesOf(input),
     checks: resolveChecks(input.checks),
     policy: { tests: input.policy?.tests ?? base.policy.tests },
@@ -241,6 +302,14 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     memory: resolveMemory(input.memory),
     dev: resolveDev(input.dev),
     subagents: input.subagents ?? base.subagents,
+    internal: {
+      ...resolveInternalWaits(input.internal),
+      ...resolveInternalRun(input.internal),
+      ...resolveInternalCards(input.internal),
+      ...resolveInternalShown(input.internal),
+    },
+    ...resolveWarnings(input),
+    ...resolveFlow(input),
     ...(review !== undefined ? { review } : {}),
   };
 }
@@ -258,11 +327,10 @@ function scopeOf(input: ConfigInput): ResolvedConfig["scope"] {
   };
 }
 
-/** The limits of a change: the quick lane's, when it must be split, and its size levels. */
-function limitsOf(input: ConfigInput): Pick<ResolvedConfig, "lanes" | "split" | "size"> {
+/** The limits of a change: when it must be split, and its size levels. */
+function limitsOf(input: ConfigInput): Pick<ResolvedConfig, "split" | "size"> {
   const base = DEFAULT_CONFIG;
   return {
-    lanes: { quick: { maxFiles: input.lanes?.quick?.maxFiles ?? base.lanes.quick.maxFiles } },
     split: {
       maxTasks: input.split?.maxTasks ?? base.split.maxTasks,
       maxFiles: input.split?.maxFiles ?? base.split.maxFiles,

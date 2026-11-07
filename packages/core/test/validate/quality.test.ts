@@ -180,6 +180,57 @@ describe("vertical slices", () => {
   });
 });
 
+describe("the person's vague terms and horizontal layers", () => {
+  /** The validation of `text` with the person's terms and layers: each `code:target` and its message. */
+  function validated(
+    text: string,
+    warnings?: { readonly vagueTerms: string[]; readonly horizontalLayers: string[] },
+  ): ReadonlyMap<string, string> {
+    const parsed = parseSpec(text);
+    const config =
+      warnings === undefined
+        ? DEFAULT_CONFIG
+        : withConfig({ warnings: { ...DEFAULT_CONFIG.warnings, ...warnings } });
+    const found = validateSpec(parsed.spec, {
+      phase: "draft",
+      config,
+      locations: parsed.locations,
+    });
+    return new Map(found.map((entry) => [`${entry.code}:${entry.target}`, entry.message]));
+  }
+
+  it("AC4: warns about a criterion with one of the person's terms, without accents or capitals, and Specty's still warn", () => {
+    const text = STANDARD.replace(
+      "ENTONCES esa serie se oculta o se muestra sin recargar la vista.",
+      "ENTONCES esa serie se oculta de forma ELEGANTE y sin friccion.",
+    ).replace(
+      "ENTONCES el gráfico muestra un punto por mes para cada materia.",
+      "ENTONCES el gráfico se ve bien.",
+    );
+    expect(validated(text).has("criterion-vague:AC2")).toBe(false);
+    const mine = validated(text, {
+      vagueTerms: ["Elegante", "sin fricción", "pulcro"],
+      horizontalLayers: [],
+    });
+    const warned = mine.get("criterion-vague:AC2");
+    expect(warned).toContain("Elegante");
+    expect(warned).toContain("sin fricción");
+    expect(warned).not.toContain("pulcro");
+    expect(mine.get("criterion-vague:AC1")).toContain("se ve bien");
+  });
+
+  it("AC5: rejects an epic slice named after one of the person's layers, and Specty's layers still do", () => {
+    const epic = fixture("epic.en.md")
+      .replace("- C1: API contracts and typed models", "- C1: The SERVICES layer for every card")
+      .replace("- C2: Grades card", "- C2: Database schema");
+    expect(validated(epic).has("slice-horizontal:C1")).toBe(false);
+    const mine = validated(epic, { vagueTerms: [], horizontalLayers: ["Services layer"] });
+    expect(mine.get("slice-horizontal:C1")).toContain("Services layer");
+    expect(mine.get("slice-horizontal:C2")).toContain("database");
+    expect(mine.has("slice-horizontal:C3")).toBe(false);
+  });
+});
+
 describe("the type check under contract", () => {
   const contract = withConfig({ policy: { tests: "contract" } });
   const TYPES = "flutter analyze";

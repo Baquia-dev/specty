@@ -8,6 +8,12 @@ const started = (cwd: string, tool: "claude-code" | "codex", source = "compact")
     stdin: JSON.stringify({ session_id: "s1", cwd, hook_event_name: "SessionStart", source }),
   });
 
+/** What each tool leaves in the environment of `next`: the guard's card is its `--tool`'s. */
+const AS = {
+  "claude-code": { CLAUDECODE: "1" },
+  codex: { CODEX_THREAD_ID: "s1" },
+} as const;
+
 for (const tool of ["claude-code", "codex"] as const) {
   describe(`Specty's card after a compaction in ${tool}`, () => {
     it("brings back what `specty next` says, with the task card (AC1)", async () => {
@@ -19,7 +25,7 @@ for (const tool of ["claude-code", "codex"] as const) {
       const card = await started(root, tool);
       expect(card.code).toBe(0);
       expect(card.out).toContain("TAREA T1: Saludar por nombre");
-      expect(card.out).toBe((await cli(root, ["next"])).out);
+      expect(card.out).toBe((await cli(root, ["next"], { env: AS[tool] })).out);
     });
 
     it("adds nothing outside a repository with Specty (AC2)", async () => {

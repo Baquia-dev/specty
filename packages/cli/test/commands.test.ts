@@ -171,9 +171,6 @@ describe("agent commands outside their phase", () => {
     expect((await cli(root, ["new", "x", "--kind", "enorme"])).code).toBe(1);
     expect((await cli(root, ["new", " "])).code).toBe(1);
     const root2 = await implementing();
-    expect((await cli(root2, ["adjust", "Algo"])).out).toContain(
-      "Los ajustes se piden cuando el resultado está en aceptación",
-    );
     expect((await cli(root2, ["adjust", " "])).code).toBe(1);
     expect((await cli(root2, ["task", "done", "T2", "--summary", "x"])).out).toContain(
       "T2 no es la tarea activa",
@@ -182,6 +179,10 @@ describe("agent commands outside their phase", () => {
     expect((await cli(root2, ["propose"])).out).toContain(
       "En la fase implementing la spec no se propone",
     );
+    // While its tasks are implemented, a change is adjusted to correct the pending ones.
+    const adjusted = await cli(root2, ["adjust", "Algo"]);
+    expect(adjusted.code, adjusted.out).toBe(0);
+    expect(adjusted.out).toContain("· adjusting");
   });
 
   it("show open changes and who they wait for", async () => {

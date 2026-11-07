@@ -23,7 +23,8 @@ async function approved(): Promise<string> {
 describe("Specty's card as a Codex session starts", () => {
   it("AC1: brings what `specty next` says on startup, resume and /clear, and nothing on a fork", async () => {
     const root = await approved();
-    const next = (await cli(root, ["next"])).out;
+    // The guard's card is its `--tool`'s: `next` in the same Codex thread.
+    const next = (await cli(root, ["next"], { env: { CODEX_THREAD_ID: "s1" } })).out;
     expect(next).toContain("TAREA T1: Saludar por nombre");
     for (const source of ["startup", "resume", "clear", "compact"]) {
       const card = await started(root, source);

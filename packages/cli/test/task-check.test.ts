@@ -25,7 +25,7 @@ async function approved(config: string): Promise<string> {
 }
 
 describe("specty check in task done", () => {
-  it("does not complete a task that leaves a check failing, and shows its report", async () => {
+  it("AC1: without checks.taskDone, does not complete a task that leaves a check failing, and shows its report", async () => {
     const root = await approved(`${CONFIG()}${CHECKS}`);
     await writeFiles(root, {
       "src/app.ts": "export const greet = (name: string) => 'Hola, ' + name;\n",
@@ -47,6 +47,40 @@ describe("specty check in task done", () => {
 
     await writeFiles(root, { "src/app.test.ts": `it("AC1: greets", () => {});\n` });
     expect((await cli(root, ["task", "done", "T1", "--summary", "Uno"])).code).toBe(0);
+  });
+
+  it("AC2: leaves out the checks checks.taskDone.skip names, which specty check still runs", async () => {
+    const skipped = "checks:\n  levels: { secrets: off }\n  taskDone: { skip: [focused-tests] }\n";
+    const root = await approved(`${CONFIG()}${skipped}`);
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name: string) => 'Hola, ' + name;\n",
+      "src/app.test.ts": `it${ONLY}("AC1: greets", () => {});\n`,
+    });
+    const done = await cli(root, ["task", "done", "T1", "--summary", "Uno"]);
+    expect(done.code).toBe(0);
+    expect(done.out).not.toContain("focused-tests");
+    expect(done.err).not.toContain("focused-tests");
+
+    const checked = await cli(root, ["check", "--changed", "--spec"]);
+    expect(checked.code).toBe(1);
+    expect(checked.out).toContain("FALLA focused-tests");
+    expect(checked.out).toContain(`src/app.test.ts:1 test enfocado: it${ONLY}`);
+  });
+
+  it("AC2: still runs the checks checks.taskDone.skip does not name", async () => {
+    const skipped = "checks:\n  levels: { secrets: off }\n  taskDone: { skip: [todo] }\n";
+    const root = await approved(`${CONFIG()}${skipped}`);
+    await writeFiles(root, {
+      "src/app.ts": `// ${TODO}: greet in more languages\nexport const greet = () => 'hola';\n`,
+      "src/app.test.ts": `it${ONLY}("AC1: greets", () => {});\n`,
+    });
+    const failed = await cli(root, ["task", "done", "T1", "--summary", "Uno"]);
+    expect(failed.code).toBe(2);
+    expect(failed.out).toContain("FALLA focused-tests");
+    for (const report of [failed.out, failed.err]) {
+      expect(report).not.toContain("FALLA todo");
+      expect(report).not.toContain("AVISO todo");
+    }
   });
 
   it("completes a task with warnings only, and leaves the report on stderr", async () => {

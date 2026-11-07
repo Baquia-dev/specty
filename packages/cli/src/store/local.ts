@@ -9,8 +9,11 @@ import type { Git } from "../io/git";
  * receipts, markers between hooks and pointers to the change in progress.
  */
 
-/** `init` is Specty's own installation: its commit belongs to no change. */
-const RECEIPT_KINDS = ["spec", "task", "tests", "close", "retro", "init"] as const;
+/**
+ * `init` is Specty's own installation and `config` the configuration the person saves from the UI:
+ * their commits belong to no change.
+ */
+const RECEIPT_KINDS = ["spec", "task", "tests", "close", "retro", "init", "config"] as const;
 
 export type ReceiptKind = (typeof RECEIPT_KINDS)[number];
 

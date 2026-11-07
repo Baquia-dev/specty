@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { existsSync } from "node:fs";
+import { rm } from "node:fs/promises";
 import { join } from "node:path";
 import { renderText } from "@baquia-dev/specty-core";
 import { describe, expect, it } from "vitest";
@@ -13,6 +14,7 @@ import {
   inWorktree,
   person,
   read,
+  SPEC_PATH,
   stateIn,
   toAcceptance,
   tryGit,
@@ -220,5 +222,105 @@ describe("«Verificar» of the UI when main moved on", () => {
     }
     expect(tryGit(folder, "merge-base", "--is-ancestor", "main", "HEAD").status).toBe(0);
     expect(await counted(root)).toBe(1);
+  });
+});
+
+describe("«Verificar» of the UI when the incorporation stops without moving anything", () => {
+  it("AC1: keeps its run, stopped and saying why, until the person presses it again, whose run does not carry it", async () => {
+    const { root, folder } = await inWorktree(COUNTING);
+    await toAcceptance(folder);
+    await mainMoves(root);
+    // Uncommitted here, a file main added: the merge would overwrite it, so it does not start.
+    await writeFiles(folder, { "src/other.ts": "export const other = 2;\n" });
+    const head = git(folder, "rev-parse", "HEAD");
+    const server = await serverOf(root);
+    try {
+      await server.runs.start(CHANGE);
+      await until(() => server.heard.at(-1)?.stopped === true);
+      // Nothing after it: its end is the stopped run.
+      await wait(600);
+      const kept = server.runs.current(CHANGE);
+      expect(kept).toMatchObject({ command: COUNTED, stopped: true });
+      expect(kept?.output.join("\n")).toContain(
+        "main también cambió archivos que aquí tienen cambios sin commit: el merge los pisaría, así que no empezó.",
+      );
+      expect(server.heard.at(-1)).toEqual(kept);
+      expect(git(folder, "rev-parse", "HEAD")).toBe(head);
+      expect(merging(folder)).toBe(false);
+      expect(await counted(root)).toBe(0);
+      await rm(join(folder, "src/other.ts"));
+      const from = server.heard.length;
+      await server.runs.start(CHANGE);
+      expect(server.heard[from]).toMatchObject({ command: COUNTED });
+      expect(server.heard[from]?.stopped).toBeUndefined();
+      expect(server.runs.current(CHANGE)?.stopped).toBeUndefined();
+      await server.ended();
+      expect(server.heard.slice(from).some((run) => run?.stopped === true)).toBe(false);
+      expect(server.runs.current(CHANGE)).toBeUndefined();
+    } finally {
+      server.runs.close();
+    }
+    expect(await counted(root)).toBe(1);
+  });
+
+  it("AC2: a run that leaves the merge to the agent ends as before, without staying", async () => {
+    const { root, folder } = await inWorktree(COUNTING);
+    await toAcceptance(folder);
+    await writeFiles(root, { "src/app.ts": "main\n" });
+    git(root, "commit", "-q", "-am", "main cambia el saludo");
+    const server = await serverOf(root);
+    try {
+      await server.runs.start(CHANGE);
+      await server.ended();
+      await wait(600);
+      expect(server.heard.at(-1)).toBeUndefined();
+      expect(server.heard.some((run) => run?.stopped === true)).toBe(false);
+      expect(server.runs.current(CHANGE)).toBeUndefined();
+    } finally {
+      server.runs.close();
+    }
+    expect(merging(folder)).toBe(true);
+  });
+});
+
+/** The glossary of a project in Spanish, where a closing adds the terms it introduced. */
+const GLOSSARY = "docs/dominio.md";
+const TERMS = "# Dominio\n\n- Saludo: lo que dice la app al abrirse.\n";
+const NAME = "\n- Nombre: cómo se llama quien abre la app.\n";
+const CLOSING = "\n## Cierre\n\n### Resumen\n\nSaludo listo.\n";
+
+/** The first parent of the last merge in `folder`'s branch, the one that brought main in: its subject. */
+const beforeMerge = (folder: string) =>
+  git(folder, "log", "-1", "--format=%s", `${git(folder, "rev-list", "--merges", "-1", "HEAD")}^1`);
+
+describe("«Verificar» of the UI with the closing sent when main changed the glossary it edits", () => {
+  it("commits the closing first, merges main and verifies the merged code, without stopping", async () => {
+    const { root, folder } = await inWorktree({ ...COUNTING, [GLOSSARY]: TERMS });
+    await toAcceptance(folder);
+    const on = await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    expect(on.code).toBe(0);
+    const spec = `${await read(folder, SPEC_PATH)}${CLOSING}`;
+    await writeFiles(folder, { [SPEC_PATH]: spec, [GLOSSARY]: `${TERMS}${NAME}` });
+    expect((await cli(folder, ["propose"])).out).toContain("Cierre válido.");
+    const main = TERMS.replace("# Dominio", "# Dominio de la app");
+    await writeFiles(root, { [GLOSSARY]: main });
+    git(root, "commit", "-q", "-am", "main cambia el glosario");
+    const server = await serverOf(root);
+    try {
+      await server.runs.start(CHANGE);
+      // It ends, or it stops and is kept.
+      await until(() => {
+        const last = server.heard.at(-1);
+        return server.heard.length > 1 && (last === undefined || last.stopped === true);
+      });
+    } finally {
+      server.runs.close();
+    }
+    expect(server.heard.some((run) => run?.stopped === true)).toBe(false);
+    expect(server.lines().some((line) => MERGED.test(line))).toBe(true);
+    expect(await counted(root)).toBe(1);
+    expect(merging(folder)).toBe(false);
+    expect(beforeMerge(folder)).toBe("docs(spec): cierre de Saludo personalizado");
+    expect(await read(folder, GLOSSARY)).toBe(`${main}${NAME}`);
   });
 });

@@ -10,7 +10,7 @@ import { isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { readWait } from "../store/waits";
-import { conversationOf, type GuardTool, isGuardTool, subagentOf } from "./actions";
+import { conversationOf, isGuardTool, subagentOf } from "./actions";
 import { leavePending, takePending } from "./pending";
 import { enteredSession } from "./sessions";
 
@@ -51,12 +51,10 @@ export async function agentStop(
   const parsed = parseJson(input);
   const given = isRecord(parsed) ? parsed : {};
   const event = agent.normalize?.(given) ?? given;
-  // A conversation that entered a change's folder ends its turn there.
+  // A conversation that entered a change's folder ends its turn there, with the hook's tool.
   const there = (await enteredSession(agent.tool, session, event)).session;
   const checks = !flags.includes(NO_CHECK);
-  const report = stop.acts(event)
-    ? await turnReport(there, stop, event, agent.tool, checks)
-    : undefined;
+  const report = stop.acts(event) ? await turnReport(there, stop, event, checks) : undefined;
   return report === undefined ? (stop.pass ?? "") : stop.reply(report);
 }
 
@@ -70,7 +68,6 @@ async function turnReport(
   session: Session,
   stop: AgentStop,
   event: Record<string, unknown>,
-  tool: GuardTool,
   checks: boolean,
 ): Promise<string | undefined> {
   const conversation = stop.counts === true ? conversationOf(event) : undefined;
@@ -82,7 +79,7 @@ async function turnReport(
   }
   const active = await resolveActive(session);
   const report =
-    (await waitReport(session, active, event, tool)) ??
+    (await waitReport(session, active, event)) ??
     (checks ? await checkReport(session, active) : undefined);
   if (report !== undefined && conversation !== undefined) {
     await leavePending(session, conversation, "stop");
@@ -100,7 +97,6 @@ async function waitReport(
   session: Session,
   active: StoredChange | undefined,
   event: Record<string, unknown>,
-  tool: GuardTool,
 ): Promise<string | undefined> {
   if (active === undefined || subagentOf(event) !== undefined) return undefined;
   if (!isWaitingForHuman(active)) return undefined;
@@ -108,9 +104,8 @@ async function waitReport(
   // The mark's times are the real clock's (`store/waits.ts`).
   const seen = await readWait(session.git, id, new Date());
   if (seen !== undefined && seen.ended === undefined) return undefined;
-  // The hook's agent, though its environment may not say so: the card says how it waits.
-  const ours: Session = { ...session, tool, cards: { ...session.cards, tool } };
-  return `${noWaitLine(id, ours.cards)}\n${renderText(await next(ours), ours.lang)}`;
+  // The session has the hook's agent (`enteredSession`): the card says how it waits.
+  return `${noWaitLine(id, session.cards)}\n${renderText(await next(session), session.lang)}`;
 }
 
 /** `specty check --changed` failing, with the plan's checks while a change is approved. */

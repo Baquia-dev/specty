@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261107-panel-de-specty",
+  "kind": "epic",
+  "phase": "done",
+  "branch": "specty/20261107-panel-de-specty",
+  "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6e1d955f2a769b4ba89e974deb17fca78bc834bc579cbbf4ad25b48cb227fdac",
+    "at": "2026-11-07T04:02:42.552Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:85c05394db7b06565d4ece4bbd59172fae9b992d4e62171792bc5800f35cda79",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:57e7b631538f96ef6bdafa3374ed3a6fe9b20f13e2864cc2d185f9925804d237",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:a0fa52b830a35e3f0e03ef21dd1626ba04da664469ac9c53c9e82631ddb5434c",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:c6c13324b1e99c282b3a7a8d3da7783851bb29504c92cb226d49fd9a004e0172",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:6ff769cf8f1aa8fdeea32fb39e84134286899ac988bd93de2a1d4ce5a36a71f4",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:c745f75a696940d8e953fe9cce9fc5bedc6226d1f4a839cdd70b73e202efa30c",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:7fa6583aa2d1eb95ce612a1ae5086a9db8199cf02a130564bf44fe4cb5a88c2c",
+      "decision": "confirmed"
+    },
+    "A8": {
+      "hash": "sha256:50adee9376769ac9436e65f40405f60fca574d1ae8d4f502f5b53f7718f8cdef",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:e2258a4d2c88a9c41c135046249208b22ce309f1576d1f8a4c7ad28ab2ed03dd",
+      "decision": "implicit"
+    },
+    "A10": {
+      "hash": "sha256:3276df6d7aa88b78e5dab3527367686d4cde1791f6c1b7c0155101023f5d550f",
+      "decision": "implicit"
+    },
+    "A11": {
+      "hash": "sha256:e48f41098bde25bf203988c83821eedb362ea98bcc00584bc47259b7515c02cd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 11,
+    "AC": 17,
+    "C": 7,
+    "R": 4
+  },
+  "closingSubmittedAt": "2026-11-07T12:55:46.119Z"
+}

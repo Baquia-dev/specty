@@ -1,15 +1,25 @@
 // SPDX-License-Identifier: Apache-2.0
 // The data source the screens run on, apart from the data it gives (records.ts, which re-exports
 // it): reading is required, every action is optional.
+import type {
+  ConfigIssue,
+  ResolvedConfig,
+  StatsChangeSort,
+  StatsChangesPage,
+  StatsView,
+} from "@baquia-dev/specty-core";
 import {
   type ChangeSort,
+  type ConfigEdit,
   type Lang,
   matchesQuery,
   type Phase,
   type SessionView,
+  type SettingChange,
   sortChanges,
 } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
+import type { Download } from "./export";
 import type { RunRecord } from "./progress";
 import type {
   Bilingual,
@@ -21,6 +31,7 @@ import type {
   MemoryRecord,
   SliceChangeRecord,
 } from "./records";
+import type { StatsExportParams } from "./stats-export";
 import type { TraceRecord } from "./trace";
 
 /** An action the source could not do, explained in both languages. */
@@ -69,6 +80,23 @@ export interface FinishedPage {
 }
 
 /**
+ * A page of the panel's table of changes (docs/ui.md, «Panel», «Cambios»): the cut, as
+ * `StatsParams`, the search, the column it is sorted by and its direction, where the page starts
+ * and how many it has, and the language its texts sort in.
+ */
+export interface StatsChangesParams {
+  readonly period?: string;
+  readonly who?: string;
+  readonly kind?: string;
+  readonly q: string;
+  readonly sort: StatsChangeSort;
+  readonly dir: "asc" | "desc";
+  readonly offset: number;
+  readonly limit: number;
+  readonly lang: Lang;
+}
+
+/**
  * A line the local server says of one of the person's actions on a change while it goes on (its
  * `action` events): why it waits, say.
  */
@@ -80,8 +108,43 @@ export interface ActionNote {
   readonly note?: string;
 }
 
+/**
+ * `GET /api/config`: `.specty/config.yaml` as YAML reads it (none when it is not YAML), what
+ * Specty uses with every default when it is valid, the defaults, and the validator's issues, each
+ * at its key (empty at the file's root), and why it cannot be saved now, in words.
+ */
+export interface ConfigRecord {
+  readonly input?: unknown;
+  readonly config?: ResolvedConfig;
+  readonly defaults: ResolvedConfig;
+  readonly issues: readonly ConfigIssue[];
+  readonly blocked?: Bilingual;
+}
+
+/** What some edits of `config.yaml` would leave: the validator's issues and the changes by setting. */
+export interface ConfigCheck {
+  readonly issues: readonly ConfigIssue[];
+  readonly changes: readonly SettingChange[];
+}
+
+/** Some edits of `config.yaml` saved: the commit that holds them, and the changes by setting. */
+export interface ConfigSaved {
+  readonly commit: string;
+  readonly changes: readonly SettingChange[];
+}
+
 /** What the person decides on an entry of Specty's memory (ADR 0016). */
 export type MemoryVerb = "drop" | "keep" | "done";
+
+/**
+ * The cut the panel asks for, as its URL has them (docs/ui.md, «Panel»): each parameter only when
+ * the URL has it; the server understands them or takes their defaults.
+ */
+export interface StatsParams {
+  readonly period?: string;
+  readonly who?: string;
+  readonly kind?: string;
+}
 
 /**
  * Any data source the UI can run on: fetch + SSE from the local server, `postMessage` in an
@@ -127,6 +190,16 @@ export abstract class SpectyData {
       counts: { done: count("done"), cancelled: count("cancelled") },
       finished: finished.length,
     };
+  }
+
+  /** A page of the panel's table of changes (docs/ui.md, «Panel»); nothing when it cannot tell. */
+  statsChanges(_params: StatsChangesParams): Promise<StatsChangesPage | undefined> {
+    return Promise.resolve(undefined);
+  }
+
+  /** The panel's changes of the cut as a CSV or JSON file (docs/ui.md, «Panel»); or nothing. */
+  statsExport(_params: StatsExportParams): Promise<Download | undefined> {
+    return Promise.resolve(undefined);
   }
 
   /** Why the person cannot decide from this source, or nothing when they can. */
@@ -250,8 +323,18 @@ export abstract class SpectyData {
     return Promise.resolve(undefined);
   }
 
+  /** The project's configuration (`.specty/config.yaml`); nothing when the source cannot tell. */
+  config(): Promise<ConfigRecord | undefined> {
+    return Promise.resolve(undefined);
+  }
+
   /** The agents' sessions in the repository, newest first (ADR 0016); nothing when it cannot tell. */
   sessions(): Promise<readonly SessionView[] | undefined> {
+    return Promise.resolve(undefined);
+  }
+
+  /** The panel of the cut `params` ask for (docs/ui.md, «Panel»); nothing when it cannot tell. */
+  stats(_params: StatsParams): Promise<StatsView | undefined> {
     return Promise.resolve(undefined);
   }
 
@@ -262,6 +345,16 @@ export abstract class SpectyData {
 
   /** Turns delegated mode on, once the person read the warning, or off. */
   setDelegation(_on: boolean): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  /** What the person's edits of `config.yaml` would leave, writing nothing. */
+  checkConfig(_edits: readonly ConfigEdit[]): Promise<ConfigCheck> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  /** Saves the person's edits of `config.yaml` in a commit of its own. */
+  saveConfig(_edits: readonly ConfigEdit[]): Promise<ConfigSaved> {
     return Promise.reject(new ActionError(READ_ONLY));
   }
 }

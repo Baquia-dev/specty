@@ -1,5 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as z from "zod";
+import {
+  DEFAULT_TASK_DONE,
+  resolveTaskDone,
+  type TaskDoneChecks,
+  TaskDoneSchema,
+} from "./task-done";
 
 /** How a check counts: its failures fail `specty check`, only warn, or it does not run. */
 export type CheckLevel = "error" | "warn" | "off";
@@ -26,6 +32,8 @@ export interface ChecksConfig {
   readonly coverage: CoverageConfig;
   /** The JUnit reports `test-time` reads and the limit of each test; without it, it does not run. */
   readonly testTime?: TestTimeConfig;
+  /** The checks `task done` leaves out of its run of `specty check`. */
+  readonly taskDone: TaskDoneChecks;
 }
 
 /**
@@ -123,9 +131,11 @@ export const DEFAULT_CHECKS: ChecksConfig = {
     ],
     warn: 80,
   },
+  taskDone: DEFAULT_TASK_DONE,
 };
 
-function isRegex(source: string): boolean {
+/** True when `source` is a valid JavaScript regular expression. */
+export function isRegex(source: string): boolean {
   try {
     new RegExp(source);
     return true;
@@ -208,6 +218,7 @@ export const ChecksSchema = z.strictObject({
       maxMs: z.number().int().positive(),
     })
     .optional(),
+  taskDone: TaskDoneSchema.optional(),
 });
 
 export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): ChecksConfig {
@@ -232,6 +243,7 @@ export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): 
     ...(input?.testTime === undefined
       ? {}
       : { testTime: { reports: input.testTime.reports, maxMs: input.testTime.maxMs } }),
+    taskDone: resolveTaskDone(input?.taskDone),
   };
 }
 

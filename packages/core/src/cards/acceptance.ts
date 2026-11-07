@@ -38,7 +38,7 @@ export function riskWarnings(tasks: readonly TaskView[], lang: Lang): string[] {
   return tasks.flatMap((task) =>
     (task.risks ?? []).map(
       (risk) =>
-        `${task.id}: ${risk.path}${risk.line === undefined ? "" : `:${risk.line}`} ${riskLabel(risk.rule, lang)}${risk.cwe === undefined ? "" : ` (${risk.cwe})`}.`,
+        `${task.id}: ${risk.path}${risk.line === undefined ? "" : `:${risk.line}`} ${riskLabel(risk.rule, lang, risk.label)}${risk.cwe === undefined ? "" : ` (${risk.cwe})`}.`,
     ),
   );
 }
@@ -51,7 +51,7 @@ export function findingLines(tasks: readonly TaskView[]): string[] {
 /**
  * How to write the closing: its sections, the findings of the tasks and the remarks of the review
  * of the result. The closing card says it, and in delegated mode the acceptance card too, where
- * the agent writes the closing before accepting (`closingInAcceptance`).
+ * the agent writes the closing before accepting (`closingAhead`).
  */
 export function closingGuide(change: ChangeView, ctx: CardContext): OutputBlock[] {
   const t = translator(ctx.lang);
@@ -90,8 +90,7 @@ export function closingGuide(change: ChangeView, ctx: CardContext): OutputBlock[
 export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   // In delegated mode the closing comes first, until it is sent.
-  const ahead =
-    closingInAcceptance(change.kind, ctx.delegated === true) && !change.closingSubmitted;
+  const ahead = closingAhead(change, ctx) && !change.closingSubmitted;
   return {
     status: "ok",
     header: headerOf(change.id, "acceptance"),
@@ -151,6 +150,14 @@ function acceptanceWarnings(change: ChangeView, ctx: CardContext): string[] {
   ];
 }
 
+/**
+ * In delegated mode, the agent writes the closing before accepting (`closingInAcceptance`), unless
+ * the change goes without its closing phase (`flow.closing: false`, formats.md §6).
+ */
+function closingAhead(change: ChangeView, ctx: CardContext): boolean {
+  return change.withoutClosing !== true && closingInAcceptance(change.kind, ctx.delegated === true);
+}
+
 /** An independent review first, if it is due; then the acceptance, the agent's or the person's. */
 function acceptanceNext(change: ChangeView, ctx: CardContext): string {
   const t = translator(ctx.lang);
@@ -160,8 +167,7 @@ function acceptanceNext(change: ChangeView, ctx: CardContext): string {
       `before asking for the acceptance, run \`${ctx.command} review\`: an independent review of the result by a stronger model.`,
     );
   }
-  if (closingInAcceptance(change.kind, ctx.delegated === true))
-    return closingAheadNext(change, ctx);
+  if (closingAhead(change, ctx)) return closingAheadNext(change, ctx);
   return ctx.delegated === true
     ? t(
         `modo delegado: acepta tú el resultado con \`${ctx.command} accept\` y sigue su salida. Si el usuario pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,

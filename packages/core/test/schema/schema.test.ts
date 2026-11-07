@@ -178,6 +178,177 @@ describe("resolveConfig", () => {
   });
 });
 
+describe("resolveConfig and `internal`'s waits and retries", () => {
+  /** The keys of the issues of `internal`, or `ok` when it is valid. */
+  const paths = (internal: unknown) => {
+    const resolved = resolveConfig({ version: 1, internal });
+    return resolved.ok ? "ok" : resolved.issues.map((issue) => issue.path);
+  };
+
+  it("AC4, AC6: without the keys, Specty waits 55 min, inside the prompt cache's hour, beats each minute and retries landing twice", () => {
+    expect(DEFAULT_CONFIG.internal).toMatchObject({
+      waits: { waitTimeoutSec: 3300, heartbeatSec: 60 },
+      retries: { landing: 2 },
+    });
+    expect(resolveConfig({ version: 1 })).toMatchObject({
+      ok: true,
+      config: {
+        internal: { waits: { waitTimeoutSec: 3300, heartbeatSec: 60 }, retries: { landing: 2 } },
+      },
+    });
+  });
+
+  it("AC4: takes each key within its limits, the others with their defaults", () => {
+    const resolved = resolveConfig({
+      version: 1,
+      internal: { waits: { waitTimeoutSec: 60 }, retries: { landing: 0 } },
+    });
+    expect(resolved).toMatchObject({
+      ok: true,
+      config: {
+        internal: { waits: { waitTimeoutSec: 60, heartbeatSec: 60 }, retries: { landing: 0 } },
+      },
+    });
+    // AC6: an hour still fits, as the most every tool measured holds.
+    expect(paths({ waits: { waitTimeoutSec: 3600, heartbeatSec: 1 } })).toBe("ok");
+    expect(paths({ waits: { heartbeatSec: 240 }, retries: { landing: 10 } })).toBe("ok");
+  });
+
+  it("AC4: refuses each key outside its limits, or not a whole number, with its key", () => {
+    expect(paths({ waits: { waitTimeoutSec: 0 } })).toEqual(["internal.waits.waitTimeoutSec"]);
+    expect(paths({ waits: { waitTimeoutSec: 59 } })).toEqual(["internal.waits.waitTimeoutSec"]);
+    expect(paths({ waits: { waitTimeoutSec: 3601 } })).toEqual(["internal.waits.waitTimeoutSec"]);
+    expect(paths({ waits: { heartbeatSec: 0 } })).toEqual(["internal.waits.heartbeatSec"]);
+    expect(paths({ waits: { heartbeatSec: 241 } })).toEqual(["internal.waits.heartbeatSec"]);
+    expect(paths({ waits: { heartbeatSec: 1.5 } })).toEqual(["internal.waits.heartbeatSec"]);
+    expect(paths({ retries: { landing: -1 } })).toEqual(["internal.retries.landing"]);
+    expect(paths({ retries: { landing: 11 } })).toEqual(["internal.retries.landing"]);
+    expect(paths({ retries: { landing: "dos" } })).toEqual(["internal.retries.landing"]);
+  });
+
+  it("AC4: refuses a key of `internal` that does not exist", () => {
+    expect(resolveConfig({ version: 1, internal: { waits: { forever: true } } })).toMatchObject({
+      ok: false,
+    });
+    expect(paths({ waits: { forever: true } })).toEqual(["internal.waits"]);
+    expect(paths({ naps: { short: 1 } })).toEqual(["internal"]);
+  });
+
+  it("AC5: has no key for the lives that are part of compliance: receipts, guard pending, shell snapshots and sessions", () => {
+    for (const internal of [
+      { retention: { receiptHours: 48 } },
+      { receipts: { lifeHours: 48 } },
+      { guard: { pendingHours: 1 } },
+      { retention: { shellSnapshotHours: 1 } },
+      { retention: { sessionHours: 1 } },
+      { waits: { receiptHours: 48 } },
+    ]) {
+      expect(resolveConfig({ version: 1, internal }).ok, JSON.stringify(internal)).toBe(false);
+    }
+  });
+});
+
+describe("resolveConfig and `internal`'s locks and retention", () => {
+  /** The keys of the issues of `internal`, or `ok` when it is valid. */
+  const paths = (internal: unknown) => {
+    const resolved = resolveConfig({ version: 1, internal });
+    return resolved.ok ? "ok" : resolved.issues.map((issue) => issue.path);
+  };
+  const today = { retries: { memory: 9, gitConfig: 5 }, retention: { verifiedDays: 30 } };
+
+  it("AC4: without the keys, the memory tries 10 times, git's configuration 5 more and the record keeps 30 days", () => {
+    expect(DEFAULT_CONFIG.internal).toMatchObject(today);
+    expect(resolveConfig({ version: 1 })).toMatchObject({ ok: true, config: { internal: today } });
+    expect(resolveConfig({ version: 1, internal: { retention: {} } })).toMatchObject({
+      ok: true,
+      config: { internal: today },
+    });
+  });
+
+  it("AC4: takes each key within its limits, the others with their defaults", () => {
+    expect(
+      resolveConfig({ version: 1, internal: { retries: { memory: 1 }, retention: {} } }),
+    ).toMatchObject({
+      ok: true,
+      config: {
+        internal: {
+          retries: { landing: 2, memory: 1, gitConfig: 5 },
+          retention: { verifiedDays: 30 },
+        },
+      },
+    });
+    expect(paths({ retries: { memory: 50, gitConfig: 1 }, retention: { verifiedDays: 1 } })).toBe(
+      "ok",
+    );
+    expect(paths({ retries: { gitConfig: 10 }, retention: { verifiedDays: 365 } })).toBe("ok");
+  });
+
+  it("AC4: refuses each key outside its limits, or not a whole number, with its key", () => {
+    expect(paths({ retries: { memory: 0 } })).toEqual(["internal.retries.memory"]);
+    expect(paths({ retries: { memory: 51 } })).toEqual(["internal.retries.memory"]);
+    expect(paths({ retries: { memory: 2.5 } })).toEqual(["internal.retries.memory"]);
+    expect(paths({ retries: { gitConfig: 0 } })).toEqual(["internal.retries.gitConfig"]);
+    expect(paths({ retries: { gitConfig: 11 } })).toEqual(["internal.retries.gitConfig"]);
+    expect(paths({ retries: { gitConfig: "cinco" } })).toEqual(["internal.retries.gitConfig"]);
+    expect(paths({ retention: { verifiedDays: 0 } })).toEqual(["internal.retention.verifiedDays"]);
+    expect(paths({ retention: { verifiedDays: 366 } })).toEqual([
+      "internal.retention.verifiedDays",
+    ]);
+    expect(paths({ retention: { verifiedDays: 7.5 } })).toEqual([
+      "internal.retention.verifiedDays",
+    ]);
+    expect(paths({ retention: { forever: true } })).toEqual(["internal.retention"]);
+  });
+});
+
+describe("resolveConfig and `internal`'s polling intervals", () => {
+  /** The keys of the issues of `internal`, or `ok` when it is valid. */
+  const paths = (internal: unknown) => {
+    const resolved = resolveConfig({ version: 1, internal });
+    return resolved.ok ? "ok" : resolved.issues.map((issue) => issue.path);
+  };
+  const today = { waits: { verifyIntervalMs: 2000, waitIntervalMs: 500 } };
+
+  it("AC4: without the keys, a verification looks again every 2000 ms and `specty wait` every 500 ms", () => {
+    expect(DEFAULT_CONFIG.internal).toMatchObject(today);
+    expect(resolveConfig({ version: 1 })).toMatchObject({ ok: true, config: { internal: today } });
+    expect(resolveConfig({ version: 1, internal: { waits: {} } })).toMatchObject({
+      ok: true,
+      config: { internal: today },
+    });
+  });
+
+  it("AC4: takes each key from 100 to 10000, the others with their defaults", () => {
+    expect(
+      resolveConfig({ version: 1, internal: { waits: { verifyIntervalMs: 100 } } }),
+    ).toMatchObject({
+      ok: true,
+      config: {
+        internal: {
+          waits: {
+            waitTimeoutSec: 3300,
+            heartbeatSec: 60,
+            verifyIntervalMs: 100,
+            waitIntervalMs: 500,
+          },
+        },
+      },
+    });
+    expect(paths({ waits: { verifyIntervalMs: 10000, waitIntervalMs: 100 } })).toBe("ok");
+    expect(paths({ waits: { waitIntervalMs: 10000 } })).toBe("ok");
+  });
+
+  it("AC4: refuses each key outside 100 to 10000, or not a whole number, with its key", () => {
+    for (const key of ["verifyIntervalMs", "waitIntervalMs"]) {
+      for (const value of [0, 99, 10001, 250.5, "medio segundo"]) {
+        expect(paths({ waits: { [key]: value } }), `${key}: ${value}`).toEqual([
+          `internal.waits.${key}`,
+        ]);
+      }
+    }
+  });
+});
+
 describe("parseChangeState", () => {
   const state = {
     schema: 1,

@@ -7,7 +7,7 @@ import { waitStep } from "./wait";
 /**
  * The pieces of the briefs a card hands to subagents, each one the text a subagent gets as is to
  * carry a change in its folder: an epic's slices (`epic.ts`) and, with no change active, each
- * change the user asks for (`idle.ts`).
+ * change the user asks for (`idle.ts`) and the orphan the user asks to resume (`rejoin.ts`).
  */
 
 /** The tool hands work to subagents (ARCHITECTURE §10), and `subagents` lets it. */
@@ -48,16 +48,52 @@ export function inItsFolder(
       `Tu \`cd\` no dura entre comandos: empieza cada uno con \`${cd}\` y usa rutas absolutas de esa carpeta.`,
       `Your \`cd\` does not last between commands: start each one with \`${cd}\` and use absolute paths in that folder.`,
     ),
-    t(
-      `Sigue \`${ctx.command} next\` hasta cerrarlo; cuando espere a la persona, ${waitStep(ctx)}.`,
-      `Follow \`${ctx.command} next\` until it is closed; when it waits for the person, ${waitStep(ctx)}.`,
-    ),
+    followNext(ctx),
     ...more,
     t(
       "Responde en tres líneas: el cambio, su fase y lo que falta.",
       "Answer in three lines: the change, its phase and what is left.",
     ),
   ];
+}
+
+/**
+ * A brief's step of following `next` to the end, and of waiting for the person with `specty wait`.
+ * In delegated mode the subagent takes the decisions `next` gives it, and waits only for one the
+ * person did not delegate (`waitsForPerson`), such as unlocking an approved test.
+ */
+function followNext(ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  const follow = `\`${ctx.command} next\``;
+  if (ctx.delegated !== true) {
+    return t(
+      `Sigue ${follow} hasta cerrarlo; cuando espere a la persona, ${waitStep(ctx)}.`,
+      `Follow ${follow} until it is closed; when it waits for the person, ${waitStep(ctx)}.`,
+    );
+  }
+  return t(
+    `Sigue ${follow} hasta cerrarlo. Cuando su \`SIGUIENTE:\` diga «modo delegado: …», hazlo tú; cuando espere a la persona en una decisión que no te delega (como desbloquear un test aprobado), ${waitStep(ctx)}.`,
+    `Follow ${follow} until it is closed. When its \`NEXT:\` says "delegated mode: …", do it yourself; when it waits for the person on a decision not delegated to you (such as unlocking an approved test), ${waitStep(ctx)}.`,
+  );
+}
+
+/** A brief's step for a change whose spec may be still to write: a question goes back to the session. */
+export function questionStep(ctx: CardContext): string {
+  return translator(ctx.lang)(
+    "Si para la spec te falta una respuesta del usuario, no la supongas: detente y responde con la pregunta.",
+    "If the spec needs an answer from the user, do not assume it: stop and answer with the question.",
+  );
+}
+
+/**
+ * A brief's step for a change that may come out too large for one: an epic's card asks to launch
+ * subagents, which the brief forbids, so the main session makes the epic in the change.
+ */
+export function tooLargeStep(ctx: CardContext): string {
+  return translator(ctx.lang)(
+    "Si `propose` dice que el cambio es demasiado grande y pide dividirlo en una épica, no lo conviertas tú: detente y responde con eso, que la épica la hace la sesión principal en tu cambio.",
+    "If `propose` says the change is too large and asks to split it into an epic, do not turn it into one yourself: stop and answer with that, since the main session makes the epic in your change.",
+  );
 }
 
 export const numbered = (steps: readonly string[]): string[] =>

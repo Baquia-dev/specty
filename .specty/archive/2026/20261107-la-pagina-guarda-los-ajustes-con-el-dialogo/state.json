@@ -1,0 +1,168 @@
+{
+  "schema": 1,
+  "id": "20261107-la-pagina-guarda-los-ajustes-con-el-dialogo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-la-pagina-guarda-los-ajustes-con-el-dialogo",
+  "baseCommit": "9183447eaa311a331341561a5c135a75de5a6508",
+  "revision": 5,
+  "approved": {
+    "revision": 4,
+    "hash": "sha256:1b0bbce9c529aa4813b07c8a63a6f35ebe4d25efcaf0aff1e744ec32834ec25a",
+    "at": "2026-11-07T05:06:15.109Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:aab558b4ee660167a7f624dcb80b96480f0fffaf3dcadd0cd211c82e95d7853e",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:31ce2a182e1006ec7ba0081451b659b4e99fed4ee5aef89ce38e5153a3451378",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:a9e5432d2510ae28aa496344c44e1f4ef5c0b3c03384534aab08f6be8fc8b177",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d962708c89caa29595492d2254f80aa1943875a1c489695bda47da668d4c77da",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:10382cf791805a3b557c0dcd8c32d748730b5f832edb3d6449aed6da9052bb04",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:bc7882a8262ad2526f5e0efc90be6a214e84fbf3760c7133ce991cf7868381d8",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:cc76cf59da2bfc629652a0dd3b7c90b3ccae27bf675a4a793be80f9716afa820",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4328f1d730a432e7794510eaed6f4aa5e670f089",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:39:31.817Z",
+      "doneAt": "2026-11-07T04:41:26.550Z",
+      "summary": "La fuente de datos del servidor comprueba (POST /api/config/check) y guarda (POST /api/config) las ediciones con el token CSRF; isConfigRecord pasa a server-answers.ts (P278) con blocked, y cada motivo (blocked y 409) sale en palabras en español y en inglés",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "324bbc4f4dddf02d1984391d355d10351a9bd115",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:41:27.618Z",
+      "doneAt": "2026-11-07T04:46:01.420Z",
+      "summary": "settings-edit.ts da los campos de cada ajuste, lee y escribe sus textos, lleva las ediciones con Restablecer, las aplica a la entrada del archivo y da cada cambio para el diálogo; settings-view.ts exporta valueItems, valueAt e isObject",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "453dfbe82ad209dd5e51950973a04165ff698194",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:46:01.933Z",
+      "doneAt": "2026-11-07T04:50:36.084Z",
+      "summary": "La fila de cada ajuste pasa a setting-row.ts con sus controles, «Restablecer» y «Sin guardar»; la página lleva las ediciones, las comprueba con el servidor, cuenta los cambios en el encabezado y la barra compacta, y en solo lectura dice por qué",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "e822b0c6118b5fc52c57f55e7e1c87b1b95824a0",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:50:36.796Z",
+      "doneAt": "2026-11-07T04:53:04.944Z",
+      "summary": "«Revisar y guardar» abre save-dialog.ts con cada cambio de la comprobación, «Antes» solo si se quita algo, avisos de comando y permisos con confirmación aparte, y guarda; docs/ui.md describe la edición",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "e572a1776dd7df997406428c84a9e1818cd1ec2e",
+      "attempts": 1,
+      "startedAt": "2026-11-07T05:06:17.710Z",
+      "doneAt": "2026-11-07T05:21:57.699Z",
+      "summary": "El test del modelo de edición lista sizing.highFanIn en lugar de effort entre los ajustes sin campo, con el parche aprobado en S1",
+      "scopeExtra": [
+        "packages/ui/src/settings/settings-edit.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 11,
+    "T": 5,
+    "R": 4,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-07T05:22:10.435Z",
+  "lockedTests": {
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:859c05b53232d31f3617f018f81413d37fa2d907311fd88300bc8ce509941fb1",
+    "packages/ui/src/data/server-config.test.ts": "sha256:e501715fa11183ccb15f625de642e17bc754b5c43e282e2c6feb567fb7fed863",
+    "packages/ui/src/settings/settings-controls.test.ts": "sha256:09b641dea5e4086ab63188bb064130f197360a1110ef27d0c6cce0fd44088067",
+    "packages/ui/src/settings/settings-edit.test.ts": "sha256:38cdabf2706a0ac2617caa5a677c6ded3c0737807c1ee212bc1b6ffce5ca067d",
+    "packages/ui/src/settings/settings-save.test.ts": "sha256:806b85d62d0869c53f39371d1672f765b3234777b7f0a7c41ccf1936146e003a"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ui.md",
+      "packages/ui/src/data/server.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/ui.md",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/test/server/stats.test.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/stats/period.ts",
+      "packages/core/src/stats/rows.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/core/test/stats/summary.test.ts",
+      "packages/ui/src/app/routes.ts",
+      "packages/ui/src/app/shell.test.ts",
+      "packages/ui/src/app/shell.ts",
+      "packages/ui/src/dashboard/dashboard-page.test.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts",
+      "packages/ui/src/dashboard/dashboard-summary.ts",
+      "packages/ui/src/data/server-answers.ts",
+      "packages/ui/src/data/server-config.test.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/settings/save-dialog.ts",
+      "packages/ui/src/settings/setting-row.ts",
+      "packages/ui/src/settings/settings-controls.test.ts",
+      "packages/ui/src/settings/settings-edit.test.ts",
+      "packages/ui/src/settings/settings-edit.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts",
+      "packages/ui/src/settings/settings-save.test.ts",
+      "packages/ui/src/settings/settings-view.ts"
+    ],
+    "at": "2026-11-07T08:35:02.295Z",
+    "resolved": {
+      "commit": "9715429",
+      "at": "2026-11-07T08:42:00.906Z"
+    }
+  }
+}

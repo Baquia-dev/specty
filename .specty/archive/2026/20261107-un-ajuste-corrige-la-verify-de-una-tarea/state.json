@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "id": "20261107-un-ajuste-corrige-la-verify-de-una-tarea",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-un-ajuste-corrige-la-verify-de-una-tarea",
+  "baseCommit": "efe8573c8c939f04712e3ff9ccede27b7c150138",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d51a3a8c2ef98fd5b190c06be3d1dd6dfa9df663c222f39c2f105e82d748ec35",
+    "at": "2026-11-06T23:17:38.804Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:69c99b718fb6bcb628524cb94e09508e0a334f307bec2f90ee6ff8800baf6cf1",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ef4ebf77751d3ccb9c3b626630e056e0652d835a455a600c375187531366af7f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:3af7bb6c6c53706e7ab1e7bc56749616719c544014a641a0e4b15bd0bd904965",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:a4dd9367e1b41c0bc2543a41fd3affb5d67a228660590e2e97724294c1094dc1",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:51003e2a21f8c6634f0945e152e6f70c0256ef5c0d35ae4890048eb798848e74",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:879a2b37dcbd3a077e19a7b8e9c5e54274dbd3d1de6ad4a559b3c1dd81e6ee43",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "1113b508c59935ecf18f417e356830a34cc6d035",
+      "attempts": 1,
+      "startedAt": "2026-11-06T23:24:13.311Z",
+      "doneAt": "2026-11-06T23:25:25.263Z",
+      "summary": "adjust lleva implementing a adjusting salvo en una retro; checkAdjusting reconoce el ajuste pedido al implementar (quedan tareas aprobadas sin hacer) y da pending-tasks-only por tarea añadida o borrada y criterio cambiado; possible-new-scope mira las tareas sin hacer",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c2cf2c00e89827b1f17c5dbf1ac07e2967095291",
+      "attempts": 1,
+      "startedAt": "2026-11-06T23:25:25.735Z",
+      "doneAt": "2026-11-06T23:25:49.173Z",
+      "summary": "La negativa de adjust nombra implementing y la aceptación; en adjusting con una tarea activa la tarjeta da «CÓMO CORREGIRLAS»; la verificación fallida de task done sugiere corregir con adjust una verify que no carga sus tests",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "e7afe9f016693175e9200ed9de616f178a948f54",
+      "attempts": 1,
+      "startedAt": "2026-11-06T23:25:49.496Z",
+      "doneAt": "2026-11-06T23:27:15.934Z",
+      "summary": "El ciclo de tests de un ajuste cuenta solo las tareas que trae (las aprobadas ya pasaron su fase de tests), así que corregir tareas pendientes vuelve a implementing con la tarea activa y los tests bloqueados; ARCHITECTURE §4 y §12, formats §2 y ui.md lo cuentan",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T23:27:39.994Z",
+  "lockedTests": {
+    "packages/cli/test/commands.test.ts": "sha256:127e77f415da09ac57964f41435d113a008899102e4e770908f795ea30e7c77b",
+    "packages/cli/test/epic-adjust.test.ts": "sha256:5491a05b6334091669b5e2fef37c2ca60847683215e4bcd9af0db10790db1e8b",
+    "packages/cli/test/server/epic-adjust.test.ts": "sha256:6504829d8133a0be44fceaae966adaf22c364c5c2c8101747a71edb0a1578dd3",
+    "packages/core/test/cards/adjust.test.ts": "sha256:8efd38e8e24c2fff835ddfe626cba9c8f5232291357c11502081cf448043b42e",
+    "packages/core/test/flow/machine.test.ts": "sha256:b37216f057d9fc1ba0f7a5e557c1951cce779c151a44bc41d52f47d1aa334ca1",
+    "packages/core/test/validate/phase.test.ts": "sha256:2e66eb5785e11498246038941032d55bb37b1722c0266a517bc85e512dbe99d5"
+  }
+}

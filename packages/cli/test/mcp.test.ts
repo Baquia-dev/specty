@@ -107,6 +107,15 @@ describe("specty mcp", () => {
     });
   });
 
+  it("AC3: describes `specty_adjust` in the acceptance and while the tasks are implemented", async () => {
+    const root = await tempRepo(APP);
+    const [listed] = await serve(root, [request(1, "tools/list")]);
+    const tools = (listed?.result as { tools: Message[] } | undefined)?.tools ?? [];
+    const adjust = tools.find((tool) => tool.name === "specty_adjust");
+    expect(adjust?.description).toEqual(expect.stringContaining("acceptance"));
+    expect(adjust?.description).toEqual(expect.stringContaining("pending tasks"));
+  });
+
   it("AC3: runs each tool as its command, in the folder given, and marks a failing one", async () => {
     const root = await tempRepo(APP);
     const expected = await cli(root, ["next"]);

@@ -104,3 +104,36 @@ describe("the phase the server says a change is in", () => {
     }
   });
 });
+
+describe("whether accepting closes a change without its closing phase", () => {
+  it("AC5: serves withoutClosing for a standard change in acceptance whose folder has flow.closing: false, and not for a slice nor with the key true or absent", async () => {
+    const without = `${CONFIG()}flow:\n  closing: false\n`;
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": without });
+    await cli(root, ["new", "Saludo personalizado"]);
+    await writeFiles(root, { [SPEC_PATH]: SPEC });
+    expect((await cli(root, ["propose"])).code).toBe(0);
+    await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    // No task needs to run: the state says it reached acceptance.
+    await writeFiles(root, {
+      [`${CHANGE_DIR}/state.json`]: JSON.stringify({ ...(await state(root)), phase: "acceptance" }),
+    });
+    const record = async () => (await changeRecords(await sessionAt(root, AGENT)))[0];
+    const accepting = await record();
+    expect(accepting?.state.phase).toBe("acceptance");
+    expect(accepting?.withoutClosing).toBe(true);
+
+    await writeFiles(root, { ".specty/config.yaml": `${CONFIG()}flow:\n  closing: true\n` });
+    expect(await record()).not.toHaveProperty("withoutClosing");
+    await writeFiles(root, { ".specty/config.yaml": CONFIG() });
+    expect(await record()).not.toHaveProperty("withoutClosing");
+
+    await writeFiles(root, {
+      ".specty/config.yaml": without,
+      [SPEC_PATH]: SPEC.replace(
+        "kind: standard\n",
+        "kind: standard\nepic: 20261101-una-epica\nslice: C1\n",
+      ),
+    });
+    expect(await record()).not.toHaveProperty("withoutClosing");
+  });
+});

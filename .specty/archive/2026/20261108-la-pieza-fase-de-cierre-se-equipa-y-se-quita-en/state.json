@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "id": "20261108-la-pieza-fase-de-cierre-se-equipa-y-se-quita-en",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-la-pieza-fase-de-cierre-se-equipa-y-se-quita-en",
+  "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:903687a0eaa0d7a565bc40821a2c0eea3c16ab23881bbc475ed8dfe34dbfa29b",
+    "at": "2026-11-07T16:14:08.644Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "3 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:83a1c6452b6f9ea4dee5d179a3404bdb382f12fcf764b123912ea899e7089004",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:46511b97bb6fd852fbe4f569aa02b9c9bfe3ff5cca0daa6c46e626b4ede71fc8",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e7225772e57df63ed7bb220197b9515a145e02be00ac827eedc2d53792662ad3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "66379ef03831e373de65fd624f04a232707c1c80",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:16:53.896Z",
+      "doneAt": "2026-11-07T16:17:13.884Z",
+      "summary": "La pieza closing se ajusta con flow.closing (toggle de sí o no, sin soon), con su descripción nueva y la frase del modo Básico cuando flow.closing es false",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "a550f1a73e98f8e4d273b67cd06df4feb2c7e0a2",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:17:14.429Z",
+      "doneAt": "2026-11-07T16:17:46.279Z",
+      "summary": "Tests de la vista Flujo con la pieza Fase de cierre equipable (Básico y Avanzado), y docs/ui.md describe la pieza y su frase",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "a78cf8095726bad61fbc6e3f2f39e6e4de041faa",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:17:46.737Z",
+      "doneAt": "2026-11-07T16:18:18.294Z",
+      "summary": "El servidor añade withoutClosing: true al registro de un cambio en aceptación que se cierra al aceptarlo (regla withoutClosing de flow/views.ts), y ARCHITECTURE §15 lo documenta",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "128223f45ca240b30d3e61c4eabd0850067a377e",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:18:18.806Z",
+      "doneAt": "2026-11-07T16:18:49.570Z",
+      "summary": "La UI lleva withoutClosing del registro del servidor a la vista del cambio, junto a criteriaTests",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "64f5665163d33a8b383b751c0cad241bf8e7066f",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:18:50.100Z",
+      "doneAt": "2026-11-07T16:19:34.277Z",
+      "summary": "El diálogo «Aceptar» y su aviso dicen que un cambio con withoutClosing se cierra al aceptarlo, sin fase de cierre; docs/ui.md lo describe",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 7,
+    "T": 5,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T16:20:25.680Z",
+  "lockedTests": {
+    "packages/cli/test/server/records.test.ts": "sha256:20309bd1101d4effb27e1bf7ad7bb0e32ed38388997d99f3066ba6b602c6a070",
+    "packages/core/test/settings/pieces.test.ts": "sha256:c3a14e9fc99d56089e1c413e39fff88a1e5b8edf9777f139391a97947f008e8b",
+    "packages/ui/src/acceptance/acceptance-actions.test.ts": "sha256:e8f8eadecb8b42f3e05a769d90a148ccffebc64311e64b37de1bf684a58448df",
+    "packages/ui/src/data/views.test.ts": "sha256:a48377b2868d4db24bc6b285e38bd884c424c6c3407a43b30559de6eb7ea5c99",
+    "packages/ui/src/settings/flow-piece.test.ts": "sha256:ef945ed161080621860c9c1f45aa91868f0f9938f949ca946d4f5e727e593546",
+    "packages/ui/src/settings/settings-flow.test.ts": "sha256:1e5a3df4ead189b6ae355507d71d229c39ed5c488cc8236c5c4799d33a8c4372"
+  }
+}

@@ -20,9 +20,13 @@ export interface UiOptions {
   readonly open?: boolean;
 }
 
-function parsePort(options?: UiOptions | string): number | undefined {
+/** The port of `--port` or, without it, that of `ui.port` (4173 with `auto`); undefined if invalid. */
+function parsePort(
+  options: UiOptions | string | undefined,
+  configured: Session["config"]["ui"]["port"],
+): number | undefined {
   const port = typeof options === "string" ? options : options?.port;
-  if (port === undefined) return DEFAULT_PORT;
+  if (port === undefined) return configured === "auto" ? DEFAULT_PORT : configured;
   const num = Number(port);
   return Number.isInteger(num) && num >= 0 && num <= 65_535 ? num : undefined;
 }
@@ -62,7 +66,7 @@ export async function ui(
   stop: Promise<void> = stopRequested(),
   openUrl: (url: string) => void = openInBrowser,
 ): Promise<Output> {
-  const port = parsePort(options);
+  const port = parsePort(options, session.config.ui.port);
   if (port === undefined) {
     return invalidPortCard(rawPort(options), session.cards);
   }

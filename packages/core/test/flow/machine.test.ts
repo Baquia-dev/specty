@@ -91,7 +91,7 @@ const TABLE: Readonly<Record<FlowEventType, Row>> = {
   adjust: {
     actors: ["agent", "human"],
     next: {
-      implementing: { epic: "adjusting", other: "kind-not-allowed" },
+      implementing: { retro: "kind-not-allowed", other: "adjusting" },
       acceptance: "adjusting",
     },
   },
@@ -206,13 +206,22 @@ describe("transition", () => {
     expect(EVENT_RULES.adjust.grantsPermission).toBe(false);
   });
 
-  it("AC3: refuses to adjust any other change while it is implemented", () => {
-    for (const kind of ["standard", "quick", "spike", "retro"] as const) {
+  it("AC1: adjusts any change with tasks while it is implemented, to correct its pending tasks", () => {
+    for (const kind of ["standard", "quick", "spike"] as const) {
       expect(
         transition({ phase: "implementing", kind, actor: "agent", event: { type: "adjust" } }),
         kind,
-      ).toEqual({ ok: false, code: "kind-not-allowed" });
+      ).toEqual({ ok: true, phase: "adjusting" });
     }
+    // A retro has no implementation, so no task to correct.
+    expect(
+      transition({
+        phase: "implementing",
+        kind: "retro",
+        actor: "agent",
+        event: { type: "adjust" },
+      }),
+    ).toEqual({ ok: false, code: "kind-not-allowed" });
   });
 
   it("never lets the agent run an event that grants permissions", () => {

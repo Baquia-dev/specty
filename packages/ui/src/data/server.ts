@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable, type Type } from "@angular/core";
-import type { SessionView } from "@baquia-dev/specty-core/light";
+import type { StatsChangesPage, StatsView } from "@baquia-dev/specty-core";
+import type { ConfigEdit, SessionView } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
+import type { Download } from "./export";
 import type { RunRecord } from "./progress";
 import {
   ActionError,
@@ -16,7 +18,12 @@ import {
 import {
   actionEvent,
   answered,
+  configReason,
+  configRefusal,
   isChangeRecord,
+  isConfigCheck,
+  isConfigRecord,
+  isConfigSaved,
   isDelegation,
   isFinishedPage,
   isMemoryRecord,
@@ -25,6 +32,7 @@ import {
   isRun,
   isSessionList,
   isSliceChanges,
+  isStatsChangesPage,
   NO_DIFF,
   NO_SESSION,
   READ_ONLY,
@@ -33,7 +41,18 @@ import {
   tooLarge,
   UNEXPECTED,
 } from "./server-answers";
-import type { ActionNote, FinishedPage, FinishedRequest, MemoryVerb } from "./source";
+import type {
+  ActionNote,
+  ConfigCheck,
+  ConfigRecord,
+  ConfigSaved,
+  FinishedPage,
+  FinishedRequest,
+  MemoryVerb,
+  StatsChangesParams,
+  StatsParams,
+} from "./source";
+import { fetchStatsExport, type StatsExportParams } from "./stats-export";
 import { isStrings, isTrace, type TraceRecord } from "./trace";
 
 /** The mark `specty ui` puts in the page it serves (ARCHITECTURE §15). */
@@ -116,6 +135,24 @@ export class ServerData extends SpectyData {
     return page;
   }
 
+  /** A page of the panel's table of changes, found, sorted and cut by the server. */
+  override async statsChanges(params: StatsChangesParams): Promise<StatsChangesPage> {
+    const query = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) query.set(key, String(value));
+    }
+    const response = await fetch(`/api/stats/changes?${query}`);
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isStatsChangesPage(body)) throw new ActionError(UNEXPECTED);
+    return body;
+  }
+
+  /** The panel's changes of the cut as the file the server writes. */
+  override statsExport(params: StatsExportParams): Promise<Download> {
+    return fetchStatsExport(params);
+  }
+
   override subscribe(listener: () => unknown): () => void {
     return this.follow(this.listeners, listener);
   }
@@ -185,6 +222,52 @@ export class ServerData extends SpectyData {
     if (response.status === 403) throw new ActionError(NO_SESSION);
     const body: unknown = await response.json().catch(() => undefined);
     if (!response.ok || !isSessionList(body)) throw new ActionError(UNEXPECTED);
+    return body;
+  }
+
+  /** The panel of the cut, with only the parameters the page's URL has. */
+  override async stats(params: StatsParams): Promise<StatsView> {
+    const query = new URLSearchParams();
+    for (const key of ["period", "who", "kind"] as const) {
+      const value = params[key];
+      if (value !== undefined) query.set(key, value);
+    }
+    const search = query.size === 0 ? "" : `?${query}`;
+    const response = await fetch(`/api/stats${search}`);
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isStatsView(body)) throw new ActionError(UNEXPECTED);
+    return body;
+  }
+
+  /** The configuration, with why it cannot be saved now in words. */
+  override async config(): Promise<ConfigRecord> {
+    const response = await fetch("/api/config");
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isConfigRecord(body)) throw new ActionError(UNEXPECTED);
+    const { blocked, ...record } = body;
+    if (blocked === undefined) return record;
+    return { ...record, blocked: configReason(blocked.kind, blocked) ?? UNEXPECTED };
+  }
+
+  /** What the person's edits would leave: the server checks them and writes nothing. */
+  override async checkConfig(edits: readonly ConfigEdit[]): Promise<ConfigCheck> {
+    const response = await this.send("/api/config/check", { edits });
+    if (!response.ok) throw new ActionError(await refusal(response));
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!isConfigCheck(body)) throw new ActionError(UNEXPECTED);
+    return body;
+  }
+
+  /** The person's edits saved in a commit of their own, read again as after any decision. */
+  override async saveConfig(edits: readonly ConfigEdit[]): Promise<ConfigSaved> {
+    const response = await this.send("/api/config", { edits });
+    if (response.status === 409) throw new ActionError(await configRefusal(response));
+    if (!response.ok) throw new ActionError(await refusal(response));
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!isConfigSaved(body)) throw new ActionError(UNEXPECTED);
+    await this.reread();
     return body;
   }
 
@@ -351,15 +434,20 @@ export class ServerData extends SpectyData {
    * read again as on a `changes` event.
    */
   private async post(path: string, body: object): Promise<void> {
+    const response = await this.send(path, body);
+    if (!response.ok) throw new ActionError(await refusal(response));
+    await this.reread();
+  }
+
+  /** A request of the person's, with the CSRF token; refused as read only where they cannot decide. */
+  private async send(path: string, body: object): Promise<Response> {
     const { actions, csrf } = await this.serverSession();
     if (!actions || csrf === undefined) throw new ActionError(READ_ONLY);
-    const response = await fetch(path, {
+    return fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json", "X-Specty-CSRF": csrf },
       body: JSON.stringify(body),
     });
-    if (!response.ok) throw new ActionError(await refusal(response));
-    await this.reread();
   }
 
   /**
@@ -412,4 +500,24 @@ async function readRun(change: string): Promise<RunRecord | undefined> {
 export async function dataSource(page: Document): Promise<Type<SpectyData>> {
   if (page.querySelector(MARK) !== null) return ServerData;
   return (await import("./fixtures")).FixtureData;
+}
+
+/** The figures the panel shows first (`StatsSummary`). */
+const FIGURES = ["closed", "tasks", "cycle", "verifications", "cost", "pending"] as const;
+
+/**
+ * `GET /api/stats`' answer: its cut and period, how many changes, who can be chosen, and each of
+ * the six figures with a number or nothing for its value.
+ */
+function isStatsView(value: unknown): value is StatsView {
+  if (!isObject(value) || !isObject(value.query) || !isObject(value.range)) return false;
+  const { summary } = value;
+  const figure = (item: unknown) =>
+    isObject(item) && (item.value === null || typeof item.value === "number");
+  return (
+    typeof value.changes === "number" &&
+    Array.isArray(value.options) &&
+    isObject(summary) &&
+    FIGURES.every((key) => figure(summary[key]))
+  );
 }

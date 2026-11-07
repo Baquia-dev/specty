@@ -10,7 +10,7 @@ import {
 import { commandsFor, scriptCommand } from "../detect/project";
 import { qualityCommands } from "../detect/quality";
 import type { Stack } from "../detect/stack";
-import { execute } from "../io/exec";
+import { execute, maxOutputOf } from "../io/exec";
 import type { CheckDefinition, Provider } from "./provider";
 
 /**
@@ -79,6 +79,8 @@ function commandCheck(id: CommandCheck, command: string): CheckDefinition {
         env: session.environment.env,
         shell: true,
         timeoutMs: timeoutSec * 1000,
+        // Findings are looked for in the whole output: this much of its end.
+        maxOutput: maxOutputOf(session.config),
       });
       if (result.code === 0) return { findings: [] };
       const head: Finding = {
@@ -92,7 +94,11 @@ function commandCheck(id: CommandCheck, command: string): CheckDefinition {
               `\`${command}\` exited with ${result.code ?? "?"}`,
             ),
       };
-      const found = findingsInOutput(`${result.stdout}\n${result.stderr}`, session.root);
+      const found = findingsInOutput(
+        `${result.stdout}\n${result.stderr}`,
+        session.root,
+        session.config.internal.findings,
+      );
       // What the change touched first, then the rest it may have broken.
       const run = new Set(files);
       const ours = (finding: Finding) => finding.path !== undefined && run.has(finding.path);

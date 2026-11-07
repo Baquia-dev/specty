@@ -1,0 +1,101 @@
+{
+  "schema": 1,
+  "id": "20261107-la-pagina-configuracion-muestra-todos-los",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-la-pagina-configuracion-muestra-todos-los",
+  "baseCommit": "53eef2c1668b92bbf9d89a26fd7a562eef5cbf60",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:39acc6b969167077702bd8e5b44356225764418e29d9717181bd195c01c66d01",
+    "at": "2026-11-06T23:14:45.457Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6a92273b708c02a261d9a3f51a82ec1ad74c0789af83f9a3840f83fe2498de04",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d5e5fe3a1aa2ff95cfc0e98b5bc95498e2a8d421f5428a3ae5010d97709d63ba",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:92e8bb987ce9dcb6efedacde9fbb3ad1b8092ab2fd31c6b78ab4af0cd0253743",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:0243b0560300b33bfb49ed71b90d688792774970629e07e87739bd64bb533973",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:925086906f2367c36c673cc20c8a2fe145aa76a23ea5bdba9711a3ac1cd3f533",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:145196f7dfbef93aaf4f0c9a7ce179e6399103c57acb4eae9486105061eb813d",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:14bd64cb912ae7ebf91575844c22abb457eca6356fcd5c78b1d9f38a4ed12c5a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "cd727ff7dc54db00b0e499f0985801696ce53171",
+      "attempts": 1,
+      "startedAt": "2026-11-06T23:23:40.415Z",
+      "doneAt": "2026-11-06T23:24:12.820Z",
+      "summary": "Catálogo de ajustes (settings/catalog.ts: 14 secciones y 54 ajustes con tipo, opciones, unidad y marcas) y sus textos en español e inglés (cards/settings.ts), exportados desde la entrada ligera",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "71ed074a72bf521022563d6ec2db4d5026391e64",
+      "attempts": 1,
+      "startedAt": "2026-11-06T23:24:13.141Z",
+      "doneAt": "2026-11-06T23:24:56.049Z",
+      "summary": "GET /api/config en server/api.ts (configView): el archivo leído de nuevo en cada petición, lo que usa Specty si es válido, los valores por defecto con el glosario del idioma del archivo y los errores del validador por clave; un YAML roto da su error en la raíz. Documentado en ARCHITECTURE §15",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "cf555b8d380585f0b2300e4abb0e128cc5ed1743",
+      "attempts": 1,
+      "startedAt": "2026-11-06T23:24:56.358Z",
+      "doneAt": "2026-11-06T23:33:53.505Z",
+      "summary": "Página «Configuración» (/settings, enlace tras «Sesiones»): cada ajuste por sección con su valor, su valor por defecto si difiere, marcas, errores, buscador y filtros; config() en la fuente de datos y en ServerData; docs/ui.md",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-06T23:35:57.359Z",
+  "lockedTests": {
+    "packages/ui/src/app/shell.test.ts": "sha256:0a26e7dcff9dee3bd63dc6a8a1cb8a0c80ffec681e5d91ac4542f7f37d74a945",
+    "packages/cli/test/server/config.test.ts": "sha256:fb7b1d9b1aa8c587c980d3a0993faf2e5302fd4dd0e6e3a1dd61ed5157a0ae09",
+    "packages/core/test/settings/catalog.test.ts": "sha256:7a12a96749c68c33364bd7c23083629df3fe39c8129eec0a53089b413f906fbf",
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:641421c05ed32c4498c1c76a733427c95595f5860ee73e03231e76f4b3376e1b"
+  }
+}

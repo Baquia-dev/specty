@@ -20,8 +20,8 @@ interface Filling {
 
 /**
  * The branch of a new change: from `pattern` (`git.branchPattern`) when there is one, else as
- * `flow` says. Its slug is the title's, as in the id but without the date; a spike's type is
- * `spike`, whatever `type` says.
+ * `flow` says. Its slug is the title's, as in the id but without the date, of `slugChars` at most
+ * (`SLUG_CHARS` without it); a spike's type is `spike`, whatever `type` says.
  */
 export function branchName(change: {
   readonly flow: GitFlow;
@@ -30,9 +30,10 @@ export function branchName(change: {
   readonly id: string;
   readonly title: string;
   readonly pattern?: string;
+  readonly slugChars?: number;
 }): string {
   const spike = change.kind === "spike";
-  const slug = slugify(change.title);
+  const slug = slugify(change.title, change.slugChars);
   if (change.pattern !== undefined) {
     return fill(change.pattern, { type: spike ? "spike" : change.type, slug, id: change.id });
   }

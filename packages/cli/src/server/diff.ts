@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { parseSpec } from "@baquia-dev/specty-core";
-import { MAX_OUTPUT } from "../io/exec";
+import { maxOutputOf } from "../io/exec";
 import type { Session } from "../session";
 import { SPECTY_DIR } from "../store/paths";
 import { changeRecords } from "./records";
@@ -60,7 +60,8 @@ export async function changeDiff(session: Session, id: string, task?: string): P
     `:(exclude)${SPECTY_DIR}`,
   ]);
   if (result.code !== 0) return { kind: "failed" };
-  // `execute` keeps the end of a longer output: the diff would start in the middle.
-  if (result.stdout.length >= MAX_OUTPUT) return { kind: "too-large", range: `${from}..${to}` };
+  // Git is read whole; past `internal.exec.maxOutputKiB`, the browser is not given it either.
+  if (result.stdout.length >= maxOutputOf(session.config))
+    return { kind: "too-large", range: `${from}..${to}` };
   return { kind: "diff", text: result.stdout };
 }

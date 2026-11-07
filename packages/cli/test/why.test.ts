@@ -4,7 +4,7 @@ import { chmod, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { CHANGE, CONFIG, cli, person, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import { CHANGE, CONFIG, cli, git, person, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
 
 /**
  * A git that gives `blame`'s error in Spanish, as a translated git does, and leaves the rest to
@@ -74,6 +74,30 @@ describe("specty why", () => {
     expect((await cli(root, ["why", "src/app.ts:3"])).out).toContain(
       "src/app.ts:3: la línea aún no está en ningún commit.",
     );
+  });
+
+  it("AC5: lists only the internal.commands.whyEntries most recent changes and commits of a file, and 10 without the key", async () => {
+    const root = await tempRepo({
+      "src/app.ts": "export const a = 0;\n",
+      ".specty/config.yaml": CONFIG(),
+    });
+    for (let step = 1; step <= 11; step++) {
+      await writeFiles(root, { "src/app.ts": `export const a = ${step};\n` });
+      git(root, "commit", "-q", "-am", `paso ${step}`);
+    }
+    /** The subjects of the entries `why` lists, newest first. */
+    const subjects = (out: string) => [...out.matchAll(/ · (paso \d+|init)$/gm)].map((m) => m[1]);
+    const today = await cli(root, ["why", "src/app.ts"]);
+    expect(today.code).toBe(0);
+    expect(subjects(today.out)).toEqual(
+      Array.from({ length: 10 }, (_, index) => `paso ${11 - index}`),
+    );
+    await writeFiles(root, {
+      ".specty/config.yaml": `${CONFIG()}internal:\n  commands:\n    whyEntries: 3\n`,
+    });
+    const cut = await cli(root, ["why", "src/app.ts"]);
+    expect(cut.code).toBe(0);
+    expect(subjects(cut.out)).toEqual(["paso 11", "paso 10", "paso 9"]);
   });
 
   it("refuses a path with no history, and a line that is not there (AC4)", async () => {

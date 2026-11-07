@@ -102,6 +102,41 @@ describe("specty review", () => {
     expect(refused.out).toContain("Este proyecto no tiene revisión independiente");
   });
 
+  it("AC2: keeps only the last internal.exec.maxOutputKiB of a longer answer, 512 without the key", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "specty-reviewer-"));
+    const script = join(dir, "reviewer.mjs");
+    // A first finding, some 80 KiB, past 64 KiB and short of 512, and a last one.
+    await writeFile(
+      script,
+      [
+        'import { readFileSync } from "node:fs";',
+        "readFileSync(0);",
+        'console.log("- Alta: lo primero que dice.");',
+        'for (let line = 0; line < 1000; line++) console.log("relleno ".repeat(10));',
+        'console.log("- Baja: lo último que dice.");',
+        "",
+      ].join("\n"),
+    );
+    const command = `node "${script}"`;
+    const kept = async (internal: string) => {
+      const root = await repo(command);
+      await writeFiles(root, {
+        ".specty/config.yaml": `${CONFIG()}review:\n  command: ${JSON.stringify(command)}\n${internal}`,
+        [SPEC_PATH]: SENSITIVE,
+      });
+      await cli(root, ["propose"]);
+      expect((await cli(root, ["review"])).code).toBe(0);
+      return read(root, `${DIR}/reviews/spec-r1.md`);
+    };
+    const whole = await kept("");
+    expect(whole).toContain("- Alta: lo primero que dice.");
+    expect(whole).toContain("- Baja: lo último que dice.");
+    const cut = await kept("internal:\n  exec:\n    maxOutputKiB: 64\n");
+    expect(cut).not.toContain("lo primero");
+    expect(cut).toContain("- Baja: lo último que dice.");
+    expect(cut.length).toBeLessThanOrEqual(64 * 1024 + 1);
+  });
+
   it("explains a review outside the review phase, or one that fails, and moves nothing", async () => {
     const root = await repo('node -e "process.exit(3)"');
     const early = await cli(root, ["review"]);
@@ -148,5 +183,47 @@ describe("specty review of the result", () => {
     });
     // Reviewed after the last task: the card asks for the acceptance again.
     expect((await cli(root, ["next"])).out).toContain("lo acepte con `specty accept`");
+  });
+});
+
+describe("the size that asks for a review", () => {
+  /**
+   * SPEC, small and plain, with a review command and `extra` in `config.yaml`: what `propose`
+   * says, and `next` in acceptance once its tasks are done without warnings.
+   */
+  async function plain(extra: string): Promise<{ proposed: string; accepting: string }> {
+    const { command } = await reviewer();
+    const root = await tempRepo({
+      "src/app.ts": "export const greet = () => 'hola';\n",
+      ".specty/config.yaml": `${CONFIG()}review:\n  command: ${JSON.stringify(command)}\n${extra}`,
+    });
+    expect((await cli(root, ["new", "Saludo personalizado"])).code).toBe(0);
+    await writeFiles(root, { [SPEC_PATH]: SPEC });
+    const proposed = (await cli(root, ["propose"])).out;
+    await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    await cli(root, ["next"]);
+    await writeFiles(root, { "src/app.ts": "export const greet = (name) => 'Hola, ' + name;\n" });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Uno"])).code).toBe(0);
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name = 'mundo') => 'Hola, ' + name;\n",
+    });
+    expect((await cli(root, ["task", "done", "T2", "--summary", "Dos"])).code).toBe(0);
+    return { proposed, accepting: (await cli(root, ["next"])).out };
+  }
+
+  it("AC4: without flow.reviewFrom, asks for no review of a small, plain spec nor of its result", async () => {
+    const { proposed, accepting } = await plain("");
+    expect(proposed).toContain("SPEC VÁLIDA · tamaño S");
+    expect(proposed).not.toContain("specty review");
+    expect(accepting).toContain(`SPECTY · ${CHANGE} · acceptance`);
+    expect(accepting).not.toContain("specty review");
+  });
+
+  it("AC5: with flow.reviewFrom S, asks for a review of a small, plain spec and of its result", async () => {
+    const { proposed, accepting } = await plain("flow:\n  reviewFrom: S\n");
+    expect(proposed).toContain("SPEC VÁLIDA · tamaño S");
+    expect(proposed).toContain("SIGUIENTE: antes de pedir la aprobación, ejecuta `specty review`");
+    expect(accepting).toContain(`SPECTY · ${CHANGE} · acceptance`);
+    expect(accepting).toContain("SIGUIENTE: antes de pedir la aceptación, ejecuta `specty review`");
   });
 });

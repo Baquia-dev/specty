@@ -40,6 +40,33 @@ describe("warningsOf", () => {
     expect(warnings[2]?.text.es).toBe("quitó 1 aserción de un test que ya existía");
   });
 
+  it("AC4: gives a rule of the person by its text, the same in both languages, and one with no text by a generic one", () => {
+    const warnings = warningsOf([
+      completed("T1", {
+        risks: [
+          {
+            path: "src/api.ts",
+            rule: "custom",
+            label: "deja un console.log",
+            cwe: "CWE-532",
+            line: 3,
+          },
+          { path: "src/api.ts", rule: "custom", line: 4 },
+          { path: "src/api.ts", rule: "custom", label: 7, line: 5 },
+        ],
+      }),
+    ]);
+    const generic = {
+      es: "coincide con una regla de riesgo del proyecto",
+      en: "matches a risk rule of the project",
+    };
+    expect(warnings.map(({ path, line, cwe, text }) => [path, line, cwe, text])).toEqual([
+      ["src/api.ts", 3, "CWE-532", { es: "deja un console.log", en: "deja un console.log" }],
+      ["src/api.ts", 4, undefined, generic],
+      ["src/api.ts", 5, undefined, generic],
+    ]);
+  });
+
   it("counts only each task's last completion (AC1)", () => {
     const first = completed("T1", { removedAssertions: [{ path: "test/a.test.ts", removed: 1 }] });
     expect(warningsOf([first, completed("T1", {})])).toEqual([]);

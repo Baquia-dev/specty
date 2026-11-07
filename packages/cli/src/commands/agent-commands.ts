@@ -98,9 +98,9 @@ function waitCommand(program: Command, run: Run): void {
   program
     .command("wait")
     .description("wait until the change is no longer waiting for the person")
-    // No default here: `wait` takes its own, an hour.
-    .option("--timeout <seconds>", "maximum seconds to wait (an hour by default)")
-    .option("--interval <ms>", "polling interval in milliseconds", "500")
+    // No defaults here: `wait` takes the configuration's (`internal.waits`).
+    .option("--timeout <seconds>", "maximum seconds to wait (55 min by default)")
+    .option("--interval <ms>", "polling interval in milliseconds (500 by default)")
     .action((options: WaitOptions) => run((session) => wait(session, options))());
 }
 

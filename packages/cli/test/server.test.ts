@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
-import { type IncomingHttpHeaders, request } from "node:http";
+import { createServer, type IncomingHttpHeaders, request, type Server } from "node:http";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -10,8 +10,10 @@ import { changeRecords } from "../src/server/records";
 import { openSession, type Session, type Terminal } from "../src/session";
 import {
   AGENT,
+  APP,
   ARCHIVE,
   CHANGE,
+  CONFIG,
   cli,
   DIST,
   folderOf,
@@ -19,6 +21,7 @@ import {
   NOW,
   person,
   read,
+  tempRepo,
   testEnv,
   toClosing,
   writeFiles,
@@ -373,5 +376,109 @@ describe("specty ui", () => {
     const session = await sessionAt(root, () => undefined, AGENT);
     await ui(session, { port: "0" }, Promise.resolve(), (url) => openedUrls.push(url));
     expect(openedUrls).toHaveLength(0);
+  });
+});
+
+/** A server that holds a free port of the machine, until it is closed. */
+async function holding(): Promise<{ readonly port: number; readonly server: Server }> {
+  const server = createServer();
+  await new Promise<void>((done) => server.listen(0, "127.0.0.1", () => done()));
+  const address = server.address();
+  if (typeof address !== "object" || address === null) throw new Error("no port");
+  return { port: address.port, server };
+}
+
+/** A free port of the machine, let go again. */
+async function freePort(): Promise<number> {
+  const { port, server } = await holding();
+  await new Promise((done) => server.close(done));
+  return port;
+}
+
+/** A repository whose configuration adds `more` to the tests' one. */
+async function configured(more: string): Promise<string> {
+  return tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}${more}` });
+}
+
+/** The port of the link `specty ui` printed, after serving until it is told to stop at once. */
+async function servedPort(root: string, options?: { readonly port?: string }): Promise<number> {
+  const printed: string[] = [];
+  await ui(await sessionAt(root, (text) => printed.push(text)), options, Promise.resolve());
+  return Number(/http:\/\/localhost:(\d+)\/\?token=/.exec(printed.join("\n"))?.[1]);
+}
+
+describe("the port of specty ui", () => {
+  it("AC2: is ui.port's without --port, and --port's with it", async () => {
+    const port = await freePort();
+    const root = await configured(`ui:\n  port: ${port}\n`);
+    expect(await servedPort(root)).toBe(port);
+    const other = await freePort();
+    expect(await servedPort(root, { port: String(other) })).toBe(other);
+  });
+
+  it("AC3: tries as many ports as internal.server.portsTried from the first, and says which it tried when none is free", async () => {
+    const taken = await holding();
+    try {
+      const one = await configured(
+        `ui:\n  port: ${taken.port}\ninternal:\n  server:\n    portsTried: 1\n`,
+      );
+      await expect(servedPort(one)).rejects.toThrow(
+        `no free port from ${taken.port} to ${taken.port}`,
+      );
+      // Without the key it tries 20: the next free one after the taken port.
+      const twenty = await configured(`ui:\n  port: ${taken.port}\n`);
+      const served = await servedPort(twenty);
+      expect(served).toBeGreaterThan(taken.port);
+      expect(served).toBeLessThanOrEqual(taken.port + 19);
+    } finally {
+      await new Promise((done) => taken.server.close(done));
+    }
+  });
+});
+
+describe("the internal keys of execution and of the server", () => {
+  /** What Specty does with a repository whose configuration adds `more`: its issues, or its `internal`. */
+  async function opening(more: string) {
+    const opened = await openSession({
+      cwd: await configured(more),
+      env: testEnv(),
+      now: () => NOW,
+      terminal: AGENT,
+      io: { out: () => undefined, err: () => undefined },
+      invocation: { command: `node "${DIST}"`, portable: false, script: DIST },
+    });
+    if (opened.kind === "invalid") return { issues: opened.issues.map((issue) => issue.path) };
+    if (opened.kind !== "ok") throw new Error(`no Specty session: ${opened.kind}`);
+    return { internal: opened.session.config.internal };
+  }
+
+  it("AC4: refuses a priority outside 0 to 19, ports outside 1 to 100 or an unknown key, by its key, and without them has 10 and 20", async () => {
+    for (const priority of ["-1", "20", "1.5", '"10"']) {
+      expect(await opening(`internal:\n  exec:\n    priority: ${priority}\n`), priority).toEqual({
+        issues: ["internal.exec.priority"],
+      });
+    }
+    for (const ports of ["0", "101", "2.5"]) {
+      expect(await opening(`internal:\n  server:\n    portsTried: ${ports}\n`), ports).toEqual({
+        issues: ["internal.server.portsTried"],
+      });
+    }
+    expect(await opening("internal:\n  exec:\n    nice: 5\n")).toEqual({
+      issues: ["internal.exec"],
+    });
+    expect(await opening("internal:\n  server:\n    port: 5\n")).toEqual({
+      issues: ["internal.server"],
+    });
+    const today = { exec: { priority: 10 }, server: { portsTried: 20 } };
+    expect(await opening("")).toMatchObject({ internal: today });
+    expect(await opening("internal:\n  exec: {}\n  server: {}\n")).toMatchObject({
+      internal: today,
+    });
+    expect(
+      await opening("internal:\n  exec:\n    priority: 0\n  server:\n    portsTried: 100\n"),
+    ).toMatchObject({ internal: { exec: { priority: 0 }, server: { portsTried: 100 } } });
+    expect(
+      await opening("internal:\n  exec:\n    priority: 19\n  server:\n    portsTried: 1\n"),
+    ).toMatchObject({ internal: { exec: { priority: 19 }, server: { portsTried: 1 } } });
   });
 });
