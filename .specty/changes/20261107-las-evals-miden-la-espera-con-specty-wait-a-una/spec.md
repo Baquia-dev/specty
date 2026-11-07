@@ -58,7 +58,7 @@ Las evals no miden la espera con `specty wait` a una persona real (P264, parte d
 
 ## Tareas
 
-- [ ] T1: El agente corre sin bloquear la suite
+- [x] T1: El agente corre sin bloquear la suite
   - files: evals/src/launch.ts, evals/run/compliance.eval.ts, evals/test/launch.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/launch.test.ts && pnpm lint

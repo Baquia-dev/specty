@@ -43,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "294f0244159de0e8595b591e165ae316a7846476",
+      "startedAt": "2026-11-07T01:52:06.642Z",
+      "doneAt": "2026-11-07T01:52:40.071Z",
+      "summary": "launch.ts lanza el agente con spawn (entrada cerrada, límite con señal) y da running() y finished; runOnce lo usa en lugar de spawnSync."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
