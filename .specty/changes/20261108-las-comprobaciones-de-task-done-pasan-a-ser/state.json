@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-las-comprobaciones-de-task-done-pasan-a-ser",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-las-comprobaciones-de-task-done-pasan-a-ser",
   "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
   "revision": 2,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9452c9f6dfcb2edac103e5f2a5d9f0b96c1d778c",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:17:41.856Z",
       "doneAt": "2026-11-07T16:18:28.199Z",
-      "summary": "checks.taskDone.skip en el catálogo (Verificaciones de calidad, tras checks.levels, lista con permissions y new), en la pieza checks tras checks.levels, y su nombre y descripción en español e inglés en cards/settings.ts."
+      "summary": "checks.taskDone.skip en el catálogo (Verificaciones de calidad, tras checks.levels, lista con permissions y new), en la pieza checks tras checks.levels, y su nombre y descripción en español e inglés en cards/settings.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "233649f1856d75ac4bacefd998ebc18a45138934",
+      "startedAt": "2026-11-07T16:18:28.929Z",
+      "doneAt": "2026-11-07T16:19:48.718Z",
+      "summary": "taskChecks suma checks.taskDone.skip a lo que task done deja fuera de specty check; formats.md §6 (ejemplo y párrafo: valor por defecto, garantizadas, que specty check y la CI las siguen ejecutando) y checks.md lo documentan."
     }
   },
   "pending": {

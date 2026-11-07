@@ -398,7 +398,7 @@ Avisa, sin hacer fallar nunca, de cada test que el diff borra y de cada archivo 
 
 ## Dónde se ejecuta
 
-- **`specty task done`** ejecuta `specty check --changed --spec` antes de la verificación de la tarea, y no la completa con fallos. Deja fuera `scope` y `max-lines`, que ya comprueba por tarea. Si la tarea tiene verificación, deja fuera también los cuatro comandos del proyecto, para que los tests no corran dos veces.
+- **`specty task done`** ejecuta `specty check --changed --spec` antes de la verificación de la tarea, y no la completa con fallos. Deja fuera `scope` y `max-lines`, que ya comprueba por tarea. Si la tarea tiene verificación, deja fuera también los cuatro comandos del proyecto, para que los tests no corran dos veces. `checks.taskDone.skip` nombra otras que deja fuera, como `vulnerabilities`, salvo las del plan aprobado y `tests-locked`, que ejecuta siempre; `specty check` y la CI las siguen ejecutando ([formats.md §6](formats.md#6-configyaml)).
 - **El pre-commit** ejecuta `specty check --staged` sobre los cambios manuales con `checks.preCommit: true`.
 - **La CI** ejecuta `specty check --all --json` con la plantilla de GitHub Actions, y `specty ci` (abajo) sobre los commits del pull request o del push.
 - **El fin de turno del agente** ejecuta `specty check --changed`, con `--spec` si hay un cambio aprobado. Si falla, el agente recibe el informe y sigue en vez de dar la tarea por terminada. Funciona en Claude Code, Cursor y Codex, que tienen un hook de fin de turno documentado. En los demás agentes, la regla escrita del bloque de AGENTS.md es el respaldo.

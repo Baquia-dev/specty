@@ -76,7 +76,7 @@ Hoy `task done` ejecuta `specty check --changed --spec` con una lista fija de lo
   - files: packages/core/src/settings/catalog.ts, packages/core/src/settings/pieces.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/task-done.test.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/task-done.test.ts test/settings/catalog.test.ts
-- [ ] T3: `task done` deja fuera lo que nombra la clave, y la documentación la explica
+- [x] T3: `task done` deja fuera lo que nombra la clave, y la documentación la explica
   - files: packages/cli/src/commands/check.ts, packages/cli/test/task-check.test.ts, docs/formats.md, docs/checks.md
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/task-check.test.ts && pnpm typecheck
