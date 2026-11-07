@@ -271,6 +271,8 @@ export const SETTINGS: readonly Setting[] = [
   { key: "verify.quick", section: "verify", kind: "command", command: true },
   { key: "verify.timeoutSec", section: "verify", kind: "number", unit: "s", basic: true },
   { key: "verify.slots", section: "verify", kind: "number" },
+  { key: "verify.processes.env", section: "verify", kind: "list" },
+  { key: "verify.processes.memoryMiB", section: "verify", kind: "number" },
   { key: "verify.units", section: "verify", kind: "list", command: true, fileOnly: true },
   { key: "git.branchPerChange", section: "git", kind: "toggle" },
   { key: "git.worktrees", section: "git", kind: "toggle", basic: true },

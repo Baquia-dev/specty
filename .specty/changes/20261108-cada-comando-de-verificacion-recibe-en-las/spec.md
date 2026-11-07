@@ -73,7 +73,7 @@ Hoy cada comando de una verificación arranca con el entorno de Specty tal cual,
   - files: packages/core/src/schema/verify.ts, packages/core/test/schema/processes.test.ts, packages/core/test/schema/units.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/processes.test.ts test/schema/units.test.ts && pnpm lint
-- [ ] T2: Los dos ajustes en la página «Configuración», con sus textos
+- [x] T2: Los dos ajustes en la página «Configuración», con sus textos
   - files: packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/processes.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/processes.test.ts test/settings/catalog.test.ts && pnpm lint

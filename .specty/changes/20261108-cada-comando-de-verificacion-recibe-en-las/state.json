@@ -52,12 +52,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c11e93d3c552d19bac6b1b7d167a35cf1d662e37",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:56:11.596Z",
       "doneAt": "2026-11-07T16:56:41.423Z",
-      "summary": "verify.processes en el schema: env (nombres de variable) y memoryMiB (entero ≥ 1), estricto, resuelto siempre con { env: [], memoryMiB: 512 }"
+      "summary": "verify.processes en el schema: env (nombres de variable) y memoryMiB (entero ≥ 1), estricto, resuelto siempre con { env: [], memoryMiB: 512 }",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e9676e8a3dd61750a277e4195d1d70af908222f6",
+      "startedAt": "2026-11-07T16:56:42.058Z",
+      "doneAt": "2026-11-07T16:57:19.599Z",
+      "summary": "verify.processes.env (lista) y verify.processes.memoryMiB (número) en Verificación tras verify.slots, con nombre y descripción en es/en"
     }
   },
   "pending": {
