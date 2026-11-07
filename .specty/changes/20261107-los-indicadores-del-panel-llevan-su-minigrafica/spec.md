@@ -61,7 +61,7 @@ Los seis indicadores del «Panel» de `specty ui` dan hoy su valor y su variaci�
 
 ## Tareas
 
-- [ ] T1: El core da cada indicador por día o por semana
+- [x] T1: El core da cada indicador por día o por semana
   - files: packages/core/src/stats/summary.ts, packages/core/test/stats/trend.test.ts, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/trend.test.ts test/stats/summary.test.ts test/stats/sections.test.ts test/stats/flow-quality.test.ts test/stats/cost-scope-memory.test.ts && pnpm lint

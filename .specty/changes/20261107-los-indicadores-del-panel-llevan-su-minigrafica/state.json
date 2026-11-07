@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9c30727b36965a10ccbf2e346fe55ce7dea70c46",
+      "startedAt": "2026-11-07T16:16:53.856Z",
+      "doneAt": "2026-11-07T16:17:36.441Z",
+      "summary": "StatsView gana trend: los seis indicadores en cada día o semana de «Ritmo», con countsOf por tramo (trendOf en stats/summary.ts); ARCHITECTURE.md lo documenta en GET /api/stats."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
