@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-evals-mantienen-viva-la-sesion-de-claude",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-las-evals-mantienen-viva-la-sesion-de-claude",
   "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
   "revision": 1,
@@ -59,14 +59,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "evals/src/launch.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "b11caf3268c40856d13a6f142178042cf788130d",
+      "attempts": 2,
       "startedAt": "2026-11-07T04:10:59.343Z",
       "doneAt": "2026-11-07T04:13:19.336Z",
-      "summary": "Claude Code tiene una conversación (entrada en stream-json, el prompt como mensaje del usuario, que termina con un result sin tareas en segundo plano) e invocation la elige cuando decide una persona; runOnce le pasa la sesión a launch, cuyos streams se tipan como posibles null"
+      "summary": "Claude Code tiene una conversación (entrada en stream-json, el prompt como mensaje del usuario, que termina con un result sin tareas en segundo plano) e invocation la elige cuando decide una persona; runOnce le pasa la sesión a launch, cuyos streams se tipan como posibles null",
+      "scopeExtra": [
+        "evals/src/launch.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5a5247eb8f8cce38f5139bece939ba22abc00397",
+      "startedAt": "2026-11-07T04:13:19.698Z",
+      "doneAt": "2026-11-07T04:23:56.651Z",
+      "summary": "ARCHITECTURE §16 cuenta la sesión viva de Claude Code en las ejecuciones con persona y la ejecución real de wait: cumplió en 122 s, 15 rondas, 0 bloqueos, 0,49 USD y 30.377 tokens de contexto"
     }
   },
   "pending": {

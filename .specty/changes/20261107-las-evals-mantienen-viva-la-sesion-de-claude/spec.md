@@ -65,7 +65,7 @@ El experimento `wait` no llega a medir la espera con `specty wait` (P272): en `c
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/conversation.test.ts test/report.test.ts test/consumption.test.ts test/question.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: feat
-- [ ] T3: La arquitectura cuenta la sesión viva y la ejecución real de wait
+- [x] T3: La arquitectura cuenta la sesión viva y la ejecución real de wait
   - files: docs/ARCHITECTURE.md
   - ac: AC4
   - verify: grep -q 'input-format stream-json' docs/ARCHITECTURE.md && pnpm lint
