@@ -13,8 +13,12 @@ export { CHANGE_SORTS, type ChangeSort, matchesQuery, sortChanges } from "./list
 export type { SessionView } from "./memory/sessions";
 export { localDay, sessionEntries } from "./memory/triggers";
 export {
+  type ConfigEdit,
   SETTING_SECTIONS,
   SETTINGS,
   type Setting,
+  type SettingChange,
   type SettingSection,
+  settingChanges,
+  settingOf,
 } from "./settings/catalog";

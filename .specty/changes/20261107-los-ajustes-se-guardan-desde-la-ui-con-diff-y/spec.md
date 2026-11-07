@@ -73,7 +73,7 @@ Hoy la página «Configuración» de `specty ui` solo muestra los ajustes: para 
 
 ## Tareas
 
-- [ ] T1: El catálogo dice cómo se edita cada ajuste y qué cambia entre dos configuraciones
+- [x] T1: El catálogo dice cómo se edita cada ajuste y qué cambia entre dos configuraciones
   - files: packages/core/src/settings/catalog.ts, packages/core/src/light.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts
