@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "id": "20261107-una-espera-cuyo-cambio-se-cierra-y-borra-su",
+  "kind": "quick",
+  "phase": "testing",
+  "branch": "specty/20261107-una-espera-cuyo-cambio-se-cierra-y-borra-su",
+  "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fa19cd95f7a9c4985424aafea3917b6cab5f220ca85b95d46217e135a01b2deb",
+    "at": "2026-11-07T05:10:25.875Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
