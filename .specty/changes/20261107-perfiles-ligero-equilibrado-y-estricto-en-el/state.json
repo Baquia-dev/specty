@@ -56,7 +56,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5e951ab00cdecf1f80fac3d72f1676f11d94caca",
+      "startedAt": "2026-11-07T10:56:06.022Z",
+      "doneAt": "2026-11-07T11:03:08.024Z",
+      "summary": "settings/presets.ts define PRESETS, PRESET_KEYS (9 claves), presetValue, presetOf y presetEdits; cards/settings-presets.ts da presetText con los valores de cada perfil; light.ts los exporta; dominio.md añade «Perfil»"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -73,7 +73,7 @@ En la vista Flujo, en Básico, la persona ve los perfiles Ligero, Equilibrado, E
 
 ## Tareas
 
-- [ ] T1: El core define los perfiles, cuál coincide, las ediciones de elegir uno y sus textos
+- [x] T1: El core define los perfiles, cuál coincide, las ediciones de elegir uno y sus textos
   - files: packages/core/src/settings/presets.ts, packages/core/src/cards/settings-presets.ts, packages/core/src/light.ts, packages/core/test/settings/presets.test.ts, docs/dominio.md
   - ac: AC1, AC2, AC5, AC6, AC7, AC9
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/presets.test.ts
