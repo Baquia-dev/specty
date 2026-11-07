@@ -96,7 +96,7 @@ Hoy la página «Configuración» de `specty ui` solo muestra los ajustes, aunqu
   - files: packages/ui/src/settings/save-dialog.ts, packages/ui/src/settings/settings-page.ts, packages/ui/src/settings/settings-save.test.ts, docs/ui.md
   - ac: AC4, AC5, AC6, AC7, AC9, AC11
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-save.test.ts && pnpm typecheck && pnpm lint && pnpm sources && pnpm knip
-- [ ] T5: El test del modelo de edición usa `sizing.highFanIn` como ajuste sin campo, porque main ya no tiene `effort`
+- [x] T5: El test del modelo de edición usa `sizing.highFanIn` como ajuste sin campo, porque main ya no tiene `effort`
   - files: packages/ui/src/settings/settings-edit.test.ts
   - ac: —
   - verify: pnpm typecheck && pnpm lint

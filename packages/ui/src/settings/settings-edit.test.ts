@@ -113,7 +113,7 @@ describe("the edit model of the settings page", () => {
     for (const key of [
       "team.approvers",
       "ui.requireUserPresence",
-      "effort",
+      "sizing.highFanIn",
       "guarantee.receipts",
       "specty delegate",
       "verify.units",
