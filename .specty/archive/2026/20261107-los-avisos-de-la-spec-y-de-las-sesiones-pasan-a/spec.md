@@ -98,3 +98,30 @@ Hoy el umbral del aviso de sesión nueva, el tiempo que Specty espera a ccusage,
 - R1: Un término propio muy común, como «datos», llena de avisos los criterios o bloquea las épicas cuyos cortes lo nombran. Mitigación: el aviso o el error nombra el término, quitarlo de la lista lo apaga y los de Specty no cambian.
 - R2: Un tiempo de ccusage corto deja el cierre sin consumo en la auditoría. Mitigación: es el mismo camino de hoy cuando ccusage no responde, el cierre no se detiene y quitar la clave lo devuelve a 60 s.
 - R3: C5, C6 y este corte añaden secciones y ajustes a la vez a `catalog.ts`, `cards/settings.ts`, `config.ts` y sus tests. Mitigación: cada corte tiene su módulo de schema, de textos y su bloque en el catálogo, los tests nuevos comprueban cada ajuste por su clave, y el conflicto al incorporar main se resuelve conservando lo de los dos.
+
+## Cierre
+
+### Resumen
+
+- Core: `schema/warnings.ts` define `usage.freshSessionTokens` (150000, un entero positivo), `usage.ccusage.timeoutSec` (60, entre 1 y 600), `usage.ccusage.version` (`20.0.45`, `x.y.z` con etiqueta opcional) y `warnings.vagueTerms` y `warnings.horizontalLayers` (listas de textos no vacíos, vacías por defecto), con `WARNINGS_SHAPE`, `DEFAULT_WARNINGS` y `resolveWarnings`; `config.ts` los reúne con spread y `ResolvedConfig` extiende `WarningsConfig`.
+- Validación: `quality.ts` busca los términos vagos y las capas de la persona además de los de Specty, como palabras enteras y sin acentos, mayúsculas ni signos, y el aviso o el error los nombra como los escribió la persona.
+- Catálogo: las secciones «Avisos» (detrás de «Verificaciones de calidad») y «Consumo y sesiones» (detrás de «Memoria»), con los cinco ajustes marcados «Nuevo» y sus textos en español y en inglés en `cards/settings-warnings.ts`.
+- CLI: el aviso de sesión nueva compara con `usage.freshSessionTokens`, cada informe de ccusage (cierre y sesiones de la UI) espera `usage.ccusage.timeoutSec` y el aviso de `doctor` da la versión de `usage.ccusage.version`; `init` sigue ofreciendo la de por defecto, ahora leída de `DEFAULT_CONFIG`.
+- Documentación: formats.md §6, ui.md y ARCHITECTURE §13 y §14.
+
+### Desviaciones
+
+- El test aprobado de C8 «AC6: opens «Interno» by itself while a search or a filter shows its settings» esperaba que el filtro «Nuevos» mostrara solo las cinco claves de `internal`. Con los cinco ajustes nuevos de este corte ya no coincidía, así que se pidió su desbloqueo (S1, con parche y evidencia) y la persona lo aprobó: ahora compara solo las claves `internal.*`, en el mismo orden, y sigue comprobando que «Interno» se abre solo.
+- Un término de la persona hecho solo de signos no encuentra nada, para que no avise en todos los criterios; lo dice formats.md §6.
+- El comentario de `ResolvedConfig` en `config.ts`, que estaba sobre `LineLimits`, pasó a su sitio.
+
+### Decisiones
+
+- Si el título de un corte nombra a la vez una capa de Specty y una de la persona, el error da la de Specty, como hasta ahora; si solo nombra de la persona, la primera de su lista.
+- Las reglas de riesgo propias se quedaron fuera para que el corte no saliera XL (A1): tocan el catálogo de riesgos, las tarjetas de aceptación y de lecciones, dos módulos de la CLI y uno de la UI.
+
+### Pendientes
+
+- Las reglas de riesgo propias (`warnings.risks`), que se suman a las de Specty en la aceptación, quedan para un corte nuevo de la épica 20261107-flujo-configurable-en-la-ui; el módulo `schema/warnings.ts` y la sección «Avisos» ya están para recibirlas.
+- `packages/core/src/cards/settings.ts` tiene 389 líneas de código: llevar los textos de «Interno» a un módulo propio, como `cards/settings-warnings.ts` (P273).
+- AC8 se comprueba a mano: formats.md §6, ARCHITECTURE §13 y §14 y ui.md.
