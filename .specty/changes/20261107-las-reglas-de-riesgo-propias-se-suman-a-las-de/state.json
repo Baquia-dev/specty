@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261107-las-reglas-de-riesgo-propias-se-suman-a-las-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-las-reglas-de-riesgo-propias-se-suman-a-las-de",
+  "baseCommit": "a491c1c0346190390d4f4344e1b40cf32aa3d417",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cb7e0a1b193a480cb84e3816d9f505eea9b05313ff8f7f48d7f4f3616491c938",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f9ac37ff77e042c6a5266bb7e0ebb2686a73643de43967bb25ab168474681687",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:7f18c5863f08d6fecbb3e21e305ae451638216d79d1c1841a6db37aca6d802b8",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:be8919dd4a12bdaa9c2a3ec55af2deeecdf49b9081db0145de0d2dc0ae0fea28",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f398f4c14182ec2ebc0c44eb801f35024fb7579c9b796eec9b53eb6159119251",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:703b6a857140808995e87552590e7f6fa9f93886f09c976d88f0234ddbbd271b",
+    "at": "2026-11-07T09:22:29.395Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
