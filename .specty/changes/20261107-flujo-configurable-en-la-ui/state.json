@@ -5,11 +5,11 @@
   "phase": "implementing",
   "branch": "specty/20261107-flujo-configurable-en-la-ui",
   "baseCommit": "101bef5b635c071e131ed1d20def1e680b80c254",
-  "revision": 7,
+  "revision": 8,
   "approved": {
-    "revision": 7,
-    "hash": "sha256:e9f411af46e8115e0c66415a2031ae09a4246d8ddc070684d5484656285d1431",
-    "at": "2026-11-07T05:50:16.496Z",
+    "revision": 8,
+    "hash": "sha256:8ace4da1eada49f2fa84b4b2f5b55bd8bfb89e0b7e7e441d0e2738450de307c5",
+    "at": "2026-11-07T10:51:14.841Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
@@ -47,7 +47,7 @@
       "decision": "confirmed"
     },
     "A7": {
-      "hash": "sha256:55a5d68eabb2972704bbcd1fe28330dac7245435c47b4ae99264f3c43aae69e7",
+      "hash": "sha256:4e38f0b5de2c5b0b9acf5d2adbee452c7b9eb0d9351ff3696cbb03f6cce96437",
       "decision": "implicit"
     },
     "A8": {
@@ -83,7 +83,7 @@
   "maxIds": {
     "A": 13,
     "AC": 26,
-    "C": 19,
+    "C": 22,
     "R": 5
   }
 }
