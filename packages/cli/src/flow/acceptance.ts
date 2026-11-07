@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import type { ChangeView, Spec, TaskView } from "@baquia-dev/specty-core";
+import { type ChangeView, SIZE_LEVELS, type Spec, type TaskView } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { type Audit, dataOf } from "./carried";
@@ -34,8 +34,9 @@ export async function acceptanceFacts(
 }
 
 /**
- * An independent review of the result (ADR 0011) comes before the acceptance of a large change,
- * or of one whose tasks removed assertions or added risks, until one follows its last task.
+ * An independent review of the result (ADR 0011) comes before the acceptance of a change from the
+ * size `flow.reviewFrom` (L by default), or of one whose tasks removed assertions or added risks,
+ * until one follows its last task.
  */
 function resultReview(
   session: Session,
@@ -45,10 +46,13 @@ function resultReview(
 ): boolean {
   if (session.config.review === undefined) return false;
   const level = change.state.size?.level;
+  const large =
+    level !== undefined &&
+    SIZE_LEVELS.indexOf(level) >= SIZE_LEVELS.indexOf(session.config.flow.reviewFrom);
   const warned = tasks.some(
     (task) => (task.risks?.length ?? 0) > 0 || (task.removedAssertions?.length ?? 0) > 0,
   );
-  if (level !== "L" && level !== "XL" && !warned) return false;
+  if (!large && !warned) return false;
   const lastTask = audit.findLastIndex((entry) => entry.event === "task.completed");
   const lastReview = audit.findLastIndex(
     (entry) => entry.event === "review.completed" && dataOf(entry).target === "diff",

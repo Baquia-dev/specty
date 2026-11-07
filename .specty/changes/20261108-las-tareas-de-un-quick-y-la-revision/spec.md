@@ -80,7 +80,7 @@ Hoy un cambio `quick` admite una sola tarea y la revisión independiente se reco
   - files: packages/core/src/validate/limits.ts, packages/core/src/validate/structure.ts, packages/core/test/validate/structure.test.ts, packages/core/test/spec/messages.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/structure.test.ts test/spec/messages.test.ts
-- [ ] T3: `propose` y la aceptación recomiendan la revisión desde `flow.reviewFrom`, y la documentación lo dice
+- [x] T3: `propose` y la aceptación recomiendan la revisión desde `flow.reviewFrom`, y la documentación lo dice
   - files: packages/cli/src/commands/propose.ts, packages/cli/src/flow/acceptance.ts, packages/cli/test/review.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC4, AC5, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/review.test.ts && pnpm typecheck

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-las-tareas-de-un-quick-y-la-revision",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-las-tareas-de-un-quick-y-la-revision",
   "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "333e7050d68ebc48f13cedc70527b0e42f325daa",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:28:24.985Z",
       "doneAt": "2026-11-07T16:35:17.909Z",
-      "summary": "checkQuickLane admite las tareas de lanes.quick.maxTasks y el aviso quick-limits dice el máximo («quick admite una» con 1, el número con más)"
+      "summary": "checkQuickLane admite las tareas de lanes.quick.maxTasks y el aviso quick-limits dice el máximo («quick admite una» con 1, el número con más)",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a6b64d626f683e829dd02b4aac54cb2329eef7a6",
+      "startedAt": "2026-11-07T16:35:18.335Z",
+      "doneAt": "2026-11-07T16:44:48.561Z",
+      "summary": "propose y la aceptación recomiendan la revisión independiente desde flow.reviewFrom (L por defecto) en SIZE_LEVELS, con las demás razones igual; formats.md §2 y §6 documentan lanes.quick.maxTasks y flow.reviewFrom, y ARCHITECTURE.md lo dice"
     }
   },
   "pending": {
