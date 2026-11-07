@@ -81,7 +81,7 @@ En la vista Flujo, en Básico, la persona ve los perfiles Ligero, Equilibrado, E
   - files: packages/core/src/cards/settings-presets.ts, packages/core/src/cards/settings-pieces.ts, packages/core/test/settings/pieces.test.ts
   - ac: AC4, AC9
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/pieces.test.ts test/settings/presets.test.ts && pnpm --filter @baquia-dev/specty-core typecheck
-- [ ] T3: La vista Flujo en Básico muestra los perfiles, marca el elegido y elegir uno cambia la línea y sus frases
+- [x] T3: La vista Flujo en Básico muestra los perfiles, marca el elegido y elegir uno cambia la línea y sus frases
   - files: packages/ui/src/settings/settings-presets.ts, packages/ui/src/settings/settings-presets.test.ts, packages/ui/src/settings/settings-flow.ts, packages/ui/src/settings/settings-flow.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC8, AC9
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-presets.test.ts --include src/settings/settings-flow.test.ts && pnpm typecheck && pnpm lint && pnpm sources && pnpm knip

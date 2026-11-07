@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-perfiles-ligero-equilibrado-y-estricto-en-el",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-perfiles-ligero-equilibrado-y-estricto-en-el",
   "baseCommit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
   "revision": 2,
@@ -68,12 +68,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "998d9a05f33e1ee7cb01fba7c1c16933d1c39683",
+      "attempts": 1,
       "startedAt": "2026-11-07T11:03:08.498Z",
       "doneAt": "2026-11-07T11:10:48.605Z",
-      "summary": "cards/settings-presets.ts añade limitSentences (líneas por archivo, funciones y cobertura del diff, con fail false y con error); flowSentences las añade al final"
+      "summary": "cards/settings-presets.ts añade limitSentences (líneas por archivo, funciones y cobertura del diff, con fail false y con error); flowSentences las añade al final",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "02dcfba6d0384f4425290060d6892da39dc92451",
+      "startedAt": "2026-11-07T11:10:49.063Z",
+      "doneAt": "2026-11-07T11:17:37.557Z",
+      "summary": "settings-presets.ts (sp-settings-presets): tarjetas de Ligero, Equilibrado, Estricto y Propio con «Por defecto» y «Elegido», botones con aria-pressed que emiten presetEdits; sp-settings-flow las pone encima de la línea en Básico; docs/ui.md describe los perfiles y las frases de los límites"
     }
   },
   "pending": {
