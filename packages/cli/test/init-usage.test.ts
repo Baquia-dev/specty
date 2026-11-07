@@ -141,6 +141,18 @@ describe("doctor's warning about ccusage", () => {
     );
   });
 
+  it("AC3: gives the command that installs the version of usage.ccusage.version", async () => {
+    const env = { PATH: pathWithoutCcusage() };
+    const root = await tempRepo(NODE);
+    await cli(root, INIT, { env });
+    const config = join(root, ".specty", "config.yaml");
+    const written = await readFile(config, "utf8");
+    await writeFile(config, `${written}usage:\n  ccusage:\n    version: 21.1.0\n`);
+    const warned = await cli(root, ["doctor"], { env });
+    expect(warned.out).toContain(`${WARNING} \`pnpm add -D ccusage@21.1.0\`.`);
+    expect(warned.out).not.toContain("ccusage@20.0.45");
+  });
+
   it("says nothing when ccusage is on the PATH", async () => {
     const bin = await mkdtemp(join(tmpdir(), "ccusage-bin-"));
     await writeFile(join(bin, "ccusage"), "#!/bin/sh\n");

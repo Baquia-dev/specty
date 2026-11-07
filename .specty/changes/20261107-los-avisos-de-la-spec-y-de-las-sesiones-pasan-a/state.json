@@ -6,6 +6,13 @@
   "branch": "specty/20261107-los-avisos-de-la-spec-y-de-las-sesiones-pasan-a",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:67dc4b31a8d0b3461b9d6b92544dc93b633be58e7c77256c1df669c58524988c",
+    "at": "2026-11-07T04:10:04.899Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -56,12 +63,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:67dc4b31a8d0b3461b9d6b92544dc93b633be58e7c77256c1df669c58524988c",
-    "at": "2026-11-07T04:10:04.899Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T04:24:51.864Z"
 }

@@ -8,6 +8,7 @@ import {
   ARCHIVE,
   BUTTON_TEST,
   CHANGE,
+  CONFIG,
   cli,
   folderOf,
   NOW,
@@ -84,6 +85,9 @@ const REPLIES = {
 /** A ccusage that answers each of `replies`' arguments, and fails on any other. */
 const answering = (replies: unknown) =>
   `#!/usr/bin/env node\nconst replies = ${JSON.stringify(replies)};\nconst reply = replies[process.argv.slice(2).join(" ")];\nif (reply === undefined) process.exit(2);\nprocess.stdout.write(JSON.stringify(reply));\n`;
+/** A ccusage that answers as `answering` does, but `seconds` late. */
+const late = (replies: unknown, seconds: number) =>
+  `#!/usr/bin/env node\nconst replies = ${JSON.stringify(replies)};\nconst reply = replies[process.argv.slice(2).join(" ")];\nif (reply === undefined) process.exit(2);\nsetTimeout(() => process.stdout.write(JSON.stringify(reply)), ${seconds * 1000});\n`;
 const LINE = "Consumo del cambio, según ccusage: 223,8 mil tokens en 2 llamadas, 0,08 USD.";
 
 /** `program` as the ccusage of the change's folder, in its `node_modules/.bin`. */
@@ -101,8 +105,13 @@ async function claudeCode(): Promise<Record<string, string>> {
 }
 
 /** A repository whose `node_modules` git ignores, as a project with ccusage installed does. */
-const repo = () =>
-  tempRepo({ ...APP, "src/button.ts": "Sing in\n", ".gitignore": "node_modules\n" });
+const repo = (config = CONFIG()) =>
+  tempRepo({
+    ...APP,
+    ".specty/config.yaml": config,
+    "src/button.ts": "Sing in\n",
+    ".gitignore": "node_modules\n",
+  });
 
 /** A quick change made by `env`'s agent in its own worktree, waiting for acceptance. */
 async function quick(root: string, env: Record<string, string>) {
@@ -205,5 +214,28 @@ describe("the consumption of a change", () => {
     expect(accepted.out).toContain("Cambio aceptado, cerrado y archivado");
     expect(accepted.out).not.toContain("Consumo del cambio");
     expect((await archivedAudit(root, id)).map((line) => line.event)).not.toContain("change.usage");
+  });
+});
+
+describe("how long Specty waits for ccusage", () => {
+  it("AC2: with usage.ccusage.timeoutSec, stops waiting for a late ccusage and closes as when it does not answer", async () => {
+    const root = await repo(`${CONFIG()}usage:\n  ccusage:\n    timeoutSec: 1\n`);
+    const { id, folder } = await quick(root, await claudeCode());
+    await ccusage(folder, late(REPLIES, 4));
+    const accepted = await cli(folder, ["accept"], { terminal: person() });
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toContain("Cambio aceptado, cerrado y archivado");
+    expect(accepted.out).not.toContain("Consumo del cambio");
+    expect((await archivedAudit(root, id)).map((line) => line.event)).not.toContain("change.usage");
+  });
+
+  it("AC2: without the key, waits for a ccusage that answers a few seconds late", async () => {
+    const root = await repo();
+    const { id, folder } = await quick(root, await claudeCode());
+    await ccusage(folder, late(REPLIES, 2));
+    const accepted = await cli(folder, ["accept"], { terminal: person() });
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toContain(LINE);
+    expect((await archivedAudit(root, id)).map((line) => line.event)).toContain("change.usage");
   });
 });
