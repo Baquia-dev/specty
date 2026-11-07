@@ -22,3 +22,9 @@ Hoy el CSV del panel (`GET /api/stats/export`, el que descarga «Exportar» del 
   - files: packages/core/src/stats/export.ts, packages/core/test/stats/export.test.ts, packages/cli/test/server/stats-export.test.ts, docs/ARCHITECTURE.md, docs/ui.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/export.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/server/stats-export.test.ts && pnpm typecheck
   - type: fix
+
+## Cierre
+
+### Resumen
+
+El CSV en español separa con punto y coma y escribe ciclo y coste con coma decimal; el inglés y el JSON no cambian. El test del servidor se actualizó tras el rojo, como preveía la spec (el && del verify no lo ejecutaba, P190).

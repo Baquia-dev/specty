@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-csv-del-panel-usa-punto-y-coma-en-espanol",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-el-csv-del-panel-usa-punto-y-coma-en-espanol",
   "baseCommit": "bbc77876ac9692c275f8142a0c75b30b956c6ded",
   "revision": 2,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6b8f5e1f587d158c227b8655f00c1830916b5517",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:06:34.589Z",
       "doneAt": "2026-11-07T16:07:37.785Z",
-      "summary": "El CSV en español separa con punto y coma y escribe ciclo y coste con coma decimal; el inglés y el JSON no cambian. El test del servidor se actualizó tras el rojo, como preveía la spec (el && del verify no lo ejecutaba, P190)."
+      "summary": "El CSV en español separa con punto y coma y escribe ciclo y coste con coma decimal; el inglés y el JSON no cambian. El test del servidor se actualizó tras el rojo, como preveía la spec (el && del verify no lo ejecutaba, P190).",
+      "scopeExtra": []
     }
   },
   "pending": {
