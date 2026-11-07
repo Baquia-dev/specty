@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-las-tareas-de-un-quick-y-la-revision",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-las-tareas-de-un-quick-y-la-revision",
   "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:29188d88d9a3b9c1db5a8f6c33b5fa04f9c1be2d542fd669aaff2ba7ae08ecf9",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a6b64d626f683e829dd02b4aac54cb2329eef7a6",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:35:18.335Z",
       "doneAt": "2026-11-07T16:44:48.561Z",
-      "summary": "propose y la aceptación recomiendan la revisión independiente desde flow.reviewFrom (L por defecto) en SIZE_LEVELS, con las demás razones igual; formats.md §2 y §6 documentan lanes.quick.maxTasks y flow.reviewFrom, y ARCHITECTURE.md lo dice"
+      "summary": "propose y la aceptación recomiendan la revisión independiente desde flow.reviewFrom (L por defecto) en SIZE_LEVELS, con las demás razones igual; formats.md §2 y §6 documentan lanes.quick.maxTasks y flow.reviewFrom, y ARCHITECTURE.md lo dice",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,6 +83,7 @@
     "T": 3,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-07T16:45:44.698Z",
   "lockedTests": {
     "packages/cli/test/review.test.ts": "sha256:41979bc2aef4817837901f7df955729abf5b5c92bd4c55d5103728c2bf5c10e4",
     "packages/core/test/settings/catalog.test.ts": "sha256:52184f058e658410965dc49f17c2d05b36257de3024a5e4436c20ee9fd6c74e4",

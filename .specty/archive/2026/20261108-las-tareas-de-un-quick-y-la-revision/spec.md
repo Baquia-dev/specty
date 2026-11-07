@@ -90,3 +90,23 @@ Hoy un cambio `quick` admite una sola tarea y la revisión independiente se reco
 - R1: Bajar `flow.reviewFrom` a S o M recomienda revisiones en casi todos los cambios, y cada una cuesta tokens. Mitigación: lo decide la persona en su `config.yaml`, el valor por defecto es el de hoy y la revisión sigue recomendándose una sola vez por spec y por resultado.
 - R2: Subir `lanes.quick.maxTasks` deja pasar por el carril rápido cambios con más trabajo, que se cierran al aceptarlos y sin retro. Mitigación: los archivos de código y las rutas sensibles siguen limitados, y la persona sigue aprobando la spec y aceptando el resultado.
 - R3: C22 también toca `schema/flow.ts`, el catálogo, sus textos, sus tests y `docs/formats.md` §6. Mitigación: cada clave va en su línea, y al incorporar main se conservan las dos partes.
+
+## Cierre
+
+### Resumen
+
+Dos parámetros fijos pasan a ser ajustes de `.specty/config.yaml`. `lanes.quick.maxTasks` (1 por defecto) son las tareas que admite la primera spec de un `quick`, y el aviso `quick-limits` dice el máximo. `flow.reviewFrom` (`L` por defecto) es el tamaño desde el que `propose` y la aceptación recomiendan la revisión independiente. Las dos claves viven en `schema/flow.ts`, que recibe también el bloque `lanes` de `config.ts`, y la página «Configuración» las muestra con la marca «Nuevo» y sus textos en español y en inglés. Sin las claves, todo sigue como hoy.
+
+### Desviaciones
+
+- `formats.md` §2 también cambia: la regla del carril rápido nombra `lanes.quick.maxTasks` en lugar de «la tarea única». En `ARCHITECTURE.md` cambian además la tabla de carriles y la fila de `propose`, que decían una tarea y «L, XL o sensible».
+
+### Decisiones
+
+- El umbral de la revisión va en `flow.reviewFrom` y no en `review.minSize`. `review` exige `command`, así que quitar la pieza «Revisión independiente» habría dejado un `review` inválido, y sumarla a la pieza obligaba a tocar los tests de la UI.
+- `config.ts` baja 6 líneas de código al ceder `lanes` a `schema/flow.ts`. El catálogo lleva su propia lista de niveles, porque `sizing/size.ts` carga picomatch y no cabe en la entrada ligera.
+
+### Pendientes
+
+- `settings/catalog.ts` (308 líneas de código) y `cards/settings.ts` (304) pasan del aviso de 300. Se pueden dividir por sección, como ya hacen `settings-size.ts`, `settings-warnings.ts` y `settings-internal.ts`: por ejemplo, Flujo, Verificación, Git y Revisión en un `settings-flow.ts`.
+- La guía para redactar un `quick` sigue diciendo «una sola tarea», y la pieza «Revisión independiente» y las frases del modo básico de la vista Flujo no nombran `flow.reviewFrom` ni `lanes.quick.maxTasks`.
