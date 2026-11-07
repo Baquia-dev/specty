@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-la-pieza-fase-de-cierre-se-equipa-y-se-quita-en",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-la-pieza-fase-de-cierre-se-equipa-y-se-quita-en",
   "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
   "revision": 2,
@@ -48,6 +48,12 @@
     "T": 5,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T16:16:44.946Z"
+  "lockedTests": {
+    "packages/cli/test/server/records.test.ts": "sha256:20309bd1101d4effb27e1bf7ad7bb0e32ed38388997d99f3066ba6b602c6a070",
+    "packages/core/test/settings/pieces.test.ts": "sha256:c3a14e9fc99d56089e1c413e39fff88a1e5b8edf9777f139391a97947f008e8b",
+    "packages/ui/src/acceptance/acceptance-actions.test.ts": "sha256:e8f8eadecb8b42f3e05a769d90a148ccffebc64311e64b37de1bf684a58448df",
+    "packages/ui/src/data/views.test.ts": "sha256:a48377b2868d4db24bc6b285e38bd884c424c6c3407a43b30559de6eb7ea5c99",
+    "packages/ui/src/settings/flow-piece.test.ts": "sha256:ef945ed161080621860c9c1f45aa91868f0f9938f949ca946d4f5e727e593546",
+    "packages/ui/src/settings/settings-flow.test.ts": "sha256:1e5a3df4ead189b6ae355507d71d229c39ed5c488cc8236c5c4799d33a8c4372"
+  }
 }
