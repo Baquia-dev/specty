@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-la-vista-flujo-muestra-las-fases-con-sus-piezas",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-la-vista-flujo-muestra-las-fases-con-sus-piezas",
   "baseCommit": "723f6f6c21ab4821589f3fc140d25950b2c1f5a7",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:ff1016b9bfe940eda74e80a032b7a4df581ff2e82dfd161c18802d100261e2b1",
@@ -93,12 +93,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4d6dab0f5a5fcbe7413777fcaca331d6ebed8ba4",
+      "attempts": 1,
       "startedAt": "2026-11-07T10:01:10.201Z",
       "doneAt": "2026-11-07T10:07:44.023Z",
-      "summary": "En Avanzado, sp-settings-flow muestra la fase elegida con sus piezas equipadas (sp-flow-piece con sus ajustes, Quitar, garantías con candado y porqué, modo delegado con su control) y las que se pueden equipar; docs/ui.md."
+      "summary": "En Avanzado, sp-settings-flow muestra la fase elegida con sus piezas equipadas (sp-flow-piece con sus ajustes, Quitar, garantías con candado y porqué, modo delegado con su control) y las que se pueden equipar; docs/ui.md.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -111,6 +111,7 @@
     "T": 4,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-07T10:08:35.592Z",
   "lockedTests": {
     "packages/core/test/settings/pieces.test.ts": "sha256:6fbd363df29bdf6033fa23cca118d443737037378bc65a47885084493b08231a",
     "packages/ui/src/settings/flow-piece.test.ts": "sha256:6f74a2a0014974fca11ce27d2ef7d256c0fa05da5a163daec3d8701a756067f7",

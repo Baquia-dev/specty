@@ -100,3 +100,28 @@ La página «Configuración» gana la vista Flujo de la propuesta B: las fases d
 - R1: `settings-page.ts` ya pasa de 440 líneas. Mitigación: la vista Flujo, sus piezas y los selectores van en sus propios archivos, y la página solo gana los selectores, el filtro de Básico y el paso de datos a la vista Flujo.
 - R2: C13 a C16 y C18 cambian el catálogo y sus tests en paralelo. Mitigación: la marca `basic` solo toca líneas de ajustes de flujo, verificación, git y revisión, y su test va en `pieces.test.ts`, no en `catalog.test.ts`; al incorporar main se conservan las dos partes.
 - R3: Una pieza sin clave hasta C5, como la fase de cierre, no se puede quitar todavía. Mitigación: se ve con «Próximamente» y sin control, y C5 la conecta (R5 de la épica).
+
+## Cierre
+
+### Resumen
+
+La página «Configuración» tiene ahora dos vistas, General y Flujo, cada una en Básico o en Avanzado, y el navegador las recuerda. La vista Flujo dibuja las fases en línea con sus piezas, las cuatro garantías con candado y su porqué, y la fase de cierre como «Próximamente». En Básico, unas frases del core dicen qué hace el flujo; en Avanzado, la fase elegida muestra sus piezas con sus ajustes, «Quitar» y «Equipar», y el modo delegado con el control del menú de preferencias. General en Básico muestra solo los 12 ajustes básicos. Las piezas, sus textos y las frases viven en el core (`settings/pieces.ts`, `cards/settings-pieces.ts`).
+
+### Desviaciones
+
+- T2 creó `settings-flow.ts` vacío (ampliación con `specty scope add`), porque su test aprobado comprueba que la vista Flujo aparece al elegirla; T3 lo completó, y T3 no tuvo que tocar `settings-page.ts`.
+- T4 cambió en las frases `@else {{{ part.text }}}` por un `<span>`: el aviso CWE-79 de T3 era un falso positivo (una interpolación escapada de Angular dentro de un bloque), pero así no vuelve a salir.
+- `cards/settings-pieces.ts` da las frases desde datos (`Sentence`), para quedar por debajo del aviso de 300 líneas de código.
+
+### Decisiones
+
+- La primera vez la página abre en General y en Avanzado, como antes de este cambio (AC1 de la épica), y los tests de C1 y C10 siguen igual.
+- La política de tests es una pieza de Implementación, y la fase Tests solo lleva la garantía del contrato. La verificación de la tarea y la completa están siempre equipadas: `propose` exige una verificación a cada tarea, y quitar `verify.full` dejaría `verify.units`. El modo delegado va en Revisión, la primera decisión que delega.
+- En Básico la línea muestra las mismas piezas que en Avanzado, sin controles, y el porqué de una garantía va en el título de su ranura.
+- El test de la marca `basic` va en `pieces.test.ts`, no en `catalog.test.ts`, para no chocar con C13 a C16 y C18 (R2).
+- `docs/dominio.md` amplía «Garantía» a las piezas con candado y añade «Pieza».
+
+### Pendientes
+
+- `settings-page.ts` tiene 407 líneas de código (aviso desde 300, P292): conviene sacar la vista General (barra, secciones e «Interno») a su propio componente, como la vista Flujo.
+- C4 (perfiles) y C5 (`flow.closing`, que conecta la pieza «Fase de cierre») siguen pendientes en la épica.
