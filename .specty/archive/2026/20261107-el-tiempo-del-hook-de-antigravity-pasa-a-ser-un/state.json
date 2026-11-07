@@ -1,0 +1,172 @@
+{
+  "schema": 1,
+  "id": "20261107-el-tiempo-del-hook-de-antigravity-pasa-a-ser-un",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-el-tiempo-del-hook-de-antigravity-pasa-a-ser-un",
+  "baseCommit": "122b0f87b0dd21aa992fe015859351574e4588ec",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:1915ed41884d7f9c2df084391b828ad981b3d308d6b737790710322d83e6a0be",
+    "at": "2026-11-07T05:30:31.125Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4e7261d15ed988c542f0191b613689005913031d221c6fb8d607f4ec483b3761",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:52d160f94df4bf433f6cc69c37306afb7f9a45ab35c9932f6f77ebc4cc6aa1a5",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:85407e5a8a6688b4fdf3d30e69166666ab384252d8fb5299b77ea4c5d39b60e7",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:2fec5956cdf403ab6db91f8d6ffa7d78ca0b526569be216d4ded914ee8971024",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "8b30aefcf51d4b0723d65d08a10294673a64da11",
+      "attempts": 1,
+      "startedAt": "2026-11-07T05:49:37.539Z",
+      "doneAt": "2026-11-07T05:57:24.546Z",
+      "summary": "internal.hooks.antigravityTimeoutSec (30 por defecto, entero entre 10 y 300) en un bloque hooks de schema/internal-run.ts; su ajuste en «Interno» tras los puertos, con unidad s y la marca Nuevo, y su nombre y descripción en español y en inglés",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "1d5f602f36f572e73c0d4b16c80cf5b89dce3ba7",
+      "attempts": 1,
+      "startedAt": "2026-11-07T05:57:25.369Z",
+      "doneAt": "2026-11-07T06:04:22.854Z",
+      "summary": "La línea antigravity-timeout de doctor (archivo y segundos) con su texto en español y en inglés, junto a antigravity-acp y antigravity-cli; formats.md §6 documenta internal.hooks.antigravityTimeoutSec, sus límites, que rige al ejecutar init y el aviso de doctor",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "549b661d2b757dff4effb2a45f2fa7fa388e2aaa",
+      "attempts": 1,
+      "startedAt": "2026-11-07T06:04:23.463Z",
+      "doneAt": "2026-11-07T08:23:45.477Z",
+      "summary": "La instalación de cada agente recibe la configuración resuelta (init le da la que había o la de por defecto), y Antigravity escribe internal.hooks.antigravityTimeoutSec en los tres hooks del guard; al reejecutar init los reescribe y conserva Stop y los de la persona",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "9b3a4fec8abd3e05a7ade9f03099d1cf330a651a",
+      "attempts": 1,
+      "startedAt": "2026-11-07T08:23:45.797Z",
+      "doneAt": "2026-11-07T08:29:10.056Z",
+      "summary": "doctor recibe la configuración de la sesión, y el de Antigravity da antigravity-timeout si algún hook del guard no tiene el tiempo de internal.hooks.antigravityTimeoutSec; ARCHITECTURE lo dice en la fila de Antigravity",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-07T08:29:46.452Z",
+  "lockedTests": {
+    "packages/core/test/settings/catalog.test.ts": "sha256:5f909615010743b8fc1fe79d7c951416a6610f66812267c5c0972ef50820008d",
+    "packages/cli/test/antigravity-timeout.test.ts": "sha256:ab940d62abc003e5c0f20040e81cb5a4b1718363b6ed05e573c74d6020059237",
+    "packages/core/test/cards/doctor-antigravity-timeout.test.ts": "sha256:ab29d624e36d3595a9291833b0b7ff93067ce08505067efb36843b718dce3442",
+    "packages/core/test/settings/internal-hooks.test.ts": "sha256:327f6631ef1bfcb3304a7a4ad6e8658f4c9f67428da5690feea36c03c9fab890"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "8eeee6ad95b5f08a27940976d72cc0c13a1e460c",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/core/test/settings/catalog.test.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/agents/adapter.ts",
+      "packages/cli/src/agents/antigravity.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/flow/full-verification.test.ts",
+      "packages/cli/src/flow/full-verification.ts",
+      "packages/cli/src/flow/usage.ts",
+      "packages/cli/src/install/hooks.ts",
+      "packages/cli/src/install/install.ts",
+      "packages/cli/src/install/usage.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/store/verify-slots.test.ts",
+      "packages/cli/src/store/verify-slots.ts",
+      "packages/cli/test/antigravity-timeout.test.ts",
+      "packages/cli/test/fresh-session.test.ts",
+      "packages/cli/test/init-usage.test.ts",
+      "packages/cli/test/server/stats.test.ts",
+      "packages/cli/test/usage.test.ts",
+      "packages/cli/test/wait-folder.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/cards/settings-warnings.ts",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/cards/wait.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/schema/warnings.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/stats/period.ts",
+      "packages/core/src/stats/rows.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/core/src/validate/quality.ts",
+      "packages/core/test/cards/doctor-antigravity-timeout.test.ts",
+      "packages/core/test/cards/wait.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/internal-hooks.test.ts",
+      "packages/core/test/stats/summary.test.ts",
+      "packages/core/test/validate/quality.test.ts",
+      "packages/ui/src/app/routes.ts",
+      "packages/ui/src/app/shell.test.ts",
+      "packages/ui/src/app/shell.ts",
+      "packages/ui/src/dashboard/dashboard-page.test.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts",
+      "packages/ui/src/dashboard/dashboard-summary.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/settings/settings-page.test.ts"
+    ],
+    "at": "2026-11-07T08:35:19.269Z",
+    "resolved": {
+      "commit": "8d7d383",
+      "at": "2026-11-07T08:48:33.554Z"
+    }
+  }
+}

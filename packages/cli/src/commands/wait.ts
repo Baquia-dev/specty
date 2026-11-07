@@ -33,14 +33,15 @@ interface WaitLimits {
 
 /**
  * Parses timeout and polling interval options safely. Without `--timeout`, `wait` waits
- * `internal.waits.waitTimeoutSec` (an hour by default, what every tool measured holds).
+ * `internal.waits.waitTimeoutSec` (an hour by default, what every tool measured holds); without
+ * `--interval`, it looks every `internal.waits.waitIntervalMs` (500 ms by default).
  */
-function parseWaitLimits(options: WaitOptions, timeoutSec: number): WaitLimits {
+function parseWaitLimits(options: WaitOptions, defaults: WaitLimits): WaitLimits {
   const timeout = Number(options.timeout);
   const interval = Number(options.interval);
   return {
-    timeoutSec: Number.isFinite(timeout) && timeout > 0 ? timeout : timeoutSec,
-    intervalMs: Number.isFinite(interval) && interval > 0 ? interval : 500,
+    timeoutSec: Number.isFinite(timeout) && timeout > 0 ? timeout : defaults.timeoutSec,
+    intervalMs: Number.isFinite(interval) && interval > 0 ? interval : defaults.intervalMs,
   };
 }
 
@@ -66,8 +67,11 @@ export async function wait(session: Session, options: WaitOptions = {}): Promise
   const { id } = current.state;
   // Asked while the change's folder is there: closing the change removes it from under `wait`.
   const main = (await session.git.worktrees())[0]?.folder ?? session.root;
-  const { waitTimeoutSec, heartbeatSec } = session.config.internal.waits;
-  const limits = parseWaitLimits(options, waitTimeoutSec);
+  const { waitTimeoutSec, heartbeatSec, waitIntervalMs } = session.config.internal.waits;
+  const limits = parseWaitLimits(options, {
+    timeoutSec: waitTimeoutSec,
+    intervalMs: waitIntervalMs,
+  });
   const started = Date.now();
   const mark = await markWait(session.git, id, {
     pid: process.pid,
