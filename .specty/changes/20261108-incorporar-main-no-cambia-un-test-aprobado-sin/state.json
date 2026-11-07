@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-incorporar-main-no-cambia-un-test-aprobado-sin",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-incorporar-main-no-cambia-un-test-aprobado-sin",
   "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
   "revision": 1,
@@ -51,6 +51,7 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T17:33:08.993Z"
+  "lockedTests": {
+    "packages/cli/test/integrate-locked.test.ts": "sha256:7f46cb94a8af394c047714255cd55c516b6371729c1ac6771052ad33c9faf6ba"
+  }
 }
