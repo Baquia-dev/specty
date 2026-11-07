@@ -17,6 +17,6 @@ Hoy `checkAdjusting` solo corre en `adjusting`. Si la persona pide cambios a un 
 
 ## Tareas
 
-- [ ] T1: Las reglas de las tareas hechas y de las tareas pendientes corren también en la revisión de un ajuste
+- [x] T1: Las reglas de las tareas hechas y de las tareas pendientes corren también en la revisión de un ajuste
   - files: packages/core/src/validate/phase.ts, packages/core/test/validate/phase.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/phase.test.ts test/validate/closed-slices.test.ts && pnpm typecheck && pnpm lint

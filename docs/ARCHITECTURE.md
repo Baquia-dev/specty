@@ -594,7 +594,7 @@ Con `policy.tests: contract` (ADR 0014), aprobar un ajuste decide el ciclo de su
 
 `propose` añade un apoyo determinista:
 
-- Modificar tareas ya hechas es un error, y también, en un ajuste pedido mientras se implementa, añadir o borrar tareas o cambiar criterios (`pending-tasks-only`).
+- Modificar tareas ya hechas es un error, y también, en un ajuste pedido mientras se implementa, añadir o borrar tareas o cambiar criterios (`pending-tasks-only`). Las dos reglas valen en `adjusting` y en la revisión del ajuste, también tras pedir cambios la persona, porque `approve` valida en `review`. En `review`, solo un ajuste tiene una revisión aprobada.
 - Si el ajuste toca archivos que no estaban en la sección Archivos, la UI lo marca como "posible alcance nuevo".
 - La re-aprobación muestra solo el delta.
 
