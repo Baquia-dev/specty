@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-el-panel-muestra-el-coste-el-alcance-las",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-el-panel-muestra-el-coste-el-alcance-las",
   "baseCommit": "2fb77e84f14790f5728193d155fce12d104768ec",
-  "revision": 1,
+  "revision": 3,
   "approved": {
     "revision": 1,
     "hash": "sha256:087ab5078e231e6b72ae7ccdb5e3d29352b57126e88fe771e187c7ef70e96a08",
@@ -73,12 +73,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a2ae2fd55b030f81e8624988cc7bd3b9fc091606",
+      "attempts": 1,
       "startedAt": "2026-11-07T12:37:45.240Z",
       "doneAt": "2026-11-07T12:40:54.336Z",
-      "summary": "El panel muestra «Coste y tokens», «Alcance e integraciones» y «Memoria» tras «Calidad», con sus gráficas, la tabla de los más caros y sus estados vacíos; docs/ui.md las describe."
+      "summary": "El panel muestra «Coste y tokens», «Alcance e integraciones» y «Memoria» tras «Calidad», con sus gráficas, la tabla de los más caros y sus estados vacíos; docs/ui.md las describe.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -91,6 +91,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-07T12:47:47.375Z",
   "lockedTests": {
     "packages/core/test/cards/stats.test.ts": "sha256:46cc863f202694393266fe472dd780d08ffc0c52c6f1c5e7bd5c3e962ed1f0c1",
     "packages/core/test/stats/cost-scope-memory.test.ts": "sha256:79b114bc14a64d4c797b95ac47875339aef60465ebba65b49eec2ba42a41e821",
