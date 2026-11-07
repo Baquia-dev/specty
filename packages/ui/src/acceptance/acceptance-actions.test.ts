@@ -209,6 +209,28 @@ describe("Acceptance actions", () => {
     expect(toasts()).toContain("Aceptaste el resultado: el cambio está cerrado.");
   });
 
+  it("AC6: says a change without its closing phase closes on accepting, in Spanish and in English", async () => {
+    const { dialog, dialogButton, settle, view, toasts } = await render();
+    const change = view();
+    if (change === undefined) throw new Error("no change");
+    TestBed.inject(ResultDialogs).accept({ ...change, withoutClosing: true });
+    await settle();
+    expect(text(dialog()?.querySelector("[data-after]"))).toBe(
+      "No tiene fase de cierre: se cierra al aceptarlo, con el resumen de sus tareas.",
+    );
+    TestBed.inject(Preferences).lang.set("en");
+    await settle();
+    expect(text(dialog()?.querySelector("[data-after]"))).toBe(
+      "It has no closing phase: accepting closes it, with the summary of its tasks.",
+    );
+    TestBed.inject(Preferences).lang.set("es");
+    await settle();
+    dialogButton("Aceptar")?.click();
+    await settle();
+    expect(toasts()).toContain("Aceptaste el resultado: el cambio está cerrado.");
+    expect(toasts()).not.toContain("Aceptaste el resultado: el agente redactará el cierre.");
+  });
+
   it("explains how the request is classified, and sends it word for word (AC5)", async () => {
     const { buttons, dialog, dialogButton, settle, view, toasts } = await render();
     buttons()[0]?.click();

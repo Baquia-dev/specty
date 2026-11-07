@@ -6,6 +6,13 @@
   "branch": "specty/20261108-la-pieza-fase-de-cierre-se-equipa-y-se-quita-en",
   "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:903687a0eaa0d7a565bc40821a2c0eea3c16ab23881bbc475ed8dfe34dbfa29b",
+    "at": "2026-11-07T16:14:08.644Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -41,12 +48,6 @@
     "T": 5,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:903687a0eaa0d7a565bc40821a2c0eea3c16ab23881bbc475ed8dfe34dbfa29b",
-    "at": "2026-11-07T16:14:08.644Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T16:16:44.946Z"
 }

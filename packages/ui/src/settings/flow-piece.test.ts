@@ -309,6 +309,43 @@ describe("the pieces of a phase in Advanced", () => {
     expect(saved).toEqual([[{ path: ["verify", "quick"], value: "pnpm lint" }]]);
   });
 
+  it("AC1: in Advanced, the closing phase shows its setting flow.closing and «Quitar», with no mark «Próximamente»", async () => {
+    const o = await open();
+    await o.press(o.phase("closing"));
+    expect(o.heading("equipped")).toBe("Equipado en Cierre");
+    expect(o.equipped()).toEqual(["closing", "retro", "after-landing"]);
+    expect(o.rows("closing")).toEqual(["flow.closing"]);
+    expect(o.remove("closing")).not.toBeNull();
+    expect(o.piece("closing")?.querySelector('[data-mark="soon"]')).toBeNull();
+    expect(text(o.piece("closing")?.querySelector("[data-piece-name]"))).toBe("Fase de cierre");
+  });
+
+  it("AC2: removing the closing phase moves it to «Para equipar», counts flow.closing: false and saves it with the dialog", async () => {
+    const o = await open();
+    await o.press(o.phase("closing"));
+    await o.press(o.remove("closing"));
+    expect(o.equipped()).toEqual(["retro", "after-landing"]);
+    expect(o.library()).toEqual(["closing"]);
+    expect(o.slots("closing")).toEqual(["retro", "after-landing"]);
+    expect(o.count()).toBe("1");
+    await o.press(o.review());
+    expect(document.querySelector('sp-save-dialog [data-change="flow.closing"]')).not.toBeNull();
+    await o.press(o.save());
+    expect(saved).toEqual([[{ path: ["flow", "closing"], value: false }]]);
+  });
+
+  it("AC2: equipping the closing phase back takes flow.closing out of the file", async () => {
+    const o = await open({ input: { ...PROJECT, flow: { closing: false } } });
+    await o.press(o.phase("closing"));
+    expect(o.library()).toEqual(["closing"]);
+    await o.press(o.equip("closing"));
+    expect(o.equipped()).toEqual(["closing", "retro", "after-landing"]);
+    expect(o.count()).toBe("1");
+    await o.press(o.review());
+    await o.press(o.save());
+    expect(saved).toEqual([[{ path: ["flow", "closing"] }]]);
+  });
+
   it("AC8: turns delegated mode on with the preferences menu's dialog, at once in the clone, with nothing to save", async () => {
     const o = await open();
     await o.press(o.phase("review"));

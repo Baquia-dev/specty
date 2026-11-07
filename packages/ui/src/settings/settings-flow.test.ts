@@ -236,12 +236,37 @@ describe("the view Flujo of the settings page", () => {
     expect(flow()?.querySelector("[data-sentences]")).toBeNull();
   });
 
-  it("AC9: shows the closing phase, which has no key yet, as coming soon, with no control", async () => {
-    const { slot } = await open();
+  it("AC1: shows the closing phase equipped with no mark «Próximamente», and in Basic with no control", async () => {
+    const { slot, slots, line } = await open({ input: { ...PROJECT, flow: { closing: true } } });
     const closing = slot("closing");
-    expect(text(closing?.querySelector('[data-mark="soon"]'))).toBe("Próximamente");
+    expect(seen(closing)).toBe("Fase de cierre");
+    expect(closing?.querySelector('[data-mark="soon"]')).toBeNull();
     expect(closing?.querySelectorAll("button, input").length).toBe(0);
-    expect(slot("retro")?.querySelector('[data-mark="soon"]')).toBeNull();
+    expect(line()?.querySelector('[data-mark="soon"]')).toBeNull();
+    expect(slots("closing")).toEqual(["closing", "retro", "after-landing"]);
+  });
+
+  it("AC3: with flow.closing: false, the line has no closing phase piece and a sentence after delegated mode says accepting closes a standard change", async () => {
+    const { slots, counts, sentences } = await open({
+      input: { ...PROJECT, flow: { closing: false } },
+    });
+    expect(slots("closing")).toEqual(["retro", "after-landing"]);
+    expect(counts().at(-1)).toBe("2");
+    expect(sentences().slice(5, 7)).toEqual([
+      "Tú apruebas, aceptas y cierras cada cambio.",
+      "Sin fase de cierre: aceptar un cambio estándar que no es corte de una épica lo cierra y lo archiva con el resumen de sus tareas.",
+    ]);
+    expect(sentences()).toHaveLength(10);
+  });
+
+  it("AC4: says the sentence of the flow without its closing phase in English", async () => {
+    const { sentences } = await open({
+      input: { ...PROJECT, flow: { closing: false } },
+      lang: "en",
+    });
+    expect(sentences()[6]).toBe(
+      "No closing phase: accepting a standard change that is not a slice of an epic closes it and archives it with the summary of its tasks.",
+    );
   });
 
   it("AC12: says the phases, the pieces, the guarantees, the sentences and the selectors in English", async () => {
@@ -254,7 +279,7 @@ describe("the view Flujo of the settings page", () => {
     expect(slot("guard")?.getAttribute("title")).toBe(
       "It cannot be removed: without it, the agent could skip the spec.",
     );
-    expect(text(slot("closing")?.querySelector('[data-mark="soon"]'))).toBe("Coming soon");
+    expect(seen(slot("closing"))).toBe("Closing phase");
     expect(sentences()[0]).toBe("Features need their tests approved before their code.");
     expect(sentences()[5]).toBe("You approve, accept and close each change.");
     expect(options("view")).toEqual(["General", "Flow"]);

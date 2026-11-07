@@ -109,6 +109,12 @@ describe("deriveView", () => {
     expect(deriveView(record())).not.toHaveProperty("holder");
   });
 
+  it("AC6: carries that accepting closes it without its closing phase, only when the server says so", () => {
+    const accepting = record({ phase: "acceptance" });
+    expect(deriveView({ ...accepting, withoutClosing: true }).withoutClosing).toBe(true);
+    expect(deriveView(accepting)).not.toHaveProperty("withoutClosing");
+  });
+
   it("carries the approved revision: which one, when and by whom", () => {
     const at = "2026-10-21T15:02:11.000Z";
     const approved = { revision: 1, hash: HASH, at, by: "Ana Gómez", channel: "ui" } as const;
