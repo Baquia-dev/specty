@@ -84,3 +84,27 @@ Limpieza de código de la UI sin cambios de comportamiento. `data/server.ts` tie
 ## Riesgos
 
 - R1: El cambio paralelo de los formatos del panel (P327) puede tocar `rowsOf` en `dashboard-changes.ts` o las importaciones de las exportaciones. Mitigación: si choca al incorporar main, se conserva lo de los dos, con `rowsOf` en `dashboard-table.ts`.
+
+## Cierre
+
+### Resumen
+
+Limpieza de la UI sin cambios de comportamiento:
+- `data/server-stats.ts` (nuevo, en lugar de `data/stats-export.ts`): las tres peticiones del panel al servidor local (`fetchStats`, `fetchStatsChanges` y `fetchStatsExport`), con `StatsExportParams` y las comprobaciones `isStatsView` e `isStatsChangesPage`, que dejan de estar en `server.ts` y en `server-answers.ts`. `ServerData` solo las llama. `server.ts` baja de 414 a 387 líneas de código y `server-answers.ts`, de 322 a 306.
+- `data/download.ts` (nuevo): `save`, que antes repetían `history/history-export.ts` y `dashboard/dashboard-export.ts`.
+- `dashboard/dashboard-table.ts` (nuevo, puro): las columnas, la fila y `rowsOf` de la tabla «Cambios»; `dashboard-changes.ts` baja de 309 a 240 líneas de código.
+- Test nuevo de `ServerData.stats` (`GET /api/stats`) en `stats-source.test.ts`, que no tenía ninguno. AC2 y AC3 los cubren los tests que ya existían: `dashboard-export.test.ts`, `history-export.test.ts` y `dashboard-changes.test.ts`.
+- ARCHITECTURE nombra `data/server-stats.ts` junto a `data/server-answers.ts`.
+
+### Desviaciones (respecto al plan)
+
+- Ninguna.
+
+### Decisiones
+
+- `isText` de `server-answers.ts` pasa a exportarse, para que la comprobación de la tabla del panel la use desde `server-stats.ts` en vez de repetirla.
+- `Row` queda sin exportar en `dashboard-table.ts`: solo la usa `rowsOf`, y el componente la recibe por inferencia.
+
+### Pendientes
+
+- `packages/ui/src/data/server.ts` sigue con 387 líneas de código (aviso a partir de 300) y `data/server-answers.ts`, con 306. Candidatos por responsabilidad: las lecturas de la trazabilidad (`traceFiles`, `trace`, `testCode` y `traced`, con sus tres mensajes) y el flujo de eventos (`listen`, `follow`, `closeIfIdle`, `watchRun`, `watchActions` y `readRun`).

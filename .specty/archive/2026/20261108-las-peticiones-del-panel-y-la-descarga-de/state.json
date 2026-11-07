@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-las-peticiones-del-panel-y-la-descarga-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-las-peticiones-del-panel-y-la-descarga-de",
   "baseCommit": "16ad77ec06157affaa0e9c6529ae3db9d19cbb4c",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:fdfefa907526c14a96ec19ffb81e28fafb7f0310f570c7e487d8436b4f8a8586",
@@ -74,12 +74,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ee4c157bb9c22f3d7e287102d0648712c9366a82",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:04:47.585Z",
       "doneAt": "2026-11-07T17:05:47.361Z",
-      "summary": "Las columnas (Column, COLUMNS, Direction), la fila (Row) y rowsOf de la tabla «Cambios» pasan al módulo puro dashboard/dashboard-table.ts; el componente conserva la búsqueda, el orden, las páginas y la plantilla"
+      "summary": "Las columnas (Column, COLUMNS, Direction), la fila (Row) y rowsOf de la tabla «Cambios» pasan al módulo puro dashboard/dashboard-table.ts; el componente conserva la búsqueda, el orden, las páginas y la plantilla",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -91,5 +91,6 @@
     "AC": 3,
     "T": 4,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-11-07T17:05:59.214Z"
 }
