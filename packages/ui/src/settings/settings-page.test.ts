@@ -422,7 +422,8 @@ describe("the settings page", () => {
     expect(internal.open()).toBe(true);
     expect(part("internal.waits.waitTimeoutSec", "key")).toBe("internal.waits.waitTimeoutSec");
     expect(part("internal.waits.waitTimeoutSec", "value")).toBe("600 s");
-    expect(part("internal.waits.waitTimeoutSec", "default")).toBe("Por defecto: 3600 s");
+    // AC6: 55 min by default, inside the prompt cache's hour.
+    expect(part("internal.waits.waitTimeoutSec", "default")).toBe("Por defecto: 3300 s");
     expect(marks("internal.waits.waitTimeoutSec")).toEqual(["modified", "new"]);
     expect(mark("internal.waits.heartbeatSec", "new")).toBe("Nuevo");
     expect(part("internal.waits.heartbeatSec", "value")).toBe("60 s");

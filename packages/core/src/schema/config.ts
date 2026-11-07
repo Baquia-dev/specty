@@ -6,6 +6,12 @@ import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "
 import { DEFAULT_DEV, type DevConfig, DevSchema, resolveDev } from "./dev";
 import { DEFAULT_GIT, type GitConfig, GitSchema, resolveGit } from "./git";
 import {
+  DEFAULT_INTERNAL_CARDS,
+  INTERNAL_CARDS_SHAPE,
+  type InternalCardsConfig,
+  resolveInternalCards,
+} from "./internal-cards";
+import {
   DEFAULT_INTERNAL_RUN,
   INTERNAL_RUN_SHAPE,
   type InternalRunConfig,
@@ -107,7 +113,10 @@ export interface ResolvedConfig extends WarningsConfig {
    * Specty's internal settings (formats.md §6): values that can leave Specty not working, with
    * today's behaviour as their defaults. Removing a key gives it back its default.
    */
-  readonly internal: InternalWaitsConfig & InternalRunConfig & InternalShownConfig;
+  readonly internal: InternalWaitsConfig &
+    InternalRunConfig &
+    InternalCardsConfig &
+    InternalShownConfig;
 }
 
 export const DEFAULT_CONFIG: ResolvedConfig = {
@@ -152,7 +161,12 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   memory: DEFAULT_MEMORY,
   dev: DEFAULT_DEV,
   subagents: true,
-  internal: { ...DEFAULT_INTERNAL_WAITS, ...DEFAULT_INTERNAL_RUN, ...DEFAULT_INTERNAL_SHOWN },
+  internal: {
+    ...DEFAULT_INTERNAL_WAITS,
+    ...DEFAULT_INTERNAL_RUN,
+    ...DEFAULT_INTERNAL_CARDS,
+    ...DEFAULT_INTERNAL_SHOWN,
+  },
   ...DEFAULT_WARNINGS,
 };
 
@@ -226,7 +240,12 @@ export const ConfigSchema = z.strictObject({
   dev: DevSchema.optional(),
   subagents: z.boolean().optional(),
   internal: z
-    .strictObject({ ...INTERNAL_WAITS_SHAPE, ...INTERNAL_RUN_SHAPE, ...INTERNAL_SHOWN_SHAPE })
+    .strictObject({
+      ...INTERNAL_WAITS_SHAPE,
+      ...INTERNAL_RUN_SHAPE,
+      ...INTERNAL_CARDS_SHAPE,
+      ...INTERNAL_SHOWN_SHAPE,
+    })
     .optional(),
   ...WARNINGS_SHAPE,
 });
@@ -288,6 +307,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     internal: {
       ...resolveInternalWaits(input.internal),
       ...resolveInternalRun(input.internal),
+      ...resolveInternalCards(input.internal),
       ...resolveInternalShown(input.internal),
     },
     ...resolveWarnings(input),

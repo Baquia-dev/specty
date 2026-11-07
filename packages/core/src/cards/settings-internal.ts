@@ -201,6 +201,53 @@ const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
 };
 
 /**
+ * Section «Interno», what the cards show: the importers `propose` names, the lines of the review,
+ * the characters of a task's notes and of a new change's slug.
+ */
+const INTERNAL_CARDS_TEXTS: Readonly<Record<string, Texts>> = {
+  "internal.cards.importersShown": {
+    es: [
+      "Importadores que nombra propose",
+      "Cuántos archivos de fuera de la spec que importan lo que cambia nombra propose por archivo; los demás los cuenta; de 1 a 50.",
+    ],
+    en: [
+      "Importers propose names",
+      "How many files outside the spec that import what it changes propose names for each file; it counts the rest; from 1 to 50.",
+    ],
+  },
+  "internal.cards.reviewLines": {
+    es: [
+      "Líneas de la revisión en la tarjeta",
+      "Cuántas líneas de la respuesta del revisor independiente repite la tarjeta de specty review; reviews/ la guarda entera; de 20 a 2000.",
+    ],
+    en: [
+      "Review lines in the card",
+      "How many lines of the independent reviewer's answer specty review's card repeats; reviews/ keeps it whole; from 20 to 2000.",
+    ],
+  },
+  "internal.cards.noteChars": {
+    es: [
+      "Largo de las notas de una tarea",
+      "Los caracteres que admite task done en el resumen y en cada hallazgo, que repiten las tarjetas de las tareas siguientes; de 100 a 1000.",
+    ],
+    en: [
+      "Length of a task's notes",
+      "The characters task done takes in the summary and in each finding, which the next task cards repeat; from 100 to 1000.",
+    ],
+  },
+  "internal.cards.slugChars": {
+    es: [
+      "Largo del slug de un cambio",
+      "Los caracteres del slug con que specty new forma el id de un cambio y su rama; los que ya existen no cambian; de 16 a 100.",
+    ],
+    en: [
+      "Length of a change's slug",
+      "The characters of the slug specty new builds a change's id and branch with; those that exist do not change; from 16 to 100.",
+    ],
+  },
+};
+
+/**
  * Section «Interno», what commands and checks show: the findings of a command's output, the
  * lines of a failure in `specty verify --fresh` and the changes `specty why` lists.
  */
@@ -261,5 +308,6 @@ const INTERNAL_SHOWN_TEXTS: Readonly<Record<string, Texts>> = {
 export const INTERNAL_SETTING_TEXTS: Readonly<Record<string, Texts>> = {
   ...INTERNAL_TEXTS,
   ...INTERNAL_RUN_TEXTS,
+  ...INTERNAL_CARDS_TEXTS,
   ...INTERNAL_SHOWN_TEXTS,
 };

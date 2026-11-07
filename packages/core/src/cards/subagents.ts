@@ -48,16 +48,33 @@ export function inItsFolder(
       `Tu \`cd\` no dura entre comandos: empieza cada uno con \`${cd}\` y usa rutas absolutas de esa carpeta.`,
       `Your \`cd\` does not last between commands: start each one with \`${cd}\` and use absolute paths in that folder.`,
     ),
-    t(
-      `Sigue \`${ctx.command} next\` hasta cerrarlo; cuando espere a la persona, ${waitStep(ctx)}.`,
-      `Follow \`${ctx.command} next\` until it is closed; when it waits for the person, ${waitStep(ctx)}.`,
-    ),
+    followNext(ctx),
     ...more,
     t(
       "Responde en tres líneas: el cambio, su fase y lo que falta.",
       "Answer in three lines: the change, its phase and what is left.",
     ),
   ];
+}
+
+/**
+ * A brief's step of following `next` to the end, and of waiting for the person with `specty wait`.
+ * In delegated mode the subagent takes the decisions `next` gives it, and waits only for one the
+ * person did not delegate (`waitsForPerson`), such as unlocking an approved test.
+ */
+function followNext(ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  const follow = `\`${ctx.command} next\``;
+  if (ctx.delegated !== true) {
+    return t(
+      `Sigue ${follow} hasta cerrarlo; cuando espere a la persona, ${waitStep(ctx)}.`,
+      `Follow ${follow} until it is closed; when it waits for the person, ${waitStep(ctx)}.`,
+    );
+  }
+  return t(
+    `Sigue ${follow} hasta cerrarlo. Cuando su \`SIGUIENTE:\` diga «modo delegado: …», hazlo tú; cuando espere a la persona en una decisión que no te delega (como desbloquear un test aprobado), ${waitStep(ctx)}.`,
+    `Follow ${follow} until it is closed. When its \`NEXT:\` says "delegated mode: …", do it yourself; when it waits for the person on a decision not delegated to you (such as unlocking an approved test), ${waitStep(ctx)}.`,
+  );
 }
 
 /** A brief's step for a change whose spec may be still to write: a question goes back to the session. */

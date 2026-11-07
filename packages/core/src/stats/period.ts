@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // The panel's cut (docs/ui.md, «Panel»): its period, who and lane, as the URL asks for them, the
-// days of the period and of the one before, and how a figure compares with the one before.
+// days of the period and of the one before, how a figure compares with the one before, and the
+// sums and medians the sections count with.
 import { localDay } from "../memory/triggers";
 import { CHANGE_KINDS, type ChangeKind } from "../spec/model";
 import type { StatsRow } from "./rows";
@@ -84,7 +85,7 @@ export function statsRanges(
 }
 
 /** The day `days` after `day`, or before it when negative. */
-function addDays(day: string, days: number): string {
+export function addDays(day: string, days: number): string {
   const [year = 0, month = 1, date = 1] = day.split("-").map(Number);
   return new Date(Date.UTC(year, month - 1, date + days)).toISOString().slice(0, 10);
 }
@@ -116,4 +117,17 @@ export function compared(
   const change =
     value === null || previous === null || previous === 0 ? null : (value - previous) / previous;
   return { previous, change };
+}
+
+export function sum(values: readonly number[]): number {
+  return values.reduce((total, value) => total + value, 0);
+}
+
+/** The middle value of `values`, or the mean of the two in the middle; none without any. */
+export function median(values: readonly number[]): number | null {
+  const sorted = values.toSorted((a, b) => a - b);
+  const middle = Math.floor(sorted.length / 2);
+  const upper = sorted[middle];
+  if (upper === undefined) return null;
+  return sorted.length % 2 === 1 ? upper : ((sorted[middle - 1] ?? upper) + upper) / 2;
 }

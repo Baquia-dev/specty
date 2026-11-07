@@ -1,0 +1,121 @@
+{
+  "schema": 1,
+  "id": "20261107-la-vista-flujo-muestra-las-fases-con-sus-piezas",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-la-vista-flujo-muestra-las-fases-con-sus-piezas",
+  "baseCommit": "723f6f6c21ab4821589f3fc140d25950b2c1f5a7",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ff1016b9bfe940eda74e80a032b7a4df581ff2e82dfd161c18802d100261e2b1",
+    "at": "2026-11-07T09:16:04.834Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ed51f897278d4949743eaaa2c618f99516ba8591e8783113d0c73caed620d2c3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6dd96702e6e0e8d8b01d02060409468fc9086460ef47746dd8bdb31e36ec09e7",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:1513d7ccf3eea417b8b711cb23552fcf08ca012d6a8621416ee70692c810649c",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0107fd6b9e4295d072a9831970ba2ce6fb3c2f81118b5de368a80e542852cec9",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:21bd6d6ccb2881fbf9b6bfab2cb083a4691eba17590eb9172f0138aa3609f1c1",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:d2db2337223963e22c2a8da82dbaf6cd76e0bfe3e6a06b9dd2e8dbb4ef8f2990",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:d72f0446a126c236879980f0a067a4fc7e73978ee2c183edd09b2ed631b508b5",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:ebffa112123092ce76d66857061b693d2507898135934e957dc3596319a9f5ba",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:259252cefae515a5076927a2e7ceeaff244cc3ce91bd7f38250affe3437f3662",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "d365f4ec8e6aeac9358ac0d7e6a082050eaadf2c",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:41:41.865Z",
+      "doneAt": "2026-11-07T09:48:13.158Z",
+      "summary": "pieces.ts con las fases del flujo, las 22 piezas (4 garantías), cuándo están equipadas y sus ediciones; settings-pieces.ts con nombres, descripciones, por qué de las garantías y las frases del flujo en es/en; marca basic en 12 ajustes del catálogo; exportado desde light.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2771c797b3ea2cc2f9c813947215242a8e46aa56",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:48:13.678Z",
+      "doneAt": "2026-11-07T09:54:45.752Z",
+      "summary": "Vista y modo recordados en el navegador con sus selectores; General en Básico muestra los 12 ajustes básicos sin buscador y dice cuántos hay en Avanzado; Flujo monta sp-settings-flow (vacío).",
+      "scopeExtra": [
+        "packages/ui/src/settings/settings-flow.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "0b11b5bc33ebfb07e63f4bce059ea736876489d1",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:54:46.160Z",
+      "doneAt": "2026-11-07T10:01:09.864Z",
+      "summary": "sp-settings-flow dibuja la línea de fases con sus piezas equipadas (con las ediciones), las garantías con candado y su porqué, la fase de cierre como Próximamente, las frases en Básico y cada fase como botón en Avanzado.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "4d6dab0f5a5fcbe7413777fcaca331d6ebed8ba4",
+      "attempts": 1,
+      "startedAt": "2026-11-07T10:01:10.201Z",
+      "doneAt": "2026-11-07T10:07:44.023Z",
+      "summary": "En Avanzado, sp-settings-flow muestra la fase elegida con sus piezas equipadas (sp-flow-piece con sus ajustes, Quitar, garantías con candado y porqué, modo delegado con su control) y las que se pueden equipar; docs/ui.md.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 9,
+    "AC": 12,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-07T10:08:35.592Z",
+  "lockedTests": {
+    "packages/core/test/settings/pieces.test.ts": "sha256:6fbd363df29bdf6033fa23cca118d443737037378bc65a47885084493b08231a",
+    "packages/ui/src/settings/flow-piece.test.ts": "sha256:6f74a2a0014974fca11ce27d2ef7d256c0fa05da5a163daec3d8701a756067f7",
+    "packages/ui/src/settings/settings-flow.test.ts": "sha256:7ed3d9726201baf37ae1cbed164ec18c92abfdb21dae28377903a3e2cbf6a335",
+    "packages/ui/src/settings/settings-mode.test.ts": "sha256:ca4c6134e45dd5a97f1759d927c93f08aac4c5d30a3e6637aa7baf5253ade7ac"
+  }
+}
