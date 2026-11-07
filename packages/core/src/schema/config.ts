@@ -6,6 +6,14 @@ import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "
 import { DEFAULT_DEV, type DevConfig, DevSchema, resolveDev } from "./dev";
 import { DEFAULT_GIT, type GitConfig, GitSchema, resolveGit } from "./git";
 import { DEFAULT_MEMORY, type MemoryConfig, MemorySchema, resolveMemory } from "./memory";
+import {
+  DEFAULT_EFFORT,
+  DEFAULT_SIZING,
+  type EffortConfig,
+  resolveSizing,
+  SIZING_SHAPE,
+  type SizingConfig,
+} from "./sizing";
 import { DEFAULT_VERIFY, resolveVerify, type VerifyConfig, VerifySchema } from "./verify";
 
 /** `contract`, above `required`: a feature's tests are written and approved before its code (ADR 0014). */
@@ -40,6 +48,10 @@ export interface ResolvedConfig {
   };
   /** Highest score of each size level; anything above `L` is `XL`. */
   readonly size: { readonly S: number; readonly M: number; readonly L: number };
+  /** How the size is scored, and from when a change is close to splitting (formats.md §6). */
+  readonly sizing: SizingConfig;
+  /** The effort recommended for each size and for a task; the model may only raise it. */
+  readonly effort: EffortConfig;
   /**
    * Lines of code of the files a task touches: a warning past `warn`, a block past `fail` (or
    * never, with `false`). Tests have their own; `exclude` lists paths not sized, the person's
@@ -86,6 +98,8 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   lanes: { quick: { maxFiles: 3 } },
   split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 },
   size: { S: 4, M: 10, L: 18 },
+  sizing: DEFAULT_SIZING,
+  effort: DEFAULT_EFFORT,
   lines: {
     warn: 300,
     fail: 500,
@@ -152,6 +166,7 @@ export const ConfigSchema = z.strictObject({
   size: z
     .strictObject({ S: Positive.optional(), M: Positive.optional(), L: Positive.optional() })
     .optional(),
+  ...SIZING_SHAPE,
   lines: z
     .strictObject({
       ...LineLimitsSchema.shape,
@@ -184,8 +199,6 @@ export const ConfigSchema = z.strictObject({
   memory: MemorySchema.optional(),
   dev: DevSchema.optional(),
   subagents: z.boolean().optional(),
-  /** Per-tool effort table overrides; interpreted by the CLI. */
-  effort: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type ConfigInput = z.infer<typeof ConfigSchema>;
@@ -230,6 +243,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     verify: resolveVerify(input.verify),
     scope: scopeOf(input),
     ...limitsOf(input),
+    ...resolveSizing(input),
     lines: linesOf(input),
     checks: resolveChecks(input.checks),
     policy: { tests: input.policy?.tests ?? base.policy.tests },

@@ -77,7 +77,7 @@ Hoy están fijos en el código del core los pesos con los que Specty puntúa el 
 
 ## Tareas
 
-- [ ] T1: Las claves `sizing` y `effort` del schema, y el tamaño, el aviso de cerca de partir y el esfuerzo que las usan
+- [x] T1: Las claves `sizing` y `effort` del schema, y el tamaño, el aviso de cerca de partir y el esfuerzo que las usan
   - files: packages/core/src/schema/sizing.ts, packages/core/src/schema/config.ts, packages/core/src/sizing/size.ts, packages/core/src/sizing/effort.ts, packages/core/src/validate/limits.ts, packages/core/test/sizing/configured.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/sizing/configured.test.ts && pnpm lint && pnpm knip
