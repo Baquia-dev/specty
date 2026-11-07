@@ -6,6 +6,13 @@
   "branch": "specty/20261107-las-evals-miden-la-vuelta-a-un-cambio-huerfano",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:424c057ec3658b78f6563c3679d89a445a5ce39d8063254dff61f3ccc1df2862",
+    "at": "2026-11-07T00:11:22.328Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -43,12 +50,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:424c057ec3658b78f6563c3679d89a445a5ce39d8063254dff61f3ccc1df2862",
-    "at": "2026-11-07T00:11:22.328Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T00:12:38.745Z"
 }
