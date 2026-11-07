@@ -103,7 +103,10 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
   },
 };
 
-/** Section «Interno», execution and server: the priority of the verifications and the UI's ports. */
+/**
+ * Section «Interno», execution and server: the priority of the verifications, the most Specty
+ * reads of a command's output and the UI's ports.
+ */
 const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
   "internal.exec.priority": {
     es: [
@@ -113,6 +116,16 @@ const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
     en: [
       "Verifications' priority",
       "The nice each task's verification and the full one run at, from 0 to 19; if Specty already runs lower, they keep its own.",
+    ],
+  },
+  "internal.exec.maxOutputKiB": {
+    es: [
+      "Salida máxima de un comando",
+      "Los KiB que Specty lee de la salida de un comando de checks.commands o de la revisión independiente, y lo más que la UI sirve de un diff, una traza o el código de un test; de 64 a 16384.",
+    ],
+    en: [
+      "A command's largest output",
+      "The KiB Specty reads of the output of a checks.commands command or of the independent review, and the most the UI serves of a diff, a trace or a test's code; from 64 to 16384.",
     ],
   },
   "internal.server.portsTried": {
