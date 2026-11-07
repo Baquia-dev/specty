@@ -81,7 +81,7 @@ El «Panel» de `specty ui` resume un corte en cifras y lista sus cambios, pero 
   - files: packages/cli/src/server/stats-changes.ts, packages/cli/src/server/api.ts, packages/cli/test/server/stats-export.test.ts, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/stats-export.test.ts test/server/stats-changes.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
-- [ ] T3: «Exportar» en la fila de filtros del panel pide el archivo a la fuente y lo descarga
+- [x] T3: «Exportar» en la fila de filtros del panel pide el archivo a la fuente y lo descarga
   - files: packages/ui/src/data/stats-export.ts, packages/ui/src/data/stats-export.test.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/dashboard/dashboard-export.ts, packages/ui/src/dashboard/dashboard-export.test.ts, packages/ui/src/dashboard/dashboard-page.ts, docs/ui.md
   - ac: AC1, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/stats-export.test.ts --include src/dashboard/dashboard-export.test.ts --include src/dashboard/dashboard-page.test.ts && pnpm typecheck && pnpm lint && pnpm knip

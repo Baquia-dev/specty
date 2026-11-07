@@ -14,9 +14,15 @@ const ASKED: StatsExportParams = {
   lang: "en",
 };
 
-/** A CSV as the server writes it: with the BOM that tells a spreadsheet it is UTF-8. */
-const BYTES = new TextEncoder().encode(
-  "\uFEFFChange,Title\r\n20261105-panel-de-cambios,Panel con acentos: áéí\r\n",
+/**
+ * A CSV as the server writes it: with the BOM that tells a spreadsheet it is UTF-8. In the
+ * global `Uint8Array`: jsdom's `TextEncoder` gives one of its own realm, which `toEqual` and
+ * `instanceof` do not take for the bytes that `fetch` reads.
+ */
+const BYTES = Uint8Array.from(
+  new TextEncoder().encode(
+    "\uFEFFChange,Title\r\n20261105-panel-de-cambios,Panel con acentos: áéí\r\n",
+  ),
 );
 
 /** A source that only gives its changes, as the prototype's does. */
