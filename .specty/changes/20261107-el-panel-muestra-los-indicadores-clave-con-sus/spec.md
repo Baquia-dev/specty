@@ -96,3 +96,30 @@ Hoy lo que pasó con Specty solo se ve cambio a cambio. Con este corte, `specty 
 - R1: El corte queda en el límite de tamaño (L) con tres paquetes. Mitigación: el componente de los indicadores, el catálogo, la entrada ligera y el ejemplo del prototipo se dejan para C2, y la lectura va en `server/api.ts`.
 - R2: `changeRecords` también busca los commits de las tareas y quién lleva cada cambio, así que cada cambio de filtro lo vuelve a hacer. Mitigación: los archivados siguen en memoria mientras su estado no cambia, y si se nota lento, C5 llevará la lectura a `server/stats.ts` con una que no complete los registros.
 - R3: `data/server.ts` ya pasa del aviso de 300 líneas. Mitigación: la comprobación de la respuesta es breve, y llevar las comprobaciones a `data/server-answers.ts` sigue anotado como pendiente.
+
+## Cierre
+
+### Resumen
+
+`specty ui` tiene la página «Panel» (`/dashboard`), con su enlace entre Sesiones y Configuración. Lleva la cabecera («42 cambios · 9 oct – 7 nov · Todos»), una fila de filtros (Periodo, Ver por y Carril) que va en la URL sin los valores por defecto, y la fila de seis indicadores de la maqueta A: cambios cerrados, tareas completadas, ciclo mediano, verificaciones que pasan, coste medido «en N de M cambios cerrados» y pendientes abiertos. Cada indicador lleva su variación frente al periodo anterior (▲ o ▼ con el %, en verde o rojo, o «sin datos en los N días anteriores»), y con «Todo» no compara. Un corte sin cambios da un estado vacío que deja los filtros. Los cálculos los hace el core (`stats/period.ts`, `stats/rows.ts` y `stats/summary.ts`, con `statsView` en el índice), y el servidor los sirve en `GET /api/stats` (`statsAnswer` en `server/api.ts`). Todos los textos están en español y en inglés, y la documentación está en `docs/ui.md` («Panel»), `docs/ARCHITECTURE.md` §15 y `docs/dominio.md`.
+
+### Desviaciones
+
+- La fila de indicadores salió de la página a su propio componente, `dashboard/dashboard-summary.ts` (`sp-dashboard-summary`), con la solicitud S2: la página pasaba de 300 líneas de código. Ahora la página tiene la cabecera, los filtros y los estados, y la fila, la tabla de indicadores, los valores, las variaciones y las notas, como prevé el diseño de la épica (un componente por sección).
+- Dos tests aprobados se corrigieron con el desbloqueo S1, que decidió la persona, sin cambiar lo que comprueban. En `dashboard-page.test.ts`, `{ kind, name }` se ensanchaba a `string` y no compilaba contra `StatsQuery`, y se anotó `who`. En `shell.test.ts`, el enlace «Panel» mueve el del catálogo de la posición 4 a la 5.
+
+### Decisiones
+
+- `who` va en la URL como `person:<nombre>`, `agent:<herramienta>` o `model:<modelo>`, partido por los primeros dos puntos. Con el nombre vacío (`model:`) elige los cambios sin dato. En «Ver por», las opciones van por tipo: las de más cambios primero, después por nombre, y «(sin dato)» al final de su tipo.
+- Una variación que redondea a 0 % dice «sin cambios frente a los N días anteriores», sin tono. Un indicador sin valor muestra «—» y no lleva variación.
+- Mientras llega otro corte, la página mantiene el anterior a la vista (`linkedSignal`), porque `resource` vacía su valor al cambiar los parámetros. La página lee los filtros que muestra del corte que respondió el servidor.
+- Los nombres de los carriles son los de las insignias (Feature, Quick, Épica, Spike y Manual), copiados en la página porque `components/badge.ts` no los exporta y el tamaño no dejaba tocarlo.
+- La UI importa del índice del core solo tipos. `statsQuery` y `STATS_PERIODS` se exportan por el índice para la CLI (C6).
+
+### Pendientes
+
+- C2: crear `components/charts/stat-tile.ts` con la minigráfica y llevar a él los indicadores de `dashboard/dashboard-summary.ts`, junto con las series por día o por semana del periodo.
+- `GET /api/stats` lee `changeRecords`, que en cada petición también busca los commits de las tareas y quién lleva cada cambio. Al pasar la lectura a `server/stats.ts` (C5), conviene una lectura que no complete los registros.
+- Falta un panel de ejemplo para el prototipo (`data/sample-stats.ts` y `data/fixtures.ts`): con `ng serve` sin servidor, la página dice que su fuente no lo da.
+- `packages/ui/src/data/server.ts` tiene 379 líneas de código: llevar sus comprobaciones de respuestas (`isStatsView`, `isConfigRecord`) a `data/server-answers.ts`.
+- Este corte llegó al límite de tamaño L (14 archivos en 3 paquetes): es probable que C2 a C7, que también tocan core, CLI y UI, haya que estrecharlos o dividirlos en la épica.

@@ -5,7 +5,7 @@
   "phase": "acceptance",
   "branch": "specty/20261107-el-panel-muestra-los-indicadores-clave-con-sus",
   "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:bddcbb7eab38c4fd3d013632b9589d60adee177c16b198768917a4c5e34dc9d5",
@@ -73,16 +73,16 @@
     },
     "T3": {
       "status": "done",
+      "baseCommit": "be24c10f4556092f0515f9694cae760386faf0b3",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:39:23.717Z",
+      "doneAt": "2026-11-07T05:13:17.556Z",
+      "summary": "La página «Panel» (/dashboard, enlace entre Sesiones y Configuración): cabecera, filtros Periodo, Ver por y Carril en la URL, y la fila de seis indicadores con su variación (dashboard-summary.ts); stats() de la fuente y del servidor; docs/ui.md",
       "scopeExtra": [
         "packages/ui/src/dashboard/dashboard-summary.ts",
         "packages/ui/src/dashboard/dashboard-page.test.ts",
         "packages/ui/src/app/shell.test.ts"
-      ],
-      "attempts": 1,
-      "baseCommit": "be24c10f4556092f0515f9694cae760386faf0b3",
-      "startedAt": "2026-11-07T04:39:23.717Z",
-      "doneAt": "2026-11-07T05:13:17.556Z",
-      "summary": "La página «Panel» (/dashboard, enlace entre Sesiones y Configuración): cabecera, filtros Periodo, Ver por y Carril en la URL, y la fila de seis indicadores con su variación (dashboard-summary.ts); stats() de la fuente y del servidor; docs/ui.md"
+      ]
     }
   },
   "pending": {
@@ -101,5 +101,6 @@
     "packages/cli/test/server/stats.test.ts": "sha256:7b2a9ee66207174e188c3b7d8467e0dcde3c4d2a070db7863884ca281266bf9f",
     "packages/core/test/stats/summary.test.ts": "sha256:a58de01d800a62978c4e6f3ccb24eb89ecb0e2eded3f571f8116147b6692fca9",
     "packages/ui/src/dashboard/dashboard-page.test.ts": "sha256:9c47c2aa7de19d3f666cd2a097a290887d64ffdca91817bb25285ee928f2c8bb"
-  }
+  },
+  "closingSubmittedAt": "2026-11-07T05:14:20.780Z"
 }
