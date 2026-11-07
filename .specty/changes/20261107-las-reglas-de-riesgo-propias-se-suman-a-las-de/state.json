@@ -6,6 +6,13 @@
   "branch": "specty/20261107-las-reglas-de-riesgo-propias-se-suman-a-las-de",
   "baseCommit": "a491c1c0346190390d4f4344e1b40cf32aa3d417",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:703b6a857140808995e87552590e7f6fa9f93886f09c976d88f0234ddbbd271b",
+    "at": "2026-11-07T09:22:29.395Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:703b6a857140808995e87552590e7f6fa9f93886f09c976d88f0234ddbbd271b",
-    "at": "2026-11-07T09:22:29.395Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T09:33:39.188Z"
 }
