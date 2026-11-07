@@ -27,6 +27,7 @@ import { ActionError, SpectyData } from "../data/records";
 import type { StatsParams } from "../data/source";
 import { Preferences } from "../theme/preferences";
 import { DashboardChanges } from "./dashboard-changes";
+import { DashboardExport } from "./dashboard-export";
 import { DashboardFlow } from "./dashboard-flow";
 import { DashboardPeople } from "./dashboard-people";
 import { DashboardQuality } from "./dashboard-quality";
@@ -65,6 +66,7 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
   selector: "sp-dashboard-page",
   imports: [
     DashboardChanges,
+    DashboardExport,
     DashboardFlow,
     DashboardPeople,
     DashboardQuality,
@@ -88,6 +90,9 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
         <sp-segmented data-period [label]="t()('Periodo', 'Period')" [options]="periods()" [value]="query().period" (valueChange)="choose({ period: $event })" />
         <sp-select data-who [label]="t()('Ver por', 'View by')" [options]="whoOptions()" [value]="whoText(query().who)" (valueChange)="choose({ who: $event })" />
         <sp-select data-kind [label]="t()('Carril', 'Lane')" [options]="lanes()" [value]="query().kind ?? ''" (valueChange)="choose({ kind: $event })" />
+        @if (shown(); as view) {
+          <sp-dashboard-export data-export class="ml-auto" [query]="view.query" />
+        }
       </div>
       @if (read.error(); as error) {
         <div role="alert" class="rounded-xl border border-border bg-surface p-4 text-sm">
