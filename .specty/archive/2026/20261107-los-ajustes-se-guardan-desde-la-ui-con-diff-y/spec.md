@@ -96,3 +96,26 @@ Hoy la página «Configuración» de `specty ui` solo muestra los ajustes: para 
 - R2: Guardar desde la UI es una vía nueva para cambiar permisos, como `scope.autoApprove` o `policy.tests`. Mitigación: la puerta de las acciones de la persona, el aviso con su confirmación aparte y el commit con su trailer en el historial.
 - R3: Con la página, el corte salía XL. Mitigación: este corte deja el servidor y el core, con el diff en el catálogo y no en un archivo aparte, y la página va en C10.
 - R4: Este corte no cambia nada visible en la página hasta C10. Mitigación: las rutas se prueban por HTTP, y C10 solo añade la UI sobre ellas.
+
+## Cierre
+
+### Resumen
+
+El servidor de `specty ui` que arrancó la persona comprueba y guarda la configuración. `POST /api/config/check` responde, sin escribir nada, los errores del validador del core y el diff por ajuste (`settingChanges` del catálogo). `POST /api/config` escribe en `.specty/config.yaml` solo las claves cambiadas, con el editor de texto nuevo (`io/yaml-edit.ts`), que deja el resto igual byte a byte, y hace un commit solo de ese archivo con `chore(config): <claves>`, `Specty-Config: true` y el recibo `config`, que el hook deja pasar como el de `init`. No guarda, y responde 409 con el motivo, si la carpeta tiene un cambio en curso, si el archivo tiene cambios sin commit o no es YAML, si el resultado no es válido o si otra sesión tiene el turno de aterrizaje. `GET /api/config` da los tres primeros motivos en `blocked`. El servidor del agente responde 403, también en modo delegado, y las rutas fuera del catálogo editable dan 400.
+
+### Desviaciones
+
+- `act` de `server/api.ts` pasó del límite de complejidad con la ruta nueva: las acciones de un cambio (verificar, restaurar y decidir) pasaron a `changeAction`, en el mismo archivo y sin cambio de comportamiento.
+- `ConfigRefusal` se usa también en `server/config.ts` para dar forma al 409 (`refusalBody`): knip lo marcaba como exportado sin uso.
+- Al incorporar main, que ya traía C8 y C9: `settingOf` y `settingChanges` dejan fuera las garantías (`guarantee.*`, sin clave en el archivo). Como `ui.port` ya tiene efecto, los tests usan `ui.requireUserPresence` como ajuste «Próximamente» que no se guarda.
+
+### Decisiones
+
+- El 409 lleva el motivo como `error` y sus datos al lado, como `{ "error": "turn", "command": "…", "folder": "…" }`, en el estilo de los demás errores del servidor.
+- El guardado toma el turno con el comando `config` y la carpeta del servidor, así que otra sesión que espera ve quién lo tiene.
+- Si git falla al hacer el commit, el archivo vuelve a su texto anterior y la ruta sale del índice (`git reset`).
+- Una clave nueva en la raíz va tras su última clave, que en la práctica es el final del archivo. Un mapa escrito en flujo se reescribe entero, en una línea, solo cuando gana o pierde claves. Si una clave del camino no es un mapa, como un `scope:` vacío, el guardado da el error en esa ruta y no toca nada.
+
+### Pendientes
+
+- P269 (llevar `isConfigRecord` a `data/server-answers.ts`) se marca hecho al cerrar este corte, pero lo hace C10, que toca `data/server.ts` (P278).
