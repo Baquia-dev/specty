@@ -27,11 +27,14 @@ import { ActionError, SpectyData } from "../data/records";
 import type { StatsParams } from "../data/source";
 import { Preferences } from "../theme/preferences";
 import { DashboardChanges } from "./dashboard-changes";
+import { DashboardCost } from "./dashboard-cost";
 import { DashboardExport } from "./dashboard-export";
 import { DashboardFlow } from "./dashboard-flow";
+import { DashboardMemory } from "./dashboard-memory";
 import { DashboardPeople } from "./dashboard-people";
 import { DashboardQuality } from "./dashboard-quality";
 import { DashboardRhythm } from "./dashboard-rhythm";
+import { DashboardScope } from "./dashboard-scope";
 import { DashboardSummary } from "./dashboard-summary";
 
 type Translate = (es: string, en: string) => string;
@@ -66,11 +69,14 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
   selector: "sp-dashboard-page",
   imports: [
     DashboardChanges,
+    DashboardCost,
     DashboardExport,
     DashboardFlow,
+    DashboardMemory,
     DashboardPeople,
     DashboardQuality,
     DashboardRhythm,
+    DashboardScope,
     DashboardSummary,
     EmptyState,
     Segmented,
@@ -113,6 +119,15 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
           }
           @if (view.quality; as quality) {
             <sp-dashboard-quality class="mt-4" [quality]="quality" />
+          }
+          @if (view.cost; as cost) {
+            <sp-dashboard-cost class="mt-4" [cost]="cost" [measured]="view.summary.cost" />
+          }
+          @if (view.scope; as scope) {
+            <sp-dashboard-scope class="mt-4" [scope]="scope" />
+          }
+          @if (view.memory; as memory) {
+            <sp-dashboard-memory class="mt-4" [memory]="memory" />
           }
           @if (view.people; as people) {
             <sp-dashboard-people class="mt-4" [people]="people" [who]="view.query.who" (pick)="choose({ who: $event })" />

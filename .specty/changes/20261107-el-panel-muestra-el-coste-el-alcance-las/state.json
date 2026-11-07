@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-panel-muestra-el-coste-el-alcance-las",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-panel-muestra-el-coste-el-alcance-las",
   "baseCommit": "2fb77e84f14790f5728193d155fce12d104768ec",
   "revision": 1,
@@ -64,12 +64,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2ee904ab91c12e825208935e07bb72740e71f9cf",
+      "attempts": 1,
       "startedAt": "2026-11-07T12:36:30.444Z",
       "doneAt": "2026-11-07T12:37:44.931Z",
-      "summary": "statsCard añade «TIEMPO POR FASE (MEDIANA)» (de flow) y «LOS CAMBIOS MÁS CAROS» (de cost), cada uno solo si hay algo que contar; los formatos pasan a cards/stats-format.ts; formats.md §9 y ARCHITECTURE §6 y §15 lo documentan (P340)."
+      "summary": "statsCard añade «TIEMPO POR FASE (MEDIANA)» (de flow) y «LOS CAMBIOS MÁS CAROS» (de cost), cada uno solo si hay algo que contar; los formatos pasan a cards/stats-format.ts; formats.md §9 y ARCHITECTURE §6 y §15 lo documentan (P340).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a2ae2fd55b030f81e8624988cc7bd3b9fc091606",
+      "startedAt": "2026-11-07T12:37:45.240Z",
+      "doneAt": "2026-11-07T12:40:54.336Z",
+      "summary": "El panel muestra «Coste y tokens», «Alcance e integraciones» y «Memoria» tras «Calidad», con sus gráficas, la tabla de los más caros y sus estados vacíos; docs/ui.md las describe."
     }
   },
   "pending": {

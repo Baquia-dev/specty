@@ -88,7 +88,7 @@ El «Panel» de `specty ui` muestra hoy los indicadores, «Ritmo», «Flujo y es
   - files: packages/core/src/cards/stats.ts, packages/core/src/cards/stats-format.ts, packages/core/test/cards/stats.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/stats.test.ts && pnpm lint
-- [ ] T3: Las secciones «Coste y tokens», «Alcance e integraciones» y «Memoria» en el panel
+- [x] T3: Las secciones «Coste y tokens», «Alcance e integraciones» y «Memoria» en el panel
   - files: packages/ui/src/dashboard/dashboard-cost.ts, packages/ui/src/dashboard/dashboard-scope.ts, packages/ui/src/dashboard/dashboard-memory.ts, packages/ui/src/dashboard/dashboard-page.ts, packages/ui/src/dashboard/dashboard-cost-scope-memory.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4, AC5, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-cost-scope-memory.test.ts --include src/dashboard/dashboard-flow-quality.test.ts --include src/dashboard/dashboard-sections.test.ts --include src/dashboard/dashboard-page.test.ts && pnpm typecheck && pnpm lint && pnpm knip
