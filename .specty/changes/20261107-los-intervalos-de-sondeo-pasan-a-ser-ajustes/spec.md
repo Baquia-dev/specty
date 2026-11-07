@@ -76,7 +76,7 @@ Hoy cada cuánto mira de nuevo una verificación que espera su turno o sus plaza
   - files: packages/core/src/schema/internal-waits.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/schema/schema.test.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts test/settings/catalog.test.ts
-- [ ] T2: El turno y las plazas de la verificación miran de nuevo según la configuración
+- [x] T2: El turno y las plazas de la verificación miran de nuevo según la configuración
   - files: packages/cli/src/flow/full-verification.ts, packages/cli/src/store/verify-slots.ts, packages/cli/src/flow/full-verification.test.ts, packages/cli/src/store/verify-slots.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/flow/full-verification.test.ts src/store/verify-slots.test.ts
