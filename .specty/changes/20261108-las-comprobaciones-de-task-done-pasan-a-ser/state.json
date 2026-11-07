@@ -6,6 +6,13 @@
   "branch": "specty/20261108-las-comprobaciones-de-task-done-pasan-a-ser",
   "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:cf062da8b6cea16a21739984bb850e3454b3efb49aa40c2b2bcec70b6b16a408",
+    "at": "2026-11-07T16:14:30.716Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:cf062da8b6cea16a21739984bb850e3454b3efb49aa40c2b2bcec70b6b16a408",
-    "at": "2026-11-07T16:14:30.716Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T16:16:53.217Z"
 }
