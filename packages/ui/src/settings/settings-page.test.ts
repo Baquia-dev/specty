@@ -382,6 +382,17 @@ describe("the settings page", () => {
     };
   };
 
+  /** The keys of the settings that `match`, in the page's order. */
+  const keysOf = (match: (setting: (typeof SETTINGS)[number]) => boolean) =>
+    SETTINGS.filter(match).map((setting) => setting.key);
+
+  /** The retries of the memory and of git's configuration and the record's days, fixed until C11. */
+  const LOCKS = [
+    "internal.retries.memory",
+    "internal.retries.gitConfig",
+    "internal.retention.verifiedDays",
+  ];
+
   it("AC6: shows «Interno» last, folded, with a warning; opened, its settings with «Nuevo», key, value and default", async () => {
     const changed = valid({ ...INPUT, internal: { waits: { waitTimeoutSec: 600 } } });
     const { page, settle, sections, headings, part, mark, marks } = await open(changed);
@@ -410,28 +421,47 @@ describe("the settings page", () => {
     const internal = internalOf(page);
     expect(internal.folded()).toBe(true);
     await search("internal.retries");
-    expect(keys()).toEqual(["internal.retries.landing"]);
+    expect(keys()).toEqual(keysOf((setting) => setting.key.startsWith("internal.retries.")));
+    expect(keys()).toContain("internal.retries.landing");
     expect(internal.open()).toBe(true);
     await search("");
     expect(internal.folded()).toBe(true);
     await choose("new");
-    expect(keys()).toEqual([
-      "sizing.weights",
-      "sizing.tasksWithoutWeight",
-      "sizing.highFanIn",
-      "sizing.nearRatio",
-      "effort.S",
-      "effort.M",
-      "effort.L",
-      "effort.XL",
-      "effort.task",
-      "internal.waits.waitTimeoutSec",
-      "internal.waits.heartbeatSec",
-      "internal.retries.landing",
-      "internal.exec.priority",
-      "internal.server.portsTried",
-    ]);
+    expect(keys()).toEqual(keysOf((setting) => setting.new === true));
+    expect(keys()).toContain("sizing.weights");
+    expect(keys()).toContain("internal.waits.waitTimeoutSec");
     expect(internal.open()).toBe(true);
+  });
+
+  it("AC5: shows the memory's and git configuration's retries and the record's days in «Interno», new, the days in d", async () => {
+    const changed = valid({ ...INPUT, internal: { retention: { verifiedDays: 7 } } });
+    const { page, settle, row, part, marks } = await open(changed);
+    const internal = internalOf(page);
+    internal.toggle()?.click();
+    await settle();
+    expect(internal.open()).toBe(true);
+    for (const key of LOCKS) {
+      expect(row(key)?.closest('section[data-section="internal"]'), key).not.toBeNull();
+      expect(part(key, "key"), key).toBe(key);
+    }
+    expect(part("internal.retries.memory", "value")).toBe("9");
+    expect(marks("internal.retries.memory")).toEqual(["new"]);
+    expect(part("internal.retries.gitConfig", "value")).toBe("5");
+    expect(marks("internal.retries.gitConfig")).toEqual(["new"]);
+    expect(part("internal.retention.verifiedDays", "value")).toBe("7 d");
+    expect(part("internal.retention.verifiedDays", "default")).toBe("Por defecto: 30 d");
+    expect(marks("internal.retention.verifiedDays")).toEqual(["modified", "new"]);
+  });
+
+  it("AC6: names the memory's and git configuration's retries and the record's days in English", async () => {
+    const { part, mark } = await open(valid(INPUT), "en");
+    for (const key of LOCKS) {
+      expect(mark(key, "new"), key).toBe("New");
+      expect(part(key, "name"), key).toBe(settingText(key, "en").name);
+      expect(part(key, "description"), key).toBe(settingText(key, "en").description);
+      expect(settingText(key, "en").name, key).not.toBe(settingText(key, "es").name);
+    }
+    expect(part("internal.retention.verifiedDays", "value")).toBe("30 d");
   });
 
   it("AC5: shows the four lives of compliance as guarantees, with a lock, their fixed 24 h and why, with no key nor control", async () => {

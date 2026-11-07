@@ -2,7 +2,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, cli, NOW, tempRepo, writeFiles } from "./support";
+import { APP, CONFIG, cli, NOW, tempRepo, writeFiles } from "./support";
 
 /** An agent that Specty recognizes: Claude Code. */
 const CLAUDE = { env: { CLAUDECODE: "1" } };
@@ -50,5 +50,41 @@ describe("`specty prune` and the record of units", () => {
     const pruned = await cli(root, ["prune"], CLAUDE);
     expect(pruned.out).not.toContain("UNIDADES BORRADAS DEL REGISTRO");
     expect(existsSync(join(root, RECORD, "aaa.json"))).toBe(true);
+  });
+
+  it("AC3: with internal.retention.verifiedDays, removes the units recorded more than those days ago, keeps the others and says those days", async () => {
+    const config = `${CONFIG()}internal:\n  retention:\n    verifiedDays: 7\n`;
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
+    await writeFiles(root, {
+      [`${RECORD}/aaa.json`]: passed("core", 8),
+      [`${RECORD}/bbb.json`]: passed("cli", 29),
+      [`${RECORD}/ccc.json`]: passed("ui", 6),
+      [`${RECORD}/ddd.json`]: passed("core", 0),
+    });
+    const pruned = await cli(root, ["prune"], CLAUDE);
+    expect(pruned.code).toBe(0);
+    expect(pruned.out).toContain(
+      "UNIDADES BORRADAS DEL REGISTRO:\n  Anotadas hace más de 7 días: 2.",
+    );
+    const left = (name: string) => existsSync(join(root, RECORD, name));
+    expect(["aaa.json", "bbb.json", "ccc.json", "ddd.json"].map(left)).toEqual([
+      false,
+      false,
+      true,
+      true,
+    ]);
+  });
+
+  it("AC3: with a whole year, keeps the units recorded 300 days ago", async () => {
+    const config = `${CONFIG()}internal:\n  retention:\n    verifiedDays: 365\n`;
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
+    await writeFiles(root, {
+      [`${RECORD}/aaa.json`]: passed("core", 300),
+      [`${RECORD}/bbb.json`]: passed("cli", 400),
+    });
+    const pruned = await cli(root, ["prune"], CLAUDE);
+    expect(pruned.out).toContain("Anotadas hace más de 365 días: 1.");
+    expect(existsSync(join(root, RECORD, "aaa.json"))).toBe(true);
+    expect(existsSync(join(root, RECORD, "bbb.json"))).toBe(false);
   });
 });
