@@ -336,6 +336,23 @@ export { type ParseOptions, type ParseResult, parseSpec } from "./spec/parse";
 export { hashUnits, serializeSpec } from "./spec/serialize";
 export { KIND_RULES, SECTION_TITLES } from "./spec/vocabulary";
 export {
+  STATS_PERIODS,
+  type StatsPeriod,
+  type StatsQuery,
+  type StatsRange,
+  type StatsWho,
+  type StatsWhoKind,
+  statsQuery,
+} from "./stats/period";
+export { type StatsRow, statsRow } from "./stats/rows";
+export {
+  type StatsFigure,
+  type StatsOption,
+  type StatsSummary,
+  type StatsView,
+  statsView,
+} from "./stats/summary";
+export {
   type ChangeSummary,
   type ChangeTab,
   initialTab,

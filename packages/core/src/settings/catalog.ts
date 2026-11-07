@@ -16,8 +16,10 @@ export const SETTING_SECTIONS = [
   "size",
   "lines",
   "checks",
+  "warnings",
   "team",
   "memory",
+  "usage",
   "dev",
   "ui",
   "effort",
@@ -63,11 +65,13 @@ export interface Setting {
 }
 
 /**
- * Section «Interno», execution and server: the priority of the verifications and the ports
- * `specty ui` tries, which Specty kept fixed in its code, as keys of `internal` (formats.md §6).
+ * Section «Interno», execution and server: the priority of the verifications, the most Specty
+ * reads of a command's output and the ports `specty ui` tries, which Specty kept fixed in its
+ * code, as keys of `internal` (formats.md §6).
  */
 const INTERNAL_RUN: readonly Setting[] = [
   { key: "internal.exec.priority", section: "internal", kind: "number", new: true },
+  { key: "internal.exec.maxOutputKiB", section: "internal", kind: "number", new: true },
   { key: "internal.server.portsTried", section: "internal", kind: "number", new: true },
 ];
 
@@ -128,6 +132,20 @@ const INTERNAL: readonly Setting[] = [
     fixed: 30,
     guarantee: true,
   },
+];
+
+/**
+ * Sections «Avisos» and «Consumo y sesiones»: the warnings of the spec and of the sessions, which
+ * Specty kept fixed in its code, as keys of `warnings` and `usage` (formats.md §6).
+ */
+const WARNINGS: readonly Setting[] = [
+  { key: "warnings.vagueTerms", section: "warnings", kind: "list", new: true },
+  { key: "warnings.horizontalLayers", section: "warnings", kind: "list", new: true },
+];
+const USAGE: readonly Setting[] = [
+  { key: "usage.freshSessionTokens", section: "usage", kind: "number", new: true },
+  { key: "usage.ccusage.timeoutSec", section: "usage", kind: "number", unit: "s", new: true },
+  { key: "usage.ccusage.version", section: "usage", kind: "text", new: true },
 ];
 
 const TESTS_POLICIES = ["contract", "required", "recommended", "off"];
@@ -208,10 +226,12 @@ export const SETTINGS: readonly Setting[] = [
   { key: "checks.commands", section: "checks", kind: "group", command: true },
   { key: "checks.coverage", section: "checks", kind: "group" },
   { key: "checks.testTime", section: "checks", kind: "group", fileOnly: true },
+  ...WARNINGS,
   { key: "team.approvers", section: "team", kind: "list", soon: true },
   { key: "team.requirePrReview", section: "team", kind: "toggle", soon: true },
   { key: "memory.orphanAfterMin", section: "memory", kind: "number", unit: "min" },
   { key: "memory.branch", section: "memory", kind: "text" },
+  ...USAGE,
   { key: "dev.ports", section: "dev", kind: "list", items: "number" },
   { key: "ui.port", section: "ui", kind: "number" },
   { key: "ui.requireUserPresence", section: "ui", kind: "toggle", soon: true },

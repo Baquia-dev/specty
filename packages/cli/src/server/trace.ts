@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { WhyCommit } from "@baquia-dev/specty-core";
 import { ChangeSpecs, logged } from "../flow/traced";
-import { MAX_OUTPUT } from "../io/exec";
+import { maxOutputOf } from "../io/exec";
 import type { Session } from "../session";
 import { SPECTY_DIR } from "../store/paths";
 import { changeRange } from "./diff";
@@ -59,7 +59,7 @@ export async function changeTrace(
   const blamed = await session.git.run(["blame", "--porcelain", range.to, "--", path]);
   if (blamed.code !== 0) return { kind: "failed" };
   // The same limit as the diff: more would not be read in a browser either.
-  if (blamed.stdout.length >= MAX_OUTPUT) return { kind: "too-large" };
+  if (blamed.stdout.length >= maxOutputOf(session.config)) return { kind: "too-large" };
   const { lines, owners } = blameOf(blamed.stdout);
   const commits = await commitsOf(session, [...new Set(owners.map((owner) => owner.hash))]);
   const trace = { path, commit: range.to, lines, blocks: blocksOf(owners, commits) };

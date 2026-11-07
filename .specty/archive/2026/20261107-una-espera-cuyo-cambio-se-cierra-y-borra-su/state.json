@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "id": "20261107-una-espera-cuyo-cambio-se-cierra-y-borra-su",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261107-una-espera-cuyo-cambio-se-cierra-y-borra-su",
+  "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fa19cd95f7a9c4985424aafea3917b6cab5f220ca85b95d46217e135a01b2deb",
+    "at": "2026-11-07T05:10:25.875Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2d72ac2f31476c817673ba2741537c2e98dba066",
+      "attempts": 1,
+      "startedAt": "2026-11-07T05:22:21.584Z",
+      "doneAt": "2026-11-07T05:31:54.511Z",
+      "summary": "wait anota la carpeta principal al empezar y, si la carpeta del cambio ya no existe cuando la persona decide, lee la fase del cambio en la punta de su rama desde la principal y da waitFolderGoneCard (cerrado, cancelado o perdido) con código 0 en vez de la tarjeta de next; ARCHITECTURE §6 lo cuenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/core/test/cards/wait.test.ts": "sha256:8226d78edad1ae80f800b8e6def9c9fca0a7b092eef5262aa8a7f9598150470f",
+    "packages/cli/test/wait-folder.test.ts": "sha256:4fb59315fd2c7d0776a2a7a1d277069ddd3a4e5ed36571479fb2e8066b100737"
+  }
+}

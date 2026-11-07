@@ -10,6 +10,7 @@ import {
   ccusageFailedWarning,
   ccusageHint,
   ccusageQuestion,
+  DEFAULT_CONFIG,
   type DoctorLine,
 } from "@baquia-dev/specty-core";
 import { detectStacks, type Stack } from "../detect/stack";
@@ -17,10 +18,14 @@ import { execute } from "../io/exec";
 import { exists, isRecord, parseJson, readText } from "../io/files";
 import type { InitSetup } from "./install";
 
-/** The ccusage whose JSON `flow/usage.ts` reads. */
-const CCUSAGE = "ccusage@20.0.45";
+/**
+ * The ccusage of `version`: init gives the one whose JSON `flow/usage.ts` reads, as it only adds
+ * it when it creates the configuration; `doctor`, that of `usage.ccusage.version`.
+ */
+const ccusageAt = (version: string) => `ccusage@${version}`;
+const DEFAULT_VERSION = DEFAULT_CONFIG.usage.ccusage.version;
 /** Outside Node, the person installs it for the whole system. */
-const GLOBAL = `npm i -g ${CCUSAGE}`;
+const globalOf = (version: string) => `npm i -g ${ccusageAt(version)}`;
 /** How each Node package manager adds a development dependency. */
 const ADD: Readonly<Record<string, readonly string[]>> = {
   pnpm: ["add", "-D"],
@@ -49,8 +54,9 @@ const NOTHING: UsageStep = { done: [], written: [], warnings: [] };
 export async function usageTool(setup: InitSetup): Promise<UsageStep> {
   const { environment, root, lang } = setup;
   if (!setup.created || setup.options.dryRun === true || (await hasCcusage(root))) return NOTHING;
-  const add = await addCommand(root, setup.detection.stacks);
-  if (add === undefined) return { ...NOTHING, warnings: [ccusageHint(GLOBAL, lang)] };
+  const add = await addCommand(root, setup.detection.stacks, DEFAULT_VERSION);
+  if (add === undefined)
+    return { ...NOTHING, warnings: [ccusageHint(globalOf(DEFAULT_VERSION), lang)] };
   const command = [add.tool, ...add.args].join(" ");
   const { terminal } = environment;
   if (!terminal.interactive) return { ...NOTHING, warnings: [ccusageHint(command, lang)] };
@@ -68,13 +74,17 @@ export async function usageTool(setup: InitSetup): Promise<UsageStep> {
 
 /**
  * `doctor`'s warning when closing would not find ccusage (`flow/usage.ts`): neither in
- * `node_modules/.bin` nor on the PATH. It carries the command init would give.
+ * `node_modules/.bin` nor on the PATH. It carries the command init would give, with `version`.
  */
-export async function usageDoctor(root: string, env: NodeJS.ProcessEnv): Promise<DoctorLine[]> {
+export async function usageDoctor(
+  root: string,
+  env: NodeJS.ProcessEnv,
+  version: string,
+): Promise<DoctorLine[]> {
   if (await exists(join(root, "node_modules", ".bin", "ccusage"))) return [];
   if ((await execute("sh", ["-c", "command -v ccusage"], { cwd: root, env })).code === 0) return [];
-  const add = await addCommand(root, await detectStacks(root));
-  const command = add === undefined ? GLOBAL : [add.tool, ...add.args].join(" ");
+  const add = await addCommand(root, await detectStacks(root), version);
+  const command = add === undefined ? globalOf(version) : [add.tool, ...add.args].join(" ");
   return [{ code: "no-ccusage", command }];
 }
 
@@ -82,6 +92,7 @@ export async function usageDoctor(root: string, env: NodeJS.ProcessEnv): Promise
 async function addCommand(
   root: string,
   stacks: readonly Stack[],
+  version: string,
 ): Promise<{ readonly tool: string; readonly args: readonly string[] } | undefined> {
   const tool = stacks.find(
     (stack) =>
@@ -92,7 +103,7 @@ async function addCommand(
   const add = tool === undefined ? undefined : ADD[tool];
   if (tool === undefined || add === undefined) return undefined;
   const workspace = tool === "pnpm" && (await exists(join(root, "pnpm-workspace.yaml")));
-  return { tool, args: [...add, ...(workspace ? ["-w"] : []), CCUSAGE] };
+  return { tool, args: [...add, ...(workspace ? ["-w"] : []), ccusageAt(version)] };
 }
 
 /** Whether the root `package.json` already depends on ccusage. */

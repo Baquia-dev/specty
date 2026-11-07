@@ -150,6 +150,26 @@ describe("the advice of a fresh session at the closing", () => {
   });
 });
 
+describe("the threshold of a fresh session, from the configuration", () => {
+  /** In the session itself, with `tokens` as `usage.freshSessionTokens`. */
+  const threshold = (tokens: number) => `${IN_SESSION}usage:\n  freshSessionTokens: ${tokens}\n`;
+
+  it("AC1: comes when the session read more than usage.freshSessionTokens, below 150,000", async () => {
+    const folder = await claudeFolder(120_002);
+    const env = { CLAUDE_CONFIG_DIR: folder };
+    const out = await acceptedQuick(claudeCode(folder), env, threshold(100_000));
+    expect(out).toContain("sesión nueva");
+    expect(out).toContain("unos 120.000 tokens de contexto");
+  });
+
+  it("AC1: does not come with usage.freshSessionTokens or fewer, above 150,000", async () => {
+    const folder = await claudeFolder(620_002);
+    const env = { CLAUDE_CONFIG_DIR: folder };
+    const out = await acceptedQuick(claudeCode(folder), env, threshold(620_002));
+    expect(out).not.toContain("sesión nueva");
+  });
+});
+
 describe("Specty's card after a /clear", () => {
   it("AC3: Claude Code's session start brings back what `specty next` says", async () => {
     const root = await tempRepo(APP);
