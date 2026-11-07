@@ -77,7 +77,7 @@ Hoy cada comando de una verificación arranca con el entorno de Specty tal cual,
   - files: packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/processes.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/processes.test.ts test/settings/catalog.test.ts && pnpm lint
-- [ ] T3: El número de procesos por núcleos y plazas, y el entorno con sus variables
+- [x] T3: El número de procesos por núcleos y plazas, y el entorno con sus variables
   - files: packages/cli/src/flow/process-budget.ts, packages/cli/test/process-budget.test.ts, packages/cli/test/server/config.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/process-budget.test.ts test/server/config.test.ts && pnpm lint
