@@ -95,3 +95,31 @@ Hoy cuánto conserva su puesto en la cola de las verificaciones un proceso que d
 
 - R1: C17 hace configurable el sondeo de esas mismas colas, y un sondeo más largo que la caducidad haría que los que esperan se quitaran el puesto unos a otros. Mitigación: el mínimo de la caducidad (10 s) son cinco vueltas del sondeo de hoy, y la memoria avisa a C17 de que su máximo quede por debajo de un tercio de ese mínimo, o de que la cola compare con max(caducidad, 3 × sondeo), como la marca de `wait`.
 - R2: C17 toca en paralelo `flow/full-verification.ts`, `store/verify-slots.ts`, el catálogo, `schema/internal-waits.ts` y `docs/formats.md`. Mitigación: aquí solo cambia la llamada a la cola en los dos primeros y se añaden líneas sueltas en los demás; al incorporar main se conservan las dos partes.
+
+## Cierre
+
+### Resumen
+
+- Core: `schema/internal-waits.ts` añade `internal.waits.queueStaleSec` (30, entre 10 y 600) e `internal.retention.indexHours` (1, entre 1 y 168); `ResolvedConfig.internal` las trae sin tocar `config.ts`.
+- Catálogo: los dos ajustes en «Interno» con la marca `new` (`queueStaleSec` en `s` tras el latido, `indexHours` en `h` tras los días del registro) y la garantía `guarantee.waitMarks`, fija en 30 s, tras las cuatro de C8; sus textos en español y en inglés en `cards/settings-internal.ts`.
+- Tarjeta de `prune`: dice las horas de los índices («de más de una hora» con 1, «de más de N horas» con más).
+- CLI: `joinQueue` y `joinTurnQueue` reciben la vida de los puestos (`queueStaleSec` y el intervalo de la cola), que pasan la cola del turno de la verificación completa y la de las plazas; un puesto dura `queueStaleSec`, y nunca menos de tres vueltas de `internal.waits.verifyIntervalMs` (C17). `removeLeftovers` recibe las horas de los índices y las devuelve para la tarjeta.
+- Documentación: formats.md §1 y §6 (las claves y la garantía de la marca de `wait`), ARCHITECTURE (la cola del turno) y ui.md (cinco garantías).
+
+### Desviaciones
+
+- T1 se dividió en dos antes de aprobar (aviso de 9 archivos): la tarjeta de `prune` y los documentos pasaron a T2, y las tareas de la CLI a T3 y T4. La última lleva `pnpm typecheck` en su `verify`, como pidió `propose`.
+- El test de las garantías de C8 en `catalog.test.ts` cambió de nombre: ya no son «cuatro, fijas en 24 h», sino esas cuatro más la marca de `wait` a 30 s.
+- Al incorporar main llegó C17, cuyos intervalos llegan hasta 10 s y cuyo test exige sus dos claves justo tras el latido. Para conservar las dos partes, R1 se resolvió en el código y no solo en la memoria: la cola cuenta max(`queueStaleSec`, 3 × intervalo), como la marca de `wait`. `queueStaleSec` va en el catálogo tras los intervalos de C17, y la línea de `internal-life.test.ts` que lo esperaba justo tras el latido pasó a esperarlo tras `waitIntervalMs`. Los números de «Interno» de `catalog.test.ts` suman las claves de C12, C16, C17 y C18 (19).
+
+### Decisiones
+
+- La vida de la marca de `specty wait` es una garantía con candado y no una clave (A3): una que viviera más dejaría terminar el turno del agente sin que nadie espere a la persona, como los pendientes del guard de C8. Las vidas de A10 de la épica pasan de cuatro a cinco.
+- La caducidad de la cola y la vida de los índices no forman parte del cumplimiento (A2): la cola solo ordena, y el mínimo de los índices es el valor de hoy.
+- `Leftovers.hours` es opcional en core, con 1 por defecto, para que la tarjeta y sus tests de hoy no cambien.
+
+### Pendientes
+
+- P297 (el aviso a C17 de R1) queda resuelto: la cola ya compara con max(caducidad, 3 × intervalo).
+- A10 de la épica nombra cuatro vidas del cumplimiento; con este corte son cinco: conviene ajustarlo en la spec de la épica.
+- AC6 se comprueba a mano: formats.md §1 y §6.
