@@ -8,6 +8,8 @@ import { dayOf } from "./period";
 /** A change for the panel: who, and each fact with its local day (YYYY-MM-DD). */
 export interface StatsRow {
   readonly id: string;
+  /** The title of its spec, when whoever reads the rows reads the specs too; `statsRow` has none. */
+  readonly title?: string;
   readonly kind: ChangeKind;
   /** `approved.by` of its state or, without it, the last `by` of its audit. */
   readonly person?: string;

@@ -1,13 +1,28 @@
 // SPDX-License-Identifier: Apache-2.0
-import { availableParallelism } from "node:os";
-import { describe, expect, it } from "vitest";
+import { chmod, mkdtemp, writeFile } from "node:fs/promises";
+import { availableParallelism, tmpdir } from "node:os";
+import { delimiter, join } from "node:path";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { budgetedEnv, processBudget } from "../src/flow/process-budget";
 import type { Session } from "../src/session";
 import { sessionAt } from "./server/support";
 import { AGENT, APP, CONFIG, tempRepo } from "./support";
 
-/** The configuration with two variables of its own: the test's, not those of who runs it. */
-const WITH = `${CONFIG()}  processes:\n    env: ["PROCESOS_A", "PROCESOS_B"]\n`;
+/** Two variables of the test's own, not those of who runs it, and `memoryMiB`, the size of a process. */
+const processes = (memoryMiB: number) =>
+  `${CONFIG()}  processes:\n    env: ["PROCESOS_A", "PROCESOS_B"]\n    memoryMiB: ${memoryMiB}\n`;
+
+/** The configuration with both variables and 1 MiB a process: the memory never lowers the number. */
+const WITH = processes(1);
+
+/** A configuration whose processes are so big that not even one fits in any machine's memory. */
+const HUGE = processes(1_000_000_000);
+
+const MIB = 1024 ** 2;
+const GIB = 1024 ** 3;
+
+/** No memory limit: the number is the cores' alone. */
+const ROOMY = { memory: Number.POSITIVE_INFINITY, memoryMiB: 512 };
 
 /** This machine's cores, and those of a task's verification with the default 2 places. */
 const CORES = availableParallelism();
@@ -20,16 +35,47 @@ async function sessionWith(config: string, env: Record<string, string> = {}): Pr
   return { ...opened, environment };
 }
 
+/** 7.25 GiB, in 16 KiB pages. */
+const SEVEN = 475_136 * 16_384;
+
+/**
+ * The environment in which the memory available is 7.25 GiB: `process.availableMemory()` says so
+ * and, on macOS, the `PATH` starts with a `vm_stat` that says so too.
+ */
+async function sevenGiB(): Promise<Record<string, string>> {
+  vi.spyOn(process, "availableMemory").mockReturnValue(SEVEN);
+  if (process.platform !== "darwin") return {};
+  const bin = await mkdtemp(join(tmpdir(), "specty-vm-stat-"));
+  const lines = [
+    "Mach Virtual Memory Statistics: (page size of 16384 bytes)",
+    "Pages free:                                   475136.",
+    "Pages purgeable:                                   0.",
+    "File-backed pages:                                 0.",
+  ];
+  await writeFile(
+    join(bin, "vm_stat"),
+    `#!/bin/sh\nprintf '%s\\n' ${lines.map((line) => `'${line}'`).join(" ")}\n`,
+  );
+  await chmod(join(bin, "vm_stat"), 0o755);
+  return { PATH: `${bin}${delimiter}${process.env.PATH ?? ""}` };
+}
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 describe("the processes a verification command may start", () => {
   it("AC1: are the cores of its share of the places, rounded down and never fewer than 1", () => {
-    expect(processBudget({ cores: 14, places: 1, slots: 2 })).toBe(7);
-    expect(processBudget({ cores: 15, places: 1, slots: 2 })).toBe(7);
-    expect(processBudget({ cores: 14, places: 2, slots: 2 })).toBe(14);
-    expect(processBudget({ cores: 14, places: Number.POSITIVE_INFINITY, slots: 2 })).toBe(14);
-    expect(processBudget({ cores: 14, places: 1, slots: 3 })).toBe(4);
-    expect(processBudget({ cores: 8, places: 1, slots: 1 })).toBe(8);
-    expect(processBudget({ cores: 1, places: 1, slots: 2 })).toBe(1);
-    expect(processBudget({ cores: 3, places: 1, slots: 4 })).toBe(1);
+    expect(processBudget({ ...ROOMY, cores: 14, places: 1, slots: 2 })).toBe(7);
+    expect(processBudget({ ...ROOMY, cores: 15, places: 1, slots: 2 })).toBe(7);
+    expect(processBudget({ ...ROOMY, cores: 14, places: 2, slots: 2 })).toBe(14);
+    expect(processBudget({ ...ROOMY, cores: 14, places: Number.POSITIVE_INFINITY, slots: 2 })).toBe(
+      14,
+    );
+    expect(processBudget({ ...ROOMY, cores: 14, places: 1, slots: 3 })).toBe(4);
+    expect(processBudget({ ...ROOMY, cores: 8, places: 1, slots: 1 })).toBe(8);
+    expect(processBudget({ ...ROOMY, cores: 1, places: 1, slots: 2 })).toBe(1);
+    expect(processBudget({ ...ROOMY, cores: 3, places: 1, slots: 4 })).toBe(1);
   });
 
   it("AC1: puts the same number in each variable, a task's share with one place and every core with all", async () => {
@@ -62,6 +108,47 @@ describe("the processes a verification command may start", () => {
       for (const places of [1, Number.POSITIVE_INFINITY]) {
         expect(await budgetedEnv(session, places)).toEqual(session.environment.env);
       }
+    }
+  });
+
+  it("AC1: are, when its share of the memory does not reach, the processes of memoryMiB that fit in it, and never fewer than 1", () => {
+    const share = { cores: 14, slots: 2, memoryMiB: 512 };
+    expect(processBudget({ ...share, places: 1, memory: 7.25 * GIB })).toBe(7);
+    expect(processBudget({ ...share, places: Number.POSITIVE_INFINITY, memory: 7.25 * GIB })).toBe(
+      14,
+    );
+    expect(processBudget({ ...share, places: 1, memory: 6.73 * GIB })).toBe(6);
+    expect(processBudget({ ...share, places: Number.POSITIVE_INFINITY, memory: 6.73 * GIB })).toBe(
+      13,
+    );
+    expect(processBudget({ ...share, places: 1, memory: 2 * GIB })).toBe(2);
+    expect(processBudget({ ...share, places: 2, memory: 2 * GIB })).toBe(4);
+    expect(processBudget({ ...share, places: 1, memory: 1.99 * GIB })).toBe(1);
+    expect(processBudget({ ...share, places: 1, memory: 512 * MIB })).toBe(1);
+    expect(processBudget({ ...share, places: 2, memory: 0 })).toBe(1);
+    expect(processBudget({ ...share, places: 2, memoryMiB: 1024, memory: 4 * GIB })).toBe(4);
+    expect(
+      processBudget({ cores: 14, places: 1, slots: 3, memoryMiB: 256, memory: 2.5 * GIB }),
+    ).toBe(3);
+    expect(
+      processBudget({ cores: 8, places: 1, slots: 1, memoryMiB: 512, memory: 1.5 * GIB }),
+    ).toBe(3);
+  });
+
+  it("AC1: puts in each variable the processes that fit in the memory available as the command starts", async () => {
+    const session = await sessionWith(processes(1024), await sevenGiB());
+    // 7.25 GiB: 3.625 for a task's place, where 3 processes of 1 GiB fit, and 7 for the full one.
+    const task = await budgetedEnv(session, 1);
+    expect([task.PROCESOS_A, task.PROCESOS_B]).toEqual(Array(2).fill(String(Math.min(TASK, 3))));
+    const full = await budgetedEnv(session, Number.POSITIVE_INFINITY);
+    expect([full.PROCESOS_A, full.PROCESOS_B]).toEqual(Array(2).fill(String(Math.min(CORES, 7))));
+  });
+
+  it("AC1: puts 1 in each variable when not even one process of memoryMiB fits", async () => {
+    const session = await sessionWith(HUGE);
+    for (const places of [1, Number.POSITIVE_INFINITY]) {
+      const env = await budgetedEnv(session, places);
+      expect([env.PROCESOS_A, env.PROCESOS_B]).toEqual(["1", "1"]);
     }
   });
 });

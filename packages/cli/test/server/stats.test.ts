@@ -14,6 +14,8 @@ const day = (days: number) => localDay(noon(days));
 
 interface Archived {
   readonly id: string;
+  /** The title of its spec; its id without one. */
+  readonly title?: string;
   readonly kind: "standard" | "quick";
   readonly by: string;
   readonly tool: string;
@@ -75,7 +77,7 @@ async function archive(root: string, change: Archived) {
   };
   const folder = `${ARCHIVE}/${change.id}`;
   await writeFiles(root, {
-    [`${folder}/spec.md`]: `---\nkind: ${change.kind}\n---\n\n# ${change.id}\n`,
+    [`${folder}/spec.md`]: `---\nkind: ${change.kind}\n---\n\n# ${change.title ?? change.id}\n`,
     [`${folder}/state.json`]: `${JSON.stringify(state, null, 2)}\n`,
     [`${folder}/audit.jsonl`]: `${lines.map((entry) => JSON.stringify(entry)).join("\n")}\n`,
   });
@@ -84,6 +86,7 @@ async function archive(root: string, change: Archived) {
 /** Bea's quick change of two days ago, and Carlos's feature of forty days ago. */
 const BEA: Archived = {
   id: "20261001-de-bea",
+  title: "El saludo de Bea",
   kind: "quick",
   by: "Bea",
   tool: "codex",
@@ -160,6 +163,22 @@ describe("the panel in the local server", () => {
         expect(body.options).toContainEqual({ who, changes: 1 });
       }
       expect((await call(server.port, "/api/stats")).status).toBe(403);
+    } finally {
+      await server.close();
+    }
+  });
+
+  it("AC4: each change of the costliest and of those that failed the most brings the title of its spec", async () => {
+    const { server, headers } = await panel();
+    try {
+      const body = await stats(server.port, headers);
+      // Only Bea's change has a cost and a task verification failed in the period.
+      expect(body.cost.top).toEqual([
+        expect.objectContaining({ id: BEA.id, title: "El saludo de Bea", cost: 1.5, tasks: 2 }),
+      ]);
+      expect(body.quality.worst).toEqual([
+        { id: BEA.id, title: "El saludo de Bea", failed: 1, total: 3 },
+      ]);
     } finally {
       await server.close();
     }

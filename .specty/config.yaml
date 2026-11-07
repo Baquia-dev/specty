@@ -13,6 +13,8 @@ verify:
   default: "pnpm test"
   full: "pnpm check"
   timeoutSec: 2000
+  processes:
+    env: ["VITEST_MAX_WORKERS"]
   units:
     - name: estático
       command: "pnpm lint && pnpm typecheck && pnpm sources && pnpm knip"
