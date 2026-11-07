@@ -6,6 +6,13 @@
   "branch": "specty/20261107-el-resto-de-esperas-bloqueos-y-retencion-pasan",
   "baseCommit": "9183447eaa311a331341561a5c135a75de5a6508",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1b5c968248ae217beae232ec944296c3effb9f44267c72d0ecf776d4207d65d4",
+    "at": "2026-11-07T04:30:45.111Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -56,12 +63,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1b5c968248ae217beae232ec944296c3effb9f44267c72d0ecf776d4207d65d4",
-    "at": "2026-11-07T04:30:45.111Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T04:38:28.268Z"
 }

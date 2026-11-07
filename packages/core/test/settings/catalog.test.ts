@@ -138,6 +138,9 @@ describe("the settings' catalog", () => {
       "internal.waits.waitTimeoutSec",
       "internal.waits.heartbeatSec",
       "internal.retries.landing",
+      "internal.retries.memory",
+      "internal.retries.gitConfig",
+      "internal.retention.verifiedDays",
       "internal.exec.priority",
       "internal.server.portsTried",
     ]);
@@ -198,6 +201,14 @@ describe("the settings' catalog", () => {
         new: true,
       }),
       expect.objectContaining({ key: "internal.retries.landing", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.retries.memory", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.retries.gitConfig", kind: "number", new: true }),
+      expect.objectContaining({
+        key: "internal.retention.verifiedDays",
+        kind: "number",
+        unit: "d",
+        new: true,
+      }),
       expect.objectContaining({ key: "internal.exec.priority", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.server.portsTried", kind: "number", new: true }),
     ]);
@@ -230,7 +241,7 @@ describe("the settings' catalog", () => {
 
   it("AC5, AC7: says why each guarantee does not change, and names the internal settings in Spanish and in English", () => {
     const internal = SETTINGS.filter((setting) => setting.section === "internal");
-    expect(internal).toHaveLength(9);
+    expect(internal).toHaveLength(12);
     for (const setting of internal) {
       const es = settingText(setting.key, "es");
       const en = settingText(setting.key, "en");
@@ -269,6 +280,64 @@ describe("the settings' catalog", () => {
       expect(settingText(key, "es").name, key).not.toBe(key);
       expect(settingText(key, "es").name, key).not.toBe(settingText(key, "en").name);
     }
+  });
+});
+
+describe("the internal settings of locks and retention", () => {
+  const KEYS_OF_LOCKS = [
+    "internal.retries.memory",
+    "internal.retries.gitConfig",
+    "internal.retention.verifiedDays",
+  ];
+
+  it("AC5: puts the memory's and git configuration's retries and the record's days in «Interno», after landing, as new numbers, the days in d", () => {
+    const keys = SETTINGS.map((setting) => setting.key);
+    const landing = keys.indexOf("internal.retries.landing");
+    expect(keys.slice(landing + 1, landing + 4)).toEqual(KEYS_OF_LOCKS);
+    expect(SETTINGS.find((setting) => setting.key === "internal.retries.memory")).toEqual({
+      key: "internal.retries.memory",
+      section: "internal",
+      kind: "number",
+      new: true,
+    });
+    expect(SETTINGS.find((setting) => setting.key === "internal.retries.gitConfig")).toEqual({
+      key: "internal.retries.gitConfig",
+      section: "internal",
+      kind: "number",
+      new: true,
+    });
+    expect(SETTINGS.find((setting) => setting.key === "internal.retention.verifiedDays")).toEqual({
+      key: "internal.retention.verifiedDays",
+      section: "internal",
+      kind: "number",
+      unit: "d",
+      new: true,
+    });
+    for (const key of KEYS_OF_LOCKS) {
+      expect(settingOf(key.split("."))?.key, key).toBe(key);
+      expect(schemaAt(key), key).toBeInstanceOf(z.ZodNumber);
+    }
+  });
+
+  it("AC6: names and describes each of them in Spanish and in English", () => {
+    for (const key of KEYS_OF_LOCKS) {
+      const es = settingText(key, "es");
+      const en = settingText(key, "en");
+      expect(es.name, key).not.toBe(key);
+      expect(en.name, key).not.toBe(key);
+      expect(es.name, key).not.toBe(en.name);
+      expect(es.description, key).not.toBe("");
+      expect(en.description, key).not.toBe("");
+      expect(es.description, key).not.toBe(en.description);
+    }
+    expect(settingText("internal.retention.verifiedDays", "es").description).toContain(
+      "specty prune",
+    );
+    expect(settingText("internal.retention.verifiedDays", "en").description).toContain(
+      "specty prune",
+    );
+    expect(settingText("internal.retries.gitConfig", "es").description).toContain("50 ms");
+    expect(settingText("internal.retries.gitConfig", "en").description).toContain("50 ms");
   });
 });
 
