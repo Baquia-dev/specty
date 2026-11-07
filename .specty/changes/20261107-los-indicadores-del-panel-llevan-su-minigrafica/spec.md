@@ -69,7 +69,7 @@ Los seis indicadores del «Panel» de `specty ui` dan hoy su valor y su variaci�
   - files: packages/ui/src/components/charts/stat-tile.ts, packages/ui/src/components/charts/stat-tile.test.ts, packages/ui/src/catalog/charts.ts, packages/ui/src/catalog/catalog.test.ts
   - ac: AC2, AC3, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/charts/stat-tile.test.ts --include src/catalog/catalog.test.ts && pnpm lint
-- [ ] T3: Los indicadores del panel llevan su minigráfica y su tabla
+- [x] T3: Los indicadores del panel llevan su minigráfica y su tabla
   - files: packages/ui/src/dashboard/dashboard-summary.ts, packages/ui/src/dashboard/dashboard-summary.test.ts, docs/ui.md
   - ac: AC1, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-summary.test.ts --include src/dashboard/dashboard-page.test.ts && pnpm typecheck && pnpm lint && pnpm knip

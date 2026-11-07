@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-indicadores-del-panel-llevan-su-minigrafica",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-los-indicadores-del-panel-llevan-su-minigrafica",
   "baseCommit": "bbc77876ac9692c275f8142a0c75b30b956c6ded",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ae00442ab25a9e9f315b5f9ccdbff8be308a65b0",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:17:37.246Z",
       "doneAt": "2026-11-07T16:19:08.449Z",
-      "summary": "sp-stat-tile (components/charts/stat-tile.ts): el indicador con su minigráfica de 2 px, cortada en los huecos, con el último valor y los sueltos marcados, cursor, información emergente y teclado; el catálogo «Gráficas» añade sus cuatro estados."
+      "summary": "sp-stat-tile (components/charts/stat-tile.ts): el indicador con su minigráfica de 2 px, cortada en los huecos, con el último valor y los sueltos marcados, cursor, información emergente y teclado; el catálogo «Gráficas» añade sus cuatro estados.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8344c8bf20adbccdb5cd770ed56117d48f10cd75",
+      "startedAt": "2026-11-07T16:19:09.036Z",
+      "doneAt": "2026-11-07T16:20:18.071Z",
+      "summary": "dashboard-summary pinta cada indicador con sp-stat-tile y su serie de trend (por día o semana), y «Ver tabla» bajo la fila abre los seis indicadores por tramo; docs/ui.md lo cuenta."
     }
   },
   "pending": {
