@@ -100,3 +100,30 @@ El «Panel» de `specty ui` solo tiene hoy la fila de indicadores. Con este cort
 - R1: El corte queda en el límite del tamaño L, con core y UI. Mitigación: la página de gráficas del catálogo, las demás gráficas y el panel del prototipo quedan para los cortes siguientes. Las secciones no tocan el servidor ni la fuente de datos, y los tipos no pasan por el índice.
 - R2: C5 se hace en paralelo y también toca `dashboard-page.ts`. Mitigación: aquí la página solo importa las dos secciones y las coloca, en unas pocas líneas.
 - R3: jsdom no calcula la geometría, así que los tests no ven si las columnas se dibujan bien. Mitigación: los tests miran la estructura, los textos, el foco y el `fill` de cada segmento, y antes de aceptar se mira el panel en el navegador, en claro y en oscuro.
+
+## Cierre
+
+### Resumen
+
+El «Panel» de `specty ui` tiene, bajo los indicadores, la sección «Ritmo». Muestra los cambios cerrados apilados por carril (Feature, Quick y «Épica, spike y manual», con leyenda) y las tareas completadas, por día o, con más de 45 días, por semana desde el lunes. También tiene la sección «Personas y agentes»: una fila por persona, agente y modelo, con cambios, tareas, ciclo, verificaciones que pasan, sesiones y coste. Elegir una fila filtra el panel por ella. El core lo calcula en `stats/rhythm.ts` y `stats/people.ts`, y `statsView` lo añade a la respuesta de `GET /api/stats` sin tocar el servidor. Las gráficas son SVG propio (`components/charts/`): `sp-column-chart`, con `sp-chart-frame` (título, leyenda y «Ver tabla») y `sp-chart-tip`. Cada columna es un botón con sus valores en su nombre accesible, y la gráfica es una sola parada del tabulador, que se recorre con las flechas, Inicio y Fin. La paleta validada va en `styles.css` y en el inventario de tokens, con un test de daltonismo y contraste en los dos temas. Todo está en español y en inglés, documentado en `docs/ui.md`, y se vio en el navegador con los datos de este repositorio, en claro y en oscuro.
+
+### Desviaciones
+
+- T3 amplió su alcance, con la política, a `components/charts/column-chart.ts` y `chart-frame.ts`. Al verlo en el navegador, al pasar a otro periodo una columna activa que ya no existía dejaba una información emergente vacía y ninguna columna en el tabulador; y la etiqueta «Épica, spike y manual» se partía en dos líneas.
+- T3 amplió también su alcance a `core/src/stats/rhythm.ts`: knip marcaba `StatsBucket` como un tipo exportado sin uso, así que el tipo de cada bucket pasó a ir dentro de `StatsRhythm`.
+- El test de AC6 es un `it` con un bucle por tema y no un `it.each`, porque el envío de los tests no reconocía el id del criterio en el nombre de un `it.each`.
+
+### Decisiones
+
+- `rhythm` y `people` son opcionales en `StatsView`. Así, una fuente que aún no los da (las de prueba de C1 o el prototipo) muestra el resto del panel, y la página solo pinta la sección que llega.
+- Las marcas del eje son enteras cuando todos los valores lo son. Sin datos, el eje llega a 1.
+- La información emergente va a la derecha de la columna y, pasada la mitad, a su izquierda. En oscuro usa los tokens del tooltip de la UI, invertidos, como el resto de tooltips.
+- La fila elegida en «Personas y agentes» es un botón con `aria-pressed`, marcado con el fondo suave y la barra de acento de la maqueta. Los nombres de los agentes salen tal como los da la auditoría (`claude-code`), igual que en «Ver por».
+- `sum`, `median` y `addDays` pasaron de `summary.ts` a `period.ts` para que las secciones los compartan sin importarse entre sí.
+
+### Pendientes
+
+- La página de gráficas del catálogo (`catalog/charts.ts`, su ruta, su enlace y su comando) no cupo en el tamaño L de este corte: conviene añadirla en C3, con la línea, la barra segmentada y el indicador con minigráfica.
+- Los formatos del panel están repetidos: `shortDay` en `dashboard-page.ts` y en `dashboard-rhythm.ts`, y el porcentaje y los dólares en `dashboard-summary.ts` y en `dashboard-people.ts`. Conviene llevarlos a un `dashboard/dashboard-format.ts` cuando C3 o C4 añadan más secciones.
+- En el core, `people.ts` (`rowOf`) repite cómo `summary.ts` (`countsOf`) cuenta el ciclo, las verificaciones y el coste de un periodo, y su orden por cambios repite el de `optionsOf`. Conviene compartirlos.
+- «Sesiones» muestra 0 para los agentes cuya herramienta no da `session` (hoy, todos menos Claude Code; por ejemplo, antigravity) y para «(sin dato)». Mostraría «—» con un `sessions: null` cuando ninguna línea de sus cambios lo trae.
