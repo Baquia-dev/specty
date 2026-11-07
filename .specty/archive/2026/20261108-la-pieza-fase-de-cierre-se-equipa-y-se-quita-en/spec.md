@@ -90,3 +90,25 @@ En la vista Flujo de «Configuración», la pieza «Fase de cierre» deja de ser
 
 - R1: C21 y C22 tocan en paralelo `schema/flow.ts`, el catálogo y quizá `settings/pieces.ts` y `cards/settings-pieces.ts`. Mitigación: este corte solo cambia la línea de la pieza `closing`, su texto y una frase, y al incorporar main se conservan las dos partes.
 - R2: Parsear la spec en el servidor cuesta en cada petición. Mitigación: solo se hace en aceptación, donde `criteriaTests` ya la parsea, y con la misma spec.
+
+## Cierre
+
+### Resumen
+
+La pieza «Fase de cierre» de la vista Flujo se ajusta ahora con `flow.closing` y ya no lleva «Próximamente». Está equipada mientras la clave no es `false`, y en Avanzado se quita y se equipa como las demás piezas de sí o no: quitarla da `flow.closing: false`, y equiparla quita la clave del archivo. Su descripción nueva está en español y en inglés. Con la pieza quitada, el modo Básico añade, tras la frase del modo delegado, una frase que dice que aceptar un cambio estándar que no es corte de una épica lo cierra y lo archiva con el resumen de sus tareas.
+
+Con P333, el servidor local añade `withoutClosing: true` al registro de un cambio en aceptación que se cierra al aceptarlo, con la regla `withoutClosing` de la CLI y la configuración de su carpeta. La UI lo lleva a la vista del cambio, y el diálogo «Aceptar» dice entonces «No tiene fase de cierre: se cierra al aceptarlo, con el resumen de sus tareas». El aviso, como en un cambio rápido, dice que el cambio está cerrado. `docs/ui.md` describe la pieza, su frase y el diálogo, y `docs/ARCHITECTURE.md` §15 el campo nuevo de `GET /api/changes`.
+
+### Desviaciones
+
+- La vista de la UI copia `withoutClosing` en `auditExtrasOf`, junto a `criteriaTests`, que también da el servidor en aceptación, y no en `identityOf` como decía el Diseño.
+
+### Decisiones
+
+- La marca `soon` de las piezas se queda sin piezas que la lleven, para la próxima que llegue sin clave, y el código de la vista Flujo no cambia: la pieza usa las ediciones y el guardado de cualquier pieza de sí o no.
+- El servidor solo calcula `withoutClosing` en aceptación, el único momento en que se abre el diálogo, con la spec que ya parsea para `criteriaTests`. La regla sigue en un solo sitio (`flow/views.ts`).
+
+### Pendientes
+
+- P352: `packages/cli/src/server/records.ts` llega a 302 líneas de código, por encima del aviso de 300. Conviene proponer cómo dividirlo por responsabilidad, por ejemplo la lectura de los archivados en su propio archivo.
+- P226: `packages/ui/src/data/records.ts` llega a 308 líneas de código; ya estaba anotado.

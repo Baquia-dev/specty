@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-la-pieza-fase-de-cierre-se-equipa-y-se-quita-en",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-la-pieza-fase-de-cierre-se-equipa-y-se-quita-en",
   "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:903687a0eaa0d7a565bc40821a2c0eea3c16ab23881bbc475ed8dfe34dbfa29b",
@@ -76,12 +76,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "64f5665163d33a8b383b751c0cad241bf8e7066f",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:18:50.100Z",
       "doneAt": "2026-11-07T16:19:34.277Z",
-      "summary": "El diálogo «Aceptar» y su aviso dicen que un cambio con withoutClosing se cierra al aceptarlo, sin fase de cierre; docs/ui.md lo describe"
+      "summary": "El diálogo «Aceptar» y su aviso dicen que un cambio con withoutClosing se cierra al aceptarlo, sin fase de cierre; docs/ui.md lo describe",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -94,6 +94,7 @@
     "T": 5,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-07T16:20:25.680Z",
   "lockedTests": {
     "packages/cli/test/server/records.test.ts": "sha256:20309bd1101d4effb27e1bf7ad7bb0e32ed38388997d99f3066ba6b602c6a070",
     "packages/core/test/settings/pieces.test.ts": "sha256:c3a14e9fc99d56089e1c413e39fff88a1e5b8edf9777f139391a97947f008e8b",
