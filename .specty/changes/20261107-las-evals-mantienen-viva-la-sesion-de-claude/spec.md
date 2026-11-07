@@ -55,7 +55,7 @@ El experimento `wait` no llega a medir la espera con `specty wait` (P272): en `c
 
 ## Tareas
 
-- [ ] T1: Un agente lanzado con una sesión tiene la entrada abierta hasta que termina
+- [x] T1: Un agente lanzado con una sesión tiene la entrada abierta hasta que termina
   - files: evals/src/launch.ts, evals/test/session.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/session.test.ts test/launch.test.ts && pnpm lint
