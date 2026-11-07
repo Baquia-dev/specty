@@ -47,7 +47,7 @@ Sin cambio activo, la tarjeta de `specty next` en la carpeta principal lista los
 
 ## Tareas
 
-- [ ] T1: Un experimento que retoma un cambio huérfano con un subagente
+- [x] T1: Un experimento que retoma un cambio huérfano con un subagente
   - files: evals/src/experiments.ts, evals/test/orphan.test.ts, evals/test/experiments.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/orphan.test.ts test/experiments.test.ts test/question.test.ts test/changes-card.test.ts && pnpm typecheck && pnpm lint

@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c5bf0310718ee814283edf08332251098c48dffe",
+      "startedAt": "2026-11-07T00:12:44.939Z",
+      "doneAt": "2026-11-07T00:15:00.346Z",
+      "summary": "Experimento orphan: un cambio quick aprobado y huérfano en .worktrees/ (state.json de hace dos horas, id en evals.orphan) y su juicio por el enter del subagente, el archivo y el cierre; leftApproved comparte la preparación con la épica."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

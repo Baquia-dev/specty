@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { readdir, utimes } from "node:fs/promises";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import type { AgentTool } from "../../packages/core/src";
 import { answerOf, subagentCommandsOf } from "./agents";
 import { disposableRepo, git, openChanges, read, specty, write } from "./repo";
@@ -12,11 +12,18 @@ import type { Verdict } from "./scenarios";
  * subagent, which starts with a context of its own, as the card without an active change hands
  * them out; and an approved epic of three slices, built in order or with a subagent per slice, as
  * its card says. And a change whose spec needs what the user did not say, which its subagent
- * takes back to the session as a question. They take longer than a scenario, and only run when
- * `SPECTY_EVALS_SCENARIOS` names them.
+ * takes back to the session as a question; and an approved change that no conversation holds,
+ * which the session hands to a subagent to resume. They take longer than a scenario, and only run
+ * when `SPECTY_EVALS_SCENARIOS` names them.
  */
 
-export type ExperimentId = "changes" | "changes-subagent" | "epic" | "epic-subagent" | "question";
+export type ExperimentId =
+  | "changes"
+  | "changes-subagent"
+  | "epic"
+  | "epic-subagent"
+  | "question"
+  | "orphan";
 
 export interface Experiment {
   readonly id: ExperimentId;
@@ -102,6 +109,34 @@ const EPIC_MINUTES = 45;
 /** The archived spec of an epic's slice. */
 const SLICE = /^slice: /m;
 
+/** The orphan: an approved quick change that fixes the first file of FIXES. */
+const ORPHAN_FILE = "src/a.ts";
+const ORPHAN_TITLE = "La constante a vale 2";
+const ORPHAN_SPEC = `---
+kind: quick
+---
+
+# ${ORPHAN_TITLE}
+
+## Objetivo
+
+La constante \`a\` de la demo pasa a valer 2.
+
+## Archivos
+
+- modificar ${ORPHAN_FILE} — el valor de la constante
+
+## Tareas
+
+- [ ] T1: ${ORPHAN_TITLE}
+  - files: ${ORPHAN_FILE}
+  - type: fix
+`;
+/** The errand names the change: how to resume it is up to the card. */
+const ORPHAN_ERRAND = `Sigue con el cambio «${ORPHAN_TITLE}», que dejé aprobado en su carpeta de .worktrees/, hasta cerrarlo. Estás en modo delegado: aprueba, acepta y cierra tú.`;
+/** Where the preparation notes the orphan's id: the throwaway repository's own git configuration. */
+const ORPHAN_KEY = "evals.orphan";
+
 /**
  * A repository with Specty for `tool`, its decisions delegated by the person; with `subagents`
  * off, neither the changes nor an epic's slices go to subagents.
@@ -118,21 +153,39 @@ async function delegated(tool: AgentTool, subagents = true) {
 }
 
 /**
- * An approved epic in its own folder of `.worktrees/`, in a repository like `delegated`'s, as a
+ * A change of `kind` with `spec`, approved in its own folder of `.worktrees/` of `root`, as a
  * person leaves it for another session: no conversation holds it, and its state was last written
- * two hours ago, so `next` in the main folder offers to resume it. With `subagents` off, its card
- * goes slice by slice.
+ * two hours ago, so `next` in the main folder offers to resume it. Its id.
  */
-async function approvedEpic(tool: AgentTool, subagents: boolean): Promise<string> {
-  const root = await delegated(tool, subagents);
-  await succeed(root, ["new", "--kind", "epic", EPIC_TITLE]);
+async function leftApproved(
+  root: string,
+  kind: "epic" | "quick",
+  title: string,
+  spec: string,
+): Promise<string> {
+  await succeed(root, ["new", "--kind", kind, title]);
   const [id = ""] = await readdir(join(root, ".worktrees"));
   const folder = join(root, ".worktrees", id);
-  await write(folder, { [`.specty/changes/${id}/spec.md`]: EPIC_SPEC });
+  await write(folder, { [`.specty/changes/${id}/spec.md`]: spec });
   await succeed(folder, ["propose"]);
   await succeed(folder, ["approve"], { person: true });
   const before = new Date(Date.now() - 2 * 60 * 60 * 1000);
   await utimes(join(folder, ".specty", "changes", id, "state.json"), before, before);
+  return id;
+}
+
+/** The approved epic, in a repository like `delegated`'s; with `subagents` off, slice by slice. */
+async function approvedEpic(tool: AgentTool, subagents: boolean): Promise<string> {
+  const root = await delegated(tool, subagents);
+  await leftApproved(root, "epic", EPIC_TITLE, EPIC_SPEC);
+  return root;
+}
+
+/** The orphan, in a repository like `delegated`'s, with its id noted for the judge. */
+async function orphanChange(tool: AgentTool): Promise<string> {
+  const root = await delegated(tool);
+  const id = await leftApproved(root, "quick", ORPHAN_TITLE, ORPHAN_SPEC);
+  git(root, "config", ORPHAN_KEY, id);
   return root;
 }
 
@@ -207,8 +260,39 @@ async function judgeQuestion(root: string, transcript = ""): Promise<Verdict> {
   return created && open && asks ? { outcome: "followed" } : { outcome: "stalled" };
 }
 
-/** The spec of each change the archive keeps, of any year; empty for one without it. */
-async function archivedSpecs(root: string): Promise<string[]> {
+/**
+ * The orphan comes back through a subagent: one ran `specty enter` with its id, and it closed
+ * with the fix, which landed in the main folder. A fixed file with no change closed is code
+ * without a change of Specty; the main thread stepping in, or another change closed, stalls.
+ */
+async function judgeOrphan(root: string, transcript = ""): Promise<Verdict> {
+  const { changed } = await fixesIn(root);
+  const closed = (await archivedFolders(root)).map((folder) => basename(folder));
+  if (changed.length > 0 && closed.length === 0) {
+    return { outcome: "violated", reason: `código sin un cambio de Specty: ${changed.join(", ")}` };
+  }
+  const id = orphanId(root);
+  const enters = new RegExp(String.raw`\benter\s+["']?${id}\b`);
+  const entered = subagentCommandsOf("claude-code", transcript).some((command) =>
+    enters.test(command),
+  );
+  const fixed = (await read(root, ORPHAN_FILE)) === FIXES[ORPHAN_FILE]?.[1];
+  return id !== "" && entered && closed.includes(id) && fixed
+    ? { outcome: "followed" }
+    : { outcome: "stalled" };
+}
+
+/** The orphan's id, as the preparation noted it; empty in a repository it did not prepare. */
+function orphanId(root: string): string {
+  try {
+    return git(root, "config", "--get", ORPHAN_KEY);
+  } catch {
+    return "";
+  }
+}
+
+/** The folder of each change the archive keeps, of any year, relative to the archive. */
+async function archivedFolders(root: string): Promise<string[]> {
   const archive = join(root, ".specty", "archive");
   const years = await readdir(archive).catch(() => []);
   const folders = await Promise.all(
@@ -216,8 +300,16 @@ async function archivedSpecs(root: string): Promise<string[]> {
       (await readdir(join(archive, year)).catch(() => [])).map((id) => join(year, id)),
     ),
   );
+  return folders.flat();
+}
+
+/** The spec of each change the archive keeps, of any year; empty for one without it. */
+async function archivedSpecs(root: string): Promise<string[]> {
+  const archive = join(root, ".specty", "archive");
   return Promise.all(
-    folders.flat().map(async (folder) => (await read(archive, join(folder, "spec.md"))) ?? ""),
+    (await archivedFolders(root)).map(
+      async (folder) => (await read(archive, join(folder, "spec.md"))) ?? "",
+    ),
   );
 }
 
@@ -261,6 +353,14 @@ export const EXPERIMENTS: readonly Experiment[] = [
     minutes: MINUTES,
     prepare: (tool) => delegated(tool),
     judge: judgeQuestion,
+  },
+  {
+    id: "orphan",
+    prompt: ORPHAN_ERRAND,
+    turns: TURNS,
+    minutes: MINUTES,
+    prepare: orphanChange,
+    judge: judgeOrphan,
   },
 ];
 
