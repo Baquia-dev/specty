@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261107-las-esperas-los-reintentos-y-la-retencion-pasan",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-las-esperas-los-reintentos-y-la-retencion-pasan",
+  "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2b7d5109c7fa5c77baf5349cc3f9c3e585eb1fe3a24ea62c652a48aea4db5f6f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4c0409404e30ca45929aab3db592649fd84c6f22fb32b7d5be820da5388e3545",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:2a5b36093f18c29a8567a121a50c022cb6a8ad9f7811ddd2a5f22ff1f6182a17",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:b8bf408b8346d2542b57a053fe6f110b064d997e41d3d3e0816d9951c9572660",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:6c0c2277610b959cfbd6b33b83a35ee30e7df1b4218cf3da2aea8bd1f45a804b",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:a10a3a9faf7c7ec2adddc9f35bd6cb57a2fa1c828c518dd71e0f9832699b2d91",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 8,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9e195ddd52a017a4a294a46d6867fe76c0b0b9538893792126521864598a5eac",
+    "at": "2026-11-07T00:52:18.577Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
