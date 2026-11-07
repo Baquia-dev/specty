@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "20261107-el-tamano-y-el-esfuerzo-pasan-a-ser-ajustes",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-tamano-y-el-esfuerzo-pasan-a-ser-ajustes",
+  "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4371443545022b0b1c812ed925145f569bb565df14c171f306cf9f9248257f12",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3c6c90a0d739df27be0253407b51be5259d886ea0f6127b9eb83cab25dae7ced",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:592d5f03a622dbf5aceb54e1beaf2deb5a439f1950c5836a9fe393a53cd8ed6d",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:9d26a779fbe55cb2bbb4f975e794000efeef80f923582cb65349f9b19bdbafa1",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:efe74c8e0d175924d31ba3550835eed609ef3e68cd1987972329f18d2860ab0f",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:e42232a3cec2afb030cb93e56152b00069e82469ec3f8d01408d4034c6cade4d",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:0919905b7845e4222132f2e74b1da228bdc66b3a0d443de661b7c72b7455c8b4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 8,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:bcf02e3fad7d3e64ebbd01dfe66bff0f1304c212da19e7365eb0d045bb3b33d1",
+    "at": "2026-11-07T03:43:37.404Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
