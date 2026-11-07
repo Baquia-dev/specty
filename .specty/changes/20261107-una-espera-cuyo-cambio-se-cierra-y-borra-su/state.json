@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261107-una-espera-cuyo-cambio-se-cierra-y-borra-su",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-una-espera-cuyo-cambio-se-cierra-y-borra-su",
   "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fa19cd95f7a9c4985424aafea3917b6cab5f220ca85b95d46217e135a01b2deb",
+    "at": "2026-11-07T05:10:25.875Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -24,12 +31,8 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:fa19cd95f7a9c4985424aafea3917b6cab5f220ca85b95d46217e135a01b2deb",
-    "at": "2026-11-07T05:10:25.875Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/core/test/cards/wait.test.ts": "sha256:8226d78edad1ae80f800b8e6def9c9fca0a7b092eef5262aa8a7f9598150470f",
+    "packages/cli/test/wait-folder.test.ts": "sha256:4fb59315fd2c7d0776a2a7a1d277069ddd3a4e5ed36571479fb2e8066b100737"
+  }
 }
