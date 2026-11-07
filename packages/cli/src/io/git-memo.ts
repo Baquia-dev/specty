@@ -16,36 +16,52 @@ interface Kept<T> {
   remember(key: string, value: T): void;
 }
 
-/** Answers a `Git` keeps for a while, forgotten together when it runs a command that changes them. */
+/**
+ * Answers a `Git` keeps for a while, forgotten together when it runs a command that changes them.
+ * Several `Git` of one repository can share it (`Git.inWorktree`): whatever one of them changes,
+ * all of them forget.
+ */
 export interface Recall {
   keep<T>(ask: (key: string) => Promise<T>): Kept<T>;
   forget(): void;
 }
 
-function recall(ttlMs: number = RECENT_MS, now: () => number = () => Date.now()): Recall {
-  const clears: (() => void)[] = [];
+/**
+ * A `Recall` that forgets by generations: `forget` starts a new one, and an answer kept in another
+ * no longer counts. So nothing registers in it, and a `Git` that shares it goes away with its
+ * answers.
+ */
+export function recall(ttlMs: number = RECENT_MS, now: () => number = () => Date.now()): Recall {
+  let generation = 0;
   return {
     keep<T>(ask: (key: string) => Promise<T>): Kept<T> {
       const answers = new Map<string, { readonly at: number; readonly value: Promise<T> }>();
-      clears.push(() => answers.clear());
+      let seen = generation;
+      const current = () => {
+        if (seen !== generation) {
+          answers.clear();
+          seen = generation;
+        }
+        return answers;
+      };
       return {
         get(key) {
-          const known = answers.get(key);
+          const known = current().get(key);
           if (known !== undefined && now() - known.at < ttlMs) return known.value;
           const value = ask(key);
-          answers.set(key, { at: now(), value });
+          current().set(key, { at: now(), value });
           value.catch(() => {
-            if (answers.get(key)?.value === value) answers.delete(key);
+            if (current().get(key)?.value === value) current().delete(key);
           });
           return value;
         },
         remember(key, value) {
-          answers.set(key, { at: now(), value: Promise.resolve(value) });
+          current().set(key, { at: now(), value: Promise.resolve(value) });
         },
       };
     },
     forget() {
-      for (const clear of clears) clear();
+      generation += 1;
     },
   };
 }
@@ -178,17 +194,42 @@ export interface OpenedHead {
   readonly branch: string;
 }
 
+const answer = (code: number, stdout: string): ExecResult => ({
+  code,
+  stdout,
+  stderr: "",
+  timedOut: false,
+});
+
+/** What git answers, by question, to the questions for HEAD and its branch. */
+const HEAD_QUESTIONS: ReadonlyMap<string, (head: OpenedHead) => ExecResult> = new Map([
+  [
+    keyOf(["rev-parse", "--verify", "-q", "HEAD"]),
+    (head: OpenedHead) => answer(0, `${head.commit}\n`),
+  ],
+  [keyOf(["rev-parse", "HEAD"]), (head: OpenedHead) => answer(0, `${head.commit}\n`)],
+  // Detached, `symbolic-ref -q` fails without a word.
+  [
+    keyOf(["symbolic-ref", "--short", "-q", "HEAD"]),
+    (head: OpenedHead) => (head.branch === "HEAD" ? answer(1, "") : answer(0, `${head.branch}\n`)),
+  ],
+]);
+
 /** HEAD and its branch, as git would answer the questions that ask for them. */
 export function rememberHead(git: Pick<Recalling, "remember">, head: OpenedHead): void {
-  const answer = (code: number, stdout: string): ExecResult => ({
-    code,
-    stdout,
-    stderr: "",
-    timedOut: false,
-  });
-  git.remember(["rev-parse", "--verify", "-q", "HEAD"], answer(0, `${head.commit}\n`));
-  git.remember(["rev-parse", "HEAD"], answer(0, `${head.commit}\n`));
-  // Detached, `symbolic-ref -q` fails without a word.
-  const branch = head.branch === "HEAD" ? answer(1, "") : answer(0, `${head.branch}\n`);
-  git.remember(["symbolic-ref", "--short", "-q", "HEAD"], branch);
+  for (const [key, answered] of HEAD_QUESTIONS) git.remember(key.split("\0"), answered(head));
+}
+
+/**
+ * What git would answer to git `args` when they ask for HEAD or its branch, from what `head`
+ * gives, which is only asked then; undefined for any other question, or when `head` gives none.
+ */
+export async function headAnswer(
+  args: readonly string[],
+  head: () => Promise<OpenedHead | undefined>,
+): Promise<ExecResult | undefined> {
+  const answered = HEAD_QUESTIONS.get(keyOf(args));
+  if (answered === undefined) return undefined;
+  const known = await head();
+  return known === undefined ? undefined : answered(known);
 }

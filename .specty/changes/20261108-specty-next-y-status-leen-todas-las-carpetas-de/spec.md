@@ -51,7 +51,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Las demás carpetas se leen con el listado de worktrees y comparten lo recordado
+- [x] T1: Las demás carpetas se leen con el listado de worktrees y comparten lo recordado
   - files: packages/cli/src/io/git-memo.ts, packages/cli/src/io/git.ts, packages/cli/src/flow/changes.ts, packages/cli/test/worktree-reads.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktree-reads.test.ts test/git-memo.test.ts test/git-paths.test.ts && pnpm typecheck

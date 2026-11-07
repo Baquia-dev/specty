@@ -6,6 +6,13 @@
   "branch": "specty/20261108-specty-next-y-status-leen-todas-las-carpetas-de",
   "baseCommit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:baa3d3dc267fc3a6b45a1903172e5d009dd224a29694d6a6f6c3a680b8dad931",
+    "at": "2026-11-07T16:48:44.686Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -32,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "04a0df33c18f9643cdda75df55dc76c1603efac0",
+      "startedAt": "2026-11-07T16:48:45.302Z",
+      "doneAt": "2026-11-07T17:18:23.890Z",
+      "summary": "Git.inWorktree da el Git de otra carpeta: HEAD y rama del worktree list del de la sesión, specty/ por su .git y common/ del de la sesión, con lo recordado compartido (recall por generaciones); locateChanges lo usa. status en este repo: 60 → 10 procesos git."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "AC": 4,
     "T": 2,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:baa3d3dc267fc3a6b45a1903172e5d009dd224a29694d6a6f6c3a680b8dad931",
-    "at": "2026-11-07T16:48:44.686Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
