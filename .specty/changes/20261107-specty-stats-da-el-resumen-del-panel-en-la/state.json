@@ -6,6 +6,13 @@
   "branch": "specty/20261107-specty-stats-da-el-resumen-del-panel-en-la",
   "baseCommit": "a4e6321c4130771efd5b22d9cc3115e691c6cc6c",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ea740ea7aa0481c4f565d15d9f856323c3dbcd3478674af36687ba63c4fb07d2",
+    "at": "2026-11-07T10:28:51.652Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -52,12 +59,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:ea740ea7aa0481c4f565d15d9f856323c3dbcd3478674af36687ba63c4fb07d2",
-    "at": "2026-11-07T10:28:51.652Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T10:32:30.641Z"
 }
