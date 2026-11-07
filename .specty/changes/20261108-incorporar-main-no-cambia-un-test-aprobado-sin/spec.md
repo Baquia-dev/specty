@@ -78,3 +78,25 @@ Mientras el agente resuelve una incorporación de main, un test aprobado (`locke
 
 - R1: `git merge-file` no coincide con el merge de git en algún caso (A2) — el agente pide el desbloqueo, que es el camino seguro, y la salida se lo da completo.
 - R2: decidir solicitudes fuera de `implementing` cambia `approve --scope` y `reject --scope` en otras fases — solo se abre cuando hay solicitudes pendientes, que fuera de `implementing` solo crea una incorporación; los tests de las solicitudes existentes siguen pasando.
+
+## Cierre
+
+### Resumen
+
+Durante una incorporación de main, un test aprobado ya no cambia sin la persona. El guard lo mantiene bloqueado salvo si git lo dejó en conflicto o la persona lo desbloqueó para esa incorporación (`integration.unlocked`). `specty integrate` solo hace el commit si cada test aprobado sigue como se aprobó, como lo funde git con la versión de main (con cada conflicto resuelto tomando un lado o los dos, `git merge-file --ours|--theirs|--union`) o como el parche del desbloqueo aprobado, y lo vuelve a bloquear con el hash de su versión fusionada. El agente pide el desbloqueo con `specty scope add --patch --evidence` con el merge en curso, y la persona lo decide con `approve --scope` fuera de `implementing`, sin abortar el merge, sin ajuste y sin volver a aceptar.
+
+### Desviaciones
+
+- Ninguna respecto al plan; `decideGoverned` y `decideScope`/`recordScopeDecision` se partieron en funciones pequeñas para no pasar del límite de complejidad.
+
+### Decisiones
+
+- «Resolver un conflicto» es dejar el test como lo funde git con la versión de main, nada que añada líneas de ninguno de los dos lados; un test que main no cambió solo puede quedar como se aprobó (A1).
+- El parche de un desbloqueo de la incorporación se comprueba sobre la versión del último commit, y la solicitud lleva la última tarea que lista el test.
+- `approve --scope` y `reject --scope` deciden solicitudes pendientes en cualquier fase cuando las hay, para que una solicitud de una incorporación descartada no se quede sin salida.
+
+### Pendientes
+
+- Volver a bloquear con su hash nuevo un test aprobado que main cambia en un merge que sale solo (sin `integrate`), en `accept` o `close`.
+- `tests-locked` aún no tiene en cuenta los tests en conflicto o desbloqueados de una incorporación pendiente.
+- `packages/cli/src/enforce/guard.ts` pasa de 300 líneas de código (317): proponer cómo dividirlo por responsabilidad.
