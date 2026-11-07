@@ -56,7 +56,7 @@ kind: standard
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktree-reads.test.ts test/git-memo.test.ts test/git-paths.test.ts && pnpm typecheck
   - type: perf
-- [ ] T2: La documentación de las lecturas de las demás carpetas, con lo medido
+- [x] T2: La documentación de las lecturas de las demás carpetas, con lo medido
   - files: docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm lint
