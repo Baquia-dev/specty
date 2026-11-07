@@ -25,3 +25,9 @@ Con `git.worktrees: false` o `git.branchPerChange: false`, `specty new` crea cad
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/idle.ts, packages/cli/src/session.ts, packages/core/test/cards/idle-subagents.test.ts, packages/cli/test/front-start.test.ts, packages/cli/test/front-start-codex.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-start.test.ts test/front-start-codex.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/idle-subagents.test.ts && pnpm typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+CardContext.changeFolders (false con git.worktrees o git.branchPerChange en false, puesto por sessionFrom vía cardsFrom): la tarjeta sin cambio activo pide specty new en la propia sesión y el cierre vuelve a aconsejar una sesión nueva; huérfanos y épica sin cambios; formats §6 y ARCHITECTURE §7

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-sin-carpeta-por-cambio-la-tarjeta-sin-cambio",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-sin-carpeta-por-cambio-la-tarjeta-sin-cambio",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 1,
@@ -26,14 +26,14 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/flow/usage.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "0c2f5f2b3186442ba57ab5589d775c11eec3e2d5",
+      "attempts": 1,
       "startedAt": "2026-11-07T00:14:59.064Z",
       "doneAt": "2026-11-07T00:24:40.944Z",
-      "summary": "CardContext.changeFolders (false con git.worktrees o git.branchPerChange en false, puesto por sessionFrom vía cardsFrom): la tarjeta sin cambio activo pide specty new en la propia sesión y el cierre vuelve a aconsejar una sesión nueva; huérfanos y épica sin cambios; formats §6 y ARCHITECTURE §7"
+      "summary": "CardContext.changeFolders (false con git.worktrees o git.branchPerChange en false, puesto por sessionFrom vía cardsFrom): la tarjeta sin cambio activo pide specty new en la propia sesión y el cierre vuelve a aconsejar una sesión nueva; huérfanos y épica sin cambios; formats §6 y ARCHITECTURE §7",
+      "scopeExtra": [
+        "packages/cli/src/flow/usage.ts"
+      ]
     }
   },
   "pending": {
