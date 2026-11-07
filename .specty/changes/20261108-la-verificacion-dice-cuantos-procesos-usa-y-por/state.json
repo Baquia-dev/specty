@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-la-verificacion-dice-cuantos-procesos-usa-y-por",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-la-verificacion-dice-cuantos-procesos-usa-y-por",
   "baseCommit": "6765424511a13d97a89c76156111aecadd5f9a98",
   "revision": 2,
@@ -51,6 +51,9 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T19:42:54.994Z"
+  "lockedTests": {
+    "packages/cli/test/process-budget.test.ts": "sha256:a852a55663ede739ce5bd74eeecb549f147540f6b2e6313d5d326eea2c6d5574",
+    "packages/cli/test/verify-processes.test.ts": "sha256:a0ac1b448a77136530702ec7809b140494471d54ac3b770c8098e2a6560de69e",
+    "packages/core/test/cards/processes.test.ts": "sha256:4cc20cba692a58580650e2767bd2a49517de4f7e338bb18b61cab72fd77eecd9"
+  }
 }
