@@ -65,12 +65,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "07eaab057532cf247afa67638d82bf9d039c5d43",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:05:31.216Z",
       "doneAt": "2026-11-07T04:05:59.496Z",
-      "summary": "propose y approve pasan session.config.effort a recommendEffort; la tarjeta de la tarea ya leía la configuración."
+      "summary": "propose y approve pasan session.config.effort a recommendEffort; la tarjeta de la tarea ya leía la configuración.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5ee6afa4e507dd4ed89958694d31d5812011e1ec",
+      "startedAt": "2026-11-07T04:05:59.850Z",
+      "doneAt": "2026-11-07T04:07:34.061Z",
+      "summary": "Catálogo: los cuatro ajustes de sizing tras split y los cinco de effort, marcados new (highFanIn también soon); sus textos pasan a cards/settings-size.ts y la sección se llama Esfuerzo recomendado."
     }
   },
   "pending": {

@@ -85,7 +85,7 @@ Hoy están fijos en el código del core los pesos con los que Specty puntúa el 
   - files: packages/cli/src/commands/propose.ts, packages/cli/src/commands/approve.ts, packages/cli/test/effort-config.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/effort-config.test.ts && pnpm lint
-- [ ] T3: Los ajustes del tamaño y del esfuerzo en el catálogo, con sus textos
+- [x] T3: Los ajustes del tamaño y del esfuerzo en el catálogo, con sus textos
   - files: packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/src/cards/settings-size.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts && pnpm lint && pnpm knip
