@@ -32,7 +32,6 @@ import {
   isRun,
   isSessionList,
   isSliceChanges,
-  isStatsChangesPage,
   NO_DIFF,
   NO_SESSION,
   READ_ONLY,
@@ -41,6 +40,12 @@ import {
   tooLarge,
   UNEXPECTED,
 } from "./server-answers";
+import {
+  fetchStats,
+  fetchStatsChanges,
+  fetchStatsExport,
+  type StatsExportParams,
+} from "./server-stats";
 import type {
   ActionNote,
   ConfigCheck,
@@ -52,7 +57,6 @@ import type {
   StatsChangesParams,
   StatsParams,
 } from "./source";
-import { fetchStatsExport, type StatsExportParams } from "./stats-export";
 import { isStrings, isTrace, type TraceRecord } from "./trace";
 
 /** The mark `specty ui` puts in the page it serves (ARCHITECTURE §15). */
@@ -136,16 +140,8 @@ export class ServerData extends SpectyData {
   }
 
   /** A page of the panel's table of changes, found, sorted and cut by the server. */
-  override async statsChanges(params: StatsChangesParams): Promise<StatsChangesPage> {
-    const query = new URLSearchParams();
-    for (const [key, value] of Object.entries(params)) {
-      if (value !== undefined) query.set(key, String(value));
-    }
-    const response = await fetch(`/api/stats/changes?${query}`);
-    if (response.status === 403) throw new ActionError(NO_SESSION);
-    const body: unknown = await response.json().catch(() => undefined);
-    if (!response.ok || !isStatsChangesPage(body)) throw new ActionError(UNEXPECTED);
-    return body;
+  override statsChanges(params: StatsChangesParams): Promise<StatsChangesPage> {
+    return fetchStatsChanges(params);
   }
 
   /** The panel's changes of the cut as the file the server writes. */
@@ -226,18 +222,8 @@ export class ServerData extends SpectyData {
   }
 
   /** The panel of the cut, with only the parameters the page's URL has. */
-  override async stats(params: StatsParams): Promise<StatsView> {
-    const query = new URLSearchParams();
-    for (const key of ["period", "who", "kind"] as const) {
-      const value = params[key];
-      if (value !== undefined) query.set(key, value);
-    }
-    const search = query.size === 0 ? "" : `?${query}`;
-    const response = await fetch(`/api/stats${search}`);
-    if (response.status === 403) throw new ActionError(NO_SESSION);
-    const body: unknown = await response.json().catch(() => undefined);
-    if (!response.ok || !isStatsView(body)) throw new ActionError(UNEXPECTED);
-    return body;
+  override stats(params: StatsParams): Promise<StatsView> {
+    return fetchStats(params);
   }
 
   /** The configuration, with why it cannot be saved now in words. */
@@ -500,24 +486,4 @@ async function readRun(change: string): Promise<RunRecord | undefined> {
 export async function dataSource(page: Document): Promise<Type<SpectyData>> {
   if (page.querySelector(MARK) !== null) return ServerData;
   return (await import("./fixtures")).FixtureData;
-}
-
-/** The figures the panel shows first (`StatsSummary`). */
-const FIGURES = ["closed", "tasks", "cycle", "verifications", "cost", "pending"] as const;
-
-/**
- * `GET /api/stats`' answer: its cut and period, how many changes, who can be chosen, and each of
- * the six figures with a number or nothing for its value.
- */
-function isStatsView(value: unknown): value is StatsView {
-  if (!isObject(value) || !isObject(value.query) || !isObject(value.range)) return false;
-  const { summary } = value;
-  const figure = (item: unknown) =>
-    isObject(item) && (item.value === null || typeof item.value === "number");
-  return (
-    typeof value.changes === "number" &&
-    Array.isArray(value.options) &&
-    isObject(summary) &&
-    FIGURES.every((key) => figure(summary[key]))
-  );
 }

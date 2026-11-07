@@ -31,7 +31,7 @@ import type {
   MemoryRecord,
   SliceChangeRecord,
 } from "./records";
-import type { StatsExportParams } from "./stats-export";
+import type { StatsExportParams } from "./server-stats";
 import type { TraceRecord } from "./trace";
 
 /** An action the source could not do, explained in both languages. */

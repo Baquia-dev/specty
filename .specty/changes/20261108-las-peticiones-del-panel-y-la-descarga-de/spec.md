@@ -65,7 +65,7 @@ Limpieza de código de la UI sin cambios de comportamiento. `data/server.ts` tie
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/stats-source.test.ts && pnpm lint
   - type: test
-- [ ] T2: Las tres peticiones del panel pasan a `data/server-stats.ts`
+- [x] T2: Las tres peticiones del panel pasan a `data/server-stats.ts`
   - files: packages/ui/src/data/server-stats.ts, packages/ui/src/data/stats-export.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/source.ts, packages/ui/src/data/stats-export.test.ts, packages/ui/src/dashboard/dashboard-export.test.ts, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/stats-source.test.ts --include src/data/stats-export.test.ts --include src/data/server.test.ts --include src/dashboard/dashboard-export.test.ts && pnpm typecheck && pnpm lint && pnpm knip

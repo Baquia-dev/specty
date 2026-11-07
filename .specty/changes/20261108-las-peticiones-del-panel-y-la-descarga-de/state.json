@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "73a905b25780d094fd7ab4c0aae1bcfdad3f83d4",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:58:07.474Z",
       "doneAt": "2026-11-07T16:59:36.682Z",
-      "summary": "Test de ServerData.stats (GET /api/stats): parámetros del corte, sin query cuando no hay ninguno, errores sin sesión o con respuesta inesperada, y una fuente sin panel"
+      "summary": "Test de ServerData.stats (GET /api/stats): parámetros del corte, sin query cuando no hay ninguno, errores sin sesión o con respuesta inesperada, y una fuente sin panel",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "87ff32285b263823254b265473405a5fe5077206",
+      "startedAt": "2026-11-07T16:59:37.706Z",
+      "doneAt": "2026-11-07T17:03:30.192Z",
+      "summary": "Las tres peticiones del panel (fetchStats, fetchStatsChanges, fetchStatsExport) y sus comprobaciones (isStatsView, isStatsChangesPage) pasan a data/server-stats.ts, que sustituye a stats-export.ts; ServerData solo las llama; server-answers exporta isText; ARCHITECTURE lo cuenta"
     }
   },
   "pending": {
