@@ -61,6 +61,7 @@ describe("Shell", () => {
       "/",
       "/memory",
       "/sessions",
+      "/dashboard",
       "/settings",
       "/catalog",
     ]);
@@ -79,6 +80,7 @@ describe("Shell", () => {
       "/",
       "/memory",
       "/sessions",
+      "/dashboard",
       "/settings",
     ]);
     expect(element.querySelector("sp-catalog")).toBeNull();
