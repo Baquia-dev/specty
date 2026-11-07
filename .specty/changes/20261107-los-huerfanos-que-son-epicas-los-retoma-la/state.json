@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261107-los-huerfanos-que-son-epicas-los-retoma-la",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-los-huerfanos-que-son-epicas-los-retoma-la",
+  "baseCommit": "9471f99e1616c92f3cce99674a3c812c73d4d0be",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:955dd5f4b1e943ecf652380c11ea4e2b510ab88594b2b9d9b9c5654f71c231bd",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a281d337efec2b6bf9ddd294206c4887f0780f76562396c6ba1a07f7b149ee1b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b70a6c6513d06657a1efd280e21593c80cf3ee8c7ef6c480368bc3adb295cc81",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:af1e119550b6d95f5e828ea978679807f86d4c352cba27673c23eba064a366f5",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d8d3f64db60b971c484177fa732ff0df7d1ef3873be7569803c201411d86df83",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:82d8e41e4dc1628fad0086cd64461148359b798a754dfac3b96ec1369bcfe693",
+    "at": "2026-11-07T00:08:59.747Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
