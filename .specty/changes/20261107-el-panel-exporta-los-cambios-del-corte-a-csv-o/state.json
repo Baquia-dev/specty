@@ -55,12 +55,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6fdc3a2f9bc3e28841e5529808364c86c108c2a2",
+      "attempts": 1,
       "startedAt": "2026-11-07T10:08:59.900Z",
       "doneAt": "2026-11-07T10:13:55.296Z",
-      "summary": "stats/export.ts arma el archivo del corte (filas de statsChanges sin límite, con persona, modelo, creación y verificaciones) en CSV RFC 4180 con BOM y celdas protegidas contra fórmulas, o en JSON; cards/stats-export.ts da encabezados y carriles en es/en."
+      "summary": "stats/export.ts arma el archivo del corte (filas de statsChanges sin límite, con persona, modelo, creación y verificaciones) en CSV RFC 4180 con BOM y celdas protegidas contra fórmulas, o en JSON; cards/stats-export.ts da encabezados y carriles en es/en.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ccdb3016dbd6de91dbfe90b8ff143380f2644799",
+      "startedAt": "2026-11-07T10:13:55.641Z",
+      "doneAt": "2026-11-07T10:19:49.869Z",
+      "summary": "server/stats-changes.ts suma sendStatsExport: GET /api/stats/export lee las mismas filas guardadas que la tabla y envía el CSV o JSON del corte con su Content-Type y Content-Disposition; api.ts lo enlaza y ARCHITECTURE §15 lo documenta."
     }
   },
   "pending": {

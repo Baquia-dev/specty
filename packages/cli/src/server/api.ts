@@ -29,7 +29,7 @@ import { memoryOrigins } from "./origins";
 import { changeRecord, changeRecords, openRecords } from "./records";
 import { sessionsView } from "./sessions";
 import { epicSliceChanges } from "./slices";
-import { statsChangesPage } from "./stats-changes";
+import { sendStatsExport, statsChangesPage } from "./stats-changes";
 import { testCode } from "./test-code";
 import { changeTrace, traceReply } from "./trace";
 
@@ -44,22 +44,23 @@ export async function readApi(
   const foreign = origin !== undefined && !isLocal(origin.replace(/^http:\/\//, ""), context.port);
   if (foreign || !hasSession(request.headers.cookie, context))
     return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
+  if (url.pathname === "/api/stats/export")
+    return sendStatsExport(response, context.session, url.searchParams);
   const view = VIEWS.get(url.pathname);
   const answer = view === undefined ? undefined : await view(context.session, url.searchParams);
   if (answer !== undefined) return send(response, 200, JSON_TYPE, JSON.stringify(answer));
   if (url.pathname === "/api/events") return context.events.add(response);
-  if (url.pathname === "/api/session") {
-    const actions = context.actions === true;
-    return send(
-      response,
-      200,
-      JSON_TYPE,
-      JSON.stringify(actions ? { actions, csrf: context.csrf } : { actions }),
-    );
-  }
+  if (url.pathname === "/api/session") return sendSession(response, context);
   const one = /^\/api\/changes\/([^/]+)$/.exec(url.pathname)?.[1];
   if (one !== undefined) return readRecord(response, context, one);
   return readChange(response, context, url);
+}
+
+/** `GET /api/session`: whether the person may decide here and, if so, the CSRF token. */
+function sendSession(response: ServerResponse, context: Context) {
+  const actions = context.actions === true;
+  const session = actions ? { actions, csrf: context.csrf } : { actions };
+  return send(response, 200, JSON_TYPE, JSON.stringify(session));
 }
 
 /** A read that looks at the session and the URL's parameters, and what it answers, as JSON. */

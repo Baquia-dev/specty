@@ -77,7 +77,7 @@ El «Panel» de `specty ui` resume un corte en cifras y lista sus cambios, pero 
   - files: packages/core/src/stats/export.ts, packages/core/src/cards/stats-export.ts, packages/core/src/index.ts, packages/core/test/stats/export.test.ts
   - ac: AC1, AC2, AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/export.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: `GET /api/stats/export` responde el archivo del corte con su tipo y su nombre
+- [x] T2: `GET /api/stats/export` responde el archivo del corte con su tipo y su nombre
   - files: packages/cli/src/server/stats-changes.ts, packages/cli/src/server/api.ts, packages/cli/test/server/stats-export.test.ts, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/stats-export.test.ts test/server/stats-changes.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
