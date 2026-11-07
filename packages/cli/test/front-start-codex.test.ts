@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { APP, cli, tempRepo } from "./support";
+import { APP, CONFIG, cli, tempRepo } from "./support";
+
+/** A repository whose changes each get a folder of their own, as `new` makes them by default. */
+const IN_FOLDERS = {
+  ...APP,
+  ".specty/config.yaml": CONFIG().replace("worktrees: false", "worktrees: true"),
+};
 
 /** An agent that Specty recognizes, to write the memory. */
 const CLAUDE = { env: { CLAUDECODE: "1" } };
@@ -86,7 +92,7 @@ describe("the card with no active change in a Codex thread that holds a front", 
 
 describe("the card of Codex's guard, whatever the hook's environment says", () => {
   it("AC2: is the card of `next` in Codex, with its brief, with no mark of Codex", async () => {
-    const root = await tempRepo(APP);
+    const root = await tempRepo(IN_FOLDERS);
     const next = (await cli(root, ["next"], inThread("t3"))).out;
     expect(next).toContain("ENCARGO:");
     expect((await cli(root, ["next"])).out).not.toBe(next);
@@ -94,7 +100,7 @@ describe("the card of Codex's guard, whatever the hook's environment says", () =
   });
 
   it("AC3: is the card of its `--tool` with the mark of another tool in the environment", async () => {
-    const root = await tempRepo(APP);
+    const root = await tempRepo(IN_FOLDERS);
     const gemini = { GEMINI_CLI: "1" };
     const next = (await cli(root, ["next"], inThread("t4"))).out;
     expect((await cli(root, ["next"], { env: gemini })).out).not.toBe(next);

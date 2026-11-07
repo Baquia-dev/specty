@@ -92,6 +92,40 @@ describe("an adjustment asked for while the tasks are implemented", () => {
   });
 });
 
+describe("an adjustment's review, after the person asked for changes", () => {
+  const modifiedDone = STANDARD.replace("Modelo multiserie y filtro temporal", "Modelo nuevo");
+  const addedTask = STANDARD.replace(
+    "\n## Riesgos",
+    "- [ ] T3: Corregir el filtro anual\n  - files: lib/features/home/home_estudiante_provider.dart\n  - ac: AC1\n  - type: fix\n  - verify: flutter test\n\n## Riesgos",
+  );
+
+  it("rejects changes to done tasks, as in adjusting", () => {
+    const ctx = { phase: "review" as const, approved, doneTasks: new Set(["T1", "T2"]) };
+    expect(check(modifiedDone, ctx)).toContain("done-task-changed:T1");
+  });
+
+  it("keeps an adjustment asked for while the tasks are implemented to the pending tasks", () => {
+    const ctx = { phase: "review" as const, approved, doneTasks: new Set(["T1"]) };
+    expect(check(addedTask, ctx)).toContain("pending-tasks-only:T3");
+  });
+
+  it("lets an adjustment asked for in acceptance add tasks", () => {
+    const ctx = { phase: "review" as const, approved, doneTasks: new Set(["T1", "T2"]) };
+    expect(
+      check(addedTask, ctx).filter((found) => found.startsWith("pending-tasks-only:")),
+    ).toEqual([]);
+  });
+
+  it("leaves a first review alone: it has no approved revision", () => {
+    const ctx = { phase: "review" as const, doneTasks: new Set(["T1"]) };
+    const found = check(modifiedDone, ctx);
+    expect(found).not.toContain("done-task-changed:T1");
+    expect(check(addedTask, ctx).filter((code) => code.startsWith("pending-tasks-only:"))).toEqual(
+      [],
+    );
+  });
+});
+
 describe("closing", () => {
   const ctx = { phase: "closing" as const, approved };
 

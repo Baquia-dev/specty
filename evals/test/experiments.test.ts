@@ -44,6 +44,7 @@ describe("the experiments of the suite", () => {
       "epic",
       "epic-subagent",
       "question",
+      "orphan",
     ]);
     for (const each of CHANGES) {
       const root = await each.prepare("claude-code");
