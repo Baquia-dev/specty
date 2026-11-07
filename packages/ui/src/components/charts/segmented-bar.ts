@@ -13,6 +13,7 @@ import {
 } from "@angular/core";
 import { Preferences } from "../../theme/preferences";
 import { ChartFrame, type ChartKey, type ChartTable, ChartTip, type TipLine } from "./chart-frame";
+import { moveFocus } from "./chart-parts";
 
 /** A part: its name, the token of its color and its value. */
 export interface ChartPart extends ChartKey {
@@ -196,17 +197,6 @@ export class SegmentedBar {
 
   /** The arrows go to the next or the previous part, Home to the first and End to the last. */
   protected move(event: KeyboardEvent): void {
-    const last = this.drawn().length - 1;
-    const current = this.stop();
-    const targets: Readonly<Record<string, number>> = {
-      ArrowRight: current + 1,
-      ArrowLeft: current - 1,
-      Home: 0,
-      End: last,
-    };
-    const target = targets[event.key];
-    if (target === undefined) return;
-    event.preventDefault();
-    this.buttons()[Math.min(last, Math.max(0, target))]?.nativeElement.focus();
+    moveFocus(event, { count: this.drawn().length, current: this.stop(), buttons: this.buttons() });
   }
 }

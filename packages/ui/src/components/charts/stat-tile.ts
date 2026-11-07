@@ -14,6 +14,7 @@ import {
 } from "@angular/core";
 import { Preferences } from "../../theme/preferences";
 import { type ChartKey, ChartTip } from "./chart-frame";
+import { linePath, moveFocus, plain, stretchesOf } from "./chart-parts";
 
 /** The minigraph's height, in px, and the room at its top and bottom for the points. */
 const HEIGHT = 36;
@@ -183,7 +184,7 @@ export class StatTile {
   protected readonly lines = computed(() =>
     stretchesOf(this.points())
       .filter((run) => run.length > 1)
-      .map((run) => run.map(({ x, y }, index) => `${index === 0 ? "M" : "L"}${x},${y}`).join("")),
+      .map(linePath),
   );
 
   /**
@@ -233,18 +234,11 @@ export class StatTile {
 
   /** The arrows go to the next or the previous day, Home to the first and End to the last. */
   protected move(event: KeyboardEvent): void {
-    const last = this.labels().length - 1;
-    const current = this.stop();
-    const targets: Readonly<Record<string, number>> = {
-      ArrowRight: current + 1,
-      ArrowLeft: current - 1,
-      Home: 0,
-      End: last,
-    };
-    const target = targets[event.key];
-    if (target === undefined) return;
-    event.preventDefault();
-    this.buttons()[Math.min(last, Math.max(0, target))]?.nativeElement.focus();
+    moveFocus(event, {
+      count: this.labels().length,
+      current: this.stop(),
+      buttons: this.buttons(),
+    });
   }
 }
 
@@ -252,23 +246,4 @@ export class StatTile {
 function yOf(value: number, low: number, high: number): number {
   if (high === low) return HEIGHT / 2;
   return PAD + (HEIGHT - 2 * PAD) * (1 - (value - low) / (high - low));
-}
-
-/** `text` with plain spaces: `Intl` puts a no-break one before «%». */
-function plain(text: string): string {
-  return text.replace(/\s/g, " ");
-}
-
-/** The stretches of points that have a value, in order. */
-function stretchesOf(points: readonly Point[]): { readonly x: number; readonly y: number }[][] {
-  const runs: { readonly x: number; readonly y: number }[][] = [];
-  let current: { readonly x: number; readonly y: number }[] = [];
-  for (const { x, y } of points) {
-    if (y === null) {
-      if (current.length > 0) runs.push(current);
-      current = [];
-    } else current.push({ x, y });
-  }
-  if (current.length > 0) runs.push(current);
-  return runs;
 }

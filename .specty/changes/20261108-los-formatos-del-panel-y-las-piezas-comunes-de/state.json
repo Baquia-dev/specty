@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-los-formatos-del-panel-y-las-piezas-comunes-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-los-formatos-del-panel-y-las-piezas-comunes-de",
   "baseCommit": "16ad77ec06157affaa0e9c6529ae3db9d19cbb4c",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "daf3459dc8421d592594662acca5b1650c75a537",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:54:58.844Z",
       "doneAt": "2026-11-07T16:56:35.171Z",
-      "summary": "dashboard/dashboard-format.ts reúne shortDay, percent y usd; page, summary, rhythm, quality y cost usan su shortDay, y summary, people y quality su porcentaje y sus dólares, sin cambiar lo que muestran"
+      "summary": "dashboard/dashboard-format.ts reúne shortDay, percent y usd; page, summary, rhythm, quality y cost usan su shortDay, y summary, people y quality su porcentaje y sus dólares, sin cambiar lo que muestran",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "368f05ddd85dc143d960ebdc06aa05ed6cc80472",
+      "startedAt": "2026-11-07T16:56:36.460Z",
+      "doneAt": "2026-11-07T16:59:39.124Z",
+      "summary": "components/charts/chart-parts.ts reúne roundScale (escala de columnas y línea), moveFocus (teclado de las cinco gráficas, con ↓ y ↑ en la lista de barras), plain, stretchesOf y linePath (de line-chart y stat-tile), sin cambiar lo que dibujan ni cómo responden"
     }
   },
   "pending": {

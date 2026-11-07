@@ -63,7 +63,7 @@ El panel repite sus formatos: `shortDay` está copiado en cinco secciones (`dash
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-page.test.ts --include src/dashboard/dashboard-summary.test.ts --include src/dashboard/dashboard-sections.test.ts --include src/dashboard/dashboard-flow-quality.test.ts --include src/dashboard/dashboard-cost-scope-memory.test.ts && pnpm lint && pnpm sources
   - type: refactor
-- [ ] T2: Las piezas comunes de las gráficas, en su propio módulo
+- [x] T2: Las piezas comunes de las gráficas, en su propio módulo
   - files: packages/ui/src/components/charts/chart-parts.ts, packages/ui/src/components/charts/column-chart.ts, packages/ui/src/components/charts/line-chart.ts, packages/ui/src/components/charts/bar-list.ts, packages/ui/src/components/charts/segmented-bar.ts, packages/ui/src/components/charts/stat-tile.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/charts/charts.test.ts --include src/components/charts/stat-tile.test.ts --include src/catalog/catalog.test.ts --include src/dashboard/dashboard-page.test.ts --include src/dashboard/dashboard-summary.test.ts --include src/dashboard/dashboard-sections.test.ts --include src/dashboard/dashboard-flow-quality.test.ts --include src/dashboard/dashboard-cost-scope-memory.test.ts && pnpm typecheck && pnpm lint && pnpm sources && pnpm knip
