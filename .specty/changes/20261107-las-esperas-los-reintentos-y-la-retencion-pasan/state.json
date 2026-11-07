@@ -6,6 +6,13 @@
   "branch": "specty/20261107-las-esperas-los-reintentos-y-la-retencion-pasan",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9e195ddd52a017a4a294a46d6867fe76c0b0b9538893792126521864598a5eac",
+    "at": "2026-11-07T00:52:18.577Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9e195ddd52a017a4a294a46d6867fe76c0b0b9538893792126521864598a5eac",
-    "at": "2026-11-07T00:52:18.577Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T02:48:10.988Z"
 }
