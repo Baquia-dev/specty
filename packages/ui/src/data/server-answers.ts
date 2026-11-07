@@ -11,7 +11,7 @@ import type {
   MemoryRecord,
   SliceChangeRecord,
 } from "./records";
-import type { ActionNote, FinishedPage } from "./source";
+import type { ActionNote, ConfigCheck, ConfigRecord, ConfigSaved, FinishedPage } from "./source";
 
 export const NO_SESSION: Bilingual = {
   es: "Esta pestaña no tiene sesión: abre el enlace que imprime `specty ui`.",
@@ -114,6 +114,132 @@ export function isSessionList(value: unknown): value is readonly SessionView[] {
       (item.change === undefined || isText(item.change)) &&
       usage(item.usage),
   );
+}
+
+/** Why `GET /api/config` says the configuration cannot be saved: its kind, and its data. */
+type ConfigBlocked = Readonly<Record<string, unknown>> & { readonly kind: string };
+
+/**
+ * `GET /api/config`'s answer: its defaults, its issues with their key, its values if valid and,
+ * when it cannot be saved, why, as data the page puts in words (`configReason`).
+ */
+export function isConfigRecord(
+  value: unknown,
+): value is Omit<ConfigRecord, "blocked"> & { readonly blocked?: ConfigBlocked } {
+  return (
+    isObject(value) &&
+    isObject(value.defaults) &&
+    (value.config === undefined || isObject(value.config)) &&
+    Array.isArray(value.issues) &&
+    value.issues.every(isIssue) &&
+    (value.blocked === undefined || (isObject(value.blocked) && isText(value.blocked.kind)))
+  );
+}
+
+/** `POST /api/config/check`'s answer: the validator's issues and the changes by setting. */
+export function isConfigCheck(value: unknown): value is ConfigCheck {
+  return (
+    isObject(value) &&
+    Array.isArray(value.issues) &&
+    value.issues.every(isIssue) &&
+    Array.isArray(value.changes) &&
+    value.changes.every(isSettingChange)
+  );
+}
+
+/** `POST /api/config`'s answer: the commit and the changes by setting. */
+export function isConfigSaved(value: unknown): value is ConfigSaved {
+  return (
+    isObject(value) &&
+    isText(value.commit) &&
+    Array.isArray(value.changes) &&
+    value.changes.every(isSettingChange)
+  );
+}
+
+function isIssue(value: unknown): boolean {
+  return isObject(value) && isText(value.path) && isText(value.message);
+}
+
+function isSettingChange(value: unknown): boolean {
+  return isObject(value) && isText(value.key);
+}
+
+const CONFIG = "`.specty/config.yaml`";
+
+/** Each reason not to save the configuration, in words, with the texts of its data. */
+const CONFIG_REASONS = new Map<string, (said: (key: string) => string) => Bilingual>([
+  [
+    "change",
+    (said) => ({
+      es: `La carpeta de specty ui tiene un cambio en curso (${said("id")}): el commit iría a su rama. Para guardar, arranca specty ui en la carpeta principal.`,
+      en: `The specty ui folder has a change in progress (${said("id")}): the commit would go to its branch. To save, start specty ui in the main folder.`,
+    }),
+  ],
+  [
+    "uncommitted",
+    () => ({
+      es: `${CONFIG} tiene cambios sin commit: haz su commit o descártalos para guardar desde aquí.`,
+      en: `${CONFIG} has uncommitted changes: commit or discard them to save from here.`,
+    }),
+  ],
+  [
+    "yaml",
+    () => ({
+      es: `${CONFIG} no es YAML: corrígelo en el archivo para guardar desde aquí.`,
+      en: `${CONFIG} is not YAML: fix it in the file to save from here.`,
+    }),
+  ],
+  [
+    "invalid",
+    () => ({
+      es: "Algún valor no es válido: corrige los errores que salen junto a su ajuste.",
+      en: "A value is not valid: fix the errors shown by its setting.",
+    }),
+  ],
+  [
+    "unchanged",
+    () => ({
+      es: `No hay nada que guardar: ${CONFIG} ya tiene esos valores.`,
+      en: `There is nothing to save: ${CONFIG} already has those values.`,
+    }),
+  ],
+  [
+    "turn",
+    (said) => ({
+      es: `Otra sesión tiene el turno de aterrizaje (${said("command")}, en ${said("folder")}): vuelve a guardar cuando termine.`,
+      en: `Another session has the landing turn (${said("command")}, in ${said("folder")}): save again when it finishes.`,
+    }),
+  ],
+  [
+    "git",
+    (said) => ({
+      es: `git no pudo hacer el commit: ${said("detail")}`,
+      en: `git could not commit: ${said("detail")}`,
+    }),
+  ],
+]);
+
+/**
+ * Why the configuration cannot be saved, in words: `blocked` of `GET /api/config` by its `kind`,
+ * or a 409 of `POST /api/config` by its `error`, with its data. None for a reason it does not know.
+ */
+export function configReason(
+  kind: unknown,
+  data: Readonly<Record<string, unknown>>,
+): Bilingual | undefined {
+  const words = isText(kind) ? CONFIG_REASONS.get(kind) : undefined;
+  return words?.((key) => {
+    const value = data[key];
+    return isText(value) ? value : "";
+  });
+}
+
+/** Why `POST /api/config` refused to save (409), in words; a reason it does not know, its status. */
+export async function configRefusal(response: Response): Promise<Bilingual> {
+  const body: unknown = await response.json().catch(() => undefined);
+  const said = isObject(body) ? configReason(body.error, body) : undefined;
+  return said ?? answered(response.status);
 }
 
 /** `GET /api/delegation`'s answer: on or off, who and when, and the warning in both languages. */
