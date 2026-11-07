@@ -44,7 +44,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/test/validate/quality.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "8717da8f08ae258a702ff6b77a6fda8fa57aa927",
+      "startedAt": "2026-11-07T09:34:06.612Z",
+      "doneAt": "2026-11-07T09:41:08.499Z",
+      "summary": "warnings.risks en el schema; contentRisks suma las reglas de la persona como custom con su texto, que riskLabel da en la aceptación y las lecciones; el ajuste va en «Avisos» con «Nuevo», solo en el archivo; formats.md §6"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

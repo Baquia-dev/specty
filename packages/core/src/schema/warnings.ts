@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as z from "zod";
+import { isRegex } from "./checks";
 
 /**
  * `usage` and `warnings` in `.specty/config.yaml`: the warnings of the sessions (the advice of a
- * fresh session and the ccusage that measures each change) and those of the spec (the person's
- * vague terms and horizontal layers, added to Specty's) (formats.md §6).
+ * fresh session and the ccusage that measures each change), those of the spec (the person's
+ * vague terms and horizontal layers) and those of the content a task adds (the person's risk
+ * rules), all added to Specty's, which stay (formats.md §6).
  */
 export interface WarningsConfig {
   readonly usage: {
@@ -22,17 +24,39 @@ export interface WarningsConfig {
     readonly vagueTerms: readonly string[];
     /** Words or phrases that make an epic's slice a horizontal layer, added to Specty's. */
     readonly horizontalLayers: readonly string[];
+    /** Patterns `task done` looks for in the lines a task adds, added to Specty's. */
+    readonly risks: readonly CustomRiskRule[];
   };
+}
+
+/** A risk rule of the person: a pattern for each added line, and what the warning says. */
+export interface CustomRiskRule {
+  /** The warning's text, as the person wrote it. */
+  readonly label: string;
+  /** A JavaScript regular expression, with no flags. */
+  readonly pattern: string;
+  readonly cwe?: string | undefined;
+  /** The extensions it looks at, without the dot; every file's, when absent. */
+  readonly extensions?: readonly string[] | undefined;
 }
 
 export const DEFAULT_WARNINGS: WarningsConfig = {
   usage: { freshSessionTokens: 150_000, ccusage: { timeoutSec: 60, version: "20.0.45" } },
-  warnings: { vagueTerms: [], horizontalLayers: [] },
+  warnings: { vagueTerms: [], horizontalLayers: [], risks: [] },
 };
 
 /** `x.y.z`, with an optional pre-release tag: it goes into a command the person copies. */
 const VERSION = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)*)?$/;
 const Terms = z.array(z.string().trim().min(1));
+const RiskRule = z.strictObject({
+  label: z.string().trim().min(1),
+  pattern: z.string().min(1).refine(isRegex, { error: "Not a valid regular expression." }),
+  cwe: z
+    .string()
+    .regex(/^CWE-\d+$/)
+    .optional(),
+  extensions: z.array(z.string().regex(/^[0-9A-Za-z]+$/)).optional(),
+});
 
 /**
  * The blocks this module owns, for `config.ts` to spread among its keys. Closing waits for each
@@ -51,7 +75,11 @@ export const WARNINGS_SHAPE = {
     })
     .optional(),
   warnings: z
-    .strictObject({ vagueTerms: Terms.optional(), horizontalLayers: Terms.optional() })
+    .strictObject({
+      vagueTerms: Terms.optional(),
+      horizontalLayers: Terms.optional(),
+      risks: z.array(RiskRule).optional(),
+    })
     .optional(),
 };
 
@@ -75,6 +103,7 @@ export function resolveWarnings(input: WarningsInput): WarningsConfig {
     warnings: {
       vagueTerms: input.warnings?.vagueTerms ?? warnings.vagueTerms,
       horizontalLayers: input.warnings?.horizontalLayers ?? warnings.horizontalLayers,
+      risks: input.warnings?.risks ?? warnings.risks,
     },
   };
 }
