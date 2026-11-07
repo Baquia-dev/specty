@@ -102,6 +102,41 @@ describe("specty review", () => {
     expect(refused.out).toContain("Este proyecto no tiene revisión independiente");
   });
 
+  it("AC2: keeps only the last internal.exec.maxOutputKiB of a longer answer, 512 without the key", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "specty-reviewer-"));
+    const script = join(dir, "reviewer.mjs");
+    // A first finding, some 80 KiB, past 64 KiB and short of 512, and a last one.
+    await writeFile(
+      script,
+      [
+        'import { readFileSync } from "node:fs";',
+        "readFileSync(0);",
+        'console.log("- Alta: lo primero que dice.");',
+        'for (let line = 0; line < 1000; line++) console.log("relleno ".repeat(10));',
+        'console.log("- Baja: lo último que dice.");',
+        "",
+      ].join("\n"),
+    );
+    const command = `node "${script}"`;
+    const kept = async (internal: string) => {
+      const root = await repo(command);
+      await writeFiles(root, {
+        ".specty/config.yaml": `${CONFIG()}review:\n  command: ${JSON.stringify(command)}\n${internal}`,
+        [SPEC_PATH]: SENSITIVE,
+      });
+      await cli(root, ["propose"]);
+      expect((await cli(root, ["review"])).code).toBe(0);
+      return read(root, `${DIR}/reviews/spec-r1.md`);
+    };
+    const whole = await kept("");
+    expect(whole).toContain("- Alta: lo primero que dice.");
+    expect(whole).toContain("- Baja: lo último que dice.");
+    const cut = await kept("internal:\n  exec:\n    maxOutputKiB: 64\n");
+    expect(cut).not.toContain("lo primero");
+    expect(cut).toContain("- Baja: lo último que dice.");
+    expect(cut.length).toBeLessThanOrEqual(64 * 1024 + 1);
+  });
+
   it("explains a review outside the review phase, or one that fails, and moves nothing", async () => {
     const root = await repo('node -e "process.exit(3)"');
     const early = await cli(root, ["review"]);

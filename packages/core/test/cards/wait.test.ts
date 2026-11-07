@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { type CardContext, renderText, waitHeartbeat, waitTimeoutCard } from "../../src";
+import {
+  type CardContext,
+  renderText,
+  waitFolderGoneCard,
+  waitHeartbeat,
+  waitTimeoutCard,
+} from "../../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
 const EN: CardContext = { ...ES, lang: "en" };
@@ -57,5 +63,70 @@ describe("wait heartbeat", () => {
       expect(waitHeartbeat("20261031-saludo", 125, 3600, { ...ES, tool })).toBeUndefined();
     }
     expect(waitHeartbeat("20261031-saludo", 125, 3600, ES)).toBeUndefined();
+  });
+});
+
+describe("wait folder gone card", () => {
+  const ID = "20261031-saludo";
+  const FOLDER = "/repo/.worktrees/20261031-saludo";
+  const gone = (phase?: "done" | "cancelled" | "acceptance") => ({
+    id: ID,
+    folder: FOLDER,
+    main: "/repo",
+    ...(phase === undefined ? {} : { phase }),
+  });
+
+  it("says the person closed the change and asks to leave the folder that no longer exists, as a closing from inside does", () => {
+    const card = waitFolderGoneCard(gone("done"), { ...ES, tool: "claude-code" });
+    expect(card.status).toBe("ok");
+    expect(card.header).toBe(`SPECTY · ${ID} · done`);
+    expect(renderText(card, "es")).toContain(
+      `La persona cerró ${ID} mientras esperabas, y su carpeta ${FOLDER} se eliminó.`,
+    );
+    expect(card.next).toBe(
+      `${FOLDER} ya no existe: sal de ella (en Claude Code, \`ExitWorktree\`) y sigue en /repo; para otro cambio, \`specty new "<título>"\`.`,
+    );
+    const english = waitFolderGoneCard(gone("done"), EN);
+    expect(renderText(english, "en")).toContain(
+      `The person closed ${ID} while you waited, and its folder ${FOLDER} was removed.`,
+    );
+    expect(english.next).toBe(
+      `${FOLDER} no longer exists: leave it (in Claude Code, \`ExitWorktree\`) and carry on in /repo; for another change, \`specty new "<title>"\`.`,
+    );
+  });
+
+  it("says the person cancelled the change, with the same way out", () => {
+    const card = waitFolderGoneCard(gone("cancelled"), ES);
+    expect(card.header).toBe(`SPECTY · ${ID} · cancelled`);
+    expect(renderText(card, "es")).toContain(
+      `La persona canceló ${ID} mientras esperabas, y su carpeta ${FOLDER} se eliminó.`,
+    );
+    expect(card.next).toBe(waitFolderGoneCard(gone("done"), ES).next);
+    expect(renderText(waitFolderGoneCard(gone("cancelled"), EN), "en")).toContain(
+      `The person cancelled ${ID} while you waited, and its folder ${FOLDER} was removed.`,
+    );
+  });
+
+  it("says the folder went with the change still open, and asks to bring it back with `specty restore` from the main folder", () => {
+    for (const card of [
+      waitFolderGoneCard(gone("acceptance"), ES),
+      waitFolderGoneCard(gone(), ES),
+    ]) {
+      expect(card.status).toBe("ok");
+      expect(renderText(card, "es")).toContain(
+        `La carpeta ${FOLDER} de ${ID} se eliminó mientras esperabas, sin cerrar ni cancelar el cambio, que sigue en su rama.`,
+      );
+      expect(card.next).toBe(
+        `${FOLDER} ya no existe: sal de ella (en Claude Code, \`ExitWorktree\`) y, en /repo, recupera la carpeta con \`specty restore ${ID}\` y sigue su salida, que dice cómo volver a ella.`,
+      );
+    }
+    expect(waitFolderGoneCard(gone("acceptance"), ES).header).toBe(`SPECTY · ${ID} · acceptance`);
+    const english = waitFolderGoneCard(gone("acceptance"), EN);
+    expect(renderText(english, "en")).toContain(
+      `Folder ${FOLDER} of ${ID} was removed while you waited, without closing or cancelling the change, which is still on its branch.`,
+    );
+    expect(english.next).toBe(
+      `${FOLDER} no longer exists: leave it (in Claude Code, \`ExitWorktree\`) and, in /repo, bring the folder back with \`specty restore ${ID}\` and follow its output, which tells how to go back to it.`,
+    );
   });
 });

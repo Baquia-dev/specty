@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { execFile, spawn } from "node:child_process";
 import { setPriority } from "node:os";
-import { DEFAULT_CONFIG } from "@baquia-dev/specty-core";
+import { DEFAULT_CONFIG, type ResolvedConfig } from "@baquia-dev/specty-core";
 
 export interface ExecOptions {
   readonly cwd: string;
@@ -14,6 +14,8 @@ export interface ExecOptions {
   readonly onOutput?: (stream: "stdout" | "stderr", text: string) => void;
   /** Keep all of the output, as for git, whose output is data rather than a log. */
   readonly whole?: boolean;
+  /** What it keeps of each stream unless `whole`, in characters: `MAX_OUTPUT` by default. */
+  readonly maxOutput?: number;
   /**
    * Run it below the rest of the machine, at `priority`, as verifications do: the processes it
    * starts afterwards inherit it. Best effort: where the system refuses, it runs as it is.
@@ -32,7 +34,15 @@ export interface ExecResult {
 }
 
 /** What `execute` keeps of each stream, unless `whole`: an output this long lost its beginning. */
-export const MAX_OUTPUT = 512 * 1024;
+export const MAX_OUTPUT = maxOutputOf(DEFAULT_CONFIG);
+
+/**
+ * The most Specty reads of a command whose whole text it uses, in characters, and the most the
+ * UI serves of a diff, a trace or a test's code: `internal.exec.maxOutputKiB` (formats.md §6).
+ */
+export function maxOutputOf(config: Pick<ResolvedConfig, "internal">): number {
+  return config.internal.exec.maxOutputKiB * 1024;
+}
 
 /**
  * Lowers the priority of process `pid` to `priority`, as `lowPriority` does, for a command not
@@ -50,7 +60,10 @@ export function lowerPriority(
   }
 }
 
-/** Runs a process and collects its output: the last 512 KB of each stream, or all with `whole`. */
+/**
+ * Runs a process and collects its output: the last `maxOutput` characters of each stream (512 KiB
+ * by default), or all with `whole`.
+ */
 export function execute(
   command: string,
   args: readonly string[],
@@ -68,8 +81,9 @@ export function execute(
     let stdout = "";
     let stderr = "";
     let timedOut = false;
+    const most = options.maxOutput ?? MAX_OUTPUT;
     const keep = (text: string) =>
-      options.whole === true || text.length <= MAX_OUTPUT ? text : text.slice(-MAX_OUTPUT);
+      options.whole === true || text.length <= most ? text : text.slice(-most);
     // Decoded as a stream, a character whose bytes come in two pieces arrives whole.
     child.stdout.setEncoding("utf8");
     child.stderr.setEncoding("utf8");
