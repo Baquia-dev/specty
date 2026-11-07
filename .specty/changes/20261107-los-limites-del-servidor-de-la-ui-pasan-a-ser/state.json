@@ -6,6 +6,13 @@
   "branch": "specty/20261107-los-limites-del-servidor-de-la-ui-pasan-a-ser",
   "baseCommit": "122b0f87b0dd21aa992fe015859351574e4588ec",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a4b79a80ce2893f6a65c7b52ef5ed21b5313564607b647c00b1c0d04314bd291",
+    "at": "2026-11-07T05:33:46.115Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -45,12 +52,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:a4b79a80ce2893f6a65c7b52ef5ed21b5313564607b647c00b1c0d04314bd291",
-    "at": "2026-11-07T05:33:46.115Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T05:49:07.657Z"
 }

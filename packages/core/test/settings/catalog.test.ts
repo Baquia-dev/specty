@@ -155,6 +155,11 @@ describe("the settings' catalog", () => {
       "internal.exec.priority",
       "internal.exec.maxOutputKiB",
       "internal.server.portsTried",
+      "internal.server.changesEveryMs",
+      "internal.server.tasksEveryMs",
+      "internal.server.runLines",
+      "internal.server.runEveryMs",
+      "internal.server.maxBodyKiB",
     ]);
   });
 
@@ -254,6 +259,9 @@ describe("the settings' catalog", () => {
       expect.objectContaining({ key: "internal.exec.priority", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.exec.maxOutputKiB", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.server.portsTried", kind: "number", new: true }),
+      ...["changesEveryMs", "tasksEveryMs", "runLines", "runEveryMs", "maxBodyKiB"].map((key) =>
+        expect.objectContaining({ key: `internal.server.${key}`, kind: "number", new: true }),
+      ),
     ]);
     expect(
       SETTINGS.find((setting) => setting.key === "internal.retries.landing")?.unit,
