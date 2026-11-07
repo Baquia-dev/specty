@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261108-las-tareas-de-un-quick-y-la-revision",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261108-las-tareas-de-un-quick-y-la-revision",
+  "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0ca0a3a4077c960493666ab84827ccf25076e9e2ae373271e0c138bd0ac8a795",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f577c2eb17139b4bc4c35b2a29330259aab25f1ea9975163f3042b4ed0db318c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e8d326c8563f8a84190d8b70f8b43b28bf1fc991df448867dfae27e4d9560f4c",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:5c22e3c702220ffc58b79d9d62d23f6bd05654e27432ddf3ba77387c1fcf4133",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:45d855689e3f8a6f13172b50fa57245792afe5f4179272d751bfb5a5b4805a3c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:29188d88d9a3b9c1db5a8f6c33b5fa04f9c1be2d542fd669aaff2ba7ae08ecf9",
+    "at": "2026-11-07T16:16:32.126Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
