@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-el-numero-de-procesos-baja-cuando-la-memoria",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-el-numero-de-procesos-baja-cuando-la-memoria",
   "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
   "revision": 1,
@@ -50,6 +50,9 @@
     "T": 2,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T17:19:18.453Z"
+  "lockedTests": {
+    "packages/cli/test/memory.test.ts": "sha256:bcf7d29f32c5a07409f00f459aecbea78b8e79c74d58697a14eb0eab7ce9de58",
+    "packages/cli/test/process-budget.test.ts": "sha256:4f7c1d0ec561cadf5e43d94078908e3ae34792b48fa1b3621ed53782bc8cef3b",
+    "packages/cli/test/verify-processes.test.ts": "sha256:048976c734a7af5b8ca034df3a6ed293b36d47c8ba975aa649e4b0f3a1c6a4b5"
+  }
 }
