@@ -6,6 +6,13 @@
   "branch": "specty/20261107-las-evals-mantienen-viva-la-sesion-de-claude",
   "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:327b17f4e314bd7cef94f29155d83ac92aa43849f88391a69cfe779a70d88a48",
+    "at": "2026-11-07T04:08:29.776Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -51,12 +58,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:327b17f4e314bd7cef94f29155d83ac92aa43849f88391a69cfe779a70d88a48",
-    "at": "2026-11-07T04:08:29.776Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T04:09:54.522Z"
 }
