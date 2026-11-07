@@ -443,6 +443,8 @@ export {
   unlockRefusalCard,
 } from "./unlock";
 export {
+  type IncorporationLocked,
+  lockedIncorporationProblem,
   type UnlockMismatch,
   unlockMismatchCard,
   unlockStaleCard,

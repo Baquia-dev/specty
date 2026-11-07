@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-incorporar-main-no-cambia-un-test-aprobado-sin",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-incorporar-main-no-cambia-un-test-aprobado-sin",
   "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "517a8f0e1257d8553b26425fb60094a7a0df5f1a",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:34:10.745Z",
       "doneAt": "2026-11-07T17:36:04.664Z",
-      "summary": "Con la incorporación pendiente, scope add pide el desbloqueo de tests aprobados (parche comprobado sobre el último commit) y approve --scope lo decide fuera de implementing, abriendo el test en integration.unlocked"
+      "summary": "Con la incorporación pendiente, scope add pide el desbloqueo de tests aprobados (parche comprobado sobre el último commit) y approve --scope lo decide fuera de implementing, abriendo el test en integration.unlocked",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1c945d97d28b7a256801d326e48da3e543e117fd",
+      "startedAt": "2026-11-07T17:36:05.037Z",
+      "doneAt": "2026-11-07T17:39:23.439Z",
+      "summary": "specty integrate solo hace el commit con cada test aprobado como se aprobó, como lo funde git con main (git merge-file ours/theirs/union) o como el parche del desbloqueo de la incorporación, y lo vuelve a bloquear con su hash; documentado en ARCHITECTURE, formats y ADR 0014"
     }
   },
   "pending": {

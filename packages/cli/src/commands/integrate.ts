@@ -9,6 +9,7 @@ import {
   integrationResolvedLine,
   isGoverned,
   isIntegrating,
+  lockedIncorporationProblem,
   markersLeftLine,
   mergeAbortedLine,
   mergingLabel,
@@ -31,6 +32,7 @@ import { changeTrailers, commitWithReceipt } from "../flow/commits";
 import { fullCommand } from "../flow/full-verification";
 import { blocked } from "../flow/integrate";
 import { fullPlan, runFull } from "../flow/units";
+import { incorporatedTests, relockedTests } from "../flow/unlock-check";
 import { codeTree, type FullRun, recordFullVerification } from "../flow/verified";
 import { readText } from "../io/files";
 import { pathsOf } from "../io/git";
@@ -43,7 +45,8 @@ const MARKER = /^(?:<{7}|>{7})(?:\s|$)|^={7}$/m;
 /**
  * `specty integrate`: the agent finishes the merge a closing left in this folder. Nothing is
  * committed unless every conflict is resolved, the changes stay within the files the merge brings
- * together and the verification passes (ARCHITECTURE §9).
+ * together, each approved test changed only as it may (ADR 0014) and the verification passes
+ * (ARCHITECTURE §9).
  */
 export async function integrate(session: Session): Promise<Output> {
   const { cards, git, lang } = session;
@@ -62,7 +65,7 @@ export async function integrate(session: Session): Promise<Output> {
     return {
       status: "blocked",
       header: headerOf(state.id, state.phase, mergingLabel(integration.target, lang)),
-      blocks: [...section(undefined, [problem.reason]), problem.details],
+      blocks: [...section(undefined, [problem.reason]), ...problem.details],
       next: problem.next ?? integrateRetry(cards),
     };
   }
@@ -74,11 +77,14 @@ type Integration = NonNullable<StoredChange["state"]["integration"]>;
 /** Why the merge cannot be committed yet, what to show, and what to do if not to retry. */
 interface MergeProblem {
   readonly reason: string;
-  readonly details: OutputBlock;
+  readonly details: readonly OutputBlock[];
   readonly next?: string;
 }
 
-/** Conflict markers left, changes outside the files the merge brings together, or a failing verification. */
+/**
+ * Conflict markers left, changes outside the files the merge brings together, an approved test
+ * changed as it may not, or a failing verification.
+ */
 async function mergeProblem(
   session: Session,
   change: StoredChange,
@@ -87,6 +93,7 @@ async function mergeProblem(
   return (
     (await markersLeft(session, integration)) ??
     (await outsideChanges(session, integration)) ??
+    (await lockedChanged(session, change, integration)) ??
     (await failedVerification(session, change))
   );
 }
@@ -102,7 +109,7 @@ async function markersLeft(
   if (marked.length === 0) return undefined;
   return {
     reason: markersLeftLine(session.lang),
-    details: { title: incorporationTitle("markers", session.lang), lines: marked },
+    details: [{ title: incorporationTitle("markers", session.lang), lines: marked }],
   };
 }
 
@@ -121,9 +128,24 @@ async function outsideChanges(
   if (outside.length === 0) return undefined;
   return {
     reason: outsideIncorporationLine(integration.target, lang),
-    details: { title: incorporationTitle("outside", lang), lines: outside },
+    details: [{ title: incorporationTitle("outside", lang), lines: outside }],
     next: undoOutsideNext(session.cards),
   };
+}
+
+/**
+ * An approved test the incorporation changed without the person's unlock, or not as the patch of
+ * the one they approved for it leaves it (ADR 0014).
+ */
+async function lockedChanged(
+  session: Session,
+  change: StoredChange,
+  integration: Integration,
+): Promise<MergeProblem | undefined> {
+  if (change.state.lockedTests === undefined) return undefined;
+  const found = await incorporatedTests(session, change, integration);
+  if (found.changed.length === 0 && found.mismatches.length === 0) return undefined;
+  return lockedIncorporationProblem(found, integration.target, session.cards);
 }
 
 /**
@@ -158,7 +180,7 @@ async function failedVerification(
   }
   return {
     reason: commandFailsLine(ran.command, lang),
-    details: { title: incorporationTitle("verification", lang), lines: ran.output.slice(-15) },
+    details: [{ title: incorporationTitle("verification", lang), lines: ran.output.slice(-15) }],
   };
 }
 
@@ -171,7 +193,10 @@ async function recordPassed(session: Session, change: StoredChange, run: FullRun
   await recordFullVerification(session, change, tree === undefined ? run : { ...run, tree });
 }
 
-/** The merge resolved: its commit, recorded in the change's state. */
+/**
+ * The merge resolved: its commit, recorded in the change's state with each approved test locked
+ * again as the merge leaves it.
+ */
 async function commitMerge(
   session: Session,
   change: StoredChange,
@@ -187,10 +212,15 @@ async function commitMerge(
     receipt: { change: state.id, kind: "close" },
   });
   const at = session.environment.now().toISOString();
+  const lockedTests = await relockedTests(session, state);
   await commitState(
     session,
     change,
-    { ...state, integration: { ...integration, resolved: { commit, at } } },
+    {
+      ...state,
+      integration: { ...integration, resolved: { commit, at } },
+      ...(lockedTests === undefined ? {} : { lockedTests }),
+    },
     "integration.resolved",
     { commit },
   );

@@ -69,7 +69,7 @@ Mientras el agente resuelve una incorporación de main, un test aprobado (`locke
   - files: packages/core/src/schema/state.ts, packages/cli/src/commands/scope.ts, packages/cli/src/commands/scope-decision.ts, packages/cli/src/flow/unlock-proposal.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/integrate-locked.test.ts, docs/formats.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate-locked.test.ts -t "AC[34]:" && pnpm lint
-- [ ] T3: `specty integrate` solo hace el commit con cada test aprobado como se aprobó, como lo funde git o como su parche, y lo vuelve a bloquear
+- [x] T3: `specty integrate` solo hace el commit con cada test aprobado como se aprobó, como lo funde git o como su parche, y lo vuelve a bloquear
   - files: packages/cli/src/commands/integrate.ts, packages/cli/src/flow/unlock-check.ts, packages/core/src/cards/unlock-check.ts, packages/core/src/cards/index.ts, packages/cli/test/integrate-locked.test.ts, docs/ARCHITECTURE.md, docs/decisions/0014-los-tests-como-contrato.md
   - ac: AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate-locked.test.ts test/integrate.test.ts test/unlock-done.test.ts && pnpm typecheck && pnpm lint && pnpm knip
