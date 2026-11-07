@@ -80,7 +80,7 @@ Hoy cuántas veces reintenta Specty escribir en su memoria cuando otra sesión e
 
 ## Tareas
 
-- [ ] T1: Las claves nuevas de `internal`, sus ajustes en «Interno» y los textos de «Interno» en su módulo
+- [x] T1: Las claves nuevas de `internal`, sus ajustes en «Interno» y los textos de «Interno» en su módulo
   - files: packages/core/src/schema/internal-waits.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/src/cards/settings.ts, packages/core/test/schema/schema.test.ts, packages/core/test/settings/catalog.test.ts, packages/ui/src/settings/settings-page.test.ts, docs/formats.md
   - ac: AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts test/settings/catalog.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts

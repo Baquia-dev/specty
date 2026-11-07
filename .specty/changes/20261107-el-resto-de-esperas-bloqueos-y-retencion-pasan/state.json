@@ -52,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e420e5c3dbe64d8aa42b922ab1bafe9bd11f2ac5",
+      "startedAt": "2026-11-07T04:38:44.317Z",
+      "doneAt": "2026-11-07T04:41:36.683Z",
+      "summary": "Claves internal.retries.memory, internal.retries.gitConfig e internal.retention.verifiedDays con sus límites; sus ajustes en «Interno» (unidad d); textos de «Interno» en cards/settings-internal.ts; tests de la página con listas del catálogo; formats.md."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
