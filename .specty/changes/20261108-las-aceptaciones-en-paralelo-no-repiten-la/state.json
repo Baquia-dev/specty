@@ -6,6 +6,13 @@
   "branch": "specty/20261108-las-aceptaciones-en-paralelo-no-repiten-la",
   "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ec7ac451d545354e480495ddaf848a6bfc4df1f8a8241802ebae40642310c35f",
+    "at": "2026-11-07T17:24:11.313Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:ec7ac451d545354e480495ddaf848a6bfc4df1f8a8241802ebae40642310c35f",
-    "at": "2026-11-07T17:24:11.313Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T17:27:59.103Z"
 }
