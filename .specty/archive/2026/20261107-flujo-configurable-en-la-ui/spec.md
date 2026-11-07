@@ -157,3 +157,45 @@ Hoy solo se configura Specty editando `.specty/config.yaml` a mano: ninguna pant
 - R3: Los cambios en curso siguen con la configuración de su rama hasta que incorporan main. Mitigación: el diálogo lo dice al guardar, y `accept` ya valida `config.yaml` después de incorporar main.
 - R4: C8 y C9 tocan muchos archivos de la CLI. Si uno de esos cortes sale demasiado grande al proponerlo, se estrecha y se ajusta la épica antes de aprobarlo, como C4 de `20261107-verificacion-sin-repetir`. Así se dividió C2, que salió XL, en el servidor (C2) y la página (C10), lo que quedó fuera de C8 pasó a C11, lo que quedó fuera de C9 pasó a C12, lo que quedó fuera de C12, que también salió XL, pasó a C13 a C16, lo que quedó fuera de C11 al cerrarse pasó a C17 y C18, las reglas de riesgo propias que dejó C7 pasaron a C19, y C5, que salió XL, dejó la pieza Fase de cierre a C20 y las demás reglas del flujo a C21 y C22.
 - R5: Las piezas de C3 tienen que corresponder a claves reales. Si una pieza no tiene clave hasta C5, C21 o C22, se muestra sin control hasta que ese corte la añada.
+
+## Cierre
+
+### Resumen
+
+La página «Configuración» de `specty ui` (`/settings`) muestra todos los ajustes de `.specty/config.yaml` y deja cambiarlos con un diff antes de guardar, en un commit propio con `Specty-Config: true`. Tiene dos vistas, General y Flujo, cada una en Básico y Avanzado. La vista Flujo pone las fases en línea con sus piezas y las garantías con candado, y el modo Básico ofrece los perfiles Ligero, Equilibrado y Estricto. Los parámetros que estaban fijos en el código son ahora claves opcionales con el valor de antes por defecto; los internos van en una sección «Interno» plegada. Los 22 cortes:
+- C1 (`20261107-la-pagina-configuracion-muestra-todos-los`, 6a6798d): la página en solo lectura, el catálogo `core/settings/catalog.ts` en la entrada ligera y `GET /api/config`.
+- C2 (`20261107-los-ajustes-se-guardan-desde-la-ui-con-diff-y`, 9183447): `POST /api/config/check` (errores y diff) y `POST /api/config` (solo las claves tocadas, commit con recibo `config`), con la puerta de las acciones de la persona.
+- C10 (`20261107-la-pagina-guarda-los-ajustes-con-el-dialogo`, 723f6f6): edición por fila, «Restablecer», «Sin guardar» y el diálogo «Revisar y guardar», con «Antes» solo si se quita algo, avisos y confirmación aparte para los permisos.
+- C3 (`20261107-la-vista-flujo-muestra-las-fases-con-sus-piezas`, c76f6f0): la vista Flujo, las piezas (`settings/pieces.ts`), las cuatro garantías con su frase y el modo delegado como pieza.
+- C4 (`20261107-perfiles-ligero-equilibrado-y-estricto-en-el`, 9467520): los perfiles (`settings/presets.ts`), que fijan nueve claves de políticas y límites.
+- C5 (`20261107-la-fase-de-cierre-y-otras-reglas-del-flujo`, d0d3cdd): `flow.closing`; con `false`, un cambio estándar que no es corte se cierra al aceptarlo.
+- C20 (`20261108-la-pieza-fase-de-cierre-se-equipa-y-se-quita-en`, 40e11e8): la pieza «Fase de cierre» y el diálogo «Aceptar» que lo dice (`withoutClosing`).
+- C21 (`20261108-las-tareas-de-un-quick-y-la-revision`, 89ef4fe): `lanes.quick.maxTasks` y `flow.reviewFrom`.
+- C22 (`20261108-las-comprobaciones-de-task-done-pasan-a-ser`, c15fd97): `checks.taskDone.skip`, que no admite las comprobaciones del plan aprobado ni la de tests bloqueados.
+- C6 (`20261107-el-tamano-y-el-esfuerzo-pasan-a-ser-ajustes`, b861974): `sizing` (pesos, umbrales, `nearRatio`) y `effort` como tabla de esfuerzo.
+- C7 (`20261107-los-avisos-de-la-spec-y-de-las-sesiones-pasan-a`, 0d670cd) y C19 (`20261107-las-reglas-de-riesgo-propias-se-suman-a-las-de`, 91706a7): `usage.*`, `warnings.vagueTerms`, `warnings.horizontalLayers` y `warnings.risks`, que se suma a las reglas de Specty.
+- Internos: C8 (396ec14) y C11 (ca7a1f0) esperas, latido, reintentos y retención; C17 (8eeee6a) intervalos de sondeo; C18 (4d88d4c) caducidad de la cola y del índice de restos; C9 (38a574c) prioridad de las verificaciones, puertos y `ui.port`; C12 (122b0f8) salida máxima de un comando; C13 (556f05e) límites del servidor; C14 (bd9dfaa) y C15 (7b748c7) límites de lo que muestran tarjetas, comandos y checks; C16 (a491c1c) tiempo del hook de Antigravity, que `init` escribe y `doctor` comprueba.
+
+### Desviaciones
+
+- La épica pasó de 9 a 22 cortes en seis ajustes (revisiones 3 a 8): C2, C5, C7, C9, C11 y C12 salieron XL al redactarse y se estrecharon según R4; lo que dejaron fuera fue a C10 a C22.
+- C8 y C18 añadieron dos garantías con candado sin clave (`guarantee.waitMarks` es la quinta), así que A10 nombra una menos de las que hay (P319).
+- `PAGE` de `server/finished.ts` sigue fijo: la UI siempre manda `limit` (C13).
+- La persona desbloqueó tests aprobados en C7, C10, C12, C13, C15 y C5, con parches que no cambian lo que comprueban (listas de ajustes «Nuevo», un tipo, el campo `delegated` del modo delegado). C18 cambió una línea de su propio test aprobado al resolver un merge, sin desbloqueo (P321).
+- Fallos de red pararon la épica varias horas el 2026-11-07; los cortes se retomaron desde sus carpetas sin perder trabajo.
+
+### Decisiones
+
+- Guardar es una decisión de la persona, con la misma puerta que aprobar: el agente no guarda ni en modo delegado. El commit lleva solo `.specty/config.yaml` y su trailer.
+- Las garantías (aprobación de la spec, contrato de tests, aceptación de la persona, guard y las vidas del cumplimiento) se ven con candado y no tienen clave.
+- Sin una clave, Specty se comporta igual que antes: los perfiles, los cortes y la página solo escriben las claves que cambian.
+- Los internos tienen mínimo y máximo en el schema, y la cola de verificaciones nunca caduca antes de tres vueltas del sondeo.
+
+### Pendientes
+
+- Comprobar a mano la página en un `specty ui` real (P293) y la documentación de cada corte (P275, P282, P286, P296, P304, P306, P314, P317, P320, P325, P337, P347).
+- Archivos por encima del aviso: `schema/config.ts` (P318, P324, P351), `settings/catalog.ts` y `cards/settings.ts` (P353, P355), `settings-page.ts` y `data/server.ts` (P292), `server/records.ts` (P352), y los tests `catalog.test.ts` y `settings-page.test.ts` (P295, P303).
+- Sin efecto aún: `sizing.highFanIn` y los pesos `fanIn` y `noTests` (P288); el esfuerzo oculto de la cabecera usa la tabla por defecto (P289).
+- Textos: la ayuda de `--port` (P281), el comentario de `server/context.ts` (P336), el aviso de volver a ejecutar `init` al guardar el hook de Antigravity (P316), la guía del quick y las frases de `flow.reviewFrom` (P356), y una pieza para `warnings.risks` (P343).
+- Las herramientas de `specty check` siguen con 512 KiB fijos (P302); falta una configuración de ejemplo para `ng serve` (P268).
+- Para Specty: aceptaciones en paralelo que se invalidan entre sí (P334) y tests aprobados que `integrate` deja cambiar (P321).

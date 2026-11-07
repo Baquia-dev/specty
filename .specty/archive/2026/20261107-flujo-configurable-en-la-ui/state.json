@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261107-flujo-configurable-en-la-ui",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261107-flujo-configurable-en-la-ui",
   "baseCommit": "101bef5b635c071e131ed1d20def1e680b80c254",
-  "revision": 8,
+  "revision": 9,
   "approved": {
     "revision": 8,
     "hash": "sha256:8ace4da1eada49f2fa84b4b2f5b55bd8bfb89e0b7e7e441d0e2738450de307c5",
@@ -85,5 +85,6 @@
     "AC": 26,
     "C": 22,
     "R": 5
-  }
+  },
+  "closingSubmittedAt": "2026-11-07T16:57:50.485Z"
 }
