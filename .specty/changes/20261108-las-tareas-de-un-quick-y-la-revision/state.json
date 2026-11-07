@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "51845aa886e0b46e23d5892148859fc3bbd1c5a3",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:19:36.251Z",
       "doneAt": "2026-11-07T16:28:24.394Z",
-      "summary": "Las claves lanes.quick.maxTasks (1) y flow.reviewFrom (L) viven en schema/flow.ts, que recibe también el bloque lanes de config.ts; el catálogo las muestra con «Nuevo» tras lanes.quick.maxFiles y review.timeoutSec, con sus textos en español e inglés"
+      "summary": "Las claves lanes.quick.maxTasks (1) y flow.reviewFrom (L) viven en schema/flow.ts, que recibe también el bloque lanes de config.ts; el catálogo las muestra con «Nuevo» tras lanes.quick.maxFiles y review.timeoutSec, con sus textos en español e inglés",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "333e7050d68ebc48f13cedc70527b0e42f325daa",
+      "startedAt": "2026-11-07T16:28:24.985Z",
+      "doneAt": "2026-11-07T16:35:17.909Z",
+      "summary": "checkQuickLane admite las tareas de lanes.quick.maxTasks y el aviso quick-limits dice el máximo («quick admite una» con 1, el número con más)"
     }
   },
   "pending": {

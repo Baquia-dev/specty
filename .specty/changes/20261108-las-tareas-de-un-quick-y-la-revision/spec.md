@@ -76,7 +76,7 @@ Hoy un cambio `quick` admite una sola tarea y la revisión independiente se reco
   - files: packages/core/src/schema/flow.ts, packages/core/src/schema/config.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/src/cards/settings-size.ts, packages/core/test/settings/quick-and-review.test.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/quick-and-review.test.ts test/settings/catalog.test.ts
-- [ ] T2: El carril rápido admite las tareas de `lanes.quick.maxTasks` y su aviso dice el máximo
+- [x] T2: El carril rápido admite las tareas de `lanes.quick.maxTasks` y su aviso dice el máximo
   - files: packages/core/src/validate/limits.ts, packages/core/src/validate/structure.ts, packages/core/test/validate/structure.test.ts, packages/core/test/spec/messages.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/structure.test.ts test/spec/messages.test.ts
