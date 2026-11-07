@@ -82,8 +82,10 @@ describe("the settings' catalog", () => {
       "size",
       "lines",
       "checks",
+      "warnings",
       "team",
       "memory",
+      "usage",
       "dev",
       "ui",
       "effort",
@@ -145,6 +147,11 @@ describe("the settings' catalog", () => {
     ]);
     expect(keysWith("new")).toEqual([
       ...SIZING_KEYS,
+      "warnings.vagueTerms",
+      "warnings.horizontalLayers",
+      "usage.freshSessionTokens",
+      "usage.ccusage.timeoutSec",
+      "usage.ccusage.version",
       ...EFFORT_KEYS,
       "internal.waits.waitTimeoutSec",
       "internal.waits.heartbeatSec",
@@ -183,8 +190,10 @@ describe("the settings' catalog", () => {
       "Tamaño y cortes",
       "Líneas de código",
       "Verificaciones de calidad",
+      "Avisos",
       "Equipo",
       "Memoria",
+      "Consumo y sesiones",
       "Desarrollo",
       "Interfaz",
       "Esfuerzo recomendado",
@@ -423,6 +432,91 @@ describe("the internal keys of execution and of the server", () => {
     }
     expect(issuesOf({ exec: { nice: 5 } })).toEqual(["internal.exec"]);
     expect(issuesOf({ server: { port: 5 } })).toEqual(["internal.server"]);
+  });
+});
+
+describe("the keys of the spec's and the sessions' warnings", () => {
+  /** Each new setting of this slice: its section and how the page shows it. */
+  const WARNINGS = [
+    { key: "warnings.vagueTerms", section: "warnings", kind: "list" },
+    { key: "warnings.horizontalLayers", section: "warnings", kind: "list" },
+    { key: "usage.freshSessionTokens", section: "usage", kind: "number" },
+    { key: "usage.ccusage.timeoutSec", section: "usage", kind: "number", unit: "s" },
+    { key: "usage.ccusage.version", section: "usage", kind: "text" },
+  ] as const;
+  const TODAY = {
+    usage: { freshSessionTokens: 150_000, ccusage: { timeoutSec: 60, version: "20.0.45" } },
+    warnings: { vagueTerms: [], horizontalLayers: [] },
+  };
+  const issuesOf = (input: Readonly<Record<string, unknown>>) => {
+    const result = resolveConfig({ version: 1, ...input });
+    return result.ok ? [] : result.issues.map((issue) => issue.path);
+  };
+
+  it("AC7: puts them in sections «Avisos», after the quality checks, and «Consumo y sesiones», after the memory, marked new", () => {
+    for (const setting of WARNINGS) {
+      expect(
+        SETTINGS.find((other) => other.key === setting.key),
+        setting.key,
+      ).toEqual({ ...setting, new: true });
+    }
+    expect(SETTING_SECTIONS.indexOf("warnings")).toBe(SETTING_SECTIONS.indexOf("checks") + 1);
+    expect(SETTING_SECTIONS.indexOf("usage")).toBe(SETTING_SECTIONS.indexOf("memory") + 1);
+  });
+
+  it("AC7: names the two sections and the five settings in Spanish and in English", () => {
+    expect(sectionName("warnings", "es")).toBe("Avisos");
+    expect(sectionName("warnings", "en")).toBe("Warnings");
+    expect(sectionName("usage", "es")).toBe("Consumo y sesiones");
+    expect(sectionName("usage", "en")).toBe("Usage and sessions");
+    for (const { key } of WARNINGS) {
+      const es = settingText(key, "es");
+      const en = settingText(key, "en");
+      expect(es.name, key).not.toBe(key);
+      expect(en.name, key).not.toBe(key);
+      expect(es.name, key).not.toBe(en.name);
+      expect(es.description, key).not.toBe(en.description);
+    }
+  });
+
+  it("AC6: default to today's values, with or without the keys", () => {
+    expect(DEFAULT_CONFIG).toMatchObject(TODAY);
+    expect(resolveConfig({ version: 1 })).toMatchObject({ ok: true, config: TODAY });
+    expect(resolveConfig({ version: 1, usage: { ccusage: {} }, warnings: {} })).toMatchObject({
+      ok: true,
+      config: TODAY,
+    });
+    const mine = {
+      usage: { freshSessionTokens: 1, ccusage: { timeoutSec: 600, version: "21.1.0-beta.2" } },
+      warnings: { vagueTerms: ["pulcro"], horizontalLayers: ["capa de servicios"] },
+    };
+    expect(resolveConfig({ version: 1, ...mine })).toMatchObject({ ok: true, config: mine });
+    expect(issuesOf({ usage: { ccusage: { timeoutSec: 1, version: "20.0.45" } } })).toEqual([]);
+  });
+
+  it("AC6: refuses a threshold that is not a positive integer, a time outside 1 to 600, a version not x.y.z, an empty term and an unknown key, by its key", () => {
+    for (const freshSessionTokens of [0, -1, 1.5, "150000"]) {
+      expect(issuesOf({ usage: { freshSessionTokens } }), String(freshSessionTokens)).toEqual([
+        "usage.freshSessionTokens",
+      ]);
+    }
+    for (const timeoutSec of [0, 601, 2.5]) {
+      expect(issuesOf({ usage: { ccusage: { timeoutSec } } }), String(timeoutSec)).toEqual([
+        "usage.ccusage.timeoutSec",
+      ]);
+    }
+    for (const version of ["latest", "20", "20.0", "v20.0.45", "20.0.45; rm -rf /", ""]) {
+      expect(issuesOf({ usage: { ccusage: { version } } }), version).toEqual([
+        "usage.ccusage.version",
+      ]);
+    }
+    expect(issuesOf({ warnings: { vagueTerms: [""] } })).toEqual(["warnings.vagueTerms.0"]);
+    expect(issuesOf({ warnings: { horizontalLayers: ["api", ""] } })).toEqual([
+      "warnings.horizontalLayers.1",
+    ]);
+    expect(issuesOf({ usage: { fresh: 5 } })).toEqual(["usage"]);
+    expect(issuesOf({ usage: { ccusage: { path: "x" } } })).toEqual(["usage.ccusage"]);
+    expect(issuesOf({ warnings: { risks: [] } })).toEqual(["warnings"]);
   });
 });
 

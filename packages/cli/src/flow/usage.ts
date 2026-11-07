@@ -26,13 +26,6 @@ import { type Audit, readAudit } from "./carried";
 
 /** ccusage's source for each agent whose audit lines name their session. */
 const SOURCES: ReadonlyMap<unknown, string> = new Map([["claude-code", "claude"]]);
-/** The logs are local: a minute is plenty for each report. */
-const TIMEOUT_MS = 60_000;
-/**
- * Beyond this context, a fresh session pays off: every step of the next change would read the
- * earlier ones again. Measured in this repository, half of the cost (ARCHITECTURE §13).
- */
-const FRESH_SESSION = 150_000;
 
 type Tokens = Omit<UsageEntry, "timestamp" | "model">;
 /** A session of ccusage's report: its id, its project and what each model cost in it. */
@@ -58,11 +51,12 @@ export async function measureUsage(
     await appendAudit(change.files, entry);
   }
   const context = await agentContext(session, audit);
+  // Beyond `usage.freshSessionTokens`, a fresh session pays off: every step of the next change
+  // would read the earlier ones again. Measured here, half of the cost (ARCHITECTURE §13).
+  const fresh = context !== undefined && context > session.config.usage.freshSessionTokens;
   return [
     ...(usage === undefined ? [] : [usageLine(usage, session.lang)]),
-    ...(context !== undefined && context > FRESH_SESSION
-      ? [freshSessionLine(context, session.lang)]
-      : []),
+    ...(fresh ? [freshSessionLine(context, session.lang)] : []),
   ];
 }
 
@@ -163,13 +157,16 @@ function namedSessions(audit: Audit): ReadonlyMap<string, string> {
   return sessions;
 }
 
-/** ccusage's JSON for `args`; undefined when it is not there, fails or answers something else. */
+/**
+ * ccusage's JSON for `args`; undefined when it is not there, fails, answers something else or
+ * takes longer than `usage.ccusage.timeoutSec`.
+ */
 async function report(session: Session, args: readonly string[]): Promise<unknown> {
   const local = join(session.root, "node_modules", ".bin", "ccusage");
   const result = await execute((await exists(local)) ? local : "ccusage", args, {
     cwd: session.root,
     env: session.environment.env,
-    timeoutMs: TIMEOUT_MS,
+    timeoutMs: session.config.usage.ccusage.timeoutSec * 1000,
     whole: true,
   });
   return result.code === 0 ? parseJson(result.stdout) : undefined;

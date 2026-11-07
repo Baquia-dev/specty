@@ -90,13 +90,32 @@ export function testCycle(
   return types.has("fix") ? "bug" : undefined;
 }
 
+/** A text without accents, capitals or signs, between spaces: what terms are looked for in. */
+function padded(text: string): string {
+  return ` ${fold(text).replace(/[^a-z0-9-]+/g, " ")} `;
+}
+
+/**
+ * The person's terms found in a `padded` text, as they wrote them: whole words, without accents
+ * or capitals. A term of signs alone has no words, so it finds nothing.
+ */
+function personsIn(text: string, terms: readonly string[]): readonly string[] {
+  return terms.filter((term) => {
+    const words = padded(term).replace(/ +/g, " ");
+    return words !== " " && text.includes(words);
+  });
+}
+
 /** Criteria name an observable outcome, in WHEN … THEN … form. */
 export const checkCriteria: Rule = (spec, ctx, lang) =>
   (spec.sections.criteria?.items ?? []).flatMap((criterion): Diagnostic[] => {
     const at = { line: itemLine(ctx, criterion.id), target: criterion.id };
-    const padded = ` ${fold(criterion.text).replace(/[^a-z0-9-]+/g, " ")} `;
-    const terms = VAGUE_TERMS.filter((term) => padded.includes(` ${term} `));
-    const structured = /\b(?:cuando|when)\b/.test(padded) && /\b(?:entonces|then)\b/.test(padded);
+    const text = padded(criterion.text);
+    const terms = [
+      ...VAGUE_TERMS.filter((term) => text.includes(` ${term} `)),
+      ...personsIn(text, ctx.config.warnings.vagueTerms),
+    ];
+    const structured = /\b(?:cuando|when)\b/.test(text) && /\b(?:entonces|then)\b/.test(text);
     return [
       ...(terms.length > 0
         ? [
@@ -279,15 +298,23 @@ const HORIZONTAL_LAYERS: readonly { readonly pattern: RegExp; readonly layer: st
   { pattern: /\b(infra(?:structure)?|infraestructura)\b/i, layer: "infrastructure" },
 ];
 
+/** Specty's layer a slice's title names, or else the first of the person's (`warnings`). */
+function layerOf(title: string, mine: readonly string[]): string | undefined {
+  return (
+    HORIZONTAL_LAYERS.find((entry) => entry.pattern.test(title))?.layer ??
+    personsIn(padded(title), mine)[0]
+  );
+}
+
 function checkVerticalSlices(spec: Spec, ctx: ValidationContext, lang: Lang): Diagnostic[] {
   const slices = spec.sections.slices?.items ?? [];
   return slices.flatMap((slice) => {
-    const matched = HORIZONTAL_LAYERS.find((entry) => entry.pattern.test(slice.title));
-    if (matched === undefined) return [];
+    const layer = layerOf(slice.title, ctx.config.warnings.horizontalLayers);
+    if (layer === undefined) return [];
     return [
       report(lang, {
         code: "slice-horizontal",
-        params: { id: slice.id, layer: matched.layer },
+        params: { id: slice.id, layer },
         line: itemLine(ctx, slice.id),
         target: slice.id,
       }),

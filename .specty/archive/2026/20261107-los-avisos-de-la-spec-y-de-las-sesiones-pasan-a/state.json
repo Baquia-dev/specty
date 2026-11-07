@@ -1,0 +1,150 @@
+{
+  "schema": 1,
+  "id": "20261107-los-avisos-de-la-spec-y-de-las-sesiones-pasan-a",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-los-avisos-de-la-spec-y-de-las-sesiones-pasan-a",
+  "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:67dc4b31a8d0b3461b9d6b92544dc93b633be58e7c77256c1df669c58524988c",
+    "at": "2026-11-07T04:10:04.899Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:774dd4908a96466def49d311fa90d7643d5209cf1fb5e969cf1e981e0c0151b0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a93dd3d7fcf06a87350d162286407a640edf6e6fa27026a50b60f2990ad0a216",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:1319f1ddde01b4727c630deca1ff2abe03f0ccda5bfc97c434ac3554fef89c8e",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b58416d72a33b4a547dc1cfc2ef0d8e66c67d57400957e92f1633a06b62f1148",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:efa331ca9e6062956a4027c43b04e638e773046ad6bc1f8126216e7f62f6f289",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:85200f7957d24b608f5a86ff1ffa9915f139925631723ffdcf994e974ca528e6",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:20eaa5fe4436ff4c2b6a01cf4a3dc8d08b90c72eeafc5e6e29c5f5bec970532b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "36f112b5ce273bd1f1818ba36477b8ec33b0433b",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:25:05.385Z",
+      "doneAt": "2026-11-07T04:35:03.971Z",
+      "summary": "Claves usage y warnings en schema/warnings.ts reunidas por spread en config.ts; quality.ts suma los términos vagos y capas de la persona a los de Specty; secciones «Avisos» y «Consumo y sesiones» con cinco ajustes nuevos en el catálogo y sus textos en cards/settings-warnings.ts; formats.md §6",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "7afe1a427a95527146c3ba2d55b265260dffcf94",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:35:04.631Z",
+      "doneAt": "2026-11-07T05:00:14.541Z",
+      "summary": "La página muestra «Avisos» y «Consumo y sesiones» desde el catálogo; ui.md las documenta; el test de C8 del filtro Nuevos compara solo las claves internal.* (desbloqueo S1, aprobado por la persona)",
+      "scopeExtra": [
+        "packages/ui/src/settings/settings-page.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "e9ff3d7348541c8336936e293be92f4e900d5b9f",
+      "attempts": 1,
+      "startedAt": "2026-11-07T05:00:14.894Z",
+      "doneAt": "2026-11-07T05:02:58.975Z",
+      "summary": "flow/usage.ts compara el contexto con usage.freshSessionTokens y espera cada informe de ccusage usage.ccusage.timeoutSec; install/usage.ts recibe la versión (init, la de DEFAULT_CONFIG; doctor, la de session.config); ARCHITECTURE §13 y §14",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 8,
+    "T": 3,
+    "R": 3,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-07T05:03:43.853Z",
+  "lockedTests": {
+    "packages/cli/test/fresh-session.test.ts": "sha256:830e5a61768191901e67978f70c468f2391a9a4a0791382d5bda4f038abd3419",
+    "packages/cli/test/init-usage.test.ts": "sha256:e426f2c25dc1f8736dce53e84db07898fe2fc24a9acabd2341a1ff5960ade9d0",
+    "packages/cli/test/usage.test.ts": "sha256:b0578e525f6b014177631d1a551197615ea0ac2b2e71f9db95cb9bc0f45d1885",
+    "packages/core/test/settings/catalog.test.ts": "sha256:500905365f6b922ee002109ecaa8b495407ad18246a60cf483b1808102f6d9c5",
+    "packages/core/test/validate/quality.test.ts": "sha256:b5374c14a0d47ec4d4efb6cdbc58af7d94c1f17491a0678dd50f455351e7fcc7",
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:a0917b67bad07d4cdc6b26c83a7a2a4d190f4cb76c0476223cce394b91478725"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "122b0f87b0dd21aa992fe015859351574e4588ec",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/core/test/settings/catalog.test.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/check/commands.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/commands/review.ts",
+      "packages/cli/src/flow/usage.ts",
+      "packages/cli/src/install/usage.ts",
+      "packages/cli/src/io/exec.ts",
+      "packages/cli/src/server/diff.ts",
+      "packages/cli/src/server/test-code.ts",
+      "packages/cli/src/server/trace.ts",
+      "packages/cli/test/check-commands.test.ts",
+      "packages/cli/test/fresh-session.test.ts",
+      "packages/cli/test/init-usage.test.ts",
+      "packages/cli/test/review.test.ts",
+      "packages/cli/test/server/output-limit.test.ts",
+      "packages/cli/test/usage.test.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/cards/settings-warnings.ts",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/warnings.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/validate/quality.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/validate/quality.test.ts",
+      "packages/ui/src/settings/settings-page.test.ts"
+    ],
+    "at": "2026-11-07T05:21:59.657Z",
+    "resolved": {
+      "commit": "cce83c1",
+      "at": "2026-11-07T05:31:18.355Z"
+    }
+  }
+}

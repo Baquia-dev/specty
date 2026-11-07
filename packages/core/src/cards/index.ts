@@ -467,7 +467,7 @@ export type {
   SliceView,
   TaskView,
 } from "./view";
-export { waitHeartbeat, waitTimeoutCard } from "./wait";
+export { waitFolderGoneCard, waitHeartbeat, waitTimeoutCard } from "./wait";
 export {
   type WhyCommit,
   type WhyRefusal,
