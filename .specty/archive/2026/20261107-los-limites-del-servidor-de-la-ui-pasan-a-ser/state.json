@@ -1,0 +1,179 @@
+{
+  "schema": 1,
+  "id": "20261107-los-limites-del-servidor-de-la-ui-pasan-a-ser",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-los-limites-del-servidor-de-la-ui-pasan-a-ser",
+  "baseCommit": "122b0f87b0dd21aa992fe015859351574e4588ec",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a4b79a80ce2893f6a65c7b52ef5ed21b5313564607b647c00b1c0d04314bd291",
+    "at": "2026-11-07T05:33:46.115Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6ae5798547f1917027ea86027c53dad9ae41a23b9856616f6a83172db44e6536",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:84bc2cbcb7c2c5f473ed9721b68e987f27fca2aecb9fd557bd40f93c8abab241",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:341144056b5dcbc836dc74d24abf36de9ed6d59af8fe26ae4e76c9f88bf23294",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:12a66f50f5831d2004703dfbcf131e18684a08c1b8b574465674fc48f80212a9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7cb8bf64c31472671f9179f6e6188138f480dcdd",
+      "attempts": 1,
+      "startedAt": "2026-11-07T05:49:29.582Z",
+      "doneAt": "2026-11-07T09:09:22.233Z",
+      "summary": "Cinco claves de internal.server con sus límites y los valores de hoy, en «Interno» del catálogo tras portsTried, con «Nuevo», la unidad ms y textos en los dos idiomas; recuento de catalog.test.ts según S1.",
+      "scopeExtra": [
+        "packages/core/test/settings/catalog.test.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "45ab4aa94ee1fbadcf5c9b0174258b9838d0b2c1",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:09:22.667Z",
+      "doneAt": "2026-11-07T09:17:30.567Z",
+      "summary": "liveRun, las líneas de cada unidad de runs.ts y el archivo en vivo de runLive guardan las últimas internal.server.runLines líneas y se avisan o reescriben como mucho cada runEveryMs.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "96d23ee593e00db2192faf85ebda4a1014834131",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:17:31.286Z",
+      "doneAt": "2026-11-07T09:25:54.129Z",
+      "summary": "El servidor mira los cambios cada internal.server.changesEveryMs (salvo interval), lee las verificaciones de otros procesos cada tasksEveryMs y el cuerpo de una acción hasta maxBodyKiB.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "b736df23b59ed212bc5bfd7e909d8eca2665f81e",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:25:54.537Z",
+      "doneAt": "2026-11-07T09:32:58.394Z",
+      "summary": "formats.md §6 documenta las cinco claves de internal.server con su valor, sus límites y dónde rigen; ARCHITECTURE las nombra en los eventos, las verificaciones en vivo y las acciones.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 9,
+    "T": 4,
+    "R": 3,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-07T09:33:23.612Z",
+  "lockedTests": {
+    "packages/cli/test/live-run.test.ts": "sha256:b1d7106954465cc01e82cae6ffc18df4c77a0f378a7fa571273c1b06c2bfd855",
+    "packages/core/test/settings/catalog.test.ts": "sha256:c05522bf042ccf7461b8f4b12bebe74fe415579e026ecbc15d94d76025fe2ac2",
+    "packages/cli/test/server/internal-server.test.ts": "sha256:0e8e3a0e816d478c0e13a0aa05c1409ad6498a4d48800ba29bb6041fce9d8bbc",
+    "packages/cli/test/server/run-output.test.ts": "sha256:c26691eb1b2626cf1e45344789128e7bf9c81efd4d9cfd64c77a33db266382fc",
+    "packages/core/test/settings/internal-server.test.ts": "sha256:40837143093d6afcd4c58c2dfb6031d61c243ff00fe0f3a538349d2486b369a4"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "91ebe7352a207b971f036dd3cedeb07335754a58",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/formats.md",
+      "packages/core/test/settings/catalog.test.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/review.ts",
+      "packages/cli/src/commands/task.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/flow/impact.ts",
+      "packages/cli/src/flow/live-run.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/run-output.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/src/server/watched-runs.ts",
+      "packages/cli/test/card-limits.test.ts",
+      "packages/cli/test/live-run.test.ts",
+      "packages/cli/test/server/internal-server.test.ts",
+      "packages/cli/test/server/run-output.test.ts",
+      "packages/cli/test/wait-delegated.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/core/src/branches.ts",
+      "packages/core/src/cards/impact.ts",
+      "packages/core/src/cards/review.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/cards/subagents.ts",
+      "packages/core/src/cards/task.ts",
+      "packages/core/src/cards/wait.ts",
+      "packages/core/src/flow/waiting.ts",
+      "packages/core/src/ids.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-cards.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/stats/people.ts",
+      "packages/core/src/stats/period.ts",
+      "packages/core/src/stats/rhythm.ts",
+      "packages/core/src/stats/rows.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/core/test/cards/idle-subagents.test.ts",
+      "packages/core/test/cards/wait.test.ts",
+      "packages/core/test/flow/waiting.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/card-limits.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/internal-server.test.ts",
+      "packages/core/test/stats/sections.test.ts",
+      "packages/ui/src/components/charts/chart-frame.ts",
+      "packages/ui/src/components/charts/charts.test.ts",
+      "packages/ui/src/components/charts/column-chart.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts",
+      "packages/ui/src/dashboard/dashboard-people.ts",
+      "packages/ui/src/dashboard/dashboard-rhythm.ts",
+      "packages/ui/src/dashboard/dashboard-sections.test.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/styles.css",
+      "packages/ui/src/theme/tokens.test.ts",
+      "packages/ui/src/theme/tokens.ts"
+    ],
+    "at": "2026-11-07T10:26:21.872Z",
+    "resolved": {
+      "commit": "55d6ee7",
+      "at": "2026-11-07T10:43:56.339Z"
+    }
+  }
+}

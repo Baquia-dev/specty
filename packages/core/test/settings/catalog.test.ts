@@ -167,6 +167,11 @@ describe("the settings' catalog", () => {
       "internal.exec.maxOutputKiB",
       "internal.server.portsTried",
       "internal.hooks.antigravityTimeoutSec",
+      "internal.server.changesEveryMs",
+      "internal.server.tasksEveryMs",
+      "internal.server.runLines",
+      "internal.server.runEveryMs",
+      "internal.server.maxBodyKiB",
       "internal.cards.importersShown",
       "internal.cards.reviewLines",
       "internal.cards.noteChars",
@@ -307,6 +312,9 @@ describe("the settings' catalog", () => {
         unit: "s",
         new: true,
       }),
+      ...["changesEveryMs", "tasksEveryMs", "runLines", "runEveryMs", "maxBodyKiB"].map((key) =>
+        expect.objectContaining({ key: `internal.server.${key}`, kind: "number", new: true }),
+      ),
       expect.objectContaining({ key: "internal.cards.importersShown", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.cards.reviewLines", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.cards.noteChars", kind: "number", new: true }),
@@ -352,6 +360,11 @@ describe("the settings' catalog", () => {
     expect(internal.map((setting) => setting.key)).toEqual(
       expect.arrayContaining([
         "internal.waits.waitTimeoutSec",
+        "internal.server.changesEveryMs",
+        "internal.server.tasksEveryMs",
+        "internal.server.runLines",
+        "internal.server.runEveryMs",
+        "internal.server.maxBodyKiB",
         "internal.hooks.antigravityTimeoutSec",
         "internal.cards.importersShown",
         "internal.cards.reviewLines",
