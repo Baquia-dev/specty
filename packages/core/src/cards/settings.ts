@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import type { SettingSection } from "../settings/catalog";
+import { INTERNAL_SETTING_TEXTS } from "./settings-internal";
+import { SIZE_TEXTS } from "./settings-size";
 
 // What the page «Configuración» of `specty ui` says of each setting of the catalog
 // (`settings/catalog.ts`): its name and what it does, its section's name and its options' names.
@@ -27,7 +29,7 @@ const SECTIONS: Readonly<Record<SettingSection, Readonly<Record<Lang, string>>>>
   memory: { es: "Memoria", en: "Memory" },
   dev: { es: "Desarrollo", en: "Development" },
   ui: { es: "Interfaz", en: "Interface" },
-  effort: { es: "Esfuerzo por herramienta", en: "Effort per tool" },
+  effort: { es: "Esfuerzo recomendado", en: "Recommended effort" },
   glossary: { es: "Glosario", en: "Glossary" },
   internal: { es: "Interno", en: "Internal" },
 };
@@ -61,95 +63,6 @@ const OPTIONS: Readonly<Record<string, Readonly<Record<string, Readonly<Record<L
       "tests-and-generated": { es: "Tests y generados", en: "Tests and generated" },
     },
   };
-
-/** Section «Interno»: its settings and the guarantees, each saying why it does not change. */
-const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
-  "internal.waits.waitTimeoutSec": {
-    es: ["Espera de specty wait", "Cuánto espera la decisión de la persona sin --timeout."],
-    en: ["specty wait's wait", "How long it waits for the person's decision without --timeout."],
-  },
-  "internal.waits.heartbeatSec": {
-    es: [
-      "Latido de specty wait",
-      "Cada cuánto escribe una línea donde la herramienta corta un comando callado.",
-    ],
-    en: [
-      "specty wait's heartbeat",
-      "How often it writes a line where the tool cuts a silent command.",
-    ],
-  },
-  "internal.retries.landing": {
-    es: [
-      "Reintentos al aterrizar",
-      "Cuántas veces más incorpora close main y aterriza si main avanzó.",
-    ],
-    en: ["Landing retries", "How many more times close incorporates main and lands if it moved."],
-  },
-  "guarantee.receipts": {
-    es: [
-      "Vida de los recibos",
-      "Fija en 24 h: un recibo que viviera más dejaría colar un commit con un recibo viejo.",
-    ],
-    en: [
-      "Life of the receipts",
-      "Fixed at 24 h: a receipt that lived longer would let a commit in with an old receipt.",
-    ],
-  },
-  "guarantee.guardPending": {
-    es: [
-      "Vida de los pendientes del guard",
-      "Fija en 24 h: uno que viviera más dejaría pasar un fin de turno con una marca vieja.",
-    ],
-    en: [
-      "Life of the guard's pending marks",
-      "Fixed at 24 h: one that lived longer would let an end of turn through with an old mark.",
-    ],
-  },
-  "guarantee.shellSnapshots": {
-    es: [
-      "Vida de las instantáneas de shell",
-      "Fija en 24 h: una que viviera menos se borraría antes del segundo hook de un comando largo, y el guard no sabría qué cambió.",
-    ],
-    en: [
-      "Life of the shell snapshots",
-      "Fixed at 24 h: one that lived less would go before a long command's second hook, and the guard would not know what changed.",
-    ],
-  },
-  "guarantee.sessions": {
-    es: [
-      "Vinculación de las sesiones",
-      "Fija en 24 h: una que viviera menos dejaría que la limpieza borrara la carpeta en la que trabaja una sesión.",
-    ],
-    en: [
-      "Sessions' binding",
-      "Fixed at 24 h: one that lived less would let the cleanup delete the folder a session works in.",
-    ],
-  },
-};
-
-/** Section «Interno», execution and server: the priority of the verifications and the UI's ports. */
-const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
-  "internal.exec.priority": {
-    es: [
-      "Prioridad de las verificaciones",
-      "El nice con que corren la verificación de cada tarea y la completa, de 0 a 19; si Specty ya corre más bajo, se quedan en la suya.",
-    ],
-    en: [
-      "Verifications' priority",
-      "The nice each task's verification and the full one run at, from 0 to 19; if Specty already runs lower, they keep its own.",
-    ],
-  },
-  "internal.server.portsTried": {
-    es: [
-      "Puertos que prueba la UI",
-      "Cuántos puertos prueba specty ui desde el primero si está ocupado, de 1 a 100.",
-    ],
-    en: [
-      "Ports the UI tries",
-      "How many ports specty ui tries from the first if it is taken, from 1 to 100.",
-    ],
-  },
-};
 
 const TEXTS: Readonly<Record<string, Texts>> = {
   language: {
@@ -269,18 +182,7 @@ const TEXTS: Readonly<Record<string, Texts>> = {
     es: ["Ampliaciones que se aprueban solas", "Entran sin pedírtelo."],
     en: ["Scope added on its own", "They come in without asking you."],
   },
-  size: {
-    es: ["Niveles de tamaño", "Puntos máximos de cada nivel; más que L es XL."],
-    en: ["Size levels", "Highest score of each level; above L it is XL."],
-  },
-  "lanes.quick.maxFiles": {
-    es: ["Archivos de un cambio rápido", "Archivos de código, sin tests, de un cambio quick."],
-    en: ["Files of a quick change", "Code files, tests aside, of a quick change."],
-  },
-  split: {
-    es: ["Cuándo partir un cambio", "Tareas, archivos y módulos de más, y archivos por tarea."],
-    en: ["When to split a change", "Too many tasks, files or modules, and files per task."],
-  },
+  ...SIZE_TEXTS,
   "lines.warn": {
     es: ["Aviso de líneas", "Avisa si una tarea deja un archivo por encima."],
     en: ["Lines warning", "Warns when a task leaves a file above it."],
@@ -375,19 +277,11 @@ const TEXTS: Readonly<Record<string, Texts>> = {
     es: ["Presencia de la persona", "Pedir WebAuthn para las acciones de la UI."],
     en: ["User presence", "Ask for WebAuthn for the UI's actions."],
   },
-  effort: {
-    es: [
-      "Esfuerzo por herramienta",
-      "El esfuerzo que se recomienda por tamaño en cada herramienta.",
-    ],
-    en: ["Effort per tool", "The effort recommended by size in each tool."],
-  },
   glossary: {
     es: ["Glosario del dominio", "El archivo con los términos del proyecto."],
     en: ["Domain glossary", "The file with the project's terms."],
   },
-  ...INTERNAL_TEXTS,
-  ...INTERNAL_RUN_TEXTS,
+  ...INTERNAL_SETTING_TEXTS,
 };
 
 /** The name and the description of the setting `key`; of one the catalog lacks, its key. */

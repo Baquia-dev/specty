@@ -12,8 +12,6 @@ export type QuickProblem =
   | { readonly kind: "files"; readonly value: number; readonly max: number }
   | { readonly kind: "sensitive" };
 
-const NEAR_RATIO = 0.8;
-
 /** Thresholds a change exceeds (it must be split) or is close to. */
 export function splitBreaches(
   size: SizeResult,
@@ -33,7 +31,7 @@ export function splitBreaches(
       breach.metric !== "level" &&
       breach.metric !== "modules" &&
       breach.value <= breach.max &&
-      breach.value >= Math.ceil(breach.max * NEAR_RATIO),
+      breach.value >= Math.ceil(breach.max * config.sizing.nearRatio),
   );
   return { exceeded, near };
 }

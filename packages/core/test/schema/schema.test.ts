@@ -247,6 +247,59 @@ describe("resolveConfig and `internal`'s waits and retries", () => {
   });
 });
 
+describe("resolveConfig and `internal`'s locks and retention", () => {
+  /** The keys of the issues of `internal`, or `ok` when it is valid. */
+  const paths = (internal: unknown) => {
+    const resolved = resolveConfig({ version: 1, internal });
+    return resolved.ok ? "ok" : resolved.issues.map((issue) => issue.path);
+  };
+  const today = { retries: { memory: 9, gitConfig: 5 }, retention: { verifiedDays: 30 } };
+
+  it("AC4: without the keys, the memory tries 10 times, git's configuration 5 more and the record keeps 30 days", () => {
+    expect(DEFAULT_CONFIG.internal).toMatchObject(today);
+    expect(resolveConfig({ version: 1 })).toMatchObject({ ok: true, config: { internal: today } });
+    expect(resolveConfig({ version: 1, internal: { retention: {} } })).toMatchObject({
+      ok: true,
+      config: { internal: today },
+    });
+  });
+
+  it("AC4: takes each key within its limits, the others with their defaults", () => {
+    expect(
+      resolveConfig({ version: 1, internal: { retries: { memory: 1 }, retention: {} } }),
+    ).toMatchObject({
+      ok: true,
+      config: {
+        internal: {
+          retries: { landing: 2, memory: 1, gitConfig: 5 },
+          retention: { verifiedDays: 30 },
+        },
+      },
+    });
+    expect(paths({ retries: { memory: 50, gitConfig: 1 }, retention: { verifiedDays: 1 } })).toBe(
+      "ok",
+    );
+    expect(paths({ retries: { gitConfig: 10 }, retention: { verifiedDays: 365 } })).toBe("ok");
+  });
+
+  it("AC4: refuses each key outside its limits, or not a whole number, with its key", () => {
+    expect(paths({ retries: { memory: 0 } })).toEqual(["internal.retries.memory"]);
+    expect(paths({ retries: { memory: 51 } })).toEqual(["internal.retries.memory"]);
+    expect(paths({ retries: { memory: 2.5 } })).toEqual(["internal.retries.memory"]);
+    expect(paths({ retries: { gitConfig: 0 } })).toEqual(["internal.retries.gitConfig"]);
+    expect(paths({ retries: { gitConfig: 11 } })).toEqual(["internal.retries.gitConfig"]);
+    expect(paths({ retries: { gitConfig: "cinco" } })).toEqual(["internal.retries.gitConfig"]);
+    expect(paths({ retention: { verifiedDays: 0 } })).toEqual(["internal.retention.verifiedDays"]);
+    expect(paths({ retention: { verifiedDays: 366 } })).toEqual([
+      "internal.retention.verifiedDays",
+    ]);
+    expect(paths({ retention: { verifiedDays: 7.5 } })).toEqual([
+      "internal.retention.verifiedDays",
+    ]);
+    expect(paths({ retention: { forever: true } })).toEqual(["internal.retention"]);
+  });
+});
+
 describe("parseChangeState", () => {
   const state = {
     schema: 1,
