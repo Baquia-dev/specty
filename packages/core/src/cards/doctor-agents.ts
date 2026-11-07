@@ -35,6 +35,7 @@ type AgentCode =
   | "antigravity-hooks"
   | "antigravity-acp"
   | "antigravity-cli"
+  | "antigravity-timeout"
   | "antigravity-cli-rule"
   | "no-antigravity-cli-rule"
   | "windsurf-guard"
@@ -180,6 +181,11 @@ export const AGENT_WRITERS: {
     t(
       `Antigravity: ${line.file} es de antes de las herramientas de su CLI (\`agy\`), así que el guard no ve lo que lee, escribe y edita allí; ejecuta \`${command} init --tools antigravity\`.`,
       `Antigravity: ${line.file} predates the tools of its CLI (\`agy\`), so the guard does not see what it reads, writes and edits there; run \`${command} init --tools antigravity\`.`,
+    ),
+  "antigravity-timeout": (line, t, command) =>
+    t(
+      `Antigravity: los hooks del guard en ${line.file} no tienen el tiempo de \`internal.hooks.antigravityTimeoutSec\` (${line.seconds} s); ejecuta \`${command} init --tools antigravity\`.`,
+      `Antigravity: the guard's hooks in ${line.file} do not have the time of \`internal.hooks.antigravityTimeoutSec\` (${line.seconds} s); run \`${command} init --tools antigravity\`.`,
     ),
   "antigravity-cli-rule": (line, t) =>
     t(

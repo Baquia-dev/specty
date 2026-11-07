@@ -14,18 +14,19 @@ export interface RiskLesson {
 }
 
 /**
- * The lessons of the risks of `tasks`, one for each file and pattern, in the order they came.
- * The text leaves out the line, which moves with each edit, so the same risk reads the same.
+ * The lessons of the risks of `tasks`, one for each file and pattern, in the order they came; a
+ * rule of the person counts by its text. The text leaves out the line, which moves with each
+ * edit, so the same risk reads the same.
  */
 export function riskLessons(tasks: readonly Pick<TaskView, "risks">[], lang: Lang): RiskLesson[] {
   const t = translator(lang);
   const seen = new Set<string>();
   return tasks.flatMap(({ risks }) =>
-    (risks ?? []).flatMap(({ path, rule, cwe }) => {
-      const key = `${path}\n${rule}`;
+    (risks ?? []).flatMap(({ path, rule, cwe, label }) => {
+      const key = [path, rule, label].join("\n");
       if (seen.has(key)) return [];
       seen.add(key);
-      const what = `${riskLabel(rule, lang)}${cwe === undefined ? "" : ` (${cwe})`}`;
+      const what = `${riskLabel(rule, lang, label)}${cwe === undefined ? "" : ` (${cwe})`}`;
       const text = t(
         `Riesgo aceptado en \`${path}\`: ${what}. Revísalo antes de ampliarlo.`,
         `Accepted risk in \`${path}\`: ${what}. Review it before extending it.`,

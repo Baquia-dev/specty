@@ -10,6 +10,7 @@ import {
   ArrowRight,
   Ban,
   Bot,
+  ChartColumn,
   Check,
   ChevronDown,
   CircleAlert,
@@ -69,6 +70,7 @@ export const LucideArrowLeft = icon("arrow-left", ArrowLeft);
 export const LucideArrowRight = icon("arrow-right", ArrowRight);
 export const LucideBan = icon("ban", Ban);
 export const LucideBot = icon("bot", Bot);
+export const LucideChartColumn = icon("chart-column", ChartColumn);
 export const LucideCheck = icon("check", Check);
 export const LucideChevronDown = icon("chevron-down", ChevronDown);
 export const LucideCircleAlert = icon("circle-alert", CircleAlert);

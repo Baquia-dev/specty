@@ -201,11 +201,11 @@ describe("the mark of `specty wait`", () => {
     expect(await hasMark(root)).toBe(false);
   });
 
-  it("AC3: without `--timeout`, it waits an hour", async () => {
+  it("AC3, AC6: without `--timeout`, it waits 55 min, so it wakes up inside the prompt cache's hour", async () => {
     const root = await proposed();
     const waiting = cli(root, ["wait", "--interval", "100"]);
     await marked(root);
-    expect((await markOf(root)).timeoutSec).toBe(3600);
+    expect((await markOf(root)).timeoutSec).toBe(3300);
     await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
     expect((await waiting).out).toContain("TAREA T1");
   });
@@ -243,6 +243,20 @@ describe("`specty wait` with `internal.waits`", () => {
     // Without the key, a minute apart: none in two seconds.
     const usual = await proposed();
     expect(beats(await waitAs(usual, { GEMINI_CLI: "1" }, options))).toEqual([]);
+  });
+
+  it("AC3: without `--interval`, looks every `internal.waits.waitIntervalMs` milliseconds, and the option still rules", async () => {
+    const root = await proposed(withWaits("    waitIntervalMs: 200\n"));
+    expect((await cli(root, ["wait", "--timeout", "1"])).out).toContain("Tiempo de espera agotado");
+    expect((await markOf(root)).intervalMs).toBe(200);
+    await cli(root, ["wait", "--interval", "100", "--timeout", "1"]);
+    expect((await markOf(root)).intervalMs).toBe(100);
+    // Without either, every 500 ms, as before.
+    const usual = await proposed();
+    expect((await cli(usual, ["wait", "--timeout", "1"])).out).toContain(
+      "Tiempo de espera agotado",
+    );
+    expect((await markOf(usual)).intervalMs).toBe(500);
   });
 });
 

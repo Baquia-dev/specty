@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { type Output, pruneCard } from "@baquia-dev/specty-core";
 import { cleanUp, deleteMerged, pruneLive } from "../flow/prune";
-import { pruneRecord, RECORD_DAYS } from "../flow/units";
+import { pruneRecord } from "../flow/units";
 import type { Session } from "../session";
 import { removeLeftovers } from "../store/leftovers";
 
@@ -11,15 +11,20 @@ import { removeLeftovers } from "../store/leftovers";
  * the empty folders of `.specty/changes/`), and it deletes the change branches already in the
  * target branch, and the memory's live records that no longer serve anybody: the activity of
  * conversations that no longer work and the messages of changes that are no longer open, and the
- * units recorded as passed more than `RECORD_DAYS` days ago; and what processes that died left in
- * git's folders. Only what is already incorporated, dead or saved goes, so the agent may run it too.
+ * units recorded as passed more than `internal.retention.verifiedDays` days ago; and what processes
+ * that died left in git's folders, the temporary indexes after `internal.retention.indexHours`
+ * hours. Only what is already incorporated, dead or saved goes, so the agent may run it too.
  */
 export async function prune(session: Session): Promise<Output> {
   const swept = await cleanUp(session);
   const branches = await deleteMerged(session);
   const live = await pruneLive(session);
   const units = await pruneRecord(session);
-  const leftovers = await removeLeftovers(session.git, session.environment.now());
+  const leftovers = await removeLeftovers(
+    session.git,
+    session.environment.now(),
+    session.config.internal.retention.indexHours,
+  );
   return pruneCard(
     {
       folders: swept.removed,
@@ -32,7 +37,7 @@ export async function prune(session: Session): Promise<Output> {
       kept: [...swept.kept, ...branches.kept],
       activity: live.activity,
       messages: live.messages,
-      units: { removed: units, days: RECORD_DAYS },
+      units,
       leftovers,
     },
     session.cards,

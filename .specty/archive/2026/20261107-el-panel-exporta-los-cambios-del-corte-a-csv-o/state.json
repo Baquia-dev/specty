@@ -1,0 +1,210 @@
+{
+  "schema": 1,
+  "id": "20261107-el-panel-exporta-los-cambios-del-corte-a-csv-o",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-el-panel-exporta-los-cambios-del-corte-a-csv-o",
+  "baseCommit": "7ba359df7f50a56f45c6146db433bf67f33b5e5b",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c59b5c0552b5d589a50eb99da22e8741f28cffdc0633ac17177ebb7833ab61bc",
+    "at": "2026-11-07T09:55:11.757Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4bb21520c367b6491d3758bab5989207bad71ba4c517a8651098d4219e5f248d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:663a4be59800f9e3dfb53bca9d2a15026b2897c5d4045035e1bbdd1ec6bfbd6b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:6855764047bfc575fe0550d41e895561e293f89893854ab6b8a9585579464a25",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0d6153549a4d685b1cc5c59464b11f0793b4870d1d2d2d372ee5849f97cad86c",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:34b862d33031d1c2efbc6280a7e993d8de36b526ebff354903de6109b38810ef",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:9e58aa241266cd61455c8a81ea06add8b4e41416bfbe66eee82aa9d327cc2c33",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:aea12b14b333dbf80f2edd8f75c73879c83956508788c57d2cd2c2f380f594e6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6fdc3a2f9bc3e28841e5529808364c86c108c2a2",
+      "attempts": 1,
+      "startedAt": "2026-11-07T10:08:59.900Z",
+      "doneAt": "2026-11-07T10:13:55.296Z",
+      "summary": "stats/export.ts arma el archivo del corte (filas de statsChanges sin límite, con persona, modelo, creación y verificaciones) en CSV RFC 4180 con BOM y celdas protegidas contra fórmulas, o en JSON; cards/stats-export.ts da encabezados y carriles en es/en.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ccdb3016dbd6de91dbfe90b8ff143380f2644799",
+      "attempts": 1,
+      "startedAt": "2026-11-07T10:13:55.641Z",
+      "doneAt": "2026-11-07T10:19:49.869Z",
+      "summary": "server/stats-changes.ts suma sendStatsExport: GET /api/stats/export lee las mismas filas guardadas que la tabla y envía el CSV o JSON del corte con su Content-Type y Content-Disposition; api.ts lo enlaza y ARCHITECTURE §15 lo documenta.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "494c44c95946cb09f3900805588cfd904c279e26",
+      "attempts": 1,
+      "startedAt": "2026-11-07T10:19:50.289Z",
+      "doneAt": "2026-11-07T10:55:52.175Z",
+      "summary": "«Exportar» (dashboard-export.ts) al final de la fila de filtros pide a la fuente el CSV o JSON del corte y lo descarga, con avisos si no lo da o falla; data/stats-export.ts lo pide al servidor como bytes; source.ts y server.ts lo enlazan; docs/ui.md lo cuenta.",
+      "scopeExtra": [
+        "packages/ui/src/data/stats-export.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 6,
+    "T": 3,
+    "R": 4,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-07T10:56:37.257Z",
+  "lockedTests": {
+    "packages/cli/test/server/stats-export.test.ts": "sha256:0b977ab6fcdecba259dbb36ee13f39c837a6b97f6db8b14d43f77248ec80172a",
+    "packages/core/test/stats/export.test.ts": "sha256:3d1bf6054b41cb7679fffb3dba508b354dd7912a60745a24317deaa59c0ae39f",
+    "packages/ui/src/dashboard/dashboard-export.test.ts": "sha256:3cda17a9bf05c32d59956ab03a01af4cad88782a3185227ab806a31a00745913",
+    "packages/ui/src/data/stats-export.test.ts": "sha256:ad952468bcc6a334240d3f31c4cd57bd0978e811d16ba980a919f17d021d7730"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "d718352a549110a7547d34273e68034f12d4a69b",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/cli/src/server/api.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/review.ts",
+      "packages/cli/src/commands/stats.ts",
+      "packages/cli/src/commands/task.ts",
+      "packages/cli/src/commands/wait.ts",
+      "packages/cli/src/flow/impact.ts",
+      "packages/cli/src/flow/live-run.ts",
+      "packages/cli/src/program.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/run-output.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/src/server/stats-changes.ts",
+      "packages/cli/src/server/stats.ts",
+      "packages/cli/src/server/watched-runs.ts",
+      "packages/cli/test/card-limits.test.ts",
+      "packages/cli/test/live-run.test.ts",
+      "packages/cli/test/server/internal-server.test.ts",
+      "packages/cli/test/server/run-output.test.ts",
+      "packages/cli/test/server/stats-export.test.ts",
+      "packages/cli/test/stats.test.ts",
+      "packages/cli/test/wait-delegated.test.ts",
+      "packages/cli/test/wait.test.ts",
+      "packages/core/src/branches.ts",
+      "packages/core/src/cards/impact.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/review.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/cards/settings-pieces.ts",
+      "packages/core/src/cards/stats-export.ts",
+      "packages/core/src/cards/stats.ts",
+      "packages/core/src/cards/subagents.ts",
+      "packages/core/src/cards/task.ts",
+      "packages/core/src/cards/wait.ts",
+      "packages/core/src/flow/waiting.ts",
+      "packages/core/src/ids.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/light.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-cards.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/settings/pieces.ts",
+      "packages/core/src/stats/export.ts",
+      "packages/core/src/stats/people.ts",
+      "packages/core/src/stats/period.ts",
+      "packages/core/src/stats/rhythm.ts",
+      "packages/core/src/stats/rows.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/core/test/cards/idle-subagents.test.ts",
+      "packages/core/test/cards/stats.test.ts",
+      "packages/core/test/cards/wait.test.ts",
+      "packages/core/test/flow/waiting.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/card-limits.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/internal-server.test.ts",
+      "packages/core/test/settings/pieces.test.ts",
+      "packages/core/test/stats/export.test.ts",
+      "packages/core/test/stats/sections.test.ts",
+      "packages/ui/src/components/charts/chart-frame.ts",
+      "packages/ui/src/components/charts/charts.test.ts",
+      "packages/ui/src/components/charts/column-chart.ts",
+      "packages/ui/src/dashboard/dashboard-export.test.ts",
+      "packages/ui/src/dashboard/dashboard-export.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts",
+      "packages/ui/src/dashboard/dashboard-people.ts",
+      "packages/ui/src/dashboard/dashboard-rhythm.ts",
+      "packages/ui/src/dashboard/dashboard-sections.test.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/data/stats-export.test.ts",
+      "packages/ui/src/data/stats-export.ts",
+      "packages/ui/src/settings/flow-piece.test.ts",
+      "packages/ui/src/settings/flow-piece.ts",
+      "packages/ui/src/settings/settings-flow.test.ts",
+      "packages/ui/src/settings/settings-flow.ts",
+      "packages/ui/src/settings/settings-mode.test.ts",
+      "packages/ui/src/settings/settings-mode.ts",
+      "packages/ui/src/settings/settings-page.test.ts",
+      "packages/ui/src/settings/settings-page.ts",
+      "packages/ui/src/styles.css",
+      "packages/ui/src/theme/tokens.test.ts",
+      "packages/ui/src/theme/tokens.ts"
+    ],
+    "at": "2026-11-07T11:17:10.595Z",
+    "resolved": {
+      "commit": "cec2344",
+      "at": "2026-11-07T11:34:00.985Z"
+    }
+  }
+}

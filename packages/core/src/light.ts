@@ -5,6 +5,8 @@
 
 export { AGENT_NAMES } from "./agents";
 export { optionName, sectionName, settingText } from "./cards/settings";
+export { flowSentences, pieceText } from "./cards/settings-pieces";
+export { presetText } from "./cards/settings-presets";
 export { translator } from "./cards/text";
 export { usageOf, usageWords } from "./cards/usage";
 export { PHASES, type Phase } from "./flow/phases";
@@ -13,8 +15,30 @@ export { CHANGE_SORTS, type ChangeSort, matchesQuery, sortChanges } from "./list
 export type { SessionView } from "./memory/sessions";
 export { localDay, sessionEntries } from "./memory/triggers";
 export {
+  type ConfigEdit,
   SETTING_SECTIONS,
   SETTINGS,
   type Setting,
+  type SettingChange,
   type SettingSection,
+  settingChanges,
+  settingOf,
 } from "./settings/catalog";
+export {
+  FLOW_PHASES,
+  type FlowPhase,
+  flowPhases,
+  isEquipped,
+  PIECES,
+  type Piece,
+  pieceEdits,
+  type SettingValue,
+} from "./settings/pieces";
+export {
+  PRESET_KEYS,
+  PRESETS,
+  type Preset,
+  presetEdits,
+  presetOf,
+  presetValue,
+} from "./settings/presets";

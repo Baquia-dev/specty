@@ -12,7 +12,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { dataOf, readAudit } from "../flow/carried";
-import { execute } from "../io/exec";
+import { execute, maxOutputOf } from "../io/exec";
 import { writeText } from "../io/files";
 import { changeDiff } from "../server/diff";
 import type { Session } from "../session";
@@ -68,6 +68,8 @@ async function runReview(session: Session, active: StoredChange, run: ReviewRun)
     env: session.environment.env,
     input: run.text,
     timeoutMs: run.timeoutSec * 1000,
+    // The answer is kept whole: this much of its end.
+    maxOutput: maxOutputOf(session.config),
   });
   const text = result.stdout.trim();
   const ok = result.code === 0 && text.length > 0;
@@ -95,7 +97,7 @@ async function runReview(session: Session, active: StoredChange, run: ReviewRun)
       session.cards,
     );
   const view = { header, target, command, path: session.paths.relative(path), text } as const;
-  return reviewedCard(view, session.cards);
+  return reviewedCard(view, session.cards, session.config.internal.cards.reviewLines);
 }
 
 type Input =

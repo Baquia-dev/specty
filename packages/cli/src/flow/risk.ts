@@ -10,6 +10,7 @@ import type { Session } from "../session";
 /**
  * The known risks in what the working tree adds to the governed files since `base`, new files
  * included: the diff runs against a tree with their current content, so nothing is staged.
+ * Specty's rules and, added to them, the person's (`warnings.risks`).
  */
 export async function riskFindings(
   session: Session,
@@ -36,5 +37,5 @@ export async function riskFindings(
     "--",
     ...paths,
   ]);
-  return result.code === 0 ? contentRisks(result.stdout) : [];
+  return result.code === 0 ? contentRisks(result.stdout, session.config.warnings.risks) : [];
 }

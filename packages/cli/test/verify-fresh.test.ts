@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { createGit } from "../src/io/git";
 import { readRuns } from "../src/store/runs";
-import { APP, CHANGE, CONFIG, cli, tempRepo, testEnv } from "./support";
+import { APP, CHANGE, CONFIG, cli, tempRepo, testEnv, writeFiles } from "./support";
 
 /** A script that appends `text` to the file `MARKS` names: what ran, in order. */
 const mark = (text: string) => `require('fs').appendFileSync(process.env.MARKS,'${text}')`;
@@ -286,5 +286,30 @@ describe("specty verify --fresh, live", () => {
     expect(done.out).toMatch(/a · correcta · \d+ s\n/);
     expect(await recorded(root)).toHaveLength(1);
     expect((await going(root)).size).toBe(0);
+  });
+});
+
+describe("specty verify --fresh with internal.commands.verifyLines", () => {
+  /** Marks `text`, prints `linea 1` to `linea 30` and fails, always. */
+  const noisy = (text: string) =>
+    `${mark(text)};for(let i=1;i<=30;i++)console.log('linea '+i);process.exitCode=1`;
+  /** `  linea <from>` to `  linea <to>`, one per line, as the card shows them. */
+  const shown = (from: number, to: number) =>
+    Array.from({ length: to - from + 1 }, (_, index) => `  linea ${from + index}`).join("\n");
+
+  it("AC4: shows only the last internal.commands.verifyLines lines of a failure, and the last 20 without the key", async () => {
+    const config = withUnits(unit("b", ["src/extra.ts"], noisy("b")));
+    const root = await repo(config);
+    const today = await verify(root);
+    expect(today.code).toBe(1);
+    expect(today.out).toContain(`SALIDA DEL FALLO DE b:\n${shown(11, 30)}`);
+    expect(today.out).not.toContain("  linea 10\n");
+    await writeFiles(root, {
+      ".specty/config.yaml": `${config}internal:\n  commands:\n    verifyLines: 5\n`,
+    });
+    const cut = await verify(root);
+    expect(cut.code).toBe(1);
+    expect(cut.out).toContain(`SALIDA DEL FALLO DE b:\n${shown(26, 30)}`);
+    expect(cut.out).not.toContain("  linea 25\n");
   });
 });

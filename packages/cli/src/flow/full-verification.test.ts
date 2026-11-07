@@ -2,7 +2,7 @@
 import { spawn } from "node:child_process";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { sessionAt } from "../../test/server/support";
 import { AGENT, APP, CONFIG, tempRepo } from "../../test/support";
 import { exists, isRecord, parseJson } from "../io/files";
@@ -270,5 +270,27 @@ describe("the turn within one process", () => {
     expect(Date.now() - started).toBeLessThan(1000);
     expect(errors.join("\n")).not.toContain("otra sesión");
     expect(await exists(join(root, LOCK))).toBe(false);
+  });
+});
+
+describe("the full verification's turn with `internal.waits.verifyIntervalMs`", () => {
+  it("AC1: a full verification that waits for another session's turn looks again every configured milliseconds", async () => {
+    const config = `${CONFIG()}internal:\n  waits:\n    verifyIntervalMs: 150\n`;
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
+    const { session, errors } = await watched(root);
+    const other = living(700);
+    await heldBy(root, other.pid);
+    // Each look waits with `setTimeout`: the configured interval is a delay nothing else asks for.
+    const timer = vi.spyOn(globalThis, "setTimeout");
+    let delays: readonly unknown[] = [];
+    try {
+      expect(await oneAtATime(session, "pnpm check", async () => "hecho")).toBe("hecho");
+      delays = timer.mock.calls.map((call) => call[1]);
+    } finally {
+      timer.mockRestore();
+    }
+    await other.ended;
+    expect(errors.join("\n")).toContain("otra sesión está haciendo una verificación completa");
+    expect(delays).toContain(150);
   });
 });

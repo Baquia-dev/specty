@@ -1,11 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Run } from "./runs";
 
-/** What a run keeps of its output: its end is what matters. */
-export const KEPT = 1000;
-/** At most this often, in milliseconds, the listener hears a run that moves. */
-const EVERY = 250;
-
 /**
  * The full verifications going on, by change, each with how to stop it and, for an
  * incorporation's, how it shows the verification that `runLive` keeps.
@@ -16,9 +11,17 @@ export type Going = Map<string, { run: Run; stop: () => void; follow?: (run: Run
 interface Shown {
   readonly going: Going;
   readonly heard: (id: string, run: Run | undefined) => void;
+  /**
+   * `internal.server` (formats.md §6): the last lines a run keeps, since its end is what matters,
+   * and at most how often, in milliseconds, the listener hears a run that moves.
+   */
+  readonly limits: { readonly runLines: number; readonly runEveryMs: number };
 }
 
-/** A run's output as it comes: kept among the runs going on, and heard at most every `EVERY` ms. */
+/**
+ * A run's output as it comes: kept among the runs going on, and heard at most every
+ * `runEveryMs`.
+ */
 export interface LiveRun {
   add(lines: readonly string[]): void;
   /** The run as it is now. */
@@ -44,18 +47,19 @@ export function liveRun(
   stop: () => void,
   follows = false,
 ): LiveRun {
+  const { runLines, runEveryMs } = target.limits;
   let current = first;
   let parts: readonly Part[] = [{ lines: first.output }];
   let tell: NodeJS.Timeout | undefined;
   const keep = () => target.going.set(id, { run: current, stop, ...(follows ? { follow } : {}) });
   const show = (next: readonly Part[]) => {
     parts = next;
-    current = { ...current, output: parts.flatMap(({ lines }) => lines).slice(-KEPT) };
+    current = { ...current, output: parts.flatMap(({ lines }) => lines).slice(-runLines) };
     keep();
     tell ??= setTimeout(() => {
       tell = undefined;
       target.heard(id, current);
-    }, EVERY);
+    }, runEveryMs);
   };
   const follow = (run: Run) => {
     const from = `${run.startedAt} ${run.command}`;
@@ -71,7 +75,7 @@ export function liveRun(
       const own = last !== undefined && last.from === undefined;
       show(
         own
-          ? [...parts.slice(0, -1), { lines: [...last.lines, ...lines].slice(-KEPT) }]
+          ? [...parts.slice(0, -1), { lines: [...last.lines, ...lines].slice(-runLines) }]
           : [...parts, { lines }],
       );
     },

@@ -1,7 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import * as z from "zod";
-import { optionName, SETTING_SECTIONS, SETTINGS, sectionName, settingText } from "../../src/light";
+import {
+  optionName,
+  SETTING_SECTIONS,
+  SETTINGS,
+  sectionName,
+  settingChanges,
+  settingOf,
+  settingText,
+} from "../../src/light";
 import { ConfigSchema, DEFAULT_CONFIG, resolveConfig } from "../../src/schema/config";
 
 type Schema = z.core.$ZodType;
@@ -31,6 +39,15 @@ function schemaAt(key: string): Schema | undefined {
 }
 
 const KEYS = leaves(ConfigSchema).filter((key) => key !== "version");
+/** The size's parameters that were fixed in core's code, in the page's order. */
+const SIZING_KEYS = [
+  "sizing.weights",
+  "sizing.tasksWithoutWeight",
+  "sizing.highFanIn",
+  "sizing.nearRatio",
+];
+/** The effort recommended for each size and for a task. */
+const EFFORT_KEYS = ["effort.S", "effort.M", "effort.L", "effort.XL", "effort.task"];
 /** The settings with a key of `config.yaml`: neither delegated mode nor Specty's guarantees. */
 const inFile = SETTINGS.filter((setting) => setting.clone !== true && setting.guarantee !== true);
 const covers = (setting: { readonly key: string }, key: string) =>
@@ -65,8 +82,10 @@ describe("the settings' catalog", () => {
       "size",
       "lines",
       "checks",
+      "warnings",
       "team",
       "memory",
+      "usage",
       "dev",
       "ui",
       "effort",
@@ -121,17 +140,48 @@ describe("the settings' catalog", () => {
     ]);
     expect(keysWith("clone")).toEqual(["specty delegate"]);
     expect(keysWith("soon")).toEqual([
+      "sizing.highFanIn",
       "team.approvers",
       "team.requirePrReview",
       "ui.requireUserPresence",
-      "effort",
     ]);
     expect(keysWith("new")).toEqual([
+      ...SIZING_KEYS,
+      "warnings.vagueTerms",
+      "warnings.horizontalLayers",
+      "warnings.risks",
+      "usage.freshSessionTokens",
+      "usage.ccusage.timeoutSec",
+      "usage.ccusage.version",
+      ...EFFORT_KEYS,
       "internal.waits.waitTimeoutSec",
       "internal.waits.heartbeatSec",
+      "internal.waits.verifyIntervalMs",
+      "internal.waits.waitIntervalMs",
+      "internal.waits.queueStaleSec",
       "internal.retries.landing",
+      "internal.retries.memory",
+      "internal.retries.gitConfig",
+      "internal.retention.verifiedDays",
+      "internal.retention.indexHours",
       "internal.exec.priority",
+      "internal.exec.maxOutputKiB",
       "internal.server.portsTried",
+      "internal.hooks.antigravityTimeoutSec",
+      "internal.server.changesEveryMs",
+      "internal.server.tasksEveryMs",
+      "internal.server.runLines",
+      "internal.server.runEveryMs",
+      "internal.server.maxBodyKiB",
+      "internal.cards.importersShown",
+      "internal.cards.reviewLines",
+      "internal.cards.noteChars",
+      "internal.cards.slugChars",
+      "internal.findings.perCommand",
+      "internal.findings.lastLines",
+      "internal.findings.messageChars",
+      "internal.commands.verifyLines",
+      "internal.commands.whyEntries",
     ]);
   });
 
@@ -160,17 +210,49 @@ describe("the settings' catalog", () => {
       "Tamaño y cortes",
       "Líneas de código",
       "Verificaciones de calidad",
+      "Avisos",
       "Equipo",
       "Memoria",
+      "Consumo y sesiones",
       "Desarrollo",
       "Interfaz",
-      "Esfuerzo por herramienta",
+      "Esfuerzo recomendado",
       "Glosario",
       "Interno",
     ]);
     expect(sectionName("verify", "en")).toBe("Verification");
     expect(optionName("policy.tests", "contract", "es")).toBe("Contrato");
     expect(optionName("policy.tests", "contract", "en")).toBe("Contract");
+  });
+
+  it("AC6: shows the size's weights, tasks, fan-in and ratio after the splitting limits, and the effort of each size and of a task in its section, marked new", () => {
+    const keys = SETTINGS.map((setting) => setting.key);
+    const at = keys.indexOf("split");
+    expect(keys.slice(at + 1, at + 1 + SIZING_KEYS.length)).toEqual(SIZING_KEYS);
+    expect(
+      SETTINGS.filter((setting) => setting.section === "effort").map((setting) => setting.key),
+    ).toEqual(EFFORT_KEYS);
+    for (const key of [...SIZING_KEYS, ...EFFORT_KEYS]) {
+      const setting = SETTINGS.find((found) => found.key === key);
+      const kind = key === "sizing.weights" || key.startsWith("effort.") ? "group" : "number";
+      expect(setting, key).toMatchObject({ kind, new: true });
+      expect(setting?.section, key).toBe(key.startsWith("effort.") ? "effort" : "size");
+    }
+    expect(SETTINGS.find((setting) => setting.key === "sizing.highFanIn")?.soon).toBe(true);
+    expect(keys).not.toContain("effort");
+  });
+
+  it("AC7: names and describes the new settings and the effort's section in Spanish and in English", () => {
+    for (const key of [...SIZING_KEYS, ...EFFORT_KEYS]) {
+      const es = settingText(key, "es");
+      const en = settingText(key, "en");
+      expect(es.name, key).not.toBe(key);
+      expect(en.name, key).not.toBe(key);
+      expect(es.name, key).not.toBe(en.name);
+      expect(es.description, key).not.toBe(en.description);
+    }
+    expect(sectionName("effort", "es")).toBe("Esfuerzo recomendado");
+    expect(sectionName("effort", "en")).toBe("Recommended effort");
   });
 
   it("AC6: puts the internal settings last, in section «Interno», as numbers with their units, marked new", () => {
@@ -189,25 +271,79 @@ describe("the settings' catalog", () => {
         unit: "s",
         new: true,
       }),
+      expect.objectContaining({
+        key: "internal.waits.verifyIntervalMs",
+        kind: "number",
+        unit: "ms",
+        new: true,
+      }),
+      expect.objectContaining({
+        key: "internal.waits.waitIntervalMs",
+        kind: "number",
+        unit: "ms",
+        new: true,
+      }),
+      expect.objectContaining({
+        key: "internal.waits.queueStaleSec",
+        kind: "number",
+        unit: "s",
+        new: true,
+      }),
       expect.objectContaining({ key: "internal.retries.landing", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.retries.memory", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.retries.gitConfig", kind: "number", new: true }),
+      expect.objectContaining({
+        key: "internal.retention.verifiedDays",
+        kind: "number",
+        unit: "d",
+        new: true,
+      }),
+      expect.objectContaining({
+        key: "internal.retention.indexHours",
+        kind: "number",
+        unit: "h",
+        new: true,
+      }),
       expect.objectContaining({ key: "internal.exec.priority", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.exec.maxOutputKiB", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.server.portsTried", kind: "number", new: true }),
+      expect.objectContaining({
+        key: "internal.hooks.antigravityTimeoutSec",
+        kind: "number",
+        unit: "s",
+        new: true,
+      }),
+      ...["changesEveryMs", "tasksEveryMs", "runLines", "runEveryMs", "maxBodyKiB"].map((key) =>
+        expect.objectContaining({ key: `internal.server.${key}`, kind: "number", new: true }),
+      ),
+      expect.objectContaining({ key: "internal.cards.importersShown", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.reviewLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.noteChars", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.slugChars", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.perCommand", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.lastLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.messageChars", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.commands.verifyLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.commands.whyEntries", kind: "number", new: true }),
     ]);
     expect(
       SETTINGS.find((setting) => setting.key === "internal.retries.landing")?.unit,
     ).toBeUndefined();
   });
 
-  it("AC5: shows the four lives of compliance as guarantees, fixed at 24 h, with no key of config.yaml", () => {
+  it("AC5: shows the lives of compliance as guarantees, fixed at 24 h and the wait mark at 30 s, with no key of config.yaml", () => {
     const guarantees = SETTINGS.filter((setting) => setting.guarantee === true);
     expect(guarantees.map((setting) => setting.key)).toEqual([
       "guarantee.receipts",
       "guarantee.guardPending",
       "guarantee.shellSnapshots",
       "guarantee.sessions",
+      "guarantee.waitMarks",
     ]);
     for (const setting of guarantees) {
-      expect(setting, setting.key).toMatchObject({ section: "internal", fixed: 24, unit: "h" });
+      const fixed =
+        setting.key === "guarantee.waitMarks" ? { fixed: 30, unit: "s" } : { fixed: 24, unit: "h" };
+      expect(setting, setting.key).toMatchObject({ section: "internal", ...fixed });
       expect(schemaAt(setting.key), setting.key).toBeUndefined();
       expect(
         KEYS.some((key) => covers(setting, key)),
@@ -222,7 +358,27 @@ describe("the settings' catalog", () => {
 
   it("AC5, AC7: says why each guarantee does not change, and names the internal settings in Spanish and in English", () => {
     const internal = SETTINGS.filter((setting) => setting.section === "internal");
-    expect(internal).toHaveLength(9);
+    expect(internal.map((setting) => setting.key)).toEqual(
+      expect.arrayContaining([
+        "internal.waits.waitTimeoutSec",
+        "internal.server.changesEveryMs",
+        "internal.server.tasksEveryMs",
+        "internal.server.runLines",
+        "internal.server.runEveryMs",
+        "internal.server.maxBodyKiB",
+        "internal.hooks.antigravityTimeoutSec",
+        "internal.cards.importersShown",
+        "internal.cards.reviewLines",
+        "internal.cards.noteChars",
+        "internal.cards.slugChars",
+        "internal.findings.perCommand",
+        "internal.findings.lastLines",
+        "internal.findings.messageChars",
+        "internal.commands.verifyLines",
+        "internal.commands.whyEntries",
+        "guarantee.receipts",
+      ]),
+    );
     for (const setting of internal) {
       const es = settingText(setting.key, "es");
       const en = settingText(setting.key, "en");
@@ -261,6 +417,98 @@ describe("the settings' catalog", () => {
       expect(settingText(key, "es").name, key).not.toBe(key);
       expect(settingText(key, "es").name, key).not.toBe(settingText(key, "en").name);
     }
+  });
+});
+
+describe("the internal settings of locks and retention", () => {
+  const KEYS_OF_LOCKS = [
+    "internal.retries.memory",
+    "internal.retries.gitConfig",
+    "internal.retention.verifiedDays",
+  ];
+
+  it("AC5: puts the memory's and git configuration's retries and the record's days in «Interno», after landing, as new numbers, the days in d", () => {
+    const keys = SETTINGS.map((setting) => setting.key);
+    const landing = keys.indexOf("internal.retries.landing");
+    expect(keys.slice(landing + 1, landing + 4)).toEqual(KEYS_OF_LOCKS);
+    expect(SETTINGS.find((setting) => setting.key === "internal.retries.memory")).toEqual({
+      key: "internal.retries.memory",
+      section: "internal",
+      kind: "number",
+      new: true,
+    });
+    expect(SETTINGS.find((setting) => setting.key === "internal.retries.gitConfig")).toEqual({
+      key: "internal.retries.gitConfig",
+      section: "internal",
+      kind: "number",
+      new: true,
+    });
+    expect(SETTINGS.find((setting) => setting.key === "internal.retention.verifiedDays")).toEqual({
+      key: "internal.retention.verifiedDays",
+      section: "internal",
+      kind: "number",
+      unit: "d",
+      new: true,
+    });
+    for (const key of KEYS_OF_LOCKS) {
+      expect(settingOf(key.split("."))?.key, key).toBe(key);
+      expect(schemaAt(key), key).toBeInstanceOf(z.ZodNumber);
+    }
+  });
+
+  it("AC6: names and describes each of them in Spanish and in English", () => {
+    for (const key of KEYS_OF_LOCKS) {
+      const es = settingText(key, "es");
+      const en = settingText(key, "en");
+      expect(es.name, key).not.toBe(key);
+      expect(en.name, key).not.toBe(key);
+      expect(es.name, key).not.toBe(en.name);
+      expect(es.description, key).not.toBe("");
+      expect(en.description, key).not.toBe("");
+      expect(es.description, key).not.toBe(en.description);
+    }
+    expect(settingText("internal.retention.verifiedDays", "es").description).toContain(
+      "specty prune",
+    );
+    expect(settingText("internal.retention.verifiedDays", "en").description).toContain(
+      "specty prune",
+    );
+    expect(settingText("internal.retries.gitConfig", "es").description).toContain("50 ms");
+    expect(settingText("internal.retries.gitConfig", "en").description).toContain("50 ms");
+  });
+});
+
+describe("the internal settings of polling intervals", () => {
+  const KEYS_OF_INTERVALS = ["internal.waits.verifyIntervalMs", "internal.waits.waitIntervalMs"];
+
+  it("AC5: puts the verification's and `specty wait`'s intervals in «Interno», after the heartbeat, as new numbers in ms", () => {
+    const keys = SETTINGS.map((setting) => setting.key);
+    const heartbeat = keys.indexOf("internal.waits.heartbeatSec");
+    expect(keys.slice(heartbeat + 1, heartbeat + 3)).toEqual(KEYS_OF_INTERVALS);
+    for (const key of KEYS_OF_INTERVALS) {
+      expect(
+        SETTINGS.find((setting) => setting.key === key),
+        key,
+      ).toEqual({ key, section: "internal", kind: "number", unit: "ms", new: true });
+      expect(settingOf(key.split("."))?.key, key).toBe(key);
+      expect(schemaAt(key), key).toBeInstanceOf(z.ZodNumber);
+    }
+    expect(keysWith("new")).toEqual(expect.arrayContaining(KEYS_OF_INTERVALS));
+  });
+
+  it("AC6: names and describes each of them in Spanish and in English", () => {
+    for (const key of KEYS_OF_INTERVALS) {
+      const es = settingText(key, "es");
+      const en = settingText(key, "en");
+      expect(es.name, key).not.toBe(key);
+      expect(en.name, key).not.toBe(key);
+      expect(es.name, key).not.toBe(en.name);
+      expect(es.description, key).not.toBe("");
+      expect(en.description, key).not.toBe("");
+      expect(es.description, key).not.toBe(en.description);
+    }
+    expect(settingText("internal.waits.waitIntervalMs", "es").description).toContain("--interval");
+    expect(settingText("internal.waits.waitIntervalMs", "en").description).toContain("--interval");
   });
 });
 
@@ -303,5 +551,278 @@ describe("the internal keys of execution and of the server", () => {
     }
     expect(issuesOf({ exec: { nice: 5 } })).toEqual(["internal.exec"]);
     expect(issuesOf({ server: { port: 5 } })).toEqual(["internal.server"]);
+  });
+});
+
+describe("the keys of the spec's and the sessions' warnings", () => {
+  /** Each new setting of this slice: its section and how the page shows it. */
+  const WARNINGS = [
+    { key: "warnings.vagueTerms", section: "warnings", kind: "list" },
+    { key: "warnings.horizontalLayers", section: "warnings", kind: "list" },
+    { key: "usage.freshSessionTokens", section: "usage", kind: "number" },
+    { key: "usage.ccusage.timeoutSec", section: "usage", kind: "number", unit: "s" },
+    { key: "usage.ccusage.version", section: "usage", kind: "text" },
+  ] as const;
+  const TODAY = {
+    usage: { freshSessionTokens: 150_000, ccusage: { timeoutSec: 60, version: "20.0.45" } },
+    warnings: { vagueTerms: [], horizontalLayers: [] },
+  };
+  const issuesOf = (input: Readonly<Record<string, unknown>>) => {
+    const result = resolveConfig({ version: 1, ...input });
+    return result.ok ? [] : result.issues.map((issue) => issue.path);
+  };
+
+  it("AC7: puts them in sections «Avisos», after the quality checks, and «Consumo y sesiones», after the memory, marked new", () => {
+    for (const setting of WARNINGS) {
+      expect(
+        SETTINGS.find((other) => other.key === setting.key),
+        setting.key,
+      ).toEqual({ ...setting, new: true });
+    }
+    expect(SETTING_SECTIONS.indexOf("warnings")).toBe(SETTING_SECTIONS.indexOf("checks") + 1);
+    expect(SETTING_SECTIONS.indexOf("usage")).toBe(SETTING_SECTIONS.indexOf("memory") + 1);
+  });
+
+  it("AC7: names the two sections and the five settings in Spanish and in English", () => {
+    expect(sectionName("warnings", "es")).toBe("Avisos");
+    expect(sectionName("warnings", "en")).toBe("Warnings");
+    expect(sectionName("usage", "es")).toBe("Consumo y sesiones");
+    expect(sectionName("usage", "en")).toBe("Usage and sessions");
+    for (const { key } of WARNINGS) {
+      const es = settingText(key, "es");
+      const en = settingText(key, "en");
+      expect(es.name, key).not.toBe(key);
+      expect(en.name, key).not.toBe(key);
+      expect(es.name, key).not.toBe(en.name);
+      expect(es.description, key).not.toBe(en.description);
+    }
+  });
+
+  it("AC6: default to today's values, with or without the keys", () => {
+    expect(DEFAULT_CONFIG).toMatchObject(TODAY);
+    expect(resolveConfig({ version: 1 })).toMatchObject({ ok: true, config: TODAY });
+    expect(resolveConfig({ version: 1, usage: { ccusage: {} }, warnings: {} })).toMatchObject({
+      ok: true,
+      config: TODAY,
+    });
+    const mine = {
+      usage: { freshSessionTokens: 1, ccusage: { timeoutSec: 600, version: "21.1.0-beta.2" } },
+      warnings: { vagueTerms: ["pulcro"], horizontalLayers: ["capa de servicios"] },
+    };
+    expect(resolveConfig({ version: 1, ...mine })).toMatchObject({ ok: true, config: mine });
+    expect(issuesOf({ usage: { ccusage: { timeoutSec: 1, version: "20.0.45" } } })).toEqual([]);
+  });
+
+  it("AC6: refuses a threshold that is not a positive integer, a time outside 1 to 600, a version not x.y.z, an empty term and an unknown key, by its key", () => {
+    for (const freshSessionTokens of [0, -1, 1.5, "150000"]) {
+      expect(issuesOf({ usage: { freshSessionTokens } }), String(freshSessionTokens)).toEqual([
+        "usage.freshSessionTokens",
+      ]);
+    }
+    for (const timeoutSec of [0, 601, 2.5]) {
+      expect(issuesOf({ usage: { ccusage: { timeoutSec } } }), String(timeoutSec)).toEqual([
+        "usage.ccusage.timeoutSec",
+      ]);
+    }
+    for (const version of ["latest", "20", "20.0", "v20.0.45", "20.0.45; rm -rf /", ""]) {
+      expect(issuesOf({ usage: { ccusage: { version } } }), version).toEqual([
+        "usage.ccusage.version",
+      ]);
+    }
+    expect(issuesOf({ warnings: { vagueTerms: [""] } })).toEqual(["warnings.vagueTerms.0"]);
+    expect(issuesOf({ warnings: { horizontalLayers: ["api", ""] } })).toEqual([
+      "warnings.horizontalLayers.1",
+    ]);
+    expect(issuesOf({ usage: { fresh: 5 } })).toEqual(["usage"]);
+    expect(issuesOf({ usage: { ccusage: { path: "x" } } })).toEqual(["usage.ccusage"]);
+    expect(issuesOf({ warnings: { rules: [] } })).toEqual(["warnings"]);
+  });
+});
+
+describe("the person's risk rules", () => {
+  /** A rule with only what it needs: its text and its pattern. */
+  const RULE = { label: "deja un console.log", pattern: "console\\.log\\(" };
+  const issuesOf = (risks: unknown) => {
+    const result = resolveConfig({ version: 1, warnings: { risks } });
+    return result.ok ? [] : result.issues.map((issue) => issue.path);
+  };
+
+  it("AC6: shows warnings.risks in «Avisos», after the horizontal layers, marked new, as a list only the file changes", () => {
+    expect(SETTINGS.find((setting) => setting.key === "warnings.risks")).toEqual({
+      key: "warnings.risks",
+      section: "warnings",
+      kind: "list",
+      fileOnly: true,
+      new: true,
+    });
+    const keys = SETTINGS.map((setting) => setting.key);
+    expect(keys.indexOf("warnings.risks")).toBe(keys.indexOf("warnings.horizontalLayers") + 1);
+    expect(settingOf(["warnings", "risks"])).toBeUndefined();
+    expect(settingOf(["warnings", "risks", "0", "label"])).toBeUndefined();
+  });
+
+  it("AC6: names and describes it in Spanish and in English", () => {
+    const es = settingText("warnings.risks", "es");
+    const en = settingText("warnings.risks", "en");
+    expect(es.name).toBe("Reglas de riesgo");
+    expect(en.name).toBe("Risk rules");
+    expect(es.description).toContain("Specty");
+    expect(en.description).toContain("Specty");
+    expect(es.description).not.toBe(en.description);
+  });
+
+  it("AC5: has no rules of the person by default, and keeps the valid ones as written", () => {
+    expect(DEFAULT_CONFIG.warnings.risks).toEqual([]);
+    expect(resolveConfig({ version: 1 })).toMatchObject({
+      ok: true,
+      config: { warnings: { risks: [] } },
+    });
+    const mine = [
+      RULE,
+      { label: "llama a print", pattern: "\\bprint\\(", cwe: "CWE-532", extensions: ["py", "PYW"] },
+    ];
+    expect(resolveConfig({ version: 1, warnings: { risks: mine } })).toMatchObject({
+      ok: true,
+      config: { warnings: { vagueTerms: [], horizontalLayers: [], risks: mine } },
+    });
+  });
+
+  it("AC5: refuses an empty text or pattern, a pattern that is not a regular expression, a CWE not CWE-<number>, an empty extension or one with a dot, and another key, by its key", () => {
+    expect(issuesOf([RULE])).toEqual([]);
+    expect(issuesOf([])).toEqual([]);
+    for (const label of ["", "   "]) {
+      expect(issuesOf([{ ...RULE, label }]), JSON.stringify(label)).toEqual([
+        "warnings.risks.0.label",
+      ]);
+    }
+    expect(issuesOf([{ pattern: RULE.pattern }])).toEqual(["warnings.risks.0.label"]);
+    expect(issuesOf([{ label: RULE.label }])).toEqual(["warnings.risks.0.pattern"]);
+    expect(issuesOf([RULE, { ...RULE, pattern: "" }])).toEqual(["warnings.risks.1.pattern"]);
+    expect(issuesOf([{ ...RULE, pattern: "console.log(" }])).toEqual(["warnings.risks.0.pattern"]);
+    for (const cwe of ["532", "cwe-532", "CWE-", "CWE-53a", ""]) {
+      expect(issuesOf([{ ...RULE, cwe }]), cwe).toEqual(["warnings.risks.0.cwe"]);
+    }
+    for (const extension of ["", ".ts", "t.s", "ts "]) {
+      expect(issuesOf([{ ...RULE, extensions: ["ts", extension] }]), extension).toEqual([
+        "warnings.risks.0.extensions.1",
+      ]);
+    }
+    expect(issuesOf([{ ...RULE, flags: "i" }])).toEqual(["warnings.risks.0"]);
+    expect(issuesOf("console")).toEqual(["warnings.risks"]);
+  });
+});
+
+describe("the most of a command's output Specty reads", () => {
+  const KEY = "internal.exec.maxOutputKiB";
+  const issuesOf = (maxOutputKiB: unknown) => {
+    const result = resolveConfig({ version: 1, internal: { exec: { maxOutputKiB } } });
+    return result.ok ? [] : result.issues.map((issue) => issue.path);
+  };
+
+  it("AC4: is 512 KiB without the key, takes a whole number from 64 to 16384 and refuses anything else by its key", () => {
+    expect(DEFAULT_CONFIG.internal.exec.maxOutputKiB).toBe(512);
+    expect(resolveConfig({ version: 1 })).toMatchObject({
+      ok: true,
+      config: { internal: { exec: { maxOutputKiB: 512, priority: 10 } } },
+    });
+    expect(resolveConfig({ version: 1, internal: { exec: { maxOutputKiB: 64 } } })).toMatchObject({
+      ok: true,
+      config: { internal: { exec: { maxOutputKiB: 64, priority: 10 } } },
+    });
+    for (const valid of [64, 1024, 16384]) expect(issuesOf(valid), String(valid)).toEqual([]);
+    for (const invalid of [63, 0, -1, 16385, 100.5, "512"]) {
+      expect(issuesOf(invalid), String(invalid)).toEqual([KEY]);
+    }
+  });
+
+  it("AC5: shows in «Interno», the last section, as a new number after the verifications' priority", () => {
+    expect(SETTING_SECTIONS.at(-1)).toBe("internal");
+    const internal = SETTINGS.filter((setting) => setting.section === "internal");
+    expect(SETTINGS.slice(-internal.length)).toEqual(internal);
+    expect(internal.find((setting) => setting.key === KEY)).toEqual({
+      key: KEY,
+      section: "internal",
+      kind: "number",
+      new: true,
+    });
+    const keys = internal.map((setting) => setting.key);
+    expect(keys.indexOf(KEY)).toBe(keys.indexOf("internal.exec.priority") + 1);
+    expect(schemaAt(KEY)).toBeDefined();
+  });
+
+  it("AC6: names it and says what it does in Spanish and in English", () => {
+    const es = settingText(KEY, "es");
+    const en = settingText(KEY, "en");
+    for (const text of [es, en]) {
+      expect(text.name).not.toBe(KEY);
+      expect(text.description).toContain("KiB");
+      expect(text.description).toMatch(/64.*16384/);
+    }
+    expect(es.name).not.toBe(en.name);
+    expect(es.description).not.toBe(en.description);
+  });
+});
+
+describe("the settings' edits", () => {
+  it("AC1: finds the setting an edit's path falls in, only among those the UI saves", () => {
+    expect(settingOf(["verify", "timeoutSec"])?.key).toBe("verify.timeoutSec");
+    expect(settingOf(["size", "M"])?.key).toBe("size");
+    expect(settingOf(["checks", "levels", "max-lines"])?.key).toBe("checks.levels");
+    expect(settingOf(["language"])?.key).toBe("language");
+    expect(settingOf(["dev", "ports"])?.items).toBe("number");
+    for (const path of [
+      ["version"],
+      ["verify"],
+      ["verify", "units"],
+      ["checks", "generators"],
+      ["checks", "layers", "core"],
+      ["checks", "testTime", "maxMs"],
+      ["team", "approvers"],
+      ["ui", "requireUserPresence"],
+      ["guarantee", "receipts"],
+      ["effort"],
+      ["specty delegate"],
+      ["unknown", "key"],
+      [],
+    ]) {
+      expect(settingOf(path), path.join(".")).toBeUndefined();
+    }
+    expect(
+      SETTINGS.filter((setting) => setting.fileOnly === true).map((setting) => setting.key),
+    ).toEqual([
+      "verify.units",
+      "checks.layers",
+      "checks.generators",
+      "checks.testTime",
+      "warnings.risks",
+    ]);
+    expect(
+      SETTINGS.filter((setting) => setting.items !== undefined).map((setting) => setting.key),
+    ).toEqual(["dev.ports"]);
+  });
+
+  it("AC1: gives, by setting and in the page's order, its value in the file before and after", () => {
+    const before = {
+      version: 1,
+      verify: { default: "pnpm test", timeoutSec: 10 },
+      size: { S: 4, M: 10 },
+      governed: ["**"],
+    };
+    const after = {
+      version: 1,
+      verify: { default: "pnpm test" },
+      size: { S: 4, M: 12 },
+      governed: ["**"],
+      git: { target: "develop" },
+    };
+    expect(settingChanges(before, after)).toEqual([
+      { key: "verify.timeoutSec", before: 10 },
+      { key: "git.target", after: "develop" },
+      { key: "size", before: { S: 4, M: 10 }, after: { S: 4, M: 12 } },
+    ]);
+    expect(settingChanges(before, before)).toEqual([]);
+    expect(settingChanges(undefined, { language: "en" })).toEqual([
+      { key: "language", after: "en" },
+    ]);
   });
 });

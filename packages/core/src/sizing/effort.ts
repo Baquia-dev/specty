@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { matchesAny } from "../glob";
 import type { ResolvedConfig } from "../schema/config";
+import { DEFAULT_EFFORT, type EffortConfig } from "../schema/sizing";
 import { EFFORT_LEVELS, type EffortLevel, type Spec, type Task } from "../spec/model";
 import type { SizeLevel } from "./size";
 
@@ -15,19 +16,17 @@ export interface EffortRecommendation {
   readonly raisedBy?: readonly string[];
 }
 
-const BY_LEVEL: Readonly<Record<SizeLevel, EffortRecommendation>> = {
-  S: { plan: "medium", implement: "low" },
-  M: { plan: "high", implement: "medium" },
-  L: { plan: "high", implement: "medium" },
-  XL: { plan: "max", implement: "high" },
-};
-
 /**
- * Effort by size; with the spec, the model's `effort` (the review's in the frontmatter, each
- * task's for the implementation) may raise it, never lower it.
+ * Effort by size, from the table of `config.yaml` (`effort`) or today's; with the spec, the
+ * model's `effort` (the review's in the frontmatter, each task's for the implementation) may raise
+ * it, never lower it.
  */
-export function recommendEffort(level: SizeLevel, spec?: Spec): EffortRecommendation {
-  const base = BY_LEVEL[level];
+export function recommendEffort(
+  level: SizeLevel,
+  spec?: Spec,
+  effort: EffortConfig = DEFAULT_EFFORT,
+): EffortRecommendation {
+  const base = effort[level];
   if (spec === undefined) return base;
   const review = spec.frontmatter.effort;
   const tasks = (spec.sections.tasks?.items ?? []).flatMap((task) =>
@@ -48,14 +47,19 @@ export function recommendEffort(level: SizeLevel, spec?: Spec): EffortRecommenda
   return { plan, implement, raisedBy };
 }
 
-/** Effort for one task: more files or sensitive paths call for more; the model may raise it. */
+/**
+ * Effort for one task: more files (`effort.task`) or sensitive paths call for more; the model may
+ * raise it.
+ */
 export function recommendTaskEffort(
   task: Task,
-  config: Pick<ResolvedConfig, "sensitive">,
+  config: Pick<ResolvedConfig, "sensitive" | "effort">,
 ): EffortLevel {
   const sensitive = task.files.some((path) => matchesAny(path, config.sensitive));
+  const { lowMaxFiles, highMinFiles } = config.effort.task;
+  const files = task.files.length;
   const base: EffortLevel =
-    sensitive || task.files.length > 3 ? "high" : task.files.length <= 1 ? "low" : "medium";
+    sensitive || files >= highMinFiles ? "high" : files <= lowMaxFiles ? "low" : "medium";
   return higher(base, task.effort?.level);
 }
 

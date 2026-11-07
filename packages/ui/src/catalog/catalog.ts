@@ -22,6 +22,7 @@ import { Commands } from "../components/command-palette";
 import { PAGE } from "../components/document";
 import { EdgeFade } from "../components/edge-fade";
 import {
+  LucideChartColumn,
   LucideComponent,
   LucideLayers,
   LucideLayoutGrid,
@@ -63,6 +64,11 @@ export const CATALOG_ROUTES: Routes = [
     path: "patterns",
     loadComponent: () => import("./patterns").then((page) => page.Patterns),
     title: "Specty · Patrones",
+  },
+  {
+    path: "charts",
+    loadComponent: () => import("./charts").then((page) => page.CatalogCharts),
+    title: "Specty · Gráficas",
   },
   { path: "**", redirectTo: "colors" },
 ];
@@ -119,6 +125,7 @@ export class Catalog {
         label: t("Superposiciones y teclado", "Overlays and keyboard"),
       },
       { path: "/catalog/patterns", icon: LucideLayoutList, label: t("Patrones", "Patterns") },
+      { path: "/catalog/charts", icon: LucideChartColumn, label: t("Gráficas", "Charts") },
     ];
   });
 
@@ -141,6 +148,7 @@ export class Catalog {
       ["components", "Componentes", "Components"],
       ["overlays", "Superposiciones y teclado", "Overlays and keyboard"],
       ["patterns", "Patrones", "Patterns"],
+      ["charts", "Gráficas", "Charts"],
     ] as const) {
       const [path, es, en] = page;
       commands.register({

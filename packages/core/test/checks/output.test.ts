@@ -103,3 +103,45 @@ describe("findingsInOutput", () => {
     expect(findingsInOutput("", ROOT)).toEqual([]);
   });
 });
+
+describe("findingsInOutput's limits", () => {
+  /** Today's limits, which each test changes one at a time. */
+  const TODAY = { perCommand: 100, lastLines: 5, messageChars: 200 };
+
+  it("AC1: takes at most the findings it is given, in order, and 100 without them", () => {
+    const many = Array.from({ length: 150 }, (_, index) => `src/a${index}.ts:1:1 - error x`);
+    expect(findingsInOutput(lines(...many), ROOT, { ...TODAY, perCommand: 12 })).toEqual(
+      Array.from({ length: 12 }, (_, index) => ({
+        path: `src/a${index}.ts`,
+        line: 1,
+        message: "error x",
+      })),
+    );
+    expect(findingsInOutput(lines(...many), ROOT, TODAY)).toHaveLength(100);
+    expect(findingsInOutput(lines(...many), ROOT)).toHaveLength(100);
+  });
+
+  it("AC2: gives as many of the last lines as it is given when nothing has a location, and 5 without them", () => {
+    const output = lines(...Array.from({ length: 8 }, (_, index) => `paso ${index + 1}`));
+    expect(findingsInOutput(output, ROOT, { ...TODAY, lastLines: 2 })).toEqual([
+      { message: "paso 7" },
+      { message: "paso 8" },
+    ]);
+    expect(findingsInOutput(output, ROOT)).toEqual(
+      ["paso 4", "paso 5", "paso 6", "paso 7", "paso 8"].map((message) => ({ message })),
+    );
+  });
+
+  it("AC3: cuts each message at the characters it is given, with or without a location, and at 200 without them", () => {
+    const long = "x".repeat(300);
+    expect(
+      findingsInOutput(`src/app.ts:3:1 ${long}`, ROOT, { ...TODAY, messageChars: 60 }),
+    ).toEqual([{ path: "src/app.ts", line: 3, message: "x".repeat(60) }]);
+    expect(findingsInOutput(long, ROOT, { ...TODAY, messageChars: 60 })).toEqual([
+      { message: "x".repeat(60) },
+    ]);
+    expect(findingsInOutput(`src/app.ts:3:1 ${long}`, ROOT)).toEqual([
+      { path: "src/app.ts", line: 3, message: "x".repeat(200) },
+    ]);
+  });
+});

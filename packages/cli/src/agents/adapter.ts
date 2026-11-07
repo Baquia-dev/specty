@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
-import type { DoctorLine, Lang } from "@baquia-dev/specty-core";
+import type { DoctorLine, Lang, ResolvedConfig } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import type { GuardReply, GuardTool, RawAction } from "../enforce/actions";
 import { type InstallFiles, rewriteJson } from "../install/files";
@@ -127,8 +127,16 @@ export interface AgentAdapter {
   readonly install: (context: InstallContext) => Promise<Installed>;
   /** Takes them out again for `uninstall`, and leaves everything else as it was. */
   readonly remove: (root: string, files: InstallFiles, git: Git) => Promise<void>;
-  /** What `doctor` finds in place and what it finds missing, in the repository and the user's folder. */
-  readonly doctor: (root: string, git: Git, env: NodeJS.ProcessEnv) => Promise<DoctorLines>;
+  /**
+   * What `doctor` finds in place and what it finds missing, in the repository and the user's
+   * folder; `config` is the session's, for what `init` writes from it (Antigravity's hook time).
+   */
+  readonly doctor: (
+    root: string,
+    git: Git,
+    env: NodeJS.ProcessEnv,
+    config: ResolvedConfig,
+  ) => Promise<DoctorLines>;
   /** Its guard in the user's folder, which Specty only reads: `uninstall` says it stays there. */
   readonly userFile?: (env: NodeJS.ProcessEnv) => string;
   /**
@@ -162,6 +170,11 @@ interface InstallContext {
   readonly lang: Lang;
   /** Where the person's folder is, for the one rule Specty writes there (Antigravity's CLI). */
   readonly env: NodeJS.ProcessEnv;
+  /**
+   * The configuration `init` works with: the repository's when it was valid, otherwise Specty's
+   * defaults. Antigravity takes the time of its guard's hooks from it.
+   */
+  readonly config: ResolvedConfig;
 }
 
 /** What an agent's install says in `init`'s output, and the files git tracks that it wrote. */

@@ -1,0 +1,157 @@
+{
+  "schema": 1,
+  "id": "20261107-los-limites-de-lo-que-muestran-los-comandos-y",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-los-limites-de-lo-que-muestran-los-comandos-y",
+  "baseCommit": "8eeee6ad95b5f08a27940976d72cc0c13a1e460c",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:f520aed23e547d9b8a86da6a0ef56e42f6953b66b93ffd8284b21742f3abda1b",
+    "at": "2026-11-07T08:44:45.249Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8c94c3af4724f8f6699672a1b755895145f312d34333c3fcace7378c5d7df279",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7d7a5f786f001c60e61d43d1f67b3cd8a0fe3e1eba5e77af1bfc15aa547cb502",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f2013ae5402a12e0c9e1e013646dc4592d74f12a2b851d77873e5f14489c134e",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:db53dce0b811a923153530ecda3e1cae01f5fa69c75a12ee92a470be54332bb2",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0827143bdcebf91843da250ad8be8b64bef3fd08",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:02:45.126Z",
+      "doneAt": "2026-11-07T09:09:01.006Z",
+      "summary": "findingsInOutput recibe FindingLimits (perCommand, lastLines, messageChars) con los valores de hoy por defecto; schema/internal-shown.ts añade internal.findings e internal.commands con sus límites, reunidos en el único internal de config.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "dfc5d09c1bd11116cc2e88de287e7ddc4d621d2b",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:09:01.787Z",
+      "doneAt": "2026-11-07T09:09:30.434Z",
+      "summary": "Bloque INTERNAL_SHOWN en el catálogo (cinco números con new, tras INTERNAL_RUN) y sus nombres y descripciones en español y en inglés en INTERNAL_SHOWN_TEXTS",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "a7fcbedfe3a869e6e148a921eca93ed285f99622",
+      "attempts": 1,
+      "startedAt": "2026-11-07T09:09:30.789Z",
+      "doneAt": "2026-11-07T09:17:25.470Z",
+      "summary": "specty check pasa session.config.internal.findings a findingsInOutput; formats.md §6 documenta internal.findings e internal.commands en el ejemplo y en su párrafo, y la sección de specty check remite a ellas",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "830f4b5cc347a9081e53fccf4bfb84dee2af225f",
+      "attempts": 2,
+      "startedAt": "2026-11-07T09:17:26.097Z",
+      "doneAt": "2026-11-07T09:41:18.964Z",
+      "summary": "specty verify --fresh muestra las últimas internal.commands.verifyLines líneas de un fallo y specty why lista hasta internal.commands.whyEntries entradas, sin SHOWN ni MAX_ENTRIES; ARCHITECTURE remite a las claves; el test de AC7 usa findIndex según el desbloqueo S1",
+      "scopeExtra": [
+        "packages/core/test/settings/internal-shown.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 9,
+    "T": 4,
+    "R": 2,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-07T09:41:46.927Z",
+  "lockedTests": {
+    "packages/cli/test/check-commands.test.ts": "sha256:798ea91d41a5959bda25e6fd2e35a2e2bb5878e1474bc96becfe1f1b19bcd512",
+    "packages/cli/test/verify-fresh.test.ts": "sha256:462a88728586b298681ee817191c981750db92e2cc681f69a9f4b1e2b54bfeb9",
+    "packages/cli/test/why.test.ts": "sha256:ab473ef23a66ac8b99d027b7bd0608becee97b3b0f7b087e83a5035718ad483c",
+    "packages/core/test/checks/output.test.ts": "sha256:b0b826e26cf815c62ed1ba5da7e5a3609e13968a873da016b064f5da48315372",
+    "packages/core/test/settings/catalog.test.ts": "sha256:b3d323431c6f91531a6f27ab23e4916fab2ca4efd48355e37ecfb7b5fbe4e3ba",
+    "packages/core/test/schema/internal-shown.test.ts": "sha256:36a930b6e49ff8421c9e65e47620f989282cc9faf4f5100173ca394b5649ccf9",
+    "packages/core/test/settings/internal-shown.test.ts": "sha256:493d091a8be6f525899734e51cf8992cf2c384043e765f71798902ebce6d9782"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "91706a75c4addc0adc1a3ae33e8d9181734b0c81",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/check/commands.ts",
+      "packages/cli/src/commands/stats.ts",
+      "packages/cli/src/commands/verify.ts",
+      "packages/cli/src/commands/why.ts",
+      "packages/cli/src/flow/risk.ts",
+      "packages/cli/src/flow/task-views.ts",
+      "packages/cli/src/program.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/stats.ts",
+      "packages/cli/test/check-commands.test.ts",
+      "packages/cli/test/risk.test.ts",
+      "packages/cli/test/stats.test.ts",
+      "packages/cli/test/verify-fresh.test.ts",
+      "packages/cli/test/why.test.ts",
+      "packages/core/src/cards/acceptance.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/risk-lessons.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/cards/settings-warnings.ts",
+      "packages/core/src/cards/stats.ts",
+      "packages/core/src/checks/output.ts",
+      "packages/core/src/schema/checks.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-shown.ts",
+      "packages/core/src/schema/warnings.ts",
+      "packages/core/src/scope/risk.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/test/cards/stats.test.ts",
+      "packages/core/test/checks/output.test.ts",
+      "packages/core/test/schema/internal-shown.test.ts",
+      "packages/core/test/scope/risk.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/internal-shown.test.ts",
+      "packages/core/test/validate/quality.test.ts",
+      "packages/ui/src/data/warnings.test.ts",
+      "packages/ui/src/data/warnings.ts"
+    ],
+    "at": "2026-11-07T11:28:43.448Z",
+    "resolved": {
+      "commit": "5a64968",
+      "at": "2026-11-07T11:50:01.219Z"
+    }
+  }
+}

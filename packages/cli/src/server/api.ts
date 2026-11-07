@@ -1,18 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { IncomingMessage, ServerResponse } from "node:http";
-import {
-  type ConfigIssue,
-  DEFAULT_CONFIG,
-  defaultGlossary,
-  LANGS,
-  type Output,
-  type ResolvedConfig,
-  resolveConfig,
-} from "@baquia-dev/specty-core";
-import { parse } from "yaml";
+import type { Output } from "@baquia-dev/specty-core";
 import { restore } from "../commands/restore";
 import { openChanges } from "../commands/status";
-import { isRecord, parseJson, readText } from "../io/files";
+import { isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
 import { readMemory } from "../store/memory";
 import {
@@ -23,6 +14,7 @@ import {
   runAction,
   setDelegation,
 } from "./actions";
+import { configPost, configView } from "./config";
 import { type Context, hasSession, isLocal, JSON_TYPE, same, send, TEXT } from "./context";
 import { changeDiff, type DiffAnswer } from "./diff";
 import { finishedPage } from "./finished";
@@ -30,6 +22,8 @@ import { memoryOrigins } from "./origins";
 import { changeRecord, openRecords } from "./records";
 import { sessionsView } from "./sessions";
 import { epicSliceChanges } from "./slices";
+import { statsAnswer } from "./stats";
+import { sendStatsExport, statsChangesPage } from "./stats-changes";
 import { testCode } from "./test-code";
 import { changeTrace, traceReply } from "./trace";
 
@@ -44,22 +38,23 @@ export async function readApi(
   const foreign = origin !== undefined && !isLocal(origin.replace(/^http:\/\//, ""), context.port);
   if (foreign || !hasSession(request.headers.cookie, context))
     return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
+  if (url.pathname === "/api/stats/export")
+    return sendStatsExport(response, context.session, url.searchParams);
   const view = VIEWS.get(url.pathname);
   const answer = view === undefined ? undefined : await view(context.session, url.searchParams);
   if (answer !== undefined) return send(response, 200, JSON_TYPE, JSON.stringify(answer));
   if (url.pathname === "/api/events") return context.events.add(response);
-  if (url.pathname === "/api/session") {
-    const actions = context.actions === true;
-    return send(
-      response,
-      200,
-      JSON_TYPE,
-      JSON.stringify(actions ? { actions, csrf: context.csrf } : { actions }),
-    );
-  }
+  if (url.pathname === "/api/session") return sendSession(response, context);
   const one = /^\/api\/changes\/([^/]+)$/.exec(url.pathname)?.[1];
   if (one !== undefined) return readRecord(response, context, one);
   return readChange(response, context, url);
+}
+
+/** `GET /api/session`: whether the person may decide here and, if so, the CSRF token. */
+function sendSession(response: ServerResponse, context: Context) {
+  const actions = context.actions === true;
+  const session = actions ? { actions, csrf: context.csrf } : { actions };
+  return send(response, 200, JSON_TYPE, JSON.stringify(session));
 }
 
 /** A read that looks at the session and the URL's parameters, and what it answers, as JSON. */
@@ -73,6 +68,8 @@ const VIEWS: ReadonlyMap<string, View> = new Map<string, View>([
   ["/api/delegation", delegationView],
   ["/api/memory", memoryView],
   ["/api/sessions", sessionsView],
+  ["/api/stats", statsAnswer],
+  ["/api/stats/changes", statsChangesPage],
 ]);
 
 /**
@@ -87,38 +84,6 @@ async function memoryView(session: Session) {
     changes: await openChanges(session),
     origins: await memoryOrigins(session, entries),
   };
-}
-
-/**
- * `GET /api/config`: `.specty/config.yaml` as YAML reads it (`input`, none when it is not YAML),
- * what Specty uses with every default when it is valid (`config`), the defaults, with the glossary
- * of the file's language, and the validator's issues, each at its key. It reads the file again on
- * each request: the person may have changed it since the server started.
- */
-async function configView(session: Session) {
-  const text = (await readText(session.paths.config)) ?? "";
-  let input: unknown;
-  try {
-    input = parse(text);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    return { defaults: DEFAULT_CONFIG, issues: [{ path: "", message }] };
-  }
-  const result = resolveConfig(input);
-  const issues: readonly ConfigIssue[] = result.ok ? [] : result.issues;
-  return {
-    input,
-    ...(result.ok ? { config: result.config } : {}),
-    defaults: defaultsIn(input),
-    issues,
-  };
-}
-
-/** The defaults of a configuration: those of `DEFAULT_CONFIG`, with the glossary of its language. */
-function defaultsIn(input: unknown): ResolvedConfig {
-  const language = isRecord(input) ? input.language : undefined;
-  const lang = LANGS.find((known) => known === language) ?? DEFAULT_CONFIG.language;
-  return { ...DEFAULT_CONFIG, glossary: defaultGlossary(lang) };
 }
 
 /** A change by its id, open or archived, as `changeRecords` gives it; 404 when there is none. */
@@ -219,10 +184,13 @@ export async function act(
 ) {
   const refused = actionRefusal(request, context);
   if (refused !== undefined) return send(response, 403, JSON_TYPE, refused);
-  const body = await readBody(request);
+  const body = await readBody(request, context.session.config.internal.server.maxBodyKiB * 1024);
   const bad = () => send(response, 400, JSON_TYPE, '{"error":"bad request"}');
   const done = (output: Output) =>
     send(response, output.status === "ok" ? 200 : 409, JSON_TYPE, JSON.stringify(output));
+  const config = await configPost(context, pathname, body);
+  if (config !== undefined)
+    return send(response, config.status, JSON_TYPE, JSON.stringify(config.body));
   if (pathname === "/api/delegation") {
     const on = isRecord(body) ? body.on : undefined;
     if (typeof on !== "boolean") return bad();
@@ -232,25 +200,36 @@ export async function act(
   if (memory === "bad") return bad();
   if (memory !== undefined)
     return done(await context.serial(() => memoryAction(context.session, memory)));
+  const output = await changeAction(context, pathname, body);
+  return output === undefined ? bad() : done(output);
+}
+
+/**
+ * An action on a change: its verification, the restore of its lost folder, or the person's
+ * decision on it; none when the path names no such action.
+ */
+async function changeAction(
+  context: Context,
+  pathname: string,
+  body: unknown,
+): Promise<Output | undefined> {
   const verify = /^\/api\/changes\/([^/]+)\/verify$/.exec(pathname)?.[1];
   // Outside the queue: it takes minutes and changes no state, so the other actions go on.
-  if (verify !== undefined) return done(await context.runs.start(decodeURIComponent(verify)));
+  if (verify !== undefined) return context.runs.start(decodeURIComponent(verify));
   // A lost folder has no change folder to act in: `restore` finds the change from its branch.
   const lost = /^\/api\/changes\/([^/]+)\/restore$/.exec(pathname)?.[1];
   if (lost !== undefined) {
     const id = decodeURIComponent(lost);
-    return done(await context.serial(() => restore(context.session, id)));
+    return context.serial(() => restore(context.session, id));
   }
   const parsed = parseAction(
     pathname.split("/").filter((part) => part !== ""),
     body,
   );
-  if (parsed === undefined) return bad();
+  if (parsed === undefined) return undefined;
   const { id, action } = parsed;
-  return done(
-    await followed(context, id, action.kind, (said) =>
-      context.serial(() => runAction(context.session, id, action, said)),
-    ),
+  return followed(context, id, action.kind, (said) =>
+    context.serial(() => runAction(context.session, id, action, said)),
   );
 }
 
@@ -288,14 +267,14 @@ function actionRefusal(request: IncomingMessage, context: Context): string | und
   return undefined;
 }
 
-/** A JSON body of at most 64 KiB; anything else reads as nothing. */
-async function readBody(request: IncomingMessage): Promise<unknown> {
+/** A JSON body of at most `max` bytes (`internal.server.maxBodyKiB`); anything else is none. */
+async function readBody(request: IncomingMessage, max: number): Promise<unknown> {
   const parts: Buffer[] = [];
   let size = 0;
   for await (const chunk of request) {
     const part = Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk));
     size += part.length;
-    if (size > 65_536) return undefined;
+    if (size > max) return undefined;
     parts.push(part);
   }
   return parseJson(Buffer.concat(parts).toString("utf8"));

@@ -388,6 +388,7 @@ export {
   type UiApprovalRefusal,
   uiApprovalRefusalCard,
 } from "./server";
+export { type StatsRefusal, statsCard, statsRefusalCard } from "./stats";
 export { type StatusEntry, statusCard } from "./status";
 export { toSubagents } from "./subagents";
 export {
@@ -467,7 +468,7 @@ export type {
   SliceView,
   TaskView,
 } from "./view";
-export { waitHeartbeat, waitTimeoutCard } from "./wait";
+export { waitFolderGoneCard, waitHeartbeat, waitTimeoutCard } from "./wait";
 export {
   type WhyCommit,
   type WhyRefusal,

@@ -5,11 +5,6 @@ import { clearRun, writeRun } from "../store/runs";
 import { inSlots } from "../store/verify-slots";
 import { oneAtATime } from "./full-verification";
 
-/** Lines a live run keeps: its end is what matters. */
-const KEPT = 1000;
-/** At most this often, in milliseconds, the live file is written again. */
-const EVERY = 250;
-
 /** How a live run starts. */
 interface LiveOptions {
   /** Hears the moment the command starts: a full one first waits for its turn. */
@@ -20,8 +15,10 @@ interface LiveOptions {
 
 /**
  * Runs the verification of `task` of change `change`, or with no task the full one, and keeps it
- * live for the local server and the MCP App (`store/runs.ts`): the file is written as lines
- * come, at most every 250 ms, and removed once the command ends, whether it passed or not.
+ * live for the local server and the MCP App (`store/runs.ts`): the file keeps the last
+ * `internal.server.runLines` lines, since their end is what matters, is written as lines come, at
+ * most every `internal.server.runEveryMs`, and is removed once the command ends, whether it passed
+ * or not.
  */
 export async function runLive(
   session: Session,
@@ -30,6 +27,7 @@ export async function runLive(
   command: string,
   { onStart, held = false }: LiveOptions = {},
 ): Promise<ExecResult> {
+  const { runLines, runEveryMs } = session.config.internal.server;
   const startedAt = session.environment.now().toISOString();
   let output: string[] = [];
   const rests = { stdout: "", stderr: "" };
@@ -54,8 +52,8 @@ export async function runLive(
       onOutput: (stream, text) => {
         const lines = `${rests[stream]}${text}`.split("\n");
         rests[stream] = lines.pop() ?? "";
-        output = [...output, ...lines.map((line) => line.trimEnd())].slice(-KEPT);
-        pending ??= setTimeout(write, EVERY);
+        output = [...output, ...lines.map((line) => line.trimEnd())].slice(-runLines);
+        pending ??= setTimeout(write, runEveryMs);
       },
     });
   };
