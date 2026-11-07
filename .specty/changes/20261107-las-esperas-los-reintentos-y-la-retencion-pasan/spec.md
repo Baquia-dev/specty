@@ -80,7 +80,7 @@ Hoy cuánto espera `specty wait`, cada cuánto escribe su línea de latido y cu�
   - files: packages/cli/src/commands/wait.ts, packages/cli/src/flow/land.ts, packages/cli/test/wait.test.ts, packages/cli/test/close-moved.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait.test.ts test/close-moved.test.ts
-- [ ] T3: La sección «Interno» plegada, con su aviso, y las garantías con candado
+- [x] T3: La sección «Interno» plegada, con su aviso, y las garantías con candado
   - files: packages/ui/src/settings/settings-page.ts, packages/ui/src/settings/settings-page.test.ts, docs/ui.md
   - ac: AC5, AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts && pnpm typecheck && pnpm lint && pnpm knip

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-esperas-los-reintentos-y-la-retencion-pasan",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-las-esperas-los-reintentos-y-la-retencion-pasan",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ac210b72d848019e845f19f5521a76337ff61e4f",
+      "attempts": 1,
       "startedAt": "2026-11-07T02:56:23.746Z",
       "doneAt": "2026-11-07T02:57:33.025Z",
-      "summary": "specty wait toma su espera sin --timeout y su latido de session.config.internal.waits, y close sus reintentos de aterrizaje de internal.retries.landing; ARCHITECTURE §… apunta a las claves"
+      "summary": "specty wait toma su espera sin --timeout y su latido de session.config.internal.waits, y close sus reintentos de aterrizaje de internal.retries.landing; ARCHITECTURE §… apunta a las claves",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dc4b5f9f84577cd0cd68fecb77c67a51eeef8543",
+      "startedAt": "2026-11-07T02:57:33.346Z",
+      "doneAt": "2026-11-07T02:59:52.713Z",
+      "summary": "Página Configuración: sección Interno la última con su aviso fuera del pliegue y sus filas en un sp-collapsible que se abre solo con búsqueda o filtro; marca Garantía (tono de cierre) y garantías con candado y 24 h, sin clave; docs/ui.md"
     }
   },
   "pending": {
