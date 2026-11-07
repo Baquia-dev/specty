@@ -147,6 +147,8 @@ describe("the settings' catalog", () => {
     ]);
     expect(keysWith("new")).toEqual([
       "flow.closing",
+      "flow.reviewFrom",
+      "lanes.quick.maxTasks",
       ...SIZING_KEYS,
       "warnings.vagueTerms",
       "warnings.horizontalLayers",
@@ -771,7 +773,7 @@ describe("the closing phase as a setting", () => {
   };
 
   it("AC5: is true without flow, takes true or false, and refuses anything else and an unknown key by its key", () => {
-    expect(DEFAULT_CONFIG.flow).toEqual({ closing: true });
+    expect(DEFAULT_CONFIG.flow).toEqual({ closing: true, reviewFrom: "L" });
     for (const input of [{ version: 1 }, { version: 1, flow: {} }]) {
       expect(resolveConfig(input)).toMatchObject({ ok: true, config: { flow: { closing: true } } });
     }

@@ -6,6 +6,13 @@
   "branch": "specty/20261108-las-tareas-de-un-quick-y-la-revision",
   "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:29188d88d9a3b9c1db5a8f6c33b5fa04f9c1be2d542fd669aaff2ba7ae08ecf9",
+    "at": "2026-11-07T16:16:32.126Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:29188d88d9a3b9c1db5a8f6c33b5fa04f9c1be2d542fd669aaff2ba7ae08ecf9",
-    "at": "2026-11-07T16:16:32.126Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T16:19:21.452Z"
 }

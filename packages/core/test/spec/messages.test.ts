@@ -100,12 +100,24 @@ describe("size and limit texts", () => {
     expect(formatBreach({ metric: "modules", value: 3, max: 2 }, "en")).toBe("3 modules, max 2");
     expect(formatBreach({ metric: "level", value: "XL" }, "es")).toBe("tamaño XL");
     expect(formatBreach({ metric: "level", value: "XL" }, "en")).toBe("size XL");
-    expect(formatQuickProblem({ kind: "tasks", value: 2 }, "es")).toBe(
+    expect(formatQuickProblem({ kind: "tasks", value: 2, max: 1 }, "es")).toBe(
       "2 tareas; quick admite una",
     );
     expect(formatQuickProblem({ kind: "files", value: 4, max: 3 }, "es")).toBe(
       "4 archivos de código, máximo 3",
     );
     expect(formatQuickProblem({ kind: "sensitive" }, "es")).toBe("toca rutas sensibles");
+  });
+
+  it("AC2: names the quick lane's maximum of tasks in both languages, «one» when it is 1", () => {
+    expect(formatQuickProblem({ kind: "tasks", value: 2, max: 1 }, "en")).toBe(
+      "2 tasks; quick allows one",
+    );
+    expect(formatQuickProblem({ kind: "tasks", value: 3, max: 2 }, "es")).toBe(
+      "3 tareas; quick admite 2",
+    );
+    expect(formatQuickProblem({ kind: "tasks", value: 3, max: 2 }, "en")).toBe(
+      "3 tasks; quick allows 2",
+    );
   });
 });
