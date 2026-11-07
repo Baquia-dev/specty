@@ -93,7 +93,7 @@ El «Panel» de `specty ui` muestra hoy los indicadores, «Ritmo», «Personas y
   - files: packages/ui/src/components/charts/line-chart.ts, packages/ui/src/components/charts/bar-list.ts, packages/ui/src/components/charts/segmented-bar.ts, packages/ui/src/catalog/charts.ts, packages/ui/src/catalog/catalog.ts, packages/ui/src/components/icons.ts, packages/ui/src/catalog/catalog.test.ts
   - ac: AC5, AC6, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/catalog/catalog.test.ts --include src/components/charts/charts.test.ts && pnpm lint
-- [ ] T3: Las secciones «Flujo y esperas» y «Calidad» en el panel
+- [x] T3: Las secciones «Flujo y esperas» y «Calidad» en el panel
   - files: packages/ui/src/dashboard/dashboard-flow.ts, packages/ui/src/dashboard/dashboard-quality.ts, packages/ui/src/dashboard/dashboard-page.ts, packages/ui/src/dashboard/dashboard-flow-quality.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4, AC5, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-flow-quality.test.ts --include src/dashboard/dashboard-sections.test.ts --include src/dashboard/dashboard-page.test.ts && pnpm typecheck && pnpm lint && pnpm knip

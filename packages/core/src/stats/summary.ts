@@ -73,10 +73,13 @@ export interface StatsView {
   readonly rhythm?: StatsRhythm;
   /** «Personas y agentes»: a row per person, agent and model of the lane, whoever the cut is for. */
   readonly people?: readonly StatsPeopleRow[];
-  /** «Flujo y esperas»: the time of each phase, who approved, the wait and the sessions. */
-  readonly flow?: StatsFlow;
+  /**
+   * «Flujo y esperas»: the time of each phase, who approved, the wait and the sessions. It and
+   * «Calidad» may be given as undefined, as a source that builds its answer does.
+   */
+  readonly flow?: StatsFlow | undefined;
   /** «Calidad»: the task verifications by the rhythm's days or weeks, and what Specty checked. */
-  readonly quality?: StatsQuality;
+  readonly quality?: StatsQuality | undefined;
 }
 
 /** What the panel is made of: every change's row, the memory's entries and the local today. */

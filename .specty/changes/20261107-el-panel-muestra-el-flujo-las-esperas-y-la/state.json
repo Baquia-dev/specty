@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-panel-muestra-el-flujo-las-esperas-y-la",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-panel-muestra-el-flujo-las-esperas-y-la",
   "baseCommit": "a4e6321c4130771efd5b22d9cc3115e691c6cc6c",
   "revision": 1,
@@ -68,12 +68,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0dcc84240751433fb378624b26ce8f04dbea8519",
+      "attempts": 1,
       "startedAt": "2026-11-07T10:55:30.277Z",
       "doneAt": "2026-11-07T11:03:20.297Z",
-      "summary": "sp-line-chart, sp-bar-list y sp-segmented-bar sobre el marco común, con tabla, teclado e información emergente, y la página «Gráficas» del catálogo con cada gráfica y sus estados"
+      "summary": "sp-line-chart, sp-bar-list y sp-segmented-bar sobre el marco común, con tabla, teclado e información emergente, y la página «Gráficas» del catálogo con cada gráfica y sus estados",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/stats/summary.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "05fbacaaa867648e1aaee32d158ddb69dfb568a2",
+      "startedAt": "2026-11-07T11:03:20.649Z",
+      "doneAt": "2026-11-07T11:11:14.881Z",
+      "summary": "Las secciones «Flujo y esperas» y «Calidad» en el panel, tras «Ritmo», con sus gráficas, cifras y la lista de cambios con más verificaciones fallidas; flow y quality admiten undefined explícito; docs/ui.md"
     }
   },
   "pending": {

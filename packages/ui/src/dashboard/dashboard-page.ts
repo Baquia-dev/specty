@@ -27,7 +27,9 @@ import { ActionError, SpectyData } from "../data/records";
 import type { StatsParams } from "../data/source";
 import { Preferences } from "../theme/preferences";
 import { DashboardChanges } from "./dashboard-changes";
+import { DashboardFlow } from "./dashboard-flow";
 import { DashboardPeople } from "./dashboard-people";
+import { DashboardQuality } from "./dashboard-quality";
 import { DashboardRhythm } from "./dashboard-rhythm";
 import { DashboardSummary } from "./dashboard-summary";
 
@@ -63,7 +65,9 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
   selector: "sp-dashboard-page",
   imports: [
     DashboardChanges,
+    DashboardFlow,
     DashboardPeople,
+    DashboardQuality,
     DashboardRhythm,
     DashboardSummary,
     EmptyState,
@@ -98,6 +102,12 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
           <sp-dashboard-summary [view]="view" />
           @if (view.rhythm; as rhythm) {
             <sp-dashboard-rhythm class="mt-4" [rhythm]="rhythm" [kind]="view.query.kind" />
+          }
+          @if (view.flow; as flow) {
+            <sp-dashboard-flow class="mt-4" [flow]="flow" />
+          }
+          @if (view.quality; as quality) {
+            <sp-dashboard-quality class="mt-4" [quality]="quality" />
           }
           @if (view.people; as people) {
             <sp-dashboard-people class="mt-4" [people]="people" [who]="view.query.who" (pick)="choose({ who: $event })" />
