@@ -3,6 +3,7 @@ import { Injectable, type Type } from "@angular/core";
 import type { StatsChangesPage, StatsView } from "@baquia-dev/specty-core";
 import type { ConfigEdit, SessionView } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
+import type { Download } from "./export";
 import type { RunRecord } from "./progress";
 import {
   ActionError,
@@ -51,6 +52,7 @@ import type {
   StatsChangesParams,
   StatsParams,
 } from "./source";
+import { fetchStatsExport, type StatsExportParams } from "./stats-export";
 import { isStrings, isTrace, type TraceRecord } from "./trace";
 
 /** The mark `specty ui` puts in the page it serves (ARCHITECTURE §15). */
@@ -144,6 +146,11 @@ export class ServerData extends SpectyData {
     const body: unknown = await response.json().catch(() => undefined);
     if (!response.ok || !isStatsChangesPage(body)) throw new ActionError(UNEXPECTED);
     return body;
+  }
+
+  /** The panel's changes of the cut as the file the server writes. */
+  override statsExport(params: StatsExportParams): Promise<Download> {
+    return fetchStatsExport(params);
   }
 
   override subscribe(listener: () => unknown): () => void {
