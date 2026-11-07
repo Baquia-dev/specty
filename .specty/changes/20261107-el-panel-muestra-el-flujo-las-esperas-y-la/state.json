@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "id": "20261107-el-panel-muestra-el-flujo-las-esperas-y-la",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-panel-muestra-el-flujo-las-esperas-y-la",
+  "baseCommit": "a4e6321c4130771efd5b22d9cc3115e691c6cc6c",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "16 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3cc6ea339fd9e23484e7b322ca4a5f4817f86a3034238af730995680926e816d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a02f82c02e6eabbe9405cce72f83f14571b6e22cc554b41d56da82326c74dfae",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:91d03c46fce374d5ed11001be38539c28d4ea4f6978bb44791474e98010e165c",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:1789a8da82dfcf9a6cb0bfb770394792c99e42096bab679bf27dca1054906a87",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:b816c6b01c18d56adb17d83202d945f6dcbde5eb522c9eef623c8db828aca6be",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:b452a7a901c1e502bb7571c37b6b55db9ffc081c9a03ec8e263c3e2d9e14e43f",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:242a2100e5f40a2c14cba249bf6f43a714e376216b36b86eac0aa41f9f43d3d6",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:8e3d299bc96f4a6f63a27fca82fbd059dc04685ece0311328c86ef39a9da6258",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 8,
+    "AC": 8,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2636bf99da7d567ab5aa9cc6fb97d6031eeb17e1201a383da68c45484e8fe774",
+    "at": "2026-11-07T10:32:53.696Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
