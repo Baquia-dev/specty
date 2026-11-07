@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-evals-miden-la-vuelta-a-un-cambio-huerfano",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-las-evals-miden-la-vuelta-a-un-cambio-huerfano",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 1,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c5bf0310718ee814283edf08332251098c48dffe",
+      "attempts": 1,
       "startedAt": "2026-11-07T00:12:44.939Z",
       "doneAt": "2026-11-07T00:15:00.346Z",
-      "summary": "Experimento orphan: un cambio quick aprobado y huérfano en .worktrees/ (state.json de hace dos horas, id en evals.orphan) y su juicio por el enter del subagente, el archivo y el cierre; leftApproved comparte la preparación con la épica."
+      "summary": "Experimento orphan: un cambio quick aprobado y huérfano en .worktrees/ (state.json de hace dos horas, id en evals.orphan) y su juicio por el enter del subagente, el archivo y el cierre; leftApproved comparte la preparación con la épica.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "02ae05e1ef32ae85b956845ec89a37742ea0e3a7",
+      "startedAt": "2026-11-07T00:15:00.694Z",
+      "doneAt": "2026-11-07T00:30:44.308Z",
+      "summary": "ARCHITECTURE §16 describe el experimento orphan y su ejecución real del 2026-11-07 (cumplió, 113 s, 16 rondas, 1 bloqueo, 0,47 USD, 30.253 de contexto)."
     }
   },
   "pending": {

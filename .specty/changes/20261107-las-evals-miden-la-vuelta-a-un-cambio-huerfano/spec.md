@@ -52,7 +52,7 @@ Sin cambio activo, la tarjeta de `specty next` en la carpeta principal lista los
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/orphan.test.ts test/experiments.test.ts test/question.test.ts test/changes-card.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T2: La arquitectura cuenta el experimento y su resultado real
+- [x] T2: La arquitectura cuenta el experimento y su resultado real
   - files: docs/ARCHITECTURE.md
   - ac: AC4
   - verify: grep -q 'orphan' docs/ARCHITECTURE.md && pnpm lint

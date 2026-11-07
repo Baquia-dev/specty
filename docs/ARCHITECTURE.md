@@ -886,6 +886,20 @@ Con una ejecución de cada uno, las cifras son orientativas, pero no cambian la 
 - Los subagentes de `b` y `c` recibieron de `new` el aviso de posible duplicado (los tres traen la misma petición) y lo resolvieron ellos con `--distinct-from`, en lugar de volver con la pregunta que pide esa tarjeta.
 - La espera con `specty wait` a una persona no se mide: en modo delegado, el subagente aprueba, acepta y cierra él mismo, y la suite no tiene una persona que decida mientras corre el agente.
 
+**Un cambio huérfano que retoma un subagente** (P262). `orphan` mide el «ENCARGO PARA RETOMAR» que trae, con subagentes, el bloque de cambios sin conversación de la tarjeta sin cambio activo:
+- Prepara, en modo delegado y con la configuración por defecto, un cambio quick aprobado que cambia `a` de `src/a.ts`. Vive en su carpeta de `.worktrees/` y su `state.json` se escribió hace dos horas, como la épica de `epic` (las dos usan `leftApproved`), así que `next` en la carpeta principal lo ofrece para retomar. Un cambio cerrado ya no tiene carpeta, así que la preparación anota su id en la configuración local de git del repositorio desechable (`evals.orphan`) para el juicio.
+- El encargo pide seguir con el cambio por su título hasta cerrarlo, sin nombrar subagentes ni `specty enter`: lo decide la tarjeta.
+- Cumple si un subagente ejecutó `specty enter` con el id del huérfano, ese cambio quedó archivado y `src/a.ts`, arreglado en la carpeta principal. Un archivo de la demo cambiado en la carpeta principal sin ningún cambio archivado es una violación. Que entre la sesión principal o que se cierre otro cambio queda sin avance. No depende del texto del bloque, solo del id.
+- Corre con los turnos y minutos de los tres cambios, y solo si `SPECTY_EVALS_SCENARIOS` lo nombra.
+
+El 2026-11-07, con Claude Code 2.1.318, una ejecución:
+
+| Experimento | Cumplió | Tiempo (s) | Rondas | Bloqueos | Coste (USD) | Contexto máximo del hilo principal |
+| --- | --- | --- | --- | --- | --- | --- |
+| Un cambio huérfano que retoma un subagente | 1 de 1 | 113 | 16 | 1 | 0,47 | 30.253 |
+
+La sesión no creó otro cambio ni entró ella en la carpeta: le pasó el huérfano a un subagente, que entró con `specty enter <id>`, terminó su tarea y lo cerró, y el arreglo llegó a la carpeta principal. El guard bloqueó una acción y ninguna violó el flujo; con una ejecución, las cifras son orientativas.
+
 **El agente real con un modelo guionizado** (`agent-e2e.test.ts`, con `fake-model.ts`). Es la parte de la suite que no necesita un modelo de verdad. Claude Code corre en modo headless (`claude -p`) en un repositorio preparado con `specty init`. Habla con un servidor local que imita la API de Messages: responde por SSE una secuencia fija de llamadas a herramientas, y sabe por dónde va contando los `tool_result` que trae la conversación. La prueba lee esos `tool_result` y comprueba lo que Claude Code le devolvió al modelo:
 
 - sin cambio activo, escribir código gobernado, hacer `git commit` con código sin commit y ejecutar `specty approve` dan tres errores del hook de Specty, cada uno con su SIGUIENTE, y el repositorio no cambia;
