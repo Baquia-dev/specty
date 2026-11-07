@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-caducidad-de-los-bloqueos-y-del-indice-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-la-caducidad-de-los-bloqueos-y-del-indice-de",
   "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
   "revision": 2,
@@ -60,6 +60,11 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T05:22:31.637Z"
+  "lockedTests": {
+    "packages/cli/test/prune-leftovers.test.ts": "sha256:4e8f2d15cb2c1a3f5c0c08a385f66475a9036c344a42dc1a7574d7e8a9a0c934",
+    "packages/core/test/cards/prune-leftovers.test.ts": "sha256:b57664ff19c56d1f35c1c33ed1416906d159a7a3ec81e6638a7518ee92c0b334",
+    "packages/core/test/settings/catalog.test.ts": "sha256:36b77f05697db75759aaef8053af64d24b33c5c5d201ed90d808f21d10d1177a",
+    "packages/cli/src/store/turn-queue.test.ts": "sha256:004eb5a16f23b264b5dfd3dfb7fc063d0d69abe1b2e4d4619a1c64744a5eee26",
+    "packages/core/test/settings/internal-life.test.ts": "sha256:a9d2bc2c0a7e8a284f0ccbc239f609d1b737cf8e7dc2c01a61cd0dc44d6eafcd"
+  }
 }
