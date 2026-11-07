@@ -240,6 +240,36 @@ describe("Catalog", () => {
     expect(palette.all().some((command) => command.id === "go:catalog/charts")).toBe(true);
   });
 
+  it("AC6: «Gráficas» shows the figure with its minigraph: with a trend and a change, with gaps and a value alone, with no data and with no trend", async () => {
+    const { element } = await open("/catalog/charts");
+    const example = element.querySelector<HTMLElement>("[data-example='stat-tile']");
+    expect(text(example?.closest("section")?.querySelector("h2"))).toBe(
+      "Indicador con minigráfica",
+    );
+    const tiles = [...(example?.querySelectorAll("sp-stat-tile") ?? [])];
+    expect(tiles).toHaveLength(4);
+    const [trend, gaps, none, bare] = tiles;
+
+    // A trend with its change against the period before, its last value marked.
+    expect(trend?.querySelector("[data-delta]")).not.toBeNull();
+    expect(trend?.querySelectorAll("[data-line]")).toHaveLength(1);
+    expect(trend?.querySelectorAll("[data-point]")).toHaveLength(1);
+    expect(trend?.querySelectorAll("[data-mark]")).toHaveLength(7);
+
+    // Gaps: one line for the two days in a row, a point for the value alone and for the last one.
+    expect(gaps?.querySelectorAll("[data-line]")).toHaveLength(1);
+    expect(gaps?.querySelectorAll("[data-point]")).toHaveLength(2);
+
+    // No data: «—», and the space of the minigraph with nothing drawn in it.
+    expect(text(none?.querySelector("[data-value]"))).toBe("—");
+    expect(none?.querySelector("[data-trend]")).not.toBeNull();
+    expect(none?.querySelectorAll("[data-line]")).toHaveLength(0);
+    expect(none?.querySelectorAll("[data-mark]")).toHaveLength(0);
+
+    // No trend: the figure alone.
+    expect(bare?.querySelector("[data-trend]")).toBeNull();
+  });
+
   it("AC5: the line, the bars and the segmented bar: one tab stop whose marks the keys go through, each with its values in its name and its tooltip", async () => {
     const { fixture, element } = await open("/catalog/charts");
     const press = async (key: string) => {

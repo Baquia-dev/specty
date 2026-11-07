@@ -126,6 +126,7 @@ describe("the settings' catalog", () => {
       "scope.generated",
       "scope.autoApprove",
       "checks.levels",
+      "checks.taskDone.skip",
     ]);
     expect(keysWith("command")).toEqual([
       "verify.default",
@@ -150,6 +151,7 @@ describe("the settings' catalog", () => {
       "flow.reviewFrom",
       "lanes.quick.maxTasks",
       ...SIZING_KEYS,
+      "checks.taskDone.skip",
       "warnings.vagueTerms",
       "warnings.horizontalLayers",
       "warnings.risks",

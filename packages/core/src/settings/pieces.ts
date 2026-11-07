@@ -83,6 +83,7 @@ export const PIECES: readonly Piece[] = [
     phase: "implementing",
     keys: [
       "checks.levels",
+      "checks.taskDone.skip",
       "checks.maxFindings",
       "checks.exclude",
       "checks.todo",
@@ -112,7 +113,12 @@ export const PIECES: readonly Piece[] = [
   { id: "full-verify", phase: "acceptance", keys: ["verify.full", "verify.units", "verify.slots"] },
   { id: "coverage", phase: "acceptance", keys: ["checks.coverage"] },
   { id: "acceptance", phase: "acceptance", keys: [], guarantee: true },
-  { id: "closing", phase: "closing", keys: [], soon: true },
+  {
+    id: "closing",
+    phase: "closing",
+    keys: ["flow.closing"],
+    toggle: yesOrNo("flow.closing"),
+  },
   {
     id: "retro",
     phase: "closing",

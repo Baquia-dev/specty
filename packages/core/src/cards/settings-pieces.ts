@@ -184,11 +184,11 @@ const TEXTS: Readonly<Record<string, Texts>> = {
   closing: {
     es: [
       "Fase de cierre",
-      "El agente escribe la retro antes de que el cambio aterrice; pronto se podrá quitar.",
+      "Tras aceptar un cambio, el agente redacta su cierre y su retro antes de que aterrice; sin ella, aceptar un cambio estándar lo cierra.",
     ],
     en: [
       "Closing phase",
-      "The agent writes the retro before the change lands; soon it can be removed.",
+      "After a change is accepted, the agent writes its closing and its retro before it lands; without it, accepting a standard change closes it.",
     ],
   },
   retro: {
@@ -256,13 +256,20 @@ const DELEGATED: Readonly<Record<"on" | "off", Sentence>> = {
   ],
 };
 
+/** With `flow.closing: false`: accepting closes a standard change outside an epic. */
+const NO_CLOSING: Sentence = [
+  "Sin fase de cierre: aceptar un cambio estándar que no es corte de una épica lo cierra y lo archiva con el resumen de sus tareas.",
+  "No closing phase: accepting a standard change that is not a slice of an epic closes it and archives it with the summary of its tasks.",
+];
+
 const filled = (value: unknown): value is string =>
   typeof value === "string" && value.trim() !== "";
 
 /**
  * What the configured flow does, in sentences: its tests, each task's verification, the full one,
  * the independent review, the files of a quick change and delegated mode, unsaid when the source
- * cannot tell; last, the limits the profiles change. Commands go between backticks.
+ * cannot tell, and the closing phase once removed; last, the limits the profiles change. Commands
+ * go between backticks.
  */
 export function flowSentences(value: SettingValue, lang: Lang): readonly string[] {
   const task = value("verify.default");
@@ -289,6 +296,7 @@ export function flowSentences(value: SettingValue, lang: Lang): readonly string[
       `A quick change touches at most ${files} code files.`,
     ],
     typeof delegated === "boolean" ? DELEGATED[delegated ? "on" : "off"] : undefined,
+    value("flow.closing") === false ? NO_CLOSING : undefined,
     ...limitSentences(value),
   ];
   const t = translator(lang);

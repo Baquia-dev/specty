@@ -70,6 +70,8 @@ export interface ChangeRecord {
   readonly reviews?: readonly ReviewRecord[];
   /** In acceptance, each criterion with the tests that carry its id, from the server (ADR 0014). */
   readonly criteriaTests?: readonly CriterionTests[];
+  /** In acceptance, accepting closes it without its closing phase (`flow.closing: false`). */
+  readonly withoutClosing?: boolean;
 }
 
 /** A test line that carries a criterion's id, added by a task's commit. */
@@ -402,6 +404,8 @@ export interface ChangeView {
   readonly resultReview?: ReviewRecord;
   /** In acceptance, each criterion with its tests, when the source has them. */
   readonly criteriaTests?: readonly CriterionTests[];
+  /** Accepting closes it, as a quick one, without its closing phase, as the server says. */
+  readonly withoutClosing?: boolean;
   /** The closing the agent wrote (`## Cierre`), in its parts; none until it writes it. */
   readonly closing?: ClosingParts;
   /** In `testing`: the tests the agent sent for the person's approval, or none yet. */

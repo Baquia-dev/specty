@@ -234,7 +234,7 @@ describe("the phases of the flow and their pieces", () => {
     expect(isEquipped(piece("quick-check"), using({ verify: { quick: "pnpm lint" } }))).toBe(true);
   });
 
-  it("AC6, AC7: has no edit for the pieces that are always equipped, for delegated mode, which lives in the clone, nor for the closing phase", () => {
+  it("AC6, AC7: has no edit for the pieces that are always equipped, nor for delegated mode, which lives in the clone", () => {
     for (const id of [
       "glossary",
       "spec-warnings",
@@ -245,7 +245,6 @@ describe("the phases of the flow and their pieces", () => {
       "full-verify",
       "coverage",
       "delegated",
-      "closing",
     ]) {
       expect(pieceEdits(piece(id), false, defaults), id).toEqual([]);
       expect(pieceEdits(piece(id), true, defaults), id).toEqual([]);
@@ -255,12 +254,24 @@ describe("the phases of the flow and their pieces", () => {
     expect(isEquipped(piece("delegated"), using({}, undefined))).toBe(false);
   });
 
-  it("AC9: shows the closing phase, which has no key until C5, as coming soon and equipped", () => {
-    expect(PIECES.filter((candidate) => candidate.soon === true).map(({ id }) => id)).toEqual([
-      "closing",
-    ]);
-    expect(piece("closing").keys).toEqual([]);
+  it("AC1: adjusts the closing phase with flow.closing, equipped unless it is false, and no piece is coming soon", () => {
+    expect(PIECES.filter((candidate) => candidate.soon === true)).toEqual([]);
+    expect(piece("closing").phase).toBe("closing");
+    expect(piece("closing").keys).toEqual(["flow.closing"]);
     expect(isEquipped(piece("closing"), using({}))).toBe(true);
+    expect(isEquipped(piece("closing"), using({ flow: { closing: true } }))).toBe(true);
+    expect(isEquipped(piece("closing"), using({ flow: { closing: false } }))).toBe(false);
+    expect(equippedIds(using({ ...PROJECT, flow: { closing: false } }, false))).not.toContain(
+      "closing",
+    );
+  });
+
+  it("AC2: removing the closing phase gives flow.closing: false, and equipping it takes the key out of the file", () => {
+    expect(pieceEdits(piece("closing"), false, defaults)).toEqual([
+      { path: ["flow", "closing"], value: false },
+    ]);
+    expect(pieceEdits(piece("closing"), true, defaults)).toEqual([{ path: ["flow", "closing"] }]);
+    expect(settingOf(["flow", "closing"])?.key).toBe("flow.closing");
   });
 });
 
@@ -310,6 +321,19 @@ describe("the texts of the pieces", () => {
       expect(en, candidate.id).not.toBe("");
       expect(es, candidate.id).not.toBe(en);
     }
+  });
+
+  it("AC4: describes the closing phase in Spanish and in English, with no word of removing it soon", () => {
+    expect(pieceText("closing", "es")).toEqual({
+      name: "Fase de cierre",
+      description:
+        "Tras aceptar un cambio, el agente redacta su cierre y su retro antes de que aterrice; sin ella, aceptar un cambio estándar lo cierra.",
+    });
+    expect(pieceText("closing", "en")).toEqual({
+      name: "Closing phase",
+      description:
+        "After a change is accepted, the agent writes its closing and its retro before it lands; without it, accepting a standard change closes it.",
+    });
   });
 
   it("AC2, AC12: says why each guarantee is not removed, in Spanish and in English, and nothing of the other pieces", () => {
@@ -366,6 +390,35 @@ describe("what the configured flow does, in sentences", () => {
       "You approve, accept and close each change.",
       ...LIMITS_EN,
     ]);
+  });
+
+  it("AC3, AC4: with flow.closing: false, says after delegated mode that accepting a standard change closes it, in Spanish and in English", () => {
+    const project = { ...PROJECT, verify: { default: "pnpm test", full: "pnpm check" } };
+    const without = using({ ...project, flow: { closing: false } }, false);
+    expect(flowSentences(without, "es")).toEqual([
+      "Las features piden sus tests aprobados antes del código.",
+      "Cada tarea pasa `pnpm test` antes de completarse.",
+      "Al aceptar, Specty ejecuta `pnpm check`.",
+      "Sin revisión independiente: la spec y el diff los revisas tú.",
+      "Un cambio rápido toca como mucho 3 archivos de código.",
+      "Tú apruebas, aceptas y cierras cada cambio.",
+      "Sin fase de cierre: aceptar un cambio estándar que no es corte de una épica lo cierra y lo archiva con el resumen de sus tareas.",
+      ...LIMITS_ES,
+    ]);
+    expect(flowSentences(without, "en")).toEqual([
+      "Features need their tests approved before their code.",
+      "Each task passes `pnpm test` before it is done.",
+      "On accepting, Specty runs `pnpm check`.",
+      "No independent review: you review the spec and the diff.",
+      "A quick change touches at most 3 code files.",
+      "You approve, accept and close each change.",
+      "No closing phase: accepting a standard change that is not a slice of an epic closes it and archives it with the summary of its tasks.",
+      ...LIMITS_EN,
+    ]);
+    const kept = using({ ...project, flow: { closing: true } }, false);
+    expect(flowSentences(kept, "es")).toEqual(flowSentences(using(project, false), "es"));
+    expect(flowSentences(kept, "es").join(" ")).not.toContain("fase de cierre");
+    expect(flowSentences(kept, "en").join(" ")).not.toContain("closing phase");
   });
 
   it("AC3: follows the configuration: required tests, no default verification, units, a review command, more files and delegated mode on", () => {

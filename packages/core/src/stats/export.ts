@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // The panel's export (docs/ui.md, «Panel», «Exportar»): every change of the cut, one row each
-// with the table's figures and who and when, as a CSV that a spreadsheet opens (RFC 4180, UTF-8
-// with BOM) or as JSON. The local server answers it as `GET /api/stats/export`.
+// with the table's figures and who and when, as a CSV that a spreadsheet opens (RFC 4180 with the
+// separator and the decimal mark of its language, UTF-8 with BOM) or as JSON. The local server
+// answers it as `GET /api/stats/export`.
 import { AGENT_NAMES, isAgentTool } from "../agents";
 import { statsExportHeaders, statsLaneName } from "../cards/stats-export";
 import { LANGS, type Lang } from "../i18n";
@@ -136,6 +137,18 @@ function rowOf(change: StatsChange, row: StatsListed): StatsExportRow {
 
 const HOUR = 3_600_000;
 
+/** How the CSV in a language separates its cells and its decimals. */
+interface CsvDialect {
+  readonly separator: string;
+  readonly decimal: string;
+}
+
+/** Excel with Spanish regional settings expects semicolons and a decimal comma; English, commas. */
+const DIALECTS: Readonly<Record<Lang, CsvDialect>> = {
+  es: { separator: ";", decimal: "," },
+  en: { separator: ",", decimal: "." },
+};
+
 /** Each column's cell: dates to the local minute, hours and dollars with two decimals. */
 const CELLS: Readonly<Record<StatsExportColumn, (row: StatsExportRow, lang: Lang) => string>> = {
   id: (row) => row.id,
@@ -148,30 +161,40 @@ const CELLS: Readonly<Record<StatsExportColumn, (row: StatsExportRow, lang: Lang
   created: (row) => minuteOf(row.created),
   closed: (row) => (row.closed === undefined ? "" : minuteOf(row.closed)),
   tasks: (row) => String(row.tasks),
-  cycle: (row) => (row.cycle === undefined ? "" : (row.cycle / HOUR).toFixed(2)),
+  cycle: (row, lang) => (row.cycle === undefined ? "" : twoDecimals(row.cycle / HOUR, lang)),
   verifications: (row) => String(row.verifications),
   failed: (row) => String(row.failed),
-  cost: (row) => (row.cost === undefined ? "" : row.cost.toFixed(2)),
+  cost: (row, lang) => (row.cost === undefined ? "" : twoDecimals(row.cost, lang)),
 };
 
-/** The CSV: the BOM, the header and a line per change, each ending in CRLF. */
+/** `value` with two decimals and the decimal mark of the CSV in `lang`. */
+function twoDecimals(value: number, lang: Lang): string {
+  return value.toFixed(2).replace(".", DIALECTS[lang].decimal);
+}
+
+/** The CSV: the BOM, the header and a line per change, with the separator of `lang`, in CRLF. */
 function csvOf(rows: readonly StatsExportRow[], lang: Lang): string {
   const headers = statsExportHeaders(lang);
+  const { separator } = DIALECTS[lang];
   const lines = [
     COLUMNS.map((column) => headers[column]),
     ...rows.map((row) => COLUMNS.map((column) => CELLS[column](row, lang))),
   ];
-  return `\uFEFF${lines.map((cells) => `${cells.map(escaped).join(",")}\r\n`).join("")}`;
+  const line = (cells: readonly string[]) =>
+    `${cells.map((cell) => escaped(cell, separator)).join(separator)}\r\n`;
+  return `\uFEFF${lines.map(line).join("")}`;
 }
 
 /**
- * A cell as RFC 4180 writes it: between quotes, with its own doubled, when it has a comma, a
- * quote or a line break. One that starts as a formula would goes after an apostrophe, so the
+ * A cell as RFC 4180 writes it: between quotes, with its own doubled, when it has the `separator`,
+ * a quote or a line break. One that starts as a formula would goes after an apostrophe, so the
  * spreadsheet shows it as text instead of running it.
  */
-function escaped(cell: string): string {
+function escaped(cell: string, separator: string): string {
   const text = /^[=+@\t\r-]/.test(cell) ? `'${cell}` : cell;
-  return /[",\r\n]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
+  return text.includes(separator) || /["\r\n]/.test(text)
+    ? `"${text.replaceAll('"', '""')}"`
+    : text;
 }
 
 /** An agent's name by its tool («Claude Code»); a tool the list does not know goes by its id. */
