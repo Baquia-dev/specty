@@ -94,3 +94,30 @@ Hoy cinco límites de lo que Specty muestra están fijos en el código: los hall
 
 - R1: C13, C14 y C16 trabajan en paralelo y también tocan `config.ts`, el catálogo, `settings-internal.ts`, `catalog.test.ts` y `docs/formats.md` §6. Mitigación: las claves van en un módulo y un bloque del catálogo propios, la cuenta de «Interno» deja de tener un número fijo, y al incorporar main se conservan las partes de todos.
 - R2: Un `perCommand` bajo deja fuera hallazgos de los archivos de la ejecución si el comando los escribe tarde. Mitigación: el mínimo es 10, lo que ya muestra `checks.maxFindings` por defecto, y la descripción del ajuste dice que es lo que se toma de cada comando.
+
+## Cierre
+
+### Resumen
+
+- Core: `checks/output.ts` exporta `FindingLimits` y `DEFAULT_FINDING_LIMITS` en lugar de `MAX_FINDINGS`, `LAST_LINES` y `MAX_MESSAGE`, y `findingsInOutput` los recibe como tercer parámetro, con los valores de hoy por defecto.
+- Schema: `schema/internal-shown.ts` añade `internal.findings` (`perCommand` 100, de 10 a 1000; `lastLines` 5, de 1 a 50; `messageChars` 200, de 50 a 2000) e `internal.commands` (`verifyLines` 20, de 5 a 200; `whyEntries` 10, de 1 a 100), que `config.ts` reúne en el único `z.strictObject` de `internal`.
+- Catálogo: el bloque `INTERNAL_SHOWN`, tras `INTERNAL_RUN`, con los cinco ajustes como números con la marca `new`; sus nombres y descripciones en español y en inglés en `INTERNAL_SHOWN_TEXTS` de `cards/settings-internal.ts`.
+- CLI: `specty check` pasa `internal.findings` a `findingsInOutput`; `specty verify --fresh` muestra las últimas `verifyLines` líneas de un fallo y `specty why` lista hasta `whyEntries` entradas, sin `SHOWN` ni `MAX_ENTRIES`.
+- Documentación: formats.md §6 documenta las cinco claves en el ejemplo y en su párrafo, y la sección de `specty check` remite a ellas; ARCHITECTURE remite a ellas en `specty verify --fresh` y en `specty why`.
+
+### Desviaciones
+
+- Al proponer la spec, T2 (schema, catálogo y textos) tocaba seis archivos. Partirla en dos dejaba el cambio en XL por las cinco tareas, así que el schema se unió a T1 con `findingsInOutput` y quedaron cuatro tareas (L). Los tests del schema y los del catálogo van en dos archivos nuevos, para que la verificación de cada tarea solo ejecute los suyos.
+- El test aprobado de AC7 (`core/test/settings/internal-shown.test.ts`) no compilaba con `noUncheckedIndexedAccess` (`keys.indexOf(KEYS[0])`). Se desbloqueó con la solicitud S1 y su parche, que cambia `indexOf` por `findIndex` con la misma comparación, y lo aprobó la persona.
+
+### Decisiones
+
+- Dos bloques nuevos de `internal` en un módulo propio: `findings`, que se pasa tal cual a `findingsInOutput` y no se confunde con `checks.maxFindings`, y `commands`, lo que muestran `verify --fresh` y `why`.
+- Los valores por defecto de los hallazgos viven en `checks/output.ts` y el schema los toma de allí: una sola fuente, y `checks/output.ts` sigue sin zod. Los de `verify` y `why` viven en el schema, porque solo los lee la CLI.
+- La cuenta fija de ajustes de «Interno» de `catalog.test.ts` pasó a `arrayContaining` con las claves, como en C14, para no chocar con los cortes paralelos.
+
+### Pendientes
+
+- `packages/core/src/schema/config.ts` tiene 315 líneas de código (aviso desde 300): conviene llevar la reunión de los módulos de `internal` a un `schema/internal.ts` propio (P318).
+- AC9 se comprueba a mano: formats.md §6 y las dos menciones de ARCHITECTURE.
+- Al incorporar main chocarán `config.ts`, el catálogo, `settings-internal.ts`, `catalog.test.ts` y formats.md §6 con C13, C14 y C16: hay que conservar las partes de todos.
