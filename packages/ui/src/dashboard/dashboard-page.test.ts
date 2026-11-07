@@ -35,7 +35,7 @@ function viewFor(params: StatsParams): StatsView {
       ? params.period
       : "30d";
   const [kind, name] = (params.who ?? "").split(":");
-  const who =
+  const who: StatsQuery["who"] =
     (kind === "person" || kind === "agent" || kind === "model") && name !== undefined
       ? { kind, name }
       : undefined;

@@ -86,7 +86,7 @@ Hoy lo que pasó con Specty solo se ve cambio a cambio. Con este corte, `specty 
   - files: packages/cli/src/server/api.ts, packages/cli/test/server/stats.test.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/stats.test.ts && pnpm lint
-- [ ] T3: La página «Panel», con su enlace, sus filtros en la URL y los seis indicadores
+- [x] T3: La página «Panel», con su enlace, sus filtros en la URL y los seis indicadores
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/dashboard/dashboard-page.ts, packages/ui/src/dashboard/dashboard-page.test.ts, packages/ui/src/app/routes.ts, packages/ui/src/app/shell.ts, packages/ui/src/app/shell.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-page.test.ts --include src/app/shell.test.ts && pnpm typecheck && pnpm lint && pnpm knip

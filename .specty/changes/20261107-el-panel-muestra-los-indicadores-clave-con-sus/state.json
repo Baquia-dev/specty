@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-panel-muestra-los-indicadores-clave-con-sus",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-panel-muestra-los-indicadores-clave-con-sus",
   "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
   "revision": 1,
@@ -64,12 +64,25 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a0d73ae787d69a6eaf802fcd45ca74d344470f1b",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:38:30.705Z",
       "doneAt": "2026-11-07T04:39:23.209Z",
-      "summary": "GET /api/stats en server/api.ts: una fila por cambio de changeRecords, las entradas de la memoria y hoy en la fecha local, con statsView; documentado en ARCHITECTURE §15"
+      "summary": "GET /api/stats en server/api.ts: una fila por cambio de changeRecords, las entradas de la memoria y hoy en la fecha local, con statsView; documentado en ARCHITECTURE §15",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/dashboard/dashboard-summary.ts",
+        "packages/ui/src/dashboard/dashboard-page.test.ts",
+        "packages/ui/src/app/shell.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "be24c10f4556092f0515f9694cae760386faf0b3",
+      "startedAt": "2026-11-07T04:39:23.717Z",
+      "doneAt": "2026-11-07T05:13:17.556Z",
+      "summary": "La página «Panel» (/dashboard, enlace entre Sesiones y Configuración): cabecera, filtros Periodo, Ver por y Carril en la URL, y la fila de seis indicadores con su variación (dashboard-summary.ts); stats() de la fuente y del servidor; docs/ui.md"
     }
   },
   "pending": {
@@ -80,12 +93,13 @@
     "A": 7,
     "AC": 8,
     "T": 3,
-    "R": 3
+    "R": 3,
+    "S": 2
   },
   "lockedTests": {
-    "packages/ui/src/app/shell.test.ts": "sha256:77e3646ea710ca9648159c1d1428e27ebe8ab530babe4283fd279b1eda8e8488",
+    "packages/ui/src/app/shell.test.ts": "sha256:9f54426aa7fb052421faf872debbb0767cd143ae01a74aa000fcdf53d271e9d9",
     "packages/cli/test/server/stats.test.ts": "sha256:7b2a9ee66207174e188c3b7d8467e0dcde3c4d2a070db7863884ca281266bf9f",
     "packages/core/test/stats/summary.test.ts": "sha256:a58de01d800a62978c4e6f3ccb24eb89ecb0e2eded3f571f8116147b6692fca9",
-    "packages/ui/src/dashboard/dashboard-page.test.ts": "sha256:b721618cb10172197f1939122d7f1a3787b7e7945e4b7f177b467066c1203377"
+    "packages/ui/src/dashboard/dashboard-page.test.ts": "sha256:9c47c2aa7de19d3f666cd2a097a290887d64ffdca91817bb25285ee928f2c8bb"
   }
 }
