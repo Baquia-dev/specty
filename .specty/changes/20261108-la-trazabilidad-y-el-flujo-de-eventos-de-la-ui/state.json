@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "id": "20261108-la-trazabilidad-y-el-flujo-de-eventos-de-la-ui",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261108-la-trazabilidad-y-el-flujo-de-eventos-de-la-ui",
+  "baseCommit": "f95e90911a803eec91ba8681e1964b2ce2e434bb",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8a1fc0bc99451974427af65972942db4d296666a7b4ff420f2a2653fa80e12da",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:894303b541856d73230a15b96911ef562e212e3256ad13a30ead2ee28ab3c585",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:428c8d0578d4f9d6db492eee0729039c4f7e92c2a6b0d7b242dd60d20b162cfa",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:4a0eddebd4b3e544cfd552a42a85dc28e139225ca4879cf70f60053a378ff7d1",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:80eb73c893c12a0fbee96b34a077355931a05182bbcf3967ab18c042acb8896a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:dae554d651162043766e5057094a93037b96da04e49c56f4e3875e9a20943a6b",
+    "at": "2026-11-07T17:22:14.437Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
