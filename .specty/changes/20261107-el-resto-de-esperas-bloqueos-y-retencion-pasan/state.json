@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-resto-de-esperas-bloqueos-y-retencion-pasan",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-resto-de-esperas-bloqueos-y-retencion-pasan",
   "baseCommit": "9183447eaa311a331341561a5c135a75de5a6508",
   "revision": 1,
@@ -63,6 +63,11 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T04:38:28.268Z"
+  "lockedTests": {
+    "packages/cli/test/memory.test.ts": "sha256:493436ea7ecd2198feeb156ef3406739dc91c9e72a17b96f70d6709f9979952d",
+    "packages/cli/test/new-locked-config.test.ts": "sha256:148f87e0b87b9c99b7944754311e5c439e7846a06225cc4d8ad36d06dc1bc653",
+    "packages/cli/test/prune-units.test.ts": "sha256:2d72655295c86cc48a347b0e105b652f8bf4ba60778c2d4f50c40bb37cc9a1ac",
+    "packages/core/test/schema/schema.test.ts": "sha256:935885ec466e126c7c9a72a4c1b09dff4bd1de39d2b983efd78b64f113632b7c",
+    "packages/core/test/settings/catalog.test.ts": "sha256:27c4e1c4aef9e295ea7f5a4d907eb063a43c0e2d2e0207f62a9d3807481f533e"
+  }
 }
