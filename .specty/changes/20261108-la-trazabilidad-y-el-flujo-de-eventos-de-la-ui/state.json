@@ -6,6 +6,13 @@
   "branch": "specty/20261108-la-trazabilidad-y-el-flujo-de-eventos-de-la-ui",
   "baseCommit": "f95e90911a803eec91ba8681e1964b2ce2e434bb",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:dae554d651162043766e5057094a93037b96da04e49c56f4e3875e9a20943a6b",
+    "at": "2026-11-07T17:22:14.437Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -36,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "736130deb622b44d1c9fa3d34ad29a8019284b5d",
+      "startedAt": "2026-11-07T17:22:16.476Z",
+      "doneAt": "2026-11-07T17:25:47.458Z",
+      "summary": "Test de ServerData.testCode en server-trace.test.ts: lee el código como texto con su URL, y explica la falta de sesión (403), un archivo que no es su test (404) y un error (500)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -46,12 +63,5 @@
     "AC": 3,
     "T": 3,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:dae554d651162043766e5057094a93037b96da04e49c56f4e3875e9a20943a6b",
-    "at": "2026-11-07T17:22:14.437Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

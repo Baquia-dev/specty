@@ -52,7 +52,7 @@ Limpieza de código de la UI sin cambios de comportamiento (P360). `data/server.
 
 ## Tareas
 
-- [ ] T1: Test del código de un test pedido al servidor local
+- [x] T1: Test del código de un test pedido al servidor local
   - files: packages/ui/src/data/server-trace.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server-trace.test.ts && pnpm lint

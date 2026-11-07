@@ -82,4 +82,25 @@ describe("the traceability from the local server", () => {
       "El servidor devolvió datos inesperados.",
     );
   });
+
+  it("AC1: reads a test's code as its text, and explains a missing session, a file that is not its test and an error", async () => {
+    const code = "void main() {\n  test('AC1: guarda', () {});\n}\n";
+    const asked = vi.fn((_url: string) => Promise.resolve(new Response(code, { status: 200 })));
+    vi.stubGlobal("fetch", asked);
+    expect(await new ServerData().testCode(ID, "test/a_test.dart")).toBe(code);
+    expect(asked).toHaveBeenCalledWith(`/api/changes/${ID}/test?path=test%2Fa_test.dart`);
+
+    answering(403, { error: "forbidden" });
+    expect(await reason(new ServerData().testCode(ID, "test/a_test.dart"))).toBe(
+      "Esta pestaña no tiene sesión: abre el enlace que imprime `specty ui`.",
+    );
+    answering(404, { error: "not found" });
+    expect(await reason(new ServerData().testCode(ID, "lib/a.dart"))).toBe(
+      "No se puede mostrar el código de este test: no es un test del cambio o no se pudo leer.",
+    );
+    answering(500, { error: "git" });
+    expect(await reason(new ServerData().testCode(ID, "test/a_test.dart"))).toBe(
+      "El servidor respondió 500.",
+    );
+  });
 });
