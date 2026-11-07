@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-esperas-los-reintentos-y-la-retencion-pasan",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-las-esperas-los-reintentos-y-la-retencion-pasan",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 1,
@@ -59,6 +59,11 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T02:48:10.988Z"
+  "lockedTests": {
+    "packages/cli/test/close-moved.test.ts": "sha256:0119f7e2e752e9eeddc98360af213f19f732bf23713e7dca23b37996c98d9dad",
+    "packages/cli/test/wait.test.ts": "sha256:053033a1e1d182695040d544d51add1be5773846c435693f0f53048230fc0441",
+    "packages/core/test/schema/schema.test.ts": "sha256:1e17ba6f6cc9a26287ccffb9fd95bfe89e84a2a791c77ad2df4c7eba3988ebf7",
+    "packages/core/test/settings/catalog.test.ts": "sha256:26a79ba0da013f736b5fcf21e4530c717dc9ce85286957c1b8cf8776972230af",
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:702b85e23852426bb2d58084259598f643f4fa19d3ae0a2495e3c1cf608da841"
+  }
 }
