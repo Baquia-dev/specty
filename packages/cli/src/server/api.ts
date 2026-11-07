@@ -5,9 +5,14 @@ import {
   DEFAULT_CONFIG,
   defaultGlossary,
   LANGS,
+  localDay,
   type Output,
   type ResolvedConfig,
   resolveConfig,
+  type StatsView,
+  statsQuery,
+  statsRow,
+  statsView,
 } from "@baquia-dev/specty-core";
 import { parse } from "yaml";
 import { restore } from "../commands/restore";
@@ -27,7 +32,7 @@ import { type Context, hasSession, isLocal, JSON_TYPE, same, send, TEXT } from "
 import { changeDiff, type DiffAnswer } from "./diff";
 import { finishedPage } from "./finished";
 import { memoryOrigins } from "./origins";
-import { changeRecord, openRecords } from "./records";
+import { changeRecord, changeRecords, openRecords } from "./records";
 import { sessionsView } from "./sessions";
 import { epicSliceChanges } from "./slices";
 import { testCode } from "./test-code";
@@ -73,6 +78,7 @@ const VIEWS: ReadonlyMap<string, View> = new Map<string, View>([
   ["/api/delegation", delegationView],
   ["/api/memory", memoryView],
   ["/api/sessions", sessionsView],
+  ["/api/stats", statsAnswer],
 ]);
 
 /**
@@ -87,6 +93,24 @@ async function memoryView(session: Session) {
     changes: await openChanges(session),
     origins: await memoryOrigins(session, entries),
   };
+}
+
+/**
+ * `GET /api/stats` (ARCHITECTURE §15): the panel's figures for the cut that `period`, `who` and
+ * `kind` ask for, from every change, open or archived, and the memory's entries, with today as
+ * the server's local day. It only reads.
+ */
+async function statsAnswer(session: Session, params: URLSearchParams): Promise<StatsView> {
+  const rows = (await changeRecords(session)).flatMap(
+    (record) => statsRow(record.state, record.audit ?? []) ?? [],
+  );
+  const { entries } = await readMemory(session.git, session.config.memory.branch);
+  const query = statsQuery({
+    period: params.get("period"),
+    who: params.get("who"),
+    kind: params.get("kind"),
+  });
+  return statsView({ rows, memory: entries, today: localDay(session.environment.now()), query });
 }
 
 /**

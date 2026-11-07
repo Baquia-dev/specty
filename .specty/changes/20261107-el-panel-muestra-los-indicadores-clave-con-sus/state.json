@@ -55,12 +55,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cc9af68c72871b602cf22823ce8fefda898cde7c",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:36:14.967Z",
       "doneAt": "2026-11-07T04:38:29.832Z",
-      "summary": "El core calcula el panel: stats/period.ts (corte, rangos, filtro y comparación), stats/rows.ts (la fila de cada cambio) y stats/summary.ts (statsView con los seis indicadores y las opciones de «Ver por»)"
+      "summary": "El core calcula el panel: stats/period.ts (corte, rangos, filtro y comparación), stats/rows.ts (la fila de cada cambio) y stats/summary.ts (statsView con los seis indicadores y las opciones de «Ver por»)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a0d73ae787d69a6eaf802fcd45ca74d344470f1b",
+      "startedAt": "2026-11-07T04:38:30.705Z",
+      "doneAt": "2026-11-07T04:39:23.209Z",
+      "summary": "GET /api/stats en server/api.ts: una fila por cambio de changeRecords, las entradas de la memoria y hoy en la fecha local, con statsView; documentado en ARCHITECTURE §15"
     }
   },
   "pending": {
