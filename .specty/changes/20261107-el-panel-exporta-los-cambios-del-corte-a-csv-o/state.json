@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-panel-exporta-los-cambios-del-corte-a-csv-o",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-panel-exporta-los-cambios-del-corte-a-csv-o",
   "baseCommit": "7ba359df7f50a56f45c6146db433bf67f33b5e5b",
   "revision": 1,
@@ -63,6 +63,10 @@
     "T": 3,
     "R": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T10:07:29.588Z"
+  "lockedTests": {
+    "packages/cli/test/server/stats-export.test.ts": "sha256:0b977ab6fcdecba259dbb36ee13f39c837a6b97f6db8b14d43f77248ec80172a",
+    "packages/core/test/stats/export.test.ts": "sha256:3d1bf6054b41cb7679fffb3dba508b354dd7912a60745a24317deaa59c0ae39f",
+    "packages/ui/src/dashboard/dashboard-export.test.ts": "sha256:3cda17a9bf05c32d59956ab03a01af4cad88782a3185227ab806a31a00745913",
+    "packages/ui/src/data/stats-export.test.ts": "sha256:446f165ec46e173026e96cc2f928a13a33fa806367aabec2b5967fae28909f25"
+  }
 }
