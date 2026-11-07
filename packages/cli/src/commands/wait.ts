@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   type ChangeState,
-  changeWaitsFor,
+  headerOf,
   type Output,
   type Phase,
   parseChangeState,
+  scopeRequestedCard,
+  unlocksApprovedTest,
   waitFolderGoneCard,
   waitHeartbeat,
+  waitsForPerson,
   waitTimeoutCard,
 } from "@baquia-dev/specty-core";
 import { resolveActive, withChangeLock } from "../flow/active";
@@ -14,6 +17,7 @@ import { exists, parseJson } from "../io/files";
 import { createGit, type Git } from "../io/git";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
+import { readDelegation } from "../store/local";
 import { liveHolder } from "../store/lock";
 import { SPECTY_DIR } from "../store/paths";
 import { markWait, type WaitMark } from "../store/waits";
@@ -33,7 +37,8 @@ interface WaitLimits {
 
 /**
  * Parses timeout and polling interval options safely. Without `--timeout`, `wait` waits
- * `internal.waits.waitTimeoutSec` (an hour by default, what every tool measured holds); without
+ * `internal.waits.waitTimeoutSec`: 55 min by default, within the hour every tool measured holds,
+ * so that the agent wakes up while its prompt cache, which lasts an hour, is still alive. Without
  * `--interval`, it looks every `internal.waits.waitIntervalMs` (500 ms by default).
  */
 function parseWaitLimits(options: WaitOptions, defaults: WaitLimits): WaitLimits {
@@ -47,22 +52,26 @@ function parseWaitLimits(options: WaitOptions, defaults: WaitLimits): WaitLimits
 
 /**
  * Checks whether the active change is waiting for a person's decision or action, by core's rule
- * (`changeWaitsFor`): the end of the agent's turn and the guard's brake on `sleep` read it too.
+ * (`changeWaitsFor`): the end of the agent's turn and the guard's brake on `sleep` read it too,
+ * and their cards tell the agent to decide in delegated mode. `wait` passes `delegated`, which
+ * leaves only what no delegation covers (`waitsForPerson`).
  */
-export function isWaitingForHuman(change: StoredChange): boolean {
-  return changeWaitsFor(change.state) === "human";
+export function isWaitingForHuman(change: StoredChange, delegated = false): boolean {
+  return waitsForPerson(change.state, delegated);
 }
 
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
  * `specty wait`: passively polls until the active change is no longer waiting for the person,
- * then returns the card of `next`. While it waits, it keeps its mark (`store/waits.ts`).
+ * then returns the card of `next`. While it waits, it keeps its mark (`store/waits.ts`). In
+ * delegated mode it does not wait for a decision the agent takes for the person, and the person
+ * may turn the mode on or off meanwhile: each look reads it again.
  */
 export async function wait(session: Session, options: WaitOptions = {}): Promise<Output> {
   const current = await resolveActive(session);
-  if (current === undefined || !isWaitingForHuman(current)) {
-    return withChangeLock(session, "next", () => next(session));
+  if (current === undefined || !isWaitingForHuman(current, session.delegated)) {
+    return answer(session);
   }
   const { id } = current.state;
   // Asked while the change's folder is there: closing the change removes it from under `wait`.
@@ -84,13 +93,43 @@ export async function wait(session: Session, options: WaitOptions = {}): Promise
   while (true) {
     await sleep(limits.intervalMs);
     await mark.renew();
+    const now = await withDelegation(session);
     if (Date.now() - started >= limits.timeoutSec * 1000) {
       await mark.end("timeout");
-      return waitTimeoutCard(id, limits.timeoutSec, session.cards);
+      return waitTimeoutCard(id, limits.timeoutSec, now.cards);
     }
     beat();
-    if (await decided(session, id, mark)) return afterDecision(session, current.state, main);
+    if (await decided(now, id, mark)) return afterDecision(now, current.state, main);
   }
+}
+
+/**
+ * The session with delegated mode as the person left it now, which they may switch while `wait`
+ * waits: who decides, for `wait`, `next` and the cards, follows it. The terminal stays the one
+ * `wait` opened with, since neither `next` nor the cards ask it anything.
+ */
+async function withDelegation(session: Session): Promise<Session> {
+  const delegated = (await readDelegation(session.git)) !== undefined;
+  if (delegated === session.delegated) return session;
+  return { ...session, delegated, cards: { ...session.cards, delegated } };
+}
+
+/**
+ * The card once nothing waits for the person: `next`'s, which in delegated mode tells the agent to
+ * decide. In delegated mode, a scope request the agent decides gets its card as `scope add` gives
+ * it, which says so, since `next`'s, the task's, only lists it.
+ */
+async function answer(session: Session): Promise<Output> {
+  const active = session.delegated ? await resolveActive(session) : undefined;
+  if (active !== undefined) {
+    const { state } = active;
+    const ours = state.pending.scopeRequests.find((entry) => !unlocksApprovedTest(entry, state));
+    if (ours !== undefined) {
+      const header = headerOf(state.id, state.phase);
+      return scopeRequestedCard(header, ours.id, ours.paths, session.cards);
+    }
+  }
+  return withChangeLock(session, "next", () => next(session));
 }
 
 /**
@@ -99,7 +138,7 @@ export async function wait(session: Session, options: WaitOptions = {}): Promise
  * main folder, at the tip of its branch.
  */
 async function afterDecision(session: Session, state: ChangeState, main: string): Promise<Output> {
-  if (await exists(session.root)) return withChangeLock(session, "next", () => next(session));
+  if (await exists(session.root)) return answer(session);
   const git = createGit(main, session.environment.env);
   const phase = state.branch === undefined ? undefined : await phaseAt(git, state.id, state.branch);
   const gone = { id: state.id, folder: session.root, main };
@@ -118,11 +157,14 @@ async function phaseAt(git: Git, id: string, branch: string): Promise<Phase | un
   return parsed.ok ? parsed.state.phase : undefined;
 }
 
-/** Whether the person decided on change `id`, ending its mark if so; not while a command changes it. */
+/**
+ * Whether the person decided on change `id`, or turned delegated mode on with a decision the agent
+ * takes, ending its mark if so (`decided`); not while a command changes it.
+ */
 async function decided(session: Session, id: string, mark: WaitMark): Promise<boolean> {
   if ((await liveHolder(session.git, id)) !== undefined) return false;
   const current = await resolveActive(session);
-  if (current !== undefined && isWaitingForHuman(current)) return false;
+  if (current !== undefined && isWaitingForHuman(current, session.delegated)) return false;
   await mark.end("decided");
   return true;
 }

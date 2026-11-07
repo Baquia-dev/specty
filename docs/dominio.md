@@ -11,7 +11,8 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Ampliación** (`ScopeRequest`): pedir tocar un archivo fuera del alcance de la tarea.
 - **Incorporación** (`IntegrationState`): traer la rama destino al cambio al cerrarlo.
 - **Recibo** (`Receipt`): lo que deja Specty para que el pre-commit acepte su commit.
-- **Garantía** (`guarantee`, `guarantee.*` del catálogo de ajustes): una vida del cumplimiento (recibos, pendientes del guard, instantáneas de shell y vinculación de sesiones) fija en 24 h, sin clave en `config.yaml`; la página «Configuración» la muestra en «Interno» con un candado.
+- **Garantía** (`guarantee`, `guarantee.*` del catálogo de ajustes y las piezas con `guarantee`): lo que Specty hace cumplir sin clave en `config.yaml` ni control; la página «Configuración» la muestra con un candado. Son las vidas del cumplimiento (recibos, pendientes del guard, instantáneas de shell y vinculación de sesiones), fijas en 24 h y en «Interno», y, en la vista Flujo, la aprobación de la spec, la del contrato de tests, la aceptación de la persona y el guard del agente.
+- **Pieza** (`Piece`, `PIECES` de `settings/pieces.ts`): lo que una fase lleva en la vista Flujo de «Configuración», con los ajustes que la definen; se equipa o se quita cambiando sus claves, salvo las garantías.
 - **Bloqueo** (`LockHolder`): qué comando está cambiando un cambio; uno a la vez.
 - **Marca de espera** (`.git/common/specty/waits/<id>.json`, `readWait`): el `specty wait` que espera la decisión de la persona en un cambio; viva mientras su proceso la renueva, y al terminar dice por qué: `decided`, `timeout` o, si se cortó, `stopped`.
 - **Plaza de verificación** (`verify.slots`, `inSlots`): una de las verificaciones que corren a la vez en el clon; la de una tarea ocupa una, y la completa, todas.

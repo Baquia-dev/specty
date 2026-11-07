@@ -50,7 +50,8 @@ export async function startServer(options: ServerOptions): Promise<UiServer> {
   );
   const token = randomBytes(32).toString("base64url");
   const csrf = randomBytes(32).toString("base64url");
-  const events = changeEvents(options.session, options.interval ?? 1000, SAFE);
+  const { changesEveryMs } = options.session.config.internal.server;
+  const events = changeEvents(options.session, options.interval ?? changesEveryMs, SAFE);
   const ui = options.ui === undefined ? undefined : resolve(options.ui);
   let last: Promise<unknown> = Promise.resolve();
   const serial = <T>(task: () => Promise<T>): Promise<T> => {
