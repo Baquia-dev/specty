@@ -17,7 +17,7 @@ La tarjeta sin cambio activo pide un subagente por cada cambio que pide el usuar
 
 ## Tareas
 
-- [ ] T1: Los subagentes de una misma petición no chocan con el aviso de duplicado por ella
+- [x] T1: Los subagentes de una misma petición no chocan con el aviso de duplicado por ella
   - files: packages/cli/src/flow/duplicates.ts, packages/cli/src/commands/new.ts, packages/cli/test/duplicates-subagent.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/duplicates-subagent.test.ts test/duplicates.test.ts test/duplicates-slice.test.ts && pnpm typecheck && pnpm lint
   - type: fix

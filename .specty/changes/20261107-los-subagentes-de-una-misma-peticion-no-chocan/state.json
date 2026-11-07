@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-subagentes-de-una-misma-peticion-no-chocan",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-los-subagentes-de-una-misma-peticion-no-chocan",
   "baseCommit": "6f9ec2b4b5622d9c8195f1e8ee7142ed12303fd1",
   "revision": 1,
@@ -22,7 +22,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c46cfb301e0cc23c2e330b60e4e0a69154980698",
+      "startedAt": "2026-11-07T00:54:02.844Z",
+      "doneAt": "2026-11-07T00:55:39.606Z",
+      "summary": "duplicatesOf recibe subagent desde new --subagent: la petición idéntica (sin espacios de los extremos) de un cambio abierto no se compara (sameErrand); título y follows sí; petición parecida distinta y new sin --subagent siguen avisando; ARCHITECTURE §6 (fila de new) y §16 (eval)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
