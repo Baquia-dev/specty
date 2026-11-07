@@ -62,7 +62,7 @@ Hoy «Sesiones» muestra 0 en «Personas y agentes» y en «Los cambios más car
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/stats.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/stats.test.ts
   - type: fix
-- [ ] T3: El panel muestra «—» en «Sesiones» sin ninguna sesión, y `docs/ui.md` lo dice
+- [x] T3: El panel muestra «—» en «Sesiones» sin ninguna sesión, y `docs/ui.md` lo dice
   - files: packages/ui/src/dashboard/dashboard-cost.ts, packages/ui/src/dashboard/dashboard-cost-scope-memory.test.ts, packages/ui/src/dashboard/dashboard-sections.test.ts, docs/ui.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/dashboard/dashboard-cost-scope-memory.test.ts --include src/dashboard/dashboard-sections.test.ts && pnpm typecheck && pnpm lint

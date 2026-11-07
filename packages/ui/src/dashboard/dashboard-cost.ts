@@ -222,7 +222,7 @@ export class DashboardCost {
       kind: change.kind,
       tasks: count.format(change.tasks),
       cycle: change.cycle === null ? "—" : formatDuration(change.cycle, lang),
-      sessions: count.format(change.sessions),
+      sessions: change.sessions === null ? "—" : count.format(change.sessions),
       cost: usd.format(change.cost),
     }));
   });

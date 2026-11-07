@@ -365,10 +365,7 @@ describe("the panel's people, agents and models", () => {
       row(
         "20260920-antes",
         "standard",
-        [
-          line(at(48), "change.created", agent("claude-code", "s8", "m-3")),
-          verified(at(1), 0),
-        ],
+        [line(at(48), "change.created", agent("claude-code", "s8", "m-3")), verified(at(1), 0)],
         "Fede",
       ),
     ];
