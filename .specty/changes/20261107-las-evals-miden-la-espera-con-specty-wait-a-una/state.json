@@ -6,6 +6,13 @@
   "branch": "specty/20261107-las-evals-miden-la-espera-con-specty-wait-a-una",
   "baseCommit": "abb0d3e277d90768dee5c6d4d4de185f4796f8bf",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:4d127654ebe3942f31b6285ef0f2970c356b29f9024dfb0927979427215b2e39",
+    "at": "2026-11-07T01:36:37.183Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -47,12 +54,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:4d127654ebe3942f31b6285ef0f2970c356b29f9024dfb0927979427215b2e39",
-    "at": "2026-11-07T01:36:37.183Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T01:51:58.615Z"
 }
