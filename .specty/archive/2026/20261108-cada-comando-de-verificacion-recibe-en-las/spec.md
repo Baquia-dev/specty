@@ -91,3 +91,25 @@ Hoy cada comando de una verificación arranca con el entorno de Specty tal cual,
 - R1: Con menos procesos, la verificación de una tarea tarda más y puede rozar `verify.timeoutSec` — solo pasa si la persona nombra variables, y la suite de la UI con 2 procesos tardó 90–115 s frente a 108 s con 13; C3 dirá el número para que se entienda.
 - R2: C2 y C3 tocan después `flow/process-budget.ts` y el schema — `budgetedEnv` ya es asíncrona y recibe la sesión, así que los sitios que arrancan los comandos no cambian otra vez.
 - R3: Otro subagente cambia en paralelo `specty next`, `status` e `io/git*.ts` — este cambio no los toca, y al incorporar main `specty integrate` conserva lo de los dos.
+
+## Cierre
+
+### Resumen
+
+`verify.processes` es una clave nueva de `.specty/config.yaml`: `env`, una lista de nombres de variable (letras, cifras y `_`, sin empezar por cifra), vacía por defecto, y `memoryMiB`, un entero de 1 o más, 512 por defecto, siempre resueltos en `VerifyConfig.processes`. `cli/flow/process-budget.ts` calcula con `processBudget` los procesos de cada comando, núcleos × plazas / `verify.slots` hacia abajo y nunca menos de 1, y con `budgetedEnv` pone ese número en cada variable de `env`, salvo la que ya trae un entero positivo menor; sin variables, devuelve el entorno tal cual. Lo usan, al arrancar cada comando, la verificación de una tarea y la de los tests en rojo (1 plaza), la completa y cada una de sus unidades (`runLive`, todas), los intentos de `specty verify --fresh` fuera de un cambio y la completa que lanza la UI (`spawned`, ahora asíncrona). La página «Configuración» muestra los dos ajustes en Verificación, tras «Verificaciones a la vez», y `docs/formats.md` §6 y `docs/dominio.md` los documentan.
+
+### Desviaciones
+
+- T4 tomó `packages/core/src/schema/verify.ts` con `specty scope add`: knip marcó como exportación sin uso la interfaz `VerifyProcesses` que añadió T1, y se le quitó el `export`.
+
+### Decisiones
+
+- La verificación completa de la UI (`server/runs.ts`) también usa `budgetedEnv`, aunque el Diseño de la épica no la nombraba: arranca su comando con `spawn` y no con `runLive`, y la épica la cuenta como «la completa».
+- `budgetedEnv` ya es asíncrona y recibe la sesión, para que C2 mida ahí la memoria y C3 diga ahí su línea sin tocar otra vez los sitios que arrancan los comandos.
+- Los dos ajustes no llevan «Nuevo» ni «Afecta permisos»: no eran parámetros fijos del código ni cambian lo que puede hacer el agente.
+- Los tests usan variables propias (`PROCESOS_A`, `PROCESOS_B`) para no heredar las que la verificación de este repo pondrá en `VITEST_MAX_WORKERS`.
+
+### Pendientes
+
+- La entrada `verify.processes.env: ["VITEST_MAX_WORKERS"]` en `.specty/config.yaml` de este repo la añade la persona.
+- `packages/core/src/settings/catalog.ts` llega a 302 líneas de código y `packages/core/src/cards/settings.ts` a 321, por encima del aviso de 300 (P353 ya propone dividir el segundo).

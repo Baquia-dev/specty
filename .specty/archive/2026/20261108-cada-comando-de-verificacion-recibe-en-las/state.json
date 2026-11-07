@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-cada-comando-de-verificacion-recibe-en-las",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-cada-comando-de-verificacion-recibe-en-las",
   "baseCommit": "40e11e87ecbc7cabb9e511752417adf995d67c90",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:eb5b005610dfcac164fb9f983aeed887fda44130c3bd50f74e1420bb090d7fc5",
@@ -79,14 +79,14 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/schema/verify.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "299216ed136f08005658b8247be5b602df3ecd1e",
+      "attempts": 2,
       "startedAt": "2026-11-07T16:58:06.540Z",
       "doneAt": "2026-11-07T17:04:39.430Z",
-      "summary": "La verificación de una tarea (1 plaza), la completa y sus unidades (runLive), los intentos de verify --fresh fuera de un cambio y la completa de la UI (spawned, ahora asíncrona) arrancan con budgetedEnv; docs/formats.md §6 documenta verify.processes; VerifyProcesses sin export (knip)"
+      "summary": "La verificación de una tarea (1 plaza), la completa y sus unidades (runLive), los intentos de verify --fresh fuera de un cambio y la completa de la UI (spawned, ahora asíncrona) arrancan con budgetedEnv; docs/formats.md §6 documenta verify.processes; VerifyProcesses sin export (knip)",
+      "scopeExtra": [
+        "packages/core/src/schema/verify.ts"
+      ]
     }
   },
   "pending": {
@@ -99,6 +99,7 @@
     "T": 4,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-07T17:05:05.970Z",
   "lockedTests": {
     "packages/cli/test/server/config.test.ts": "sha256:f0fd67328141ea424257abea271ff1518fb55c7c296114525e2a8c75a9ab2754",
     "packages/core/test/schema/units.test.ts": "sha256:53d27a55322a2fee5cb53edbb4cb365f257c4debdb4973131d6b7bd8fe61a0fe",

@@ -1,0 +1,115 @@
+---
+kind: standard
+epic: 20261108-las-verificaciones-limitan-sus-procesos-segun-2
+slice: C1
+---
+
+# Cada comando de verificación recibe en las variables de verify.processes un número de procesos según sus núcleos y sus plazas
+
+## Objetivo
+
+Hoy cada comando de una verificación arranca con el entorno de Specty tal cual, y Vitest y `ng test` lanzan un proceso por núcleo aunque la verificación solo ocupe una de las plazas de `verify.slots`. Con este cambio, la clave opcional `verify.processes.env` de `.specty/config.yaml` nombra las variables de entorno en las que cada comando de una verificación recibe cuántos procesos puede lanzar: los núcleos que le tocan por sus plazas (con 2 plazas, la mitad para la de una tarea y todos para la completa), nunca menos de 1. `verify.processes.memoryMiB` entra en el schema y en la página «Configuración» para que C2 baje el número por la memoria. Sin la clave, todo sigue como hoy. Es el corte C1 de la épica `20261108-las-verificaciones-limitan-sus-procesos-segun-2`: sus AC1, AC3, AC4 y AC7.
+
+## Fuera de alcance
+
+- Medir la memoria disponible y bajar el número por ella (AC2 y AC5 de la épica), que son de C2: aquí `verify.processes.memoryMiB` se valida y se muestra, pero no cambia el número.
+- La línea por la salida de error que dice el número y por qué (AC6 de la épica), que es de C3.
+- Que `specty init` proponga la variable de cada herramienta, y la entrada `verify.processes.env` de `.specty/config.yaml` de este repo, que añade la persona.
+- Los comandos que no son verificaciones: `checks.commands` de `specty check`, `review.command`, `git.setup` y `git.afterLanding`.
+- Cambiar `verify.slots`, la prioridad (`internal.exec.priority`) o el turno de la verificación completa.
+- Una pieza de la vista Flujo para la clave: el ajuste solo aparece en la sección Verificación de la página.
+
+## Supuestos
+
+- A1: Las plazas de cada verificación son las que ya ocupa en `verify.slots`: 1 la de una tarea, también la que comprueba los tests en rojo, y todas la completa (la de `accept`, la de la incorporación de main, la de `specty integrate` y la de la UI), cada una de sus unidades y los intentos de `specty verify --fresh`. El número es el entero por debajo de núcleos × plazas / `verify.slots`, con las plazas acotadas a `verify.slots`, y nunca menos de 1. Los núcleos son los de `os.availableParallelism()`, que ya respeta la afinidad de CPU del proceso.
+  - impacto: alto
+- A2: El número se calcula al arrancar cada comando, cuando ya tiene sus plazas, en la función asíncrona `budgetedEnv(session, places)` de `cli/flow/process-budget.ts`. Es asíncrona para que C2 mida ahí la memoria y C3 diga ahí su línea sin volver a tocar los sitios que arrancan los comandos. Cada variable recibe el mismo número, como texto.
+  - impacto: medio
+- A3: Un valor del entorno que es un entero positivo escrito solo con cifras y menor que el número se queda tal cual. Uno mayor o igual, `0`, vacío, con decimales o que no es un número se reemplaza por el número.
+  - impacto: bajo
+- A4: La verificación completa que lanza la UI (`server/runs.ts`) arranca su comando con `spawn` y no con `runLive`, así que también pasa por `budgetedEnv`, con todas las plazas: la épica la cuenta como «la completa», aunque su Diseño no la nombra.
+  - impacto: medio
+- A5: Los dos ajustes van en la sección Verificación de la página, tras `verify.slots` y antes de `verify.units`: `verify.processes.env` como lista y `verify.processes.memoryMiB` como número. No llevan «Nuevo», que es para los parámetros que Specty tenía fijos en su código, ni «Afecta permisos», porque no cambian lo que el agente puede hacer. Sus textos van en `cards/settings.ts`, que pasa de unas 307 a unas 315 líneas de código: un aviso, no un fallo, y P353 ya propone dividirlo.
+  - impacto: bajo
+- A6: `verify.processes` es un objeto estricto, como el resto de `verify`: otra clave dentro es un error. Un nombre repetido en `env` se acepta, y un nombre en minúsculas también, porque algunas herramientas las leen así.
+  - impacto: bajo
+
+## Criterios de aceptación
+
+- AC1: CUANDO `verify.processes.env` nombra variables y corre la verificación de una tarea, la completa de `accept`, la que lanza la UI o `specty verify --fresh` ENTONCES cada comando recibe en cada variable el mismo número: los núcleos que le tocan por sus plazas (con 2 plazas, la mitad redondeada hacia abajo para la de una tarea y todos para la completa) y nunca menos de 1.
+- AC2: CUANDO una de esas variables ya trae en el entorno un entero positivo menor que el número ENTONCES el comando la recibe con ese valor; con otro valor, la recibe con el número.
+- AC3: CUANDO la configuración no tiene `verify.processes.env`, o la tiene vacía, ENTONCES los comandos de verificación reciben el entorno de Specty sin ninguna variable nueva ni cambiada.
+- AC4: CUANDO `.specty/config.yaml` da `verify.processes` ENTONCES `env` es una lista de nombres de variable (letras, cifras y `_`, sin empezar por cifra) y `memoryMiB` un entero de 1 o más, y otro valor u otra clave es un error del validador con su clave; sin ellas, `env` es una lista vacía y `memoryMiB` 512.
+- AC5: CUANDO la persona abre «Configuración» ENTONCES ve en Verificación, tras «Verificaciones a la vez», `verify.processes.env` como lista y `verify.processes.memoryMiB` como número, con su nombre y su descripción en español y en inglés.
+
+## Diseño
+
+- Core, `schema/verify.ts`: `VerifyProcesses` (`env: readonly string[]`, `memoryMiB: number`), `VerifyConfig.processes`, siempre resuelto, `DEFAULT_VERIFY.processes` (`{ env: [], memoryMiB: 512 }`), un `ProcessesSchema` estricto con `env: z.array(z.string().regex(/^[A-Za-z_][A-Za-z0-9_]*$/, mensaje))` y `memoryMiB: Positive`, opcionales, en `VerifySchema.processes`, y `resolveVerify`, que rellena lo que falta.
+- Core, `settings/catalog.ts`: `{ key: "verify.processes.env", section: "verify", kind: "list" }` y `{ key: "verify.processes.memoryMiB", section: "verify", kind: "number" }` tras `verify.slots`. `cards/settings.ts`: su nombre y su descripción en los dos idiomas.
+- CLI, `flow/process-budget.ts` (nuevo): `processBudget({ cores, places, slots })`, el cálculo puro de A1, y `budgetedEnv(session, places)`: sin variables, el entorno de la sesión tal cual; con ellas, una copia con cada una puesta al número o a su valor menor (A3).
+- CLI, `flow/live-run.ts`: `go` arranca el comando con `await budgetedEnv(session, places)`, 1 con tarea y todas sin ella, también las unidades que ya tienen las plazas (`held`). `commands/verify.ts`: el intento fuera de un cambio, con todas. `server/runs.ts`: `spawned` pasa a ser asíncrona y arranca con todas.
+- Tests: `core/test/schema/processes.test.ts` (nuevo: AC4), `core/test/settings/processes.test.ts` (nuevo: AC5), `core/test/schema/units.test.ts` y `cli/test/server/config.test.ts` (la `verify` resuelta lleva `processes`), `cli/test/process-budget.test.ts` (nuevo: el cálculo de AC1 y el entorno de AC2 y AC3, con una sesión) y `cli/test/verify-processes.test.ts` (nuevo: AC1, AC2 y AC3 de punta a punta con `task done`, `accept`, `verify --fresh` y la verificación de la UI). Los tests usan variables propias, como `PROCESOS_A`, para no heredar las de la verificación que los ejecuta.
+
+## Archivos
+
+- modificar packages/core/src/schema/verify.ts — `verify.processes`, con sus valores por defecto y su validación
+- modificar packages/core/src/settings/catalog.ts — los ajustes `verify.processes.env` y `verify.processes.memoryMiB` en Verificación
+- modificar packages/core/src/cards/settings.ts — el nombre y la descripción de los dos ajustes en español y en inglés
+- crear packages/cli/src/flow/process-budget.ts — el número de procesos de cada comando y el entorno con sus variables
+- modificar packages/cli/src/flow/live-run.ts — cada comando de una tarea o de la completa arranca con el entorno de sus plazas
+- modificar packages/cli/src/commands/verify.ts — los intentos de `verify --fresh` fuera de un cambio arrancan con todas las plazas
+- modificar packages/cli/src/server/runs.ts — la verificación completa de la UI arranca con todas las plazas
+- crear packages/core/test/schema/processes.test.ts — el schema de `verify.processes` y sus valores por defecto
+- modificar packages/core/test/schema/units.test.ts — la `verify` resuelta lleva `processes`
+- crear packages/core/test/settings/processes.test.ts — los dos ajustes en la página, con sus textos
+- crear packages/cli/test/process-budget.test.ts — el cálculo del número y el entorno que recibe cada comando
+- modificar packages/cli/test/server/config.test.ts — la `verify` resuelta que sirve el servidor lleva `processes`
+- crear packages/cli/test/verify-processes.test.ts — las variables en la verificación de una tarea, la de `accept`, la de `verify --fresh` y la de la UI
+- modificar docs/formats.md — §6: `verify.processes`
+
+## Tareas
+
+- [x] T1: `verify.processes` en el schema, con sus valores por defecto
+  - files: packages/core/src/schema/verify.ts, packages/core/test/schema/processes.test.ts, packages/core/test/schema/units.test.ts
+  - ac: AC4
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/processes.test.ts test/schema/units.test.ts && pnpm lint
+- [x] T2: Los dos ajustes en la página «Configuración», con sus textos
+  - files: packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/processes.test.ts
+  - ac: AC5
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/processes.test.ts test/settings/catalog.test.ts && pnpm lint
+- [x] T3: El número de procesos por núcleos y plazas, y el entorno con sus variables
+  - files: packages/cli/src/flow/process-budget.ts, packages/cli/test/process-budget.test.ts, packages/cli/test/server/config.test.ts
+  - ac: AC1, AC2, AC3, AC4
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/process-budget.test.ts test/server/config.test.ts && pnpm lint
+- [x] T4: Cada verificación arranca sus comandos con ese entorno, y la documentación lo explica
+  - files: packages/cli/src/flow/live-run.ts, packages/cli/src/commands/verify.ts, packages/cli/src/server/runs.ts, packages/cli/test/verify-processes.test.ts, docs/formats.md
+  - ac: AC1, AC2, AC3
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-processes.test.ts test/live-run.test.ts test/verify-fresh.test.ts test/server/verify.test.ts && pnpm typecheck && pnpm lint && pnpm knip
+
+## Riesgos
+
+- R1: Con menos procesos, la verificación de una tarea tarda más y puede rozar `verify.timeoutSec` — solo pasa si la persona nombra variables, y la suite de la UI con 2 procesos tardó 90–115 s frente a 108 s con 13; C3 dirá el número para que se entienda.
+- R2: C2 y C3 tocan después `flow/process-budget.ts` y el schema — `budgetedEnv` ya es asíncrona y recibe la sesión, así que los sitios que arrancan los comandos no cambian otra vez.
+- R3: Otro subagente cambia en paralelo `specty next`, `status` e `io/git*.ts` — este cambio no los toca, y al incorporar main `specty integrate` conserva lo de los dos.
+
+## Cierre
+
+### Resumen
+
+`verify.processes` es una clave nueva de `.specty/config.yaml`: `env`, una lista de nombres de variable (letras, cifras y `_`, sin empezar por cifra), vacía por defecto, y `memoryMiB`, un entero de 1 o más, 512 por defecto, siempre resueltos en `VerifyConfig.processes`. `cli/flow/process-budget.ts` calcula con `processBudget` los procesos de cada comando, núcleos × plazas / `verify.slots` hacia abajo y nunca menos de 1, y con `budgetedEnv` pone ese número en cada variable de `env`, salvo la que ya trae un entero positivo menor; sin variables, devuelve el entorno tal cual. Lo usan, al arrancar cada comando, la verificación de una tarea y la de los tests en rojo (1 plaza), la completa y cada una de sus unidades (`runLive`, todas), los intentos de `specty verify --fresh` fuera de un cambio y la completa que lanza la UI (`spawned`, ahora asíncrona). La página «Configuración» muestra los dos ajustes en Verificación, tras «Verificaciones a la vez», y `docs/formats.md` §6 y `docs/dominio.md` los documentan.
+
+### Desviaciones
+
+- T4 tomó `packages/core/src/schema/verify.ts` con `specty scope add`: knip marcó como exportación sin uso la interfaz `VerifyProcesses` que añadió T1, y se le quitó el `export`.
+
+### Decisiones
+
+- La verificación completa de la UI (`server/runs.ts`) también usa `budgetedEnv`, aunque el Diseño de la épica no la nombraba: arranca su comando con `spawn` y no con `runLive`, y la épica la cuenta como «la completa».
+- `budgetedEnv` ya es asíncrona y recibe la sesión, para que C2 mida ahí la memoria y C3 diga ahí su línea sin tocar otra vez los sitios que arrancan los comandos.
+- Los dos ajustes no llevan «Nuevo» ni «Afecta permisos»: no eran parámetros fijos del código ni cambian lo que puede hacer el agente.
+- Los tests usan variables propias (`PROCESOS_A`, `PROCESOS_B`) para no heredar las que la verificación de este repo pondrá en `VITEST_MAX_WORKERS`.
+
+### Pendientes
+
+- La entrada `verify.processes.env: ["VITEST_MAX_WORKERS"]` en `.specty/config.yaml` de este repo la añade la persona.
+- `packages/core/src/settings/catalog.ts` llega a 302 líneas de código y `packages/core/src/cards/settings.ts` a 321, por encima del aviso de 300 (P353 ya propone dividir el segundo).
