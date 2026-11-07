@@ -20,3 +20,9 @@ Hoy `checkAdjusting` solo corre en `adjusting`. Si la persona pide cambios a un 
 - [x] T1: Las reglas de las tareas hechas y de las tareas pendientes corren también en la revisión de un ajuste
   - files: packages/core/src/validate/phase.ts, packages/core/test/validate/phase.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/phase.test.ts test/validate/closed-slices.test.ts && pnpm typecheck && pnpm lint
+
+## Cierre
+
+### Resumen
+
+checkAdjusting corre en ADJUSTMENT_PHASES (adjusting y review): con una revisión aprobada, la revisión de un ajuste tras pedir cambios sigue dando done-task-changed y pending-tasks-only; la revisión inicial sigue igual. Tests en phase.test.ts; formats.md §2 y ARCHITECTURE §12 al día

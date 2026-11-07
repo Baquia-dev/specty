@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-tras-pedir-cambios-la-propuesta-del-ajuste",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261107-tras-pedir-cambios-la-propuesta-del-ajuste",
   "baseCommit": "cbea4acf4df0cfc97e79baa2b56b95fa178c578f",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "4df57d53cded59013dff14d7868799203772a3bd",
+      "attempts": 2,
       "startedAt": "2026-11-07T01:29:04.792Z",
       "doneAt": "2026-11-07T01:35:02.318Z",
-      "summary": "checkAdjusting corre en ADJUSTMENT_PHASES (adjusting y review): con una revisión aprobada, la revisión de un ajuste tras pedir cambios sigue dando done-task-changed y pending-tasks-only; la revisión inicial sigue igual. Tests en phase.test.ts; formats.md §2 y ARCHITECTURE §12 al día"
+      "summary": "checkAdjusting corre en ADJUSTMENT_PHASES (adjusting y review): con una revisión aprobada, la revisión de un ajuste tras pedir cambios sigue dando done-task-changed y pending-tasks-only; la revisión inicial sigue igual. Tests en phase.test.ts; formats.md §2 y ARCHITECTURE §12 al día",
+      "scopeExtra": []
     }
   },
   "pending": {
