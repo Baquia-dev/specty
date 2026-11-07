@@ -104,3 +104,5 @@ split:
   maxModules: 3
 lines:
   exclude: ["packages/core/src/index.ts", "packages/core/src/cards/index.ts"]
+processes:
+  env: ["VITEST_MAX_WORKERS"]
