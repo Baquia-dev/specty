@@ -52,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6fdc3a2f9bc3e28841e5529808364c86c108c2a2",
+      "startedAt": "2026-11-07T10:08:59.900Z",
+      "doneAt": "2026-11-07T10:13:55.296Z",
+      "summary": "stats/export.ts arma el archivo del corte (filas de statsChanges sin límite, con persona, modelo, creación y verificaciones) en CSV RFC 4180 con BOM y celdas protegidas contra fórmulas, o en JSON; cards/stats-export.ts da encabezados y carriles en es/en."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

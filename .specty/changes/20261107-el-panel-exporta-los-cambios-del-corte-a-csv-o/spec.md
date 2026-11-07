@@ -73,7 +73,7 @@ El «Panel» de `specty ui` resume un corte en cifras y lista sus cambios, pero 
 
 ## Tareas
 
-- [ ] T1: El core arma el archivo de los cambios del corte en CSV o JSON
+- [x] T1: El core arma el archivo de los cambios del corte en CSV o JSON
   - files: packages/core/src/stats/export.ts, packages/core/src/cards/stats-export.ts, packages/core/src/index.ts, packages/core/test/stats/export.test.ts
   - ac: AC1, AC2, AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/export.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
