@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261107-el-panel-exporta-los-cambios-del-corte-a-csv-o",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-panel-exporta-los-cambios-del-corte-a-csv-o",
+  "baseCommit": "7ba359df7f50a56f45c6146db433bf67f33b5e5b",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4bb21520c367b6491d3758bab5989207bad71ba4c517a8651098d4219e5f248d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:663a4be59800f9e3dfb53bca9d2a15026b2897c5d4045035e1bbdd1ec6bfbd6b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:6855764047bfc575fe0550d41e895561e293f89893854ab6b8a9585579464a25",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0d6153549a4d685b1cc5c59464b11f0793b4870d1d2d2d372ee5849f97cad86c",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:34b862d33031d1c2efbc6280a7e993d8de36b526ebff354903de6109b38810ef",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:9e58aa241266cd61455c8a81ea06add8b4e41416bfbe66eee82aa9d327cc2c33",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:aea12b14b333dbf80f2edd8f75c73879c83956508788c57d2cd2c2f380f594e6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 6,
+    "T": 3,
+    "R": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c59b5c0552b5d589a50eb99da22e8741f28cffdc0633ac17177ebb7833ab61bc",
+    "at": "2026-11-07T09:55:11.757Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
