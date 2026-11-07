@@ -27,8 +27,14 @@ import { ActionError, SpectyData } from "../data/records";
 import type { StatsParams } from "../data/source";
 import { Preferences } from "../theme/preferences";
 import { DashboardChanges } from "./dashboard-changes";
+import { DashboardCost } from "./dashboard-cost";
+import { DashboardExport } from "./dashboard-export";
+import { DashboardFlow } from "./dashboard-flow";
+import { DashboardMemory } from "./dashboard-memory";
 import { DashboardPeople } from "./dashboard-people";
+import { DashboardQuality } from "./dashboard-quality";
 import { DashboardRhythm } from "./dashboard-rhythm";
+import { DashboardScope } from "./dashboard-scope";
 import { DashboardSummary } from "./dashboard-summary";
 
 type Translate = (es: string, en: string) => string;
@@ -63,8 +69,14 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
   selector: "sp-dashboard-page",
   imports: [
     DashboardChanges,
+    DashboardCost,
+    DashboardExport,
+    DashboardFlow,
+    DashboardMemory,
     DashboardPeople,
+    DashboardQuality,
     DashboardRhythm,
+    DashboardScope,
     DashboardSummary,
     EmptyState,
     Segmented,
@@ -84,6 +96,9 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
         <sp-segmented data-period [label]="t()('Periodo', 'Period')" [options]="periods()" [value]="query().period" (valueChange)="choose({ period: $event })" />
         <sp-select data-who [label]="t()('Ver por', 'View by')" [options]="whoOptions()" [value]="whoText(query().who)" (valueChange)="choose({ who: $event })" />
         <sp-select data-kind [label]="t()('Carril', 'Lane')" [options]="lanes()" [value]="query().kind ?? ''" (valueChange)="choose({ kind: $event })" />
+        @if (shown(); as view) {
+          <sp-dashboard-export data-export class="ml-auto" [query]="view.query" />
+        }
       </div>
       @if (read.error(); as error) {
         <div role="alert" class="rounded-xl border border-border bg-surface p-4 text-sm">
@@ -98,6 +113,21 @@ const LANES: readonly { readonly value: ChangeKind; readonly es: string; readonl
           <sp-dashboard-summary [view]="view" />
           @if (view.rhythm; as rhythm) {
             <sp-dashboard-rhythm class="mt-4" [rhythm]="rhythm" [kind]="view.query.kind" />
+          }
+          @if (view.flow; as flow) {
+            <sp-dashboard-flow class="mt-4" [flow]="flow" />
+          }
+          @if (view.quality; as quality) {
+            <sp-dashboard-quality class="mt-4" [quality]="quality" />
+          }
+          @if (view.cost; as cost) {
+            <sp-dashboard-cost class="mt-4" [cost]="cost" [measured]="view.summary.cost" />
+          }
+          @if (view.scope; as scope) {
+            <sp-dashboard-scope class="mt-4" [scope]="scope" />
+          }
+          @if (view.memory; as memory) {
+            <sp-dashboard-memory class="mt-4" [memory]="memory" />
           }
           @if (view.people; as people) {
             <sp-dashboard-people class="mt-4" [people]="people" [who]="view.query.who" (pick)="choose({ who: $event })" />

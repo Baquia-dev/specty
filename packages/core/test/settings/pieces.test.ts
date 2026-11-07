@@ -39,6 +39,18 @@ const PROJECT = {
   git: { afterLanding: "pnpm build" },
 };
 
+/** The sentences of the default limits, which end the flow's. */
+const LIMITS_ES = [
+  "Una tarea no puede dejar un archivo con más de 500 líneas de código, y Specty avisa por encima de 300.",
+  "`specty check` señala cada función de más de 50 líneas o con complejidad mayor que 10.",
+  "La cobertura del diff avisa si los tests ejecutan menos del 80 % de las líneas que añade el cambio.",
+];
+const LIMITS_EN = [
+  "A task cannot leave a file with more than 500 lines of code, and Specty warns above 300.",
+  "`specty check` points out each function of more than 50 lines or with a complexity above 10.",
+  "Diff coverage warns when the tests run less than 80% of the lines the change adds.",
+];
+
 const piece = (id: string) => {
   const found = PIECES.find((candidate) => candidate.id === id);
   if (found === undefined) throw new Error(`no piece ${id}`);
@@ -343,6 +355,7 @@ describe("what the configured flow does, in sentences", () => {
       "Sin revisión independiente: la spec y el diff los revisas tú.",
       "Un cambio rápido toca como mucho 3 archivos de código.",
       "Tú apruebas, aceptas y cierras cada cambio.",
+      ...LIMITS_ES,
     ]);
     expect(flowSentences(value, "en")).toEqual([
       "Features need their tests approved before their code.",
@@ -351,6 +364,7 @@ describe("what the configured flow does, in sentences", () => {
       "No independent review: you review the spec and the diff.",
       "A quick change touches at most 3 code files.",
       "You approve, accept and close each change.",
+      ...LIMITS_EN,
     ]);
   });
 
@@ -377,6 +391,7 @@ describe("what the configured flow does, in sentences", () => {
       "La revisión independiente ejecuta `claude -p`; cuesta tokens en cada revisión.",
       "Un cambio rápido toca como mucho 5 archivos de código.",
       "Modo delegado activo: tu agente aprueba, acepta y cierra por ti.",
+      ...LIMITS_ES,
     ]);
     expect(flowSentences(value, "en")).toEqual([
       "Each code task comes with its tests.",
@@ -385,6 +400,7 @@ describe("what the configured flow does, in sentences", () => {
       "The independent review runs `claude -p`; each review costs tokens.",
       "A quick change touches at most 5 code files.",
       "Delegated mode on: your agent approves, accepts and closes for you.",
+      ...LIMITS_EN,
     ]);
   });
 
@@ -395,6 +411,7 @@ describe("what the configured flow does, in sentences", () => {
       "Al aceptar no hay verificación completa.",
       "Sin revisión independiente: la spec y el diff los revisas tú.",
       "Un cambio rápido toca como mucho 3 archivos de código.",
+      ...LIMITS_ES,
     ]);
     expect(flowSentences(using({ policy: { tests: "off" } }), "en").slice(0, 3)).toEqual([
       "Specty does not ask for tests.",
@@ -403,6 +420,33 @@ describe("what the configured flow does, in sentences", () => {
     ]);
     expect(flowSentences(using({ policy: { tests: "off" } }), "es")[0]).toBe(
       "Specty no pide tests.",
+    );
+  });
+
+  it("AC4, AC9: ends with the limits of the configuration: lines per file, functions and diff coverage", () => {
+    const value = using({
+      lines: { warn: 500, fail: 1000 },
+      checks: { functions: { maxLines: 100, complexity: 20 }, coverage: { warn: 90, error: 80 } },
+    });
+    expect(flowSentences(value, "es").slice(-3)).toEqual([
+      "Una tarea no puede dejar un archivo con más de 1000 líneas de código, y Specty avisa por encima de 500.",
+      "`specty check` señala cada función de más de 100 líneas o con complejidad mayor que 20.",
+      "La cobertura del diff falla si los tests ejecutan menos del 80 % de las líneas que añade el cambio, y avisa por debajo del 90 %.",
+    ]);
+    expect(flowSentences(value, "en").slice(-3)).toEqual([
+      "A task cannot leave a file with more than 1000 lines of code, and Specty warns above 500.",
+      "`specty check` points out each function of more than 100 lines or with a complexity above 20.",
+      "Diff coverage fails when the tests run less than 80% of the lines the change adds, and warns below 90%.",
+    ]);
+  });
+
+  it("AC4, AC9: says a file limit that never blocks the task", () => {
+    const value = using({ lines: { warn: 250, fail: false } });
+    expect(flowSentences(value, "es").at(-3)).toBe(
+      "Specty avisa de un archivo con más de 250 líneas de código, sin bloquear la tarea.",
+    );
+    expect(flowSentences(value, "en").at(-3)).toBe(
+      "Specty warns of a file with more than 250 lines of code, without blocking the task.",
     );
   });
 });

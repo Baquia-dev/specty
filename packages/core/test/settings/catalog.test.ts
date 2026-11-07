@@ -150,6 +150,7 @@ describe("the settings' catalog", () => {
       ...SIZING_KEYS,
       "warnings.vagueTerms",
       "warnings.horizontalLayers",
+      "warnings.risks",
       "usage.freshSessionTokens",
       "usage.ccusage.timeoutSec",
       "usage.ccusage.version",
@@ -168,10 +169,20 @@ describe("the settings' catalog", () => {
       "internal.exec.maxOutputKiB",
       "internal.server.portsTried",
       "internal.hooks.antigravityTimeoutSec",
+      "internal.server.changesEveryMs",
+      "internal.server.tasksEveryMs",
+      "internal.server.runLines",
+      "internal.server.runEveryMs",
+      "internal.server.maxBodyKiB",
       "internal.cards.importersShown",
       "internal.cards.reviewLines",
       "internal.cards.noteChars",
       "internal.cards.slugChars",
+      "internal.findings.perCommand",
+      "internal.findings.lastLines",
+      "internal.findings.messageChars",
+      "internal.commands.verifyLines",
+      "internal.commands.whyEntries",
     ]);
   });
 
@@ -303,10 +314,18 @@ describe("the settings' catalog", () => {
         unit: "s",
         new: true,
       }),
+      ...["changesEveryMs", "tasksEveryMs", "runLines", "runEveryMs", "maxBodyKiB"].map((key) =>
+        expect.objectContaining({ key: `internal.server.${key}`, kind: "number", new: true }),
+      ),
       expect.objectContaining({ key: "internal.cards.importersShown", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.cards.reviewLines", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.cards.noteChars", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.cards.slugChars", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.perCommand", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.lastLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.messageChars", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.commands.verifyLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.commands.whyEntries", kind: "number", new: true }),
     ]);
     expect(
       SETTINGS.find((setting) => setting.key === "internal.retries.landing")?.unit,
@@ -343,10 +362,21 @@ describe("the settings' catalog", () => {
     expect(internal.map((setting) => setting.key)).toEqual(
       expect.arrayContaining([
         "internal.waits.waitTimeoutSec",
+        "internal.server.changesEveryMs",
+        "internal.server.tasksEveryMs",
+        "internal.server.runLines",
+        "internal.server.runEveryMs",
+        "internal.server.maxBodyKiB",
+        "internal.hooks.antigravityTimeoutSec",
         "internal.cards.importersShown",
         "internal.cards.reviewLines",
         "internal.cards.noteChars",
         "internal.cards.slugChars",
+        "internal.findings.perCommand",
+        "internal.findings.lastLines",
+        "internal.findings.messageChars",
+        "internal.commands.verifyLines",
+        "internal.commands.whyEntries",
         "guarantee.receipts",
       ]),
     );
@@ -606,7 +636,80 @@ describe("the keys of the spec's and the sessions' warnings", () => {
     ]);
     expect(issuesOf({ usage: { fresh: 5 } })).toEqual(["usage"]);
     expect(issuesOf({ usage: { ccusage: { path: "x" } } })).toEqual(["usage.ccusage"]);
-    expect(issuesOf({ warnings: { risks: [] } })).toEqual(["warnings"]);
+    expect(issuesOf({ warnings: { rules: [] } })).toEqual(["warnings"]);
+  });
+});
+
+describe("the person's risk rules", () => {
+  /** A rule with only what it needs: its text and its pattern. */
+  const RULE = { label: "deja un console.log", pattern: "console\\.log\\(" };
+  const issuesOf = (risks: unknown) => {
+    const result = resolveConfig({ version: 1, warnings: { risks } });
+    return result.ok ? [] : result.issues.map((issue) => issue.path);
+  };
+
+  it("AC6: shows warnings.risks in «Avisos», after the horizontal layers, marked new, as a list only the file changes", () => {
+    expect(SETTINGS.find((setting) => setting.key === "warnings.risks")).toEqual({
+      key: "warnings.risks",
+      section: "warnings",
+      kind: "list",
+      fileOnly: true,
+      new: true,
+    });
+    const keys = SETTINGS.map((setting) => setting.key);
+    expect(keys.indexOf("warnings.risks")).toBe(keys.indexOf("warnings.horizontalLayers") + 1);
+    expect(settingOf(["warnings", "risks"])).toBeUndefined();
+    expect(settingOf(["warnings", "risks", "0", "label"])).toBeUndefined();
+  });
+
+  it("AC6: names and describes it in Spanish and in English", () => {
+    const es = settingText("warnings.risks", "es");
+    const en = settingText("warnings.risks", "en");
+    expect(es.name).toBe("Reglas de riesgo");
+    expect(en.name).toBe("Risk rules");
+    expect(es.description).toContain("Specty");
+    expect(en.description).toContain("Specty");
+    expect(es.description).not.toBe(en.description);
+  });
+
+  it("AC5: has no rules of the person by default, and keeps the valid ones as written", () => {
+    expect(DEFAULT_CONFIG.warnings.risks).toEqual([]);
+    expect(resolveConfig({ version: 1 })).toMatchObject({
+      ok: true,
+      config: { warnings: { risks: [] } },
+    });
+    const mine = [
+      RULE,
+      { label: "llama a print", pattern: "\\bprint\\(", cwe: "CWE-532", extensions: ["py", "PYW"] },
+    ];
+    expect(resolveConfig({ version: 1, warnings: { risks: mine } })).toMatchObject({
+      ok: true,
+      config: { warnings: { vagueTerms: [], horizontalLayers: [], risks: mine } },
+    });
+  });
+
+  it("AC5: refuses an empty text or pattern, a pattern that is not a regular expression, a CWE not CWE-<number>, an empty extension or one with a dot, and another key, by its key", () => {
+    expect(issuesOf([RULE])).toEqual([]);
+    expect(issuesOf([])).toEqual([]);
+    for (const label of ["", "   "]) {
+      expect(issuesOf([{ ...RULE, label }]), JSON.stringify(label)).toEqual([
+        "warnings.risks.0.label",
+      ]);
+    }
+    expect(issuesOf([{ pattern: RULE.pattern }])).toEqual(["warnings.risks.0.label"]);
+    expect(issuesOf([{ label: RULE.label }])).toEqual(["warnings.risks.0.pattern"]);
+    expect(issuesOf([RULE, { ...RULE, pattern: "" }])).toEqual(["warnings.risks.1.pattern"]);
+    expect(issuesOf([{ ...RULE, pattern: "console.log(" }])).toEqual(["warnings.risks.0.pattern"]);
+    for (const cwe of ["532", "cwe-532", "CWE-", "CWE-53a", ""]) {
+      expect(issuesOf([{ ...RULE, cwe }]), cwe).toEqual(["warnings.risks.0.cwe"]);
+    }
+    for (const extension of ["", ".ts", "t.s", "ts "]) {
+      expect(issuesOf([{ ...RULE, extensions: ["ts", extension] }]), extension).toEqual([
+        "warnings.risks.0.extensions.1",
+      ]);
+    }
+    expect(issuesOf([{ ...RULE, flags: "i" }])).toEqual(["warnings.risks.0"]);
+    expect(issuesOf("console")).toEqual(["warnings.risks"]);
   });
 });
 
@@ -743,7 +846,13 @@ describe("the settings' edits", () => {
     }
     expect(
       SETTINGS.filter((setting) => setting.fileOnly === true).map((setting) => setting.key),
-    ).toEqual(["verify.units", "checks.layers", "checks.generators", "checks.testTime"]);
+    ).toEqual([
+      "verify.units",
+      "checks.layers",
+      "checks.generators",
+      "checks.testTime",
+      "warnings.risks",
+    ]);
     expect(
       SETTINGS.filter((setting) => setting.items !== undefined).map((setting) => setting.key),
     ).toEqual(["dev.ports"]);

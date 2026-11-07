@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "id": "20261107-el-panel-muestra-el-coste-el-alcance-las",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-el-panel-muestra-el-coste-el-alcance-las",
+  "baseCommit": "2fb77e84f14790f5728193d155fce12d104768ec",
+  "revision": 3,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:087ab5078e231e6b72ae7ccdb5e3d29352b57126e88fe771e187c7ef70e96a08",
+    "at": "2026-11-07T12:28:40.537Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2d575ae2515d2249f8478a6fe6c28fdb318c1075af7ee11d1c697243d7b85f45",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:8c95124852ff213978ba9b1fe0ae89d8c39a61dcb2f4519ecd70beae8a9e17fd",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:9aa8facffaecc2768e21963ebff28849e761ded29ee6d5b1eb398afdebc7c60b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:519eaca09b31a7893ddf4f5d13a879d3f33d5959207336399307ec4c66b53977",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:d2534e17515a8e77add32090d85d82e1518bf4c6ce56b08d37358e7fb6a8aa71",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:d61790a2b5e800a6eb16b70d3473996468f43d84d39ac6b2822b4516f95ec6e8",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:722ce52a34f23bcead2fd9c6bc5d52f2c80d340b296e7c3e71f7ad17bbe6db90",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "089e7cf6dbe2d0c2c10a4d8835b595eae915d011",
+      "attempts": 1,
+      "startedAt": "2026-11-07T12:34:58.795Z",
+      "doneAt": "2026-11-07T12:36:30.138Z",
+      "summary": "StatsRow guarda el consumo (change.usage), las decisiones de alcance, las incorporaciones de main que pararon y los ajustes; stats/cost.ts, scope.ts y memory.ts calculan las tres secciones y statsView las añade a StatsView como cost, scope y memory.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2ee904ab91c12e825208935e07bb72740e71f9cf",
+      "attempts": 1,
+      "startedAt": "2026-11-07T12:36:30.444Z",
+      "doneAt": "2026-11-07T12:37:44.931Z",
+      "summary": "statsCard añade «TIEMPO POR FASE (MEDIANA)» (de flow) y «LOS CAMBIOS MÁS CAROS» (de cost), cada uno solo si hay algo que contar; los formatos pasan a cards/stats-format.ts; formats.md §9 y ARCHITECTURE §6 y §15 lo documentan (P340).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "a2ae2fd55b030f81e8624988cc7bd3b9fc091606",
+      "attempts": 1,
+      "startedAt": "2026-11-07T12:37:45.240Z",
+      "doneAt": "2026-11-07T12:40:54.336Z",
+      "summary": "El panel muestra «Coste y tokens», «Alcance e integraciones» y «Memoria» tras «Calidad», con sus gráficas, la tabla de los más caros y sus estados vacíos; docs/ui.md las describe.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 8,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T12:47:47.375Z",
+  "lockedTests": {
+    "packages/core/test/cards/stats.test.ts": "sha256:46cc863f202694393266fe472dd780d08ffc0c52c6f1c5e7bd5c3e962ed1f0c1",
+    "packages/core/test/stats/cost-scope-memory.test.ts": "sha256:79b114bc14a64d4c797b95ac47875339aef60465ebba65b49eec2ba42a41e821",
+    "packages/ui/src/dashboard/dashboard-cost-scope-memory.test.ts": "sha256:6028fe457045682b214a2075240502b47f8f3f52220fe2ef46d9b81615a211de"
+  }
+}

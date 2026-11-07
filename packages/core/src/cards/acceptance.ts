@@ -38,7 +38,7 @@ export function riskWarnings(tasks: readonly TaskView[], lang: Lang): string[] {
   return tasks.flatMap((task) =>
     (task.risks ?? []).map(
       (risk) =>
-        `${task.id}: ${risk.path}${risk.line === undefined ? "" : `:${risk.line}`} ${riskLabel(risk.rule, lang)}${risk.cwe === undefined ? "" : ` (${risk.cwe})`}.`,
+        `${task.id}: ${risk.path}${risk.line === undefined ? "" : `:${risk.line}`} ${riskLabel(risk.rule, lang, risk.label)}${risk.cwe === undefined ? "" : ` (${risk.cwe})`}.`,
     ),
   );
 }

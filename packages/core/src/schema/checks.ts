@@ -125,7 +125,8 @@ export const DEFAULT_CHECKS: ChecksConfig = {
   },
 };
 
-function isRegex(source: string): boolean {
+/** True when `source` is a valid JavaScript regular expression. */
+export function isRegex(source: string): boolean {
   try {
     new RegExp(source);
     return true;

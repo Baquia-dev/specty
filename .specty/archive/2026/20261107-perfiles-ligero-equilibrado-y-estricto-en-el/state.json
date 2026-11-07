@@ -1,0 +1,168 @@
+{
+  "schema": 1,
+  "id": "20261107-perfiles-ligero-equilibrado-y-estricto-en-el",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-perfiles-ligero-equilibrado-y-estricto-en-el",
+  "baseCommit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7d15d0b8306de9724a556a24f263cfcf0c5cf95fa210522f20cc8d8ca3ac5c25",
+    "at": "2026-11-07T10:47:44.035Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e51ed02398c504af921a2ecf56deb6ad66e5b2cdeedcdbcc6fa8bbd9e89dcb2d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:546053b9df577fbf19897b6e25cb7041891f79a7060d833cc01f765c510d0c99",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:6a434f7e870be35e3f71765017ff600336433783c6c8e0a758f0008c65b741ad",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:30c81161a9405bd4b42a268619536276f73ad413a2c40b5e86c143039618d402",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:077aaf98b604559c66788fd2bd6188ce65e8b917770ef8b895fa0a91b9894069",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:c819a57f672a98974245e4433d57029541504cf5a40232a594084efbbcf0c043",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:d999bdab64efbd844b15858213509c0d5c806fc2e6e6b2b94e03c2c0091cdb6a",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:9206c44461391973627a1102a1387dd0297e141c141d47ba3a82066c356a1074",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "5e951ab00cdecf1f80fac3d72f1676f11d94caca",
+      "attempts": 1,
+      "startedAt": "2026-11-07T10:56:06.022Z",
+      "doneAt": "2026-11-07T11:03:08.024Z",
+      "summary": "settings/presets.ts define PRESETS, PRESET_KEYS (9 claves), presetValue, presetOf y presetEdits; cards/settings-presets.ts da presetText con los valores de cada perfil; light.ts los exporta; dominio.md añade «Perfil»",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "998d9a05f33e1ee7cb01fba7c1c16933d1c39683",
+      "attempts": 1,
+      "startedAt": "2026-11-07T11:03:08.498Z",
+      "doneAt": "2026-11-07T11:10:48.605Z",
+      "summary": "cards/settings-presets.ts añade limitSentences (líneas por archivo, funciones y cobertura del diff, con fail false y con error); flowSentences las añade al final",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "02dcfba6d0384f4425290060d6892da39dc92451",
+      "attempts": 1,
+      "startedAt": "2026-11-07T11:10:49.063Z",
+      "doneAt": "2026-11-07T11:17:37.557Z",
+      "summary": "settings-presets.ts (sp-settings-presets): tarjetas de Ligero, Equilibrado, Estricto y Propio con «Por defecto» y «Elegido», botones con aria-pressed que emiten presetEdits; sp-settings-flow las pone encima de la línea en Básico; docs/ui.md describe los perfiles y las frases de los límites",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 8,
+    "AC": 9,
+    "T": 3,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-07T11:18:01.011Z",
+  "lockedTests": {
+    "packages/core/test/settings/pieces.test.ts": "sha256:df61789bc658daf28d84e5e8f555ce21bf457bb36aa757e14d2716a0f1377740",
+    "packages/ui/src/settings/settings-flow.test.ts": "sha256:aad584e35e5e007da9011d34236a2b29c8b1fc2cec8190fae95e2aa5d3b7de9d",
+    "packages/core/test/settings/presets.test.ts": "sha256:355a991e622f0a52a87d1df6b78c38f82d920e8f96bf706e7104e2de3aad196c",
+    "packages/ui/src/settings/settings-presets.test.ts": "sha256:efbb4f3f08663a2d436fe4aa786af9ddf923b466e925c46665d4ba340e498d13"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "91706a75c4addc0adc1a3ae33e8d9181734b0c81",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ui.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/stats.ts",
+      "packages/cli/src/flow/live-run.ts",
+      "packages/cli/src/flow/risk.ts",
+      "packages/cli/src/flow/task-views.ts",
+      "packages/cli/src/program.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/http.ts",
+      "packages/cli/src/server/run-output.ts",
+      "packages/cli/src/server/runs.ts",
+      "packages/cli/src/server/stats.ts",
+      "packages/cli/src/server/watched-runs.ts",
+      "packages/cli/test/live-run.test.ts",
+      "packages/cli/test/risk.test.ts",
+      "packages/cli/test/server/internal-server.test.ts",
+      "packages/cli/test/server/run-output.test.ts",
+      "packages/cli/test/stats.test.ts",
+      "packages/core/src/cards/acceptance.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/risk-lessons.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/cards/settings-pieces.ts",
+      "packages/core/src/cards/settings-presets.ts",
+      "packages/core/src/cards/settings-warnings.ts",
+      "packages/core/src/cards/stats.ts",
+      "packages/core/src/light.ts",
+      "packages/core/src/schema/checks.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/warnings.ts",
+      "packages/core/src/scope/risk.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/settings/presets.ts",
+      "packages/core/test/cards/stats.test.ts",
+      "packages/core/test/scope/risk.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/settings/internal-server.test.ts",
+      "packages/core/test/settings/pieces.test.ts",
+      "packages/core/test/settings/presets.test.ts",
+      "packages/core/test/validate/quality.test.ts",
+      "packages/ui/src/data/warnings.test.ts",
+      "packages/ui/src/data/warnings.ts",
+      "packages/ui/src/settings/settings-flow.test.ts",
+      "packages/ui/src/settings/settings-flow.ts",
+      "packages/ui/src/settings/settings-presets.test.ts",
+      "packages/ui/src/settings/settings-presets.ts"
+    ],
+    "at": "2026-11-07T11:28:45.331Z",
+    "resolved": {
+      "commit": "2b30f06",
+      "at": "2026-11-07T11:44:54.386Z"
+    }
+  }
+}

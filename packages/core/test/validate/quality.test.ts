@@ -187,7 +187,10 @@ describe("the person's vague terms and horizontal layers", () => {
     warnings?: { readonly vagueTerms: string[]; readonly horizontalLayers: string[] },
   ): ReadonlyMap<string, string> {
     const parsed = parseSpec(text);
-    const config = warnings === undefined ? DEFAULT_CONFIG : withConfig({ warnings });
+    const config =
+      warnings === undefined
+        ? DEFAULT_CONFIG
+        : withConfig({ warnings: { ...DEFAULT_CONFIG.warnings, ...warnings } });
     const found = validateSpec(parsed.spec, {
       phase: "draft",
       config,

@@ -155,7 +155,8 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
 
 /**
  * Section «Interno», execution, server and hooks: the priority of the verifications, the most
- * Specty reads of a command's output, the UI's ports and the time of Antigravity's hooks.
+ * Specty reads of a command's output, the UI's ports, the time of Antigravity's hooks and the
+ * limits of the UI's server.
  */
 const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
   "internal.exec.priority": {
@@ -196,6 +197,56 @@ const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
     en: [
       "Antigravity's hook time",
       "How many seconds Antigravity lets each hook of the guard run before cutting it and blocking the tool, from 10 to 300; it applies when specty init writes .agents/hooks.json, and specty doctor warns if the file has another.",
+    ],
+  },
+  "internal.server.changesEveryMs": {
+    es: [
+      "Cada cuánto mira la UI los cambios",
+      "Los ms entre dos miradas del servidor de specty ui a si los cambios se movieron, mientras alguien lo escucha; de 100 a 60000.",
+    ],
+    en: [
+      "How often the UI looks at the changes",
+      "The ms between two looks of specty ui's server at whether the changes moved, while someone listens; from 100 to 60000.",
+    ],
+  },
+  "internal.server.tasksEveryMs": {
+    es: [
+      "Cada cuánto mira la UI las verificaciones",
+      "Los ms entre dos lecturas de las verificaciones que corren en otros procesos, como la de specty task done; de 100 a 60000.",
+    ],
+    en: [
+      "How often the UI looks at the verifications",
+      "The ms between two reads of the verifications running in other processes, such as specty task done's; from 100 to 60000.",
+    ],
+  },
+  "internal.server.runLines": {
+    es: [
+      "Líneas de una verificación en curso",
+      "Las últimas líneas que guarda una verificación mientras corre, en la UI y en su archivo en vivo; de 100 a 10000.",
+    ],
+    en: [
+      "Lines of a verification going on",
+      "The last lines a verification keeps while it runs, in the UI and in its live file; from 100 to 10000.",
+    ],
+  },
+  "internal.server.runEveryMs": {
+    es: [
+      "Avisos de una verificación en curso",
+      "Cada cuántos ms, como mucho, la UI oye una verificación que avanza y se reescribe su archivo en vivo; de 50 a 10000.",
+    ],
+    en: [
+      "Notices of a verification going on",
+      "At most how often, in ms, the UI hears a verification that moves and its live file is written again; from 50 to 10000.",
+    ],
+  },
+  "internal.server.maxBodyKiB": {
+    es: [
+      "Cuerpo máximo de una acción",
+      "Los KiB que lee el servidor del cuerpo de una acción de la persona; uno mayor se lee como ninguno. De 64 a 1024.",
+    ],
+    en: [
+      "Largest body of an action",
+      "The KiB the server reads of the body of an action of the person; a larger one reads as none. From 64 to 1024.",
     ],
   },
 };
@@ -247,9 +298,67 @@ const INTERNAL_CARDS_TEXTS: Readonly<Record<string, Texts>> = {
   },
 };
 
+/**
+ * Section «Interno», what commands and checks show: the findings of a command's output, the
+ * lines of a failure in `specty verify --fresh` and the changes `specty why` lists.
+ */
+const INTERNAL_SHOWN_TEXTS: Readonly<Record<string, Texts>> = {
+  "internal.findings.perCommand": {
+    es: [
+      "Hallazgos por comando",
+      "Cuántos hallazgos toma specty check de la salida de un comando de checks.commands que falla, de 10 a 1000; checks.maxFindings dice cuántos muestra sin --verbose.",
+    ],
+    en: [
+      "Findings per command",
+      "How many findings specty check takes from the output of a failing checks.commands command, from 10 to 1000; checks.maxFindings says how many it shows without --verbose.",
+    ],
+  },
+  "internal.findings.lastLines": {
+    es: [
+      "Últimas líneas de una salida sin ubicaciones",
+      "Cuántas de sus últimas líneas da specty check como hallazgos cuando la salida de un comando que falla no señala ninguna ruta:línea, de 1 a 50.",
+    ],
+    en: [
+      "Last lines of an output with no location",
+      "How many of its last lines specty check gives as findings when a failing command's output points at no path:line, from 1 to 50.",
+    ],
+  },
+  "internal.findings.messageChars": {
+    es: [
+      "Caracteres de un hallazgo",
+      "Dónde corta specty check el mensaje de cada hallazgo de la salida de un comando, de 50 a 2000 caracteres.",
+    ],
+    en: [
+      "Characters of a finding",
+      "Where specty check cuts the message of each finding of a command's output, from 50 to 2000 characters.",
+    ],
+  },
+  "internal.commands.verifyLines": {
+    es: [
+      "Líneas de un fallo en specty verify",
+      "Cuántas de las últimas líneas de la salida de una unidad que falla muestra specty verify --fresh, de 5 a 200.",
+    ],
+    en: [
+      "Lines of a failure in specty verify",
+      "How many of the last lines of a failing unit's output specty verify --fresh shows, from 5 to 200.",
+    ],
+  },
+  "internal.commands.whyEntries": {
+    es: [
+      "Cambios que lista specty why",
+      "Cuántos cambios o commits, los más recientes, lista specty why de un archivo, de 1 a 100.",
+    ],
+    en: [
+      "Changes specty why lists",
+      "How many changes or commits, the newest, specty why lists for a file, from 1 to 100.",
+    ],
+  },
+};
+
 /** The names and descriptions of section «Interno», for `cards/settings.ts` to gather. */
 export const INTERNAL_SETTING_TEXTS: Readonly<Record<string, Texts>> = {
   ...INTERNAL_TEXTS,
   ...INTERNAL_RUN_TEXTS,
   ...INTERNAL_CARDS_TEXTS,
+  ...INTERNAL_SHOWN_TEXTS,
 };

@@ -94,7 +94,11 @@ function commandCheck(id: CommandCheck, command: string): CheckDefinition {
               `\`${command}\` exited with ${result.code ?? "?"}`,
             ),
       };
-      const found = findingsInOutput(`${result.stdout}\n${result.stderr}`, session.root);
+      const found = findingsInOutput(
+        `${result.stdout}\n${result.stderr}`,
+        session.root,
+        session.config.internal.findings,
+      );
       // What the change touched first, then the rest it may have broken.
       const run = new Set(files);
       const ours = (finding: Finding) => finding.path !== undefined && run.has(finding.path);

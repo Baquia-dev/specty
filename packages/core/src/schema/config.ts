@@ -19,6 +19,12 @@ import {
   resolveInternalRun,
 } from "./internal-run";
 import {
+  DEFAULT_INTERNAL_SHOWN,
+  INTERNAL_SHOWN_SHAPE,
+  type InternalShownConfig,
+  resolveInternalShown,
+} from "./internal-shown";
+import {
   DEFAULT_INTERNAL_WAITS,
   INTERNAL_WAITS_SHAPE,
   type InternalWaitsConfig,
@@ -108,7 +114,10 @@ export interface ResolvedConfig extends WarningsConfig, FlowConfig {
    * Specty's internal settings (formats.md §6): values that can leave Specty not working, with
    * today's behaviour as their defaults. Removing a key gives it back its default.
    */
-  readonly internal: InternalWaitsConfig & InternalRunConfig & InternalCardsConfig;
+  readonly internal: InternalWaitsConfig &
+    InternalRunConfig &
+    InternalCardsConfig &
+    InternalShownConfig;
 }
 
 export const DEFAULT_CONFIG: ResolvedConfig = {
@@ -153,7 +162,12 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   memory: DEFAULT_MEMORY,
   dev: DEFAULT_DEV,
   subagents: true,
-  internal: { ...DEFAULT_INTERNAL_WAITS, ...DEFAULT_INTERNAL_RUN, ...DEFAULT_INTERNAL_CARDS },
+  internal: {
+    ...DEFAULT_INTERNAL_WAITS,
+    ...DEFAULT_INTERNAL_RUN,
+    ...DEFAULT_INTERNAL_CARDS,
+    ...DEFAULT_INTERNAL_SHOWN,
+  },
   ...DEFAULT_WARNINGS,
   ...DEFAULT_FLOW,
 };
@@ -228,7 +242,12 @@ export const ConfigSchema = z.strictObject({
   dev: DevSchema.optional(),
   subagents: z.boolean().optional(),
   internal: z
-    .strictObject({ ...INTERNAL_WAITS_SHAPE, ...INTERNAL_RUN_SHAPE, ...INTERNAL_CARDS_SHAPE })
+    .strictObject({
+      ...INTERNAL_WAITS_SHAPE,
+      ...INTERNAL_RUN_SHAPE,
+      ...INTERNAL_CARDS_SHAPE,
+      ...INTERNAL_SHOWN_SHAPE,
+    })
     .optional(),
   ...WARNINGS_SHAPE,
   ...FLOW_SHAPE,
@@ -292,6 +311,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
       ...resolveInternalWaits(input.internal),
       ...resolveInternalRun(input.internal),
       ...resolveInternalCards(input.internal),
+      ...resolveInternalShown(input.internal),
     },
     ...resolveWarnings(input),
     ...resolveFlow(input),
