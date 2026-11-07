@@ -4,10 +4,12 @@
 import type { ConfigIssue, ResolvedConfig } from "@baquia-dev/specty-core";
 import {
   type ChangeSort,
+  type ConfigEdit,
   type Lang,
   matchesQuery,
   type Phase,
   type SessionView,
+  type SettingChange,
   sortChanges,
 } from "@baquia-dev/specty-core/light";
 import type { ResultDecision } from "./acceptance";
@@ -84,13 +86,26 @@ export interface ActionNote {
 /**
  * `GET /api/config`: `.specty/config.yaml` as YAML reads it (none when it is not YAML), what
  * Specty uses with every default when it is valid, the defaults, and the validator's issues, each
- * at its key (empty at the file's root).
+ * at its key (empty at the file's root), and why it cannot be saved now, in words.
  */
 export interface ConfigRecord {
   readonly input?: unknown;
   readonly config?: ResolvedConfig;
   readonly defaults: ResolvedConfig;
   readonly issues: readonly ConfigIssue[];
+  readonly blocked?: Bilingual;
+}
+
+/** What some edits of `config.yaml` would leave: the validator's issues and the changes by setting. */
+export interface ConfigCheck {
+  readonly issues: readonly ConfigIssue[];
+  readonly changes: readonly SettingChange[];
+}
+
+/** Some edits of `config.yaml` saved: the commit that holds them, and the changes by setting. */
+export interface ConfigSaved {
+  readonly commit: string;
+  readonly changes: readonly SettingChange[];
 }
 
 /** What the person decides on an entry of Specty's memory (ADR 0016). */
@@ -280,6 +295,16 @@ export abstract class SpectyData {
 
   /** Turns delegated mode on, once the person read the warning, or off. */
   setDelegation(_on: boolean): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  /** What the person's edits of `config.yaml` would leave, writing nothing. */
+  checkConfig(_edits: readonly ConfigEdit[]): Promise<ConfigCheck> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  /** Saves the person's edits of `config.yaml` in a commit of its own. */
+  saveConfig(_edits: readonly ConfigEdit[]): Promise<ConfigSaved> {
     return Promise.reject(new ActionError(READ_ONLY));
   }
 }

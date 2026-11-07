@@ -80,7 +80,7 @@ Hoy la página «Configuración» de `specty ui` solo muestra los ajustes, aunqu
 
 ## Tareas
 
-- [ ] T1: La fuente de datos del servidor comprueba y guarda la configuración, con sus motivos en palabras
+- [x] T1: La fuente de datos del servidor comprueba y guarda la configuración, con sus motivos en palabras
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/server-config.test.ts
   - ac: AC9, AC10
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server-config.test.ts && pnpm lint

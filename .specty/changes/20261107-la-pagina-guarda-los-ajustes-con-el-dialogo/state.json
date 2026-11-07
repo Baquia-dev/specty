@@ -52,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4328f1d730a432e7794510eaed6f4aa5e670f089",
+      "startedAt": "2026-11-07T04:39:31.817Z",
+      "doneAt": "2026-11-07T04:41:26.550Z",
+      "summary": "La fuente de datos del servidor comprueba (POST /api/config/check) y guarda (POST /api/config) las ediciones con el token CSRF; isConfigRecord pasa a server-answers.ts (P278) con blocked, y cada motivo (blocked y 409) sale en palabras en español y en inglés"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
