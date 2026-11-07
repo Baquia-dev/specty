@@ -79,7 +79,7 @@ Hoy Specty lee como mucho 512 KiB de la salida de cada comando que ejecuta, y la
   - files: packages/cli/src/io/exec.ts, packages/cli/src/check/commands.ts, packages/cli/src/commands/review.ts, packages/cli/test/check-commands.test.ts, packages/cli/test/review.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-commands.test.ts test/review.test.ts
-- [ ] T3: El servidor de la UI sirve el diff, la traza y el código de un test hasta el límite de la configuración
+- [x] T3: El servidor de la UI sirve el diff, la traza y el código de un test hasta el límite de la configuración
   - files: packages/cli/src/server/diff.ts, packages/cli/src/server/trace.ts, packages/cli/src/server/test-code.ts, packages/cli/test/server/output-limit.test.ts, docs/ARCHITECTURE.md
   - ac: AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/output-limit.test.ts && pnpm typecheck

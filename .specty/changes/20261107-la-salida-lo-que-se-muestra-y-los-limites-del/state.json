@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-salida-lo-que-se-muestra-y-los-limites-del",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-salida-lo-que-se-muestra-y-los-limites-del",
   "baseCommit": "b86197436485e8d85b86ad14e6a72becfa16bb2e",
   "revision": 2,
@@ -54,12 +54,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e8f9b86f5d7cd46a2210232a384cc2574e4f5799",
+      "attempts": 1,
       "startedAt": "2026-11-07T05:00:03.790Z",
       "doneAt": "2026-11-07T05:00:58.075Z",
-      "summary": "execute acepta maxOutput (lo que guarda de cada flujo; MAX_OUTPUT sale de DEFAULT_CONFIG) y maxOutputOf(config) da internal.exec.maxOutputKiB en caracteres; los comandos de checks.commands y la revisión independiente lo pasan."
+      "summary": "execute acepta maxOutput (lo que guarda de cada flujo; MAX_OUTPUT sale de DEFAULT_CONFIG) y maxOutputOf(config) da internal.exec.maxOutputKiB en caracteres; los comandos de checks.commands y la revisión independiente lo pasan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d3161292c6d0a6925431568f353616c42051d686",
+      "startedAt": "2026-11-07T05:00:58.603Z",
+      "doneAt": "2026-11-07T05:02:43.711Z",
+      "summary": "diff.ts, trace.ts y test-code.ts comparan con maxOutputOf(session.config): por encima de internal.exec.maxOutputKiB, 413 al diff y a la traza y 404 al código del test; ARCHITECTURE lo dice ahí y en specty check y specty review."
     }
   },
   "pending": {
