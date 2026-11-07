@@ -90,6 +90,16 @@ const TEXTS: Readonly<Record<string, Texts>> = {
     es: ["Subagentes", "Los cortes de una épica y tus cambios van a subagentes, si se puede."],
     en: ["Subagents", "An epic's slices and your changes go to subagents, when the tool can."],
   },
+  "flow.closing": {
+    es: [
+      "Fase de cierre",
+      "Tras aceptar, el agente redacta el cierre; sin ella, un cambio estándar se cierra al aceptarlo.",
+    ],
+    en: [
+      "Closing phase",
+      "After accepting, the agent writes the closing; without it, a standard change closes on acceptance.",
+    ],
+  },
   "retro.mode": {
     es: ["Retro al cerrar", "La escribe el agente, o queda en una línea."],
     en: ["Retro on closing", "The agent writes it, or it stays one line."],

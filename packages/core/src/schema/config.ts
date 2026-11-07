@@ -4,6 +4,7 @@ import { defaultGlossary } from "../glossary";
 import type { Lang } from "../i18n";
 import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
 import { DEFAULT_DEV, type DevConfig, DevSchema, resolveDev } from "./dev";
+import { DEFAULT_FLOW, FLOW_SHAPE, type FlowConfig, resolveFlow } from "./flow";
 import { DEFAULT_GIT, type GitConfig, GitSchema, resolveGit } from "./git";
 import {
   DEFAULT_INTERNAL_CARDS,
@@ -50,8 +51,8 @@ export interface LineLimits {
   readonly fail: number | false;
 }
 
-/** `.specty/config.yaml` with every default applied; `usage` and `warnings` from `warnings.ts`. */
-export interface ResolvedConfig extends WarningsConfig {
+/** `.specty/config.yaml` with every default; `usage`, `warnings` and `flow` from their modules. */
+export interface ResolvedConfig extends WarningsConfig, FlowConfig {
   readonly version: 1;
   readonly language: Lang;
   readonly mode: "individual" | "team";
@@ -168,6 +169,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
     ...DEFAULT_INTERNAL_SHOWN,
   },
   ...DEFAULT_WARNINGS,
+  ...DEFAULT_FLOW,
 };
 
 const Globs = z.array(z.string().min(1));
@@ -248,6 +250,7 @@ export const ConfigSchema = z.strictObject({
     })
     .optional(),
   ...WARNINGS_SHAPE,
+  ...FLOW_SHAPE,
 });
 
 export type ConfigInput = z.infer<typeof ConfigSchema>;
@@ -311,6 +314,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
       ...resolveInternalShown(input.internal),
     },
     ...resolveWarnings(input),
+    ...resolveFlow(input),
     ...(review !== undefined ? { review } : {}),
   };
 }

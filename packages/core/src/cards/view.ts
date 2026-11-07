@@ -214,6 +214,11 @@ export interface ChangeView {
   }[];
   readonly closingSubmitted: boolean;
   /**
+   * With `flow.closing: false`, a standard change outside an epic: accepting closes it, with no
+   * closing phase, so the agent writes no closing first, in delegated mode either (formats.md §6).
+   */
+  readonly withoutClosing?: boolean;
+  /**
    * While closing, the remarks of high or medium severity of the last review of the result
    * (ADR 0011) that the closing does not cite yet, if there are any.
    */

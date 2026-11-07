@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "id": "20261107-la-fase-de-cierre-y-otras-reglas-del-flujo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-la-fase-de-cierre-y-otras-reglas-del-flujo",
+  "baseCommit": "c76f6f09b5649423a935102d409cd43f913fbcf9",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:3a661febefa2f4412617eaafdf83c89a4f78f22277c21ffcbd4a414b79f8c603",
+    "at": "2026-11-07T10:51:47.707Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ddd7f35295be349785f15db7a3d7afc2718ded2e760fbd81ee362983ceda37f1",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:bcfebc66976fb3841c489592600744631e097d82db0b1f0165eeb99e833cf2b1",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:a4f32aa8371a47a88ff525d260ff345d87c394d0ec003b5e2f4bd695528444fa",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:28240d067cdd4eaa83a6226fc72233915c09ea1273822993a0fce654013382bd",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:8f12f33e83e03442dd82a2248744ebc730a42070cf40af195b8ec362f0e597e5",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:9b3600647f81873919f9cf60cf9f8489766b8c1f1f86f0baff4d3f0ddd7d10e1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "86954746ae644599edc4586b0723894f85c15982",
+      "attempts": 1,
+      "startedAt": "2026-11-07T11:11:15.863Z",
+      "doneAt": "2026-11-07T11:17:10.568Z",
+      "summary": "flow.closing en schema/flow.ts (true por defecto), reunido por spread en config.ts, en el catálogo (Flujo, interruptor, Nuevo) y con sus textos es/en.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "e2c27d67901a641231632f0e3b068c7a98f3857b",
+      "attempts": 1,
+      "startedAt": "2026-11-07T11:17:11.014Z",
+      "doneAt": "2026-11-07T11:23:35.988Z",
+      "summary": "El evento accept lleva withoutClosing y deja hecho un standard; ChangeView.withoutClosing hace que la tarjeta en modo delegado no pida el cierre; ARCHITECTURE §4 y §9 lo explican.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "4189774132dfab279609f4da61d188062538482b",
+      "attempts": 1,
+      "startedAt": "2026-11-07T11:23:36.427Z",
+      "doneAt": "2026-11-07T15:58:33.330Z",
+      "summary": "views.ts calcula withoutClosing (standard sin epic con flow.closing: false); accept lo pasa al evento y cierra con closeQuick; closingTurn toma el turno y change.closed registra closing: false; formats.md §4 y §6.",
+      "scopeExtra": [
+        "packages/cli/test/closing-ahead.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 7,
+    "T": 3,
+    "R": 3,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-07T15:59:24.336Z",
+  "lockedTests": {
+    "packages/cli/test/closing-ahead.test.ts": "sha256:474b39061784c74529a618e14d140980ab190af4811b920802fd97ede9f982b0",
+    "packages/core/test/closing-ahead.test.ts": "sha256:134ef47a8dcccb2dd81f93a0c84e0b57dcab773d8c0ec65f13c124ef811825c4",
+    "packages/core/test/settings/catalog.test.ts": "sha256:244cb73c1fb63a09770ee2bd11978aa3902a5cad33ea7c9cefb759e4c3055a2c"
+  }
+}
