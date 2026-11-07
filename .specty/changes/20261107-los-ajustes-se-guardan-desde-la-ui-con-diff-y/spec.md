@@ -77,7 +77,7 @@ Hoy la página «Configuración» de `specty ui` solo muestra los ajustes: para 
   - files: packages/core/src/settings/catalog.ts, packages/core/src/light.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts
-- [ ] T2: Un editor de YAML cambia, añade y quita claves sin tocar el resto del texto
+- [x] T2: Un editor de YAML cambia, añade y quita claves sin tocar el resto del texto
   - files: packages/cli/src/io/yaml-edit.ts, packages/cli/test/yaml-edit.test.ts
   - ac: AC2, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/yaml-edit.test.ts

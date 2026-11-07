@@ -56,12 +56,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bab2350f0c50f7c800621db892bb6c629d19c446",
+      "attempts": 1,
       "startedAt": "2026-11-07T03:42:05.683Z",
       "doneAt": "2026-11-07T03:42:31.111Z",
-      "summary": "El catálogo marca fileOnly (verify.units, checks.layers, checks.generators, checks.testTime) e items number (dev.ports); settingOf da el ajuste editable de una ruta y settingChanges el diff por ajuste entre dos lecturas del archivo, exportados en la entrada ligera"
+      "summary": "El catálogo marca fileOnly (verify.units, checks.layers, checks.generators, checks.testTime) e items number (dev.ports); settingOf da el ajuste editable de una ruta y settingChanges el diff por ajuste entre dos lecturas del archivo, exportados en la entrada ligera",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3351d6cf8dbae1a374f39addd5b15607e9542a79",
+      "startedAt": "2026-11-07T03:42:31.422Z",
+      "doneAt": "2026-11-07T03:50:12.815Z",
+      "summary": "io/yaml-edit.ts: editYaml cambia, añade y quita claves por ruta tocando solo su texto (localizado con parseDocument), con listas y mapas nuevos en flujo y textos de varias líneas en bloque literal"
     }
   },
   "pending": {
