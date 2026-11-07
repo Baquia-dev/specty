@@ -6,6 +6,13 @@
   "branch": "specty/20261107-el-tamano-y-el-esfuerzo-pasan-a-ser-ajustes",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:bcf02e3fad7d3e64ebbd01dfe66bff0f1304c212da19e7365eb0d045bb3b33d1",
+    "at": "2026-11-07T03:43:37.404Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -57,12 +64,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:bcf02e3fad7d3e64ebbd01dfe66bff0f1304c212da19e7365eb0d045bb3b33d1",
-    "at": "2026-11-07T03:43:37.404Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T03:54:52.200Z"
 }

@@ -171,7 +171,7 @@ describe("the settings page", () => {
       "Memoria",
       "Desarrollo",
       "Interfaz",
-      "Esfuerzo por herramienta",
+      "Esfuerzo recomendado",
       "Glosario",
     ]);
     expect(keys()).toEqual(SETTINGS.map((setting) => setting.key));
@@ -221,11 +221,11 @@ describe("the settings page", () => {
     expect(mark("verify.default", "command")).toBe("Ejecuta un comando");
     expect(mark("specty delegate", "clone")).toBe("Este clon");
     for (const key of [
+      "sizing.highFanIn",
       "team.approvers",
       "team.requirePrReview",
       "ui.port",
       "ui.requireUserPresence",
-      "effort",
     ]) {
       expect(mark(key, "soon"), key).toBe("Próximamente");
     }
@@ -250,16 +250,53 @@ describe("the settings page", () => {
     expect(text(page()?.querySelector("[data-no-match]"))).toBe("Nada coincide con el filtro.");
   });
 
+  it("AC6, AC7: shows the new settings of the size and the effort with «Nuevo», their key and value, in Spanish and in English", async () => {
+    const input = { ...INPUT, sizing: { weights: { create: 2 } }, effort: { S: { plan: "high" } } };
+    const es = await open(valid(input));
+    expect(es.headings()).toContain("Esfuerzo recomendado");
+    for (const key of [
+      "sizing.weights",
+      "sizing.tasksWithoutWeight",
+      "sizing.highFanIn",
+      "sizing.nearRatio",
+      "effort.S",
+      "effort.M",
+      "effort.L",
+      "effort.XL",
+      "effort.task",
+    ]) {
+      expect(es.mark(key, "new"), key).toBe("Nuevo");
+      expect(es.part(key, "key"), key).toBe(key);
+      expect(es.part(key, "name"), key).toBe(settingText(key, "es").name);
+    }
+    expect(es.mark("sizing.highFanIn", "soon")).toBe("Próximamente");
+    expect(es.part("sizing.tasksWithoutWeight", "value")).toBe("3");
+    expect(es.part("sizing.nearRatio", "value")).toBe("0.8");
+    expect(es.items("sizing.weights")).toContain("create: 2");
+    expect(es.marks("sizing.weights")).toContain("modified");
+    expect(es.items("effort.S")).toEqual(["plan: high", "implement: low"]);
+    expect(es.marks("effort.S")).toContain("modified");
+    expect(es.items("effort.task")).toEqual(["lowMaxFiles: 1", "highMinFiles: 4"]);
+    expect(es.marks("effort.task")).not.toContain("modified");
+    const en = await open(valid(input), "en");
+    expect(en.headings()).toContain("Recommended effort");
+    expect(en.mark("effort.task", "new")).toBe("New");
+    expect(en.part("effort.task", "name")).toBe(settingText("effort.task", "en").name);
+    expect(en.part("sizing.nearRatio", "description")).toBe(
+      settingText("sizing.nearRatio", "en").description,
+    );
+  });
+
   it("AC3: filters by mark, with how many settings each filter has, and the search narrows the filter", async () => {
     const { page, keys, filters, choose, search } = await open(valid(INPUT));
-    const count = (flag: "permissions" | "command") =>
+    const count = (flag: "permissions" | "command" | "new") =>
       SETTINGS.filter((setting) => setting[flag] === true).map((setting) => setting.key);
     expect(filters()).toEqual([
       `Todos · ${SETTINGS.length}`,
       "Modificados · 4",
       `Afectan permisos · ${count("permissions").length}`,
       `Ejecutan comandos · ${count("command").length}`,
-      "Nuevos · 0",
+      `Nuevos · ${count("new").length}`,
     ]);
     await choose("modified");
     expect(keys()).toEqual(["language", "policy.tests", "verify.default", "verify.timeoutSec"]);
@@ -271,8 +308,10 @@ describe("the settings page", () => {
     await choose("command");
     expect(keys()).toEqual(count("command"));
     await choose("new");
-    expect(keys()).toEqual([]);
+    expect(keys()).toEqual(count("new"));
+    await search("nada de esto existe");
     expect(text(page()?.querySelector("[data-no-match]"))).toBe("Nada coincide con el filtro.");
+    await search("");
     await choose("all");
     expect(keys()).toHaveLength(SETTINGS.length);
   });
