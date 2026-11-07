@@ -68,7 +68,7 @@ Hoy `task done` ejecuta `specty check --changed --spec` con una lista fija de lo
 
 ## Tareas
 
-- [ ] T1: La clave `checks.taskDone.skip` en el schema, con las verificaciones garantizadas
+- [x] T1: La clave `checks.taskDone.skip` en el schema, con las verificaciones garantizadas
   - files: packages/core/src/schema/task-done.ts, packages/core/src/schema/checks.ts, packages/core/test/schema/task-done.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/task-done.test.ts
