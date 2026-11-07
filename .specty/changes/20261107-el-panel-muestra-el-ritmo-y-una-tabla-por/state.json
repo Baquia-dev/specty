@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-panel-muestra-el-ritmo-y-una-tabla-por",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-el-panel-muestra-el-ritmo-y-una-tabla-por",
   "baseCommit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
   "revision": 1,
@@ -63,6 +63,10 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T08:54:42.671Z"
+  "lockedTests": {
+    "packages/ui/src/theme/tokens.test.ts": "sha256:bab59d5df6a03f263c5466e77de968888c3928fb0bfc273c93cd1c70284d4efc",
+    "packages/core/test/stats/sections.test.ts": "sha256:787d573f16d8fc5e5c7b3716b8b37b09073676a189e1a5fcff1a017cd0a9ec3d",
+    "packages/ui/src/components/charts/charts.test.ts": "sha256:f581f3b55c8d9ea3f566ce176c0cc57f134a5bbec909ac4f26f5409f9e6f1b9c",
+    "packages/ui/src/dashboard/dashboard-sections.test.ts": "sha256:7aec96a7f0193c5b1c8557ea683c15b04c6926e42cf5f8d2afcd82e13a5c6611"
+  }
 }
