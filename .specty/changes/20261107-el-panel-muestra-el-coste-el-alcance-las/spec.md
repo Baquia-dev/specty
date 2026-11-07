@@ -80,7 +80,7 @@ El «Panel» de `specty ui` muestra hoy los indicadores, «Ritmo», «Flujo y es
 
 ## Tareas
 
-- [ ] T1: El core calcula el coste, el alcance y la memoria del periodo
+- [x] T1: El core calcula el coste, el alcance y la memoria del periodo
   - files: packages/core/src/stats/rows.ts, packages/core/src/stats/cost.ts, packages/core/src/stats/scope.ts, packages/core/src/stats/memory.ts, packages/core/src/stats/summary.ts, packages/core/test/stats/cost-scope-memory.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/cost-scope-memory.test.ts test/stats/flow-quality.test.ts test/stats/sections.test.ts test/stats/summary.test.ts test/stats/table.test.ts test/stats/export.test.ts && pnpm lint

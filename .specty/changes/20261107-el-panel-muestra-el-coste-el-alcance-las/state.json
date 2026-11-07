@@ -52,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "089e7cf6dbe2d0c2c10a4d8835b595eae915d011",
+      "startedAt": "2026-11-07T12:34:58.795Z",
+      "doneAt": "2026-11-07T12:36:30.138Z",
+      "summary": "StatsRow guarda el consumo (change.usage), las decisiones de alcance, las incorporaciones de main que pararon y los ajustes; stats/cost.ts, scope.ts y memory.ts calculan las tres secciones y statsView las añade a StatsView como cost, scope y memory."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

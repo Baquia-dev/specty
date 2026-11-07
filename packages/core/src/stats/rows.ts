@@ -62,7 +62,30 @@ export interface StatsRow {
     readonly longFiles: number;
     readonly removed: number;
   }[];
+  /** Each `change.usage`: its day, its calls to the model and its tokens of each type, 0 unsaid. */
+  readonly usage: readonly {
+    readonly day: string;
+    readonly calls: number;
+    readonly input: number;
+    readonly output: number;
+    readonly cacheWrite: number;
+    readonly cacheRead: number;
+  }[];
+  /** Each `scope.decided` with a decision it knows: its day and the decision. */
+  readonly scope: readonly { readonly day: string; readonly decision: ScopeDecision }[];
+  /** Each `integration.started` with a reason it knows: its day and why the merge stopped. */
+  readonly integrations: readonly { readonly day: string; readonly reason: StopReason }[];
+  /** The day of each `adjust.requested`. */
+  readonly adjustments: readonly string[];
 }
+
+/** How a scope request was decided: by Specty on its own, approved or rejected. */
+const SCOPE_DECISIONS = ["auto", "approved", "rejected"] as const;
+type ScopeDecision = (typeof SCOPE_DECISIONS)[number];
+
+/** Why a merge of main stopped for the agent: its verification failed, or it has conflicts. */
+const STOP_REASONS = ["verify", "conflicts"] as const;
+type StopReason = (typeof STOP_REASONS)[number];
 
 /** An audit line, with what the panel reads of it. */
 interface Line {
@@ -113,6 +136,48 @@ export function statsRow(
     sessions: sessionsOf(lines),
     ...flowOf(lines),
     ...qualityOf(lines),
+    ...outsideOf(lines),
+  };
+}
+
+/**
+ * What went outside the plan and what the change consumed: its usage, its scope decisions, the
+ * merges of main that stopped and the adjustments asked for.
+ */
+function outsideOf(
+  lines: readonly Line[],
+): Pick<StatsRow, "usage" | "scope" | "integrations" | "adjustments"> {
+  const count = (value: unknown) => (typeof value === "number" ? value : 0);
+  return {
+    usage: lines.flatMap((line) => {
+      if (line.event !== "change.usage") return [];
+      const { calls, input, output, cacheWrite, cacheRead } = line.data;
+      return [
+        {
+          day: dayOf(line.ts),
+          calls: count(calls),
+          input: count(input),
+          output: count(output),
+          cacheWrite: count(cacheWrite),
+          cacheRead: count(cacheRead),
+        },
+      ];
+    }),
+    scope: lines.flatMap((line) => {
+      const decision = SCOPE_DECISIONS.find((known) => known === line.data.decision);
+      return line.event === "scope.decided" && decision !== undefined
+        ? [{ day: dayOf(line.ts), decision }]
+        : [];
+    }),
+    integrations: lines.flatMap((line) => {
+      const reason = STOP_REASONS.find((known) => known === line.data.reason);
+      return line.event === "integration.started" && reason !== undefined
+        ? [{ day: dayOf(line.ts), reason }]
+        : [];
+    }),
+    adjustments: lines
+      .filter((line) => line.event === "adjust.requested")
+      .map((line) => dayOf(line.ts)),
   };
 }
 

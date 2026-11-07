@@ -3,7 +3,9 @@
 // period before, and what the page needs around them. The local server answers it as
 // `GET /api/stats`; the other sections of the panel join `StatsView` as they come.
 import type { MemoryEntry } from "../memory/entries";
+import { type StatsCost, statsCost } from "./cost";
 import { type StatsFlow, statsFlow } from "./flow";
+import { type StatsMemory, statsMemory } from "./memory";
 import { type StatsPeopleRow, statsPeople } from "./people";
 import {
   compared,
@@ -21,6 +23,7 @@ import {
 import { type StatsQuality, statsQuality } from "./quality";
 import { type StatsRhythm, statsRhythm } from "./rhythm";
 import type { StatsRow } from "./rows";
+import { type StatsScope, statsScope } from "./scope";
 
 /**
  * A figure of the period: its value, none when nothing measures it, and, unless the period is
@@ -80,6 +83,15 @@ export interface StatsView {
   readonly flow?: StatsFlow | undefined;
   /** «Calidad»: the task verifications by the rhythm's days or weeks, and what Specty checked. */
   readonly quality?: StatsQuality | undefined;
+  /** «Coste y tokens»: the cost by the rhythm's buckets, by lane and by change; the tokens. */
+  readonly cost?: StatsCost | undefined;
+  /**
+   * «Alcance e integraciones»: the scope requests decided, the merges of main that stopped and
+   * the adjustments asked for.
+   */
+  readonly scope?: StatsScope | undefined;
+  /** «Memoria»: the entries of the cut noted in the period, by status and by kind. */
+  readonly memory?: StatsMemory | undefined;
 }
 
 /** What the panel is made of: every change's row, the memory's entries and the local today. */
@@ -116,6 +128,9 @@ export function statsView({ rows, memory, today, query }: StatsInput): StatsView
     people: statsPeople(lane, current),
     flow: statsFlow(cut, current),
     quality: statsQuality(cut, current, rhythm),
+    cost: statsCost(cut, current, rhythm),
+    scope: statsScope(cut, current),
+    memory: statsMemory(entries, current),
   };
 }
 
