@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261108-la-verificacion-dice-cuantos-procesos-usa-y-por",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261108-la-verificacion-dice-cuantos-procesos-usa-y-por",
+  "baseCommit": "6765424511a13d97a89c76156111aecadd5f9a98",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2292e6e9592055c392d310ef014ab1eed4e8aa348053c19cd780bd0067fb1df5",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:9efce1de066b7b2e920c17e669831c0fe122d5ef95c542d740905acd887e97ff",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:02f74f75e48c1923be1a5c1e227389dc2485a9fffca109e5de7b9421ff2bc8f1",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:6370632c77b97f38807dfbf48228061c449c504235387078630f78075b3a292b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ec1812044dd844af027472f27f1a1f61dd9ae8d5af08f85e2779872e47e255a7",
+    "at": "2026-11-07T19:20:14.001Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
