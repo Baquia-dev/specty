@@ -83,6 +83,7 @@ export const PIECES: readonly Piece[] = [
     phase: "implementing",
     keys: [
       "checks.levels",
+      "checks.taskDone.skip",
       "checks.maxFindings",
       "checks.exclude",
       "checks.todo",

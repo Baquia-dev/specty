@@ -216,6 +216,16 @@ const TEXTS: Readonly<Record<string, Texts>> = {
     es: ["Nivel de cada verificación", "Error bloquea, warn avisa y off la apaga."],
     en: ["Level of each check", "Error blocks, warn warns and off turns it off."],
   },
+  "checks.taskDone.skip": {
+    es: [
+      "Fuera de task done",
+      "Verificaciones que task done no ejecuta; las del plan y tests-locked no se quitan.",
+    ],
+    en: [
+      "Left out of task done",
+      "Checks task done does not run; the plan's and tests-locked cannot be left out.",
+    ],
+  },
   "checks.maxFindings": {
     es: ["Fallos que se muestran", "Por verificación, antes de «… y N más»."],
     en: ["Findings shown", "Per check, before “… and N more”."],

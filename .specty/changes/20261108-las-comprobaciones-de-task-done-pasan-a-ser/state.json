@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b532ef806924e105fe73f7f11de76592733ec977",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:16:59.958Z",
       "doneAt": "2026-11-07T16:17:41.237Z",
-      "summary": "Módulo schema/task-done.ts con checks.taskDone.skip (lista de ids, vacía por defecto) y un error por cada verificación garantizada (las del plan y tests-locked); checks.ts lo reúne en ChecksConfig, su schema y su resolve."
+      "summary": "Módulo schema/task-done.ts con checks.taskDone.skip (lista de ids, vacía por defecto) y un error por cada verificación garantizada (las del plan y tests-locked); checks.ts lo reúne en ChecksConfig, su schema y su resolve.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9452c9f6dfcb2edac103e5f2a5d9f0b96c1d778c",
+      "startedAt": "2026-11-07T16:17:41.856Z",
+      "doneAt": "2026-11-07T16:18:28.199Z",
+      "summary": "checks.taskDone.skip en el catálogo (Verificaciones de calidad, tras checks.levels, lista con permissions y new), en la pieza checks tras checks.levels, y su nombre y descripción en español e inglés en cards/settings.ts."
     }
   },
   "pending": {

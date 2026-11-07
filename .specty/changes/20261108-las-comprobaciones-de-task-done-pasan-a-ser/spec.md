@@ -72,7 +72,7 @@ Hoy `task done` ejecuta `specty check --changed --spec` con una lista fija de lo
   - files: packages/core/src/schema/task-done.ts, packages/core/src/schema/checks.ts, packages/core/test/schema/task-done.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/task-done.test.ts
-- [ ] T2: El ajuste en el catálogo y en la pieza, con sus textos
+- [x] T2: El ajuste en el catálogo y en la pieza, con sus textos
   - files: packages/core/src/settings/catalog.ts, packages/core/src/settings/pieces.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/task-done.test.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/task-done.test.ts test/settings/catalog.test.ts
