@@ -24,6 +24,26 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
       "How often it writes a line where the tool cuts a silent command.",
     ],
   },
+  "internal.waits.verifyIntervalMs": {
+    es: [
+      "Intervalo de una verificación que espera",
+      "Cada cuánto mira de nuevo una verificación que espera el turno de la completa o una plaza del clon, de 100 a 10000 ms.",
+    ],
+    en: [
+      "Interval of a waiting verification",
+      "How often a verification waiting for the full verification's turn or a place of the clone looks again, from 100 to 10000 ms.",
+    ],
+  },
+  "internal.waits.waitIntervalMs": {
+    es: [
+      "Intervalo de specty wait",
+      "Cada cuánto mira specty wait si la persona decidió, cuando no se le pasa --interval; de 100 a 10000 ms.",
+    ],
+    en: [
+      "specty wait's interval",
+      "How often specty wait looks whether the person decided, when --interval is not given; from 100 to 10000 ms.",
+    ],
+  },
   "internal.retries.landing": {
     es: [
       "Reintentos al aterrizar",

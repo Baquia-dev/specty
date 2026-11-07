@@ -244,6 +244,20 @@ describe("`specty wait` with `internal.waits`", () => {
     const usual = await proposed();
     expect(beats(await waitAs(usual, { GEMINI_CLI: "1" }, options))).toEqual([]);
   });
+
+  it("AC3: without `--interval`, looks every `internal.waits.waitIntervalMs` milliseconds, and the option still rules", async () => {
+    const root = await proposed(withWaits("    waitIntervalMs: 200\n"));
+    expect((await cli(root, ["wait", "--timeout", "1"])).out).toContain("Tiempo de espera agotado");
+    expect((await markOf(root)).intervalMs).toBe(200);
+    await cli(root, ["wait", "--interval", "100", "--timeout", "1"]);
+    expect((await markOf(root)).intervalMs).toBe(100);
+    // Without either, every 500 ms, as before.
+    const usual = await proposed();
+    expect((await cli(usual, ["wait", "--timeout", "1"])).out).toContain(
+      "Tiempo de espera agotado",
+    );
+    expect((await markOf(usual)).intervalMs).toBe(500);
+  });
 });
 
 describe("the heartbeat of `specty wait`", () => {
