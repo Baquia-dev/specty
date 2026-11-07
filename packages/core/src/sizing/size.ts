@@ -61,9 +61,6 @@ export interface SizeResult {
   readonly signals: SizeSignals;
 }
 
-const HIGH_FAN_IN = 10;
-const TASKS_WITHOUT_WEIGHT = 3;
-
 export function collectSignals(
   spec: Spec,
   config: ResolvedConfig,
@@ -97,7 +94,7 @@ export function collectSignals(
     sensitive: paths.filter((path) => matchesAny(path, config.sensitive)),
     manifests: paths.filter(isManifest),
     tasks: spec.sections.tasks?.items.length ?? 0,
-    highFanIn: paths.filter((path) => (repo.fanIn?.[path] ?? 0) >= HIGH_FAN_IN),
+    highFanIn: paths.filter((path) => (repo.fanIn?.[path] ?? 0) >= config.sizing.highFanIn),
     modulesWithoutTests: (repo.modulesWithoutTests ?? []).filter((module) =>
       modules.includes(module),
     ),
@@ -143,17 +140,7 @@ export function computeSize(
   repo: RepoSignals = {},
 ): SizeResult {
   const signals = collectSignals(spec, config, repo);
-  const { files } = signals;
-  const score =
-    files.create +
-    files.modify +
-    2 * (files.delete + files.rename) +
-    2 * Math.max(0, signals.modules.length - 1) +
-    3 * signals.sensitive.length +
-    (signals.manifests.length > 0 ? 2 : 0) +
-    Math.max(0, signals.tasks - TASKS_WITHOUT_WEIGHT) +
-    signals.highFanIn.length +
-    2 * signals.modulesWithoutTests.length;
+  const score = scoreOf(signals, config.sizing);
   const baseLevel = levelFor(score, config.size);
   const estimate = spec.frontmatter.estimate;
   // The model may only raise the size: lowering it could dodge the split of an XL change.
@@ -165,7 +152,10 @@ export function computeSize(
     ...when(signals.modules.length > 1, { code: "modules", count: signals.modules.length }),
     ...when(signals.sensitive.length > 0, { code: "sensitive", count: signals.sensitive.length }),
     ...when(signals.manifests.length > 0, { code: "dependencies" }),
-    ...when(signals.tasks > TASKS_WITHOUT_WEIGHT, { code: "tasks", count: signals.tasks }),
+    ...when(signals.tasks > config.sizing.tasksWithoutWeight, {
+      code: "tasks",
+      count: signals.tasks,
+    }),
     ...when(signals.highFanIn.length > 0, { code: "fan-in", count: signals.highFanIn.length }),
     ...when(signals.modulesWithoutTests.length > 0, {
       code: "no-tests",
@@ -176,6 +166,24 @@ export function computeSize(
       : []),
   ];
   return { level: shift(baseLevel, adjust), baseLevel, score, adjust, reasons, signals };
+}
+
+/** Each signal times its weight (`sizing.weights`); the tasks past those without weight count. */
+function scoreOf(signals: SizeSignals, sizing: ResolvedConfig["sizing"]): number {
+  const { files } = signals;
+  const { weights } = sizing;
+  return (
+    weights.create * files.create +
+    weights.modify * files.modify +
+    weights.delete * files.delete +
+    weights.rename * files.rename +
+    weights.module * Math.max(0, signals.modules.length - 1) +
+    weights.sensitive * signals.sensitive.length +
+    (signals.manifests.length > 0 ? weights.dependencies : 0) +
+    weights.task * Math.max(0, signals.tasks - sizing.tasksWithoutWeight) +
+    weights.fanIn * signals.highFanIn.length +
+    weights.noTests * signals.modulesWithoutTests.length
+  );
 }
 
 export function formatSizeReason(reason: SizeReason, lang: Lang): string {

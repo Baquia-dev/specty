@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import type { SettingSection } from "../settings/catalog";
+import { SIZE_TEXTS } from "./settings-size";
 
 // What the page «Configuración» of `specty ui` says of each setting of the catalog
 // (`settings/catalog.ts`): its name and what it does, its section's name and its options' names.
@@ -27,7 +28,7 @@ const SECTIONS: Readonly<Record<SettingSection, Readonly<Record<Lang, string>>>>
   memory: { es: "Memoria", en: "Memory" },
   dev: { es: "Desarrollo", en: "Development" },
   ui: { es: "Interfaz", en: "Interface" },
-  effort: { es: "Esfuerzo por herramienta", en: "Effort per tool" },
+  effort: { es: "Esfuerzo recomendado", en: "Recommended effort" },
   glossary: { es: "Glosario", en: "Glossary" },
   internal: { es: "Interno", en: "Internal" },
 };
@@ -269,18 +270,7 @@ const TEXTS: Readonly<Record<string, Texts>> = {
     es: ["Ampliaciones que se aprueban solas", "Entran sin pedírtelo."],
     en: ["Scope added on its own", "They come in without asking you."],
   },
-  size: {
-    es: ["Niveles de tamaño", "Puntos máximos de cada nivel; más que L es XL."],
-    en: ["Size levels", "Highest score of each level; above L it is XL."],
-  },
-  "lanes.quick.maxFiles": {
-    es: ["Archivos de un cambio rápido", "Archivos de código, sin tests, de un cambio quick."],
-    en: ["Files of a quick change", "Code files, tests aside, of a quick change."],
-  },
-  split: {
-    es: ["Cuándo partir un cambio", "Tareas, archivos y módulos de más, y archivos por tarea."],
-    en: ["When to split a change", "Too many tasks, files or modules, and files per task."],
-  },
+  ...SIZE_TEXTS,
   "lines.warn": {
     es: ["Aviso de líneas", "Avisa si una tarea deja un archivo por encima."],
     en: ["Lines warning", "Warns when a task leaves a file above it."],
@@ -374,13 +364,6 @@ const TEXTS: Readonly<Record<string, Texts>> = {
   "ui.requireUserPresence": {
     es: ["Presencia de la persona", "Pedir WebAuthn para las acciones de la UI."],
     en: ["User presence", "Ask for WebAuthn for the UI's actions."],
-  },
-  effort: {
-    es: [
-      "Esfuerzo por herramienta",
-      "El esfuerzo que se recomienda por tamaño en cada herramienta.",
-    ],
-    en: ["Effort per tool", "The effort recommended by size in each tool."],
   },
   glossary: {
     es: ["Glosario del dominio", "El archivo con los términos del proyecto."],
