@@ -86,3 +86,26 @@ Con el modo delegado activo, `specty wait` hoy espera hasta una hora a una perso
 
 - R1: Otra sesión cambia en paralelo los ajustes internos (los intervalos de sondeo) y puede tocar `wait.ts` e `internal-waits.ts`. Mitigación: al aceptar, incorporar main y resolver los conflictos conservando lo de ambos (`specty integrate`).
 - R2: `wait` lee el modo delegado en cada vuelta, una lectura más cada 500 ms. Mitigación: es un archivo pequeño de la carpeta común, y la ruta de git se resuelve una vez.
+
+## Cierre
+
+### Resumen
+
+`specty wait` respeta ahora el modo delegado y despierta con la caché de prompts viva. Las piezas:
+- Core: `waitsForPerson` y `unlocksApprovedTest` (`flow/waiting.ts`) dicen qué espera a la persona: sin el modo, lo de `changeWaitsFor`; con él, solo que todas las solicitudes pendientes desbloqueen un test aprobado. `waitTimeoutCard` tiene rama delegada («la decisión pendiente es solo de la persona, también en modo delegado»). El paso de seguir `next` del encargo de un subagente (`followNext` en `cards/subagents.ts`) le pide, en modo delegado, hacer lo que diga «modo delegado» y esperar con `specty wait` solo una decisión que no le delega. `internal.waits.waitTimeoutSec` vale 3300 s por defecto, con el máximo en 3600.
+- CLI: `wait` usa el modo al empezar y lo relee en cada vuelta (`readDelegation`); responde con la tarjeta de `next` o, para una solicitud que decide el agente, con `scopeRequestedCard`. Termina su marca como `decided` si la persona activa el modo con una decisión del agente. La ayuda de `--timeout` dice 55 min.
+- Documentación: ARCHITECTURE §6 y formats.md §6.
+
+### Desviaciones (respecto al plan)
+
+- La primera entrega de los tests no pasó la puerta: las verificaciones de T1 y T3 encadenan varios runners con `&&`, y el primero, en rojo, ocultaba a los siguientes, así que la salida no nombraba `wait-delegated.test.ts` ni `settings-page.test.ts` (P190). Con la spec ya bloqueada, los tests rojos y bloqueados fueron los de la CLI y la UI, y los tests unitarios de core (T1) y los cambios a 3300 de `schema.test.ts` y `wait.test.ts` (T3) se añadieron en su tarea.
+
+### Decisiones
+
+- Para una solicitud de alcance que decide el agente, `wait` devuelve la tarjeta de la solicitud en modo delegado y no la de `next`, porque la de la tarea solo la lista y no le dice que la apruebe.
+- El fin de turno y el freno del guard siguen leyendo `isWaitingForHuman` sin el modo: sus tarjetas ya mandan decidir en modo delegado.
+- Al cambiar el modo mientras espera, la sesión de `wait` cambia solo `delegated` y `cards.delegated`; la terminal sigue siendo la del principio, porque ni `next` ni las tarjetas le preguntan.
+
+### Pendientes
+
+- Ninguno nuevo; P190 (el rojo de una verificación encadenada con `&&` oculta los runners siguientes) sigue abierto.
