@@ -88,7 +88,7 @@ Hoy cuántas veces reintenta Specty escribir en su memoria cuando otra sesión e
   - files: packages/cli/src/store/memory.ts, packages/cli/src/commands/memory.ts, packages/cli/src/flow/branches.ts, packages/cli/src/commands/new.ts, packages/cli/test/memory.test.ts, packages/cli/test/new-locked-config.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory.test.ts test/new-locked-config.test.ts
-- [ ] T3: `specty prune` guarda el registro de unidades los días de la configuración
+- [x] T3: `specty prune` guarda el registro de unidades los días de la configuración
   - files: packages/cli/src/flow/units.ts, packages/cli/src/commands/prune.ts, packages/cli/test/prune-units.test.ts, docs/dominio.md
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-units.test.ts && pnpm typecheck && pnpm lint && pnpm knip

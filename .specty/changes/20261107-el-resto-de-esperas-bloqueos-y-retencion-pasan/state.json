@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-resto-de-esperas-bloqueos-y-retencion-pasan",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-resto-de-esperas-bloqueos-y-retencion-pasan",
   "baseCommit": "9183447eaa311a331341561a5c135a75de5a6508",
   "revision": 1,
@@ -64,12 +64,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "30a4831e870fdcdf87e188ddf949bb1ffd9af7e6",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:41:37.220Z",
       "doneAt": "2026-11-07T04:43:51.144Z",
-      "summary": "editMemory reintenta internal.retries.memory veces más (MemoryTarget.retries, que pone targetOf) y new pasa a markBranch las esperas de lockWaits(internal.retries.gitConfig); ARCHITECTURE remite a las claves."
+      "summary": "editMemory reintenta internal.retries.memory veces más (MemoryTarget.retries, que pone targetOf) y new pasa a markBranch las esperas de lockWaits(internal.retries.gitConfig); ARCHITECTURE remite a las claves.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "69e0ff20fe0a554f9099e3116ecd5aaa5db455a9",
+      "startedAt": "2026-11-07T04:43:51.654Z",
+      "doneAt": "2026-11-07T04:50:06.089Z",
+      "summary": "pruneRecord usa internal.retention.verifiedDays y devuelve lo borrado con los días, que prune pasa a su tarjeta; dominio.md remite a la clave."
     }
   },
   "pending": {
