@@ -6,6 +6,13 @@
   "branch": "specty/20261107-los-intervalos-de-sondeo-pasan-a-ser-ajustes",
   "baseCommit": "ca7a1f095a3be754d2819000fe662401b0ccdaee",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:bbf0e00312151aede9a332949c1cbad250521391252ddf47f8686db4636d4586",
+    "at": "2026-11-07T05:09:01.685Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:bbf0e00312151aede9a332949c1cbad250521391252ddf47f8686db4636d4586",
-    "at": "2026-11-07T05:09:01.685Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T05:22:25.181Z"
 }
