@@ -72,7 +72,7 @@ Hoy cada cuánto mira de nuevo una verificación que espera su turno o sus plaza
 
 ## Tareas
 
-- [ ] T1: Las claves de los intervalos en `internal.waits` y sus ajustes en «Interno»
+- [x] T1: Las claves de los intervalos en `internal.waits` y sus ajustes en «Interno»
   - files: packages/core/src/schema/internal-waits.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/schema/schema.test.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts test/settings/catalog.test.ts

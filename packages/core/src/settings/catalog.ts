@@ -40,8 +40,8 @@ export interface Setting {
   readonly kind: SettingKind;
   /** The values of a choice, in order. */
   readonly options?: readonly string[];
-  /** The unit of a number: seconds, minutes, hours or days. */
-  readonly unit?: "s" | "min" | "h" | "d";
+  /** The unit of a number: milliseconds, seconds, minutes, hours or days. */
+  readonly unit?: "ms" | "s" | "min" | "h" | "d";
   /** It changes what the agent may do without the person. */
   readonly permissions?: true;
   /** It runs a command of the project. */
@@ -84,6 +84,20 @@ const INTERNAL: readonly Setting[] = [
     new: true,
   },
   { key: "internal.waits.heartbeatSec", section: "internal", kind: "number", unit: "s", new: true },
+  {
+    key: "internal.waits.verifyIntervalMs",
+    section: "internal",
+    kind: "number",
+    unit: "ms",
+    new: true,
+  },
+  {
+    key: "internal.waits.waitIntervalMs",
+    section: "internal",
+    kind: "number",
+    unit: "ms",
+    new: true,
+  },
   { key: "internal.retries.landing", section: "internal", kind: "number", new: true },
   { key: "internal.retries.memory", section: "internal", kind: "number", new: true },
   { key: "internal.retries.gitConfig", section: "internal", kind: "number", new: true },

@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5c8cc4c435a86375f02491c671e84f1edc3def47",
+      "startedAt": "2026-11-07T05:22:43.379Z",
+      "doneAt": "2026-11-07T05:31:19.458Z",
+      "summary": "internal.waits gana verifyIntervalMs (2000) y waitIntervalMs (500), enteros de 100 a 10000; el catálogo admite la unidad ms y los muestra en «Interno» tras heartbeatSec, con la marca nueva; sus textos en español e inglés en settings-internal.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
