@@ -6,6 +6,13 @@
   "branch": "specty/20261108-las-listas-del-panel-muestran-el-titulo-de-cada",
   "baseCommit": "89ef4fe4ce5725e9021aa923aa57cdbce41eabc2",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7dee0f1c8983736669d4befa956b9ee0138b36859c7f8357fdd24fcb362a10e8",
+    "at": "2026-11-07T17:05:55.030Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -40,12 +47,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:7dee0f1c8983736669d4befa956b9ee0138b36859c7f8357fdd24fcb362a10e8",
-    "at": "2026-11-07T17:05:55.030Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T17:12:28.807Z"
 }
