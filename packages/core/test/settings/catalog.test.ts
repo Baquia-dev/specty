@@ -177,6 +177,11 @@ describe("the settings' catalog", () => {
       "internal.cards.reviewLines",
       "internal.cards.noteChars",
       "internal.cards.slugChars",
+      "internal.findings.perCommand",
+      "internal.findings.lastLines",
+      "internal.findings.messageChars",
+      "internal.commands.verifyLines",
+      "internal.commands.whyEntries",
     ]);
   });
 
@@ -315,6 +320,11 @@ describe("the settings' catalog", () => {
       expect.objectContaining({ key: "internal.cards.reviewLines", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.cards.noteChars", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.cards.slugChars", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.perCommand", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.lastLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.findings.messageChars", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.commands.verifyLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.commands.whyEntries", kind: "number", new: true }),
     ]);
     expect(
       SETTINGS.find((setting) => setting.key === "internal.retries.landing")?.unit,
@@ -356,10 +366,16 @@ describe("the settings' catalog", () => {
         "internal.server.runLines",
         "internal.server.runEveryMs",
         "internal.server.maxBodyKiB",
+        "internal.hooks.antigravityTimeoutSec",
         "internal.cards.importersShown",
         "internal.cards.reviewLines",
         "internal.cards.noteChars",
         "internal.cards.slugChars",
+        "internal.findings.perCommand",
+        "internal.findings.lastLines",
+        "internal.findings.messageChars",
+        "internal.commands.verifyLines",
+        "internal.commands.whyEntries",
         "guarantee.receipts",
       ]),
     );

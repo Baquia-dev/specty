@@ -221,10 +221,13 @@ describe("the view Flujo of the settings page", () => {
       "Sin revisión independiente: la spec y el diff los revisas tú.",
       "Un cambio rápido toca como mucho 3 archivos de código.",
       "Tú apruebas, aceptas y cierras cada cambio.",
+      "Una tarea no puede dejar un archivo con más de 500 líneas de código, y Specty avisa por encima de 300.",
+      "specty check señala cada función de más de 50 líneas o con complejidad mayor que 10.",
+      "La cobertura del diff avisa si los tests ejecutan menos del 80 % de las líneas que añade el cambio.",
     ]);
     expect(
       [...(flow()?.querySelectorAll("[data-sentences] code") ?? [])].map((code) => text(code)),
-    ).toEqual(["pnpm test", "pnpm check"]);
+    ).toEqual(["pnpm test", "pnpm check", "specty check"]);
   });
 
   it("AC3: in Advanced, each phase of the line is a button and there are no sentences", async () => {

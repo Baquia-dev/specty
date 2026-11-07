@@ -32,6 +32,7 @@ import { FlowPiece } from "./flow-piece";
 import type { FieldView } from "./setting-row";
 import { applyEdits, type Draft } from "./settings-edit";
 import { SettingsMode } from "./settings-mode";
+import { SettingsPresets } from "./settings-presets";
 import { type SettingRow, valueAt } from "./settings-view";
 
 /** A piece in its phase of the line: its name and, of a guarantee, why it is not removed. */
@@ -59,16 +60,20 @@ const HEAD =
 /**
  * The view Flujo of the page «Configuración»: the phases of a change in line, each with the pieces
  * the configuration equips with the page's edits, Specty's guarantees with a lock. In Básico, the
- * line has no controls and sentences say what the flow does; in Avanzado, each phase is a button
+ * profiles go above the line, which has no controls, and sentences say what the flow does; choosing
+ * a profile is edits of the page, as a piece's are. In Avanzado, each phase is a button
  * that chooses it, and under the line go the chosen phase's equipped pieces, with their settings,
  * and those to equip. Equipping and removing a piece are edits of the page, as its settings' are.
  */
 @Component({
   selector: "sp-settings-flow",
-  imports: [LucideDynamicIcon, PhaseBadge, SectionDivider, FlowPiece],
+  imports: [LucideDynamicIcon, PhaseBadge, SectionDivider, FlowPiece, SettingsPresets],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-8" },
   template: `
+    @if (basic()) {
+      <sp-settings-presets [record]="record()" [value]="value()" [editable]="editable()" (edit)="edit.emit($event)" />
+    }
     <ol data-line class="m-0 grid list-none grid-cols-2 gap-x-4 gap-y-6 p-0 sm:grid-cols-3 lg:grid-flow-col lg:auto-cols-fr lg:grid-cols-none">
       @for (column of line(); track column.phase) {
         <li class="flex min-w-0 flex-col gap-2" [attr.data-phase-column]="column.phase">
