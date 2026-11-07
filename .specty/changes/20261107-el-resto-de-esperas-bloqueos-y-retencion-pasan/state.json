@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261107-el-resto-de-esperas-bloqueos-y-retencion-pasan",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-resto-de-esperas-bloqueos-y-retencion-pasan",
+  "baseCommit": "9183447eaa311a331341561a5c135a75de5a6508",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "16 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:91ec90a1d000191e602c8251ad9d2a2220fbc52f3437010fbf63777afe7f9da9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:deca8db07d5330edd325d9956642bc6d98bccb97a8b46042ae59e6e1897c2543",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:d52bb43c7de27cf1879cb60b87a5b6aa7434fb887d9d0e0574cddd3421df52b7",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:e536f50d7608bf54578564095fac786b3b3e8d5a669c7f0c966f425b145d8e98",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:4085b2412dcdd9a080e7641cdb942f31b3d7aa209ac44a6af58a9648e8fe6bc4",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:f833ec2d44102b727b402c7074e69ec31c0abb5eaf0112654628045013b050a1",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:9091da4bd7eba9f8d6487cce869e9983ade2ad8bb0fc8a5a2cbac11d5a507604",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1b5c968248ae217beae232ec944296c3effb9f44267c72d0ecf776d4207d65d4",
+    "at": "2026-11-07T04:30:45.111Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
