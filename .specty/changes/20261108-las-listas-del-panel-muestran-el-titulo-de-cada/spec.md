@@ -60,7 +60,7 @@ En el «Panel» de `specty ui`, «Los cambios más caros» y «Cambios con más 
   - files: packages/core/src/stats/rows.ts, packages/core/src/stats/cost.ts, packages/core/src/stats/quality.ts, packages/core/test/stats/titles.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/titles.test.ts test/stats/cost-scope-memory.test.ts test/stats/flow-quality.test.ts && pnpm lint
-- [ ] T2: `GET /api/stats` lee las filas con el título de su spec
+- [x] T2: `GET /api/stats` lee las filas con el título de su spec
   - files: packages/cli/src/server/stats-changes.ts, packages/cli/src/server/stats.ts, packages/cli/test/server/stats.test.ts, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/stats.test.ts test/server/stats-changes.test.ts test/stats.test.ts && pnpm lint && pnpm knip

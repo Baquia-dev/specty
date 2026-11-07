@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "770534b8ecc4c39f09d4107dc63a061bfad030fc",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:12:46.037Z",
       "doneAt": "2026-11-07T17:18:12.819Z",
-      "summary": "StatsRow gana title? (statsRow no lo pone) y cost.top y quality.worst lo copian de la fila cuando lo trae, sin cambiar orden ni cifras"
+      "summary": "StatsRow gana title? (statsRow no lo pone) y cost.top y quality.worst lo copian de la fila cuando lo trae, sin cambiar orden ni cifras",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "18f19bfea02482b7b488650be07e0f112c0c8b88",
+      "startedAt": "2026-11-07T17:18:13.291Z",
+      "doneAt": "2026-11-07T17:25:42.277Z",
+      "summary": "GET /api/stats y specty stats leen las filas con el título de su spec (listedRows de server/stats-changes.ts, ahora exportada), así que --json sigue dando lo mismo que la API; la tabla de la terminal sigue con el id; ARCHITECTURE §15 al día"
     }
   },
   "pending": {
