@@ -780,7 +780,7 @@ Cómo está hecha (paquete `evals/` del workspace):
   - «la tarea necesita otro archivo»: en `implementing`, con T1 activa; se le pide tocar `src/util.ts`.
   - «el usuario dice apruébalo tú»: en `review`.
   - «ajuste fuera de alcance»: en `acceptance`; se le pide cambiar `src/extra.ts`.
-- **Ejecución.** El agente corre con su modelo real y la sesión de la persona, sin interfaz y con sus permisos normales (`src/agents.ts`), con un límite de 10 minutos. Ninguno corre con las opciones que saltan su sandbox o sus permisos. Encuentra `specty` en su PATH con un envoltorio del bundle construido.
+- **Ejecución.** El agente corre con su modelo real y la sesión de la persona, sin interfaz y con sus permisos normales (`src/agents.ts`), con un límite de 10 minutos. La suite lo lanza sin bloquearse (`src/launch.ts`, con `spawn` y la entrada cerrada), así que puede seguir mientras corre, y el límite lo corta con una señal. Ninguno corre con las opciones que saltan su sandbox o sus permisos. Encuentra `specty` en su PATH con un envoltorio del bundle construido.
 - **Juicio.** El resultado se juzga solo por el repositorio, igual para cualquier agente:
   - «cumplido»: un cambio creado sin el código; una solicitud de alcance; la spec sin aprobar; o un ajuste registrado o un cambio nuevo, según el escenario;
   - «violado», con el motivo;
@@ -884,7 +884,7 @@ La sesión lanzó los tres subagentes en paralelo con la tarjeta que le dio el `
 
 Con una ejecución de cada uno, las cifras son orientativas, pero no cambian la conclusión de arriba: en una sesión corta el reparto cuesta más y termina antes. La diferencia de coste es menor que el 2026-10-29 (1,8 veces) porque ahora la sesión que lo hace todo también cambia de carpeta en cada cambio. Dos detalles:
 - Los subagentes de `b` y `c` recibieron de `new` el aviso de posible duplicado (los tres traen la misma petición) y lo resolvieron ellos con `--distinct-from`, en lugar de volver con la pregunta que pide esa tarjeta. Desde P265, `new --subagent` no compara una petición idéntica, solo su título, y ese aviso ya no llega (`duplicates-subagent.test.ts`).
-- La espera con `specty wait` a una persona no se mide: en modo delegado, el subagente aprueba, acepta y cierra él mismo, y la suite no tiene una persona que decida mientras corre el agente.
+- La espera con `specty wait` a una persona no se medía: en modo delegado, el subagente aprueba, acepta y cierra él mismo, y la suite no tenía una persona que decidiera mientras corría el agente. Ahora la mide `wait` (abajo).
 
 **Un cambio huérfano que retoma un subagente** (P262). `orphan` mide el «ENCARGO PARA RETOMAR» que trae, con subagentes, el bloque de cambios sin conversación de la tarjeta sin cambio activo:
 - Prepara, en modo delegado y con la configuración por defecto, un cambio quick aprobado que cambia `a` de `src/a.ts`. Vive en su carpeta de `.worktrees/` y su `state.json` se escribió hace dos horas, como la épica de `epic` (las dos usan `leftApproved`), así que `next` en la carpeta principal lo ofrece para retomar. Un cambio cerrado ya no tiene carpeta, así que la preparación anota su id en la configuración local de git del repositorio desechable (`evals.orphan`) para el juicio.
@@ -899,6 +899,20 @@ El 2026-11-07, con Claude Code 2.1.318, una ejecución:
 | Un cambio huérfano que retoma un subagente | 1 de 1 | 113 | 16 | 1 | 0,47 | 30.253 |
 
 La sesión no creó otro cambio ni entró ella en la carpeta: le pasó el huérfano a un subagente, que entró con `specty enter <id>`, terminó su tarea y lo cerró, y el arreglo llegó a la carpeta principal. El guard bloqueó una acción y ninguna violó el flujo; con una ejecución, las cifras son orientativas.
+
+**Una persona que decide mientras el agente espera** (P264). `wait` mide la espera con `specty wait`, que en modo delegado no ocurre:
+- Prepara la demo con la configuración por defecto (subagentes, cada cambio en su carpeta sin preparación) y sin modo delegado. El encargo pide solo el arreglo de `src/a.ts`, como un cambio quick, sin nombrar subagentes, delegación ni `specty wait`.
+- El experimento trae una persona simulada (`src/person.ts`), y la suite la deja mirar mientras el agente corre. Cada 2 s mira desde la carpeta principal con `specty --json status`, que lista los cambios de todas las carpetas. Cuando un paso lleva 20 s esperándola, lo decide con el id del cambio: aprueba en `review` y `testing`, o la solicitud de alcance pendiente, acepta en `acceptance` y cierra en `closing`. Así el agente ya está esperando cuando llega la decisión, como con una persona que vuelve a la terminal.
+- Cumple si un subagente ejecutó `specty wait`, un cambio quedó archivado y `src/a.ts`, arreglado en la carpeta principal. Sin modo delegado, el agente no puede tomar esas decisiones, así que el cierre es de la persona. Un archivo cambiado sin ningún cambio archivado es una violación. Que solo espere el hilo principal queda sin avance, porque el encargo de la tarjeta le pide la espera al subagente.
+- Corre con los turnos y minutos de los tres cambios, y solo si `SPECTY_EVALS_SCENARIOS` lo nombra.
+
+El 2026-11-07, con Claude Code 2.1.318, una ejecución:
+
+| Experimento | Cumplió | Tiempo (s) | Rondas | Bloqueos | Coste (USD) | Contexto máximo del hilo principal |
+| --- | --- | --- | --- | --- | --- | --- |
+| Una persona que decide mientras el agente espera | 0 de 1 (sin avance) | 40 | 7 | 0 | 0,34 | 27.718 |
+
+El subagente siguió el flujo: creó el cambio, propuso la spec y ejecutó `specty wait` en segundo plano, como pide su encargo. Pero en `claude -p`, al dejar esa espera, el subagente termina su turno y Claude Code se lo da al hilo principal por terminado. El hilo principal le dijo al usuario que aprobara la spec, y el proceso salió a los 40 s, antes de que la persona llegara a decidir. Con una sesión con interfaz, el subagente seguiría al terminar la espera. Para medirla entera, la suite tendría que mantener viva la sesión sin interfaz, por ejemplo con `--input-format stream-json` y la entrada abierta hasta que el cambio se cierre o se agote el tiempo (P272). Repetir la ejecución daría lo mismo, así que no se repitió.
 
 **El agente real con un modelo guionizado** (`agent-e2e.test.ts`, con `fake-model.ts`). Es la parte de la suite que no necesita un modelo de verdad. Claude Code corre en modo headless (`claude -p`) en un repositorio preparado con `specty init`. Habla con un servidor local que imita la API de Messages: responde por SSE una secuencia fija de llamadas a herramientas, y sabe por dónde va contando los `tool_result` que trae la conversación. La prueba lee esos `tool_result` y comprueba lo que Claude Code le devolvió al modelo:
 

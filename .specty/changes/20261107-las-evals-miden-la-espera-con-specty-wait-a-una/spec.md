@@ -68,7 +68,7 @@ Las evals no miden la espera con `specty wait` a una persona real (P264, parte d
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/wait.test.ts test/experiments.test.ts test/orphan.test.ts test/question.test.ts test/changes-card.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T3: La arquitectura cuenta la persona, el experimento y su resultado real
+- [x] T3: La arquitectura cuenta la persona, el experimento y su resultado real
   - files: docs/ARCHITECTURE.md
   - ac: AC6
   - verify: grep -q 'specty wait' docs/ARCHITECTURE.md && grep -q '`wait`' docs/ARCHITECTURE.md && pnpm lint

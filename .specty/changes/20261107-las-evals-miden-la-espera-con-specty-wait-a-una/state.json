@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-evals-miden-la-espera-con-specty-wait-a-una",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-las-evals-miden-la-espera-con-specty-wait-a-una",
   "baseCommit": "abb0d3e277d90768dee5c6d4d4de185f4796f8bf",
   "revision": 2,
@@ -55,14 +55,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "evals/test/wait.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "903bd1b49906a5bf6fb57ef86ffcaca4098a9f76",
+      "attempts": 1,
       "startedAt": "2026-11-07T01:52:40.368Z",
       "doneAt": "2026-11-07T03:11:18.213Z",
-      "summary": "person.ts: persona simulada que, desde la carpeta principal, aprueba, acepta y cierra lo que la espera tras 20 s; experimento wait sin modo delegado, juzgado por el specty wait de un subagente; runOnce la deja mirar mientras corre el agente."
+      "summary": "person.ts: persona simulada que, desde la carpeta principal, aprueba, acepta y cierra lo que la espera tras 20 s; experimento wait sin modo delegado, juzgado por el specty wait de un subagente; runOnce la deja mirar mientras corre el agente.",
+      "scopeExtra": [
+        "evals/test/wait.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d160883845a70529e3a96494446c9556921d8164",
+      "startedAt": "2026-11-07T03:11:18.583Z",
+      "doneAt": "2026-11-07T03:11:43.770Z",
+      "summary": "ARCHITECTURE §16: la suite lanza el agente sin bloquearse, la persona simulada y el experimento wait, con su ejecución real (sin avance en 40 s: claude -p sale cuando el subagente deja specty wait en segundo plano, P272)."
     }
   },
   "pending": {
