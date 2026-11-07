@@ -52,7 +52,7 @@ Desde C1, cada comando de una verificación recibe en las variables de `verify.p
 
 ## Tareas
 
-- [ ] T1: La memoria disponible, con el lector de `vm_stat` en macOS y `process.availableMemory()` en los demás
+- [x] T1: La memoria disponible, con el lector de `vm_stat` en macOS y `process.availableMemory()` en los demás
   - files: packages/cli/src/io/memory.ts, packages/cli/test/memory.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory.test.ts && pnpm lint

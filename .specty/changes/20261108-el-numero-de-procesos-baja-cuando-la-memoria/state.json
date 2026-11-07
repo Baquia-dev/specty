@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "00ea4bcad69bc69b2bb8732478f455c713b5a8c7",
+      "startedAt": "2026-11-07T17:19:33.095Z",
+      "doneAt": "2026-11-07T17:25:35.262Z",
+      "summary": "io/memory.ts: vmStatMemory lee las páginas libres, de archivos y purgables de vm_stat por su tamaño de página; availableMemory ejecuta vm_stat en macOS y, si falla, no da cifras o en otro sistema, usa process.availableMemory()"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
