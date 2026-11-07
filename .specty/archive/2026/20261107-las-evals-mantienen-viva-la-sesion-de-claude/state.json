@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "id": "20261107-las-evals-mantienen-viva-la-sesion-de-claude",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-las-evals-mantienen-viva-la-sesion-de-claude",
+  "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:327b17f4e314bd7cef94f29155d83ac92aa43849f88391a69cfe779a70d88a48",
+    "at": "2026-11-07T04:08:29.776Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3f05409b4eaf88f02d431dafe9af6a7f8ee36cb36e32b6b12dced483dbc796c3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8d2e7b448aaf9d990c8c374428010cb2cf28ad83377b4e87bab47787cbb7c683",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:939ff07066f7eb984b213e56bc787a6eb96f6f58d2614868057a531183239a90",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:abddbf28043bb241c45dc1de4ea34c7c8bce7e6e41901bcbd0c5cae465a64f77",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:aa8658bc0541b274bb54b989421f62f67d81370b560311e348e879d9cba8797d",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:9e09e41ee13531d39a8dbc2f22ff1ba1e3b1c9b78f83898c20c3a96231249035",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "be84e469edcf75cadca2a08220085c15f5ba603f",
+      "attempts": 3,
+      "startedAt": "2026-11-07T04:10:01.442Z",
+      "doneAt": "2026-11-07T04:10:59.005Z",
+      "summary": "launch acepta una sesión: escribe su mensaje en la entrada, la deja abierta y la cierra con la primera línea completa de la salida que la sesión da por terminada",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b11caf3268c40856d13a6f142178042cf788130d",
+      "attempts": 2,
+      "startedAt": "2026-11-07T04:10:59.343Z",
+      "doneAt": "2026-11-07T04:13:19.336Z",
+      "summary": "Claude Code tiene una conversación (entrada en stream-json, el prompt como mensaje del usuario, que termina con un result sin tareas en segundo plano) e invocation la elige cuando decide una persona; runOnce le pasa la sesión a launch, cuyos streams se tipan como posibles null",
+      "scopeExtra": [
+        "evals/src/launch.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "5a5247eb8f8cce38f5139bece939ba22abc00397",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:13:19.698Z",
+      "doneAt": "2026-11-07T04:23:56.651Z",
+      "summary": "ARCHITECTURE §16 cuenta la sesión viva de Claude Code en las ejecuciones con persona y la ejecución real de wait: cumplió en 122 s, 15 rondas, 0 bloqueos, 0,49 USD y 30.377 tokens de contexto",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-07T04:25:05.270Z",
+  "lockedTests": {
+    "evals/test/conversation.test.ts": "sha256:a6f4d3a8582b1ff83d184929683320687130bf74e30462f58e59d4ccd06a8af3",
+    "evals/test/session.test.ts": "sha256:8f70b0fe45ce96258ce192e3b71d7bd311fec3b43c6d5cc05ec32666776cf8a3"
+  }
+}

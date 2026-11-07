@@ -150,7 +150,7 @@ async function proposalCard(
     approvedText === undefined || phase === "closing"
       ? []
       : specDelta(parseSpec(approvedText).spec, analysis.spec).entries;
-  const effort = recommendEffort(analysis.size.level, analysis.spec);
+  const effort = recommendEffort(analysis.size.level, analysis.spec, session.config.effort);
   const review = await reviewRecommended(session, active, analysis.size, effort, phase);
   const card = proposedCard(
     {

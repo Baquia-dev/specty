@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-import { rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { markBranch } from "../src/flow/branches";
+import { lockWaits, markBranch } from "../src/flow/branches";
 import type { ExecResult } from "../src/io/exec";
 import { exists } from "../src/io/files";
 import { GitError } from "../src/io/git";
@@ -94,5 +95,41 @@ describe("specty new while another process holds git's configuration", () => {
     expect(again.code).toBe(0);
     expect(again.out).toContain(`Cambio creado: ${OTHER} (rama ${BRANCH}) en ${folder}`);
     expect(git(root, "config", `branch.${BRANCH}.specty`)).toBe(OTHER);
+  });
+});
+
+describe("specty new and internal.retries.gitConfig", () => {
+  /**
+   * The writes of the branch's mark that `specty new --worktree` tried in a repository whose
+   * `config.yaml` ends with `extra`, while another process holds git's configuration the whole
+   * time, counted in a `GIT_TRACE` file; and that it undid what it had created.
+   */
+  const triedWrites = async (extra: string) => {
+    const root = await tempRepo({ ...FILES, ".specty/config.yaml": `${CONFIG()}${extra}` });
+    await writeFile(join(root, ".git", "config.lock"), "");
+    const trace = join(await mkdtemp(join(tmpdir(), "specty-trace-")), "git.log");
+    const failed = await cli(root, ["new", "--worktree", "Otro cambio"], {
+      env: { GIT_TRACE: trace },
+    });
+    expect(failed.code).toBe(1);
+    expect(failed.out).toContain("Specty deshizo lo que había creado");
+    expect(await exists(join(root, ".worktrees", OTHER))).toBe(false);
+    const written = `trace: built-in: git config branch.${BRANCH}.specty ${OTHER}`;
+    return (await readFile(trace, "utf8")).split("\n").filter((line) => line.includes(written));
+  };
+
+  it("AC2: repeats the write that ties the branch to its change those more times, then undoes", async () => {
+    expect(await triedWrites("internal:\n  retries:\n    gitConfig: 1\n")).toHaveLength(2);
+    expect(await triedWrites("internal:\n  retries:\n    gitConfig: 3\n")).toHaveLength(4);
+  });
+
+  it("AC2: without the key, repeats it 5 times, as before", async () => {
+    expect(await triedWrites("")).toHaveLength(6);
+  });
+
+  it("AC2: waits twice the wait before each time, from 50 ms", async () => {
+    expect(lockWaits(1)).toEqual([50]);
+    expect(lockWaits(5)).toEqual([50, 100, 200, 400, 800]);
+    expect(lockWaits(10).at(-1)).toBe(25_600);
   });
 });

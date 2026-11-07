@@ -2,6 +2,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { delimiter, join } from "node:path";
+import type { Session } from "./launch";
 
 /**
  * The agents of the suite: how to find each one, its command line without an interface, and how
@@ -22,6 +23,31 @@ export interface Agent {
    * `turns` of the model at most where the agent takes a limit (30 by default).
    */
   command(binary: string, prompt: string, turns?: number): string[];
+  /**
+   * The same run with its conversation kept open, for a person who decides while it runs
+   * (ARCHITECTURE §16): its command line, without the prompt, and its session, which brings the
+   * prompt. Only Claude Code has one.
+   */
+  conversation?(binary: string, prompt: string, turns?: number): Conversation;
+}
+
+interface Conversation {
+  readonly command: string[];
+  readonly session: Session;
+}
+
+/**
+ * What the suite runs: with a person who decides, the agent's conversation, if it has one;
+ * otherwise its command line, with the prompt and its input closed.
+ */
+export function invocation(
+  agent: Agent,
+  binary: string,
+  prompt: string,
+  options: { readonly turns: number | undefined; readonly person: boolean },
+): { readonly command: string[]; readonly session?: Session } {
+  const open = options.person ? agent.conversation?.(binary, prompt, options.turns) : undefined;
+  return open ?? { command: agent.command(binary, prompt, options.turns) };
 }
 
 interface Counts {
@@ -208,26 +234,54 @@ function bundledClaude(): string | undefined {
   return found.toSorted((a, b) => a.localeCompare(b, undefined, { numeric: true })).at(-1);
 }
 
+/** Claude Code's options after its prompt: its `stream-json`, its turns and its permissions. */
+function claudeOptions(turns: number): string[] {
+  return [
+    "--output-format",
+    "stream-json",
+    "--verbose",
+    "--max-turns",
+    String(turns),
+    "--permission-mode",
+    "acceptEdits",
+    // `Agent` lets it hand work to the subagents the repository defines.
+    "--allowedTools",
+    "Bash,Read,Write,Edit,Glob,Grep,Agent",
+  ];
+}
+
+/**
+ * Claude Code's session over `stream-json`: the prompt as the user's message, and done once its
+ * main thread answers (a `result`) with no background task left, by the last list that
+ * `background_tasks_changed` gave. A task that ends wakes whoever launched it, and the main thread
+ * answers again; an empty list without a result is a subagent about to resume.
+ */
+function claudeSession(prompt: string): Session {
+  const message = { type: "user", message: { role: "user", content: prompt } };
+  let tasks = 0;
+  return {
+    input: `${JSON.stringify({ ...message, parent_tool_use_id: null, session_id: "" })}\n`,
+    done(line) {
+      const value = parsed(line);
+      if (!isObject(value)) return false;
+      if (value.subtype === "background_tasks_changed" && Array.isArray(value.tasks)) {
+        tasks = value.tasks.length;
+      }
+      return value.type === "result" && tasks === 0;
+    },
+  };
+}
+
 export const AGENTS: readonly Agent[] = [
   {
     id: "claude-code",
     name: "Claude Code",
     find: (env) => finder("claude-code", "claude")(env) ?? bundledClaude(),
-    command: (binary, prompt, turns = 30) => [
-      binary,
-      "-p",
-      prompt,
-      "--output-format",
-      "stream-json",
-      "--verbose",
-      "--max-turns",
-      String(turns),
-      "--permission-mode",
-      "acceptEdits",
-      // `Agent` lets it hand work to the subagents the repository defines.
-      "--allowedTools",
-      "Bash,Read,Write,Edit,Glob,Grep,Agent",
-    ],
+    command: (binary, prompt, turns = 30) => [binary, "-p", prompt, ...claudeOptions(turns)],
+    conversation: (binary, prompt, turns = 30) => ({
+      command: [binary, "-p", "--input-format", "stream-json", ...claudeOptions(turns)],
+      session: claudeSession(prompt),
+    }),
   },
   {
     id: "codex",

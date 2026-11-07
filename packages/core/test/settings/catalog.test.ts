@@ -1,7 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import * as z from "zod";
-import { optionName, SETTING_SECTIONS, SETTINGS, sectionName, settingText } from "../../src/light";
+import {
+  optionName,
+  SETTING_SECTIONS,
+  SETTINGS,
+  sectionName,
+  settingChanges,
+  settingOf,
+  settingText,
+} from "../../src/light";
 import { ConfigSchema, DEFAULT_CONFIG, resolveConfig } from "../../src/schema/config";
 
 type Schema = z.core.$ZodType;
@@ -31,6 +39,15 @@ function schemaAt(key: string): Schema | undefined {
 }
 
 const KEYS = leaves(ConfigSchema).filter((key) => key !== "version");
+/** The size's parameters that were fixed in core's code, in the page's order. */
+const SIZING_KEYS = [
+  "sizing.weights",
+  "sizing.tasksWithoutWeight",
+  "sizing.highFanIn",
+  "sizing.nearRatio",
+];
+/** The effort recommended for each size and for a task. */
+const EFFORT_KEYS = ["effort.S", "effort.M", "effort.L", "effort.XL", "effort.task"];
 /** The settings with a key of `config.yaml`: neither delegated mode nor Specty's guarantees. */
 const inFile = SETTINGS.filter((setting) => setting.clone !== true && setting.guarantee !== true);
 const covers = (setting: { readonly key: string }, key: string) =>
@@ -123,20 +140,25 @@ describe("the settings' catalog", () => {
     ]);
     expect(keysWith("clone")).toEqual(["specty delegate"]);
     expect(keysWith("soon")).toEqual([
+      "sizing.highFanIn",
       "team.approvers",
       "team.requirePrReview",
       "ui.requireUserPresence",
-      "effort",
     ]);
     expect(keysWith("new")).toEqual([
+      ...SIZING_KEYS,
       "warnings.vagueTerms",
       "warnings.horizontalLayers",
       "usage.freshSessionTokens",
       "usage.ccusage.timeoutSec",
       "usage.ccusage.version",
+      ...EFFORT_KEYS,
       "internal.waits.waitTimeoutSec",
       "internal.waits.heartbeatSec",
       "internal.retries.landing",
+      "internal.retries.memory",
+      "internal.retries.gitConfig",
+      "internal.retention.verifiedDays",
       "internal.exec.priority",
       "internal.server.portsTried",
     ]);
@@ -173,13 +195,43 @@ describe("the settings' catalog", () => {
       "Consumo y sesiones",
       "Desarrollo",
       "Interfaz",
-      "Esfuerzo por herramienta",
+      "Esfuerzo recomendado",
       "Glosario",
       "Interno",
     ]);
     expect(sectionName("verify", "en")).toBe("Verification");
     expect(optionName("policy.tests", "contract", "es")).toBe("Contrato");
     expect(optionName("policy.tests", "contract", "en")).toBe("Contract");
+  });
+
+  it("AC6: shows the size's weights, tasks, fan-in and ratio after the splitting limits, and the effort of each size and of a task in its section, marked new", () => {
+    const keys = SETTINGS.map((setting) => setting.key);
+    const at = keys.indexOf("split");
+    expect(keys.slice(at + 1, at + 1 + SIZING_KEYS.length)).toEqual(SIZING_KEYS);
+    expect(
+      SETTINGS.filter((setting) => setting.section === "effort").map((setting) => setting.key),
+    ).toEqual(EFFORT_KEYS);
+    for (const key of [...SIZING_KEYS, ...EFFORT_KEYS]) {
+      const setting = SETTINGS.find((found) => found.key === key);
+      const kind = key === "sizing.weights" || key.startsWith("effort.") ? "group" : "number";
+      expect(setting, key).toMatchObject({ kind, new: true });
+      expect(setting?.section, key).toBe(key.startsWith("effort.") ? "effort" : "size");
+    }
+    expect(SETTINGS.find((setting) => setting.key === "sizing.highFanIn")?.soon).toBe(true);
+    expect(keys).not.toContain("effort");
+  });
+
+  it("AC7: names and describes the new settings and the effort's section in Spanish and in English", () => {
+    for (const key of [...SIZING_KEYS, ...EFFORT_KEYS]) {
+      const es = settingText(key, "es");
+      const en = settingText(key, "en");
+      expect(es.name, key).not.toBe(key);
+      expect(en.name, key).not.toBe(key);
+      expect(es.name, key).not.toBe(en.name);
+      expect(es.description, key).not.toBe(en.description);
+    }
+    expect(sectionName("effort", "es")).toBe("Esfuerzo recomendado");
+    expect(sectionName("effort", "en")).toBe("Recommended effort");
   });
 
   it("AC6: puts the internal settings last, in section «Interno», as numbers with their units, marked new", () => {
@@ -199,6 +251,14 @@ describe("the settings' catalog", () => {
         new: true,
       }),
       expect.objectContaining({ key: "internal.retries.landing", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.retries.memory", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.retries.gitConfig", kind: "number", new: true }),
+      expect.objectContaining({
+        key: "internal.retention.verifiedDays",
+        kind: "number",
+        unit: "d",
+        new: true,
+      }),
       expect.objectContaining({ key: "internal.exec.priority", kind: "number", new: true }),
       expect.objectContaining({ key: "internal.server.portsTried", kind: "number", new: true }),
     ]);
@@ -231,7 +291,7 @@ describe("the settings' catalog", () => {
 
   it("AC5, AC7: says why each guarantee does not change, and names the internal settings in Spanish and in English", () => {
     const internal = SETTINGS.filter((setting) => setting.section === "internal");
-    expect(internal).toHaveLength(9);
+    expect(internal).toHaveLength(12);
     for (const setting of internal) {
       const es = settingText(setting.key, "es");
       const en = settingText(setting.key, "en");
@@ -270,6 +330,64 @@ describe("the settings' catalog", () => {
       expect(settingText(key, "es").name, key).not.toBe(key);
       expect(settingText(key, "es").name, key).not.toBe(settingText(key, "en").name);
     }
+  });
+});
+
+describe("the internal settings of locks and retention", () => {
+  const KEYS_OF_LOCKS = [
+    "internal.retries.memory",
+    "internal.retries.gitConfig",
+    "internal.retention.verifiedDays",
+  ];
+
+  it("AC5: puts the memory's and git configuration's retries and the record's days in «Interno», after landing, as new numbers, the days in d", () => {
+    const keys = SETTINGS.map((setting) => setting.key);
+    const landing = keys.indexOf("internal.retries.landing");
+    expect(keys.slice(landing + 1, landing + 4)).toEqual(KEYS_OF_LOCKS);
+    expect(SETTINGS.find((setting) => setting.key === "internal.retries.memory")).toEqual({
+      key: "internal.retries.memory",
+      section: "internal",
+      kind: "number",
+      new: true,
+    });
+    expect(SETTINGS.find((setting) => setting.key === "internal.retries.gitConfig")).toEqual({
+      key: "internal.retries.gitConfig",
+      section: "internal",
+      kind: "number",
+      new: true,
+    });
+    expect(SETTINGS.find((setting) => setting.key === "internal.retention.verifiedDays")).toEqual({
+      key: "internal.retention.verifiedDays",
+      section: "internal",
+      kind: "number",
+      unit: "d",
+      new: true,
+    });
+    for (const key of KEYS_OF_LOCKS) {
+      expect(settingOf(key.split("."))?.key, key).toBe(key);
+      expect(schemaAt(key), key).toBeInstanceOf(z.ZodNumber);
+    }
+  });
+
+  it("AC6: names and describes each of them in Spanish and in English", () => {
+    for (const key of KEYS_OF_LOCKS) {
+      const es = settingText(key, "es");
+      const en = settingText(key, "en");
+      expect(es.name, key).not.toBe(key);
+      expect(en.name, key).not.toBe(key);
+      expect(es.name, key).not.toBe(en.name);
+      expect(es.description, key).not.toBe("");
+      expect(en.description, key).not.toBe("");
+      expect(es.description, key).not.toBe(en.description);
+    }
+    expect(settingText("internal.retention.verifiedDays", "es").description).toContain(
+      "specty prune",
+    );
+    expect(settingText("internal.retention.verifiedDays", "en").description).toContain(
+      "specty prune",
+    );
+    expect(settingText("internal.retries.gitConfig", "es").description).toContain("50 ms");
+    expect(settingText("internal.retries.gitConfig", "en").description).toContain("50 ms");
   });
 });
 
@@ -397,5 +515,63 @@ describe("the keys of the spec's and the sessions' warnings", () => {
     expect(issuesOf({ usage: { fresh: 5 } })).toEqual(["usage"]);
     expect(issuesOf({ usage: { ccusage: { path: "x" } } })).toEqual(["usage.ccusage"]);
     expect(issuesOf({ warnings: { risks: [] } })).toEqual(["warnings"]);
+  });
+});
+
+describe("the settings' edits", () => {
+  it("AC1: finds the setting an edit's path falls in, only among those the UI saves", () => {
+    expect(settingOf(["verify", "timeoutSec"])?.key).toBe("verify.timeoutSec");
+    expect(settingOf(["size", "M"])?.key).toBe("size");
+    expect(settingOf(["checks", "levels", "max-lines"])?.key).toBe("checks.levels");
+    expect(settingOf(["language"])?.key).toBe("language");
+    expect(settingOf(["dev", "ports"])?.items).toBe("number");
+    for (const path of [
+      ["version"],
+      ["verify"],
+      ["verify", "units"],
+      ["checks", "generators"],
+      ["checks", "layers", "core"],
+      ["checks", "testTime", "maxMs"],
+      ["team", "approvers"],
+      ["ui", "requireUserPresence"],
+      ["guarantee", "receipts"],
+      ["effort"],
+      ["specty delegate"],
+      ["unknown", "key"],
+      [],
+    ]) {
+      expect(settingOf(path), path.join(".")).toBeUndefined();
+    }
+    expect(
+      SETTINGS.filter((setting) => setting.fileOnly === true).map((setting) => setting.key),
+    ).toEqual(["verify.units", "checks.layers", "checks.generators", "checks.testTime"]);
+    expect(
+      SETTINGS.filter((setting) => setting.items !== undefined).map((setting) => setting.key),
+    ).toEqual(["dev.ports"]);
+  });
+
+  it("AC1: gives, by setting and in the page's order, its value in the file before and after", () => {
+    const before = {
+      version: 1,
+      verify: { default: "pnpm test", timeoutSec: 10 },
+      size: { S: 4, M: 10 },
+      governed: ["**"],
+    };
+    const after = {
+      version: 1,
+      verify: { default: "pnpm test" },
+      size: { S: 4, M: 12 },
+      governed: ["**"],
+      git: { target: "develop" },
+    };
+    expect(settingChanges(before, after)).toEqual([
+      { key: "verify.timeoutSec", before: 10 },
+      { key: "git.target", after: "develop" },
+      { key: "size", before: { S: 4, M: 10 }, after: { S: 4, M: 12 } },
+    ]);
+    expect(settingChanges(before, before)).toEqual([]);
+    expect(settingChanges(undefined, { language: "en" })).toEqual([
+      { key: "language", after: "en" },
+    ]);
   });
 });
