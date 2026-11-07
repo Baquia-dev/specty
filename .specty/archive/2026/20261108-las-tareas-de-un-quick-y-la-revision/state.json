@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "id": "20261108-las-tareas-de-un-quick-y-la-revision",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-las-tareas-de-un-quick-y-la-revision",
+  "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:29188d88d9a3b9c1db5a8f6c33b5fa04f9c1be2d542fd669aaff2ba7ae08ecf9",
+    "at": "2026-11-07T16:16:32.126Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0ca0a3a4077c960493666ab84827ccf25076e9e2ae373271e0c138bd0ac8a795",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f577c2eb17139b4bc4c35b2a29330259aab25f1ea9975163f3042b4ed0db318c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e8d326c8563f8a84190d8b70f8b43b28bf1fc991df448867dfae27e4d9560f4c",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:5c22e3c702220ffc58b79d9d62d23f6bd05654e27432ddf3ba77387c1fcf4133",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:45d855689e3f8a6f13172b50fa57245792afe5f4179272d751bfb5a5b4805a3c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "51845aa886e0b46e23d5892148859fc3bbd1c5a3",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:19:36.251Z",
+      "doneAt": "2026-11-07T16:28:24.394Z",
+      "summary": "Las claves lanes.quick.maxTasks (1) y flow.reviewFrom (L) viven en schema/flow.ts, que recibe también el bloque lanes de config.ts; el catálogo las muestra con «Nuevo» tras lanes.quick.maxFiles y review.timeoutSec, con sus textos en español e inglés",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "333e7050d68ebc48f13cedc70527b0e42f325daa",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:28:24.985Z",
+      "doneAt": "2026-11-07T16:35:17.909Z",
+      "summary": "checkQuickLane admite las tareas de lanes.quick.maxTasks y el aviso quick-limits dice el máximo («quick admite una» con 1, el número con más)",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "a6b64d626f683e829dd02b4aac54cb2329eef7a6",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:35:18.335Z",
+      "doneAt": "2026-11-07T16:44:48.561Z",
+      "summary": "propose y la aceptación recomiendan la revisión independiente desde flow.reviewFrom (L por defecto) en SIZE_LEVELS, con las demás razones igual; formats.md §2 y §6 documentan lanes.quick.maxTasks y flow.reviewFrom, y ARCHITECTURE.md lo dice",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 3,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-07T16:45:44.698Z",
+  "lockedTests": {
+    "packages/cli/test/review.test.ts": "sha256:41979bc2aef4817837901f7df955729abf5b5c92bd4c55d5103728c2bf5c10e4",
+    "packages/core/test/settings/catalog.test.ts": "sha256:52184f058e658410965dc49f17c2d05b36257de3024a5e4436c20ee9fd6c74e4",
+    "packages/core/test/spec/messages.test.ts": "sha256:6396d8b6399d7ce6abe78fa0d040c8373183a4d082fc384aa90c910165d68102",
+    "packages/core/test/validate/structure.test.ts": "sha256:3c28a1881bf35275ea3e536199036489ae170ef7c0d61e8afdc9b7f7ad416ee5",
+    "packages/core/test/settings/quick-and-review.test.ts": "sha256:b7bbe40d181d05a65846e63d39bc193a11821a229ea5d2a145afaa473c9b92e4"
+  }
+}

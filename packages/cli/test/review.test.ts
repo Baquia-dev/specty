@@ -185,3 +185,45 @@ describe("specty review of the result", () => {
     expect((await cli(root, ["next"])).out).toContain("lo acepte con `specty accept`");
   });
 });
+
+describe("the size that asks for a review", () => {
+  /**
+   * SPEC, small and plain, with a review command and `extra` in `config.yaml`: what `propose`
+   * says, and `next` in acceptance once its tasks are done without warnings.
+   */
+  async function plain(extra: string): Promise<{ proposed: string; accepting: string }> {
+    const { command } = await reviewer();
+    const root = await tempRepo({
+      "src/app.ts": "export const greet = () => 'hola';\n",
+      ".specty/config.yaml": `${CONFIG()}review:\n  command: ${JSON.stringify(command)}\n${extra}`,
+    });
+    expect((await cli(root, ["new", "Saludo personalizado"])).code).toBe(0);
+    await writeFiles(root, { [SPEC_PATH]: SPEC });
+    const proposed = (await cli(root, ["propose"])).out;
+    await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    await cli(root, ["next"]);
+    await writeFiles(root, { "src/app.ts": "export const greet = (name) => 'Hola, ' + name;\n" });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Uno"])).code).toBe(0);
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name = 'mundo') => 'Hola, ' + name;\n",
+    });
+    expect((await cli(root, ["task", "done", "T2", "--summary", "Dos"])).code).toBe(0);
+    return { proposed, accepting: (await cli(root, ["next"])).out };
+  }
+
+  it("AC4: without flow.reviewFrom, asks for no review of a small, plain spec nor of its result", async () => {
+    const { proposed, accepting } = await plain("");
+    expect(proposed).toContain("SPEC VÁLIDA · tamaño S");
+    expect(proposed).not.toContain("specty review");
+    expect(accepting).toContain(`SPECTY · ${CHANGE} · acceptance`);
+    expect(accepting).not.toContain("specty review");
+  });
+
+  it("AC5: with flow.reviewFrom S, asks for a review of a small, plain spec and of its result", async () => {
+    const { proposed, accepting } = await plain("flow:\n  reviewFrom: S\n");
+    expect(proposed).toContain("SPEC VÁLIDA · tamaño S");
+    expect(proposed).toContain("SIGUIENTE: antes de pedir la aprobación, ejecuta `specty review`");
+    expect(accepting).toContain(`SPECTY · ${CHANGE} · acceptance`);
+    expect(accepting).toContain("SIGUIENTE: antes de pedir la aceptación, ejecuta `specty review`");
+  });
+});

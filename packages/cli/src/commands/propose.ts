@@ -25,6 +25,7 @@ import {
   recommendEffort,
   revisionLabel,
   runNext,
+  SIZE_LEVELS,
   type SizeResult,
   type Spec,
   specDelta,
@@ -221,9 +222,9 @@ function keptSize(
 }
 
 /**
- * An independent review (ADR 0011) comes before the approval of a large or sensitive spec, or one
- * whose review effort is `max`, once per change, when the person set one up; a failed one counts,
- * so reviews never chain.
+ * An independent review (ADR 0011) comes before the approval of a spec from the size
+ * `flow.reviewFrom` (L by default), a sensitive one or one whose review effort is `max`, once per
+ * change, when the person set one up; a failed one counts, so reviews never chain.
  */
 async function reviewRecommended(
   session: Session,
@@ -233,7 +234,8 @@ async function reviewRecommended(
   phase: ProposePhase,
 ): Promise<boolean> {
   if (session.config.review === undefined || phase === "closing") return false;
-  const large = size.level === "L" || size.level === "XL" || size.signals.sensitive.length > 0;
+  const from = SIZE_LEVELS.indexOf(session.config.flow.reviewFrom);
+  const large = SIZE_LEVELS.indexOf(size.level) >= from || size.signals.sensitive.length > 0;
   if (!large && effort.plan !== "max") return false;
   const audit = await readAudit(change.files);
   return !audit.some(

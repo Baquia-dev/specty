@@ -31,6 +31,7 @@ describe("the configuration in the local server", () => {
         default: "true",
         timeoutSec: DEFAULT_CONFIG.verify.timeoutSec,
         slots: DEFAULT_CONFIG.verify.slots,
+        processes: { env: [], memoryMiB: 512 },
       });
       expect(body.config.glossary).toBe(defaultGlossary("es"));
       expect(body.defaults).toEqual({ ...DEFAULT_CONFIG, glossary: defaultGlossary("es") });
