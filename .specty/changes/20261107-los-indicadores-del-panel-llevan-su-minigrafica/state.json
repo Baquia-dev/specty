@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261107-los-indicadores-del-panel-llevan-su-minigrafica",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-los-indicadores-del-panel-llevan-su-minigrafica",
+  "baseCommit": "bbc77876ac9692c275f8142a0c75b30b956c6ded",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:632cf57b059f8c430313d05e50443c462d4f27db403841abe16b8401a1ee7b91",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6ea7c7e7203e8dbe5075212173c40748a0a6056a151ca0f2bd77506d2968806e",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:41b94101532bbc4cc3ee5f4201c8e29f8ee52f1b8375dd4073bb5f31b6e3e924",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ad992e7a4ea7281e793dc93e45ab5436130d9251dd23fe903ee138b5de0d8a92",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:68068c6ed9f53ee549b5eefd60dc1e48f3570d8173e0e43ecdef8a502d5f757d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c76a0c758def8e3d34fdc6f97ed9601c459acc75f1f1755d3514156dadcd129c",
+    "at": "2026-11-07T16:05:32.808Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
