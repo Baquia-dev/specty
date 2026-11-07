@@ -69,7 +69,7 @@ Hoy cada comando de una verificación arranca con el entorno de Specty tal cual,
 
 ## Tareas
 
-- [ ] T1: `verify.processes` en el schema, con sus valores por defecto
+- [x] T1: `verify.processes` en el schema, con sus valores por defecto
   - files: packages/core/src/schema/verify.ts, packages/core/test/schema/processes.test.ts, packages/core/test/schema/units.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/processes.test.ts test/schema/units.test.ts && pnpm lint
