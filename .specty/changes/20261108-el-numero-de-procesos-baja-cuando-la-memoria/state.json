@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261108-el-numero-de-procesos-baja-cuando-la-memoria",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261108-el-numero-de-procesos-baja-cuando-la-memoria",
+  "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6f02804a057f822d40498e7120b46b52e1ba44ad6eb43f131b6c17c900b0a3d1",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6e450930b4d4cd4037ad3ca65e6d1157a261106df66c79dcd80b317d105b4f14",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:2b16ad4fe30c90366f96fb9932d8fdfaae62459a36177f92b32b5180886cc7d9",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:8eb48555d36931deb48a86081e521a5e2c46897b3b023dc6661e7d51f22af5c6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 2,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:08caf93fa6c2e34554186892251f8d0bd118a39de8ffd369e1229a1069cf10f6",
+    "at": "2026-11-07T17:17:15.914Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
