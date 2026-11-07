@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-indicadores-del-panel-llevan-su-minigrafica",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-los-indicadores-del-panel-llevan-su-minigrafica",
   "baseCommit": "bbc77876ac9692c275f8142a0c75b30b956c6ded",
   "revision": 1,
@@ -55,6 +55,10 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T16:15:17.752Z"
+  "lockedTests": {
+    "packages/ui/src/catalog/catalog.test.ts": "sha256:add69e66eae85fb9fb41a10c41ebaf8a9854f1da0ab02db550030801b1ae5e0a",
+    "packages/core/test/stats/trend.test.ts": "sha256:00c98ad01e8baf83817f6017d4e24d70671ff077a529ca89aa597011846a8fc3",
+    "packages/ui/src/components/charts/stat-tile.test.ts": "sha256:4fc2328226eaa67771f488dae6ec5be86269aed36e504ce08068c86ebd1957d5",
+    "packages/ui/src/dashboard/dashboard-summary.test.ts": "sha256:daf45a78bcfc8082e577998aa8b4524483afe37a4f21d4be96af9c697e1c5c3c"
+  }
 }
