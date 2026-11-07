@@ -90,7 +90,11 @@ function waitWith(
   );
 }
 
-/** The wait command timed out before human action was completed: it runs again right away. */
+/**
+ * The wait command timed out before human action was completed: it runs again right away. In
+ * delegated mode, `wait` only waits for a decision no delegation covers (`waitsForPerson`), and
+ * the card says so, so the agent does not take it for one of its own.
+ */
 export function waitTimeoutCard(id: string, timeoutSec: number, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   const again = waitWith(
@@ -98,6 +102,16 @@ export function waitTimeoutCard(id: string, timeoutSec: number, ctx: CardContext
     (wait) => `vuelve a ejecutar ya ${wait}`,
     (wait) => `run ${wait} again right away`,
   );
+  const remind =
+    ctx.delegated === true
+      ? t(
+          `la decisión pendiente es solo de la persona, también en modo delegado: recuérdasela y ${again}.`,
+          `the pending decision is the person's alone, in delegated mode too: remind them of it and ${again}.`,
+        )
+      : t(
+          `recuérdale a la persona la decisión pendiente y ${again}.`,
+          `remind the person of the pending decision and ${again}.`,
+        );
   return {
     status: "blocked",
     header: headerOf(id),
@@ -107,10 +121,7 @@ export function waitTimeoutCard(id: string, timeoutSec: number, ctx: CardContext
         `Wait timed out (${timeoutSec}s) on ${id}: the person has not taken a decision yet. The change's state was not modified.`,
       ),
     ]),
-    next: t(
-      `recuérdale a la persona la decisión pendiente y ${again}.`,
-      `remind the person of the pending decision and ${again}.`,
-    ),
+    next: remind,
   };
 }
 

@@ -130,7 +130,7 @@ export {
   type SpecAccess,
   type WaitingFor,
 } from "./flow/phases";
-export { changeWaitsFor } from "./flow/waiting";
+export { changeWaitsFor, unlocksApprovedTest, waitsForPerson } from "./flow/waiting";
 export { globBase, isGlob, matchesAny, matchesPattern } from "./glob";
 export {
   defaultGlossary,

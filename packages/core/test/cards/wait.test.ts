@@ -37,6 +37,27 @@ describe("wait timeout card", () => {
       "recuérdale a la persona la decisión pendiente y vuelve a ejecutar ya `specty wait` para esperar su decisión. Ejecútalo en primer plano y vuelve a ejecutarlo cada vez que se agote o se corte.",
     );
   });
+
+  it("AC4: in delegated mode, says the pending decision is the person's alone and asks to remind them and wait again", () => {
+    const delegated = { delegated: true } as const;
+    const claude = waitTimeoutCard("20261031-saludo", 3300, {
+      ...ES,
+      tool: "claude-code",
+      ...delegated,
+    });
+    expect(claude.status).toBe("blocked");
+    expect(renderText(claude, "es")).toContain("Tiempo de espera agotado (3300s)");
+    expect(claude.next).toBe(
+      "la decisión pendiente es solo de la persona, también en modo delegado: recuérdasela y vuelve a ejecutar ya `specty wait` para esperar su decisión. Ejecútalo en segundo plano (`run_in_background: true`), que te avisa al terminar, y vuelve a ejecutarlo cada vez que se agote o se corte.",
+    );
+    expect(waitTimeoutCard("20261031-saludo", 3300, { ...EN, ...delegated }).next).toBe(
+      "the pending decision is the person's alone, in delegated mode too: remind them of it and run `specty wait` again right away to wait for their decision. Run it in the foreground and run it again each time it times out or is cut off.",
+    );
+    // Without delegated mode, the card stays as it was.
+    expect(waitTimeoutCard("20261031-saludo", 3300, { ...ES, delegated: false }).next).toBe(
+      waitTimeoutCard("20261031-saludo", 3300, ES).next,
+    );
+  });
 });
 
 describe("wait heartbeat", () => {

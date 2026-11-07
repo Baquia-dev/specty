@@ -66,7 +66,7 @@ Con el modo delegado activo, `specty wait` hoy espera hasta una hora a una perso
 
 ## Tareas
 
-- [ ] T1: `specty wait` respeta el modo delegado
+- [x] T1: `specty wait` respeta el modo delegado
   - files: packages/core/src/flow/waiting.ts, packages/core/src/index.ts, packages/cli/src/commands/wait.ts, packages/core/src/cards/wait.ts, packages/cli/test/wait-delegated.test.ts, packages/core/test/flow/waiting.test.ts, packages/core/test/cards/wait.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow/waiting.test.ts test/cards/wait.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/wait-delegated.test.ts test/wait-folder.test.ts test/wait-guard.test.ts && pnpm lint
