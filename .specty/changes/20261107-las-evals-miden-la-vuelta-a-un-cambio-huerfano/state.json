@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-las-evals-miden-la-vuelta-a-un-cambio-huerfano",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-las-evals-miden-la-vuelta-a-un-cambio-huerfano",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 1,
@@ -50,6 +50,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T00:12:38.745Z"
+  "lockedTests": {
+    "evals/test/experiments.test.ts": "sha256:91fb86d65a256878b8be4c72a312dc205f9c90a86d2423418cfdffa01fed2c95",
+    "evals/test/orphan.test.ts": "sha256:8ae994d96853479dd2a144ca0870dd2c4992558732d60c17dc784f9f7ae2cbdc"
+  }
 }
