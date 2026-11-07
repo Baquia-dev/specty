@@ -82,7 +82,7 @@ El «Panel» de `specty ui` resume el periodo en indicadores, pero no dice qué 
   - files: packages/cli/src/server/stats-changes.ts, packages/cli/src/server/records.ts, packages/cli/src/server/api.ts, packages/cli/test/server/stats-changes.test.ts, docs/ARCHITECTURE.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/stats-changes.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
-- [ ] T3: La sección «Cambios» del panel pide sus páginas a la fuente, con búsqueda, orden por columna, páginas y enlace a cada cambio
+- [x] T3: La sección «Cambios» del panel pide sus páginas a la fuente, con búsqueda, orden por columna, páginas y enlace a cada cambio
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/stats-source.test.ts, packages/ui/src/dashboard/dashboard-changes.ts, packages/ui/src/dashboard/dashboard-changes.test.ts, packages/ui/src/dashboard/dashboard-page.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/stats-source.test.ts --include src/dashboard/dashboard-changes.test.ts --include src/dashboard/dashboard-page.test.ts && pnpm typecheck && pnpm lint && pnpm knip

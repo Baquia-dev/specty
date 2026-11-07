@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-panel-lista-los-cambios-del-periodo-con",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-panel-lista-los-cambios-del-periodo-con",
   "baseCommit": "f54c2d5f6c0f39be191b400b881e09d3d43e1e06",
   "revision": 2,
@@ -64,12 +64,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "49389266696e522059538519b855a78fdd26b14f",
+      "attempts": 1,
       "startedAt": "2026-11-07T08:42:04.433Z",
       "doneAt": "2026-11-07T08:48:39.997Z",
-      "summary": "GET /api/stats/changes en server/stats-changes.ts: entiende corte, búsqueda, orden y página y llama a statsChanges con título y tamaño de summaryOf, guardados por registro; plainRecords en records.ts lee los cambios sin completarlos; ruta en api.ts y ARCHITECTURE §15."
+      "summary": "GET /api/stats/changes en server/stats-changes.ts: entiende corte, búsqueda, orden y página y llama a statsChanges con título y tamaño de summaryOf, guardados por registro; plainRecords en records.ts lee los cambios sin completarlos; ruta en api.ts y ARCHITECTURE §15.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c986c9bc52440f98633d5dec556751f92d3fe4f3",
+      "startedAt": "2026-11-07T08:48:40.410Z",
+      "doneAt": "2026-11-07T08:55:11.061Z",
+      "summary": "Sección «Cambios» del panel (dashboard-changes.ts): tabla por páginas de 25 con búsqueda, orden por columna con aria-sort, paginador y filas que abren su cambio; la fuente la pide a /api/stats/changes y comprueba la respuesta; docs/ui.md."
     }
   },
   "pending": {
