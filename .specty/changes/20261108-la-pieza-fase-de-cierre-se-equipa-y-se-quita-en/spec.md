@@ -73,7 +73,7 @@ En la vista Flujo de «Configuración», la pieza «Fase de cierre» deja de ser
   - files: packages/ui/src/settings/settings-flow.test.ts, packages/ui/src/settings/flow-piece.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-flow.test.ts --include src/settings/flow-piece.test.ts
-- [ ] T3: El servidor dice si un cambio en aceptación se cierra al aceptarlo
+- [x] T3: El servidor dice si un cambio en aceptación se cierra al aceptarlo
   - files: packages/cli/src/server/records.ts, packages/cli/test/server/records.test.ts, docs/ARCHITECTURE.md
   - ac: AC5, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/records.test.ts

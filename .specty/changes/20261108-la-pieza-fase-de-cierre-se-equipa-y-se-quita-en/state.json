@@ -49,12 +49,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a550f1a73e98f8e4d273b67cd06df4feb2c7e0a2",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:17:14.429Z",
       "doneAt": "2026-11-07T16:17:46.279Z",
-      "summary": "Tests de la vista Flujo con la pieza Fase de cierre equipable (Básico y Avanzado), y docs/ui.md describe la pieza y su frase"
+      "summary": "Tests de la vista Flujo con la pieza Fase de cierre equipable (Básico y Avanzado), y docs/ui.md describe la pieza y su frase",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a78cf8095726bad61fbc6e3f2f39e6e4de041faa",
+      "startedAt": "2026-11-07T16:17:46.737Z",
+      "doneAt": "2026-11-07T16:18:18.294Z",
+      "summary": "El servidor añade withoutClosing: true al registro de un cambio en aceptación que se cierra al aceptarlo (regla withoutClosing de flow/views.ts), y ARCHITECTURE §15 lo documenta"
     }
   },
   "pending": {
