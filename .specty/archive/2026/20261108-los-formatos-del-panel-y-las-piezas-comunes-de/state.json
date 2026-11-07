@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-los-formatos-del-panel-y-las-piezas-comunes-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-los-formatos-del-panel-y-las-piezas-comunes-de",
   "baseCommit": "16ad77ec06157affaa0e9c6529ae3db9d19cbb4c",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:44192f77b2dba79638b3188137ccf94c285527560cdaa78dc728f40ea32ac506",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "368f05ddd85dc143d960ebdc06aa05ed6cc80472",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:56:36.460Z",
       "doneAt": "2026-11-07T16:59:39.124Z",
-      "summary": "components/charts/chart-parts.ts reúne roundScale (escala de columnas y línea), moveFocus (teclado de las cinco gráficas, con ↓ y ↑ en la lista de barras), plain, stretchesOf y linePath (de line-chart y stat-tile), sin cambiar lo que dibujan ni cómo responden"
+      "summary": "components/charts/chart-parts.ts reúne roundScale (escala de columnas y línea), moveFocus (teclado de las cinco gráficas, con ↓ y ↑ en la lista de barras), plain, stretchesOf y linePath (de line-chart y stat-tile), sin cambiar lo que dibujan ni cómo responden",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "AC": 3,
     "T": 2,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-11-07T16:59:59.274Z"
 }

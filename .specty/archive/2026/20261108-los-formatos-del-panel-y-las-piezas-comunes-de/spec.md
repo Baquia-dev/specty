@@ -72,3 +72,23 @@ El panel repite sus formatos: `shortDay` está copiado en cinco secciones (`dash
 ## Riesgos
 
 - R1: Una escala común podría dar otros ticks por el redondeo de los decimales. Mitigación: los ticks se redondean a la millonésima como antes, y los tests de las gráficas comprueban los del eje.
+
+## Cierre
+
+### Resumen
+
+Los formatos del panel viven en `dashboard/dashboard-format.ts` (`shortDay`, `percent` y `usd`): las cinco secciones que copiaban `shortDay` lo importan, y el resumen, las personas y la calidad escriben con él su porcentaje y sus dólares. Las piezas comunes de las gráficas viven en `components/charts/chart-parts.ts`: `roundScale` sustituye a `niceScale` y a `lineScale`, `moveFocus` al teclado de las cinco gráficas (con ↓ y ↑ en la lista de barras), y `plain`, `stretchesOf` y `linePath` a las copias de `line-chart.ts` y de la minigráfica de `stat-tile.ts`. Los tests del panel, de las gráficas y del catálogo pasan sin cambiar ninguno.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `dashboard-cost.ts` y `dashboard-changes.ts` siguen creando su `Intl.NumberFormat` de dólares una vez para toda su tabla, y `segmented-bar.ts` el suyo de porcentaje: no son copias de una función, y llamar a `usd` por celda crearía un formato por valor.
+- `roundScale` cuenta los ticks por su índice en vez de sumar el paso, con el mismo margen de una millonésima: da los mismos valores que las dos escalas de antes.
+- Los módulos nuevos no se exportan fuera de la UI: solo los usan el panel y sus gráficas.
+
+### Pendientes
+
+Ninguno.
