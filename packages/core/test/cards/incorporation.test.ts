@@ -18,6 +18,7 @@ import {
   markersLeftLine,
   mergeAbortedLine,
   mergeByHandNext,
+  mergedAgainLine,
   mergedVerifyFailsLine,
   mergeFailedLine,
   mergingLabel,
@@ -79,8 +80,23 @@ describe("bringing the main branch into a change", () => {
     expect(resolveIncorporationNext("close", ES)).toBe(
       "dile a tu agente «continúa» (ejecutará `specty next`); cuando termine, vuelve a ejecutar `specty close`.",
     );
+  });
+
+  it("AC3: in delegated mode, says that `specty integrate` goes on with the command, instead of asking to run it again", () => {
     expect(resolveIncorporationNext("accept", DELEGATED)).toBe(
-      "modo delegado: resuélvela tú (`specty next` te dice qué falta), termínala con `specty integrate` y vuelve a ejecutar `specty accept`.",
+      "modo delegado: resuélvela tú (`specty next` te dice qué falta) y termínala con `specty integrate`, que sigue con `specty accept`.",
+    );
+    expect(resolveIncorporationNext("close", { ...EN, delegated: true })).toBe(
+      "delegated mode: resolve it yourself (`specty next` says what is missing) and finish it with `specty integrate`, which goes on with `specty close`.",
+    );
+  });
+
+  it("AC1: says that main moved on while it was being resolved, and came in again before verifying", () => {
+    expect(mergedAgainLine("main", "es")).toBe(
+      "main avanzó mientras se resolvía la incorporación: se incorporó otra vez antes de verificar, así que la verificación corre una vez, con todo main.",
+    );
+    expect(mergedAgainLine("develop", "en")).toBe(
+      "develop moved on while the incorporation was being resolved: it was merged again before verifying, so the verification runs once, with all of develop.",
     );
   });
 

@@ -16,8 +16,12 @@ const writes = (name: string) =>
 /** The configuration without `verify.processes`: a task's verification and the full one write. */
 const BASE = `version: 1\nlanguage: es\ngit:\n  worktrees: false\nverify:\n  default: ${JSON.stringify(writes("tarea"))}\n  full: ${JSON.stringify(writes("completa"))}\n`;
 
-/** The configuration that names both variables in `verify.processes.env`. */
-const WITH = `${BASE}  processes:\n    env: ["PROCESOS_A", "PROCESOS_B"]\n`;
+/** The configuration that names both variables in `verify.processes.env`, with processes of `memoryMiB`. */
+const processes = (memoryMiB: number) =>
+  `${BASE}  processes:\n    env: ["PROCESOS_A", "PROCESOS_B"]\n    memoryMiB: ${memoryMiB}\n`;
+
+/** Both variables, with 1 MiB a process: the memory of who runs the tests never lowers the number. */
+const WITH = processes(1);
 
 /** This machine's cores, and those of a task's verification with the default 2 places. */
 const CORES = availableParallelism();
@@ -102,5 +106,11 @@ describe("the processes each verification command may start", () => {
     });
     expect((await cli(empty, ["verify", "--fresh"], { env })).code).toBe(0);
     expect(await read(empty, ".git/procesos-completa")).toBe(`${CORES + 1} undefined`);
+  });
+
+  it("AC1: specty verify --fresh gets 1 in each variable when not even one process of memoryMiB fits in the memory", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": processes(1_000_000_000) });
+    expect((await cli(root, ["verify", "--fresh"])).code).toBe(0);
+    expect(await read(root, ".git/procesos-completa")).toBe(both(1));
   });
 });

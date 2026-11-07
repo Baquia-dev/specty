@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "id": "20261108-las-peticiones-del-panel-y-la-descarga-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-las-peticiones-del-panel-y-la-descarga-de",
+  "baseCommit": "16ad77ec06157affaa0e9c6529ae3db9d19cbb4c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fdfefa907526c14a96ec19ffb81e28fafb7f0310f570c7e487d8436b4f8a8586",
+    "at": "2026-11-07T16:58:04.854Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a919ec369992af5fc11104677367c33e05a3b2b03c2e51f9aa0b1e026e536928",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:80f1b29b5958b66ddd7d090c5c16ec7c0121a9896e37a4aa788a7ad7bd19eb33",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7dfe9ede3ea233c67de803d51b38c38eee42298214ca6e6f237a54574c31330b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c746e9fb7625833d1fba0a78bb06df09cc1554fd8fd20f01b6dc6c0f3e7f3e12",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:b51151999ec300136d382cc9afcb07950f25ab2f60d5fce0e55cbe6a87ca7bab",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "73a905b25780d094fd7ab4c0aae1bcfdad3f83d4",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:58:07.474Z",
+      "doneAt": "2026-11-07T16:59:36.682Z",
+      "summary": "Test de ServerData.stats (GET /api/stats): parámetros del corte, sin query cuando no hay ninguno, errores sin sesión o con respuesta inesperada, y una fuente sin panel",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "87ff32285b263823254b265473405a5fe5077206",
+      "attempts": 1,
+      "startedAt": "2026-11-07T16:59:37.706Z",
+      "doneAt": "2026-11-07T17:03:30.192Z",
+      "summary": "Las tres peticiones del panel (fetchStats, fetchStatsChanges, fetchStatsExport) y sus comprobaciones (isStatsView, isStatsChangesPage) pasan a data/server-stats.ts, que sustituye a stats-export.ts; ServerData solo las llama; server-answers exporta isText; ARCHITECTURE lo cuenta",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "51bbbaf4b7e9d598e7e13c7e487fa2fcad308ddc",
+      "attempts": 1,
+      "startedAt": "2026-11-07T17:03:30.984Z",
+      "doneAt": "2026-11-07T17:04:47.132Z",
+      "summary": "save pasa a data/download.ts y la usan las exportaciones de Historial y del Panel",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "ee4c157bb9c22f3d7e287102d0648712c9366a82",
+      "attempts": 1,
+      "startedAt": "2026-11-07T17:04:47.585Z",
+      "doneAt": "2026-11-07T17:05:47.361Z",
+      "summary": "Las columnas (Column, COLUMNS, Direction), la fila (Row) y rowsOf de la tabla «Cambios» pasan al módulo puro dashboard/dashboard-table.ts; el componente conserva la búsqueda, el orden, las páginas y la plantilla",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 4,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-07T17:05:59.214Z"
+}

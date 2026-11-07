@@ -278,15 +278,15 @@ export function notYetLine(phase: Phase, outcome: "unchanged" | "waiting", lang:
 
 /**
  * What comes next while an incorporation waits for the agent: the person tells the agent to go
- * on, or, in delegated mode, the agent resolves it itself and then runs `again`.
+ * on, or, in delegated mode, the agent resolves it itself, and `integrate` goes on with `again`.
  */
 export function resolveIncorporationNext(again: "close" | "accept", ctx: CardContext): string {
   const t = translator(ctx.lang);
   const { command } = ctx;
   return ctx.delegated === true
     ? t(
-        `modo delegado: resuélvela tú (\`${command} next\` te dice qué falta), termínala con \`${command} integrate\` y vuelve a ejecutar \`${command} ${again}\`.`,
-        `delegated mode: resolve it yourself (\`${command} next\` says what is missing), finish it with \`${command} integrate\` and run \`${command} ${again}\` again.`,
+        `modo delegado: resuélvela tú (\`${command} next\` te dice qué falta) y termínala con \`${command} integrate\`, que sigue con \`${command} ${again}\`.`,
+        `delegated mode: resolve it yourself (\`${command} next\` says what is missing) and finish it with \`${command} integrate\`, which goes on with \`${command} ${again}\`.`,
       )
     : t(
         `dile a tu agente «continúa» (ejecutará \`${command} next\`); cuando termine, vuelve a ejecutar \`${command} ${again}\`.`,
@@ -345,6 +345,14 @@ export function undoOutsideNext(ctx: CardContext): string {
 
 export function commandFailsLine(command: string, lang: Lang): string {
   return translator(lang)(`\`${command}\` falla.`, `\`${command}\` fails.`);
+}
+
+/** `target` moved on while the agent resolved its merge: it came in again before verifying. */
+export function mergedAgainLine(target: string, lang: Lang): string {
+  return translator(lang)(
+    `${target} avanzó mientras se resolvía la incorporación: se incorporó otra vez antes de verificar, así que la verificación corre una vez, con todo ${target}.`,
+    `${target} moved on while the incorporation was being resolved: it was merged again before verifying, so the verification runs once, with all of ${target}.`,
+  );
 }
 
 export function integrationResolvedLine(target: string, commit: string, lang: Lang): string {
