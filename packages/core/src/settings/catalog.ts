@@ -222,6 +222,7 @@ export const SETTINGS: readonly Setting[] = [
     basic: true,
   },
   { key: "subagents", section: "flow", kind: "toggle", basic: true },
+  { key: "flow.closing", section: "flow", kind: "toggle", new: true },
   {
     key: "retro.mode",
     section: "flow",

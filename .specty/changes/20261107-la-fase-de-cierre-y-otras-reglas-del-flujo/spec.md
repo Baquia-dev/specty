@@ -73,7 +73,7 @@ Hoy, aceptar un cambio estándar siempre lo lleva a la fase de cierre: el agente
 
 ## Tareas
 
-- [ ] T1: La clave `flow.closing` en el schema y en el catálogo, con sus textos
+- [x] T1: La clave `flow.closing` en el schema y en el catálogo, con sus textos
   - files: packages/core/src/schema/flow.ts, packages/core/src/schema/config.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts

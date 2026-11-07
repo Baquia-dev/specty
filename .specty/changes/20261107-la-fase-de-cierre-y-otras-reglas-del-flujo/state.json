@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "86954746ae644599edc4586b0723894f85c15982",
+      "startedAt": "2026-11-07T11:11:15.863Z",
+      "doneAt": "2026-11-07T11:17:10.568Z",
+      "summary": "flow.closing en schema/flow.ts (true por defecto), reunido por spread en config.ts, en el catálogo (Flujo, interruptor, Nuevo) y con sus textos es/en."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
