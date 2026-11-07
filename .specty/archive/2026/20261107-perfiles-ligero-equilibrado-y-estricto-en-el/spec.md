@@ -91,3 +91,23 @@ En la vista Flujo, en Básico, la persona ve los perfiles Ligero, Equilibrado, E
 - R1: C5 también cambia la vista Flujo y puede añadir frases. Mitigación: las de los límites van al final de la lista y en su propio archivo de textos; al incorporar main se conservan las dos partes.
 - R2: `settings-page.ts` ya tiene unas 407 líneas de código (P292). Mitigación: no se toca; los perfiles viven en `settings-presets.ts`, dentro de `sp-settings-flow`.
 - R3: `cards/settings-pieces.ts` está cerca del aviso de 300 líneas de código. Mitigación: las frases nuevas van en `cards/settings-presets.ts`, y `flowSentences` solo las añade.
+
+## Cierre
+
+### Resumen
+
+En la vista Flujo, en Básico, la página «Configuración» muestra encima de la línea los perfiles Ligero, Equilibrado («Por defecto»), Estricto y Propio, cada uno con lo que fija y sus valores, y marca «Elegido» el que coincide con la configuración y las ediciones sin guardar. Elegir uno cambia al momento la línea y sus frases, que ahora terminan con los límites de líneas por archivo, de las funciones y de la cobertura del diff, y «Revisar y guardar» guarda solo lo que cambia. Los perfiles viven en el core (`settings/presets.ts`, con sus textos en `cards/settings-presets.ts`) y fijan nueve claves de `policy.tests`, `lines`, `checks.functions` y `checks.coverage`.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Elegir un perfil da una edición por cada una de sus nueve claves, también donde no cambia nada: la que el archivo ya tiene conserva su valor y la que falta se quita, que no hace nada. Así sustituye las ediciones anteriores de esas claves sin otra operación, y el servidor deja esas claves igual byte a byte.
+- La frase de las funciones dice que `specty check` las «señala», sin decir si bloquea, porque `checks.levels` puede bajar esas verificaciones a aviso.
+- «Elegido» lleva el tono de «Modificado» y «Por defecto», el neutro. Propio no es un botón, porque no fija valores.
+
+### Pendientes
+
+- Ninguno.
