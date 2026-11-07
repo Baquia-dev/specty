@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "86954746ae644599edc4586b0723894f85c15982",
+      "attempts": 1,
       "startedAt": "2026-11-07T11:11:15.863Z",
       "doneAt": "2026-11-07T11:17:10.568Z",
-      "summary": "flow.closing en schema/flow.ts (true por defecto), reunido por spread en config.ts, en el catálogo (Flujo, interruptor, Nuevo) y con sus textos es/en."
+      "summary": "flow.closing en schema/flow.ts (true por defecto), reunido por spread en config.ts, en el catálogo (Flujo, interruptor, Nuevo) y con sus textos es/en.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e2c27d67901a641231632f0e3b068c7a98f3857b",
+      "startedAt": "2026-11-07T11:17:11.014Z",
+      "doneAt": "2026-11-07T11:23:35.988Z",
+      "summary": "El evento accept lleva withoutClosing y deja hecho un standard; ChangeView.withoutClosing hace que la tarjeta en modo delegado no pida el cierre; ARCHITECTURE §4 y §9 lo explican."
     }
   },
   "pending": {

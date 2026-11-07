@@ -77,7 +77,7 @@ Hoy, aceptar un cambio estándar siempre lo lleva a la fase de cierre: el agente
   - files: packages/core/src/schema/flow.ts, packages/core/src/schema/config.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts
-- [ ] T2: La máquina de estados y la tarjeta de aceptación sin fase de cierre
+- [x] T2: La máquina de estados y la tarjeta de aceptación sin fase de cierre
   - files: packages/core/src/flow/machine.ts, packages/core/src/cards/view.ts, packages/core/src/cards/acceptance.ts, packages/core/test/closing-ahead.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC3, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/closing-ahead.test.ts
