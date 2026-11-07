@@ -94,3 +94,27 @@ Hoy el servidor de `specty ui` tiene sus límites fijos en el código: mira los 
 - R1: Un valor bajo de las esperas hace que el servidor mire más a menudo y gaste más CPU, y uno alto hace que la UI tarde en enterarse. Mitigación: los mínimos y máximos de A1, la sección «Interno» plegada con su aviso (C8) y quitar la clave devuelve el valor de hoy.
 - R2: C16, C17 y C18 trabajan en paralelo y también tocan el catálogo, `cards/settings-internal.ts` y las listas de `catalog.test.ts`. Mitigación: cada corte añade sus entradas a su bloque, y el conflicto al incorporar main se resuelve con `specty integrate`, conservando lo de los dos.
 - R3: Los tests de AC1, AC2 y AC4 prueban que algo no llega en un plazo (segundo y medio o dos segundos) con la espera más larga. Mitigación: la contraprueba sin la clave espera con margen, y con la máquina cargada un aviso que tarda solo puede hacer pasar el test, no fallarlo.
+
+## Cierre
+
+### Resumen
+
+- Core: `internal.server` tiene cinco claves nuevas en `schema/internal-run.ts`, con el valor de hoy por defecto: `changesEveryMs` (1000, de 100 a 60000), `tasksEveryMs` (500, de 100 a 60000), `runLines` (1000, de 100 a 10000), `runEveryMs` (250, de 50 a 10000) y `maxBodyKiB` (64, de 64 a 1024). En el catálogo van en «Interno» tras `portsTried`, con la marca «Nuevo» y la unidad nueva `ms` en las de tiempo. Sus nombres y descripciones están en español y en inglés.
+- CLI: `liveRun` y las líneas de cada unidad de `server/runs.ts` usan `runLines` y `runEveryMs` de la configuración del servidor, y el archivo en vivo de `runLive` los de la sesión que verifica. Los eventos miran los cambios cada `changesEveryMs`, salvo que se pase `interval`. Las verificaciones de otros procesos se leen cada `tasksEveryMs`, y el cuerpo de una acción, hasta `maxBodyKiB`.
+- Documentación: formats.md §6 y ARCHITECTURE (eventos, verificaciones en vivo y acciones de la persona).
+
+### Desviaciones
+
+- `PAGE` de `server/finished.ts` sigue fijo (A2): la UI siempre pide su página con `limit`, así que una clave no cambiaría nada de lo que ve la persona.
+- El test AC5/AC7 de C1 en `catalog.test.ts` cuenta los ajustes de «Interno» con un número fijo. Se me pasó en el envío de tests, así que se desbloqueó con S1, que aprobó la persona: 13 → 18.
+
+### Decisiones
+
+- `runLines` y `runEveryMs` rigen las dos copias que había: la verificación completa que lanza el servidor y el archivo en vivo de `task done`, `accept` y `verify --fresh`, que el servidor lee para avisar de ellas.
+- El cuerpo máximo no baja de los 64 KiB de hoy, para que ninguna acción de hoy se quede sin cuerpo.
+
+### Pendientes
+
+- `catalog.test.ts` sigue contando los ajustes de «Interno» con un número fijo: cada corte que añada uno (C14–C18) tendrá que cambiarlo. Conviene comprobar las claves con `arrayContaining` en lugar del total.
+- El comentario de `ServerOptions` en `server/context.ts` aún dice que `specty ui` prueba 19 puertos más después del primero, cuando ahora son `internal.server.portsTried`. Tampoco dice que, sin `interval`, el servidor usa `internal.server.changesEveryMs`.
+- AC9 se comprueba a mano: formats.md §6 y ARCHITECTURE.
