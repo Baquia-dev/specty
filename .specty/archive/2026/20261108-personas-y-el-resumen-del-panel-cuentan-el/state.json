@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261108-personas-y-el-resumen-del-panel-cuentan-el",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-personas-y-el-resumen-del-panel-cuentan-el",
+  "baseCommit": "46518cfc71473855c39a55f2b2cc740689059e0c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eed4654ec2fcdb9927098cb2e28a49cc4ed86675cf5f712a36621e283028592a",
+    "at": "2026-11-07T22:43:03.929Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e3dfe5932e16fce75b4819aa2f315b1f668a551dec69b534ad6332a3e00c8267",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b6189d68aa0abb21270505f5d54ae5d50de98424e4bae2b9a3c0406360b74f93",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f763eac1c576ed87d6588762b547d320932e4044ad47ca8a6ca3a2fbf5fb6cd0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3657e8116cb6172560259e715c46e40e1600e081",
+      "attempts": 2,
+      "startedAt": "2026-11-07T22:43:04.346Z",
+      "doneAt": "2026-11-07T22:44:33.272Z",
+      "summary": "Nuevo stats/counts.ts (periodCounts y perWho) que comparten summary.ts y people.ts para contar el periodo y ordenar por cambios; period.ts exporta WHO_KINDS. Sin tocar tests.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 1,
+    "T": 1,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-07T22:44:41.890Z"
+}
