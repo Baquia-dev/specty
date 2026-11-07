@@ -1,0 +1,94 @@
+---
+kind: standard
+epic: 20261107-flujo-configurable-en-la-ui
+slice: C9
+---
+
+# La ejecución, la salida y el servidor pasan a ser ajustes internos
+
+## Objetivo
+
+Hoy la prioridad con que corren las verificaciones y cuántos puertos prueba `specty ui` están fijos en el código de la CLI, y `ui.port` se acepta en `.specty/config.yaml` pero nada lo lee. Con este cambio, la prioridad y los puertos son claves opcionales bajo `internal` (`internal.exec` e `internal.server`), con límites en el schema y los valores de hoy por defecto, y `specty ui` sin `--port` arranca en el puerto de `ui.port`. La página «Configuración» las muestra en la sección «Interno» con la marca «Nuevo», y `ui.port` deja de ser «Próximamente». Es el corte C9 de la épica, estrechado (R4 de la épica): cubre sus AC23, AC24, AC25 y AC26 para estos parámetros.
+
+## Fuera de alcance
+
+- Los demás parámetros del inventario de C9, que pasan a un corte nuevo de la épica: la salida máxima de un comando (`MAX_OUTPUT` de `io/exec.ts`, que es también el límite del diff, de la traza y del código de un test en la UI) y el tiempo del hook de Antigravity (`agents/antigravity.ts`).
+- Los límites de la salida de los comandos de `checks/output.ts` (`MAX_FINDINGS`, `LAST_LINES`, `MAX_MESSAGE`) y los de lo que se muestra (`SHOWN` de `cards/impact.ts`, `MAX_ENTRIES` de `commands/verify.ts`, `commands/why.ts`, `MAX_LINES` de `cards/review.ts`, `NOTE_MAX` de `cards/work.ts` y los 48 caracteres de `slugify`), que también van a ese corte.
+- Los demás límites del servidor de la UI: la espera de 1000 ms de sus eventos, `PAGE` de `server/finished.ts`, `KEPT` y `EVERY` de `server/run-output.ts`, `TASKS_EVERY` de `server/watched-runs.ts` y el cuerpo de 64 KiB de `server/api.ts`, que también van a ese corte.
+- Las comprobaciones de origen, cookie y CSRF del servidor: son una garantía y no se configuran.
+- Plegar la sección «Interno» y su aviso: los pone C8, que comparte la sección.
+- `internal.waits`, `internal.retries` e `internal.retention`, que son de C8.
+- Guardar ajustes desde la UI (C2).
+
+## Supuestos
+
+- A1: El corte completo (unos 20 parámetros en más de 25 archivos de core, CLI y UI, cada uno con su test) sale XL. Por eso este cambio se estrecha a la base de `internal` de C9 (schema, catálogo y textos), a la prioridad de las verificaciones, a `ui.port` y a los puertos que prueba `specty ui`. Los demás van a un corte nuevo de la épica, que se ajusta para recogerlos.
+  - impacto: alto
+- A2: Las claves son `internal.exec.priority` (10 por defecto, un entero entre 0 y 19) e `internal.server.portsTried` (20 por defecto, un entero entre 1 y 100). La prioridad va de 0 a 19 porque es el rango de `nice` en el que un proceso sin permisos puede bajarse. Con 0 no se baja, y una prioridad más alta que la de Specty no se puede pedir, así que el comando se queda en la de Specty, como hoy cuando ya corre por debajo de 10.
+  - impacto: medio
+- A3: Las claves van en un módulo propio, `schema/internal-run.ts`, como `internal-waits.ts` de C8. Exporta la forma de sus bloques (`INTERNAL_RUN_SHAPE`), sus valores por defecto y su `resolve`, para que `config.ts` los reúna bajo `internal` con los de C8 (`{ ...INTERNAL_WAITS_SHAPE, ...INTERNAL_RUN_SHAPE }`). Quien llegue primero a main crea la clave, y el segundo añade los suyos al incorporar main. `ResolvedConfig.internal` siempre tiene los valores resueltos, y la CLI los lee de `session.config`.
+  - impacto: medio
+- A4: Con `ui.port` numérico, `specty ui` sin `--port` empieza en ese puerto y, si está ocupado, prueba los siguientes, como con `--port`. Con `auto` o sin la clave, empieza en el 4173, como hoy. `--port` manda sobre la clave.
+  - impacto: bajo
+- A5: En el catálogo, «Interno» es la última sección (`internal`), como en C8, y estar en ella ya es la marca de interno. Los dos ajustes nuevos llevan la marca `new`. Si este cambio llega antes que C8, la sección se ve sin plegar hasta que C8 la pliegue.
+  - impacto: bajo
+
+## Criterios de aceptación
+
+- AC1: CUANDO `.specty/config.yaml` tiene `internal.exec.priority` ENTONCES la verificación de cada tarea y la completa de `accept` corren con esa prioridad, o con la de Specty si ya es más baja. Sin la clave corren con 10, como hoy.
+- AC2: CUANDO `ui.port` tiene un número y `specty ui` se arranca sin `--port` ENTONCES el servidor escucha en ese puerto y su enlace lo lleva. Con `--port`, manda la opción.
+- AC3: CUANDO `.specty/config.yaml` tiene `internal.server.portsTried` y el primer puerto está ocupado ENTONCES `specty ui` prueba como mucho esos puertos desde el primero, y si ninguno está libre no arranca y dice desde cuál hasta cuál probó. Sin la clave prueba 20, como hoy.
+- AC4: CUANDO `internal.exec.priority` no es un entero entre 0 y 19, `internal.server.portsTried` no es un entero entre 1 y 100, o `internal.exec` o `internal.server` llevan una clave que no existe ENTONCES el validador del core da un error con su clave, y Specty no usa el archivo, como con cualquier error de `config.yaml`. Sin `internal`, la configuración resuelta tiene 10 y 20.
+- AC5: CUANDO la persona abre «Configuración» ENTONCES ve la prioridad de las verificaciones y los puertos que prueba la UI en la sección «Interno», la última, con la marca «Nuevo», su clave y su valor. `ui.port` ya no lleva la marca «Próximamente».
+- AC6: CUANDO la UI está en inglés ENTONCES la sección «Interno» y los nombres y descripciones de los dos ajustes nuevos salen en inglés, y cada uno tiene su nombre y su descripción en español y en inglés.
+- AC7: CUANDO se lee `docs/formats.md` §6 ENTONCES documenta `internal.exec.priority` e `internal.server.portsTried`, con sus valores por defecto y sus límites, y que `specty ui` sin `--port` usa `ui.port`. `docs/ARCHITECTURE.md` y `docs/ui.md` dicen lo mismo donde hablan de la prioridad, del puerto y de la página.
+  - test: manual
+
+## Diseño
+
+- Core, `schema/internal-run.ts`: `InternalRunConfig` (`exec: { priority }`, `server: { portsTried }`), `DEFAULT_INTERNAL_RUN`, `INTERNAL_RUN_SHAPE` (los `strictObject` opcionales de `exec` y `server`, con `int`, `min` y `max`) y `resolveInternalRun(input)`. `config.ts` añade `internal: z.strictObject({ ...INTERNAL_RUN_SHAPE }).optional()` al schema, `internal: InternalRunConfig` a `ResolvedConfig`, `DEFAULT_INTERNAL_RUN` a `DEFAULT_CONFIG` y `resolveInternalRun(input.internal)` a `withDefaults`.
+- Core, `settings/catalog.ts`: la sección `internal` al final de `SETTING_SECTIONS`. Al final de `SETTINGS`, en un bloque propio, `internal.exec.priority` e `internal.server.portsTried` (`kind: "number"`, `new: true`). `ui.port` pierde `soon`.
+- Core, `cards/settings.ts`: la sección «Interno» / «Internal», el nombre y la descripción de los dos ajustes en los dos idiomas, y la descripción de `ui.port`, que dice que vale sin `--port`.
+- CLI, `io/exec.ts`: `ExecOptions` gana `priority`, la que aplica `lowPriority`. `lowerPriority(pid, priority)` toma por defecto la de `DEFAULT_CONFIG`, así que el 10 deja de estar repetido en la CLI. `commands/verify.ts` y `flow/live-run.ts` pasan `session.config.internal.exec.priority`, y `server/runs.ts` la pasa a `lowerPriority` para la verificación completa que lanza la UI.
+- CLI, `commands/ui.ts`: sin `--port`, el puerto es `session.config.ui.port`, o `DEFAULT_PORT` con `auto`. `server/http.ts`: `listen` prueba `session.config.internal.server.portsTried` puertos desde el primero, sin pasar de 65535.
+- Tests: `core/test/settings/catalog.test.ts` (AC4, AC5, AC6), `cli/test/verify-priority.test.ts` (AC1), `cli/test/server.test.ts` (AC2, AC3) y `ui/src/settings/settings-page.test.ts` (AC5, AC6).
+
+## Archivos
+
+- crear packages/core/src/schema/internal-run.ts — las claves `internal.exec` e `internal.server`, con sus límites y los valores de hoy
+- modificar packages/core/src/schema/config.ts — la clave `internal`, que reúne esos bloques, en el schema, en `ResolvedConfig` y en `DEFAULT_CONFIG`
+- modificar packages/core/src/settings/catalog.ts — la sección «Interno», los dos ajustes nuevos y `ui.port` sin «Próximamente»
+- modificar packages/core/src/cards/settings.ts — la sección y los nombres y descripciones en español y en inglés
+- modificar packages/core/test/settings/catalog.test.ts — los límites del schema, los valores por defecto, la sección nueva, las marcas y los textos
+- modificar packages/ui/src/settings/settings-page.test.ts — la sección «Interno», la marca «Nuevo» y `ui.port` sin «Próximamente», en los dos idiomas
+- modificar packages/cli/src/io/exec.ts — la prioridad que aplica `lowPriority`, de la configuración
+- modificar packages/cli/src/commands/verify.ts — la prioridad de la configuración en la verificación sin cambio
+- modificar packages/cli/src/flow/live-run.ts — la prioridad de la configuración en las verificaciones en vivo
+- modificar packages/cli/src/server/runs.ts — la prioridad de la configuración en la verificación completa de la UI
+- modificar packages/cli/test/verify-priority.test.ts — la prioridad configurada en la tarea y en `accept`
+- modificar packages/cli/src/commands/ui.ts — el puerto de `ui.port` sin `--port`
+- modificar packages/cli/src/server/http.ts — los puertos que prueba, de la configuración
+- modificar packages/cli/test/server.test.ts — `ui.port`, `--port` y los puertos probados
+- modificar docs/formats.md — §6: `internal.exec`, `internal.server` y `ui.port`
+- modificar docs/ARCHITECTURE.md — la prioridad de las verificaciones y el puerto de `specty ui`
+- modificar docs/ui.md — la sección «Interno» de «Configuración» y `ui.port` sin «Próximamente»
+
+## Tareas
+
+- [ ] T1: El bloque `internal` de C9 en el schema y sus ajustes en el catálogo, con sus textos
+  - files: packages/core/src/schema/internal-run.ts, packages/core/src/schema/config.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/catalog.test.ts, packages/ui/src/settings/settings-page.test.ts, docs/formats.md, docs/ui.md
+  - ac: AC4, AC5, AC6, AC7
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts
+- [ ] T2: Las verificaciones corren con la prioridad de la configuración
+  - files: packages/cli/src/io/exec.ts, packages/cli/src/commands/verify.ts, packages/cli/src/flow/live-run.ts, packages/cli/src/server/runs.ts, packages/cli/test/verify-priority.test.ts, docs/ARCHITECTURE.md
+  - ac: AC1, AC7
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-priority.test.ts test/exec.test.ts
+- [ ] T3: `specty ui` arranca en `ui.port` y prueba los puertos de la configuración
+  - files: packages/cli/src/commands/ui.ts, packages/cli/src/server/http.ts, packages/cli/test/server.test.ts, docs/ARCHITECTURE.md
+  - ac: AC2, AC3, AC7
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts && pnpm typecheck
+
+## Riesgos
+
+- R1: Una prioridad de 19 deja las verificaciones muy lentas en una máquina ocupada. Mitigación: el schema la limita a 19, la sección «Interno» va plegada con su aviso (C8) y quitar la clave la devuelve a 10.
+- R2: C8 crea a la vez la clave `internal`, la sección «Interno» y sus tests en `config.ts`, `catalog.ts`, `cards/settings.ts` y `catalog.test.ts`. Mitigación: cada corte tiene su módulo de schema y su bloque en el catálogo, y el conflicto al incorporar main se resuelve con `specty integrate` conservando lo de los dos.
