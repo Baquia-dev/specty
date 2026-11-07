@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-las-aceptaciones-en-paralelo-no-repiten-la",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-las-aceptaciones-en-paralelo-no-repiten-la",
   "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
   "revision": 2,
@@ -59,6 +59,9 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T17:27:59.103Z"
+  "lockedTests": {
+    "packages/cli/test/delegated-integration.test.ts": "sha256:b69f843ab4bcf95c28ddcd21dff86d035521d498bea1b7669869e137f459bc88",
+    "packages/core/test/cards/incorporation.test.ts": "sha256:48dc40d412bf8375b7e2c09f502b4c35c2f814f2fd6ca85dd47e764c5b1d9dc0",
+    "packages/cli/test/integrate-landing.test.ts": "sha256:8788f618861853e7a4b40b6ef71a9f4d4ea3b996c4a3635729a9d71fa342a75a"
+  }
 }
