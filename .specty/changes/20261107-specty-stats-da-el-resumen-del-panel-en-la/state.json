@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-specty-stats-da-el-resumen-del-panel-en-la",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-specty-stats-da-el-resumen-del-panel-en-la",
   "baseCommit": "a4e6321c4130771efd5b22d9cc3115e691c6cc6c",
   "revision": 2,
@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "0b9983cfd1059b9f687ff030783250215f99d41c",
+      "attempts": 2,
       "startedAt": "2026-11-07T10:32:47.416Z",
       "doneAt": "2026-11-07T10:44:00.240Z",
-      "summary": "cards/stats.ts escribe el resumen de specty stats (cabecera con el corte, los seis indicadores con su variación, una tabla alineada por persona, agente y modelo, el estado vacío) y sus rechazos, en español y en inglés; formats.md §9 lleva un ejemplo"
+      "summary": "cards/stats.ts escribe el resumen de specty stats (cabecera con el corte, los seis indicadores con su variación, una tabla alineada por persona, agente y modelo, el estado vacío) y sus rechazos, en español y en inglés; formats.md §9 lleva un ejemplo",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "11d28ffafc38601f560c37339325767ed51e043e",
+      "startedAt": "2026-11-07T10:44:00.597Z",
+      "doneAt": "2026-11-07T10:49:26.203Z",
+      "summary": "specty stats imprime el resumen del panel o, con --json, el mismo StatsView que /api/stats: ambos leen con statsOf en server/stats.ts, que pasa a plainRecords (P322); rechaza con código 1 lo que no entiende"
     }
   },
   "pending": {

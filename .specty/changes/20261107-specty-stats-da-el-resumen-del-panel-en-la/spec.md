@@ -66,7 +66,7 @@ Hoy el resumen de lo que se hizo con Specty solo se ve en el «Panel» de `spect
   - files: packages/core/src/cards/stats.ts, packages/core/src/cards/index.ts, packages/core/test/cards/stats.test.ts, docs/formats.md
   - ac: AC1, AC2, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/stats.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: `specty stats` lee el panel con la misma función que `GET /api/stats` y lo imprime o lo da en JSON
+- [x] T2: `specty stats` lee el panel con la misma función que `GET /api/stats` y lo imprime o lo da en JSON
   - files: packages/cli/src/server/stats.ts, packages/cli/src/server/api.ts, packages/cli/src/commands/stats.ts, packages/cli/src/program.ts, packages/cli/test/stats.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/stats.test.ts test/server/stats.test.ts && pnpm typecheck && pnpm lint
