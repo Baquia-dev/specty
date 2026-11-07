@@ -22,6 +22,7 @@ export const SETTING_SECTIONS = [
   "ui",
   "effort",
   "glossary",
+  "internal",
 ] as const;
 
 export type SettingSection = (typeof SETTING_SECTIONS)[number];
@@ -52,6 +53,15 @@ export interface Setting {
   /** A parameter Specty kept fixed in its code until it became a setting. */
   readonly new?: true;
 }
+
+/**
+ * Section «Interno», execution and server: the priority of the verifications and the ports
+ * `specty ui` tries, which Specty kept fixed in its code, as keys of `internal` (formats.md §6).
+ */
+const INTERNAL_RUN: readonly Setting[] = [
+  { key: "internal.exec.priority", section: "internal", kind: "number", new: true },
+  { key: "internal.server.portsTried", section: "internal", kind: "number", new: true },
+];
 
 const TESTS_POLICIES = ["contract", "required", "recommended", "off"];
 
@@ -119,8 +129,9 @@ export const SETTINGS: readonly Setting[] = [
   { key: "memory.orphanAfterMin", section: "memory", kind: "number", unit: "min" },
   { key: "memory.branch", section: "memory", kind: "text" },
   { key: "dev.ports", section: "dev", kind: "list" },
-  { key: "ui.port", section: "ui", kind: "number", soon: true },
+  { key: "ui.port", section: "ui", kind: "number" },
   { key: "ui.requireUserPresence", section: "ui", kind: "toggle", soon: true },
   { key: "effort", section: "effort", kind: "map", soon: true },
   { key: "glossary", section: "glossary", kind: "text" },
+  ...INTERNAL_RUN,
 ];

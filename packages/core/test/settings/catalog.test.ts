@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import * as z from "zod";
 import { optionName, SETTING_SECTIONS, SETTINGS, sectionName, settingText } from "../../src/light";
-import { ConfigSchema } from "../../src/schema/config";
+import { ConfigSchema, DEFAULT_CONFIG, resolveConfig } from "../../src/schema/config";
 
 type Schema = z.core.$ZodType;
 
@@ -70,6 +70,7 @@ describe("the settings' catalog", () => {
       "ui",
       "effort",
       "glossary",
+      "internal",
     ]);
     const order = SETTINGS.map((setting) => SETTING_SECTIONS.indexOf(setting.section));
     expect(order.every((index) => index >= 0)).toBe(true);
@@ -121,11 +122,10 @@ describe("the settings' catalog", () => {
     expect(keysWith("soon")).toEqual([
       "team.approvers",
       "team.requirePrReview",
-      "ui.port",
       "ui.requireUserPresence",
       "effort",
     ]);
-    expect(keysWith("new")).toEqual([]);
+    expect(keysWith("new")).toEqual(["internal.exec.priority", "internal.server.portsTried"]);
   });
 
   it("AC5: names and describes each setting, section and option in Spanish and in English", () => {
@@ -159,9 +159,78 @@ describe("the settings' catalog", () => {
       "Interfaz",
       "Esfuerzo por herramienta",
       "Glosario",
+      "Interno",
     ]);
     expect(sectionName("verify", "en")).toBe("Verification");
     expect(optionName("policy.tests", "contract", "es")).toBe("Contrato");
     expect(optionName("policy.tests", "contract", "en")).toBe("Contract");
+  });
+
+  it("AC5: puts the verifications' priority and the ports the UI tries in «Interno», the last section, as new numbers", () => {
+    expect(SETTING_SECTIONS.at(-1)).toBe("internal");
+    const internal = SETTINGS.filter((setting) => setting.section === "internal");
+    expect(SETTINGS.slice(-internal.length)).toEqual(internal);
+    for (const key of ["internal.exec.priority", "internal.server.portsTried"]) {
+      expect(
+        internal.find((setting) => setting.key === key),
+        key,
+      ).toEqual({ key, section: "internal", kind: "number", new: true });
+    }
+    expect(SETTINGS.find((setting) => setting.key === "ui.port")).toEqual({
+      key: "ui.port",
+      section: "ui",
+      kind: "number",
+    });
+  });
+
+  it("AC6: names «Interno» and its settings in Spanish and in English", () => {
+    expect(sectionName("internal", "es")).toBe("Interno");
+    expect(sectionName("internal", "en")).toBe("Internal");
+    for (const key of ["internal.exec.priority", "internal.server.portsTried"]) {
+      expect(settingText(key, "es").name, key).not.toBe(key);
+      expect(settingText(key, "es").name, key).not.toBe(settingText(key, "en").name);
+    }
+  });
+});
+
+describe("the internal keys of execution and of the server", () => {
+  const issuesOf = (internal: unknown) => {
+    const result = resolveConfig({ version: 1, internal });
+    return result.ok ? [] : result.issues.map((issue) => issue.path);
+  };
+
+  it("AC4: default to today's values, with or without the key", () => {
+    const today = { exec: { priority: 10 }, server: { portsTried: 20 } };
+    expect(DEFAULT_CONFIG.internal).toMatchObject(today);
+    expect(resolveConfig({ version: 1 })).toMatchObject({ ok: true, config: { internal: today } });
+    expect(resolveConfig({ version: 1, internal: { exec: {}, server: {} } })).toMatchObject({
+      ok: true,
+      config: { internal: today },
+    });
+    expect(
+      resolveConfig({
+        version: 1,
+        internal: { exec: { priority: 0 }, server: { portsTried: 100 } },
+      }),
+    ).toMatchObject({
+      ok: true,
+      config: { internal: { exec: { priority: 0 }, server: { portsTried: 100 } } },
+    });
+    expect(issuesOf({ exec: { priority: 19 }, server: { portsTried: 1 } })).toEqual([]);
+  });
+
+  it("AC4: refuses a priority outside 0 to 19, ports outside 1 to 100, a fraction and an unknown key, by its key", () => {
+    for (const priority of [-1, 20, 1.5, "10"]) {
+      expect(issuesOf({ exec: { priority } }), String(priority)).toEqual([
+        "internal.exec.priority",
+      ]);
+    }
+    for (const portsTried of [0, 101, 2.5]) {
+      expect(issuesOf({ server: { portsTried } }), String(portsTried)).toEqual([
+        "internal.server.portsTried",
+      ]);
+    }
+    expect(issuesOf({ exec: { nice: 5 } })).toEqual(["internal.exec"]);
+    expect(issuesOf({ server: { port: 5 } })).toEqual(["internal.server"]);
   });
 });

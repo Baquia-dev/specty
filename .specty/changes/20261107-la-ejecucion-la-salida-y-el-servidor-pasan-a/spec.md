@@ -75,7 +75,7 @@ Hoy la prioridad con que corren las verificaciones y cuántos puertos prueba `sp
 
 ## Tareas
 
-- [ ] T1: El bloque `internal` de C9 en el schema y sus ajustes en el catálogo, con sus textos
+- [x] T1: El bloque `internal` de C9 en el schema y sus ajustes en el catálogo, con sus textos
   - files: packages/core/src/schema/internal-run.ts, packages/core/src/schema/config.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/catalog.test.ts, packages/ui/src/settings/settings-page.test.ts, docs/formats.md, docs/ui.md
   - ac: AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts

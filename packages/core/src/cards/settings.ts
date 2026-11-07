@@ -29,6 +29,7 @@ const SECTIONS: Readonly<Record<SettingSection, Readonly<Record<Lang, string>>>>
   ui: { es: "Interfaz", en: "Interface" },
   effort: { es: "Esfuerzo por herramienta", en: "Effort per tool" },
   glossary: { es: "Glosario", en: "Glossary" },
+  internal: { es: "Interno", en: "Internal" },
 };
 
 /** The names of the options of each choice, by its key and the option. */
@@ -60,6 +61,30 @@ const OPTIONS: Readonly<Record<string, Readonly<Record<string, Readonly<Record<L
       "tests-and-generated": { es: "Tests y generados", en: "Tests and generated" },
     },
   };
+
+/** Section «Interno», execution and server: the priority of the verifications and the UI's ports. */
+const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
+  "internal.exec.priority": {
+    es: [
+      "Prioridad de las verificaciones",
+      "El nice con que corren la verificación de cada tarea y la completa, de 0 a 19; si Specty ya corre más bajo, se quedan en la suya.",
+    ],
+    en: [
+      "Verifications' priority",
+      "The nice each task's verification and the full one run at, from 0 to 19; if Specty already runs lower, they keep its own.",
+    ],
+  },
+  "internal.server.portsTried": {
+    es: [
+      "Puertos que prueba la UI",
+      "Cuántos puertos prueba specty ui desde el primero si está ocupado, de 1 a 100.",
+    ],
+    en: [
+      "Ports the UI tries",
+      "How many ports specty ui tries from the first if it is taken, from 1 to 100.",
+    ],
+  },
+};
 
 const TEXTS: Readonly<Record<string, Texts>> = {
   language: {
@@ -272,8 +297,14 @@ const TEXTS: Readonly<Record<string, Texts>> = {
     en: ["Development ports", "The main folder's; the others add their place."],
   },
   "ui.port": {
-    es: ["Puerto de la UI", "El de specty ui; auto, uno libre."],
-    en: ["UI port", "specty ui's; auto, a free one."],
+    es: [
+      "Puerto de la UI",
+      "Desde el que escucha specty ui sin --port; con auto, el 4173. Si está ocupado, prueba los siguientes.",
+    ],
+    en: [
+      "UI port",
+      "The one specty ui listens from without --port; with auto, 4173. If it is taken, it tries the next ones.",
+    ],
   },
   "ui.requireUserPresence": {
     es: ["Presencia de la persona", "Pedir WebAuthn para las acciones de la UI."],
@@ -290,6 +321,7 @@ const TEXTS: Readonly<Record<string, Texts>> = {
     es: ["Glosario del dominio", "El archivo con los términos del proyecto."],
     en: ["Domain glossary", "The file with the project's terms."],
   },
+  ...INTERNAL_RUN_TEXTS,
 };
 
 /** The name and the description of the setting `key`; of one the catalog lacks, its key. */

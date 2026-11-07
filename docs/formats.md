@@ -480,7 +480,7 @@ team:                             # solo con mode: team
   approvers: []
   requirePrReview: true
 ui:
-  port: auto
+  port: auto                      # el puerto desde el que escucha `specty ui` sin `--port`; auto: el 4173; `--port` manda
   requireUserPresence: false      # WebAuthn (fase 4)
 memory:                           # la memoria de Specty (ADR 0016)
   orphanAfterMin: 60              # minutos sin pasos ni cambios de estado tras los que un cambio que espera al agente es huérfano
@@ -488,6 +488,11 @@ memory:                           # la memoria de Specty (ADR 0016)
 dev:
   ports: [4200, 5173]             # los puertos de desarrollo del proyecto en la carpeta principal; cada carpeta de cambio usa estos más su posición (§1, `ports.json`), y `new` y `next` se los dicen al agente; sin la clave: ninguno
 subagents: true                   # false: ni los cortes de una épica ni los cambios que pide el usuario van a subagentes, aunque su herramienta pueda
+internal:                         # ajustes internos: pueden dejar Specty sin funcionar; sin la clave, el valor de hoy
+  exec:
+    priority: 10                  # el `nice` de la verificación de cada tarea y de la completa (entre 0 y 19); si Specty ya corre más bajo, la suya
+  server:
+    portsTried: 20                # cuántos puertos prueba `specty ui` desde el primero si está ocupado (entre 1 y 100)
 ```
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
@@ -537,6 +542,10 @@ No las escribe: las añade la persona tras comprobar que entre todas ejecutan lo
 `specty init` escribe `verify.default` y `verify.full` con los comandos que detecta. Si el archivo ya existe, solo añade los que falten y la detección encuentre ahora (por ejemplo, tras el primer cambio de un repositorio vacío), insertando sus líneas al final de `verify` (o un bloque `verify` nuevo al final del archivo); nunca cambia un valor que ya está, y el resto del archivo, con sus comentarios, queda igual.
 
 La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y se puede sobrescribir con una clave `effort:` en este archivo.
+
+`internal` reúne parámetros que Specty tenía fijos en su código; son opcionales, con el valor de hoy por defecto, y quitar una clave lo devuelve. `internal.exec.priority` (10 por defecto, un entero entre 0 y 19) es la prioridad (`nice`) con que corren la verificación de cada tarea, la completa de `accept` y la que lanza la UI: va de 0 a 19 porque es el rango en el que un proceso sin permisos puede bajarse; con 0 no se baja, y si Specty ya corre con una prioridad más baja, el comando se queda en la suya, porque una más alta no se puede pedir. `internal.server.portsTried` (20, un entero entre 1 y 100) es cuántos puertos prueba `specty ui` desde el primero, sin pasar del 65535, cuando ese está ocupado; si ninguno está libre, no arranca y dice desde cuál hasta cuál probó. Una clave fuera de sus límites, o una que no existe bajo `internal`, es un error de `config.yaml`.
+
+`ui.port` es el puerto desde el que `specty ui` escucha cuando se arranca sin `--port`; con `auto` (el valor por defecto) empieza en el 4173. Si está ocupado, prueba los siguientes, como con `--port`, que manda sobre la clave.
 
 La guía de las verificaciones, con lo que comprueba cada una, cómo se configura y cómo se desactiva, está en [checks.md](checks.md) y, en inglés, en [checks.en.md](checks.en.md). Lo que sigue es el detalle.
 
