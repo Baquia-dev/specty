@@ -1,0 +1,191 @@
+{
+  "schema": 1,
+  "id": "20261107-el-panel-muestra-los-indicadores-clave-con-sus",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261107-el-panel-muestra-los-indicadores-clave-con-sus",
+  "baseCommit": "38a574cf24dfa0be97c1254548ede20c85792483",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bddcbb7eab38c4fd3d013632b9589d60adee177c16b198768917a4c5e34dc9d5",
+    "at": "2026-11-07T04:23:54.718Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9db860e8a9ca07c0d379a3866c455b7f33836ecbca249cf7600053a5d841f838",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8c47139b32b1de1ec28ef4ae3aaa242d2f399bcff72bff5ca24470deea94a33e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:507bd374e2aa17c7206eb522b367f2628386d7093b08450d7ebedb2929e34bb3",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:214b73391b740dd03defb837851b4a3f9f874c60ee3810910e71cfac10890379",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f6d25e0e3f421d6f1934b7b07c39f8a94a24e01f366ec6c63bd45bc979e5a16c",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:ae9dfb6ee83da7d8f979c32e59deabca151cf610dfc7a57061429bf225354a45",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:c05b518c6ee18b233e083929f4602a067b6467e107e94a953b23d2a92f9a4dd4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "cc9af68c72871b602cf22823ce8fefda898cde7c",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:36:14.967Z",
+      "doneAt": "2026-11-07T04:38:29.832Z",
+      "summary": "El core calcula el panel: stats/period.ts (corte, rangos, filtro y comparación), stats/rows.ts (la fila de cada cambio) y stats/summary.ts (statsView con los seis indicadores y las opciones de «Ver por»)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "a0d73ae787d69a6eaf802fcd45ca74d344470f1b",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:38:30.705Z",
+      "doneAt": "2026-11-07T04:39:23.209Z",
+      "summary": "GET /api/stats en server/api.ts: una fila por cambio de changeRecords, las entradas de la memoria y hoy en la fecha local, con statsView; documentado en ARCHITECTURE §15",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "be24c10f4556092f0515f9694cae760386faf0b3",
+      "attempts": 1,
+      "startedAt": "2026-11-07T04:39:23.717Z",
+      "doneAt": "2026-11-07T05:13:17.556Z",
+      "summary": "La página «Panel» (/dashboard, enlace entre Sesiones y Configuración): cabecera, filtros Periodo, Ver por y Carril en la URL, y la fila de seis indicadores con su variación (dashboard-summary.ts); stats() de la fuente y del servidor; docs/ui.md",
+      "scopeExtra": [
+        "packages/ui/src/dashboard/dashboard-summary.ts",
+        "packages/ui/src/dashboard/dashboard-page.test.ts",
+        "packages/ui/src/app/shell.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 8,
+    "T": 3,
+    "R": 3,
+    "S": 2
+  },
+  "closingSubmittedAt": "2026-11-07T05:14:20.780Z",
+  "lockedTests": {
+    "packages/ui/src/app/shell.test.ts": "sha256:9f54426aa7fb052421faf872debbb0767cd143ae01a74aa000fcdf53d271e9d9",
+    "packages/cli/test/server/stats.test.ts": "sha256:7b2a9ee66207174e188c3b7d8467e0dcde3c4d2a070db7863884ca281266bf9f",
+    "packages/core/test/stats/summary.test.ts": "sha256:a58de01d800a62978c4e6f3ccb24eb89ecb0e2eded3f571f8116147b6692fca9",
+    "packages/ui/src/dashboard/dashboard-page.test.ts": "sha256:9c47c2aa7de19d3f666cd2a097a290887d64ffdca91817bb25285ee928f2c8bb"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "122b0f87b0dd21aa992fe015859351574e4588ec",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/server/api.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "evals/run/compliance.eval.ts",
+      "evals/src/agents.ts",
+      "evals/src/launch.ts",
+      "evals/test/conversation.test.ts",
+      "evals/test/session.test.ts",
+      "packages/cli/src/check/commands.ts",
+      "packages/cli/src/commands/approve.ts",
+      "packages/cli/src/commands/memory.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/propose.ts",
+      "packages/cli/src/commands/prune.ts",
+      "packages/cli/src/commands/review.ts",
+      "packages/cli/src/enforce/hook.ts",
+      "packages/cli/src/flow/branches.ts",
+      "packages/cli/src/flow/config-save.ts",
+      "packages/cli/src/flow/units.ts",
+      "packages/cli/src/io/exec.ts",
+      "packages/cli/src/io/yaml-edit.ts",
+      "packages/cli/src/server/api.ts",
+      "packages/cli/src/server/config.ts",
+      "packages/cli/src/server/diff.ts",
+      "packages/cli/src/server/test-code.ts",
+      "packages/cli/src/server/trace.ts",
+      "packages/cli/src/store/local.ts",
+      "packages/cli/src/store/memory.ts",
+      "packages/cli/test/check-commands.test.ts",
+      "packages/cli/test/config-save.test.ts",
+      "packages/cli/test/effort-config.test.ts",
+      "packages/cli/test/memory.test.ts",
+      "packages/cli/test/new-locked-config.test.ts",
+      "packages/cli/test/prune-units.test.ts",
+      "packages/cli/test/review.test.ts",
+      "packages/cli/test/server/config.test.ts",
+      "packages/cli/test/server/output-limit.test.ts",
+      "packages/cli/test/server/stats.test.ts",
+      "packages/cli/test/yaml-edit.test.ts",
+      "packages/core/src/cards/settings-internal.ts",
+      "packages/core/src/cards/settings-size.ts",
+      "packages/core/src/cards/settings.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/light.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/internal-run.ts",
+      "packages/core/src/schema/internal-waits.ts",
+      "packages/core/src/schema/sizing.ts",
+      "packages/core/src/settings/catalog.ts",
+      "packages/core/src/sizing/effort.ts",
+      "packages/core/src/sizing/size.ts",
+      "packages/core/src/stats/period.ts",
+      "packages/core/src/stats/rows.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/core/src/validate/limits.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/settings/catalog.test.ts",
+      "packages/core/test/sizing/configured.test.ts",
+      "packages/core/test/stats/summary.test.ts",
+      "packages/ui/src/app/routes.ts",
+      "packages/ui/src/app/shell.test.ts",
+      "packages/ui/src/app/shell.ts",
+      "packages/ui/src/dashboard/dashboard-page.test.ts",
+      "packages/ui/src/dashboard/dashboard-page.ts",
+      "packages/ui/src/dashboard/dashboard-summary.ts",
+      "packages/ui/src/data/server.ts",
+      "packages/ui/src/data/source.ts",
+      "packages/ui/src/settings/settings-page.test.ts"
+    ],
+    "at": "2026-11-07T05:21:58.678Z",
+    "resolved": {
+      "commit": "baeed71",
+      "at": "2026-11-07T05:48:36.991Z"
+    }
+  }
+}
