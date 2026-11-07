@@ -84,7 +84,7 @@ Hoy la página «Configuración» de `specty ui` solo muestra los ajustes, aunqu
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/server-config.test.ts
   - ac: AC9, AC10
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server-config.test.ts && pnpm lint
-- [ ] T2: El modelo de edición da los campos de cada ajuste, sus ediciones y cada cambio en palabras
+- [x] T2: El modelo de edición da los campos de cada ajuste, sus ediciones y cada cambio en palabras
   - files: packages/ui/src/settings/settings-edit.ts, packages/ui/src/settings/settings-edit.test.ts, packages/ui/src/settings/settings-view.ts
   - ac: AC1, AC4, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-edit.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
