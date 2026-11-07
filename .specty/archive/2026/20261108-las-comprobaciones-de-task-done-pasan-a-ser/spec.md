@@ -85,3 +85,24 @@ Hoy `task done` ejecuta `specty check --changed --spec` con una lista fija de lo
 
 - R1: Dejar fuera una verificación permite completar una tarea con un problema que esa verificación pararía, como un secreto o una vulnerabilidad. Mitigación: lo decide la persona en su `config.yaml`, con su commit, y el ajuste lleva «Afecta permisos», que pide una confirmación aparte al guardar desde la UI. `specty check`, el pre-commit y la CI la siguen ejecutando, y las verificaciones del plan aprobado y la de los tests aprobados no se pueden quitar.
 - R2: C20 y C21 tocan en paralelo el catálogo, sus textos, sus tests, `settings/pieces.ts` y `docs/formats.md` §6. Mitigación: la clave va en su módulo y en sus líneas, y al incorporar main `specty integrate` conserva lo de los dos.
+
+## Cierre
+
+### Resumen
+
+`checks.taskDone.skip` es una clave nueva de `.specty/config.yaml`, una lista de ids vacía por defecto, en su propio módulo `schema/task-done.ts`, que `checks.ts` reúne en `ChecksConfig`, en su schema y en `resolveChecks`. `task done` deja fuera de su `specty check --changed --spec` las verificaciones que nombra, además de `scope`, `max-lines` y, con verificación de la tarea, los comandos del proyecto. `specty check`, el pre-commit y la CI las siguen ejecutando. El validador rechaza, en su posición de la lista, las del plan aprobado (`spec-approved`, `scope`, `dependencies`, `fix-tests`, `criteria-tested` y `tests-removed`) y `tests-locked`, con un mensaje que dice que `task done` las ejecuta siempre. La página «Configuración» muestra el ajuste en «Verificaciones de calidad», tras `checks.levels`, como lista con «Nuevo» y «Afecta permisos», y la vista Flujo lo incluye en la pieza «specty check de lo cambiado». `docs/formats.md` §6 y `docs/checks.md` lo documentan.
+
+### Desviaciones
+
+- T1 se dividió en dos tareas antes de aprobar la spec, porque tocaba 7 archivos: el schema (T1) y el catálogo con su pieza y sus textos (T2). Los tests de AC4 pasaron a su propio archivo, `core/test/settings/task-done.test.ts`.
+
+### Decisiones
+
+- La clave va en el bloque `checks`, no en `flow`: usa los mismos ids que `checks.levels`, y así ni `schema/config.ts` ni `schema/flow.ts`, que C21 toca en paralelo, crecen.
+- Las garantizadas son todas las que añade `--spec` más `tests-locked`, para que la regla se explique en una frase: la clave elige solo entre las de calidad del código. Lo que `task done` comprueba por su cuenta (solicitudes de alcance, alcance de la tarea, parche de los tests desbloqueados, aserciones con `contract` y la verificación de la tarea) no pasa por `specty check` y no se toca.
+- Lleva «Afecta permisos», como `checks.levels`, porque deja al agente completar una tarea que una verificación pararía.
+- Un id desconocido se acepta, como en `checks.levels`, porque los ids viven en la CLI y dependen de los stacks del repositorio.
+
+### Pendientes
+
+- `packages/core/src/cards/settings.ts` llega a 307 líneas de código, por encima del aviso de 300. Se puede dividir por sección, como `settings-size.ts` y `settings-warnings.ts`, llevando los textos de `checks.*` a un `cards/settings-checks.ts`.

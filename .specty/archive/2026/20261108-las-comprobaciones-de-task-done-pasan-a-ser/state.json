@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-las-comprobaciones-de-task-done-pasan-a-ser",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-las-comprobaciones-de-task-done-pasan-a-ser",
   "baseCommit": "d0d3cdde0e489f3bd257f4f0b1ee56009dc83254",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:cf062da8b6cea16a21739984bb850e3454b3efb49aa40c2b2bcec70b6b16a408",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "233649f1856d75ac4bacefd998ebc18a45138934",
+      "attempts": 1,
       "startedAt": "2026-11-07T16:18:28.929Z",
       "doneAt": "2026-11-07T16:19:48.718Z",
-      "summary": "taskChecks suma checks.taskDone.skip a lo que task done deja fuera de specty check; formats.md §6 (ejemplo y párrafo: valor por defecto, garantizadas, que specty check y la CI las siguen ejecutando) y checks.md lo documentan."
+      "summary": "taskChecks suma checks.taskDone.skip a lo que task done deja fuera de specty check; formats.md §6 (ejemplo y párrafo: valor por defecto, garantizadas, que specty check y la CI las siguen ejecutando) y checks.md lo documentan.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,6 +87,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-07T16:20:09.655Z",
   "lockedTests": {
     "packages/cli/test/task-check.test.ts": "sha256:0aea82314d3ac30c9834eb0854a03549d68a2081e0d031a1f9822c17cf7949e5",
     "packages/core/test/settings/catalog.test.ts": "sha256:088a1af8e38925d357c1b096247980ee1450cd1a7493ffc0817d91ffd1e15918",
