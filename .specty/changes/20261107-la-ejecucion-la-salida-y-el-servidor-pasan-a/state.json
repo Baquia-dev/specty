@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7edaef1d33f69cf40ccdef6a35dcb1f5f030faab",
+      "attempts": 1,
       "startedAt": "2026-11-07T03:37:06.698Z",
       "doneAt": "2026-11-07T03:39:32.220Z",
-      "summary": "Módulo schema/internal-run.ts con internal.exec.priority (10, 0–19) e internal.server.portsTried (20, 1–100), reunido bajo internal en config.ts; sección «Interno» con los dos ajustes «Nuevo» en el catálogo y sus textos es/en; ui.port sin «Próximamente»; formats.md §6 y ui.md"
+      "summary": "Módulo schema/internal-run.ts con internal.exec.priority (10, 0–19) e internal.server.portsTried (20, 1–100), reunido bajo internal en config.ts; sección «Interno» con los dos ajustes «Nuevo» en el catálogo y sus textos es/en; ui.port sin «Próximamente»; formats.md §6 y ui.md",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d1d01e029498b6d0288ba24dc399ec43dc07dfe8",
+      "startedAt": "2026-11-07T03:39:32.557Z",
+      "doneAt": "2026-11-07T03:40:32.434Z",
+      "summary": "ExecOptions gana priority, que aplica lowPriority; lowerPriority toma por defecto la de DEFAULT_CONFIG; verify.ts, live-run.ts y server/runs.ts pasan internal.exec.priority; ARCHITECTURE explica la prioridad configurable"
     }
   },
   "pending": {

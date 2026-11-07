@@ -79,7 +79,7 @@ Hoy la prioridad con que corren las verificaciones y cuántos puertos prueba `sp
   - files: packages/core/src/schema/internal-run.ts, packages/core/src/schema/config.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/test/settings/catalog.test.ts, packages/ui/src/settings/settings-page.test.ts, docs/formats.md, docs/ui.md
   - ac: AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts
-- [ ] T2: Las verificaciones corren con la prioridad de la configuración
+- [x] T2: Las verificaciones corren con la prioridad de la configuración
   - files: packages/cli/src/io/exec.ts, packages/cli/src/commands/verify.ts, packages/cli/src/flow/live-run.ts, packages/cli/src/server/runs.ts, packages/cli/test/verify-priority.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-priority.test.ts test/exec.test.ts

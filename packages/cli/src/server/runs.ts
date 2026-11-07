@@ -291,7 +291,7 @@ function spawned(
     stdio: ["ignore", "pipe", "pipe"],
   });
   // Below the rest of the machine, as every verification.
-  if (child.pid !== undefined) lowerPriority(child.pid);
+  if (child.pid !== undefined) lowerPriority(child.pid, there.config.internal.exec.priority);
   const stop = () => {
     child.kill("SIGTERM");
     setTimeout(() => child.kill("SIGKILL"), 2000).unref();
