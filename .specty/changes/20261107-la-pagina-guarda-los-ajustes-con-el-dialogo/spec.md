@@ -92,7 +92,7 @@ Hoy la página «Configuración» de `specty ui` solo muestra los ajustes, aunqu
   - files: packages/ui/src/settings/setting-row.ts, packages/ui/src/settings/settings-page.ts, packages/ui/src/settings/settings-page.test.ts, packages/ui/src/settings/settings-controls.test.ts
   - ac: AC1, AC2, AC3, AC7, AC8, AC9
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-controls.test.ts --include src/settings/settings-page.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
-- [ ] T4: «Revisar y guardar» abre el diálogo con cada cambio, sus avisos y la confirmación, y guarda
+- [x] T4: «Revisar y guardar» abre el diálogo con cada cambio, sus avisos y la confirmación, y guarda
   - files: packages/ui/src/settings/save-dialog.ts, packages/ui/src/settings/settings-page.ts, packages/ui/src/settings/settings-save.test.ts, docs/ui.md
   - ac: AC4, AC5, AC6, AC7, AC9, AC11
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-save.test.ts && pnpm typecheck && pnpm lint && pnpm sources && pnpm knip

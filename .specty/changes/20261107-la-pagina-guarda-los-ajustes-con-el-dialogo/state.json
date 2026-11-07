@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-la-pagina-guarda-los-ajustes-con-el-dialogo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-la-pagina-guarda-los-ajustes-con-el-dialogo",
   "baseCommit": "9183447eaa311a331341561a5c135a75de5a6508",
   "revision": 2,
@@ -73,12 +73,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "453dfbe82ad209dd5e51950973a04165ff698194",
+      "attempts": 1,
       "startedAt": "2026-11-07T04:46:01.933Z",
       "doneAt": "2026-11-07T04:50:36.084Z",
-      "summary": "La fila de cada ajuste pasa a setting-row.ts con sus controles, «Restablecer» y «Sin guardar»; la página lleva las ediciones, las comprueba con el servidor, cuenta los cambios en el encabezado y la barra compacta, y en solo lectura dice por qué"
+      "summary": "La fila de cada ajuste pasa a setting-row.ts con sus controles, «Restablecer» y «Sin guardar»; la página lleva las ediciones, las comprueba con el servidor, cuenta los cambios en el encabezado y la barra compacta, y en solo lectura dice por qué",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e822b0c6118b5fc52c57f55e7e1c87b1b95824a0",
+      "startedAt": "2026-11-07T04:50:36.796Z",
+      "doneAt": "2026-11-07T04:53:04.944Z",
+      "summary": "«Revisar y guardar» abre save-dialog.ts con cada cambio de la comprobación, «Antes» solo si se quita algo, avisos de comando y permisos con confirmación aparte, y guarda; docs/ui.md describe la edición"
     }
   },
   "pending": {

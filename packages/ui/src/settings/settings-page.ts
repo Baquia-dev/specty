@@ -16,14 +16,18 @@ import { SETTINGS, type Setting, settingChanges } from "@baquia-dev/specty-core/
 import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { Collapsible } from "../components/collapsible";
+import { Dialogs } from "../components/dialog";
 import { LIST, PAGE, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
 import { LucideSearch } from "../components/icons";
 import { Segmented } from "../components/segmented";
 import { Skeleton } from "../components/skeleton";
+import { Toasts } from "../components/toast";
 import { Decisions } from "../data/decisions";
 import { ActionError, type Bilingual, SpectyData } from "../data/records";
+import type { ConfigSaved } from "../data/source";
 import { Preferences } from "../theme/preferences";
+import { type SaveData, SaveDialog } from "./save-dialog";
 import { type FieldView, SettingRowView } from "./setting-row";
 import {
   applyEdits,
@@ -197,6 +201,8 @@ export class SettingsPage {
   private readonly data = inject(SpectyData);
   private readonly preferences = inject(Preferences);
   private readonly decisions = inject(Decisions);
+  private readonly dialogs = inject(Dialogs);
+  private readonly toasts = inject(Toasts);
   protected readonly t = this.preferences.t;
   protected readonly read = resource({ loader: () => this.data.config() });
   private readonly delegation = resource({ loader: () => this.data.delegation() });
@@ -402,9 +408,29 @@ export class SettingsPage {
     this.drafts.set(new Map());
   }
 
-  /** «Revisar y guardar»: the dialog with each change, its warnings and the person's confirmation. */
+  /**
+   * «Revisar y guardar»: the dialog with the changes of the server's check, which are the ones it
+   * saves. Once saved, the edits go, the page reads the file again and a toast gives the commit.
+   */
   protected review(): void {
-    return;
+    const record = this.record();
+    if (record === undefined || !this.check.hasValue()) return;
+    const data: SaveData = { changes: this.check.value().changes, edits: this.edits(), record };
+    this.dialogs
+      .open<ConfigSaved, SaveData, SaveDialog>(SaveDialog, data)
+      .closed.subscribe((saved) => {
+        if (saved === undefined) return;
+        this.drafts.set(new Map());
+        this.read.reload();
+        const commit = saved.commit.slice(0, 7);
+        this.toasts.show(
+          this.t()(
+            `Ajustes guardados en el commit ${commit}.`,
+            `Settings saved in commit ${commit}.`,
+          ),
+          "success",
+        );
+      });
   }
 
   protected type(event: Event): void {
