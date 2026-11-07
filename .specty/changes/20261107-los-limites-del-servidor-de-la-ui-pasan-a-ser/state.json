@@ -44,14 +44,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/test/settings/catalog.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "7cb8bf64c31472671f9179f6e6188138f480dcdd",
+      "attempts": 1,
       "startedAt": "2026-11-07T05:49:29.582Z",
       "doneAt": "2026-11-07T09:09:22.233Z",
-      "summary": "Cinco claves de internal.server con sus límites y los valores de hoy, en «Interno» del catálogo tras portsTried, con «Nuevo», la unidad ms y textos en los dos idiomas; recuento de catalog.test.ts según S1."
+      "summary": "Cinco claves de internal.server con sus límites y los valores de hoy, en «Interno» del catálogo tras portsTried, con «Nuevo», la unidad ms y textos en los dos idiomas; recuento de catalog.test.ts según S1.",
+      "scopeExtra": [
+        "packages/core/test/settings/catalog.test.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "45ab4aa94ee1fbadcf5c9b0174258b9838d0b2c1",
+      "startedAt": "2026-11-07T09:09:22.667Z",
+      "doneAt": "2026-11-07T09:17:30.567Z",
+      "summary": "liveRun, las líneas de cada unidad de runs.ts y el archivo en vivo de runLive guardan las últimas internal.server.runLines líneas y se avisan o reescriben como mucho cada runEveryMs."
     }
   },
   "pending": {

@@ -75,7 +75,7 @@ Hoy el servidor de `specty ui` tiene sus límites fijos en el código: mira los 
   - files: packages/core/src/schema/internal-run.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/settings/catalog.test.ts, packages/core/test/settings/internal-server.test.ts
   - ac: AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/catalog.test.ts test/settings/internal-server.test.ts
-- [ ] T2: Una verificación en vivo guarda las líneas y se avisa con la frecuencia de la configuración
+- [x] T2: Una verificación en vivo guarda las líneas y se avisa con la frecuencia de la configuración
   - files: packages/cli/src/server/run-output.ts, packages/cli/src/server/runs.ts, packages/cli/src/flow/live-run.ts, packages/cli/test/server/run-output.test.ts, packages/cli/test/live-run.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/run-output.test.ts test/live-run.test.ts
