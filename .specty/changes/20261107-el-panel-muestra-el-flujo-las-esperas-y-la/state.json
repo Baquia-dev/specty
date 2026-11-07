@@ -6,6 +6,13 @@
   "branch": "specty/20261107-el-panel-muestra-el-flujo-las-esperas-y-la",
   "baseCommit": "a4e6321c4130771efd5b22d9cc3115e691c6cc6c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2636bf99da7d567ab5aa9cc6fb97d6031eeb17e1201a383da68c45484e8fe774",
+    "at": "2026-11-07T10:32:53.696Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -60,12 +67,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2636bf99da7d567ab5aa9cc6fb97d6031eeb17e1201a383da68c45484e8fe774",
-    "at": "2026-11-07T10:32:53.696Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T10:49:18.351Z"
 }
