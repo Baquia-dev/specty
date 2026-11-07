@@ -67,7 +67,7 @@ Opción elegida: ordenar los aterrizajes con el turno que ya existe, en lugar de
 
 ## Tareas
 
-- [ ] T1: Los textos de la incorporación que sigue sola
+- [x] T1: Los textos de la incorporación que sigue sola
   - files: packages/core/src/cards/integration.ts, packages/core/src/cards/index.ts, packages/core/test/cards/incorporation.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/incorporation.test.ts

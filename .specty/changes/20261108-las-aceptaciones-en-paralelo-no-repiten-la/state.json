@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "003bbc53169535cdcc5521f8b4bb3a839e19418b",
+      "startedAt": "2026-11-07T17:28:11.208Z",
+      "doneAt": "2026-11-07T17:28:33.387Z",
+      "summary": "resolveIncorporationNext delegado dice que specty integrate sigue con el comando, y mergedAgainLine dice que main avanzó y se incorporó otra vez antes de verificar"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

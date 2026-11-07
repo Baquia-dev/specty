@@ -226,6 +226,7 @@ export {
   markersLeftLine,
   mergeAbortedLine,
   mergeByHandNext,
+  mergedAgainLine,
   mergedConfigInvalidLine,
   mergedConfigNext,
   mergedVerifyFailsLine,
