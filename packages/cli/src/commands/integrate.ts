@@ -11,6 +11,7 @@ import {
   isIntegrating,
   markersLeftLine,
   mergeAbortedLine,
+  mergedAgainLine,
   mergingLabel,
   noIncorporationCard,
   type Output,
@@ -27,9 +28,17 @@ import {
   verifyingNote,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
+import { closingFirst } from "../flow/closing-turn";
 import { changeTrailers, commitWithReceipt } from "../flow/commits";
-import { fullCommand } from "../flow/full-verification";
-import { blocked } from "../flow/integrate";
+import { fullCommand, landingTurn } from "../flow/full-verification";
+import {
+  type Absorbed,
+  blocked,
+  contains,
+  integrationOf,
+  type Integration as Landing,
+  mergeTarget,
+} from "../flow/integrate";
 import { fullPlan, runFull } from "../flow/units";
 import { codeTree, type FullRun, recordFullVerification } from "../flow/verified";
 import { readText } from "../io/files";
@@ -40,12 +49,16 @@ import type { StoredChange } from "../store/changes";
 /** A conflict marker left at the start of a line. */
 const MARKER = /^(?:<{7}|>{7})(?:\s|$)|^={7}$/m;
 
+/** What `integrate` goes on with in delegated mode: the command that left the incorporation. */
+export type Resume = (again: "accept" | "close") => Promise<Output>;
+
 /**
  * `specty integrate`: the agent finishes the merge a closing left in this folder. Nothing is
- * committed unless every conflict is resolved, the changes stay within the files the merge brings
- * together and the verification passes (ARCHITECTURE §9).
+ * committed unless every conflict is resolved and the changes stay within the files the merge
+ * brings together; then, on the landing turn, the verification passes, or main moved on and comes
+ * in again (ARCHITECTURE §9). In delegated mode, `resume` goes on with the agent's command.
  */
-export async function integrate(session: Session): Promise<Output> {
+export async function integrate(session: Session, resume: Resume): Promise<Output> {
   const { cards, git, lang } = session;
   const change = await resolveActive(session);
   const integration = change?.state.integration;
@@ -57,16 +70,11 @@ export async function integrate(session: Session): Promise<Output> {
   if ((await git.run(["rev-parse", "-q", "--verify", "MERGE_HEAD"])).code !== 0) {
     return blocked(state, [mergeAbortedLine(lang)], undefined, runAgainNext(again, cards));
   }
-  const problem = await mergeProblem(session, change, integration);
-  if (problem !== undefined) {
-    return {
-      status: "blocked",
-      header: headerOf(state.id, state.phase, mergingLabel(integration.target, lang)),
-      blocks: [...section(undefined, [problem.reason]), problem.details],
-      next: problem.next ?? integrateRetry(cards),
-    };
-  }
-  return commitMerge(session, change, integration, again);
+  const problem = await mergeProblem(session, integration);
+  if (problem !== undefined) return problemCard(session, state, integration, problem);
+  const plan = await integrationOf(session, state);
+  const resolved = { change, integration, again } as const;
+  return landingTurn(session, plan, () => integrateOnTurn(session, resolved, plan, resume));
 }
 
 type Integration = NonNullable<StoredChange["state"]["integration"]>;
@@ -78,17 +86,94 @@ interface MergeProblem {
   readonly next?: string;
 }
 
-/** Conflict markers left, changes outside the files the merge brings together, or a failing verification. */
+/**
+ * Conflict markers left, or changes outside the files the merge brings together: checked before
+ * the landing turn, which they do not need.
+ */
 async function mergeProblem(
   session: Session,
-  change: StoredChange,
   integration: Integration,
 ): Promise<MergeProblem | undefined> {
-  return (
-    (await markersLeft(session, integration)) ??
-    (await outsideChanges(session, integration)) ??
-    (await failedVerification(session, change))
-  );
+  return (await markersLeft(session, integration)) ?? (await outsideChanges(session, integration));
+}
+
+/** The merge cannot be committed yet: why, and what to do. */
+function problemCard(
+  session: Session,
+  state: StoredChange["state"],
+  integration: Integration,
+  problem: MergeProblem,
+): Output {
+  return {
+    status: "blocked",
+    header: headerOf(state.id, state.phase, mergingLabel(integration.target, session.lang)),
+    blocks: [...section(undefined, [problem.reason]), problem.details],
+    next: problem.next ?? integrateRetry(session.cards),
+  };
+}
+
+/** The incorporation the agent resolved, and the command that left it. */
+interface Resolved {
+  readonly change: StoredChange;
+  readonly integration: Integration;
+  readonly again: "accept" | "close";
+}
+
+/**
+ * On the landing turn, so that nobody lands meanwhile: if main moved on since the merge the agent
+ * resolved, its commit, and main comes in again, verified once with all of it (`mergeAgain`);
+ * otherwise, its verification and its commit. In delegated mode, the agent's command follows on
+ * the same turn (`resume`), so that the change lands without another verification.
+ */
+async function integrateOnTurn(
+  session: Session,
+  resolved: Resolved,
+  plan: Landing | undefined,
+  resume: Resume,
+): Promise<Output> {
+  const done =
+    plan !== undefined && !(await contains(session.git, "MERGE_HEAD", plan.target))
+      ? await mergeAgain(session, resolved, plan)
+      : await verifiedCommit(session, resolved);
+  if (!done.ok) return done.output;
+  const lines = section(undefined, done.lines);
+  if (session.actor === "agent" && session.delegated) {
+    const resumed = await resume(resolved.again);
+    return { ...resumed, blocks: [...lines, ...resumed.blocks] };
+  }
+  const { state } = resolved.change;
+  return {
+    status: "ok",
+    header: headerOf(state.id, state.phase),
+    blocks: lines,
+    next: runAgainNext(resolved.again, session.cards),
+  };
+}
+
+/** Main did not move: the merge's verification and, if it passes, its commit. */
+async function verifiedCommit(session: Session, resolved: Resolved): Promise<Absorbed> {
+  const { change, integration } = resolved;
+  const failed = await failedVerification(session, change);
+  if (failed !== undefined)
+    return { ok: false, output: problemCard(session, change.state, integration, failed) };
+  const { commit } = await commitMerge(session, resolved);
+  return { ok: true, lines: [integrationResolvedLine(integration.target, commit, session.lang)] };
+}
+
+/**
+ * Main moved on while the agent resolved the merge: verifying it would check stale code. Its
+ * commit goes first, unverified, and main comes in again (`mergeTarget`), with its verification,
+ * or with a new incorporation for the agent; main only ever receives the verified merge.
+ */
+async function mergeAgain(session: Session, resolved: Resolved, plan: Landing): Promise<Absorbed> {
+  const { change, commit } = await commitMerge(session, resolved);
+  const { again } = resolved;
+  const absorbed = await mergeTarget(session, plan, change, again, closingFirst(session, change));
+  if (!absorbed.ok) return absorbed;
+  const { target } = resolved.integration;
+  const { lang } = session;
+  const first = [integrationResolvedLine(target, commit, lang), mergedAgainLine(target, lang)];
+  return { ok: true, lines: [...first, ...absorbed.lines] };
 }
 
 async function markersLeft(
@@ -174,10 +259,8 @@ async function recordPassed(session: Session, change: StoredChange, run: FullRun
 /** The merge resolved: its commit, recorded in the change's state. */
 async function commitMerge(
   session: Session,
-  change: StoredChange,
-  integration: Integration,
-  again: "accept" | "close",
-): Promise<Output> {
+  { change, integration }: Resolved,
+): Promise<{ readonly change: StoredChange; readonly commit: string }> {
   const { state } = change;
   const { target } = integration;
   const commit = await commitWithReceipt(session, {
@@ -187,19 +270,14 @@ async function commitMerge(
     receipt: { change: state.id, kind: "close" },
   });
   const at = session.environment.now().toISOString();
-  await commitState(
+  const committed = await commitState(
     session,
     change,
     { ...state, integration: { ...integration, resolved: { commit, at } } },
     "integration.resolved",
     { commit },
   );
-  return {
-    status: "ok",
-    header: headerOf(state.id, state.phase),
-    blocks: section(undefined, [integrationResolvedLine(target, commit, session.lang)]),
-    next: runAgainNext(again, session.cards),
-  };
+  return { change: committed, commit };
 }
 
 export type Pending =

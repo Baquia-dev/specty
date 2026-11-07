@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "003bbc53169535cdcc5521f8b4bb3a839e19418b",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:28:11.208Z",
       "doneAt": "2026-11-07T17:28:33.387Z",
-      "summary": "resolveIncorporationNext delegado dice que specty integrate sigue con el comando, y mergedAgainLine dice que main avanzó y se incorporó otra vez antes de verificar"
+      "summary": "resolveIncorporationNext delegado dice que specty integrate sigue con el comando, y mergedAgainLine dice que main avanzó y se incorporó otra vez antes de verificar",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "66f166833752c680ff4f3a844bc7706ec0639b05",
+      "startedAt": "2026-11-07T17:28:33.763Z",
+      "doneAt": "2026-11-07T17:32:45.168Z",
+      "summary": "specty integrate verifica en el turno de aterrizaje: si main avanzó, hace el commit de lo resuelto e incorpora main otra vez antes de verificar; en modo delegado sigue en ese turno con accept o close"
     }
   },
   "pending": {

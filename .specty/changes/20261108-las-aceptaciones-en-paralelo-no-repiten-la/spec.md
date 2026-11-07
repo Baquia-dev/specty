@@ -71,7 +71,7 @@ Opción elegida: ordenar los aterrizajes con el turno que ya existe, en lugar de
   - files: packages/core/src/cards/integration.ts, packages/core/src/cards/index.ts, packages/core/test/cards/incorporation.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/incorporation.test.ts
-- [ ] T2: `specty integrate` en el turno de aterrizaje
+- [x] T2: `specty integrate` en el turno de aterrizaje
   - files: packages/cli/src/commands/integrate.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/integrate-landing.test.ts, packages/cli/test/delegated-integration.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate-landing.test.ts test/delegated-integration.test.ts test/integrate.test.ts test/integrate-turn.test.ts test/integrate-units.test.ts test/close-shared-file.test.ts && pnpm typecheck
