@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-el-tiempo-del-hook-de-antigravity-pasa-a-ser-un",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261107-el-tiempo-del-hook-de-antigravity-pasa-a-ser-un",
   "baseCommit": "122b0f87b0dd21aa992fe015859351574e4588ec",
   "revision": 2,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "549b661d2b757dff4effb2a45f2fa7fa388e2aaa",
+      "attempts": 1,
       "startedAt": "2026-11-07T06:04:23.463Z",
       "doneAt": "2026-11-07T08:23:45.477Z",
-      "summary": "La instalación de cada agente recibe la configuración resuelta (init le da la que había o la de por defecto), y Antigravity escribe internal.hooks.antigravityTimeoutSec en los tres hooks del guard; al reejecutar init los reescribe y conserva Stop y los de la persona"
+      "summary": "La instalación de cada agente recibe la configuración resuelta (init le da la que había o la de por defecto), y Antigravity escribe internal.hooks.antigravityTimeoutSec en los tres hooks del guard; al reejecutar init los reescribe y conserva Stop y los de la persona",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9b3a4fec8abd3e05a7ade9f03099d1cf330a651a",
+      "startedAt": "2026-11-07T08:23:45.797Z",
+      "doneAt": "2026-11-07T08:29:10.056Z",
+      "summary": "doctor recibe la configuración de la sesión, y el de Antigravity da antigravity-timeout si algún hook del guard no tiene el tiempo de internal.hooks.antigravityTimeoutSec; ARCHITECTURE lo dice en la fila de Antigravity"
     }
   },
   "pending": {

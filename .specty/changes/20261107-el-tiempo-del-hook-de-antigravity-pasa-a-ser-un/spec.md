@@ -82,7 +82,7 @@ Hoy `specty init` escribe en `.agents/hooks.json` los hooks del guard de Antigra
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/antigravity.ts, packages/cli/src/install/hooks.ts, packages/cli/src/install/install.ts, packages/cli/test/antigravity-timeout.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-timeout.test.ts -t "the time init writes"
-- [ ] T4: `doctor` avisa cuando los hooks de Antigravity tienen otro tiempo
+- [x] T4: `doctor` avisa cuando los hooks de Antigravity tienen otro tiempo
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/antigravity.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/antigravity-timeout.test.ts, docs/ARCHITECTURE.md
   - ac: AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-timeout.test.ts && pnpm typecheck
