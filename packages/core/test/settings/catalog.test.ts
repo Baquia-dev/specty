@@ -31,10 +31,11 @@ function schemaAt(key: string): Schema | undefined {
 }
 
 const KEYS = leaves(ConfigSchema).filter((key) => key !== "version");
-const inFile = SETTINGS.filter((setting) => setting.clone !== true);
+/** The settings with a key of `config.yaml`: neither delegated mode nor Specty's guarantees. */
+const inFile = SETTINGS.filter((setting) => setting.clone !== true && setting.guarantee !== true);
 const covers = (setting: { readonly key: string }, key: string) =>
   key === setting.key || key.startsWith(`${setting.key}.`);
-const keysWith = (mark: "permissions" | "command" | "clone" | "soon" | "new") =>
+const keysWith = (mark: "permissions" | "command" | "clone" | "soon" | "new" | "guarantee") =>
   SETTINGS.filter((setting) => setting[mark] === true).map((setting) => setting.key);
 
 describe("the settings' catalog", () => {
@@ -125,7 +126,13 @@ describe("the settings' catalog", () => {
       "ui.requireUserPresence",
       "effort",
     ]);
-    expect(keysWith("new")).toEqual(["internal.exec.priority", "internal.server.portsTried"]);
+    expect(keysWith("new")).toEqual([
+      "internal.waits.waitTimeoutSec",
+      "internal.waits.heartbeatSec",
+      "internal.retries.landing",
+      "internal.exec.priority",
+      "internal.server.portsTried",
+    ]);
   });
 
   it("AC5: names and describes each setting, section and option in Spanish and in English", () => {
@@ -164,6 +171,70 @@ describe("the settings' catalog", () => {
     expect(sectionName("verify", "en")).toBe("Verification");
     expect(optionName("policy.tests", "contract", "es")).toBe("Contrato");
     expect(optionName("policy.tests", "contract", "en")).toBe("Contract");
+  });
+
+  it("AC6: puts the internal settings last, in section «Interno», as numbers with their units, marked new", () => {
+    const internal = SETTINGS.filter((setting) => setting.section === "internal");
+    expect(SETTINGS.slice(-internal.length)).toEqual(internal);
+    expect(internal.filter((setting) => setting.guarantee !== true)).toEqual([
+      expect.objectContaining({
+        key: "internal.waits.waitTimeoutSec",
+        kind: "number",
+        unit: "s",
+        new: true,
+      }),
+      expect.objectContaining({
+        key: "internal.waits.heartbeatSec",
+        kind: "number",
+        unit: "s",
+        new: true,
+      }),
+      expect.objectContaining({ key: "internal.retries.landing", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.exec.priority", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.server.portsTried", kind: "number", new: true }),
+    ]);
+    expect(
+      SETTINGS.find((setting) => setting.key === "internal.retries.landing")?.unit,
+    ).toBeUndefined();
+  });
+
+  it("AC5: shows the four lives of compliance as guarantees, fixed at 24 h, with no key of config.yaml", () => {
+    const guarantees = SETTINGS.filter((setting) => setting.guarantee === true);
+    expect(guarantees.map((setting) => setting.key)).toEqual([
+      "guarantee.receipts",
+      "guarantee.guardPending",
+      "guarantee.shellSnapshots",
+      "guarantee.sessions",
+    ]);
+    for (const setting of guarantees) {
+      expect(setting, setting.key).toMatchObject({ section: "internal", fixed: 24, unit: "h" });
+      expect(schemaAt(setting.key), setting.key).toBeUndefined();
+      expect(
+        KEYS.some((key) => covers(setting, key)),
+        setting.key,
+      ).toBe(false);
+      for (const mark of ["permissions", "command", "clone", "soon", "new"] as const) {
+        expect(setting[mark], `${setting.key} ${mark}`).toBeUndefined();
+      }
+    }
+    expect(keysWith("guarantee")).toEqual(guarantees.map((setting) => setting.key));
+  });
+
+  it("AC5, AC7: says why each guarantee does not change, and names the internal settings in Spanish and in English", () => {
+    const internal = SETTINGS.filter((setting) => setting.section === "internal");
+    expect(internal).toHaveLength(9);
+    for (const setting of internal) {
+      const es = settingText(setting.key, "es");
+      const en = settingText(setting.key, "en");
+      expect(es.name, setting.key).not.toBe(setting.key);
+      expect(en.name, setting.key).not.toBe(setting.key);
+      expect(es.name, setting.key).not.toBe(en.name);
+      expect(es.description, setting.key).not.toBe(en.description);
+    }
+    expect(settingText("guarantee.receipts", "es").description).toContain("24 h");
+    expect(settingText("guarantee.receipts", "en").description).toContain("24 h");
+    expect(sectionName("internal", "es")).toBe("Interno");
+    expect(sectionName("internal", "en")).toBe("Internal");
   });
 
   it("AC5: puts the verifications' priority and the ports the UI tries in «Interno», the last section, as new numbers", () => {

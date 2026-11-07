@@ -169,17 +169,28 @@ export function sessionFrom(
       : {}),
     actor: interactive ? "human" : "agent",
     delegated,
-    cards: {
-      lang,
-      command: COMMAND,
-      ...(tool !== undefined ? { tool } : {}),
-      quickMaxFiles: config.lanes.quick.maxFiles,
-      implicitTests: config.scope.implicitTests,
-      ...(delegated ? { delegated: true } : {}),
-      ...(branchUsesType(config.git) ? { branchTypes: true } : {}),
-      // `subagents: false` keeps slices and the user's changes out of subagents (formats.md §6).
-      ...(config.subagents ? {} : { subagents: false }),
-    },
+    cards: cardsFrom(config, tool, delegated),
+  };
+}
+
+/** What the cards need to know of the configuration, the tool and the delegation. */
+function cardsFrom(
+  config: ResolvedConfig,
+  tool: AgentTool | undefined,
+  delegated: boolean,
+): CardContext {
+  return {
+    lang: config.language,
+    command: COMMAND,
+    ...(tool !== undefined ? { tool } : {}),
+    quickMaxFiles: config.lanes.quick.maxFiles,
+    implicitTests: config.scope.implicitTests,
+    ...(delegated ? { delegated: true } : {}),
+    ...(branchUsesType(config.git) ? { branchTypes: true } : {}),
+    // `subagents: false` keeps slices and the user's changes out of subagents (formats.md §6).
+    ...(config.subagents ? {} : { subagents: false }),
+    // Without a folder per change, the user's changes stay out of subagents (formats.md §6).
+    ...(config.git.worktrees && config.git.branchPerChange ? {} : { changeFolders: false }),
   };
 }
 

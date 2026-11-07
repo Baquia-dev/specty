@@ -45,7 +45,8 @@ const BRIEF = [
   "  2. Tu `cd` no dura entre comandos: empieza cada uno con `cd '<carpeta del cambio>' &&` y usa rutas absolutas de esa carpeta.",
   `  3. Sigue \`specty next\` hasta cerrarlo; cuando espere a la persona, ${WAIT}`,
   "  4. Si para la spec te falta una respuesta del usuario, no la supongas: detente y responde con la pregunta.",
-  "  5. Responde en tres líneas: el cambio, su fase y lo que falta.",
+  "  5. Si `propose` dice que el cambio es demasiado grande y pide dividirlo en una épica, no lo conviertas tú: detente y responde con eso, que la épica la hace la sesión principal en tu cambio.",
+  "  6. Responde en tres líneas: el cambio, su fase y lo que falta.",
 ].join("\n");
 
 describe("the changes no conversation holds, when the tool hands changes to subagents", () => {
@@ -133,7 +134,8 @@ describe("the changes no conversation holds, when the tool hands changes to suba
     expect(text).toContain(
       [
         "  4. If the spec needs an answer from the user, do not assume it: stop and answer with the question.",
-        "  5. Answer in three lines: the change, its phase and what is left.",
+        "  5. If `propose` says the change is too large and asks to split it into an epic, do not turn it into one yourself: stop and answer with that, since the main session makes the epic in your change.",
+        "  6. Answer in three lines: the change, its phase and what is left.",
       ].join("\n"),
     );
     expect(text).not.toContain("EnterWorktree");

@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
-import { spawnSync } from "node:child_process";
 import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { expect, inject, it } from "vitest";
 import { AGENTS, type Agent, consumptionOf, countsOf } from "../src/agents";
 import { type Experiment, namedExperiments } from "../src/experiments";
+import { launch } from "../src/launch";
+import { attend } from "../src/person";
 import { DIST } from "../src/repo";
 import { type Omitted, type Run, reportJson, reportMarkdown, summarize } from "../src/report";
 import { SCENARIOS, type Scenario } from "../src/scenarios";
@@ -55,7 +56,8 @@ function agentEnv(bin: string): NodeJS.ProcessEnv {
 /**
  * One run of a scenario or an experiment by `agent`, or why the agent has to be left out. An
  * experiment brings its own turns and minutes; each run keeps its wall-clock seconds, and one
- * that tells its consumption keeps it too.
+ * that tells its consumption keeps it too. The agent runs without blocking the suite, so an
+ * experiment's person decides meanwhile; the suite waits for them before judging.
  */
 async function runOnce(
   agent: Agent,
@@ -67,20 +69,22 @@ async function runOnce(
   const turns = "turns" in scenario ? scenario.turns : undefined;
   const [command = binary, ...args] = agent.command(binary, scenario.prompt, turns);
   const started = performance.now();
-  const result = spawnSync(command, args, {
+  const run = launch(command, args, {
     cwd: root,
     env: agentEnv(bin),
-    encoding: "utf8",
-    timeout: "minutes" in scenario ? scenario.minutes * 60 * 1000 : TIMEOUT_MS,
-    maxBuffer: 64 * 1024 * 1024,
+    timeoutMs: "minutes" in scenario ? scenario.minutes * 60 * 1000 : TIMEOUT_MS,
   });
+  const person = "person" in scenario && scenario.person === true;
+  const attending = person ? attend(root, run.running) : Promise.resolve();
+  const result = await run.finished;
+  await attending;
   const seconds = Math.round((performance.now() - started) / 1000);
-  const transcript = result.stdout ?? "";
+  const transcript = result.stdout;
   const counts = countsOf(agent.id, transcript);
   if (
     result.status !== 0 &&
     counts.rounds === 0 &&
-    NO_SESSION.test(`${transcript}${result.stderr ?? ""}`)
+    NO_SESSION.test(`${transcript}${result.stderr}`)
   ) {
     return { agent: agent.id, reason: "sin sesión iniciada" };
   }

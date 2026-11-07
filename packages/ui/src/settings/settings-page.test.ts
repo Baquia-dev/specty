@@ -211,7 +211,7 @@ describe("the settings page", () => {
 
   it("AC2: marks what affects permissions, runs a command, lives in the clone or has no effect yet, with no control to change it", async () => {
     const { page, marks, mark } = await open(valid(INPUT));
-    const flags = ["permissions", "command", "clone", "soon", "new"] as const;
+    const flags = ["permissions", "command", "clone", "soon", "new", "guarantee"] as const;
     for (const setting of SETTINGS) {
       expect(
         marks(setting.key).filter((name) => name !== "modified"),
@@ -327,6 +327,106 @@ describe("the settings page", () => {
       "New",
     ]);
     expect(text(page()?.querySelector("[data-read-only]"))).toContain("Read-only");
+  });
+
+  /** The section «Interno» of the page, its toggle and whether its settings are folded away. */
+  const internalOf = (page: () => HTMLElement | null) => {
+    const section = () => page()?.querySelector<HTMLElement>('section[data-section="internal"]');
+    const toggle = () => section()?.querySelector<HTMLButtonElement>("button[aria-expanded]");
+    return {
+      section,
+      toggle,
+      folded: () =>
+        toggle()?.getAttribute("aria-expanded") === "false" &&
+        section()?.querySelector("[data-setting]")?.closest("[inert]") !== null,
+      open: () =>
+        toggle()?.getAttribute("aria-expanded") === "true" &&
+        section()?.querySelector("[data-setting]")?.closest("[inert]") === null,
+    };
+  };
+
+  it("AC6: shows «Interno» last, folded, with a warning; opened, its settings with «Nuevo», key, value and default", async () => {
+    const changed = valid({ ...INPUT, internal: { waits: { waitTimeoutSec: 600 } } });
+    const { page, settle, sections, headings, part, mark, marks } = await open(changed);
+    expect(sections().at(-1)).toBe("internal");
+    expect(headings().at(-1)).toBe("Interno");
+    const internal = internalOf(page);
+    const warning = text(internal.section()?.querySelector("[data-internal-warning]"));
+    expect(warning).toContain("sin funcionar");
+    expect(warning).toContain("quita su clave");
+    expect(internal.folded()).toBe(true);
+    internal.toggle()?.click();
+    await settle();
+    expect(internal.open()).toBe(true);
+    expect(part("internal.waits.waitTimeoutSec", "key")).toBe("internal.waits.waitTimeoutSec");
+    expect(part("internal.waits.waitTimeoutSec", "value")).toBe("600 s");
+    expect(part("internal.waits.waitTimeoutSec", "default")).toBe("Por defecto: 3600 s");
+    expect(marks("internal.waits.waitTimeoutSec")).toEqual(["modified", "new"]);
+    expect(mark("internal.waits.heartbeatSec", "new")).toBe("Nuevo");
+    expect(part("internal.waits.heartbeatSec", "value")).toBe("60 s");
+    expect(part("internal.waits.heartbeatSec", "default")).toBe("");
+    expect(part("internal.retries.landing", "value")).toBe("2");
+  });
+
+  it("AC6: opens «Interno» by itself while a search or a filter shows its settings", async () => {
+    const { page, keys, search, choose } = await open(valid(INPUT));
+    const internal = internalOf(page);
+    expect(internal.folded()).toBe(true);
+    await search("internal.retries");
+    expect(keys()).toEqual(["internal.retries.landing"]);
+    expect(internal.open()).toBe(true);
+    await search("");
+    expect(internal.folded()).toBe(true);
+    await choose("new");
+    expect(keys()).toEqual([
+      "internal.waits.waitTimeoutSec",
+      "internal.waits.heartbeatSec",
+      "internal.retries.landing",
+      "internal.exec.priority",
+      "internal.server.portsTried",
+    ]);
+    expect(internal.open()).toBe(true);
+  });
+
+  it("AC5: shows the four lives of compliance as guarantees, with a lock, their fixed 24 h and why, with no key nor control", async () => {
+    const { page, row, part, items, marks, mark } = await open(valid(INPUT));
+    for (const key of [
+      "guarantee.receipts",
+      "guarantee.guardPending",
+      "guarantee.shellSnapshots",
+      "guarantee.sessions",
+    ]) {
+      expect(row(key)?.closest('section[data-section="internal"]'), key).not.toBeNull();
+      expect(marks(key), key).toEqual(["guarantee"]);
+      expect(row(key)?.querySelector("[data-lock]"), key).not.toBeNull();
+      expect(items(key), key).toEqual(["24 h"]);
+      expect(row(key)?.querySelector("[data-key]"), key).toBeNull();
+      expect(part(key, "default"), key).toBe("");
+      expect(part(key, "description"), key).toBe(settingText(key, "es").description);
+    }
+    expect(mark("guarantee.receipts", "guarantee")).toBe("Garantía");
+    expect(part("guarantee.receipts", "description")).toContain("24 h");
+    const controls = internalOf(page)
+      .section()
+      ?.querySelectorAll(
+        "[data-setting] input, [data-setting] select, [data-setting] textarea, [data-setting] button",
+      );
+    expect(controls).toHaveLength(0);
+  });
+
+  it("AC7: shows «Interno», its warning, the guarantees and the internal settings in English", async () => {
+    const { page, headings, part, mark } = await open(valid(INPUT), "en");
+    expect(headings().at(-1)).toBe("Internal");
+    const warning = text(internalOf(page).section()?.querySelector("[data-internal-warning]"));
+    expect(warning).toContain("stop working");
+    expect(warning).toContain("remove its key");
+    expect(mark("guarantee.receipts", "guarantee")).toBe("Guarantee");
+    for (const key of SETTINGS.filter((setting) => setting.section === "internal").map(
+      (setting) => setting.key,
+    )) {
+      expect(part(key, "name"), key).toBe(settingText(key, "en").name);
+      expect(part(key, "description"), key).toBe(settingText(key, "en").description);
+    }
   });
 
   /** The settings of execution and of the server that were fixed in Specty's code until C9. */

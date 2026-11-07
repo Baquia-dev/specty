@@ -9,12 +9,19 @@ import { itemLine, type Rule, report, type ValidationContext } from "./context";
 import { declaredPaths, isDeclared } from "./references";
 
 /**
+ * The phases where an adjustment is proposed: once proposed, it goes on in its review, also after
+ * the person asks for changes. Only an adjustment has an approved revision in review.
+ */
+const ADJUSTMENT_PHASES: ReadonlySet<string> = new Set(["adjusting", "review"]);
+
+/**
  * Adjustments add work: done tasks are immutable, new files may be new scope. One asked for while
- * the tasks are implemented only corrects the pending ones (ARCHITECTURE §12).
+ * the tasks are implemented only corrects the pending ones (ARCHITECTURE §12). It holds in the
+ * adjustment's review too, which `approve` validates.
  */
 export const checkAdjusting: Rule = (spec, ctx, lang) => {
   const approved = ctx.approved;
-  if (ctx.phase !== "adjusting" || approved === undefined) return [];
+  if (!ADJUSTMENT_PHASES.has(ctx.phase) || approved === undefined) return [];
   const done = ctx.doneTasks ?? new Set<string>();
   const before = itemHashes(approved);
   const after = itemHashes(spec);
@@ -44,9 +51,10 @@ export const checkAdjusting: Rule = (spec, ctx, lang) => {
 
 /**
  * An adjustment asked for while the tasks are implemented: the approved revision still has tasks
- * to do. In acceptance every one is done, and an epic has none.
+ * to do. In acceptance every one is done, and an epic has none. The adjusting card asks the same
+ * (`ChangeView.pendingTasksOnly`).
  */
-function adjustsPendingTasks(approved: Spec, done: ReadonlySet<string>): boolean {
+export function adjustsPendingTasks(approved: Spec, done: ReadonlySet<string>): boolean {
   return (approved.sections.tasks?.items ?? []).some((task) => !done.has(task.id));
 }
 
@@ -84,9 +92,6 @@ function newScope(
         ),
     );
 }
-
-/** The phases where an adjustment is proposed: once proposed, it goes on in its review. */
-const ADJUSTMENT_PHASES: ReadonlySet<string> = new Set(["adjusting", "review"]);
 
 /**
  * An epic's adjustment does not modify or remove a closed slice: each one stays as approved, or as

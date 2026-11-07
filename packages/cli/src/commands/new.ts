@@ -130,6 +130,7 @@ async function claimed(
     follows: options.follows,
     ...(options.epic !== undefined ? { epic: options.epic } : {}),
     distinctFrom: options.distinctFrom ?? [],
+    ...(options.subagent === true ? { subagent: true } : {}),
   });
   if (duplicates.length > 0) return { refusal: duplicateCard(duplicates, session.cards) };
   return { options: claim.entries.length > 0 ? { ...options, claimed: claim.entries } : options };

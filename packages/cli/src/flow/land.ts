@@ -147,19 +147,17 @@ async function afterLanding(session: Session, folder: string | undefined): Promi
   ];
 }
 
-/** How many more times a change lands when main moved while it was landing. */
-const RETRIES = 2;
-
 /**
  * Lands the change; when main moved meanwhile (the change's branch, with main incorporated, no
  * longer contains it), does what running `specty close` again would: incorporates main once more,
- * with its verification, and lands, up to `RETRIES` more times. Those incorporations' lines go
- * before the last landing's.
+ * with its verification, and lands, up to `internal.retries.landing` more times. Those
+ * incorporations' lines go before the last landing's.
  */
 export async function landRetrying(session: Session, plan: Integration): Promise<Landed> {
   let landed = await landChange(session, plan);
   const lines: string[] = [];
-  for (let retry = 0; retry < RETRIES && !landed.landed; retry++) {
+  const retries = session.config.internal.retries.landing;
+  for (let retry = 0; retry < retries && !landed.landed; retry++) {
     if (await contains(session.git, "HEAD", plan.target)) break;
     const change = await findChange(session, plan.id);
     if (change === undefined) break;

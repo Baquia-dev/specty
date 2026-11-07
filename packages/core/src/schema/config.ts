@@ -11,6 +11,12 @@ import {
   type InternalRunConfig,
   resolveInternalRun,
 } from "./internal-run";
+import {
+  DEFAULT_INTERNAL_WAITS,
+  INTERNAL_WAITS_SHAPE,
+  type InternalWaitsConfig,
+  resolveInternalWaits,
+} from "./internal-waits";
 import { DEFAULT_MEMORY, type MemoryConfig, MemorySchema, resolveMemory } from "./memory";
 import { DEFAULT_VERIFY, resolveVerify, type VerifyConfig, VerifySchema } from "./verify";
 
@@ -82,7 +88,7 @@ export interface ResolvedConfig {
    * Specty's internal settings (formats.md §6): values that can leave Specty not working, with
    * today's behaviour as their defaults. Removing a key gives it back its default.
    */
-  readonly internal: InternalRunConfig;
+  readonly internal: InternalWaitsConfig & InternalRunConfig;
 }
 
 export const DEFAULT_CONFIG: ResolvedConfig = {
@@ -125,7 +131,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   memory: DEFAULT_MEMORY,
   dev: DEFAULT_DEV,
   subagents: true,
-  internal: DEFAULT_INTERNAL_RUN,
+  internal: { ...DEFAULT_INTERNAL_WAITS, ...DEFAULT_INTERNAL_RUN },
 };
 
 const Globs = z.array(z.string().min(1));
@@ -198,7 +204,7 @@ export const ConfigSchema = z.strictObject({
   subagents: z.boolean().optional(),
   /** Per-tool effort table overrides; interpreted by the CLI. */
   effort: z.record(z.string(), z.unknown()).optional(),
-  internal: z.strictObject({ ...INTERNAL_RUN_SHAPE }).optional(),
+  internal: z.strictObject({ ...INTERNAL_WAITS_SHAPE, ...INTERNAL_RUN_SHAPE }).optional(),
 });
 
 export type ConfigInput = z.infer<typeof ConfigSchema>;
@@ -254,7 +260,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     memory: resolveMemory(input.memory),
     dev: resolveDev(input.dev),
     subagents: input.subagents ?? base.subagents,
-    internal: resolveInternalRun(input.internal),
+    internal: { ...resolveInternalWaits(input.internal), ...resolveInternalRun(input.internal) },
     ...(review !== undefined ? { review } : {}),
   };
 }
