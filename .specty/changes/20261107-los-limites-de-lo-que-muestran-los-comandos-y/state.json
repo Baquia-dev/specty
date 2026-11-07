@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-limites-de-lo-que-muestran-los-comandos-y",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-los-limites-de-lo-que-muestran-los-comandos-y",
   "baseCommit": "8eeee6ad95b5f08a27940976d72cc0c13a1e460c",
   "revision": 2,
@@ -52,6 +52,13 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T09:02:20.891Z"
+  "lockedTests": {
+    "packages/cli/test/check-commands.test.ts": "sha256:798ea91d41a5959bda25e6fd2e35a2e2bb5878e1474bc96becfe1f1b19bcd512",
+    "packages/cli/test/verify-fresh.test.ts": "sha256:462a88728586b298681ee817191c981750db92e2cc681f69a9f4b1e2b54bfeb9",
+    "packages/cli/test/why.test.ts": "sha256:ab473ef23a66ac8b99d027b7bd0608becee97b3b0f7b087e83a5035718ad483c",
+    "packages/core/test/checks/output.test.ts": "sha256:b0b826e26cf815c62ed1ba5da7e5a3609e13968a873da016b064f5da48315372",
+    "packages/core/test/settings/catalog.test.ts": "sha256:b3d323431c6f91531a6f27ab23e4916fab2ca4efd48355e37ecfb7b5fbe4e3ba",
+    "packages/core/test/schema/internal-shown.test.ts": "sha256:36a930b6e49ff8421c9e65e47620f989282cc9faf4f5100173ca394b5649ccf9",
+    "packages/core/test/settings/internal-shown.test.ts": "sha256:e7df4c765a81ca18bc5b3d7f75f662747023ec67564d592be6bff3a013d68feb"
+  }
 }
