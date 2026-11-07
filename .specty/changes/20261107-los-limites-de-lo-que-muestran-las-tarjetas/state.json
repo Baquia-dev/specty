@@ -6,6 +6,13 @@
   "branch": "specty/20261107-los-limites-de-lo-que-muestran-las-tarjetas",
   "baseCommit": "0d670cd5ecc67d21d161bf1e7d956a89bdbfe72b",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:05da830b29787f4000297f43d456cdca30a17f6f042d30a56f83a5dfd486c59f",
+    "at": "2026-11-07T08:19:05.736Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -40,12 +47,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:05da830b29787f4000297f43d456cdca30a17f6f042d30a56f83a5dfd486c59f",
-    "at": "2026-11-07T08:19:05.736Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-07T08:35:08.893Z"
 }
