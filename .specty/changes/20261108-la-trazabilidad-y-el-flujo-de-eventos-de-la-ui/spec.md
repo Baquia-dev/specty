@@ -57,7 +57,7 @@ Limpieza de código de la UI sin cambios de comportamiento (P360). `data/server.
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server-trace.test.ts && pnpm lint
   - type: test
-- [ ] T2: Las lecturas de la trazabilidad pasan a `data/server-trace.ts`
+- [x] T2: Las lecturas de la trazabilidad pasan a `data/server-trace.ts`
   - files: packages/ui/src/data/server-trace.ts, packages/ui/src/data/server.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server-trace.test.ts --include src/progress/tests-sent.test.ts --include src/progress/locked-tests.test.ts && pnpm typecheck && pnpm lint && pnpm knip

@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "736130deb622b44d1c9fa3d34ad29a8019284b5d",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:22:16.476Z",
       "doneAt": "2026-11-07T17:25:47.458Z",
-      "summary": "Test de ServerData.testCode en server-trace.test.ts: lee el código como texto con su URL, y explica la falta de sesión (403), un archivo que no es su test (404) y un error (500)."
+      "summary": "Test de ServerData.testCode en server-trace.test.ts: lee el código como texto con su URL, y explica la falta de sesión (403), un archivo que no es su test (404) y un error (500).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "453f9cf7581629c91c5801119691bc6152d638ad",
+      "startedAt": "2026-11-07T17:25:47.807Z",
+      "doneAt": "2026-11-07T17:27:02.435Z",
+      "summary": "Las lecturas de la trazabilidad (fetchTraceFiles, fetchTrace, fetchTestCode y traced, con NO_TRACE_YET, NOT_A_TEST y TRACE_TOO_LARGE) pasan a data/server-trace.ts; traceFiles, trace y testCode de ServerData solo las llaman."
     }
   },
   "pending": {
