@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261108-las-listas-del-panel-muestran-el-titulo-de-cada",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261108-las-listas-del-panel-muestran-el-titulo-de-cada",
+  "baseCommit": "89ef4fe4ce5725e9021aa923aa57cdbce41eabc2",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d81c9902ad442f7366026ef0cf2fc8c70b9e81ec38a8be8ca4a4ee8c8d5b6ce9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e085ab6e288c66702f51e12e1991b18bec6218dad1973132d27c30b12eeab508",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9f43011e4d51bf753489f254950b32c7b62d0fd6dce0537b1ed609f2e5b1dc63",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7dee0f1c8983736669d4befa956b9ee0138b36859c7f8357fdd24fcb362a10e8",
+    "at": "2026-11-07T17:05:55.030Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
