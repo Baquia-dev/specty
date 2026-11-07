@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261107-los-avisos-de-la-spec-y-de-las-sesiones-pasan-a",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261107-los-avisos-de-la-spec-y-de-las-sesiones-pasan-a",
   "baseCommit": "6a6798d0c8c2f5dd617e6e7ea72b19f0588814a3",
   "revision": 2,
@@ -63,6 +63,12 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-07T04:24:51.864Z"
+  "lockedTests": {
+    "packages/cli/test/fresh-session.test.ts": "sha256:830e5a61768191901e67978f70c468f2391a9a4a0791382d5bda4f038abd3419",
+    "packages/cli/test/init-usage.test.ts": "sha256:e426f2c25dc1f8736dce53e84db07898fe2fc24a9acabd2341a1ff5960ade9d0",
+    "packages/cli/test/usage.test.ts": "sha256:b0578e525f6b014177631d1a551197615ea0ac2b2e71f9db95cb9bc0f45d1885",
+    "packages/core/test/settings/catalog.test.ts": "sha256:500905365f6b922ee002109ecaa8b495407ad18246a60cf483b1808102f6d9c5",
+    "packages/core/test/validate/quality.test.ts": "sha256:b5374c14a0d47ec4d4efb6cdbc58af7d94c1f17491a0678dd50f455351e7fcc7",
+    "packages/ui/src/settings/settings-page.test.ts": "sha256:44a9f32694238aecc7eb80c373c3f449b8242c08da3c475c9a3ebc07082d3f89"
+  }
 }
