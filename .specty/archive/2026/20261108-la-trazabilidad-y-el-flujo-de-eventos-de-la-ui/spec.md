@@ -71,3 +71,27 @@ Limpieza de código de la UI sin cambios de comportamiento (P360). `data/server.
 ## Riesgos
 
 - R1: Que `ServerData` y `ServerEvents` acaben abriendo dos flujos o no cerrarlo al dejar de escuchar. Mitigación: los tests de `server-runs.test.ts` e `in-flight.test.ts` comprueban que el flujo es uno y que se cierra.
+
+## Cierre
+
+### Resumen
+
+Limpieza de la UI sin cambios de comportamiento (P360):
+- `data/server-trace.ts` (nuevo): las lecturas de la trazabilidad al servidor local (`fetchTraceFiles`, `fetchTrace` y `fetchTestCode`), con `traced` y sus tres mensajes. `ServerData` solo las llama.
+- `data/server-events.ts` (nuevo): `ServerEvents`, el flujo de eventos (`subscribe`, `watchRun`, `watchActions` y `reread`, con `listen`, `follow` y `closeIfIdle`), y `readRun`, `runEvent`, `actionEvent` y `eventData`, que salen de `server-answers.ts`. Cada `ServerData` tiene el suyo y le delega.
+- `data/server.ts` baja de 387 a 292 líneas de código y `data/server-answers.ts`, de 306 a 282: los dos quedan por debajo del aviso de 300.
+- Test nuevo de `ServerData.testCode` en `server-trace.test.ts` (texto, 403, 404 y 500). AC2 y AC3 los cubren los tests que ya existían: `server-runs.test.ts`, `in-flight.test.ts`, `server.test.ts`, `server-actions.test.ts` y `server-config.test.ts`, que pasan sin cambios.
+- ARCHITECTURE nombra `data/server-trace.ts` y `data/server-events.ts` junto a `server-answers.ts` y `server-stats.ts`.
+
+### Desviaciones (respecto al plan)
+
+- Ninguna.
+
+### Decisiones
+
+- `runEvent`, `actionEvent` y `eventData` dejan de exportarse: solo los usa el flujo de eventos. `isRun` sigue exportada en `server-answers.ts`, que la usan `server-events.ts` y `mcp-app.ts`.
+- `watchRun` y `watchActions` de `ServerData` declaran sus oyentes con los tipos de `SpectyData`; los alias `RunListener` y `ActionListener` quedan privados en `server-events.ts`.
+
+### Pendientes
+
+- Ninguno.

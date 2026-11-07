@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-la-trazabilidad-y-el-flujo-de-eventos-de-la-ui",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-la-trazabilidad-y-el-flujo-de-eventos-de-la-ui",
   "baseCommit": "f95e90911a803eec91ba8681e1964b2ce2e434bb",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:dae554d651162043766e5057094a93037b96da04e49c56f4e3875e9a20943a6b",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "07be0e423f95963aea4447b718221f2bc2ecefeb",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:27:02.832Z",
       "doneAt": "2026-11-07T17:28:44.927Z",
-      "summary": "El flujo de eventos (ServerEvents, readRun y la lectura de los eventos run y action, que sale de server-answers.ts) pasa a data/server-events.ts; ServerData le delega. ARCHITECTURE nombra los dos módulos nuevos."
+      "summary": "El flujo de eventos (ServerEvents, readRun y la lectura de los eventos run y action, que sale de server-answers.ts) pasa a data/server-events.ts; ServerData le delega. ARCHITECTURE nombra los dos módulos nuevos.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -81,5 +81,6 @@
     "AC": 3,
     "T": 3,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-11-07T17:32:10.411Z"
 }
