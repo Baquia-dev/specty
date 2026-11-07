@@ -138,8 +138,10 @@ const SECTIONS = [
   "size",
   "lines",
   "checks",
+  "warnings",
   "team",
   "memory",
+  "usage",
   "dev",
   "ui",
   "effort",
@@ -168,8 +170,10 @@ describe("the settings page", () => {
       "Tamaño y cortes",
       "Líneas de código",
       "Verificaciones de calidad",
+      "Avisos",
       "Equipo",
       "Memoria",
+      "Consumo y sesiones",
       "Desarrollo",
       "Interfaz",
       "Esfuerzo recomendado",
@@ -539,6 +543,59 @@ describe("the settings page", () => {
     const { headings, part, mark } = await open(valid(INPUT), "en");
     expect(headings().at(-1)).toBe("Internal");
     for (const key of RUN) {
+      expect(mark(key, "new"), key).toBe("New");
+      expect(part(key, "name"), key).toBe(settingText(key, "en").name);
+      expect(part(key, "description"), key).toBe(settingText(key, "en").description);
+      expect(settingText(key, "en").name, key).not.toBe(settingText(key, "es").name);
+    }
+  });
+
+  /** The settings of the spec's and the sessions' warnings, fixed in Specty's code until C7, by section. */
+  const WARNINGS = {
+    warnings: ["warnings.vagueTerms", "warnings.horizontalLayers"],
+    usage: ["usage.freshSessionTokens", "usage.ccusage.timeoutSec", "usage.ccusage.version"],
+  } as const;
+
+  it("AC7: shows the spec's warnings in «Avisos» and the sessions' in «Consumo y sesiones», marked «Nuevo», with key and value", async () => {
+    const { part, mark, items, row } = await open(valid(INPUT));
+    for (const [section, keys] of Object.entries(WARNINGS)) {
+      for (const key of keys) {
+        expect(row(key)?.closest(`section[data-section="${section}"]`), key).not.toBeNull();
+        expect(mark(key, "new"), key).toBe("Nuevo");
+        expect(part(key, "key"), key).toBe(key);
+        expect(part(key, "name"), key).toBe(settingText(key, "es").name);
+        expect(part(key, "description"), key).toBe(settingText(key, "es").description);
+      }
+    }
+    expect(items("warnings.vagueTerms")).toEqual(["Sin elementos"]);
+    expect(items("warnings.horizontalLayers")).toEqual(["Sin elementos"]);
+    expect(part("usage.freshSessionTokens", "value")).toBe("150000");
+    expect(part("usage.ccusage.timeoutSec", "value")).toBe("60 s");
+    expect(part("usage.ccusage.version", "value")).toBe("20.0.45");
+  });
+
+  it("AC7: shows the person's terms and a configured threshold as modified, with today's value as default", async () => {
+    const { part, mark, items } = await open(
+      valid({
+        ...INPUT,
+        usage: { freshSessionTokens: 300_000, ccusage: { timeoutSec: 120 } },
+        warnings: { vagueTerms: ["pulcro", "sin fricción"] },
+      }),
+    );
+    expect(items("warnings.vagueTerms")).toEqual(["pulcro", "sin fricción"]);
+    expect(mark("warnings.vagueTerms", "modified")).toBe("Modificado");
+    expect(part("usage.freshSessionTokens", "value")).toBe("300000");
+    expect(part("usage.freshSessionTokens", "default")).toBe("Por defecto: 150000");
+    expect(part("usage.ccusage.timeoutSec", "value")).toBe("120 s");
+    expect(part("usage.ccusage.timeoutSec", "default")).toBe("Por defecto: 60 s");
+    expect(mark("usage.ccusage.version", "modified")).toBe("");
+  });
+
+  it("AC7: names «Avisos», «Consumo y sesiones» and their settings in English", async () => {
+    const { headings, part, mark } = await open(valid(INPUT), "en");
+    expect(headings()).toContain("Warnings");
+    expect(headings()).toContain("Usage and sessions");
+    for (const key of [...WARNINGS.warnings, ...WARNINGS.usage]) {
       expect(mark(key, "new"), key).toBe("New");
       expect(part(key, "name"), key).toBe(settingText(key, "en").name);
       expect(part(key, "description"), key).toBe(settingText(key, "en").description);

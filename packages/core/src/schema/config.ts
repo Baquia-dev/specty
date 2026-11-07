@@ -27,18 +27,19 @@ import {
   type SizingConfig,
 } from "./sizing";
 import { DEFAULT_VERIFY, resolveVerify, type VerifyConfig, VerifySchema } from "./verify";
+import { DEFAULT_WARNINGS, resolveWarnings, WARNINGS_SHAPE, type WarningsConfig } from "./warnings";
 
 /** `contract`, above `required`: a feature's tests are written and approved before its code (ADR 0014). */
 export type TestsPolicy = "contract" | "required" | "recommended" | "off";
 
-/** `.specty/config.yaml` with every default applied. */
 /** Lines of code: a warning past `warn`, a block past `fail`, or never with `false`. */
 export interface LineLimits {
   readonly warn: number;
   readonly fail: number | false;
 }
 
-export interface ResolvedConfig {
+/** `.specty/config.yaml` with every default applied; `usage` and `warnings` from `warnings.ts`. */
+export interface ResolvedConfig extends WarningsConfig {
   readonly version: 1;
   readonly language: Lang;
   readonly mode: "individual" | "team";
@@ -146,6 +147,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   dev: DEFAULT_DEV,
   subagents: true,
   internal: { ...DEFAULT_INTERNAL_WAITS, ...DEFAULT_INTERNAL_RUN },
+  ...DEFAULT_WARNINGS,
 };
 
 const Globs = z.array(z.string().min(1));
@@ -218,6 +220,7 @@ export const ConfigSchema = z.strictObject({
   dev: DevSchema.optional(),
   subagents: z.boolean().optional(),
   internal: z.strictObject({ ...INTERNAL_WAITS_SHAPE, ...INTERNAL_RUN_SHAPE }).optional(),
+  ...WARNINGS_SHAPE,
 });
 
 export type ConfigInput = z.infer<typeof ConfigSchema>;
@@ -275,6 +278,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     dev: resolveDev(input.dev),
     subagents: input.subagents ?? base.subagents,
     internal: { ...resolveInternalWaits(input.internal), ...resolveInternalRun(input.internal) },
+    ...resolveWarnings(input),
     ...(review !== undefined ? { review } : {}),
   };
 }
