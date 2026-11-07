@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261108-la-trazabilidad-no-cuenta-para-un-criterio-las",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-la-trazabilidad-no-cuenta-para-un-criterio-las",
   "baseCommit": "46518cfc71473855c39a55f2b2cc740689059e0c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e1cef05254b17a973419e9ea034d2ffb9ae8f9581b3e65f2b16248820cc10240",
+    "at": "2026-11-07T22:44:29.935Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -23,12 +30,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e1cef05254b17a973419e9ea034d2ffb9ae8f9581b3e65f2b16248820cc10240",
-    "at": "2026-11-07T22:44:29.935Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/criteria-tests.test.ts": "sha256:e39b3c5ac4cb238fd6c67f6a7f86c703dfd41f5561ef1a79191b98954d524f67"
+  }
 }

@@ -139,6 +139,57 @@ describe("the acceptance matrix", () => {
     );
   });
 
+  it("counts no line the change leaves as it was on main, though a task deleted it and another put it back", async () => {
+    const onMain = "it('AC1: a test of another change', () => {});\n";
+    const spec = SPEC.replace(
+      "- crear src/app.test.ts — prueba\n",
+      "- crear src/app.test.ts — prueba\n- modificar src/other.test.ts — tests de otro cambio\n",
+    )
+      .replace(
+        "  - files: src/app.ts, src/app.test.ts\n",
+        "  - files: src/app.ts, src/app.test.ts, src/other.test.ts\n",
+      )
+      .replace("  - files: src/app.ts\n", "  - files: src/app.ts, src/other.test.ts\n");
+    const root = await approvedChange(spec, { files: { "src/other.test.ts": onMain } });
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name: string) => 'Hola, ' + name;\n",
+      "src/app.test.ts": "it('AC1: greets Ana', () => {});\n",
+      "src/other.test.ts": "// overwritten by mistake\n",
+    });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Saludo"])).code).toBe(0);
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name: string) => '¡Hola, ' + name;\n",
+      "src/other.test.ts": onMain,
+    });
+    const last = await cli(root, ["task", "done", "T2", "--summary", "Mensaje"]);
+    expect(last.code, last.out).toBe(0);
+    const commit = /T1 Saludo \((\w+)\)/.exec(last.out)?.[1];
+    expect(commit).toBeDefined();
+    expect(last.out).toContain(`CRITERIOS Y TESTS:\n  AC1: src/app.test.ts:1 (T1, ${commit})\n`);
+    expect(last.out).not.toContain("src/other.test.ts:1");
+  });
+
+  it("still counts the change's lines when it works on the target branch itself", async () => {
+    const onTarget = CONFIG().replace(
+      "worktrees: false\n",
+      "worktrees: false\n  branchPerChange: false\n",
+    );
+    const root = await approvedChange(SPEC, { config: onTarget });
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name: string) => 'Hola, ' + name;\n",
+      "src/app.test.ts": "it('AC1: greets Ana', () => {});\n",
+    });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Saludo"])).code).toBe(0);
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name: string) => '¡Hola, ' + name;\n",
+    });
+    const last = await cli(root, ["task", "done", "T2", "--summary", "Mensaje"]);
+    expect(last.code, last.out).toBe(0);
+    const commit = /T1 Saludo \((\w+)\)/.exec(last.out)?.[1];
+    expect(commit).toBeDefined();
+    expect(last.out).toContain(`CRITERIOS Y TESTS:\n  AC1: src/app.test.ts:1 (T1, ${commit})\n`);
+  });
+
   it("AC6: names to the person the criteria to check by hand and those without their test", async () => {
     const root = await approvedChange(THREE);
     await writeFiles(root, { "src/app.test.ts": "it('AC1: greets Ana', () => {});\n" });
