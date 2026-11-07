@@ -80,7 +80,7 @@ Hoy `specty task done` avisa de los riesgos del contenido solo con el catálogo 
   - files: packages/core/src/schema/warnings.ts, packages/core/src/schema/checks.ts, packages/core/src/scope/risk.ts, packages/core/src/cards/acceptance.ts, packages/core/src/cards/risk-lessons.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-warnings.ts, packages/core/test/scope/risk.test.ts, packages/core/test/settings/catalog.test.ts, docs/formats.md
   - ac: AC1, AC2, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/scope/risk.test.ts test/settings/catalog.test.ts
-- [ ] T2: `task done`, la aceptación y la memoria usan las reglas de la persona
+- [x] T2: `task done`, la aceptación y la memoria usan las reglas de la persona
   - files: packages/cli/src/flow/risk.ts, packages/cli/src/flow/task-views.ts, packages/cli/test/risk.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/risk.test.ts
