@@ -61,7 +61,7 @@ Mientras el agente resuelve una incorporación de main, un test aprobado (`locke
 
 ## Tareas
 
-- [ ] T1: El guard no abre un test aprobado durante la incorporación salvo si quedó en conflicto
+- [x] T1: El guard no abre un test aprobado durante la incorporación salvo si quedó en conflicto
   - files: packages/core/src/guard/decide.ts, packages/core/src/guard/testing.ts, packages/core/src/cards/unlock.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/integrate-locked.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate-locked.test.ts -t "AC[12]:" && pnpm lint

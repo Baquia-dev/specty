@@ -386,10 +386,14 @@ function plannedFiles(spec: Spec | undefined): string[] {
   ];
 }
 
-/** The approved tests still locked: one the person unlocked for the active task is open for it (ADR 0014). */
+/**
+ * The approved tests still locked (ADR 0014): one the person unlocked for the active task is open
+ * for it and, during an incorporation, only one git left in conflict, to resolve it.
+ */
 function lockedOf(state: ChangeState, extras: readonly string[]): Pick<GuardChange, "locked"> {
   if (state.lockedTests === undefined) return {};
-  return { locked: Object.keys(state.lockedTests).filter((path) => !extras.includes(path)) };
+  const open = isIntegrating(state) ? (state.integration?.conflicts ?? []) : extras;
+  return { locked: Object.keys(state.lockedTests).filter((path) => !open.includes(path)) };
 }
 
 /** The incorporation of the target branch the agent is resolving, if any. */

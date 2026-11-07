@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "019e803014a7b5ac5aac41ec27e000ac2aebdb5f",
+      "startedAt": "2026-11-07T17:33:22.447Z",
+      "doneAt": "2026-11-07T17:34:10.424Z",
+      "summary": "El guard mira los tests aprobados antes que la incorporación pendiente: solo abre los que git dejó en conflicto, y el SIGUIENTE da el desbloqueo sin --task"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
