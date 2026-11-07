@@ -72,7 +72,7 @@ Hoy un cambio `quick` admite una sola tarea y la revisión independiente se reco
 
 ## Tareas
 
-- [ ] T1: Las claves `lanes.quick.maxTasks` y `flow.reviewFrom` en el schema y en el catálogo, con sus textos
+- [x] T1: Las claves `lanes.quick.maxTasks` y `flow.reviewFrom` en el schema y en el catálogo, con sus textos
   - files: packages/core/src/schema/flow.ts, packages/core/src/schema/config.ts, packages/core/src/settings/catalog.ts, packages/core/src/cards/settings.ts, packages/core/src/cards/settings-size.ts, packages/core/test/settings/quick-and-review.test.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/quick-and-review.test.ts test/settings/catalog.test.ts
