@@ -56,7 +56,7 @@ Desde C1, cada comando de una verificación recibe en las variables de `verify.p
   - files: packages/cli/src/io/memory.ts, packages/cli/test/memory.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory.test.ts && pnpm lint
-- [ ] T2: El número de procesos baja por la memoria disponible de sus plazas, y la documentación lo explica
+- [x] T2: El número de procesos baja por la memoria disponible de sus plazas, y la documentación lo explica
   - files: packages/cli/src/flow/process-budget.ts, packages/cli/test/process-budget.test.ts, packages/cli/test/verify-processes.test.ts, docs/formats.md, docs/dominio.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/process-budget.test.ts test/verify-processes.test.ts test/memory.test.ts && pnpm typecheck && pnpm lint && pnpm knip

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-el-numero-de-procesos-baja-cuando-la-memoria",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-el-numero-de-procesos-baja-cuando-la-memoria",
   "baseCommit": "cbc8a05f0be509e71836d2c3c21b6e46cef4bc81",
   "revision": 1,
@@ -42,12 +42,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "00ea4bcad69bc69b2bb8732478f455c713b5a8c7",
+      "attempts": 1,
       "startedAt": "2026-11-07T17:19:33.095Z",
       "doneAt": "2026-11-07T17:25:35.262Z",
-      "summary": "io/memory.ts: vmStatMemory lee las páginas libres, de archivos y purgables de vm_stat por su tamaño de página; availableMemory ejecuta vm_stat en macOS y, si falla, no da cifras o en otro sistema, usa process.availableMemory()"
+      "summary": "io/memory.ts: vmStatMemory lee las páginas libres, de archivos y purgables de vm_stat por su tamaño de página; availableMemory ejecuta vm_stat en macOS y, si falla, no da cifras o en otro sistema, usa process.availableMemory()",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/memory.test.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "7167c6e7c3ac5c16e370b0b6fdc03eda3ffb7a24",
+      "startedAt": "2026-11-07T17:25:35.716Z",
+      "doneAt": "2026-11-07T18:45:30.944Z",
+      "summary": "processBudget baja el número a los procesos de memoryMiB que caben en la memoria disponible de sus plazas, medida por budgetedEnv al arrancar cada comando; memory.test.ts vuelve a main (S1) y los tests de AC2 pasan a available-memory.test.ts"
     }
   },
   "pending": {
@@ -58,10 +69,11 @@
     "A": 4,
     "AC": 2,
     "T": 2,
-    "R": 3
+    "R": 3,
+    "S": 1
   },
   "lockedTests": {
-    "packages/cli/test/memory.test.ts": "sha256:bcf7d29f32c5a07409f00f459aecbea78b8e79c74d58697a14eb0eab7ce9de58",
+    "packages/cli/test/memory.test.ts": "sha256:493436ea7ecd2198feeb156ef3406739dc91c9e72a17b96f70d6709f9979952d",
     "packages/cli/test/process-budget.test.ts": "sha256:4f7c1d0ec561cadf5e43d94078908e3ae34792b48fa1b3621ed53782bc8cef3b",
     "packages/cli/test/verify-processes.test.ts": "sha256:048976c734a7af5b8ca034df3a6ed293b36d47c8ba975aa649e4b0f3a1c6a4b5"
   }
