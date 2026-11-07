@@ -86,7 +86,7 @@ El «Panel» de `specty ui` solo tiene hoy la fila de indicadores. Con este cort
   - files: packages/core/src/stats/period.ts, packages/core/src/stats/rows.ts, packages/core/src/stats/rhythm.ts, packages/core/src/stats/people.ts, packages/core/src/stats/summary.ts, packages/core/test/stats/sections.test.ts
   - ac: AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats/sections.test.ts test/stats/summary.test.ts && pnpm lint
-- [ ] T2: La paleta de las gráficas y la gráfica de columnas, con su leyenda, su tabla, su teclado y su información emergente
+- [x] T2: La paleta de las gráficas y la gráfica de columnas, con su leyenda, su tabla, su teclado y su información emergente
   - files: packages/ui/src/styles.css, packages/ui/src/theme/tokens.ts, packages/ui/src/theme/tokens.test.ts, packages/ui/src/components/charts/chart-frame.ts, packages/ui/src/components/charts/column-chart.ts, packages/ui/src/components/charts/charts.test.ts
   - ac: AC1, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/theme/tokens.test.ts --include src/components/charts/charts.test.ts --include src/catalog/catalog.test.ts && pnpm lint

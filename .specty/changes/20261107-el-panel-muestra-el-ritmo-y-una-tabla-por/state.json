@@ -55,12 +55,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f0e58e5dc3a1142beb9a9bbc2dbd58965de22a65",
+      "attempts": 1,
       "startedAt": "2026-11-07T08:55:17.846Z",
       "doneAt": "2026-11-07T09:02:02.576Z",
-      "summary": "statsView da «Ritmo» (stats/rhythm.ts, por día o por semana) y «Personas y agentes» (stats/people.ts, sin el filtro «Ver por»); las filas guardan sus sesiones por día, y sum, median y addDays pasan a period.ts."
+      "summary": "statsView da «Ritmo» (stats/rhythm.ts, por día o por semana) y «Personas y agentes» (stats/people.ts, sin el filtro «Ver por»); las filas guardan sus sesiones por día, y sum, median y addDays pasan a period.ts.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a8d4e539ff32990ec7e3d2b66a80d8057276b9ff",
+      "startedAt": "2026-11-07T09:02:03.153Z",
+      "doneAt": "2026-11-07T09:09:20.133Z",
+      "summary": "Tokens --color-series-1..3, --color-chart-grid y --color-chart-axis en los dos temas y en el inventario; sp-column-chart (columnas apiladas en SVG, puntero, teclado itinerante) con sp-chart-frame (título, leyenda, Ver tabla) y sp-chart-tip."
     }
   },
   "pending": {
