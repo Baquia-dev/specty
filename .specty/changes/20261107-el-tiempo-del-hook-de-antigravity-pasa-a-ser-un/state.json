@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261107-el-tiempo-del-hook-de-antigravity-pasa-a-ser-un",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261107-el-tiempo-del-hook-de-antigravity-pasa-a-ser-un",
+  "baseCommit": "122b0f87b0dd21aa992fe015859351574e4588ec",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4e7261d15ed988c542f0191b613689005913031d221c6fb8d607f4ec483b3761",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:52d160f94df4bf433f6cc69c37306afb7f9a45ab35c9932f6f77ebc4cc6aa1a5",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:85407e5a8a6688b4fdf3d30e69166666ab384252d8fb5299b77ea4c5d39b60e7",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:2fec5956cdf403ab6db91f8d6ffa7d78ca0b526569be216d4ded914ee8971024",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:1915ed41884d7f9c2df084391b828ad981b3d308d6b737790710322d83e6a0be",
+    "at": "2026-11-07T05:30:31.125Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
