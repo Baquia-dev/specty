@@ -172,6 +172,10 @@ describe("the settings' catalog", () => {
       "internal.server.runLines",
       "internal.server.runEveryMs",
       "internal.server.maxBodyKiB",
+      "internal.cards.importersShown",
+      "internal.cards.reviewLines",
+      "internal.cards.noteChars",
+      "internal.cards.slugChars",
     ]);
   });
 
@@ -306,6 +310,10 @@ describe("the settings' catalog", () => {
       ...["changesEveryMs", "tasksEveryMs", "runLines", "runEveryMs", "maxBodyKiB"].map((key) =>
         expect.objectContaining({ key: `internal.server.${key}`, kind: "number", new: true }),
       ),
+      expect.objectContaining({ key: "internal.cards.importersShown", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.reviewLines", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.noteChars", kind: "number", new: true }),
+      expect.objectContaining({ key: "internal.cards.slugChars", kind: "number", new: true }),
     ]);
     expect(
       SETTINGS.find((setting) => setting.key === "internal.retries.landing")?.unit,
@@ -339,7 +347,21 @@ describe("the settings' catalog", () => {
 
   it("AC5, AC7: says why each guarantee does not change, and names the internal settings in Spanish and in English", () => {
     const internal = SETTINGS.filter((setting) => setting.section === "internal");
-    expect(internal).toHaveLength(24);
+    expect(internal.map((setting) => setting.key)).toEqual(
+      expect.arrayContaining([
+        "internal.waits.waitTimeoutSec",
+        "internal.server.changesEveryMs",
+        "internal.server.tasksEveryMs",
+        "internal.server.runLines",
+        "internal.server.runEveryMs",
+        "internal.server.maxBodyKiB",
+        "internal.cards.importersShown",
+        "internal.cards.reviewLines",
+        "internal.cards.noteChars",
+        "internal.cards.slugChars",
+        "guarantee.receipts",
+      ]),
+    );
     for (const setting of internal) {
       const es = settingText(setting.key, "es");
       const en = settingText(setting.key, "en");

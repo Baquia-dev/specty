@@ -74,14 +74,24 @@ export interface ReviewedView {
   readonly text: string;
 }
 
-/** The longest answer the card repeats; the file keeps it whole. */
-const MAX_LINES = 200;
+/**
+ * The longest answer the card repeats by default (`internal.cards.reviewLines`); the file keeps
+ * it whole.
+ */
+export const REVIEW_LINES = 200;
 
-/** The reviewer's answer, for the agent to act on what is real and tell the user the rest. */
-export function reviewedCard(view: ReviewedView, ctx: CardContext): Output {
+/**
+ * The reviewer's answer, at most `maxLines` of it, for the agent to act on what is real and tell
+ * the user the rest.
+ */
+export function reviewedCard(
+  view: ReviewedView,
+  ctx: CardContext,
+  maxLines = REVIEW_LINES,
+): Output {
   const t = translator(ctx.lang);
   const lines = view.text.trimEnd().split("\n");
-  const shown = lines.length > MAX_LINES ? [...lines.slice(0, MAX_LINES), "…"] : lines;
+  const shown = lines.length > maxLines ? [...lines.slice(0, maxLines), "…"] : lines;
   const blocks = section(
     t(`REVISIÓN INDEPENDIENTE (${view.command})`, `INDEPENDENT REVIEW (${view.command})`),
     [t(`Guardada en ${view.path}.`, `Kept in ${view.path}.`), ...shown],
