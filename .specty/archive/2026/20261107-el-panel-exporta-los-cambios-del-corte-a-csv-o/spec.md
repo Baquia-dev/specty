@@ -92,3 +92,28 @@ El «Panel» de `specty ui` resume un corte en cifras y lista sus cambios, pero 
 - R2: Excel con configuración regional española espera punto y coma y coma decimal, así que al abrir el archivo con doble clic puede ponerlo todo en una columna. Mitigación: el archivo sigue el estándar (RFC 4180, UTF-8 con BOM), que leen bien el resto de hojas de cálculo y la importación de Excel; si la persona lo pide, un cambio aparte puede añadir el separador por idioma.
 - R3: C2 toca a la vez `dashboard-page.ts`, `data/source.ts`, `data/server.ts` y `server/api.ts`. Mitigación: aquí solo se enlazan el menú, el método y la ruta; lo demás va en archivos propios.
 - R4: `data/server.ts` ya pasa de 300 líneas de código. Mitigación: la petición va en `data/stats-export.ts`, y `server.ts` solo suma el método que la enlaza.
+
+## Cierre
+
+### Resumen
+
+El «Panel» de `specty ui` tiene «Exportar» al final de la fila de filtros (`dashboard/dashboard-export.ts`): un menú con «CSV» y «JSON» que descarga `specty-stats-<desde>-<hasta>.csv` o `.json`, con una fila por cambio del corte que se ve. Son los mismos cambios que la tabla «Cambios» sin búsqueda, cada uno con su id, título, carril, tamaño, persona, agente, modelo, creación, cierre, tareas, ciclo, verificaciones, fallidas y coste. El core arma el archivo (`stats/export.ts`: `statsExport` y `statsExportQuery`), con los encabezados y los carriles en español y en inglés (`cards/stats-export.ts`). El servidor lo da en `GET /api/stats/export` (`sendStatsExport` en `server/stats-changes.ts`), con su `Content-Type` y su `Content-Disposition`. La UI lo pide a la fuente (`SpectyData.statsExport`; `data/stats-export.ts` en el servidor), y si la fuente no lo da o falla, un aviso lo dice. Lo cuentan `docs/ui.md` (Panel, «Exportar») y `docs/ARCHITECTURE.md` §15.
+
+### Desviaciones
+
+- `server/api.ts`: la respuesta de `/api/session` pasó a su propia función (`sendSession`), porque con la ruta nueva `readApi` superaba la complejidad máxima (10).
+- El test aprobado AC4 de `data/stats-export.test.ts` se desbloqueó (S1, decidido por la persona). Sus bytes esperados salían del `TextEncoder` de jsdom, de otro reino que el `Uint8Array` global, así que ninguna implementación podía pasar a la vez su `toEqual` y su `instanceof`. Ahora se crean con `Uint8Array.from`.
+
+### Decisiones
+
+- Las filas salen de `statsChanges` (`stats/table.ts`) sin límite de página y en su orden por defecto, completadas con la persona, el modelo, la creación y las verificaciones de su `StatsListed`. Así el archivo lista exactamente los cambios de la tabla.
+- El CSV sigue el RFC 4180, va en UTF-8 con BOM y lleva fechas `AAAA-MM-DD HH:MM` locales, el ciclo en horas y el coste en dólares con dos decimales, el carril con el nombre de su insignia y el agente con su nombre. Una celda que empieza como una fórmula lleva un apóstrofo delante. El JSON usa los valores de la API (fechas ISO, ciclo en ms, carril y agente por su id) y omite las claves que faltan.
+- La UI lee el cuerpo como bytes, porque `response.text()` quitaría el BOM. El nombre sale del `Content-Disposition` y, sin él, es `specty-stats.<formato>`.
+- «Exportar» aparece siempre que el panel está a la vista, también con un corte sin cambios (el archivo trae solo los encabezados).
+- Para quedarse en tamaño L, el endpoint va junto a la página de la tabla en `server/stats-changes.ts`, y `save` se repite en `dashboard-export.ts` en lugar de pasar a un módulo común.
+
+### Pendientes
+
+- `save`, que entrega un archivo al navegador, está repetida en `history/history-export.ts` y `dashboard/dashboard-export.ts`: puede pasar a un módulo común (`data/download.ts`).
+- `packages/ui/src/data/server.ts` tiene 414 líneas de código (aviso a partir de 300): las peticiones del panel (`stats`, `statsChanges` y `statsExport`) podrían ir a un módulo propio.
+- Excel con configuración regional española espera punto y coma en el CSV: si la persona lo pide, el separador puede ir según el idioma.
