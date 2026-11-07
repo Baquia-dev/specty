@@ -76,6 +76,19 @@ const INTERNAL_RUN: readonly Setting[] = [
 ];
 
 /**
+ * Section «Interno», what commands and checks show: the findings `specty check` takes from a
+ * command's output, the lines of a failure in `specty verify --fresh` and the changes
+ * `specty why` lists, which Specty kept fixed in its code, as keys of `internal` (formats.md §6).
+ */
+const INTERNAL_SHOWN: readonly Setting[] = [
+  "internal.findings.perCommand",
+  "internal.findings.lastLines",
+  "internal.findings.messageChars",
+  "internal.commands.verifyLines",
+  "internal.commands.whyEntries",
+].map((key): Setting => ({ key, section: "internal", kind: "number", new: true }));
+
+/**
  * Section «Interno»: the parameters Specty kept fixed in its code, as keys of `internal`, and the
  * four lives of compliance, which stay fixed at 24 h with no key (formats.md §6).
  */
@@ -113,6 +126,7 @@ const INTERNAL: readonly Setting[] = [
     new: true,
   },
   ...INTERNAL_RUN,
+  ...INTERNAL_SHOWN,
   ...["receipts", "guardPending", "shellSnapshots", "sessions"].map(
     (life): Setting => ({
       key: `guarantee.${life}`,

@@ -77,7 +77,7 @@ Hoy cinco límites de lo que Specty muestra están fijos en el código: los hall
   - files: packages/core/src/checks/output.ts, packages/core/test/checks/output.test.ts, packages/core/src/schema/internal-shown.ts, packages/core/src/schema/config.ts, packages/core/test/schema/internal-shown.test.ts
   - ac: AC1, AC2, AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/output.test.ts test/schema/internal-shown.test.ts
-- [ ] T2: Los cinco ajustes en «Interno», con sus textos
+- [x] T2: Los cinco ajustes en «Interno», con sus textos
   - files: packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/settings/internal-shown.test.ts, packages/core/test/settings/catalog.test.ts
   - ac: AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings/internal-shown.test.ts test/settings/catalog.test.ts

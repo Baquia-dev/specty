@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0827143bdcebf91843da250ad8be8b64bef3fd08",
+      "attempts": 1,
       "startedAt": "2026-11-07T09:02:45.126Z",
       "doneAt": "2026-11-07T09:09:01.006Z",
-      "summary": "findingsInOutput recibe FindingLimits (perCommand, lastLines, messageChars) con los valores de hoy por defecto; schema/internal-shown.ts añade internal.findings e internal.commands con sus límites, reunidos en el único internal de config.ts"
+      "summary": "findingsInOutput recibe FindingLimits (perCommand, lastLines, messageChars) con los valores de hoy por defecto; schema/internal-shown.ts añade internal.findings e internal.commands con sus límites, reunidos en el único internal de config.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dfc5d09c1bd11116cc2e88de287e7ddc4d621d2b",
+      "startedAt": "2026-11-07T09:09:01.787Z",
+      "doneAt": "2026-11-07T09:09:30.434Z",
+      "summary": "Bloque INTERNAL_SHOWN en el catálogo (cinco números con new, tras INTERNAL_RUN) y sus nombres y descripciones en español y en inglés en INTERNAL_SHOWN_TEXTS"
     }
   },
   "pending": {

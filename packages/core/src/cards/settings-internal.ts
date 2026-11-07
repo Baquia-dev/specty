@@ -160,8 +160,66 @@ const INTERNAL_RUN_TEXTS: Readonly<Record<string, Texts>> = {
   },
 };
 
+/**
+ * Section «Interno», what commands and checks show: the findings of a command's output, the
+ * lines of a failure in `specty verify --fresh` and the changes `specty why` lists.
+ */
+const INTERNAL_SHOWN_TEXTS: Readonly<Record<string, Texts>> = {
+  "internal.findings.perCommand": {
+    es: [
+      "Hallazgos por comando",
+      "Cuántos hallazgos toma specty check de la salida de un comando de checks.commands que falla, de 10 a 1000; checks.maxFindings dice cuántos muestra sin --verbose.",
+    ],
+    en: [
+      "Findings per command",
+      "How many findings specty check takes from the output of a failing checks.commands command, from 10 to 1000; checks.maxFindings says how many it shows without --verbose.",
+    ],
+  },
+  "internal.findings.lastLines": {
+    es: [
+      "Últimas líneas de una salida sin ubicaciones",
+      "Cuántas de sus últimas líneas da specty check como hallazgos cuando la salida de un comando que falla no señala ninguna ruta:línea, de 1 a 50.",
+    ],
+    en: [
+      "Last lines of an output with no location",
+      "How many of its last lines specty check gives as findings when a failing command's output points at no path:line, from 1 to 50.",
+    ],
+  },
+  "internal.findings.messageChars": {
+    es: [
+      "Caracteres de un hallazgo",
+      "Dónde corta specty check el mensaje de cada hallazgo de la salida de un comando, de 50 a 2000 caracteres.",
+    ],
+    en: [
+      "Characters of a finding",
+      "Where specty check cuts the message of each finding of a command's output, from 50 to 2000 characters.",
+    ],
+  },
+  "internal.commands.verifyLines": {
+    es: [
+      "Líneas de un fallo en specty verify",
+      "Cuántas de las últimas líneas de la salida de una unidad que falla muestra specty verify --fresh, de 5 a 200.",
+    ],
+    en: [
+      "Lines of a failure in specty verify",
+      "How many of the last lines of a failing unit's output specty verify --fresh shows, from 5 to 200.",
+    ],
+  },
+  "internal.commands.whyEntries": {
+    es: [
+      "Cambios que lista specty why",
+      "Cuántos cambios o commits, los más recientes, lista specty why de un archivo, de 1 a 100.",
+    ],
+    en: [
+      "Changes specty why lists",
+      "How many changes or commits, the newest, specty why lists for a file, from 1 to 100.",
+    ],
+  },
+};
+
 /** The names and descriptions of section «Interno», for `cards/settings.ts` to gather. */
 export const INTERNAL_SETTING_TEXTS: Readonly<Record<string, Texts>> = {
   ...INTERNAL_TEXTS,
   ...INTERNAL_RUN_TEXTS,
+  ...INTERNAL_SHOWN_TEXTS,
 };
