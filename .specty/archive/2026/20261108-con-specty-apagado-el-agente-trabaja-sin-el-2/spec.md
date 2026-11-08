@@ -91,3 +91,26 @@ Primer corte de la épica del interruptor: lo que hace Specty apagado y el regis
 
 - R1: Un comando de shell que apaga Specty sin nombrar el registro (un script que calcula la ruta) escapa a la regla `bypass`. Mitigación: el archivo queda en solo lectura y cada cambio queda en el registro con quién y cuándo, que la UI enseñará en C2.
 - R2: El guard lee el registro en cada acción del agente. Mitigación: es un archivo local pequeño, que solo crece cuando la persona cambia el estado.
+
+## Cierre
+
+### Resumen
+
+Con Specty apagado, el agente trabaja sin el flujo. El estado vive en `.git/common/specty/switch.jsonl`, un registro local de solo añadir con una línea `{ "on", "by", "at" }` por cada cambio de estado (`store/switch.ts`: `switchLog`, `readSwitch` y `turnSwitch`, que solo añade si el estado cambia y deja el archivo en `0o444`). Apagado, el guard responde a cualquier agente como fuera de Specty, salvo a los hooks de carpetas de Claude Code. `pre-commit` solo atiende los recibos de Specty, cuyos commits conservan sus trailers, y deja pasar lo demás. `agent-stop` y `memory-stop` dejan terminar el turno, y `specty next` da la tarjeta de Specty apagado (`cards/off.ts`, en español y en inglés) antes que ninguna otra, sin tocar el cambio abierto. Al volver a encenderlo todo actúa como antes. La regla `bypass` rechaza un comando de shell que nombre el registro. Documentado en formats.md §1, ARCHITECTURE.md §10 y el glosario.
+
+### Desviaciones
+
+- Este cambio rehace el corte C1 tras cancelar `20261108-con-specty-apagado-el-agente-trabaja-sin-el` en su fase de tests. Allí T1 y T3 encadenaban con `&&` los tests de core y de la CLI: el primer rojo cortaba la cadena, el envío no nombraba todos los tests nuevos y la spec estaba bloqueada (P190). Aquí cada verificación ejecuta un solo paquete de tests: la tarjeta (T3, core) y `next` (T4, CLI) van en tareas aparte, y AC5 se prueba con el guard de punta a punta en `switch-log.test.ts`, sin tocar `core/test/guard/shell.test.ts`.
+- El test de AC6 de `specty-off-hooks.test.ts` esperaba que, encendido, `pre-commit` bloqueara `src/app.ts` con un cambio en revisión. Pero ese archivo está en el alcance del cambio, y un retoque manual dentro del alcance pasa también encendido. El desbloqueo S1, que decidió la persona, lo cambió por un archivo fuera del alcance.
+- La rama de `next` sin cambio activo pasó a su propia función, `withoutChange`, para que `next` no pase el límite de complejidad con la comprobación del interruptor.
+- La documentación fue a una tarea propia (T5) y se añadió el término al glosario.
+
+### Decisiones
+
+- `readSwitch` da la última entrada válida o `{ on: true }`, así que apagado siempre trae quién y cuándo, y `NextView.off` los exige.
+- El guard mira el interruptor justo después de abrir la sesión y antes de `enteredSession`: apagado, tampoco ata la conversación a una carpeta ni la anota en `activity/`.
+- La regla `bypass` reconoce `common/specty/switch.jsonl`, así que también un comando que arma la ruta con `$(git rev-parse --git-common-dir)/common/specty/switch.jsonl`.
+
+### Pendientes
+
+- `packages/cli/src/enforce/guard.ts` sube a 320 líneas de código (aviso desde 300): sigue abierta la propuesta de pasar el contexto del guard a `enforce/guard-context.ts` (P218).

@@ -38,6 +38,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Desbloqueo** (`scope add --patch --evidence`): la solicitud de cambiar un test aprobado para una tarea o para una incorporación pendiente, con el parche exacto y las líneas que lo justifican; lo decide solo la persona, y `task done` (o `integrate`) exige que el test quede como lo deja el parche. Otro desbloqueo del mismo test sustituye al anterior.
 - **Ciclo de tests** (`TestCycle`): con `contract`, el de una feature (gate 2) o el de un bug (su rojo se bloquea solo).
 - **Modo delegado** (`Delegation`): el agente aprueba, acepta y cierra por la persona.
+- **Specty apagado** (`SwitchEntry`, `switch.jsonl`): la persona apagó Specty en su clon; nada de lo que hace el agente pasa por Specty hasta que lo vuelve a encender, y cada cambio de estado queda en el registro con quién y cuándo.
 - **Retro-spec**: la spec que documenta después cambios hechos sin spec.
 - **Hallazgo**: lo que una tarea aprendió (`task done --finding`) para las siguientes.
 - **Observación** (`ReviewRemark`): una viñeta alta o media de la última revisión independiente del resultado, con su referencia `diff-<n>.md#<número>`; la que el cierre no cita pasa a la memoria como pendiente.
