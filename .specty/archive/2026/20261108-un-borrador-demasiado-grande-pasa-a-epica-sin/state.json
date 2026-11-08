@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-un-borrador-demasiado-grande-pasa-a-epica-sin",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-un-borrador-demasiado-grande-pasa-a-epica-sin",
   "baseCommit": "bd69ea44a9af4d0ac0b40c8bf5d27e33a5b0d91e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:11d653530f3c81a6d62329f6615f518e03c1a6db4dfc799cd39e0ed7752c36f0",
@@ -64,12 +64,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b8174d4e9308e288e1f0ce4c14650a013f220c86",
+      "attempts": 1,
       "startedAt": "2026-11-08T00:27:58.360Z",
       "doneAt": "2026-11-08T00:29:06.118Z",
-      "summary": "propose guarda en el estado el kind del frontmatter mientras el cambio no se ha aprobado (analyzeChange pasa el del estado a la validación) y anota kind y previousKind en spec.proposed; specty audit muestra «(de standard a epic)»; formats.md §2-§4 y ARCHITECTURE §11"
+      "summary": "propose guarda en el estado el kind del frontmatter mientras el cambio no se ha aprobado (analyzeChange pasa el del estado a la validación) y anota kind y previousKind en spec.proposed; specty audit muestra «(de standard a epic)»; formats.md §2-§4 y ARCHITECTURE §11",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,6 +82,7 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-08T00:29:20.016Z",
   "lockedTests": {
     "packages/cli/test/kind-change.test.ts": "sha256:394ba34f454eea2afca6e9794ec0972afdad95bc4436f2e606cac94601249259",
     "packages/core/test/validate/kind.test.ts": "sha256:42a959fa029f5f88b7f0d599f9a6fef3bd74120b14a1ec2209bbedc2ec834767"

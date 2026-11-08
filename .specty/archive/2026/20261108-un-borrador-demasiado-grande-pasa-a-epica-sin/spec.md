@@ -78,3 +78,23 @@ Hoy, cuando `propose` rechaza un borrador estándar por demasiado grande, no hay
 ## Riesgos
 
 - R1: Un agente podría pasar un borrador a quick para saltarse la fase de cierre — la persona aprueba la spec, que muestra el `kind`; la auditoría anota el cambio; y el carril quick valida sus límites como siempre.
+
+## Cierre
+
+### Resumen
+
+Un borrador que `propose` rechaza por demasiado grande ya pasa a épica en su sitio, sin cancelarlo (P354). Mientras el cambio no se ha aprobado nunca, `propose` toma el `kind` del frontmatter, lo usa en la transición y lo guarda en el estado, así que `approve` lo aprueba como épica y pasa a `implementing` a la espera de sus cortes, en lugar de ir a aceptación sin tareas. Conserva su id, su carpeta, su rama, su petición literal y las entradas de la memoria que toma. `spec.proposed` anota `kind` y `previousKind`, y `specty audit` lo muestra como «(de standard a epic)». Lo mismo vale de quick a standard, como ya pedía el error del carril quick. La validación recibe el tipo del estado (`ValidationContext.kind`) y su regla `checkKind` da `kind-fixed` tras la primera aprobación o si uno de los dos tipos es retro, y `slice-epic` si un corte pasa a épica. El mensaje de `split-required` dice cómo pasar a épica en la misma spec. Documentado en formats.md §2, §3 y §4 y en ARCHITECTURE.md §11.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El tipo cambia con el frontmatter y `propose`, sin un comando nuevo: el agente ya edita la spec y la persona ve el tipo al revisarla.
+- La auditoría lo anota en el `spec.proposed` de esa propuesta, sin un evento nuevo, y `change.created` conserva el tipo con el que se creó.
+- Sin el tipo del estado, como en la UI, que valida sin él, la regla no comprueba nada.
+
+### Pendientes
+
+- La pestaña Historial de la UI aún no muestra el cambio de tipo de una propuesta (P377).
