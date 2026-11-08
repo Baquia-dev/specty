@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-la-pestana-historial-muestra-el-cambio-de-tipo",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-la-pestana-historial-muestra-el-cambio-de-tipo",
   "baseCommit": "791194c55f445b5ae1f7914daaff60c3fff9ffa6",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3c8c995471a09e22622a88c2e4f59ab5f409a450",
+      "attempts": 1,
       "startedAt": "2026-11-08T02:03:36.302Z",
       "doneAt": "2026-11-08T02:04:41.089Z",
-      "summary": "El Historial dice «Pasó de carril estándar a épica» en la propuesta que trae kind y previousKind (tipo sin nombre tal cual); test es/en, muestra boletines-pdf de quick a standard y docs/ui.md."
+      "summary": "El Historial dice «Pasó de carril estándar a épica» en la propuesta que trae kind y previousKind (tipo sin nombre tal cual); test es/en, muestra boletines-pdf de quick a standard y docs/ui.md.",
+      "scopeExtra": []
     }
   },
   "pending": {

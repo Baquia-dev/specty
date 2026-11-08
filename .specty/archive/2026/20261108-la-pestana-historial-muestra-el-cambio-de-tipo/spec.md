@@ -21,3 +21,9 @@ Desde que `spec.proposed` trae `kind` y `previousKind` cuando el borrador cambia
   - files: packages/ui/src/data/history.ts, packages/ui/src/data/history.test.ts, packages/ui/src/data/sample-history.ts, docs/ui.md
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/history.test.ts --include src/data/sample-specs.test.ts && pnpm typecheck && pnpm lint
   - type: feat
+
+## Cierre
+
+### Resumen
+
+El Historial dice «Pasó de carril estándar a épica» en la propuesta que trae kind y previousKind (tipo sin nombre tal cual); test es/en, muestra boletines-pdf de quick a standard y docs/ui.md.
