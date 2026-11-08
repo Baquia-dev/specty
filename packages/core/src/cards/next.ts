@@ -11,6 +11,7 @@ import { integrationCard } from "./integration";
 import { memoryStartBlocks, resolvesLines } from "./memory";
 import { pathEntriesBlock } from "./memory-paths";
 import { notesBlock } from "./notes";
+import { type OffView, offCard } from "./off";
 import {
   type LostView,
   lostBlock,
@@ -47,10 +48,14 @@ export interface NextView {
   readonly lost?: readonly LostView[];
   /** Claude Code enters a change's folder by name, with Specty's worktree hooks. */
   readonly byName?: boolean;
+  /** The person turned Specty off: who and when. Its card goes before any other. */
+  readonly off?: OffView;
 }
 
 /** `specty next`: what to do now, for every phase. Never changes anything. */
 export function nextCard(view: NextView, ctx: CardContext): Output {
+  // With Specty off, the agent works without the flow, whatever the change or the tree.
+  if (view.off !== undefined) return offCard(view.off, ctx);
   const { change } = view;
   if (change === undefined) {
     const byName = view.byName === true;

@@ -74,7 +74,7 @@ Primer corte de la épica del interruptor: lo que hace Specty apagado y el regis
   - files: packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/entry.ts, packages/cli/src/enforce/hook.ts, packages/cli/test/specty-off-hooks.test.ts
   - ac: AC2, AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/specty-off-hooks.test.ts
-- [ ] T3: La tarjeta de Specty apagado va antes que ninguna otra en `next`
+- [x] T3: La tarjeta de Specty apagado va antes que ninguna otra en `next`
   - files: packages/core/src/cards/off.ts, packages/core/src/cards/next.ts, packages/core/test/cards/off.test.ts
   - ac: AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/off.test.ts
