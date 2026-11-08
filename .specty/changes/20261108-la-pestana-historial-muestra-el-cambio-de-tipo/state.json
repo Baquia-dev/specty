@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261108-la-pestana-historial-muestra-el-cambio-de-tipo",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261108-la-pestana-historial-muestra-el-cambio-de-tipo",
+  "baseCommit": "791194c55f445b5ae1f7914daaff60c3fff9ffa6",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ea8b9762d878a951f022afed975a007658c30bd7af6bed0b847122294a15d8cf",
+    "at": "2026-11-08T02:03:35.558Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
