@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261108-un-borrador-demasiado-grande-pasa-a-epica-sin",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-un-borrador-demasiado-grande-pasa-a-epica-sin",
   "baseCommit": "bd69ea44a9af4d0ac0b40c8bf5d27e33a5b0d91e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:11d653530f3c81a6d62329f6615f518e03c1a6db4dfc799cd39e0ed7752c36f0",
+    "at": "2026-11-08T00:23:08.084Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -56,12 +63,8 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:11d653530f3c81a6d62329f6615f518e03c1a6db4dfc799cd39e0ed7752c36f0",
-    "at": "2026-11-08T00:23:08.084Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/kind-change.test.ts": "sha256:394ba34f454eea2afca6e9794ec0972afdad95bc4436f2e606cac94601249259",
+    "packages/core/test/validate/kind.test.ts": "sha256:42a959fa029f5f88b7f0d599f9a6fef3bd74120b14a1ec2209bbedc2ec834767"
+  }
 }
