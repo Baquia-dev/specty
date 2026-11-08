@@ -159,7 +159,8 @@ export class FixtureData extends SpectyData {
     return Promise.resolve(this.delegated);
   }
 
-  override specty(): Promise<SpectySwitch> {
+  /** Typed as the base's: a test's source may still know nothing of the switch. */
+  override specty(): Promise<SpectySwitch | undefined> {
     return Promise.resolve(this.switched);
   }
 

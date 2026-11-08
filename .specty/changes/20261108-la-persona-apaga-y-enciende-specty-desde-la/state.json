@@ -57,12 +57,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1d347d51ca0655b71136142b40c0bc03eacefbc9",
+      "attempts": 1,
       "startedAt": "2026-11-08T01:29:28.459Z",
       "doneAt": "2026-11-08T01:31:10.311Z",
-      "summary": "SpectySwitch y SwitchEntry en records.ts; SpectyData gana specty() y setSpecty(on) (rechazado con NO_SWITCH); ServerData los pide a /api/switch con isSpectySwitch; FixtureData empieza encendido con el registro de sample-switch.ts y añade cada cambio"
+      "summary": "SpectySwitch y SwitchEntry en records.ts; SpectyData gana specty() y setSpecty(on) (rechazado con NO_SWITCH); ServerData los pide a /api/switch con isSpectySwitch; FixtureData empieza encendido con el registro de sample-switch.ts y añade cada cambio",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/data/fixtures.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "6686644475714180101ff38208b2128254306639",
+      "startedAt": "2026-11-08T01:31:10.784Z",
+      "doneAt": "2026-11-08T01:33:47.467Z",
+      "summary": "app/specty-switch.ts: interruptor «Specty» (role=switch, aria-checked, tono de atención apagado, desactivado con el motivo en solo lectura), diálogos para apagar y encender con el registro, y el comando de la paleta; shell.ts lo pone en la cabecera; FixtureData.specty() tipado como el de la base"
     }
   },
   "pending": {

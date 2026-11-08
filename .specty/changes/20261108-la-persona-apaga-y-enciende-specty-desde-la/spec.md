@@ -73,7 +73,7 @@ Segundo corte de la épica del interruptor. C1 dejó en main lo que hace Specty 
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-switch.ts, packages/ui/src/data/switch-data.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/switch-data.test.ts
-- [ ] T3: El interruptor «Specty» en la cabecera, con sus diálogos y su comando de la paleta
+- [x] T3: El interruptor «Specty» en la cabecera, con sus diálogos y su comando de la paleta
   - files: packages/ui/src/app/specty-switch.ts, packages/ui/src/app/shell.ts, packages/ui/src/app/specty-switch.test.ts
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app/specty-switch.test.ts && pnpm typecheck

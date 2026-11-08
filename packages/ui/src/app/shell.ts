@@ -24,8 +24,12 @@ import { Preferences } from "../theme/preferences";
 import { DelegationChip } from "./delegation";
 import { PreferencesMenu } from "./preferences-menu";
 import { DEV_TOOLS } from "./routes";
+import { SpectySwitchToggle } from "./specty-switch";
 
-/** The frame of every screen: header (Inbox, the catalog in development, ⌘K, preferences) and toasts. */
+/**
+ * The frame of every screen: header (Inbox, the catalog in development, ⌘K, Specty's switch,
+ * preferences) and toasts.
+ */
 @Component({
   selector: "sp-root",
   imports: [
@@ -39,6 +43,7 @@ import { DEV_TOOLS } from "./routes";
     Toaster,
     DelegationChip,
     PreferencesMenu,
+    SpectySwitchToggle,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -70,6 +75,7 @@ import { DEV_TOOLS } from "./routes";
               <sp-kbd keys="mod+k" />
             </sp-button>
           </span>
+          <sp-specty-switch />
           <sp-delegation-chip />
           <sp-preferences-menu />
         </div>
