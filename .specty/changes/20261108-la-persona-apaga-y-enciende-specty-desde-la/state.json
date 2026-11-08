@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-la-persona-apaga-y-enciende-specty-desde-la",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-la-persona-apaga-y-enciende-specty-desde-la",
   "baseCommit": "9c0581ace242ce89a2436c60cbe0288b96593b06",
   "revision": 1,
@@ -56,6 +56,9 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-08T01:28:40.633Z"
+  "lockedTests": {
+    "packages/cli/test/server/switch.test.ts": "sha256:b937706addbb1d8895a179ad88bfe76d6805448fc688ef5f30db2d1d334c1ca2",
+    "packages/ui/src/app/specty-switch.test.ts": "sha256:ee03257a864ff87de35d780334bd102d1bc8a869be872f20441edd2b794eaa6d",
+    "packages/ui/src/data/switch-data.test.ts": "sha256:b194f8484d17727de4478037258b50b43292613cb481805bccbf4f5f8df3fc6f"
+  }
 }
