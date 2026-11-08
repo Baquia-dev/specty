@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7e3025a2dc620603c7cffee1ddeb560b62eb9f74",
+      "startedAt": "2026-11-08T00:53:36.645Z",
+      "doneAt": "2026-11-08T00:54:07.920Z",
+      "summary": "Nuevo store/switch.ts con switchLog, readSwitch y turnSwitch sobre .git/common/specty/switch.jsonl (solo añade si cambia el estado, 0o444 entre cambios); la regla bypass de shell.ts reconoce common/specty/switch.jsonl."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

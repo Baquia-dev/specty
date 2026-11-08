@@ -70,7 +70,8 @@ const OPENERS: ReadonlySet<string> = new Set([
 const CLOSERS: ReadonlySet<string> = new Set(["}", "fi", "done", "esac"]);
 const RUNNERS: ReadonlySet<string> = new Set(["node", "bun", "deno"]);
 const BYPASS_ENV: Readonly<Record<string, string>> = { HUSKY: "0", LEFTHOOK: "0" };
-const SENSITIVE_SPECTY = /common\/specty\/delegated\.json|\.git\/common\/specty/;
+// The switches of delegated mode and of Specty itself, and the rest of its internal storage.
+const SENSITIVE_SPECTY = /common\/specty\/(?:delegated\.json|switch\.jsonl)|\.git\/common\/specty/;
 const SPECTY_PACKAGE = /^@baquia-dev\/specty(?:@[^/]*)?$/;
 const UNSCOPED_PACKAGE = /^specty(?:@.*)?$/;
 const SPECTY_SCRIPT = /(?:^|\/)specty(?:\.[cm]?js)?$/;

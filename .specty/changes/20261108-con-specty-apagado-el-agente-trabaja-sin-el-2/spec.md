@@ -66,7 +66,7 @@ Primer corte de la épica del interruptor: lo que hace Specty apagado y el regis
 
 ## Tareas
 
-- [ ] T1: El registro del interruptor y la regla `bypass` que lo protege
+- [x] T1: El registro del interruptor y la regla `bypass` que lo protege
   - files: packages/cli/src/store/switch.ts, packages/core/src/guard/shell.ts, packages/cli/test/switch-log.test.ts
   - ac: AC1, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/switch-log.test.ts
