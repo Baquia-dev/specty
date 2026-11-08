@@ -6,6 +6,13 @@
   "branch": "specty/20261108-la-persona-apaga-y-enciende-specty-desde-la",
   "baseCommit": "9c0581ace242ce89a2436c60cbe0288b96593b06",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:28fc36fd5afb8567d4f2689bbff6537b0fce2066c5272af12c7a31723ca6c224",
+    "at": "2026-11-08T01:26:04.947Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:28fc36fd5afb8567d4f2689bbff6537b0fce2066c5272af12c7a31723ca6c224",
-    "at": "2026-11-08T01:26:04.947Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-08T01:28:40.633Z"
 }
