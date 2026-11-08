@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-un-borrador-demasiado-grande-pasa-a-epica-sin",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-un-borrador-demasiado-grande-pasa-a-epica-sin",
   "baseCommit": "bd69ea44a9af4d0ac0b40c8bf5d27e33a5b0d91e",
   "revision": 1,
@@ -55,12 +55,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e4c0f07e9088b25fb803139434a166ecad8125c2",
+      "attempts": 1,
       "startedAt": "2026-11-08T00:27:09.375Z",
       "doneAt": "2026-11-08T00:27:58.014Z",
-      "summary": "Regla checkKind en la validación: kind-fixed tras la primera aprobación o con una retro, slice-epic para un corte que pasa a épica; ValidationContext.kind; split-required explica cómo pasar a épica en la misma spec"
+      "summary": "Regla checkKind en la validación: kind-fixed tras la primera aprobación o con una retro, slice-epic para un corte que pasa a épica; ValidationContext.kind; split-required explica cómo pasar a épica en la misma spec",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b8174d4e9308e288e1f0ce4c14650a013f220c86",
+      "startedAt": "2026-11-08T00:27:58.360Z",
+      "doneAt": "2026-11-08T00:29:06.118Z",
+      "summary": "propose guarda en el estado el kind del frontmatter mientras el cambio no se ha aprobado (analyzeChange pasa el del estado a la validación) y anota kind y previousKind en spec.proposed; specty audit muestra «(de standard a epic)»; formats.md §2-§4 y ARCHITECTURE §11"
     }
   },
   "pending": {

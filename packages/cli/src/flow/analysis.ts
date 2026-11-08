@@ -48,6 +48,8 @@ export async function analyzeChange(
     {
       phase,
       config: session.config,
+      // A draft never approved may take the frontmatter's kind; once approved, it is fixed.
+      kind: state.kind,
       doneTasks,
       maxIds,
       repo: await repoSignals(session, text),

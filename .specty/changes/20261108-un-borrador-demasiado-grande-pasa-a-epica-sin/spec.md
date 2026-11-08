@@ -69,7 +69,7 @@ Hoy, cuando `propose` rechaza un borrador estándar por demasiado grande, no hay
   - ac: AC5, AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/kind.test.ts test/validate/quality.test.ts test/validate/split-slice.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
   - type: fix
-- [ ] T2: `propose` cambia el tipo de un borrador sin aprobar y lo anota en la auditoría
+- [x] T2: `propose` cambia el tipo de un borrador sin aprobar y lo anota en la auditoría
   - files: packages/cli/src/flow/analysis.ts, packages/cli/src/commands/propose.ts, packages/core/src/cards/audit.ts, packages/cli/test/kind-change.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4, AC5, AC9
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/kind-change.test.ts test/audit.test.ts && pnpm typecheck && pnpm lint
