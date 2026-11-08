@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261108-la-persona-apaga-y-enciende-specty-desde-la",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261108-la-persona-apaga-y-enciende-specty-desde-la",
   "baseCommit": "9c0581ace242ce89a2436c60cbe0288b96593b06",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:28fc36fd5afb8567d4f2689bbff6537b0fce2066c5272af12c7a31723ca6c224",
@@ -77,12 +77,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "385e2045d9cac925b79c2113cec9499e957a3d9f",
+      "attempts": 1,
       "startedAt": "2026-11-08T01:33:47.838Z",
       "doneAt": "2026-11-08T01:45:10.770Z",
-      "summary": "ARCHITECTURE §15 cuenta GET y POST /api/switch y §10 que se apaga desde la cabecera; formats §1 dice que lo escribe POST /api/switch; ui.md describe el interruptor del armazón, sus diálogos, la paleta y la solo lectura"
+      "summary": "ARCHITECTURE §15 cuenta GET y POST /api/switch y §10 que se apaga desde la cabecera; formats §1 dice que lo escribe POST /api/switch; ui.md describe el interruptor del armazón, sus diálogos, la paleta y la solo lectura",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -95,6 +95,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-08T01:45:31.230Z",
   "lockedTests": {
     "packages/cli/test/server/switch.test.ts": "sha256:b937706addbb1d8895a179ad88bfe76d6805448fc688ef5f30db2d1d334c1ca2",
     "packages/ui/src/app/specty-switch.test.ts": "sha256:ee03257a864ff87de35d780334bd102d1bc8a869be872f20441edd2b794eaa6d",

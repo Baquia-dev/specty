@@ -86,3 +86,25 @@ Segundo corte de la épica del interruptor. C1 dejó en main lo que hace Specty 
 
 - R1: El servidor acepta `POST /api/switch` de quien tenga su token, como `/api/delegation`. Mitigación: pasa por `actionRefusal` (origen, cookie, token y servidor con acciones), igual que las demás decisiones de la persona.
 - R2: Una pestaña abierta con el estado viejo podría pedir el que ya hay. Mitigación: pedir el estado actual no añade ninguna línea y responde con la vista nueva, y la firma de los eventos avisa a las demás pestañas de cada cambio.
+
+## Cierre
+
+### Resumen
+
+La persona apaga y enciende Specty desde la cabecera de la UI y ve su registro. El servidor local sirve el interruptor en `GET /api/switch` (`server/switch.ts`), con el estado, quién lo cambió por última vez, cuándo y el registro, de la entrada más reciente a la más antigua. Lo cambia con `POST /api/switch` y `{ on }`, que pasa por las comprobaciones de las demás decisiones y por la cola de acciones y escribe con el `user.name` de git. Pedir el estado que ya tiene no añade ninguna línea. La última entrada entra en la firma de los eventos, así que las demás pestañas lo ven. En la UI, `SpectyData` gana `specty()` y `setSpecty(on)`: `ServerData` los pide al servidor con `isSpectySwitch`, y `FixtureData` empieza encendido con un registro de ejemplo (`sample-switch.ts`). `app/specty-switch.ts` pone en la cabecera el interruptor «Specty» (`role="switch"`, en tono de atención mientras está apagado), con los diálogos «Apagar Specty» y «Encender Specty», el registro y el comando de la paleta «Encender o apagar Specty…». En solo lectura, el interruptor está desactivado con el motivo. Si la fuente no sabe del interruptor, no aparece. Documentado en ARCHITECTURE §10 y §15, formats §1, ui.md y el glosario.
+
+### Desviaciones
+
+- La fuente base rechaza `setSpecty` con un motivo propio, `NO_SWITCH` («Esta fuente no puede encender ni apagar Specty: es de solo lectura.»), y no con el `READ_ONLY` que decía el diseño. El test aprobado espera «read only», y el `READ_ONLY` de `source.ts` dice «read-only».
+- T3 pidió `packages/ui/src/data/fixtures.ts` con `specty scope add`, y se aprobó solo. El test aprobado sobrescribe `specty()` de `FixtureData` con `Promise<SpectySwitch | undefined>`, así que su override declara ese tipo, como el de la base.
+
+### Decisiones
+
+- `act` (`server/api.ts`) pregunta a `configPost` y después a `switchPost` desde una función aparte, `ownAnswer`, para no subir su complejidad.
+- Los textos de los diálogos van en la UI con `t()`, como los del modo delegado: el servidor solo da el estado y el registro.
+- El interruptor es un `<button role="switch">` nativo dentro de `sp-tooltip`, y no un `sp-button`, para que los tests de la cabecera que buscan su primer `sp-button` sigan encontrando el de la paleta.
+- `FixtureData.setSpecty` hace como el servidor: el estado que ya tiene no añade ninguna entrada ni avisa a nadie (`turnedSwitch`).
+
+### Pendientes
+
+- `packages/ui/src/data/records.ts` (319 líneas de código) y `packages/ui/src/data/server.ts` (304) pasan del aviso de 300 líneas. `records.ts` reúne los tipos de los registros y `server.ts` las lecturas del servidor: si siguen creciendo, se podrían pasar los tipos de la memoria y del modo delegado e interruptor a su propio archivo, o las lecturas que no son de cambios a un `server-reads.ts`.
