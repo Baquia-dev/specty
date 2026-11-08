@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-con-specty-apagado-el-agente-trabaja-sin-el-2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-con-specty-apagado-el-agente-trabaja-sin-el-2",
   "baseCommit": "ab0118afa3a95f26b46ae4356a9bd05f5c75f3bb",
   "revision": 1,
@@ -77,12 +77,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "32ab3c26e1c77eb99b2b47ae22cd91a70384bf25",
+      "attempts": 1,
       "startedAt": "2026-11-08T01:01:32.678Z",
       "doneAt": "2026-11-08T01:05:54.138Z",
-      "summary": "specty next lee el registro al empezar y, con Specty apagado, da la tarjeta de apagado sin buscar el cambio activo ni activar tareas; la rama sin cambio activo pasa a withoutChange."
+      "summary": "specty next lee el registro al empezar y, con Specty apagado, da la tarjeta de apagado sin buscar el cambio activo ni activar tareas; la rama sin cambio activo pasa a withoutChange.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "543a97696fa6e4690b2e970d326dca869d76fec5",
+      "startedAt": "2026-11-08T01:05:54.452Z",
+      "doneAt": "2026-11-08T01:14:46.282Z",
+      "summary": "formats.md §1 documenta switch.jsonl y ARCHITECTURE.md §10 cuenta qué deja de actuar con Specty apagado: guard, pre-commit, fin de turno y next, y lo que sigue igual."
     }
   },
   "pending": {

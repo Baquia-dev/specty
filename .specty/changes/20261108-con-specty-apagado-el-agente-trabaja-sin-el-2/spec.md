@@ -82,7 +82,7 @@ Primer corte de la épica del interruptor: lo que hace Specty apagado y el regis
   - files: packages/cli/src/commands/next.ts, packages/cli/test/specty-off-next.test.ts
   - ac: AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/specty-off-next.test.ts && pnpm typecheck
-- [ ] T5: La documentación cuenta el registro y lo que deja de actuar con Specty apagado
+- [x] T5: La documentación cuenta el registro y lo que deja de actuar con Specty apagado
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - type: docs

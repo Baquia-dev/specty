@@ -551,6 +551,15 @@ Specty protege contra el agente impaciente (el que se salta pasos para ayudar) y
 
 En modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)), la persona renuncia a revisar cada spec y cada resultado: el agente decide por ella, y la auditoría marca esas decisiones como delegadas. Lo demás se mantiene: la spec antes del código, el alcance de cada tarea y los commits de Specty.
 
+**Specty apagado.** La persona puede apagar Specty en su clon y todas sus worktrees. El estado vive en un registro local de solo añadir, `common/specty/switch.jsonl` ([formats.md §1](formats.md#1-estructura)), con quién lo apagó o lo encendió y cuándo. Apagado, nada de lo que hace el agente pasa por Specty:
+
+- El guard responde a cualquier agente como fuera de un repositorio de Specty: no juzga sus acciones, no guarda fotos del árbol antes de sus comandos, no da tarjetas ni mensajes y no anota sus pasos en `activity/`. Solo siguen respondiendo los hooks de carpetas de Claude Code (`WorktreeCreate` y `WorktreeRemove`), porque sin ellos `EnterWorktree` no funcionaría.
+- `pre-commit` atiende primero los recibos, así que los commits de Specty conservan su marca y sus trailers, y deja pasar el resto, sin trailers.
+- El fin de turno (`agent-stop` y `memory-stop`) deja terminar sin revisar nada.
+- `specty next` da la tarjeta de Specty apagado antes que ninguna otra (desde cuándo, quién y que trabaje sin el flujo), sin buscar el cambio activo ni activar tareas.
+
+Los comandos de Specty que alguien ejecute a propósito siguen funcionando, y los cambios abiertos se quedan en su fase hasta que se vuelve a encender. `specty ci` y los clones de otras personas no cambian: un commit hecho con Specty apagado es como cualquier commit sin Specty. El guard rechaza con la regla `bypass` un comando de shell que nombre el registro, como el interruptor del modo delegado. Uno que calcule su ruta sin nombrarla escapa a la regla, pero el archivo queda en solo lectura y cada cambio de estado queda en el registro.
+
 ## 11. Tamaño y esfuerzo
 
 **Señales deterministas** que calcula `propose`:
