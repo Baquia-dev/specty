@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261108-con-specty-apagado-el-agente-trabaja-sin-el-2",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261108-con-specty-apagado-el-agente-trabaja-sin-el-2",
+  "baseCommit": "ab0118afa3a95f26b46ae4356a9bd05f5c75f3bb",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3f6ff6593da298218f6458005d61eda9d30e2ac347b882b229fdd815219e887a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:5b327d9f000699bb4fe361b78f7b2fc099fda5ee5f260fa5133c64addf62d01b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:7550a420188bde0dc26618e2b60be97d53eaef9ce5f866d1a277070c9355e1ec",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:3be5e43ffa4238677eba086fc39ca9b7434623a11f6ca6a7a643623f531e76bd",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:b8f321132e069da3f65f1c40335fc5595440bd1fb99b8af2d1b0a101ca36c805",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 5,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7e2c9bd56e59d3a1f6723619059fdf615991eb1be6644bb2ef985e0ff9dcbd4f",
+    "at": "2026-11-08T00:52:49.634Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
