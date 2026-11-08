@@ -52,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e4c0f07e9088b25fb803139434a166ecad8125c2",
+      "startedAt": "2026-11-08T00:27:09.375Z",
+      "doneAt": "2026-11-08T00:27:58.014Z",
+      "summary": "Regla checkKind en la validación: kind-fixed tras la primera aprobación o con una retro, slice-epic para un corte que pasa a épica; ValidationContext.kind; split-required explica cómo pasar a épica en la misma spec"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

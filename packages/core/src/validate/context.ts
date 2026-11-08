@@ -4,7 +4,7 @@ import type { ItemPrefix } from "../ids";
 import type { ResolvedConfig } from "../schema/config";
 import type { RepoSignals } from "../sizing/size";
 import { type Diagnostic, type DiagnosticInput, diagnostic } from "../spec/diagnostics";
-import type { SectionKey, Spec, SpecLocations } from "../spec/model";
+import type { ChangeKind, SectionKey, Spec, SpecLocations } from "../spec/model";
 
 /** Phases in which `propose` is allowed, and therefore validation runs. */
 export type ProposePhase = "draft" | "review" | "adjusting" | "closing";
@@ -13,6 +13,12 @@ export interface ValidationContext {
   readonly phase: ProposePhase;
   readonly config: ResolvedConfig;
   readonly locations?: SpecLocations;
+  /**
+   * The change's kind in its state (`state.json`). Before its first approval, a draft takes the
+   * frontmatter's, except to or from a retro; once approved, the kind is fixed. Without it, as in
+   * the UI, which validates without the state, the kind is not checked.
+   */
+  readonly kind?: ChangeKind;
   /** Last approved revision; required to validate adjustments and closings. */
   readonly approved?: Spec;
   /** Last proposed revision; with `maxIds`, detects reused ids. */

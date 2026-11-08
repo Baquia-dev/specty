@@ -43,6 +43,8 @@ export type DiagnosticCode =
   | "quick-limits"
   | "split-required"
   | "slice-split-required"
+  | "kind-fixed"
+  | "slice-epic"
   | "done-task-changed"
   | "pending-tasks-only"
   | "closed-slice-changed"

@@ -73,9 +73,15 @@ export const MESSAGES_EN: MessageCatalog = {
   "quick-limits": (p) =>
     `The change does not fit the quick lane (${v(p, "detail")}); use \`kind: standard\`.`,
   "split-required": (p) =>
-    `The change is too large (${v(p, "detail")}); split it into an epic with vertical slices, or into a spike if the problem is uncertainty.`,
+    `The change is too large (${v(p, "detail")}); split it into an epic with vertical slices, or into a spike if the problem is uncertainty. To turn it into an epic in this same spec, set \`kind: epic\` in the frontmatter, replace "Files" and "Tasks" with "Slices" and run \`propose\` again: the change keeps its request and what it resolves.`,
   "slice-split-required": (p) =>
     `The slice is too large (${v(p, "detail")}) and a slice cannot be an epic: narrow it to what fits in one change and take the rest to new slices of epic ${v(p, "epic")}, which is adjusted in its folder while it is implemented (\`adjust\`, the new slices in "Slices" with their \`depends\`, and \`propose\`); the person approves it again.`,
+  "kind-fixed": (p) =>
+    v(p, "reason") === "retro"
+      ? `A retro does not change its kind and no other change becomes a retro, which only \`specty retro\` creates; put back \`kind: ${v(p, "from")}\` in the frontmatter.`
+      : `The change was approved as ${v(p, "from")} and can no longer become ${v(p, "to")}; put back \`kind: ${v(p, "from")}\` in the frontmatter.`,
+  "slice-epic": (p) =>
+    `A slice cannot be an epic; put back \`kind: ${v(p, "from")}\` and, if it does not fit in one change, take the rest to new slices of epic ${v(p, "epic")}.`,
   "done-task-changed": (p) =>
     `${v(p, "id")} is already done and cannot be modified or removed; add a new task.`,
   "pending-tasks-only": (p) =>

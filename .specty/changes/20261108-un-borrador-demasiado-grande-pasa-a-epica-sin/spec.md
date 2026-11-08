@@ -64,7 +64,7 @@ Hoy, cuando `propose` rechaza un borrador estándar por demasiado grande, no hay
 
 ## Tareas
 
-- [ ] T1: La validación fija el tipo tras la primera aprobación, en una retro y en un corte, y `split-required` dice cómo pasar a épica
+- [x] T1: La validación fija el tipo tras la primera aprobación, en una retro y en un corte, y `split-required` dice cómo pasar a épica
   - files: packages/core/src/validate/context.ts, packages/core/src/validate/phase.ts, packages/core/src/validate/index.ts, packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/validate/kind.test.ts
   - ac: AC5, AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/kind.test.ts test/validate/quality.test.ts test/validate/split-slice.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
