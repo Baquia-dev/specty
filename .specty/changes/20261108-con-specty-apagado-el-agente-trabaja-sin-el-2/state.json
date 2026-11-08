@@ -6,6 +6,13 @@
   "branch": "specty/20261108-con-specty-apagado-el-agente-trabaja-sin-el-2",
   "baseCommit": "ab0118afa3a95f26b46ae4356a9bd05f5c75f3bb",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7e2c9bd56e59d3a1f6723619059fdf615991eb1be6644bb2ef985e0ff9dcbd4f",
+    "at": "2026-11-08T00:52:49.634Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -49,12 +56,6 @@
     "T": 5,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7e2c9bd56e59d3a1f6723619059fdf615991eb1be6644bb2ef985e0ff9dcbd4f",
-    "at": "2026-11-08T00:52:49.634Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-08T00:53:30.149Z"
 }
