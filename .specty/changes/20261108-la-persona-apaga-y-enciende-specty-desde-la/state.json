@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-la-persona-apaga-y-enciende-specty-desde-la",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-la-persona-apaga-y-enciende-specty-desde-la",
   "baseCommit": "9c0581ace242ce89a2436c60cbe0288b96593b06",
   "revision": 1,
@@ -66,14 +66,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/data/fixtures.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "6686644475714180101ff38208b2128254306639",
+      "attempts": 1,
       "startedAt": "2026-11-08T01:31:10.784Z",
       "doneAt": "2026-11-08T01:33:47.467Z",
-      "summary": "app/specty-switch.ts: interruptor «Specty» (role=switch, aria-checked, tono de atención apagado, desactivado con el motivo en solo lectura), diálogos para apagar y encender con el registro, y el comando de la paleta; shell.ts lo pone en la cabecera; FixtureData.specty() tipado como el de la base"
+      "summary": "app/specty-switch.ts: interruptor «Specty» (role=switch, aria-checked, tono de atención apagado, desactivado con el motivo en solo lectura), diálogos para apagar y encender con el registro, y el comando de la paleta; shell.ts lo pone en la cabecera; FixtureData.specty() tipado como el de la base",
+      "scopeExtra": [
+        "packages/ui/src/data/fixtures.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "385e2045d9cac925b79c2113cec9499e957a3d9f",
+      "startedAt": "2026-11-08T01:33:47.838Z",
+      "doneAt": "2026-11-08T01:45:10.770Z",
+      "summary": "ARCHITECTURE §15 cuenta GET y POST /api/switch y §10 que se apaga desde la cabecera; formats §1 dice que lo escribe POST /api/switch; ui.md describe el interruptor del armazón, sus diálogos, la paleta y la solo lectura"
     }
   },
   "pending": {

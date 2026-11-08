@@ -77,7 +77,7 @@ Segundo corte de la épica del interruptor. C1 dejó en main lo que hace Specty 
   - files: packages/ui/src/app/specty-switch.ts, packages/ui/src/app/shell.ts, packages/ui/src/app/specty-switch.test.ts
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app/specty-switch.test.ts && pnpm typecheck
-- [ ] T4: La documentación cuenta `/api/switch` y el interruptor de la cabecera
+- [x] T4: La documentación cuenta `/api/switch` y el interruptor de la cabecera
   - files: docs/ARCHITECTURE.md, docs/formats.md, docs/ui.md
   - ac: AC1, AC3
   - type: docs
