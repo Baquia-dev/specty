@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261108-interruptor-para-encender-y-apagar-el-flujo-de",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261108-interruptor-para-encender-y-apagar-el-flujo-de",
+  "baseCommit": "bd69ea44a9af4d0ac0b40c8bf5d27e33a5b0d91e",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0fbd2dc672d1eef0fcd776844017404b8ed3158bb6c77bf61f6b3014a44b99d0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:908a51d19164ad9883c3356d4a8c88c9a254e00ee8052177d61227bc92320d07",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:0f088abfdf377d96bb0008909713cb6d3ca389f136dbd776fc89ab846a71fe27",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:9c638d645f076f8c272dfe86dc102a336a5abf1b4ef959cd432af677c1bcff92",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 8,
+    "C": 2,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bc54643dd59b1d1cce11d8cf907a56edb8b93efdb378d953a5b3896f64d2b58a",
+    "at": "2026-11-08T00:37:10.905Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
