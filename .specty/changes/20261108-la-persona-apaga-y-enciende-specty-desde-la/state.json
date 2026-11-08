@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261108-la-persona-apaga-y-enciende-specty-desde-la",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261108-la-persona-apaga-y-enciende-specty-desde-la",
+  "baseCommit": "9c0581ace242ce89a2436c60cbe0288b96593b06",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c637c0f8bb88314ecdd69ea92801112268012a502bbc1b032cdade0bd3fc7515",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:83c68f48a6db7db6cc09edb1bc8a3d0c30f0f1f5e8203860866b7851b5acd310",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f2593fdf5f168f3eaff91aeb45733759074794c5c4830f27795f16211cce71c1",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a6eb043facd923f6c3e1dffc59cacd7d557de365da15d1e4dff6cc12c82060d2",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:129d93f1bc368b358158d5a9a12f4cc0e9b86c28fc0f13683115b59265dc60db",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:28fc36fd5afb8567d4f2689bbff6537b0fce2066c5272af12c7a31723ca6c224",
+    "at": "2026-11-08T01:26:04.947Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
