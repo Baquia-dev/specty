@@ -69,7 +69,7 @@ Segundo corte de la épica del interruptor. C1 dejó en main lo que hace Specty 
   - files: packages/cli/src/server/switch.ts, packages/cli/src/server/api.ts, packages/cli/src/server/events.ts, packages/cli/test/server/switch.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/switch.test.ts
-- [ ] T2: Las fuentes de datos de la UI leen y cambian el interruptor
+- [x] T2: Las fuentes de datos de la UI leen y cambian el interruptor
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-switch.ts, packages/ui/src/data/switch-data.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/switch-data.test.ts
