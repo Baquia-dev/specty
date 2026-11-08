@@ -25,6 +25,7 @@ import { COMMAND, type Environment, type Session } from "../session";
 import { noteActivity } from "../store/activity";
 import { readSpec, type StoredChange } from "../store/changes";
 import { liveHolder } from "../store/lock";
+import { readSwitch } from "../store/switch";
 import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
 import { enterCommand } from "./enter-command";
 import { endConversation, judgeFronts } from "./fronts";
@@ -71,7 +72,7 @@ interface Call {
  * It reads and answers each agent through its module (`agents/`); a tool whose input does not
  * name its event gets it from the hook's command (`--event`).
  * It fails open on its own errors (the git hooks and CI still apply) and never blocks outside
- * Specty repos.
+ * Specty repos, nor with Specty off, when it answers only the worktree events.
  */
 export async function guard(
   environment: Environment,
@@ -91,7 +92,10 @@ export async function guard(
     // They make and remove worktrees for Claude Code, so they answer even outside a session.
     if (kind === "worktree") return await worktreeHook(environment, event, cwd);
     const opened = await guardSession(environment, cwd);
-    if (opened.kind !== "ok") return agent.reply(ALLOW, kind === "before" ? "before" : "after");
+    // Outside Specty, or with Specty off, nothing the agent does goes through it.
+    if (opened.kind !== "ok" || !(await readSwitch(opened.session.git)).on) {
+      return agent.reply(ALLOW, kind === "before" ? "before" : "after");
+    }
     // A conversation that entered a change's folder is answered in that folder's session.
     const entered = await enteredSession(agent.tool, opened.session, event);
     await noted(kind, agent.tool, entered.session, event);

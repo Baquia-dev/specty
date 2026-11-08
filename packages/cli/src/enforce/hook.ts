@@ -6,11 +6,12 @@ import { changeScope, stagedGoverned } from "../flow/retro-into";
 import { COMMAND, type Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { takeMarker, takeReceipt, writeMarker } from "../store/local";
+import { readSwitch } from "../store/switch";
 
 /**
  * `specty hook pre-commit` (ARCHITECTURE §9): lets through operations in progress, Specty's
- * own commits (receipts), ungoverned changes and manual edits inside the active change's
- * scope; blocks everything else until it is documented with a retro.
+ * own commits (receipts), everything with Specty off, ungoverned changes and manual edits inside
+ * the active change's scope; blocks everything else until it is documented with a retro.
  */
 export async function preCommit(session: Session): Promise<number> {
   const { git } = session;
@@ -21,6 +22,8 @@ export async function preCommit(session: Session): Promise<number> {
     await writeMarker(git, { tree, change: receipt.change, kind: receipt.kind });
     return 0;
   }
+  // With Specty off, its own commits keep their trailers and the rest goes through.
+  if (!(await readSwitch(git)).on) return 0;
   const governed = await stagedGoverned(session);
   if (governed.length === 0) return 0;
   const active = await resolveActive(session);

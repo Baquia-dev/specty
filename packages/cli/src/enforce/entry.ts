@@ -3,6 +3,7 @@ import { personAtTerminal } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
 import type { CliEnvironment } from "../program";
 import { openSession, type Session, type Terminal } from "../session";
+import { readSwitch } from "../store/switch";
 import { type GuardTool, isGuardTool } from "./actions";
 import { agentStop } from "./agent-stop";
 import { guard } from "./guard";
@@ -43,7 +44,7 @@ const STOPS: ReadonlyMap<
 /**
  * `specty hook <name> [args…]`, from git's hooks and from the agents' end of turn (`agent-stop
  * <agent> [--no-check]` and `memory-stop <agent>`, with the event on stdin). Outside a Specty
- * repository, git and the agent go on.
+ * repository, git and the agent go on, and with Specty off, the agent's turn ends unchecked.
  */
 export async function hookCommand(
   environment: CliEnvironment,
@@ -51,15 +52,12 @@ export async function hookCommand(
   args: readonly string[],
 ): Promise<number> {
   const opened = await openSession(environment);
-  if (opened.kind !== "ok") {
-    // The turn ends; a tool that wants an answer every time gets the one that says so.
-    const pass = name === "agent-stop" ? stopPass(args[0]) : undefined;
-    if (pass !== undefined) environment.io.out(pass);
-    return 0;
-  }
+  if (opened.kind !== "ok") return outside(environment, name, args);
   if (name === "pre-commit") return preCommit(opened.session);
   const stop = STOPS.get(name);
   if (stop !== undefined) {
+    // With Specty off, the turn ends as outside Specty: nothing is checked.
+    if (!(await readSwitch(opened.session.git)).on) return outside(environment, name, args);
     const [tool = "", ...flags] = args;
     const reply = await stop(opened.session, tool, await environment.stdin(), flags);
     if (reply.length > 0) environment.io.out(reply);
@@ -68,6 +66,16 @@ export async function hookCommand(
   if (name === "prepare-commit-msg") {
     return prepareCommitMsg(opened.session, args[0] ?? "", args[1]);
   }
+  return 0;
+}
+
+/**
+ * A hook answered as outside Specty: git goes on and the turn ends, and a tool that wants an
+ * answer every time gets the one that says so.
+ */
+function outside(environment: CliEnvironment, name: string, args: readonly string[]): number {
+  const pass = name === "agent-stop" ? stopPass(args[0]) : undefined;
+  if (pass !== undefined) environment.io.out(pass);
   return 0;
 }
 

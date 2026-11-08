@@ -48,12 +48,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7e3025a2dc620603c7cffee1ddeb560b62eb9f74",
+      "attempts": 1,
       "startedAt": "2026-11-08T00:53:36.645Z",
       "doneAt": "2026-11-08T00:54:07.920Z",
-      "summary": "Nuevo store/switch.ts con switchLog, readSwitch y turnSwitch sobre .git/common/specty/switch.jsonl (solo añade si cambia el estado, 0o444 entre cambios); la regla bypass de shell.ts reconoce common/specty/switch.jsonl."
+      "summary": "Nuevo store/switch.ts con switchLog, readSwitch y turnSwitch sobre .git/common/specty/switch.jsonl (solo añade si cambia el estado, 0o444 entre cambios); la regla bypass de shell.ts reconoce common/specty/switch.jsonl.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/specty-off-hooks.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "da6785e8e9539cf2a0bd5b9f26fcef539911c6f2",
+      "startedAt": "2026-11-08T00:54:08.225Z",
+      "doneAt": "2026-11-08T01:01:12.226Z",
+      "summary": "Con Specty apagado, el guard responde como fuera de Specty salvo a los hooks de carpetas, pre-commit solo atiende los recibos de Specty y deja pasar lo demás, y agent-stop y memory-stop dejan terminar el turno. Test de AC6 corregido con el parche S1."
     }
   },
   "pending": {
@@ -64,10 +75,11 @@
     "A": 5,
     "AC": 6,
     "T": 5,
-    "R": 2
+    "R": 2,
+    "S": 1
   },
   "lockedTests": {
-    "packages/cli/test/specty-off-hooks.test.ts": "sha256:20ce99afc4f004393917afd02f3a357f31e162cef4d2e81bce5647d849e92858",
+    "packages/cli/test/specty-off-hooks.test.ts": "sha256:a98df06e660b71a5d09dc4522d949de15c9d93768b340b37a197fce930f0edc4",
     "packages/cli/test/specty-off-next.test.ts": "sha256:3991eb81f331070c239274f097c8b1c9b8434ba48fb7a01e90f7c04ed4acb0d9",
     "packages/cli/test/switch-log.test.ts": "sha256:c950ed6d24ce53279909a9027b94c37957eabeefa8d07d3629bb1ca73ecc4c77",
     "packages/core/test/cards/off.test.ts": "sha256:1e85bf3e400610843efdfaffba19e84094e6e526ff8b83cc0cd0433f0dc516ae"

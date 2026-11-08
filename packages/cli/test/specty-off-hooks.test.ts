@@ -216,8 +216,9 @@ describe("turning Specty back on", () => {
     await turn(root, true);
 
     expect((await writeApp(root)).code).toBe(2);
-    await writeFiles(root, { "src/app.ts": "sin spec\n" });
-    git(root, "add", "src/app.ts");
+    // Outside the change's scope: inside it, a manual edit goes through (ARCHITECTURE §9).
+    await writeFiles(root, { "lib/fuera.ts": "sin spec\n" });
+    git(root, "add", "lib/fuera.ts");
     expect((await cli(root, ["hook", "pre-commit"])).code).toBe(1);
     expect((await stateIn(root, CHANGE)).phase).toBe("review");
   });

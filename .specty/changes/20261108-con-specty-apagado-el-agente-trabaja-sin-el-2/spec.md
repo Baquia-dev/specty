@@ -70,7 +70,7 @@ Primer corte de la épica del interruptor: lo que hace Specty apagado y el regis
   - files: packages/cli/src/store/switch.ts, packages/core/src/guard/shell.ts, packages/cli/test/switch-log.test.ts
   - ac: AC1, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/switch-log.test.ts
-- [ ] T2: Con Specty apagado, el guard, `pre-commit` y el fin de turno dejan pasar todo
+- [x] T2: Con Specty apagado, el guard, `pre-commit` y el fin de turno dejan pasar todo
   - files: packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/entry.ts, packages/cli/src/enforce/hook.ts, packages/cli/test/specty-off-hooks.test.ts
   - ac: AC2, AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/specty-off-hooks.test.ts
