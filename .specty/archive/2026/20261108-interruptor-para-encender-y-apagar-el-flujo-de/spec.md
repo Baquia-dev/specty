@@ -61,3 +61,26 @@ La persona enciende y apaga Specty desde la UI con un interruptor en la cabecera
 - R1: Un comando de shell que apaga Specty sin nombrar el registro (un script que calcula la ruta) escapa a la regla `bypass`. Mitigación: el archivo queda en solo lectura, el registro muestra cada cambio con su hora y la UI lo enseña; el guard no lo deshace después porque no distingue ese comando de la persona que apaga Specty desde la UI mientras el comando corre.
 - R2: El servidor de la UI acepta `POST /api/switch` de quien tenga su token, como `/api/delegation`. Mitigación: las mismas comprobaciones de origen, token y servidor con acciones que el resto de decisiones de la persona.
 - R3: El guard lee el registro en cada acción del agente. Mitigación: es un archivo local pequeño, y solo se lee su última línea válida.
+
+## Cierre
+
+### Resumen
+
+La persona enciende y apaga Specty desde el interruptor «Specty» de la cabecera de la UI, y cada cambio de estado queda en `.git/common/specty/switch.jsonl` con quién y cuándo, en dos cortes cerrados en main. C1 (9c0581a): con Specty apagado, el guard responde a cualquier agente como fuera de Specty (salvo los hooks de carpetas de Claude Code), `pre-commit` solo atiende los recibos de Specty, el fin de turno deja terminar y `specty next` da la tarjeta de Specty apagado; al encenderlo todo vuelve a actuar y los cambios abiertos siguen donde estaban; la regla `bypass` rechaza los comandos que nombran el registro. C2 (43f2585): `GET` y `POST /api/switch` en el servidor, con las comprobaciones de las demás decisiones, y el interruptor de la cabecera con sus diálogos, el registro y el comando de la paleta; en solo lectura está desactivado con el motivo.
+
+### Desviaciones
+
+- La épica nació como un cambio estándar que `propose` rechazó por XL (16 archivos de código). Se convirtió en épica en su sitio, sin cancelarlo, después de que el usuario pidiera arreglar antes P354 (`20261108-un-borrador-demasiado-grande-pasa-a-epica-sin`, ab0118a).
+- Dos cortes en lugar de los tres que proponía el borrador (núcleo, API y UI): la API y la UI van juntas en C2, para que el corte sea vertical.
+- C1 se rehízo tras cancelar un primer intento cuya verificación encadenaba con `&&` los tests de dos paquetes (P190), y su test de AC6 se corrigió con un desbloqueo (S1) que decidió la persona.
+- C2 rechaza `setSpecty` en la fuente de solo lectura con un motivo propio, `NO_SWITCH`, y no con `READ_ONLY`.
+
+### Decisiones
+
+- C2 esperó a C1 porque usa su registro (`store/switch.ts`).
+- Los textos de los diálogos van en la UI con `t()`, como los del modo delegado: el servidor solo da el estado y el registro.
+
+### Pendientes
+
+- `enforce/guard.ts` (320 líneas de código) sigue por encima del aviso de 300 (P218).
+- `ui/src/data/records.ts` (319) y `ui/src/data/server.ts` (304) pasan del aviso de 300 (P379; P378 la repite y está propuesta para descartar).
