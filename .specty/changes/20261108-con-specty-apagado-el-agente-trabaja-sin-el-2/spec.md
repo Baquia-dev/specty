@@ -78,7 +78,7 @@ Primer corte de la épica del interruptor: lo que hace Specty apagado y el regis
   - files: packages/core/src/cards/off.ts, packages/core/src/cards/next.ts, packages/core/test/cards/off.test.ts
   - ac: AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/off.test.ts
-- [ ] T4: `specty next` lee el registro y, apagado, da esa tarjeta sin tocar el cambio abierto
+- [x] T4: `specty next` lee el registro y, apagado, da esa tarjeta sin tocar el cambio abierto
   - files: packages/cli/src/commands/next.ts, packages/cli/test/specty-off-next.test.ts
   - ac: AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/specty-off-next.test.ts && pnpm typecheck

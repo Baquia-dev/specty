@@ -24,44 +24,21 @@ import { readSpec, type StoredChange } from "../store/changes";
 import { liveHolds } from "../store/front-owners";
 import { readMemory } from "../store/memory";
 import { portsOf } from "../store/ports";
+import { readSwitch } from "../store/switch";
 import { pendingIntegration } from "./integrate";
 import { openChanges } from "./status";
 
 /**
  * `specty next`: what to do now. In `implementing` it activates the next pending task, or moves an
  * epic whose slices are all closed to acceptance. An incorporation whose merge someone aborted is
- * forgotten, as `accept` and `close` do: nothing is left to resolve.
+ * forgotten, as `accept` and `close` do: nothing is left to resolve. With Specty off, it says so
+ * and changes nothing: the agent works without the flow.
  */
 export async function next(session: Session): Promise<Output> {
+  const turned = await readSwitch(session.git);
+  if (!turned.on) return nextCard({ dirty: [], off: turned }, session.cards);
   const active = await resolveActive(session);
-  if (active === undefined) {
-    const byName = await entersByName(session.root);
-    // A conversation that left its change's folder goes back there (`specty new`, `enter`).
-    const own = await conversationChange(session);
-    if (own !== undefined) {
-      const epic = await ownEpic(session, own);
-      const view = epic === undefined ? own : { ...own, epic };
-      return nextCard({ dirty: [], own: view, byName }, session.cards);
-    }
-    const dirty = await dirtyGoverned(session);
-    // Without code yet, the first change is the project's skeleton (ARCHITECTURE §14).
-    const fresh = dirty.length === 0 && (await freshProject(session));
-    // The memory goes to every session that starts with no change (ADR 0016), but for the
-    // reminders that wait for their day or for the files of their paths.
-    const { entries, fronts } = await readMemory(session.git, session.config.memory.branch);
-    const memory = sessionEntries(entries, localDay(session.environment.now()));
-    const view = fronts.length === 0 ? {} : { fronts: await frontsView(session, fronts) };
-    // Specty doesn't edit the tools that see what it writes: the agent tells the user (ADR 0018).
-    const exclusions = (await toolExclusions(session.root)).filter((tool) => !tool.excluded);
-    const orphans = await orphanChanges(session);
-    const lost = (await lostChanges(session)).map(({ id, title, state }) => ({
-      id,
-      title,
-      phase: state.phase,
-    }));
-    const start = { memory, exclusions, orphans, lost, byName, ...view };
-    return nextCard({ dirty, ...(fresh ? { fresh } : {}), ...start }, session.cards);
-  }
+  if (active === undefined) return await withoutChange(session);
   const pending = await pendingIntegration(session, active, "close");
   const current = pending.kind === "go" ? pending.change : active;
   const change =
@@ -73,6 +50,39 @@ export async function next(session: Session): Promise<Output> {
   const card = nextCard({ change: await changeView(session, change), dirty: [] }, session.cards);
   // In a change's folder, the agent starts its development servers on that folder's ports.
   return withDevPorts(card, await portsOf(session, session.root), session.lang);
+}
+
+/**
+ * With no change active: the conversation's own change in another folder, code without a spec,
+ * a new project's skeleton or the change the user asks for, with the memory and what else waits.
+ */
+async function withoutChange(session: Session): Promise<Output> {
+  const byName = await entersByName(session.root);
+  // A conversation that left its change's folder goes back there (`specty new`, `enter`).
+  const own = await conversationChange(session);
+  if (own !== undefined) {
+    const epic = await ownEpic(session, own);
+    const view = epic === undefined ? own : { ...own, epic };
+    return nextCard({ dirty: [], own: view, byName }, session.cards);
+  }
+  const dirty = await dirtyGoverned(session);
+  // Without code yet, the first change is the project's skeleton (ARCHITECTURE §14).
+  const fresh = dirty.length === 0 && (await freshProject(session));
+  // The memory goes to every session that starts with no change (ADR 0016), but for the
+  // reminders that wait for their day or for the files of their paths.
+  const { entries, fronts } = await readMemory(session.git, session.config.memory.branch);
+  const memory = sessionEntries(entries, localDay(session.environment.now()));
+  const view = fronts.length === 0 ? {} : { fronts: await frontsView(session, fronts) };
+  // Specty doesn't edit the tools that see what it writes: the agent tells the user (ADR 0018).
+  const exclusions = (await toolExclusions(session.root)).filter((tool) => !tool.excluded);
+  const orphans = await orphanChanges(session);
+  const lost = (await lostChanges(session)).map(({ id, title, state }) => ({
+    id,
+    title,
+    phase: state.phase,
+  }));
+  const start = { memory, exclusions, orphans, lost, byName, ...view };
+  return nextCard({ dirty, ...(fresh ? { fresh } : {}), ...start }, session.cards);
 }
 
 /**

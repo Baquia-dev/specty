@@ -68,12 +68,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6fd22e44b0d88d60f0708632db2ea8ee2b3a6d15",
+      "attempts": 1,
       "startedAt": "2026-11-08T01:01:12.591Z",
       "doneAt": "2026-11-08T01:01:32.349Z",
-      "summary": "Nueva tarjeta offCard (cards/off.ts) en español e inglés: apagado desde cuándo y por quién, nada pasa por Specty y los cambios siguen; NextView.off la da antes que ninguna otra."
+      "summary": "Nueva tarjeta offCard (cards/off.ts) en español e inglés: apagado desde cuándo y por quién, nada pasa por Specty y los cambios siguen; NextView.off la da antes que ninguna otra.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "32ab3c26e1c77eb99b2b47ae22cd91a70384bf25",
+      "startedAt": "2026-11-08T01:01:32.678Z",
+      "doneAt": "2026-11-08T01:05:54.138Z",
+      "summary": "specty next lee el registro al empezar y, con Specty apagado, da la tarjeta de apagado sin buscar el cambio activo ni activar tareas; la rama sin cambio activo pasa a withoutChange."
     }
   },
   "pending": {
