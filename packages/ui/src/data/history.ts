@@ -73,6 +73,22 @@ const LANES: Readonly<Record<string, Bilingual>> = {
   retro: both("Retro: código ya escrito", "Retro: code already written"),
 };
 
+/** A kind inside a sentence: its lane in lower case («carril estándar»), or as it comes. */
+function laneIn(kind: string): Bilingual {
+  const lane = LANES[kind] ?? both(kind, kind);
+  const lower = (said: string) => said.charAt(0).toLowerCase() + said.slice(1);
+  return both(lower(lane.es), lower(lane.en));
+}
+
+/** «Pasó de carril estándar a épica», when the proposal changed the draft's kind (formats.md §4). */
+function kindChangeOf(data: Data): Bilingual | undefined {
+  const kind = text(data, "kind");
+  const previous = text(data, "previousKind");
+  if (kind === undefined || previous === undefined) return undefined;
+  const [from, to] = [laneIn(previous), laneIn(kind)];
+  return both(`Pasó de ${from.es} a ${to.es}`, `Went from ${from.en} to ${to.en}`);
+}
+
 /** «la revisión 3», or «la spec» when the event does not say which. */
 const revisionOf = (data: Data) => {
   const revision = count(data, "revision");
@@ -128,6 +144,7 @@ const TELL: Readonly<Record<string, (data: Data) => Told>> = {
       type: "spec",
       title: both(`Propuso ${of.es}`, `Proposed ${of.en}`),
       details: [
+        kindChangeOf(data),
         when(text(data, "size"), (size) => both(`Tamaño ${size}`, `Size ${size}`)),
         counted(count(data, "warnings") ?? 0, "aviso", "warning"),
       ],

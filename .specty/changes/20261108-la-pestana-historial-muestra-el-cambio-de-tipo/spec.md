@@ -17,7 +17,7 @@ Desde que `spec.proposed` trae `kind` y `previousKind` cuando el borrador cambia
 
 ## Tareas
 
-- [ ] T1: La línea de una propuesta en el Historial dice el cambio de tipo del borrador
+- [x] T1: La línea de una propuesta en el Historial dice el cambio de tipo del borrador
   - files: packages/ui/src/data/history.ts, packages/ui/src/data/history.test.ts, packages/ui/src/data/sample-history.ts, docs/ui.md
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/history.test.ts --include src/data/sample-specs.test.ts && pnpm typecheck && pnpm lint
   - type: feat

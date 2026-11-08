@@ -73,9 +73,15 @@ const STEPS: Readonly<Record<string, readonly Step[]>> = {
     ],
     [30, "agent", "spec.proposed", { revision: 3, size: "M", warnings: 0 }],
   ],
+  // Created as a quick change; its first proposal made it a standard one.
   "20261019-boletines-pdf": [
-    created(3 * HOUR, "20261019-boletines-pdf"),
-    [2 * HOUR + 50, "agent", "spec.proposed", { revision: 1, size: "L", warnings: 0 }],
+    created(3 * HOUR, "20261019-boletines-pdf", "quick"),
+    [
+      2 * HOUR + 50,
+      "agent",
+      "spec.proposed",
+      { revision: 1, size: "L", warnings: 0, kind: "standard", previousKind: "quick" },
+    ],
     [50, "human", "spec.approved", { revision: 1, channel: "tty" }],
   ],
   "20261018-asistencia-curso": [

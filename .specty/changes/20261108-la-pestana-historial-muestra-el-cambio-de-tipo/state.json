@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261108-la-pestana-historial-muestra-el-cambio-de-tipo",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261108-la-pestana-historial-muestra-el-cambio-de-tipo",
   "baseCommit": "791194c55f445b5ae1f7914daaff60c3fff9ffa6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ea8b9762d878a951f022afed975a007658c30bd7af6bed0b847122294a15d8cf",
+    "at": "2026-11-08T02:03:35.558Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3c8c995471a09e22622a88c2e4f59ab5f409a450",
+      "startedAt": "2026-11-08T02:03:36.302Z",
+      "doneAt": "2026-11-08T02:04:41.089Z",
+      "summary": "El Historial dice «Pasó de carril estándar a épica» en la propuesta que trae kind y previousKind (tipo sin nombre tal cual); test es/en, muestra boletines-pdf de quick a standard y docs/ui.md."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ea8b9762d878a951f022afed975a007658c30bd7af6bed0b847122294a15d8cf",
-    "at": "2026-11-08T02:03:35.558Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

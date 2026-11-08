@@ -129,6 +129,31 @@ describe("historyOf", () => {
     expect(historyOf([event("agent", "scope.requested", { request })])[0]?.type).toBe("scope");
   });
 
+  it("tells the kind a proposal moved the draft to, only when the event says so", () => {
+    const audit = [
+      event("agent", "spec.proposed", {
+        revision: 1,
+        size: "S",
+        warnings: 0,
+        kind: "epic",
+        previousKind: "standard",
+      }),
+      event("agent", "spec.proposed", { revision: 2, kind: "spike", previousKind: "quick" }),
+      event("agent", "spec.proposed", { revision: 3, size: "S", kind: "epic" }),
+      event("agent", "spec.proposed", { revision: 4, previousKind: "standard" }),
+    ];
+    expect(said(audit)).toEqual([
+      "Propuso la revisión 1 · Pasó de carril estándar a épica · Tamaño S",
+      "Propuso la revisión 2 · Pasó de cambio rápido a spike",
+      "Propuso la revisión 3 · Tamaño S",
+      "Propuso la revisión 4",
+    ]);
+    expect(historyOf(audit)[0]?.details.map((detail) => detail.en)).toEqual([
+      "Went from standard lane to epic",
+      "Size S",
+    ]);
+  });
+
   it("tells adjustments, cancellations, retros and quick changes", () => {
     const entries = historyOf([
       event("human", "adjust.requested", { request: "No se cumple AC2: falta el curso." }),
