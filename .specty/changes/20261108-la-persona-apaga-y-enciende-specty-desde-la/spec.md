@@ -65,7 +65,7 @@ Segundo corte de la épica del interruptor. C1 dejó en main lo que hace Specty 
 
 ## Tareas
 
-- [ ] T1: El servidor da y cambia el interruptor en `/api/switch`, y la firma de los eventos lo incluye
+- [x] T1: El servidor da y cambia el interruptor en `/api/switch`, y la firma de los eventos lo incluye
   - files: packages/cli/src/server/switch.ts, packages/cli/src/server/api.ts, packages/cli/src/server/events.ts, packages/cli/test/server/switch.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/switch.test.ts

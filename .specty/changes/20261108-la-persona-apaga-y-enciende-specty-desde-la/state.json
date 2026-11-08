@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0524f9e96a8a8e4db1028193ff8a573c116f76a9",
+      "startedAt": "2026-11-08T01:28:52.670Z",
+      "doneAt": "2026-11-08T01:29:28.077Z",
+      "summary": "server/switch.ts da GET /api/switch (estado, quién, cuándo y registro) y atiende POST /api/switch con turnSwitch y user.name dentro de la cola; api.ts lo enruta y events.ts añade la última entrada a la firma"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

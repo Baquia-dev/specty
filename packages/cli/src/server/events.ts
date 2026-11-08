@@ -6,17 +6,21 @@ import type { Session } from "../session";
 import { listDir } from "../store/changes";
 import { readDelegation } from "../store/local";
 import { repoPaths } from "../store/paths";
+import { readSwitch } from "../store/switch";
 
 /** The files of an open change whose time and size say it moved. */
 const WATCHED: readonly string[] = ["spec.md", "state.json", "audit.jsonl", "comments.json"];
 
 /**
  * What the changes look like on disk: the open changes of each worktree, by their files' time and
- * size, and its configuration's; the name of every archived change, and the delegated mode
- * switch. The same fingerprint means the same data.
+ * size, and its configuration's; the name of every archived change, the delegated mode switch
+ * and Specty's switch, by its last entry. The same fingerprint means the same data.
  */
 export async function fingerprint(session: Session): Promise<string> {
-  const parts: string[] = [`delegated ${JSON.stringify(await readDelegation(session.git))}`];
+  const parts: string[] = [
+    `delegated ${JSON.stringify(await readDelegation(session.git))}`,
+    `switch ${JSON.stringify(await readSwitch(session.git))}`,
+  ];
   // A write to Specty's memory moves its branch (ADR 0016): the memory page reads it again.
   const tip = await session.git.run([
     "rev-parse",
