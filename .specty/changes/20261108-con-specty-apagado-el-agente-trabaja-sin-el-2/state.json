@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261108-con-specty-apagado-el-agente-trabaja-sin-el-2",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261108-con-specty-apagado-el-agente-trabaja-sin-el-2",
   "baseCommit": "ab0118afa3a95f26b46ae4356a9bd05f5c75f3bb",
   "revision": 1,
@@ -56,6 +56,10 @@
     "T": 5,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-08T00:53:30.149Z"
+  "lockedTests": {
+    "packages/cli/test/specty-off-hooks.test.ts": "sha256:20ce99afc4f004393917afd02f3a357f31e162cef4d2e81bce5647d849e92858",
+    "packages/cli/test/specty-off-next.test.ts": "sha256:3991eb81f331070c239274f097c8b1c9b8434ba48fb7a01e90f7c04ed4acb0d9",
+    "packages/cli/test/switch-log.test.ts": "sha256:c950ed6d24ce53279909a9027b94c37957eabeefa8d07d3629bb1ca73ecc4c77",
+    "packages/core/test/cards/off.test.ts": "sha256:1e85bf3e400610843efdfaffba19e84094e6e526ff8b83cc0cd0433f0dc516ae"
+  }
 }
