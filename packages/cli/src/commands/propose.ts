@@ -61,9 +61,12 @@ export async function propose(session: Session): Promise<Output> {
     const specPath = session.paths.relative(files.spec);
     return invalidSpecCard(headerOf(state.id, state.phase), specPath, analysis.diagnostics, cards);
   }
+  // A draft never approved takes the frontmatter's kind (validated above): a too-large standard
+  // becomes an epic in place, keeping its request and what it resolves.
+  const { kind } = analysis.spec.frontmatter;
   const moved = transition({
     phase: state.phase,
-    kind: state.kind,
+    kind,
     actor: session.actor,
     event: { type: "propose", validationErrors: 0 },
   });
@@ -122,6 +125,7 @@ async function recordProposal(
   const { changesRequestedAt: _requested, closingSubmittedAt: _sent, ...rest } = state;
   const nextState: ChangeState = {
     ...rest,
+    kind: analysis.spec.frontmatter.kind,
     phase: moved,
     revision,
     items: decisions(state, analysis.spec),
@@ -134,6 +138,7 @@ async function recordProposal(
     hash: analysis.hash,
     size: size.level,
     warnings: analysis.diagnostics.length,
+    ...(nextState.kind === state.kind ? {} : { kind: nextState.kind, previousKind: state.kind }),
   });
 }
 

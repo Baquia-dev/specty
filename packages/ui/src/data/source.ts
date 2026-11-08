@@ -30,6 +30,7 @@ import type {
   Delegation,
   MemoryRecord,
   SliceChangeRecord,
+  SpectySwitch,
 } from "./records";
 import type { StatsExportParams } from "./server-stats";
 import type { TraceRecord } from "./trace";
@@ -49,6 +50,10 @@ const NO_DIFFS: Bilingual = { es: "Esta fuente no da diffs.", en: "This source g
 const NO_TRACE: Bilingual = {
   es: "Esta fuente no da la trazabilidad.",
   en: "This source gives no traceability.",
+};
+const NO_SWITCH: Bilingual = {
+  es: "Esta fuente no puede encender ni apagar Specty: es de solo lectura.",
+  en: "This source cannot turn Specty on or off: it is read only.",
 };
 const NO_TEST_CODE: Bilingual = {
   es: "Esta fuente no da el código de los tests.",
@@ -318,6 +323,11 @@ export abstract class SpectyData {
     return Promise.resolve(undefined);
   }
 
+  /** Specty's switch, with its log, as the source knows it; nothing when it cannot tell. */
+  specty(): Promise<SpectySwitch | undefined> {
+    return Promise.resolve(undefined);
+  }
+
   /** Specty's memory and who holds each open change (ADR 0016); nothing when it cannot tell. */
   memory(): Promise<MemoryRecord | undefined> {
     return Promise.resolve(undefined);
@@ -346,6 +356,11 @@ export abstract class SpectyData {
   /** Turns delegated mode on, once the person read the warning, or off. */
   setDelegation(_on: boolean): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  /** Turns Specty off, so nothing the agent does goes through it, or on again. */
+  setSpecty(_on: boolean): Promise<void> {
+    return Promise.reject(new ActionError(NO_SWITCH));
   }
 
   /** What the person's edits of `config.yaml` would leave, writing nothing. */

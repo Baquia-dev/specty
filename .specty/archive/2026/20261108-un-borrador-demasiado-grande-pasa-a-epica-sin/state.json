@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "id": "20261108-un-borrador-demasiado-grande-pasa-a-epica-sin",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-un-borrador-demasiado-grande-pasa-a-epica-sin",
+  "baseCommit": "bd69ea44a9af4d0ac0b40c8bf5d27e33a5b0d91e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:11d653530f3c81a6d62329f6615f518e03c1a6db4dfc799cd39e0ed7752c36f0",
+    "at": "2026-11-08T00:23:08.084Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:630aefcfd56630dc2b6d87e82605a0611cc1bedce7e2e4e29a810374af647ce6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d9ea8f841836d89c49118021f4c8990d5b67996994c675be3629ca88a93177b4",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:efd4bb99629e19ce092e64cee3b7595cf74cefe81a3735e76f19d83bf0902623",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:cb4065e9c0df59df558c13a0021a9da6f5ba39d8c749d32a0f9fea24f817df2c",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f92c5c9e48baeeaeeff036e9c2588a9bf472cebcf74e438835c272dcf1aff563",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:d9e5ed5ce8f0af9d4b57cf822fec6c659af45e941bbd043eea9a33a7635aff6a",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:f414b51cfdfc216b97f3c5aa9314a1794a48e104efac90b81e91f5c8532849c9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e4c0f07e9088b25fb803139434a166ecad8125c2",
+      "attempts": 1,
+      "startedAt": "2026-11-08T00:27:09.375Z",
+      "doneAt": "2026-11-08T00:27:58.014Z",
+      "summary": "Regla checkKind en la validación: kind-fixed tras la primera aprobación o con una retro, slice-epic para un corte que pasa a épica; ValidationContext.kind; split-required explica cómo pasar a épica en la misma spec",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b8174d4e9308e288e1f0ce4c14650a013f220c86",
+      "attempts": 1,
+      "startedAt": "2026-11-08T00:27:58.360Z",
+      "doneAt": "2026-11-08T00:29:06.118Z",
+      "summary": "propose guarda en el estado el kind del frontmatter mientras el cambio no se ha aprobado (analyzeChange pasa el del estado a la validación) y anota kind y previousKind en spec.proposed; specty audit muestra «(de standard a epic)»; formats.md §2-§4 y ARCHITECTURE §11",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 9,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-08T00:29:20.016Z",
+  "lockedTests": {
+    "packages/cli/test/kind-change.test.ts": "sha256:394ba34f454eea2afca6e9794ec0972afdad95bc4436f2e606cac94601249259",
+    "packages/core/test/validate/kind.test.ts": "sha256:42a959fa029f5f88b7f0d599f9a6fef3bd74120b14a1ec2209bbedc2ec834767"
+  }
+}

@@ -14,6 +14,7 @@ import {
   type MemoryRecord,
   type SliceChangeRecord,
   SpectyData,
+  type SpectySwitch,
 } from "./records";
 import {
   answered,
@@ -30,6 +31,7 @@ import {
   isRecords,
   isSessionList,
   isSliceChanges,
+  isSpectySwitch,
   NO_DIFF,
   NO_SESSION,
   READ_ONLY,
@@ -170,6 +172,18 @@ export class ServerData extends SpectyData {
 
   override setDelegation(on: boolean): Promise<void> {
     return this.post("/api/delegation", { on });
+  }
+
+  override async specty(): Promise<SpectySwitch> {
+    const response = await fetch("/api/switch");
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isSpectySwitch(body)) throw new ActionError(UNEXPECTED);
+    return body;
+  }
+
+  override setSpecty(on: boolean): Promise<void> {
+    return this.post("/api/switch", { on });
   }
 
   override memoryAction(id: string, verb: MemoryVerb, reason?: string): Promise<void> {

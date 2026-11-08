@@ -2,7 +2,7 @@
 import type { Diagnostic } from "../spec/diagnostics";
 import type { Spec } from "../spec/model";
 import type { Rule, ValidationContext } from "./context";
-import { checkAdjusting, checkClosedSlices, checkClosing, checkIdReuse } from "./phase";
+import { checkAdjusting, checkClosedSlices, checkClosing, checkIdReuse, checkKind } from "./phase";
 import {
   checkCriteria,
   checkFileReasons,
@@ -16,6 +16,7 @@ import { checkQuickLane, checkSections, checkSpikeClosing } from "./structure";
 export type { ProposePhase, ValidationContext } from "./context";
 
 const RULES: readonly Rule[] = [
+  checkKind,
   checkSections,
   checkSpikeClosing,
   checkQuickLane,

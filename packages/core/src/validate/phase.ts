@@ -4,7 +4,7 @@ import { parseItemId } from "../ids";
 import { itemHashes } from "../spec/canonical";
 import { specDelta } from "../spec/delta";
 import type { Diagnostic } from "../spec/diagnostics";
-import type { Spec } from "../spec/model";
+import type { ChangeKind, Spec } from "../spec/model";
 import { itemLine, type Rule, report, type ValidationContext } from "./context";
 import { declaredPaths, isDeclared } from "./references";
 
@@ -136,6 +136,35 @@ export const checkClosing: Rule = (spec, ctx, lang) => {
     .filter((key) => before.get(key) !== after.get(key))
     .map((key) => report(lang, { code: "closing-outside", params: { target: key }, target: key }));
 };
+
+/**
+ * The kind the change has in its state. Before its first approval, a draft takes the frontmatter's
+ * (`propose` writes it in the state), so a too-large change becomes an epic in place; but a slice
+ * is never an epic, and a retro, which only `specty retro` creates, never changes kind. Once
+ * approved, the kind is fixed.
+ */
+export const checkKind: Rule = (spec, ctx, lang) => {
+  const from = ctx.kind;
+  const { kind: to, epic } = spec.frontmatter;
+  if (from === undefined || from === to) return [];
+  if (to === "epic" && epic !== undefined) {
+    return [report(lang, { code: "slice-epic", params: { from, epic } })];
+  }
+  const reason = fixedBy(from, to, ctx);
+  return reason === undefined
+    ? []
+    : [report(lang, { code: "kind-fixed", params: { from, to, reason } })];
+};
+
+/** Why the kind cannot change: the change was approved, or a retro is involved. */
+function fixedBy(
+  from: ChangeKind,
+  to: ChangeKind,
+  ctx: ValidationContext,
+): "approved" | "retro" | undefined {
+  if (ctx.approved !== undefined) return "approved";
+  return from === "retro" || to === "retro" ? "retro" : undefined;
+}
 
 /** A deleted id is never given to a different item. */
 export const checkIdReuse: Rule = (spec, ctx, lang) => {

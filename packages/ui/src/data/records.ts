@@ -177,6 +177,25 @@ export interface Delegation {
   readonly warning: Readonly<Record<Lang, readonly string[]>>;
 }
 
+/** A change of state of Specty's switch (formats §1): the state it left, who and when (ISO). */
+export interface SwitchEntry {
+  readonly on: boolean;
+  readonly by: string;
+  readonly at: string;
+}
+
+/**
+ * Specty's switch: on or off, who changed it last and when, and its log, the most recent first.
+ * Off, nothing the agent does goes through Specty; without any entry it is on, with neither.
+ */
+export interface SpectySwitch {
+  readonly on: boolean;
+  readonly by?: string;
+  /** ISO time of its last change. */
+  readonly at?: string;
+  readonly log: readonly SwitchEntry[];
+}
+
 export type ReviewSection =
   | "goal"
   | "outOfScope"

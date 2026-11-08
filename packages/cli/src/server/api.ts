@@ -24,6 +24,7 @@ import { sessionsView } from "./sessions";
 import { epicSliceChanges } from "./slices";
 import { statsAnswer } from "./stats";
 import { sendStatsExport, statsChangesPage } from "./stats-changes";
+import { switchPost, switchView } from "./switch";
 import { testCode } from "./test-code";
 import { changeTrace, traceReply } from "./trace";
 
@@ -70,6 +71,7 @@ const VIEWS: ReadonlyMap<string, View> = new Map<string, View>([
   ["/api/sessions", sessionsView],
   ["/api/stats", statsAnswer],
   ["/api/stats/changes", statsChangesPage],
+  ["/api/switch", switchView],
 ]);
 
 /**
@@ -188,9 +190,9 @@ export async function act(
   const bad = () => send(response, 400, JSON_TYPE, '{"error":"bad request"}');
   const done = (output: Output) =>
     send(response, output.status === "ok" ? 200 : 409, JSON_TYPE, JSON.stringify(output));
-  const config = await configPost(context, pathname, body);
-  if (config !== undefined)
-    return send(response, config.status, JSON_TYPE, JSON.stringify(config.body));
+  const answer = await ownAnswer(context, pathname, body);
+  if (answer !== undefined)
+    return send(response, answer.status, JSON_TYPE, JSON.stringify(answer.body));
   if (pathname === "/api/delegation") {
     const on = isRecord(body) ? body.on : undefined;
     if (typeof on !== "boolean") return bad();
@@ -202,6 +204,14 @@ export async function act(
     return done(await context.serial(() => memoryAction(context.session, memory)));
   const output = await changeAction(context, pathname, body);
   return output === undefined ? bad() : done(output);
+}
+
+/**
+ * An action that answers with its own status and body, not a command's output: the configuration
+ * (`/api/config`, `/api/config/check`) or Specty's switch (`/api/switch`); none for another path.
+ */
+async function ownAnswer(context: Context, pathname: string, body: unknown) {
+  return (await configPost(context, pathname, body)) ?? switchPost(context, pathname, body);
 }
 
 /**

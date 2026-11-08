@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "id": "20261108-con-specty-apagado-el-agente-trabaja-sin-el-2",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261108-con-specty-apagado-el-agente-trabaja-sin-el-2",
+  "baseCommit": "ab0118afa3a95f26b46ae4356a9bd05f5c75f3bb",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7e2c9bd56e59d3a1f6723619059fdf615991eb1be6644bb2ef985e0ff9dcbd4f",
+    "at": "2026-11-08T00:52:49.634Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3f6ff6593da298218f6458005d61eda9d30e2ac347b882b229fdd815219e887a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:5b327d9f000699bb4fe361b78f7b2fc099fda5ee5f260fa5133c64addf62d01b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:7550a420188bde0dc26618e2b60be97d53eaef9ce5f866d1a277070c9355e1ec",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:3be5e43ffa4238677eba086fc39ca9b7434623a11f6ca6a7a643623f531e76bd",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:b8f321132e069da3f65f1c40335fc5595440bd1fb99b8af2d1b0a101ca36c805",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7e3025a2dc620603c7cffee1ddeb560b62eb9f74",
+      "attempts": 1,
+      "startedAt": "2026-11-08T00:53:36.645Z",
+      "doneAt": "2026-11-08T00:54:07.920Z",
+      "summary": "Nuevo store/switch.ts con switchLog, readSwitch y turnSwitch sobre .git/common/specty/switch.jsonl (solo añade si cambia el estado, 0o444 entre cambios); la regla bypass de shell.ts reconoce common/specty/switch.jsonl.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "da6785e8e9539cf2a0bd5b9f26fcef539911c6f2",
+      "attempts": 1,
+      "startedAt": "2026-11-08T00:54:08.225Z",
+      "doneAt": "2026-11-08T01:01:12.226Z",
+      "summary": "Con Specty apagado, el guard responde como fuera de Specty salvo a los hooks de carpetas, pre-commit solo atiende los recibos de Specty y deja pasar lo demás, y agent-stop y memory-stop dejan terminar el turno. Test de AC6 corregido con el parche S1.",
+      "scopeExtra": [
+        "packages/cli/test/specty-off-hooks.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "6fd22e44b0d88d60f0708632db2ea8ee2b3a6d15",
+      "attempts": 1,
+      "startedAt": "2026-11-08T01:01:12.591Z",
+      "doneAt": "2026-11-08T01:01:32.349Z",
+      "summary": "Nueva tarjeta offCard (cards/off.ts) en español e inglés: apagado desde cuándo y por quién, nada pasa por Specty y los cambios siguen; NextView.off la da antes que ninguna otra.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "32ab3c26e1c77eb99b2b47ae22cd91a70384bf25",
+      "attempts": 1,
+      "startedAt": "2026-11-08T01:01:32.678Z",
+      "doneAt": "2026-11-08T01:05:54.138Z",
+      "summary": "specty next lee el registro al empezar y, con Specty apagado, da la tarjeta de apagado sin buscar el cambio activo ni activar tareas; la rama sin cambio activo pasa a withoutChange.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "543a97696fa6e4690b2e970d326dca869d76fec5",
+      "attempts": 1,
+      "startedAt": "2026-11-08T01:05:54.452Z",
+      "doneAt": "2026-11-08T01:14:46.282Z",
+      "summary": "formats.md §1 documenta switch.jsonl y ARCHITECTURE.md §10 cuenta qué deja de actuar con Specty apagado: guard, pre-commit, fin de turno y next, y lo que sigue igual.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 5,
+    "R": 2,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-08T01:15:30.048Z",
+  "lockedTests": {
+    "packages/cli/test/specty-off-hooks.test.ts": "sha256:a98df06e660b71a5d09dc4522d949de15c9d93768b340b37a197fce930f0edc4",
+    "packages/cli/test/specty-off-next.test.ts": "sha256:3991eb81f331070c239274f097c8b1c9b8434ba48fb7a01e90f7c04ed4acb0d9",
+    "packages/cli/test/switch-log.test.ts": "sha256:c950ed6d24ce53279909a9027b94c37957eabeefa8d07d3629bb1ca73ecc4c77",
+    "packages/core/test/cards/off.test.ts": "sha256:1e85bf3e400610843efdfaffba19e84094e6e526ff8b83cc0cd0433f0dc516ae"
+  }
+}

@@ -10,6 +10,8 @@ import type {
   Delegation,
   MemoryRecord,
   SliceChangeRecord,
+  SpectySwitch,
+  SwitchEntry,
 } from "./records";
 import type { ConfigCheck, ConfigRecord, ConfigSaved, FinishedPage } from "./source";
 
@@ -254,6 +256,22 @@ export function isDelegation(value: unknown): value is Delegation {
     en.every(isText) &&
     optional(value.by) &&
     optional(value.at)
+  );
+}
+
+/** `GET /api/switch`'s answer: on or off, who changed it last and when, and its log. */
+export function isSpectySwitch(value: unknown): value is SpectySwitch {
+  if (!isObject(value) || typeof value.on !== "boolean" || !Array.isArray(value.log)) return false;
+  const optional = (field: unknown) => field === undefined || typeof field === "string";
+  return optional(value.by) && optional(value.at) && value.log.every(isSwitchEntry);
+}
+
+function isSwitchEntry(value: unknown): value is SwitchEntry {
+  return (
+    isObject(value) &&
+    typeof value.on === "boolean" &&
+    typeof value.by === "string" &&
+    typeof value.at === "string"
   );
 }
 

@@ -165,8 +165,14 @@ interface EventWords {
 const EVENTS: Readonly<Record<string, (words: EventWords) => string>> = {
   "change.created": ({ t, text }) =>
     t("Creó el cambio", "Created the change") + (text("kind") === "" ? "" : ` (${text("kind")})`),
-  "spec.proposed": ({ t, value }) =>
-    t(`Propuso la revisión ${value("revision")}`, `Proposed revision ${value("revision")}`),
+  "spec.proposed": ({ t, text, value }) =>
+    t(`Propuso la revisión ${value("revision")}`, `Proposed revision ${value("revision")}`) +
+    (text("previousKind") === ""
+      ? ""
+      : t(
+          ` (de ${text("previousKind")} a ${text("kind")})`,
+          ` (from ${text("previousKind")} to ${text("kind")})`,
+        )),
   "assumption.decided": ({ t }) => t("Decidió los supuestos", "Decided the assumptions"),
   "review.changes_requested": ({ t, value }) =>
     t(

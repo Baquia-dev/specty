@@ -77,9 +77,15 @@ export const MESSAGES_ES: MessageCatalog = {
   "quick-limits": (p) =>
     `El cambio no cabe en el carril quick (${v(p, "detail")}); usa \`kind: standard\`.`,
   "split-required": (p) =>
-    `El cambio es demasiado grande (${v(p, "detail")}); divídelo en una épica con cortes verticales, o en un spike si el problema es la incertidumbre.`,
+    `El cambio es demasiado grande (${v(p, "detail")}); divídelo en una épica con cortes verticales, o en un spike si el problema es la incertidumbre. Para pasarlo a épica en esta misma spec, pon \`kind: epic\` en el frontmatter, cambia «Archivos» y «Tareas» por «Cortes» y vuelve a ejecutar \`propose\`: el cambio conserva su petición y lo que resuelve.`,
   "slice-split-required": (p) =>
     `El corte es demasiado grande (${v(p, "detail")}) y un corte no puede ser una épica: estréchalo a lo que cabe en un cambio y lleva el resto a cortes nuevos de la épica ${v(p, "epic")}, que se ajusta en su carpeta mientras se implementa (\`adjust\`, los cortes nuevos en «Cortes» con su \`depends\` y \`propose\`); la persona vuelve a aprobarla.`,
+  "kind-fixed": (p) =>
+    v(p, "reason") === "retro"
+      ? `Una retro no cambia de tipo y ningún otro cambio pasa a ser una retro, que solo crea \`specty retro\`; vuelve a poner \`kind: ${v(p, "from")}\` en el frontmatter.`
+      : `El cambio se aprobó como ${v(p, "from")} y ya no puede pasar a ${v(p, "to")}; vuelve a poner \`kind: ${v(p, "from")}\` en el frontmatter.`,
+  "slice-epic": (p) =>
+    `Un corte no puede ser una épica; vuelve a poner \`kind: ${v(p, "from")}\` y, si no cabe en un cambio, lleva el resto a cortes nuevos de la épica ${v(p, "epic")}.`,
   "done-task-changed": (p) =>
     `${v(p, "id")} ya está completada y no se puede modificar ni eliminar; añade una tarea nueva.`,
   "pending-tasks-only": (p) =>

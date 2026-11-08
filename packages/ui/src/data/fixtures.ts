@@ -13,6 +13,7 @@ import {
   type Delegation,
   type MemoryRecord,
   SpectyData,
+  type SpectySwitch,
 } from "./records";
 import { confirmClosingIn, decideResultIn } from "./sample-acceptance";
 import { sampleDelegation } from "./sample-delegation";
@@ -35,6 +36,7 @@ import {
   runTarget,
   verifiedIn,
 } from "./sample-run";
+import { sampleSwitch, turnedSwitch } from "./sample-switch";
 import { sampleTestCode } from "./sample-test-code";
 import { sampleTrace, sampleTraceFiles } from "./sample-trace";
 import type { MemoryVerb } from "./source";
@@ -50,6 +52,7 @@ export { REVIEWER, sampleRecords } from "./sample-records";
 export class FixtureData extends SpectyData {
   private records = sampleRecords(Date.now());
   private delegated = sampleDelegation(false);
+  private switched = sampleSwitch();
   private remembered = sampleMemory();
   private readonly listeners = new Set<() => void>();
   private failing = false;
@@ -156,6 +159,11 @@ export class FixtureData extends SpectyData {
     return Promise.resolve(this.delegated);
   }
 
+  /** Typed as the base's: a test's source may still know nothing of the switch. */
+  override specty(): Promise<SpectySwitch | undefined> {
+    return Promise.resolve(this.switched);
+  }
+
   /** A memory with an entry of every kind and status, and changes held, waiting and orphaned. */
   override memory(): Promise<MemoryRecord> {
     return Promise.resolve(this.remembered);
@@ -200,6 +208,15 @@ export class FixtureData extends SpectyData {
 
   override setDelegation(on: boolean): Promise<void> {
     this.delegated = sampleDelegation(on);
+    this.notify();
+    return Promise.resolve();
+  }
+
+  /** Like the server, the state it already has adds nothing and tells no one. */
+  override setSpecty(on: boolean): Promise<void> {
+    const turned = turnedSwitch(this.switched, on, Date.now());
+    if (turned === this.switched) return Promise.resolve();
+    this.switched = turned;
     this.notify();
     return Promise.resolve();
   }
