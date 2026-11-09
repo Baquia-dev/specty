@@ -140,7 +140,7 @@ describe("a change no conversation holds, in the UI", () => {
     );
   });
 
-  it("AC3: its page says, above the tabs, how to resume it with each agent", async () => {
+  it("AC3: its page says, above the tabs, how to resume it with each enabled agent", async () => {
     const { element } = await open(`/changes/${AWAY}`);
     const panel = element.querySelector("sp-change-page sp-resume-hints");
     const tabs = element.querySelector("sp-change-page sp-tabs");
@@ -156,11 +156,9 @@ describe("a change no conversation holds, in the UI", () => {
     const hints = [...(panel?.querySelectorAll("[data-agent]") ?? [])].map(
       (hint) => `${text(hint.querySelector("[data-name]"))}: ${text(hint.querySelector("code"))}`,
     );
+    // Only the agents this version enables (ENABLED_AGENTS): Claude Code and Antigravity's CLI.
     expect(hints).toEqual([
       `Claude Code: cd "${FOLDER}" && claude`,
-      `Codex: codex -C "${FOLDER}"`,
-      `OpenCode: opencode "${FOLDER}"`,
-      `Cursor: cursor "${FOLDER}"`,
       `Antigravity CLI: cd "${FOLDER}" && agy`,
     ]);
     expect(text(panel?.querySelector("[data-open-session]"))).toBe(
