@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261110-doctor-y-la-suite-de-cumplimiento-se-quedan-con",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261110-doctor-y-la-suite-de-cumplimiento-se-quedan-con",
   "baseCommit": "11f76e12825a5c163227e943853cedd15e9258b8",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e99324bc205475350faed6ef912572bcce7aef5d",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:51:29.589Z",
       "doneAt": "2026-11-09T17:54:35.775Z",
-      "summary": "agentsToRun da los agentes que nombra SPECTY_EVALS_AGENTS o, sin ella, los de ENABLED_AGENTS, y lo usa compliance.eval.ts; el specty en proceso de la suite ofrece todos los agentes"
+      "summary": "agentsToRun da los agentes que nombra SPECTY_EVALS_AGENTS o, sin ella, los de ENABLED_AGENTS, y lo usa compliance.eval.ts; el specty en proceso de la suite ofrece todos los agentes",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f07f4ddc649063606111230c6528653dd44bb446",
+      "startedAt": "2026-11-09T17:54:36.208Z",
+      "doneAt": "2026-11-09T18:02:48.432Z",
+      "summary": "ARCHITECTURE §10 dice qué hace doctor con los deshabilitados; §16, cómo elige agentes la suite y la medición del 2026-11-09 (16 de 16); §18 da F3 por cumplida con cada agente habilitado"
     }
   },
   "pending": {

@@ -68,7 +68,7 @@ Sigue a «La primera versión solo ofrece Claude Code y Antigravity», que dejó
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/agents-default.test.ts && pnpm typecheck
   - type: feat
-- [ ] T4: ARCHITECTURE: `doctor`, la medición del 2026-11-09 y el criterio de F3
+- [x] T4: ARCHITECTURE: `doctor`, la medición del 2026-11-09 y el criterio de F3
   - files: docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
