@@ -14,7 +14,7 @@ const KNOWN: Readonly<Record<string, readonly (readonly [string, string])[]>> = 
   "serde@1.0.0": [["RUSTSEC-2026-0001", ""]],
 };
 
-type Flavor = "working" | "broken" | "failing";
+type Flavor = "working" | "broken" | "failing" | "uneven";
 
 interface ScannerRun {
   readonly args: readonly string[];
@@ -22,13 +22,16 @@ interface ScannerRun {
   readonly files: readonly string[];
   /** The text of each lockfile it was given, by its `-L` path. */
   readonly texts: Readonly<Record<string, string>>;
+  /** The uneven one's slow run, at its end: whether its folder was still there. */
+  readonly kept?: boolean;
 }
 
 /**
  * An OSV-Scanner 2 that reads each `-L` lockfile as lines `name@version`, reports the known
  * vulnerabilities in its JSON form, leaves out the ids the `osv-scanner.toml` next to the
  * lockfile names, and logs how it was called. The broken one fails with 127, OSV-Scanner's
- * general error; the failing one with another code.
+ * general error; the failing one with another code. The uneven one fails as the broken one in the
+ * copy after the change, and in the one before takes 2 s and logs whether its folder is still there.
  */
 const fakeScanner = (flavor: Flavor, log: string) => `#!/usr/bin/env node
 const fs = require("node:fs");
@@ -42,6 +45,14 @@ fs.appendFileSync(${JSON.stringify(log)}, JSON.stringify({ args, cwd: process.cw
 const flavor = ${JSON.stringify(flavor)};
 if (flavor === "broken") { console.error("failed to load config: invalid toml"); process.exit(127); }
 if (flavor === "failing") { console.error("unknown flag: --frobnicate"); process.exit(2); }
+if (flavor === "uneven") {
+  const here = process.cwd();
+  if (path.basename(here) === "after") { console.error("failed to load config: invalid toml"); process.exit(127); }
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 2000);
+  fs.appendFileSync(${JSON.stringify(log)}, JSON.stringify({ args, cwd: here, files: [], texts: {}, kept: fs.existsSync(here) }) + "\\n");
+  try { fs.writeFileSync(args[args.indexOf("--output-file") + 1], JSON.stringify({ results: [] })); } catch {}
+  process.exit(0);
+}
 if (args[0] !== "scan" || args[1] !== "source") process.exit(3);
 if (!args.includes("--allow-no-lockfiles") || args[args.indexOf("--format") + 1] !== "json") process.exit(4);
 const known = ${JSON.stringify(KNOWN)};
@@ -224,5 +235,18 @@ describe("the vulnerabilities check of specty check", () => {
       expect(check?.status).toBe("skipped");
       expect(check?.reason).toContain(message);
     }
+  });
+
+  it("AC1: waits for both runs of OSV-Scanner before removing its folder, and gives the failing one's message", async () => {
+    const root = await repo();
+    await writeFiles(root, { "pnpm-lock.yaml": "minimist@0.0.8\nlodash@4.17.20\n" });
+    const { env, runs } = await scanner("uneven");
+    const check = await vulnerabilities(root, [], env);
+    expect(check?.status).toBe("skipped");
+    expect(check?.reason).toContain("failed to load config: invalid toml");
+    // The slow run, on the copy from before, ended with its folder still there: on Windows a
+    // folder a process works in cannot be removed (EBUSY), and that error hid the scanner's.
+    const slow = (await runs()).filter((run) => run.kept !== undefined);
+    expect(slow).toEqual([expect.objectContaining({ kept: true })]);
   });
 });
