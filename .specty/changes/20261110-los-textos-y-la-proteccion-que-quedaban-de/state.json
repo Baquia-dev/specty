@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "997dadc604466a738cd6ab6f7933b6922e52f9ec",
+      "attempts": 1,
       "startedAt": "2026-11-09T22:02:44.764Z",
       "doneAt": "2026-11-09T22:03:09.771Z",
-      "summary": "El guard deja de proteger .gemini/settings.json (guard/spec.ts): decide.test lo trata como archivo de la persona y sigue protegiendo los hooks de Antigravity y Devin; ARCHITECTURE sin él entre los protegidos ni GEMINI.md en uninstall"
+      "summary": "El guard deja de proteger .gemini/settings.json (guard/spec.ts): decide.test lo trata como archivo de la persona y sigue protegiendo los hooks de Antigravity y Devin; ARCHITECTURE sin él entre los protegidos ni GEMINI.md en uninstall",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "51945be27799332d2806125da833349fb9eaa2c8",
+      "startedAt": "2026-11-09T22:03:10.182Z",
+      "doneAt": "2026-11-09T22:03:49.323Z",
+      "summary": "specty uninstall deja de nombrar GEMINI.md: sin su línea en commands/uninstall.ts, sin GEMINI_POINTER en project-files.ts ni geminiPointerStaysLine en core; uninstall.test comprueba que no lo nombra ni lo toca"
     }
   },
   "pending": {

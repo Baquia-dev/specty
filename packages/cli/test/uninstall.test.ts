@@ -101,6 +101,16 @@ describe("specty uninstall", () => {
     expect(again.out).toContain("No hay nada de Specty que quitar en este repositorio.");
   });
 
+  it("AC2: says nothing of a GEMINI.md, which Specty no longer writes, and leaves it", async () => {
+    const pointer = "@./AGENTS.md\n";
+    const root = await installed({ "GEMINI.md": pointer });
+    const removed = await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
+    expect(removed.code).toBe(0);
+    expect(removed.out).toContain("CLAUDE.md sigue importando AGENTS.md.");
+    expect(removed.out).not.toContain("GEMINI.md");
+    expect(await read(root, "GEMINI.md")).toBe(pointer);
+  });
+
   it("takes the Codex guard and the OpenCode plugin out of the project, keeping the person's hooks (AC7, AC9)", async () => {
     const homes = {
       CODEX_HOME: await mkdtemp(join(tmpdir(), "specty-codex-home-")),

@@ -211,9 +211,6 @@ export async function removeAgentsBlocks(root: string, files: InstallFiles): Pro
   else await files.write(path, left);
 }
 
-/** How GEMINI.md imports AGENTS.md: Gemini CLI documents only paths that start with `./`. */
-export const GEMINI_POINTER = "@./AGENTS.md";
-
 /** Claude Code reads CLAUDE.md: it imports AGENTS.md instead of copying it. */
 export function writeClaudePointer(
   root: string,

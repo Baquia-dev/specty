@@ -419,7 +419,6 @@ export { invalidPortCard, uiOpenedCard, uiStoppedCard } from "./ui";
 export {
   antigravityRuleStaysLine,
   claudePointerStaysLine,
-  geminiPointerStaysLine,
   globalGuardStaysLine,
   historyStaysLine,
   nothingRemovedCard,

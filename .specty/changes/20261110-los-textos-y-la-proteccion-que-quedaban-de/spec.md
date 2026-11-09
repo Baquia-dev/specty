@@ -58,7 +58,7 @@ kind: standard
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts
   - type: chore
-- [ ] T2: `specty uninstall` deja de nombrar `GEMINI.md`
+- [x] T2: `specty uninstall` deja de nombrar `GEMINI.md`
   - files: packages/cli/src/commands/uninstall.ts, packages/cli/src/install/project-files.ts, packages/core/src/cards/uninstall.ts, packages/core/src/cards/index.ts, packages/cli/test/uninstall.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/uninstall.test.ts
