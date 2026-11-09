@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261109-los-ultimos-fallos-de-windows-del-ci",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261109-los-ultimos-fallos-de-windows-del-ci",
+  "baseCommit": "5ba0e12afb83eccf61940e642775c78e2ca2fb80",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3cb5606dd163e3c3ca270fa6652fcb44dd50cc83cc154bce0c9a029c5ba0ca7a",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:978faec4d6268d9cc2caaf1be8e4a4286b4dd68b27f934e9b26fbc00eb2e1c2b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e311fff77ab9f2dc2bc393e0ff134a5c1bfb87651240b696411c745fa80ae8eb",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:02371bd232d9524fd9b6ddc05f92042aa736742a2fa8d29f113d23228b20bdb5",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:bb3507abf1352d7e5e6bb6c39d985527d1572b3824931e273a0ec60498ae3904",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:be089b82581c8c700947d6eca8f68e137331ad638227d6f8404741eb494ed291",
+    "at": "2026-11-09T13:21:56.377Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
