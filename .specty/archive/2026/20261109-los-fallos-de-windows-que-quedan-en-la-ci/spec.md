@@ -68,3 +68,23 @@ Sigue a 20261109-los-ultimos-fallos-de-windows-del-ci, que arregló los fallos d
 
 - R1: Aquí no hay Windows: lo que se arregla allí solo se comprueba en la CI. Mitigación: el test del check reproduce el orden en macOS (una ejecución que tarda y comprueba que su carpeta sigue al terminar), y la sesión principal lee el siguiente run.
 - R2: Un test que hoy se corta en Windows en su primera aserción puede tener otra detrás que también falle allí. Mitigación: se revisan las aserciones siguientes de cada test con la forma de Windows, y lo que quede lo dirá el siguiente run.
+
+## Cierre
+
+### Resumen
+
+El check de vulnerabilidades espera a sus dos ejecuciones de OSV-Scanner antes de borrar su carpeta temporal: `bothScans` (`check/vulnerabilities.ts`) las junta con `Promise.allSettled` y relanza el primer fallo en su orden, así que en Windows el motivo vuelve a ser el último mensaje del escáner y no el EBUSY del borrado; `formats.md` lo dice. El test nuevo usa un escáner que falla en la copia de después y tarda 2 s en la de antes, y comprueba que su carpeta seguía al acabar. Los demás tests del run comprueban lo mismo con la forma de cada plataforma: `switchOf` y `logOf` resuelven con `resolve` la ruta que da git; la tarjeta de la épica se espera con `\` o `/` alrededor de `.worktrees`; en Windows, `doctor-watchers` espera que `doctor` siga pidiendo las formas ancladas; y `cancel-folder` y `prune-rescue` hacen fallar `git add` con un filtro `clean` obligatorio que falla, en vez de con `chmod`.
+
+### Desviaciones
+
+- Ninguna respecto a las tareas.
+
+### Decisiones
+
+- El fallo que se relanza es el de la copia de después si las dos fallan, como antes con `Promise.all`.
+- El filtro `clean` va en `.git/info/attributes` y en la configuración de la carpeta común, que leen también las worktrees y el índice temporal de la ref de rescate; con él, los dos tests ya no se saltan con root.
+- La tarjeta de la épica sigue dando la ruta nativa; el test acepta los dos separadores.
+
+### Pendientes
+
+- AC2, y lo que quede de Windows detrás de estos fallos, se comprueba en el siguiente run de la CI de Windows, que lee la sesión principal.

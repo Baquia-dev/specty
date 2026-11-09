@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-los-fallos-de-windows-que-quedan-en-la-ci",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-los-fallos-de-windows-que-quedan-en-la-ci",
   "baseCommit": "0f92de4b06f67fc829dd636c2a28554f27b7f6b8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:9b4af8938e7a6c4e77f82cf989e870ff48bf3726f7bb749ad1579143fd269f71",
@@ -60,12 +60,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "795db219436fd707cd8c846ddd04229f57e9054a",
+      "attempts": 1,
       "startedAt": "2026-11-09T13:37:00.451Z",
       "doneAt": "2026-11-09T13:38:01.473Z",
-      "summary": "cancel-folder y prune-rescue hacen fallar git add de secreto.txt con un filtro clean obligatorio que falla, en vez de con chmod, que en Windows no impide leer el archivo; ya no se saltan con root."
+      "summary": "cancel-folder y prune-rescue hacen fallar git add de secreto.txt con un filtro clean obligatorio que falla, en vez de con chmod, que en Windows no impide leer el archivo; ya no se saltan con root.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,6 +78,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-09T13:38:10.925Z",
   "lockedTests": {
     "packages/cli/test/check-vulnerabilities.test.ts": "sha256:1baf56839c1904e9b4d1e1fc672174d27ed6c4d0efbd3440ef9f727975a7425e"
   }
