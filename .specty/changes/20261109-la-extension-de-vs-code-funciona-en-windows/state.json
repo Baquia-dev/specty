@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261109-la-extension-de-vs-code-funciona-en-windows",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-la-extension-de-vs-code-funciona-en-windows",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:dd4da943382b4e2ffb85895b76a99ea9b3e819907353967dd6c0af2be093eca0",
+    "at": "2026-11-09T11:15:57.393Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -51,12 +58,10 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:dd4da943382b4e2ffb85895b76a99ea9b3e819907353967dd6c0af2be093eca0",
-    "at": "2026-11-09T11:15:57.393Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/vscode/test/extension.test.ts": "sha256:9502d4c1da8a77f9c0502df7ff6baee520f7b5ef91e2f6332d1a2c09e1d0ff58",
+    "packages/vscode/test/specty.test.ts": "sha256:0266fce01e3165e71116fe91bbd3fa4ca7c9d9a127f7d1465fe34fd989887a17",
+    "packages/vscode/test/fake-specty.ts": "sha256:0d68c6037b1ddc285703b42477bf4f5768e3879d49075bcf8a93e3e72730e5e8",
+    "packages/vscode/test/launch.test.ts": "sha256:b461466a272706c025d7eac7bdbfe7bde2aca6742d18efc48d6912d2a28d2695"
+  }
 }

@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { activate } from "../src/extension";
+import { NOTE_UI_PID, stoppedIn, writeSpecty } from "./fake-specty";
 
 /** A stand-in for the `vscode` module: what the extension asks of VS Code, recorded. */
 const fake = vi.hoisted(() => {
@@ -184,8 +185,12 @@ vi.mock("vscode", () => fake.vscode);
 
 const LINK = "http://localhost:4173/?token=abc_DEF-123";
 
-/** A stand-in for `specty`: it notes each call, prints `status.json` and, for `ui`, its link. */
+/**
+ * A stand-in for `specty`: it notes each call, prints `status.json` and, for `ui`, its link; as
+ * `ui`, it first notes its process, for Windows, where no signal reaches it.
+ */
 const SCRIPT = `#!/usr/bin/env node
+${NOTE_UI_PID}
 const fs = require("node:fs");
 const path = require("node:path");
 const here = (name) => path.join(__dirname, name);
@@ -257,7 +262,7 @@ async function open(options: Options = {}) {
     await writeFile(join(folder, ".specty", "config.yaml"), "version: 1\n");
   }
   const bin = await mkdtemp(join(tmpdir(), "specty-bin-"));
-  await writeFile(join(bin, "specty"), SCRIPT, { mode: 0o755 });
+  await writeSpecty(bin, SCRIPT);
   const setStatus = (status: unknown) =>
     writeFile(join(bin, "status.json"), JSON.stringify(status));
   await setStatus(options.status ?? statusOf([REVIEW]));
@@ -279,7 +284,7 @@ async function open(options: Options = {}) {
     context,
     setStatus,
     calls,
-    stopped: () => existsSync(join(bin, "stopped")),
+    stopped: () => stoppedIn(bin),
   };
 }
 

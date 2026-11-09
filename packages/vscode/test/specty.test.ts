@@ -5,13 +5,15 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import { readStatus, startUi } from "../src/specty";
+import { NOTE_UI_PID, stoppedIn, writeSpecty } from "./fake-specty";
 
 const LINK = "http://localhost:4173/?token=abc_DEF-123";
 
 /**
  * A stand-in for `specty`: it notes each call and its folder, prints the status of
  * `settings.json` and, for `ui`, its link (or nothing, or a failure) until it is stopped. It
- * listens for the stop before anything else, so a stop that comes early still leaves its mark.
+ * listens for the stop before anything else, so a stop that comes early still leaves its mark;
+ * as `ui`, it then notes its process, for Windows, where no signal reaches it.
  */
 const SCRIPT = `#!/usr/bin/env node
 const fs = require("node:fs");
@@ -21,6 +23,7 @@ process.on("SIGTERM", () => {
   fs.writeFileSync(here("stopped"), "");
   process.exit(0);
 });
+${NOTE_UI_PID}
 const args = process.argv.slice(2);
 fs.appendFileSync(here("calls.log"), args.join(" ") + " @ " + process.cwd() + "\\n");
 const settings = JSON.parse(fs.readFileSync(here("settings.json"), "utf8"));
@@ -78,8 +81,7 @@ interface Behavior {
 
 async function fakeSpecty(behavior: Behavior = {}) {
   const bin = await mkdtemp(join(tmpdir(), "specty-bin-"));
-  const command = join(bin, "specty");
-  await writeFile(command, SCRIPT, { mode: 0o755 });
+  const command = await writeSpecty(bin, SCRIPT);
   const status = behavior.status ?? STATUS;
   await writeFile(
     join(bin, "settings.json"),
@@ -94,7 +96,7 @@ async function fakeSpecty(behavior: Behavior = {}) {
     existsSync(join(bin, "calls.log"))
       ? (await readFile(join(bin, "calls.log"), "utf8")).trim().split("\n")
       : [];
-  return { bin, command, folder, calls, stopped: () => existsSync(join(bin, "stopped")) };
+  return { bin, command, folder, calls, stopped: () => stoppedIn(bin) };
 }
 
 /**
@@ -175,7 +177,8 @@ describe("starting the UI", SLOW, () => {
     expect(await calls()).toEqual([`ui @ ${folder}`]);
     started.server.stop();
     await started.server.exited;
-    expect(stopped()).toBe(true);
+    // On Windows, `taskkill` ends the tree around `cmd.exe`, which may close first.
+    await until(() => expect(stopped()).toBe(true));
   });
 
   it("AC3: fails when `specty ui` ends without a link", async () => {
