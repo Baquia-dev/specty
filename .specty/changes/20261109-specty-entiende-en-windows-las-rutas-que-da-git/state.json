@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261109-specty-entiende-en-windows-las-rutas-que-da-git",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261109-specty-entiende-en-windows-las-rutas-que-da-git",
+  "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a49c783f3872961939754d6cd49ef7c7e398b7195f549ffe44b88855c40b38a7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:73c441bd05b53b6c867cd2ab0de1e5db78699204f574edd636bc543294a796e0",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:441b9266a402bd5fc42416fd9d143b7e3d1f472d9f205843cb02909fc67c9bcc",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:1c311a2a41203a8ff5b9a463b40539af18965e8fc66f70e4941401c7962a4d3e",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:ad6525e2f0c33e93f1dd8825624ab2600a7dec55333b60180a86f5274a508c1f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:157fe241eb7d4fe25d223ddf401f39b8acafed9d9d8990f0a692a4ea2731748a",
+    "at": "2026-11-09T11:18:41.539Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
