@@ -12,12 +12,12 @@
 ## Requirements
 
 - The `specty` command, in a version whose `specty --json status` gives the open changes as data: `npm install -g @baquia-dev/specty@latest`.
-- macOS or Linux. On Windows, Node does not start npm's `.cmd` files without a shell; it is not supported yet.
+- macOS, Linux or Windows. On Windows the extension finds npm's `specty.cmd` on the `PATH` and runs it through `cmd.exe`, and stops `specty ui` with its whole process tree (`taskkill`).
 - A trusted workspace: the extension runs `specty`, so it does not start in Restricted Mode.
 
 ## Setting
 
-- `specty.path` (default `specty`): the command to run, as a path or a name on the `PATH`. It is a setting of the machine: a repository's `.vscode/settings.json` cannot change it.
+- `specty.path` (default `specty`): the command to run, as a path or a name on the `PATH`. It is a setting of the machine: a repository's `.vscode/settings.json` cannot change it. On Windows, a name or a path without extension takes the extensions of `PATHEXT` (npm's `specty.cmd`), a name is looked for only in the absolute folders of the `PATH`, never in the repository's, and a `.mjs`, `.cjs` or `.js`, like the CLI's `dist/specty.mjs`, runs with the `node` of the `PATH`.
 
 ## Limits
 
@@ -48,12 +48,12 @@ code --install-extension packages/vscode/dist/specty.vsix
 ## Requisitos
 
 - El comando `specty`, en una versión cuyo `specty --json status` da los cambios abiertos como datos: `npm install -g @baquia-dev/specty@latest`.
-- macOS o Linux. En Windows, Node no lanza los `.cmd` de npm sin una shell; aún no se admite.
+- macOS, Linux o Windows. En Windows, la extensión encuentra el `specty.cmd` de npm en el `PATH` y lo ejecuta a través de `cmd.exe`, y detiene `specty ui` con todo su árbol de procesos (`taskkill`).
 - Un espacio de trabajo de confianza: la extensión ejecuta `specty`, así que no arranca en el modo restringido.
 
 ## Ajuste
 
-- `specty.path` (por defecto `specty`): el comando que se ejecuta, como ruta o como nombre del `PATH`. Es un ajuste de la máquina: el `.vscode/settings.json` de un repositorio no puede cambiarlo.
+- `specty.path` (por defecto `specty`): el comando que se ejecuta, como ruta o como nombre del `PATH`. Es un ajuste de la máquina: el `.vscode/settings.json` de un repositorio no puede cambiarlo. En Windows, un nombre o una ruta sin extensión toman las extensiones de `PATHEXT` (el `specty.cmd` de npm), un nombre se busca solo en las carpetas absolutas del `PATH`, nunca en la del repositorio, y un `.mjs`, `.cjs` o `.js`, como el `dist/specty.mjs` de la CLI, se ejecuta con el `node` del `PATH`.
 
 ## Límites
 

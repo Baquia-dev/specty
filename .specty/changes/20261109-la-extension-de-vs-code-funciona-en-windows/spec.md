@@ -63,7 +63,7 @@ Windows entra en la 0.1.0, y en el CI de Windows (run 42601745517, main 2a1c7cc)
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter specty-vscode exec vitest run test/launch.test.ts test/specty.test.ts test/extension.test.ts && pnpm typecheck
   - type: fix
-- [ ] T2: La documentación de la extensión admite Windows
+- [x] T2: La documentación de la extensión admite Windows
   - files: packages/vscode/README.md, packages/vscode/package.nls.json, packages/vscode/package.nls.es.json, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
