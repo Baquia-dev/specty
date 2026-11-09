@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261109-los-tests-de-prioridad-pasan-cuando-specty",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261109-los-tests-de-prioridad-pasan-cuando-specty",
+  "baseCommit": "120d7e3a3f91c44e7fd94772815cbcb78525e407",
+  "revision": 2,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:64ccbe0a6949e6c6d71f3d2f2784c533dfaa33f75b422688c5a33f981ecb3a74",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e30f4892022ae1686f535b457aa196000193488989a9ad66d14b66acb54c25b4",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:494219eacac3209224c553cf77edd882ac3ebf0577b29a24c9841278424d184d",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:dd9d95021eae5d2e9b6c6a19239def4f1e91c85d8243e592907bb70174732021",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 1,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:f34aadee44ec84c36c400e02f260fd8fc8637636f14ba9033374b8100ff8fa6a",
+    "at": "2026-11-09T11:29:27.535Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
