@@ -67,3 +67,24 @@ En el run 42652237044 (main 172c8cc) el CI de Windows, ya bloqueante, falló en 
 
 - R1: Aquí no hay Windows: el turno solo se prueba de verdad en el CI. Mitigación: el test nuevo lo ejecuta con la plataforma `win32` en macOS, y si el AC7 vuelve a fallar en Windows, ahora muestra la salida del `new` que falló; la sesión principal lee el siguiente run.
 - R2: Un `new` que se cuelga con el turno tomado haría esperar al otro unos 60 s. Mitigación: pasado ese tiempo sigue sin turno, como hoy, y el turno de un proceso que ya no existe no cuenta.
+
+## Cierre
+
+### Resumen
+
+En Windows, `new --worktree` hace ahora los pasos que crean el cambio (la limpieza, el id y la rama, `git worktree add`, la marca de la rama en `.git/config` y el estado) en un turno de todo el clon, `common/specty/locks/new.json`: dos `new` a la vez, como los de los cortes de una épica, van uno tras otro y no se pisan en `.git/config` ni en `.worktrees/`. `onNewTurn` (`cli/src/flow/new-turn.ts`) lo toma con `lockNewChange` (`cli/src/store/lock.ts`), con las reglas de los demás bloqueos y sin darlo de nuevo dentro del mismo proceso; quien lo encuentra tomado, o ve que Windows rechaza un momento uno de sus archivos, lo intenta de nuevo desde 50 ms hasta 1 s cada vez, y tras unos 60 s sigue sin turno, como antes. La preparación de la carpeta va después de soltarlo. En Linux y macOS `new` no lo toma. El borrador de cada bloqueo lleva además un uuid: con el pid solo, dos tomas del mismo proceso a la vez compartían el borrador y la segunda fallaba con ENOENT. El AC7 de `epic-subagents.test.ts` comprueba el código de cada `new` con su salida y su error como mensaje, así que el próximo fallo dirá qué pasó. `new-turn.test.ts` prueba el turno con la plataforma `win32` y sin él con `linux` y `darwin`; formats.md §1 y ARCHITECTURE.md §9 lo explican.
+
+### Desviaciones
+
+- La tarea T3 del primer borrador (el mensaje del AC7) se unió a T2 antes de aprobar, porque `propose` pide tests en cada tarea con `policy.tests: contract`.
+
+### Decisiones
+
+- Un turno en vez de reintentar cada paso: no se sabe cuál de los pasos falló en el run 42652237044 (el log no mostraba la salida), y en el test no corre nada más en ese clon, así que hacerlos uno tras otro quita el fallo sea cual sea.
+- Solo en Windows: en Linux y macOS nunca ha fallado, y la persona pidió no cambiar allí el comportamiento.
+- El AC4 se prueba con el helper `expectCreated` sobre una ejecución fallida inventada, porque el fallo real solo sale en el CI de Windows.
+
+### Pendientes
+
+- Comprobar en el siguiente run del CI de Windows que el AC7 de `epic-subagents.test.ts` pasa; si vuelve a fallar, su mensaje trae la salida del `new` que falló. Lo lee la sesión principal.
+- `cli/src/commands/new.ts` tiene 320 líneas de código (aviso desde 300): proponer sacar la creación en worktree (`newInWorktree`, `makeWorktree`, `markOrUndo`, `withSweptAndPorts`) a un módulo propio.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261110-dos-specty-new-a-la-vez-no-fallan-en-windows",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261110-dos-specty-new-a-la-vez-no-fallan-en-windows",
   "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:cc90b37b2fb8f5d6f364d0f735d179785267eaf6c8ee46f7e7e42f7a4ae2d9b7",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "88e644314918269bfa63825fb14f7f08d837eb8f",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:36:39.505Z",
       "doneAt": "2026-11-09T17:41:09.084Z",
-      "summary": "newInWorktree saca a makeWorktree la limpieza, el id, la rama, la worktree, su marca y el estado, y los ejecuta en onNewTurn; la preparación va después. El AC7 muestra la salida del new que falla; formats y ARCHITECTURE explican locks/new.json"
+      "summary": "newInWorktree saca a makeWorktree la limpieza, el id, la rama, la worktree, su marca y el estado, y los ejecuta en onNewTurn; la preparación va después. El AC7 muestra la salida del new que falla; formats y ARCHITECTURE explican locks/new.json",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,6 +69,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-09T17:41:26.875Z",
   "lockedTests": {
     "packages/cli/test/epic-subagents.test.ts": "sha256:df656eee1b2e2200470103c5bc471886ab41bbafbb69aa6983ccd97ea59d4715",
     "packages/cli/test/new-turn.test.ts": "sha256:f68d727cf0e090fcd606ffb9a1cb243f326b41f408747392c303e38e74ad69b4"
