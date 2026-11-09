@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261110-los-textos-y-la-proteccion-que-quedaban-de",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261110-los-textos-y-la-proteccion-que-quedaban-de",
+  "baseCommit": "df077b8f7ce2b7b8f8472564f2fbea20f05d5df9",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c6cad214882a8b04895afdfab56892b6bc4270025958105b7376dd0c060bde82",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:78136959ee6398bf8e306c035e98203e7eb2c55ef01f108025eaf51e5972e88e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:502ac52b436b58d0fb5d206d1347604df76ec127a99c0e6cc06f06b7d4964538",
+    "at": "2026-11-09T22:02:44.179Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
