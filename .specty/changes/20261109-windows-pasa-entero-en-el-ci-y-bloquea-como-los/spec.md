@@ -49,7 +49,7 @@ Windows entra en la primera versión. En el run 42628873388 (main fba98e4) Linux
 
 ## Tareas
 
-- [ ] T1: `writeText` repite en Windows el renombrado que otro tiene abierto
+- [x] T1: `writeText` repite en Windows el renombrado que otro tiene abierto
   - files: packages/cli/src/io/files.ts, packages/cli/test/replace-file.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/replace-file.test.ts && pnpm lint
