@@ -50,7 +50,7 @@ La primera versión (0.1.0, beta pública) de `@baquia-dev/specty` la publica la
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/workflows.test.ts && pnpm lint
   - type: ci
-- [ ] T2: ARCHITECTURE.md explica los pasos de la publicación
+- [x] T2: ARCHITECTURE.md explica los pasos de la publicación
   - files: docs/ARCHITECTURE.md
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/workflows.test.ts

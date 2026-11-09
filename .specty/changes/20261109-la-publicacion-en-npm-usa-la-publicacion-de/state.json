@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-la-publicacion-en-npm-usa-la-publicacion-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-la-publicacion-en-npm-usa-la-publicacion-de",
   "baseCommit": "e8dfaf3d64a387fc8f9b075274ebcbd769357ac2",
   "revision": 1,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e37b49256aa735a311feeebc76834a8f2fc1e528",
+      "attempts": 1,
       "startedAt": "2026-11-09T15:50:44.628Z",
       "doneAt": "2026-11-09T15:51:53.197Z",
-      "summary": "release.yml publica con la publicación de confianza: npm ^11.5.1 y `npm publish` sin NPM_TOKEN ni env, tras la etiqueta y pnpm check; workflows.test.ts lo fija"
+      "summary": "release.yml publica con la publicación de confianza: npm ^11.5.1 y `npm publish` sin NPM_TOKEN ni env, tras la etiqueta y pnpm check; workflows.test.ts lo fija",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "08fc8964668b2381b076c811a5f1e4a07c32b3b4",
+      "startedAt": "2026-11-09T15:51:54.450Z",
+      "doneAt": "2026-11-09T15:53:02.904Z",
+      "summary": "ARCHITECTURE.md explica la publicación de confianza y los tres pasos de la persona; npm publish --dry-run --provenance=false da @baquia-dev/specty 0.1.0 con README, LICENSE, NOTICE, dist y la UI (156 archivos)"
     }
   },
   "pending": {
