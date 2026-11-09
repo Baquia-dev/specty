@@ -6,6 +6,13 @@
   "branch": "specty/20261109-specty-corre-dentro-del-sandbox-de-antigravity",
   "baseCommit": "2a1c7ccf81bc3c5c3f987eb744a8d63f7ef2feaa",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d4beb399050e5b9466ed944a365c05cc45562457b36a5e7b35147db10f7076ee",
+    "at": "2026-11-09T10:46:01.446Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -49,12 +56,6 @@
     "T": 5,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d4beb399050e5b9466ed944a365c05cc45562457b36a5e7b35147db10f7076ee",
-    "at": "2026-11-09T10:46:01.446Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-09T10:55:11.566Z"
 }
