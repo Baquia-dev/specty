@@ -91,9 +91,12 @@ export function addDays(day: string, days: number): string {
   return new Date(Date.UTC(year, month - 1, date + days)).toISOString().slice(0, 10);
 }
 
-/** The local day of an ISO time, as the change ids and the memory's reminders count days. */
-export function dayOf(iso: string): string {
-  return localDay(new Date(iso));
+/**
+ * The local day of an ISO time, or of a time in milliseconds, as the change ids and the memory's
+ * reminders count days.
+ */
+export function dayOf(time: string | number): string {
+  return localDay(new Date(time));
 }
 
 export function inRange(day: string, range: StatsRange): boolean {

@@ -6,6 +6,13 @@
   "branch": "specty/20261109-el-resumen-del-panel-cumple-su-tiempo-tambien",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a6ffcf450dad92da87531b7043fd75713ceab3adfcd5bdb472c152d8a3d77e98",
+    "at": "2026-11-09T11:34:39.156Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dd9d582549b6452a0e50c87ea17eaaa327405539",
+      "startedAt": "2026-11-09T11:34:41.354Z",
+      "doneAt": "2026-11-09T11:38:25.518Z",
+      "summary": "statsRow lee las líneas una vez (un Map de funciones por evento), sin copiar cada entrada y con su hora en milisegundos; la fila trae closedDay y el día de cada aprobación; dayOf acepta milisegundos; Flujo usa esos días y no crea un Set para un cambio sin sesiones"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 2,
     "T": 4,
     "R": 2
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:a6ffcf450dad92da87531b7043fd75713ceab3adfcd5bdb472c152d8a3d77e98",
-    "at": "2026-11-09T11:34:39.156Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

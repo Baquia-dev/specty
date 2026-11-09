@@ -65,7 +65,7 @@ El prototipo de todo esto, en el scratchpad, deja AC8 en unos 105 ms con cobertu
 
 ## Tareas
 
-- [ ] T1: Una fila por cambio en un solo recorrido por sus líneas, con el día de cada hecho
+- [x] T1: Una fila por cambio en un solo recorrido por sus líneas, con el día de cada hecho
   - files: packages/core/src/stats/rows.ts, packages/core/src/stats/period.ts, packages/core/src/stats/flow.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats && pnpm --filter @baquia-dev/specty exec vitest run test/stats.test.ts test/server/stats.test.ts test/server/stats-changes.test.ts test/server/stats-export.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm exec biome check packages/core/src/stats && pnpm knip
