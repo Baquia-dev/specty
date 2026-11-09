@@ -50,7 +50,7 @@ Los tests de la UI pasan también con la máquina cargada dentro de `pnpm check`
   - files: packages/ui/vitest-base.config.ts, packages/ui/src/test-timeout.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/test-timeout.test.ts && pnpm lint && pnpm --filter @baquia-dev/specty-ui typecheck
-- [ ] T2: El worker de las vistas ignora los mensajes que no son peticiones de derivar
+- [x] T2: El worker de las vistas ignora los mensajes que no son peticiones de derivar
   - files: packages/ui/src/data/derive.worker.ts, packages/ui/src/data/derive.worker.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/derive.worker.test.ts && pnpm lint && pnpm typecheck && pnpm knip
