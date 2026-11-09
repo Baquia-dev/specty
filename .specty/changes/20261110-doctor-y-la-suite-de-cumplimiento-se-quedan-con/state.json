@@ -6,6 +6,13 @@
   "branch": "specty/20261110-doctor-y-la-suite-de-cumplimiento-se-quedan-con",
   "baseCommit": "11f76e12825a5c163227e943853cedd15e9258b8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1acb3a8ad618ec1ba594335d67e7f3e972fafd723bdd85772c673146cfd83497",
+    "at": "2026-11-09T17:28:11.571Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -45,12 +52,6 @@
     "T": 4,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1acb3a8ad618ec1ba594335d67e7f3e972fafd723bdd85772c673146cfd83497",
-    "at": "2026-11-09T17:28:11.571Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-09T17:36:56.961Z"
 }
