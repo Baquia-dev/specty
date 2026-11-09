@@ -40,7 +40,8 @@ const AGENT_MARKS = [
 
 /**
  * The environment Specty and git run with: isolated git, Spanish, and the agents' user folders
- * (Codex, OpenCode) in temporary ones, so `init` never writes in the person's.
+ * (Codex, OpenCode, Antigravity's CLI) in temporary ones, so `init` never writes in the person's.
+ * Antigravity's does not exist, so `init` leaves its rule out; the suite gives it to agy.
  */
 function cliEnv(): NodeJS.ProcessEnv {
   const env: NodeJS.ProcessEnv = { ...process.env, ...GIT_ENV, LANG: "es_ES.UTF-8" };
@@ -49,6 +50,7 @@ function cliEnv(): NodeJS.ProcessEnv {
     ...env,
     CODEX_HOME: join(tmpdir(), `specty-evals-codex-${process.pid}`),
     XDG_CONFIG_HOME: join(tmpdir(), `specty-evals-config-${process.pid}`),
+    SPECTY_ANTIGRAVITY_CLI_DIR: join(tmpdir(), `specty-evals-antigravity-cli-${process.pid}`),
   };
 }
 

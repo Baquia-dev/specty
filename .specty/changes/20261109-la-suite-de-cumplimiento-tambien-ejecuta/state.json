@@ -54,12 +54,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "72f95d901b12314e98d3cd05a7065be239f12a43",
+      "attempts": 1,
       "startedAt": "2026-11-09T09:55:24.515Z",
       "doneAt": "2026-11-09T09:56:10.020Z",
-      "summary": "Antigravity CLI entra en la suite: se busca en SPECTY_EVALS_ANTIGRAVITY o como agy en el PATH, corre agy -p en su sandbox con --settings (proceed-in-sandbox, command(specty) y la carpeta del repositorio como confiable) y sus rondas y bloqueos se cuentan exactos."
+      "summary": "Antigravity CLI entra en la suite: se busca en SPECTY_EVALS_ANTIGRAVITY o como agy en el PATH, corre agy -p en su sandbox con --settings (proceed-in-sandbox, command(specty) y la carpeta del repositorio como confiable) y sus rondas y bloqueos se cuentan exactos.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f644f9ef50abd28b1b704d4d0e7980c4f5a923ab",
+      "startedAt": "2026-11-09T09:56:10.414Z",
+      "doneAt": "2026-11-09T09:56:31.651Z",
+      "summary": "El init de la suite usa una carpeta temporal para los ajustes del CLI de Antigravity (SPECTY_ANTIGRAVITY_CLI_DIR), así que no escribe la regla en los de la persona; agy la recibe por --settings."
     }
   },
   "pending": {

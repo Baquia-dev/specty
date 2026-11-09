@@ -71,7 +71,7 @@ El criterio de salida de la fase 3 (ARCHITECTURE §18) pide la suite de cumplimi
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/antigravity.test.ts test/report.test.ts test/conversation.test.ts && pnpm --filter @baquia-dev/specty-evals typecheck && pnpm lint
   - type: feat
-- [ ] T2: La preparación deja intactos los ajustes de Antigravity de la persona
+- [x] T2: La preparación deja intactos los ajustes de Antigravity de la persona
   - files: evals/src/repo.ts, evals/test/antigravity-init.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/antigravity-init.test.ts && pnpm --filter @baquia-dev/specty-evals typecheck && pnpm lint
