@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4f821086ef26da8549eb12fc86248d381a3d638a",
+      "startedAt": "2026-11-09T13:23:10.573Z",
+      "doneAt": "2026-11-09T13:23:53.935Z",
+      "summary": "El tokenizador deja la \\ entre comillas dobles salvo delante de $, `, \", \\ o un salto de línea, como bash; shell.ts toma como absolutas las rutas con letra de unidad (C:\\…, C:/…) y las de un recurso compartido (\\\\servidor), en locate y en enter, sin perder la raíz C:\\; ARCHITECTURE lo explica."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

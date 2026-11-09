@@ -143,9 +143,16 @@ export function analyzeShell(command: string): ShellAnalysis {
 
 const UNRESOLVABLE = /[$`]|^~/;
 
+/**
+ * A Windows absolute path: from a drive, with `\` or `/` after its letter (`C:\…`, `C:/…`), or
+ * from a share (`\\servidor\…`). Nobody names a relative path so on macOS or Linux, so it is
+ * absolute everywhere; `C:a.ts`, relative to the drive's folder, is not.
+ */
+const WINDOWS_ABSOLUTE = /^(?:[A-Za-z]:[\\/]|\\\\)/;
+
 function locate(directory: Directory, raw: string): { raw: string; path: string | undefined } {
   if (UNRESOLVABLE.test(raw)) return { raw, path: undefined };
-  if (raw.startsWith("/")) return { raw, path: raw };
+  if (raw.startsWith("/") || WINDOWS_ABSOLUTE.test(raw)) return { raw, path: raw };
   if (directory === undefined) return { raw, path: undefined };
   return { raw, path: directory === "" ? raw : `${directory}/${raw}` };
 }
@@ -172,6 +179,8 @@ function changeDirectory(directory: Directory, tokens: readonly Token[]): Direct
 function enter(directory: Directory, target: string): Directory {
   if (target === "-" || UNRESOLVABLE.test(target)) return undefined;
   if (target.startsWith("/")) return target.replace(/\/+$/, "") || "/";
+  // Without its last separator, a drive's root (`C:\`) would name the drive's current folder.
+  if (WINDOWS_ABSOLUTE.test(target)) return target.replace(/(?<=[^:\\/])[\\/]+$/, "");
   if (directory === undefined) return undefined;
   const joined = directory === "" ? target : `${directory}/${target}`;
   return joined.replace(/\/+$/, "");

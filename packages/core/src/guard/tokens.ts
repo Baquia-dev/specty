@@ -131,13 +131,24 @@ function redirecting(state: State, chars: readonly string[], index: number): num
   return undefined;
 }
 
+/**
+ * What a `\` escapes inside double quotes, as in bash; before anything else it stays, as in
+ * `"C:\Users\ana"`. Before a newline it joins the lines, and both go.
+ */
+const ESCAPED_IN_DOUBLE_QUOTES: ReadonlySet<string> = new Set(["$", "`", '"', "\\", "\n"]);
+
 function quoted(state: State, char: string, next: string | undefined, index: number): number {
   if (char === state.quote) {
     state.quote = undefined;
     return index;
   }
-  if (char === "\\" && state.quote === '"' && next !== undefined) {
-    append(state, next);
+  if (
+    char === "\\" &&
+    state.quote === '"' &&
+    next !== undefined &&
+    ESCAPED_IN_DOUBLE_QUOTES.has(next)
+  ) {
+    if (next !== "\n") append(state, next);
     return index + 1;
   }
   append(state, char);

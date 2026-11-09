@@ -55,7 +55,7 @@ Tras seis cambios de Windows, el run 42616529185 de la CI (main 5ba0e12) deja en
 
 ## Tareas
 
-- [ ] T1: El análisis del shell lee las rutas de Windows
+- [x] T1: El análisis del shell lee las rutas de Windows
   - files: packages/core/src/guard/tokens.ts, packages/core/src/guard/shell.ts, packages/core/test/guard/shell-windows.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell-windows.test.ts test/guard/shell.test.ts && pnpm lint
