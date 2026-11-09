@@ -59,7 +59,7 @@ Windows entra en la primera versión. En el run 42628873388 (main fba98e4) Linux
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/live-run.test.ts && pnpm lint
   - type: test
-- [ ] T3: Windows bloquea en el CI como Linux y macOS
+- [x] T3: Windows bloquea en el CI como Linux y macOS
   - files: .github/workflows/ci.yml, packages/cli/test/workflows.test.ts, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/workflows.test.ts && pnpm lint && pnpm typecheck

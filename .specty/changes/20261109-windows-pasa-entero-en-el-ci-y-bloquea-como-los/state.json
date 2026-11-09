@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-windows-pasa-entero-en-el-ci-y-bloquea-como-los",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-windows-pasa-entero-en-el-ci-y-bloquea-como-los",
   "baseCommit": "fba98e485e5841ca98e91b18fc3d37bcdace1391",
   "revision": 2,
@@ -49,12 +49,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ecd53aa4945f3710a9f0db98d19766c543ba537d",
+      "attempts": 1,
       "startedAt": "2026-11-09T14:45:03.648Z",
       "doneAt": "2026-11-09T14:45:54.203Z",
-      "summary": "Los dos AC3 de live-run usan printed: el comando imprime sus líneas y espera, hasta 60 s, el archivo listo, que el test crea tras ver la última línea en el archivo (también si falla); las aserciones son las de antes"
+      "summary": "Los dos AC3 de live-run usan printed: el comando imprime sus líneas y espera, hasta 60 s, el archivo listo, que el test crea tras ver la última línea en el archivo (también si falla); las aserciones son las de antes",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e3b02c20f0ace4e3566edd86c953e40997e21103",
+      "startedAt": "2026-11-09T14:45:54.581Z",
+      "doneAt": "2026-11-09T14:46:25.226Z",
+      "summary": "Quitado el continue-on-error del job check de Windows y su comentario en ci.yml; workflows.test.ts comprueba que ningún job check lo tiene (AC4); ARCHITECTURE.md dice que los tres sistemas bloquean y explica el renombrado repetido en Windows de la verificación en vivo"
     }
   },
   "pending": {

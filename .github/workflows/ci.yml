@@ -17,8 +17,6 @@ jobs:
   check:
     name: check (${{ matrix.os }}, Node ${{ matrix.node }})
     runs-on: ${{ matrix.os }}
-    # Windows has never run: it reports without blocking until it passes once.
-    continue-on-error: ${{ matrix.os == 'windows-latest' }}
     strategy:
       fail-fast: false
       matrix:
