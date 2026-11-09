@@ -82,3 +82,23 @@ Tercero de los cambios consecutivos que retiran Gemini CLI, que Antigravity reem
 ## Riesgos
 
 - R1: El cambio abierto sobre `doctor` y la suite de cumplimiento puede chocar en `evals/` y ARCHITECTURE al incorporar main. Mitigación: se resuelve conservando las dos intenciones.
+
+## Cierre
+
+### Resumen
+
+La UI deja de ofrecer `cd … && gemini` para retomar un cambio en su carpeta (`OPEN_IN` de `change/resume-hints.ts`), y la sesión de ejemplo de `sessions-page.test.ts` pasa a Devin (Windsurf). La suite de cumplimiento deja de conocer a Gemini CLI: sale de `AgentId`, `ROUNDS` y `AGENTS` (`evals/src/agents.ts`), su marca `GEMINI_CLI` sale de las que `repo.ts` y `compliance.eval.ts` quitan del entorno, y `report.test.ts` pierde su transcripción. Los tests de core usan Devin (Windsurf) donde usaban Gemini CLI como herramienta sin cortes en subagentes, o lo quitan de sus listas; los del CLI crean la worktree de otra herramienta en `.otra/worktrees/`, dejan Copilot fuera de alcance en la spec de ejemplo de `epic-subagents.test.ts`, y `support.ts` deja de quitar `GEMINI_CLI`. ARCHITECTURE dice que la suite conoce cinco agentes y pone de ejemplo de worktree solo la carpeta de Claude Code.
+
+### Desviaciones
+
+- La fila de la Fase 3 de ARCHITECTURE decía que la suite conoce seis agentes: ahora dice cinco y que Gemini CLI se retiró el 2026-11-10 en favor de Antigravity.
+- Biome reformateó `evals/src/agents.ts`, `evals/test/report.test.ts` y dos tests de core al quitar las líneas, sin cambiar lo que comprueban.
+
+### Decisiones
+
+- Devin (Windsurf) sustituye a Gemini CLI como ejemplo de herramienta que entra con `specty enter` y no reparte cortes, porque cumple las dos cosas (A1).
+- `stats/summary.test.ts` sigue usando `gemini` como nombre de una herramienta desconocida: no es Gemini CLI.
+
+### Pendientes
+
+- El resto del retiro de Gemini CLI (P410): su módulo de agente, su fila de capacidades, su detección y su documentación; sus textos de `doctor`, `init` y `uninstall` y la protección de `.gemini/settings.json` en el guard.
