@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-core-pasa-en-windows-y-pnpm-test-muestra-los",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-core-pasa-en-windows-y-pnpm-test-muestra-los",
   "baseCommit": "c4693b5feb73d3e25ea3df04551e92ec12050a2a",
   "revision": 2,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e909c490b2689e4d103a0abaa8a3df18a068c09b",
+      "attempts": 1,
       "startedAt": "2026-11-09T10:07:46.319Z",
       "doneAt": "2026-11-09T10:14:59.912Z",
-      "summary": "light.test.ts nombra los módulos con relative y el separador del sistema cambiado por /, en un ayudante que recibe el módulo de rutas; un test nuevo lo ejecuta con path.win32 y rutas de Windows (antes daba cards\\text.ts)"
+      "summary": "light.test.ts nombra los módulos con relative y el separador del sistema cambiado por /, en un ayudante que recibe el módulo de rutas; un test nuevo lo ejecuta con path.win32 y rutas de Windows (antes daba cards\\text.ts)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d22833a4a74f30f18ab1e19549b389c073153a0f",
+      "startedAt": "2026-11-09T10:15:00.353Z",
+      "doneAt": "2026-11-09T10:23:21.304Z",
+      "summary": "pnpm test añade --no-bail: sigue con los demás paquetes aunque uno falle y termina en rojo; el test de AC2 lo ejecuta en un workspace temporal con dos paquetes en rojo. pnpm check no cambia."
     }
   },
   "pending": {

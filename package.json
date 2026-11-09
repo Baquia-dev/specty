@@ -17,7 +17,7 @@
     "lint": "biome check .",
     "format": "biome check --write .",
     "typecheck": "pnpm -r --if-present typecheck",
-    "test": "pnpm -r --workspace-concurrency=1 --if-present --filter !@baquia-dev/specty-evals test",
+    "test": "pnpm -r --no-bail --workspace-concurrency=1 --if-present --filter !@baquia-dev/specty-evals test",
     "test:evals": "pnpm --filter @baquia-dev/specty-evals test",
     "sources": "node scripts/check-sources.mjs",
     "knip": "knip",

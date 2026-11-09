@@ -48,7 +48,7 @@ El job de Windows del CI (`check (windows-latest, Node 22)`) se para en `package
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/light.test.ts
   - type: test
-- [ ] T2: `pnpm test` sigue con los demás paquetes aunque los tests de uno fallen
+- [x] T2: `pnpm test` sigue con los demás paquetes aunque los tests de uno fallen
   - files: package.json, packages/cli/test/repo-units.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/repo-units.test.ts && pnpm typecheck
