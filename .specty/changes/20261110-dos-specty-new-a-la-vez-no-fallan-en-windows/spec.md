@@ -57,7 +57,7 @@ En el run 42652237044 (main 172c8cc) el CI de Windows, ya bloqueante, falló en 
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/new-turn.test.ts test/lock.test.ts && pnpm lint
   - type: fix
-- [ ] T2: `new` crea la worktree dentro del turno, y el AC7 de los cortes a la vez muestra la salida del `new` que falla
+- [x] T2: `new` crea la worktree dentro del turno, y el AC7 de los cortes a la vez muestra la salida del `new` que falla
   - files: packages/cli/src/commands/new.ts, packages/cli/test/epic-subagents.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic-subagents.test.ts test/new-locked-config.test.ts test/new-turn.test.ts && pnpm lint && pnpm typecheck

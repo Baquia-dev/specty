@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261110-dos-specty-new-a-la-vez-no-fallan-en-windows",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261110-dos-specty-new-a-la-vez-no-fallan-en-windows",
   "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
   "revision": 1,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "023c3dda43b238cec1eccc9db7a151410ff24b4e",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:27:59.649Z",
       "doneAt": "2026-11-09T17:36:38.912Z",
-      "summary": "lockNewChange toma locks/new.json sin darlo de nuevo en el proceso, con un borrador propio por toma; onNewTurn ejecuta los pasos en ese turno solo en win32, reintenta mientras otro lo tiene y tras unos 60 s sigue sin turno"
+      "summary": "lockNewChange toma locks/new.json sin darlo de nuevo en el proceso, con un borrador propio por toma; onNewTurn ejecuta los pasos en ese turno solo en win32, reintenta mientras otro lo tiene y tras unos 60 s sigue sin turno",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "88e644314918269bfa63825fb14f7f08d837eb8f",
+      "startedAt": "2026-11-09T17:36:39.505Z",
+      "doneAt": "2026-11-09T17:41:09.084Z",
+      "summary": "newInWorktree saca a makeWorktree la limpieza, el id, la rama, la worktree, su marca y el estado, y los ejecuta en onNewTurn; la preparación va después. El AC7 muestra la salida del new que falla; formats y ARCHITECTURE explican locks/new.json"
     }
   },
   "pending": {
