@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261109-los-fallos-de-windows-que-quedan-en-la-ci",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261109-los-fallos-de-windows-que-quedan-en-la-ci",
+  "baseCommit": "0f92de4b06f67fc829dd636c2a28554f27b7f6b8",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2c556be8510705ce130a39329871274f0cc5663f6b40ac45f62ccf8e4520e040",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:07b7289cee49d9418c16f191d5de9ea366ae26283a1a758ea4eecc8e5fa2dc8c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:1283ed12de65ccdac684c0833ae187ea6b5427d0ba26b5f6f77380ad99f90e3c",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:964505c4387a9803f057968f30e36b01f7b99c04de01e044a145df3cd4d67829",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9b4af8938e7a6c4e77f82cf989e870ff48bf3726f7bb749ad1579143fd269f71",
+    "at": "2026-11-09T13:34:33.619Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
