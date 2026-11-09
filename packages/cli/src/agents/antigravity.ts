@@ -15,7 +15,7 @@ import {
   removeFromJson,
   stopLines,
 } from "../install/agents";
-import { allowSpecty, cliRule } from "../install/antigravity-cli";
+import { allowSpecty, cliRule, cliRules } from "../install/antigravity-cli";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
 import { COMMAND } from "../session";
@@ -163,17 +163,17 @@ export const antigravity: AgentAdapter = {
       ({ [HOOK]: _, ...rest }: Record<string, unknown>) => rest,
       files,
     ),
-  doctor: async (root, _git, env, config) => {
+  doctor: async (root, git, env, config, invocation) => {
     const hooks = await hooksDoctor(root, config.internal.hooks.antigravityTimeoutSec);
-    // The rule of its CLI, in the person's folder, only when the person uses its CLI.
-    const rule = await cliRule(env);
-    if (rule === undefined) return hooks;
-    const { file } = rule;
+    // The rules of its CLI, in the person's folder, only when the person uses its CLI.
+    const rules = await cliRules(env, git, invocation);
+    if (rules === undefined) return hooks;
+    const { file, missing } = rules;
     const lines = doctorLines([
       [
-        rule.there,
+        missing.length === 0,
         { code: "antigravity-cli-rule", file },
-        { code: "no-antigravity-cli-rule", file },
+        { code: "no-antigravity-cli-rule", file, missing },
       ],
     ]);
     return { ok: [...hooks.ok, ...lines.ok], problems: [...hooks.problems, ...lines.problems] };

@@ -129,13 +129,15 @@ export interface AgentAdapter {
   readonly remove: (root: string, files: InstallFiles, git: Git) => Promise<void>;
   /**
    * What `doctor` finds in place and what it finds missing, in the repository and the user's
-   * folder; `config` is the session's, for what `init` writes from it (Antigravity's hook time).
+   * folder; `config` is the session's, for what `init` writes from it (Antigravity's hook time),
+   * and `invocation` how Specty runs, for the folders its sandbox's rules open (Antigravity's CLI).
    */
   readonly doctor: (
     root: string,
     git: Git,
     env: NodeJS.ProcessEnv,
     config: ResolvedConfig,
+    invocation: Invocation,
   ) => Promise<DoctorLines>;
   /** Its guard in the user's folder, which Specty only reads: `uninstall` says it stays there. */
   readonly userFile?: (env: NodeJS.ProcessEnv) => string;

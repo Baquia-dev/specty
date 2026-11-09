@@ -78,7 +78,7 @@ Antigravity CLI (`agy`) enciende su sandbox de terminal en todo modo print, y de
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-cli-rule.test.ts -t "AC1|AC2|AC3" && pnpm lint
   - type: feat
-- [ ] T3: `doctor` comprueba las reglas y nombra las que faltan
+- [x] T3: `doctor` comprueba las reglas y nombra las que faltan
   - files: packages/cli/test/antigravity-cli-rule.test.ts, packages/cli/src/install/antigravity-cli.ts, packages/cli/src/agents/antigravity.ts, packages/cli/src/agents/adapter.ts, packages/cli/src/commands/doctor.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-cli-rule.test.ts -t "AC4" && pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/doctor-enter.test.ts && pnpm lint
