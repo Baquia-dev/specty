@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { execFile, spawn } from "node:child_process";
-import { accessSync, constants } from "node:fs";
 import { getPriority, setPriority } from "node:os";
-import { delimiter, isAbsolute, join } from "node:path";
 import { DEFAULT_CONFIG, type ResolvedConfig } from "@baquia-dev/specty-core";
+import { findProgram, type System, startOf } from "./programs";
 
 export interface ExecOptions {
   readonly cwd: string;
@@ -51,6 +50,8 @@ export interface Launch {
   readonly file: string;
   readonly args: readonly string[];
   readonly shell: boolean;
+  /** Its arguments go to `spawn` as they are (`windowsVerbatimArguments`): cmd.exe's own line. */
+  readonly verbatim: boolean;
   /** What to do with its process once started: lower it, where it could not be born lower. */
   readonly started: (pid: number | undefined) => void;
 }
@@ -64,7 +65,8 @@ const SHELL = "/bin/sh";
  * at its priority, and so is every process it starts, even one it starts at once, which a shell
  * of Linux starts in a process of its own. Without it, as on Windows, it is lowered once started,
  * and a process it started before keeps its own. Already at that priority or lower, it runs at
- * Specty's, since a process without privileges cannot raise its own.
+ * Specty's, since a process without privileges cannot raise its own. Without the shell, on
+ * Windows, it starts what `startOf` finds: the program by PATHEXT, and a `.cmd` through cmd.exe.
  */
 export function launch(
   command: string,
@@ -72,32 +74,27 @@ export function launch(
   shell: boolean,
   env: NodeJS.ProcessEnv,
   priority?: number,
+  system?: System,
 ): Launch {
-  const plain: Launch = { file: command, args, shell, started: () => undefined };
+  const start = shell
+    ? { file: command, args, verbatim: false }
+    : startOf(command, args, env, system);
+  const plain: Launch = { ...start, shell, started: () => undefined };
   const by = priority === undefined ? 0 : priority - getPriority();
   if (priority === undefined || by <= 0) return plain;
-  const nice = process.platform === "win32" ? undefined : program("nice", env);
+  const windows = (system?.platform ?? process.platform) === "win32";
+  const nice = windows ? undefined : findProgram("nice", env, system);
   if (nice === undefined) {
     return { ...plain, started: (pid) => lowerPriority(pid, priority) };
   }
   const line = shell ? [SHELL, "-c", [command, ...args].join(" ")] : [command, ...args];
-  return { file: nice, args: ["-n", String(by), ...line], shell: false, started: () => undefined };
-}
-
-/** Where `name` is in the absolute folders of `env`'s PATH, as a program to run; none without it. */
-function program(name: string, env: NodeJS.ProcessEnv): string | undefined {
-  return (env.PATH ?? "")
-    .split(delimiter)
-    .filter((folder) => isAbsolute(folder))
-    .map((folder) => join(folder, name))
-    .find((path) => {
-      try {
-        accessSync(path, constants.X_OK);
-        return true;
-      } catch {
-        return false;
-      }
-    });
+  return {
+    file: nice,
+    args: ["-n", String(by), ...line],
+    shell: false,
+    verbatim: false,
+    started: () => undefined,
+  };
 }
 
 /**
@@ -137,6 +134,7 @@ export function execute(
       cwd: options.cwd,
       env: options.env ?? process.env,
       shell: how.shell,
+      windowsVerbatimArguments: how.verbatim,
       stdio: ["pipe", "pipe", "pipe"],
     });
     how.started(child.pid);

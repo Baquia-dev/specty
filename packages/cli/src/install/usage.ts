@@ -16,6 +16,7 @@ import {
 import { detectStacks, type Stack } from "../detect/stack";
 import { execute } from "../io/exec";
 import { exists, isRecord, parseJson, readText } from "../io/files";
+import { findProgram } from "../io/programs";
 import type { InitSetup } from "./install";
 
 /**
@@ -82,7 +83,7 @@ export async function usageDoctor(
   version: string,
 ): Promise<DoctorLine[]> {
   if (await exists(join(root, "node_modules", ".bin", "ccusage"))) return [];
-  if ((await execute("sh", ["-c", "command -v ccusage"], { cwd: root, env })).code === 0) return [];
+  if (findProgram("ccusage", env) !== undefined) return [];
   const add = await addCommand(root, await detectStacks(root), version);
   const command = add === undefined ? globalOf(version) : [add.tool, ...add.args].join(" ");
   return [{ code: "no-ccusage", command }];

@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "823052b011d0b9d73a654a70859c8d68012b314e",
+      "startedAt": "2026-11-09T11:28:52.778Z",
+      "doneAt": "2026-11-09T11:38:45.807Z",
+      "summary": "io/programs.ts busca los programas por PATH y PATHEXT (sin la carpeta actual) y lanza los .cmd y .bat por cmd.exe con el escape doble de cross-spawn; launch y execute lo usan sin shell (verbatim); doctor y usageDoctor buscan specty y ccusage con findProgram en vez de sh -c command -v"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

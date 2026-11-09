@@ -72,7 +72,7 @@ Windows entra en la versión 0.1.0, y el run 42601745517 de la CI (main 2a1c7cc)
 
 ## Tareas
 
-- [ ] T1: Specty encuentra en Windows los programas por PATHEXT y lanza sus `.cmd` por `cmd.exe`, escapados
+- [x] T1: Specty encuentra en Windows los programas por PATHEXT y lanza sus `.cmd` por `cmd.exe`, escapados
   - files: packages/cli/src/io/programs.ts, packages/cli/src/io/exec.ts, packages/cli/src/commands/doctor.ts, packages/cli/src/install/usage.ts, packages/cli/test/windows-programs.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/windows-programs.test.ts test/exec.test.ts test/exec-priority.test.ts test/init-usage.test.ts test/doctor-enter.test.ts && pnpm lint && pnpm typecheck && pnpm knip
