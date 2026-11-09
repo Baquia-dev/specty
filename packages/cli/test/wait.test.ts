@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { access, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
+import { AGENT_NAMES } from "@baquia-dev/specty-core";
 import { describe, expect, it } from "vitest";
 import { type WaitOptions, wait } from "../src/commands/wait";
 import { openSession } from "../src/session";
@@ -232,19 +233,6 @@ describe("`specty wait` with `internal.waits`", () => {
     expect((await waiting).out).toContain("TAREA T1");
   });
 
-  it("AC2: in Gemini CLI, writes its heartbeat line at most `internal.waits.heartbeatSec` apart", async () => {
-    const options: WaitOptions = { interval: 50, timeout: 2 };
-    const beats = (err: readonly string[]) =>
-      err.filter((line) => line.includes(`sigue esperando la decisión de la persona en ${CHANGE}`));
-    const configured = await proposed(withWaits("    heartbeatSec: 1\n"));
-    expect(
-      beats(await waitAs(configured, { GEMINI_CLI: "1" }, options)).length,
-    ).toBeGreaterThanOrEqual(1);
-    // Without the key, a minute apart: none in two seconds.
-    const usual = await proposed();
-    expect(beats(await waitAs(usual, { GEMINI_CLI: "1" }, options))).toEqual([]);
-  });
-
   it("AC3: without `--interval`, looks every `internal.waits.waitIntervalMs` milliseconds, and the option still rules", async () => {
     const root = await proposed(withWaits("    waitIntervalMs: 200\n"));
     expect((await cli(root, ["wait", "--timeout", "1"])).out).toContain("Tiempo de espera agotado");
@@ -260,20 +248,13 @@ describe("`specty wait` with `internal.waits`", () => {
   });
 });
 
-describe("the heartbeat of `specty wait`", () => {
-  const options: WaitOptions = { interval: 50, timeout: 1, beatMs: 200 };
-  const beats = (err: readonly string[]) =>
-    err.filter((line) => line.includes(`sigue esperando la decisión de la persona en ${CHANGE}`));
-
-  it("AC4: in Gemini CLI, it writes a heartbeat line with the change and its minutes, never further apart than its limit", async () => {
+describe("`specty wait` while it waits", () => {
+  it("AC1: writes nothing on stderr in any tool, or with none, until it times out", async () => {
+    const options: WaitOptions = { interval: 50, timeout: 1 };
     const root = await proposed();
-    const lines = beats(await waitAs(root, { GEMINI_CLI: "1" }, options));
-    expect(lines.length).toBeGreaterThanOrEqual(3);
-    expect(lines[0]).toContain("(0 de 1 min)");
-  });
-
-  it("AC4: in another tool, it writes no heartbeat line", async () => {
-    const root = await proposed();
-    expect(beats(await waitAs(root, { SPECTY_AGENT: "claude-code" }, options))).toEqual([]);
+    for (const tool of [...Object.keys(AGENT_NAMES), undefined]) {
+      const env: Record<string, string> = tool === undefined ? {} : { SPECTY_AGENT: tool };
+      expect(await waitAs(root, env, options), tool).toEqual([]);
+    }
   });
 });

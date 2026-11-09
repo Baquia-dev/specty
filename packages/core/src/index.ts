@@ -32,6 +32,7 @@ export {
   AGENT_CAPABILITIES,
   type AgentCapabilities,
   capabilityTable,
+  ENABLED_AGENTS,
   type GuardedAgent,
   isGuardedAgent,
   type Support,

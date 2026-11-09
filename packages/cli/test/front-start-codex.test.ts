@@ -101,9 +101,9 @@ describe("the card of Codex's guard, whatever the hook's environment says", () =
 
   it("AC3: is the card of its `--tool` with the mark of another tool in the environment", async () => {
     const root = await tempRepo(IN_FOLDERS);
-    const gemini = { GEMINI_CLI: "1" };
+    const cursor = { CURSOR_AGENT: "1" };
     const next = (await cli(root, ["next"], inThread("t4"))).out;
-    expect((await cli(root, ["next"], { env: gemini })).out).not.toBe(next);
-    expect((await started(root, "t4", gemini)).out).toBe(next);
+    expect((await cli(root, ["next"], { env: cursor })).out).not.toBe(next);
+    expect((await started(root, "t4", cursor)).out).toBe(next);
   });
 });

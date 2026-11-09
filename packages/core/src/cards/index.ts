@@ -473,7 +473,7 @@ export type {
   SliceView,
   TaskView,
 } from "./view";
-export { waitFolderGoneCard, waitHeartbeat, waitTimeoutCard } from "./wait";
+export { waitFolderGoneCard, waitTimeoutCard } from "./wait";
 export {
   type WhyCommit,
   type WhyRefusal,

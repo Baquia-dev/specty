@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  ENABLED_AGENTS,
   EXIT_CODES,
   gitFailedCard,
   invalidConfigCard,
@@ -156,7 +157,7 @@ function readingCommands(
     .command("init")
     .description("set up Specty in this repository")
     .option("--language <lang>", "es or en")
-    .option("--tools <list>", "comma-separated agent tools, for example claude-code,cursor")
+    .option("--tools <list>", `comma-separated agent tools, any of: ${ENABLED_AGENTS.join(", ")}`)
     .option("--git-flow <flow>", "how change branches are named: specty, github, trunk or gitflow")
     .option("--dry-run", "only list what init would create or change")
     .option("--mcp", "also register Specty's MCP server in each agent's project configuration")

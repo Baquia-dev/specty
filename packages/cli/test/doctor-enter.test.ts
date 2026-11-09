@@ -48,42 +48,12 @@ function withMatcher(hooks: unknown, event: string, tool: string, matcher: strin
 }
 
 describe("doctor and an install from before specty enter", () => {
-  it("names Gemini CLI's settings without the reads or the worktrees' folder (AC1, AC2)", async () => {
+  it("AC3: does not take OpenCode's settings without the worktrees' folder for outdated ones", async () => {
     const root = await tempRepo(PACKAGE);
-    await init(root, "gemini-cli");
-    const file = ".gemini/settings.json";
-    const line = outdated("Gemini CLI", file, "gemini-cli");
-    expect(await says(root, line)).toBe(false);
-    await rewrite(root, file, (value) => ({
-      ...value,
-      hooks: withMatcher(
-        value.hooks,
-        "BeforeTool",
-        "gemini-cli",
-        "run_shell_command|write_file|replace",
-      ),
-    }));
-    expect(await says(root, line)).toBe(true);
-    await init(root, "gemini-cli");
-    expect(await says(root, line)).toBe(false);
-  });
-
-  it("AC3: does not take Gemini CLI's or OpenCode's settings without the worktrees' folder for outdated ones", async () => {
-    const root = await tempRepo(PACKAGE);
-    await init(root, "gemini-cli");
     await init(root, "opencode");
-    await rewrite(root, ".gemini/settings.json", ({ context: _, ...rest }) => rest);
     await rm(join(root, ".opencode/opencode.jsonc"), { force: true });
     const doctor = await cli(root, ["doctor"]);
     expect(doctor.out).not.toContain("es de antes de `specty enter`");
-  });
-
-  it("leaves Gemini CLI's settings kept in git, which init gives no machine path (AC3)", async () => {
-    const root = await tempRepo({ ...PACKAGE, ".gemini/settings.json": "{}\n" });
-    await init(root, "gemini-cli");
-    expect(await says(root, outdated("Gemini CLI", ".gemini/settings.json", "gemini-cli"))).toBe(
-      false,
-    );
   });
 
   it("names OpenCode's plugin that does not run the rewritten input, and its settings without the worktrees (AC1, AC2)", async () => {

@@ -13,8 +13,6 @@ import type { CardContext } from "./view";
 interface WaitHabit {
   readonly es: string;
   readonly en: string;
-  /** The tool cuts a command that writes nothing for a while: `wait` writes a heartbeat line. */
-  readonly beats?: true;
 }
 
 const FOREGROUND: WaitHabit = { es: "Ejecútalo en primer plano", en: "Run it in the foreground" };
@@ -55,8 +53,7 @@ const WAIT_HABITS: Readonly<Record<AgentTool, WaitHabit>> = {
     es: "Si pasa a segundo plano, consulta su salida con `get_output` hasta que termine,",
     en: "If it goes to the background, poll its output with `get_output` until it ends,",
   },
-  // 0.67 kills a command that writes nothing for 300 s: `wait` writes a heartbeat line each minute.
-  "gemini-cli": { ...FOREGROUND, beats: true },
+  "gemini-cli": FOREGROUND,
   // Nothing measured, and no guard.
   copilot: FOREGROUND,
 };
@@ -177,25 +174,6 @@ function goneLine({ id, folder, phase }: GoneFolder, t: Translate): string {
     `La carpeta ${folder} de ${id} se eliminó mientras esperabas, sin cerrar ni cancelar el cambio, que sigue en su rama.`,
     `Folder ${folder} of ${id} was removed while you waited, without closing or cancelling the change, which is still on its branch.`,
   );
-}
-
-/**
- * The line `specty wait` writes while it waits for the person, in a tool that cuts a command that
- * writes nothing for a while (`beats`), with the minutes waited and its limit; nothing elsewhere.
- */
-export function waitHeartbeat(
-  id: string,
-  waitedSec: number,
-  timeoutSec: number,
-  ctx: CardContext,
-): string | undefined {
-  if (ctx.tool === undefined || WAIT_HABITS[ctx.tool].beats !== true) return undefined;
-  const waited = Math.floor(waitedSec / 60);
-  const limit = Math.ceil(timeoutSec / 60);
-  return `specty: ${translator(ctx.lang)(
-    `sigue esperando la decisión de la persona en ${id} (${waited} de ${limit} min)…`,
-    `still waiting for the person's decision on ${id} (${waited} of ${limit} min)…`,
-  )}`;
 }
 
 /** Why the guard stops something, and the next step it gives instead. */

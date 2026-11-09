@@ -50,9 +50,9 @@ describe("the lines of `doctor` about the MCP server", () => {
       "Cursor: falta el servidor MCP de Specty en .cursor/mcp.json; ejecuta `specty init --mcp`.",
     );
     expect(
-      doctorLine({ code: "mcp-other", tool: "gemini-cli", file: ".gemini/settings.json" }, ES),
+      doctorLine({ code: "mcp-other", tool: "windsurf", file: ".devin/config.json" }, ES),
     ).toBe(
-      "Gemini CLI: el servidor MCP «specty» de .gemini/settings.json no ejecuta `specty mcp`; ejecuta `specty init --mcp`.",
+      "Devin (Windsurf): el servidor MCP «specty» de .devin/config.json no ejecuta `specty mcp`; ejecuta `specty init --mcp`.",
     );
     expect(doctorLine({ code: "mcp-user-folder", tool: "antigravity" }, ES)).toBe(
       "Antigravity: solo lee los servidores MCP de la carpeta del usuario; añade allí `specty mcp` en «Manage MCP Servers».",

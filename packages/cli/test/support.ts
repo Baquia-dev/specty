@@ -3,10 +3,10 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, readFile, realpath, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
-import { makeChangeId } from "@baquia-dev/specty-core";
+import { AGENT_NAMES, type AgentTool, isAgentTool, makeChangeId } from "@baquia-dev/specty-core";
 import { expect } from "vitest";
 import { runCli } from "../src/program";
-import type { Terminal } from "../src/session";
+import type { Invocation, Terminal } from "../src/session";
 
 export const DIST = join(import.meta.dirname, "..", "dist", "specty.mjs");
 /**
@@ -181,10 +181,43 @@ export interface Run {
   readonly err: string;
 }
 
+interface RunOptions {
+  terminal?: Terminal;
+  stdin?: string;
+  env?: Record<string, string>;
+}
+
+/**
+ * Every agent Specty knows: the CLI's tests offer them all, so the modules of the agents this
+ * version does not offer yet stay tested (`released` runs as the published command does).
+ */
+const EVERY_AGENT: readonly AgentTool[] = Object.keys(AGENT_NAMES).filter(isAgentTool);
+
 export async function cli(
   cwd: string,
   argv: readonly string[],
-  options: { terminal?: Terminal; stdin?: string; env?: Record<string, string> } = {},
+  options: RunOptions = {},
+): Promise<Run> {
+  return run(cwd, argv, options, EVERY_AGENT);
+}
+
+/**
+ * `specty <argv>` as the published command runs it: with only the agents this version offers
+ * (`ENABLED_AGENTS`), and as `invocation` calls it when given.
+ */
+export async function released(
+  cwd: string,
+  argv: readonly string[],
+  options: RunOptions & { invocation?: Invocation } = {},
+): Promise<Run> {
+  return run(cwd, argv, options, undefined);
+}
+
+async function run(
+  cwd: string,
+  argv: readonly string[],
+  options: RunOptions & { invocation?: Invocation },
+  agents: readonly AgentTool[] | undefined,
 ): Promise<Run> {
   const out: string[] = [];
   const err: string[] = [];
@@ -194,8 +227,9 @@ export async function cli(
     now: () => NOW,
     terminal: options.terminal ?? AGENT,
     io: { out: (text) => out.push(text), err: (text) => err.push(text) },
-    invocation: { command: `node "${DIST}"`, portable: false, script: DIST },
+    invocation: options.invocation ?? { command: `node "${DIST}"`, portable: false, script: DIST },
     stdin: async () => options.stdin ?? "",
+    ...(agents === undefined ? {} : { agents }),
   });
   return { code, out: out.join("\n"), err: err.join("\n") };
 }

@@ -9,7 +9,6 @@ const AGENTS: readonly (readonly [string, string, string])[] = [
   ["claude-code", "Claude Code", ".claude/settings.local.json"],
   ["codex", "Codex", ".codex/hooks.json"],
   ["cursor", "Cursor", ".cursor/hooks.json"],
-  ["gemini-cli", "Gemini CLI", ".gemini/settings.json"],
   ["windsurf", "Devin (Windsurf)", ".devin/hooks.v1.json"],
   ["antigravity", "Antigravity", ".agents/hooks.json"],
 ];

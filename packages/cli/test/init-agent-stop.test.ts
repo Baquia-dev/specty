@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
+import { AGENT_NAMES, isAgentTool } from "@baquia-dev/specty-core";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { runCli } from "../src/program";
@@ -29,7 +30,6 @@ const AGENTS: readonly (readonly [string, string])[] = [
   ["claude-code", CLAUDE],
   ["codex", CODEX],
   ["cursor", ".cursor/hooks.json"],
-  ["gemini-cli", ".gemini/settings.json"],
   ["windsurf", ".devin/hooks.v1.json"],
   ["antigravity", ".agents/hooks.json"],
 ];
@@ -58,7 +58,10 @@ const PATH_COMMAND = `node "${DIST}"`;
 const LOCAL: Invocation = { command: PATH_COMMAND, portable: false, script: DIST };
 const PORTABLE: Invocation = { command: "specty", portable: true };
 
-/** Runs `init` for `tools` with `invocation`. */
+/**
+ * Runs `init` for `tools` with `invocation`, offering every agent as `cli` does: OpenCode is not
+ * one this version offers.
+ */
 async function initWith(root: string, tools: string, invocation: Invocation): Promise<void> {
   const code = await runCli(["init", "--language", "es", "--tools", tools], {
     cwd: root,
@@ -68,6 +71,7 @@ async function initWith(root: string, tools: string, invocation: Invocation): Pr
     io: { out: () => {}, err: () => {} },
     invocation,
     stdin: async () => "",
+    agents: Object.keys(AGENT_NAMES).filter(isAgentTool),
   });
   expect(code).toBe(0);
 }
@@ -90,8 +94,7 @@ async function turnHooks(root: string, tool: string, file: string): Promise<unkn
 /** The hook of the end of turn of `tool` with `command` and `timeout` seconds, in its form. */
 function turnHook(tool: string, command: string, timeout: number): unknown {
   if (tool === "cursor") return { command };
-  // Gemini CLI counts the time limit in milliseconds.
-  return { type: "command", command, timeout: tool === "gemini-cli" ? timeout * 1000 : timeout };
+  return { type: "command", command, timeout };
 }
 
 /** A repository with `verify.timeoutSec: 900` and the plugin of OpenCode's project. */
@@ -133,10 +136,6 @@ describe("the end of the turn init installs", () => {
     expect((await parsed(root, ".cursor/hooks.json")).hooks.stop).toEqual([
       { command: specty("hook agent-stop cursor --no-check") },
     ]);
-    // Gemini CLI counts the time limit in milliseconds.
-    expect((await parsed(root, ".gemini/settings.json")).hooks.AfterAgent).toEqual([
-      { hooks: [hook("gemini-cli", 900_000)] },
-    ]);
     expect((await parsed(root, ".devin/hooks.v1.json")).Stop).toEqual([
       { hooks: [hook("windsurf", 900)] },
     ]);
@@ -161,13 +160,6 @@ describe("the end of the turn init installs", () => {
       { hooks: [{ type: "command", command: specty("hook memory-stop claude-code") }] },
       {
         hooks: [{ type: "command", command: specty("hook agent-stop claude-code"), timeout: 600 }],
-      },
-    ]);
-    expect((await parsed(root, ".gemini/settings.json")).hooks.AfterAgent).toEqual([
-      {
-        hooks: [
-          { type: "command", command: specty("hook agent-stop gemini-cli"), timeout: 600_000 },
-        ],
       },
     ]);
     expect((await cli(root, ["check", "--install", "--dry-run"])).out).not.toContain("agent-stop");

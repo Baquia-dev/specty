@@ -160,7 +160,6 @@ describe("the settings' catalog", () => {
       "usage.ccusage.version",
       ...EFFORT_KEYS,
       "internal.waits.waitTimeoutSec",
-      "internal.waits.heartbeatSec",
       "internal.waits.verifyIntervalMs",
       "internal.waits.waitIntervalMs",
       "internal.waits.queueStaleSec",
@@ -266,12 +265,6 @@ describe("the settings' catalog", () => {
     expect(internal.filter((setting) => setting.guarantee !== true)).toEqual([
       expect.objectContaining({
         key: "internal.waits.waitTimeoutSec",
-        kind: "number",
-        unit: "s",
-        new: true,
-      }),
-      expect.objectContaining({
-        key: "internal.waits.heartbeatSec",
         kind: "number",
         unit: "s",
         new: true,
@@ -486,10 +479,10 @@ describe("the internal settings of locks and retention", () => {
 describe("the internal settings of polling intervals", () => {
   const KEYS_OF_INTERVALS = ["internal.waits.verifyIntervalMs", "internal.waits.waitIntervalMs"];
 
-  it("AC5: puts the verification's and `specty wait`'s intervals in «Interno», after the heartbeat, as new numbers in ms", () => {
+  it("AC5: puts the verification's and `specty wait`'s intervals in «Interno», after `specty wait`'s wait, as new numbers in ms", () => {
     const keys = SETTINGS.map((setting) => setting.key);
-    const heartbeat = keys.indexOf("internal.waits.heartbeatSec");
-    expect(keys.slice(heartbeat + 1, heartbeat + 3)).toEqual(KEYS_OF_INTERVALS);
+    const wait = keys.indexOf("internal.waits.waitTimeoutSec");
+    expect(keys.slice(wait + 1, wait + 3)).toEqual(KEYS_OF_INTERVALS);
     for (const key of KEYS_OF_INTERVALS) {
       expect(
         SETTINGS.find((setting) => setting.key === key),

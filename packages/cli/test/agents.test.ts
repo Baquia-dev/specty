@@ -132,11 +132,6 @@ describe("each agent's module", () => {
       "after",
       "compacting",
     ]);
-    expect(kinds("gemini-cli", ["BeforeTool", "AfterTool", "BeforeAgent"])).toEqual([
-      "before",
-      "after",
-      "turn",
-    ]);
   });
 
   it("answers Devin as Claude Code before an action, and after a command with the card that waited", () => {
@@ -155,25 +150,6 @@ describe("each agent's module", () => {
     );
     expect(context(devin.reply(allow, "after", "TARJETA")).additionalContext).toBe("TARJETA");
     expect(devin.failed("specty guard: roto").code).not.toBe(2);
-  });
-
-  it("answers Gemini CLI as Claude Code before an action, and after a command in its result", () => {
-    const gemini = ADAPTERS["gemini-cli"];
-    const silent = { code: 0, stdout: "", stderr: "" };
-    expect(gemini.reply(allow, "before")).toEqual(silent);
-    expect(gemini.reply(deny, "before")).toEqual({ code: 2, stdout: "", stderr: deny.text });
-    expect(gemini.reply(allow, "after")).toEqual(silent);
-    const warned = gemini.reply(deny, "after");
-    expect(warned.code).toBe(0);
-    expect(JSON.parse(warned.stdout)).toEqual({
-      hookSpecificOutput: { hookEventName: "AfterTool", additionalContext: deny.text },
-    });
-    expect(gemini.failed("specty guard: roto").code).not.toBe(2);
-    // The card goes with the turn's prompt; nothing to add says nothing.
-    expect(JSON.parse(gemini.inject?.(["TARJETA"]).stdout ?? "")).toEqual({
-      hookSpecificOutput: { hookEventName: "BeforeAgent", additionalContext: "TARJETA" },
-    });
-    expect(gemini.inject?.([])).toEqual(silent);
   });
 
   it("brings the card back after a compaction where the tool reads it: all but Cursor", () => {

@@ -278,7 +278,7 @@ describe("the end of the turn init installs, without the check", () => {
     const root = await failing();
     // Without the mark, as `check --install` leaves it, the check sends the turn back.
     expect(await claude(root)).toContain(FAILED);
-    for (const tool of ["claude-code", "codex", "gemini-cli", "windsurf"]) {
+    for (const tool of ["claude-code", "codex", "windsurf"]) {
       const run = await unchecked(root, tool, { hook_event_name: "Stop", stop_hook_active: false });
       expect(run, tool).toMatchObject({ code: 0, out: "" });
     }

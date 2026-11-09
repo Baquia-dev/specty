@@ -185,17 +185,20 @@ describe("resolveConfig and `internal`'s waits and retries", () => {
     return resolved.ok ? "ok" : resolved.issues.map((issue) => issue.path);
   };
 
-  it("AC4, AC6: without the keys, Specty waits 55 min, inside the prompt cache's hour, beats each minute and retries landing twice", () => {
+  it("AC4, AC6: without the keys, Specty waits 55 min, inside the prompt cache's hour, and retries landing twice", () => {
     expect(DEFAULT_CONFIG.internal).toMatchObject({
-      waits: { waitTimeoutSec: 3300, heartbeatSec: 60 },
+      waits: { waitTimeoutSec: 3300 },
       retries: { landing: 2 },
     });
     expect(resolveConfig({ version: 1 })).toMatchObject({
       ok: true,
-      config: {
-        internal: { waits: { waitTimeoutSec: 3300, heartbeatSec: 60 }, retries: { landing: 2 } },
-      },
+      config: { internal: { waits: { waitTimeoutSec: 3300 }, retries: { landing: 2 } } },
     });
+  });
+
+  it("AC2: has no heartbeat for `specty wait`, and takes its old key for one that does not exist", () => {
+    expect(DEFAULT_CONFIG.internal.waits).not.toHaveProperty("heartbeatSec");
+    expect(paths({ waits: { heartbeatSec: 60 } })).toEqual(["internal.waits"]);
   });
 
   it("AC4: takes each key within its limits, the others with their defaults", () => {
@@ -206,21 +209,18 @@ describe("resolveConfig and `internal`'s waits and retries", () => {
     expect(resolved).toMatchObject({
       ok: true,
       config: {
-        internal: { waits: { waitTimeoutSec: 60, heartbeatSec: 60 }, retries: { landing: 0 } },
+        internal: { waits: { waitTimeoutSec: 60, waitIntervalMs: 500 }, retries: { landing: 0 } },
       },
     });
     // AC6: an hour still fits, as the most every tool measured holds.
-    expect(paths({ waits: { waitTimeoutSec: 3600, heartbeatSec: 1 } })).toBe("ok");
-    expect(paths({ waits: { heartbeatSec: 240 }, retries: { landing: 10 } })).toBe("ok");
+    expect(paths({ waits: { waitTimeoutSec: 3600 } })).toBe("ok");
+    expect(paths({ retries: { landing: 10 } })).toBe("ok");
   });
 
   it("AC4: refuses each key outside its limits, or not a whole number, with its key", () => {
     expect(paths({ waits: { waitTimeoutSec: 0 } })).toEqual(["internal.waits.waitTimeoutSec"]);
     expect(paths({ waits: { waitTimeoutSec: 59 } })).toEqual(["internal.waits.waitTimeoutSec"]);
     expect(paths({ waits: { waitTimeoutSec: 3601 } })).toEqual(["internal.waits.waitTimeoutSec"]);
-    expect(paths({ waits: { heartbeatSec: 0 } })).toEqual(["internal.waits.heartbeatSec"]);
-    expect(paths({ waits: { heartbeatSec: 241 } })).toEqual(["internal.waits.heartbeatSec"]);
-    expect(paths({ waits: { heartbeatSec: 1.5 } })).toEqual(["internal.waits.heartbeatSec"]);
     expect(paths({ retries: { landing: -1 } })).toEqual(["internal.retries.landing"]);
     expect(paths({ retries: { landing: 11 } })).toEqual(["internal.retries.landing"]);
     expect(paths({ retries: { landing: "dos" } })).toEqual(["internal.retries.landing"]);
@@ -327,7 +327,6 @@ describe("resolveConfig and `internal`'s polling intervals", () => {
         internal: {
           waits: {
             waitTimeoutSec: 3300,
-            heartbeatSec: 60,
             verifyIntervalMs: 100,
             waitIntervalMs: 500,
           },
