@@ -65,7 +65,7 @@ En una ejecución de la suite sin una persona que decida, el agente que llega a 
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/unattended.test.ts && pnpm typecheck && pnpm lint
   - type: fix
-- [ ] T3: La ejecución real y el fin del turno en ARCHITECTURE §16
+- [x] T3: La ejecución real y el fin del turno en ARCHITECTURE §16
   - files: docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm lint
