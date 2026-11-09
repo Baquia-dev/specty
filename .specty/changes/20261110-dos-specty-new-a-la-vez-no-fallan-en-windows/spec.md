@@ -52,7 +52,7 @@ En el run 42652237044 (main 172c8cc) el CI de Windows, ya bloqueante, falló en 
 
 ## Tareas
 
-- [ ] T1: El turno de `new` en Windows
+- [x] T1: El turno de `new` en Windows
   - files: packages/cli/src/store/lock.ts, packages/cli/src/flow/new-turn.ts, packages/cli/test/new-turn.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/new-turn.test.ts test/lock.test.ts && pnpm lint

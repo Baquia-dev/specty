@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "023c3dda43b238cec1eccc9db7a151410ff24b4e",
+      "startedAt": "2026-11-09T17:27:59.649Z",
+      "doneAt": "2026-11-09T17:36:38.912Z",
+      "summary": "lockNewChange toma locks/new.json sin darlo de nuevo en el proceso, con un borrador propio por toma; onNewTurn ejecuta los pasos en ese turno solo en win32, reintenta mientras otro lo tiene y tras unos 60 s sigue sin turno"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
