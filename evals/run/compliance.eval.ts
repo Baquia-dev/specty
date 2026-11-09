@@ -45,9 +45,7 @@ function agentEnv(bin: string): NodeJS.ProcessEnv {
   const env = Object.fromEntries(
     Object.entries(process.env).filter(
       ([key]) =>
-        !/^(?:CLAUDECODE|CLAUDE_CODE_|CURSOR_AGENT|GEMINI_CLI|CODEX_|OPENCODE|SPECTY_AGENT)/.test(
-          key,
-        ),
+        !/^(?:CLAUDECODE|CLAUDE_CODE_|CURSOR_AGENT|CODEX_|OPENCODE|SPECTY_AGENT)/.test(key),
     ),
   );
   return { ...env, PATH: `${bin}${delimiter}${process.env.PATH ?? ""}` };

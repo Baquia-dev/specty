@@ -63,7 +63,7 @@ Tercero de los cambios consecutivos que retiran Gemini CLI, que Antigravity reem
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/resume-hints.test.ts --include src/sessions/sessions-page.test.ts
   - type: chore
-- [ ] T2: La suite de cumplimiento deja de ejecutar Gemini CLI
+- [x] T2: La suite de cumplimiento deja de ejecutar Gemini CLI
   - files: evals/src/agents.ts, evals/src/repo.ts, evals/run/compliance.eval.ts, evals/test/report.test.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/report.test.ts

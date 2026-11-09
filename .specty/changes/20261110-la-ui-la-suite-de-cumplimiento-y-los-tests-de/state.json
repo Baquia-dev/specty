@@ -40,12 +40,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3f459b42fd428050722f1c78f3e33c7b7132133c",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:42:06.845Z",
       "doneAt": "2026-11-09T17:51:24.129Z",
-      "summary": "La UI deja de proponer cd … && gemini para retomar un cambio (OPEN_IN de change/resume-hints.ts); su test lista las órdenes sin Gemini CLI y la sesión de ejemplo de sessions-page.test es de Devin (Windsurf)"
+      "summary": "La UI deja de proponer cd … && gemini para retomar un cambio (OPEN_IN de change/resume-hints.ts); su test lista las órdenes sin Gemini CLI y la sesión de ejemplo de sessions-page.test es de Devin (Windsurf)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "91f4048f7c303afd46fc29e801cf55f1745b698f",
+      "startedAt": "2026-11-09T17:51:24.579Z",
+      "doneAt": "2026-11-09T17:53:16.550Z",
+      "summary": "La suite de cumplimiento deja de ejecutar Gemini CLI: sin gemini-cli en AgentId, ROUNDS y AGENTS de evals/src/agents.ts ni la marca GEMINI_CLI en repo.ts y compliance.eval.ts; report.test sin su transcripción; ARCHITECTURE dice que la suite conoce cinco agentes"
     }
   },
   "pending": {

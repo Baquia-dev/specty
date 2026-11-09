@@ -13,13 +13,7 @@ import { antigravityCliFolder } from "./repo";
  * permissions.
  */
 
-export type AgentId =
-  | "claude-code"
-  | "codex"
-  | "gemini-cli"
-  | "opencode"
-  | "cursor"
-  | "antigravity";
+export type AgentId = "claude-code" | "codex" | "opencode" | "cursor" | "antigravity";
 
 export interface Agent {
   readonly id: AgentId;
@@ -81,7 +75,6 @@ const REFUSAL = /specty: [^"]*?(?:SIGUIENTE|NEXT):/;
 const ROUNDS: Readonly<Record<Exclude<AgentId, "claude-code" | "antigravity">, RegExp>> = {
   codex:
     /"type":"item\.completed","item":\{[^}]*?"type":"(?:command_execution|file_change|mcp_tool_call)"/,
-  "gemini-cli": /"type":"tool_use"/,
   opencode: /"type":"tool_use"/,
   cursor: /"type":"tool_call","subtype":"started"/,
 };
@@ -359,12 +352,6 @@ export const AGENTS: readonly Agent[] = [
     name: "Codex",
     find: finder("codex", "codex"),
     command: (binary, prompt) => [binary, "exec", "--json", "-s", "workspace-write", prompt],
-  },
-  {
-    id: "gemini-cli",
-    name: "Gemini CLI",
-    find: finder("gemini-cli", "gemini"),
-    command: (binary, prompt) => [binary, "-p", prompt, "--output-format", "stream-json"],
   },
   {
     id: "opencode",

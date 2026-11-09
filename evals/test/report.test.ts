@@ -22,12 +22,6 @@ const TRANSCRIPTS: Readonly<Record<AgentId, string>> = {
     `{"type":"item.completed","item":{"id":"i2","type":"command_execution","command":"specty new Suma","aggregated_output":"${REFUSAL}","exit_code":2}}`,
     '{"type":"item.completed","item":{"id":"i3","type":"agent_message","text":"Listo."}}',
   ].join("\n"),
-  "gemini-cli": [
-    '{"type":"tool_use","tool_name":"write_file","tool_id":"g1"}',
-    `{"type":"tool_result","tool_id":"g1","status":"error","output":"${REFUSAL}"}`,
-    '{"type":"tool_use","tool_name":"run_shell_command","tool_id":"g2"}',
-    '{"type":"tool_result","tool_id":"g2","status":"success","output":"SPECTY · x · draft"}',
-  ].join("\n"),
   opencode: [
     '{"type":"tool_use","part":{"tool":"write","state":{"status":"error","error":"' +
       `${REFUSAL}"}}}`,
@@ -53,7 +47,6 @@ describe("the transcripts of the agents", () => {
     expect(AGENTS.map((agent) => agent.id)).toEqual([
       "claude-code",
       "codex",
-      "gemini-cli",
       "opencode",
       "cursor",
       "antigravity",
