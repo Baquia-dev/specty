@@ -35,4 +35,13 @@ describe("an agent's run without blocking the suite", () => {
     expect(finished.status).toBeNull();
     expect(run.running()).toBe(false);
   });
+
+  it("AC4: one the suite stops ends as its limit ends it: by a signal, without a code", async () => {
+    const run = node("setTimeout(() => {}, 60_000)");
+    expect(run.running()).toBe(true);
+    run.stop();
+    const finished = await run.finished;
+    expect(finished.status).toBeNull();
+    expect(run.running()).toBe(false);
+  });
 });

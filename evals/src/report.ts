@@ -16,7 +16,10 @@ export interface Run {
   readonly verdict: Verdict;
   readonly blocks: number;
   readonly rounds: number;
-  /** The wall-clock seconds from launching the agent until it ended or its limit stopped it. */
+  /**
+   * The wall-clock seconds from launching the agent until it ended or its limit stopped it; or,
+   * when the suite stopped it waiting for a person nobody plays, until its wait started.
+   */
   readonly seconds: number;
   /** What the run cost, in USD, when the agent tells it. */
   readonly cost?: number;

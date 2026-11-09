@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
-import { specty } from "./repo";
+import { readdir } from "node:fs/promises";
+import { resolve } from "node:path";
+import { git, specty } from "./repo";
 
 /**
  * The person of an experiment who decides while the agent runs (ARCHITECTURE §16): with delegated
  * mode off, they approve, accept and close what waits for them, in any folder, from the main one,
  * as `specty status` lists it. Like a person who comes back to the terminal, they decide on a
  * change once it has waited for them `delayMs`, so the agent is already waiting with `specty wait`.
+ * In a run without them, nobody decides: an agent that waits for them has ended its turn.
  */
 
 /** What the person reads of each open change in `specty status --json`. */
@@ -95,7 +98,7 @@ const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve,
 const TIMING = { delayMs: 20_000, intervalMs: 2_000 };
 
 /** The person looks every `intervalMs` while `running()` says the agent runs. */
-export async function attend(
+async function attend(
   root: string,
   running: () => boolean,
   { delayMs, intervalMs } = TIMING,
@@ -105,4 +108,55 @@ export async function attend(
     await at.look(Date.now());
     await sleep(intervalMs);
   }
+}
+
+/** The agent's run, as the suite watches it: whether it still runs, and how to stop it. */
+interface Watched {
+  running(): boolean;
+  stop(): void;
+}
+
+/** How long an agent that waits for nobody has to end on its own, and how often the suite looks. */
+const UNATTENDED = { graceMs: 15_000, intervalMs: 1_000 };
+
+/**
+ * Nobody at the terminal of `root`: once the agent waits for the person with `specty wait`, whose
+ * mark (formats.md §1) says so, nobody will decide, so its turn is over. It gets `graceMs` to end
+ * it on its own, as an agent that leaves the wait in the background does; if it still runs, the
+ * suite stops it. Then, the moment its wait was seen, on `performance.now()`'s clock; nothing when
+ * it ended on its own or never waited.
+ */
+export async function unattended(
+  root: string,
+  run: Watched,
+  { graceMs, intervalMs } = UNATTENDED,
+): Promise<number | undefined> {
+  const marks = resolve(root, git(root, "rev-parse", "--git-path", "common/specty/waits"));
+  while (run.running()) {
+    const names = await readdir(marks).catch(() => []);
+    if (names.some((name) => name.endsWith(".json"))) {
+      const waited = performance.now();
+      while (run.running() && performance.now() - waited < graceMs) await sleep(intervalMs);
+      if (!run.running()) return undefined;
+      run.stop();
+      return waited;
+    }
+    await sleep(intervalMs);
+  }
+  return undefined;
+}
+
+/**
+ * Who decides while the agent of `root` runs: with `person`, the person, who looks until it ends
+ * (`attend`); without, nobody (`unattended`). What `unattended` gives, and nothing with a person.
+ */
+export async function attendance(
+  root: string,
+  run: Watched,
+  person: boolean,
+  timing = UNATTENDED,
+): Promise<number | undefined> {
+  if (!person) return unattended(root, run, timing);
+  await attend(root, () => run.running());
+  return undefined;
 }
