@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-specty-corre-dentro-del-sandbox-de-antigravity",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-specty-corre-dentro-del-sandbox-de-antigravity",
   "baseCommit": "2a1c7ccf81bc3c5c3f987eb744a8d63f7ef2feaa",
   "revision": 1,
@@ -56,6 +56,8 @@
     "T": 5,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-09T10:55:11.566Z"
+  "lockedTests": {
+    "packages/cli/test/antigravity-cli-rule.test.ts": "sha256:0c697ea2cb01c23eff57c5f368cf6ddd1a9eb1ce9c68abebf048c306c5cc8890",
+    "packages/core/test/cards/antigravity-cli-rule.test.ts": "sha256:a678336e8aa73fe492fd822aa8df0f74115ac14f947aa238609a9524abdfc983"
+  }
 }
