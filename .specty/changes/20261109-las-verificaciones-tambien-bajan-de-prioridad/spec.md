@@ -58,7 +58,7 @@ En Linux, una verificación (la de una tarea, la completa de `accept`, la de una
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/exec-priority.test.ts test/server/runs-priority.test.ts test/exec.test.ts test/verify-priority.test.ts test/server/runs.test.ts test/server/verify.test.ts && pnpm typecheck
   - type: fix
-- [ ] T2: Documentar que las verificaciones nacen con su prioridad
+- [x] T2: Documentar que las verificaciones nacen con su prioridad
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC3
   - verify: pnpm sources
