@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261110-specty-deja-de-soportar-gemini-cli-que",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261110-specty-deja-de-soportar-gemini-cli-que",
+  "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e8d906d5292b5aaec0f86a7ed8cc2d0d371f4c075bed69c22fab1c9577517b23",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fe56dac8fdc28100535e4180f19a681d439b10cb61bd64043272b695586456eb",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:446c4fdc020d70a31620434d23703798c7830efa1d1ff580e6c81c1955806448",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0fdcb002dbf638068229336d2e44fbdd670344c1ee7e0961ded29c6a7b864ea2",
+    "at": "2026-11-09T16:58:48.732Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
