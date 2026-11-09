@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a95d914489641c1d6657d3ec6aa64c0b13d5c970",
+      "attempts": 1,
       "startedAt": "2026-11-09T09:56:47.226Z",
       "doneAt": "2026-11-09T09:59:10.303Z",
-      "summary": "Una verificación no arranca mientras corre otra de otro proceso en su carpeta y lo dice una vez; inFolder (para specty check) marca la carpeta con peso 0 sin ocupar plazas; los antecesores no cuentan."
+      "summary": "Una verificación no arranca mientras corre otra de otro proceso en su carpeta y lo dice una vez; inFolder (para specty check) marca la carpeta con peso 0 sin ocupar plazas; los antecesores no cuentan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dc675cf066eaca851e1b4a37f3b5a81d9a175c54",
+      "startedAt": "2026-11-09T09:59:10.702Z",
+      "doneAt": "2026-11-09T09:59:58.372Z",
+      "summary": "Los comandos del proyecto de specty check (formato, lint, tipos y tests) corren dentro de inFolder: esperan a la verificación de otro proceso en su carpeta y la marcan con peso 0 mientras corren."
     }
   },
   "pending": {

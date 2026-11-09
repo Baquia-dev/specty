@@ -64,7 +64,7 @@ La unidad `ui` de la verificación completa falló en `accept` porque otro Vites
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/folder-wait.test.ts test/cards/lock.test.ts && pnpm --filter @baquia-dev/specty exec vitest run src/store/verify-folder.test.ts src/store/verify-slots.test.ts src/store/turn-queue.test.ts && pnpm lint
   - type: fix
-- [ ] T2: Los comandos de `specty check` esperan a la verificación de su carpeta y la marcan mientras corren
+- [x] T2: Los comandos de `specty check` esperan a la verificación de su carpeta y la marcan mientras corren
   - files: packages/cli/src/check/commands.ts, packages/cli/test/check-folder.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-folder.test.ts test/check-commands.test.ts && pnpm lint && pnpm typecheck

@@ -11,6 +11,7 @@ import { commandsFor, scriptCommand } from "../detect/project";
 import { qualityCommands } from "../detect/quality";
 import type { Stack } from "../detect/stack";
 import { execute, maxOutputOf } from "../io/exec";
+import { inFolder } from "../store/verify-slots";
 import type { CheckDefinition, Provider } from "./provider";
 
 /**
@@ -74,14 +75,18 @@ function commandCheck(id: CommandCheck, command: string): CheckDefinition {
     async run({ session, files }) {
       const t = translator(session.lang);
       const { timeoutSec } = session.config.verify;
-      const result = await execute(command, [], {
-        cwd: session.root,
-        env: session.environment.env,
-        shell: true,
-        timeoutMs: timeoutSec * 1000,
-        // Findings are looked for in the whole output: this much of its end.
-        maxOutput: maxOutputOf(session.config),
-      });
+      // Not while a verification of another process runs in this folder: they would share files,
+      // such as the coverage folder, and its own mark makes one that arrives wait.
+      const result = await inFolder(session, command, () =>
+        execute(command, [], {
+          cwd: session.root,
+          env: session.environment.env,
+          shell: true,
+          timeoutMs: timeoutSec * 1000,
+          // Findings are looked for in the whole output: this much of its end.
+          maxOutput: maxOutputOf(session.config),
+        }),
+      );
       if (result.code === 0) return { findings: [] };
       const head: Finding = {
         message: result.timedOut
