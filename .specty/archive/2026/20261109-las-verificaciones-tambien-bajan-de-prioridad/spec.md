@@ -68,3 +68,27 @@ En Linux, una verificación (la de una tarea, la completa de `accept`, la de una
 
 - R1: Un sistema POSIX sin `nice` en el `PATH` (un contenedor mínimo) sigue con la carrera de ahora — se baja al lanzarla, como hasta ahora, y lo dice el documento.
 - R2: Sustituir `setPriority` en los tests no prueba la carrera tal cual en Linux — sí prueba que el comando ya no depende de que se la bajen después, y la sesión principal confirma el arreglo con el siguiente run del CI en Linux.
+
+## Cierre
+
+### Resumen
+
+- `packages/cli/src/io/exec.ts` tiene `launch`, que da cómo lanzar un comando con prioridad: fuera de Windows y con `nice` en el `PATH` de la verificación, por `nice -n <diferencia entre internal.exec.priority y la de Specty>` (con `/bin/sh -c` si va por la shell), así que el comando nace con ella y todo lo que lanza la hereda; sin `nice`, o en Windows, lo lanza tal cual y le baja la prioridad con `os.setPriority` al arrancar, como antes. Si Specty ya corre igual o más bajo, lo lanza tal cual. `execute` (verificaciones de las tareas, `accept`, `verify --fresh`, incorporaciones e `integrate`) y la verificación completa de la UI (`server/runs.ts`) lanzan con él; `lowerPriority` dejó de exportarse.
+- Causa del CI comprobada en un contenedor Debian (`debian:trixie-slim`): `/bin/sh` es dash, y `sh -c "sleep 2"` deja a `sleep` como hijo de `sh`, así que bajar el pid de la shell no alcanza al comando si ya nació; con `nice -n 10 /bin/sh -c "…; true"` el hijo corre con 10 y sin él con 0.
+- Tests: `exec-priority.test.ts` (AC1, AC4) y `server/runs-priority.test.ts` (AC2) sustituyen `setPriority` por una función vacía y fallaron con el código anterior (`expected '0' to be '5'`); AC3 va en `exec.test.ts` con un `PATH` vacío. La verificación de T1 pasó también `verify-priority.test.ts`, `server/runs.test.ts`, `server/verify.test.ts` y `pnpm typecheck`.
+- `docs/ARCHITECTURE.md` («Las verificaciones, con menos prioridad») lo describe.
+
+### Desviaciones
+
+- `execute` pasó de 50 líneas, así que el cálculo de la prioridad de sus opciones va en una función propia, `launchOf`.
+- AC3 se nombra en un comentario de su test, porque `it.skipIf(…)(` deja el nombre en la línea siguiente.
+
+### Decisiones
+
+- `nice` se busca en las carpetas absolutas del `PATH` del entorno de cada verificación en cada lanzamiento, y no se da por hecho: sin él, la verificación no falla, se baja como antes.
+- El incremento de `nice` es la diferencia con la prioridad de Specty, para que el comando acabe en el mismo valor absoluto que daba `os.setPriority`.
+- `verify-priority.test.ts`, ya aprobado, no cambia.
+
+### Pendientes
+
+- Confirmar con el siguiente run del CI que el job de Linux pasa los tests de prioridad (P387): lo lleva la sesión principal, que sube main.

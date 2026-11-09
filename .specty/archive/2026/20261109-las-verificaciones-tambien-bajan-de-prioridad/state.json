@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-las-verificaciones-tambien-bajan-de-prioridad",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-las-verificaciones-tambien-bajan-de-prioridad",
   "baseCommit": "2a1c7ccf81bc3c5c3f987eb744a8d63f7ef2feaa",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:2e13d26e0f6abcc1591cf2141c4b8e7968febfaea1bcb31c54dcfcf7d3939d0c",
@@ -55,12 +55,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5a8418cfd9b3ccf1a82253958441408672a56065",
+      "attempts": 1,
       "startedAt": "2026-11-09T10:47:51.821Z",
       "doneAt": "2026-11-09T10:48:38.939Z",
-      "summary": "El párrafo «Las verificaciones, con menos prioridad» de ARCHITECTURE.md dice que fuera de Windows nacen con su prioridad por nice -n, y que sin nice o en Windows se baja al lanzarlas, de mejor esfuerzo."
+      "summary": "El párrafo «Las verificaciones, con menos prioridad» de ARCHITECTURE.md dice que fuera de Windows nacen con su prioridad por nice -n, y que sin nice o en Windows se baja al lanzarlas, de mejor esfuerzo.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -73,6 +73,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-09T10:49:06.935Z",
   "lockedTests": {
     "packages/cli/test/exec.test.ts": "sha256:89dd3e10a9a9a9d26a2693a2a7317b235faa62ee182bdbbd84c7af3635b49ad3",
     "packages/cli/test/exec-priority.test.ts": "sha256:58c185733819d6b7da1c3289547013528eaab62ce1285dcff59c6983867635eb",
