@@ -39,6 +39,13 @@ const TRANSCRIPTS: Readonly<Record<AgentId, string>> = {
     '{"type":"tool_call","subtype":"started","call_id":"c2"}',
     '{"type":"tool_call","subtype":"completed","call_id":"c2","tool_call":{"result":{"success":"SPECTY · x · draft"}}}',
   ].join("\n"),
+  antigravity: [
+    '{"event":"init","conversation_id":"a1","init":{"model":"gemini"}}',
+    '{"event":"step_update","step_update":{"conversation_id":"a1","step_index":2,"state":"ACTIVE","step_type":"tool","tool_name":"edit_file","tool_info":{"name":"edit_file"}}}',
+    `{"event":"step_update","step_update":{"conversation_id":"a1","step_index":2,"state":"ERROR","step_type":"tool","tool_name":"edit_file","tool_info":{"name":"edit_file","error":{"type":"TOOL_ERROR","message":"tool call denied by pre-tool hook: ${REFUSAL}"}}}}`,
+    '{"event":"step_update","step_update":{"conversation_id":"a1","step_index":4,"state":"ACTIVE","step_type":"tool","tool_name":"run_command","tool_info":{"name":"run_command"}}}',
+    '{"event":"step_update","step_update":{"conversation_id":"a1","step_index":4,"state":"DONE","step_type":"tool","tool_name":"run_command","tool_info":{"name":"run_command","output":"SPECTY · x · draft"}}}',
+  ].join("\n"),
 };
 
 describe("the transcripts of the agents", () => {
@@ -49,6 +56,7 @@ describe("the transcripts of the agents", () => {
       "gemini-cli",
       "opencode",
       "cursor",
+      "antigravity",
     ]);
     for (const agent of AGENTS) {
       expect(countsOf(agent.id, TRANSCRIPTS[agent.id]), agent.id).toEqual({ rounds: 2, blocks: 1 });
