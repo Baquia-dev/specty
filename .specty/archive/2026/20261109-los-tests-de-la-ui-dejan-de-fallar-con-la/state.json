@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-los-tests-de-la-ui-dejan-de-fallar-con-la",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-los-tests-de-la-ui-dejan-de-fallar-con-la",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:3c2798039fbe1c513c538a73f5e358b0c7e878c2f10237a63238bd5057c81ba6",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8c90ae990d6adc46d1ada07a0078448f257e0e61",
+      "attempts": 1,
       "startedAt": "2026-11-09T09:48:59.436Z",
       "doneAt": "2026-11-09T09:55:19.904Z",
-      "summary": "derive.worker.ts responde solo a las peticiones de derivar (id numérico y lista records, con el guardián isRequest) e ignora los demás mensajes, como el saludo de la MCP App que en los tests llegaba a la misma ventana de jsdom (P78, P79)."
+      "summary": "derive.worker.ts responde solo a las peticiones de derivar (id numérico y lista records, con el guardián isRequest) e ignora los demás mensajes, como el saludo de la MCP App que en los tests llegaba a la misma ventana de jsdom (P78, P79).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,6 +69,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-09T09:56:41.413Z",
   "lockedTests": {
     "packages/ui/src/data/derive.worker.test.ts": "sha256:3213937fdd67ea593b7b1d4f3b27065d164aefeda1e472caec056b7ba11b1cf4",
     "packages/ui/src/test-timeout.test.ts": "sha256:e6050ff97c02e34777156609c2c9b7431da2e659bc19ca36dffaa7e08e300df5"

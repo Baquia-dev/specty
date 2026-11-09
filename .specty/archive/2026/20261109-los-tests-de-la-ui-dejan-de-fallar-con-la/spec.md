@@ -59,3 +59,22 @@ Los tests de la UI pasan también con la máquina cargada dentro de `pnpm check`
 
 - R1: Que el constructor de Angular no pasara `testTimeout` de `runnerConfig` a su proyecto — el test de T1 lo detecta, porque lee el tiempo del propio test.
 - R2: Que, con `isolate: false`, el módulo del worker se evalúe más de una vez y queden varios oyentes en la ventana — el test de T2 comprueba la respuesta con `toHaveBeenCalledWith` y no cuenta las llamadas.
+
+## Cierre
+
+### Resumen
+
+Las tres entradas seguían abiertas en main. `packages/ui/vitest-base.config.ts` fija `testTimeout: 30_000`, que el constructor de Angular pasa a su proyecto de Vitest: cada test de la UI tiene 30 s en lugar de 5, y el de `delegation.test.ts` de P75 ya no se corta con la máquina cargada. P78 y P79 eran el mismo fallo: con `isolate: false`, importar `answer` de `derive.worker.ts` en `views.test.ts` o `fixtures.test.ts` deja su oyente de mensajes en la ventana de jsdom, y el saludo `ui/initialize` que `McpAppData` manda a `window.parent` (la propia ventana) en el AC7 de `embedded.test.ts` le llegaba sin `records`. Ahora el worker responde solo a las peticiones de derivar (guardián `isRequest`: `id` numérico y lista `records`) e ignora los demás mensajes. Los tests nuevos salieron en rojo antes del código (5000 ms y el TypeError del saludo) y pasan con él; las verificaciones de T1 y T2 pasaron.
+
+### Desviaciones
+
+- Ninguna; la verificación de T2 usa `pnpm typecheck` de todo el repositorio, como pidió el aviso de `propose`, en lugar del de la UI.
+
+### Decisiones
+
+- No se tocó ningún test aprobado: el tiempo va en la configuración de Vitest y el arreglo del worker en su código.
+- El worker sigue registrando su oyente también fuera de un worker y filtra los mensajes, en lugar de registrarse solo en un ámbito de worker: en jsdom no lo hay y esas líneas quedarían sin test.
+
+### Pendientes
+
+- Ninguno.
