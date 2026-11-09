@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261109-los-tests-de-la-extension-de-vs-code-dejan-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-los-tests-de-la-extension-de-vs-code-dejan-de",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e0d07425cb60cefd94824e08e5b8d8bdc5fd25881e4df5d699560942167fdd4b",
+    "at": "2026-11-09T09:44:30.109Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -38,12 +45,7 @@
     "AC": 1,
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e0d07425cb60cefd94824e08e5b8d8bdc5fd25881e4df5d699560942167fdd4b",
-    "at": "2026-11-09T09:44:30.109Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/vscode/test/repo-timeout.test.ts": "sha256:4d94458614ead78b8fc5722a05145ad955db56d0d60128b0cd28ae342a5fc39d"
+  }
 }
