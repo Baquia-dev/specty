@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261110-los-instaladores-de-mcp-y-de-exclusiones-y-los",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261110-los-instaladores-de-mcp-y-de-exclusiones-y-los",
+  "baseCommit": "b1fd1dfdd76df8364062218513f5eb9685677556",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:604c4548573bcc81384b3d9517a96390c187012c85ef3555deb619b959803c50",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:e98c7d9e8dfcd5b09bbfe93790c325e815e6bdc5d88ec2e5a9adcd115bbbfeea",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:bb6312e746591543652b67a0dc38b291aebbbfda27bbbe4ad53338ee20c020e8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f3188dd4ae3098fd32f3bcbf7c0b5477042c219ce2154fbe8f97a45e1d1bec8c",
+    "at": "2026-11-09T17:17:53.414Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
