@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -14,6 +14,7 @@ import {
   tempRepo,
   writeFiles,
 } from "./support";
+import { writeTool } from "./tools";
 
 const MODEL = "claude-opus-5-5";
 /** Tokens of each kind: input, output, cache write and cache read. */
@@ -105,10 +106,7 @@ async function accepted(program: string): Promise<string> {
   await cli(folder, ["next"], { env });
   await writeFiles(folder, { "src/button.ts": "Sign in\n", "src/button.test.ts": BUTTON_TEST });
   expect((await cli(folder, ["task", "done", "T1", "--summary", "Texto"], { env })).code).toBe(0);
-  const bin = join(folder, "node_modules", ".bin");
-  await mkdir(bin, { recursive: true });
-  await writeFile(join(bin, "ccusage"), program);
-  await chmod(join(bin, "ccusage"), 0o755);
+  await writeTool(join(folder, "node_modules", ".bin"), "ccusage", program);
   const result = await cli(folder, ["accept"], { terminal: person() });
   expect(result.code).toBe(0);
   return result.out;

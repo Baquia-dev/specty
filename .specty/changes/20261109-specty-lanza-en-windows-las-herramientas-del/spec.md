@@ -82,7 +82,7 @@ Windows entra en la versión 0.1.0, y el run 42601745517 de la CI (main 2a1c7cc)
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-code-rules.test.ts test/check-secrets.test.ts test/check-vulnerabilities.test.ts test/check-install.test.ts && pnpm lint
   - type: test
-- [ ] T3: ESLint, dependency-cruiser, Prisma y ccusage falsos, en Windows también
+- [x] T3: ESLint, dependency-cruiser, Prisma y ccusage falsos, en Windows también
   - files: packages/cli/test/check-typescript.test.ts, packages/cli/test/check-layers.test.ts, packages/cli/test/check-generated.test.ts, packages/cli/test/usage.test.ts, packages/cli/test/usage-projects.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-typescript.test.ts test/check-layers.test.ts test/check-generated.test.ts test/usage.test.ts test/usage-projects.test.ts && pnpm lint

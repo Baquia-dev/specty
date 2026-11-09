@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-import { chmod } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { CONFIG, cli, read, tempRepo, writeFiles } from "./support";
+import { writeTool } from "./tools";
 
 const json = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
 
@@ -105,13 +105,16 @@ describe("the generated code check of specty check", () => {
       },
       "checks:\n  levels: { secrets: off }\n",
     );
-    await writeFiles(root, {
-      "node_modules/.bin/prisma": `#!/usr/bin/env node
+    await writeTool(
+      join(root, "node_modules", ".bin"),
+      "prisma",
+      `#!/usr/bin/env node
 require("node:fs").writeFileSync("src/generated/prisma/client.ts", "export const version = 2;\\n");
 `,
+    );
+    await writeFiles(root, {
       "prisma/schema.prisma": `${await read(root, "prisma/schema.prisma")}model User {\n  id Int @id\n}\n`,
     });
-    await chmod(join(root, "node_modules/.bin/prisma"), 0o755);
     const run = await cli(root, ["check"]);
     expect(run.code).toBe(1);
     expect(run.out).toContain(

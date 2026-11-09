@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -19,6 +19,7 @@ import {
   tempRepo,
   writeFiles,
 } from "./support";
+import { writeTool } from "./tools";
 
 const MODEL = "claude-opus-5-5";
 /** Tokens of each kind: input, output, cache write and cache read. */
@@ -92,10 +93,7 @@ const LINE = "Consumo del cambio, según ccusage: 223,8 mil tokens en 2 llamadas
 
 /** `program` as the ccusage of the change's folder, in its `node_modules/.bin`. */
 async function ccusage(folder: string, program: string): Promise<void> {
-  const bin = join(folder, "node_modules", ".bin");
-  await mkdir(bin, { recursive: true });
-  await writeFile(join(bin, "ccusage"), program);
-  await chmod(join(bin, "ccusage"), 0o755);
+  await writeTool(join(folder, "node_modules", ".bin"), "ccusage", program);
 }
 
 /** Claude Code's session `sesion-1`, with a configuration folder of its own, empty. */
