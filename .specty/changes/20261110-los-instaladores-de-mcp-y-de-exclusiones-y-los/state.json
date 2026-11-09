@@ -6,6 +6,13 @@
   "branch": "specty/20261110-los-instaladores-de-mcp-y-de-exclusiones-y-los",
   "baseCommit": "b1fd1dfdd76df8364062218513f5eb9685677556",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f3188dd4ae3098fd32f3bcbf7c0b5477042c219ce2154fbe8f97a45e1d1bec8c",
+    "at": "2026-11-09T17:17:53.414Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "49267624d94931369a6a1e81b5fad98543dc8ffc",
+      "startedAt": "2026-11-09T17:17:54.008Z",
+      "doneAt": "2026-11-09T17:18:24.522Z",
+      "summary": "init --mcp y doctor dejan de registrar y mirar el servidor MCP en .gemini/settings.json: TARGETS de install/mcp.ts sin Gemini CLI; mcp-install.test sin él y el ejemplo mcp-other de cards/mcp.test con Devin (Windsurf)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 4,
     "T": 4,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f3188dd4ae3098fd32f3bcbf7c0b5477042c219ce2154fbe8f97a45e1d1bec8c",
-    "at": "2026-11-09T17:17:53.414Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

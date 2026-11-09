@@ -58,7 +58,7 @@ Segundo de los cambios consecutivos que retiran Gemini CLI, que Antigravity reem
 
 ## Tareas
 
-- [ ] T1: `init --mcp` y `doctor` dejan de registrar y mirar el servidor MCP en Gemini CLI
+- [x] T1: `init --mcp` y `doctor` dejan de registrar y mirar el servidor MCP en Gemini CLI
   - files: packages/cli/src/install/mcp.ts, packages/cli/test/mcp-install.test.ts, packages/core/test/cards/mcp.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-install.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/mcp.test.ts

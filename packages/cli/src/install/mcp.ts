@@ -32,7 +32,6 @@ interface Target {
 const TARGETS: readonly Target[] = [
   { tool: "claude-code", file: ".mcp.json", format: "mcpServers" },
   { tool: "cursor", file: ".cursor/mcp.json", format: "mcpServers" },
-  { tool: "gemini-cli", file: ".gemini/settings.json", format: "mcpServers" },
   { tool: "opencode", file: "opencode.json", format: "opencode" },
   { tool: "windsurf", file: ".devin/config.json", format: "mcpServers" },
   { tool: "codex", file: ".codex/config.toml", format: "codex" },

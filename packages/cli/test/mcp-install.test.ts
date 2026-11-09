@@ -16,7 +16,6 @@ const THEIRS = {
 const ALL: readonly AgentTool[] = [
   "claude-code",
   "cursor",
-  "gemini-cli",
   "opencode",
   "windsurf",
   "codex",
@@ -47,7 +46,6 @@ describe("init --mcp", () => {
       specty: SPECTY,
     });
     expect((await json(root, ".cursor/mcp.json")).mcpServers.specty).toEqual(SPECTY);
-    expect((await json(root, ".gemini/settings.json")).mcpServers.specty).toEqual(SPECTY);
     expect((await json(root, ".devin/config.json")).mcpServers.specty).toEqual(SPECTY);
     expect(await json(root, "opencode.json")).toEqual({
       $schema: "https://opencode.ai/config.json",
@@ -55,12 +53,11 @@ describe("init --mcp", () => {
     });
     expect(await read(root, ".codex/config.toml")).toBe(`model = "o3"\n\n${TOML}`);
     expect(installed.done).toEqual([
-      "Servidor MCP de Specty (`specty mcp`) registrado: Claude Code (.mcp.json), Cursor (.cursor/mcp.json), Gemini CLI (.gemini/settings.json), OpenCode (opencode.json), Devin (Windsurf) (.devin/config.json), Codex (.codex/config.toml).",
+      "Servidor MCP de Specty (`specty mcp`) registrado: Claude Code (.mcp.json), Cursor (.cursor/mcp.json), OpenCode (opencode.json), Devin (Windsurf) (.devin/config.json), Codex (.codex/config.toml).",
     ]);
     expect(installed.written).toEqual([
       ".mcp.json",
       ".cursor/mcp.json",
-      ".gemini/settings.json",
       "opencode.json",
       ".devin/config.json",
       ".codex/config.toml",
