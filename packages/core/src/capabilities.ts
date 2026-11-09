@@ -140,31 +140,6 @@ export const AGENT_CAPABILITIES = {
     // `opencode-e2e.test.ts`, against a fake of OpenAI's chat API.
     endToEnd: yes,
   },
-  "gemini-cli": {
-    markers: [".gemini", "GEMINI.md"],
-    guard: yes,
-    // `AfterTool` adds it to the command's result (`additionalContext`).
-    afterShell: yes,
-    afterCompaction: indirect(
-      "dispara `PreCompress` antes de cada intento de compactar, compacte o no, así que la tarjeta llega al empezar cada turno, con su prompt (`BeforeAgent`).",
-      "it fires `PreCompress` before every attempt to compact, whether it compacts or not, so the card comes at the start of each turn, with its prompt (`BeforeAgent`).",
-    ),
-    worktreeByName: indirect(
-      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y lleva allí las rutas, las búsquedas y los comandos de sus herramientas (`hookSpecificOutput.tool_input`).",
-      "with `specty enter <id>`: the guard binds the conversation to the change's folder and moves its tools' paths, searches and commands there (`hookSpecificOutput.tool_input`).",
-    ),
-    subagentSlices: impossible(
-      "sus hooks traen el `session_id` de la sesión principal sin nada que distinga al subagente, así que el guard no puede atar cada uno a la carpeta de su corte.",
-      "its hooks carry the main session's `session_id` with nothing that tells the subagent apart, so the guard cannot bind each one to its slice's folder.",
-    ),
-    // `AfterAgent`, checked with Gemini CLI 0.65.0.
-    endOfTurn: yes,
-    exclusion: yes,
-    // Its sandbox, off by default, takes Specty's folders in `tools.sandboxAllowedPaths`.
-    permissions: yes,
-    // `gemini-e2e.test.ts`, against a fake of the Gemini API.
-    endToEnd: yes,
-  },
   copilot: {
     markers: [".github/copilot-instructions.md", ".github/instructions"],
     guard: unsupported,

@@ -6,6 +6,13 @@
   "branch": "specty/20261110-gemini-cli-deja-de-ser-un-agente-de-specty",
   "baseCommit": "15a3107d0c4fb0a04deabe495c15904e0c0ce7ae",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:55352b9f1b78060fdf473f26fbd330b83b5a627ce1fb0005efd02f42ea70e27e",
+    "at": "2026-11-09T18:05:58.217Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1de1fc77e8d4db2ffdff1e8fc56fedc70174d102",
+      "startedAt": "2026-11-09T18:05:59.036Z",
+      "doneAt": "2026-11-09T18:12:40.838Z",
+      "summary": "Gemini CLI sale de AgentTool, AGENT_NAMES y las marcas del entorno (agents.ts), de la tabla de capacidades (capabilities.ts, tabla de ARCHITECTURE §10 vuelta a pegar) y de las pistas de init; ARCHITECTURE deja de describir sus hooks, su sandbox y su GEMINI.md"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 4,
     "T": 3,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:55352b9f1b78060fdf473f26fbd330b83b5a627ce1fb0005efd02f42ea70e27e",
-    "at": "2026-11-09T18:05:58.217Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

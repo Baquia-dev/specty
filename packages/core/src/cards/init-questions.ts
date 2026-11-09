@@ -25,10 +25,6 @@ const AGENT_HINTS: Readonly<Record<AgentTool, readonly [string, string]>> = {
     "Agente terminal de código abierto: configuración en .opencode/ (ej. ejecución de tareas)",
     "Open-source terminal agent: config in .opencode/ (e.g. task runs)",
   ],
-  "gemini-cli": [
-    "CLI de Google Gemini: hooks y extensiones en .gemini/ (ej. asistencia de código)",
-    "Google Gemini CLI: hooks and extensions in .gemini/ (e.g. coding assistant)",
-  ],
   copilot: [
     "GitHub Copilot: instrucciones en .github/copilot-instructions.md (ej. agentes en el IDE)",
     "GitHub Copilot: instructions in .github/copilot-instructions.md (e.g. IDE agents)",

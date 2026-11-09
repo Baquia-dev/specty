@@ -55,7 +55,7 @@ Cuarto de los cambios consecutivos que retiran Gemini CLI, que Antigravity reemp
 
 ## Tareas
 
-- [ ] T1: Gemini CLI sale de los agentes que conoce core y de la tabla de capacidades
+- [x] T1: Gemini CLI sale de los agentes que conoce core y de la tabla de capacidades
   - files: packages/core/src/agents.ts, packages/core/src/capabilities.ts, packages/core/src/cards/init-questions.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts test/enabled-agents.test.ts

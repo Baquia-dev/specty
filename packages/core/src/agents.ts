@@ -6,7 +6,6 @@ export type AgentTool =
   | "cursor"
   | "codex"
   | "opencode"
-  | "gemini-cli"
   | "copilot"
   | "windsurf"
   | "antigravity";
@@ -16,7 +15,6 @@ export const AGENT_NAMES: Readonly<Record<AgentTool, string>> = {
   cursor: "Cursor",
   codex: "Codex",
   opencode: "OpenCode",
-  "gemini-cli": "Gemini CLI",
   copilot: "GitHub Copilot",
   // Windsurf is Devin Desktop now, whose agent shares Devin CLI's hooks.
   windsurf: "Devin (Windsurf)",
@@ -59,7 +57,6 @@ type Env = Readonly<Record<string, string | undefined>>;
 const MARKS: readonly (readonly [AgentTool, (env: Env) => boolean])[] = [
   ["claude-code", (env) => env.CLAUDECODE === "1"],
   ["cursor", (env) => env.CURSOR_AGENT === "1"],
-  ["gemini-cli", (env) => env.GEMINI_CLI === "1"],
   // Codex sets CODEX_SANDBOX only inside its sandbox; the other two reach every command.
   [
     "codex",

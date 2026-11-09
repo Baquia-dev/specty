@@ -28,7 +28,6 @@ describe("the capability table", () => {
       "cursor",
       "codex",
       "opencode",
-      "gemini-cli",
       "windsurf",
       "antigravity",
     ]);
@@ -81,9 +80,9 @@ describe("the capability table", () => {
       "| OpenCode | sí | sí | sí | indirecto | sí | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
     );
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — | — |");
-    expect(es).toContain(
-      "| Gemini CLI | sí | sí | indirecto | indirecto | no posible | sí | sí | sí | sí |",
-    );
+    // AC1: Gemini CLI, retired in favour of Antigravity, has no row.
+    expect(es).not.toContain("Gemini CLI");
+    expect(es).not.toContain("`.gemini`");
     expect(es).toContain(
       "| Devin (Windsurf) | sí | sí | indirecto | indirecto | no posible | sí | sí | sí | no posible |",
     );
@@ -108,10 +107,7 @@ describe("the capability table", () => {
       "- Tarjeta tras compactar (Antigravity): no avisa cuando compacta, así que la tarjeta llega al empezar cada turno, con su primera llamada al modelo (`PreInvocation`).",
     );
     expect(es).toContain(
-      "- Tarjeta tras compactar (Gemini CLI): dispara `PreCompress` antes de cada intento de compactar, compacte o no, así que la tarjeta llega al empezar cada turno, con su prompt (`BeforeAgent`).",
-    );
-    expect(es).toContain(
-      "- Worktree por nombre (Gemini CLI): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio",
+      "- Worktree por nombre (Devin (Windsurf)): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio",
     );
     expect(es).toContain(
       "- Worktree por nombre (OpenCode): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, y el plugin de Specty",
@@ -129,16 +125,13 @@ describe("the capability table", () => {
 
   it("AC6: says which tools hand an epic's slices to subagents, and why it is not possible elsewhere", () => {
     expect(AGENT_CAPABILITIES["claude-code"].subagentSlices.state).toBe("yes");
-    for (const tool of ["gemini-cli", "windsurf"] as const) {
+    for (const tool of ["windsurf"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("impossible");
     }
     for (const tool of ["copilot"] as const) {
       expect(AGENT_CAPABILITIES[tool].subagentSlices.state, tool).toBe("unsupported");
     }
     const es = capabilityTable("es");
-    expect(es).toContain(
-      "- Cortes en subagentes (Gemini CLI): sus hooks traen el `session_id` de la sesión principal sin nada que distinga al subagente, así que el guard no puede atar cada uno a la carpeta de su corte.",
-    );
     expect(es).toContain(
       "- Cortes en subagentes (Devin (Windsurf)): sus hooks no documentan las acciones de sus subagentes (consultado el 2026-11-04).",
     );
