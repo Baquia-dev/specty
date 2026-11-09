@@ -1,12 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-import { execFileSync } from "node:child_process";
-import { mkdir, mkdtemp, symlink, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CONFIG, cli, git, person, read, tempRepo, writeFiles } from "./support";
-
-const GIT = execFileSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).trim();
+import { toolFolder, writeTool } from "./tools";
 
 const json = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
 const WORKFLOW = ".github/workflows/specty-check.yml";
@@ -150,12 +145,10 @@ describe("specty check --install", () => {
     const root = await typescript(
       'checks:\n  levels: { secrets: off }\n  preCommit: true\n  layers:\n    domain: { paths: ["src/domain/**"] }\n',
     );
-    const bin = join(await mkdtemp(join(tmpdir(), "specty-npm-")), "bin");
-    await mkdir(bin);
-    await symlink(GIT, join(bin, "git"));
-    await symlink(process.execPath, join(bin, "node"));
-    await writeFile(
-      join(bin, "npm"),
+    const { bin, path } = await toolFolder("specty-npm-");
+    await writeTool(
+      bin,
+      "npm",
       `#!/usr/bin/env node
 const fs = require("node:fs");
 const manifest = JSON.parse(fs.readFileSync("package.json", "utf8"));
@@ -163,10 +156,9 @@ const [name, version] = process.argv.at(-1).split("@");
 manifest.devDependencies = { ...manifest.devDependencies, [name]: version };
 fs.writeFileSync("package.json", JSON.stringify(manifest, null, 2) + "\\n");
 `,
-      { mode: 0o755 },
     );
     const terminal = person({ confirm: [true, true] });
-    const run = await cli(root, ["check", "--install"], { terminal, env: { PATH: bin } });
+    const run = await cli(root, ["check", "--install"], { terminal, env: { PATH: path } });
     expect(run.code).toBe(0);
     expect(run.out).toContain(
       "Aplicado:\n  .github/workflows/specty-check.yml\n  dependency-cruiser@18.7.0",

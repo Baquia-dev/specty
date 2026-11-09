@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
-import { execFileSync } from "node:child_process";
-import { mkdir, mkdtemp, readFile, realpath, symlink, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { CONFIG, cli, git, tempRepo, writeFiles } from "./support";
+import { toolFolder, writeTool } from "./tools";
 
 /** What the fake scanners report: no real scanner takes it for a secret. */
 const SECRET = "FAKE-SECRET-";
-const GIT = execFileSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).trim();
 
 type Flavor = "betterleaks-2" | "betterleaks-1" | "gitleaks" | "broken";
 
@@ -27,7 +25,7 @@ const fakeScanner = (flavor: Flavor, log: string) => `#!/usr/bin/env node
 const fs = require("node:fs");
 const path = require("node:path");
 const args = process.argv.slice(2);
-const files = fs.readdirSync(".", { recursive: true }).map(String).sort();
+const files = fs.readdirSync(".", { recursive: true }).map((file) => String(file).split(path.sep).join("/")).sort();
 fs.appendFileSync(${JSON.stringify(log)}, JSON.stringify({ args, cwd: process.cwd(), files }) + "\\n");
 const flavor = ${JSON.stringify(flavor)};
 if (flavor === "broken") { console.error("config: invalid regex"); process.exit(2); }
@@ -50,14 +48,10 @@ fs.writeFileSync(report, JSON.stringify(body));
 
 /** A PATH with only git, node and these fake scanners, and the log of their runs. */
 async function scanners(kinds: Partial<Record<"betterleaks" | "gitleaks", Flavor>>) {
-  const folder = await realpath(await mkdtemp(join(tmpdir(), "specty-scanners-")));
-  const bin = join(folder, "bin");
+  const { folder, bin, path } = await toolFolder("specty-scanners-");
   const log = join(folder, "runs.jsonl");
-  await mkdir(bin);
-  await symlink(GIT, join(bin, "git"));
-  await symlink(process.execPath, join(bin, "node"));
   for (const [name, flavor] of Object.entries(kinds)) {
-    await writeFile(join(bin, name), fakeScanner(flavor, log), { mode: 0o755 });
+    await writeTool(bin, name, fakeScanner(flavor, log));
   }
   const runs = async (): Promise<ScannerRun[]> =>
     (await readFile(log, "utf8").catch(() => ""))
@@ -70,7 +64,7 @@ async function scanners(kinds: Partial<Record<"betterleaks" | "gitleaks", Flavor
     if (found === undefined) throw new Error(`no scanner run ${index}`);
     return found;
   };
-  return { env: { PATH: bin, BETTERLEAKS_CONFIG: "", BETTERLEAKS_CONFIG_TOML: "" }, scan };
+  return { env: { PATH: path, BETTERLEAKS_CONFIG: "", BETTERLEAKS_CONFIG_TOML: "" }, scan };
 }
 
 async function repo(files: Readonly<Record<string, string>> = {}): Promise<string> {

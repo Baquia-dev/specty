@@ -77,7 +77,7 @@ Windows entra en la versión 0.1.0, y el run 42601745517 de la CI (main 2a1c7cc)
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/windows-programs.test.ts test/exec.test.ts test/exec-priority.test.ts test/init-usage.test.ts test/doctor-enter.test.ts && pnpm lint && pnpm typecheck && pnpm knip
   - type: fix
-- [ ] T2: Las herramientas falsas de los escáneres, en Windows también
+- [x] T2: Las herramientas falsas de los escáneres, en Windows también
   - files: packages/cli/test/tools.ts, packages/cli/test/check-code-rules.test.ts, packages/cli/test/check-secrets.test.ts, packages/cli/test/check-vulnerabilities.test.ts, packages/cli/test/check-install.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-code-rules.test.ts test/check-secrets.test.ts test/check-vulnerabilities.test.ts test/check-install.test.ts && pnpm lint
