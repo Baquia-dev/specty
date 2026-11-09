@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-el-resumen-del-panel-cumple-su-tiempo-tambien",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-el-resumen-del-panel-cumple-su-tiempo-tambien",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
   "revision": 2,
@@ -57,12 +57,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f1f75e83abf898f93288905954f5f3c64b8a8467",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:45:27.205Z",
       "doneAt": "2026-11-09T11:50:55.070Z",
-      "summary": "Un solo recuento por cambio sirve al periodo, a todos los tramos a la vez (bucketCounts) y a lo de cada cambio (ownCounts, sumado con addedUp en el mismo orden); la tendencia va en un recorrido, la memoria se lee una vez por vista y el resumen y Personas suman lo ya contado"
+      "summary": "Un solo recuento por cambio sirve al periodo, a todos los tramos a la vez (bucketCounts) y a lo de cada cambio (ownCounts, sumado con addedUp en el mismo orden); la tendencia va en un recorrido, la memoria se lee una vez por vista y el resumen y Personas suman lo ya contado",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "740e17a18c67021b8eb4b934f83e66959c4aa6d4",
+      "startedAt": "2026-11-09T11:50:55.413Z",
+      "doneAt": "2026-11-09T11:51:25.782Z",
+      "summary": "ARCHITECTURE dice que la tendencia la cuenta bucketCounts en un solo recorrido y que lo de cada cambio se cuenta una vez (ownCounts) y se suma para los indicadores y people (addedUp)"
     }
   },
   "pending": {
