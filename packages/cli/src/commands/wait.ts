@@ -8,7 +8,6 @@ import {
   scopeRequestedCard,
   unlocksApprovedTest,
   waitFolderGoneCard,
-  waitHeartbeat,
   waitsForPerson,
   waitTimeoutCard,
 } from "@baquia-dev/specty-core";
@@ -26,8 +25,6 @@ import { next } from "./next";
 export interface WaitOptions {
   readonly timeout?: string | number;
   readonly interval?: string | number;
-  /** How far apart the heartbeat lines go at most, in milliseconds; tests shorten it. */
-  readonly beatMs?: number;
 }
 
 interface WaitLimits {
@@ -76,7 +73,7 @@ export async function wait(session: Session, options: WaitOptions = {}): Promise
   const { id } = current.state;
   // Asked while the change's folder is there: closing the change removes it from under `wait`.
   const main = (await session.git.worktrees())[0]?.folder ?? session.root;
-  const { waitTimeoutSec, heartbeatSec, waitIntervalMs } = session.config.internal.waits;
+  const { waitTimeoutSec, waitIntervalMs } = session.config.internal.waits;
   const limits = parseWaitLimits(options, {
     timeoutSec: waitTimeoutSec,
     intervalMs: waitIntervalMs,
@@ -88,8 +85,6 @@ export async function wait(session: Session, options: WaitOptions = {}): Promise
     since: new Date(started).toISOString(),
     ...limits,
   });
-  // Gemini CLI cuts a command that writes nothing for 300 s: `heartbeatSec` is a minute by default.
-  const beat = heartbeat(session, id, limits, started, options.beatMs ?? heartbeatSec * 1000);
   while (true) {
     await sleep(limits.intervalMs);
     await mark.renew();
@@ -98,7 +93,6 @@ export async function wait(session: Session, options: WaitOptions = {}): Promise
       await mark.end("timeout");
       return waitTimeoutCard(id, limits.timeoutSec, now.cards);
     }
-    beat();
     if (await decided(now, id, mark)) return afterDecision(now, current.state, main);
   }
 }
@@ -167,26 +161,4 @@ async function decided(session: Session, id: string, mark: WaitMark): Promise<bo
   if (current !== undefined && isWaitingForHuman(current, session.delegated)) return false;
   await mark.end("decided");
   return true;
-}
-
-/**
- * Writes the heartbeat line on stderr when the next look would leave it more than `beatMs` from
- * the last one, in a tool that needs it (`waitHeartbeat`).
- */
-function heartbeat(
-  session: Session,
-  id: string,
-  limits: WaitLimits,
-  started: number,
-  beatMs: number,
-): () => void {
-  let last = started;
-  return () => {
-    const now = Date.now();
-    if (now + limits.intervalMs - last < beatMs) return;
-    const line = waitHeartbeat(id, (now - started) / 1000, limits.timeoutSec, session.cards);
-    if (line === undefined) return;
-    session.environment.io.err(line);
-    last = now;
-  };
 }

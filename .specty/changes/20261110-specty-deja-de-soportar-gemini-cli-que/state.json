@@ -39,11 +39,13 @@
   },
   "tasks": {
     "T1": {
-      "status": "active",
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
       "baseCommit": "b623346fd1e7924ea76a68b0b8e2ef337b943795",
-      "attempts": 0,
       "startedAt": "2026-11-09T16:58:49.622Z",
-      "scopeExtra": []
+      "doneAt": "2026-11-09T17:01:49.839Z",
+      "summary": "specty wait deja de escribir el latido: sin beats ni waitHeartbeat en cards/wait.ts (Gemini CLI queda en primer plano), sin heartbeat ni beatMs en commands/wait.ts; los tests del latido se van y uno comprueba que wait no escribe por stderr con ninguna herramienta"
     }
   },
   "pending": {

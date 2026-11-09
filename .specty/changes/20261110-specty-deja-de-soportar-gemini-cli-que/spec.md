@@ -59,7 +59,7 @@ La persona decidió el 2026-11-10 retirar Gemini CLI, porque Antigravity lo reem
 
 ## Tareas
 
-- [ ] T1: `specty wait` deja de escribir el latido
+- [x] T1: `specty wait` deja de escribir el latido
   - files: packages/core/src/cards/wait.ts, packages/core/src/cards/index.ts, packages/cli/src/commands/wait.ts, packages/core/test/cards/wait.test.ts, packages/cli/test/wait.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/wait.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/wait.test.ts
