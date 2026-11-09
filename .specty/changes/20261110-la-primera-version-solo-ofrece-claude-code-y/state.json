@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9608c747685affbcd6407f1c1f1910efdeb9a2aa",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:00:12.435Z",
       "doneAt": "2026-11-09T17:01:03.050Z",
-      "summary": "ENABLED_AGENTS (claude-code, antigravity) en capabilities.ts y exportada en core; agentChoices y noAgentWarning reciben los agentes ofrecidos, por defecto ENABLED_AGENTS; InitRefusal gana unavailable-tools con su tarjeta en es y en"
+      "summary": "ENABLED_AGENTS (claude-code, antigravity) en capabilities.ts y exportada en core; agentChoices y noAgentWarning reciben los agentes ofrecidos, por defecto ENABLED_AGENTS; InitRefusal gana unavailable-tools con su tarjeta en es y en",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "36d99349930ff22135a6751d02cc1fb9fcd67d51",
+      "startedAt": "2026-11-09T17:01:03.468Z",
+      "doneAt": "2026-11-09T17:02:46.117Z",
+      "summary": "Environment.agents y offeredAgents (por defecto ENABLED_AGENTS); init rechaza con unavailable-tools los nombres de --tools no ofrecidos; la ayuda nombra los habilitados; los tests de la CLI ofrecen todos y released corre como el comando publicado"
     }
   },
   "pending": {

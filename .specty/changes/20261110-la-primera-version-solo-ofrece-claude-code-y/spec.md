@@ -69,7 +69,7 @@ La primera versión publicada (0.1.0, beta pública) sale solo con Claude Code y
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/enabled-agents.test.ts test/cards/init.test.ts
   - type: feat
-- [ ] T2: CLI: `init --tools` rechaza los agentes que esta versión no ofrece
+- [x] T2: CLI: `init --tools` rechaza los agentes que esta versión no ofrece
   - files: packages/cli/src/session.ts, packages/cli/src/commands/init.ts, packages/cli/src/program.ts, packages/cli/test/support.ts, packages/cli/test/init-tools.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-tools.test.ts test/uninstall.test.ts test/opencode-install.test.ts
