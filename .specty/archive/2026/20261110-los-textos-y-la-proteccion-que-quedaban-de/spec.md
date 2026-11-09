@@ -68,3 +68,21 @@ kind: standard
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards && pnpm lint && pnpm typecheck && pnpm sources && pnpm knip
   - type: chore
+
+## Cierre
+
+### Resumen
+
+Se van los restos de Gemini CLI que solo existían por su módulo de agente: el guard deja de proteger `.gemini/settings.json`, que pasa a ser un archivo más de la persona (los hooks de Antigravity y Devin siguen protegidos); `specty uninstall` deja de decir que `GEMINI.md` importa `AGENTS.md` y no lo toca (`GEMINI_POINTER` y `geminiPointerStaysLine` desaparecen); y core deja de tener y de exportar los textos de su instalación (`geminiPointerLine`, `geminiTrustWarning`, `geminiSandboxLine`, `geminiSandboxVersionedWarning`) y sus códigos de `doctor` (`gemini-guard`, `no-gemini-guard`, `gemini-hooks`). ARCHITECTURE deja de nombrarlos y el ADR 0018 lleva la nota de que Gemini CLI se retiró el 2026-11-10 en favor de Antigravity. Con este cambio termina el retiro de Gemini CLI en cinco cambios consecutivos.
+
+### Desviaciones
+
+- El ADR 0013 no lleva nota: no nombra a Gemini CLI, solo la carpeta de Antigravity (`~/.gemini/antigravity-cli`).
+
+### Decisiones
+
+- Los tests que comprueban que Gemini CLI ya no está (la tabla de capacidades, la detección por `GEMINI_CLI`, la orden de `new`, las exclusiones, el guard y `uninstall`) se quedan como criterios de los cambios del retiro.
+
+### Pendientes
+
+- Ninguno.

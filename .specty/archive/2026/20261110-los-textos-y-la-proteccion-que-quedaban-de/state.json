@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261110-los-textos-y-la-proteccion-que-quedaban-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261110-los-textos-y-la-proteccion-que-quedaban-de",
   "baseCommit": "df077b8f7ce2b7b8f8472564f2fbea20f05d5df9",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:502ac52b436b58d0fb5d206d1347604df76ec127a99c0e6cc06f06b7d4964538",
@@ -53,12 +53,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e2bf59abfa156fc9b00b676e72c0e596463c3a1d",
+      "attempts": 1,
       "startedAt": "2026-11-09T22:03:49.733Z",
       "doneAt": "2026-11-09T22:04:47.615Z",
-      "summary": "Core deja de tener los textos de instalación de Gemini CLI (cards/install.ts) y sus códigos de doctor (doctor.ts, doctor-agents.ts), ni los exporta; el ADR 0018 lleva la nota de que Gemini CLI se retiró el 2026-11-10"
+      "summary": "Core deja de tener los textos de instalación de Gemini CLI (cards/install.ts) y sus códigos de doctor (doctor.ts, doctor-agents.ts), ni los exporta; el ADR 0018 lleva la nota de que Gemini CLI se retiró el 2026-11-10",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,5 +69,6 @@
     "A": 2,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-11-09T22:04:55.847Z"
 }
