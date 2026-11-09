@@ -62,14 +62,15 @@ describe("a write in a ghost folder", () => {
 
   it("AC1: is denied from a command that writes or deletes, in `.worktrees/` or the sibling folder", async () => {
     const { root, folder } = await cancelled();
-    const written = await claude(root, "Bash", { command: `echo x > ${folder}/src/app.ts` });
+    // Between quotes: outside them, bash drops the `\` of a Windows path.
+    const written = await claude(root, "Bash", { command: `echo x > '${folder}/src/app.ts'` });
     expect(written.code).toBe(2);
     expect(written.err).toContain(GHOST);
-    const sibling = `${root}.worktrees/viejo`;
-    const removed = await claude(root, "Bash", { command: `rm -rf ${sibling}/src` });
+    const sibling = join(`${root}.worktrees`, "viejo");
+    const removed = await claude(root, "Bash", { command: `rm -rf '${sibling}/src'` });
     expect(removed.code).toBe(2);
     expect(removed.err).toContain(
-      `\`${sibling}/src\` está en \`${sibling}\`, que ya no es la carpeta de ningún cambio:`,
+      `\`${join(sibling, "src")}\` está en \`${sibling}\`, que ya no es la carpeta de ningún cambio:`,
     );
     const patch = ["*** Begin Patch", `*** Add File: ${folder}/src/x.ts`, "+x", "*** End Patch"];
     const patched = await codex(root, "s1", {
@@ -109,7 +110,7 @@ describe("a write in a ghost folder", () => {
       tool_input: { command: patch.join("\n") },
     });
     expect(denied.code).toBe(2);
-    expect(denied.err).toContain(`\`${ghost}/src/x.ts\` está en \`${ghost}\`, ${GHOST}`);
+    expect(denied.err).toContain(`\`${join(ghost, "src/x.ts")}\` está en \`${ghost}\`, ${GHOST}`);
     expect(denied.err).not.toContain(folder);
   });
 

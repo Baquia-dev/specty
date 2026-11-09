@@ -297,9 +297,10 @@ describe("the guard and the other worktrees", () => {
     expect(write.err).toContain(
       `SIGUIENTE: trabaja solo con los archivos de esta carpeta; ese cambio se edita desde una sesión abierta en \`${sibling}\`.`,
     );
-    const shell = await claude(root, "Bash", { command: `echo x > ${sibling}/src/app.ts` });
+    // Between quotes: outside them, bash drops the `\` of a Windows path.
+    const shell = await claude(root, "Bash", { command: `echo x > '${sibling}/src/app.ts'` });
     expect(shell.err).toContain("está en otra worktree");
-    const removal = await claude(root, "Bash", { command: `rm ${sibling}/src/app.ts` });
+    const removal = await claude(root, "Bash", { command: `rm '${sibling}/src/app.ts'` });
     expect(removal.err).toContain("está en otra worktree");
     const inside = await claude(root, "Edit", { file_path: join(nested, "src/app.ts") });
     expect(inside.err).toContain(`está en otra worktree (\`${nested}\`): es de otro cambio.`);

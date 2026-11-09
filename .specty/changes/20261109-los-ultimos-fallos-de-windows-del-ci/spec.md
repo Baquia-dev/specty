@@ -65,7 +65,7 @@ Tras seis cambios de Windows, el run 42616529185 de la CI (main 5ba0e12) deja en
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/enforce/removals.test.ts test/remove-change-folder.test.ts && pnpm lint && pnpm typecheck
   - type: fix
-- [ ] T3: Los tests del guard con las rutas entre comillas
+- [x] T3: Los tests del guard con las rutas entre comillas
   - files: packages/cli/test/enforce.test.ts, packages/cli/test/ghost-folders.test.ts, packages/cli/test/worktrees.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enforce.test.ts test/ghost-folders.test.ts test/worktrees.test.ts && pnpm lint

@@ -154,7 +154,8 @@ describe("agent guard", () => {
     expect(inside.code).toBe(2);
     expect(inside.err).toContain("src/app.ts");
     expect((await bash("cd /tmp && echo hi > app.ts")).code).toBe(0);
-    expect((await bash(`cd src && echo hi > ${root}/../outside.ts`)).code).toBe(0);
+    // Between quotes: outside them, bash drops the `\` of a Windows path.
+    expect((await bash(`cd src && echo hi > '${root}/../outside.ts'`)).code).toBe(0);
     expect((await bash("S=/tmp/x && cd $S && cat > a.css <<'EOF'\nx\nEOF")).code).toBe(0);
     expect((await bash('echo hi > "$TMPDIR/a.ts"')).code).toBe(0);
   });

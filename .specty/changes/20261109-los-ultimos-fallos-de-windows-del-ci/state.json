@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "258deadbf8252456106cd35f71d59133e8f81adf",
+      "attempts": 1,
       "startedAt": "2026-11-09T13:23:54.310Z",
       "doneAt": "2026-11-09T13:24:33.390Z",
-      "summary": "removals.ts compara el final de la ruta de cada worktree con endsWithName, por componentes enteros y, en Windows, con \\ o /; recibe las rutas de la plataforma salvo en los tests, como fromGit. ARCHITECTURE lo dice."
+      "summary": "removals.ts compara el final de la ruta de cada worktree con endsWithName, por componentes enteros y, en Windows, con \\ o /; recibe las rutas de la plataforma salvo en los tests, como fromGit. ARCHITECTURE lo dice.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9bf9e20e70159eb9adbb3db5a3557981190c1166",
+      "startedAt": "2026-11-09T13:24:33.774Z",
+      "doneAt": "2026-11-09T13:25:41.884Z",
+      "summary": "enforce, ghost-folders y worktrees meten las rutas del repositorio entre comillas simples en los comandos de bash (sin ellas, bash quita la \\ de una ruta de Windows) y esperan la ruta como la da la plataforma, con join."
     }
   },
   "pending": {
