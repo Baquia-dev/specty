@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261110-la-primera-version-solo-ofrece-claude-code-y",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261110-la-primera-version-solo-ofrece-claude-code-y",
   "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:76ee502fe0fdd6f61e6c8bec8adc501a2436c188ba2224a7a3b3b3847916245f",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "15b3cc3d3a321fb73ddac2499cfb2d5c8e3234d8",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:17:53.129Z",
       "doneAt": "2026-11-09T17:18:30.092Z",
-      "summary": "README.md, README.es.md y PRODUCT.md muestran solo Claude Code y Antigravity, con Codex, OpenCode, Cursor y Devin (Windsurf) más adelante; ARCHITECTURE §10 explica ENABLED_AGENTS, qué hace init con ellos y cómo siguen probándose los demás"
+      "summary": "README.md, README.es.md y PRODUCT.md muestran solo Claude Code y Antigravity, con Codex, OpenCode, Cursor y Devin (Windsurf) más adelante; ARCHITECTURE §10 explica ENABLED_AGENTS, qué hace init con ellos y cómo siguen probándose los demás",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-09T17:18:43.525Z",
   "lockedTests": {
     "packages/cli/test/support.ts": "sha256:f3b8a2a1580b3286d6aedc2aee7c819e5231c19bb47658343329748233b0c80c",
     "packages/core/test/cards/init.test.ts": "sha256:a046525a738bec49adbd671238559e6f60f1d5e4c97893dff20fb7a50a0fa13f",

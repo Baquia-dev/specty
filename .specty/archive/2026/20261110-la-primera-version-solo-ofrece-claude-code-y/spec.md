@@ -89,3 +89,26 @@ La primera versión publicada (0.1.0, beta pública) sale solo con Claude Code y
 
 - R1: Otro cambio quita Gemini CLI en paralelo y toca los mismos archivos (capacidades, README, ARCHITECTURE). Mitigación: las líneas nuevas van al final de cada lista y los textos no nombran a Gemini CLI; al incorporar main se conservan las dos intenciones.
 - R2: Un test de la CLI que ejecuta `init` sin `cli` de `test/support.ts` y con un agente deshabilitado fallaría. Mitigación: los que construyen su entorno llaman a `installHooks`, que sigue instalando cualquiera; `accept` ejecuta la suite completa.
+
+## Cierre
+
+### Resumen
+
+`ENABLED_AGENTS` (`claude-code`, `antigravity`), en `core/src/capabilities.ts` junto a la tabla de capacidades, dice qué agentes ofrece esta versión. `specty init` solo pregunta por ellos, solo detecta esos dos (por sus archivos y por el agente que lo ejecuta) y solo los instala, también con `--mcp`; sin nadie que responda instala el guard de Claude Code con un aviso que nombra solo los dos. `init --tools` rechaza, sin escribir nada y en es o en, cualquier nombre que no se ofrece, de un agente deshabilitado o de ninguno, con los valores que acepta. El entorno de la CLI puede ofrecer otros agentes (`Environment.agents`), algo que solo dan las pruebas: `cli` de `test/support.ts` los ofrece todos, para que los módulos de Codex, OpenCode, Cursor y Devin sigan probados, y `released` corre como el comando publicado. README, README.es, PRODUCT y ARCHITECTURE §10 dicen que la 0.1.0 ofrece Claude Code y Antigravity y que Codex, OpenCode, Cursor y Devin (Windsurf) llegarán más adelante.
+
+### Desviaciones
+
+- `packages/cli/test/init-agent-stop.test.ts` entró en el alcance (aprobado solo, por ser un test): su `initWith` llama a `runCli` sin `cli` y con `opencode` en `--tools`, así que ahora ofrece todos los agentes como `cli`; sus aserciones no cambian.
+- El cambio se partió en dos para no pasar del tamaño L: `doctor` y la suite de cumplimiento con los agentes habilitados, con ARCHITECTURE §16 y §18, van en el cambio siguiente.
+
+### Decisiones
+
+- `ENABLED_AGENTS` no es un campo de `AGENT_CAPABILITIES`: los tests de la tabla tratan cada campo, salvo `markers`, como una capacidad con estado.
+- Los agentes ofrecidos se inyectan en el entorno, como la terminal, y no con una variable de entorno: ningún usuario puede habilitar un agente que la versión no ofrece.
+- `agentChoices` y `noAgentWarning` toman los ofrecidos con `ENABLED_AGENTS` por defecto, y los tests de antes que esperaban todos los agentes pasan ahora todos o esperan los habilitados.
+- Gemini CLI no se anuncia como «llegará más adelante»: otro cambio lo quita.
+
+### Pendientes
+
+- `doctor` y la suite de cumplimiento con los agentes habilitados, y ARCHITECTURE §16 y §18: el cambio siguiente.
+- Las órdenes para retomar un cambio con cada agente en la UI (`packages/ui/src/change/resume-hints.ts`) siguen nombrando a Codex, OpenCode, Cursor y Gemini CLI.
