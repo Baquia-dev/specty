@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261110-la-primera-version-solo-ofrece-claude-code-y",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261110-la-primera-version-solo-ofrece-claude-code-y",
   "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bc5e5c9369d9a39e475ed2fce6ef3364c9a8268e",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:02:46.532Z",
       "doneAt": "2026-11-09T17:17:52.725Z",
-      "summary": "agentsToInstall solo se queda con los agentes ofrecidos de los detectados y del que ejecuta init, y pasa los ofrecidos a la pregunta y al aviso; init --mcp recibe esa lista; init-agent-stop.test.ts ofrece todos al llamar a runCli, como cli"
+      "summary": "agentsToInstall solo se queda con los agentes ofrecidos de los detectados y del que ejecuta init, y pasa los ofrecidos a la pregunta y al aviso; init --mcp recibe esa lista; init-agent-stop.test.ts ofrece todos al llamar a runCli, como cli",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "15b3cc3d3a321fb73ddac2499cfb2d5c8e3234d8",
+      "startedAt": "2026-11-09T17:17:53.129Z",
+      "doneAt": "2026-11-09T17:18:30.092Z",
+      "summary": "README.md, README.es.md y PRODUCT.md muestran solo Claude Code y Antigravity, con Codex, OpenCode, Cursor y Devin (Windsurf) más adelante; ARCHITECTURE §10 explica ENABLED_AGENTS, qué hace init con ellos y cómo siguen probándose los demás"
     }
   },
   "pending": {

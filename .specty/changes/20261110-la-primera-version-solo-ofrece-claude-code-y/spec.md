@@ -79,7 +79,7 @@ La primera versión publicada (0.1.0, beta pública) sale solo con Claude Code y
   - ac: AC1, AC2, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enabled-agents.test.ts test/init-agents.test.ts test/mcp-install.test.ts && pnpm typecheck
   - type: feat
-- [ ] T4: Documentación: los dos agentes de la 0.1.0
+- [x] T4: Documentación: los dos agentes de la 0.1.0
   - files: README.md, README.es.md, PRODUCT.md, docs/ARCHITECTURE.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts

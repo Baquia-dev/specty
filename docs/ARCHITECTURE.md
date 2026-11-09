@@ -508,6 +508,8 @@ Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decis
 - Prueba de extremo a extremo (Cursor, Devin (Windsurf), Antigravity): su modelo va siempre por el servidor de la herramienta, así que no se puede simular.
 <!-- specty:capabilities:end -->
 
+**Agentes habilitados en esta versión.** La 0.1.0 ofrece solo Claude Code y Antigravity (la app y su CLI, `agy`): son los de `ENABLED_AGENTS`, en `core/src/capabilities.ts`, junto a la tabla. `init` solo pregunta por ellos, solo los detecta, por los archivos del repositorio y por el agente que lo ejecuta, y solo los instala, también con `--mcp`; `init --tools` rechaza cualquier otro nombre, de otro agente o de ninguno, sin escribir nada y con los valores que acepta. Codex, OpenCode, Cursor y Devin (Windsurf) llegarán más adelante: su módulo, su instalación y su guard siguen en el código, el guard sigue respondiendo a sus hooks donde ya estén instalados y `uninstall` los quita. Sus tests siguen corriendo: el entorno de la CLI (`Environment.agents`, que solo dan las pruebas, sin variable de entorno ni opción) ofrece en ellos todos los agentes, y `released` de `cli/test/support.ts` corre como el comando publicado.
+
 **Soporte de hooks por herramienta** (revisado el 2026-10-21; se vuelve a verificar al implementar cada adaptador):
 
 | Herramienta | Evento previo a la acción | Configuración | Estado |
