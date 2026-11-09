@@ -61,7 +61,7 @@ La suite de cumplimiento (`evals/`) lanza Antigravity CLI (`agy`) con una regla 
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/antigravity-init.test.ts && pnpm lint
   - type: feat
-- [ ] T2: La suite le pasa a agy las reglas que escribió la instalación
+- [x] T2: La suite le pasa a agy las reglas que escribió la instalación
   - files: evals/test/antigravity.test.ts, evals/src/agents.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/antigravity.test.ts && pnpm typecheck && pnpm lint

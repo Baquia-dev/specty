@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "91af9821136c728f0e948b6837b64514b5134266",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:17:00.588Z",
       "doneAt": "2026-11-09T11:17:43.179Z",
-      "summary": "La suite crea una carpeta del CLI de Antigravity propia por repositorio (antigravityCliFolder) antes del init para Antigravity (installSpecty), y el entorno de Specty apunta ahí SPECTY_ANTIGRAVITY_CLI_DIR; escenarios y experimentos instalan con installSpecty"
+      "summary": "La suite crea una carpeta del CLI de Antigravity propia por repositorio (antigravityCliFolder) antes del init para Antigravity (installSpecty), y el entorno de Specty apunta ahí SPECTY_ANTIGRAVITY_CLI_DIR; escenarios y experimentos instalan con installSpecty",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "27c67dcd051dbb7969acccbb76ee1c1c63bdf0b7",
+      "startedAt": "2026-11-09T11:17:43.515Z",
+      "doneAt": "2026-11-09T11:19:09.025Z",
+      "summary": "agySettings pasa en --settings exactamente el permissions.allow que la instalación escribió en la carpeta del CLI de la suite para ese repositorio (solo textos); sin esos ajustes o si no se analizan, sin permissions; toolPermission y trustedWorkspaces igual"
     }
   },
   "pending": {
