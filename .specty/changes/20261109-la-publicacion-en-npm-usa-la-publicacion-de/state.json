@@ -6,6 +6,13 @@
   "branch": "specty/20261109-la-publicacion-en-npm-usa-la-publicacion-de",
   "baseCommit": "e8dfaf3d64a387fc8f9b075274ebcbd769357ac2",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6b67aed9eb644386dc02ea15f87701c55ea78198b42b5bc1d4932288825655e6",
+    "at": "2026-11-09T15:50:43.117Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e37b49256aa735a311feeebc76834a8f2fc1e528",
+      "startedAt": "2026-11-09T15:50:44.628Z",
+      "doneAt": "2026-11-09T15:51:53.197Z",
+      "summary": "release.yml publica con la publicación de confianza: npm ^11.5.1 y `npm publish` sin NPM_TOKEN ni env, tras la etiqueta y pnpm check; workflows.test.ts lo fija"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 3,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6b67aed9eb644386dc02ea15f87701c55ea78198b42b5bc1d4932288825655e6",
-    "at": "2026-11-09T15:50:43.117Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

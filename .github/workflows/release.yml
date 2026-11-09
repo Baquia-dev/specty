@@ -1,4 +1,7 @@
-# Publishes @baquia-dev/specty to npm, with provenance, when a version tag (`v<version>`) is pushed.
+# Publishes @baquia-dev/specty to npm when a version tag (`v<version>`) is pushed, with npm's
+# trusted publishing: no token, and npm records the package's provenance on its own. The first
+# version is published by hand; this workflow is then set as the package's trusted publisher on
+# npmjs.com (repository Baquia-dev/specty, workflow `release.yml`, `npm publish` allowed).
 name: Release
 
 on:
@@ -7,7 +10,7 @@ on:
 
 permissions:
   contents: read
-  # Provenance: npm records which workflow, commit and repository built the package.
+  # Trusted publishing: npm trades the workflow's OIDC token for a short-lived one to publish.
   id-token: write
 
 jobs:
@@ -23,14 +26,16 @@ jobs:
           node-version: 22
           cache: pnpm
           registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or later, newer than the one Node 22 brings.
+      - name: npm with trusted publishing
+        run: npm install -g npm@^11.5.1
       - run: pnpm install --frozen-lockfile
       - name: The tag is the package's version
         working-directory: packages/cli
         run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
       - run: pnpm check
-      # `prepack` builds the UI and puts it next to the bundle.
+      # `prepack` builds the UI and puts it next to the bundle; `publishConfig` makes the package
+      # public and asks for provenance.
       - name: Publish
         working-directory: packages/cli
-        run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish

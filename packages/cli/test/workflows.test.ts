@@ -21,19 +21,17 @@ interface Workflow {
         readonly run?: string;
         readonly uses?: string;
         readonly with?: Record<string, unknown>;
+        readonly env?: Record<string, string>;
         readonly "working-directory"?: string;
       }[];
     }
   >;
 }
 
-const workflow = async (name: string): Promise<Workflow> =>
-  parse(
-    await readFile(
-      join(import.meta.dirname, "..", "..", "..", ".github", "workflows", name),
-      "utf8",
-    ),
-  );
+const workflowText = (name: string): Promise<string> =>
+  readFile(join(import.meta.dirname, "..", "..", "..", ".github", "workflows", name), "utf8");
+
+const workflow = async (name: string): Promise<Workflow> => parse(await workflowText(name));
 
 const runs = (steps: Workflow["jobs"][string]["steps"]) => steps.flatMap((step) => step.run ?? []);
 
@@ -84,18 +82,24 @@ describe("the CI", () => {
 });
 
 describe("the release", () => {
-  it("publishes with provenance only from a tag that matches the version, after pnpm check (AC2, AC3)", async () => {
+  it("AC1: publishes with trusted publishing only from a tag that matches the version, after pnpm check", async () => {
     const release = await workflow("release.yml");
     expect(release.on).toEqual({ push: { tags: ["v*"] } });
+    // Trusted publishing: npm trades the workflow's OIDC token for one to publish.
     expect(release.permissions).toEqual({ contents: "read", "id-token": "write" });
     const steps = release.jobs.publish?.steps ?? [];
     const commands = runs(steps);
     const at = (text: string) => commands.findIndex((command) => command.includes(text));
     expect(at('= "$GITHUB_REF_NAME"')).toBeGreaterThan(at("pnpm install --frozen-lockfile"));
     expect(at("pnpm check")).toBeGreaterThan(at('= "$GITHUB_REF_NAME"'));
-    expect(at("npm publish --provenance --access public")).toBeGreaterThan(at("pnpm check"));
-    const publish = steps.find((step) => step.run?.startsWith("npm publish"));
+    // Trusted publishing needs npm 11.5.1 or later, newer than Node 22's.
+    expect(at("npm install -g npm@^11.5.1")).toBeGreaterThanOrEqual(0);
+    expect(commands.indexOf("npm publish")).toBeGreaterThan(at("pnpm check"));
+    expect(commands.indexOf("npm publish")).toBeGreaterThan(at("npm install -g npm@^11.5.1"));
+    const publish = steps.find((step) => step.run === "npm publish");
     expect(publish?.["working-directory"]).toBe("packages/cli");
+    expect(steps.flatMap((step) => Object.keys(step.env ?? {}))).toEqual([]);
+    expect(await workflowText("release.yml")).not.toMatch(/NPM_TOKEN|NODE_AUTH_TOKEN|secrets\./);
     const pkg = JSON.parse(await readFile(join(import.meta.dirname, "..", "package.json"), "utf8"));
     expect(pkg.private).toBeUndefined();
     expect(pkg.publishConfig).toEqual({ access: "public", provenance: true });

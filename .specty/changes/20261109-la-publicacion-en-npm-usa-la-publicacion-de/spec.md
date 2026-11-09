@@ -45,7 +45,7 @@ La primera versión (0.1.0, beta pública) de `@baquia-dev/specty` la publica la
 
 ## Tareas
 
-- [ ] T1: `release.yml` publica con la publicación de confianza
+- [x] T1: `release.yml` publica con la publicación de confianza
   - files: .github/workflows/release.yml, packages/cli/test/workflows.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/workflows.test.ts && pnpm lint
