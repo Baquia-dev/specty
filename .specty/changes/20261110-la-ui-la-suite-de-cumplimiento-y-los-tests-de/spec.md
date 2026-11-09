@@ -68,7 +68,7 @@ Tercero de los cambios consecutivos que retiran Gemini CLI, que Antigravity reem
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/report.test.ts
   - type: chore
-- [ ] T3: Los tests de core usan otra herramienta de ejemplo
+- [x] T3: Los tests de core usan otra herramienta de ejemplo
   - files: packages/core/test/cards/epic.test.ts, packages/core/test/cards/idle-subagents.test.ts, packages/core/test/cards/orphans-subagents.test.ts, packages/core/test/cards/rejoin.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts test/cards/idle-subagents.test.ts test/cards/orphans-subagents.test.ts test/cards/rejoin.test.ts

@@ -187,7 +187,7 @@ describe("the card of an epic whose tool hands its slices to subagents", () => {
     expect(today).toContain(
       `SIGUIENTE: sigue con el corte C2 en su carpeta, ${FOLDER}: ejecuta \`specty next\` allí.`,
     );
-    for (const tool of ["gemini-cli", "windsurf", "copilot"] as const) {
+    for (const tool of ["windsurf", "copilot"] as const) {
       expect(card(change, { ...ES, tool })).toBe(today);
     }
     expect(card(change, { ...CLAUDE, subagents: false })).toBe(today);
