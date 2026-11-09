@@ -62,7 +62,7 @@ Windows entra en la 0.1.0, y el run 42601745517 de la CI (main 2a1c7cc) tiene un
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/io/git-folders.test.ts test/git-paths.test.ts test/git-memo.test.ts test/worktree-reads.test.ts test/worktrees.test.ts test/cancel-folder.test.ts test/epic-return.test.ts && pnpm lint && pnpm typecheck
   - type: fix
-- [ ] T2: Los tests comparan la lista de worktrees y la carpeta de las copias en la forma de la plataforma
+- [x] T2: Los tests comparan la lista de worktrees y la carpeta de las copias en la forma de la plataforma
   - files: packages/cli/test/support.ts, packages/cli/test/prune-commands.test.ts, packages/cli/test/prune-orphans.test.ts, packages/cli/test/restore.test.ts, packages/cli/test/worktree-hooks.test.ts, packages/cli/test/init-reversible.test.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-commands.test.ts test/prune-orphans.test.ts test/restore.test.ts test/worktree-hooks.test.ts test/init-reversible.test.ts && pnpm lint && pnpm typecheck

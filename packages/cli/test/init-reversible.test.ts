@@ -51,7 +51,7 @@ describe("a reversible init", () => {
     const installed = await cli(root, ["init", "--language", "es", "--tools", "claude-code"]);
     const folder = /Copia de lo que había antes: (.+)\.\n/.exec(installed.out)?.[1] ?? "";
     expect(folder).toContain(join(root, ".git"));
-    expect(folder).toContain("/specty/backups/");
+    expect(folder).toContain(join("specty", "backups"));
     expect(await readFile(join(folder, "repo/AGENTS.md"), "utf8")).toBe("# App\n\nReglas mías.\n");
     expect(await read(root, "AGENTS.md")).toContain("<!-- specty:begin id=flow -->");
     const manifest = JSON.parse(await readFile(join(folder, "manifest.json"), "utf8"));

@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "94abbe207eb03abf13be6d3e9d6ca22f3d857447",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:20:21.551Z",
       "doneAt": "2026-11-09T11:28:56.944Z",
-      "summary": "Nuevo io/git-folders.ts: fromGit (ruta de git en la forma de la plataforma), parseWorktrees (lista de worktrees con fromGit) y startedIn (git arranca en la carpeta de -C, sin -C). git.ts los usa en findRoot, openRepository, gitPaths, worktrees y el runner."
+      "summary": "Nuevo io/git-folders.ts: fromGit (ruta de git en la forma de la plataforma), parseWorktrees (lista de worktrees con fromGit) y startedIn (git arranca en la carpeta de -C, sin -C). git.ts los usa en findRoot, openRepository, gitPaths, worktrees y el runner.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "30e15fe764c306a2225fb97e91ed190223069f85",
+      "startedAt": "2026-11-09T11:28:57.324Z",
+      "doneAt": "2026-11-09T11:29:57.495Z",
+      "summary": "support.ts gana worktreeList (la lista de worktrees de git con cada carpeta en la forma de la plataforma); prune-commands, prune-orphans, restore y worktree-hooks la usan en vez de la salida tal cual de git, e init-reversible busca la carpeta de las copias con join."
     }
   },
   "pending": {

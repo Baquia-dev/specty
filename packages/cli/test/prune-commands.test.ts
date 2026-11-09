@@ -3,7 +3,7 @@ import { rm } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
-import { APP, cli, git, inWorktree, person, tempRepo, toClosing } from "./support";
+import { APP, cli, git, inWorktree, person, tempRepo, toClosing, worktreeList } from "./support";
 
 /** A record git keeps of a worktree whose folder is gone, made with git alone; its folder. */
 async function staleRecord(root: string, name: string): Promise<string> {
@@ -13,7 +13,7 @@ async function staleRecord(root: string, name: string): Promise<string> {
   return folder;
 }
 
-const listed = (root: string) => git(root, "worktree", "list", "--porcelain");
+const listed = (root: string) => worktreeList(root);
 
 describe("the commands that clean up when they end", () => {
   it("AC4: `new` forgets the records of worktrees whose folder is gone", async () => {

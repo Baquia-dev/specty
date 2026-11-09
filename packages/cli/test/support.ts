@@ -2,7 +2,7 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, readFile, realpath, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { makeChangeId } from "@baquia-dev/specty-core";
 import { expect } from "vitest";
 import { runCli } from "../src/program";
@@ -82,6 +82,17 @@ export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
 
 export function git(cwd: string, ...args: string[]): string {
   return execFileSync("git", args, { cwd, env: testEnv(), encoding: "utf8" }).trim();
+}
+
+/**
+ * `git worktree list --porcelain` in `cwd`, with each folder as the platform writes it, as the
+ * folders of `node:path` are: on Windows git writes `C:/…` where they have `C:\…`.
+ */
+export function worktreeList(cwd: string): string {
+  return git(cwd, "worktree", "list", "--porcelain").replace(
+    /^worktree (.+)$/gm,
+    (_line, folder: string) => `worktree ${resolve(folder)}`,
+  );
 }
 
 /** Runs git and returns its status and output instead of throwing (for blocked commits). */
