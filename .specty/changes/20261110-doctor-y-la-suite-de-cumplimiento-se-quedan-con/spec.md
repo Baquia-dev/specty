@@ -58,7 +58,7 @@ Sigue a «La primera versión solo ofrece Claude Code y Antigravity», que dejó
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-disabled.test.ts test/cards/doctor.test.ts
   - type: feat
-- [ ] T2: CLI: `doctor` calla de los deshabilitados y avisa de los instalados
+- [x] T2: CLI: `doctor` calla de los deshabilitados y avisa de los instalados
   - files: packages/cli/src/install/agents.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/doctor-disabled.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-disabled.test.ts test/install.test.ts test/doctor-enter.test.ts

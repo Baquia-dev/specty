@@ -59,6 +59,14 @@ export function hasGuard(text: string | undefined, tool: GuardTool): boolean {
   return text?.includes(`guard --tool ${tool}`) === true;
 }
 
+/** The first of `AGENT_HOOK_FILES` in `root` that has Specty's guard for `tool`, if any has it. */
+export async function guardFile(root: string, tool: GuardTool): Promise<string | undefined> {
+  for (const file of AGENT_HOOK_FILES) {
+    if (hasGuard(await readText(join(root, file)), tool)) return file;
+  }
+  return undefined;
+}
+
 /** Whether Claude Code's settings in `root` send `EnterWorktree` by name to the change's folder. */
 export async function entersByName(root: string): Promise<boolean> {
   const settings = [
