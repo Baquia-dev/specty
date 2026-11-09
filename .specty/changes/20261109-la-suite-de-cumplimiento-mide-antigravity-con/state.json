@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-la-suite-de-cumplimiento-mide-antigravity-con",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-la-suite-de-cumplimiento-mide-antigravity-con",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
   "revision": 2,
@@ -54,6 +54,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-09T11:16:55.155Z"
+  "lockedTests": {
+    "evals/test/antigravity-init.test.ts": "sha256:456c5114806b6441f792279cf560e72b482e78d165be342bcd552bb961ce127d",
+    "evals/test/antigravity.test.ts": "sha256:fc11c9f7c6c8a35ddcd97cfcdf019946abba33d59d72af9aa35f8f89bfa911eb"
+  }
 }
