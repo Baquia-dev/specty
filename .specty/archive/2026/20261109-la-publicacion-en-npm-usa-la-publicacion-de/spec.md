@@ -59,3 +59,27 @@ La primera versión (0.1.0, beta pública) de `@baquia-dev/specty` la publica la
 ## Riesgos
 
 - R1: La publicación de confianza solo se comprueba de verdad al subir la primera etiqueta tras la 0.1.0. Mitigación: el workflow sigue el ejemplo de la documentación de npm, y si npm responde ENEEDAUTH, su guía de problemas pide revisar el nombre del workflow y el `id-token: write`, que el test fija.
+
+## Cierre
+
+### Resumen
+
+`.github/workflows/release.yml` publica `@baquia-dev/specty` con la publicación de confianza de npm: con `id-token: write` y sin `NPM_TOKEN` ni ningún `env`, tras comprobar que la etiqueta es la versión del paquete y tras `pnpm check`, actualiza npm a `^11.5.1` (el de Node 22 no la admite) y ejecuta `npm publish` en `packages/cli`; `publishConfig` pone el acceso público y la procedencia, que npm genera sola. `workflows.test.ts` fija ese orden, el npm, que ningún paso tiene `env` y que el archivo no nombra `NPM_TOKEN`, `NODE_AUTH_TOKEN` ni secretos (AC1). ARCHITECTURE.md, en «CI y publicación», explica la publicación de confianza y los tres pasos de la persona: la primera versión a mano con `npm publish --provenance=false`, el publicador de confianza en npmjs.com (Baquia-dev/specty, `release.yml`, `npm publish` permitido) y luego una etiqueta `v<versión>` por versión (AC2, comprobado leyéndolo). `npm publish --dry-run --provenance=false` en `packages/cli`, sin `npm login`, sale con 0 y daría `@baquia-dev/specty` 0.1.0, 156 archivos (4,0 MB): README.md, `dist/LICENSE`, `dist/NOTICE`, `dist/specty.mjs` con sus chunks y la UI en `dist/ui/` (AC3).
+
+Este cambio deja resueltas P390, P392, P393, P398, P399, P400, P403, P405, P407 y P408, que pedían confirmar en el CI los cambios de Windows, de macOS y del panel: el run 42639128089 de GitHub (main e8dfaf3) pasó entero en windows-latest, en ubuntu con Node 22 y 24 y en macos, con Windows ya sin `continue-on-error`.
+
+### Desviaciones
+
+- Ninguna respecto a las tareas.
+
+### Decisiones
+
+- npm se actualiza en el job con `npm install -g npm@^11.5.1` y no cambiando a Node 24: el job sigue con el Node 22 que fija `engines` y que prueba el CI, y el rango asegura la versión mínima sin saltar a npm 12.
+- `npm publish` sin `--provenance` ni `--access public`: `publishConfig` ya los pone, y con la publicación de confianza la procedencia sale sola. `publishConfig.provenance: true` se queda, para que una publicación desde una terminal falle salvo que se pida `--provenance=false` a propósito.
+- `registry-url` sigue en `actions/setup-node`, como en el ejemplo de la documentación de npm.
+- El workflow publica directo, así que la persona marca `npm publish` al configurar el publicador; la publicación por etapas (`npm stage publish`, aprobada con 2FA) queda fuera.
+- El README no se toca: no tiene sección de contribuir ni de publicar.
+
+### Pendientes
+
+- La persona publica la 0.1.0 a mano (`npm publish --provenance=false` en `packages/cli`) y luego configura en npmjs.com el publicador de confianza (Baquia-dev/specty, `release.yml`, `npm publish` permitido); la publicación de confianza se prueba de verdad con la primera etiqueta que suba después, antes de dos días desde que la configure.
