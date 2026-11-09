@@ -12,8 +12,11 @@ const CONFIG = `version: 1\nlanguage: es\ngit:\n  worktrees: false\nverify:\n  d
 /** The priority of a command run with less priority, from this process. */
 const LOW = String(Math.max(getPriority(), 10));
 
-/** The priority of a command run at `internal.exec.priority: 15`, from this process. */
-const CONFIGURED = String(Math.max(getPriority(), 15));
+/**
+ * The priority of a command run at `internal.exec.priority: 15`, from this process. Windows has
+ * classes instead: 15 falls in «below normal», which it reads as 10.
+ */
+const CONFIGURED = String(process.platform === "win32" ? 10 : Math.max(getPriority(), 15));
 
 /** SPEC's change, approved, with T1 active; `config`, its configuration. */
 async function approved(config = CONFIG): Promise<string> {

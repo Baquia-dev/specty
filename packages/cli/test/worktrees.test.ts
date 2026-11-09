@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -18,6 +18,7 @@ import {
   tempRepo,
   writeFiles,
 } from "./support";
+import { writeTool } from "./tools";
 
 const FILES = {
   "src/app.ts": "export const greet = () => 'hola';\n",
@@ -207,9 +208,11 @@ describe("every change in its own worktree", () => {
 
   it("prepares the new folder with git.setup, or else with the stack's install command (AC2)", async () => {
     const folderOf = (root: string) => join(home(root), OTHER);
-    const set = await tempRepo(configured('  setup: "echo listo > preparado.txt"\n'));
+    // Node writes the line, as `echo` does in sh: cmd.exe's would end in « \r\n».
+    const setup = `node -e "console.log('listo')" > preparado.txt`;
+    const set = await tempRepo(configured(`  setup: ${JSON.stringify(setup)}\n`));
     const prepared = await cli(set, ["new", "Otro cambio"]);
-    expect(prepared.out).toContain("Carpeta preparada con `echo listo > preparado.txt`.");
+    expect(prepared.out).toContain(`Carpeta preparada con \`${setup}\`.`);
     expect(await read(folderOf(set), "preparado.txt")).toBe("listo\n");
 
     const broken = await tempRepo(configured('  setup: "echo roto && exit 3"\n'));
@@ -223,8 +226,11 @@ describe("every change in its own worktree", () => {
 
     // Without git.setup, the detected stack's command runs: here a stand-in `pnpm`.
     const bin = await mkdtemp(join(tmpdir(), "specty-bin-"));
-    await writeFile(join(bin, "pnpm"), '#!/bin/sh\necho "$@" > instalado.txt\n');
-    await chmod(join(bin, "pnpm"), 0o755);
+    await writeTool(
+      bin,
+      "pnpm",
+      '#!/usr/bin/env node\nrequire("node:fs").writeFileSync("instalado.txt", process.argv.slice(2).join(" ") + "\\n");\n',
+    );
     const env = { PATH: `${bin}${delimiter}${process.env.PATH ?? ""}` };
     const node = {
       "package.json": '{"name":"demo"}\n',

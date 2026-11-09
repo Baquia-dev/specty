@@ -22,6 +22,10 @@ async function withServer(server: string) {
   return sessionAt(await tempRepo({ ...APP, ".specty/config.yaml": config }), AGENT);
 }
 
+/** A command that prints «uno», waits `seconds` and prints «dos», in sh and in cmd.exe alike. */
+const unoDos = (seconds: number) =>
+  `node -e "console.log('uno'); setTimeout(() => console.log('dos'), ${seconds * 1000})"`;
+
 /** A command that prints the lines 1 to `count` and then waits 2 s. */
 const printing = (count: number) =>
   `node -e "for (let i = 1; i <= ${count}; i++) console.log(i); setTimeout(() => {}, 2000)"`;
@@ -33,7 +37,7 @@ const numbers = (from: number, to: number) =>
 describe("a task's verification, live", () => {
   it("is in its file while it runs, and gone once it ends (AC1)", async () => {
     const session = await sessionAt(await tempRepo(APP), AGENT);
-    const running = runLive(session, "20261024-saludo", "T1", "echo uno && sleep 2 && echo dos");
+    const running = runLive(session, "20261024-saludo", "T1", unoDos(2));
     // While it sleeps, the file holds its first line.
     let live: Awaited<ReturnType<typeof readRuns>> = new Map();
     await until(async () => {
@@ -42,7 +46,7 @@ describe("a task's verification, live", () => {
     });
     expect(live.get("20261024-saludo")).toMatchObject({
       task: "T1",
-      command: "echo uno && sleep 2 && echo dos",
+      command: unoDos(2),
       startedAt: expect.any(String),
       output: ["uno"],
       pid: process.pid,
@@ -88,7 +92,7 @@ describe("a task's verification, live", () => {
 
   it("AC4: writes its file again at most every internal.server.runEveryMs", async () => {
     const session = await withServer("runEveryMs: 10000");
-    const running = runLive(session, "20261024-saludo", "T1", "echo uno && sleep 3 && echo dos");
+    const running = runLive(session, "20261024-saludo", "T1", unoDos(3));
     await until(async () => (await readRuns(session.git)).has("20261024-saludo"));
     // «uno» comes at once, but the file waits 10 s to be written again.
     await new Promise((done) => setTimeout(done, 1500));

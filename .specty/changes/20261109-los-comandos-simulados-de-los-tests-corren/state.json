@@ -6,6 +6,13 @@
   "branch": "specty/20261109-los-comandos-simulados-de-los-tests-corren",
   "baseCommit": "6ce5443b5f3a857ef71758e4afbe7688f574f2f8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d173b129b79f0c5f7398aa0ec9c12e44c53c719029dfc95373ee73249b435ff0",
+    "at": "2026-11-09T12:06:05.139Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ba513105e0cbf9aa461c8a43af4f9645560771d0",
+      "startedAt": "2026-11-09T12:06:05.578Z",
+      "doneAt": "2026-11-09T12:07:22.436Z",
+      "summary": "tools.ts exporta COMMON_DIR (la carpeta común de git, en JavaScript con comillas simples); live-run y git.setup de worktrees escriben con Node, el pnpm falso usa writeTool y verify-priority espera 10 en Windows para 15"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "AC": 3,
     "T": 3,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d173b129b79f0c5f7398aa0ec9c12e44c53c719029dfc95373ee73249b435ff0",
-    "at": "2026-11-09T12:06:05.139Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

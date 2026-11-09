@@ -11,6 +11,14 @@ const WINDOWS = process.platform === "win32";
 const GIT = findProgram("git", process.env) ?? "git";
 
 /**
+ * JavaScript, with single quotes only, for the common folder of git where it runs: what the tests'
+ * commands took from `$(git rev-parse --git-common-dir)`, which cmd.exe does not run. It fits in a
+ * `node -e "…"` of sh and of cmd.exe alike.
+ */
+export const COMMON_DIR =
+  "require('node:child_process').execFileSync('git', ['rev-parse', '--git-common-dir'], { encoding: 'utf8' }).trim()";
+
+/**
  * Writes `script`, a Node script with its `#!/usr/bin/env node` line, as the program `name` of
  * `folder`, as npm installs one: runnable as it is outside Windows, and on Windows by `name.cmd`,
  * which runs it with this Node and hands it its arguments with `%*`, as npm's shim does.

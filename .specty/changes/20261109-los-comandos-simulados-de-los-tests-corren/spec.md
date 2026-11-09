@@ -62,7 +62,7 @@ Sigue a 20261109-specty-lanza-en-windows-las-herramientas-del. En el run 4260174
 
 ## Tareas
 
-- [ ] T1: La carpeta común, la preparación, la verificación en vivo y la prioridad, también en `cmd.exe`
+- [x] T1: La carpeta común, la preparación, la verificación en vivo y la prioridad, también en `cmd.exe`
   - files: packages/cli/test/tools.ts, packages/cli/test/verify-priority.test.ts, packages/cli/test/live-run.test.ts, packages/cli/test/worktrees.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-priority.test.ts test/live-run.test.ts test/worktrees.test.ts && pnpm lint
