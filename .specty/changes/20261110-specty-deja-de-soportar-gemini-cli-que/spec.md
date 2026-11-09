@@ -63,22 +63,22 @@ La persona decidió el 2026-11-10 retirar Gemini CLI, porque Antigravity lo reem
   - files: packages/core/src/cards/wait.ts, packages/core/src/cards/index.ts, packages/cli/src/commands/wait.ts, packages/core/test/cards/wait.test.ts, packages/cli/test/wait.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/wait.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/wait.test.ts
-  - type: refactor
+  - type: chore
 - [ ] T2: `config.yaml` deja de tener `internal.waits.heartbeatSec`
   - files: packages/core/src/schema/internal-waits.ts, packages/core/test/schema/schema.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts
-  - type: refactor
+  - type: chore
 - [ ] T3: La página «Configuración» deja de mostrar el latido
   - files: packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/settings/catalog.test.ts, packages/core/test/settings/internal-life.test.ts, packages/ui/src/settings/settings-page.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings && pnpm --filter @baquia-dev/specty-ui exec vitest run src/settings/settings-page.test.ts
-  - type: refactor
+  - type: chore
 - [ ] T4: `specty new` deja de proponer Gemini CLI, y la documentación sin el latido
   - files: packages/core/src/cards/new.ts, packages/core/test/cards/new.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/new.test.ts && pnpm lint && pnpm typecheck && pnpm knip
-  - type: refactor
+  - type: chore
 
 ## Riesgos
 

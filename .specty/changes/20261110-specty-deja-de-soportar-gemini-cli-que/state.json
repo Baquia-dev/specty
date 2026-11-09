@@ -5,7 +5,14 @@
   "phase": "implementing",
   "branch": "specty/20261110-specty-deja-de-soportar-gemini-cli-que",
   "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:968454a67fe217128545d1156e25fa0ab05449f4df48fc8d76c2da44cbf4426e",
+    "at": "2026-11-09T17:01:16.004Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -30,7 +37,15 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "active",
+      "baseCommit": "b623346fd1e7924ea76a68b0b8e2ef337b943795",
+      "attempts": 0,
+      "startedAt": "2026-11-09T16:58:49.622Z",
+      "scopeExtra": []
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -40,12 +55,5 @@
     "AC": 4,
     "T": 4,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:0fdcb002dbf638068229336d2e44fbdd670344c1ee7e0961ded29c6a7b864ea2",
-    "at": "2026-11-09T16:58:48.732Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
