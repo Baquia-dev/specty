@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
+import { AGENT_NAMES, isAgentTool } from "@baquia-dev/specty-core";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { runCli } from "../src/program";
@@ -58,7 +59,10 @@ const PATH_COMMAND = `node "${DIST}"`;
 const LOCAL: Invocation = { command: PATH_COMMAND, portable: false, script: DIST };
 const PORTABLE: Invocation = { command: "specty", portable: true };
 
-/** Runs `init` for `tools` with `invocation`. */
+/**
+ * Runs `init` for `tools` with `invocation`, offering every agent as `cli` does: OpenCode is not
+ * one this version offers.
+ */
 async function initWith(root: string, tools: string, invocation: Invocation): Promise<void> {
   const code = await runCli(["init", "--language", "es", "--tools", tools], {
     cwd: root,
@@ -68,6 +72,7 @@ async function initWith(root: string, tools: string, invocation: Invocation): Pr
     io: { out: () => {}, err: () => {} },
     invocation,
     stdin: async () => "",
+    agents: Object.keys(AGENT_NAMES).filter(isAgentTool),
   });
   expect(code).toBe(0);
 }

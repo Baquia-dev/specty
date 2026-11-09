@@ -19,7 +19,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
 import type { Git } from "../io/git";
-import { COMMAND, type Environment } from "../session";
+import { COMMAND, type Environment, offeredAgents } from "../session";
 import type { InstallFiles } from "./files";
 import { installGitHooks } from "./git-hooks";
 import { writeClaudePointer } from "./project-files";
@@ -36,7 +36,8 @@ interface HooksInstall {
  * The agent tools `init` installs: the ones `given`; otherwise the ones a person at the terminal
  * checks, offered with those found already checked: the ones their files show (`detected`) and
  * the one running `init`, by its environment. If the person cancels, or nobody can be asked, the
- * ones found; with none, Claude Code's, and a warning when nobody could say.
+ * ones found; with none, Claude Code's, and a warning when nobody could say. It only offers and
+ * finds the agents this version offers (`offeredAgents`): `init` already refused any other given.
  */
 export async function agentsToInstall(options: {
   readonly environment: Environment;
@@ -47,18 +48,20 @@ export async function agentsToInstall(options: {
 }): Promise<{ readonly tools: readonly AgentTool[]; readonly warnings: readonly string[] }> {
   const { environment, given, detected, lang } = options;
   if (given !== undefined) return { tools: given, warnings: [] };
+  const offered = offeredAgents(environment);
   const running = detectAgentTool(environment.env);
-  const found =
+  const all =
     running === undefined || detected.includes(running) ? detected : [...detected, running];
+  const found = all.filter((tool) => offered.includes(tool));
   const { terminal } = environment;
   if (terminal.interactive && !options.dryRun) {
     const question = agentQuestion(found.length > 0, lang);
-    const chosen = await terminal.chooseMany(question, agentChoices(found, lang), found);
+    const chosen = await terminal.chooseMany(question, agentChoices(found, lang, offered), found);
     const tools = chosen ?? found;
     return { tools: tools.length > 0 ? tools : ["claude-code"], warnings: [] };
   }
   if (found.length > 0) return { tools: found, warnings: [] };
-  return { tools: ["claude-code"], warnings: [noAgentWarning(COMMAND, lang)] };
+  return { tools: ["claude-code"], warnings: [noAgentWarning(COMMAND, lang, offered)] };
 }
 
 /**

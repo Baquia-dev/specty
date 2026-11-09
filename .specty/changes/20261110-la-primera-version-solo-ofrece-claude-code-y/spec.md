@@ -74,7 +74,7 @@ La primera versión publicada (0.1.0, beta pública) sale solo con Claude Code y
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-tools.test.ts test/uninstall.test.ts test/opencode-install.test.ts
   - type: feat
-- [ ] T3: CLI: `init` solo detecta, pregunta e instala los agentes habilitados
+- [x] T3: CLI: `init` solo detecta, pregunta e instala los agentes habilitados
   - files: packages/cli/src/install/hooks.ts, packages/cli/test/enabled-agents.test.ts
   - ac: AC1, AC2, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enabled-agents.test.ts test/init-agents.test.ts test/mcp-install.test.ts && pnpm typecheck

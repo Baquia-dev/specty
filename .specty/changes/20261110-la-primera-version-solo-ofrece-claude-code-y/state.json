@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "36d99349930ff22135a6751d02cc1fb9fcd67d51",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:01:03.468Z",
       "doneAt": "2026-11-09T17:02:46.117Z",
-      "summary": "Environment.agents y offeredAgents (por defecto ENABLED_AGENTS); init rechaza con unavailable-tools los nombres de --tools no ofrecidos; la ayuda nombra los habilitados; los tests de la CLI ofrecen todos y released corre como el comando publicado"
+      "summary": "Environment.agents y offeredAgents (por defecto ENABLED_AGENTS); init rechaza con unavailable-tools los nombres de --tools no ofrecidos; la ayuda nombra los habilitados; los tests de la CLI ofrecen todos y released corre como el comando publicado",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bc5e5c9369d9a39e475ed2fce6ef3364c9a8268e",
+      "startedAt": "2026-11-09T17:02:46.532Z",
+      "doneAt": "2026-11-09T17:17:52.725Z",
+      "summary": "agentsToInstall solo se queda con los agentes ofrecidos de los detectados y del que ejecuta init, y pasa los ofrecidos a la pregunta y al aviso; init --mcp recibe esa lista; init-agent-stop.test.ts ofrece todos al llamar a runCli, como cli"
     }
   },
   "pending": {
