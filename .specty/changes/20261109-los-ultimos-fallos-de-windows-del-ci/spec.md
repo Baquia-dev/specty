@@ -60,7 +60,7 @@ Tras seis cambios de Windows, el run 42616529185 de la CI (main 5ba0e12) deja en
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell-windows.test.ts test/guard/shell.test.ts && pnpm lint
   - type: fix
-- [ ] T2: `git worktree remove` por el final de la ruta, también con `\`
+- [x] T2: `git worktree remove` por el final de la ruta, también con `\`
   - files: packages/cli/src/enforce/removals.ts, packages/cli/src/enforce/removals.test.ts, docs/ARCHITECTURE.md
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/enforce/removals.test.ts test/remove-change-folder.test.ts && pnpm lint && pnpm typecheck

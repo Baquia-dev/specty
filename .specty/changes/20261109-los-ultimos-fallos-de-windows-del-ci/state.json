@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4f821086ef26da8549eb12fc86248d381a3d638a",
+      "attempts": 1,
       "startedAt": "2026-11-09T13:23:10.573Z",
       "doneAt": "2026-11-09T13:23:53.935Z",
-      "summary": "El tokenizador deja la \\ entre comillas dobles salvo delante de $, `, \", \\ o un salto de línea, como bash; shell.ts toma como absolutas las rutas con letra de unidad (C:\\…, C:/…) y las de un recurso compartido (\\\\servidor), en locate y en enter, sin perder la raíz C:\\; ARCHITECTURE lo explica."
+      "summary": "El tokenizador deja la \\ entre comillas dobles salvo delante de $, `, \", \\ o un salto de línea, como bash; shell.ts toma como absolutas las rutas con letra de unidad (C:\\…, C:/…) y las de un recurso compartido (\\\\servidor), en locate y en enter, sin perder la raíz C:\\; ARCHITECTURE lo explica.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "258deadbf8252456106cd35f71d59133e8f81adf",
+      "startedAt": "2026-11-09T13:23:54.310Z",
+      "doneAt": "2026-11-09T13:24:33.390Z",
+      "summary": "removals.ts compara el final de la ruta de cada worktree con endsWithName, por componentes enteros y, en Windows, con \\ o /; recibe las rutas de la plataforma salvo en los tests, como fromGit. ARCHITECTURE lo dice."
     }
   },
   "pending": {
