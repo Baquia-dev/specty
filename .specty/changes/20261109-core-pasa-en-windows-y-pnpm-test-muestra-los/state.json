@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e909c490b2689e4d103a0abaa8a3df18a068c09b",
+      "startedAt": "2026-11-09T10:07:46.319Z",
+      "doneAt": "2026-11-09T10:14:59.912Z",
+      "summary": "light.test.ts nombra los módulos con relative y el separador del sistema cambiado por /, en un ayudante que recibe el módulo de rutas; un test nuevo lo ejecuta con path.win32 y rutas de Windows (antes daba cards\\text.ts)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

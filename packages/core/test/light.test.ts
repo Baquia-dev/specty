@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { existsSync, readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, type PlatformPath, relative, resolve, sep, win32 } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import * as index from "../src";
@@ -35,11 +35,20 @@ function loaded(file: string, files = new Set<string>(), packages = new Set<stri
   return { files, packages };
 }
 
+/** The path of `file` from `root` with `/`, as the tests write it: Windows gives `cards\text.ts`. */
+function moduleName(
+  file: string,
+  root = SRC,
+  path: Pick<PlatformPath, "relative" | "sep"> = { relative, sep },
+): string {
+  return path.relative(root, file).split(path.sep).join("/");
+}
+
 describe("core's light entry", () => {
   it("AC1: loads only light modules: none of the parser's dependencies", () => {
     const { files, packages } = loaded(join(SRC, "light.ts"));
-    const relative = [...files].map((file) => file.slice(SRC.length + 1));
-    expect(relative).toEqual(
+    const names = [...files].map((file) => moduleName(file));
+    expect(names).toEqual(
       expect.arrayContaining(["light.ts", "i18n.ts", "flow/phases.ts", "cards/text.ts"]),
     );
     expect([...packages].filter((name) => HEAVY.some((heavy) => name.startsWith(heavy)))).toEqual(
@@ -57,5 +66,11 @@ describe("core's light entry", () => {
   it("AC1: sees what the index loads, so the walk finds the parser's dependencies there", () => {
     const { packages } = loaded(join(SRC, "index.ts"));
     expect([...packages]).toEqual(expect.arrayContaining(["zod", "yaml"]));
+  });
+
+  it("AC1: names the modules with / also from Windows paths, which separate with \\", () => {
+    const src = "C:\\specty\\packages\\core\\src";
+    expect(moduleName(`${src}\\cards\\text.ts`, src, win32)).toBe("cards/text.ts");
+    expect(moduleName(`${src}\\light.ts`, src, win32)).toBe("light.ts");
   });
 });

@@ -43,7 +43,7 @@ El job de Windows del CI (`check (windows-latest, Node 22)`) se para en `package
 
 ## Tareas
 
-- [ ] T1: Nombrar con `/` los módulos del test de la entrada ligera de core
+- [x] T1: Nombrar con `/` los módulos del test de la entrada ligera de core
   - files: packages/core/test/light.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/light.test.ts
