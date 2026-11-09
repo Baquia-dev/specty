@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261109-los-comandos-simulados-de-los-tests-corren",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261109-los-comandos-simulados-de-los-tests-corren",
+  "baseCommit": "6ce5443b5f3a857ef71758e4afbe7688f574f2f8",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3be081151dfa48783e32fc640a8b38c12a7e885c99cb2ff44876c352d5dd49ea",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:15356b5e6183951ea5496b4ebdad7e49f262df073adbb991aa912bf7833cff67",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:67d1a90e613b33bc47d981d76aa1c118e6f5dc3d25e749958518c9b6d5c6eb89",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d173b129b79f0c5f7398aa0ec9c12e44c53c719029dfc95373ee73249b435ff0",
+    "at": "2026-11-09T12:06:05.139Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
