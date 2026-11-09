@@ -68,7 +68,7 @@ Segundo de los cambios consecutivos que retiran Gemini CLI, que Antigravity reem
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-ignores.test.ts
   - type: chore
-- [ ] T3: Los tests de `init`, `doctor` y `uninstall` dejan de instalar Gemini CLI
+- [x] T3: Los tests de `init`, `doctor` y `uninstall` dejan de instalar Gemini CLI
   - files: packages/cli/test/agents.test.ts, packages/cli/test/doctor-agent-stop.test.ts, packages/cli/test/doctor-enter.test.ts, packages/cli/test/init-agent-stop.test.ts, packages/cli/test/uninstall.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agents.test.ts test/doctor-agent-stop.test.ts test/doctor-enter.test.ts test/init-agent-stop.test.ts test/uninstall.test.ts

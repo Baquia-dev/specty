@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "88285881d15706c9f7db5280c39a79cfcea88682",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:18:24.938Z",
       "doneAt": "2026-11-09T17:18:55.586Z",
-      "summary": "check --install deja de escribir .geminiignore: IGNORE_FILES de check/install-ignores.ts sin Gemini CLI; check-ignores.test comprueba que un repositorio con .gemini/ no lo recibe, y la tabla de exclusiones de ARCHITECTURE pierde su fila"
+      "summary": "check --install deja de escribir .geminiignore: IGNORE_FILES de check/install-ignores.ts sin Gemini CLI; check-ignores.test comprueba que un repositorio con .gemini/ no lo recibe, y la tabla de exclusiones de ARCHITECTURE pierde su fila",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2f166198e6c64e1633587ac646aab426741403a0",
+      "startedAt": "2026-11-09T17:18:56.011Z",
+      "doneAt": "2026-11-09T17:26:56.202Z",
+      "summary": "Los tests de init, doctor y uninstall dejan de instalar Gemini CLI: agents.test sin los casos de su módulo; doctor-agent-stop, init-agent-stop y uninstall sin su fila; doctor-enter sin sus casos, con el de OpenCode de AC3 por separado"
     }
   },
   "pending": {
