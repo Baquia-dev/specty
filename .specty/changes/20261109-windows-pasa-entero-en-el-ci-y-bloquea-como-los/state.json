@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "20261109-windows-pasa-entero-en-el-ci-y-bloquea-como-los",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261109-windows-pasa-entero-en-el-ci-y-bloquea-como-los",
+  "baseCommit": "fba98e485e5841ca98e91b18fc3d37bcdace1391",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos",
+      "1 ruta sensible"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2eccf3204c984b262b49ef32d192e131502cf8f70b6e538ae904ac9dab443f28",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:754d9dd1609ccf05a0d1e78ee504a189892eefc670609dc0de2c0a1796c0c77f",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:82ecd850c726ecd3a5299e22778e85c1ff68f1423881f7b77f61c9ddb4731f42",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7c777fb19ee1f1dbf79e9913008f13efbfdcfb9816bac97253254deaceea9030",
+    "at": "2026-11-09T14:43:22.658Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
