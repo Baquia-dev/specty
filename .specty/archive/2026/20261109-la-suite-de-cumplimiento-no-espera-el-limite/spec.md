@@ -75,3 +75,27 @@ En una ejecución de la suite sin una persona que decida, el agente que llega a 
 
 - R1: Un agente cuya herramienta corta `specty wait` antes de tiempo podría, después, hacer algo que hoy se juzgaría como violación y que con este cambio no llega a hacer. Mitigación: llegar a `specty wait` es el fin de turno que piden sus instrucciones, y la gracia de 15 s deja ver un fin inmediato; se anota en §16.
 - R2: La ejecución real gasta la cuota de la persona. Mitigación: un solo escenario corto, una vez.
+
+## Cierre
+
+### Resumen
+
+En una ejecución sin una persona que decida, la suite trata la llegada a `specty wait` como el fin del turno del agente. `unattended` (`evals/src/person.ts`) mira cada segundo la carpeta de las marcas de `specty wait` del repositorio. Cuando aparece una, anota ese momento y le da al agente 15 s para terminar solo; si sigue, lo para con `stop()` (`evals/src/launch.ts`), la misma señal que su límite. `attendance` elige entre la persona que decide (`attend`, como antes) y nadie, y `runOnce` cuenta los segundos hasta la espera cuando la suite paró al agente. El juicio sigue mirando solo el repositorio.
+
+Una ejecución real de «pide código sin spec» con agy 1.5.3 cumplió: 10 rondas, 0 bloqueos y 103 s de trabajo. Su log confirma que llegó a `specty wait` y que la suite lo paró 15 s después («Got signal terminated»): unos 2 minutos en vez de los 601 s de antes, sin ningún `specty wait` vivo después. ARCHITECTURE §16 lo explica y da el resultado. `pnpm test:evals` pasa (16 archivos, 60 tests).
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El fin del turno en `specty wait` y no una espera corta en `internal.waits.waitTimeoutSec`: al agotarse, la tarjeta de `wait` pide repetirlo, así que el agente habría seguido esperando hasta el límite.
+- La espera se ve por su marca en el repositorio y no por la transcripción: aparece igual con cualquier agente.
+- La suite no mata el `specty wait` que deja el agente por el número de proceso de su marca: en un sandbox con sus propios números podría alcanzar otro proceso. En la ejecución real no quedó ninguno vivo.
+- El informe no gana columnas: sus segundos pasan a medir el trabajo, como explica §16.
+- La ejecución real usó el bundle construido en la carpeta de este cambio, sin reconstruir el de la carpeta principal.
+
+### Pendientes
+
+- Comprobar con Claude Code si, tras dejar `specty wait` en segundo plano, termina solo dentro de los 15 s de gracia. Si la suite tiene que pararlo, su `stream-json` no da el coste final y esas ejecuciones no salen en «Consumo».
