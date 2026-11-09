@@ -47,3 +47,25 @@ En el CI de GitHub (run 42606628025, main 01e1b4d), Linux ya pasa los tests de p
 ## Riesgos
 
 - R1: Aquí no se puede ejecutar con una prioridad negativa — el siguiente run del CI en macOS (con -10) lo confirma, y la sesión principal lo lee.
+
+## Cierre
+
+### Resumen
+
+- `packages/cli/test/exec-priority.test.ts`: el test de una prioridad igual o más alta que la de Specty pide `own - 5` en vez de `Math.max(own - 5, 0)`. Con -10, el tope daba 0, una prioridad más baja que la propia, que el código baja de verdad (`expected '0' to be '-10'` en macOS).
+- `packages/cli/test/server/runs-priority.test.ts`: la prioridad que configura es `Math.min(Math.max(own, 0) + 5, 19)`. Con -10, la anterior daba -5, fuera del rango de `internal.exec.priority`, y el primer `task done` fallaba por la configuración (`expected 1 to be +0`).
+- El código no cambia: con una prioridad propia negativa, el comando corre con la prioridad absoluta de `internal.exec.priority`, como hacía `os.setPriority` antes y como dice el documento.
+- La verificación de T1 pasó los dos archivos con la prioridad de la verificación y con `nice -n 3` como base.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- El arreglo va en los tests y no en el código, porque lo que suponían (una prioridad propia de 0 o más) no es parte del contrato.
+- `exec-priority.test.ts` mantiene su prioridad del AC1 (`Math.min(own + 5, 19)`), que `execute` acepta aunque sea negativa y pasó en macOS.
+
+### Pendientes
+
+- Confirmar en el siguiente run del CI que macOS (-10) pasa los dos tests (P392); Linux ya los pasaba (P387, que este cambio resuelve).

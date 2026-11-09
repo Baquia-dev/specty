@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-los-tests-de-prioridad-pasan-cuando-specty",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-los-tests-de-prioridad-pasan-cuando-specty",
   "baseCommit": "120d7e3a3f91c44e7fd94772815cbcb78525e407",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:f34aadee44ec84c36c400e02f260fd8fc8637636f14ba9033374b8100ff8fa6a",
@@ -42,12 +42,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bbdb2632bee1fec4d9a2072fac79f755b0fef5cf",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:29:27.960Z",
       "doneAt": "2026-11-09T11:29:54.084Z",
-      "summary": "AC4 de exec-priority.test.ts pide own - 5 sin tope en 0, y runs-priority.test.ts configura min(max(own, 0) + 5, 19), dentro del rango de 0 a 19: con Specty a -10, como el runner de macOS, los dos esperan lo que hace el código."
+      "summary": "AC4 de exec-priority.test.ts pide own - 5 sin tope en 0, y runs-priority.test.ts configura min(max(own, 0) + 5, 19), dentro del rango de 0 a 19: con Specty a -10, como el runner de macOS, los dos esperan lo que hace el código.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -59,5 +59,6 @@
     "AC": 2,
     "T": 1,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-11-09T11:30:23.951Z"
 }
