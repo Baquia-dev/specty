@@ -57,7 +57,7 @@ Windows entra en la 0.1.0, y el run 42601745517 de la CI (main 2a1c7cc) tiene un
 
 ## Tareas
 
-- [ ] T1: Specty lee en la forma de la plataforma las rutas que da git y arranca git en la carpeta de `-C`
+- [x] T1: Specty lee en la forma de la plataforma las rutas que da git y arranca git en la carpeta de `-C`
   - files: packages/cli/src/io/git-folders.ts, packages/cli/src/io/git-folders.test.ts, packages/cli/src/io/git.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/io/git-folders.test.ts test/git-paths.test.ts test/git-memo.test.ts test/worktree-reads.test.ts test/worktrees.test.ts test/cancel-folder.test.ts test/epic-return.test.ts && pnpm lint && pnpm typecheck
