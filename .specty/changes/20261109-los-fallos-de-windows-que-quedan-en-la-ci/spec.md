@@ -53,7 +53,7 @@ Sigue a 20261109-los-ultimos-fallos-de-windows-del-ci, que arregló los fallos d
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-vulnerabilities.test.ts && pnpm lint && pnpm typecheck
   - type: fix
-- [ ] T2: Las rutas de git, el encargo de la épica y `doctor` con la forma de cada plataforma
+- [x] T2: Las rutas de git, el encargo de la épica y `doctor` con la forma de cada plataforma
   - files: packages/cli/test/delegate.test.ts, packages/cli/test/switch-log.test.ts, packages/cli/test/epic-subagents.test.ts, packages/cli/test/doctor-watchers.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts test/switch-log.test.ts test/epic-subagents.test.ts test/doctor-watchers.test.ts && pnpm lint

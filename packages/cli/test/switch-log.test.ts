@@ -1,16 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
-import { basename, dirname, isAbsolute, join } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { createGit } from "../src/io/git";
 import { readSwitch, switchLog, turnSwitch } from "../src/store/switch";
 import { APP, cli, git, tempRepo } from "./support";
 
-/** Where Specty's switch log lives, as git resolves it from `cwd`. */
+/** Where Specty's switch log lives, as git resolves it from `cwd`, in the platform's form. */
 function logOf(cwd: string): string {
   const path = git(cwd, "rev-parse", "--git-path", "common/specty/switch.jsonl").trim();
-  return isAbsolute(path) ? path : join(cwd, path);
+  // On Windows git writes `C:/…`: `resolve` gives it as Specty does, with `\`.
+  return resolve(cwd, path);
 }
 
 const OFF = { on: false, by: "Ana", at: "2026-11-08T10:05:00.000Z" };

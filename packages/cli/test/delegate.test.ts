@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
-import { basename, dirname, isAbsolute, join } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import {
@@ -21,10 +21,11 @@ import {
   writeFiles,
 } from "./support";
 
-/** Where the switch lives, as git resolves it from `cwd`. */
+/** Where the switch lives, as git resolves it from `cwd`, in the platform's form. */
 function switchOf(cwd: string): string {
   const path = git(cwd, "rev-parse", "--git-path", "common/specty/delegated.json").trim();
-  return isAbsolute(path) ? path : join(cwd, path);
+  // On Windows git writes `C:/…`: `resolve` gives it as Specty does, with `\`.
+  return resolve(cwd, path);
 }
 
 /** A repository with delegated mode turned on by its person. */

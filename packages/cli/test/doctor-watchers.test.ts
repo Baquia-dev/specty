@@ -185,14 +185,17 @@ describe("doctor and the dev servers that would watch the changes' worktrees", (
     const naive = await cli(root, ["doctor"]);
     expect(naive.out).toContain(seen("Vite", VITE, "vite.config.ts (server.watch.ignored)"));
 
-    // Without special characters in the project's path, the forms asked before work too.
+    // Without special characters in the project's path, the forms asked before work too. On
+    // Windows its `\` is one, which escapes the next character in a glob or a regular expression.
     await writeFiles(root, {
       "vite.config.ts": viteConfig(VITE_BEFORE),
       "metro.config.js": metroConfig(METRO_BEFORE),
     });
     const before = await cli(root, ["doctor"]);
+    const said =
+      process.platform === "win32" ? "también revisa .worktrees/" : "excluye .worktrees/.";
     for (const name of ["Vite", "Metro"]) {
-      expect(before.out).toContain(`${name} excluye .worktrees/.`);
+      expect(before.out).toContain(`${name} ${said}`);
     }
   });
 

@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "34df68f2eb9e15301b1ae95260aacd786a7e4ffe",
+      "attempts": 1,
       "startedAt": "2026-11-09T13:35:24.469Z",
       "doneAt": "2026-11-09T13:36:10.660Z",
-      "summary": "vulnerabilities.ts espera a sus dos ejecuciones de OSV-Scanner con Promise.allSettled (bothScans) antes de borrar la carpeta temporal y relanza el primer fallo en su orden, así el motivo es el mensaje del escáner y no el EBUSY del borrado en Windows; formats.md lo dice."
+      "summary": "vulnerabilities.ts espera a sus dos ejecuciones de OSV-Scanner con Promise.allSettled (bothScans) antes de borrar la carpeta temporal y relanza el primer fallo en su orden, así el motivo es el mensaje del escáner y no el EBUSY del borrado en Windows; formats.md lo dice.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "330381bda2db3bd946a222e6c75fd42425cdd3fa",
+      "startedAt": "2026-11-09T13:36:11.054Z",
+      "doneAt": "2026-11-09T13:37:00.064Z",
+      "summary": "switchOf y logOf resuelven la ruta de git con resolve; epic-subagents admite \\ o / en el cd del encargo; doctor-watchers espera en Windows que doctor siga pidiendo las formas ancladas."
     }
   },
   "pending": {

@@ -121,7 +121,8 @@ describe("the card of an epic, from Claude Code", () => {
     const text = await claudeNext(root);
     expect(text).toContain("ENCARGO C1 (huérfano):");
     expect(text).toContain(`1. \`specty enter ${id}\``);
-    expect(text).toMatch(new RegExp(`\`cd '[^']*/\\.worktrees/${id}' &&\``));
+    // The folder as the platform writes it: with `\` on Windows.
+    expect(text).toMatch(new RegExp(`\`cd '[^']*[/\\\\]\\.worktrees[/\\\\]${id}' &&\``));
     expect(text).toContain("ENCARGO C2:");
   });
 });
