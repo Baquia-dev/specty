@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261110-gemini-cli-deja-de-ser-un-agente-de-specty",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261110-gemini-cli-deja-de-ser-un-agente-de-specty",
   "baseCommit": "15a3107d0c4fb0a04deabe495c15904e0c0ce7ae",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:55352b9f1b78060fdf473f26fbd330b83b5a627ce1fb0005efd02f42ea70e27e",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c843b9a47daf100af8ea2029343366f83aad6f61",
+      "attempts": 1,
       "startedAt": "2026-11-09T18:13:15.190Z",
       "doneAt": "2026-11-09T18:14:09.568Z",
-      "summary": "El CLI deja de tener el módulo de agente de Gemini CLI: se borran agents/gemini-cli.ts y su test, ADAPTERS y los archivos de hooks y del fin de turno de install/agents.ts quedan sin él, y writePointer deja de exportarse"
+      "summary": "El CLI deja de tener el módulo de agente de Gemini CLI: se borran agents/gemini-cli.ts y su test, ADAPTERS y los archivos de hooks y del fin de turno de install/agents.ts quedan sin él, y writePointer deja de exportarse",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,5 +74,6 @@
     "AC": 4,
     "T": 3,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-11-09T21:52:43.372Z"
 }

@@ -74,3 +74,23 @@ Cuarto de los cambios consecutivos que retiran Gemini CLI, que Antigravity reemp
 ## Riesgos
 
 - R1: El cambio abierto sobre `doctor` y la suite de cumplimiento puede chocar en ARCHITECTURE al incorporar main. Mitigación: se resuelve conservando las dos intenciones, y la tabla de §10 se vuelve a pegar desde `capabilityTable("es")`.
+
+## Cierre
+
+### Resumen
+
+Gemini CLI deja de ser un agente de Specty. En core sale de `AgentTool`, `AGENT_NAMES` y las marcas del entorno (`GEMINI_CLI` ya no da ningún agente), de la tabla de capacidades con sus marcas `.gemini` y `GEMINI.md`, de las pistas de la pregunta de `init` y de las formas de esperar de `specty wait`. En el CLI se borran `agents/gemini-cli.ts` y `gemini-cli.test.ts`, `ADAPTERS` queda sin él, `.gemini/settings.json` sale de los archivos de hooks que `new` copia y de los del fin de turno, y `writePointer` deja de exportarse. ARCHITECTURE (tabla de §10 vuelta a pegar desde `capabilityTable("es")`, hooks, permisos, punteros, tras compactar, tras cada comando, entrar en la carpeta, fin de turno, marcas) y formats.md (MCP, fin de turno, exclusiones) dejan de describirlo.
+
+### Desviaciones
+
+- Todas las secciones de ARCHITECTURE se editaron en T1, junto a la tabla de §10, en vez de repartirlas con T2; T2 solo tocó formats.md.
+- `capabilities.test.ts` comprueba además que la tabla no nombra a Gemini CLI ni `.gemini`, y usa Devin (Windsurf) como ejemplo de «Worktree por nombre» indirecto.
+
+### Decisiones
+
+- No se guarda la marca `GEMINI_CLI` para negar permisos: la detección es de mejor esfuerzo y solo quita permisos, y Specty no guarda marcas de herramientas que no soporta (A1).
+- `GEMINI_POINTER` sigue en `install/project-files.ts` hasta que `uninstall` deje de nombrar `GEMINI.md` en el cambio siguiente.
+
+### Pendientes
+
+- El último paso del retiro de Gemini CLI (P410): los textos de core que solo usaba su módulo (`cards/install.ts`, sus códigos de `doctor`, la línea de `GEMINI.md` de `uninstall`) y sus exportaciones, la línea de `uninstall` que nombra `GEMINI.md`, la protección de `.gemini/settings.json` en el guard y las notas de los ADR 0013 y 0018.
