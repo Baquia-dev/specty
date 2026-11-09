@@ -20,3 +20,9 @@ La primera versión solo habilita Claude Code y Antigravity (`ENABLED_AGENTS` de
   - files: packages/core/src/light.ts, packages/ui/src/change/resume-hints.ts, packages/ui/src/change/resume-hints.test.ts
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/resume-hints.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: fix
+
+## Cierre
+
+### Resumen
+
+La entrada ligera de core exporta ENABLED_AGENTS y AgentTool; «Cómo retomarlo» toma las órdenes por agente y propone solo las de los habilitados (Claude Code y Antigravity CLI); las de Codex, OpenCode y Cursor quedan en la tabla para cuando se habiliten
