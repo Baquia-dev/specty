@@ -80,3 +80,25 @@ Tras seis cambios de Windows, el run 42616529185 de la CI (main 5ba0e12) deja en
 
 - R1: Aquí no hay Windows: lo que se arregla allí solo se comprueba en la CI. Mitigación: el producto se prueba con `path.win32` y con rutas `C:\…` en el análisis del shell, que no depende de la plataforma; la sesión principal lee el siguiente run.
 - R2: Un test que hoy se corta en Windows en su primera aserción puede tener otra detrás que también falle allí. Mitigación: se revisan las aserciones siguientes de cada test con la forma de Windows, y lo que quede lo dirá el siguiente run.
+
+## Cierre
+
+### Resumen
+
+El guard lee las rutas de Windows como bash en Git Bash. En `guard/tokens.ts`, entre comillas dobles la `\` solo escapa `$`, `` ` ``, `"`, `\` y el salto de línea (que une las líneas), así que `cd "C:\Users\ana"` llega entero. En `guard/shell.ts`, `WINDOWS_ABSOLUTE` toma como absolutas las rutas con letra de unidad y `\` o `/` y las de un recurso compartido (`\\servidor`), en `locate` y en `enter`, de modo que no se sitúan tras el `cd` anterior y un `cd` a ellas mueve lo que sigue; la raíz `C:\` conserva su separador. En el CLI, `endsWithName` (`enforce/removals.ts`) reconoce la carpeta de un cambio que `git worktree remove` nombra por el final de su ruta, con `\` o `/` en Windows. Los tests del guard (`enforce`, `ghost-folders`, `worktrees`) meten las rutas entre comillas simples en los comandos de bash y esperan la ruta nativa; `install-files` espera la copia en `outside/<ruta sin unidad>` y el bit de ejecución solo fuera de Windows; `opencode-install` espera el comando del plugin con `JSON.stringify`. ARCHITECTURE describe las comillas, las rutas absolutas de Windows y `endsWithName`.
+
+### Desviaciones
+
+- El cambio pedía los 16 fallos del run 42616529185, pero juntos daban tamaño XL: este cubre los de P395 y los del guard; el resto (`check-vulnerabilities`, `delegate`, `switch-log`, `epic-subagents`, `doctor-watchers`, `cancel-folder` y `prune-rescue`) va en el cambio siguiente.
+
+### Decisiones
+
+- Las rutas `C:\…` sin comillas en un comando no se tratan como rutas de Windows: bash quita esas `\`, y el guard sigue a bash; los tests que las ponían sin comillas son los que cambian.
+- Las rutas absolutas de Windows lo son en todas las plataformas, porque el análisis del shell de core no sabe la plataforma y nadie nombra así una ruta relativa en macOS o Linux; `C:a.ts`, sin separador, sigue siendo relativa.
+- La copia de `install` de un archivo de fuera sigue sin la letra de unidad, como ya hacía el producto; el test es el que la esperaba concatenada.
+
+### Pendientes
+
+- El cambio siguiente, que sigue a este, con los fallos de Windows restantes del run: el check de vulnerabilidades que borra su carpeta temporal antes de que acabe la otra ejecución de OSV-Scanner (EBUSY), `logOf` y `switchOf` sin `resolve`, el `cd` del encargo de la épica con `\`, las formas de antes de `doctor` en Windows y el `chmod` de `cancel-folder` y `prune-rescue`.
+- AC4 se comprueba en el siguiente run de la CI de Windows, que lee la sesión principal.
+- `guard/shell.ts` pasa de 300 líneas de código (316): si vuelve a crecer, separar la ubicación de rutas (`locate`, `enter`, `placeCommit`, `placeRemoval`) en su propio archivo.
