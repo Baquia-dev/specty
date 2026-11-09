@@ -53,7 +53,7 @@ En Linux, una verificación (la de una tarea, la completa de `accept`, la de una
 
 ## Tareas
 
-- [ ] T1: Las verificaciones nacen con su prioridad por `nice` donde lo hay
+- [x] T1: Las verificaciones nacen con su prioridad por `nice` donde lo hay
   - files: packages/cli/src/io/exec.ts, packages/cli/src/server/runs.ts, packages/cli/test/exec-priority.test.ts, packages/cli/test/server/runs-priority.test.ts, packages/cli/test/exec.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/exec-priority.test.ts test/server/runs-priority.test.ts test/exec.test.ts test/verify-priority.test.ts test/server/runs.test.ts test/server/verify.test.ts && pnpm typecheck

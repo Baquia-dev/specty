@@ -43,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "eecb03388a04ef12ad11157ea30b54eaec226989",
+      "startedAt": "2026-11-09T10:46:25.307Z",
+      "doneAt": "2026-11-09T10:47:51.491Z",
+      "summary": "launch() en exec.ts lanza la verificación por nice -n <diferencia> donde hay nice (fuera de Windows), así nace con su prioridad; sin nice la baja con setPriority al arrancar. execute y la verificación completa de la UI lanzan con launch."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

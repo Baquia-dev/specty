@@ -16,7 +16,7 @@ import { contains, type Integration, integrationOf } from "../flow/integrate";
 import { budgetedEnv } from "../flow/process-budget";
 import { fullPlan, runUnits } from "../flow/units";
 import { codeTree, recordFullVerification } from "../flow/verified";
-import { lowerPriority } from "../io/exec";
+import { launch } from "../io/exec";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { mergedVerification } from "./merged-run";
@@ -292,14 +292,15 @@ async function spawned(
 ): Promise<Ran> {
   const env = await budgetedEnv(there, Number.POSITIVE_INFINITY);
   if (target.closing()) return { code: undefined, output: [] };
-  const child = spawn(command, {
+  // Below the rest of the machine, as every verification.
+  const how = launch(command, [], true, env, there.config.internal.exec.priority);
+  const child = spawn(how.file, [...how.args], {
     cwd: there.root,
     env,
-    shell: true,
+    shell: how.shell,
     stdio: ["ignore", "pipe", "pipe"],
   });
-  // Below the rest of the machine, as every verification.
-  if (child.pid !== undefined) lowerPriority(child.pid, there.config.internal.exec.priority);
+  how.started(child.pid);
   const stop = () => {
     child.kill("SIGTERM");
     setTimeout(() => child.kill("SIGKILL"), 2000).unref();
