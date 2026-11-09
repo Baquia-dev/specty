@@ -58,3 +58,25 @@ El job de Windows del CI (`check (windows-latest, Node 22)`) se para en `package
 
 - R1: Con `--no-bail`, un `pnpm test` en rojo tarda más, porque ya no corta en el primer paquete que falla; es lo que se busca, y en verde tarda lo mismo.
 - R2: El test de AC2 lanza pnpm de verdad (unos segundos) y necesita que esté en el PATH, como lo está al ejecutar los tests con pnpm.
+
+## Cierre
+
+### Resumen
+
+- `packages/core/test/light.test.ts` nombra los módulos que carga la entrada ligera con `relative` y el separador del sistema cambiado por `/`, en un ayudante (`moduleName`) que recibe el módulo de rutas; un test nuevo lo ejecuta con `path.win32` y rutas de Windows y da `cards/text.ts`, donde el recorte anterior daba `cards\text.ts`. Las aserciones de AC1 de la entrada ligera no cambian.
+- El script `test` de la raíz lleva `--no-bail`: `pnpm test`, y con él `pnpm check` y el CI, ejecuta los tests de todos los paquetes aunque los de uno fallen, y sigue terminando en rojo. El test de AC2 de `packages/cli/test/repo-units.test.ts` ejecuta ese mismo script en un workspace temporal con dos paquetes en rojo: corrió solo uno antes del arreglo y los dos después, con código distinto de 0.
+- `pnpm check` no cambia, así que `repo-units.test.ts` sigue comprobando que las unidades de `verify.units` lo cubren; su verificación pasó en T2.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- El arreglo de AC1 va en el ayudante del propio test, que es quien produce las rutas, y no en `packages/core/src`: ningún módulo de core produce esas rutas.
+- T1 es de tipo `test` y T2 de tipo `fix`: solo el test de T2 se podía ver en rojo antes del arreglo, y Specty lo bloqueó (e909c49).
+- En el test de AC2 los dos paquetes fallan, para que el resultado no dependa del orden en que pnpm los ejecuta, y en Windows `pnpm` se lanza con `shell` porque allí es `pnpm.cmd`.
+
+### Pendientes
+
+- El siguiente run del CI dirá qué falla en Windows en los demás paquetes, y el `continue-on-error` de ese job se quita cuando pase: sigue en P381, que lleva la sesión principal.

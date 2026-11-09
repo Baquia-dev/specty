@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-core-pasa-en-windows-y-pnpm-test-muestra-los",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-core-pasa-en-windows-y-pnpm-test-muestra-los",
   "baseCommit": "c4693b5feb73d3e25ea3df04551e92ec12050a2a",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:75b28249573f590b1e6b67a1312d01cff610dc0323c1daa15c2a4bec018ae950",
@@ -52,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d22833a4a74f30f18ab1e19549b389c073153a0f",
+      "attempts": 1,
       "startedAt": "2026-11-09T10:15:00.353Z",
       "doneAt": "2026-11-09T10:23:21.304Z",
-      "summary": "pnpm test añade --no-bail: sigue con los demás paquetes aunque uno falle y termina en rojo; el test de AC2 lo ejecuta en un workspace temporal con dos paquetes en rojo. pnpm check no cambia."
+      "summary": "pnpm test añade --no-bail: sigue con los demás paquetes aunque uno falle y termina en rojo; el test de AC2 lo ejecuta en un workspace temporal con dos paquetes en rojo. pnpm check no cambia.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,6 +70,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-09T10:23:47.196Z",
   "lockedTests": {
     "packages/cli/test/repo-units.test.ts": "sha256:b2e49ebb4373b4ed291aab539d0a3e43b41e37bd8646d9ac9bc0642ae23a4d70"
   }
