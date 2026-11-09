@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { execFile, spawn } from "node:child_process";
-import { setPriority } from "node:os";
+import { accessSync, constants } from "node:fs";
+import { getPriority, setPriority } from "node:os";
+import { delimiter, isAbsolute, join } from "node:path";
 import { DEFAULT_CONFIG, type ResolvedConfig } from "@baquia-dev/specty-core";
 
 export interface ExecOptions {
@@ -17,8 +19,8 @@ export interface ExecOptions {
   /** What it keeps of each stream unless `whole`, in characters: `MAX_OUTPUT` by default. */
   readonly maxOutput?: number;
   /**
-   * Run it below the rest of the machine, at `priority`, as verifications do: the processes it
-   * starts afterwards inherit it. Best effort: where the system refuses, it runs as it is.
+   * Run it below the rest of the machine, at `priority`, as verifications do, and every process
+   * it starts with it (`launch`). Best effort: where the system refuses, it runs as it is.
    */
   readonly lowPriority?: boolean;
   /** The priority `lowPriority` runs it at: `internal.exec.priority`, 10 by default. */
@@ -44,20 +46,80 @@ export function maxOutputOf(config: Pick<ResolvedConfig, "internal">): number {
   return config.internal.exec.maxOutputKiB * 1024;
 }
 
+/** How `launch` starts a command: the program, its arguments and whether through the shell. */
+export interface Launch {
+  readonly file: string;
+  readonly args: readonly string[];
+  readonly shell: boolean;
+  /** What to do with its process once started: lower it, where it could not be born lower. */
+  readonly started: (pid: number | undefined) => void;
+}
+
+/** The shell Node runs a command through on every system but Windows. */
+const SHELL = "/bin/sh";
+
 /**
- * Lowers the priority of process `pid` to `priority`, as `lowPriority` does, for a command not
- * launched by `execute`. A system that refuses leaves it as it is: so does one already running
- * lower, since a process without privileges cannot raise its priority.
+ * How to start `command` with `args`, through the shell with `shell`, at `priority`: as it is
+ * without one. With `nice` in the folders of `env`'s PATH, outside Windows, through it: it is born
+ * at its priority, and so is every process it starts, even one it starts at once, which a shell
+ * of Linux starts in a process of its own. Without it, as on Windows, it is lowered once started,
+ * and a process it started before keeps its own. Already at that priority or lower, it runs at
+ * Specty's, since a process without privileges cannot raise its own.
  */
-export function lowerPriority(
-  pid: number,
-  priority: number = DEFAULT_CONFIG.internal.exec.priority,
-): void {
+export function launch(
+  command: string,
+  args: readonly string[],
+  shell: boolean,
+  env: NodeJS.ProcessEnv,
+  priority?: number,
+): Launch {
+  const plain: Launch = { file: command, args, shell, started: () => undefined };
+  const by = priority === undefined ? 0 : priority - getPriority();
+  if (priority === undefined || by <= 0) return plain;
+  const nice = process.platform === "win32" ? undefined : program("nice", env);
+  if (nice === undefined) {
+    return { ...plain, started: (pid) => lowerPriority(pid, priority) };
+  }
+  const line = shell ? [SHELL, "-c", [command, ...args].join(" ")] : [command, ...args];
+  return { file: nice, args: ["-n", String(by), ...line], shell: false, started: () => undefined };
+}
+
+/** Where `name` is in the absolute folders of `env`'s PATH, as a program to run; none without it. */
+function program(name: string, env: NodeJS.ProcessEnv): string | undefined {
+  return (env.PATH ?? "")
+    .split(delimiter)
+    .filter((folder) => isAbsolute(folder))
+    .map((folder) => join(folder, name))
+    .find((path) => {
+      try {
+        accessSync(path, constants.X_OK);
+        return true;
+      } catch {
+        return false;
+      }
+    });
+}
+
+/**
+ * Lowers the priority of process `pid` to `priority`, once started. A system that refuses leaves
+ * it as it is.
+ */
+function lowerPriority(pid: number | undefined, priority: number): void {
+  if (pid === undefined) return;
   try {
     setPriority(pid, priority);
   } catch {
     // Best effort: the command runs all the same.
   }
+}
+
+/** How `execute` starts `command`: at `priority` with `lowPriority`, and as it is without. */
+function launchOf(command: string, args: readonly string[], options: ExecOptions): Launch {
+  const priority =
+    options.lowPriority === true
+      ? (options.priority ?? DEFAULT_CONFIG.internal.exec.priority)
+      : undefined;
+  return launch(command, args, options.shell ?? false, options.env ?? process.env, priority);
 }
 
 /**
@@ -70,14 +132,14 @@ export function execute(
   options: ExecOptions,
 ): Promise<ExecResult> {
   return new Promise((resolve) => {
-    const child = spawn(command, [...args], {
+    const how = launchOf(command, args, options);
+    const child = spawn(how.file, [...how.args], {
       cwd: options.cwd,
       env: options.env ?? process.env,
-      shell: options.shell ?? false,
+      shell: how.shell,
       stdio: ["pipe", "pipe", "pipe"],
     });
-    if (options.lowPriority === true && child.pid !== undefined)
-      lowerPriority(child.pid, options.priority);
+    how.started(child.pid);
     let stdout = "";
     let stderr = "";
     let timedOut = false;

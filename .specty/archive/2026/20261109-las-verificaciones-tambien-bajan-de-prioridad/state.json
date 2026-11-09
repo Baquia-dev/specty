@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261109-las-verificaciones-tambien-bajan-de-prioridad",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261109-las-verificaciones-tambien-bajan-de-prioridad",
+  "baseCommit": "2a1c7ccf81bc3c5c3f987eb744a8d63f7ef2feaa",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:2e13d26e0f6abcc1591cf2141c4b8e7968febfaea1bcb31c54dcfcf7d3939d0c",
+    "at": "2026-11-09T10:44:37.194Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a087c409ee4c841a82003444bc0fa9834cbeac2bbbedb30448831aec1d123c49",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:221432c8b9096f92a74f865a519a84038001abb4ebdef77026316d9d6e97b13b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:2effea76901e39296e7ada088eaf667cba11b7abe92ba9d11579090dccfecf86",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:6fa9ad4aa42626b3c4b6c96efab8dfe3711193448be0c698aa0e1b74d299c480",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:e376d03af28ba4918acbe740b7ae5da3168c762e82c84ebdb4f7603c400272ee",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "eecb03388a04ef12ad11157ea30b54eaec226989",
+      "attempts": 1,
+      "startedAt": "2026-11-09T10:46:25.307Z",
+      "doneAt": "2026-11-09T10:47:51.491Z",
+      "summary": "launch() en exec.ts lanza la verificación por nice -n <diferencia> donde hay nice (fuera de Windows), así nace con su prioridad; sin nice la baja con setPriority al arrancar. execute y la verificación completa de la UI lanzan con launch.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "5a8418cfd9b3ccf1a82253958441408672a56065",
+      "attempts": 1,
+      "startedAt": "2026-11-09T10:47:51.821Z",
+      "doneAt": "2026-11-09T10:48:38.939Z",
+      "summary": "El párrafo «Las verificaciones, con menos prioridad» de ARCHITECTURE.md dice que fuera de Windows nacen con su prioridad por nice -n, y que sin nice o en Windows se baja al lanzarlas, de mejor esfuerzo.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-09T10:49:06.935Z",
+  "lockedTests": {
+    "packages/cli/test/exec.test.ts": "sha256:89dd3e10a9a9a9d26a2693a2a7317b235faa62ee182bdbbd84c7af3635b49ad3",
+    "packages/cli/test/exec-priority.test.ts": "sha256:58c185733819d6b7da1c3289547013528eaab62ce1285dcff59c6983867635eb",
+    "packages/cli/test/server/runs-priority.test.ts": "sha256:15d22a1fdd59f301ae0f1e979b35ba112cd81cbe30e4f65f959acfe53536918d"
+  }
+}

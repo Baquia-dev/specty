@@ -75,4 +75,19 @@ describe("a command with less priority", () => {
     const plain = await execute(process.execPath, ["-e", PRIORITIES], { cwd: tmpdir() });
     expect(plain.stdout).toBe(`${getPriority()} ${getPriority()}`);
   });
+
+  // AC3: Windows has no such program, so the test above is how it runs there.
+  it.skipIf(process.platform === "win32")(
+    "AC3: without the program that starts it lower in its PATH, is lowered once started",
+    async () => {
+      const lower = Math.min(getPriority() + 5, 19);
+      const lowered = await execute(process.execPath, ["-e", PRIORITIES], {
+        cwd: tmpdir(),
+        env: { PATH: "" },
+        lowPriority: true,
+        priority: lower,
+      });
+      expect(lowered.stdout).toBe(`${lower} ${lower}`);
+    },
+  );
 });
