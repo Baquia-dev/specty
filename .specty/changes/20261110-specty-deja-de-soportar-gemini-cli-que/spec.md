@@ -74,7 +74,7 @@ La persona decidió el 2026-11-10 retirar Gemini CLI, porque Antigravity lo reem
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts
   - type: chore
-- [ ] T4: `specty new` deja de proponer Gemini CLI, y la documentación sin el latido
+- [x] T4: `specty new` deja de proponer Gemini CLI, y la documentación sin el latido
   - files: packages/core/src/cards/new.ts, packages/core/test/cards/new.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/new.test.ts && pnpm lint && pnpm typecheck && pnpm knip

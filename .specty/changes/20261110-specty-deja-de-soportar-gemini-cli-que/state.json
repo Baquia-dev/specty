@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261110-specty-deja-de-soportar-gemini-cli-que",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261110-specty-deja-de-soportar-gemini-cli-que",
   "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
   "revision": 3,
@@ -58,12 +58,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "aa0c676332cb1bc82c3d2b9e23ec7791ddf080de",
+      "attempts": 2,
       "startedAt": "2026-11-09T17:02:29.583Z",
       "doneAt": "2026-11-09T17:03:57.109Z",
-      "summary": "La página Configuración deja de mostrar el latido: sin internal.waits.heartbeatSec en settings/catalog.ts ni sus textos en cards/settings-internal.ts; los tests del catálogo ordenan los intervalos tras la espera de specty wait y la UI comprueba que no aparece"
+      "summary": "La página Configuración deja de mostrar el latido: sin internal.waits.heartbeatSec en settings/catalog.ts ni sus textos en cards/settings-internal.ts; los tests del catálogo ordenan los intervalos tras la espera de specty wait y la UI comprueba que no aparece",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3bc3881be2ec64ba6340b80a41fdb93d0c701fb7",
+      "startedAt": "2026-11-09T17:03:57.533Z",
+      "doneAt": "2026-11-09T17:04:58.632Z",
+      "summary": "specty new deja de proponer gemini para abrir la carpeta del cambio (OPEN_IN de cards/new.ts sin Gemini CLI; el test comprueba que ningún agente recibe esa orden), y formats.md §6 y ARCHITECTURE dejan de hablar del latido de specty wait"
     }
   },
   "pending": {

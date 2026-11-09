@@ -206,11 +206,6 @@ const OPEN_IN: Partial<Readonly<Record<AgentTool, (folder: string, t: Translate)
       `una ventana de Cursor en esa carpeta (\`cursor "${folder}"\`)`,
       `a Cursor window in that folder (\`cursor "${folder}"\`)`,
     ),
-  "gemini-cli": (folder, t) =>
-    t(
-      `Gemini CLI en esa carpeta (\`cd "${folder}" && gemini\`)`,
-      `Gemini CLI in that folder (\`cd "${folder}" && gemini\`)`,
-    ),
   antigravity: (folder, t) =>
     t(
       `Antigravity CLI en esa carpeta (\`cd "${folder}" && agy\`)`,
