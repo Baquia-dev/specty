@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261110-gemini-cli-deja-de-ser-un-agente-de-specty",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261110-gemini-cli-deja-de-ser-un-agente-de-specty",
+  "baseCommit": "15a3107d0c4fb0a04deabe495c15904e0c0ce7ae",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:898560ca76e65a8bc0d61f614982ccaa2ae5cf772c6d86ec72048b947e41adc4",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:5e0f8fb8f9a5b3eb775f1eeee01170fd7e7dde4214149ce4bf4667b23bd389e6",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:792f4bfc12f77c8aca3c0739ceb3bfd4ef73b9a5758bbdd9475b2080bd433bc4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:55352b9f1b78060fdf473f26fbd330b83b5a627ce1fb0005efd02f42ea70e27e",
+    "at": "2026-11-09T18:05:58.217Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
