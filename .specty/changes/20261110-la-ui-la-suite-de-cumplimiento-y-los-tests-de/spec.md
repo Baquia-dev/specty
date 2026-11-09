@@ -73,7 +73,7 @@ Tercero de los cambios consecutivos que retiran Gemini CLI, que Antigravity reem
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts test/cards/idle-subagents.test.ts test/cards/orphans-subagents.test.ts test/cards/rejoin.test.ts
   - type: test
-- [ ] T4: Los tests del CLI dejan de nombrar Gemini CLI
+- [x] T4: Los tests del CLI dejan de nombrar Gemini CLI
   - files: packages/cli/test/worktrees.test.ts, packages/cli/test/epic-subagents.test.ts, packages/cli/test/support.ts, docs/ARCHITECTURE.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts test/epic-subagents.test.ts && pnpm lint && pnpm typecheck && pnpm knip

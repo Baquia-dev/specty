@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261110-la-ui-la-suite-de-cumplimiento-y-los-tests-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261110-la-ui-la-suite-de-cumplimiento-y-los-tests-de",
   "baseCommit": "1fe70408877a578f8993da0f84c4eb6d86bccc25",
   "revision": 1,
@@ -58,12 +58,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "057b70877c984a7e8d6b1bd4c4709d3150d7b3c9",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:53:17.002Z",
       "doneAt": "2026-11-09T17:53:35.542Z",
-      "summary": "Los tests de core usan Devin (Windsurf), otra herramienta sin cortes en subagentes que entra con specty enter, donde usaban Gemini CLI (orphans-subagents, rejoin), o lo quitan de sus listas (epic, idle-subagents)"
+      "summary": "Los tests de core usan Devin (Windsurf), otra herramienta sin cortes en subagentes que entra con specty enter, donde usaban Gemini CLI (orphans-subagents, rejoin), o lo quitan de sus listas (epic, idle-subagents)",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3563abb9b4a9a187fd3a30567e723a24f9a0b05c",
+      "startedAt": "2026-11-09T17:53:35.997Z",
+      "doneAt": "2026-11-09T17:54:34.044Z",
+      "summary": "Los tests del CLI dejan de nombrar Gemini CLI (worktree de otra herramienta, Copilot fuera de alcance en la spec de ejemplo, support.ts sin GEMINI_CLI) y ARCHITECTURE pone de ejemplo solo la carpeta de Claude Code"
     }
   },
   "pending": {

@@ -50,7 +50,6 @@ export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
   const {
     CLAUDECODE: _a,
     CURSOR_AGENT: _b,
-    GEMINI_CLI: _c,
     CODEX_SANDBOX: _d,
     CODEX_CI: _g,
     CODEX_THREAD_ID: _h,

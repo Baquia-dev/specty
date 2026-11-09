@@ -33,7 +33,7 @@ Cada subagente de cada herramienta trabaja en la carpeta de su cambio.
 
 ## Fuera de alcance
 
-- Gemini CLI.
+- GitHub Copilot.
 
 ## Supuestos
 
