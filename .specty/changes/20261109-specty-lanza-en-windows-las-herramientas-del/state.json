@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261109-specty-lanza-en-windows-las-herramientas-del",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261109-specty-lanza-en-windows-las-herramientas-del",
+  "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "17 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e70638f85a5f1f7125703215aaa868d9fd6980b66198ed205d458745af7f053c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ee380e36c0104870118b057d51d7782e2e998e3ae2ce2ccfa1467f221b82c0a6",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f8308e4bdc16476751a65dfb80544b70d468d0f5b60964c531d9ad9d89cd749b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d15867f612947ce2d1183c40eab982a8e819868560440da232a5a93382779b21",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:c35330cf5adf8472b025036c53aa9e2470dcd118125e97094e070e3c1163b66f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:adda2327590e34c63b401dd514a132393e3064bd184548ef1067449a931045d1",
+    "at": "2026-11-09T11:23:24.603Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
