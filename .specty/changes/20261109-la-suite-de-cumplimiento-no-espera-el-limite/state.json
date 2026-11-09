@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261109-la-suite-de-cumplimiento-no-espera-el-limite",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261109-la-suite-de-cumplimiento-no-espera-el-limite",
+  "baseCommit": "1f4cf113f8372bca9dad64a5ab96007bb41b8e9e",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8049d1f8d61035b682065e99bb4fcf7db9f6f4d88eb50ec85d3c05c61411ab16",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7bc835d3f837e91a5e03ce8c766beb78d46c6ed85e55388d77b816fdfe3f0f2c",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:aec932dab0a8563310a9a21666592cf4f5bf94f5ae57437fda192fe9cfd5d558",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:98c838d029bc685aee0f402f44cbd32fb6ec8b535b30a0af73172081840d8b07",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ba75bafc70686f4521e3bed5f2b0458fb30798f79101609c8b50b3c959df347a",
+    "at": "2026-11-09T11:56:24.080Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
