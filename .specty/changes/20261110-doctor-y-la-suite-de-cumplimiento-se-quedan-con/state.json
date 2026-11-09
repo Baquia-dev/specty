@@ -41,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "02bcee838cc0315836aa43f77b9fe39fb1b63a52",
+      "startedAt": "2026-11-09T17:36:58.143Z",
+      "doneAt": "2026-11-09T17:40:53.068Z",
+      "summary": "DoctorLine gana agent-disabled (agente no ofrecido con su guard aún en un archivo), con su aviso en es y en en doctor-agents.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -53,7 +53,7 @@ Sigue a «La primera versión solo ofrece Claude Code y Antigravity», que dejó
 
 ## Tareas
 
-- [ ] T1: Core: el aviso de `doctor` de un agente deshabilitado instalado
+- [x] T1: Core: el aviso de `doctor` de un agente deshabilitado instalado
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/test/cards/doctor-disabled.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor-disabled.test.ts test/cards/doctor.test.ts
