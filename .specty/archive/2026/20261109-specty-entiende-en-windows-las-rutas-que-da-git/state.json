@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-specty-entiende-en-windows-las-rutas-que-da-git",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-specty-entiende-en-windows-las-rutas-que-da-git",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:157fe241eb7d4fe25d223ddf401f39b8acafed9d9d8990f0a692a4ea2731748a",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "86d659f72af84cd186f3f80fc7e2dcc12c01975b",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:29:57.854Z",
       "doneAt": "2026-11-09T11:30:15.430Z",
-      "summary": "ARCHITECTURE §16: las rutas que da git se leen en la forma de la plataforma (io/git-folders.ts) y git arranca en la carpeta de -C, por el lanzador de Git for Windows."
+      "summary": "ARCHITECTURE §16: las rutas que da git se leen en la forma de la plataforma (io/git-folders.ts) y git arranca en la carpeta de -C, por el lanzador de Git for Windows.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,6 +82,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-09T11:30:38.685Z",
   "lockedTests": {
     "packages/cli/src/io/git-folders.test.ts": "sha256:f32b0ac87caef94ae508ba150dcbc66ca354347a79fa0b06ac9d6ef9c51bbc7f"
   }

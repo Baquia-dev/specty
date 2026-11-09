@@ -77,3 +77,24 @@ Windows entra en la 0.1.0, y el run 42601745517 de la CI (main 2a1c7cc) tiene un
 
 - R1: Quitar `-C` y arrancar git en esa carpeta cambia el mensaje cuando la carpeta no existe (Node no puede arrancar git allí, en vez de «cannot change to»). Mitigación: Specty solo pone `-C` con carpetas que git lista o que acaba de usar, y el fallo sigue siendo un fallo con su motivo.
 - R2: Sin Windows aquí, algo más de las rutas de git puede seguir fallando allí. Mitigación: las funciones se prueban con `path.win32`, y la sesión principal lee el siguiente run de la CI.
+
+## Cierre
+
+### Resumen
+
+Specty lee en la forma de la plataforma cada ruta que le da git: la raíz (`findRoot`, `openRepository`), las de su carpeta de git (`gitPath`) y la carpeta de cada worktree (`parseWorktrees`), con `fromGit` de `cli/src/io/git-folders.ts`, que en Windows pasa `C:/…` a `C:\…` y en macOS y Linux las deja igual. Además, el runner de `Git` arranca git en la carpeta que nombran los `-C` del principio, sin ellos (`startedIn`), para que el lanzador de Git for Windows no retenga la carpeta del cambio que `close`, `cancel` y `accept` borran. Los tests que comparaban la salida tal cual de `git worktree list --porcelain`, o la ruta de las copias de `init`, con rutas de `node:path` las comparan ahora en la forma de la plataforma (`worktreeList` de `test/support.ts`). Las tres funciones se prueban con `path.win32` y `path.posix`, y con git de verdad.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- `-C` se resuelve en un solo sitio, el runner de `io/git.ts`, y no en cada llamada que lo usa (`land.ts`, `prune.ts`, `worktree-hooks.ts`, `rescue.ts`…): cualquier `git -C` futuro arranca ya en su carpeta. La memoria de `git-memo.ts` sigue viendo los argumentos originales.
+- `fromGit` es `resolve` del módulo de rutas de la plataforma, que recibe como parámetro para probar Windows en cualquier sistema; las comparaciones de rutas siguen siendo por texto o con `resolved`, sin distinguir mayúsculas solo si el sistema lo hace.
+
+### Pendientes
+
+- Confirmar en el siguiente run de la CI en `windows-latest` que los fallos de carpetas (`cancel-folder`, `epic-return`, `prune*`, `restore`, `ghost-folders`, `wait-folder`, `session-end-binding`, `worktrees*`, `git-paths`, `git-memo`, `subagents`, `server*`, y los de `close`/`accept` que no borraban la carpeta) desaparecen.
+- En Windows, la carpeta de un cambio que un agente cierra o cancela desde dentro sigue quedándose si la shell del agente la tiene como carpeta de trabajo: Specty lo dice y `specty prune` la quita después, pero cabría pedir al agente que salga antes de borrarla.
+- Rutas de Windows que no vienen de git y siguen fallando en la CI: la copia de `install` de un archivo de fuera del repositorio (`backups\outsideC:\…`, `install-files.test.ts`), el comando con `\` sin escapar en el plugin de OpenCode (`opencode-install.test.ts`) y las rutas `C:\…` dentro de un comando de shell que juzga el guard (`enforce.test.ts`).
