@@ -47,7 +47,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b3bba389e9eff91ed2bc3cbaf4b751e9f8267e15",
+      "startedAt": "2026-11-09T11:19:41.015Z",
+      "doneAt": "2026-11-09T11:20:25.467Z",
+      "summary": "Nuevo launch.ts: en Windows resuelve specty por PATH y PATHEXT, lanza el .cmd por cmd.exe y un .mjs con node, y para specty ui con taskkill /T /F. specty.ts lo usa; los tests simulan specty con un specty.cmd."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

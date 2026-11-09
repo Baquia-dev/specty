@@ -58,7 +58,7 @@ Windows entra en la 0.1.0, y en el CI de Windows (run 42601745517, main 2a1c7cc)
 
 ## Tareas
 
-- [ ] T1: La extensión lanza y detiene `specty` en Windows
+- [x] T1: La extensión lanza y detiene `specty` en Windows
   - files: packages/vscode/src/launch.ts, packages/vscode/src/specty.ts, packages/vscode/test/launch.test.ts, packages/vscode/test/fake-specty.ts, packages/vscode/test/specty.test.ts, packages/vscode/test/extension.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter specty-vscode exec vitest run test/launch.test.ts test/specty.test.ts test/extension.test.ts && pnpm typecheck
