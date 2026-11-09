@@ -38,7 +38,7 @@ En el CI de GitHub (run 42606628025, main 01e1b4d), Linux ya pasa los tests de p
 
 ## Tareas
 
-- [ ] T1: Los tests de prioridad no suponen que la de Specty es 0 o más
+- [x] T1: Los tests de prioridad no suponen que la de Specty es 0 o más
   - files: packages/cli/test/exec-priority.test.ts, packages/cli/test/server/runs-priority.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/exec-priority.test.ts test/server/runs-priority.test.ts && nice -n 3 pnpm --filter @baquia-dev/specty exec vitest run test/exec-priority.test.ts test/server/runs-priority.test.ts
