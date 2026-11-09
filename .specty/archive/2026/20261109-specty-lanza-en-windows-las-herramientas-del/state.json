@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-specty-lanza-en-windows-las-herramientas-del",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-specty-lanza-en-windows-las-herramientas-del",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:adda2327590e34c63b401dd514a132393e3064bd184548ef1067449a931045d1",
@@ -74,12 +74,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1e6bbdd38b62f307fef67247381fb2a96c77d27b",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:51:00.556Z",
       "doneAt": "2026-11-09T11:51:55.440Z",
-      "summary": "El pnpm y el ccusage falsos de init y del servidor usan writeTool, y ARCHITECTURE §9 explica cómo busca y lanza Specty los programas en Windows"
+      "summary": "El pnpm y el ccusage falsos de init y del servidor usan writeTool, y ARCHITECTURE §9 explica cómo busca y lanza Specty los programas en Windows",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -92,7 +92,74 @@
     "T": 4,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-09T11:52:20.999Z",
   "lockedTests": {
     "packages/cli/test/windows-programs.test.ts": "sha256:02298c40af5e5e69c32c84ebc7680c72f39280fc2f51117ae9a804f3a3b9ba25"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "6a047dfa12b6fdb95e4d88b9b11dcca299668219",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "evals/src/agents.ts",
+      "evals/src/experiments.ts",
+      "evals/src/repo.ts",
+      "evals/src/scenarios.ts",
+      "evals/test/antigravity-init.test.ts",
+      "evals/test/antigravity.test.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/install/usage.ts",
+      "packages/cli/src/io/exec.ts",
+      "packages/cli/src/io/git-folders.test.ts",
+      "packages/cli/src/io/git-folders.ts",
+      "packages/cli/src/io/git.ts",
+      "packages/cli/src/io/programs.ts",
+      "packages/cli/test/check-code-rules.test.ts",
+      "packages/cli/test/check-generated.test.ts",
+      "packages/cli/test/check-install.test.ts",
+      "packages/cli/test/check-layers.test.ts",
+      "packages/cli/test/check-secrets.test.ts",
+      "packages/cli/test/check-typescript.test.ts",
+      "packages/cli/test/check-vulnerabilities.test.ts",
+      "packages/cli/test/exec-priority.test.ts",
+      "packages/cli/test/init-reversible.test.ts",
+      "packages/cli/test/init-usage.test.ts",
+      "packages/cli/test/prune-commands.test.ts",
+      "packages/cli/test/prune-orphans.test.ts",
+      "packages/cli/test/restore.test.ts",
+      "packages/cli/test/server/runs-priority.test.ts",
+      "packages/cli/test/server/sessions.test.ts",
+      "packages/cli/test/support.ts",
+      "packages/cli/test/tools.ts",
+      "packages/cli/test/usage-projects.test.ts",
+      "packages/cli/test/usage.test.ts",
+      "packages/cli/test/windows-programs.test.ts",
+      "packages/cli/test/worktree-hooks.test.ts",
+      "packages/core/src/stats/cost.ts",
+      "packages/core/src/stats/counts.ts",
+      "packages/core/src/stats/flow.ts",
+      "packages/core/src/stats/people.ts",
+      "packages/core/src/stats/period.ts",
+      "packages/core/src/stats/quality.ts",
+      "packages/core/src/stats/rhythm.ts",
+      "packages/core/src/stats/rows.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/vscode/README.md",
+      "packages/vscode/package.nls.es.json",
+      "packages/vscode/package.nls.json",
+      "packages/vscode/src/launch.ts",
+      "packages/vscode/src/specty.ts",
+      "packages/vscode/test/extension.test.ts",
+      "packages/vscode/test/fake-specty.ts",
+      "packages/vscode/test/launch.test.ts",
+      "packages/vscode/test/specty.test.ts"
+    ],
+    "at": "2026-11-09T11:58:08.338Z",
+    "resolved": {
+      "commit": "bed6045",
+      "at": "2026-11-09T12:05:15.875Z"
+    }
   }
 }

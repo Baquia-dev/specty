@@ -98,3 +98,28 @@ Windows entra en la versión 0.1.0, y el run 42601745517 de la CI (main 2a1c7cc)
 - R1: Aquí no hay Windows, y el escape de `cmd.exe` solo se comprueba de verdad en la CI de Windows. Mitigación: el algoritmo es el de cross-spawn, y el test que solo corre en Windows lanza un shim como el de npm con los argumentos difíciles; la sesión principal lee el siguiente run.
 - R2: Un test falso que en Windows siga fallando por otra causa (las rutas de git con `/`) puede parecer de este cambio. Mitigación: el cierre nombra lo que queda y a qué causa va.
 - R3: Buscar en cada lanzamiento cuesta unas comprobaciones de archivos por carpeta del PATH. Mitigación: solo en Windows y solo sin shell; es mucho menos que lanzar el proceso.
+
+## Cierre
+
+### Resumen
+
+En Windows, `spawn` sin shell solo encuentra `.exe` y `.com`, mira antes en la carpeta actual y rechaza los `.cmd`, así que Specty no lanzaba los shims de npm y pnpm (ccusage, ESLint, dependency-cruiser, escáneres). `io/programs.ts` añade `findProgram`, que busca carpeta por carpeta del PATH con las extensiones de PATHEXT que Specty lanza, solo en carpetas absolutas y nunca en la actual, y `startOf`, que lanza un `.exe` o un `.com` directamente y un `.cmd` o un `.bat` por `cmd.exe /d /s /c` con la línea tal cual (`windowsVerbatimArguments`), escapada como en cross-spawn y con el escape doble para el `%*` del shim. `launch` y `execute` (`io/exec.ts`) lo usan sin shell, y `doctor` busca ccusage y `specty` con `findProgram`, sin `sh`. En los tests, `test/tools.ts` (`writeTool`, `toolFolder`) escribe cada herramienta falsa con su `.cmd` en Windows y da un PATH con solo ella, git y node; lo usan los escáneres, ESLint, dependency-cruiser, Prisma, npm, pnpm y ccusage falsos. ARCHITECTURE §9 lo explica («Los programas en Windows»).
+
+### Desviaciones
+
+- La spec se estrechó antes de aprobarla: la primera versión salió XL, y los comandos simulados de los tests que usan la sintaxis de `sh` (`$(git rev-parse …)`, `sleep`, `echo`) y la prioridad 15 que Windows lee como 10 pasan al cambio siguiente, que sigue a este.
+- La documentación fue en T4, con los tests de init y del servidor, en vez de una tarea propia, para que el cambio quedara en L.
+- Los escáneres falsos de code-rules, secrets y vulnerabilities apuntan sus listas de archivos con `/` en todo sistema y calculan el prefijo de las reglas con `path.sep`: en Windows, `readdirSync` da `\` y las comparaciones con `.semgrepignore`, `.gitleaksignore` y los registros de los tests habrían fallado. No cambia lo que comprueban.
+
+### Decisiones
+
+- El escape para `cmd.exe` se escribe en el CLI, sin añadir cross-spawn, y se dobla para cualquier `.cmd` o `.bat` del PATH, no solo los de `node_modules/.bin` (A3).
+- `startOf` lanza la ruta absoluta que encuentra, no el nombre, para que ni libuv ni `cmd.exe` busquen en la carpeta actual (A4).
+- `launch` usa `findProgram` también para buscar `nice`, en lugar de su propia búsqueda; ahora además exige que sea un archivo.
+- En Windows, `toolFolder` pone en el PATH la carpeta de `git.exe` en vez de un enlace: el lanzador de Git busca el resto de Git junto a él.
+- AC4 (los ayudantes en Windows) solo se comprueba en la CI de Windows; AC5 se comprobó leyendo ARCHITECTURE §9.
+
+### Pendientes
+
+- Confirmar en el siguiente run de la CI de Windows que pasan `windows-programs.test.ts` (en especial el shim de npm con argumentos difíciles en una carpeta con `&`, paréntesis, `^` y `!`) y los tests de las herramientas falsas; los que sigan fallando solo por las rutas de git con `/` son del otro cambio.
+- Los comandos simulados de los tests con sintaxis de `sh` y la prioridad 15 de `verify-priority` en Windows: el cambio siguiente.
