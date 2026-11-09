@@ -83,3 +83,24 @@ La persona decidió el 2026-11-10 retirar Gemini CLI, porque Antigravity lo reem
 ## Riesgos
 
 - R1: El cambio paralelo «La primera versión solo ofrece Claude Code y Antigravity» toca ARCHITECTURE y puede chocar al incorporar main. Mitigación: se resuelve conservando las dos intenciones.
+
+## Cierre
+
+### Resumen
+
+`specty wait` ya no escribe la línea de latido por la salida de errores: `WaitHabit` pierde `beats`, `waitHeartbeat` desaparece de `cards/wait.ts` y de la API de core, y `commands/wait.ts` pierde `heartbeat` y la opción `beatMs`. Gemini CLI queda en la tabla de `specty wait` como una herramienta en primer plano hasta que se retire del todo. El ajuste `internal.waits.heartbeatSec` sale del esquema (una clave así es ahora un error de `config.yaml`), del catálogo de ajustes y de sus textos, así que la página «Configuración» ya no lo muestra. `specty new` deja de proponer `cd … && gemini` para abrir la carpeta del cambio. formats.md §6 y ARCHITECTURE ya no describen el latido. P215 queda sin objeto.
+
+### Desviaciones
+
+- Las cuatro tareas pasaron de `refactor` a `chore` con un ajuste (revisión 2): retiran una función con sus tests, y con `policy.tests: contract` un refactor no puede quitar aserciones. Las quitadas son las del latido (T1, T2), y quedan anotadas.
+- La `verify` de T3 se corrigió con otro ajuste (revisión 3): los tests de la UI corren con `ng test`, no con `vitest run`.
+- El test de AC3 no nombra a Gemini CLI: recorre todos los agentes y comprueba que ninguno recibe la orden `gemini`, para que el retiro de su tipo no lo obligue a cambiar.
+
+### Decisiones
+
+- El latido se quita entero y no se deja para otro agente: solo Gemini CLI lo tenía (A1).
+- La prueba de la UI usa `internal.waits.queueStaleSec` como ejemplo de ajuste nuevo sin modificar, en lugar del latido.
+
+### Pendientes
+
+- El resto del retiro de Gemini CLI, en cambios consecutivos que siguen a este: los instaladores de MCP y de exclusiones y los tests del CLI que lo usan; la UI, la suite de cumplimiento y los tests de core que lo ponen de ejemplo; su módulo de agente, su fila de capacidades, su detección y su documentación; sus textos de `doctor`, `init` y `uninstall` y la protección de `.gemini/settings.json` en el guard.
