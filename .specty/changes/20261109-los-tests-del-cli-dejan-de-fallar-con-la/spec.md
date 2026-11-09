@@ -14,7 +14,7 @@ Resuelve P117 y la parte de P118 de `packages/cli/test/init-usage.test.ts`, y da
 
 ## Tareas
 
-- [ ] T1: Cada test del CLI tiene 300 s
+- [x] T1: Cada test del CLI tiene 300 s
   - files: packages/cli/vitest.config.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-usage.test.ts test/init-worktrees.test.ts test/mcp-install.test.ts test/opencode-install.test.ts test/session-resume.test.ts test/server/runs-turn.test.ts test/epic-subagents.test.ts && pnpm typecheck && pnpm lint
   - type: chore

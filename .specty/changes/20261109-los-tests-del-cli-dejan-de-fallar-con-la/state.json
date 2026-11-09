@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261109-los-tests-del-cli-dejan-de-fallar-con-la",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-los-tests-del-cli-dejan-de-fallar-con-la",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:aee40ffca72107ae222117f44ffa8ed451b9ad69c6ca2abe1f88eaea0e29bd0d",
+    "at": "2026-11-09T09:48:05.077Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 1,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2d6e35ca3183f79c57527ac4cc9a113782942181",
+      "startedAt": "2026-11-09T09:48:05.461Z",
+      "doneAt": "2026-11-09T09:48:48.862Z",
+      "summary": "testTimeout del CLI de 60 s a 300 s, con el motivo en un comentario; P80 y P103 ya estaban resueltas por otros cambios"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:aee40ffca72107ae222117f44ffa8ed451b9ad69c6ca2abe1f88eaea0e29bd0d",
-    "at": "2026-11-09T09:48:05.077Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
