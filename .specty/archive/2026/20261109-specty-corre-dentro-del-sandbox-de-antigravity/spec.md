@@ -99,3 +99,28 @@ Antigravity CLI (`agy`) enciende su sandbox de terminal en todo modo print, y de
 - R1: Otra versión de agy cambia cómo lee las reglas, o el sandbox necesita leer algo más (otra carpeta de node, la caché de algún gestor). Mitigación: el cambio siguiente lo comprueba con agy real en la suite, y lo que falte queda como pendiente con lo que dijo el sandbox.
 - R2: La regla de node abre en el sandbox, para leer, una carpeta amplia si node está en una ruta del sistema (`/usr/local`, `/opt/homebrew`). Mitigación: es solo lectura, sin escritura, y la persona ve cada regla en la línea de `init`.
 - R3: Un test que no pase por `testEnv()` escribiría en la carpeta real de la persona. Mitigación: los tests nuevos usan su propia carpeta temporal, como los de D4.
+
+## Cierre
+
+### Resumen
+
+`specty init --tools antigravity` añade ahora a `permissions.allow` de los ajustes del CLI de Antigravity, además de `command(specty)` (o `unsandboxed(specty)` si ya está), las reglas que dejan correr Specty dentro de su sandbox de terminal: `read_file` del prefijo de node, `read_file` de la carpeta del bundle (salvo si está dentro de la de node) y `write_file` de la carpeta común de git del repositorio. Todas llevan rutas absolutas, y `init` solo añade las que faltan, tras las de la persona. Es la ampliación D5 de la excepción D4 a ADR 0013.
+
+`doctor` las comprueba todas y nombra las que faltan. `uninstall` deja el archivo como está y nombra las reglas de Specty que siguen en él, con que `write_file` solo sirve a ese proyecto y cómo quitarlas. Los textos están en español y en inglés en core. ADR 0013 recoge la ampliación, y ARCHITECTURE §10 recoge las reglas, la fila de Antigravity y lo que dicen `doctor` y `uninstall`. Las tareas pasaron sus verificaciones, con `pnpm typecheck` en la última de código.
+
+### Desviaciones
+
+- Antes de aprobarla, la spec se estrechó: `propose` la dio por demasiado grande (XL), y la sesión principal decidió dejar en este cambio solo la instalación y su documentación. La suite de cumplimiento (`evals/`), la ejecución real con agy y su resultado en ARCHITECTURE §16 y §18 pasan a un cambio siguiente.
+- La tarea de `doctor` y `uninstall` se partió en dos (T3 y T4), por el aviso de `propose` sobre su número de archivos.
+
+### Decisiones
+
+- `uninstall` no toca los ajustes del CLI: deja también las reglas del sandbox, como `command(specty)`, porque D5 solo permite escribir en la carpeta del usuario al instalar (A5).
+- La carpeta del bundle sale de `invocation.script` o, con un comando portable, del módulo que corre, como en `mcp/app.ts`. Así no hizo falta cambiar `Invocation` ni que `uninstall` resuelva la invocación.
+- El prefijo de node sale de `process.execPath` del proceso que ejecuta `init`, `doctor` o `uninstall`.
+- La regla de comandos que cuenta es la que ya esté: `unsandboxed(specty)` si la persona la tiene, y si no `command(specty)`. `allowSpecty` recibe un objeto con su contexto, y `cliRules` reemplaza a `cliRule` para `doctor` y `uninstall`.
+
+### Pendientes
+
+- La suite de cumplimiento tiene que darle a agy las reglas que escribe la instalación real: crear su carpeta del CLI antes del `init` de un repositorio para Antigravity y pasar su `permissions.allow` en `--settings`, en lugar de su regla fija. Después, hacer una ejecución real de un escenario corto para comprobar que Specty arranca dentro del sandbox, y anotar el resultado en ARCHITECTURE §16 y §18.
+- `npx -y @baquia-dev/specty` no corre dentro del sandbox de agy aunque estén las reglas: necesita la caché de npm y la red, y la carpeta del bundle cambia con cada versión.

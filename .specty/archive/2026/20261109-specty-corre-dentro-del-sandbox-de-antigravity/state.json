@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-specty-corre-dentro-del-sandbox-de-antigravity",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-specty-corre-dentro-del-sandbox-de-antigravity",
   "baseCommit": "2a1c7ccf81bc3c5c3f987eb744a8d63f7ef2feaa",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:d4beb399050e5b9466ed944a365c05cc45562457b36a5e7b35147db10f7076ee",
@@ -84,12 +84,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "988f1669f3af78cb6641568c18ef31f9fb492f11",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:00:05.943Z",
       "doneAt": "2026-11-09T11:00:55.724Z",
-      "summary": "ADR 0013 recoge la ampliación D5 (las reglas del sandbox del CLI de Antigravity) y ARCHITECTURE §10 describe las reglas que escribe init, lo que comprueba doctor y lo que dice uninstall."
+      "summary": "ADR 0013 recoge la ampliación D5 (las reglas del sandbox del CLI de Antigravity) y ARCHITECTURE §10 describe las reglas que escribe init, lo que comprueba doctor y lo que dice uninstall.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -102,6 +102,7 @@
     "T": 5,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-09T11:01:17.090Z",
   "lockedTests": {
     "packages/cli/test/antigravity-cli-rule.test.ts": "sha256:0c697ea2cb01c23eff57c5f368cf6ddd1a9eb1ce9c68abebf048c306c5cc8890",
     "packages/core/test/cards/antigravity-cli-rule.test.ts": "sha256:a678336e8aa73fe492fd822aa8df0f74115ac14f947aa238609a9524abdfc983"
