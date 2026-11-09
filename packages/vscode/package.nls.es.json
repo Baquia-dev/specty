@@ -1,5 +1,5 @@
 {
   "description": "Desarrollo guiado por especificaciones, obligatorio: la fase de tu cambio en la barra de estado y su UI a un clic.",
   "command.openUi": "Abrir la UI",
-  "configuration.path": "El comando `specty` que ejecuta la extensión: su ruta, o un nombre del `PATH`. Es un ajuste de esta máquina, nunca de un repositorio."
+  "configuration.path": "El comando `specty` que ejecuta la extensión: su ruta, o un nombre del `PATH`. En Windows, también el `specty.cmd` de npm, o un `.mjs` que se ejecuta con `node`. Es un ajuste de esta máquina, nunca de un repositorio."
 }

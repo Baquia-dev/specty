@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, CHANGE, cli, folderOf, git, tempRepo, tryGit } from "./support";
+import { APP, CHANGE, cli, folderOf, git, tempRepo, tryGit, worktreeList } from "./support";
 
 /** Claude Code's `WorktreeCreate` or `WorktreeRemove`, run from `cwd`. */
 const hook = (cwd: string, event: string, input: Record<string, unknown>) =>
@@ -9,7 +9,7 @@ const hook = (cwd: string, event: string, input: Record<string, unknown>) =>
     stdin: JSON.stringify({ session_id: "s1", cwd, hook_event_name: event, ...input }),
   });
 
-const listed = (root: string) => git(root, "worktree", "list", "--porcelain");
+const listed = (root: string) => worktreeList(root);
 
 describe("Claude Code's worktree hooks", () => {
   it("answer a change's id with the folder `specty new` prepared, creating nothing (AC1)", async () => {

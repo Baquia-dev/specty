@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-// Talks to the `specty` CLI, without a shell: the status as data, and the server of its local UI.
+// Talks to the `specty` CLI, without a shell (on Windows, npm's `specty.cmd` through cmd.exe): the
+// status as data, and the server of its local UI.
 import { type ExecFileException, execFile, spawn } from "node:child_process";
 import type { Phase, WaitingFor } from "@baquia-dev/specty-core";
+import { launchOf, stopTree } from "./launch";
 
 /** An open change, as `specty --json status` gives it. */
 export interface OpenChange {
@@ -60,11 +62,18 @@ const STATUS_TIMEOUT_MS = 30_000;
 
 /** Runs `specty --json status` in `folder`. */
 export function readStatus(command: string, folder: string): Promise<StatusRead> {
+  const launch = launchOf(command, ["--json", "status"]);
+  if (launch === undefined) return Promise.resolve({ kind: "missing" });
   return new Promise((resolve) => {
     execFile(
-      command,
-      ["--json", "status"],
-      { cwd: folder, timeout: STATUS_TIMEOUT_MS, windowsHide: true },
+      launch.file,
+      launch.args,
+      {
+        cwd: folder,
+        timeout: STATUS_TIMEOUT_MS,
+        windowsHide: true,
+        windowsVerbatimArguments: launch.verbatim,
+      },
       (error, stdout, stderr) => resolve(readOf(error, stdout, stderr)),
     );
   });
@@ -133,15 +142,17 @@ export function startUi(
   folder: string,
   timeoutMs: number = UI_TIMEOUT_MS,
 ): Promise<UiStart> {
-  const child = spawn(command, ["ui"], {
+  const launch = launchOf(command, ["ui"]);
+  if (launch === undefined) return Promise.resolve({ kind: "missing" });
+  const child = spawn(launch.file, launch.args, {
     cwd: folder,
     stdio: ["ignore", "pipe", "pipe"],
     windowsHide: true,
+    windowsVerbatimArguments: launch.verbatim,
   });
   const exited = new Promise<void>((done) => child.once("close", () => done()));
-  const stop = () => {
-    child.kill();
-  };
+  // On Windows, the whole tree: `specty.cmd`'s cmd.exe and the server it started.
+  const stop = () => stopTree(child);
   let output = "";
   return new Promise((resolve) => {
     const finish = (start: UiStart) => {

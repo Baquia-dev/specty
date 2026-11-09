@@ -35,6 +35,7 @@ describe.skipIf(process.platform === "win32")("a verification in Linux or macOS"
   it("AC4: runs at Specty's priority when it asks for that one or a higher one", async () => {
     const own = getPriority();
     expect(await printed(own)).toBe(String(own));
-    expect(await printed(Math.max(own - 5, 0))).toBe(String(own));
+    // A higher one even above the normal priority, as on GitHub's macOS runner, at -10 (AC1).
+    expect(await printed(own - 5)).toBe(String(own));
   });
 });

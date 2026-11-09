@@ -5,6 +5,7 @@ import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import type { ChangedFile } from "@baquia-dev/specty-core";
 import { type ExecResult, execute } from "./exec";
 import { exists, isDirectory, readText, remove } from "./files";
+import { fromGit, parseWorktrees, startedIn } from "./git-folders";
 import {
   headAnswer,
   type OpenedHead,
@@ -96,7 +97,7 @@ export interface Worktree {
 /** Root of the repository that contains `cwd`, or undefined outside git. */
 export async function findRoot(cwd: string): Promise<string | undefined> {
   const result = await execute("git", ["rev-parse", "--show-toplevel"], { cwd });
-  return result.code === 0 ? result.stdout.trim() : undefined;
+  return result.code === 0 ? fromGit(result.stdout.trim(), cwd) : undefined;
 }
 
 /** The repository that contains a folder, and what git already said of it. */
@@ -118,11 +119,12 @@ const OPENING = ["rev-parse", "--show-toplevel", "--git-path", "specty", "--git-
 export async function openRepository(cwd: string): Promise<OpenedRepository | undefined> {
   const full = await execute("git", [...OPENING, "HEAD", "--abbrev-ref", "HEAD"], { cwd });
   const result = full.code === 0 ? full : await execute("git", OPENING, { cwd });
-  const [root, specty, common, commit, branch] = result.stdout.trim().split("\n");
-  if (result.code !== 0 || root === undefined || specty === undefined || common === undefined)
+  const [top, specty, common, commit, branch] = result.stdout.trim().split("\n");
+  if (result.code !== 0 || top === undefined || specty === undefined || common === undefined)
     return undefined;
   // A relative path of git's folder is relative to where it was asked.
-  const known = { specty: resolve(cwd, specty), common: resolve(cwd, common) };
+  const root = fromGit(top, cwd);
+  const known = { specty: fromGit(specty, cwd), common: fromGit(common, cwd) };
   if (commit === undefined || branch === undefined) return { root, known };
   return { root, known, head: { commit, branch } };
 }
@@ -259,7 +261,7 @@ function gitPaths(
       segment !== undefined && rest.length > 0 && ONE_FOLDER.has(segment)
         ? `${await ask(segment)}/${rest.join("/")}`
         : await ask(name);
-    return isAbsolute(path) ? path : resolve(git.root, path);
+    return fromGit(path, git.root);
   };
 }
 
@@ -285,10 +287,11 @@ function runner(
   const ask = async (args: readonly string[], options: RunOptions) => {
     const known =
       options.env === undefined && options.input === undefined ? await answered(args) : undefined;
+    const start = startedIn(root, args);
     return (
       known ??
-      execute("git", args, {
-        cwd: root,
+      execute("git", start.args, {
+        cwd: start.cwd,
         env: { ...baseEnv, ...options.env },
         // A diff or a file is read whole: cut, it would lose its beginning.
         whole: true,
@@ -314,29 +317,8 @@ function worktreeQueries(
   git: Runner,
   listing?: Pick<Git, "worktrees">,
 ): Pick<Git, "worktrees" | "nestedWorktrees"> {
-  // `--porcelain` prints one block per worktree: `worktree <folder>`, `HEAD <commit>`, then
-  // `branch refs/heads/…` unless it is detached, and `locked`, with its reason or not, when it is
-  // locked.
   const listed = async () =>
-    (await git.output(["worktree", "list", "--porcelain"])).split("\n\n").flatMap((block) => {
-      const lines = block.split("\n");
-      const value = (prefix: string) =>
-        lines.find((line) => line.startsWith(prefix))?.slice(prefix.length);
-      const folder = value("worktree ");
-      const branch = value("branch refs/heads/");
-      // A branch without commits yet has a HEAD of zeros.
-      const head = value("HEAD ");
-      if (folder === undefined) return [];
-      const locked = lines.some((line) => line === "locked" || line.startsWith("locked "));
-      return [
-        {
-          folder,
-          ...(branch === undefined ? {} : { branch }),
-          ...(locked ? { locked } : {}),
-          ...(head === undefined || /^0+$/.test(head) ? {} : { head }),
-        },
-      ];
-    });
+    parseWorktrees(await git.output(["worktree", "list", "--porcelain"]), git.root);
   const worktrees = listing?.worktrees ?? listed;
   const nestedWorktrees = async () => {
     const own = await resolved(git.root);

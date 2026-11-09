@@ -12,6 +12,7 @@ import {
   read,
   SPEC,
   SPEC_PATH,
+  worktreeList,
   writeFiles,
 } from "./support";
 
@@ -75,7 +76,7 @@ describe("`specty restore` of a change without its folder", () => {
   it("AC2: leaves git one worktree for the branch, with no dead record behind", async () => {
     const { root, folder } = await lostFolder();
     expect((await cli(root, ["restore", CHANGE])).code).toBe(0);
-    const listed = git(root, "worktree", "list", "--porcelain");
+    const listed = worktreeList(root);
     expect(listed.split(`branch refs/heads/specty/${CHANGE}`)).toHaveLength(2);
     expect(listed).not.toContain("prunable");
     expect(listed).toContain(`worktree ${folder}`);

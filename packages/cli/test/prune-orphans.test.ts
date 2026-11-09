@@ -15,6 +15,7 @@ import {
   SPEC,
   SPEC_PATH,
   tempRepo,
+  worktreeList,
   writeFiles,
 } from "./support";
 
@@ -23,7 +24,7 @@ const rescueRef = (name: string) =>
   `refs/specty/rescue/${name}/${NOW.toISOString().replace(/\D/g, "").slice(0, 14)}`;
 
 const rescueRefs = (root: string) => git(root, "for-each-ref", "refs/specty/rescue/");
-const listed = (root: string) => git(root, "worktree", "list", "--porcelain");
+const listed = (root: string) => worktreeList(root);
 
 /** A repository whose change, approved in its own folder, lost that folder. */
 async function lostChange() {
