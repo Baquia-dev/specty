@@ -40,12 +40,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b623346fd1e7924ea76a68b0b8e2ef337b943795",
+      "attempts": 1,
       "startedAt": "2026-11-09T16:58:49.622Z",
       "doneAt": "2026-11-09T17:01:49.839Z",
-      "summary": "specty wait deja de escribir el latido: sin beats ni waitHeartbeat en cards/wait.ts (Gemini CLI queda en primer plano), sin heartbeat ni beatMs en commands/wait.ts; los tests del latido se van y uno comprueba que wait no escribe por stderr con ninguna herramienta"
+      "summary": "specty wait deja de escribir el latido: sin beats ni waitHeartbeat en cards/wait.ts (Gemini CLI queda en primer plano), sin heartbeat ni beatMs en commands/wait.ts; los tests del latido se van y uno comprueba que wait no escribe por stderr con ninguna herramienta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4efaddcf12b5ecfeceb0bf4a3dab0f0aa0b7f960",
+      "startedAt": "2026-11-09T17:01:50.554Z",
+      "doneAt": "2026-11-09T17:02:29.058Z",
+      "summary": "config.yaml deja de tener internal.waits.heartbeatSec: fuera del tipo, los valores por defecto, la forma y la resolución de schema/internal-waits.ts; la clave es ahora un error como cualquier otra desconocida bajo internal"
     }
   },
   "pending": {

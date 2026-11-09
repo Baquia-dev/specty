@@ -64,7 +64,7 @@ La persona decidió el 2026-11-10 retirar Gemini CLI, porque Antigravity lo reem
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/wait.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/wait.test.ts
   - type: chore
-- [ ] T2: `config.yaml` deja de tener `internal.waits.heartbeatSec`
+- [x] T2: `config.yaml` deja de tener `internal.waits.heartbeatSec`
   - files: packages/core/src/schema/internal-waits.ts, packages/core/test/schema/schema.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/schema.test.ts
