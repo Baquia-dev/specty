@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261109-la-publicacion-en-npm-usa-la-publicacion-de",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261109-la-publicacion-en-npm-usa-la-publicacion-de",
+  "baseCommit": "e8dfaf3d64a387fc8f9b075274ebcbd769357ac2",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos",
+      "1 ruta sensible"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d83be42fe45382284a41e0b0f9d77056490a876e55c397c45eac0d2ba2a83841",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:b03de20bd35b4f5fd798e44b5d4bb0d8c769005d226f949f13797b1cbff86d65",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:87ee728097a958b044471f7492d1cd7edc274de21b678ed54e344d432c411c3d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6b67aed9eb644386dc02ea15f87701c55ea78198b42b5bc1d4932288825655e6",
+    "at": "2026-11-09T15:50:43.117Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
