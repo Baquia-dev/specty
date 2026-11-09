@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261110-doctor-y-la-suite-de-cumplimiento-se-quedan-con",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261110-doctor-y-la-suite-de-cumplimiento-se-quedan-con",
   "baseCommit": "11f76e12825a5c163227e943853cedd15e9258b8",
   "revision": 1,
@@ -52,6 +52,9 @@
     "T": 4,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-09T17:36:56.961Z"
+  "lockedTests": {
+    "evals/test/agents-default.test.ts": "sha256:fb6cb4737eeb8649a63db285574a090451320a023f088bc05c8334ab590abe1b",
+    "packages/cli/test/doctor-disabled.test.ts": "sha256:8d11c23189ad5aceb49a6c34f8440580f48cd16b5cc5dab933f1cc0a8f7cb0ca",
+    "packages/core/test/cards/doctor-disabled.test.ts": "sha256:46dd9d70e4bbff843ad1187d7bf59312c777f7522289fdad8c87aeaa71d1e92c"
+  }
 }
