@@ -148,7 +148,6 @@ const INTERNAL: readonly Setting[] = [
     unit: "s",
     new: true,
   },
-  { key: "internal.waits.heartbeatSec", section: "internal", kind: "number", unit: "s", new: true },
   {
     key: "internal.waits.verifyIntervalMs",
     section: "internal",

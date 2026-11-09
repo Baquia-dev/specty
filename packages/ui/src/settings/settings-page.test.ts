@@ -409,7 +409,7 @@ describe("the settings page", () => {
 
   it("AC6: shows «Interno» last, folded, with a warning; opened, its settings with «Nuevo», key, value and default", async () => {
     const changed = valid({ ...INPUT, internal: { waits: { waitTimeoutSec: 600 } } });
-    const { page, settle, sections, headings, part, mark, marks } = await open(changed);
+    const { page, settle, sections, headings, keys, part, mark, marks } = await open(changed);
     expect(sections().at(-1)).toBe("internal");
     expect(headings().at(-1)).toBe("Interno");
     const internal = internalOf(page);
@@ -425,9 +425,11 @@ describe("the settings page", () => {
     // AC6: 55 min by default, inside the prompt cache's hour.
     expect(part("internal.waits.waitTimeoutSec", "default")).toBe("Por defecto: 3300 s");
     expect(marks("internal.waits.waitTimeoutSec")).toEqual(["modified", "new"]);
-    expect(mark("internal.waits.heartbeatSec", "new")).toBe("Nuevo");
-    expect(part("internal.waits.heartbeatSec", "value")).toBe("60 s");
-    expect(part("internal.waits.heartbeatSec", "default")).toBe("");
+    expect(mark("internal.waits.queueStaleSec", "new")).toBe("Nuevo");
+    expect(part("internal.waits.queueStaleSec", "value")).toBe("30 s");
+    expect(part("internal.waits.queueStaleSec", "default")).toBe("");
+    // AC2: `specty wait` has no heartbeat any more, nor its setting.
+    expect(keys()).not.toContain("internal.waits.heartbeatSec");
     expect(part("internal.retries.landing", "value")).toBe("2");
   });
 

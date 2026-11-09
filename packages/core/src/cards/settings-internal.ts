@@ -14,16 +14,6 @@ const INTERNAL_TEXTS: Readonly<Record<string, Texts>> = {
     es: ["Espera de specty wait", "Cuánto espera la decisión de la persona sin --timeout."],
     en: ["specty wait's wait", "How long it waits for the person's decision without --timeout."],
   },
-  "internal.waits.heartbeatSec": {
-    es: [
-      "Latido de specty wait",
-      "Cada cuánto escribe una línea donde la herramienta corta un comando callado.",
-    ],
-    en: [
-      "specty wait's heartbeat",
-      "How often it writes a line where the tool cuts a silent command.",
-    ],
-  },
   "internal.waits.verifyIntervalMs": {
     es: [
       "Intervalo de una verificación que espera",

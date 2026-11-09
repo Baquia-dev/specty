@@ -57,11 +57,13 @@
       "scopeExtra": []
     },
     "T3": {
-      "status": "active",
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
       "baseCommit": "aa0c676332cb1bc82c3d2b9e23ec7791ddf080de",
-      "attempts": 1,
       "startedAt": "2026-11-09T17:02:29.583Z",
-      "scopeExtra": []
+      "doneAt": "2026-11-09T17:03:57.109Z",
+      "summary": "La página Configuración deja de mostrar el latido: sin internal.waits.heartbeatSec en settings/catalog.ts ni sus textos en cards/settings-internal.ts; los tests del catálogo ordenan los intervalos tras la espera de specty wait y la UI comprueba que no aparece"
     }
   },
   "pending": {
