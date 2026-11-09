@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261109-specty-corre-dentro-del-sandbox-de-antigravity",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261109-specty-corre-dentro-del-sandbox-de-antigravity",
+  "baseCommit": "2a1c7ccf81bc3c5c3f987eb744a8d63f7ef2feaa",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1fd59f89af850953ff570d4dd662b51b97af86cd17f8fc800bea4c1deea9e28a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fa86f2533c914793fd1af7ea26a0546496f75f51ebc7c43cf2aed66c65b52409",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e15b3ada8ae829aeb0da1812ace5c78286593998c629f61809a9f62022834522",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:adf21c2575853e91fecc655658a2bc4e149a00e715740c31c86a5a31de0f1ede",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:2868f7f9c1018f0c8735741326cb5fa1a921c859ca9f856b7a4c49cd05e37080",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 5,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d4beb399050e5b9466ed944a365c05cc45562457b36a5e7b35147db10f7076ee",
+    "at": "2026-11-09T10:46:01.446Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
