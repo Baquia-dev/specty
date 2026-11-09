@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261110-la-primera-version-solo-ofrece-claude-code-y",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261110-la-primera-version-solo-ofrece-claude-code-y",
+  "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:51f4b0f92b2023efaed3deefdd933facb4c77696849d431f07e7d0a9805761e2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e8fc9973c4400e3fcc385410e36e49aa6f9ad7df10dd75defb03187be53e574a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:92691657ed25e25eac193c623b1a527c6dfa63e79db23bb622d09859ab5e5b59",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a794f6a22b3d4e45e897313bfaf9ec7f3f7c110098171398d7b296fe711faf2b",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:79433705908e65bd05dd8751187307d6f8e4a2657c4f65beb6b2bec8787ec954",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:76ee502fe0fdd6f61e6c8bec8adc501a2436c188ba2224a7a3b3b3847916245f",
+    "at": "2026-11-09T16:56:02.184Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
