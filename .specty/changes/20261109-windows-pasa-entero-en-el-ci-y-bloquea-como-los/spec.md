@@ -54,7 +54,7 @@ Windows entra en la primera versión. En el run 42628873388 (main fba98e4) Linux
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/replace-file.test.ts && pnpm lint
   - type: fix
-- [ ] T2: Los AC3 de la verificación en vivo sostienen el comando hasta leer su última línea
+- [x] T2: Los AC3 de la verificación en vivo sostienen el comando hasta leer su última línea
   - files: packages/cli/test/live-run.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/live-run.test.ts && pnpm lint

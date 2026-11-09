@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { dirname } from "node:path";
+import { dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { runLive } from "../src/flow/live-run";
 import { writeText } from "../src/io/files";
@@ -26,9 +26,34 @@ async function withServer(server: string) {
 const unoDos = (seconds: number) =>
   `node -e "console.log('uno'); setTimeout(() => console.log('dos'), ${seconds * 1000})"`;
 
-/** A command that prints the lines 1 to `count` and then waits 2 s. */
+/** The file, in the repository, whose arrival lets the command of `printing` end. */
+const RELEASE = "listo";
+
+/**
+ * A command that prints the lines 1 to `count` and then waits for the file `RELEASE`, up to 60 s,
+ * so a slow machine cannot end it before the test reads its file.
+ */
 const printing = (count: number) =>
-  `node -e "for (let i = 1; i <= ${count}; i++) console.log(i); setTimeout(() => {}, 2000)"`;
+  `node -e "for (let i = 1; i <= ${count}; i++) console.log(i); const end = Date.now() + 60000; const wait = setInterval(() => { if (require('fs').existsSync('${RELEASE}') || Date.now() > end) clearInterval(wait) }, 50)"`;
+
+/**
+ * Runs `printing(count)` live as T1 of the change and gives the lines of its file once they reach
+ * `count`; then lets the command end, also when they never do, and checks it passed.
+ */
+async function printed(session: Awaited<ReturnType<typeof sessionAt>>, count: number) {
+  const running = runLive(session, "20261024-saludo", "T1", printing(count));
+  let output: readonly string[] = [];
+  try {
+    await until(async () => {
+      output = (await readRuns(session.git)).get("20261024-saludo")?.output ?? [];
+      return output.includes(String(count));
+    });
+  } finally {
+    await writeText(join(session.root, RELEASE), "");
+  }
+  expect((await running).code).toBe(0);
+  return output;
+}
 
 /** The lines `from` to `to`, each its number. */
 const numbers = (from: number, to: number) =>
@@ -68,26 +93,12 @@ describe("a task's verification, live", () => {
 
   it("AC3: keeps in its file only the last internal.server.runLines lines", async () => {
     const session = await withServer("runLines: 100");
-    const running = runLive(session, "20261024-saludo", "T1", printing(300));
-    let output: readonly string[] = [];
-    await until(async () => {
-      output = (await readRuns(session.git)).get("20261024-saludo")?.output ?? [];
-      return output.includes("300");
-    });
-    expect(output).toEqual(numbers(201, 300));
-    expect((await running).code).toBe(0);
+    expect(await printed(session, 300)).toEqual(numbers(201, 300));
   });
 
   it("AC3: keeps the last 1000 lines without the key", async () => {
     const session = await sessionAt(await tempRepo(APP), AGENT);
-    const running = runLive(session, "20261024-saludo", "T1", printing(1500));
-    let output: readonly string[] = [];
-    await until(async () => {
-      output = (await readRuns(session.git)).get("20261024-saludo")?.output ?? [];
-      return output.includes("1500");
-    });
-    expect(output).toEqual(numbers(501, 1500));
-    expect((await running).code).toBe(0);
+    expect(await printed(session, 1500)).toEqual(numbers(501, 1500));
   });
 
   it("AC4: writes its file again at most every internal.server.runEveryMs", async () => {

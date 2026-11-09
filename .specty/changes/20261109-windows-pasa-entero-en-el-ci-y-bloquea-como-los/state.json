@@ -40,12 +40,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4fde9c96fb6d3044572fab9384c186ceb8ea4010",
+      "attempts": 1,
       "startedAt": "2026-11-09T14:44:41.998Z",
       "doneAt": "2026-11-09T14:45:03.274Z",
-      "summary": "writeText reemplaza con replaceFile, que en Windows repite el renombrado rechazado con EPERM, EACCES o EBUSY tras 50, 100, 200, 400 y 800 ms y lanza el último error; en otros sistemas o con otro código, el error sale a la primera"
+      "summary": "writeText reemplaza con replaceFile, que en Windows repite el renombrado rechazado con EPERM, EACCES o EBUSY tras 50, 100, 200, 400 y 800 ms y lanza el último error; en otros sistemas o con otro código, el error sale a la primera",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ecd53aa4945f3710a9f0db98d19766c543ba537d",
+      "startedAt": "2026-11-09T14:45:03.648Z",
+      "doneAt": "2026-11-09T14:45:54.203Z",
+      "summary": "Los dos AC3 de live-run usan printed: el comando imprime sus líneas y espera, hasta 60 s, el archivo listo, que el test crea tras ver la última línea en el archivo (también si falla); las aserciones son las de antes"
     }
   },
   "pending": {
