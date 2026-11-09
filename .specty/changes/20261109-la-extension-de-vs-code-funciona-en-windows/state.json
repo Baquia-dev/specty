@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": "20261109-la-extension-de-vs-code-funciona-en-windows",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261109-la-extension-de-vs-code-funciona-en-windows",
+  "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3fd04ea2b352191e98b3973fe045377d35a0126feb9cea9afcb404f7a99c77ec",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:95c9ca2335a8c152a699d3a1007ae03006ebca10d684265540df209acd6d57f5",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:30463f388d4567621e735ae30f68dc0d81a8069aef5d3e090dbc0d45cda813ea",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:2f78ea6bf989842e1a6418bd4d73d655e6a87eff20a12cc02a75f5a65be342ff",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:b485726e63fd9a08f11d4e828952f3f1436a7da5b400bbca890c746a6074982b",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:f41f859fcc55cdd1e1e39e943b2cf218eea3fd4579d0908c10c4f12cbbeaf0b6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:dd4da943382b4e2ffb85895b76a99ea9b3e819907353967dd6c0af2be093eca0",
+    "at": "2026-11-09T11:15:57.393Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
