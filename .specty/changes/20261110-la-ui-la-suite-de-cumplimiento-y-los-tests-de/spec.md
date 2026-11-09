@@ -58,7 +58,7 @@ Tercero de los cambios consecutivos que retiran Gemini CLI, que Antigravity reem
 
 ## Tareas
 
-- [ ] T1: La UI deja de proponer Gemini CLI para retomar un cambio
+- [x] T1: La UI deja de proponer Gemini CLI para retomar un cambio
   - files: packages/ui/src/change/resume-hints.ts, packages/ui/src/change/resume-hints.test.ts, packages/ui/src/sessions/sessions-page.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/resume-hints.test.ts --include src/sessions/sessions-page.test.ts

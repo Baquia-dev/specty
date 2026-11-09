@@ -6,6 +6,13 @@
   "branch": "specty/20261110-la-ui-la-suite-de-cumplimiento-y-los-tests-de",
   "baseCommit": "1fe70408877a578f8993da0f84c4eb6d86bccc25",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ced1968f3d940414d1ebbd757c5fac45e91885e244984cecee8ab00670efbefa",
+    "at": "2026-11-09T17:42:05.758Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -30,7 +37,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3f459b42fd428050722f1c78f3e33c7b7132133c",
+      "startedAt": "2026-11-09T17:42:06.845Z",
+      "doneAt": "2026-11-09T17:51:24.129Z",
+      "summary": "La UI deja de proponer cd … && gemini para retomar un cambio (OPEN_IN de change/resume-hints.ts); su test lista las órdenes sin Gemini CLI y la sesión de ejemplo de sessions-page.test es de Devin (Windsurf)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -40,12 +57,5 @@
     "AC": 4,
     "T": 4,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ced1968f3d940414d1ebbd757c5fac45e91885e244984cecee8ab00670efbefa",
-    "at": "2026-11-09T17:42:05.758Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
