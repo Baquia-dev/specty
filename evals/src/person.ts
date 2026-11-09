@@ -98,7 +98,7 @@ const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve,
 const TIMING = { delayMs: 20_000, intervalMs: 2_000 };
 
 /** The person looks every `intervalMs` while `running()` says the agent runs. */
-export async function attend(
+async function attend(
   root: string,
   running: () => boolean,
   { delayMs, intervalMs } = TIMING,

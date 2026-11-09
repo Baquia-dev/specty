@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { chmod, mkdtemp, readFile } from "node:fs/promises";
+import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CONFIG, cli, tempRepo, writeFiles } from "./support";
+import { writeTool } from "./tools";
 
 const json = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
 
@@ -62,9 +63,10 @@ async function repo(config = LAYERS): Promise<string> {
 /** A fake dependency-cruiser that logs its arguments and writes CRUISE, or fails. */
 async function fakeCruiser(root: string, broken = false): Promise<string> {
   const log = join(await mkdtemp(join(tmpdir(), "specty-depcruise-")), "args.json");
-  const bin = join(root, "node_modules/.bin/depcruise");
-  await writeFiles(root, {
-    "node_modules/.bin/depcruise": `#!/usr/bin/env node
+  await writeTool(
+    join(root, "node_modules", ".bin"),
+    "depcruise",
+    `#!/usr/bin/env node
 const fs = require("node:fs");
 const args = process.argv.slice(2);
 fs.writeFileSync(${JSON.stringify(log)}, JSON.stringify(args));
@@ -74,8 +76,7 @@ if (${broken}) {
 }
 fs.writeFileSync(args[args.indexOf("--output-to") + 1], ${JSON.stringify(JSON.stringify(CRUISE))});
 `,
-  });
-  await chmod(bin, 0o755);
+  );
   return log;
 }
 

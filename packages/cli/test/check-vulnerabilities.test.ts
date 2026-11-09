@@ -1,13 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { execFileSync } from "node:child_process";
-import { mkdir, mkdtemp, readFile, realpath, symlink, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { CONFIG, cli, git, tempRepo, writeFiles } from "./support";
-
-const GIT = execFileSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).trim();
+import { toolFolder, writeTool } from "./tools";
 
 /** The vulnerabilities the fake scanner knows, by `name@version`, each with its severity. */
 const KNOWN: Readonly<Record<string, readonly (readonly [string, string])[]>> = {
@@ -39,7 +36,7 @@ const path = require("node:path");
 const args = process.argv.slice(2);
 if (args[0] === "--version") { console.log("osv-scanner version: 2.7.0"); process.exit(0); }
 const locks = args.flatMap((arg, index) => (args[index - 1] === "-L" ? [arg] : []));
-const files = fs.readdirSync(".", { recursive: true }).map(String).sort();
+const files = fs.readdirSync(".", { recursive: true }).map((file) => String(file).split(path.sep).join("/")).sort();
 const texts = Object.fromEntries(locks.map((lock) => [lock, fs.readFileSync(lock, "utf8")]));
 fs.appendFileSync(${JSON.stringify(log)}, JSON.stringify({ args, cwd: process.cwd(), files, texts }) + "\\n");
 const flavor = ${JSON.stringify(flavor)};
@@ -72,21 +69,15 @@ process.exit(found ? 1 : 0);
 
 /** A PATH with only git, node and, unless `flavor` is undefined, the fake OSV-Scanner. */
 async function scanner(flavor: Flavor | undefined) {
-  const folder = await realpath(await mkdtemp(join(tmpdir(), "specty-osv-")));
-  const bin = join(folder, "bin");
+  const { folder, bin, path } = await toolFolder("specty-osv-");
   const log = join(folder, "runs.jsonl");
-  await mkdir(bin);
-  await symlink(GIT, join(bin, "git"));
-  await symlink(process.execPath, join(bin, "node"));
-  if (flavor !== undefined) {
-    await writeFile(join(bin, "osv-scanner"), fakeScanner(flavor, log), { mode: 0o755 });
-  }
+  if (flavor !== undefined) await writeTool(bin, "osv-scanner", fakeScanner(flavor, log));
   const runs = async (): Promise<ScannerRun[]> =>
     (await readFile(log, "utf8").catch(() => ""))
       .split("\n")
       .filter((line) => line.length > 0)
       .map((line) => JSON.parse(line));
-  return { env: { PATH: bin }, runs };
+  return { env: { PATH: path }, runs };
 }
 
 /** `secrets` stays off: no other scanner of the machine runs, and none is missing either. */

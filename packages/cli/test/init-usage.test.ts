@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { existsSync } from "node:fs";
-import { chmod, mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { cli, git, person, tempRepo, writeFiles } from "./support";
+import { writeTool } from "./tools";
 
 /** A Node project managed by pnpm, as init detects it. */
 const NODE = {
@@ -31,8 +32,7 @@ async function fakePnpm(fails = false) {
     'json.devDependencies = { ...json.devDependencies, ccusage: "20.0.45" };',
     'fs.writeFileSync("package.json", JSON.stringify(json, null, 2) + "\\n");',
   ].join("\n");
-  await writeFile(join(bin, "pnpm"), `${script}\n`);
-  await chmod(join(bin, "pnpm"), 0o755);
+  await writeTool(bin, "pnpm", `${script}\n`);
   return {
     env: { PATH: `${bin}${delimiter}${process.env.PATH ?? ""}` },
     calls: async () => (await readFile(log, "utf8").catch(() => "")).trim(),
@@ -155,8 +155,7 @@ describe("doctor's warning about ccusage", () => {
 
   it("says nothing when ccusage is on the PATH", async () => {
     const bin = await mkdtemp(join(tmpdir(), "ccusage-bin-"));
-    await writeFile(join(bin, "ccusage"), "#!/bin/sh\n");
-    await chmod(join(bin, "ccusage"), 0o755);
+    await writeTool(bin, "ccusage", "#!/usr/bin/env node\n");
     const env = { PATH: `${bin}${delimiter}${pathWithoutCcusage()}` };
     const root = await tempRepo(NODE);
     await cli(root, INIT, { env });

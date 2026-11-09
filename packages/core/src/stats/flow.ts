@@ -2,7 +2,7 @@
 // The panel's «Flujo y esperas» (docs/ui.md, «Panel»): where the time of a change goes, phase by
 // phase, who approves the specs, how long the person waits and how many agent sessions a change
 // takes, each fact by the day of its event.
-import { dayOf, inRange, median, type StatsRange, sum } from "./period";
+import { inRange, median, type StatsRange, sum } from "./period";
 import type { StatsRow } from "./rows";
 
 /** The phases of a change, in order: write the spec, review it, implement it, accept and close. */
@@ -37,17 +37,16 @@ export interface StatsFlow {
 /** The flow of `rows` in `range`. */
 export function statsFlow(rows: readonly StatsRow[], range: StatsRange): StatsFlow {
   const timed = rows.flatMap((row) =>
-    row.closed !== undefined && inRange(dayOf(row.closed), range)
+    row.closed !== undefined && row.closedDay !== undefined && inRange(row.closedDay, range)
       ? [phasesOf(row, row.closed)]
       : [],
   );
-  const approvals = rows.flatMap((row) =>
-    row.approvals.filter((one) => inRange(dayOf(one.at), range)),
-  );
+  const approvals = rows.flatMap((row) => row.approvals.filter((one) => inRange(one.day, range)));
   const waits = approvals.flatMap((one) =>
     one.channel !== "delegated" && one.review !== null ? [one.review] : [],
   );
   const sessions = rows.flatMap((row) => {
+    if (row.sessions.length === 0) return [];
     const own = new Set(row.sessions.filter((one) => inRange(one.day, range)).map((one) => one.id));
     return own.size === 0 ? [] : [own.size];
   });

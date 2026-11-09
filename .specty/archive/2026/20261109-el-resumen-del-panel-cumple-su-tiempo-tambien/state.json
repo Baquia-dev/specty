@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "id": "20261109-el-resumen-del-panel-cumple-su-tiempo-tambien",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261109-el-resumen-del-panel-cumple-su-tiempo-tambien",
+  "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a6ffcf450dad92da87531b7043fd75713ceab3adfcd5bdb472c152d8a3d77e98",
+    "at": "2026-11-09T11:34:39.156Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0ddd1f20aa635079df6f6f1e638ba0153a75ba5bb2ff45cc08d5d9e114ba7252",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f8efe5c85740529d42c0ee5a650b609e670467b8ce198f5e5b181b545be29db5",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f1be25ef6368cfb4fcd2e8a0b987ddfd2470538c1409061ba2dc91b740db3960",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "dd9d582549b6452a0e50c87ea17eaaa327405539",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:34:41.354Z",
+      "doneAt": "2026-11-09T11:38:25.518Z",
+      "summary": "statsRow lee las líneas una vez (un Map de funciones por evento), sin copiar cada entrada y con su hora en milisegundos; la fila trae closedDay y el día de cada aprobación; dayOf acepta milisegundos; Flujo usa esos días y no crea un Set para un cambio sin sesiones",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2944407adef84b3e4c4e414c96bd53f7d180e04b",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:38:26.009Z",
+      "doneAt": "2026-11-09T11:45:26.736Z",
+      "summary": "rangeFinder da el tramo de un día buscando a mitades y recordándolo; Ritmo, Calidad y Coste reparten así en vez de con un mapa de cada día del calendario; Calidad recorre las verificaciones una vez para los tramos y los cambios con más fallos, y no crea conjuntos para cambios sin tests de contrato",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f1f75e83abf898f93288905954f5f3c64b8a8467",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:45:27.205Z",
+      "doneAt": "2026-11-09T11:50:55.070Z",
+      "summary": "Un solo recuento por cambio sirve al periodo, a todos los tramos a la vez (bucketCounts) y a lo de cada cambio (ownCounts, sumado con addedUp en el mismo orden); la tendencia va en un recorrido, la memoria se lee una vez por vista y el resumen y Personas suman lo ya contado",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "740e17a18c67021b8eb4b934f83e66959c4aa6d4",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:50:55.413Z",
+      "doneAt": "2026-11-09T11:51:25.782Z",
+      "summary": "ARCHITECTURE dice que la tendencia la cuenta bucketCounts en un solo recorrido y que lo de cada cambio se cuenta una vez (ownCounts) y se suma para los indicadores y people (addedUp)",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-09T11:52:15.079Z"
+}

@@ -18,8 +18,8 @@ import { rescueRefs } from "../flow/rescue";
 import { gitHooksInstalled } from "../install/git-hooks";
 import { mcpDoctor } from "../install/mcp";
 import { usageDoctor } from "../install/usage";
-import { execute } from "../io/exec";
 import { exists, readText } from "../io/files";
+import { findProgram } from "../io/programs";
 import { COMMAND, type Session } from "../session";
 import { readDelegation } from "../store/local";
 
@@ -97,12 +97,15 @@ async function toolLines(session: Session): Promise<{
   return { ok, problems, warnings: mcp.warnings };
 }
 
-/** Whether the `specty` command the agent runs can be found: its script, or the one on PATH. */
+/**
+ * Whether the `specty` command the agent runs can be found: its script, or the one on PATH, as
+ * the system finds it (on Windows, npm's `specty.cmd`), without a shell.
+ */
 async function reachable(session: Session): Promise<boolean> {
   const command = session.environment.invocation;
   return command.script !== undefined
     ? exists(command.script)
-    : (await execute("sh", ["-c", `command -v ${COMMAND}`], { cwd: session.root })).code === 0;
+    : findProgram(COMMAND, session.environment.env) !== undefined;
 }
 
 /**

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { chmod, mkdtemp, readFile } from "node:fs/promises";
+import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CONFIG, cli, tempRepo, writeFiles } from "./support";
+import { writeTool } from "./tools";
 
 /** `secrets` stays off, whatever scanners the machine has. */
 const CHECKS = "checks:\n  levels: { secrets: off }\n";
@@ -31,9 +32,10 @@ async function repo(
 /** A fake ESLint that logs its arguments and reports the messages of `flavor`. */
 async function fakeEslint(root: string, flavor: "report" | "broken"): Promise<string> {
   const log = join(await mkdtemp(join(tmpdir(), "specty-eslint-")), "args.json");
-  const bin = join(root, "node_modules/.bin/eslint");
-  await writeFiles(root, {
-    "node_modules/.bin/eslint": `#!/usr/bin/env node
+  await writeTool(
+    join(root, "node_modules", ".bin"),
+    "eslint",
+    `#!/usr/bin/env node
 const fs = require("node:fs");
 const path = require("node:path");
 const args = process.argv.slice(2);
@@ -54,8 +56,7 @@ const results = [{
 fs.writeFileSync(args[args.indexOf("--output-file") + 1], JSON.stringify(results));
 process.exit(1);
 `,
-  });
-  await chmod(bin, 0o755);
+  );
   return log;
 }
 

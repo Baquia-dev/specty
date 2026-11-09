@@ -1,0 +1,165 @@
+{
+  "schema": 1,
+  "id": "20261109-specty-lanza-en-windows-las-herramientas-del",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261109-specty-lanza-en-windows-las-herramientas-del",
+  "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:adda2327590e34c63b401dd514a132393e3064bd184548ef1067449a931045d1",
+    "at": "2026-11-09T11:23:24.603Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "17 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e70638f85a5f1f7125703215aaa868d9fd6980b66198ed205d458745af7f053c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ee380e36c0104870118b057d51d7782e2e998e3ae2ce2ccfa1467f221b82c0a6",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f8308e4bdc16476751a65dfb80544b70d468d0f5b60964c531d9ad9d89cd749b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d15867f612947ce2d1183c40eab982a8e819868560440da232a5a93382779b21",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:c35330cf5adf8472b025036c53aa9e2470dcd118125e97094e070e3c1163b66f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "823052b011d0b9d73a654a70859c8d68012b314e",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:28:52.778Z",
+      "doneAt": "2026-11-09T11:38:45.807Z",
+      "summary": "io/programs.ts busca los programas por PATH y PATHEXT (sin la carpeta actual) y lanza los .cmd y .bat por cmd.exe con el escape doble de cross-spawn; launch y execute lo usan sin shell (verbatim); doctor y usageDoctor buscan specty y ccusage con findProgram en vez de sh -c command -v",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "63a883bb60b3431aada5778f0fa7848e2467c207",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:38:46.176Z",
+      "doneAt": "2026-11-09T11:45:26.806Z",
+      "summary": "test/tools.ts: writeTool escribe la herramienta falsa y, en Windows, su .cmd; toolFolder da un PATH con solo ella, git y node. Lo usan los escáneres falsos y el npm de check --install, y sus listas de archivos van con /",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "02891e7c2cce492f92e9304498b5fd08b220a113",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:45:27.284Z",
+      "doneAt": "2026-11-09T11:51:00.201Z",
+      "summary": "ESLint, dependency-cruiser, Prisma y ccusage falsos se escriben con writeTool, así que en Windows llevan su .cmd y Specty los lanza; lo que comprueban no cambia",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "1e6bbdd38b62f307fef67247381fb2a96c77d27b",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:51:00.556Z",
+      "doneAt": "2026-11-09T11:51:55.440Z",
+      "summary": "El pnpm y el ccusage falsos de init y del servidor usan writeTool, y ARCHITECTURE §9 explica cómo busca y lanza Specty los programas en Windows",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-09T11:52:20.999Z",
+  "lockedTests": {
+    "packages/cli/test/windows-programs.test.ts": "sha256:02298c40af5e5e69c32c84ebc7680c72f39280fc2f51117ae9a804f3a3b9ba25"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "6a047dfa12b6fdb95e4d88b9b11dcca299668219",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "evals/src/agents.ts",
+      "evals/src/experiments.ts",
+      "evals/src/repo.ts",
+      "evals/src/scenarios.ts",
+      "evals/test/antigravity-init.test.ts",
+      "evals/test/antigravity.test.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/install/usage.ts",
+      "packages/cli/src/io/exec.ts",
+      "packages/cli/src/io/git-folders.test.ts",
+      "packages/cli/src/io/git-folders.ts",
+      "packages/cli/src/io/git.ts",
+      "packages/cli/src/io/programs.ts",
+      "packages/cli/test/check-code-rules.test.ts",
+      "packages/cli/test/check-generated.test.ts",
+      "packages/cli/test/check-install.test.ts",
+      "packages/cli/test/check-layers.test.ts",
+      "packages/cli/test/check-secrets.test.ts",
+      "packages/cli/test/check-typescript.test.ts",
+      "packages/cli/test/check-vulnerabilities.test.ts",
+      "packages/cli/test/exec-priority.test.ts",
+      "packages/cli/test/init-reversible.test.ts",
+      "packages/cli/test/init-usage.test.ts",
+      "packages/cli/test/prune-commands.test.ts",
+      "packages/cli/test/prune-orphans.test.ts",
+      "packages/cli/test/restore.test.ts",
+      "packages/cli/test/server/runs-priority.test.ts",
+      "packages/cli/test/server/sessions.test.ts",
+      "packages/cli/test/support.ts",
+      "packages/cli/test/tools.ts",
+      "packages/cli/test/usage-projects.test.ts",
+      "packages/cli/test/usage.test.ts",
+      "packages/cli/test/windows-programs.test.ts",
+      "packages/cli/test/worktree-hooks.test.ts",
+      "packages/core/src/stats/cost.ts",
+      "packages/core/src/stats/counts.ts",
+      "packages/core/src/stats/flow.ts",
+      "packages/core/src/stats/people.ts",
+      "packages/core/src/stats/period.ts",
+      "packages/core/src/stats/quality.ts",
+      "packages/core/src/stats/rhythm.ts",
+      "packages/core/src/stats/rows.ts",
+      "packages/core/src/stats/summary.ts",
+      "packages/vscode/README.md",
+      "packages/vscode/package.nls.es.json",
+      "packages/vscode/package.nls.json",
+      "packages/vscode/src/launch.ts",
+      "packages/vscode/src/specty.ts",
+      "packages/vscode/test/extension.test.ts",
+      "packages/vscode/test/fake-specty.ts",
+      "packages/vscode/test/launch.test.ts",
+      "packages/vscode/test/specty.test.ts"
+    ],
+    "at": "2026-11-09T11:58:08.338Z",
+    "resolved": {
+      "commit": "bed6045",
+      "at": "2026-11-09T12:05:15.875Z"
+    }
+  }
+}

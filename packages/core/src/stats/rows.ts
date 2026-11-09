@@ -21,6 +21,8 @@ export interface StatsRow {
   readonly created: string;
   /** ISO time it closed: its `change.closed` or, for a retro, its `retro.confirmed`. */
   readonly closed?: string;
+  /** The local day of `closed`, which the panel counts it by. */
+  readonly closedDay?: string;
   /** The days of its first and last lines: while it lived. */
   readonly lived: { readonly from: string; readonly to: string };
   /** The day of each `task.completed`. */
@@ -36,12 +38,14 @@ export interface StatsRow {
   /** ISO time of its last `task.completed`. */
   readonly completed?: string;
   /**
-   * Each `spec.approved`: its ISO time; who gave it, the agent in delegated mode, the terminal or
-   * the UI (a pull request counts with it); the `spec.proposed` since the approval before, and
-   * its review, the milliseconds from the first of them to it, none without any.
+   * Each `spec.approved`: its ISO time and its local day; who gave it, the agent in delegated
+   * mode, the terminal or the UI (a pull request counts with it); the `spec.proposed` since the
+   * approval before, and its review, the milliseconds from the first of them to it, none without
+   * any.
    */
   readonly approvals: readonly {
     readonly at: string;
+    readonly day: string;
     readonly channel: "delegated" | "tty" | "ui";
     readonly proposals: number;
     readonly review: number | null;
@@ -92,6 +96,8 @@ type StopReason = (typeof STOP_REASONS)[number];
 /** An audit line, with what the panel reads of it. */
 interface Line {
   readonly ts: string;
+  /** `ts` in milliseconds, read once. */
+  readonly time: number;
   readonly event: string;
   readonly actor?: unknown;
   readonly tool?: unknown;
@@ -106,143 +112,233 @@ export function statsRow(
   state: Pick<ChangeState, "id" | "kind" | "approved">,
   audit: readonly unknown[],
 ): StatsRow | undefined {
-  const lines = audit.flatMap(lineOf);
+  const lines = linesOf(audit);
   const first = lines[0];
   const last = lines.at(-1);
   if (first === undefined || last === undefined) return undefined;
-  const created = lines.find((line) => line.event === "change.created")?.ts ?? first.ts;
-  const closing = state.kind === "retro" ? "retro.confirmed" : "change.closed";
-  const closed = lines.findLast((line) => line.event === closing)?.ts;
-  const person = state.approved?.by ?? lines.findLast((line) => isText(line.by))?.by;
-  const agent = mostOf(lines.filter((line) => line.actor === "agent").map((line) => line.tool));
-  const model = mostOf(lines.map((line) => line.model));
+  const found = gathered(lines, state.kind === "retro" ? "retro.confirmed" : "change.closed");
+  const { closed } = found;
   return {
     id: state.id,
     kind: state.kind,
+    ...whoOf(state, found),
+    created: found.created ?? first.ts,
+    ...(closed === undefined ? {} : { closed, closedDay: dayOf(closed) }),
+    lived: { from: dayOf(first.time), to: dayOf(last.time) },
+    ...factsOf(found),
+  };
+}
+
+/** What the row takes from the lines of a change, gathered going through them once. */
+interface Gathered {
+  created?: string;
+  closed?: string;
+  /** The last `by` of its lines. */
+  by?: string;
+  /** How many `actor: agent` lines have each `tool`, and how many lines each `model`. */
+  readonly tools: Map<string, number>;
+  readonly models: Map<string, number>;
+  readonly sessions: Map<string, StatsRow["sessions"][number]>;
+  proposed?: string;
+  completed?: string;
+  /** The first `spec.proposed` since the approval before, if any, and how many there were. */
+  since: string | undefined;
+  proposals: number;
+  readonly tasks: string[];
+  readonly verifications: StatsRow["verifications"][number][];
+  readonly costs: StatsRow["costs"][number][];
+  readonly approvals: StatsRow["approvals"][number][];
+  readonly full: StatsRow["full"][number][];
+  readonly contract: StatsRow["contract"][number][];
+  readonly findings: StatsRow["findings"][number][];
+  readonly usage: StatsRow["usage"][number][];
+  readonly scope: StatsRow["scope"][number][];
+  readonly integrations: StatsRow["integrations"][number][];
+  readonly adjustments: string[];
+}
+
+/** What `lines` tell, each line read once: `closing` is the event that closes the change. */
+function gathered(lines: readonly Line[], closing: string): Gathered {
+  const found: Gathered = {
+    tools: new Map(),
+    models: new Map(),
+    sessions: new Map(),
+    since: undefined,
+    proposals: 0,
+    tasks: [],
+    verifications: [],
+    costs: [],
+    approvals: [],
+    full: [],
+    contract: [],
+    findings: [],
+    usage: [],
+    scope: [],
+    integrations: [],
+    adjustments: [],
+  };
+  for (const line of lines) {
+    whoIn(line, found);
+    if (line.event === closing) found.closed = line.ts;
+    GATHER.get(line.event)?.(line, found);
+  }
+  return found;
+}
+
+/** Who the line tells: its `by`, its agent's tool, its model and its session. */
+function whoIn(line: Line, found: Gathered): void {
+  if (isText(line.by)) found.by = line.by;
+  if (line.actor === "agent") counted(found.tools, line.tool);
+  counted(found.models, line.model);
+  if (!isText(line.session)) return;
+  const day = dayOf(line.time);
+  found.sessions.set(`${line.session} ${day}`, { id: line.session, day });
+}
+
+function counted(counts: Map<string, number>, value: unknown): void {
+  if (isText(value)) counts.set(value, (counts.get(value) ?? 0) + 1);
+}
+
+/** Its person, agent and model, the ones it has. */
+function whoOf(
+  state: Pick<ChangeState, "approved">,
+  found: Gathered,
+): Pick<StatsRow, "person" | "agent" | "model"> {
+  const person = state.approved?.by ?? found.by;
+  const agent = mostOf(found.tools);
+  const model = mostOf(found.models);
+  return {
     ...(isText(person) ? { person } : {}),
     ...(agent === undefined ? {} : { agent }),
     ...(model === undefined ? {} : { model }),
-    created,
-    ...(closed === undefined ? {} : { closed }),
-    lived: { from: dayOf(first.ts), to: dayOf(last.ts) },
-    tasks: lines.filter((line) => line.event === "task.completed").map((line) => dayOf(line.ts)),
-    verifications: lines
-      .filter((line) => line.event === "task.verified")
-      .map((line) => ({ day: dayOf(line.ts), passed: line.data.exit === 0 })),
-    costs: lines.flatMap((line) => {
-      const { cost } = line.data;
-      return line.event === "change.usage" && typeof cost === "number"
-        ? [{ day: dayOf(line.ts), cost }]
-        : [];
-    }),
-    sessions: sessionsOf(lines),
-    ...flowOf(lines),
-    ...qualityOf(lines),
-    ...outsideOf(lines),
   };
 }
 
-/**
- * What went outside the plan and what the change consumed: its usage, its scope decisions, the
- * merges of main that stopped and the adjustments asked for.
- */
-function outsideOf(
-  lines: readonly Line[],
-): Pick<StatsRow, "usage" | "scope" | "integrations" | "adjustments"> {
-  const count = (value: unknown) => (typeof value === "number" ? value : 0);
+/** The facts of the row, each with its day, and when its phases ended. */
+function factsOf(found: Gathered): Omit<StatsRow, "id" | "kind" | "created" | "lived"> {
+  const { proposed, completed } = found;
   return {
-    usage: lines.flatMap((line) => {
-      if (line.event !== "change.usage") return [];
-      const { calls, input, output, cacheWrite, cacheRead } = line.data;
-      return [
-        {
-          day: dayOf(line.ts),
-          calls: count(calls),
-          input: count(input),
-          output: count(output),
-          cacheWrite: count(cacheWrite),
-          cacheRead: count(cacheRead),
-        },
-      ];
-    }),
-    scope: lines.flatMap((line) => {
-      const decision = SCOPE_DECISIONS.find((known) => known === line.data.decision);
-      return line.event === "scope.decided" && decision !== undefined
-        ? [{ day: dayOf(line.ts), decision }]
-        : [];
-    }),
-    integrations: lines.flatMap((line) => {
-      const reason = STOP_REASONS.find((known) => known === line.data.reason);
-      return line.event === "integration.started" && reason !== undefined
-        ? [{ day: dayOf(line.ts), reason }]
-        : [];
-    }),
-    adjustments: lines
-      .filter((line) => line.event === "adjust.requested")
-      .map((line) => dayOf(line.ts)),
-  };
-}
-
-/** When the phases of the change ended, and each approval of its spec. */
-function flowOf(lines: readonly Line[]): Pick<StatsRow, "proposed" | "completed" | "approvals"> {
-  const proposed = lines.find((line) => line.event === "spec.proposed")?.ts;
-  const completed = lines.findLast((line) => line.event === "task.completed")?.ts;
-  const approvals: StatsRow["approvals"][number][] = [];
-  let first: string | undefined;
-  let proposals = 0;
-  for (const line of lines) {
-    if (line.event === "spec.proposed") {
-      first ??= line.ts;
-      proposals += 1;
-    } else if (line.event === "spec.approved") {
-      const review = first === undefined ? null : Date.parse(line.ts) - Date.parse(first);
-      approvals.push({ at: line.ts, channel: channelOf(line.data), proposals, review });
-      first = undefined;
-      proposals = 0;
-    }
-  }
-  return {
+    tasks: found.tasks,
+    verifications: found.verifications,
+    costs: found.costs,
+    sessions: [...found.sessions.values()],
     ...(proposed === undefined ? {} : { proposed }),
     ...(completed === undefined ? {} : { completed }),
-    approvals,
+    approvals: found.approvals,
+    full: found.full,
+    contract: found.contract,
+    findings: found.findings,
+    usage: found.usage,
+    scope: found.scope,
+    integrations: found.integrations,
+    adjustments: found.adjustments,
   };
+}
+
+/** What each event the panel counts adds to the row; the others add nothing. */
+const GATHER = new Map<string, (line: Line, found: Gathered) => void>([
+  [
+    "change.created",
+    (line, found) => {
+      found.created ??= line.ts;
+    },
+  ],
+  ["task.completed", completedIn],
+  [
+    "task.verified",
+    (line, found) => {
+      found.verifications.push({ day: dayOf(line.time), passed: line.data.exit === 0 });
+    },
+  ],
+  ["change.usage", usageIn],
+  [
+    "change.verified",
+    (line, found) => {
+      found.full.push({ day: dayOf(line.time), passed: line.data.exit === 0 });
+    },
+  ],
+  ["tests.proposed", (line, found) => contractIn(line, found, false)],
+  ["tests.locked", (line, found) => contractIn(line, found, true)],
+  [
+    "scope.decided",
+    (line, found) => {
+      const decision = SCOPE_DECISIONS.find((known) => known === line.data.decision);
+      if (decision !== undefined) found.scope.push({ day: dayOf(line.time), decision });
+    },
+  ],
+  [
+    "integration.started",
+    (line, found) => {
+      const reason = STOP_REASONS.find((known) => known === line.data.reason);
+      if (reason !== undefined) found.integrations.push({ day: dayOf(line.time), reason });
+    },
+  ],
+  [
+    "adjust.requested",
+    (line, found) => {
+      found.adjustments.push(dayOf(line.time));
+    },
+  ],
+  ["spec.proposed", proposedIn],
+  ["spec.approved", approvedIn],
+]);
+
+/** A task completed: its day, when, and what it left to note, if anything. */
+function completedIn(line: Line, found: Gathered): void {
+  const day = dayOf(line.time);
+  found.tasks.push(day);
+  found.completed = line.ts;
+  const { risks, longFiles, removedAssertions } = line.data;
+  const noted = {
+    day,
+    risks: Array.isArray(risks) ? risks.length : 0,
+    longFiles: Array.isArray(longFiles) ? longFiles.length : 0,
+    removed: removedOf(removedAssertions),
+  };
+  if (noted.risks + noted.longFiles + noted.removed > 0) found.findings.push(noted);
+}
+
+/** A `change.usage`: its cost, if it has one, and its calls and tokens, 0 unsaid. */
+function usageIn(line: Line, found: Gathered): void {
+  const day = dayOf(line.time);
+  const { cost, calls, input, output, cacheWrite, cacheRead } = line.data;
+  if (typeof cost === "number") found.costs.push({ day, cost });
+  const count = (value: unknown) => (typeof value === "number" ? value : 0);
+  found.usage.push({
+    day,
+    calls: count(calls),
+    input: count(input),
+    output: count(output),
+    cacheWrite: count(cacheWrite),
+    cacheRead: count(cacheRead),
+  });
+}
+
+function contractIn(line: Line, found: Gathered, locked: boolean): void {
+  found.contract.push({ day: dayOf(line.time), locked, files: textsOf(line.data.files) });
+}
+
+function proposedIn(line: Line, found: Gathered): void {
+  found.proposed ??= line.ts;
+  found.since ??= line.ts;
+  found.proposals += 1;
+}
+
+/** An approval of the spec, with the proposals since the one before and their review. */
+function approvedIn(line: Line, found: Gathered): void {
+  const { ts: at } = line;
+  const review = found.since === undefined ? null : Date.parse(at) - Date.parse(found.since);
+  const { proposals } = found;
+  const day = dayOf(line.time);
+  found.approvals.push({ at, day, channel: channelOf(line.data), proposals, review });
+  found.since = undefined;
+  found.proposals = 0;
 }
 
 /** Who approved: the agent in delegated mode, the terminal, or the UI, a pull request too. */
 function channelOf(data: Line["data"]): StatsRow["approvals"][number]["channel"] {
   if (data.delegated === true || data.channel === "delegated") return "delegated";
   return data.channel === "tty" ? "tty" : "ui";
-}
-
-/** What Specty checked: the full verifications, the contract tests and what the tasks left. */
-function qualityOf(lines: readonly Line[]): Pick<StatsRow, "full" | "contract" | "findings"> {
-  return {
-    full: lines
-      .filter((line) => line.event === "change.verified")
-      .map((line) => ({ day: dayOf(line.ts), passed: line.data.exit === 0 })),
-    contract: lines.flatMap((line) =>
-      line.event === "tests.proposed" || line.event === "tests.locked"
-        ? [
-            {
-              day: dayOf(line.ts),
-              locked: line.event === "tests.locked",
-              files: textsOf(line.data.files),
-            },
-          ]
-        : [],
-    ),
-    findings: lines.flatMap((line) => {
-      if (line.event !== "task.completed") return [];
-      const { risks, longFiles, removedAssertions } = line.data;
-      const found = {
-        day: dayOf(line.ts),
-        risks: Array.isArray(risks) ? risks.length : 0,
-        longFiles: Array.isArray(longFiles) ? longFiles.length : 0,
-        removed: removedOf(removedAssertions),
-      };
-      return found.risks + found.longFiles + found.removed === 0 ? [] : [found];
-    }),
-  };
 }
 
 /** The texts of a list; none of what is not one. */
@@ -261,39 +357,48 @@ function removedOf(value: unknown): number {
   return removed;
 }
 
-/** Each session of `lines` with each day it has a line on, once. */
-function sessionsOf(lines: readonly Line[]): { readonly id: string; readonly day: string }[] {
-  const found = new Map<string, { readonly id: string; readonly day: string }>();
-  for (const line of lines) {
-    if (!isText(line.session)) continue;
-    const day = dayOf(line.ts);
-    found.set(`${line.session} ${day}`, { id: line.session, day });
+/** The entries of `audit.jsonl` with a valid time and an event, in order. */
+function linesOf(audit: readonly unknown[]): Line[] {
+  const lines: Line[] = [];
+  for (const entry of audit) {
+    const line = lineOf(entry);
+    if (line !== undefined) lines.push(line);
   }
-  return [...found.values()];
+  return lines;
 }
 
 /** An entry of `audit.jsonl` with a valid time and an event; anything else, none. */
-function lineOf(entry: unknown): Line[] {
-  if (typeof entry !== "object" || entry === null) return [];
-  const line: Readonly<Record<string, unknown>> = { ...entry };
-  const { ts, event, data } = line;
-  if (typeof ts !== "string" || Number.isNaN(Date.parse(ts)) || typeof event !== "string")
-    return [];
-  const fields: Readonly<Record<string, unknown>> =
-    typeof data === "object" && data !== null ? { ...data } : {};
-  return [{ ...line, ts, event, data: fields }];
+function lineOf(entry: unknown): Line | undefined {
+  if (typeof entry !== "object" || entry === null || !("ts" in entry) || !("event" in entry))
+    return undefined;
+  const { ts, event } = entry;
+  if (typeof ts !== "string" || typeof event !== "string") return undefined;
+  const time = Date.parse(ts);
+  return Number.isNaN(time) ? undefined : lineFrom(entry, { ts, time, event });
+}
+
+/** The line of an entry, with its time and its event, read without copying the entry. */
+function lineFrom(entry: object, { ts, time, event }: Pick<Line, "ts" | "time" | "event">): Line {
+  const data = "data" in entry ? entry.data : undefined;
+  return {
+    ts,
+    time,
+    event,
+    actor: "actor" in entry ? entry.actor : undefined,
+    tool: "tool" in entry ? entry.tool : undefined,
+    by: "by" in entry ? entry.by : undefined,
+    model: "model" in entry ? entry.model : undefined,
+    session: "session" in entry ? entry.session : undefined,
+    data: typeof data === "object" && data !== null ? { ...data } : {},
+  };
 }
 
 function isText(value: unknown): value is string {
   return typeof value === "string" && value !== "";
 }
 
-/** The text most of `values` are, the first to appear on a tie; none without any. */
-function mostOf(values: readonly unknown[]): string | undefined {
-  const counts = new Map<string, number>();
-  for (const value of values) {
-    if (isText(value)) counts.set(value, (counts.get(value) ?? 0) + 1);
-  }
+/** The text counted the most, the first to appear on a tie; none without any. */
+function mostOf(counts: ReadonlyMap<string, number>): string | undefined {
   let best: string | undefined;
   let most = 0;
   for (const [value, count] of counts) {

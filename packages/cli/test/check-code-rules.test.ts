@@ -1,13 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { execFileSync } from "node:child_process";
-import { mkdir, mkdtemp, readFile, realpath, symlink, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { CONFIG, cli, git, tempRepo, writeFiles } from "./support";
-
-const GIT = execFileSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).trim();
+import { toolFolder, writeTool } from "./tools";
 
 /** `secrets` stays off, so that no scanner on the machine runs. */
 const SETTINGS = `${CONFIG()}checks:\n  levels: { secrets: off }\n`;
@@ -35,7 +32,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const args = process.argv.slice(2);
 const target = args.at(-1);
-const files = fs.existsSync(target) ? fs.readdirSync(target, { recursive: true }).map(String).sort() : [];
+const files = fs.existsSync(target) ? fs.readdirSync(target, { recursive: true }).map((file) => String(file).split(path.sep).join("/")).sort() : [];
 fs.appendFileSync(${JSON.stringify(log)}, JSON.stringify({ program: ${JSON.stringify(program)}, args, cwd: process.cwd(), target, files }) + "\\n");
 const flavor = ${JSON.stringify(flavor)};
 if (flavor === "broken") { console.error("[ERROR] invalid rule no-eval: missing pattern"); process.exit(7); }
@@ -48,8 +45,8 @@ const ruleFiles = configs.flatMap((config) =>
     ? fs.readdirSync(config, { recursive: true }).map(String).filter((file) => /\\.ya?ml$/.test(file)).sort().map((file) => path.join(config, file))
     : [config]);
 const prefixOf = (file) => {
-  const relative = file.startsWith(process.cwd() + "/") ? file.slice(process.cwd().length + 1) : file;
-  const dirs = relative.split("/").slice(0, -1).join(".").replace(/^[./]+/, "");
+  const relative = file.startsWith(process.cwd() + path.sep) ? file.slice(process.cwd().length + 1) : file;
+  const dirs = relative.split(/[\\\\/]/).slice(0, -1).join(".").replace(/^[./]+/, "");
   return dirs === "" ? "" : dirs + ".";
 };
 const rules = ruleFiles.flatMap((file) =>
@@ -80,14 +77,10 @@ fs.writeFileSync(args[args.indexOf("--output") + 1], JSON.stringify({ version: "
 
 /** A PATH with only git, node and these fake scanners, and the log of their runs. */
 async function scanners(kinds: Partial<Record<"opengrep" | "semgrep", Flavor>>) {
-  const folder = await realpath(await mkdtemp(join(tmpdir(), "specty-rules-")));
-  const bin = join(folder, "bin");
+  const { folder, bin, path } = await toolFolder("specty-rules-");
   const log = join(folder, "runs.jsonl");
-  await mkdir(bin);
-  await symlink(GIT, join(bin, "git"));
-  await symlink(process.execPath, join(bin, "node"));
   for (const [name, flavor] of Object.entries(kinds)) {
-    await writeFile(join(bin, name), fakeScanner(name, flavor, log), { mode: 0o755 });
+    await writeTool(bin, name, fakeScanner(name, flavor, log));
   }
   const runs = async (): Promise<ScannerRun[]> =>
     (await readFile(log, "utf8").catch(() => ""))
@@ -100,7 +93,7 @@ async function scanners(kinds: Partial<Record<"opengrep" | "semgrep", Flavor>>) 
     if (found === undefined) throw new Error(`no scanner run ${index}`);
     return found;
   };
-  return { env: { PATH: bin }, runs, scan };
+  return { env: { PATH: path }, runs, scan };
 }
 
 /** A rule in the form the fake scanners read: the text of `pattern` before `...)`, literally. */
