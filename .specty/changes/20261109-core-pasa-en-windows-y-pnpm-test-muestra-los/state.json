@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261109-core-pasa-en-windows-y-pnpm-test-muestra-los",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261109-core-pasa-en-windows-y-pnpm-test-muestra-los",
+  "baseCommit": "c4693b5feb73d3e25ea3df04551e92ec12050a2a",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5b9de4443f5a8e6a30e7f30b1dd6313cad46169375dca1a9d959e15be2c6e133",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f70b5b2466d3e6cbf59bd7334c50647f79559ac4850e09952068909aca6e7f7d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:74f1c9a85d3af499717555e64d262f576a04b4e3de4e860b38f716aa302dc3c6",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:653f6f7c157df615a3da53394357a8c94978b4b3c8d14c18ea669ce1fc1a6289",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:75b28249573f590b1e6b67a1312d01cff610dc0323c1daa15c2a4bec018ae950",
+    "at": "2026-11-09T10:02:08.463Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
