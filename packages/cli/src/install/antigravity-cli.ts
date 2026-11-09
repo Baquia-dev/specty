@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { homedir } from "node:os";
-import { dirname, join } from "node:path";
+import { dirname, isAbsolute, join, relative } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   antigravityAppRuleWarning,
   antigravityCliInvalidWarning,
@@ -8,8 +9,10 @@ import {
   type Lang,
 } from "@baquia-dev/specty-core";
 import { applyEdits, modify, type ParseError, parse } from "jsonc-parser";
+import { gitCommonFolder } from "../flow/worktree";
 import { exists, isRecord, readText } from "../io/files";
-import { COMMAND } from "../session";
+import type { Git } from "../io/git";
+import { COMMAND, type Invocation } from "../session";
 import type { InstallFiles } from "./files";
 
 /** The rule that lets Specty's commands run without asking, with the one of business accounts. */
@@ -43,35 +46,80 @@ function rulesIn(text: string): readonly unknown[] | undefined {
   return Array.isArray(allow) ? allow : undefined;
 }
 
+/** Whether `folder` is `parent` or inside it. */
+function inside(folder: string, parent: string): boolean {
+  const path = relative(parent, folder);
+  return path === "" || (!path.startsWith("..") && !isAbsolute(path));
+}
+
 /**
- * `init` for Antigravity's CLI, the exception to ADR 0013: when the person uses it (its folder
- * exists), `command(specty)` goes into `permissions.allow` of its settings, after their rules and
- * once; settings Specty cannot edit stay as they are, with a warning. Its app keeps its
+ * The rules that let Specty run inside the CLI's terminal sandbox (D5, P167), all absolute, since
+ * a relative one breaks the whole sandbox: reading the folder of the node that runs Specty and
+ * that of its bundle, which node's may already hold (a global npm install), so Specty starts; and
+ * writing in git's common folder, where its commits go, from any worktree. The bundle is the
+ * script of a command with a machine path or, otherwise, the running module's, as in `mcp/app.ts`.
+ */
+async function sandboxRules(git: Git, invocation: Invocation): Promise<string[]> {
+  const node = dirname(dirname(process.execPath));
+  const bundle = dirname(invocation.script ?? fileURLToPath(import.meta.url));
+  return [
+    `read_file(${node})`,
+    ...(inside(bundle, node) ? [] : [`read_file(${bundle})`]),
+    `write_file(${await gitCommonFolder(git)})`,
+  ];
+}
+
+/**
+ * Specty's rules for settings that hold `rules`: the one for its commands (the business accounts'
+ * when it is there, otherwise `command(specty)`), then the sandbox's.
+ */
+function wanted(rules: readonly unknown[], sandbox: readonly string[]): string[] {
+  const command = RULES.find((rule) => rules.includes(rule));
+  return [typeof command === "string" ? command : RULE, ...sandbox];
+}
+
+/** `text` with `missing` after the rules it holds (`rules`), once each, keeping the rest. */
+function withRules(text: string, rules: readonly unknown[], missing: readonly string[]): string {
+  // With no list it is created whole; otherwise an index of -1 appends to the person's.
+  const final =
+    rules.length === 0
+      ? applyEdits(text, modify(text, ["permissions", "allow"], missing, FORMAT))
+      : missing.reduce(
+          (current, rule) =>
+            applyEdits(current, modify(current, ["permissions", "allow", -1], rule, FORMAT)),
+          text,
+        );
+  return final.endsWith("\n") ? final : `${final}\n`;
+}
+
+/**
+ * `init` for Antigravity's CLI, the exception to ADR 0013 (D4, D5): when the person uses it (its
+ * folder exists), Specty's rules go into `permissions.allow` of its settings, after their rules
+ * and once each; settings Specty cannot edit stay as they are, with a warning. Its app keeps its
  * permissions in no file Specty can read, so the person always gets the rule to add there.
  */
-export async function allowSpecty(
-  env: NodeJS.ProcessEnv,
-  files: InstallFiles,
-  lang: Lang,
-): Promise<{ readonly done: readonly string[]; readonly warnings: readonly string[] }> {
+export async function allowSpecty(context: {
+  readonly env: NodeJS.ProcessEnv;
+  readonly files: InstallFiles;
+  readonly lang: Lang;
+  readonly git: Git;
+  readonly invocation: Invocation;
+}): Promise<{ readonly done: readonly string[]; readonly warnings: readonly string[] }> {
+  const { env, files, lang } = context;
   const app = antigravityAppRuleWarning(COMMAND, lang);
   const file = antigravityCliSettings(env);
   if (!(await exists(dirname(file)))) return { done: [], warnings: [app] };
   const text = (await files.read(file)) ?? "{}\n";
   const rules = rulesIn(text);
+  const sandbox = await sandboxRules(context.git, context.invocation);
   if (rules === undefined) {
-    return { done: [], warnings: [antigravityCliInvalidWarning(file, COMMAND, lang), app] };
+    const add = wanted([], sandbox);
+    return { done: [], warnings: [antigravityCliInvalidWarning(file, add, lang), app] };
   }
-  if (!rules.some((rule) => RULES.includes(rule))) {
-    // An index of -1 appends to the person's list; with none, the list is created whole.
-    const added =
-      rules.length === 0
-        ? modify(text, ["permissions", "allow"], [RULE], FORMAT)
-        : modify(text, ["permissions", "allow", -1], RULE, FORMAT);
-    const final = applyEdits(text, added);
-    await files.write(file, final.endsWith("\n") ? final : `${final}\n`);
-  }
-  return { done: [antigravityCliRuleLine(file, COMMAND, lang)], warnings: [app] };
+  const all = wanted(rules, sandbox);
+  const missing = all.filter((rule) => !rules.includes(rule));
+  if (missing.length > 0) await files.write(file, withRules(text, rules, missing));
+  return { done: [antigravityCliRuleLine(file, all, lang)], warnings: [app] };
 }
 
 /**

@@ -149,7 +149,7 @@ export const antigravity: AgentAdapter = {
     await rewriteJson(join(root, ANTIGRAVITY_HOOKS), update, true, files);
     if (local) await excludeLocally(git, ANTIGRAVITY_HOOKS, files);
     // Its permissions live in the person's folder, outside git: they are not in `written`.
-    const rule = await allowSpecty(env, files, lang);
+    const rule = await allowSpecty({ env, files, lang, git, invocation });
     return {
       done: [guardLine("Antigravity", ANTIGRAVITY_HOOKS, local, lang), ...rule.done],
       warnings: [antigravityTrustWarning(lang), ...rule.warnings],
