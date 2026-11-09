@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-los-tests-de-la-ui-dejan-de-fallar-con-la",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-los-tests-de-la-ui-dejan-de-fallar-con-la",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
   "revision": 2,
@@ -50,6 +50,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-09T09:48:31.883Z"
+  "lockedTests": {
+    "packages/ui/src/data/derive.worker.test.ts": "sha256:3213937fdd67ea593b7b1d4f3b27065d164aefeda1e472caec056b7ba11b1cf4",
+    "packages/ui/src/test-timeout.test.ts": "sha256:e6050ff97c02e34777156609c2c9b7431da2e659bc19ca36dffaa7e08e300df5"
+  }
 }
