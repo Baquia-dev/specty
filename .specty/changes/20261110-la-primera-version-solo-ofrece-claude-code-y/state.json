@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261110-la-primera-version-solo-ofrece-claude-code-y",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261110-la-primera-version-solo-ofrece-claude-code-y",
   "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
   "revision": 1,
@@ -56,6 +56,11 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-09T17:00:00.477Z"
+  "lockedTests": {
+    "packages/cli/test/support.ts": "sha256:f3b8a2a1580b3286d6aedc2aee7c819e5231c19bb47658343329748233b0c80c",
+    "packages/core/test/cards/init.test.ts": "sha256:a046525a738bec49adbd671238559e6f60f1d5e4c97893dff20fb7a50a0fa13f",
+    "packages/cli/test/enabled-agents.test.ts": "sha256:6148803181eb9179de66b8e3717b9df785465b8f22d3532f5b61999f6962529f",
+    "packages/cli/test/init-tools.test.ts": "sha256:3e03776a3d0ed417d3e6cca60c8e66203f1682fcf81926f0155b554e818bc32a",
+    "packages/core/test/enabled-agents.test.ts": "sha256:3596483a9cb98ed568d522ea7a31b48382c1c11ac31ad68926b139969e7ebb25"
+  }
 }
