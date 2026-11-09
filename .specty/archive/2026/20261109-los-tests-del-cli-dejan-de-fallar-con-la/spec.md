@@ -18,3 +18,9 @@ Resuelve P117 y la parte de P118 de `packages/cli/test/init-usage.test.ts`, y da
   - files: packages/cli/vitest.config.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-usage.test.ts test/init-worktrees.test.ts test/mcp-install.test.ts test/opencode-install.test.ts test/session-resume.test.ts test/server/runs-turn.test.ts test/epic-subagents.test.ts && pnpm typecheck && pnpm lint
   - type: chore
+
+## Cierre
+
+### Resumen
+
+testTimeout del CLI de 60 s a 300 s, con el motivo en un comentario; P80 y P103 ya estaban resueltas por otros cambios

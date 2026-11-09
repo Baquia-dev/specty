@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-los-tests-del-cli-dejan-de-fallar-con-la",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-los-tests-del-cli-dejan-de-fallar-con-la",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2d6e35ca3183f79c57527ac4cc9a113782942181",
+      "attempts": 1,
       "startedAt": "2026-11-09T09:48:05.461Z",
       "doneAt": "2026-11-09T09:48:48.862Z",
-      "summary": "testTimeout del CLI de 60 s a 300 s, con el motivo en un comentario; P80 y P103 ya estaban resueltas por otros cambios"
+      "summary": "testTimeout del CLI de 60 s a 300 s, con el motivo en un comentario; P80 y P103 ya estaban resueltas por otros cambios",
+      "scopeExtra": []
     }
   },
   "pending": {
