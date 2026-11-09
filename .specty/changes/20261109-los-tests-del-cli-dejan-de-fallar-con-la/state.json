@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261109-los-tests-del-cli-dejan-de-fallar-con-la",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261109-los-tests-del-cli-dejan-de-fallar-con-la",
+  "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:aee40ffca72107ae222117f44ffa8ed451b9ad69c6ca2abe1f88eaea0e29bd0d",
+    "at": "2026-11-09T09:48:05.077Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
