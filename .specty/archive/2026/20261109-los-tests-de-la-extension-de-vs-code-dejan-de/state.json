@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": "20261109-los-tests-de-la-extension-de-vs-code-dejan-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261109-los-tests-de-la-extension-de-vs-code-dejan-de",
+  "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e0d07425cb60cefd94824e08e5b8d8bdc5fd25881e4df5d699560942167fdd4b",
+    "at": "2026-11-09T09:44:30.109Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:62e6f0e3acb57fdaa0a82445f4aa94c1b720f6725e3dfbefdda827b016f242ff",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:d3d81e9f6423c1a6d45190e4a678d6be8aa5015fcf32c82a0fb3a29b79b02112",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:258769116193b0605b855c9506cc958b892f0f7f49de77c730e5cb8319ce014c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "f21903ae768ed0e99779e5fbb63ee2521ef72f6e",
+      "attempts": 1,
+      "startedAt": "2026-11-09T09:44:45.348Z",
+      "doneAt": "2026-11-09T09:44:55.674Z",
+      "summary": "vitest.config.ts de vscode da 30 s a cada test sin límite propio (testTimeout), y repo-timeout.test.ts lo vigila",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 1,
+    "T": 1
+  },
+  "closingSubmittedAt": "2026-11-09T09:45:02.512Z",
+  "lockedTests": {
+    "packages/vscode/test/repo-timeout.test.ts": "sha256:4d94458614ead78b8fc5722a05145ad955db56d0d60128b0cd28ae342a5fc39d"
+  }
+}

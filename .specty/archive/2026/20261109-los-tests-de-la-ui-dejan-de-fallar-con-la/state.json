@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "id": "20261109-los-tests-de-la-ui-dejan-de-fallar-con-la",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261109-los-tests-de-la-ui-dejan-de-fallar-con-la",
+  "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:3c2798039fbe1c513c538a73f5e358b0c7e878c2f10237a63238bd5057c81ba6",
+    "at": "2026-11-09T09:47:33.187Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1b1dad15264b9e9ed2ec19851cdd57897797d9ecf5398d0cf06aca515fc79351",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:124c4bcb87dad2ae80e7e125831f02c8037014fa27f4637fd28e46f041a25426",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:ff69503a7d0c446cd0622c530ea021595dd9fb30b4f0500668e6280ed2cf21df",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:5b7958719f9fe149dc37d84ed95fc583eac17dbcbc9b81552c1d91c3899d7ec6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "8472b86163ee102d524dcd2ad90c985dbf9d4255",
+      "attempts": 1,
+      "startedAt": "2026-11-09T09:48:40.292Z",
+      "doneAt": "2026-11-09T09:48:59.094Z",
+      "summary": "vitest-base.config.ts fija testTimeout: 30_000, que el constructor de Angular pasa a su proyecto: cada test de la UI tiene 30 s en lugar de 5 (P75).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "8c90ae990d6adc46d1ada07a0078448f257e0e61",
+      "attempts": 1,
+      "startedAt": "2026-11-09T09:48:59.436Z",
+      "doneAt": "2026-11-09T09:55:19.904Z",
+      "summary": "derive.worker.ts responde solo a las peticiones de derivar (id numérico y lista records, con el guardián isRequest) e ignora los demás mensajes, como el saludo de la MCP App que en los tests llegaba a la misma ventana de jsdom (P78, P79).",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-09T09:56:41.413Z",
+  "lockedTests": {
+    "packages/ui/src/data/derive.worker.test.ts": "sha256:3213937fdd67ea593b7b1d4f3b27065d164aefeda1e472caec056b7ba11b1cf4",
+    "packages/ui/src/test-timeout.test.ts": "sha256:e6050ff97c02e34777156609c2c9b7431da2e659bc19ca36dffaa7e08e300df5"
+  }
+}

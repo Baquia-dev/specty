@@ -14,7 +14,10 @@ export default defineConfig({
     // The run's temporary files go in a folder of its own, removed at the end. Git hooks run the
     // real bundle, so it is built once before the tests.
     globalSetup: ["../core/vitest-temp-dir.ts", "test/global-setup.ts"],
-    testTimeout: 60_000,
+    // Many tests run the real flow, with git and its hooks: the slowest takes about 35 s in a full
+    // run, and a loaded machine (several sessions verifying at once) multiplies it. A test that
+    // hangs still fails long before the full verification's own limit (`verify.timeoutSec`).
+    testTimeout: 300_000,
     coverage: {
       provider: "v8",
       include: ["src/**"],
