@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261110-doctor-y-la-suite-de-cumplimiento-se-quedan-con",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261110-doctor-y-la-suite-de-cumplimiento-se-quedan-con",
+  "baseCommit": "11f76e12825a5c163227e943853cedd15e9258b8",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "3 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1399917ba4876479bdd3bc5c5574619205a05505ad86c13319471f13215b7844",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bcadfc72fea9654c14d7b41a5432a5cce30eed87563edc1a69e657c1cda9c8ea",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:898c9e83cf3d70a9586129b1c7aee4b0979eb5efaf5b9c5283fb834e93607682",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:94c1fb16d36bf126b4f384375ee1fd6a398d5f40b4947872957998dd4fa39952",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1acb3a8ad618ec1ba594335d67e7f3e972fafd723bdd85772c673146cfd83497",
+    "at": "2026-11-09T17:28:11.571Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
