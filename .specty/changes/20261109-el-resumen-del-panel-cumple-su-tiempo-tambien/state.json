@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261109-el-resumen-del-panel-cumple-su-tiempo-tambien",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261109-el-resumen-del-panel-cumple-su-tiempo-tambien",
+  "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0ddd1f20aa635079df6f6f1e638ba0153a75ba5bb2ff45cc08d5d9e114ba7252",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f8efe5c85740529d42c0ee5a650b609e670467b8ce198f5e5b181b545be29db5",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f1be25ef6368cfb4fcd2e8a0b987ddfd2470538c1409061ba2dc91b740db3960",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a6ffcf450dad92da87531b7043fd75713ceab3adfcd5bdb472c152d8a3d77e98",
+    "at": "2026-11-09T11:34:39.156Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
