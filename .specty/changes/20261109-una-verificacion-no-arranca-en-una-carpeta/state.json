@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261109-una-verificacion-no-arranca-en-una-carpeta",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261109-una-verificacion-no-arranca-en-una-carpeta",
+  "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a214a454f367df94406a07eb924b2bc80d367d3d0b594493f09bf508c491fead",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:99091510ba0f0557c705ea92d938c29247d8f6614aed7e42ce5e0d5003e50b9e",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:bceefdda7fc3217c04c01aca74dbd4ad06a49d2a8322368462a96465c4e08e20",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1ccfc9bd69418444846b20e816bba3ba85737f772de142a3a392d757d715a4ac",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f41613c9993b557fd0f15db8ea4fa638f0b71be1177b6c2b7189c28a849a859a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1230b02c8f951bbee84f7ad5699ed646211e49a60c4cd71153e5d9ec85ab619c",
+    "at": "2026-11-09T09:51:24.157Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
