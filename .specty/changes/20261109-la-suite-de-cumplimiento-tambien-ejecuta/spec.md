@@ -66,7 +66,7 @@ El criterio de salida de la fase 3 (ARCHITECTURE §18) pide la suite de cumplimi
 
 ## Tareas
 
-- [ ] T1: Antigravity CLI entra en la suite
+- [x] T1: Antigravity CLI entra en la suite
   - files: evals/src/agents.ts, evals/run/compliance.eval.ts, evals/test/antigravity.test.ts, evals/test/report.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/antigravity.test.ts test/report.test.ts test/conversation.test.ts && pnpm --filter @baquia-dev/specty-evals typecheck && pnpm lint
