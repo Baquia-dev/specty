@@ -63,7 +63,7 @@ Segundo de los cambios consecutivos que retiran Gemini CLI, que Antigravity reem
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-install.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/mcp.test.ts
   - type: chore
-- [ ] T2: `check --install` deja de escribir `.geminiignore`
+- [x] T2: `check --install` deja de escribir `.geminiignore`
   - files: packages/cli/src/check/install-ignores.ts, packages/cli/test/check-ignores.test.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-ignores.test.ts

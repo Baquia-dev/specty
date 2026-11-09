@@ -23,14 +23,16 @@ describe("specty check --install keeps the agents out of the noise", () => {
     const root = await repo({
       ".cursor/rules.md": "x\n",
       "CLAUDE.md": "x\n",
-      ".gemini/settings.json": "{}\n",
       ".windsurfrules": "x\n",
       ".agents/rules/style.md": "x\n",
+      ".gemini/settings.json": "{}\n",
     });
     const plan = await cli(root, ["check", "--install", "--dry-run"]);
-    for (const file of [".cursorignore", ".geminiignore", ".codeiumignore", ".antigravityignore"]) {
+    for (const file of [".cursorignore", ".codeiumignore", ".antigravityignore"]) {
       expect(plan.out).toContain(`${file} (crear)`);
     }
+    // AC2: Gemini CLI, retired in favour of Antigravity, gets no exclusions.
+    expect(plan.out).not.toContain(".geminiignore");
     expect(plan.out).toContain("+**/node_modules/**");
     expect(plan.out).toContain("+**/.dart_tool/**");
     expect(plan.out).toContain("+**/*.g.dart");
@@ -108,7 +110,6 @@ describe("specty check --install keeps the agents out of the noise", () => {
       ".cursor/rules.md": "x\n",
       ".agents/rules/style.md": "x\n",
       "CLAUDE.md": "x\n",
-      ".gemini/settings.json": "{}\n",
       ".windsurfrules": "x\n",
       "opencode.json": "{}\n",
     });
@@ -123,7 +124,7 @@ describe("specty check --install keeps the agents out of the noise", () => {
     const antigravity = await read(root, ".antigravityignore");
     expect(antigravity).toContain(archived);
     expect(antigravity).toContain("**/node_modules/**");
-    for (const file of [".cursorignore", ".geminiignore", ".codeiumignore"]) {
+    for (const file of [".cursorignore", ".codeiumignore"]) {
       expect(await read(root, file), file).not.toContain(".specty/");
     }
     expect(await read(root, ".claude/settings.json")).not.toContain(".specty/");

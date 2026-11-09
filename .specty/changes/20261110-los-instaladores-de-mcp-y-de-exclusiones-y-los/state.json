@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "49267624d94931369a6a1e81b5fad98543dc8ffc",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:17:54.008Z",
       "doneAt": "2026-11-09T17:18:24.522Z",
-      "summary": "init --mcp y doctor dejan de registrar y mirar el servidor MCP en .gemini/settings.json: TARGETS de install/mcp.ts sin Gemini CLI; mcp-install.test sin él y el ejemplo mcp-other de cards/mcp.test con Devin (Windsurf)"
+      "summary": "init --mcp y doctor dejan de registrar y mirar el servidor MCP en .gemini/settings.json: TARGETS de install/mcp.ts sin Gemini CLI; mcp-install.test sin él y el ejemplo mcp-other de cards/mcp.test con Devin (Windsurf)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "88285881d15706c9f7db5280c39a79cfcea88682",
+      "startedAt": "2026-11-09T17:18:24.938Z",
+      "doneAt": "2026-11-09T17:18:55.586Z",
+      "summary": "check --install deja de escribir .geminiignore: IGNORE_FILES de check/install-ignores.ts sin Gemini CLI; check-ignores.test comprueba que un repositorio con .gemini/ no lo recibe, y la tabla de exclusiones de ARCHITECTURE pierde su fila"
     }
   },
   "pending": {
