@@ -1,6 +1,6 @@
 # Specty
 
-Specty hace cumplir el desarrollo guiado por especificaciones cuando se programa con agentes de IA. Ningún agente escribe código sin una spec aprobada por una persona, cada tarea queda en un commit trazable y cualquier cambio, del agente o manual, se puede rastrear hasta la spec que lo justifica. Funciona dentro del chat del agente que ya usa cada persona (Claude Code, Cursor, Codex, Antigravity, Gemini CLI, Copilot, Windsurf…), sin claves de API.
+Specty hace cumplir el desarrollo guiado por especificaciones cuando se programa con agentes de IA. Ningún agente escribe código sin una spec aprobada por una persona, cada tarea queda en un commit trazable y cualquier cambio, del agente o manual, se puede rastrear hasta la spec que lo justifica. Funciona dentro del chat del agente de cada persona, sin claves de API: la primera versión (0.1.0) ofrece Claude Code y Antigravity, y Codex, OpenCode, Cursor y Devin (Windsurf) llegarán más adelante.
 
 Repositorio: `github.com/Baquia-dev/specty` · npm: `@baquia-dev/specty` (comando `specty`) · Licencia: [Apache-2.0](LICENSE)
 

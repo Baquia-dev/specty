@@ -233,6 +233,13 @@ export const AGENT_CAPABILITIES = {
   },
 } as const satisfies Readonly<Record<AgentTool, AgentCapabilities>>;
 
+/**
+ * The agents this version offers (ARCHITECTURE §10), in the order of `AGENT_NAMES`: `init` asks
+ * about, detects and installs only these. The others keep their module, their guard and what
+ * `uninstall` takes out, for the installations they already have, until they are enabled.
+ */
+export const ENABLED_AGENTS: readonly AgentTool[] = ["claude-code", "antigravity"];
+
 /** The agents that have Specty's guard, derived from the table so no list can drift from it. */
 export type GuardedAgent = {
   [Tool in AgentTool]: (typeof AGENT_CAPABILITIES)[Tool]["guard"]["state"] extends "yes"

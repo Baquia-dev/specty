@@ -6,7 +6,7 @@
 
 > **Public beta, 0.1.0.** Specty runs on macOS, Linux and Windows. Its commands, its API and its file formats may still change before 1.0.
 
-Specty enforces spec-driven development when you code with AI agents. No agent writes code without a spec that a person approved, every task lands in a traceable commit, and any change, the agent's or a manual one, can be traced back to the spec that justifies it. It works inside the chat of the agent you already use (Claude Code, Cursor, Codex, OpenCode, Gemini CLI, Devin (Windsurf), Antigravity, GitHub Copilot…), with no API keys: Specty calls no model itself.
+Specty enforces spec-driven development when you code with AI agents. No agent writes code without a spec that a person approved, every task lands in a traceable commit, and any change, the agent's or a manual one, can be traced back to the spec that justifies it. It works inside your agent's chat: this version offers Claude Code and Antigravity, and Codex, OpenCode, Cursor and Devin (Windsurf) will come later. It needs no API keys: Specty calls no model itself.
 
 ## Why
 
@@ -56,7 +56,7 @@ specty init
 It ends with `specty doctor`, which checks the configuration and the hooks; run it again whenever you like.
 
 - `specty init --dry-run` lists what it would create or change, without writing anything. Before changing a file that already exists, `init` keeps a backup.
-- `--language <es|en>`, `--tools <list>` (for example `claude-code,cursor`) and `--git-flow <specty|github|trunk|gitflow>` answer its questions up front, and `--mcp` also registers Specty's MCP server.
+- `--language <es|en>`, `--tools <list>` (`claude-code`, `antigravity` or `claude-code,antigravity`) and `--git-flow <specty|github|trunk|gitflow>` answer its questions up front, and `--mcp` also registers Specty's MCP server.
 - `specty uninstall` removes what Specty installed; `specty uninstall --dry-run` only lists it.
 
 ## Your first change, end to end
@@ -111,17 +111,14 @@ Specty enforces the flow in layers:
 | 3. git hooks | Blocks commits without a receipt or a spec | Yes, with `--no-verify` |
 | 4. CI (`specty ci` as a required check) | Rejects commits that do not trace back to an approved change | Only by copying the trailers by hand |
 
-What Specty does with each agent that has a guard (`specty init --tools <list>` installs it):
+What Specty does with each agent this version offers (`specty init --tools <list>` installs it):
 
 | Agent | Guard | Warning after each command | Card after compaction | Worktree by name | Slices in subagents | End of turn | Exclusion | Permissions |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Claude Code | yes | yes | yes | yes | yes | yes | yes | yes |
-| Cursor | yes | yes | indirect | indirect | yes | yes | yes | yes |
-| Codex | yes | yes | yes | indirect | yes | yes | not possible | yes |
-| OpenCode | yes | yes | yes | indirect | yes | yes | yes | yes |
-| Gemini CLI | yes | yes | indirect | indirect | not possible | yes | yes | yes |
-| Devin (Windsurf) | yes | yes | indirect | indirect | not possible | yes | yes | yes |
 | Antigravity | yes | indirect | indirect | indirect | yes | yes | yes | yes |
+
+Antigravity is both the app and its CLI, `agy`. Codex, OpenCode, Cursor and Devin (Windsurf) will come later: Specty already has their guard, but this version does not offer them, so `init` neither detects nor installs them.
 
 - **Guard:** judges each action of the agent before it happens.
 - **Warning after each command:** after each shell command, Specty judges what changed with the same rules and warns the agent, so it also sees what scripts and generators write.
@@ -134,7 +131,7 @@ What Specty does with each agent that has a guard (`specty init --tools <list>` 
 
 *yes* works as in Claude Code; *indirect* goes through another event of the tool, a little later; *not possible* means the tool has nothing Specty can use. How each indirect capability works, and why each one is not possible, is in [ARCHITECTURE §10](https://github.com/Baquia-dev/specty/blob/main/docs/ARCHITECTURE.md#10-cumplimiento-por-capas) (in Spanish).
 
-GitHub Copilot and agents without hooks (Aider, Zed, Cline, Continue…) get layers 1, 3 and 4: the instructions, the git hooks and CI.
+Any other agent (GitHub Copilot, Aider, Zed, Cline, Continue…) gets layers 1, 3 and 4: the instructions, the git hooks and CI.
 
 Specty does not protect against people or agents that set out to bypass it with write access to the repository: CI is the final guarantee.
 

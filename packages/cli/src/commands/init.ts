@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { basename } from "node:path";
 import {
+  type AgentTool,
   backupLine,
   type CardContext,
   DEFAULT_CONFIG,
@@ -9,7 +10,6 @@ import {
   type InitRefusal,
   initCard,
   initRefusalCard,
-  isAgentTool,
   type Lang,
   languageChoices,
   languageQuestion,
@@ -26,7 +26,7 @@ import { type Migration, migrateLegacy } from "../install/legacy";
 import { isNewProject } from "../install/product";
 import { exists } from "../io/files";
 import { createGit, findRoot, type Git, pathsOf } from "../io/git";
-import { bareCards, type Environment, systemLanguage } from "../session";
+import { bareCards, type Environment, offeredAgents, systemLanguage } from "../session";
 import { loadConfig } from "../store/config";
 import { repoPaths, shownPath } from "../store/paths";
 
@@ -43,17 +43,18 @@ export async function initCommand(
 ): Promise<{ readonly output: Output; readonly lang: Lang }> {
   const language =
     options.language === "es" || options.language === "en" ? options.language : undefined;
-  const tools = options.tools
-    ?.split(",")
-    .map((tool) => tool.trim())
-    .filter(isAgentTool);
+  const refused = (refusal: InitRefusal) => {
+    const lang = language ?? systemLanguage(environment.env);
+    return { output: initRefusalCard(refusal, lang), lang };
+  };
+  const offered = offeredAgents(environment);
+  const { tools, unavailable } = namedTools(options.tools, offered);
+  if (unavailable.length > 0) {
+    return refused({ reason: "unavailable-tools", tools: unavailable, offered });
+  }
   const gitFlow = GIT_FLOWS.find((flow) => flow === options.gitFlow);
   if (options.gitFlow !== undefined && gitFlow === undefined) {
-    const lang = language ?? systemLanguage(environment.env);
-    return {
-      output: initRefusalCard({ reason: "unknown-flow", flow: options.gitFlow }, lang),
-      lang,
-    };
+    return refused({ reason: "unknown-flow", flow: options.gitFlow });
   }
   return init(environment, {
     ...(language !== undefined ? { language } : {}),
@@ -61,6 +62,26 @@ export async function initCommand(
     ...(gitFlow !== undefined ? { gitFlow } : {}),
     ...switches(options),
   });
+}
+
+/**
+ * The agents `--tools` names among the `offered`, in its order, and the names it gives that are
+ * not offered: another agent's, or no agent's. An empty name, as after a last comma, is none.
+ * Without `--tools`, no list: `init` detects the agents or asks.
+ */
+function namedTools(
+  list: string | undefined,
+  offered: readonly AgentTool[],
+): { readonly tools?: readonly AgentTool[]; readonly unavailable: readonly string[] } {
+  if (list === undefined) return { unavailable: [] };
+  const names = list
+    .split(",")
+    .map((name) => name.trim())
+    .filter((name) => name !== "");
+  return {
+    tools: names.flatMap((name) => offered.filter((tool) => tool === name)),
+    unavailable: names.filter((name) => !offered.some((tool) => tool === name)),
+  };
 }
 
 /** The switches of `init` that are on, and only those. */

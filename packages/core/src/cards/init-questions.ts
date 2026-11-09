@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
-import { AGENT_NAMES, type AgentTool, isAgentTool } from "../agents";
+import { AGENT_NAMES, type AgentTool } from "../agents";
 import { GIT_FLOWS, type GitFlow } from "../branches";
+import { ENABLED_AGENTS } from "../capabilities";
 import type { Lang } from "../i18n";
 import { translator } from "./text";
 
 // The options `specty init` offers a person: the language, the agents and the git flow, with
 // their questions, their answers and the lines that name them when nobody could be asked.
-
-/** Every agent tool, in the order of `AGENT_NAMES`: Claude Code first. */
-const AGENT_TOOLS = Object.keys(AGENT_NAMES).filter(isAgentTool);
 
 const AGENT_HINTS: Readonly<Record<AgentTool, readonly [string, string]>> = {
   "claude-code": [
@@ -62,14 +60,18 @@ export function agentQuestion(detected: boolean, lang: Lang): string {
       );
 }
 
-/** The answers to `agentQuestion`: every agent tool, Claude Code first; the `detected` say so. */
+/**
+ * The answers to `agentQuestion`: the `offered` agents, those of this version unless given, Claude
+ * Code first; the `detected` say so.
+ */
 export function agentChoices(
   detected: readonly AgentTool[],
   lang: Lang,
+  offered: readonly AgentTool[] = ENABLED_AGENTS,
 ): readonly { readonly value: AgentTool; readonly label: string; readonly hint?: string }[] {
   const t = translator(lang);
   const mark = t("detectado", "detected");
-  return AGENT_TOOLS.map((tool) => {
+  return offered.map((tool) => {
     const [es, en] = AGENT_HINTS[tool];
     return {
       value: tool,
@@ -79,9 +81,16 @@ export function agentChoices(
   });
 }
 
-/** No agent was detected and nobody could be asked: Claude Code's guard went in. */
-export function noAgentWarning(command: string, lang: Lang): string {
-  const tools = AGENT_TOOLS.join(", ");
+/**
+ * No agent was detected and nobody could be asked: Claude Code's guard went in. It names the
+ * `offered` agents, those of this version unless given.
+ */
+export function noAgentWarning(
+  command: string,
+  lang: Lang,
+  offered: readonly AgentTool[] = ENABLED_AGENTS,
+): string {
+  const tools = offered.join(", ");
   return translator(lang)(
     `No se detectó ningún agente: se instaló el guard de Claude Code. Si usas otro, ejecuta \`${command} init --tools <herramienta>\` con alguna de estas: ${tools}.`,
     `No agent detected: Claude Code's guard was installed. If you use another, run \`${command} init --tools <tool>\` with any of: ${tools}.`,

@@ -5,6 +5,7 @@ import {
   type CardContext,
   type ConfigIssue,
   detectAgentTool,
+  ENABLED_AGENTS,
   type Lang,
   type ResolvedConfig,
 } from "@baquia-dev/specty-core";
@@ -63,6 +64,16 @@ export interface Environment {
   readonly terminal: Terminal;
   readonly io: Io;
   readonly invocation: Invocation;
+  /**
+   * The agents `init` offers: those of this version (`ENABLED_AGENTS`) when not given. Only the
+   * tests give them, all of them, to keep testing the modules of the agents not offered yet.
+   */
+  readonly agents?: readonly AgentTool[];
+}
+
+/** The agents `init` offers in this environment (`Environment.agents`). */
+export function offeredAgents(environment: Environment): readonly AgentTool[] {
+  return environment.agents ?? ENABLED_AGENTS;
 }
 
 export interface Session {
