@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 // Bundles the CLI and its dependencies into `specty.mjs` and its chunks: users install nothing
 // else, and the hooks load only their own entry. `--ui <folder>` copies a build of the UI next to
-// it, for the npm package; `--outdir <folder>` writes somewhere else than `dist`; `--metafile
-// <file>` keeps esbuild's metafile, for the tests. With a build of the UI, `--ui`'s or the
-// monorepo's, it also writes the page of the MCP App, `mcp-app.html` (ADR 0015).
+// it, for the npm package, and `--readme <file>` copies the monorepo's README to that file;
+// `--outdir <folder>` writes somewhere else than `dist`; `--metafile <file>` keeps esbuild's
+// metafile, for the tests. With a build of the UI, `--ui`'s or the monorepo's, it also writes the
+// page of the MCP App, `mcp-app.html` (ADR 0015).
 import { access, cp, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { basename, dirname, join, resolve } from "node:path";
@@ -15,6 +16,7 @@ import { mcpAppPage } from "./mcp-app.mjs";
 const { values } = parseArgs({
   options: {
     ui: { type: "string" },
+    readme: { type: "string" },
     outdir: { type: "string", default: "dist" },
     metafile: { type: "string" },
   },
@@ -53,6 +55,9 @@ if (values.metafile !== undefined) {
 // Apache-2.0 asks every distribution to carry the license and the notice, and the package
 // publishes only this folder (`files: ["dist"]`).
 for (const name of ["LICENSE", "NOTICE"]) await cp(join("..", "..", name), join(outdir, name));
+// npm takes the README from the package's folder, next to `package.json`, so `prepack` asks for a
+// copy of the monorepo's there (`--readme README.md`); git ignores it, so there is one to keep.
+if (values.readme !== undefined) await cp(join("..", "..", "README.md"), values.readme);
 
 // The tree-sitter runtime and the grammars that `src/check/syntax.ts` loads (ADR 0016), compressed
 // with brotli at quality 9: 11 would save a tenth of the size and take eighty times as long.

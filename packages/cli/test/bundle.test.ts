@@ -90,6 +90,16 @@ describe("the CLI bundle", () => {
       const root = await readFile(join(PACKAGE, "..", "..", name), "utf8");
       expect(await readFile(join(out, name), "utf8")).toBe(root);
     }
+    expect(await exists(join(out, "README.md"))).toBe(false);
+  });
+
+  it("copies the monorepo's README where --readme says, for the npm package's page (AC4)", async () => {
+    const out = await mkdtemp(join(tmpdir(), "specty-bundle-"));
+    const readme = join(await mkdtemp(join(tmpdir(), "specty-readme-")), "README.md");
+    bundle(out, "--readme", readme);
+    const root = await readFile(join(PACKAGE, "..", "..", "README.md"), "utf8");
+    expect(await readFile(readme, "utf8")).toBe(root);
+    expect(await exists(join(out, "README.md"))).toBe(false);
   });
 
   it("lets the hooks load none of the rest of the CLI, from this build's chunks only (AC1, AC2, AC4)", async () => {

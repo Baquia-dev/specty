@@ -54,7 +54,7 @@ Resuelve P370, un bloqueante de la primera versión: no hay README ni en la raí
 
 ## Tareas
 
-- [ ] T1: El paquete de npm lleva el README de la raíz
+- [x] T1: El paquete de npm lleva el README de la raíz
   - files: packages/cli/build.mjs, packages/cli/package.json, .gitignore, packages/cli/test/bundle.test.ts
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/bundle.test.ts && pnpm lint

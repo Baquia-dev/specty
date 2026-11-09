@@ -6,6 +6,13 @@
   "branch": "specty/20261109-un-readme-para-npm-y-github",
   "baseCommit": "c4693b5feb73d3e25ea3df04551e92ec12050a2a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8d04d9f4bec90f39b1090f38a4af613765707b00cf3fa3ffceaa4a1c72f53b1c",
+    "at": "2026-11-09T10:01:17.597Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "df0419ea0f2ca4ea63a231cda29121b983d0519c",
+      "startedAt": "2026-11-09T10:01:18.524Z",
+      "doneAt": "2026-11-09T10:07:47.954Z",
+      "summary": "build.mjs gana --readme <archivo>, que copia el README de la raíz; prepack lo pasa con README.md, git ignora la copia, y bundle.test.ts lo comprueba"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +65,5 @@
     "AC": 5,
     "T": 2,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:8d04d9f4bec90f39b1090f38a4af613765707b00cf3fa3ffceaa4a1c72f53b1c",
-    "at": "2026-11-09T10:01:17.597Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
