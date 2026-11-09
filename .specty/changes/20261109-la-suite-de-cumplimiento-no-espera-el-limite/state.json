@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b0540ab1fb5a97e09bbc83693b9a3beea8a4e828",
+      "startedAt": "2026-11-09T11:57:53.746Z",
+      "doneAt": "2026-11-09T11:58:14.645Z",
+      "summary": "launch() devuelve stop(), que manda al agente SIGTERM, la señal de su límite"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

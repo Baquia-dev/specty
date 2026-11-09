@@ -3,7 +3,7 @@ import { spawn } from "node:child_process";
 
 /**
  * An agent's run without blocking (ARCHITECTURE §16): the suite goes on while it runs, so a
- * person can decide meanwhile, and gathers its output when it ends or its limit stops it.
+ * person can decide meanwhile, and gathers its output when it ends or it is stopped.
  */
 
 interface Finished {
@@ -16,6 +16,8 @@ interface Finished {
 export interface Launched {
   /** Whether it is still running. */
   running(): boolean;
+  /** Stops it with the signal its limit sends. */
+  stop(): void;
   readonly finished: Promise<Finished>;
 }
 
@@ -29,9 +31,9 @@ export interface Session {
 }
 
 /**
- * `command` with `args`, stopped with a signal once `timeoutMs` go by. Its input is closed; with
- * `session`, it starts with the session's message and stays open until the first whole line of
- * its output that the session calls done.
+ * `command` with `args`, stopped with a signal once `timeoutMs` go by, or when the suite stops it
+ * first. Its input is closed; with `session`, it starts with the session's message and stays open
+ * until the first whole line of its output that the session calls done.
  */
 export function launch(
   command: string,
@@ -77,7 +79,7 @@ export function launch(
       end(null);
     });
   });
-  return { running: () => !done, finished };
+  return { running: () => !done, stop: () => child.kill("SIGTERM"), finished };
 }
 
 /**

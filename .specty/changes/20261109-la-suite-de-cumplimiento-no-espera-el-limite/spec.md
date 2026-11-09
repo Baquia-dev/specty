@@ -55,7 +55,7 @@ En una ejecución de la suite sin una persona que decida, el agente que llega a 
 
 ## Tareas
 
-- [ ] T1: La suite puede parar una ejecución como la para su límite
+- [x] T1: La suite puede parar una ejecución como la para su límite
   - files: evals/test/launch.test.ts, evals/src/launch.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/launch.test.ts && pnpm lint
