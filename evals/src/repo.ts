@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { basename, dirname, join } from "node:path";
 import { runCli } from "../../packages/cli/src/program";
 import type { Terminal } from "../../packages/cli/src/session";
-import type { AgentTool } from "../../packages/core/src";
+import { AGENT_NAMES, type AgentTool, isAgentTool } from "../../packages/core/src";
 
 /**
  * The suite's throwaway repositories: isolated git, and Specty run in-process as in the CLI's
@@ -137,6 +137,8 @@ export async function specty(
     io: { out: (text) => out.push(text), err: () => undefined },
     invocation: { command: `node "${DIST}"`, portable: false, script: DIST },
     stdin: async () => "",
+    // Every agent, so `SPECTY_EVALS_AGENTS` can measure one this version does not offer yet.
+    agents: Object.keys(AGENT_NAMES).filter(isAgentTool),
   });
   return { code, out: out.join("\n") };
 }

@@ -63,7 +63,7 @@ Sigue a «La primera versión solo ofrece Claude Code y Antigravity», que dejó
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-disabled.test.ts test/install.test.ts test/doctor-enter.test.ts
   - type: feat
-- [ ] T3: Evals: la suite mide por defecto los agentes habilitados
+- [x] T3: Evals: la suite mide por defecto los agentes habilitados
   - files: evals/src/agents.ts, evals/run/compliance.eval.ts, evals/src/repo.ts, evals/test/agents-default.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/agents-default.test.ts && pnpm typecheck

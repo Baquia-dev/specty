@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "54b9f6b04d82f7ed7f829190fef7bde9d90fbb21",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:40:53.522Z",
       "doneAt": "2026-11-09T17:51:29.181Z",
-      "summary": "guardFile busca el guard de un agente en AGENT_HOOK_FILES; doctor solo comprueba (guard y MCP) los ofrecidos que detecta y avisa con agent-disabled de cada no ofrecido con su guard instalado"
+      "summary": "guardFile busca el guard de un agente en AGENT_HOOK_FILES; doctor solo comprueba (guard y MCP) los ofrecidos que detecta y avisa con agent-disabled de cada no ofrecido con su guard instalado",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e99324bc205475350faed6ef912572bcce7aef5d",
+      "startedAt": "2026-11-09T17:51:29.589Z",
+      "doneAt": "2026-11-09T17:54:35.775Z",
+      "summary": "agentsToRun da los agentes que nombra SPECTY_EVALS_AGENTS o, sin ella, los de ENABLED_AGENTS, y lo usa compliance.eval.ts; el specty en proceso de la suite ofrece todos los agentes"
     }
   },
   "pending": {
