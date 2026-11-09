@@ -103,7 +103,8 @@ async function remaining(session: Session): Promise<string[]> {
     stays.push(globalGuardStaysLine(AGENT_NAMES[tool], file, session.lang));
   }
   for (const agent of Object.values(ADAPTERS)) {
-    stays.push(...((await agent.stays?.(env, session.lang)) ?? []));
+    const { invocation } = session.environment;
+    stays.push(...((await agent.stays?.(env, session.lang, session.git, invocation)) ?? []));
   }
   if (await exists(join(session.root, "CLAUDE.md"))) {
     stays.push(claudePointerStaysLine(session.lang));

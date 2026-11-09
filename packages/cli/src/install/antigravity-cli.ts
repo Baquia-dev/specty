@@ -123,32 +123,29 @@ export async function allowSpecty(context: {
 }
 
 /**
- * Specty's rules in the settings of Antigravity's CLI, for `doctor`: the `missing` ones, which
- * settings that are not there or that Specty cannot read miss all of; undefined when the person
- * does not use its CLI.
+ * Specty's rules in the settings of Antigravity's CLI, for `doctor` and `uninstall`: the `missing`
+ * ones and those that are `there`, in `init`'s order. Settings that are not there or that Specty
+ * cannot read miss them all. Undefined when the person does not use its CLI.
  */
 export async function cliRules(
   env: NodeJS.ProcessEnv,
   git: Git,
   invocation: Invocation,
-): Promise<{ readonly file: string; readonly missing: readonly string[] } | undefined> {
+): Promise<
+  | {
+      readonly file: string;
+      readonly missing: readonly string[];
+      readonly there: readonly string[];
+    }
+  | undefined
+> {
   const file = antigravityCliSettings(env);
   if (!(await exists(dirname(file)))) return undefined;
   const rules = rulesIn((await readText(file)) ?? "") ?? [];
   const all = wanted(rules, await sandboxRules(git, invocation));
-  return { file, missing: all.filter((rule) => !rules.includes(rule)) };
-}
-
-/**
- * Whether the settings of Antigravity's CLI hold Specty's rule (or the one of business accounts),
- * for `uninstall`; undefined when the person does not use its CLI. Settings that are missing or
- * that Specty cannot read do not hold it.
- */
-export async function cliRule(
-  env: NodeJS.ProcessEnv,
-): Promise<{ readonly file: string; readonly there: boolean } | undefined> {
-  const file = antigravityCliSettings(env);
-  if (!(await exists(dirname(file)))) return undefined;
-  const rules = rulesIn((await readText(file)) ?? "");
-  return { file, there: rules?.some((rule) => RULES.includes(rule)) === true };
+  return {
+    file,
+    missing: all.filter((rule) => !rules.includes(rule)),
+    there: all.filter((rule) => rules.includes(rule)),
+  };
 }

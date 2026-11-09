@@ -15,10 +15,9 @@ import {
   removeFromJson,
   stopLines,
 } from "../install/agents";
-import { allowSpecty, cliRule, cliRules } from "../install/antigravity-cli";
+import { allowSpecty, cliRules } from "../install/antigravity-cli";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
-import { COMMAND } from "../session";
 import { type AgentAdapter, type DoctorLines, doctorLines, jsonStop } from "./adapter";
 
 /** The name of Specty's hook among the person's in `.agents/hooks.json`. */
@@ -178,9 +177,10 @@ export const antigravity: AgentAdapter = {
     ]);
     return { ok: [...hooks.ok, ...lines.ok], problems: [...hooks.problems, ...lines.problems] };
   },
-  stays: async (env, lang) => {
-    const rule = await cliRule(env);
-    return rule?.there === true ? [antigravityRuleStaysLine(rule.file, COMMAND, lang)] : [];
+  stays: async (env, lang, git, invocation) => {
+    const rules = await cliRules(env, git, invocation);
+    if (rules === undefined || rules.there.length === 0) return [];
+    return [antigravityRuleStaysLine(rules.file, rules.there, lang)];
   },
 };
 

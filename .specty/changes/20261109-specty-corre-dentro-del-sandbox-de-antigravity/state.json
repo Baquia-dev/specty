@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a558c938474185a4058ec3bae97b3557e1129be5",
+      "attempts": 1,
       "startedAt": "2026-11-09T10:57:11.022Z",
       "doneAt": "2026-11-09T10:58:22.662Z",
-      "summary": "doctor compara permissions.allow del CLI de Antigravity con todas las reglas de Specty (la de sus comandos y las del sandbox) y nombra las que faltan; la invocación llega a cada doctor del adaptador."
+      "summary": "doctor compara permissions.allow del CLI de Antigravity con todas las reglas de Specty (la de sus comandos y las del sandbox) y nombra las que faltan; la invocación llega a cada doctor del adaptador.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "35ab09d0baf9b9df65fc70b0bd90e966427c472d",
+      "startedAt": "2026-11-09T10:58:23.004Z",
+      "doneAt": "2026-11-09T11:00:05.598Z",
+      "summary": "uninstall deja los ajustes del CLI de Antigravity y nombra las reglas de Specty que siguen allí, con que write_file solo sirve a este proyecto; stays recibe git y la invocación."
     }
   },
   "pending": {

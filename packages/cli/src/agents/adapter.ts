@@ -142,10 +142,15 @@ export interface AgentAdapter {
   /** Its guard in the user's folder, which Specty only reads: `uninstall` says it stays there. */
   readonly userFile?: (env: NodeJS.ProcessEnv) => string;
   /**
-   * What `uninstall` leaves of it in the user's folder because every project shares it, each with
-   * where it is and how to remove it: the rule of Antigravity's CLI.
+   * What `uninstall` leaves of it in the user's folder, each with where it is and how to remove it:
+   * Specty's rules in the settings of Antigravity's CLI, which `git` and `invocation` tell apart.
    */
-  readonly stays?: (env: NodeJS.ProcessEnv, lang: Lang) => Promise<readonly string[]>;
+  readonly stays?: (
+    env: NodeJS.ProcessEnv,
+    lang: Lang,
+    git: Git,
+    invocation: Invocation,
+  ) => Promise<readonly string[]>;
 }
 
 export interface DoctorLines {
