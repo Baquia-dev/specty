@@ -43,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "91af9821136c728f0e948b6837b64514b5134266",
+      "startedAt": "2026-11-09T11:17:00.588Z",
+      "doneAt": "2026-11-09T11:17:43.179Z",
+      "summary": "La suite crea una carpeta del CLI de Antigravity propia por repositorio (antigravityCliFolder) antes del init para Antigravity (installSpecty), y el entorno de Specty apunta ahí SPECTY_ANTIGRAVITY_CLI_DIR; escenarios y experimentos instalan con installSpecty"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

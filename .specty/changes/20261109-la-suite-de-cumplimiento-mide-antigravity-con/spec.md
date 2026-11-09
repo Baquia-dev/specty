@@ -56,7 +56,7 @@ La suite de cumplimiento (`evals/`) lanza Antigravity CLI (`agy`) con una regla 
 
 ## Tareas
 
-- [ ] T1: La suite instala Specty para Antigravity con su propia carpeta del CLI
+- [x] T1: La suite instala Specty para Antigravity con su propia carpeta del CLI
   - files: evals/test/antigravity-init.test.ts, evals/src/repo.ts, evals/src/scenarios.ts, evals/src/experiments.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/antigravity-init.test.ts && pnpm lint
