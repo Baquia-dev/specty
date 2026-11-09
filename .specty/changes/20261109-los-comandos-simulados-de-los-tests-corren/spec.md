@@ -67,7 +67,7 @@ Sigue a 20261109-specty-lanza-en-windows-las-herramientas-del. En el run 4260174
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/verify-priority.test.ts test/live-run.test.ts test/worktrees.test.ts && pnpm lint
   - type: test
-- [ ] T2: Las verificaciones simuladas de la aceptación y el cierre, sin `$(…)`
+- [x] T2: Las verificaciones simuladas de la aceptación y el cierre, sin `$(…)`
   - files: packages/cli/test/accept-quick-turn.test.ts, packages/cli/test/close-moved.test.ts, packages/cli/test/incorporation-units.test.ts, packages/cli/test/integrate-landing.test.ts, packages/cli/test/integrate-units.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-quick-turn.test.ts test/close-moved.test.ts test/incorporation-units.test.ts test/integrate-landing.test.ts test/integrate-units.test.ts && pnpm lint

@@ -15,13 +15,14 @@ import {
   tryGit,
   writeFiles,
 } from "./support";
+import { COMMON_DIR } from "./tools";
 
 /**
  * A unit's shell command: Node appends `name` to the clone's `.git/marks`, from any worktree, so
  * the file says what ran and in what order, and then runs `script`.
  */
 const command = (name: string, script = "") =>
-  `node -e "require('fs').appendFileSync(process.argv[1] + '/marks', '${name}');${script}" "$(git rev-parse --git-common-dir)"`;
+  `node -e "require('fs').appendFileSync(${COMMON_DIR} + '/marks', '${name}');${script}"`;
 
 /** A unit of `verify.units` in YAML, under `units:`. */
 const unit = (name: string, paths: readonly string[], script = "") =>

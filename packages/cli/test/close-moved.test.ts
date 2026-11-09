@@ -16,6 +16,7 @@ import {
   toClosing,
   writeFiles,
 } from "./support";
+import { COMMON_DIR } from "./tools";
 
 const BRANCH = `specty/${CHANGE}`;
 
@@ -27,7 +28,7 @@ const MOVER = `
 const fs = require("node:fs");
 const path = require("node:path");
 const { execFileSync } = require("node:child_process");
-const common = path.resolve(process.argv[2]);
+const common = path.resolve(${COMMON_DIR});
 const root = path.dirname(common);
 const arm = path.join(common, "arm");
 const left = fs.existsSync(arm) ? Number(fs.readFileSync(arm, "utf8")) : 0;
@@ -46,7 +47,7 @@ if (left > 0) {
 async function closingWhileMainMoves(times: number, retries?: number) {
   const script = join(await mkdtemp(join(tmpdir(), "specty-mover-")), "mover.js");
   await writeFile(script, MOVER);
-  const full = `node "${script}" "$(git rev-parse --git-common-dir)"`;
+  const full = `node "${script}"`;
   const { root, folder } = await inWorktree({
     ...FILES,
     ".specty/config.yaml": `${CONFIG()}  full: ${JSON.stringify(full)}\n${

@@ -19,6 +19,7 @@ import {
   tryGit,
   writeFiles,
 } from "./support";
+import { COMMON_DIR } from "./tools";
 
 const BRANCH = `specty/${CHANGE}`;
 
@@ -30,7 +31,8 @@ const BRANCH = `specty/${CHANGE}`;
 const VERIFY = `const { spawn } = require("node:child_process");
 const { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } = require("node:fs");
 const { join, resolve } = require("node:path");
-const [given, other] = process.argv.slice(2);
+const given = ${COMMON_DIR};
+const [other] = process.argv.slice(2);
 const common = resolve(given);
 const locks = join(common, "common/specty/locks");
 const runs = join(common, "runs");
@@ -72,7 +74,7 @@ async function fullVerification(other: boolean): Promise<string> {
   await writeFile(join(scripts, "verify.cjs"), VERIFY);
   await writeFile(join(scripts, "other.cjs"), OTHER);
   const lands = other ? ` "${join(scripts, "other.cjs")}"` : "";
-  return `node "${join(scripts, "verify.cjs")}" "$(git rev-parse --git-common-dir)"${lands}`;
+  return `node "${join(scripts, "verify.cjs")}"${lands}`;
 }
 
 /** The marks of the full verifications that ran, or "" when none did. */

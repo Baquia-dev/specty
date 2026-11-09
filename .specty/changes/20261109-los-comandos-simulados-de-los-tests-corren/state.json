@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ba513105e0cbf9aa461c8a43af4f9645560771d0",
+      "attempts": 1,
       "startedAt": "2026-11-09T12:06:05.578Z",
       "doneAt": "2026-11-09T12:07:22.436Z",
-      "summary": "tools.ts exporta COMMON_DIR (la carpeta común de git, en JavaScript con comillas simples); live-run y git.setup de worktrees escriben con Node, el pnpm falso usa writeTool y verify-priority espera 10 en Windows para 15"
+      "summary": "tools.ts exporta COMMON_DIR (la carpeta común de git, en JavaScript con comillas simples); live-run y git.setup de worktrees escriben con Node, el pnpm falso usa writeTool y verify-priority espera 10 en Windows para 15",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b8cc686df628f321d83b9b4117e694a3cc2bdce0",
+      "startedAt": "2026-11-09T12:07:22.764Z",
+      "doneAt": "2026-11-09T12:14:20.003Z",
+      "summary": "Las verificaciones y unidades simuladas de accept-quick-turn, close-moved, incorporation-units, integrate-landing e integrate-units calculan la carpeta común con COMMON_DIR en vez de con $(git rev-parse …)"
     }
   },
   "pending": {
