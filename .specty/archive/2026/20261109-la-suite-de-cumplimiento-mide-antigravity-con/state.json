@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-la-suite-de-cumplimiento-mide-antigravity-con",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-la-suite-de-cumplimiento-mide-antigravity-con",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:8204b04a45d48dcf283136ab348605d7095d54a275ff018c62d1f7d505f495de",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0fbb8e3ff1ec3d57d9ff8607666f8aa40e5d7d76",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:19:09.393Z",
       "doneAt": "2026-11-09T11:37:54.635Z",
-      "summary": "Ejecución real con agy 1.5.3 de «pide código sin spec» con las reglas de la instalación: cumplió (7 rondas, 0 bloqueos, 601 s, cortada en specty wait). ARCHITECTURE §16 y la fila de F3 de §18 lo recogen"
+      "summary": "Ejecución real con agy 1.5.3 de «pide código sin spec» con las reglas de la instalación: cumplió (7 rondas, 0 bloqueos, 601 s, cortada en specty wait). ARCHITECTURE §16 y la fila de F3 de §18 lo recogen",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,8 +82,51 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-09T11:38:13.012Z",
   "lockedTests": {
     "evals/test/antigravity-init.test.ts": "sha256:456c5114806b6441f792279cf560e72b482e78d165be342bcd552bb961ce127d",
     "evals/test/antigravity.test.ts": "sha256:fc11c9f7c6c8a35ddcd97cfcdf019946abba33d59d72af9aa35f8f89bfa911eb"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "356abe486d5c45d8b8396a18e2b127e4da3c95c6",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "evals/src/agents.ts",
+      "evals/src/experiments.ts",
+      "evals/src/repo.ts",
+      "evals/src/scenarios.ts",
+      "evals/test/antigravity-init.test.ts",
+      "evals/test/antigravity.test.ts",
+      "packages/cli/src/io/git-folders.test.ts",
+      "packages/cli/src/io/git-folders.ts",
+      "packages/cli/src/io/git.ts",
+      "packages/cli/test/exec-priority.test.ts",
+      "packages/cli/test/init-reversible.test.ts",
+      "packages/cli/test/prune-commands.test.ts",
+      "packages/cli/test/prune-orphans.test.ts",
+      "packages/cli/test/restore.test.ts",
+      "packages/cli/test/server/runs-priority.test.ts",
+      "packages/cli/test/support.ts",
+      "packages/cli/test/worktree-hooks.test.ts",
+      "packages/vscode/README.md",
+      "packages/vscode/package.nls.es.json",
+      "packages/vscode/package.nls.json",
+      "packages/vscode/src/launch.ts",
+      "packages/vscode/src/specty.ts",
+      "packages/vscode/test/extension.test.ts",
+      "packages/vscode/test/fake-specty.ts",
+      "packages/vscode/test/launch.test.ts",
+      "packages/vscode/test/specty.test.ts"
+    ],
+    "at": "2026-11-09T11:45:30.104Z",
+    "resolved": {
+      "commit": "b61be58",
+      "at": "2026-11-09T11:50:38.082Z"
+    }
   }
 }

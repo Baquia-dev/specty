@@ -76,3 +76,26 @@ La suite de cumplimiento (`evals/`) lanza Antigravity CLI (`agy`) con una regla 
 
 - R1: El modelo de agy puede no seguir el flujo por razones ajenas al sandbox, y la ejecución acabaría «sin avance» o «violado». Mitigación: el resultado se anota tal cual, con lo que mostró su log, y lo que falte para Specty queda como pendiente.
 - R2: La ejecución real gasta la cuota de agy de la persona. Mitigación: un solo escenario corto, una vez.
+
+## Cierre
+
+### Resumen
+
+La suite de cumplimiento instala Specty para Antigravity como lo tiene quien usa su CLI. Antes de `init`, `installSpecty` crea la carpeta de ajustes del CLI propia de la suite para ese repositorio (`antigravityCliFolder`, fuera del repositorio y de la carpeta de la persona), y el entorno de Specty le apunta `SPECTY_ANTIGRAVITY_CLI_DIR`. Escenarios y experimentos instalan así. Al lanzar agy, `--settings` lleva exactamente el `permissions.allow` que escribió esa instalación, sin la regla fija de antes: sin esos ajustes, no lleva `permissions`.
+
+Una ejecución real de «pide código sin spec» con agy 1.5.3 cumplió: 7 rondas, 0 bloqueos y 601 s. El log de agy confirma que encendió el sandbox de terminal, cargó el hook de Specty y tomó las cuatro reglas de la instalación. Specty corrió dentro: el modelo creó el cambio, escribió y propuso su spec y esperó a la persona con `specty wait`, sin `BypassSandbox`. ARCHITECTURE §16 y la fila de F3 de §18 lo recogen. Los tests de `evals` pasan con `pnpm test:evals` (15 archivos, 54 tests).
+
+### Desviaciones
+
+- La tarea de código se partió en dos (T1, la carpeta y la instalación; T2, los ajustes de agy), por el aviso de `propose` sobre su número de archivos. La ejecución real y la documentación pasaron a T3.
+
+### Decisiones
+
+- Una carpeta del CLI por repositorio (`specty-evals-antigravity-cli/<repositorio>` en la carpeta temporal de la ejecución): así el `write_file` de cada sesión abre solo el git de su repositorio, y la suite no acumula reglas de otros repositorios desechables.
+- `toolPermission` y `trustedWorkspaces` siguen en `--settings`: no son reglas de permisos, y en modo print nadie responde ni confía en la carpeta.
+- El envoltorio `specty` de la suite sigue en la carpeta temporal de la ejecución: una prueba a mano antes de la ejecución vio que corre dentro del sandbox sin otra regla, y que git escribe en `.git` con las de la instalación.
+- La ejecución real usó el bundle construido en la carpeta de este cambio (`pnpm evals` desde ella), sin reconstruir el de la carpeta principal.
+
+### Pendientes
+
+- En los escenarios de la suite sin una persona que decida, como «pide código sin spec», el agente acaba en `specty wait` tras proponer y la ejecución dura hasta el límite de 10 minutos: con agy, 601 s, de los que unos 80 fueron trabajo. Los segundos del informe miden el límite y no al agente; la suite podría dar por terminada la ejecución cuando el agente espera a la persona, o anotar ese momento.
