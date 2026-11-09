@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261109-core-pasa-en-windows-y-pnpm-test-muestra-los",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-core-pasa-en-windows-y-pnpm-test-muestra-los",
   "baseCommit": "c4693b5feb73d3e25ea3df04551e92ec12050a2a",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:75b28249573f590b1e6b67a1312d01cff610dc0323c1daa15c2a4bec018ae950",
+    "at": "2026-11-09T10:02:08.463Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -44,12 +51,7 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:75b28249573f590b1e6b67a1312d01cff610dc0323c1daa15c2a4bec018ae950",
-    "at": "2026-11-09T10:02:08.463Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/repo-units.test.ts": "sha256:b2e49ebb4373b4ed291aab539d0a3e43b41e37bd8646d9ac9bc0642ae23a4d70"
+  }
 }

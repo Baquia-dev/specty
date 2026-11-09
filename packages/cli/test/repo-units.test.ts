@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-import { readdir, readFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import { mkdtemp, readdir, readFile, realpath } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { makeChangeId, type VerifyUnit } from "@baquia-dev/specty-core";
 import { describe, expect, it } from "vitest";
@@ -116,5 +119,43 @@ describe("this repository's verify.units", () => {
       .map(({ name }) => `pnpm --filter ${name} test`);
     expect(tested).toHaveLength(5);
     expect(commands).toEqual(expect.arrayContaining(tested));
+  });
+});
+
+/** A package of a workspace whose test leaves the file `ran` in its folder and fails. */
+const failing = (name: string) =>
+  JSON.stringify({
+    name,
+    scripts: { test: `node -e "require('fs').writeFileSync('ran','');process.exit(1)"` },
+  });
+
+describe("this repository's pnpm test", () => {
+  it("AC2: runs the tests of every package though one fails, and fails", async () => {
+    const { scripts }: { readonly scripts: Readonly<Record<string, string>> } = JSON.parse(
+      await readFile(join(ROOT, "package.json"), "utf8"),
+    );
+    // Both fail: stopping at the first would leave the other without `ran`, whatever the order.
+    const root = await realpath(await mkdtemp(join(tmpdir(), "specty-")));
+    await writeFiles(root, {
+      "pnpm-workspace.yaml": 'packages:\n  - "packages/*"\n',
+      "package.json": JSON.stringify({
+        name: "root",
+        private: true,
+        scripts: { test: scripts.test },
+      }),
+      "packages/a/package.json": failing("a"),
+      "packages/b/package.json": failing("b"),
+    });
+
+    // On Windows `pnpm` is `pnpm.cmd`, which only a shell runs.
+    const run = spawnSync("pnpm", ["test"], {
+      cwd: root,
+      encoding: "utf8",
+      shell: process.platform === "win32",
+    });
+    expect(run.error).toBeUndefined();
+    expect(run.status).not.toBe(0);
+    const ran = ["a", "b"].filter((name) => existsSync(join(root, "packages", name, "ran")));
+    expect(ran).toEqual(["a", "b"]);
   });
 });
