@@ -59,7 +59,7 @@ La unidad `ui` de la verificación completa falló en `accept` porque otro Vites
 
 ## Tareas
 
-- [ ] T1: Una verificación espera a la de otro proceso en su carpeta, y lo dice
+- [x] T1: Una verificación espera a la de otro proceso en su carpeta, y lo dice
   - files: packages/core/src/cards/lock.ts, packages/core/src/cards/index.ts, packages/core/test/cards/folder-wait.test.ts, packages/cli/src/io/exec.ts, packages/cli/src/store/verify-slots.ts, packages/cli/src/store/verify-folder.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/folder-wait.test.ts test/cards/lock.test.ts && pnpm --filter @baquia-dev/specty exec vitest run src/store/verify-folder.test.ts src/store/verify-slots.test.ts src/store/turn-queue.test.ts && pnpm lint

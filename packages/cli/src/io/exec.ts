@@ -146,16 +146,43 @@ function descendants(pid: number, children: ReadonlyMap<number, readonly number[
 }
 
 /** The children of each process, from `ps`; without it, none, and only the command itself ends. */
-function childrenTable(): Promise<ReadonlyMap<number, readonly number[]>> {
+async function childrenTable(): Promise<ReadonlyMap<number, readonly number[]>> {
+  const children = new Map<number, number[]>();
+  for (const [pid, parent] of await processTable()) {
+    children.set(parent, [...(children.get(parent) ?? []), pid]);
+  }
+  return children;
+}
+
+/**
+ * The processes that started this one, from its parent up, from `ps`; without it, as on Windows,
+ * only its parent.
+ */
+export async function ancestors(): Promise<ReadonlySet<number>> {
+  const parents = new Map(await processTable());
+  const found = new Set<number>();
+  for (let pid = process.ppid; pid > 1 && !found.has(pid); pid = parents.get(pid) ?? 0) {
+    found.add(pid);
+  }
+  return found;
+}
+
+/** Each process and its parent, from `ps`; none without it. */
+function processTable(): Promise<readonly (readonly [number, number])[]> {
   return new Promise((resolve) => {
     execFile("ps", ["-A", "-o", "pid=,ppid="], (error, stdout) => {
-      const children = new Map<number, number[]>();
       const rows = error === null ? stdout.split("\n") : [];
-      for (const [pid, parent] of rows.map((row) => row.trim().split(/\s+/).map(Number))) {
-        if (pid === undefined || parent === undefined || Number.isNaN(pid)) continue;
-        children.set(parent, [...(children.get(parent) ?? []), pid]);
-      }
-      resolve(children);
+      resolve(
+        rows.flatMap((row) => {
+          const [pid, parent] = row.trim().split(/\s+/).map(Number);
+          return pid === undefined ||
+            parent === undefined ||
+            Number.isNaN(pid) ||
+            Number.isNaN(parent)
+            ? []
+            : [[pid, parent] as const];
+        }),
+      );
     });
   });
 }

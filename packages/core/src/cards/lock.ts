@@ -81,3 +81,24 @@ export function verifySlotsWaitNote(
     `specty: waiting for one of the clone's verification places (\`verify.slots\`: ${slots}) so as not to overload the machine…`,
   )}${held}${queue}`;
 }
+
+/**
+ * Said once while a verification, or a command of `specty check`, waits because another process
+ * runs a verification command of Specty in its folder: which commands, and since when.
+ */
+export function verifyFolderWaitNote(running: readonly LockHolderView[], lang: Lang): string {
+  const t = translator(lang);
+  const who = running
+    .map((holder) => {
+      const since = holder.at.slice(11, 16);
+      return t(
+        `\`${holder.command}\`, desde las ${since} UTC`,
+        `\`${holder.command}\`, since ${since} UTC`,
+      );
+    })
+    .join("; ");
+  return t(
+    `specty: en esta carpeta ya corre otro comando de verificación de Specty (${who}); espero a que termine para que no se pisen, por ejemplo en la carpeta de la cobertura…`,
+    `specty: another Specty verification command is already running in this folder (${who}); waiting for it to end so that the two do not clash, over the coverage folder for one…`,
+  );
+}
