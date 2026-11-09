@@ -86,3 +86,24 @@ El criterio de salida de la fase 3 (ARCHITECTURE §18) pide la suite de cumplimi
 
 - R1: Si `--settings` no basta para confiar en la carpeta, o sustituye las reglas de la persona de otra forma, el guard o `specty` no correrían en la ejecución de agy. Mitigación: la ejecución real lo dice, y ARCHITECTURE anota lo que se vio.
 - R2: El modelo de agy puede no sacar `specty` del sandbox por su cuenta y acabar sin avance. Mitigación: es lo que vería la persona con el sandbox encendido; el informe lo da como «sin avance» y no como violación, y ARCHITECTURE lo anota.
+
+## Cierre
+
+### Resumen
+
+Antigravity CLI es el sexto agente de la suite (`evals/src/agents.ts`). Se busca en `SPECTY_EVALS_ANTIGRAVITY` o como `agy` en el PATH, corre con `agy -p <prompt> --mode accept-edits --sandbox --output-format stream-json` y con `--settings` para la sesión (`proceed-in-sandbox`, `command(specty)` y el repositorio de la ejecución como carpeta de confianza). Sus rondas y bloqueos se cuentan exactos sobre su `stream-json`. El `init` de la suite ya no escribe en los ajustes del CLI de Antigravity de la persona. `pnpm test:evals` pasa (51 tests).
+
+La ejecución real de «pide código sin spec», con agy 1.5.1 y la sesión de la persona, dio sin avance: 2 rondas, 0 bloqueos, 50 s. La línea funcionó: agy tomó los ajustes, cargó el hook de Specty y el recuento leyó su salida. Pero Specty no corre en el sandbox que agy enciende en todo modo print: `node` no puede abrir el bundle (`EPERM`), y un monitor de seguridad de agy bloqueó el `BypassSandbox` que el modelo puso por su cuenta, aunque los ajustes tenían `command(specty)`. ARCHITECTURE §16 y §18 lo cuentan.
+
+### Desviaciones
+
+- Ninguna en el código ni en los archivos. R2 se cumplió: el modelo no pudo sacar `specty` del sandbox, y tampoco lo habría logrado con la regla de `init`, porque lo frenó el monitor de seguridad de agy y no un permiso.
+
+### Decisiones
+
+- El recuento de Antigravity es exacto, leyendo el JSON, y no por patrón: la respuesta final de agy cita la negativa del guard, y por patrón contaría como un segundo bloqueo (A5).
+- La suite le da a agy solo la regla de `init` (`command(specty)`), sin rutas abiertas en el sandbox, para medir lo que tendría la persona (A3). Abrir el bundle y `.git` queda como decisión aparte (P382).
+
+### Pendientes
+
+- P382: con agy en modo print, Specty no corre en el sandbox y el monitor de seguridad de agy bloquea su salida. Para medir Antigravity hay que decidir si la sesión de la suite abre en el sandbox la carpeta del bundle y `.git` del repositorio (`read_file`, `write_file`, como el E2E), o si lo resuelve la instalación de la persona.
