@@ -90,3 +90,24 @@ El prototipo de todo esto, en el scratchpad, deja AC8 en unos 105 ms con cobertu
 
 - R1: Un recorrido unificado que cuente distinto alguna cifra en un caso raro (líneas desordenadas, eventos desconocidos, varios costes de un cambio en tramos distintos). Mitigación: los tests de `test/stats/` y del servidor cubren cada sección, y antes de aceptar se repite la comparación del JSON de `statsView` y de las filas de `statsRow` entre `main` y el cambio sobre cambios aleatorios.
 - R2: Que la mejora no baste en un runner muy cargado (A1). Mitigación: se mide AC8 antes y después en este Mac, con y sin cobertura, y si el CI vuelve a fallar con estos números el siguiente paso es mirar la carga del runner, no el umbral.
+
+## Cierre
+
+### Resumen
+
+La agregación del panel recorre cada hecho una vez por sección: `statsRow` lee las líneas una vez y trae el día de cierre y el de cada aprobación; la tendencia cuenta todos sus tramos en un recorrido (`bucketCounts`); lo de cada cambio en el periodo se cuenta una vez (`ownCounts`) y lo suman los indicadores y «Personas y agentes» (`addedUp`); los pendientes leen la memoria una vez por vista; «Ritmo», «Calidad», «Coste» y la tendencia encuentran el tramo de un día con `rangeFinder` y no con un mapa de cada día del calendario. AC8, sin tocarlo, pasa en este Mac de unos 224 ms a unos 96 ms con cobertura (cinco medidas alternas: 217–232 frente a 94–103) y de unos 160 a unos 72 sin ella. Con la peor proporción vista en el CI (5,4 veces este Mac), quedaría en torno a 520 ms. AC2: el JSON de `statsView` es idéntico byte a byte al de `main` en 1.120 vistas (8 semillas × 140 cortes: los cuatro periodos y uno inválido, con y sin persona, agente, modelo o carril) sobre 1.500 cambios aleatorios por semilla, con todos los eventos, líneas desordenadas e inválidas, retros, costes con decimales y memoria; las filas de `statsRow` también, salvo los dos días nuevos. Pasan los 52 tests de `packages/core/test/stats/` y los del panel en el servidor.
+
+### Desviaciones
+
+- La spec propuesta en la revisión 1 tenía tres tareas; `propose` avisó de que T2 tocaba 7 archivos y de que la última tarea de código no comprobaba los tipos de todo el repo, así que la revisión 2 la partió en T2 (tramos con `rangeFinder`) y T3 (recuentos por cambio), con `pnpm typecheck` en la verificación de T3.
+- `bucketCounts` devuelve cada tramo con sus días junto a sus cifras, en vez de una lista paralela a los tramos, para que la tendencia no tenga que emparejarlas por índice.
+
+### Decisiones
+
+- No se salta ningún cambio por su vida (`lived`): solo ahorraba unos 8 ms más y habría cambiado lo que cuenta un cambio cuyas líneas no van en orden.
+- `rows.ts` pasa de 300 líneas de código (328): sigue siendo una responsabilidad (la fila de un cambio a partir de su auditoría) y crece por el `Map` de una función por evento, así que no se parte.
+- Los dólares se suman como antes (lo de cada cambio y luego esas sumas en el orden de las filas), para que el redondeo sea el mismo y el JSON idéntico.
+
+### Pendientes
+
+- Confirmar en el CI (Linux y Windows con Node 22) que AC8 pasa con margen tras subir `main`.

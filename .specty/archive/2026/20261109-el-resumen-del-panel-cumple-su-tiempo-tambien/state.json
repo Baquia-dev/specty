@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-el-resumen-del-panel-cumple-su-tiempo-tambien",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-el-resumen-del-panel-cumple-su-tiempo-tambien",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:a6ffcf450dad92da87531b7043fd75713ceab3adfcd5bdb472c152d8a3d77e98",
@@ -66,12 +66,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "740e17a18c67021b8eb4b934f83e66959c4aa6d4",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:50:55.413Z",
       "doneAt": "2026-11-09T11:51:25.782Z",
-      "summary": "ARCHITECTURE dice que la tendencia la cuenta bucketCounts en un solo recorrido y que lo de cada cambio se cuenta una vez (ownCounts) y se suma para los indicadores y people (addedUp)"
+      "summary": "ARCHITECTURE dice que la tendencia la cuenta bucketCounts en un solo recorrido y que lo de cada cambio se cuenta una vez (ownCounts) y se suma para los indicadores y people (addedUp)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,5 +83,6 @@
     "AC": 2,
     "T": 4,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-11-09T11:52:15.079Z"
 }
