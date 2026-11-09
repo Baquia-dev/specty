@@ -6,7 +6,7 @@
 
 > **Public beta, 0.1.0.** Specty runs on macOS, Linux and Windows. Its commands, its API and its file formats may still change before 1.0.
 
-Specty enforces spec-driven development when you code with AI agents. No agent writes code without a spec that a person approved, every task lands in a traceable commit, and any change, the agent's or a manual one, can be traced back to the spec that justifies it. It works inside the chat of the agent you already use (Claude Code, Cursor, Codex, OpenCode, Gemini CLI, Devin (Windsurf), Antigravity, GitHub Copilot…), with no API keys: Specty never calls a model.
+Specty enforces spec-driven development when you code with AI agents. No agent writes code without a spec that a person approved, every task lands in a traceable commit, and any change, the agent's or a manual one, can be traced back to the spec that justifies it. It works inside the chat of the agent you already use (Claude Code, Cursor, Codex, OpenCode, Gemini CLI, Devin (Windsurf), Antigravity, GitHub Copilot…), with no API keys: Specty calls no model itself.
 
 ## Why
 
@@ -78,7 +78,7 @@ Each change follows a lane, chosen with `specty new --kind <lane>`:
 
 | Lane | When | How it differs from the standard flow |
 | --- | --- | --- |
-| `quick` | Up to 3 files, no sensitive paths | Minimal spec (goal, files and one task); one-click approval and acceptance; closes on its own |
+| `quick` | Up to 3 files, no sensitive paths | Minimal spec (goal, files and one task, by default); one-click approval and acceptance; closes on its own |
 | `standard` | By default | The full flow |
 | `spike` | Technical uncertainty | A `spike/<id>` branch that is never merged; it ends in a decision (an ADR or a follow-up spec) |
 | `retro` | Code written without a spec, by hand or by an agent without hooks | Documents changes already made; the person confirms; the commit is allowed |

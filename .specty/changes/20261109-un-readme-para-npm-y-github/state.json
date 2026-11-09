@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-un-readme-para-npm-y-github",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-un-readme-para-npm-y-github",
   "baseCommit": "c4693b5feb73d3e25ea3df04551e92ec12050a2a",
   "revision": 1,
@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "df0419ea0f2ca4ea63a231cda29121b983d0519c",
+      "attempts": 1,
       "startedAt": "2026-11-09T10:01:18.524Z",
       "doneAt": "2026-11-09T10:07:47.954Z",
-      "summary": "build.mjs gana --readme <archivo>, que copia el README de la raíz; prepack lo pasa con README.md, git ignora la copia, y bundle.test.ts lo comprueba"
+      "summary": "build.mjs gana --readme <archivo>, que copia el README de la raíz; prepack lo pasa con README.md, git ignora la copia, y bundle.test.ts lo comprueba",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0ae5166ec59a797e484b21116427db4b17198f50",
+      "startedAt": "2026-11-09T10:07:48.393Z",
+      "doneAt": "2026-11-09T10:14:55.327Z",
+      "summary": "README.md en inglés y README.es.md en español, enlazados entre sí y con enlaces absolutos de GitHub; cada comando y opción comprobados con la ayuda de la CLI; npm pack y pnpm pack en seco llevan README.md"
     }
   },
   "pending": {

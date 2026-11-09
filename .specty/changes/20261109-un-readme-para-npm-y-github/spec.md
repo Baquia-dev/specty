@@ -59,7 +59,7 @@ Resuelve P370, un bloqueante de la primera versión: no hay README ni en la raí
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/bundle.test.ts && pnpm lint
   - type: build
-- [ ] T2: El README en inglés y en español
+- [x] T2: El README en inglés y en español
   - files: README.md, README.es.md
   - ac: AC1, AC2, AC3
   - verify: test -s README.md && test -s README.es.md
