@@ -6,6 +6,13 @@
   "branch": "specty/20261109-la-suite-de-cumplimiento-tambien-ejecuta",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5e14a4f8782452441c1cb6b3f625070d4cc73a35a3860decb6c9941c76a9b837",
+    "at": "2026-11-09T09:50:11.117Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -55,12 +62,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5e14a4f8782452441c1cb6b3f625070d4cc73a35a3860decb6c9941c76a9b837",
-    "at": "2026-11-09T09:50:11.117Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-09T09:55:10.909Z"
 }
