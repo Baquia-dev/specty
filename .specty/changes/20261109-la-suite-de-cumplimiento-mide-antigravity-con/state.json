@@ -6,6 +6,13 @@
   "branch": "specty/20261109-la-suite-de-cumplimiento-mide-antigravity-con",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:8204b04a45d48dcf283136ab348605d7095d54a275ff018c62d1f7d505f495de",
+    "at": "2026-11-09T11:15:41.017Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -47,12 +54,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:8204b04a45d48dcf283136ab348605d7095d54a275ff018c62d1f7d505f495de",
-    "at": "2026-11-09T11:15:41.017Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-09T11:16:55.155Z"
 }
