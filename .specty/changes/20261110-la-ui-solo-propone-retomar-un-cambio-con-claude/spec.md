@@ -16,7 +16,7 @@ La primera versión solo habilita Claude Code y Antigravity (`ENABLED_AGENTS` de
 
 ## Tareas
 
-- [ ] T1: La UI solo propone retomar un cambio con Claude Code o Antigravity
+- [x] T1: La UI solo propone retomar un cambio con Claude Code o Antigravity
   - files: packages/core/src/light.ts, packages/ui/src/change/resume-hints.ts, packages/ui/src/change/resume-hints.test.ts
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/resume-hints.test.ts && pnpm typecheck && pnpm lint && pnpm knip
   - type: fix

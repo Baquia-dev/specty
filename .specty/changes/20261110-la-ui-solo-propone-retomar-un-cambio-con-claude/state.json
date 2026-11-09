@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261110-la-ui-solo-propone-retomar-un-cambio-con-claude",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261110-la-ui-solo-propone-retomar-un-cambio-con-claude",
   "baseCommit": "7033290bcf5aa281c210a9994fb009343fd2111f",
   "revision": 2,
@@ -25,11 +25,13 @@
   "items": {},
   "tasks": {
     "T1": {
-      "status": "active",
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
       "baseCommit": "d86b463f1dbc349c0e49aee89f15c11184e1babe",
-      "attempts": 1,
       "startedAt": "2026-11-09T22:16:42.143Z",
-      "scopeExtra": []
+      "doneAt": "2026-11-09T22:19:11.094Z",
+      "summary": "La entrada ligera de core exporta ENABLED_AGENTS y AgentTool; «Cómo retomarlo» toma las órdenes por agente y propone solo las de los habilitados (Claude Code y Antigravity CLI); las de Codex, OpenCode y Cursor quedan en la tabla para cuando se habiliten"
     }
   },
   "pending": {

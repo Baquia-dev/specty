@@ -3,7 +3,8 @@
 // the parser, zod or yaml. Importing the index there would pull them into the page's first load
 // as soon as a lazy chunk uses the parser; the worker and the lazy chunks use the index.
 
-export { AGENT_NAMES } from "./agents";
+export { AGENT_NAMES, type AgentTool } from "./agents";
+export { ENABLED_AGENTS } from "./capabilities";
 export { optionName, sectionName, settingText } from "./cards/settings";
 export { flowSentences, pieceText } from "./cards/settings-pieces";
 export { presetText } from "./cards/settings-presets";

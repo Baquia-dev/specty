@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
+import { type AgentTool, ENABLED_AGENTS } from "@baquia-dev/specty-core/light";
 import { Button } from "../components/button";
 import { Toasts } from "../components/toast";
 import { agentName } from "../data/agent-name";
@@ -13,16 +14,17 @@ interface Hint {
 }
 
 /**
- * The orders that open each agent in a folder: the ones `specty new` proposes (Codex with `-C`,
+ * The order that opens each agent in a folder: the ones `specty new` proposes (Codex with `-C`,
  * OpenCode and Cursor with the folder, Antigravity CLI after `cd`), and Claude Code after `cd`.
+ * Only those of the agents this version enables (`ENABLED_AGENTS`) are offered, in its order.
  */
-const OPEN_IN: readonly ((folder: string) => Hint)[] = [
-  (folder) => ({ agent: "Claude Code", command: `cd "${folder}" && claude` }),
-  (folder) => ({ agent: "Codex", command: `codex -C "${folder}"` }),
-  (folder) => ({ agent: "OpenCode", command: `opencode "${folder}"` }),
-  (folder) => ({ agent: "Cursor", command: `cursor "${folder}"` }),
-  (folder) => ({ agent: "Antigravity CLI", command: `cd "${folder}" && agy` }),
-];
+const OPEN_IN: Partial<Readonly<Record<AgentTool, (folder: string) => Hint>>> = {
+  "claude-code": (folder) => ({ agent: "Claude Code", command: `cd "${folder}" && claude` }),
+  codex: (folder) => ({ agent: "Codex", command: `codex -C "${folder}"` }),
+  opencode: (folder) => ({ agent: "OpenCode", command: `opencode "${folder}"` }),
+  cursor: (folder) => ({ agent: "Cursor", command: `cursor "${folder}"` }),
+  antigravity: (folder) => ({ agent: "Antigravity CLI", command: `cd "${folder}" && agy` }),
+};
 
 /**
  * A change that waits for the agent with no conversation in its folder (an orphan, or one whose
@@ -124,7 +126,8 @@ export class ResumeHints {
 
   protected readonly hints = computed(() => {
     const folder = this.change().folder;
-    return folder === undefined ? [] : OPEN_IN.map((open) => open(folder));
+    if (folder === undefined) return [];
+    return ENABLED_AGENTS.flatMap((tool) => OPEN_IN[tool]?.(folder) ?? []);
   });
 
   /** Puts `command` on the clipboard, and says whether it could. */
