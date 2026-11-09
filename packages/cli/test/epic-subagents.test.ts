@@ -4,7 +4,18 @@ import { join } from "node:path";
 import { makeChangeId } from "@baquia-dev/specty-core";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
-import { CHANGE, CONFIG, cli, folderOf, git, NOW, person, tempRepo, writeFiles } from "./support";
+import {
+  CHANGE,
+  CONFIG,
+  cli,
+  folderOf,
+  git,
+  NOW,
+  person,
+  type Run,
+  tempRepo,
+  writeFiles,
+} from "./support";
 
 const EPIC = CHANGE.replace("saludo-personalizado", "subagentes-en-su-carpeta");
 const EPIC_DIR = `.specty/changes/${EPIC}`;
@@ -66,6 +77,11 @@ async function approvedEpic(config = CONFIG()): Promise<string> {
 /** What a subagent runs to create the change of `slice`, as its brief says. */
 const startSlice = (root: string, slice: Slice) =>
   cli(root, ["new", "--worktree", TITLES[slice], "--epic", EPIC, "--slice", slice, "--subagent"]);
+
+/** That `run` of `new` ended with 0; if not, the failure shows what it printed, out and err. */
+function expectCreated(run: Run): void {
+  expect(run.code, `specty new salió con ${run.code}:\n${run.out}\n${run.err}`).toBe(0);
+}
 
 /** `specty next` in the epic's folder, from Claude Code's main session. */
 const claudeNext = async (root: string) =>
@@ -134,7 +150,7 @@ describe("the slices of an epic, created at once", () => {
     const runs = await Promise.all([startSlice(root, "C2"), startSlice(root, "C3")]);
     for (const run of runs) {
       expect(run.out).not.toContain("Puede duplicar");
-      expect(run.code).toBe(0);
+      expectCreated(run);
     }
     const branches = git(root, "branch", "--list");
     for (const slice of SLICES) {
@@ -142,5 +158,13 @@ describe("the slices of an epic, created at once", () => {
       expect(await exists(join(folderOf(root, id), `.specty/changes/${id}/state.json`))).toBe(true);
       expect(branches).toContain(`specty/${id}`);
     }
+  });
+
+  it("AC4: a `new` that fails shows what it printed, out and err", () => {
+    const failed: Run = { code: 1, out: "SPECTY · git falló", err: "fatal: could not lock config" };
+    expect(() => expectCreated(failed)).toThrow(
+      /specty new salió con 1:\nSPECTY · git falló\nfatal: could not lock config/,
+    );
+    expect(() => expectCreated({ ...failed, code: 0 })).not.toThrow();
   });
 });

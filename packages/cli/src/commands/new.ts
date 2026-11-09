@@ -23,11 +23,13 @@ import { commitState, isFinished, resolveActive } from "../flow/active";
 import { freeBranch, lockWaits, markBranch } from "../flow/branches";
 import { duplicatesOf } from "../flow/duplicates";
 import { sliceRefusal } from "../flow/epic";
+import { onNewTurn } from "../flow/new-turn";
 import { cleanUp, type Swept, withCleanup } from "../flow/prune";
 import { changeView } from "../flow/views";
 import {
   addWorktree,
   apartFromMain,
+  type CopiedFiles,
   parallelBase,
   prepareWorktree,
   worktreesHome,
@@ -189,27 +191,15 @@ async function newInWorktree(
     return newRefusalCard({ reason: "worktree-without-branches" }, cards);
   }
   const base = await parallelBase(git, options.from, session.config.git.target);
-  if (base.commit === undefined) {
+  const { commit } = base;
+  if (commit === undefined) {
     return newRefusalCard({ reason: "unknown-base", base: base.name }, cards);
   }
-  // Folders of changes already closed (and incorporated) or cancelled are no longer needed, nor
-  // the orphans (`cleanUp`).
-  const swept = await cleanUp(session);
-  const home = await worktreesHome(git);
-  const changeTitle = options.slug?.trim() ? options.slug : title;
-  const id = await uniqueId(session, changeIdOf(session, changeTitle), home);
-  const branch = await branchFor(session, options, id);
-  const folder = join(home, id);
-  const { hooks, workspace } = await addWorktree(git, { folder, branch, base: base.commit });
-  const unmarked = await markOrUndo(session, { folder, branch, id });
-  if (unmarked !== undefined) return unmarked;
-  await createChange(session, options, {
-    id,
-    title,
-    branch,
-    baseCommit: base.commit,
-    dir: repoPaths(folder).changeDir(id),
-  });
+  // On Windows, two `new` of one clone create theirs one after the other; the preparation, which
+  // may take minutes, goes after the turn.
+  const made = await onNewTurn(session, () => makeWorktree(session, options, title, commit));
+  if ("refusal" in made) return made.refusal;
+  const { id, branch, folder, hooks, workspace, swept } = made;
   const prepared = await prepareWorktree(session, folder);
   // The conversation that creates it works there, even before it enters it; a subagent's command
   // names the session that launched it, which stays where it was.
@@ -219,7 +209,7 @@ async function newInWorktree(
       id,
       branch,
       folder,
-      from: `${base.name} (${base.commit.slice(0, 7)})`,
+      from: `${base.name} (${commit.slice(0, 7)})`,
       ...(prepared !== undefined ? { prepared } : {}),
       copied: hooks,
       ...(workspace !== undefined ? { workspace } : {}),
@@ -235,6 +225,41 @@ async function newInWorktree(
     cards,
   );
   return withSweptAndPorts(session, card, swept, folder);
+}
+
+/** What `makeWorktree` made: the change's id, branch and folder, what it copied there and swept. */
+interface Made extends CopiedFiles {
+  readonly id: string;
+  readonly branch: string;
+  readonly folder: string;
+  readonly swept: Swept;
+}
+
+/**
+ * The steps of `new --worktree` that create the change from `base`: the clean-up, its id and
+ * branch, its folder, the branch's mark and its state; or the card of a mark git could not write.
+ */
+async function makeWorktree(
+  session: Session,
+  options: NewOptions,
+  title: string,
+  base: string,
+): Promise<Made | { readonly refusal: Output }> {
+  const { git } = session;
+  // Folders of changes already closed (and incorporated) or cancelled are no longer needed, nor
+  // the orphans (`cleanUp`).
+  const swept = await cleanUp(session);
+  const home = await worktreesHome(git);
+  const changeTitle = options.slug?.trim() ? options.slug : title;
+  const id = await uniqueId(session, changeIdOf(session, changeTitle), home);
+  const branch = await branchFor(session, options, id);
+  const folder = join(home, id);
+  const copied = await addWorktree(git, { folder, branch, base });
+  const unmarked = await markOrUndo(session, { folder, branch, id });
+  if (unmarked !== undefined) return { refusal: unmarked };
+  const dir = repoPaths(folder).changeDir(id);
+  await createChange(session, options, { id, title, branch, baseCommit: base, dir });
+  return { id, branch, folder, swept, ...copied };
 }
 
 /**
