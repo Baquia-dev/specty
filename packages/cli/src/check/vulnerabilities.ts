@@ -77,10 +77,10 @@ export const vulnerabilities: CheckDefinition = {
       const before = join(folder, "before");
       const now = await copy(context, lockfiles, after, (path) => context.read(path));
       const then = await copy(context, lockfiles, before, (path) => context.before(path));
-      const [found, known] = await Promise.all([
+      const [found, known] = await bothScans(
         scan(context.session, after, now, join(folder, "after.json")),
         scan(context.session, before, then, join(folder, "before.json")),
-      ]);
+      );
       if ("skipped" in found) return found;
       if ("skipped" in known) return known;
       return { findings: findingsOf(context, found.vulnerabilities, known.vulnerabilities) };
@@ -89,6 +89,17 @@ export const vulnerabilities: CheckDefinition = {
     }
   },
 };
+
+/**
+ * The two scans, once both ended, or the first one's failure, in their order: the folder they run
+ * in goes after them, and on Windows a folder a process still works in cannot be removed (EBUSY).
+ */
+async function bothScans(after: Promise<Scan>, before: Promise<Scan>): Promise<[Scan, Scan]> {
+  const [found, known] = await Promise.allSettled([after, before]);
+  if (found.status === "rejected") throw found.reason;
+  if (known.status === "rejected") throw known.reason;
+  return [found.value, known.value];
+}
 
 function isLockfile(path: string): boolean {
   return LOCKFILES.has(path.slice(path.lastIndexOf("/") + 1)) || GRADLE_METADATA.test(path);

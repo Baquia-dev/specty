@@ -48,7 +48,7 @@ Sigue a 20261109-los-ultimos-fallos-de-windows-del-ci, que arregló los fallos d
 
 ## Tareas
 
-- [ ] T1: El check de vulnerabilidades espera a sus dos ejecuciones
+- [x] T1: El check de vulnerabilidades espera a sus dos ejecuciones
   - files: packages/cli/src/check/vulnerabilities.ts, packages/cli/test/check-vulnerabilities.test.ts, docs/formats.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-vulnerabilities.test.ts && pnpm lint && pnpm typecheck
