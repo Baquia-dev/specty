@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261109-un-readme-para-npm-y-github",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261109-un-readme-para-npm-y-github",
+  "baseCommit": "c4693b5feb73d3e25ea3df04551e92ec12050a2a",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos",
+      "2 módulos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d6449a5eb09f3d0a66deba039fdfb484c1b36f3307f0b6b2ef1b8070bbd8fe39",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bfb07e0a809fbcc276faafc6e5060afe52e457960a6e45f51b79d35a3e5f102a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:fb8aa685b0f86d8b7d0c08fc9ef71277ce5a9c8f9a762c58f256ba697059a342",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:5a56c6e8c06e183fec9f7b88a485f72e8188d5bdf0d7b8a891fc1d5a8b2c4243",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f8e20bef3a1a59534ae5c0720ca9abcc6361901ac5409c52ba220825cacd0900",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8d04d9f4bec90f39b1090f38a4af613765707b00cf3fa3ffceaa4a1c72f53b1c",
+    "at": "2026-11-09T10:01:17.597Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
