@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "id": "20261110-la-ui-solo-propone-retomar-un-cambio-con-claude",
+  "kind": "quick",
+  "phase": "testing",
+  "branch": "specty/20261110-la-ui-solo-propone-retomar-un-cambio-con-claude",
+  "baseCommit": "7033290bcf5aa281c210a9994fb009343fd2111f",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:905a053db8b0a09200786c0b36907b85fc88a336168a13984e70c166a2ae2b08",
+    "at": "2026-11-09T22:16:20.794Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
