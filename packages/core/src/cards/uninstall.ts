@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import { headerOf, type Output, type OutputBlock, section } from "../output";
-import { translator } from "./text";
+import { rulesListed } from "./install";
+import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
 // The texts of `specty uninstall`: what it would remove, its question, and what it left.
@@ -106,12 +107,43 @@ export function globalGuardStaysLine(tool: string, file: string, lang: Lang): st
   );
 }
 
-/** The rule for Specty's commands in the settings of Antigravity's CLI, which every project shares. */
-export function antigravityRuleStaysLine(file: string, command: string, lang: Lang): string {
-  return translator(lang)(
-    `Antigravity CLI: la regla \`command(${command})\` sigue en ${file}, que sirve a todos tus proyectos; quítala de \`permissions.allow\` si ya no usas Specty.`,
-    `Antigravity CLI: the rule \`command(${command})\` stays in ${file}, which serves all your projects; remove it from \`permissions.allow\` if you no longer use Specty.`,
+/**
+ * Specty's rules that stay in the settings of Antigravity's CLI: `write_file` only serves this
+ * project, and the others every project of the person.
+ */
+export function antigravityRuleStaysLine(
+  file: string,
+  rules: readonly string[],
+  lang: Lang,
+): string {
+  const t = translator(lang);
+  const listed = rulesListed(rules, t);
+  const one = rules.length === 1;
+  const subject = one
+    ? t(`la regla ${listed} sigue`, `the rule ${listed} stays`)
+    : t(`las reglas ${listed} siguen`, `the rules ${listed} stay`);
+  const remove = one ? t("quítala", "remove it") : t("quítalas", "remove them");
+  return t(
+    `Antigravity CLI: ${subject} en ${file}${servesWhom(rules, one, t)}; ${remove} de \`permissions.allow\` si ya no usas Specty.`,
+    `Antigravity CLI: ${subject} in ${file}${servesWhom(rules, one, t)}; ${remove} from \`permissions.allow\` if you no longer use Specty.`,
   );
+}
+
+/** Which projects the rules serve: only this one (`write_file`), all of them, or some of each. */
+function servesWhom(rules: readonly string[], one: boolean, t: Translate): string {
+  const own = rules.some((rule) => rule.startsWith("write_file("));
+  if (own && rules.every((rule) => rule.startsWith("write_file("))) {
+    return t(", que solo sirve a este proyecto", ", which only serves this project");
+  }
+  if (own) {
+    return t(
+      ": `write_file` solo sirve a este proyecto, y las demás, a todos tus proyectos",
+      ": `write_file` only serves this project, and the others serve all your projects",
+    );
+  }
+  return one
+    ? t(", que sirve a todos tus proyectos", ", which serves all your projects")
+    : t(", que sirven a todos tus proyectos", ", which serve all your projects");
 }
 
 export function claudePointerStaysLine(lang: Lang): string {

@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ad1c36f196329a2486bda0e797d3563fd7af758e",
+      "startedAt": "2026-11-09T10:55:19.059Z",
+      "doneAt": "2026-11-09T10:56:07.735Z",
+      "summary": "Los textos de Antigravity CLI (línea de init, aviso de ajustes inválidos, doctor y lo que queda tras uninstall) nombran todas las reglas de Specty, la de sus comandos y las del sandbox, en español y en inglés; doctor lista las que faltan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

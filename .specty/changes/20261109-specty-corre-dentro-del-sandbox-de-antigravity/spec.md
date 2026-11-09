@@ -68,7 +68,7 @@ Antigravity CLI (`agy`) enciende su sandbox de terminal en todo modo print, y de
 
 ## Tareas
 
-- [ ] T1: Los textos de las reglas del sandbox de Antigravity, en español y en inglés
+- [x] T1: Los textos de las reglas del sandbox de Antigravity, en español y en inglés
   - files: packages/core/test/cards/antigravity-cli-rule.test.ts, packages/core/src/cards/install.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/src/cards/uninstall.ts
   - ac: AC1, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/antigravity-cli-rule.test.ts && pnpm lint

@@ -69,8 +69,16 @@ export type DoctorLine =
    * (`seconds`): `init` wrote them with another one, or someone edited them.
    */
   | { readonly code: "antigravity-timeout"; readonly file: string; readonly seconds: number }
-  /** The rule for Specty's commands in the settings of Antigravity's CLI, in the user's folder. */
-  | { readonly code: "antigravity-cli-rule" | "no-antigravity-cli-rule"; readonly file: string }
+  /**
+   * Specty's rules in the settings of Antigravity's CLI, in the user's folder: the one for its
+   * commands and its sandbox's; without some, the `missing` ones.
+   */
+  | { readonly code: "antigravity-cli-rule"; readonly file: string }
+  | {
+      readonly code: "no-antigravity-cli-rule";
+      readonly file: string;
+      readonly missing: readonly string[];
+    }
   /** Devin's guard in `file`, its standalone hooks. */
   | { readonly code: "windsurf-guard" | "no-windsurf-guard"; readonly file: string }
   /** Devin's guard is there, without the hooks of these events. */

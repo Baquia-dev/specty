@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { AGENT_NAMES } from "../agents";
 import type { DoctorLine } from "./doctor";
+import { rulesListed } from "./install";
 import type { Translate } from "./text";
 
 type AgentCode =
@@ -189,14 +190,17 @@ export const AGENT_WRITERS: {
     ),
   "antigravity-cli-rule": (line, t) =>
     t(
-      `Antigravity CLI: regla de Specty en ${line.file}.`,
-      `Antigravity CLI: Specty's rule in ${line.file}.`,
+      `Antigravity CLI: reglas de Specty en ${line.file}.`,
+      `Antigravity CLI: Specty's rules in ${line.file}.`,
     ),
-  "no-antigravity-cli-rule": (line, t, command) =>
-    t(
-      `Antigravity CLI: falta \`command(${command})\` en \`permissions.allow\` de ${line.file}, así que los comandos de Specty piden permiso o fallan en su sandbox; ejecuta \`${command} init --tools antigravity\`.`,
-      `Antigravity CLI: \`command(${command})\` is missing from \`permissions.allow\` in ${line.file}, so Specty's commands ask for permission or fail in its sandbox; run \`${command} init --tools antigravity\`.`,
-    ),
+  "no-antigravity-cli-rule": (line, t, command) => {
+    const listed = rulesListed(line.missing, t);
+    const one = line.missing.length === 1;
+    return t(
+      `Antigravity CLI: ${one ? "falta" : "faltan"} ${listed} en \`permissions.allow\` de ${line.file}, así que los comandos de Specty piden permiso o fallan en su sandbox; ejecuta \`${command} init --tools antigravity\`.`,
+      `Antigravity CLI: ${listed} ${one ? "is" : "are"} missing from \`permissions.allow\` in ${line.file}, so Specty's commands ask for permission or fail in its sandbox; run \`${command} init --tools antigravity\`.`,
+    );
+  },
   "windsurf-guard": (line, t) =>
     t(
       `Devin (Windsurf): guard en ${line.file}; Devin Desktop no lo ejecuta en modo restringido.`,

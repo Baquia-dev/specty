@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { HUMAN_COMMANDS } from "../guard/human";
 import type { Lang } from "../i18n";
-import { translator } from "./text";
+import { type Translate, translator } from "./text";
 
 // What `init` says about the hooks it installs (layers 2 and 3 of ARCHITECTURE §10) and its commit.
 
@@ -100,22 +100,38 @@ export function antigravityTrustWarning(lang: Lang): string {
   );
 }
 
+/** Rules of Antigravity's permissions as a text lists them, each as code: «`a`, `b` y `c`». */
+export function rulesListed(rules: readonly string[], t: Translate): string {
+  const quoted = rules.map((rule) => `\`${rule}\``);
+  const last = quoted.at(-1) ?? "";
+  return quoted.length < 2 ? last : `${quoted.slice(0, -1).join(", ")}${t(" y ", " and ")}${last}`;
+}
+
 /**
- * The rule for Specty's commands in the permissions of Antigravity's CLI, in the user's folder
- * (the exception to ADR 0013): it serves every project of the person.
+ * Specty's rules in the permissions of Antigravity's CLI, in the user's folder (the exception to
+ * ADR 0013, D4 and D5): the one for its commands and those that let it run inside the sandbox.
+ * `write_file` opens this project's git; the others serve every project of the person.
  */
-export function antigravityCliRuleLine(file: string, command: string, lang: Lang): string {
-  return translator(lang)(
-    `Antigravity CLI: regla \`command(${command})\` en ${file}, para que los comandos de Specty corran sin preguntar; sirve a todos tus proyectos.`,
-    `Antigravity CLI: rule \`command(${command})\` in ${file}, so Specty's commands run without asking; it serves all your projects.`,
+export function antigravityCliRuleLine(file: string, rules: readonly string[], lang: Lang): string {
+  const t = translator(lang);
+  const listed = rulesListed(rules, t);
+  return t(
+    `Antigravity CLI: reglas ${listed} en ${file}, para que los comandos de Specty corran sin preguntar y dentro de su sandbox; \`write_file\` abre en él el git de este proyecto, y las demás sirven a todos tus proyectos.`,
+    `Antigravity CLI: rules ${listed} in ${file}, so Specty's commands run without asking and inside its sandbox; \`write_file\` opens this project's git in it, and the others serve all your projects.`,
   );
 }
 
 /** Settings of Antigravity's CLI that Specty cannot edit: it leaves them alone and says what to add. */
-export function antigravityCliInvalidWarning(file: string, command: string, lang: Lang): string {
-  return translator(lang)(
-    `Antigravity CLI: ${file} no es un JSON que Specty pueda editar, así que no lo toca; añade \`command(${command})\` a \`permissions.allow\` para que los comandos de Specty corran sin preguntar.`,
-    `Antigravity CLI: ${file} is not JSON that Specty can edit, so Specty leaves it alone; add \`command(${command})\` to \`permissions.allow\` so Specty's commands run without asking.`,
+export function antigravityCliInvalidWarning(
+  file: string,
+  rules: readonly string[],
+  lang: Lang,
+): string {
+  const t = translator(lang);
+  const listed = rulesListed(rules, t);
+  return t(
+    `Antigravity CLI: ${file} no es un JSON que Specty pueda editar, así que no lo toca; añade ${listed} a \`permissions.allow\` para que los comandos de Specty corran sin preguntar y dentro de su sandbox.`,
+    `Antigravity CLI: ${file} is not JSON that Specty can edit, so Specty leaves it alone; add ${listed} to \`permissions.allow\` so Specty's commands run without asking and inside its sandbox.`,
   );
 }
 
