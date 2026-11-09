@@ -81,3 +81,23 @@ Sigue a 20261109-specty-lanza-en-windows-las-herramientas-del. En el run 4260174
 ## Riesgos
 
 - R1: Aquí no hay Windows: que los comandos corran en `cmd.exe` solo se comprueba en la CI de Windows. Mitigación: los comandos solo usan `node` con su código entre comillas dobles, sin caracteres que `cmd.exe` interprete ahí; la sesión principal lee el siguiente run.
+
+## Cierre
+
+### Resumen
+
+Los comandos simulados de los tests del CLI ya no dependen de `sh`. `test/tools.ts` exporta `COMMON_DIR`, una expresión de JavaScript con comillas simples que pide a git su carpeta común, y la usan las verificaciones y unidades simuladas de accept-quick-turn, close-moved, incorporation-units, integrate-landing, integrate-units, integrate, no-code y las de la UI (verify-merge y verify-units) en vez de `"$(git rev-parse --git-common-dir)"`. La verificación en vivo de live-run y la de verify-merge escriben y esperan con Node en vez de `echo` y `sleep`, el `git.setup` de worktrees escribe su línea con Node y su `pnpm` falso se escribe con `writeTool`, y verify-priority espera en Windows la prioridad 10 que el sistema lee para 15. En macOS los tests comprueban lo mismo que antes.
+
+### Desviaciones
+
+- Ninguna respecto a las tareas. `switch-log.test.ts` conserva un `$(git rev-parse --git-common-dir)` porque es la entrada que el guard debe rechazar, no un comando que se ejecute.
+
+### Decisiones
+
+- `COMMON_DIR` va en `test/tools.ts`, junto a `writeTool`, y solo lleva comillas simples para que quepa en un `node -e "…"` de `sh` y de `cmd.exe`.
+- Los `echo … && exit N` que quedan se dejan: sus tests comprueban la salida sin el espacio final que añade `cmd.exe`.
+- En verify-priority, Windows espera 10 directamente en lugar de medirlo en un proceso aparte, con un comentario sobre las clases de prioridad.
+
+### Pendientes
+
+- Confirmar en el siguiente run de la CI de Windows que estos tests pasan; los que sigan fallando solo por las rutas de git con `/` son del otro cambio.
