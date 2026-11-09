@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "id": "20261109-una-verificacion-no-arranca-en-una-carpeta",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261109-una-verificacion-no-arranca-en-una-carpeta",
+  "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1230b02c8f951bbee84f7ad5699ed646211e49a60c4cd71153e5d9ec85ab619c",
+    "at": "2026-11-09T09:51:24.157Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a214a454f367df94406a07eb924b2bc80d367d3d0b594493f09bf508c491fead",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:99091510ba0f0557c705ea92d938c29247d8f6614aed7e42ce5e0d5003e50b9e",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:bceefdda7fc3217c04c01aca74dbd4ad06a49d2a8322368462a96465c4e08e20",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1ccfc9bd69418444846b20e816bba3ba85737f772de142a3a392d757d715a4ac",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f41613c9993b557fd0f15db8ea4fa638f0b71be1177b6c2b7189c28a849a859a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "a95d914489641c1d6657d3ec6aa64c0b13d5c970",
+      "attempts": 1,
+      "startedAt": "2026-11-09T09:56:47.226Z",
+      "doneAt": "2026-11-09T09:59:10.303Z",
+      "summary": "Una verificación no arranca mientras corre otra de otro proceso en su carpeta y lo dice una vez; inFolder (para specty check) marca la carpeta con peso 0 sin ocupar plazas; los antecesores no cuentan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "dc675cf066eaca851e1b4a37f3b5a81d9a175c54",
+      "attempts": 1,
+      "startedAt": "2026-11-09T09:59:10.702Z",
+      "doneAt": "2026-11-09T09:59:58.372Z",
+      "summary": "Los comandos del proyecto de specty check (formato, lint, tipos y tests) corren dentro de inFolder: esperan a la verificación de otro proceso en su carpeta y la marcan con peso 0 mientras corren.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "a0d672a1befda9b900e86c30495203c3be19ec49",
+      "attempts": 1,
+      "startedAt": "2026-11-09T09:59:58.758Z",
+      "doneAt": "2026-11-09T10:00:30.113Z",
+      "summary": "formats.md §1 y ARCHITECTURE §9 («Una verificación por carpeta») explican la regla de la carpeta, la marca de peso 0 de specty check, quién no cuenta y cómo se resuelven dos a la vez.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-09T10:00:44.730Z",
+  "lockedTests": {
+    "packages/cli/src/store/verify-folder.test.ts": "sha256:e41191389aa870771193b8863de7ebaf03a351c85369d92503379b92f8c2be89",
+    "packages/cli/test/check-folder.test.ts": "sha256:a929e853010dcddf4a7743eb8111278e8197aedf157603e706de7d63e59a5f7c"
+  }
+}

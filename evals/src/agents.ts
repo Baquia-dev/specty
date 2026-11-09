@@ -7,11 +7,18 @@ import type { Session } from "./launch";
 /**
  * The agents of the suite: how to find each one, its command line without an interface, and how
  * to count its tool calls (rounds) and the guard's refusals (blocks) in its transcript. Claude
- * Code's count is exact; the others' is by pattern, since their formats change between versions.
- * No command line takes the options that skip an agent's sandbox or its permissions.
+ * Code's and Antigravity CLI's counts are exact; the others' is by pattern, since their formats
+ * change between versions. No command line takes the options that skip an agent's sandbox or its
+ * permissions.
  */
 
-export type AgentId = "claude-code" | "codex" | "gemini-cli" | "opencode" | "cursor";
+export type AgentId =
+  | "claude-code"
+  | "codex"
+  | "gemini-cli"
+  | "opencode"
+  | "cursor"
+  | "antigravity";
 
 export interface Agent {
   readonly id: AgentId;
@@ -19,10 +26,11 @@ export interface Agent {
   /** Its binary: `SPECTY_EVALS_<ID>`, on the PATH or, for Claude Code, in an editor's extension. */
   find(env: NodeJS.ProcessEnv): string | undefined;
   /**
-   * The command line that runs `prompt` without an interface, in the folder it starts in, with
-   * `turns` of the model at most where the agent takes a limit (30 by default).
+   * The command line that runs `prompt` without an interface, in `folder`, the repository it
+   * starts in, with `turns` of the model at most where the agent takes a limit (30 by default).
+   * Only Antigravity CLI uses the folder: it trusts it for the session.
    */
-  command(binary: string, prompt: string, turns?: number): string[];
+  command(binary: string, prompt: string, turns?: number, folder?: string): string[];
   /**
    * The same run with its conversation kept open, for a person who decides while it runs
    * (ARCHITECTURE §16): its command line, without the prompt, and its session, which brings the
@@ -44,10 +52,14 @@ export function invocation(
   agent: Agent,
   binary: string,
   prompt: string,
-  options: { readonly turns: number | undefined; readonly person: boolean },
+  options: {
+    readonly turns: number | undefined;
+    readonly person: boolean;
+    readonly folder?: string;
+  },
 ): { readonly command: string[]; readonly session?: Session } {
   const open = options.person ? agent.conversation?.(binary, prompt, options.turns) : undefined;
-  return open ?? { command: agent.command(binary, prompt, options.turns) };
+  return open ?? { command: agent.command(binary, prompt, options.turns, options.folder) };
 }
 
 interface Counts {
@@ -64,8 +76,8 @@ export interface Consumption {
 /** A guard refusal: Specty's message and its next step, inside a tool's output. */
 const REFUSAL = /specty: [^"]*?(?:SIGUIENTE|NEXT):/;
 
-/** The tool calls of each agent other than Claude Code, one per matching line. */
-const ROUNDS: Readonly<Record<Exclude<AgentId, "claude-code">, RegExp>> = {
+/** The tool calls of each agent counted by pattern, one per matching line. */
+const ROUNDS: Readonly<Record<Exclude<AgentId, "claude-code" | "antigravity">, RegExp>> = {
   codex:
     /"type":"item\.completed","item":\{[^}]*?"type":"(?:command_execution|file_change|mcp_tool_call)"/,
   "gemini-cli": /"type":"tool_use"/,
@@ -76,6 +88,7 @@ const ROUNDS: Readonly<Record<Exclude<AgentId, "claude-code">, RegExp>> = {
 export function countsOf(id: AgentId, transcript: string): Counts {
   const lines = transcript.split("\n");
   if (id === "claude-code") return claudeCounts(lines);
+  if (id === "antigravity") return agyCounts(lines);
   const pattern = ROUNDS[id];
   return {
     rounds: lines.filter((line) => pattern.test(line)).length,
@@ -98,6 +111,28 @@ function claudeCounts(lines: readonly string[]): Counts {
     }
   }
   return { rounds, blocks };
+}
+
+/**
+ * Antigravity CLI's `stream-json`: each tool step (a `step_update` with `step_type: "tool"`), once
+ * by its conversation and index, though it comes when it starts and again when it ends; and those
+ * that end in `ERROR` with the guard's refusal, which agy gives as «tool call denied by pre-tool
+ * hook: specty: …». Its final answer may quote the refusal, which is no step.
+ */
+function agyCounts(lines: readonly string[]): Counts {
+  const rounds = new Set<string>();
+  const blocks = new Set<string>();
+  for (const line of lines) {
+    const value = parsed(line);
+    const step = isObject(value) ? value.step_update : undefined;
+    if (!isObject(step) || step.step_type !== "tool") continue;
+    const key = `${String(step.conversation_id)}:${String(step.step_index)}`;
+    rounds.add(key);
+    const info = isObject(step.tool_info) ? step.tool_info : {};
+    const error = isObject(info.error) ? info.error : {};
+    if (step.state === "ERROR" && textOf(error.message).includes("specty:")) blocks.add(key);
+  }
+  return { rounds: rounds.size, blocks: blocks.size };
 }
 
 /**
@@ -272,6 +307,21 @@ function claudeSession(prompt: string): Session {
   };
 }
 
+/**
+ * Antigravity CLI's settings for the session, which agy never saves. Nobody answers in print mode,
+ * so its commands run in its terminal sandbox without asking and those that would leave it are
+ * denied, as in Codex's `workspace-write`; Specty's leave it when the model asks to, with the rule
+ * `init` gives the person (`command(specty)`). And the repository is trusted: agy only loads its
+ * `.agents/hooks.json`, the guard, from a trusted folder.
+ */
+function agySettings(folder: string | undefined): string {
+  return JSON.stringify({
+    toolPermission: "proceed-in-sandbox",
+    permissions: { allow: ["command(specty)"] },
+    ...(folder === undefined ? {} : { trustedWorkspaces: [folder] }),
+  });
+}
+
 export const AGENTS: readonly Agent[] = [
   {
     id: "claude-code",
@@ -306,6 +356,15 @@ export const AGENTS: readonly Agent[] = [
     name: "Cursor CLI",
     find: finder("cursor", "cursor-agent"),
     command: (binary, prompt) => [binary, "-p", prompt, "--output-format", "stream-json"],
+  },
+  {
+    id: "antigravity",
+    name: "Antigravity CLI",
+    find: finder("antigravity", "agy"),
+    command: (binary, prompt, _turns, folder) => [
+      ...[binary, "-p", prompt, "--mode", "accept-edits", "--sandbox"],
+      ...["--output-format", "stream-json", "--settings", agySettings(folder)],
+    ],
   },
 ];
 

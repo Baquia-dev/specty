@@ -69,7 +69,11 @@ async function runOnce(
   const root = await scenario.prepare(agent.id);
   const turns = "turns" in scenario ? scenario.turns : undefined;
   const person = "person" in scenario && scenario.person === true;
-  const { command: line, session } = invocation(agent, binary, scenario.prompt, { turns, person });
+  const { command: line, session } = invocation(agent, binary, scenario.prompt, {
+    turns,
+    person,
+    folder: root,
+  });
   const [command = binary, ...args] = line;
   const started = performance.now();
   const run = launch(command, args, {

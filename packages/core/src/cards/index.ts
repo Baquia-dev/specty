@@ -270,6 +270,7 @@ export {
   busyChangeCard,
   fullVerificationWaitNote,
   type LockHolderView,
+  verifyFolderWaitNote,
   verifySlotsWaitNote,
 } from "./lock";
 export { mcpNotOnPathWarning, mcpRegisteredLine, mcpUserFolderWarning } from "./mcp";
