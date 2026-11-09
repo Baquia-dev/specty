@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-la-suite-de-cumplimiento-tambien-ejecuta",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-la-suite-de-cumplimiento-tambien-ejecuta",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
   "revision": 1,
@@ -62,6 +62,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-09T09:55:10.909Z"
+  "lockedTests": {
+    "evals/test/report.test.ts": "sha256:ff7041bccf6159b0f8937e205796e3a8e01329c66abd89c567e2e66b043a250f",
+    "evals/test/antigravity-init.test.ts": "sha256:4457295d72b40e7eaa685723d6129ece0d196adc279e170abe9e17bc6cfe3128",
+    "evals/test/antigravity.test.ts": "sha256:f37a1443b334aaa7ad30f9c6caff5f2f0518203dadd2646dea347a6a5150ad8b"
+  }
 }
