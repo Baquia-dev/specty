@@ -88,7 +88,7 @@ Antigravity CLI (`agy`) enciende su sandbox de terminal en todo modo print, y de
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-cli-rule.test.ts test/uninstall.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T5: La documentación: ADR 0013 y los permisos de Antigravity en ARCHITECTURE
+- [x] T5: La documentación: ADR 0013 y los permisos de Antigravity en ARCHITECTURE
   - files: docs/decisions/0013-specty-no-escribe-en-la-carpeta-del-usuario.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

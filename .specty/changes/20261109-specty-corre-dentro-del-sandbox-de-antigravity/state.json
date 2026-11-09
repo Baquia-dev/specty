@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-specty-corre-dentro-del-sandbox-de-antigravity",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-specty-corre-dentro-del-sandbox-de-antigravity",
   "baseCommit": "2a1c7ccf81bc3c5c3f987eb744a8d63f7ef2feaa",
   "revision": 1,
@@ -75,12 +75,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "35ab09d0baf9b9df65fc70b0bd90e966427c472d",
+      "attempts": 1,
       "startedAt": "2026-11-09T10:58:23.004Z",
       "doneAt": "2026-11-09T11:00:05.598Z",
-      "summary": "uninstall deja los ajustes del CLI de Antigravity y nombra las reglas de Specty que siguen allí, con que write_file solo sirve a este proyecto; stays recibe git y la invocación."
+      "summary": "uninstall deja los ajustes del CLI de Antigravity y nombra las reglas de Specty que siguen allí, con que write_file solo sirve a este proyecto; stays recibe git y la invocación.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "988f1669f3af78cb6641568c18ef31f9fb492f11",
+      "startedAt": "2026-11-09T11:00:05.943Z",
+      "doneAt": "2026-11-09T11:00:55.724Z",
+      "summary": "ADR 0013 recoge la ampliación D5 (las reglas del sandbox del CLI de Antigravity) y ARCHITECTURE §10 describe las reglas que escribe init, lo que comprueba doctor y lo que dice uninstall."
     }
   },
   "pending": {

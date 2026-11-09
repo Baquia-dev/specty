@@ -13,7 +13,7 @@ Así, una instalación servía en todos los repositorios de la persona, pero que
 
 Decisión del usuario del 2026-10-26: nada de Specty escribe en la carpeta del usuario; Specty escribe en la del proyecto.
 
-- **Specty escribe solo dentro del proyecto**: su carpeta de trabajo y su directorio de git. Nunca en la configuración del usuario (`~`, `$CODEX_HOME`, `$XDG_CONFIG_HOME` u otras), salvo la excepción de la regla del CLI de Antigravity (abajo).
+- **Specty escribe solo dentro del proyecto**: su carpeta de trabajo y su directorio de git. Nunca en la configuración del usuario (`~`, `$CODEX_HOME`, `$XDG_CONFIG_HOME` u otras), salvo la excepción de las reglas del CLI de Antigravity (abajo).
 - **El guard de cada agente vive en el proyecto**: `.claude/settings.json`, `.cursor/hooks.json`, `.codex/hooks.json` y `.opencode/plugins/specty.js`. Se versiona cuando el comando de Specty está en el PATH; si lleva una ruta de la máquina, queda excluido en `.git/info/exclude` y `specty new` lo copia a cada worktree.
 - **La configuración del usuario solo se lee**: para la guía de gentle-ai y para lo que `uninstall` dice que queda allí de una instalación anterior.
 - **Lo que escriben las herramientas que Specty ejecuta es de esas herramientas**: el gestor de paquetes al preparar una worktree, la caché de `npx`, el modelo de `review.command`, o Codex al guardar la confianza de la persona.
@@ -32,6 +32,20 @@ Decisión del usuario del 2026-11-05 (D4): «para p157 entonces agrega una execp
 
 - El sandbox de terminal de Antigravity CLI (`agy` 1.5.1, `--sandbox`) no deja escribir en `.git`, ni dentro del espacio de trabajo, ni arrancar un `specty` global de nvm, así que el agente no podía ejecutar `specty enter`, `next` ni `task done` (P157). Los `permissionOverrides` que da el guard no cambian ese sandbox, y las reglas de `permissions.allow` de `~/.gemini/antigravity-cli/settings.json` sí (P167). Antigravity no tiene un archivo de permisos en el proyecto.
 - Por eso `specty init --tools antigravity` añade `command(specty)` a esa lista, solo si la carpeta del CLI existe: sin duplicarla, respetando `unsandboxed(specty)` (la de las cuentas de empresa) y sin tocar unos ajustes que no puede editar, de los que avisa con la regla que añadir.
-- Solo esa regla. Ninguna regla de rutas (`read_file`, `write_file`), que llevan rutas de la máquina de cada repositorio, y nada en los ajustes de la app, que no están en un archivo legible: para la app, `init` dice qué regla añadir.
+- Solo esa regla. Ninguna regla de rutas (`read_file`, `write_file`), que llevan rutas de la máquina de cada repositorio, y nada en los ajustes de la app, que no están en un archivo legible: para la app, `init` dice qué regla añadir. Las reglas de rutas llegaron con la ampliación D5 (abajo).
 - `doctor` comprueba la regla cuando existe la carpeta del CLI. `uninstall` la deja, porque la comparten todos los proyectos de la persona, y dice dónde está y cómo quitarla.
 - El resto de esta decisión sigue igual.
+
+## Ampliación: las reglas del sandbox del CLI de Antigravity (2026-11-09)
+
+Decisión del usuario del 2026-11-09 (D5), entre las opciones que se le dieron: «Ampliar D4 en la instalación».
+
+- `agy` enciende su sandbox de terminal en todo modo print, y dentro Specty no arrancaba: `node` no podía abrir el bundle, que está fuera del espacio de trabajo (`EPERM`), y git no podía escribir en `.git`. Con `command(specty)`, los comandos de Specty solo salían del sandbox si el modelo ponía `BypassSandbox: true`, y un monitor de seguridad de `agy` lo bloqueó como un intento de eludir el sandbox (P382). Las reglas de rutas de `permissions.allow` sí abren el sandbox (P167).
+- Por eso `specty init --tools antigravity` añade, tras `command(specty)` (o `unsandboxed(specty)`), en este orden:
+  - `read_file(<prefijo de node>)`, la carpeta dos niveles por encima del node que ejecuta `init`;
+  - `read_file(<carpeta del bundle>)`, salvo si está dentro de la de node, como en una instalación global de npm;
+  - `write_file(<carpeta común de git>)` del repositorio, la misma desde cualquier worktree.
+- Todas llevan rutas absolutas, porque una relativa rompe el sandbox entero. `init` solo añade las que faltan.
+- Las de lectura sirven a todos los proyectos de la persona; la de escritura, solo a ese repositorio, así que cada proyecto en el que la persona ejecuta `init` añade la suya.
+- `doctor` las comprueba todas y nombra las que faltan, por ejemplo tras cambiar de versión de node. `uninstall` las deja, como `command(specty)`, porque Specty solo escribe en la carpeta del usuario al instalar. Dice cuáles siguen, que `write_file` solo sirve a ese proyecto y cómo quitarlas. Las de un node o un bundle anteriores no se quitan: Specty no las distingue de las de la persona.
+- Nada cambia en la app de Antigravity, cuyos permisos no están en un archivo legible. El resto de esta decisión sigue igual.
