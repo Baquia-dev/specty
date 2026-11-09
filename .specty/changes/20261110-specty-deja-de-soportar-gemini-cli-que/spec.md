@@ -72,7 +72,7 @@ La persona decidió el 2026-11-10 retirar Gemini CLI, porque Antigravity lo reem
 - [ ] T3: La página «Configuración» deja de mostrar el latido
   - files: packages/core/src/settings/catalog.ts, packages/core/src/cards/settings-internal.ts, packages/core/test/settings/catalog.test.ts, packages/core/test/settings/internal-life.test.ts, packages/ui/src/settings/settings-page.test.ts
   - ac: AC2
-  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings && pnpm --filter @baquia-dev/specty-ui exec vitest run src/settings/settings-page.test.ts
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/settings && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/settings/settings-page.test.ts
   - type: chore
 - [ ] T4: `specty new` deja de proponer Gemini CLI, y la documentación sin el latido
   - files: packages/core/src/cards/new.ts, packages/core/test/cards/new.test.ts, docs/formats.md, docs/ARCHITECTURE.md

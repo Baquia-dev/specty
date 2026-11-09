@@ -5,11 +5,11 @@
   "phase": "implementing",
   "branch": "specty/20261110-specty-deja-de-soportar-gemini-cli-que",
   "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
-  "revision": 2,
+  "revision": 3,
   "approved": {
-    "revision": 2,
-    "hash": "sha256:968454a67fe217128545d1156e25fa0ab05449f4df48fc8d76c2da44cbf4426e",
-    "at": "2026-11-09T17:01:16.004Z",
+    "revision": 3,
+    "hash": "sha256:88003cc1f70236bd96bd102bf5d6343c4b1bbbc09365a9ac18111d162fd887ed",
+    "at": "2026-11-09T17:03:30.043Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
@@ -49,12 +49,19 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4efaddcf12b5ecfeceb0bf4a3dab0f0aa0b7f960",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:01:50.554Z",
       "doneAt": "2026-11-09T17:02:29.058Z",
-      "summary": "config.yaml deja de tener internal.waits.heartbeatSec: fuera del tipo, los valores por defecto, la forma y la resolución de schema/internal-waits.ts; la clave es ahora un error como cualquier otra desconocida bajo internal"
+      "summary": "config.yaml deja de tener internal.waits.heartbeatSec: fuera del tipo, los valores por defecto, la forma y la resolución de schema/internal-waits.ts; la clave es ahora un error como cualquier otra desconocida bajo internal",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "active",
+      "baseCommit": "aa0c676332cb1bc82c3d2b9e23ec7791ddf080de",
+      "attempts": 1,
+      "startedAt": "2026-11-09T17:02:29.583Z",
+      "scopeExtra": []
     }
   },
   "pending": {
