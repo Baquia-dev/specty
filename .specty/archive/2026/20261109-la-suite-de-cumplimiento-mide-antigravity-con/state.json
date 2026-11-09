@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "id": "20261109-la-suite-de-cumplimiento-mide-antigravity-con",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261109-la-suite-de-cumplimiento-mide-antigravity-con",
+  "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:8204b04a45d48dcf283136ab348605d7095d54a275ff018c62d1f7d505f495de",
+    "at": "2026-11-09T11:15:41.017Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b77e7fa0c6c4ff7020f4ad1f288a3534138bd12d9e23301d84501363e25ef66c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:dbf627d1e9939fc42d4920161ab1add06ada0a8c94e9eaca33f0b4f8c3eca8ff",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:62075e80b167ca4d967ddb8a5b9df4e8309c224b2eb409f12b33c6e502b8501f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:42ad9e8b2056ed481ec127c0e97b85a01789b70f40301a25254a3972cf714ed0",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:b59963afa7fcbf974e83a5ac1f4b756b4724acacf57c9a1c79f60d0d0b673717",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "91af9821136c728f0e948b6837b64514b5134266",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:17:00.588Z",
+      "doneAt": "2026-11-09T11:17:43.179Z",
+      "summary": "La suite crea una carpeta del CLI de Antigravity propia por repositorio (antigravityCliFolder) antes del init para Antigravity (installSpecty), y el entorno de Specty apunta ahí SPECTY_ANTIGRAVITY_CLI_DIR; escenarios y experimentos instalan con installSpecty",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "27c67dcd051dbb7969acccbb76ee1c1c63bdf0b7",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:17:43.515Z",
+      "doneAt": "2026-11-09T11:19:09.025Z",
+      "summary": "agySettings pasa en --settings exactamente el permissions.allow que la instalación escribió en la carpeta del CLI de la suite para ese repositorio (solo textos); sin esos ajustes o si no se analizan, sin permissions; toolPermission y trustedWorkspaces igual",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "0fbb8e3ff1ec3d57d9ff8607666f8aa40e5d7d76",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:19:09.393Z",
+      "doneAt": "2026-11-09T11:37:54.635Z",
+      "summary": "Ejecución real con agy 1.5.3 de «pide código sin spec» con las reglas de la instalación: cumplió (7 rondas, 0 bloqueos, 601 s, cortada en specty wait). ARCHITECTURE §16 y la fila de F3 de §18 lo recogen",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-09T11:38:13.012Z",
+  "lockedTests": {
+    "evals/test/antigravity-init.test.ts": "sha256:456c5114806b6441f792279cf560e72b482e78d165be342bcd552bb961ce127d",
+    "evals/test/antigravity.test.ts": "sha256:fc11c9f7c6c8a35ddcd97cfcdf019946abba33d59d72af9aa35f8f89bfa911eb"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "356abe486d5c45d8b8396a18e2b127e4da3c95c6",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "evals/src/agents.ts",
+      "evals/src/experiments.ts",
+      "evals/src/repo.ts",
+      "evals/src/scenarios.ts",
+      "evals/test/antigravity-init.test.ts",
+      "evals/test/antigravity.test.ts",
+      "packages/cli/src/io/git-folders.test.ts",
+      "packages/cli/src/io/git-folders.ts",
+      "packages/cli/src/io/git.ts",
+      "packages/cli/test/exec-priority.test.ts",
+      "packages/cli/test/init-reversible.test.ts",
+      "packages/cli/test/prune-commands.test.ts",
+      "packages/cli/test/prune-orphans.test.ts",
+      "packages/cli/test/restore.test.ts",
+      "packages/cli/test/server/runs-priority.test.ts",
+      "packages/cli/test/support.ts",
+      "packages/cli/test/worktree-hooks.test.ts",
+      "packages/vscode/README.md",
+      "packages/vscode/package.nls.es.json",
+      "packages/vscode/package.nls.json",
+      "packages/vscode/src/launch.ts",
+      "packages/vscode/src/specty.ts",
+      "packages/vscode/test/extension.test.ts",
+      "packages/vscode/test/fake-specty.ts",
+      "packages/vscode/test/launch.test.ts",
+      "packages/vscode/test/specty.test.ts"
+    ],
+    "at": "2026-11-09T11:45:30.104Z",
+    "resolved": {
+      "commit": "b61be58",
+      "at": "2026-11-09T11:50:38.082Z"
+    }
+  }
+}

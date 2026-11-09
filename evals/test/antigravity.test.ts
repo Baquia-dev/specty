@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { AGENTS, type Agent, agentName, countsOf, invocation } from "../src/agents";
+import { antigravityCliFolder } from "../src/repo";
 
 const antigravity = (): Agent => {
   const found = AGENTS.find((agent) => agent.id === "antigravity");
@@ -98,6 +99,41 @@ describe("Antigravity CLI in the compliance suite", () => {
     expect(agent.find({})).toBeUndefined();
   });
 
+  it("AC2: passes agy exactly the rules the installation wrote for the repository, and none without them", async () => {
+    const agent = antigravity();
+    // The suite's Antigravity CLI settings for a repository, as its installation leaves them.
+    const repo = await mkdtemp(join(tmpdir(), "specty-evals-repo-"));
+    const rules = [
+      "command(specty)",
+      "read_file(/opt/node)",
+      "read_file(/opt/specty/dist)",
+      `write_file(${join(repo, ".git")})`,
+    ];
+    await mkdir(antigravityCliFolder(repo), { recursive: true });
+    await writeFile(
+      join(antigravityCliFolder(repo), "settings.json"),
+      `${JSON.stringify({ colorScheme: "dark", permissions: { allow: [...rules, 7], deny: ["x"] } }, null, 2)}\n`,
+    );
+    expect(JSON.parse(agent.command("agy", "Haz algo", 30, repo).at(-1) ?? "")).toEqual({
+      toolPermission: "proceed-in-sandbox",
+      permissions: { allow: rules },
+      trustedWorkspaces: [repo],
+    });
+    // Without the installation's settings, or with settings it cannot read, no rule at all.
+    const bare = await mkdtemp(join(tmpdir(), "specty-evals-repo-"));
+    expect(JSON.parse(agent.command("agy", "Haz algo", 30, bare).at(-1) ?? "")).toEqual({
+      toolPermission: "proceed-in-sandbox",
+      trustedWorkspaces: [bare],
+    });
+    const broken = await mkdtemp(join(tmpdir(), "specty-evals-repo-"));
+    await mkdir(antigravityCliFolder(broken), { recursive: true });
+    await writeFile(join(antigravityCliFolder(broken), "settings.json"), "{ not json");
+    expect(JSON.parse(agent.command("agy", "Haz algo", 30, broken).at(-1) ?? "")).toEqual({
+      toolPermission: "proceed-in-sandbox",
+      trustedWorkspaces: [broken],
+    });
+  });
+
   it("AC2: runs agy in print mode, in its sandbox, with the session's settings and the repository trusted", () => {
     const agent = antigravity();
     const line = agent.command("agy", "Haz algo", 30, "/tmp/repo");
@@ -112,15 +148,14 @@ describe("Antigravity CLI in the compliance suite", () => {
       "stream-json",
       "--settings",
     ]);
+    // A repository with no installation of the suite's: no rule, not even a fixed one.
     expect(JSON.parse(line.at(-1) ?? "")).toEqual({
       toolPermission: "proceed-in-sandbox",
-      permissions: { allow: ["command(specty)"] },
       trustedWorkspaces: ["/tmp/repo"],
     });
     // Without a folder, nothing is trusted.
     expect(JSON.parse(agent.command("agy", "Haz algo").at(-1) ?? "")).toEqual({
       toolPermission: "proceed-in-sandbox",
-      permissions: { allow: ["command(specty)"] },
     });
     // Nothing skips its sandbox or its permissions, and the prompt goes as it is.
     expect(line.join(" ")).not.toMatch(/dangerously|bypass|skip-permissions|--yolo|--force/i);

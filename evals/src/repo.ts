@@ -2,9 +2,10 @@
 import { execFileSync } from "node:child_process";
 import { mkdir, mkdtemp, readdir, readFile, realpath, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { runCli } from "../../packages/cli/src/program";
 import type { Terminal } from "../../packages/cli/src/session";
+import type { AgentTool } from "../../packages/core/src";
 
 /**
  * The suite's throwaway repositories: isolated git, and Specty run in-process as in the CLI's
@@ -39,23 +40,32 @@ const AGENT_MARKS = [
 ];
 
 /**
- * The environment Specty and git run with: isolated git, Spanish, and the agents' user folders
- * (Codex, OpenCode, Antigravity's CLI) in temporary ones, so `init` never writes in the person's.
- * Antigravity's does not exist, so `init` leaves its rule out; the suite gives it to agy.
+ * The suite's folder of Antigravity's CLI for the repository `root`, outside it and the person's:
+ * one per repository, so the rules its `init` writes open only that repository's git. A folder of
+ * `.worktrees/` gets another one, which does not exist.
  */
-function cliEnv(): NodeJS.ProcessEnv {
+export function antigravityCliFolder(root: string): string {
+  return join(tmpdir(), "specty-evals-antigravity-cli", basename(root));
+}
+
+/**
+ * The environment Specty and git run with in `root`: isolated git, Spanish, and the agents' user
+ * folders (Codex, OpenCode, Antigravity's CLI) in temporary ones, so `init` never writes in the
+ * person's. Antigravity's exists only for a repository prepared for it (`installSpecty`).
+ */
+function cliEnv(root: string): NodeJS.ProcessEnv {
   const env: NodeJS.ProcessEnv = { ...process.env, ...GIT_ENV, LANG: "es_ES.UTF-8" };
   for (const mark of [...AGENT_MARKS, "LC_ALL", "LC_MESSAGES"]) delete env[mark];
   return {
     ...env,
     CODEX_HOME: join(tmpdir(), `specty-evals-codex-${process.pid}`),
     XDG_CONFIG_HOME: join(tmpdir(), `specty-evals-config-${process.pid}`),
-    SPECTY_ANTIGRAVITY_CLI_DIR: join(tmpdir(), `specty-evals-antigravity-cli-${process.pid}`),
+    SPECTY_ANTIGRAVITY_CLI_DIR: antigravityCliFolder(root),
   };
 }
 
 export function git(root: string, ...args: string[]): string {
-  return execFileSync("git", args, { cwd: root, env: cliEnv(), encoding: "utf8" }).trim();
+  return execFileSync("git", args, { cwd: root, env: cliEnv(root), encoding: "utf8" }).trim();
 }
 
 export async function write(root: string, files: Readonly<Record<string, string>>): Promise<void> {
@@ -121,7 +131,7 @@ export async function specty(
         };
   const code = await runCli(argv, {
     cwd: root,
-    env: cliEnv(),
+    env: cliEnv(root),
     now: () => new Date(),
     terminal: options.person === true ? person : NOBODY,
     io: { out: (text) => out.push(text), err: () => undefined },
@@ -129,6 +139,15 @@ export async function specty(
     stdin: async () => "",
   });
   return { code, out: out.join("\n") };
+}
+
+/**
+ * `specty init` for `tool` in `root`, as a person who uses it: for Antigravity, the suite's folder
+ * of its CLI exists first, so `init` writes there the rules agy gets (D5).
+ */
+export async function installSpecty(root: string, tool: AgentTool): Promise<void> {
+  if (tool === "antigravity") await mkdir(antigravityCliFolder(root), { recursive: true });
+  await specty(root, ["init", "--language", "es", "--tools", tool]);
 }
 
 /** What the suite reads of a change's state. */

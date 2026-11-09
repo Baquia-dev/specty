@@ -3,7 +3,7 @@ import { readdir, utimes } from "node:fs/promises";
 import { basename, join } from "node:path";
 import type { AgentTool } from "../../packages/core/src";
 import { answerOf, subagentCommandsOf } from "./agents";
-import { disposableRepo, git, openChanges, read, specty, write } from "./repo";
+import { disposableRepo, git, installSpecty, openChanges, read, specty, write } from "./repo";
 import type { Verdict } from "./scenarios";
 
 /**
@@ -160,7 +160,7 @@ async function delegated(tool: AgentTool, subagents = true) {
 /** A repository with Specty for `tool` and `config`, committed; the person keeps their decisions. */
 async function withSpecty(tool: AgentTool, config: string): Promise<string> {
   const root = await disposableRepo(FILES);
-  await specty(root, ["init", "--language", "es", "--tools", tool]);
+  await installSpecty(root, tool);
   await write(root, { ".specty/config.yaml": config });
   git(root, "add", "-A");
   git(root, "commit", "-q", "-m", "chore: specty");

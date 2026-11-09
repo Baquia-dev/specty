@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "20261109-specty-entiende-en-windows-las-rutas-que-da-git",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261109-specty-entiende-en-windows-las-rutas-que-da-git",
+  "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:157fe241eb7d4fe25d223ddf401f39b8acafed9d9d8990f0a692a4ea2731748a",
+    "at": "2026-11-09T11:18:41.539Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a49c783f3872961939754d6cd49ef7c7e398b7195f549ffe44b88855c40b38a7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:73c441bd05b53b6c867cd2ab0de1e5db78699204f574edd636bc543294a796e0",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:441b9266a402bd5fc42416fd9d143b7e3d1f472d9f205843cb02909fc67c9bcc",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:1c311a2a41203a8ff5b9a463b40539af18965e8fc66f70e4941401c7962a4d3e",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:ad6525e2f0c33e93f1dd8825624ab2600a7dec55333b60180a86f5274a508c1f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "94abbe207eb03abf13be6d3e9d6ca22f3d857447",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:20:21.551Z",
+      "doneAt": "2026-11-09T11:28:56.944Z",
+      "summary": "Nuevo io/git-folders.ts: fromGit (ruta de git en la forma de la plataforma), parseWorktrees (lista de worktrees con fromGit) y startedIn (git arranca en la carpeta de -C, sin -C). git.ts los usa en findRoot, openRepository, gitPaths, worktrees y el runner.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "30e15fe764c306a2225fb97e91ed190223069f85",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:28:57.324Z",
+      "doneAt": "2026-11-09T11:29:57.495Z",
+      "summary": "support.ts gana worktreeList (la lista de worktrees de git con cada carpeta en la forma de la plataforma); prune-commands, prune-orphans, restore y worktree-hooks la usan en vez de la salida tal cual de git, e init-reversible busca la carpeta de las copias con join.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "86d659f72af84cd186f3f80fc7e2dcc12c01975b",
+      "attempts": 1,
+      "startedAt": "2026-11-09T11:29:57.854Z",
+      "doneAt": "2026-11-09T11:30:15.430Z",
+      "summary": "ARCHITECTURE §16: las rutas que da git se leen en la forma de la plataforma (io/git-folders.ts) y git arranca en la carpeta de -C, por el lanzador de Git for Windows.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-09T11:30:38.685Z",
+  "lockedTests": {
+    "packages/cli/src/io/git-folders.test.ts": "sha256:f32b0ac87caef94ae508ba150dcbc66ca354347a79fa0b06ac9d6ef9c51bbc7f"
+  }
+}
