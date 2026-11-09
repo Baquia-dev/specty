@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: Apache-2.0
-import { chmod } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
@@ -18,6 +17,17 @@ import {
 } from "./support";
 
 const BRANCH = `specty/${CHANGE}`;
+
+/**
+ * Makes `git add` of `file` fail in the repository of `root` and in its worktrees, on every
+ * platform: its clean filter fails and is required. A file without read permission did it, but
+ * Windows reads it anyway, and so does root.
+ */
+async function unaddable(root: string, file: string): Promise<void> {
+  git(root, "config", "filter.falla.clean", "false");
+  git(root, "config", "filter.falla.required", "true");
+  await writeFiles(root, { ".git/info/attributes": `${file} filter=falla\n` });
+}
 
 /** The person cancels the change from the main folder, naming it. */
 const cancelFrom = (root: string) =>
@@ -185,14 +195,11 @@ describe("the uncommitted work of a cancelled change's folder", () => {
     expect(await exists(folder)).toBe(false);
   });
 
-  it("AC4: stays in the folder, with nothing staged, when git cannot commit it", async (ctx) => {
-    // A file git cannot read makes `git add` fail; root reads it anyway.
-    if (process.getuid?.() === 0) ctx.skip();
+  it("AC4: stays in the folder, with nothing staged, when git cannot commit it", async () => {
     const { root, folder } = await inWorktree();
     await writeFiles(folder, { ...HALF_DONE, "secreto.txt": "no se lee\n" });
-    await chmod(join(folder, "secreto.txt"), 0o000);
+    await unaddable(root, "secreto.txt");
     const cancelled = await cancelFrom(root);
-    await chmod(join(folder, "secreto.txt"), 0o644);
     expect(cancelled.code).toBe(0);
     expect(cancelled.out).toContain(
       `La carpeta ${folder} queda: tiene cambios sin commit, que se perderían.`,

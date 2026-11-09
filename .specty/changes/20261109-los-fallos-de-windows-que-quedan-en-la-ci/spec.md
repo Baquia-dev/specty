@@ -58,7 +58,7 @@ Sigue a 20261109-los-ultimos-fallos-de-windows-del-ci, que arregló los fallos d
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts test/switch-log.test.ts test/epic-subagents.test.ts test/doctor-watchers.test.ts && pnpm lint
   - type: test
-- [ ] T3: git que no puede guardar el trabajo, en cualquier plataforma
+- [x] T3: git que no puede guardar el trabajo, en cualquier plataforma
   - files: packages/cli/test/cancel-folder.test.ts, packages/cli/test/prune-rescue.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cancel-folder.test.ts test/prune-rescue.test.ts && pnpm lint && pnpm typecheck && pnpm knip

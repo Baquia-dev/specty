@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-los-fallos-de-windows-que-quedan-en-la-ci",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-los-fallos-de-windows-que-quedan-en-la-ci",
   "baseCommit": "0f92de4b06f67fc829dd636c2a28554f27b7f6b8",
   "revision": 1,
@@ -51,12 +51,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "330381bda2db3bd946a222e6c75fd42425cdd3fa",
+      "attempts": 1,
       "startedAt": "2026-11-09T13:36:11.054Z",
       "doneAt": "2026-11-09T13:37:00.064Z",
-      "summary": "switchOf y logOf resuelven la ruta de git con resolve; epic-subagents admite \\ o / en el cd del encargo; doctor-watchers espera en Windows que doctor siga pidiendo las formas ancladas."
+      "summary": "switchOf y logOf resuelven la ruta de git con resolve; epic-subagents admite \\ o / en el cd del encargo; doctor-watchers espera en Windows que doctor siga pidiendo las formas ancladas.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "795db219436fd707cd8c846ddd04229f57e9054a",
+      "startedAt": "2026-11-09T13:37:00.451Z",
+      "doneAt": "2026-11-09T13:38:01.473Z",
+      "summary": "cancel-folder y prune-rescue hacen fallar git add de secreto.txt con un filtro clean obligatorio que falla, en vez de con chmod, que en Windows no impide leer el archivo; ya no se saltan con root."
     }
   },
   "pending": {

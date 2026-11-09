@@ -1,11 +1,20 @@
 // SPDX-License-Identifier: Apache-2.0
-import { chmod } from "node:fs/promises";
-import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { CHANGE, cli, git, inWorktree, NOW, person, read, toClosing, writeFiles } from "./support";
 
 const BRANCH = `specty/${CHANGE}`;
+
+/**
+ * Makes `git add` of `file` fail in the repository of `root` and in its worktrees, on every
+ * platform: its clean filter fails and is required. A file without read permission did it, but
+ * Windows reads it anyway, and so does root.
+ */
+async function unaddable(root: string, file: string): Promise<void> {
+  git(root, "config", "filter.falla.clean", "false");
+  git(root, "config", "filter.falla.required", "true");
+  await writeFiles(root, { ".git/info/attributes": `${file} filter=falla\n` });
+}
 
 /** The rescue ref the clean-up makes for the folder named `name` at `NOW`, in UTC. */
 const rescueRef = (name: string) =>
@@ -72,14 +81,11 @@ describe("the folder of a finished change with something uncommitted", () => {
     expect(rescueRefs(root)).toBe("");
   });
 
-  it("AC8: stays with what it has when git cannot save it, and the output says why", async (ctx) => {
-    // A file git cannot read makes the rescue fail; root reads it anyway.
-    if (process.getuid?.() === 0) ctx.skip();
+  it("AC8: stays with what it has when git cannot save it, and the output says why", async () => {
     const { root, folder } = await closedFolder();
     await writeFiles(folder, { ...HALF_DONE, "secreto.txt": "no se lee\n" });
-    await chmod(join(folder, "secreto.txt"), 0o000);
+    await unaddable(root, "secreto.txt");
     const pruned = await cli(root, ["prune"]);
-    await chmod(join(folder, "secreto.txt"), 0o644);
     expect(pruned.code).toBe(0);
     expect(pruned.out).toContain("QUEDAN:");
     expect(pruned.out).toContain(
