@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261109-la-suite-de-cumplimiento-no-espera-el-limite",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-la-suite-de-cumplimiento-no-espera-el-limite",
   "baseCommit": "1f4cf113f8372bca9dad64a5ab96007bb41b8e9e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ba75bafc70686f4521e3bed5f2b0458fb30798f79101609c8b50b3c959df347a",
+    "at": "2026-11-09T11:56:24.080Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -43,12 +50,8 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ba75bafc70686f4521e3bed5f2b0458fb30798f79101609c8b50b3c959df347a",
-    "at": "2026-11-09T11:56:24.080Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "evals/test/launch.test.ts": "sha256:9efaf2fdcfe7f3076245310ba0e5445338b96bbc41fdafda3449c95a3f4c317f",
+    "evals/test/unattended.test.ts": "sha256:d13b29205191b6dff49309c03721431e39471fc1b5fad2878e74d081435c3ac0"
+  }
 }
