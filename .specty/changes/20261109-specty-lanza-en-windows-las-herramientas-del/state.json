@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-specty-lanza-en-windows-las-herramientas-del",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-specty-lanza-en-windows-las-herramientas-del",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
   "revision": 1,
@@ -65,12 +65,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "02891e7c2cce492f92e9304498b5fd08b220a113",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:45:27.284Z",
       "doneAt": "2026-11-09T11:51:00.201Z",
-      "summary": "ESLint, dependency-cruiser, Prisma y ccusage falsos se escriben con writeTool, así que en Windows llevan su .cmd y Specty los lanza; lo que comprueban no cambia"
+      "summary": "ESLint, dependency-cruiser, Prisma y ccusage falsos se escriben con writeTool, así que en Windows llevan su .cmd y Specty los lanza; lo que comprueban no cambia",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1e6bbdd38b62f307fef67247381fb2a96c77d27b",
+      "startedAt": "2026-11-09T11:51:00.556Z",
+      "doneAt": "2026-11-09T11:51:55.440Z",
+      "summary": "El pnpm y el ccusage falsos de init y del servidor usan writeTool, y ARCHITECTURE §9 explica cómo busca y lanza Specty los programas en Windows"
     }
   },
   "pending": {

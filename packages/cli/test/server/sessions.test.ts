@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-import { chmod, mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CHANGE, NOW, writeFiles } from "../support";
+import { writeTool } from "../tools";
 import { call, serving } from "./support";
 
 const MINUTE = 60_000;
@@ -43,12 +43,11 @@ async function ccusage(root: string): Promise<void> {
   };
   const replies = { "claude session --json --offline": report };
   const bin = join(root, "node_modules", ".bin");
-  await mkdir(bin, { recursive: true });
-  await writeFile(
-    join(bin, "ccusage"),
+  await writeTool(
+    bin,
+    "ccusage",
     `#!/usr/bin/env node\nconst replies = ${JSON.stringify(replies)};\nconst reply = replies[process.argv.slice(2).join(" ")];\nif (reply === undefined) process.exit(2);\nprocess.stdout.write(JSON.stringify(reply));\n`,
   );
-  await chmod(join(bin, "ccusage"), 0o755);
 }
 
 describe("the agent sessions in the local server", () => {

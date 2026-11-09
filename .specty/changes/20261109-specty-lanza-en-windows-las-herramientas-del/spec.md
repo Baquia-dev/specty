@@ -87,7 +87,7 @@ Windows entra en la versión 0.1.0, y el run 42601745517 de la CI (main 2a1c7cc)
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-typescript.test.ts test/check-layers.test.ts test/check-generated.test.ts test/usage.test.ts test/usage-projects.test.ts && pnpm lint
   - type: test
-- [ ] T4: ccusage y pnpm falsos de init y del servidor, en Windows también, y la documentación
+- [x] T4: ccusage y pnpm falsos de init y del servidor, en Windows también, y la documentación
   - files: packages/cli/test/init-usage.test.ts, packages/cli/test/server/sessions.test.ts, docs/ARCHITECTURE.md
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-usage.test.ts test/server/sessions.test.ts && pnpm lint
