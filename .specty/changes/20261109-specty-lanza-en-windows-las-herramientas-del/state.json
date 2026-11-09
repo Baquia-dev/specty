@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261109-specty-lanza-en-windows-las-herramientas-del",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-specty-lanza-en-windows-las-herramientas-del",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:adda2327590e34c63b401dd514a132393e3064bd184548ef1067449a931045d1",
+    "at": "2026-11-09T11:23:24.603Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -48,12 +55,7 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:adda2327590e34c63b401dd514a132393e3064bd184548ef1067449a931045d1",
-    "at": "2026-11-09T11:23:24.603Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/windows-programs.test.ts": "sha256:02298c40af5e5e69c32c84ebc7680c72f39280fc2f51117ae9a804f3a3b9ba25"
+  }
 }
