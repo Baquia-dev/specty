@@ -1,0 +1,96 @@
+---
+kind: standard
+---
+
+# La extensión de VS Code funciona en Windows
+
+## Objetivo
+
+Windows entra en la 0.1.0, y en el CI de Windows (run 42601745517, main 2a1c7cc) fallan 11 tests de `packages/vscode`: la extensión lanza `specty` con `spawn`/`execFile` sin shell, y en Windows npm lo instala como `specty.cmd`, que Node no ejecuta así; con el nombre sin extensión, Node solo prueba `.com` y `.exe`, así que la barra dice que falta `specty` aunque esté instalado. Además, detiene `specty ui` con una señal, que en Windows no llega a un `.cmd`: mataría solo `cmd.exe` y el servidor seguiría vivo. Con este cambio la extensión encuentra y lanza `specty` en Windows (el `.cmd` de npm, un `.exe` o un `.mjs` con `node`), detiene el árbol entero de `specty ui`, y sus tests tienen un `specty` simulado que Windows ejecuta.
+
+## Fuera de alcance
+
+- `packages/cli`: las causas de los fallos de la CLI en Windows (rutas de git y herramientas simuladas) las llevan otros cambios.
+- PowerShell: un `specty.path` que apunta al `specty.ps1` de npm, o a cualquier otro tipo de archivo que no sea `.exe`, `.com`, `.cmd`, `.bat`, `.mjs`, `.cjs` o `.js`.
+- Cortar el árbol de un `specty --json status` que no responde en 30 s en Windows: `execFile` sigue cortando solo su proceso, `cmd.exe`.
+- Lanzar un `.mjs` con `node` fuera de Windows: allí se sigue ejecutando como hasta ahora, por su primera línea.
+- Decidir desde VS Code y publicar la extensión.
+
+## Supuestos
+
+- A1: En Windows, `npm install -g` deja en una carpeta del `PATH` un `specty.cmd`, un `specty.ps1` y un `specty` para sh sin extensión. Node no lanza un `.cmd` ni un `.bat` sin shell (da `EINVAL` desde el arreglo de CVE-2024-27980), y con un nombre o una ruta sin extensión solo prueba `.com` y `.exe`; por eso el CI dio `missing` en cada test que arranca el `specty` simulado.
+  - impacto: alto
+- A2: `cmd.exe /d /s /c "<línea>"` con `windowsVerbatimArguments`, lo mismo que hace Node con `shell: true`, ejecuta el `.cmd` con su ruta entre comillas aunque tenga espacios: `/s` quita solo las comillas de fuera. Los argumentos de la extensión son palabras fijas (`--json`, `status`, `ui`), sin comillas, espacios ni metacaracteres, y van tal cual.
+  - impacto: alto
+- A3: `taskkill /pid <pid> /T /F` termina `cmd.exe` y el Node de `specty ui` que lanzó, como ya hace la CLI en `endTree` (`packages/cli/src/io/exec.ts`). En Windows, `child.kill()` termina el proceso sin que reciba SIGTERM, y no termina a sus hijos.
+- A4: `process.kill(pid, 0)` dice en Windows si un proceso sigue vivo (`ESRCH` si ya terminó), así que los tests ven allí la parada del `specty` simulado sin señales.
+- A5: En el runner de Windows del CI, `node` está en el `PATH`, y el `specty.cmd` simulado (`@node "%~dp0specty" %*`) devuelve el código de salida de Node, como el de npm.
+- A6: Windows busca un programa sin ruta primero en la carpeta actual, que es la del repositorio. La extensión resuelve ella misma `specty` y `node` solo en las carpetas absolutas del `PATH`, y `cmd.exe` y `taskkill.exe` por `ComSpec` y `SystemRoot`, para que un repositorio no pueda poner los suyos.
+
+## Criterios de aceptación
+
+- AC1: CUANDO en Windows `specty.path` es un nombre (por defecto `specty`) o una ruta sin extensión ENTONCES la extensión busca el archivo con las extensiones de `PATHEXT`, si es un nombre solo en las carpetas absolutas del `PATH` y nunca en la del repositorio; si encuentra el `specty.cmd` de npm lo ejecuta con `cmd.exe /d /s /c` y su ruta entre comillas, aunque tenga espacios, y un `.exe` lo ejecuta directamente.
+- AC2: CUANDO en Windows `specty.path` apunta a un `.mjs`, `.cjs` o `.js` ENTONCES la extensión lo ejecuta con el `node` del `PATH`.
+- AC3: CUANDO en Windows no encuentra ese `specty`, o el `node` de un `.mjs` ENTONCES la extensión dice que falta, como en macOS y Linux, sin ejecutar nada.
+- AC4: CUANDO la extensión detiene `specty ui` en Windows (al cerrar la ventana, al cambiar `specty.path` o porque no dio su enlace a tiempo) ENTONCES termina su árbol de procesos con `taskkill /pid <pid> /T /F`, y si `taskkill` no arranca, el proceso; fuera de Windows lo sigue deteniendo con SIGTERM.
+- AC5: CUANDO los tests de `packages/vscode` corren en Windows ENTONCES su `specty` simulado arranca por un `specty.cmd` junto a él, como lo instala npm, y comprueban lo mismo que en macOS y Linux; la parada de `specty ui`, que allí no recibe señales, como que su proceso ya no existe.
+  - test: manual
+
+## Diseño
+
+- `packages/vscode/src/launch.ts` (nuevo), con la plataforma, el entorno y los archivos que existen como parámetro con los del proceso por defecto (`Host`), como `browserCommand` de la CLI: `launchOf(command, args, host)` da el programa, sus argumentos y si van tal cual (`verbatim`), o nada si en Windows no lo encuentra; fuera de Windows devuelve el comando y los argumentos sin cambios. En Windows: un nombre se busca en las carpetas absolutas del `PATH` (sin comillas) y una ruta se usa tal cual; si no tiene extensión se le añade cada una de `PATHEXT` (`.COM;.EXE;.BAT;.CMD` sin la variable), en orden; si la tiene, se prueba ella primero. Un `.cmd` o `.bat` va por `ComSpec` (o `%SystemRoot%\System32\cmd.exe`) con `/d /s /c` y la línea entre comillas; un `.mjs`, `.cjs` o `.js`, por el `node` que se encuentra igual; el resto, directo. `stopTree(child, host, run)` lanza `%SystemRoot%\System32\taskkill.exe /pid <pid> /T /F` en Windows y `child.kill()` si no arranca o fuera de Windows. Las variables de entorno se leen sin distinguir mayúsculas, como Windows (`Path`, `PathExt`).
+- `packages/vscode/src/specty.ts`: `readStatus` y `startUi` lanzan lo que da `launchOf` (con `windowsVerbatimArguments`), y responden `missing` sin lanzar nada si no da nada; la parada de `startUi` usa `stopTree`.
+- Tests: `packages/vscode/test/launch.test.ts` (nuevo) prueba `launchOf` y `stopTree` con un Windows simulado, y un test que solo corre en Windows lee el estado de un `specty.cmd` en una carpeta con espacios. `packages/vscode/test/fake-specty.ts` (nuevo, sin casos) escribe el `specty` simulado con su `specty.cmd` y dice si su `specty ui` se detuvo: por la marca de SIGTERM fuera de Windows y, en Windows, porque el proceso cuyo pid anotó ya no existe. `specty.test.ts` y `extension.test.ts` lo usan, sin cambiar sus casos ni lo que comprueban; la parada en «AC3: starts `specty ui`…» se espera con `until`, porque `taskkill` termina el árbol mientras `cmd.exe` ya cerró.
+- Documentación: el README de la extensión deja de decir que Windows no se admite y explica qué puede ser `specty.path` allí; la descripción del ajuste (`package.nls*.json`) lo dice también; ARCHITECTURE (F4) deja de dar Windows como pendiente de la extensión.
+
+## Archivos
+
+- crear packages/vscode/src/launch.ts — cómo lanzar y detener `specty` en Windows: AC1–AC4
+- modificar packages/vscode/src/specty.ts — `readStatus` y `startUi` lanzan con `launchOf` y detienen con `stopTree`: AC1–AC4
+- crear packages/vscode/test/launch.test.ts — `launchOf` y `stopTree` con Windows simulado, y el `.cmd` real en Windows: AC1–AC4
+- crear packages/vscode/test/fake-specty.ts — el `specty` simulado con su `specty.cmd` y su parada sin señales: AC5
+- modificar packages/vscode/test/specty.test.ts — usa el `specty` simulado con su variante de Windows: AC5
+- modificar packages/vscode/test/extension.test.ts — usa el `specty` simulado con su variante de Windows: AC5
+- modificar packages/vscode/README.md — Windows admitido y qué puede ser `specty.path` allí
+- modificar packages/vscode/package.nls.json — la descripción de `specty.path` en Windows
+- modificar packages/vscode/package.nls.es.json — la descripción de `specty.path` en Windows
+- modificar docs/ARCHITECTURE.md — F4: Windows deja de faltar en la extensión
+
+## Tareas
+
+- [x] T1: La extensión lanza y detiene `specty` en Windows
+  - files: packages/vscode/src/launch.ts, packages/vscode/src/specty.ts, packages/vscode/test/launch.test.ts, packages/vscode/test/fake-specty.ts, packages/vscode/test/specty.test.ts, packages/vscode/test/extension.test.ts
+  - ac: AC1, AC2, AC3, AC4, AC5
+  - verify: pnpm --filter specty-vscode exec vitest run test/launch.test.ts test/specty.test.ts test/extension.test.ts && pnpm typecheck
+  - type: fix
+- [x] T2: La documentación de la extensión admite Windows
+  - files: packages/vscode/README.md, packages/vscode/package.nls.json, packages/vscode/package.nls.es.json, docs/ARCHITECTURE.md
+  - ac: —
+  - verify: pnpm lint
+  - type: docs
+
+## Riesgos
+
+- R1: Aquí no hay Windows: `cmd.exe`, `taskkill` y el `specty.cmd` simulado solo corren de verdad en el CI de Windows — `launchOf` y `stopTree` se prueban con un Windows simulado, un test exclusivo de Windows lanza un `.cmd` real desde una carpeta con espacios, y la sesión principal leerá el siguiente run.
+- R2: `cmd.exe` expande `%NOMBRE%` también entre comillas: una ruta de `specty` con el nombre de una variable definida entre `%` se rompería — es raro en una ruta de Windows; queda anotado en el diseño de `launch.ts`.
+
+## Cierre
+
+### Resumen
+
+La extensión de VS Code lanza y detiene `specty` en Windows. El nuevo `packages/vscode/src/launch.ts` resuelve allí el comando (un nombre solo en las carpetas absolutas del `PATH`, con las extensiones de `PATHEXT`; una ruta sin extensión, también con ellas), ejecuta el `specty.cmd` de npm a través de `cmd.exe /d /s /c` con su ruta entre comillas, un `.exe` directamente y un `.mjs`, `.cjs` o `.js` con el `node` del `PATH`, y responde `missing` sin ejecutar nada si no lo encuentra; `stopTree` detiene `specty ui` con `%SystemRoot%\System32\taskkill.exe /pid <pid> /T /F` en Windows y con SIGTERM fuera. `specty.ts` los usa en `readStatus` y `startUi`. Los tests de vscode escriben junto al `specty` simulado un `specty.cmd` (`test/fake-specty.ts`) y, en Windows, ven la parada de `specty ui` porque su proceso ya no existe; fuera de Windows comprueban lo mismo que antes. El README, la descripción de `specty.path` y ARCHITECTURE (F4) dicen que Windows se admite. En macOS pasan los tests de `launch.test.ts` (con un Windows simulado), `specty.test.ts` y `extension.test.ts`, y los tipos.
+
+### Desviaciones
+
+- Ninguna: se siguió el plan aprobado.
+
+### Decisiones
+
+- La extensión resuelve ella misma `specty`, `node`, `cmd.exe` y `taskkill.exe` en vez de usar `shell: true`: así distingue un `specty` que falta (la shell daría un error de `cmd.exe`, no `ENOENT`), no busca programas en la carpeta del repositorio (Windows mira primero la carpeta actual) y evita el aviso de Node 24 por pasar argumentos con `shell: true`.
+- La parada de `specty ui` en los tests sigue siendo la marca de SIGTERM fuera de Windows; solo en Windows, donde no hay señales, es que su proceso ya no existe. En «AC3: starts `specty ui`…» se espera con `until`, porque `taskkill` termina el árbol mientras `cmd.exe` puede cerrar antes.
+- Fuera de Windows nada cambia: el comando se lanza tal cual y un `.mjs` se sigue ejecutando por su primera línea.
+
+### Pendientes
+
+- AC5 (test: manual) se comprueba en el job `check (windows-latest, Node 22)` del CI cuando la sesión principal suba main: ni `cmd.exe` ni `taskkill` existen aquí.
+- En Windows, un `specty --json status` que no responde en 30 s se corta solo en su `cmd.exe` (`execFile`): el Node que lanzó seguiría vivo. Cortar el árbol, como en `specty ui`, queda para otro cambio.
