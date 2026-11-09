@@ -47,7 +47,8 @@ type AgentCode =
   | "gemini-hooks"
   | "memory-stop"
   | "agent-stop"
-  | "enter-outdated";
+  | "enter-outdated"
+  | "agent-disabled";
 
 /** The lines of `doctor` about each agent's installation, which `cards/doctor.ts` adds to its own. */
 export const AGENT_WRITERS: {
@@ -245,6 +246,11 @@ export const AGENT_WRITERS: {
     t(
       `${AGENT_NAMES[line.tool]}: ${line.file} es de antes de \`${command} enter\`, así que no lleva sus acciones a la carpeta de un cambio; ejecuta \`${command} init --tools ${line.tool}\`.`,
       `${AGENT_NAMES[line.tool]}: ${line.file} predates \`${command} enter\`, so it does not carry its actions to a change's folder; run \`${command} init --tools ${line.tool}\`.`,
+    ),
+  "agent-disabled": (line, t, command) =>
+    t(
+      `${AGENT_NAMES[line.tool]}: esta versión de Specty aún no lo ofrece, pero su guard sigue en ${line.file}: funciona, aunque \`${command} doctor\` ya no lo comprueba ni \`${command} init\` lo actualiza.`,
+      `${AGENT_NAMES[line.tool]}: this version of Specty does not offer it yet, but its guard is still in ${line.file}: it works, though \`${command} doctor\` no longer checks it and \`${command} init\` no longer updates it.`,
     ),
   "opencode-compact": (_, t, command) =>
     t(

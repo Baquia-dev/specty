@@ -2,6 +2,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { delimiter, join } from "node:path";
+import { ENABLED_AGENTS } from "../../packages/core/src";
 import type { Session } from "./launch";
 import { antigravityCliFolder } from "./repo";
 
@@ -375,6 +376,18 @@ export const AGENTS: readonly Agent[] = [
     ],
   },
 ];
+
+/**
+ * The agents a run measures, in the suite's order: the ones `SPECTY_EVALS_AGENTS` (`variable`)
+ * names, by their ids separated by commas, a disabled one too; without it, the ones this version
+ * enables (`ENABLED_AGENTS`).
+ */
+export function agentsToRun(variable: string | undefined): readonly Agent[] {
+  const wanted = variable?.split(",").map((id) => id.trim());
+  return AGENTS.filter((agent) =>
+    wanted === undefined ? ENABLED_AGENTS.includes(agent.id) : wanted.includes(agent.id),
+  );
+}
 
 export function agentName(id: AgentId): string {
   return AGENTS.find((agent) => agent.id === id)?.name ?? id;

@@ -3,7 +3,7 @@ import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { expect, inject, it } from "vitest";
-import { AGENTS, type Agent, consumptionOf, countsOf, invocation } from "../src/agents";
+import { type Agent, agentsToRun, consumptionOf, countsOf, invocation } from "../src/agents";
 import { type Experiment, namedExperiments } from "../src/experiments";
 import { launch } from "../src/launch";
 import { attendance } from "../src/person";
@@ -128,7 +128,7 @@ it("runs each agent through each scenario and writes the report", async () => {
   const bin = await wrapper();
   const runs: Run[] = [];
   const omitted: Omitted[] = [];
-  for (const agent of chosen(AGENTS, "SPECTY_EVALS_AGENTS")) {
+  for (const agent of agentsToRun(process.env.SPECTY_EVALS_AGENTS)) {
     const result = await runAgent(agent, bin);
     runs.push(...result.runs);
     if (result.omitted !== undefined) omitted.push(result.omitted);

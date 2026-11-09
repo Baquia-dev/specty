@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import {
+  type AgentTool,
   citedPaths,
   type DoctorLine,
   doctorCard,
@@ -15,12 +16,13 @@ import { gentleAiGuidance } from "../detect/gentle-ai";
 import { detectProject } from "../detect/project";
 import { countOrphans } from "../flow/orphans";
 import { rescueRefs } from "../flow/rescue";
+import { guardFile } from "../install/agents";
 import { gitHooksInstalled } from "../install/git-hooks";
 import { mcpDoctor } from "../install/mcp";
 import { usageDoctor } from "../install/usage";
 import { exists, readText } from "../io/files";
 import { findProgram } from "../io/programs";
-import { COMMAND, type Session } from "../session";
+import { COMMAND, offeredAgents, type Session } from "../session";
 import { readDelegation } from "../store/local";
 
 /** `specty doctor`: checks that the configuration and every hook are in place. */
@@ -65,8 +67,9 @@ export async function doctor(session: Session): Promise<Output> {
 
 /**
  * Each agent's guard, as its module checks it (`agents/`), and Specty's MCP server once the
- * repository registered it; another tool's guidance that tells the agent to do what the guard
- * blocks; and the formatters that would rewrite Specty's files.
+ * repository registered it, only for the agents this version offers (`offeredAgents`); a warning
+ * for each one it does not offer whose guard is still there; another tool's guidance that tells
+ * the agent to do what the guard blocks; and the formatters that would rewrite Specty's files.
  */
 async function toolLines(session: Session): Promise<{
   readonly ok: DoctorLine[];
@@ -76,7 +79,8 @@ async function toolLines(session: Session): Promise<{
   const { root, git } = session;
   const ok: DoctorLine[] = [];
   const problems: DoctorLine[] = [];
-  const tools = (await detectProject(root, "")).tools;
+  const offered = offeredAgents(session.environment);
+  const tools = (await detectProject(root, "")).tools.filter((tool) => offered.includes(tool));
   for (const agent of Object.values(ADAPTERS)) {
     if (!tools.includes(agent.tool)) continue;
     const { env, invocation } = session.environment;
@@ -94,7 +98,21 @@ async function toolLines(session: Session): Promise<{
     if (excluded) ok.push({ code: "formatter-excludes", name, path });
     else problems.push({ code: "formatter-checks", name, path, add, file });
   }
-  return { ok, problems, warnings: mcp.warnings };
+  return { ok, problems, warnings: [...mcp.warnings, ...(await disabledGuards(root, offered))] };
+}
+
+/**
+ * The agents this version does not offer whose guard is still in the repository: a warning for
+ * each, instead of its checks, whose fixes ask for an `init --tools` that `init` now refuses.
+ */
+async function disabledGuards(root: string, offered: readonly AgentTool[]): Promise<DoctorLine[]> {
+  const lines: DoctorLine[] = [];
+  for (const { tool } of Object.values(ADAPTERS)) {
+    if (offered.includes(tool)) continue;
+    const file = await guardFile(root, tool);
+    if (file !== undefined) lines.push({ code: "agent-disabled", tool, file });
+  }
+  return lines;
 }
 
 /**

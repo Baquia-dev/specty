@@ -92,6 +92,11 @@ export type DoctorLine =
    * actions of a conversation that entered a change's folder there, or fails in it.
    */
   | { readonly code: "enter-outdated"; readonly tool: AgentTool; readonly file: string }
+  /**
+   * An agent this version does not offer whose guard is still in the repository's `file`: a
+   * warning, instead of its checks.
+   */
+  | { readonly code: "agent-disabled"; readonly tool: AgentTool; readonly file: string }
   /** gentle-ai's flow guidance, which asks the agent for what the guard blocks. */
   | { readonly code: "gentle-ai"; readonly file: string; readonly blocks: readonly string[] }
   | { readonly code: "formatter-excludes"; readonly name: string; readonly path: string }
