@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-un-readme-para-npm-y-github",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-un-readme-para-npm-y-github",
   "baseCommit": "c4693b5feb73d3e25ea3df04551e92ec12050a2a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:8d04d9f4bec90f39b1090f38a4af613765707b00cf3fa3ffceaa4a1c72f53b1c",
@@ -57,12 +57,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0ae5166ec59a797e484b21116427db4b17198f50",
+      "attempts": 1,
       "startedAt": "2026-11-09T10:07:48.393Z",
       "doneAt": "2026-11-09T10:14:55.327Z",
-      "summary": "README.md en inglés y README.es.md en español, enlazados entre sí y con enlaces absolutos de GitHub; cada comando y opción comprobados con la ayuda de la CLI; npm pack y pnpm pack en seco llevan README.md"
+      "summary": "README.md en inglés y README.es.md en español, enlazados entre sí y con enlaces absolutos de GitHub; cada comando y opción comprobados con la ayuda de la CLI; npm pack y pnpm pack en seco llevan README.md",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,5 +74,6 @@
     "AC": 5,
     "T": 2,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-11-09T10:15:14.086Z"
 }

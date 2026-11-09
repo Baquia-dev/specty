@@ -69,3 +69,27 @@ Resuelve P370, un bloqueante de la primera versión: no hay README ni en la raí
 
 - R1: Los README se desfasan de la CLI con el tiempo — cada comando y opción se comprueba con la ayuda de la CLI al escribirlos, y la tabla de agentes enlaza a su fuente en ARCHITECTURE §10.
 - R2: Alguien edita la copia de `packages/cli/README.md` en vez de la de la raíz — git la ignora y cada empaquetado la sobrescribe con la de la raíz.
+
+## Cierre
+
+### Resumen
+
+La raíz tiene `README.md` en inglés y `README.es.md` en español, con las mismas secciones, enlazados entre sí y con enlaces absolutos de GitHub: qué es Specty (beta pública 0.1.0 para macOS, Linux y Windows), por qué, requisitos, instalación, `init`, el primer cambio de punta a punta, carriles, UI local, agentes y capas de cumplimiento, CI con la Action, MCP, exportar e importar, más comandos, documentación y licencia. `build.mjs --readme <archivo>` copia el README de la raíz, `prepack` lo pasa con `README.md` y git ignora esa copia; `npm pack --dry-run` y `pnpm pack --dry-run` en `packages/cli`, empezando sin copia, llevan `README.md`, idéntico al de la raíz.
+
+### Desviaciones
+
+- El commit de T1 lleva la primera versión de `README.md`: su test compara la copia con el README de la raíz, así que lo escribí antes de completar T1, y T2 lo retocó y añadió `README.es.md`.
+- Además de `npm pack --dry-run` (AC5), comprobé `pnpm pack --dry-run`, por si la primera publicación a mano se hace con pnpm.
+
+### Decisiones
+
+- Una opción explícita, `--readme <archivo>`, en vez de copiar el README con `--ui`: el build normal y los tests no dejan copias en la carpeta del paquete.
+- `specty import` solo trae cambios de OpenSpec (su ayuda y `commands/import.ts`); Spec Kit y Kiro solo se exportan, y así lo dicen los README.
+- `init` no escribe el workflow de CI: lo hace la plantilla de `specty check --install`, y así lo dicen los README.
+- «Specty no llama a ningún modelo por su cuenta», no «nunca»: el ADR 0001 dice «por ahora», y `specty review` ejecuta el comando que configure la persona.
+- La tabla de agentes no lleva las columnas de prueba de extremo a extremo ni de detección, para no confundirlas con resultados de la suite de cumplimiento.
+
+### Pendientes
+
+- P384: la persona añade `README.md` a los paths de la unidad `cli` de `verify.units`, porque `bundle.test.ts` lo lee de la raíz.
+- P383: un test que mantenga la tabla de agentes de los README igual que `AGENT_CAPABILITIES`.
