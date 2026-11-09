@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "node build.mjs",
-    "prepack": "pnpm --filter @baquia-dev/specty-ui build && node build.mjs --ui ../ui/dist/browser",
+    "prepack": "pnpm --filter @baquia-dev/specty-ui build && node build.mjs --ui ../ui/dist/browser --readme README.md",
     "test": "vitest run --coverage",
     "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json"
   },

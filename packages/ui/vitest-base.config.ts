@@ -10,5 +10,8 @@ export default defineConfig({
     // The run's temporary files go in a folder of its own, removed at the end. The builder runs
     // Vitest from `packages/ui`.
     globalSetup: ["../core/vitest-temp-dir.ts"],
+    // Inside `pnpm check`, with the machine loaded, a test that takes 1 s alone can pass Vitest's
+    // 5 s; a test that hangs fails at 30 s, and `checks.testTime` still points at the slow ones.
+    testTimeout: 30_000,
   },
 });

@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "id": "20261109-la-suite-de-cumplimiento-tambien-ejecuta",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261109-la-suite-de-cumplimiento-tambien-ejecuta",
+  "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5e14a4f8782452441c1cb6b3f625070d4cc73a35a3860decb6c9941c76a9b837",
+    "at": "2026-11-09T09:50:11.117Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:58fbf63d1c51f6bfdeb3ce6896dda9749bb70c45aab991e2805dc81029082c37",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9cfecf6c9e2dc976a97ecace2e13819a0a8aa674fafd0448bf2e067916acb0dd",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:cc542046df9585fd2ac97a462547c07a67ab37189bf7c76b8c97114a682927bd",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:cdc9c2d0fcd49f5405219744001a639e87ffea9309cf9a8cfe7785749e5a2b9f",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:68d3ed01270a92d503f67ce41974a93278c36db03c967a28de962f2bdbd543e9",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:b4c634f796daa2317878e46583b2fd92c61e99202313c45de17892aa2dcaa4f8",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:07455305caaf4b71cc43a7ff9ac8834b8d25e48809055aa0c2f77fddf84439a6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "72f95d901b12314e98d3cd05a7065be239f12a43",
+      "attempts": 1,
+      "startedAt": "2026-11-09T09:55:24.515Z",
+      "doneAt": "2026-11-09T09:56:10.020Z",
+      "summary": "Antigravity CLI entra en la suite: se busca en SPECTY_EVALS_ANTIGRAVITY o como agy en el PATH, corre agy -p en su sandbox con --settings (proceed-in-sandbox, command(specty) y la carpeta del repositorio como confiable) y sus rondas y bloqueos se cuentan exactos.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "f644f9ef50abd28b1b704d4d0e7980c4f5a923ab",
+      "attempts": 1,
+      "startedAt": "2026-11-09T09:56:10.414Z",
+      "doneAt": "2026-11-09T09:56:31.651Z",
+      "summary": "El init de la suite usa una carpeta temporal para los ajustes del CLI de Antigravity (SPECTY_ANTIGRAVITY_CLI_DIR), así que no escribe la regla en los de la persona; agy la recibe por --settings.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "cd6b31d6eefe68dcd71b792ef53fdf87279706eb",
+      "attempts": 1,
+      "startedAt": "2026-11-09T09:56:32.035Z",
+      "doneAt": "2026-11-09T09:59:29.025Z",
+      "summary": "ARCHITECTURE §16 cuenta Antigravity CLI en la suite (línea, --settings, recuento) y su ejecución real, sin avance porque Specty no corre en el sandbox de agy -p (P382); §18 dice qué agentes mide la suite.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-09T10:00:25.782Z",
+  "lockedTests": {
+    "evals/test/report.test.ts": "sha256:ff7041bccf6159b0f8937e205796e3a8e01329c66abd89c567e2e66b043a250f",
+    "evals/test/antigravity-init.test.ts": "sha256:4457295d72b40e7eaa685723d6129ece0d196adc279e170abe9e17bc6cfe3128",
+    "evals/test/antigravity.test.ts": "sha256:f37a1443b334aaa7ad30f9c6caff5f2f0518203dadd2646dea347a6a5150ad8b"
+  }
+}

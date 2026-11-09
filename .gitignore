@@ -4,3 +4,5 @@ coverage/
 *.log
 .DS_Store
 /.worktrees/
+# The README that `prepack` copies from the root for the npm package.
+/packages/cli/README.md
