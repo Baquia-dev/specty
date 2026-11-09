@@ -21,7 +21,6 @@ const PROTECTED: readonly string[] = [
   ".codex/rules/specty.rules",
   ".opencode/plugins/specty.js",
   ".agents/hooks.json",
-  ".gemini/settings.json",
   ".devin/hooks.v1.json",
   ".husky/pre-commit",
   ".husky/prepare-commit-msg",

@@ -53,7 +53,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: El guard deja de proteger `.gemini/settings.json`
+- [x] T1: El guard deja de proteger `.gemini/settings.json`
   - files: packages/core/src/guard/spec.ts, packages/core/test/guard/decide.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts

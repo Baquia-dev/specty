@@ -90,8 +90,8 @@ describe("decideGuard on files", () => {
     });
   });
 
-  it("AC3: protects the hooks of Antigravity, Gemini CLI and Devin, written or deleted", () => {
-    for (const path of [".agents/hooks.json", ".gemini/settings.json", ".devin/hooks.v1.json"]) {
+  it("AC3: protects the hooks of Antigravity and Devin, written or deleted", () => {
+    for (const path of [".agents/hooks.json", ".devin/hooks.v1.json"]) {
       for (const action of [write(path), { kind: "delete" as const, paths: [path] }]) {
         expect(decideGuard(action, ctx(IMPLEMENTING)), path).toMatchObject({
           allow: false,
@@ -99,12 +99,9 @@ describe("decideGuard on files", () => {
         });
       }
     }
-    // The rest of each tool's folder belongs to the person.
-    for (const path of [
-      ".agents/skills/x/SKILL.md",
-      ".gemini/commands/x.toml",
-      ".devin/notes.md",
-    ]) {
+    // The rest of each tool's folder belongs to the person, and so do the settings of Gemini CLI,
+    // retired in favour of Antigravity (AC1).
+    for (const path of [".agents/skills/x/SKILL.md", ".devin/notes.md", ".gemini/settings.json"]) {
       expect(decideGuard(write(path), ctx(IMPLEMENTING)), path).not.toMatchObject({
         rule: "protected",
       });
