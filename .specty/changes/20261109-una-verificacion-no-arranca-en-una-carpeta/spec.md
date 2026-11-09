@@ -69,7 +69,7 @@ La unidad `ui` de la verificación completa falló en `accept` porque otro Vites
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-folder.test.ts test/check-commands.test.ts && pnpm lint && pnpm typecheck
   - type: fix
-- [ ] T3: La documentación de la regla de la carpeta
+- [x] T3: La documentación de la regla de la carpeta
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm lint

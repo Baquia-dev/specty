@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-una-verificacion-no-arranca-en-una-carpeta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-una-verificacion-no-arranca-en-una-carpeta",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dc675cf066eaca851e1b4a37f3b5a81d9a175c54",
+      "attempts": 1,
       "startedAt": "2026-11-09T09:59:10.702Z",
       "doneAt": "2026-11-09T09:59:58.372Z",
-      "summary": "Los comandos del proyecto de specty check (formato, lint, tipos y tests) corren dentro de inFolder: esperan a la verificación de otro proceso en su carpeta y la marcan con peso 0 mientras corren."
+      "summary": "Los comandos del proyecto de specty check (formato, lint, tipos y tests) corren dentro de inFolder: esperan a la verificación de otro proceso en su carpeta y la marcan con peso 0 mientras corren.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a0d672a1befda9b900e86c30495203c3be19ec49",
+      "startedAt": "2026-11-09T09:59:58.758Z",
+      "doneAt": "2026-11-09T10:00:30.113Z",
+      "summary": "formats.md §1 y ARCHITECTURE §9 («Una verificación por carpeta») explican la regla de la carpeta, la marca de peso 0 de specty check, quién no cuenta y cómo se resuelven dos a la vez."
     }
   },
   "pending": {
