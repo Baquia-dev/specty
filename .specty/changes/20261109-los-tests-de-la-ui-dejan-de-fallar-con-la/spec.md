@@ -46,7 +46,7 @@ Los tests de la UI pasan también con la máquina cargada dentro de `pnpm check`
 
 ## Tareas
 
-- [ ] T1: Cada test de la UI tiene 30 s
+- [x] T1: Cada test de la UI tiene 30 s
   - files: packages/ui/vitest-base.config.ts, packages/ui/src/test-timeout.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/test-timeout.test.ts && pnpm lint && pnpm --filter @baquia-dev/specty-ui typecheck

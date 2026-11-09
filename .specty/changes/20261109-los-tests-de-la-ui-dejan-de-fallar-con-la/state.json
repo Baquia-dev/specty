@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8472b86163ee102d524dcd2ad90c985dbf9d4255",
+      "startedAt": "2026-11-09T09:48:40.292Z",
+      "doneAt": "2026-11-09T09:48:59.094Z",
+      "summary": "vitest-base.config.ts fija testTimeout: 30_000, que el constructor de Angular pasa a su proyecto: cada test de la UI tiene 30 s en lugar de 5 (P75)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
