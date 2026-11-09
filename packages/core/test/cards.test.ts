@@ -432,6 +432,11 @@ describe("agent detection", () => {
     expect(detectAgentTool({})).toBeUndefined();
   });
 
+  it("AC2: attributes no agent to Gemini CLI's mark, retired in favour of Antigravity", () => {
+    expect(detectAgentTool({ GEMINI_CLI: "1" })).toBeUndefined();
+    expect(detectAgentTool({ SPECTY_AGENT: "gemini-cli" })).toBeUndefined();
+  });
+
   it("recognizes Codex outside its sandbox", () => {
     expect(detectAgentTool({ CODEX_SANDBOX: "seatbelt" })).toBe("codex");
     expect(detectAgentTool({ CODEX_CI: "1" })).toBe("codex");

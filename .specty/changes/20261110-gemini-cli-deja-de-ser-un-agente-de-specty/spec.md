@@ -60,7 +60,7 @@ Cuarto de los cambios consecutivos que retiran Gemini CLI, que Antigravity reemp
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts test/enabled-agents.test.ts
   - type: chore
-- [ ] T2: Specty deja de detectar Gemini CLI y de decirle cómo esperar
+- [x] T2: Specty deja de detectar Gemini CLI y de decirle cómo esperar
   - files: packages/core/src/cards/wait.ts, packages/core/test/cards/delegated.test.ts, packages/core/test/cards.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts test/cards/delegated.test.ts test/cards/wait.test.ts

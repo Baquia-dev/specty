@@ -53,7 +53,6 @@ const WAIT_HABITS: Readonly<Record<AgentTool, WaitHabit>> = {
     es: "Si pasa a segundo plano, consulta su salida con `get_output` hasta que termine,",
     en: "If it goes to the background, poll its output with `get_output` until it ends,",
   },
-  "gemini-cli": FOREGROUND,
   // Nothing measured, and no guard.
   copilot: FOREGROUND,
 };

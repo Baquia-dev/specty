@@ -168,7 +168,6 @@ const HOW: Readonly<Record<AgentTool | "none", { readonly es: string; readonly e
     es: "Si pasa a segundo plano, consulta su salida con `get_output` hasta que termine,",
     en: "If it goes to the background, poll its output with `get_output` until it ends,",
   },
-  "gemini-cli": { es: "Ejecútalo en primer plano", en: "Run it in the foreground" },
   copilot: { es: "Ejecútalo en primer plano", en: "Run it in the foreground" },
   none: { es: "Ejecútalo en primer plano", en: "Run it in the foreground" },
 };
@@ -181,7 +180,6 @@ const TOOLS = [
   "antigravity",
   "codex",
   "windsurf",
-  "gemini-cli",
   "copilot",
   "none",
 ] as const satisfies readonly (AgentTool | "none")[];

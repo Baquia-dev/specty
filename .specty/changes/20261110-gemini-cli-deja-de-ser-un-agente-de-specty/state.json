@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1de1fc77e8d4db2ffdff1e8fc56fedc70174d102",
+      "attempts": 1,
       "startedAt": "2026-11-09T18:05:59.036Z",
       "doneAt": "2026-11-09T18:12:40.838Z",
-      "summary": "Gemini CLI sale de AgentTool, AGENT_NAMES y las marcas del entorno (agents.ts), de la tabla de capacidades (capabilities.ts, tabla de ARCHITECTURE §10 vuelta a pegar) y de las pistas de init; ARCHITECTURE deja de describir sus hooks, su sandbox y su GEMINI.md"
+      "summary": "Gemini CLI sale de AgentTool, AGENT_NAMES y las marcas del entorno (agents.ts), de la tabla de capacidades (capabilities.ts, tabla de ARCHITECTURE §10 vuelta a pegar) y de las pistas de init; ARCHITECTURE deja de describir sus hooks, su sandbox y su GEMINI.md",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2041e35074eefc46cc408b58700d719c60c8acae",
+      "startedAt": "2026-11-09T18:12:41.425Z",
+      "doneAt": "2026-11-09T18:13:14.764Z",
+      "summary": "Specty deja de detectar Gemini CLI (cards.test comprueba que GEMINI_CLI=1 no da agente) y de decirle cómo esperar (WAIT_HABITS de cards/wait.ts y delegated.test sin él); formats.md sin su entrada MCP, su fin de turno ni .geminiignore"
     }
   },
   "pending": {
