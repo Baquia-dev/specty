@@ -161,7 +161,6 @@ describe("a change no conversation holds, in the UI", () => {
       `Codex: codex -C "${FOLDER}"`,
       `OpenCode: opencode "${FOLDER}"`,
       `Cursor: cursor "${FOLDER}"`,
-      `Gemini CLI: cd "${FOLDER}" && gemini`,
       `Antigravity CLI: cd "${FOLDER}" && agy`,
     ]);
     expect(text(panel?.querySelector("[data-open-session]"))).toBe(

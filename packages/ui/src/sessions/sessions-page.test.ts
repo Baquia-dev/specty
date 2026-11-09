@@ -43,7 +43,7 @@ class ThreeSessions extends FixtureData {
         live: false,
       },
       {
-        tool: "gemini-cli",
+        tool: "windsurf",
         conversation: "g1",
         folder: "",
         first: before(5000),

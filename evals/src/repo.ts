@@ -29,7 +29,6 @@ const GIT_ENV = {
 const AGENT_MARKS = [
   "CLAUDECODE",
   "CURSOR_AGENT",
-  "GEMINI_CLI",
   "CODEX_SANDBOX",
   "CODEX_CI",
   "CODEX_THREAD_ID",

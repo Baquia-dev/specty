@@ -14,15 +14,13 @@ interface Hint {
 
 /**
  * The orders that open each agent in a folder: the ones `specty new` proposes (Codex with `-C`,
- * OpenCode and Cursor with the folder, Gemini CLI and Antigravity CLI after `cd`), and Claude
- * Code after `cd`.
+ * OpenCode and Cursor with the folder, Antigravity CLI after `cd`), and Claude Code after `cd`.
  */
 const OPEN_IN: readonly ((folder: string) => Hint)[] = [
   (folder) => ({ agent: "Claude Code", command: `cd "${folder}" && claude` }),
   (folder) => ({ agent: "Codex", command: `codex -C "${folder}"` }),
   (folder) => ({ agent: "OpenCode", command: `opencode "${folder}"` }),
   (folder) => ({ agent: "Cursor", command: `cursor "${folder}"` }),
-  (folder) => ({ agent: "Gemini CLI", command: `cd "${folder}" && gemini` }),
   (folder) => ({ agent: "Antigravity CLI", command: `cd "${folder}" && agy` }),
 ];
 

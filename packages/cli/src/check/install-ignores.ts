@@ -23,7 +23,6 @@ interface IgnoreFile {
 
 const IGNORE_FILES: readonly IgnoreFile[] = [
   { tool: "cursor", names: [".cursorignore"], create: ".cursorignore" },
-  { tool: "gemini-cli", names: [".geminiignore"], create: ".geminiignore" },
   // Windsurf, now Devin, reads `.devinignore` and still the older names; the oldest suits both.
   {
     tool: "windsurf",

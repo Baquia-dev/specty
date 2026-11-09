@@ -84,7 +84,7 @@ describe("the changes no conversation holds, when the tool hands changes to suba
       '  Si el usuario pide seguir uno de ellos, retómalo en su carpeta en lugar de crear otro cambio: en Claude Code, `EnterWorktree` con `name: "<id>"`.';
     expect(withOrphans({ ...CLAUDE, subagents: false })).toContain(today);
     expect(withOrphans(ES)).toContain(today);
-    expect(withOrphans({ ...ES, tool: "gemini-cli" })).toContain(
+    expect(withOrphans({ ...ES, tool: "windsurf" })).toContain(
       "retómalo en su carpeta en lugar de crear otro cambio: `specty enter <id>`.",
     );
     expect(withOrphans({ ...ES, tool: "cursor", subagents: false })).toContain(
@@ -93,11 +93,7 @@ describe("the changes no conversation holds, when the tool hands changes to suba
     expect(card({ orphans: ORPHANS, byName: false }, { ...CLAUDE, subagents: false })).toContain(
       "retómalo en su carpeta en lugar de crear otro cambio: cambia allí la carpeta de trabajo de tu sesión o abre allí un agente.",
     );
-    for (const ctx of [
-      ES,
-      { ...CLAUDE, subagents: false },
-      { ...ES, tool: "gemini-cli" as const },
-    ]) {
+    for (const ctx of [ES, { ...CLAUDE, subagents: false }, { ...ES, tool: "windsurf" as const }]) {
       const text = withOrphans(ctx);
       expect(text).not.toContain("ENCARGO PARA RETOMAR");
       expect(text).not.toContain("lanza un subagente con el encargo para retomarlo");

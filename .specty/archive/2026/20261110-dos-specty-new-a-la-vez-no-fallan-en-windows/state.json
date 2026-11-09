@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "id": "20261110-dos-specty-new-a-la-vez-no-fallan-en-windows",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261110-dos-specty-new-a-la-vez-no-fallan-en-windows",
+  "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cc90b37b2fb8f5d6f364d0f735d179785267eaf6c8ee46f7e7e42f7a4ae2d9b7",
+    "at": "2026-11-09T17:26:08.095Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ae054edf57c0e78b77c53a6a977f87e1b2a6d8f95b712aec3e7550f8cd330475",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ab647360094b1b5746e1d998e67c540ee676c59cfddde5d75a14d05815663909",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:daf68c6637deec496e4e4598215d703b3c05b0cab9c1ec85037f85ad7b346929",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:2836f48ee7544d0ddab73df69126e864285a89959fbd966de1ec43ebe67abc74",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "023c3dda43b238cec1eccc9db7a151410ff24b4e",
+      "attempts": 1,
+      "startedAt": "2026-11-09T17:27:59.649Z",
+      "doneAt": "2026-11-09T17:36:38.912Z",
+      "summary": "lockNewChange toma locks/new.json sin darlo de nuevo en el proceso, con un borrador propio por toma; onNewTurn ejecuta los pasos en ese turno solo en win32, reintenta mientras otro lo tiene y tras unos 60 s sigue sin turno",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "88e644314918269bfa63825fb14f7f08d837eb8f",
+      "attempts": 1,
+      "startedAt": "2026-11-09T17:36:39.505Z",
+      "doneAt": "2026-11-09T17:41:09.084Z",
+      "summary": "newInWorktree saca a makeWorktree la limpieza, el id, la rama, la worktree, su marca y el estado, y los ejecuta en onNewTurn; la preparación va después. El AC7 muestra la salida del new que falla; formats y ARCHITECTURE explican locks/new.json",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-09T17:41:26.875Z",
+  "lockedTests": {
+    "packages/cli/test/epic-subagents.test.ts": "sha256:df656eee1b2e2200470103c5bc471886ab41bbafbb69aa6983ccd97ea59d4715",
+    "packages/cli/test/new-turn.test.ts": "sha256:f68d727cf0e090fcd606ffb9a1cb243f326b41f408747392c303e38e74ad69b4"
+  }
+}

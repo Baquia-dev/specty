@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "20261110-la-ui-la-suite-de-cumplimiento-y-los-tests-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261110-la-ui-la-suite-de-cumplimiento-y-los-tests-de",
+  "baseCommit": "1fe70408877a578f8993da0f84c4eb6d86bccc25",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ced1968f3d940414d1ebbd757c5fac45e91885e244984cecee8ab00670efbefa",
+    "at": "2026-11-09T17:42:05.758Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7455ef3435c7ae099fe6a3412ec77cdb8d4243dedfae68317adb192cedaf4eed",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:ec988e9476890e2cda0f05c55cffc44ba4ca96f466db0a0b4efda926887de0f9",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:876e27ecf8650759e6e88fe4ae89b179c5f497c8d53197028b0c83be0f494352",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3f459b42fd428050722f1c78f3e33c7b7132133c",
+      "attempts": 1,
+      "startedAt": "2026-11-09T17:42:06.845Z",
+      "doneAt": "2026-11-09T17:51:24.129Z",
+      "summary": "La UI deja de proponer cd … && gemini para retomar un cambio (OPEN_IN de change/resume-hints.ts); su test lista las órdenes sin Gemini CLI y la sesión de ejemplo de sessions-page.test es de Devin (Windsurf)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "91f4048f7c303afd46fc29e801cf55f1745b698f",
+      "attempts": 1,
+      "startedAt": "2026-11-09T17:51:24.579Z",
+      "doneAt": "2026-11-09T17:53:16.550Z",
+      "summary": "La suite de cumplimiento deja de ejecutar Gemini CLI: sin gemini-cli en AgentId, ROUNDS y AGENTS de evals/src/agents.ts ni la marca GEMINI_CLI en repo.ts y compliance.eval.ts; report.test sin su transcripción; ARCHITECTURE dice que la suite conoce cinco agentes",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "057b70877c984a7e8d6b1bd4c4709d3150d7b3c9",
+      "attempts": 1,
+      "startedAt": "2026-11-09T17:53:17.002Z",
+      "doneAt": "2026-11-09T17:53:35.542Z",
+      "summary": "Los tests de core usan Devin (Windsurf), otra herramienta sin cortes en subagentes que entra con specty enter, donde usaban Gemini CLI (orphans-subagents, rejoin), o lo quitan de sus listas (epic, idle-subagents)",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "3563abb9b4a9a187fd3a30567e723a24f9a0b05c",
+      "attempts": 1,
+      "startedAt": "2026-11-09T17:53:35.997Z",
+      "doneAt": "2026-11-09T17:54:34.044Z",
+      "summary": "Los tests del CLI dejan de nombrar Gemini CLI (worktree de otra herramienta, Copilot fuera de alcance en la spec de ejemplo, support.ts sin GEMINI_CLI) y ARCHITECTURE pone de ejemplo solo la carpeta de Claude Code",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-09T17:54:45.697Z"
+}

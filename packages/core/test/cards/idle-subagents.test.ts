@@ -96,7 +96,7 @@ describe("the card with no change active, when the tool hands changes to subagen
     expect(today).not.toContain("ENCARGO");
     expect(today).toContain('SIGUIENTE: ejecuta `specty new "<título>"');
     expect(idle({ ...CLAUDE, subagents: false })).toBe(today);
-    const without: readonly AgentTool[] = ["gemini-cli", "copilot", "windsurf"];
+    const without: readonly AgentTool[] = ["copilot", "windsurf"];
     for (const tool of without) expect(idle({ ...ES, tool }), tool).toBe(today);
   });
 

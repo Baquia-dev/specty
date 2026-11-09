@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { AsyncLocalStorage } from "node:async_hooks";
+import { randomUUID } from "node:crypto";
 import { link, mkdir, unlink, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { isRecord, parseJson, readText } from "../io/files";
@@ -29,6 +30,8 @@ export type Lock =
 const lockOf = (id: string) => `common/specty/locks/${id}.json`;
 /** The turn of the full verification, one for the whole clone. */
 const FULL_VERIFICATION = "common/specty/locks/full-verification.json";
+/** The turn of `new`'s creation of a worktree on Windows, one for the whole clone. */
+const NEW_CHANGE = "common/specty/locks/new.json";
 
 /** The locks this process holds: a command run inside another one does not lock twice. */
 const held = new Set<string>();
@@ -56,6 +59,15 @@ export async function lockChange(git: Git, id: string, holder: LockHolder): Prom
  */
 export async function lockFullVerification(git: Git, holder: LockHolder): Promise<Lock> {
   return lockAt(git, FULL_VERIFICATION, holder, false);
+}
+
+/**
+ * Takes the turn of `new` for `holder` (`onNewTurn`): one at a time in the whole clone, with the
+ * same rules as a change's lock (formats.md §1), and not given again inside this process, so two
+ * `new` of one process go one after the other too.
+ */
+export async function lockNewChange(git: Git, holder: LockHolder): Promise<Lock> {
+  return lockAt(git, NEW_CHANGE, holder, false);
 }
 
 /** Whether the code that runs now holds the turn of the full verification, as a closing does. */
@@ -133,9 +145,12 @@ export async function liveHolder(git: Git, id: string): Promise<LockHolder | und
   return holder !== undefined && alive(holder.pid) ? holder : undefined;
 }
 
-/** Creates the lock whole or not at all: written aside, then linked in place, which fails if it exists. */
+/**
+ * Creates the lock whole or not at all: written aside, then linked in place, which fails if it
+ * exists. Each try writes its own draft: two of one process at once would share one by its pid.
+ */
 async function create(path: string, holder: LockHolder): Promise<boolean> {
-  const draft = `${path}.${holder.pid}.tmp`;
+  const draft = `${path}.${holder.pid}.${randomUUID()}.tmp`;
   await writeFile(draft, `${JSON.stringify(holder, null, 2)}\n`);
   try {
     await link(draft, path);

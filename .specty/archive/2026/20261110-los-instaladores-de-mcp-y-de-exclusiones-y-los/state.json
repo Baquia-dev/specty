@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "id": "20261110-los-instaladores-de-mcp-y-de-exclusiones-y-los",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261110-los-instaladores-de-mcp-y-de-exclusiones-y-los",
+  "baseCommit": "b1fd1dfdd76df8364062218513f5eb9685677556",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f3188dd4ae3098fd32f3bcbf7c0b5477042c219ce2154fbe8f97a45e1d1bec8c",
+    "at": "2026-11-09T17:17:53.414Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:604c4548573bcc81384b3d9517a96390c187012c85ef3555deb619b959803c50",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:e98c7d9e8dfcd5b09bbfe93790c325e815e6bdc5d88ec2e5a9adcd115bbbfeea",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:bb6312e746591543652b67a0dc38b291aebbbfda27bbbe4ad53338ee20c020e8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "49267624d94931369a6a1e81b5fad98543dc8ffc",
+      "attempts": 1,
+      "startedAt": "2026-11-09T17:17:54.008Z",
+      "doneAt": "2026-11-09T17:18:24.522Z",
+      "summary": "init --mcp y doctor dejan de registrar y mirar el servidor MCP en .gemini/settings.json: TARGETS de install/mcp.ts sin Gemini CLI; mcp-install.test sin él y el ejemplo mcp-other de cards/mcp.test con Devin (Windsurf)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "88285881d15706c9f7db5280c39a79cfcea88682",
+      "attempts": 1,
+      "startedAt": "2026-11-09T17:18:24.938Z",
+      "doneAt": "2026-11-09T17:18:55.586Z",
+      "summary": "check --install deja de escribir .geminiignore: IGNORE_FILES de check/install-ignores.ts sin Gemini CLI; check-ignores.test comprueba que un repositorio con .gemini/ no lo recibe, y la tabla de exclusiones de ARCHITECTURE pierde su fila",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "2f166198e6c64e1633587ac646aab426741403a0",
+      "attempts": 1,
+      "startedAt": "2026-11-09T17:18:56.011Z",
+      "doneAt": "2026-11-09T17:26:56.202Z",
+      "summary": "Los tests de init, doctor y uninstall dejan de instalar Gemini CLI: agents.test sin los casos de su módulo; doctor-agent-stop, init-agent-stop y uninstall sin su fila; doctor-enter sin sus casos, con el de OpenCode de AC3 por separado",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "741e7ea335ca82698c8974702495740c5d8af2bb",
+      "attempts": 1,
+      "startedAt": "2026-11-09T17:26:56.983Z",
+      "doneAt": "2026-11-09T17:28:04.351Z",
+      "summary": "Se van gemini-e2e.test.ts y fake-gemini.ts y su apartado de ARCHITECTURE; agent-stop-wait sin Gemini CLI y front-start-codex usa la marca de Cursor como otra herramienta en el entorno; mcp-install.test con su formato",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-11-09T17:28:13.981Z"
+}
