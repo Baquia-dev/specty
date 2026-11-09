@@ -3,11 +3,12 @@ import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CHANGE, CONFIG, read } from "../support";
+import { COMMON_DIR } from "../tools";
 import { call, implemented, listen, path, serving } from "./support";
 
 /** A unit's shell command: Node appends `name` to `.git/marks`, so the file says what ran, in order. */
 const command = (name: string) =>
-  `node -e "require('fs').appendFileSync(process.argv[1] + '/marks', '${name}')" "$(git rev-parse --git-common-dir)"`;
+  `node -e "require('fs').appendFileSync(${COMMON_DIR} + '/marks', '${name}')"`;
 
 /** A unit of `verify.units` in YAML, under `units:`. */
 const unit = (name: string, paths: readonly string[]) =>

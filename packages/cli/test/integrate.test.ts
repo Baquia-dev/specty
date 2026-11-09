@@ -22,11 +22,12 @@ import {
   tryGit,
   writeFiles,
 } from "./support";
+import { COMMON_DIR } from "./tools";
 
 const BRANCH = `specty/${CHANGE}`;
 
 /** A full verification that counts its runs in the repository's `.git/runs`, from any worktree. */
-const COUNTED = `node -e "require('fs').appendFileSync(process.argv[1] + '/runs', 'x')" "$(git rev-parse --git-common-dir)"`;
+const COUNTED = `node -e "require('fs').appendFileSync(${COMMON_DIR} + '/runs', 'x')"`;
 const COUNTING = {
   ...FILES,
   ".specty/config.yaml": `${CONFIG()}  full: ${JSON.stringify(COUNTED)}\n`,

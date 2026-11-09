@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-los-comandos-simulados-de-los-tests-corren",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-los-comandos-simulados-de-los-tests-corren",
   "baseCommit": "6ce5443b5f3a857ef71758e4afbe7688f574f2f8",
   "revision": 1,
@@ -47,12 +47,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b8cc686df628f321d83b9b4117e694a3cc2bdce0",
+      "attempts": 1,
       "startedAt": "2026-11-09T12:07:22.764Z",
       "doneAt": "2026-11-09T12:14:20.003Z",
-      "summary": "Las verificaciones y unidades simuladas de accept-quick-turn, close-moved, incorporation-units, integrate-landing e integrate-units calculan la carpeta común con COMMON_DIR en vez de con $(git rev-parse …)"
+      "summary": "Las verificaciones y unidades simuladas de accept-quick-turn, close-moved, incorporation-units, integrate-landing e integrate-units calculan la carpeta común con COMMON_DIR en vez de con $(git rev-parse …)",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e7202943b6404cd04fbd740d4373a789f7a02e5f",
+      "startedAt": "2026-11-09T12:14:20.556Z",
+      "doneAt": "2026-11-09T12:16:08.642Z",
+      "summary": "Las verificaciones y unidades simuladas de integrate, no-code y la UI usan COMMON_DIR, y la de verify-merge escribe su línea y espera con Node en vez de echo y sleep"
     }
   },
   "pending": {

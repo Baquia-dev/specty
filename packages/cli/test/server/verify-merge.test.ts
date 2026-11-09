@@ -20,13 +20,14 @@ import {
   tryGit,
   writeFiles,
 } from "../support";
+import { COMMON_DIR } from "../tools";
 import { sessionAt } from "./support";
 
 /**
  * A full verification that says a line, lasts long enough for the server to see it live, and
  * counts its runs in the repository's `.git/runs`, from any worktree.
  */
-const COUNTED = `echo verificando-lo-incorporado && sleep 2 && node -e "require('fs').appendFileSync(process.argv[1] + '/runs', 'x')" "$(git rev-parse --git-common-dir)"`;
+const COUNTED = `node -e "console.log('verificando-lo-incorporado'); setTimeout(() => require('fs').appendFileSync(${COMMON_DIR} + '/runs', 'x'), 2000)"`;
 const COUNTING = {
   ...FILES,
   ".specty/config.yaml": `${CONFIG()}  full: ${JSON.stringify(COUNTED)}\n`,

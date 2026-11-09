@@ -16,9 +16,10 @@ import {
   toAcceptance,
   writeFiles,
 } from "./support";
+import { COMMON_DIR } from "./tools";
 
 /** A full verification that counts its runs in `runs` of the clone's common folder. */
-const COUNTER = `require("node:fs").appendFileSync(require("node:path").join(process.argv[2], "runs"), "x");\n`;
+const COUNTER = `require("node:fs").appendFileSync(require("node:path").join(${COMMON_DIR}, "runs"), "x");\n`;
 
 /** SPEC's change, but its only task writes documentation: a free file. */
 const DOCS_SPEC = `---
@@ -60,7 +61,7 @@ La app explica cómo saluda.
 async function counted() {
   const script = join(await mkdtemp(join(tmpdir(), "specty-count-")), "count.js");
   await writeFile(script, COUNTER);
-  const full = `node "${script}" "$(git rev-parse --git-common-dir)"`;
+  const full = `node "${script}"`;
   return inWorktree({
     ...FILES,
     ".specty/config.yaml": `${CONFIG()}  full: ${JSON.stringify(full)}\n`,

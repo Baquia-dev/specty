@@ -72,7 +72,7 @@ Sigue a 20261109-specty-lanza-en-windows-las-herramientas-del. En el run 4260174
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-quick-turn.test.ts test/close-moved.test.ts test/incorporation-units.test.ts test/integrate-landing.test.ts test/integrate-units.test.ts && pnpm lint
   - type: test
-- [ ] T3: Las verificaciones simuladas de la incorporación y de la UI, sin `$(…)`
+- [x] T3: Las verificaciones simuladas de la incorporación y de la UI, sin `$(…)`
   - files: packages/cli/test/integrate.test.ts, packages/cli/test/no-code.test.ts, packages/cli/test/server/verify-merge.test.ts, packages/cli/test/server/verify-units.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate.test.ts test/no-code.test.ts test/server/verify-merge.test.ts test/server/verify-units.test.ts && pnpm lint && pnpm typecheck && pnpm knip
