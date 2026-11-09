@@ -985,15 +985,6 @@ OpenCode 2.2 manda la petición de compactar con herramientas y solo da por buen
 
 OpenCode se busca en `SPECTY_E2E_OPENCODE` o en el PATH, desde la 2.2: en ella cambiaron sus herramientas (`shell`, `write` y `read` con `path`, `subagent`), `opencode run` (sin `--dir`, y con el servicio en segundo plano por defecto) y la API de `opencode serve`. Si no está, o es anterior, la prueba se salta. Comprobado con OpenCode 2.2.5; la versión anterior del test se comprobó con OpenCode 1.19.4 y con la beta de OpenCode 2 (`0.0.0-beta-202608110357`, la etiqueta `beta` de npm).
 
-**Gemini CLI con un modelo guionizado** (`gemini-e2e.test.ts`, con `fake-gemini.ts`). El servidor imita `streamGenerateContent` de la API de Gemini, responde una llamada a herramienta del guion por cada `functionResponse` que trae la conversación, y guarda cada petición. Gemini CLI le habla por `GOOGLE_GEMINI_BASE_URL`, con `security.auth.selectedType: "gemini-api-key"` y una clave falsa, en un `HOME` temporal: confía en la carpeta para esa sesión (`GEMINI_CLI_TRUST_WORKSPACE`) y ejecuta sus herramientas sin preguntar (`tools.allowed`), así que el guion avanza y deciden los hooks de Specty. Con `gemini -p`:
-
-- Sin cambio activo, escribir código, `git commit` y `specty approve` vuelven con el SIGUIENTE del guard y el repositorio no cambia.
-- Con una tarea, un archivo de fuera vuelve con `specty scope add`, y el prompt del turno trae la tarjeta.
-- Un comando que escribe por un camino que el análisis de shell no prevé trae el aviso en su resultado.
-- Con el fin de turno que activa `check --install`, si `specty check --changed` falla, el modelo recibe el informe una vez y luego termina.
-
-Gemini CLI se busca en `SPECTY_E2E_GEMINI` o en las carpetas del PATH, sin ejecutar nada para encontrarlo; si no está, la prueba se salta. Comprobado con Gemini CLI 0.65.0.
-
 **Codex con un modelo guionizado** (`codex-e2e.test.ts`, con `fake-responses.ts`). El servidor imita `POST /v1/responses` de OpenAI por streaming, responde una llamada del guion (`exec_command` o `apply_patch`) por cada resultado de herramienta que trae la conversación, y guarda cada petición. Codex corre con `codex exec --ephemeral` y un `CODEX_HOME` temporal, con un proveedor `wire_api = "responses"` que apunta al servidor, una clave falsa y el repositorio de confianza; nada de la configuración de la persona interviene. Usa dos opciones que la persona autorizó para estos repositorios desechables (2026-10-26): `-s workspace-write`, para escribir en el repositorio, y `--dangerously-bypass-hook-trust`, para no revisar los hooks a mano.
 
 - Sin cambio activo, un parche de código, `git commit` y `specty approve` vuelven con el SIGUIENTE del guard y el repositorio no cambia.

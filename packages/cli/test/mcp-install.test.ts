@@ -13,13 +13,7 @@ const THEIRS = {
   "opencode.json": '{\n  "$schema": "https://opencode.ai/config.json"\n}\n',
   ".codex/config.toml": 'model = "o3"\n',
 };
-const ALL: readonly AgentTool[] = [
-  "claude-code",
-  "cursor",
-  "opencode",
-  "windsurf",
-  "codex",
-];
+const ALL: readonly AgentTool[] = ["claude-code", "cursor", "opencode", "windsurf", "codex"];
 const SPECTY = { command: "specty", args: ["mcp"] };
 const TOML = '[mcp_servers.specty]\ncommand = "specty"\nargs = ["mcp"]\n';
 

@@ -73,7 +73,7 @@ Segundo de los cambios consecutivos que retiran Gemini CLI, que Antigravity reem
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agents.test.ts test/doctor-agent-stop.test.ts test/doctor-enter.test.ts test/init-agent-stop.test.ts test/uninstall.test.ts
   - type: chore
-- [ ] T4: Se van la prueba de extremo a extremo de Gemini CLI y sus demás casos en los tests del CLI
+- [x] T4: Se van la prueba de extremo a extremo de Gemini CLI y sus demás casos en los tests del CLI
   - files: packages/cli/test/agent-stop-wait.test.ts, packages/cli/test/front-start-codex.test.ts, packages/cli/test/gemini-e2e.test.ts, packages/cli/test/fake-gemini.ts, docs/ARCHITECTURE.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agent-stop-wait.test.ts test/front-start-codex.test.ts && pnpm lint && pnpm typecheck && pnpm knip

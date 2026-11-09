@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261110-los-instaladores-de-mcp-y-de-exclusiones-y-los",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261110-los-instaladores-de-mcp-y-de-exclusiones-y-los",
   "baseCommit": "b1fd1dfdd76df8364062218513f5eb9685677556",
   "revision": 1,
@@ -57,12 +57,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2f166198e6c64e1633587ac646aab426741403a0",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:18:56.011Z",
       "doneAt": "2026-11-09T17:26:56.202Z",
-      "summary": "Los tests de init, doctor y uninstall dejan de instalar Gemini CLI: agents.test sin los casos de su módulo; doctor-agent-stop, init-agent-stop y uninstall sin su fila; doctor-enter sin sus casos, con el de OpenCode de AC3 por separado"
+      "summary": "Los tests de init, doctor y uninstall dejan de instalar Gemini CLI: agents.test sin los casos de su módulo; doctor-agent-stop, init-agent-stop y uninstall sin su fila; doctor-enter sin sus casos, con el de OpenCode de AC3 por separado",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "741e7ea335ca82698c8974702495740c5d8af2bb",
+      "startedAt": "2026-11-09T17:26:56.983Z",
+      "doneAt": "2026-11-09T17:28:04.351Z",
+      "summary": "Se van gemini-e2e.test.ts y fake-gemini.ts y su apartado de ARCHITECTURE; agent-stop-wait sin Gemini CLI y front-start-codex usa la marca de Cursor como otra herramienta en el entorno; mcp-install.test con su formato"
     }
   },
   "pending": {
