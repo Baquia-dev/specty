@@ -76,7 +76,7 @@ El criterio de salida de la fase 3 (ARCHITECTURE §18) pide la suite de cumplimi
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/antigravity-init.test.ts && pnpm --filter @baquia-dev/specty-evals typecheck && pnpm lint
   - type: fix
-- [ ] T3: La arquitectura cuenta Antigravity CLI en la suite y su ejecución real
+- [x] T3: La arquitectura cuenta Antigravity CLI en la suite y su ejecución real
   - files: docs/ARCHITECTURE.md
   - ac: AC5
   - verify: grep -q 'SPECTY_EVALS_ANTIGRAVITY' docs/ARCHITECTURE.md && pnpm lint

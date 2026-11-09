@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-la-suite-de-cumplimiento-tambien-ejecuta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-la-suite-de-cumplimiento-tambien-ejecuta",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
   "revision": 1,
@@ -63,12 +63,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f644f9ef50abd28b1b704d4d0e7980c4f5a923ab",
+      "attempts": 1,
       "startedAt": "2026-11-09T09:56:10.414Z",
       "doneAt": "2026-11-09T09:56:31.651Z",
-      "summary": "El init de la suite usa una carpeta temporal para los ajustes del CLI de Antigravity (SPECTY_ANTIGRAVITY_CLI_DIR), así que no escribe la regla en los de la persona; agy la recibe por --settings."
+      "summary": "El init de la suite usa una carpeta temporal para los ajustes del CLI de Antigravity (SPECTY_ANTIGRAVITY_CLI_DIR), así que no escribe la regla en los de la persona; agy la recibe por --settings.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cd6b31d6eefe68dcd71b792ef53fdf87279706eb",
+      "startedAt": "2026-11-09T09:56:32.035Z",
+      "doneAt": "2026-11-09T09:59:29.025Z",
+      "summary": "ARCHITECTURE §16 cuenta Antigravity CLI en la suite (línea, --settings, recuento) y su ejecución real, sin avance porque Specty no corre en el sandbox de agy -p (P382); §18 dice qué agentes mide la suite."
     }
   },
   "pending": {
