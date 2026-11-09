@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261109-las-verificaciones-tambien-bajan-de-prioridad",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261109-las-verificaciones-tambien-bajan-de-prioridad",
+  "baseCommit": "2a1c7ccf81bc3c5c3f987eb744a8d63f7ef2feaa",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a087c409ee4c841a82003444bc0fa9834cbeac2bbbedb30448831aec1d123c49",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:221432c8b9096f92a74f865a519a84038001abb4ebdef77026316d9d6e97b13b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:2effea76901e39296e7ada088eaf667cba11b7abe92ba9d11579090dccfecf86",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:6fa9ad4aa42626b3c4b6c96efab8dfe3711193448be0c698aa0e1b74d299c480",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:e376d03af28ba4918acbe740b7ae5da3168c762e82c84ebdb4f7603c400272ee",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:2e13d26e0f6abcc1591cf2141c4b8e7968febfaea1bcb31c54dcfcf7d3939d0c",
+    "at": "2026-11-09T10:44:37.194Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}

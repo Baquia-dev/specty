@@ -1,0 +1,70 @@
+---
+kind: standard
+---
+
+# Las verificaciones también bajan de prioridad en Linux
+
+## Objetivo
+
+En Linux, una verificación (la de una tarea, la completa de `accept`, la de una incorporación, la de `specty integrate` y la que lanza la UI) puede correr con la prioridad normal en vez de con la de `internal.exec.priority`: Specty lanza la shell y le baja la prioridad justo después, y si la shell ya lanzó el comando antes, el comando y todo lo que lanza conservan la normal. Es lo que hace fallar a `packages/cli/test/verify-priority.test.ts` en el job de Linux del CI (run 42597410365, `expected '0' to be '10'`), un bloqueante de la primera versión. Con este cambio, donde hay `nice` (Linux, macOS y los demás POSIX) la verificación nace ya con su prioridad, y todo lo que lanza la hereda; donde no lo hay, como en Windows, sigue bajándola nada más lanzarla.
+
+## Fuera de alcance
+
+- Windows: no tiene `nice`, así que sigue bajando la prioridad nada más lanzar el comando, con `os.setPriority`, como hasta ahora.
+- La prioridad de git y de los demás comandos que lanza Specty, que no son verificaciones.
+- El rango y el significado de `internal.exec.priority` (0 a 19, 10 por defecto) y su texto en la página «Configuración».
+- Cambiar `packages/cli/test/verify-priority.test.ts`, que ya está aprobado: con el arreglo debe pasar también en Linux.
+- Subir a GitHub o leer el siguiente run del CI: lo hace la sesión principal.
+
+## Supuestos
+
+- A1: El fallo del CI es una carrera, no un fallo del test: en el mismo run, cada job de Linux falla en dos de los tres tests y no en los mismos (Node 22 pasa AC1 y Node 24 pasa AC3), y en macOS pasan todos. En Linux `/bin/sh` es dash, que lanza el comando en un proceso hijo; `os.setPriority` con el pid de la shell solo baja la shell, y si el hijo ya nació, se queda con la prioridad normal. En macOS `/bin/sh` es bash, que ejecuta un comando único en el mismo proceso, y por eso la carrera no se ve allí.
+  - impacto: alto
+- A2: `nice -n <incremento> <programa> <argumentos>` existe en Linux (coreutils y BusyBox), macOS y los BSD, porque es una utilidad POSIX, y suma el incremento a la prioridad con que se lanza. Specty le pasa la diferencia entre `internal.exec.priority` y su propia prioridad (`os.getPriority()`), así que el comando acaba en el mismo valor absoluto que daba `os.setPriority`. Specty busca `nice` en las carpetas del `PATH` del entorno de la verificación; si no lo encuentra, la baja nada más lanzarla, como hasta ahora.
+  - impacto: alto
+- A3: Con la shell, Node ejecuta `/bin/sh -c "<comando y argumentos unidos por espacios>"` fuera de Windows; por `nice`, Specty ejecuta lo mismo: `nice -n <incremento> /bin/sh -c "<lo mismo>"`. `nice` hace `exec` de la shell, así que el pid del proceso es el de la shell, y el tiempo límite (`endTree`) y la parada de la UI siguen terminando el mismo árbol de procesos.
+- A4: Si Specty ya corre con una prioridad igual o más baja que `internal.exec.priority`, o esta es 0, el comando corre con la de Specty sin pasar por `nice`, como el documento ya describe («el comando se queda en la suya»).
+- A5: Los tests nuevos sustituyen `os.setPriority` por una función que no hace nada para comprobar que el comando nace con su prioridad y no depende de que se la bajen después: con el código de ahora fallan en cualquier sistema POSIX, y no solo cuando la carrera la gana la shell. Usan una prioridad 5 por encima de la de quien ejecuta los tests (hasta 19), porque las verificaciones de Specty ya los ejecutan con prioridad 10.
+
+## Criterios de aceptación
+
+- AC1: CUANDO Specty corre la verificación de una tarea, la completa de `accept` o cualquier otra con la shell, en Linux o macOS ENTONCES el comando nace ya con la prioridad de `internal.exec.priority`, y también un proceso que la shell lanza nada más empezar, aunque nada le baje la prioridad después de arrancar.
+- AC2: CUANDO la UI lanza la verificación completa de un cambio, en Linux o macOS ENTONCES su comando nace ya con la prioridad de `internal.exec.priority`, como en AC1.
+- AC3: CUANDO el `PATH` de la verificación no tiene el programa que lanza otro con menos prioridad, o el sistema es Windows ENTONCES Specty le baja la prioridad a la de `internal.exec.priority` nada más lanzarla, como hasta ahora.
+- AC4: CUANDO Specty ya corre con una prioridad igual o más baja que la de `internal.exec.priority` ENTONCES el comando corre con la de Specty.
+
+## Diseño
+
+- `io/exec.ts`: una función exportada, `launch(command, args, shell, env, priority?)`, da cómo lanzar un comando: el programa, sus argumentos, si va por la shell y qué hacer con el pid al arrancar (`started`). Sin prioridad, o si la diferencia con la de Specty no es positiva, lo lanza tal cual. Fuera de Windows y con `nice` en el `PATH` de `env`, lo lanza por `nice -n <diferencia>`, con `/bin/sh -c` si va por la shell, y `started` no hace nada. Si no, lo lanza tal cual y `started` le baja la prioridad con `os.setPriority`, de mejor esfuerzo, como `lowerPriority` hasta ahora.
+- `execute` lanza con `launch` cuando lleva `lowPriority`; `lowerPriority` deja de exportarse y queda dentro de `launch`.
+- `server/runs.ts` (`spawned`, la verificación completa de la UI) lanza con `launch` en vez de `spawn` con la shell seguido de `lowerPriority`.
+- `nice` se busca en las carpetas absolutas del `PATH` de `env`, con `accessSync(…, X_OK)`, en cada lanzamiento: el entorno de cada verificación puede tener su propio `PATH`, y el coste (unas pocas llamadas al sistema) no se nota al lado de una verificación.
+- Tests: `packages/cli/test/exec-priority.test.ts` (AC1, AC4) y `packages/cli/test/server/runs-priority.test.ts` (AC2) sustituyen `setPriority` de `node:os` por una función vacía (`vi.mock`) y se saltan en Windows. La falta de `nice` (AC3) se prueba en `packages/cli/test/exec.test.ts`, sin sustituir nada, con un `PATH` vacío.
+- `docs/ARCHITECTURE.md`: el párrafo «Las verificaciones, con menos prioridad» dice que fuera de Windows nacen con ella por `nice`, y que donde no hay `nice` se baja al lanzarla, con su mejor esfuerzo.
+
+## Archivos
+
+- modificar packages/cli/src/io/exec.ts — `launch`: lanzar por `nice` con la prioridad, o bajarla al arrancar donde no hay `nice`
+- modificar packages/cli/src/server/runs.ts — la verificación completa de la UI se lanza con `launch`
+- crear packages/cli/test/exec-priority.test.ts — tests de AC1 y AC4: el comando nace con su prioridad, sin `setPriority`
+- crear packages/cli/test/server/runs-priority.test.ts — test de AC2: la verificación completa de la UI nace con su prioridad
+- modificar packages/cli/test/exec.test.ts — test de AC3: sin `nice` en el `PATH`, la prioridad se baja al lanzar el comando
+- modificar docs/ARCHITECTURE.md — las verificaciones nacen con su prioridad por `nice` fuera de Windows
+
+## Tareas
+
+- [ ] T1: Las verificaciones nacen con su prioridad por `nice` donde lo hay
+  - files: packages/cli/src/io/exec.ts, packages/cli/src/server/runs.ts, packages/cli/test/exec-priority.test.ts, packages/cli/test/server/runs-priority.test.ts, packages/cli/test/exec.test.ts
+  - ac: AC1, AC2, AC3, AC4
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/exec-priority.test.ts test/server/runs-priority.test.ts test/exec.test.ts test/verify-priority.test.ts test/server/runs.test.ts test/server/verify.test.ts && pnpm typecheck
+  - type: fix
+- [ ] T2: Documentar que las verificaciones nacen con su prioridad
+  - files: docs/ARCHITECTURE.md
+  - ac: AC1, AC3
+  - verify: pnpm sources
+  - type: docs
+
+## Riesgos
+
+- R1: Un sistema POSIX sin `nice` en el `PATH` (un contenedor mínimo) sigue con la carrera de ahora — se baja al lanzarla, como hasta ahora, y lo dice el documento.
+- R2: Sustituir `setPriority` en los tests no prueba la carrera tal cual en Linux — sí prueba que el comando ya no depende de que se la bajen después, y la sesión principal confirma el arreglo con el siguiente run del CI en Linux.
