@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dd9d582549b6452a0e50c87ea17eaaa327405539",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:34:41.354Z",
       "doneAt": "2026-11-09T11:38:25.518Z",
-      "summary": "statsRow lee las líneas una vez (un Map de funciones por evento), sin copiar cada entrada y con su hora en milisegundos; la fila trae closedDay y el día de cada aprobación; dayOf acepta milisegundos; Flujo usa esos días y no crea un Set para un cambio sin sesiones"
+      "summary": "statsRow lee las líneas una vez (un Map de funciones por evento), sin copiar cada entrada y con su hora en milisegundos; la fila trae closedDay y el día de cada aprobación; dayOf acepta milisegundos; Flujo usa esos días y no crea un Set para un cambio sin sesiones",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2944407adef84b3e4c4e414c96bd53f7d180e04b",
+      "startedAt": "2026-11-09T11:38:26.009Z",
+      "doneAt": "2026-11-09T11:45:26.736Z",
+      "summary": "rangeFinder da el tramo de un día buscando a mitades y recordándolo; Ritmo, Calidad y Coste reparten así en vez de con un mapa de cada día del calendario; Calidad recorre las verificaciones una vez para los tramos y los cambios con más fallos, y no crea conjuntos para cambios sin tests de contrato"
     }
   },
   "pending": {

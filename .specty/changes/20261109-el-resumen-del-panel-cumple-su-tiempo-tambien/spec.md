@@ -70,7 +70,7 @@ El prototipo de todo esto, en el scratchpad, deja AC8 en unos 105 ms con cobertu
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats && pnpm --filter @baquia-dev/specty exec vitest run test/stats.test.ts test/server/stats.test.ts test/server/stats-changes.test.ts test/server/stats-export.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm exec biome check packages/core/src/stats && pnpm knip
   - type: perf
-- [ ] T2: Cada sección reparte sus hechos por los días o semanas de «Ritmo» sin recorrer el calendario
+- [x] T2: Cada sección reparte sus hechos por los días o semanas de «Ritmo» sin recorrer el calendario
   - files: packages/core/src/stats/period.ts, packages/core/src/stats/rhythm.ts, packages/core/src/stats/quality.ts, packages/core/src/stats/cost.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats && pnpm --filter @baquia-dev/specty exec vitest run test/stats.test.ts test/server/stats.test.ts test/server/stats-changes.test.ts test/server/stats-export.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm exec biome check packages/core/src/stats && pnpm knip
