@@ -70,7 +70,7 @@ Tras seis cambios de Windows, el run 42616529185 de la CI (main 5ba0e12) deja en
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enforce.test.ts test/ghost-folders.test.ts test/worktrees.test.ts && pnpm lint
   - type: test
-- [ ] T4: La copia de `install` y el plugin de OpenCode con la forma de cada plataforma
+- [x] T4: La copia de `install` y el plugin de OpenCode con la forma de cada plataforma
   - files: packages/cli/test/install-files.test.ts, packages/cli/test/opencode-install.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/install-files.test.ts test/opencode-install.test.ts && pnpm lint && pnpm typecheck && pnpm knip

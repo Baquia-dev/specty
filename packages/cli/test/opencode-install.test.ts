@@ -71,7 +71,10 @@ describe("installing the plugin in OpenCode", () => {
     expect(result.out).toContain(
       "OpenCode: plugin del guard en .opencode/plugins/specty.js (local).",
     );
-    expect(await read(root, PLUGIN)).toContain(`"node \\"${DIST}\\" guard --tool opencode"`);
+    // The command as a JavaScript string: on Windows, each `\` of the path goes doubled.
+    expect(await read(root, PLUGIN)).toContain(
+      JSON.stringify(`node "${DIST}" guard --tool opencode`),
+    );
     expect(await readdir(config)).toEqual([]);
     // With a machine path, the plugin stays out of git, and new copies it to the worktree (AC3).
     expect(await read(root, ".git/info/exclude")).toContain(`/${PLUGIN}`);

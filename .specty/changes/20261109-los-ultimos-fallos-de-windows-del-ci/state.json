@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-los-ultimos-fallos-de-windows-del-ci",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-los-ultimos-fallos-de-windows-del-ci",
   "baseCommit": "5ba0e12afb83eccf61940e642775c78e2ca2fb80",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9bf9e20e70159eb9adbb3db5a3557981190c1166",
+      "attempts": 1,
       "startedAt": "2026-11-09T13:24:33.774Z",
       "doneAt": "2026-11-09T13:25:41.884Z",
-      "summary": "enforce, ghost-folders y worktrees meten las rutas del repositorio entre comillas simples en los comandos de bash (sin ellas, bash quita la \\ de una ruta de Windows) y esperan la ruta como la da la plataforma, con join."
+      "summary": "enforce, ghost-folders y worktrees meten las rutas del repositorio entre comillas simples en los comandos de bash (sin ellas, bash quita la \\ de una ruta de Windows) y esperan la ruta como la da la plataforma, con join.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8114fbb1f182bf826b7ac5e74375d1d3ba3a136f",
+      "startedAt": "2026-11-09T13:25:42.362Z",
+      "doneAt": "2026-11-09T13:26:30.555Z",
+      "summary": "install-files espera la copia de fuera del repositorio en outside/<ruta> con / y sin la letra de unidad, y el bit de ejecución solo fuera de Windows; opencode-install espera el comando del plugin con JSON.stringify, que en Windows dobla cada \\ de la ruta."
     }
   },
   "pending": {

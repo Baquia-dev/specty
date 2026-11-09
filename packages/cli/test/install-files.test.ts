@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { mkdtemp, readFile, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, sep } from "node:path";
 import { describe, expect, it } from "vitest";
 import { installFiles } from "../src/install/files";
 import { exists } from "../src/io/files";
@@ -32,7 +32,9 @@ describe("how the installers write", () => {
     await files.write(join(root, "same.md"), "same\n");
     await files.write(join(root, "hook"), "#!/bin/sh\n", { executable: true });
     expect(files.changes).toEqual([{ path: join(root, "hook"), created: true }]);
-    expect((await stat(join(root, "hook"))).mode & 0o111).toBe(0o111);
+    // Windows has no execute bit: there, Node's `chmod` only touches the read-only flag.
+    const runnable = process.platform === "win32" ? 0 : 0o111;
+    expect((await stat(join(root, "hook"))).mode & 0o111).toBe(runnable);
   });
 
   it("keeps a copy of each existing file before it changes, with a manifest", async () => {
@@ -47,7 +49,9 @@ describe("how the installers write", () => {
     await files.write(join(root, "AGENTS.md"), "mine\nspecty again\n");
     await files.write(join(outside, "hooks.json"), '{"hooks":{}}\n');
     expect(await readFile(join(backups, "repo/AGENTS.md"), "utf8")).toBe("mine\n");
-    const copy = `outside${join(outside, "hooks.json")}`;
+    // Its absolute path under `outside/`, with `/` and, on Windows, without the drive's letter.
+    const absolute = join(outside, "hooks.json").replace(/^[A-Za-z]:/, "");
+    const copy = ["outside", ...absolute.split(sep).filter(Boolean)].join("/");
     expect(await readFile(join(backups, copy), "utf8")).toBe("{}\n");
     expect(JSON.parse(await readFile(join(backups, "manifest.json"), "utf8"))).toEqual([
       { path: join(root, "CLAUDE.md"), created: true },
