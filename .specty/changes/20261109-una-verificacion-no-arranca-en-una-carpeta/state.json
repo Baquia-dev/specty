@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261109-una-verificacion-no-arranca-en-una-carpeta",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-una-verificacion-no-arranca-en-una-carpeta",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1230b02c8f951bbee84f7ad5699ed646211e49a60c4cd71153e5d9ec85ab619c",
+    "at": "2026-11-09T09:51:24.157Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -48,12 +55,8 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1230b02c8f951bbee84f7ad5699ed646211e49a60c4cd71153e5d9ec85ab619c",
-    "at": "2026-11-09T09:51:24.157Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/src/store/verify-folder.test.ts": "sha256:e41191389aa870771193b8863de7ebaf03a351c85369d92503379b92f8c2be89",
+    "packages/cli/test/check-folder.test.ts": "sha256:a929e853010dcddf4a7743eb8111278e8197aedf157603e706de7d63e59a5f7c"
+  }
 }
