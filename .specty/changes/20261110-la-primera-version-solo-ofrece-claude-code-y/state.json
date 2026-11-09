@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9608c747685affbcd6407f1c1f1910efdeb9a2aa",
+      "startedAt": "2026-11-09T17:00:12.435Z",
+      "doneAt": "2026-11-09T17:01:03.050Z",
+      "summary": "ENABLED_AGENTS (claude-code, antigravity) en capabilities.ts y exportada en core; agentChoices y noAgentWarning reciben los agentes ofrecidos, por defecto ENABLED_AGENTS; InitRefusal gana unavailable-tools con su tarjeta en es y en"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

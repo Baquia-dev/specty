@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { AGENT_NAMES, type AgentTool } from "../agents";
 import { GIT_FLOWS } from "../branches";
 import type { Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
@@ -15,7 +16,13 @@ export type InitRefusal =
   /** `.specty/config.yaml` exists and is not valid: `issues` says why. */
   | { readonly reason: "invalid-config"; readonly issues: string }
   /** `--git-flow` names no flow of `GIT_FLOWS`. */
-  | { readonly reason: "unknown-flow"; readonly flow: string };
+  | { readonly reason: "unknown-flow"; readonly flow: string }
+  /** `--tools` names `tools`, as typed, that this version does not offer: only the `offered`. */
+  | {
+      readonly reason: "unavailable-tools";
+      readonly tools: readonly string[];
+      readonly offered: readonly AgentTool[];
+    };
 
 export function initRefusalCard(refusal: InitRefusal, lang: Lang): Output {
   const t = translator(lang);
@@ -47,7 +54,37 @@ export function initRefusalCard(refusal: InitRefusal, lang: Lang): Output {
         ),
         status: "invalid",
       };
+    case "unavailable-tools":
+      return { ...unavailableTools(refusal, lang), status: "invalid" };
   }
+}
+
+/**
+ * `--tools` named agents this version does not offer: which ones, the agents it does offer, that
+ * the others come later, and the values `--tools` takes.
+ */
+function unavailableTools(
+  refusal: { readonly tools: readonly string[]; readonly offered: readonly AgentTool[] },
+  lang: Lang,
+): Output {
+  const t = translator(lang);
+  const named = refusal.tools.map((tool) => `\`${tool}\``).join(", ");
+  const names = refusal.offered.map((tool) => AGENT_NAMES[tool]);
+  const last = names.at(-1) ?? "";
+  const listed = (and: string) =>
+    names.length > 1 ? `${names.slice(0, -1).join(", ")} ${and} ${last}` : last;
+  const values = refusal.offered.join(", ");
+  return blockedCard(
+    headerOf("init"),
+    t(
+      `Esta versión de Specty no ofrece ${named}: solo ${listed("y")}. Los demás agentes llegarán más adelante.`,
+      `This version of Specty does not offer ${named}: only ${listed("and")}. The other agents will come later.`,
+    ),
+    t(
+      `usa \`--tools\` con alguna de estas herramientas, separadas por comas: ${values}.`,
+      `use \`--tools\` with any of these tools, separated by commas: ${values}.`,
+    ),
+  );
 }
 
 /** Git Flow's `develop` did not exist: `init` made it from `from`. */

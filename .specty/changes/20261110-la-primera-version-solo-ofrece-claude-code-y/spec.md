@@ -64,7 +64,7 @@ La primera versión publicada (0.1.0, beta pública) sale solo con Claude Code y
 
 ## Tareas
 
-- [ ] T1: Core: los agentes que ofrece esta versión, la pregunta, el aviso y la negativa de `init`
+- [x] T1: Core: los agentes que ofrece esta versión, la pregunta, el aviso y la negativa de `init`
   - files: packages/core/src/capabilities.ts, packages/core/src/index.ts, packages/core/src/cards/init-questions.ts, packages/core/src/cards/init.ts, packages/core/test/enabled-agents.test.ts, packages/core/test/cards/init.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/enabled-agents.test.ts test/cards/init.test.ts
