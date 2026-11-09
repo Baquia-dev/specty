@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { delimiter, join } from "node:path";
 import type { Session } from "./launch";
+import { antigravityCliFolder } from "./repo";
 
 /**
  * The agents of the suite: how to find each one, its command line without an interface, and how
@@ -308,16 +309,36 @@ function claudeSession(prompt: string): Session {
 }
 
 /**
+ * The rules of `permissions.allow` that the installation wrote for the repository `folder`, in the
+ * suite's settings of Antigravity's CLI (D5), or none without them or when they do not parse.
+ */
+function installedRules(folder: string): readonly string[] {
+  let text: string;
+  try {
+    text = readFileSync(join(antigravityCliFolder(folder), "settings.json"), "utf8");
+  } catch {
+    return [];
+  }
+  const settings = parsed(text);
+  const permissions = isObject(settings) ? settings.permissions : undefined;
+  const allow = isObject(permissions) ? permissions.allow : undefined;
+  return Array.isArray(allow)
+    ? allow.filter((rule): rule is string => typeof rule === "string")
+    : [];
+}
+
+/**
  * Antigravity CLI's settings for the session, which agy never saves. Nobody answers in print mode,
  * so its commands run in its terminal sandbox without asking and those that would leave it are
- * denied, as in Codex's `workspace-write`; Specty's leave it when the model asks to, with the rule
- * `init` gives the person (`command(specty)`). And the repository is trusted: agy only loads its
- * `.agents/hooks.json`, the guard, from a trusted folder.
+ * denied, as in Codex's `workspace-write`. Its rules are those the installation wrote for the
+ * repository, and no other: they let Specty run in that sandbox (D5). And the repository is
+ * trusted: agy only loads its `.agents/hooks.json`, the guard, from a trusted folder.
  */
 function agySettings(folder: string | undefined): string {
+  const allow = folder === undefined ? [] : installedRules(folder);
   return JSON.stringify({
     toolPermission: "proceed-in-sandbox",
-    permissions: { allow: ["command(specty)"] },
+    ...(allow.length === 0 ? {} : { permissions: { allow } }),
     ...(folder === undefined ? {} : { trustedWorkspaces: [folder] }),
   });
 }

@@ -3,7 +3,7 @@
 // ccusage measured it on closing them, day by day or week by week, by lane and by change, and
 // the tokens of each type they spent, each by the day of its `change.usage`.
 import { CHANGE_KINDS, type ChangeKind } from "../spec/model";
-import { addDays, inRange, type StatsRange, sum } from "./period";
+import { inRange, rangeFinder, type StatsRange, sum } from "./period";
 import type { StatsRhythm } from "./rhythm";
 import type { StatsRow } from "./rows";
 
@@ -96,12 +96,9 @@ function bucketsOf(
   rhythm: StatsRhythm,
 ): StatsCost["buckets"] {
   const buckets = rhythm.buckets.map(({ from, to }) => ({ from, to, cost: 0 }));
-  const byDay = new Map<string, (typeof buckets)[number]>();
-  for (const bucket of buckets) {
-    for (let day = bucket.from; day <= bucket.to; day = addDays(day, 1)) byDay.set(day, bucket);
-  }
+  const find = rangeFinder(buckets);
   for (const one of costs) {
-    const bucket = byDay.get(one.day);
+    const bucket = buckets[find(one.day)];
     if (bucket !== undefined) bucket.cost += one.cost;
   }
   return buckets;

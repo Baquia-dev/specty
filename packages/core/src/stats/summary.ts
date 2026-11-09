@@ -4,7 +4,15 @@
 // `GET /api/stats`; the other sections of the panel join `StatsView` as they come.
 import type { MemoryEntry } from "../memory/entries";
 import { type StatsCost, statsCost } from "./cost";
-import { type PeriodCounts, periodCounts, perWho } from "./counts";
+import {
+  addedUp,
+  bucketCounts,
+  type OwnCounts,
+  ownCounts,
+  type PeriodCounts,
+  periodCounts,
+  perWho,
+} from "./counts";
 import { type StatsFlow, statsFlow } from "./flow";
 import { type StatsMemory, statsMemory } from "./memory";
 import { type StatsPeopleRow, statsPeople } from "./people";
@@ -137,57 +145,64 @@ export function statsView({ rows, memory, today, query }: StatsInput): StatsView
   const entries = filtered ? memory.filter((entry) => ids.has(entry.origin.change ?? "")) : memory;
   const lived = cut.filter((row) => row.lived.from <= current.to && row.lived.to >= current.from);
   const rhythm = statsRhythm(cut, current);
+  const waiting = waitingOf(entries);
+  // What each change of the lane did in the period, counted once: the summary adds up those of
+  // the cut, and «Personas y agentes» those of each person, agent and model.
+  const own = ownCounts(lane, current);
   return {
     query,
     range: current,
     ...(previous === undefined ? {} : { previous }),
     changes: lived.length,
-    options: perWho(rows, (who, own) => ({ who, changes: own.length })),
-    summary: summaryOf(cut, entries, current, previous),
+    options: perWho(rows, (who, theirs) => ({ who, changes: theirs.length })),
+    summary: summaryOf(cut, waiting, { range: current, own }, previous),
     rhythm,
-    people: statsPeople(lane, current),
+    people: statsPeople(lane, current, own),
     flow: statsFlow(cut, current),
     quality: statsQuality(cut, current, rhythm),
     cost: statsCost(cut, current, rhythm),
     scope: statsScope(cut, current),
     memory: statsMemory(entries, current),
-    trend: trendOf(cut, entries, rhythm),
+    trend: trendOf(cut, waiting, rhythm),
   };
 }
 
-/** The figures of `rows` and `memory` in each day or week of `rhythm`. */
+/**
+ * The figures of `rows` and of the `waiting` entries in each day or week of `rhythm`, as the
+ * period counts them: all of them in one pass over the changes.
+ */
 function trendOf(
   rows: readonly StatsRow[],
-  memory: readonly MemoryEntry[],
+  waiting: readonly Waiting[],
   rhythm: StatsRhythm,
 ): NonNullable<StatsView["trend"]> {
   return {
     unit: rhythm.unit,
-    buckets: rhythm.buckets.map(({ from, to }) => {
-      const counts = countsOf(rows, memory, { from, to });
-      return {
-        from,
-        to,
-        closed: counts.closed,
-        tasks: counts.tasks,
-        cycle: counts.cycle,
-        verifications: counts.passing,
-        cost: counts.cost,
-        pending: counts.pending,
-      };
-    }),
+    buckets: bucketCounts(rows, rhythm.buckets).map((counts) => ({
+      from: counts.from,
+      to: counts.to,
+      closed: counts.closed,
+      tasks: counts.tasks,
+      cycle: counts.cycle,
+      verifications: counts.passing,
+      cost: counts.cost,
+      pending: pendingAt(waiting, counts.to),
+    })),
   };
 }
 
-/** The figures of `rows` and `memory` in `range`, each compared with `before` if there is one. */
+/**
+ * The figures of `rows` and of the `waiting` entries in `period.range`, each compared with
+ * `before` if there is one; `period.own` has what each of `rows` did in it.
+ */
 function summaryOf(
   rows: readonly StatsRow[],
-  memory: readonly MemoryEntry[],
-  range: StatsRange,
+  waiting: readonly Waiting[],
+  period: { readonly range: StatsRange; readonly own: ReadonlyMap<StatsRow, OwnCounts> },
   before: StatsRange | undefined,
 ): StatsSummary {
-  const now = countsOf(rows, memory, range);
-  const then = before === undefined ? undefined : countsOf(rows, memory, before);
+  const now = { ...addedUp(rows, period.own), pending: pendingAt(waiting, period.range.to) };
+  const then = before === undefined ? undefined : countsOf(rows, waiting, before);
   const figure = (pick: (counts: Counts) => number | null): StatsFigure => {
     const value = pick(now);
     return then === undefined ? { value } : { value, ...compared(value, pick(then)) };
@@ -209,22 +224,37 @@ interface Counts extends PeriodCounts {
 
 function countsOf(
   rows: readonly StatsRow[],
-  memory: readonly MemoryEntry[],
+  waiting: readonly Waiting[],
   range: StatsRange,
 ): Counts {
-  return {
-    ...periodCounts(rows, range),
-    pending: memory.filter((entry) => openAt(entry, range.to)).length,
-  };
+  return { ...periodCounts(rows, range), pending: pendingAt(waiting, range.to) };
 }
 
 /** The kinds of entry that wait to be done: not decisions nor lessons. */
 const WAITING: ReadonlySet<MemoryEntry["kind"]> = new Set(["pending", "improvement", "reminder"]);
 
-/** An entry that waits to be done, created by `day` and not yet done nor dropped then. */
-function openAt(entry: MemoryEntry, day: string): boolean {
-  if (!WAITING.has(entry.kind) || dayOf(entry.created) > day) return false;
-  if (entry.status !== "done" && entry.status !== "dropped") return true;
-  // Done or dropped with no date: closed since it was created.
-  return entry.closed !== undefined && dayOf(entry.closed.at) > day;
+/** An entry that waits to be done: the day it was noted and the day it was done or dropped. */
+interface Waiting {
+  readonly from: string;
+  /** None while it is not done nor dropped. */
+  readonly until?: string;
+}
+
+/**
+ * The entries of `memory` that wait to be done, with their days, each read once and not once per
+ * period. One done or dropped with no date has been closed since it was created: none of them.
+ */
+function waitingOf(memory: readonly MemoryEntry[]): readonly Waiting[] {
+  return memory.flatMap((entry) => {
+    if (!WAITING.has(entry.kind)) return [];
+    const from = dayOf(entry.created);
+    if (entry.status !== "done" && entry.status !== "dropped") return [{ from }];
+    return entry.closed === undefined ? [] : [{ from, until: dayOf(entry.closed.at) }];
+  });
+}
+
+/** How many of the `waiting` entries were open at the end of `day`: created, not yet closed. */
+function pendingAt(waiting: readonly Waiting[], day: string): number {
+  return waiting.filter((one) => one.from <= day && (one.until === undefined || one.until > day))
+    .length;
 }

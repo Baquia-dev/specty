@@ -2,7 +2,7 @@
 // The panel's «Ritmo» (docs/ui.md, «Panel»): the changes closed, by lane, and the tasks
 // completed, day by day or, in a longer period, week by week from Monday.
 import type { ChangeKind } from "../spec/model";
-import { addDays, dayOf, inRange, type StatsRange } from "./period";
+import { addDays, rangeFinder, type StatsRange } from "./period";
 import type { StatsRow } from "./rows";
 
 /** Up to this many days the rhythm goes day by day; above them, week by week. */
@@ -28,11 +28,12 @@ export interface StatsRhythm {
  * task on the day it was completed. Days or weeks with nothing count 0.
  */
 export function statsRhythm(rows: readonly StatsRow[], range: StatsRange): StatsRhythm {
-  const { unit, spans, indexOf } = calendarOf(range);
+  const { unit, spans } = calendarOf(range);
   const buckets = spans.map((span) => ({ ...span, closed: noneClosed(), tasks: 0 }));
-  const bucketOf = (day: string) => (inRange(day, range) ? buckets[indexOf(day)] : undefined);
+  const find = rangeFinder(buckets);
+  const bucketOf = (day: string) => buckets[find(day)];
   for (const row of rows) {
-    const closing = row.closed === undefined ? undefined : bucketOf(dayOf(row.closed));
+    const closing = row.closedDay === undefined ? undefined : bucketOf(row.closedDay);
     if (closing !== undefined) closing.closed[row.kind] += 1;
     for (const day of row.tasks) {
       const bucket = bucketOf(day);
@@ -42,10 +43,7 @@ export function statsRhythm(rows: readonly StatsRow[], range: StatsRange): Stats
   return { unit, buckets };
 }
 
-/**
- * The days of `range`, or its weeks from Monday to Sunday, the first and the last cut to it, and
- * the one a day of it falls in.
- */
+/** The days of `range`, or its weeks from Monday to Sunday, the first and the last cut to it. */
 function calendarOf(range: StatsRange) {
   const first = dayNumber(range.from);
   const length = dayNumber(range.to) - first + 1;
@@ -58,8 +56,7 @@ function calendarOf(range: StatsRange) {
     from: addDays(range.from, Math.max(0, index * size - before)),
     to: addDays(range.from, Math.min(length, (index + 1) * size - before) - 1),
   }));
-  const indexOf = (day: string) => Math.floor((dayNumber(day) - first + before) / size);
-  return { unit, spans, indexOf } as const;
+  return { unit, spans } as const;
 }
 
 /** The days from 1 January 1970 to `day`, a YYYY-MM-DD of the calendar. */

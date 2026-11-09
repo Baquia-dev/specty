@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // The panel's «Personas y agentes» (docs/ui.md, «Panel»): for each person, agent and model, what
 // their changes did in the period, counted as the panel's figures count it.
-import { periodCounts, perWho } from "./counts";
+import { addedUp, type OwnCounts, perWho } from "./counts";
 import { inRange, type StatsRange, type StatsWho } from "./period";
 import type { StatsRow } from "./rows";
 
@@ -28,18 +28,25 @@ export interface StatsPeopleRow {
 /**
  * A row per person, agent and model with a change of `rows` in `range`, «(sin dato)» (an empty
  * name) too: by kind, the most changes first, then by name, and «(sin dato)» last of its kind.
+ * `own` has what each of `rows` did in `range` (`ownCounts`).
  */
 export function statsPeople(
   rows: readonly StatsRow[],
   range: StatsRange,
+  own: ReadonlyMap<StatsRow, OwnCounts>,
 ): readonly StatsPeopleRow[] {
   const lived = rows.filter((row) => row.lived.from <= range.to && row.lived.to >= range.from);
-  return perWho(lived, (who, own) => rowOf(who, own, range));
+  return perWho(lived, (who, theirs) => rowOf(who, theirs, range, own));
 }
 
-/** What `rows`, the changes of `who`, did in `range`. */
-function rowOf(who: StatsWho, rows: readonly StatsRow[], range: StatsRange): StatsPeopleRow {
-  const counts = periodCounts(rows, range);
+/** What `rows`, the changes of `who`, did in `range`, from what each did, in `own`. */
+function rowOf(
+  who: StatsWho,
+  rows: readonly StatsRow[],
+  range: StatsRange,
+  own: ReadonlyMap<StatsRow, OwnCounts>,
+): StatsPeopleRow {
+  const counts = addedUp(rows, own);
   const sessions = rows.flatMap((row) =>
     row.sessions.filter((one) => inRange(one.day, range)).map((one) => one.id),
   );

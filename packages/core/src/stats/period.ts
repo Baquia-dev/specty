@@ -91,13 +91,47 @@ export function addDays(day: string, days: number): string {
   return new Date(Date.UTC(year, month - 1, date + days)).toISOString().slice(0, 10);
 }
 
-/** The local day of an ISO time, as the change ids and the memory's reminders count days. */
-export function dayOf(iso: string): string {
-  return localDay(new Date(iso));
+/**
+ * The local day of an ISO time, or of a time in milliseconds, as the change ids and the memory's
+ * reminders count days.
+ */
+export function dayOf(time: string | number): string {
+  return localDay(new Date(time));
 }
 
 export function inRange(day: string, range: StatsRange): boolean {
   return day >= range.from && day <= range.to;
+}
+
+/**
+ * What finds the range of `ranges`, in order and none over another, that a day falls in: its
+ * index, or -1 when it falls in none. It looks for each day once, halving them, and remembers it,
+ * as the facts of many changes fall on few days.
+ */
+export function rangeFinder(ranges: readonly StatsRange[]): (day: string) => number {
+  const found = new Map<string, number>();
+  return (day) => {
+    let index = found.get(day);
+    if (index === undefined) {
+      index = rangeIndex(ranges, day);
+      found.set(day, index);
+    }
+    return index;
+  };
+}
+
+/** The index of the range of `ranges`, in order and none over another, that `day` falls in. */
+function rangeIndex(ranges: readonly StatsRange[], day: string): number {
+  let low = 0;
+  let high = ranges.length - 1;
+  while (low <= high) {
+    const middle = (low + high) >>> 1;
+    const range = ranges[middle];
+    if (range === undefined || day < range.from) high = middle - 1;
+    else if (day > range.to) low = middle + 1;
+    else return middle;
+  }
+  return -1;
 }
 
 /** Whether the change is one of the cut: of its person, agent or model, and of its lane. */

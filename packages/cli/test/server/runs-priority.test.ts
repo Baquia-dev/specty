@@ -23,8 +23,11 @@ vi.mock("node:os", async (importOriginal) => ({
   setPriority: () => undefined,
 }));
 
-/** Lower than this process's, as `internal.exec.priority` is lower than Specty's. */
-const LOWER = Math.min(getPriority() + 5, 19);
+/**
+ * Lower than this process's, as `internal.exec.priority` is lower than Specty's, and from 0 to 19
+ * as the configuration takes it, even above the normal priority, as on GitHub's macOS runner (AC2).
+ */
+const LOWER = Math.min(Math.max(getPriority(), 0) + 5, 19);
 
 /** A full verification whose first process, which the shell starts at once, writes its priority. */
 const FULL = `node -e "require('fs').writeFileSync('.git/priority-ui', String(require('os').getPriority()))"; true`;

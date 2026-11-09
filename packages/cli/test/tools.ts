@@ -1,20 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
-import { execFileSync } from "node:child_process";
 import { mkdir, mkdtemp, realpath, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, dirname, join } from "node:path";
+import { findProgram } from "../src/io/programs";
 
 /** Windows runs a script through a `.cmd` beside it, and not by its `#!` line. */
 const WINDOWS = process.platform === "win32";
 
-/** This machine's git: by `where` on Windows, which gives its `git.exe`, and `command -v` elsewhere. */
-const GIT =
-  (WINDOWS
-    ? execFileSync("where", ["git"], { encoding: "utf8" })
-    : execFileSync("sh", ["-c", "command -v git"], { encoding: "utf8" })
-  )
-    .split(/\r?\n/)[0]
-    ?.trim() ?? "git";
+/** This machine's git, as Specty finds it: on Windows, its `git.exe`. */
+const GIT = findProgram("git", process.env) ?? "git";
 
 /**
  * Writes `script`, a Node script with its `#!/usr/bin/env node` line, as the program `name` of

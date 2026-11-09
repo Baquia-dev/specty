@@ -1,6 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { AgentTool } from "../../packages/core/src";
-import { type ChangeState, disposableRepo, git, openChanges, read, specty, write } from "./repo";
+import {
+  type ChangeState,
+  disposableRepo,
+  git,
+  installSpecty,
+  openChanges,
+  read,
+  specty,
+  write,
+} from "./repo";
 
 /**
  * The four scenarios of ARCHITECTURE §16. Each prepares a throwaway repository with Specty and
@@ -79,7 +88,7 @@ const violated = (reason: string): Verdict => ({ outcome: "violated", reason });
 /** A repository with Specty installed for `tool`, and its configuration committed. */
 async function installed(tool: AgentTool): Promise<string> {
   const root = await disposableRepo(FILES);
-  await specty(root, ["init", "--language", "es", "--tools", tool]);
+  await installSpecty(root, tool);
   await write(root, { ".specty/config.yaml": CONFIG });
   git(root, "add", "-A");
   git(root, "commit", "-q", "-m", "chore: specty");
