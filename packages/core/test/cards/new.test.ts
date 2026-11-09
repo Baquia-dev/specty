@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  AGENT_NAMES,
   type CardContext,
   changeCreatedLead,
+  isAgentTool,
   type NewRefusal,
   newRefusalCard,
   renderText,
@@ -109,7 +111,10 @@ describe("a change created by `new`", () => {
     expect(next("cursor")).toContain(
       `una ventana de Cursor en esa carpeta (\`cursor "${folder}"\`)`,
     );
-    expect(next("gemini-cli")).toContain(`(\`cd "${folder}" && gemini\`)`);
+    // AC3: no agent is told to open Gemini CLI, retired in favour of Antigravity.
+    for (const agent of Object.keys(AGENT_NAMES).filter(isAgentTool)) {
+      expect(next(agent), agent).not.toContain("&& gemini`");
+    }
     expect(next("antigravity")).toContain(`(\`cd "${folder}" && agy\`)`);
     // Devin has no way to be opened that Specty knows: it enters, and that is all.
     expect(next("windsurf")).toBe(
