@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261110-la-ui-la-suite-de-cumplimiento-y-los-tests-de",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261110-la-ui-la-suite-de-cumplimiento-y-los-tests-de",
+  "baseCommit": "1fe70408877a578f8993da0f84c4eb6d86bccc25",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7455ef3435c7ae099fe6a3412ec77cdb8d4243dedfae68317adb192cedaf4eed",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:ec988e9476890e2cda0f05c55cffc44ba4ca96f466db0a0b4efda926887de0f9",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:876e27ecf8650759e6e88fe4ae89b179c5f497c8d53197028b0c83be0f494352",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ced1968f3d940414d1ebbd757c5fac45e91885e244984cecee8ab00670efbefa",
+    "at": "2026-11-09T17:42:05.758Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
