@@ -60,7 +60,7 @@ En una ejecución de la suite sin una persona que decida, el agente que llega a 
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/launch.test.ts && pnpm lint
   - type: fix
-- [ ] T2: Sin persona, la suite termina el turno del agente cuando espera con `specty wait`
+- [x] T2: Sin persona, la suite termina el turno del agente cuando espera con `specty wait`
   - files: evals/test/unattended.test.ts, evals/src/person.ts, evals/run/compliance.eval.ts, evals/src/report.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/unattended.test.ts && pnpm typecheck && pnpm lint

@@ -6,7 +6,7 @@ import { expect, inject, it } from "vitest";
 import { AGENTS, type Agent, consumptionOf, countsOf, invocation } from "../src/agents";
 import { type Experiment, namedExperiments } from "../src/experiments";
 import { launch } from "../src/launch";
-import { attend } from "../src/person";
+import { attendance } from "../src/person";
 import { DIST } from "../src/repo";
 import { type Omitted, type Run, reportJson, reportMarkdown, summarize } from "../src/report";
 import { SCENARIOS, type Scenario } from "../src/scenarios";
@@ -58,7 +58,8 @@ function agentEnv(bin: string): NodeJS.ProcessEnv {
  * experiment brings its own turns and minutes; each run keeps its wall-clock seconds, and one
  * that tells its consumption keeps it too. The agent runs without blocking the suite, so an
  * experiment's person decides meanwhile, and with its conversation kept open while it has work
- * going on, if it has one; the suite waits for them before judging.
+ * going on, if it has one; the suite waits for them before judging. Without a person, an agent
+ * that waits for one with `specty wait` has ended its turn, and the suite stops it (`attendance`).
  */
 async function runOnce(
   agent: Agent,
@@ -82,10 +83,12 @@ async function runOnce(
     timeoutMs: "minutes" in scenario ? scenario.minutes * 60 * 1000 : TIMEOUT_MS,
     session,
   });
-  const attending = person ? attend(root, run.running) : Promise.resolve();
+  const attending = attendance(root, run, person);
   const result = await run.finished;
-  await attending;
-  const seconds = Math.round((performance.now() - started) / 1000);
+  const ended = performance.now();
+  // Stopped waiting for nobody, its work ended when its wait started.
+  const worked = (await attending) ?? ended;
+  const seconds = Math.round((worked - started) / 1000);
   const transcript = result.stdout;
   const counts = countsOf(agent.id, transcript);
   if (

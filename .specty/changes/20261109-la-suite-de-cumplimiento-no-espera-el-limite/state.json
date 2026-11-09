@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b0540ab1fb5a97e09bbc83693b9a3beea8a4e828",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:57:53.746Z",
       "doneAt": "2026-11-09T11:58:14.645Z",
-      "summary": "launch() devuelve stop(), que manda al agente SIGTERM, la señal de su límite"
+      "summary": "launch() devuelve stop(), que manda al agente SIGTERM, la señal de su límite",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "81dd63c5fe317afd4162e0263677ab471b2c7a28",
+      "startedAt": "2026-11-09T11:58:15.004Z",
+      "doneAt": "2026-11-09T11:59:13.921Z",
+      "summary": "person.ts: unattended() mira las marcas de specty wait y, tras 15 s de gracia, para al agente; attendance() elige persona o nadie; runOnce cuenta los segundos hasta la espera"
     }
   },
   "pending": {
