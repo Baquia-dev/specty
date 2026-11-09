@@ -65,7 +65,7 @@ Cuarto de los cambios consecutivos que retiran Gemini CLI, que Antigravity reemp
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts test/cards/delegated.test.ts test/cards/wait.test.ts
   - type: chore
-- [ ] T3: El CLI deja de tener el módulo de agente de Gemini CLI
+- [x] T3: El CLI deja de tener el módulo de agente de Gemini CLI
   - files: packages/cli/src/agents/index.ts, packages/cli/src/agents/gemini-cli.ts, packages/cli/src/install/agents.ts, packages/cli/src/install/project-files.ts, packages/cli/test/gemini-cli.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agents.test.ts test/worktrees.test.ts test/uninstall.test.ts && pnpm lint && pnpm typecheck && pnpm knip

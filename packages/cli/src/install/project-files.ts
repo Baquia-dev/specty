@@ -226,7 +226,7 @@ export function writeClaudePointer(
  * An agent's own instructions file starts with `line`, which imports AGENTS.md, and keeps what it
  * had; false when it already imports it.
  */
-export async function writePointer(
+async function writePointer(
   root: string,
   file: string,
   line: string,

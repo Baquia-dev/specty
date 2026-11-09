@@ -19,7 +19,6 @@ export const CODEX_HOOKS = ".codex/hooks.json";
 export const CODEX_RULES = ".codex/rules/specty.rules";
 export const OPENCODE_PLUGIN = ".opencode/plugins/specty.js";
 export const ANTIGRAVITY_HOOKS = ".agents/hooks.json";
-export const GEMINI_SETTINGS = ".gemini/settings.json";
 /** Devin's standalone hooks file, which Devin Desktop's agent and Devin CLI share. */
 export const DEVIN_HOOKS = ".devin/hooks.v1.json";
 /** Devin's shared settings, and its local ones, which hold machine paths. */
@@ -35,7 +34,6 @@ export const AGENT_HOOK_FILES: readonly string[] = [
   CODEX_HOOKS,
   OPENCODE_PLUGIN,
   ANTIGRAVITY_HOOKS,
-  GEMINI_SETTINGS,
   DEVIN_HOOKS,
   DEVIN_LOCAL_CONFIG,
 ];
@@ -135,7 +133,6 @@ const STOP_FILES: readonly string[] = [
   CLAUDE_LOCAL_SETTINGS,
   CURSOR_HOOKS,
   CODEX_HOOKS,
-  GEMINI_SETTINGS,
   DEVIN_HOOKS,
 ];
 

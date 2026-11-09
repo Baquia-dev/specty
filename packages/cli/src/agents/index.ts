@@ -8,7 +8,6 @@ import { antigravity } from "./antigravity";
 import { claudeCode } from "./claude-code";
 import { codex } from "./codex";
 import { cursor } from "./cursor";
-import { geminiCli } from "./gemini-cli";
 import { opencode } from "./opencode";
 import { windsurf } from "./windsurf";
 
@@ -22,7 +21,6 @@ export const ADAPTERS: Readonly<Record<GuardTool, AgentAdapter>> = {
   codex,
   opencode,
   antigravity,
-  "gemini-cli": geminiCli,
   windsurf,
 };
 
