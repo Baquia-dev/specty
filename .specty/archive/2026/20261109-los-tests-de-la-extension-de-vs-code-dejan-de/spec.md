@@ -42,3 +42,22 @@ Resuelve P104 y P113, y la parte de vscode de P118: con la máquina cargada, los
   - ac: AC1
   - verify: pnpm --filter specty-vscode exec vitest run test/repo-timeout.test.ts && pnpm --filter specty-vscode typecheck && pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+Los tests de la extensión de VS Code que no fijan su propio límite tienen 30 s en lugar de los 5 s de Vitest: `packages/vscode/vitest.config.ts` fija `test.testTimeout: 30_000`, como la CLI fija 60 s, y `packages/vscode/test/repo-timeout.test.ts` lo vigila. P104 y P113 ya estaban resueltas en el código de main por 525f9deeb (2026-11-05: esperas de 15 s y 30 s por test en `extension.test.ts` y `specty.test.ts`); este cambio las marca hechas y cubre el resto del paquete, como `temp-dir.test.ts`, que también arranca Node.
+
+### Desviaciones
+
+- Ninguna: se siguió el plan aprobado.
+
+### Decisiones
+
+- El margen va en la configuración del paquete y no en los tests ya aprobados, que siguen bloqueados y sin cambios.
+- El `specty` simulado no se abarata: ya es un script de Node mínimo, y lo que tarda con carga es arrancar Node.
+
+### Pendientes
+
+- Ninguno de vscode. Los tests de la CLI de P117 y P118 (`init-usage` y los que hacen commits con init) los lleva otro cambio.
