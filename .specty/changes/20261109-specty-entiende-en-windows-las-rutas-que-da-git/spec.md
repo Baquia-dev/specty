@@ -67,7 +67,7 @@ Windows entra en la 0.1.0, y el run 42601745517 de la CI (main 2a1c7cc) tiene un
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-commands.test.ts test/prune-orphans.test.ts test/restore.test.ts test/worktree-hooks.test.ts test/init-reversible.test.ts && pnpm lint && pnpm typecheck
   - type: test
-- [ ] T3: ARCHITECTURE explica cómo lee Specty las rutas de git en Windows
+- [x] T3: ARCHITECTURE explica cómo lee Specty las rutas de git en Windows
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

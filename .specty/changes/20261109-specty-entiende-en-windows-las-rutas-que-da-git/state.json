@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-specty-entiende-en-windows-las-rutas-que-da-git",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-specty-entiende-en-windows-las-rutas-que-da-git",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
   "revision": 1,
@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "30e15fe764c306a2225fb97e91ed190223069f85",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:28:57.324Z",
       "doneAt": "2026-11-09T11:29:57.495Z",
-      "summary": "support.ts gana worktreeList (la lista de worktrees de git con cada carpeta en la forma de la plataforma); prune-commands, prune-orphans, restore y worktree-hooks la usan en vez de la salida tal cual de git, e init-reversible busca la carpeta de las copias con join."
+      "summary": "support.ts gana worktreeList (la lista de worktrees de git con cada carpeta en la forma de la plataforma); prune-commands, prune-orphans, restore y worktree-hooks la usan en vez de la salida tal cual de git, e init-reversible busca la carpeta de las copias con join.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "86d659f72af84cd186f3f80fc7e2dcc12c01975b",
+      "startedAt": "2026-11-09T11:29:57.854Z",
+      "doneAt": "2026-11-09T11:30:15.430Z",
+      "summary": "ARCHITECTURE §16: las rutas que da git se leen en la forma de la plataforma (io/git-folders.ts) y git arranca en la carpeta de -C, por el lanzador de Git for Windows."
     }
   },
   "pending": {

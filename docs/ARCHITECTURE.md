@@ -756,7 +756,7 @@ No ejecuta los comandos que cita AGENTS.md ni revisa la configuración de CI.
 
 **Requisitos no funcionales**:
 
-- Node ≥ 22; macOS, Linux y Windows (las rutas se normalizan a POSIX en las specs).
+- Node ≥ 22; macOS, Linux y Windows (las rutas se normalizan a POSIX en las specs). Las rutas que da git (la raíz, las de su carpeta y las de las worktrees) se leen en la forma de la plataforma (`cli/src/io/git-folders.ts`): en Windows git escribe `C:/…` donde Node y la persona escriben `C:\…`. Y git arranca en la carpeta que nombra `-C`, sin `-C`: en Windows, el lanzador de Git for Windows retiene la carpeta desde la que arranca, y git no podría borrar la carpeta de un cambio desde la sesión abierta en ella.
 - Funciona sin conexión y sin telemetría: las métricas son solo locales.
 - Ninguna dependencia en el código del usuario.
 
