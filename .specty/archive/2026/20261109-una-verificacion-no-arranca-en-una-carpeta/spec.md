@@ -80,3 +80,24 @@ La unidad `ui` de la verificación completa falló en `accept` porque otro Vites
 - R1: Una verificación que espera a su carpeta por un archivo que nunca se libera se quedaría parada. Mitigación: el archivo de un proceso que ya no existe no cuenta, como hoy, y el comando de quien lo tiene se corta a los `verify.timeoutSec`.
 - R2: Un comando de verificación que ejecuta Specty en su propia carpeta se esperaría a sí mismo. Mitigación: los archivos del propio proceso y de sus antecesores no cuentan (AC3).
 - R3: `specty check` dentro de un sandbox que no deja escribir en `.git` dejaría de ejecutar sus comandos. Mitigación: sin poder escribir la marca, corre sin ella.
+
+## Cierre
+
+### Resumen
+
+P144 seguía abierta en main: las plazas solo contaban cuántas verificaciones corren en el clon, y los comandos del proyecto de `specty check` no pasaban por ellas. Ahora `inSlots` (`store/verify-slots.ts`) no empieza mientras otro proceso tiene un archivo en `locks/verify-slots/` con su misma carpeta, aunque haya plazas libres, y lo dice una vez con `verifyFolderWaitNote`; de dos que llegan a la vez corre la que escribió antes su archivo. Los comandos de `specty check` corren en `inFolder`: esperan a la verificación de otro proceso en su carpeta y la marcan mientras corren con un archivo de peso 0, que no ocupa plaza. No cuentan los archivos del propio proceso ni los de sus antecesores (`ancestors` en `io/exec.ts`, con la tabla de `ps` de `endTree`). formats.md §1 y ARCHITECTURE §9 («Una verificación por carpeta») lo explican.
+
+### Desviaciones
+
+- El test del aviso en core (`packages/core/test/cards/folder-wait.test.ts`) se escribió en T1 y no en la fase de tests: la verificación de T1 encadena con `&&` los tests de core y los del CLI, así que el fallo en rojo de core cortaba la cadena antes de que corrieran los del CLI, y `propose` pedía que la salida nombrara `verify-folder.test.ts`. El texto en español del aviso ya lo fijaban los tests bloqueados del CLI.
+- El aviso de las plazas solo nombra las verificaciones que las ocupan, no las marcas de peso 0 de `specty check`.
+
+### Decisiones
+
+- Los antecesores se buscan una vez por proceso y solo cuando hay un archivo de otro proceso en la carpeta, así que el camino normal no lanza `ps`.
+- La verificación que, primera en la cola, espera a su carpeta no deja pasar a las de detrás, como ya hacía la que espera más plazas de las libres (A5).
+- El aviso CWE-78 de `check/commands.ts` es la misma llamada a `execute` con shell de antes, movida dentro de `inFolder`.
+
+### Pendientes
+
+- Un comando de verificación que sigue vivo después de que su proceso de Specty muriera (matado desde fuera) ya no cuenta: su archivo deja de contar con el proceso, y otra verificación puede arrancar en esa carpeta mientras él sigue. Se podría guardar también el pid del comando en el archivo, o cortar el árbol del comando cuando Specty recibe SIGTERM o SIGINT.

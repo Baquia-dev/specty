@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261109-una-verificacion-no-arranca-en-una-carpeta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261109-una-verificacion-no-arranca-en-una-carpeta",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:1230b02c8f951bbee84f7ad5699ed646211e49a60c4cd71153e5d9ec85ab619c",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a0d672a1befda9b900e86c30495203c3be19ec49",
+      "attempts": 1,
       "startedAt": "2026-11-09T09:59:58.758Z",
       "doneAt": "2026-11-09T10:00:30.113Z",
-      "summary": "formats.md §1 y ARCHITECTURE §9 («Una verificación por carpeta») explican la regla de la carpeta, la marca de peso 0 de specty check, quién no cuenta y cómo se resuelven dos a la vez."
+      "summary": "formats.md §1 y ARCHITECTURE §9 («Una verificación por carpeta») explican la regla de la carpeta, la marca de peso 0 de specty check, quién no cuenta y cómo se resuelven dos a la vez.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,6 +83,7 @@
     "T": 3,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-09T10:00:44.730Z",
   "lockedTests": {
     "packages/cli/src/store/verify-folder.test.ts": "sha256:e41191389aa870771193b8863de7ebaf03a351c85369d92503379b92f8c2be89",
     "packages/cli/test/check-folder.test.ts": "sha256:a929e853010dcddf4a7743eb8111278e8197aedf157603e706de7d63e59a5f7c"
