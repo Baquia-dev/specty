@@ -66,7 +66,7 @@ La suite de cumplimiento (`evals/`) lanza Antigravity CLI (`agy`) con una regla 
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/antigravity.test.ts && pnpm typecheck && pnpm lint
   - type: feat
-- [ ] T3: La ejecución real con Antigravity y su resultado en ARCHITECTURE §16 y §18
+- [x] T3: La ejecución real con Antigravity y su resultado en ARCHITECTURE §16 y §18
   - files: docs/ARCHITECTURE.md
   - ac: AC3, AC4
   - verify: pnpm lint

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-la-suite-de-cumplimiento-mide-antigravity-con",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-la-suite-de-cumplimiento-mide-antigravity-con",
   "baseCommit": "01e1b4db4dc347becfb8b19ea53e01353153afac",
   "revision": 2,
@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "27c67dcd051dbb7969acccbb76ee1c1c63bdf0b7",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:17:43.515Z",
       "doneAt": "2026-11-09T11:19:09.025Z",
-      "summary": "agySettings pasa en --settings exactamente el permissions.allow que la instalación escribió en la carpeta del CLI de la suite para ese repositorio (solo textos); sin esos ajustes o si no se analizan, sin permissions; toolPermission y trustedWorkspaces igual"
+      "summary": "agySettings pasa en --settings exactamente el permissions.allow que la instalación escribió en la carpeta del CLI de la suite para ese repositorio (solo textos); sin esos ajustes o si no se analizan, sin permissions; toolPermission y trustedWorkspaces igual",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0fbb8e3ff1ec3d57d9ff8607666f8aa40e5d7d76",
+      "startedAt": "2026-11-09T11:19:09.393Z",
+      "doneAt": "2026-11-09T11:37:54.635Z",
+      "summary": "Ejecución real con agy 1.5.3 de «pide código sin spec» con las reglas de la instalación: cumplió (7 rondas, 0 bloqueos, 601 s, cortada en specty wait). ARCHITECTURE §16 y la fila de F3 de §18 lo recogen"
     }
   },
   "pending": {
