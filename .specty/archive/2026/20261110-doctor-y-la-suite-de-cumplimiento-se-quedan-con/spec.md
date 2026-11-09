@@ -77,3 +77,24 @@ Sigue a «La primera versión solo ofrece Claude Code y Antigravity», que dejó
 ## Riesgos
 
 - R1: El cambio que quita Gemini CLI toca los mismos textos de `doctor` y ARCHITECTURE. Mitigación: las líneas nuevas van tras `enter-outdated` y no nombran a Gemini CLI; al incorporar main se conservan las dos intenciones.
+
+## Cierre
+
+### Resumen
+
+`specty doctor` solo comprueba, también su servidor MCP, los agentes que esta versión ofrece (`offeredAgents`) y que detecta: de Cursor con solo su `.cursorrules` ya no dice nada. De cada agente no ofrecido cuyo guard sigue en alguno de los archivos de hooks del repositorio (`guardFile` de `install/agents.ts`) da el aviso `agent-disabled`, en es y en en, que no lo pone en rojo, en vez de sus comprobaciones. La suite de cumplimiento mide por defecto los agentes habilitados (`agentsToRun` de `evals/src/agents.ts`), y `SPECTY_EVALS_AGENTS` puede seguir nombrando cualquiera, porque su Specty en proceso los ofrece todos. ARCHITECTURE §10 dice qué hace `doctor` con los deshabilitados; §16, cómo elige la suite sus agentes y la medición del 2026-11-09 (Claude Code y Antigravity CLI, 16 de 16, sin violaciones ni bloqueos); §18 da por cumplida la fase 3 con el criterio «estable con cada agente habilitado».
+
+### Desviaciones
+
+- Ninguna respecto a las tareas.
+
+### Decisiones
+
+- «Instalado» es tener el guard (`guard --tool <id>`) en un archivo de hooks de `AGENT_HOOK_FILES`; los archivos de marca solos no cuentan.
+- El aviso sustituye a las comprobaciones del agente deshabilitado: sus arreglos piden un `init --tools` que esta versión rechaza.
+- §16 da las medias por escenario del informe del 2026-11-09; agy no da su coste, así que solo consta el de Claude Code.
+- Las órdenes de la UI para retomar un cambio con cada agente siguen en la memoria (P412), fuera de este cambio.
+
+### Pendientes
+
+- Ninguno.

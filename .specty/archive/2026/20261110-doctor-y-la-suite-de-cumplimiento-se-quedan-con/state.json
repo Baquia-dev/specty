@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261110-doctor-y-la-suite-de-cumplimiento-se-quedan-con",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261110-doctor-y-la-suite-de-cumplimiento-se-quedan-con",
   "baseCommit": "11f76e12825a5c163227e943853cedd15e9258b8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:1acb3a8ad618ec1ba594335d67e7f3e972fafd723bdd85772c673146cfd83497",
@@ -71,12 +71,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f07f4ddc649063606111230c6528653dd44bb446",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:54:36.208Z",
       "doneAt": "2026-11-09T18:02:48.432Z",
-      "summary": "ARCHITECTURE §10 dice qué hace doctor con los deshabilitados; §16, cómo elige agentes la suite y la medición del 2026-11-09 (16 de 16); §18 da F3 por cumplida con cada agente habilitado"
+      "summary": "ARCHITECTURE §10 dice qué hace doctor con los deshabilitados; §16, cómo elige agentes la suite y la medición del 2026-11-09 (16 de 16); §18 da F3 por cumplida con cada agente habilitado",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -89,9 +89,66 @@
     "T": 4,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-09T18:03:07.143Z",
   "lockedTests": {
     "evals/test/agents-default.test.ts": "sha256:fb6cb4737eeb8649a63db285574a090451320a023f088bc05c8334ab590abe1b",
     "packages/cli/test/doctor-disabled.test.ts": "sha256:8d11c23189ad5aceb49a6c34f8440580f48cd16b5cc5dab933f1cc0a8f7cb0ca",
     "packages/core/test/cards/doctor-disabled.test.ts": "sha256:46dd9d70e4bbff843ad1187d7bf59312c777f7522289fdad8c87aeaa71d1e92c"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "15a3107d0c4fb0a04deabe495c15904e0c0ce7ae",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "evals/run/compliance.eval.ts",
+      "evals/src/agents.ts",
+      "evals/src/repo.ts",
+      "evals/test/agents-default.test.ts",
+      "evals/test/report.test.ts",
+      "packages/cli/src/check/install-ignores.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/flow/new-turn.ts",
+      "packages/cli/src/install/agents.ts",
+      "packages/cli/src/install/mcp.ts",
+      "packages/cli/src/store/lock.ts",
+      "packages/cli/test/agent-stop-wait.test.ts",
+      "packages/cli/test/agents.test.ts",
+      "packages/cli/test/check-ignores.test.ts",
+      "packages/cli/test/doctor-agent-stop.test.ts",
+      "packages/cli/test/doctor-disabled.test.ts",
+      "packages/cli/test/doctor-enter.test.ts",
+      "packages/cli/test/epic-subagents.test.ts",
+      "packages/cli/test/fake-gemini.ts",
+      "packages/cli/test/front-start-codex.test.ts",
+      "packages/cli/test/gemini-e2e.test.ts",
+      "packages/cli/test/init-agent-stop.test.ts",
+      "packages/cli/test/mcp-install.test.ts",
+      "packages/cli/test/new-turn.test.ts",
+      "packages/cli/test/support.ts",
+      "packages/cli/test/uninstall.test.ts",
+      "packages/cli/test/worktrees.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/test/cards/doctor-disabled.test.ts",
+      "packages/core/test/cards/epic.test.ts",
+      "packages/core/test/cards/idle-subagents.test.ts",
+      "packages/core/test/cards/mcp.test.ts",
+      "packages/core/test/cards/orphans-subagents.test.ts",
+      "packages/core/test/cards/rejoin.test.ts",
+      "packages/ui/src/change/resume-hints.test.ts",
+      "packages/ui/src/change/resume-hints.ts",
+      "packages/ui/src/sessions/sessions-page.test.ts"
+    ],
+    "at": "2026-11-09T18:03:20.933Z",
+    "resolved": {
+      "commit": "e89506c",
+      "at": "2026-11-09T18:12:38.726Z"
+    }
   }
 }
