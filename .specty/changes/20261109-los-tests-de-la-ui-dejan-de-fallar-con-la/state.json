@@ -6,6 +6,13 @@
   "branch": "specty/20261109-los-tests-de-la-ui-dejan-de-fallar-con-la",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:3c2798039fbe1c513c538a73f5e358b0c7e878c2f10237a63238bd5057c81ba6",
+    "at": "2026-11-09T09:47:33.187Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -43,12 +50,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:3c2798039fbe1c513c538a73f5e358b0c7e878c2f10237a63238bd5057c81ba6",
-    "at": "2026-11-09T09:47:33.187Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-09T09:48:31.883Z"
 }
