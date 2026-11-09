@@ -37,7 +37,7 @@ Resuelve P104 y P113, y la parte de vscode de P118: con la máquina cargada, los
 
 ## Tareas
 
-- [ ] T1: Los tests de vscode tienen 30 s por defecto
+- [x] T1: Los tests de vscode tienen 30 s por defecto
   - files: packages/vscode/vitest.config.ts, packages/vscode/test/repo-timeout.test.ts
   - ac: AC1
   - verify: pnpm --filter specty-vscode exec vitest run test/repo-timeout.test.ts && pnpm --filter specty-vscode typecheck && pnpm lint

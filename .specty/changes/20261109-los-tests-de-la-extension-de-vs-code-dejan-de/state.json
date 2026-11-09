@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261109-los-tests-de-la-extension-de-vs-code-dejan-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261109-los-tests-de-la-extension-de-vs-code-dejan-de",
   "baseCommit": "01dabb6f3812be67141f0181b1ae0fa6a9c2d8a6",
   "revision": 1,
@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f21903ae768ed0e99779e5fbb63ee2521ef72f6e",
+      "startedAt": "2026-11-09T09:44:45.348Z",
+      "doneAt": "2026-11-09T09:44:55.674Z",
+      "summary": "vitest.config.ts de vscode da 30 s a cada test sin límite propio (testTimeout), y repo-timeout.test.ts lo vigila"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

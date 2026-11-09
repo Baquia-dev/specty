@@ -9,6 +9,8 @@ export default defineConfig({
     include: ["test/**/*.test.ts"],
     // The run's temporary files go in a folder of its own, removed at the end.
     globalSetup: ["../core/vitest-temp-dir.ts"],
+    // The tests start Node, which may take seconds on a busy machine: 30 s for each, not 5.
+    testTimeout: 30_000,
     coverage: {
       provider: "v8",
       include: ["src/**"],
