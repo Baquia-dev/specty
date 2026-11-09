@@ -69,3 +69,24 @@ Windows entra en la primera versión. En el run 42628873388 (main fba98e4) Linux
 
 - R1: Aquí no hay Windows: el renombrado repetido solo se comprueba de verdad en la CI. Mitigación: el test nuevo simula los rechazos de Windows con la plataforma `win32` en macOS, y la sesión principal lee el siguiente run.
 - R2: Con Windows bloqueando, un test intermitente de Windows que aún no ha salido bloquearía main. Mitigación: es lo que la persona decidió para la primera versión; el siguiente run lo dirá.
+
+## Cierre
+
+### Resumen
+
+`writeText` (`cli/src/io/files.ts`) reemplaza el archivo con `replaceFile`, que en Windows repite el renombrado rechazado con EPERM, EACCES o EBUSY tras 50, 100, 200, 400 y 800 ms y lanza el error del último intento; en Linux y macOS, y con cualquier otro código, el error sale a la primera. Así la verificación en vivo ya no pierde en Windows la escritura de sus últimas líneas cuando el servidor (o el test) tiene el archivo abierto en ese momento, que es lo que dejó el AC3 de `live-run.test.ts` sin la línea «300» en el run 42628873388. El test nuevo `replace-file.test.ts` lo simula en macOS con un `rename` que rechaza los primeros intentos y la plataforma `win32`, con temporizadores falsos. Los dos AC3 de `live-run.test.ts` sostienen el comando hasta haber leído la última línea en el archivo (el comando espera el archivo `listo`, hasta 60 s) en vez de darle 2 s, con las mismas aserciones; pasan en unos 450 ms. El job `check` de Windows ya no tiene `continue-on-error`, `workflows.test.ts` lo comprueba y ARCHITECTURE.md dice que los tres sistemas bloquean y explica el renombrado repetido.
+
+### Desviaciones
+
+- Ninguna respecto a las tareas.
+
+### Decisiones
+
+- La repetición va en `writeText` y no solo en la verificación en vivo: cualquier archivo que Specty reemplaza (el estado, la auditoría derivada, las marcas) puede estar abierto por el servidor de la UI en Windows.
+- Solo en `win32`: en Linux y macOS esos códigos no pasan solos, y repetirlos solo retrasaría el error.
+- El aviso de `task done` de que T2 «quitó 1 aserción» de `live-run.test.ts` es de forma: las dos aserciones del código de salida pasaron al helper `printed`, que las ejecuta en los dos tests; cada test comprueba lo mismo que antes.
+- La trazabilidad da AC3 «sin test» porque sus tests ya existían (los AC3 de `live-run.test.ts`, de otro cambio) y este cambio solo les da margen.
+
+### Pendientes
+
+- Comprobar en el siguiente run de la CI de Windows (ya bloqueante) que `live-run.test.ts` y toda la suite pasan; lo lee la sesión principal.
