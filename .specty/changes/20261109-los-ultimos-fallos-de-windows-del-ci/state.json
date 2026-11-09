@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261109-los-ultimos-fallos-de-windows-del-ci",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-los-ultimos-fallos-de-windows-del-ci",
   "baseCommit": "5ba0e12afb83eccf61940e642775c78e2ca2fb80",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:be089b82581c8c700947d6eca8f68e137331ad638227d6f8404741eb494ed291",
+    "at": "2026-11-09T13:21:56.377Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -49,12 +56,8 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:be089b82581c8c700947d6eca8f68e137331ad638227d6f8404741eb494ed291",
-    "at": "2026-11-09T13:21:56.377Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/src/enforce/removals.test.ts": "sha256:86de7b08ceb14c4c601c5d87df39a5f38418f0c7f60f0c05c7ae15428c63371d",
+    "packages/core/test/guard/shell-windows.test.ts": "sha256:669786792145d69734a84d6a5d79ddcf4231ed7f933ff98445311aa41cdec7e0"
+  }
 }
