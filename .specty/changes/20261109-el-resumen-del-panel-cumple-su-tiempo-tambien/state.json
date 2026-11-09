@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2944407adef84b3e4c4e414c96bd53f7d180e04b",
+      "attempts": 1,
       "startedAt": "2026-11-09T11:38:26.009Z",
       "doneAt": "2026-11-09T11:45:26.736Z",
-      "summary": "rangeFinder da el tramo de un día buscando a mitades y recordándolo; Ritmo, Calidad y Coste reparten así en vez de con un mapa de cada día del calendario; Calidad recorre las verificaciones una vez para los tramos y los cambios con más fallos, y no crea conjuntos para cambios sin tests de contrato"
+      "summary": "rangeFinder da el tramo de un día buscando a mitades y recordándolo; Ritmo, Calidad y Coste reparten así en vez de con un mapa de cada día del calendario; Calidad recorre las verificaciones una vez para los tramos y los cambios con más fallos, y no crea conjuntos para cambios sin tests de contrato",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f1f75e83abf898f93288905954f5f3c64b8a8467",
+      "startedAt": "2026-11-09T11:45:27.205Z",
+      "doneAt": "2026-11-09T11:50:55.070Z",
+      "summary": "Un solo recuento por cambio sirve al periodo, a todos los tramos a la vez (bucketCounts) y a lo de cada cambio (ownCounts, sumado con addedUp en el mismo orden); la tendencia va en un recorrido, la memoria se lee una vez por vista y el resumen y Personas suman lo ya contado"
     }
   },
   "pending": {

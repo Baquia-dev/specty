@@ -75,7 +75,7 @@ El prototipo de todo esto, en el scratchpad, deja AC8 en unos 105 ms con cobertu
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats && pnpm --filter @baquia-dev/specty exec vitest run test/stats.test.ts test/server/stats.test.ts test/server/stats-changes.test.ts test/server/stats-export.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm exec biome check packages/core/src/stats && pnpm knip
   - type: perf
-- [ ] T3: El panel cuenta cada hecho una vez por sección, no una vez por tramo ni por grupo
+- [x] T3: El panel cuenta cada hecho una vez por sección, no una vez por tramo ni por grupo
   - files: packages/core/src/stats/counts.ts, packages/core/src/stats/summary.ts, packages/core/src/stats/people.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/stats && pnpm --filter @baquia-dev/specty exec vitest run test/stats.test.ts test/server/stats.test.ts test/server/stats-changes.test.ts test/server/stats-export.test.ts && pnpm typecheck && pnpm exec biome check packages/core/src/stats && pnpm knip
