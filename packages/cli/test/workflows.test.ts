@@ -51,8 +51,12 @@ describe("the CI", () => {
     expect(runs(check?.steps ?? [])).toEqual(
       expect.arrayContaining(["pnpm install --frozen-lockfile", "pnpm check"]),
     );
-    // Only Windows may fail without blocking, until it passes once.
-    expect(String(check?.["continue-on-error"])).toContain("matrix.os == 'windows-latest'");
+  });
+
+  it("AC4: lets no system fail without blocking: Windows blocks like Linux and macOS", async () => {
+    const check = (await workflow("ci.yml")).jobs.check;
+    expect(check?.strategy?.matrix.os).toContain("windows-latest");
+    expect(check?.["continue-on-error"]).toBeUndefined();
   });
 
   it("runs the evals' tests, which pnpm check leaves out, after it (AC3)", async () => {

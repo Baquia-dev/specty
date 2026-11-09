@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261109-windows-pasa-entero-en-el-ci-y-bloquea-como-los",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261109-windows-pasa-entero-en-el-ci-y-bloquea-como-los",
   "baseCommit": "fba98e485e5841ca98e91b18fc3d37bcdace1391",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7c777fb19ee1f1dbf79e9913008f13efbfdcfb9816bac97253254deaceea9030",
+    "at": "2026-11-09T14:43:22.658Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -41,12 +48,8 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:7c777fb19ee1f1dbf79e9913008f13efbfdcfb9816bac97253254deaceea9030",
-    "at": "2026-11-09T14:43:22.658Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/workflows.test.ts": "sha256:88c4812e2b7140f692b1e1aeb2e8df9af4235bb592c0c77bb00da31474d2bc8f",
+    "packages/cli/test/replace-file.test.ts": "sha256:28fcd67e23aa52667879298ef3bc7877b0ae4e5221758fe2365982b3ba96fd98"
+  }
 }
