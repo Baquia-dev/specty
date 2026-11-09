@@ -2,6 +2,7 @@
 
 - Estado: aceptada
 - Fecha: 2026-11-03
+- Nota: Gemini CLI, que se nombra aquí, se retiró el 2026-11-10 en favor de Antigravity.
 
 ## Contexto
 

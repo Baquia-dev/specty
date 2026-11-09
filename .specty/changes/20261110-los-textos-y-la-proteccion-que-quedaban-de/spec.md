@@ -63,7 +63,7 @@ kind: standard
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/uninstall.test.ts
   - type: chore
-- [ ] T3: Core deja de tener los textos de instalación y de `doctor` de Gemini CLI
+- [x] T3: Core deja de tener los textos de instalación y de `doctor` de Gemini CLI
   - files: packages/core/src/cards/install.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/src/cards/index.ts, docs/decisions/0018-worktrees-dentro-del-repositorio.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards && pnpm lint && pnpm typecheck && pnpm sources && pnpm knip

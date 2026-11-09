@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261110-los-textos-y-la-proteccion-que-quedaban-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261110-los-textos-y-la-proteccion-que-quedaban-de",
   "baseCommit": "df077b8f7ce2b7b8f8472564f2fbea20f05d5df9",
   "revision": 1,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "51945be27799332d2806125da833349fb9eaa2c8",
+      "attempts": 1,
       "startedAt": "2026-11-09T22:03:10.182Z",
       "doneAt": "2026-11-09T22:03:49.323Z",
-      "summary": "specty uninstall deja de nombrar GEMINI.md: sin su línea en commands/uninstall.ts, sin GEMINI_POINTER en project-files.ts ni geminiPointerStaysLine en core; uninstall.test comprueba que no lo nombra ni lo toca"
+      "summary": "specty uninstall deja de nombrar GEMINI.md: sin su línea en commands/uninstall.ts, sin GEMINI_POINTER en project-files.ts ni geminiPointerStaysLine en core; uninstall.test comprueba que no lo nombra ni lo toca",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e2bf59abfa156fc9b00b676e72c0e596463c3a1d",
+      "startedAt": "2026-11-09T22:03:49.733Z",
+      "doneAt": "2026-11-09T22:04:47.615Z",
+      "summary": "Core deja de tener los textos de instalación de Gemini CLI (cards/install.ts) y sus códigos de doctor (doctor.ts, doctor-agents.ts), ni los exporta; el ADR 0018 lleva la nota de que Gemini CLI se retiró el 2026-11-10"
     }
   },
   "pending": {

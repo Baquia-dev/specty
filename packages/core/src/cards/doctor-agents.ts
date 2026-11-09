@@ -42,9 +42,6 @@ type AgentCode =
   | "windsurf-guard"
   | "no-windsurf-guard"
   | "windsurf-hooks"
-  | "gemini-guard"
-  | "no-gemini-guard"
-  | "gemini-hooks"
   | "memory-stop"
   | "agent-stop"
   | "enter-outdated"
@@ -216,21 +213,6 @@ export const AGENT_WRITERS: {
     t(
       `Devin (Windsurf): faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools windsurf\`.`,
       `Devin (Windsurf): Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools windsurf\`.`,
-    ),
-  "gemini-guard": (line, t) =>
-    t(
-      `Gemini CLI: guard en ${line.file}; Gemini CLI avisa antes de ejecutarlo si es nuevo o cambió.`,
-      `Gemini CLI: guard in ${line.file}; Gemini CLI asks before running it when it is new or changed.`,
-    ),
-  "no-gemini-guard": (line, t, command) =>
-    t(
-      `Gemini CLI: falta el guard en ${line.file}; ejecuta \`${command} init --tools gemini-cli\`.`,
-      `Gemini CLI: the guard is missing in ${line.file}; run \`${command} init --tools gemini-cli\`.`,
-    ),
-  "gemini-hooks": (line, t, command) =>
-    t(
-      `Gemini CLI: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools gemini-cli\`.`,
-      `Gemini CLI: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools gemini-cli\`.`,
     ),
   "memory-stop": (line, t, command) =>
     t(

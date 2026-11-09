@@ -83,10 +83,6 @@ export type DoctorLine =
   | { readonly code: "windsurf-guard" | "no-windsurf-guard"; readonly file: string }
   /** Devin's guard is there, without the hooks of these events. */
   | { readonly code: "windsurf-hooks"; readonly file: string; readonly events: string }
-  /** Gemini CLI's guard in `file`, its project settings. */
-  | { readonly code: "gemini-guard" | "no-gemini-guard"; readonly file: string }
-  /** Gemini CLI's guard is there, without the hooks of these events. */
-  | { readonly code: "gemini-hooks"; readonly file: string; readonly events: string }
   /**
    * An agent's `file` as `init` wrote it before `specty enter`: the agent does not carry the
    * actions of a conversation that entered a change's folder there, or fails in it.
