@@ -10,11 +10,13 @@ import {
   configLine,
   developLine,
   dryRunCard,
+  ENABLED_AGENTS,
   flowChoices,
   flowLine,
   flowQuestion,
   initCard,
   initRefusalCard,
+  isAgentTool,
   newProjectNext,
   noAgentWarning,
   noFlowWarning,
@@ -132,11 +134,13 @@ describe("the agent `init` installs", () => {
     );
     const choices = agentChoices([], "es");
     expect(choices[0]).toMatchObject({ value: "claude-code", label: "Claude Code" });
-    expect(choices.map((choice) => choice.value)).toEqual(Object.keys(AGENT_NAMES));
+    // This version offers only the enabled agents; enabled-agents.test.ts tries the rest.
+    expect(choices.map((choice) => choice.value)).toEqual(ENABLED_AGENTS);
   });
 
   it("labels the detected ones, and says when there are none, with hints explaining each option with examples (AC2)", () => {
-    const es = agentChoices(["codex", "cursor"], "es");
+    const every = Object.keys(AGENT_NAMES).filter(isAgentTool);
+    const es = agentChoices(["codex", "cursor"], "es", every);
     expect(es.find((choice) => choice.value === "codex")?.label).toBe("Codex (detectado)");
     expect(es.find((choice) => choice.value === "cursor")?.label).toBe("Cursor (detectado)");
     expect(es[0]?.label).toBe("Claude Code");
@@ -144,7 +148,7 @@ describe("the agent `init` installs", () => {
       expect((choice as unknown as { readonly hint?: string }).hint).toBeDefined();
       expect((choice as unknown as { readonly hint?: string }).hint).toMatch(/\(ej\./);
     }
-    const en = agentChoices(["codex"], "en");
+    const en = agentChoices(["codex"], "en", every);
     expect(en.find((choice) => choice.value === "codex")?.label).toBe("Codex (detected)");
     for (const choice of en) {
       expect((choice as unknown as { readonly hint?: string }).hint).toBeDefined();
@@ -160,10 +164,10 @@ describe("the agent `init` installs", () => {
 
   it("warns when nobody could say, and how to choose another (AC5)", () => {
     expect(noAgentWarning("specty", "es")).toBe(
-      "No se detectó ningún agente: se instaló el guard de Claude Code. Si usas otro, ejecuta `specty init --tools <herramienta>` con alguna de estas: claude-code, cursor, codex, opencode, gemini-cli, copilot, windsurf, antigravity.",
+      "No se detectó ningún agente: se instaló el guard de Claude Code. Si usas otro, ejecuta `specty init --tools <herramienta>` con alguna de estas: claude-code, antigravity.",
     );
     expect(noAgentWarning("specty", "en")).toBe(
-      "No agent detected: Claude Code's guard was installed. If you use another, run `specty init --tools <tool>` with any of: claude-code, cursor, codex, opencode, gemini-cli, copilot, windsurf, antigravity.",
+      "No agent detected: Claude Code's guard was installed. If you use another, run `specty init --tools <tool>` with any of: claude-code, antigravity.",
     );
   });
 });

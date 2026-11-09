@@ -6,6 +6,13 @@
   "branch": "specty/20261110-la-primera-version-solo-ofrece-claude-code-y",
   "baseCommit": "172c8cc91606d84364f5619136a80fd3aa24eaee",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:76ee502fe0fdd6f61e6c8bec8adc501a2436c188ba2224a7a3b3b3847916245f",
+    "at": "2026-11-09T16:56:02.184Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:76ee502fe0fdd6f61e6c8bec8adc501a2436c188ba2224a7a3b3b3847916245f",
-    "at": "2026-11-09T16:56:02.184Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-09T17:00:00.477Z"
 }
