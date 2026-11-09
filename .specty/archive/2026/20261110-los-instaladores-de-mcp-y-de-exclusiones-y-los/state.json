@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261110-los-instaladores-de-mcp-y-de-exclusiones-y-los",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261110-los-instaladores-de-mcp-y-de-exclusiones-y-los",
   "baseCommit": "b1fd1dfdd76df8364062218513f5eb9685677556",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:f3188dd4ae3098fd32f3bcbf7c0b5477042c219ce2154fbe8f97a45e1d1bec8c",
@@ -66,12 +66,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "741e7ea335ca82698c8974702495740c5d8af2bb",
+      "attempts": 1,
       "startedAt": "2026-11-09T17:26:56.983Z",
       "doneAt": "2026-11-09T17:28:04.351Z",
-      "summary": "Se van gemini-e2e.test.ts y fake-gemini.ts y su apartado de ARCHITECTURE; agent-stop-wait sin Gemini CLI y front-start-codex usa la marca de Cursor como otra herramienta en el entorno; mcp-install.test con su formato"
+      "summary": "Se van gemini-e2e.test.ts y fake-gemini.ts y su apartado de ARCHITECTURE; agent-stop-wait sin Gemini CLI y front-start-codex usa la marca de Cursor como otra herramienta en el entorno; mcp-install.test con su formato",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,5 +83,6 @@
     "AC": 4,
     "T": 4,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-11-09T17:28:13.981Z"
 }

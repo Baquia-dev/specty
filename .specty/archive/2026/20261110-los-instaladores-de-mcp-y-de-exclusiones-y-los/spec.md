@@ -82,3 +82,23 @@ Segundo de los cambios consecutivos que retiran Gemini CLI, que Antigravity reem
 ## Riesgos
 
 - R1: El cambio paralelo «La primera versión solo ofrece Claude Code y Antigravity» toca ARCHITECTURE, `init` y `doctor`, y puede chocar al incorporar main. Mitigación: se resuelve conservando las dos intenciones.
+
+## Cierre
+
+### Resumen
+
+`specty init --mcp` y `specty doctor` dejan de registrar y de mirar el servidor MCP de Specty en `.gemini/settings.json` (`TARGETS` de `install/mcp.ts`), y `specty check --install` deja de escribir `.geminiignore` (`IGNORE_FILES` de `check/install-ignores.ts`). Los tests del CLI dejan de instalar Gemini CLI o de usarlo de ejemplo: sus filas salen de las listas de MCP, exclusiones, fin de turno, `doctor` y `uninstall`; sus casos propios salen de `agents.test.ts` y `doctor-enter.test.ts`; `front-start-codex.test.ts` usa la marca de Cursor como otra herramienta en el entorno; y se borran `gemini-e2e.test.ts` y `fake-gemini.ts`. ARCHITECTURE pierde la fila de `.geminiignore` y el apartado de la prueba de Gemini CLI con un modelo guionizado.
+
+### Desviaciones
+
+- `check-ignores.test.ts` conserva `.gemini/settings.json` en su repositorio de prueba para comprobar AC2: un repositorio con `.gemini/` ya no recibe `.geminiignore`.
+- `doctor-enter.test.ts` mantiene la mitad de OpenCode del caso de AC3, que compartía con Gemini CLI, como un test propio.
+- En T4 se corrigió el formato de `mcp-install.test.ts`, que T1 dejó con la lista de agentes en varias líneas.
+
+### Decisiones
+
+- El ejemplo de `mcp-other` en `cards/mcp.test.ts` pasa a Devin (Windsurf), que también registra el servidor en un JSON de `mcpServers`.
+
+### Pendientes
+
+- El resto del retiro de Gemini CLI (P410): la UI, la suite de cumplimiento y los tests de core que lo ponen de ejemplo; su módulo de agente, su fila de capacidades, su detección y su documentación; sus textos de `doctor`, `init` y `uninstall` y la protección de `.gemini/settings.json` en el guard.
