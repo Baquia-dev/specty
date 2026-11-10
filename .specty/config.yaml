@@ -89,6 +89,7 @@ verify:
           "tsconfig.base.json",
           "LICENSE",
           "NOTICE",
+          "README.md",
         ]
 
 scope:
